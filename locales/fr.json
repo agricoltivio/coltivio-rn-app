@@ -1,0 +1,508 @@
+{
+  "buttons": {
+    "signup": "S'inscrire",
+    "login": "Se connecter",
+    "signout": "Se déconnecter",
+    "next": "Suivant",
+    "back": "Retour",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "save": "Enregistrer",
+    "add": "Ajouter",
+    "ok": "OK",
+    "delete": "Supprimer",
+    "parcel_select": "Sélectionner la parcelle",
+    "draw_area": "Dessiner une zone",
+    "edit_area": "Modifier la zone",
+    "show_entries": "Afficher les entrées",
+    "export": "Exporter",
+    "finish": "Terminer",
+    "send_email": "Envoyer e-mail",
+    "forgot_password": "Mot de passe oublié"
+  },
+  "forms": {
+    "labels": {
+      "name": "Nom",
+      "description_optional": "Description (facultative)",
+      "display_name": "Nom d'affichage",
+      "select_date": "Sélectionner une date",
+      "email": "Email",
+      "password": "Mot de passe",
+      "password_repeat": "Répéter le mot de passe",
+      "date": "Date",
+      "farm_name": "Nom de la ferme",
+      "location": "Localisation",
+      "location_search": "Rechercher une localisation",
+      "federal_farm_number": "Numéro d'enregistrement de l'exploitation agricole",
+      "crop": "Culture",
+      "size_m2": "Taille (m²)",
+      "area": "Surface",
+      "divide_by_plot_size": "Diviser en fonction de la taille du champ",
+      "plot_w_size": "Parcelle {{name}} ({{size}}a)",
+      "device": "Appareil",
+      "none": "Aucun",
+      "method": "Méthode",
+      "capacity_per_unit": "{{unit}} par {{loadUnit}}",
+      "crop_protection_product": "Produit de protection des cultures",
+      "load": "Charge",
+      "balls": "Ballots",
+      "amount_unit": "Quantité {{unit}}",
+      "amount_of_loads": "Nombre de charges",
+      "amount_per_load": "Quantité par charge",
+      "unit_per_load": "{{unit}} par charge",
+      "total": "Total",
+      "total_unit": "Total {{unit}}",
+      "total_w_amount_unit": "Total {{amount}}{{unit}}",
+      "additional_notes": "Notes supplémentaires",
+      "additional_notes_optional": "Notes supplémentaires (facultatives)",
+      "unit": "Unité",
+      "kind": "Variété",
+      "kind_optional": "Variété (facultative)",
+      "sowing": "Semis",
+      "end_optional": "Fin (facultative)",
+      "category": "Catégorie",
+      "type": "Type",
+      "fertiliser": "Engrais",
+      "reason": "Raison",
+      "action": "Action",
+      "conservation": "Conservation",
+      "processing_type": "Transformation",
+      "weight_kg_per_harvest_unit": "Poids par unité (kg)",
+      "machine": "Machine",
+      "default_machine": "Machine par défaut",
+      "organic": "Biologique",
+      "mineralic": "Minéral",
+      "produced_units": "Unités produites",
+      "please_select": "Veuillez sélectionner",
+      "from": "De",
+      "to": "À"
+    },
+    "placeholders": {
+      "location_search": "ex. Rue, Numéro, Ville",
+      "federal_farm_number": "ex. 123/555/4/1",
+      "search": "Rechercher...",
+      "weight_kg_per_harvest_unit": "ex. 20kg par balle carrée",
+      "password_requirements": "Au moins 6 caractères"
+    },
+    "validation": {
+      "name_mismatch": "Le nom ne correspond pas",
+      "password_min_length": "Le mot de passe doit contenir au moins 6 caractères",
+      "password_repeat_invalid": "Les mots de passe ne correspondent pas",
+      "divided_amount_too_big": "La quantité distribuée est supérieure à la quantité disponible",
+      "not_all_divided": "Vous n'avez pas encore distribué la totalité de la quantité",
+      "required": "Ce champ ne peut pas être vide"
+    }
+  },
+  "common": {
+    "no_entries": "Aucune entrée pour le moment",
+    "area_acres": "Surface: {{area}}a",
+    "dont_show_again": "Ne plus afficher",
+    "danger_zone": "Attention !",
+    "all_entries_will_be_deleted": "Toutes les entrées seront définitivement supprimées.",
+    "remaining_quantity": "{{quantity}} {{quantityLabel}} encore disponible",
+    "total_amount_w_unit": "Total {{amount}}{{unit}}",
+    "if_problem_contact_support": "En cas de problème, veuillez contacter notre support.",
+    "unknown": "unknown",
+    "parcel_number": "Parcel Number"
+  },
+  "errors": {
+    "unexpected_retry": "Oups, une erreur s'est produite. Veuillez réessayer.",
+    "unexpected_retry_later": "Oups, une erreur s'est produite. Veuillez réessayer plus tard.",
+    "unexpected": "Oups, une erreur s'est produite.",
+    "try_again_later": "Veuillez réessayer plus tard..."
+  },
+  "units": {
+    "long": {
+      "load": "Charge",
+      "g": "Gramme",
+      "kg": "Kilogramme",
+      "dt": "Décitonne",
+      "t": "Tonne",
+      "l": "Litre",
+      "ml": "Millilitre",
+      "m3": "Mètre cube"
+    },
+    "short": {
+      "load": "Charge",
+      "g": "g",
+      "kg": "kg",
+      "dt": "dt",
+      "t": "t",
+      "l": "l",
+      "ml": "ml",
+      "m3": "m³"
+    }
+  },
+  "tips": {
+    "select_or_draw_area": {
+      "select_area": "Sélectionnez votre zone",
+      "chose_select_or_draw": "Choisissez des champs entiers ou dessinez une zone personnalisée.",
+      "draw_tip": "Utilisez ces symboles pour commencer et terminer le dessin. Vous pouvez déplacer les points d'angle en les maintenant enfoncés jusqu'à ce qu'ils apparaissent devant votre doigt, puis en le faisant glisser à l'endroit souhaité."
+    },
+    "select_plots": {
+      "heading": "Sélectionner les champs utilisés",
+      "content": "Sélectionnez un ou plusieurs champs"
+    }
+  },
+  "signup": {
+    "create_account": "Créer votre compte",
+    "errors": {
+      "email_taken": "Cet email est déjà utilisé",
+      "unexpected": "Une erreur inattendue s'est produite"
+    }
+  },
+  "signin": {
+    "signup_text": "Vous n'avez pas encore de compte ?"
+  },
+  "forgot_password": {
+    "reset_password": "Réinitialiser le mot de passe",
+    "enter_email": "Veuillez entrer votre email pour réinitialiser votre mot de passe.",
+    "reset_link_sent": "Un email a été envoyé à {{email}} pour réinitialiser votre mot de passe.",
+    "mail_being_deliverd": "Cela peut prendre un moment avant que l'email arrive. S'il ne s'affiche pas, vérifiez votre dossier spam.",
+    "link_expired": "Le lien a expiré. Veuillez réessayer."
+  },
+  "onboarding": {
+    "farm_name": {
+      "heading": "Bienvenue chez Coltivio!",
+      "subheading": "Entrez un nom pour votre ferme"
+    },
+    "location": {
+      "heading": "Où se trouve {{farmName}} ?",
+      "subheading": "Recherchez votre adresse pour trouver l'emplacement."
+    },
+    "federal_farm_number": {
+      "modal": {
+        "heading": "Votre numéro d'enregistrement de l'exploitation agricole",
+        "body": "Appuyez sur l'un de vos champs ou recherchez manuellement votre numéro d'enregistrement."
+      },
+      "confirmation": "Est-ce que {{federalFarmId}} est votre numéro d'enregistrement de l'exploitation agricole ?"
+    },
+    "summary": {
+      "heading": "Tout est prêt !",
+      "content": "Vos champs seront ajoutées en tant que champs en fonction de votre numéro d'enregistrement {{federalFarmId}}. Vous pouvez les modifier à tout moment.",
+      "press_save_to_finish": "Appuyez sur Enregistrer pour créer votre ferme."
+    }
+  },
+  "users": {
+    "change_email": "Modifier l'adresse e-mail",
+    "verify_new_email_before_in_effect": "Votre nouvelle adresse e-mail doit être vérifiée avant que la modification ne prenne effet.",
+    "email_not_verified": "Adresse e-mail non vérifiée !",
+    "resend_verification_email": "Renvoyer l'e-mail",
+    "new_password": "Nouveau mot de passe",
+    "change_display_name": "Modifier le nom d'affichage"
+  },
+  "home": {
+    "welcome_text": "Salut {{displayName}},",
+    "tiles": {
+      "farm": "Ma ferme",
+      "plots": "Champs",
+      "machines": "Machines",
+      "field_calendar": "Calendrier des champs",
+      "animal_husbandry": "Animal",
+      "community": "Pastorino"
+    }
+  },
+  "farm": {
+    "farm": "Ferme",
+    "farm_name": "Nom de la ferme",
+    "location": "Localisation",
+    "delete_farm": "Supprimer la ferme",
+    "enter_farm_name_to_delete": "Pour supprimer votre ferme, entrez le nom de la ferme et confirmez l'action.",
+    "chose_option_to_delete_account": "Si vous souhaitez également supprimer votre compte, activez l'option 'Supprimer le compte'.",
+    "delete_account": "Supprimer le compte"
+  },
+  "plots": {
+    "plots": "Champs",
+    "plot_name": "Champ {{name}}",
+    "plot_name_date": "{{date}} - Champ {{name}}",
+    "common": {
+      "draw_area_overlap_info": "Si la zone chevauche un champ existant, elle sera automatiquement réduite.",
+      "affected_plots_warning": "Attention, les champs suivants seront réduits par ce champ."
+    },
+    "map": {
+      "selected_plot": {
+        "size": "Surface : {{size}}a",
+        "crop": "Culture : {{crop}}"
+      }
+    },
+    "add": {
+      "map": {
+        "mode_select": {
+          "message": "Pour créer un nouveau champ, vous pouvez sélectionner une parcelle ou dessiner une nouvelle zone."
+        },
+        "tips": {
+          "parcel_select": {
+            "heading": "Sélectionner une parcelle",
+            "overlap_info": "Si la parcelle sélectionnée chevauche un champ existant, elle sera automatiquement réduite."
+          },
+          "draw_area": {
+            "heading": "Dessiner un nouveau champ",
+            "drawing_info": "Utilisez ces symboles pour commencer et terminer le dessin. Vous pouvez déplacer les points d'angle en les maintenant enfoncés jusqu'à ce qu'ils apparaissent devant votre doigt, puis en les faisant glisser vers la position souhaitée."
+          }
+        }
+      }
+    },
+    "edit": {
+      "map": {
+        "tips": {
+          "edit_area": {
+            "heading": "Modifier le champ",
+            "move_markers": "Maintenez les points d'angle enfoncés jusqu'à ce qu'ils apparaissent devant votre doigt et déplacez-les vers l'emplacement souhaité."
+          },
+          "delete": {
+            "heading": "Voulez-vous vraiment supprimer le champ {{name}} ?",
+            "entries_warning": "Attention, tous les enregistrements de ce champ seront définitivement supprimés.",
+            "confirm_by_typing_name": "Pour supprimer ce champ, tapez le nom et confirmez l'action."
+          }
+        }
+      },
+      "details": {}
+    }
+  },
+  "farm_equipment": {
+    "farm_equipment": "Machines et équipements",
+    "new_equipment": "Nouvel équipement",
+    "device_types": {
+      "harvest": "Récolte",
+      "tillage": "Travail du sol",
+      "crop_protection": "Protection des cultures",
+      "fertilization": "Fertilisation"
+    }
+  },
+  "crop_protection_equipments": {
+    "new_equipment": "Nouveau dispositif de protection des cultures",
+    "only_same_unit_warning": "Attention : Pour utiliser une machine pour un produit phytosanitaire, elle doit avoir la même unité."
+  },
+  "harvest_equipments": {
+    "new_harvester": "Nouvelle moissonneuse-batteuse",
+    "info_default_values": "Ces configurations sont des valeurs par défaut et peuvent être ajustées si nécessaire."
+  },
+  "tillage_equipment": {
+    "new_equipment": "Nouvel équipement de travail du sol"
+  },
+  "fertilizer_spreaders": {
+    "new_spreader": "Nouvel épandeur d'engrais",
+    "only_same_unit_warning": "Attention : Pour utiliser une machine pour un engrais, elle doit avoir la même unité."
+  },
+  "field_calendar": {
+    "field_calendar": "Calendrier cultural",
+    "crops": "Cultures",
+    "sowings": "Semis",
+    "tillages": "Travaux du sol",
+    "fertilizers": "Engrais",
+    "fertilizer_applications": "Applications d'engrais",
+    "harvests": "Récoltes",
+    "crop_protection_products": "Produits phytosanitaires",
+    "crop_protection_applications": "Protection des cultures",
+    "export": "Générer des rapports"
+  },
+  "harvests": {
+    "harvest": "Récolte",
+    "harvest_year": "Récolte {{year}}",
+    "harvest_date": "Récolte {{date}}",
+    "harvest_plot_name": "Récolte - {{name}}",
+    "divide_on_plots": {
+      "header_title": "Distribution",
+      "heading": "Comment la récolte doit-elle être distribuée ?"
+    },
+    "select_crop": {
+      "heading": "Qu'est-ce qui a été récolté ?"
+    },
+    "labels": {
+      "unit": {
+        "none": "Charge",
+        "round_bale": "Balle ronde",
+        "square_bale": "Balle carrée",
+        "other": "Unité"
+      },
+      "conservation_method": {
+        "dried": "Foin",
+        "silage": "Ensilage",
+        "haylage": "Ensilage d'herbe",
+        "other": "Autre",
+        "none": ""
+      },
+      "processing_type": {
+        "none": "En vrac",
+        "round_bale": "Balle ronde",
+        "square_bale": "Balle carrée",
+        "other": "Autre"
+      },
+      "select_date": {
+        "heading": "Quand a-t-elle été récoltée ?"
+      },
+      "select_machinery": {
+        "heading": "Quelle machine a été utilisée ?",
+        "no_machinery": "Vous n'avez pas encore ajouté de machines. Elles permettent de simplifier le suivi des récoltes en définissant des valeurs standard."
+      }
+    }
+  },
+  "fertilizers": {
+    "fertilizer": "Engrais",
+    "new_fertilizer": "Nouvel engrais",
+    "product_in_use_warning": "Attention, cet engrais est en cours d'utilisation et ne peut donc être modifié que dans une mesure limitée et ne peut pas être supprimé.",
+    "warning_unit_not_editable": "Attention, l'unité ne peut pas être modifiée ! Elle doit correspondre à l'unité dans laquelle l'engrais est appliqué."
+  },
+  "fertilizer_application": {
+    "fertilizer_application": "Application d'engrais",
+    "fertilizer_application_date": "Application d'engrais {{date}}",
+    "fertilizer_application_year": "Application d'engrais {{year}}",
+    "fertilizer_application_plot_name": "Application d'engrais - {{name}}",
+    "select_quantity": {
+      "heading": "Quelle quantité a été appliquée ?"
+    },
+    "divide_on_plots": {
+      "header_title": "Distribution",
+      "heading": "Comment la quantité appliquée doit-elle être distribuée ?"
+    },
+    "select_date": {
+      "heading": "Quand a-t-il été appliqué ?"
+    },
+    "select_fertilizer": {
+      "header_title": "Engrais",
+      "heading": "Quel engrais a été utilisé ?",
+      "no_fertilizers": "Aucun engrais enregistré pour le moment"
+    },
+    "select_machine": {
+      "heading": "Quelle machine a été utilisée ?",
+      "no_machines": "Vous n'avez pas encore enregistré de machines. Celles-ci peuvent simplifier la saisie des données en prédéfinissant des valeurs standard.",
+      "only_same_unit_warning": "Attention : Vous ne pouvez utiliser que des machines qui utilisent la même unité que l'engrais sélectionné."
+    },
+    "methods": {
+      "spread": "Épandage",
+      "spray": "Pulvérisation",
+      "other": "Autre"
+    }
+  },
+  "tillages": {
+    "tillages": "Travaux du sol",
+    "tillage": "Travail du sol",
+    "tillage_year": "Travail du sol {{year}}",
+    "tillage_date": "Travail du sol {{date}}",
+    "tillage_plot_name": "Travail du sol - {{name}}",
+    "select_date": {
+      "heading": "Quand le travail a-t-il été effectué ?"
+    },
+    "select_equipment": {
+      "heading": "Quelle machine a été utilisée ?",
+      "no_machinery": "Vous n'avez pas encore enregistré de machines. Celles-ci peuvent simplifier la saisie des données en prédéfinissant des valeurs standard."
+    },
+    "reasons": {
+      "soil_loosening": "Décompactage du sol",
+      "weed_control": "Désherbage",
+      "other": "Autre"
+    },
+    "actions": {
+      "plowing": "Labour",
+      "tilling": "Bêchage",
+      "harrowing": "Hersage",
+      "rolling": "Rouleau",
+      "rotavating": "Rotavator",
+      "hoeing": "Binage",
+      "weed_harrowing": "Hersage de désherbage",
+      "flame_weeding": "Désherbage thermique",
+      "other": "Autre"
+    }
+  },
+  "crops": {
+    "crop": "Culture",
+    "crops": "Cultures",
+    "crop_name": "Culture {{name}}",
+    "new_crop": "Nouvelle culture",
+    "categories": {
+      "grass": "Herbe",
+      "grain": "Céréale",
+      "none": "Aucun"
+    },
+    "no_variety": "Aucune variété"
+  },
+  "crop_protection_applications": {
+    "crop_protection": "Protection des cultures",
+    "crop_protection_year": "Protection des cultures {{year}}",
+    "crop_protection_plot_name": "Protection des cultures - {{name}}",
+    "crop_protection_date": "Protection des cultures - {{date}}",
+    "select_date": {
+      "heading": "Quand la mesure a-t-elle été appliquée ?"
+    },
+    "select_product": {
+      "heading": "Quel produit de protection des cultures a été utilisé ?",
+      "no_products_message": "Aucun produit de protection des cultures enregistré pour le moment"
+    },
+    "select_equipment": {
+      "heading": "Quel équipement a été utilisé ?",
+      "only_same_unit_warning": "Attention, vous ne pouvez utiliser que les équipements qui correspondent à l'unité du produit de protection des cultures.",
+      "no_matching_equipment_message": "Aucun équipement correspondant enregistré pour le moment. Ceux-ci peuvent simplifier la saisie des données en prédéfinissant des valeurs standard."
+    },
+    "select_quantity": {
+      "heading": "Quelle quantité a été utilisée ?"
+    },
+    "divide_on_plots": {
+      "header_title": "Distribution",
+      "heading": "Comment la quantité appliquée doit-elle être distribuée ?"
+    },
+    "list": {
+      "title": "Champ {{plotName}} - {{date}}",
+      "body": "{{totalAmount}}{{unit}} {{product}} ({{method}})"
+    },
+    "methods": {
+      "broadcasting": "Épandage",
+      "injecting": "Injection",
+      "misting": "Nébulisation",
+      "spraying": "Pulvérisation",
+      "other": "Autre"
+    }
+  },
+  "crop_protection_product": {
+    "add_product": "Nouveau produit de protection des cultures",
+    "product_in_use_warning": "Attention, cet produit de protection des cultures est en cours d'utilisation et ne peut donc pas être supprimé.",
+    "warning_unit_not_editable": "Attention, l'unité ne peut pas être modifiée ! Elle doit correspondre à l'unité dans laquelle le produit phytosanitaire est appliqué."
+  },
+  "crop_rotations": {
+    "crop_rotation": "Rotation des cultures",
+    "crop_rotation_year": "Rotation des cultures {{year}}",
+    "crop_rotation_plot_name": "Rotation des cultures - {{name}}",
+    "crop_rotation_date": "Rotation des cultures - {{date}}",
+    "sowing": "Semis",
+    "sowings": "Semis",
+    "sowings_year": "Semis {{year}}",
+    "sowing_date": "Semis {{date}}",
+    "new_crop": "Nouvelle culture",
+    "select_crop": {
+      "heading": "Qu'est-ce qui a été semé ?"
+    },
+    "select_date": {
+      "heading": "Quand a-t-il été semé ?"
+    },
+    "cannot_delete_warning": "C'est la seule culture sur cette parcelle et ne peut donc pas être supprimée."
+  },
+  "reports": {
+    "field_calendar": {
+      "heading": "Exportation du calendrier des champs",
+      "subheading": "Exportez le calendrier des champs sous forme de document Excel.",
+      "select_sections": "Sélectionnez ce qui doit être exporté",
+      "confirmation": "Le document Excel généré vous sera envoyé par email à {{email}}.",
+      "export_success_heading": "Calendrier des champs exporté avec succès",
+      "export_sent_to": "Le document a été envoyé à {{email}}.",
+      "export_mail_being_deliverd": "Cela peut prendre un moment avant que l'email arrive. S'il ne s'affiche pas, vérifiez votre dossier spam."
+    }
+  },
+  "agri_coltivio": {
+    "subheading": "Ensemble pour une agriculture libre et indépendante",
+    "section_1": "AgriColtivio, qui a développé cette application, est une association à but non lucratif visant à renforcer les petites et moyennes exploitations agricoles.",
+    "section_2": "Cette application est open source, ce qui signifie que le code source est accessible publiquement - transparent et vérifiable.",
+    "section_3_bold": "La sécurité des données est une priorité absolue.",
+    "section_3": "Toutes les données sont stockées exclusivement sur des serveurs situés dans l'UE et sont soumises aux strictes réglementations GDPR en matière de protection des données.",
+    "section_4": "Le fonctionnement et le développement de cette application sont financés uniquement par des dons volontaires.",
+    "section_5_title": "Aidez à maintenir l'application gratuite et indépendante pour tous.",
+    "section_5": "Devenez membre ou soutenez-nous par un don. Chaque contribution compte – grande ou petite.",
+    "section_6": "Merci de faire partie de l'aventure."
+  },
+  "permissions": {
+    "location": {
+      "error": {
+        "title": "Localisation désactivée !",
+        "message": "Nous avons besoin de votre position pour l'afficher sur la carte."
+      }
+    }
+  }
+}

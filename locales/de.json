@@ -1,0 +1,674 @@
+{
+  "buttons": {
+    "signup": "Registrieren",
+    "login": "Anmelden",
+    "signout": "Abmelden",
+    "next": "Weiter",
+    "back": "Zurück",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "save": "Speichern",
+    "add": "Hinzufügen",
+    "ok": "OK",
+    "delete": "Löschen",
+    "parcel_select": "Parzelle auswählen",
+    "draw_area": "Fläche zeichnen",
+    "edit_area": "Fläche bearbeiten",
+    "show_entries": "Einträge anzeigen",
+    "export": "Exportieren",
+    "finish": "Fertig",
+    "send_email": "E-Mail senden",
+    "forgot_password": "Passwort vergessen"
+  },
+  "forms": {
+    "labels": {
+      "name": "Name",
+      "description_optional": "Beschreibung (optional)",
+      "display_name": "Anzeigename",
+      "select_date": "Datum wählen",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "password_repeat": "Passwort wiederholen",
+      "date": "Datum",
+      "farm_name": "Hofname",
+      "location": "Standort",
+      "location_search": "Standort suchen",
+      "federal_farm_number": "Betriebsnummer",
+      "crop": "Kultur",
+      "size_m2": "Größe (m²)",
+      "area": "Fläche",
+      "divide_by_plot_size": "Aufteilung nach Schlaggröße",
+      "plot_w_size": "Schlag {{name}} ({{size}}a)",
+      "device": "Gerät",
+      "none": "Keine",
+      "method": "Verfahren",
+      "capacity_per_unit": "{{unit}} pro {{loadUnit}}",
+      "crop_protection_product": "Pflanzenschutzmittel",
+      "load": "Fuder",
+      "balls": "Ballen",
+      "amount_unit": "Anzahl {{unit}}",
+      "amount_of_loads": "Anzahl Fuder",
+      "amount_per_load": "Menge pro Fuder",
+      "unit_per_load": "{{unit}} pro Fuder",
+      "total": "Total",
+      "total_unit": "Total {{unit}}",
+      "total_w_amount_unit": "Total {{amount}}{{unit}}",
+      "additional_notes": "Zusätzliche Notizen",
+      "additional_notes_optional": "Zusätzliche Notizen (optional)",
+      "unit": "Einheit",
+      "kind": "Sorte",
+      "kind_optional": "Sorte (optional)",
+      "sowing": "Aussaat",
+      "end_optional": "Ende (optional)",
+      "category": "Kategorie",
+      "type": "Typ",
+      "fertiliser": "Dünger",
+      "reason": "Grund",
+      "action": "Aktion",
+      "conservation": "Konservierungsmethode",
+      "processing_type": "Verarbeitungsart",
+      "weight_kg_per_harvest_unit": "Gewicht pro Ernteeinheit (kg)",
+      "machine": "Maschine",
+      "default_machine": "Standardmaschine",
+      "organic": "Organisch",
+      "mineralic": "Mineralisch",
+      "produced_units": "Produzierte Einheiten",
+      "please_select": "Bitte auswählen",
+      "from": "Von",
+      "to": "Bis"
+    },
+    "placeholders": {
+      "location_search": "z.B. Straße, Hausnummer, Ort",
+      "federal_farm_number": "z.B. 123/555/4/1",
+      "search": "Suche...",
+      "weight_kg_per_harvest_unit": "z.B. 20kg pro Quaderballen",
+      "password_requirements": "Mindestens 6 Zeichen"
+    },
+    "validation": {
+      "name_mismatch": "Name stimmt nicht überein",
+      "password_min_length": "Passwort muss mindestens 6 Zeichen lang sein",
+      "password_repeat_invalid": "Passwörter stimmen nicht überein",
+      "divided_amount_too_big": "Die verteilte Menge ist größer als die verfügbare Menge",
+      "not_all_divided": "Du hast noch nicht die gesamte Menge verteilt",
+      "required": "Feld darf nicht leer sein"
+    }
+  },
+  "common": {
+    "no_entries": "Noch keine Einträge",
+    "area_acres": "Fläche: {{area}}a",
+    "dont_show_again": "Nicht mehr anzeigen",
+    "danger_zone": "Vorsicht!",
+    "all_entries_will_be_deleted": "Alle Einträge werden unwiderruflich gelöscht.",
+    "remaining_quantity": "{{quantity}} {{quantityLabel}} noch verfügbar",
+    "total_amount_w_unit": "Total {{amount}}{{unit}}",
+    "if_problem_contact_support": "Bei Problemen kontaktiere bitte unseren Support.",
+    "unknown": "Unbekannt",
+    "parcel_number": "Parzelle: {{number}}",
+    "usage": "Nutzung",
+    "federal_farm_id": "Betriebsnummer: {{number}}"
+  },
+  "errors": {
+    "unexpected_retry": "Ups, etwas ist schief gelaufen. Bitte versuche es erneut.",
+    "unexpected_retry_later": "Ups, etwas ist schief gelaufen. Bitte versuche es später erneut.",
+    "unexpected": "Ups, etwas ist schief gelaufen.",
+    "try_again_later": "Bitte versuche es später nochmals..."
+  },
+  "units": {
+    "long": {
+      "load": "Fuder",
+      "g": "Gramm",
+      "kg": "Kilogramm",
+      "dt": "Dezitonne",
+      "t": "Tonne",
+      "l": "Liter",
+      "ml": "Milliliter",
+      "m3": "Kubikmeter"
+    },
+    "short": {
+      "load": "Fuder",
+      "g": "g",
+      "kg": "kg",
+      "dt": "dt",
+      "t": "t",
+      "l": "l",
+      "ml": "ml",
+      "m3": "m³"
+    }
+  },
+  "tips": {
+    "select_or_draw_area": {
+      "select_area": "Wähle deine Fläche",
+      "chose_select_or_draw": "Wähle entweder ganze Schläge aus oder zeichne eine eigene Fläche.",
+      "draw_tip": "Benutze diese Symbole, um mit dem Zeichnen zu beginnen und abzuschließen. Du kannst die Eckpunkte verschieben, indem du einen Punkt gedrückt hältst bis er vor deinem Finger sichtbar wird und ihn dann an den gewünschten Ort ziehst."
+    },
+    "select_plots": {
+      "heading": "Wähle die verwendeten Schläge",
+      "content": "Wähle einen oder mehrere Schläge aus"
+    }
+  },
+  "signup": {
+    "create_account": "Erstelle dein Konto",
+    "errors": {
+      "email_taken": "Diese E-Mail ist bereits vergeben",
+      "unexpected": "Ein unerwarteter Fehler ist aufgetreten"
+    }
+  },
+  "signin": {
+    "signup_text": "Hast du noch keinen Account?"
+  },
+  "forgot_password": {
+    "reset_password": "Passwort zurücksetzen",
+    "enter_email": "Bitte gib deine E-Mail an, um dein Passwort zurückzusetzen.",
+    "reset_link_sent": "Eine Email wurde an {{email}} gesendet, um dein Passwort zurückzusetzen.",
+    "mail_being_deliverd": "Es kann einen Moment dauern, bis das Mail im Postfach ist. Falls das Mail nicht ankommt, schaue bitte in deinen Spam Ordner.",
+    "link_expired": "Der Link ist abgelaufen. Bitte versuche es erneut."
+  },
+  "onboarding": {
+    "farm_name": {
+      "heading": "Willkommen bei Coltivio!",
+      "subheading": "Gib einen Namen für deinen Hof an"
+    },
+    "location": {
+      "heading": "Wo befindet sich {{farmName}}?",
+      "subheading": "Suche nach deiner Adresse, um den Standort zu finden."
+    },
+    "federal_farm_number": {
+      "modal": {
+        "heading": "Deine Betriebsnummer",
+        "body": "Tippe entweder auf eine deiner Parzellen oder suche manuell nach deiner Betriebsnummer."
+      },
+      "confirmation": "Ist {{federalFarmId}} deine Betriebsnummer?"
+    },
+    "summary": {
+      "heading": "Geschafft!",
+      "plots_info": "Deine Flächen werden basierend auf deiner Betriebsnummer als Schläge hinzugefügt.",
+      "crops_info": "Die momentane Kultur wird vom Nutzungscode abgeleitet.",
+      "edit_plots_info": "Du kannst deine Flächen jederzeit unter 'Schläge' oder über die Karte bearbeiten.",
+      "press_save_to_finish": "Drücke 'Speichern', um deinen Hof zu erstellen."
+    }
+  },
+  "users": {
+    "change_email": "E-Mail-Adresse ändern",
+    "verify_new_email_before_in_effect": "Deine neue E-Mail-Adresse muss zuerst verifiziert werden, bevor die Änderung übernommen wird.",
+    "email_not_verified": "E-Mail-Adresse noch nicht verifiziert!",
+    "resend_verification_email": "E-Mail erneut senden",
+    "new_password": "Neues Passwort",
+    "change_display_name": "Namen bearbeiten"
+  },
+  "home": {
+    "welcome_text": "Hallo {{displayName}},",
+    "tiles": {
+      "farm": "Mein Hof",
+      "plots": "Schläge",
+      "machines": "Maschinen",
+      "field_calendar": "Feldkalender",
+      "animal_husbandry": "Tierhaltung",
+      "community": "Vernetzen"
+    }
+  },
+  "farm": {
+    "farm": "Hof",
+    "farm_name": "Hofname",
+    "location": "Standort",
+    "delete_farm": "Hof löschen",
+    "enter_farm_name_to_delete": "Um deinen Hof zu löschen, gib den Hofnamen ein und bestätige den Vorgang.",
+    "chose_option_to_delete_account": "Wenn du auch dein Konto löschen möchtest, aktiviere die Option 'Konto löschen'.",
+    "delete_account": "Konto löschen"
+  },
+  "plots": {
+    "plots": "Schläge",
+    "plot_name": "Schlag {{name}}",
+    "plot_name_date": "{{date}} - Schlag {{name}}",
+    "common": {
+      "draw_area_overlap_info": "Wenn die Fläche einen existierenden Schlag überlappt, wird dieser automatisch verkleinert.",
+      "affected_plots_warning": "Achtung: Folgende Schläge werden durch diesen Schlag verkleinert."
+    },
+    "map": {
+      "selected_plot": {
+        "size": "Fläche: {{size}}a",
+        "crop": "Kultur: {{crop}}"
+      }
+    },
+    "add": {
+      "map": {
+        "mode_select": {
+          "message": "Um einen neuen Schlag zu erstellen, kannst du entweder eine Parzelle auswählen oder eine neue Fläche einzeichnen."
+        },
+        "tips": {
+          "parcel_select": {
+            "heading": "Wähle eine Parzelle aus",
+            "overlap_info": "Wenn die gewählte Parzelle einen existierenden Schlag überlappt, wird dieser automatisch verkleinert."
+          },
+          "draw_area": {
+            "heading": "Zeichne einen neuen Schlag",
+            "drawing_info": "Benutze diese Symbole, um mit dem Zeichnen zu beginnen und abzuschließen. Du kannst die Eckpunkte verschieben, indem du einen Punkt gedrückt hältst, bis er vor dem Finger sichtbar wird, und ihn dann an den gewünschten Ort ziehst."
+          }
+        }
+      }
+    },
+    "edit": {
+      "map": {
+        "tips": {
+          "edit_area": {
+            "heading": "Bearbeite den Schlag",
+            "move_markers": "Halte die Eckpunkte gedrückt, bis sie vor dem Finger sichtbar sind, und ziehe sie an den gewünschten Ort."
+          },
+          "delete": {
+            "heading": "Schlag {{name}} wirklich löschen?",
+            "entries_warning": "Achtung: Alle Einträge für diesen Schlag werden unwiderruflich gelöscht.",
+            "confirm_by_typing_name": "Um diesen Schlag zu löschen, gib den Namen ein und bestätige den Vorgang."
+          }
+        }
+      },
+      "details": {}
+    },
+    "usage_codes": {
+      "501": "Sommergerste",
+      "502": "Wintergerste",
+      "504": "Hafer",
+      "505": "Triticale",
+      "506": "Mischel Futtergetreide",
+      "507": "Futterweizen gemäss Sortenliste swiss granum",
+      "508": "Körnermais",
+      "510": "Hartweizen",
+      "511": "Emmer, Einkorn",
+      "512": "Sommerweizen (ohne Futterweizen der Sortenliste swiss granum)",
+      "513": "Winterweizen (ohne Futterweizen der Sortenliste swiss granum)",
+      "514": "Roggen",
+      "515": "Mischel Brotgetreide",
+      "516": "Dinkel",
+      "519": "Saatmais (Vertragsanbau)",
+      "520": "Trockenreis",
+      "521": "Silo- und Grünmais",
+      "522": "Zuckerrüben",
+      "523": "Futterrüben",
+      "524": "Kartoffeln",
+      "525": "Pflanzkartoffeln (Vertragsanbau)",
+      "526": "Sommerraps zur Speiseölgewinnung",
+      "527": "Winterraps zur Speiseölgewinnung",
+      "528": "Soja",
+      "529": "Nassreis",
+      "531": "Sonnenblumen zur Speiseölgewinnung",
+      "534": "Lein",
+      "536": "Bohnen und Wicken zur Körnergewinnung (z.B. Ackerbohnen)",
+      "537": "Erbsen zur Körnergewinnung (z.B. Eiweisserbsen)",
+      "538": "Lupinen",
+      "539": "Ölkürbisse",
+      "540": "Kichererbsen",
+      "541": "Tabak",
+      "543": "Getreide siliert",
+      "544": "Leindotter",
+      "545": "Einjährige Freilandgemüse, ohne Konservengemüse",
+      "546": "Freiland-Konservengemüse",
+      "547": "Wurzeln der Treibzichorie",
+      "548": "Buchweizen",
+      "551": "Einjährige Beeren (z.B. Erdbeeren)",
+      "552": "Einjährige nachwachsende Rohstoffe (Kenaf, usw.)",
+      "553": "Einjährige Gewürz- und Medizinalpflanzen",
+      "554": "Einjährige gärtnerische Freilandkulturen (Blumen, Rollrasen usw.)",
+      "556": "Buntbrache",
+      "557": "Rotationsbrache",
+      "559": "Saum auf Ackerflächen",
+      "566": "Mohn",
+      "567": "Saflor",
+      "568": "Linsen",
+      "569": "Mischungen von Bohnen, Wicken, Erbsen, Kichererbsen und Lupinen mit Getreide oder Leindotter, mindestens 30 % Anteil Leguminosen bei der Ernte (zur Körnergewinnung)",
+      "570": "Mischungen von Linsen mit Getreide oder Leindotter, mindestens 30 % Anteil Linsen bei der Ernte (zur Körnergewinnung)",
+      "572": "Nützlingsstreifen auf offener Ackerfläche",
+      "573": "Senf",
+      "574": "Quinoa",
+      "575": "Hanf zur Nutzung der Samen",
+      "576": "Hanf zur Fasernutzung",
+      "577": "Anderer Hanf",
+      "578": "Hirse zur Körnergewinnung",
+      "579": "Hirse zur Nutzung ganze Pflanze",
+      "580": "Sorghum zur Körnergewinnung",
+      "581": "Sorghum zur Nutzung ganze Pflanze",
+      "591": "Winterraps als nachwachsender Rohstoff",
+      "592": "Sonnenblumen als nachwachsender Rohstoff",
+      "594": "Offene Ackerfläche, beitragsberechtigt (regionsspezifische Biodiversitätsförderfläche)",
+      "595": "Übrige offene Ackerfläche, nicht beitragsberechtigt (regionsspezifische Biodiversitätsförderfläche)",
+      "597": "Übrige offene Ackerfläche, beitragsberechtigt",
+      "598": "Übrige offene Ackerfläche, nicht beitragsberechtigt",
+      "601": "Kunstwiesen (ohne Weiden)",
+      "602": "Übrige Kunstwiese, beitragsberechtigt (z.B. Schweineweide, Geflügelweide)",
+      "611": "Extensiv genutzte Wiesen (ohne Weiden)",
+      "612": "Wenig intensiv genutzte Wiesen (ohne Weiden)",
+      "613": "Übrige Dauerwiesen (ohne Weiden)",
+      "616": "Weiden (Heimweiden, übrige Weiden ohne Sömmerungsweiden)",
+      "617": "Extensiv genutzte Weiden",
+      "618": "Waldweiden (ohne bewaldete Fläche)",
+      "621": "Heuwiesen im Sömmerungsgebiet, Übrige Wiesen",
+      "622": "Heuwiesen im Sömmerungsgebiet, Typ extensiv genutzte Wiese",
+      "623": "Heuwiesen im Sömmerungsgebiet, Typ wenig intensiv genutzte Wiese",
+      "625": "Waldweiden (ohne bewaldete Fläche)",
+      "631": "Futterleguminosen für die Samenproduktion (Vertragsanbau)",
+      "632": "Futtergräser für die Samenproduktion (Vertragsanbau)",
+      "635": "Uferwiesen (ohne Weiden)",
+      "660": "Übrige Dauerweiden, beitragsberechtigt aggregiert",
+      "693": "Regionsspezifische Biodiversitätsförderflächen (Weiden)",
+      "694": "Regionsspezifische Biodiversitätsförderfläche (Grünflächen ohne Weiden)",
+      "697": "Übrige Grünfläche (Dauergrünfläche), beitragsberechtigt",
+      "698": "Übrige Grünfläche (Dauergrünflächen), nicht beitragsberechtigt",
+      "701": "Reben",
+      "702": "Obstanlagen (Äpfel)",
+      "703": "Obstanlagen (Birnen)",
+      "704": "Obstanlagen (Steinobst)",
+      "705": "Mehrjährige Beeren",
+      "706": "Mehrjährige Gewürz- und Medizinalpflanzen",
+      "707": "Mehrjährige nachwachsende Rohstoffe (Chinaschilf, usw.)",
+      "708": "Hopfen",
+      "709": "Rhabarber",
+      "710": "Spargel",
+      "711": "Pilze (Freiland)",
+      "712": "Christbäume",
+      "713": "Baumschule von Forstpflanzen ausserhalb der Forstzone",
+      "714": "Ziersträucher, Ziergehölze und Zierstauden",
+      "717": "Rebflächen mit natürlicher Artenvielfalt",
+      "718": "Trüffelanlagen",
+      "719": "Maulbeerbaumanlagen (Fütterung Seidenraupen)",
+      "720": "Gepflegte Selven (Edelkastanienbäume)",
+      "721": "Mehrjährige gärtnerische Freilandkulturen (nicht im Gewächshaus)",
+      "722": "Baumschulen von Reben",
+      "723": "Baumschulen von Obst und Beeren",
+      "724": "Übrige Baumschulen (Rosen, Zierstauden, usw.)",
+      "725": "Permakultur",
+      "730": "Obstanlagen aggregiert",
+      "731": "Andere Obstanlagen (Kiwis, Holunder usw.)",
+      "735": "Reben (regionsspezifische Biodiversitätsförderflächen)",
+      "797": "Übrige Flächen mit Dauerkulturen, beitragsberechtigt",
+      "798": "Übrige Flächen mit Dauerkulturen, nicht beitragsberechtigt",
+      "801": "Gemüsekulturen in Gewächshäusern mit festem Fundament",
+      "802": "Übrige Spezialkulturen in Gewächshäusern mit festem Fundament",
+      "803": "Gärtnerische Kulturen in Gewächshäusern mit festem Fundament",
+      "804": "Beerenkulturen in Gewächshäusern mit festem Fundament",
+      "807": "Übrige Spezialkulturen in geschütztem Anbau ohne festes Fundament",
+      "808": "Gärtnerische Kulturen in geschütztem Anbau ohne festes Fundament",
+      "810": "Pilze in geschütztem Anbau mit festem Fundament",
+      "811": "Gemüsekulturen in geschütztem Anbau ohne festes Fundament; im gewachsenen Boden",
+      "812": "Gemüsekulturen in geschütztem Anbau ohne festes Fundament; auf Pflanztischen oder -gestellen",
+      "813": "Beerenkulturen in geschütztem Anbau ohne festes Fundament; im gewachsenen Boden",
+      "814": "Beerenkulturen in geschütztem Anbau ohne festes Fundament; auf Pflanztischen oder -gestellen",
+      "830": "Kulturen in ganzjährig geschütztem Anbau, beitragsberechtigt aggregiert",
+      "847": "Übrige Kulturen in geschütztem Anbau ohne festes Fundament, beitragsberechtigt",
+      "848": "Übrige Kulturen in geschütztem Anbau mit festem Fundament",
+      "849": "Übrige Kulturen in geschütztem Anbau ohne festes Fundament, nicht beitragsberechtigt",
+      "851": "Streueflächen in der LN",
+      "852": "Hecken-, Feld- und Ufergehölze (mit Krautsaum)",
+      "857": "Hecken-, Feld- und Ufergehölze (mit Pufferstreifen)",
+      "858": "Hecken-, Feld- und Ufergehölze (mit Pufferstreifen) (regionsspezifische Biodiversitätsförderfläche)",
+      "897": "Übrige Flächen innerhalb der LN, beitragsberechtigt",
+      "898": "Übrige Flächen innerhalb der LN, nicht beitragsberechtigt",
+      "901": "Wald",
+      "902": "Übrige unproduktive Flächen (z.B. gemulchte Flächen, stark verunkrautete Flächen, Hecken ohne Pufferstreifen)",
+      "903": "Flächen ohne landwirtschaftliche Hauptzweckbestimmung (erschlossenes Bauland, Spiel-, Reit-, Camping-, Golf-, Flug- und Militärplätze oder ausgemarchte Bereiche von Eisenbahnen, öffentlichen Strassen und Gewässern)",
+      "904": "Wassergräben, Tümpel, Teiche",
+      "905": "Ruderalflächen, Steinhaufen und -wälle",
+      "906": "Trockenmauern",
+      "907": "Unbefestigte, natürliche Wege",
+      "908": "Regionsspezifische Biodiversitätsförderflächen",
+      "909": "Hausgärten",
+      "911": "Landwirtschaftliche Produktion in Gebäuden (z. B. Champignon, Brüsseler)",
+      "921": "Hochstamm-Feldobstbäume (Punkte oder Flächen)",
+      "922": "Nussbäume (Punkte oder Flächen)",
+      "923": "Edelkastanienbäume",
+      "924": "Einheimische standortgerechte Einzelbäume und Alleen (Punkte oder Flächen)",
+      "926": "Andere Bäume",
+      "927": "Andere Bäume (regionsspezifische Biodiversitätsförderfläche)",
+      "928": "Andere Elemente (regionsspezifische Biodiversitätsförderfläche)",
+      "930": "Sömmerungsweiden",
+      "933": "Gemeinschaftsweiden",
+      "935": "Heuwiesen mit Zufütterung während der Sömmerung",
+      "936": "Streueflächen im Sömmerungsgebiet",
+      "950": "Ackerschonstreifen",
+      "951": "Getreide in weiter Reihen",
+      "998": "Übrige Flächen ausserhalb der LN und SF"
+    }
+  },
+  "farm_equipment": {
+    "farm_equipment": "Landmaschinen & Geräte",
+    "new_equipment": "Neues Gerät",
+    "device_types": {
+      "harvest": "Ernte",
+      "tillage": "Bodenbearbeitung",
+      "crop_protection": "Pflanzenschutz",
+      "fertilization": "Düngung"
+    }
+  },
+  "crop_protection_equipments": {
+    "new_equipment": "Neues Pflanzenschutzgerät",
+    "only_same_unit_warning": "Achtung: Um eine Maschine für einen Pflanzenschutzmittel zu verwenden muss sie die selbe Einheit haben."
+  },
+  "harvest_equipments": {
+    "new_harvester": "Neue Erntemaschine",
+    "info_default_values": "Diese Konfigurationen sind Standardwerte und können bei Bedarf angepasst werden."
+  },
+  "tillage_equipment": {
+    "new_equipment": "Neues Gerät zur Bodenbearbeitung"
+  },
+  "fertilizer_spreaders": {
+    "new_spreader": "Neue Maschine für Düngung",
+    "only_same_unit_warning": "Achtung: Um eine Maschine für einen Dünger zu verwenden muss sie die selbe Einheit haben."
+  },
+  "field_calendar": {
+    "field_calendar": "Feldkalender",
+    "crops": "Kulturen",
+    "sowings": "Aussaaten",
+    "tillages": "Bodenbearbeitungen",
+    "fertilizers": "Dünger",
+    "fertilizer_applications": "Düngung",
+    "harvests": "Ernte",
+    "crop_protection_products": "Pflanzenschutzmittel",
+    "crop_protection_applications": "Pflanzenschutz",
+    "export": "Exportieren"
+  },
+  "harvests": {
+    "harvest": "Ernte",
+    "harvest_year": "Ernte {{year}}",
+    "harvest_date": "Ernte {{date}}",
+    "harvest_plot_name": "Ernte - {{name}}",
+    "divide_on_plots": {
+      "header_title": "Aufteilung",
+      "heading": "Wie soll die Ernte aufgeteilt werden?"
+    },
+    "select_crop": {
+      "heading": "Was wurde geerntet?"
+    },
+    "labels": {
+      "unit": {
+        "none": "Fuder",
+        "round_bale": "Rundballen",
+        "square_bale": "Quaderballen",
+        "other": "Einheit"
+      },
+      "conservation_method": {
+        "dried": "Heu",
+        "silage": "Silage",
+        "haylage": "Heulage",
+        "other": "Anderes",
+        "none": "Keine"
+      },
+      "processing_type": {
+        "none": "Lose",
+        "round_bale": "Rundballen",
+        "square_bale": "Quaderballen",
+        "other": "Anderes"
+      },
+      "select_date": {
+        "heading": "Wann wurde geerntet?"
+      },
+      "select_machinery": {
+        "heading": "Welche Maschine wurde verwendet?",
+        "no_machinery": "Du hast noch keine Maschine erfasst. Diese vereinfachen die Erfassung der Ernte, indem du Standardwerte vordefinieren kannst."
+      }
+    }
+  },
+  "fertilizers": {
+    "fertilizer": "Dünger",
+    "new_fertilizer": "Neuer Dünger",
+    "product_in_use_warning": "Achtung: Dieser Dünger wird verwendet und kann deshalb nur beschränkt bearbeitet und nicht gelöscht werden.",
+    "warning_unit_not_editable": "Achtung, die Einheit kann nicht bearbeitet werden! Sie sollte der Einheit entsprechen in welchem der Dünger ausgebracht wird."
+  },
+  "fertilizer_application": {
+    "fertilizer_application": "Düngung",
+    "fertilizer_application_date": "Düngung {{date}}",
+    "fertilizer_application_year": "Düngung {{year}}",
+    "fertilizer_application_plot_name": "Düngung - {{name}}",
+    "select_quantity": {
+      "heading": "Wie viel wurde ausgebracht?"
+    },
+    "divide_on_plots": {
+      "header_title": "Aufteilung",
+      "heading": "Wie soll die ausgebrachte Menge aufgeteilt werden?"
+    },
+    "select_date": {
+      "heading": "Wann wurde ausgebracht?"
+    },
+    "select_fertilizer": {
+      "header_title": "Dünger",
+      "heading": "Welcher Dünger wurde verwendet?",
+      "no_fertilizers": "Noch kein Dünger erfasst"
+    },
+    "select_machine": {
+      "heading": "Welche Maschine wurde verwendet?",
+      "no_machines": "Du hast noch keine Maschine erfasst. Diese vereinfachen die Erfassung, indem du Standardwerte vordefinieren kannst.",
+      "only_same_unit_warning": "Achtung: Du kannst nur Geräte verwenden, welche die gleiche Einheit verwendet wie der gewählte Dünger."
+    },
+    "methods": {
+      "spread": "Streuen",
+      "spray": "Sprühen",
+      "other": "Anderes"
+    }
+  },
+  "tillages": {
+    "tillages": "Bodenbearbeitungen",
+    "tillage": "Bodenbearbeitung",
+    "tillage_year": "Bodenbearbeitung {{year}}",
+    "tillage_date": "Bodenbearbeitung {{date}}",
+    "tillage_plot_name": "Bodenbearbeitung - {{name}}",
+    "select_date": {
+      "heading": "Wann wurde die Arbeit durchgeführt?"
+    },
+    "select_equipment": {
+      "heading": "Welche Maschine wurde verwendet?",
+      "no_machinery": "Du hast noch keine Maschine erfasst. Diese vereinfachen die Erfassung der Ernte, indem du Standardwerte vordefinieren kannst."
+    },
+    "reasons": {
+      "soil_loosening": "Bodenlockerung",
+      "weed_control": "Unkrautbekämpfung",
+      "other": "Andere"
+    },
+    "actions": {
+      "plowing": "Pflügen",
+      "tilling": "Grubbern",
+      "harrowing": "Eggen",
+      "rolling": "Walzen",
+      "rotavating": "Fräsen",
+      "hoeing": "Hacken",
+      "weed_harrowing": "Striegeln",
+      "flame_weeding": "Abflammen",
+      "other": "Andere"
+    }
+  },
+  "crops": {
+    "crop": "Kultur",
+    "crops": "Kulturen",
+    "crop_name": "Kultur {{name}}",
+    "new_crop": "Neue Kultur",
+    "categories": {
+      "grass": "Gras",
+      "grain": "Getreide",
+      "none": "Keine"
+    },
+    "no_variety": "Keine Sorte"
+  },
+  "crop_protection_applications": {
+    "crop_protection": "Pflanzenschutz",
+    "crop_protection_year": "Pflanzenschutz {{year}}",
+    "crop_protection_plot_name": "Pflanzenschutz - {{name}}",
+    "crop_protection_date": "Pflanzenschutz - {{date}}",
+    "select_date": {
+      "heading": "Wann wurde die Maßnahme angewendet?"
+    },
+    "select_product": {
+      "heading": "Welches Pflanzenschutzmittel wurde verwendet?",
+      "no_products_message": "Noch kein Pflanzenschutzmittel erfasst"
+    },
+    "select_equipment": {
+      "heading": "Welches Gerät wurde verwendet?",
+      "only_same_unit_warning": "Achtung: Du kannst nur Geräte verwenden, welche die gleiche Einheit wie das Pflanzenschutzmittel verwenden.",
+      "no_matching_equipment_message": "Noch kein passendes Gerät erfasst. Diese vereinfachen die Erfassung, indem du Standardwerte vordefinieren kannst."
+    },
+    "select_quantity": {
+      "heading": "Wie viel wurde verwendet?"
+    },
+    "divide_on_plots": {
+      "header_title": "Aufteilung",
+      "heading": "Wie soll die ausgebrachte Menge aufgeteilt werden?"
+    },
+    "list": {
+      "title": "Schlag {{plotName}} - {{date}}",
+      "body": "{{totalAmount}}{{unit}} {{product}} ({{method}})"
+    },
+    "methods": {
+      "broadcasting": "Flächendeckend",
+      "injecting": "Injektion",
+      "misting": "Vernebeln",
+      "spraying": "Sprühen",
+      "other": "Andere"
+    }
+  },
+  "crop_protection_product": {
+    "add_product": "Neues Pflanzenschutzmittel",
+    "product_in_use_warning": "Achtung: Dieses Pflanzenschutzmittel wird verwendet und kann deshalb nicht gelöscht werden.",
+    "warning_unit_not_editable": "Achtung, die Einheit kann nicht bearbeitet werden! Sie sollte der Einheit entsprechen in welchem das Pflanzenschutzmittel ausgebracht wird."
+  },
+  "crop_rotations": {
+    "crop_rotation": "Fruchtfolge",
+    "crop_rotation_year": "Fruchtfolge {{year}}",
+    "crop_rotation_plot_name": "Fruchtfolge - {{name}}",
+    "crop_rotation_date": "Fruchtfolge - {{date}}",
+    "sowing": "Aussaat",
+    "sowings": "Aussaaten",
+    "sowings_year": "Aussaaten {{year}}",
+    "sowing_date": "Aussaat {{date}}",
+    "new_crop": "Neue Kultur",
+    "select_crop": {
+      "heading": "Was wurde gesät"
+    },
+    "select_date": {
+      "heading": "Wann wurde gesät?"
+    },
+    "cannot_delete_warning": "Dies ist die einzige Kultur auf diesem Schlag und kann desshalb nicht gelöscht werden."
+  },
+  "reports": {
+    "field_calendar": {
+      "heading": "Feldkalender Export",
+      "subheading": "Exportiere den Feldkalender als Excel Dokument.",
+      "select_sections": "Wähle was exportiert werden soll",
+      "confirmation": "Das generierte Excel Dokument wird dir per Mail an {{email}} gesendet.",
+      "export_success_heading": "Feldkalender erfolgreich exportiert",
+      "export_sent_to": "Das Dokument wurde an {{email}} gesendet.",
+      "export_mail_being_deliverd": "Es kann einen Moment dauern, bis das Mail im Postfach ist. Falls das Mail nicht ankommt, schaue bitte in deinen Spam Ordner."
+    }
+  },
+  "agri_coltivio": {
+    "subheading": "Gemeinsam für eine freie und unabhängige Landwirtschaft ",
+    "section_1": "AgriColtivio, welcher diese App entwickelt, ist ein gemeinnütziger Verein, der zum Ziel hat, kleine und mittelgrosse landwirtschaftliche Betriebe zu stärken.",
+    "section_2": "Diese App ist Open Source. Das bedeutet, dass der Quellcode offen einsehbar ist - transparent und überprüfbar.",
+    "section_3_bold": "Datensicherheit hat höchste Priorität. ",
+    "section_3": "Alle Daten werden ausschliesslich auf Servern innerhalb der EU gespeichert und unterliegen den strengen Datenschutzrichtlinien der DSGVO.",
+    "section_4": "Der Betrieb und die Weiterentwicklung dieser App wird ausschliesslich durch freiwillige Spenden finanziert",
+    "section_5_title": "Hilf mit damit die App weiterhin frei und unabhängig für alle zur Verfügung steht.",
+    "section_5": "Werde Mitglied oder unterstütze uns mit einer Spende. Jeder Beitrag hilft – ob klein oder gross.",
+    "section_6": "Danke, dass du Teil davon bist."
+  },
+  "permissions": {
+    "location": {
+      "error": {
+        "title": "Standort deaktiviert!",
+        "message": "Wir brauchen deinen Standort, um ihn auf der Karte anzuzeigen."
+      }
+    }
+  }
+}

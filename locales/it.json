@@ -1,0 +1,508 @@
+{
+  "buttons": {
+    "signup": "Iscriviti",
+    "login": "Accedi",
+    "signout": "Esci",
+    "next": "Avanti",
+    "back": "Indietro",
+    "cancel": "Annulla",
+    "confirm": "Conferma",
+    "save": "Salva",
+    "add": "Aggiungi",
+    "ok": "OK",
+    "delete": "Elimina",
+    "parcel_select": "Seleziona la Parcella",
+    "draw_area": "Disegna Area",
+    "edit_area": "Modifica Area",
+    "show_entries": "Mostra Elementi",
+    "export": "Esporta",
+    "finish": "Finisci",
+    "send_email": "Invia e-mail",
+    "forgot_password": "Password dimenticato"
+  },
+  "forms": {
+    "labels": {
+      "name": "Nome",
+      "description_optional": "Descrizione (facoltativa)",
+      "display_name": "Nome visualizzato",
+      "select_date": "Seleziona data",
+      "email": "Email",
+      "password": "Password",
+      "password_repeat": "Ripeti Password",
+      "date": "Data",
+      "farm_name": "Nome dell'Azienda Agricola",
+      "location": "Posizione",
+      "location_search": "Cerca Posizione",
+      "federal_farm_number": "Codice Azienda Agricola",
+      "crop": "Coltura",
+      "size_m2": "Dimensione (m²)",
+      "area": "Superficie",
+      "divide_by_plot_size": "Dividi in base alle dimensioni della parcella",
+      "plot_w_size": "Campo {{name}} ({{size}}a)",
+      "device": "Dispositivo",
+      "none": "Nessuno",
+      "method": "Metodo",
+      "capacity_per_unit": "{{unit}} per {{loadUnit}}",
+      "crop_protection_product": "Prodotto fitosanitario",
+      "load": "Carico",
+      "balls": "Rotoballe/Ballette",
+      "amount_unit": "Quantità {{unit}}",
+      "amount_of_loads": "Numero di Carichi",
+      "amount_per_load": "Quantità per Carico",
+      "unit_per_load": "{{unit}} per Carico",
+      "total": "Totale",
+      "total_unit": "Totale {{unit}}",
+      "total_w_amount_unit": "Totale {{amount}}{{unit}}",
+      "additional_notes": "Note Aggiuntive",
+      "additional_notes_optional": "Note Aggiuntive (facoltative)",
+      "unit": "Unità di misura",
+      "kind": "Varietà",
+      "kind_optional": "Varietà (facoltativa)",
+      "sowing": "Semina",
+      "end_optional": "Fine (facoltativa)",
+      "category": "Categoria",
+      "type": "Tipologia",
+      "fertiliser": "Fertilizzante",
+      "reason": "Motivo",
+      "action": "Azione",
+      "conservation": "Conservazione",
+      "processing_type": "Trasformazione",
+      "weight_kg_per_harvest_unit": "Peso per unità di raccolto (kg)",
+      "machine": "Macchina Agricola",
+      "default_machine": "Macchina Agricola Predefinita",
+      "organic": "Biologico",
+      "mineralic": "Minerale",
+      "produced_units": "Unità Prodotte",
+      "please_select": "Seleziona per favore",
+      "from": "Da",
+      "to": "A"
+    },
+    "placeholders": {
+      "location_search": "es. Via, Numero Civico, Città",
+      "federal_farm_number": "es. 123/555/4/1",
+      "search": "Cerca...",
+      "weight_kg_per_harvest_unit": "es. 20kg per balla quadrata",
+      "password_requirements": "Almeno 6 caratteri"
+    },
+    "validation": {
+      "name_mismatch": "Il nome non corrisponde",
+      "password_min_length": "La password deve contenere almeno 6 caratteri",
+      "password_repeat_invalid": "Le password non corrispondono",
+      "divided_amount_too_big": "La quantità distribuita è maggiore di quella disponibile",
+      "not_all_divided": "Non hai ancora distribuito l'intera quantità",
+      "required": "Campo obbligatorio"
+    }
+  },
+  "common": {
+    "no_entries": "Ancora nessun elemento",
+    "area_acres": "Superficie: {{area}}a",
+    "dont_show_again": "Non mostrare più",
+    "danger_zone": "Attenzione!",
+    "all_entries_will_be_deleted": "Tutti gli elementi verranno eliminati definitivamente.",
+    "remaining_quantity": "{{quantity}} {{quantityLabel}} ancora disponibile",
+    "total_amount_w_unit": "Totale {{amount}}{{unit}}",
+    "if_problem_contact_support": "In caso di problemi, si prega di contattare il nostro supporto.",
+    "unknown": "unknown",
+    "parcel_number": "Parcel Number"
+  },
+  "errors": {
+    "unexpected_retry": "Oops, qualcosa è andato storto. Riprova.",
+    "unexpected_retry_later": "Oops, qualcosaè andato storto. Riprova più tardi.",
+    "unexpected": "Oops, qualcosa è andato storto.",
+    "try_again_later": "Riprova più tardi..."
+  },
+  "units": {
+    "long": {
+      "load": "Carico",
+      "g": "Grammo",
+      "kg": "Chilogrammo",
+      "dt": "Decitonnellata",
+      "t": "Tonnellata",
+      "l": "Litro",
+      "ml": "Millilitro",
+      "m3": "Metro cubo"
+    },
+    "short": {
+      "load": "Carico",
+      "g": "g",
+      "kg": "kg",
+      "dt": "dt",
+      "t": "t",
+      "l": "l",
+      "ml": "ml",
+      "m3": "m³"
+    }
+  },
+  "tips": {
+    "select_or_draw_area": {
+      "select_area": "Seleziona la tua area",
+      "chose_select_or_draw": "Scegli tra campi interi o disegna un'area personalizzata.",
+      "draw_tip": "Usa questi simboli per iniziare e terminare il disegno. Puoi muovere i punti tenendoli premuti finché non appaiono sopra il dito, quindi trascinandolo nella posizione desiderata."
+    },
+    "select_plots": {
+      "heading": "Seleziona gli campi utilizzati",
+      "content": "Seleziona uno o più campi"
+    }
+  },
+  "signup": {
+    "create_account": "Crea il tuo account",
+    "errors": {
+      "email_taken": "Questa email è già in uso",
+      "unexpected": "Si è verificato un errore inatteso"
+    }
+  },
+  "signin": {
+    "signup_text": "Non hai ancora un account?"
+  },
+  "forgot_password": {
+    "reset_password": "Reimposta password",
+    "enter_email": "Inserisci la tua email per reimpostare la password.",
+    "reset_link_sent": "Un'email è stata inviata a {{email}} per reimpostare la password.",
+    "mail_being_deliverd": "Potrebbe volerci un momento perché l'email arrivi. Se non compare, controlla la cartella spam.",
+    "link_expired": "Il link è scaduto. Per favore, riprova."
+  },
+  "onboarding": {
+    "farm_name": {
+      "heading": "Benvenuto in Coltivio!",
+      "subheading": "Inserisci un nome per la tua azienda agricola"
+    },
+    "location": {
+      "heading": "Dove si trova {{farmName}}?",
+      "subheading": "Cerca il tuo indirizzo per trovare la posizione."
+    },
+    "federal_farm_number": {
+      "modal": {
+        "heading": "Il tuo Codice Azienda Agricola",
+        "body": "Tocca uno dei tuoi campi o cerca manualmente il tuo codice di registrazione."
+      },
+      "confirmation": "{{federalFarmId}} è il tuo codice azienda agricola?"
+    },
+    "summary": {
+      "heading": "Tutto pronto!",
+      "content": "I tuoi campi verranno aggiunti come particelle in base al tuo codice di registrazione {{federalFarmId}}. Puoi modificarli in qualsiasi momento.",
+      "press_save_to_finish": "Premi Salva per creare la tua azienda agricola."
+    }
+  },
+  "users": {
+    "change_email": "Cambia indirizzo email",
+    "verify_new_email_before_in_effect": "Il tuo nuovo indirizzo email deve essere verificato prima che la modifica abbia effetto.",
+    "email_not_verified": "Indirizzo email non verificato!",
+    "resend_verification_email": "Reinvia Email",
+    "new_password": "Nuova Password",
+    "change_display_name": "Modifica Nome Visualizzato"
+  },
+  "home": {
+    "welcome_text": "Ciao {{displayName}},",
+    "tiles": {
+      "farm": "La Mia Azienda",
+      "plots": "Campi",
+      "machines": "Macchine",
+      "field_calendar": "Calendario dei Campi",
+      "animal_husbandry": "Animali",
+      "community": "Pastorino"
+    }
+  },
+  "farm": {
+    "farm": "Azienda Agricola",
+    "farm_name": "Nome Azienda Agricola",
+    "location": "Posizione",
+    "delete_farm": "Elimina Azienda Agricola",
+    "enter_farm_name_to_delete": "Per eliminare la tua azienda agricola, inserisci il nome dell'azienda e conferma l'azione.",
+    "chose_option_to_delete_account": "Se vuoi anche eliminare il tuo account, abilita l'opzione 'Elimina Account'.",
+    "delete_account": "Elimina Account"
+  },
+  "plots": {
+    "plots": "Campi",
+    "plot_name": "Campo {{name}}",
+    "plot_name_date": "{{date}} - Campo {{name}}",
+    "common": {
+      "draw_area_overlap_info": "Se l'area si sovrappone a un campo esistente, verrà automaticamente ridotta.",
+      "affected_plots_warning": "Attenzione, i seguenti campi verranno ridotti da questo campo."
+    },
+    "map": {
+      "selected_plot": {
+        "size": "Superficie: {{size}}a",
+        "crop": "Coltura: {{crop}}"
+      }
+    },
+    "add": {
+      "map": {
+        "mode_select": {
+          "message": "Per creare un nuovo campo, puoi selezionare una particella catastale oppure disegnare una nuova area."
+        },
+        "tips": {
+          "parcel_select": {
+            "heading": "Seleziona una Particella Catastale",
+            "overlap_info": "Se la particella selezionata si sovrappone a un campo esistente, verrà automaticamente ridotta."
+          },
+          "draw_area": {
+            "heading": "Disegna un Nuovo Campo",
+            "drawing_info": "Usa questi simboli per iniziare e finire di disegnare. Puoi muovere i punti tenendoli premuti finché non appaiono sopra il dito, poi trascinali nella posizione desiderata."
+          }
+        }
+      }
+    },
+    "edit": {
+      "map": {
+        "tips": {
+          "edit_area": {
+            "heading": "Modifica il Campo",
+            "move_markers": "Tieni premuti i punti finché non appaiono sopra il dito e spostali nella posizione desiderata."
+          },
+          "delete": {
+            "heading": "Eliminare il campo {{name}}?",
+            "entries_warning": "Attenzione, tutti i dati relativi a questo campo verranno eliminati definitivamente.",
+            "confirm_by_typing_name": "Per eliminare questo campo, digita il nome e conferma l'azione."
+          }
+        }
+      },
+      "details": {}
+    }
+  },
+  "farm_equipment": {
+    "farm_equipment": "Macchine e Attrezzature Agricole",
+    "new_equipment": "Nuova Attrezzatura",
+    "device_types": {
+      "harvest": "Raccolta",
+      "tillage": "Lavorazione del Terreno",
+      "crop_protection": "Difesa delle Colture",
+      "fertilization": "Fertilizzazione"
+    }
+  },
+  "crop_protection_equipments": {
+    "new_equipment": "Nuovo Dispositivo per la Difesa delle Colture",
+    "only_same_unit_warning": "Attention : Pour utiliser une machine pour un produit phytosanitaire, deve avere la stessa unità di misura."
+  },
+  "harvest_equipments": {
+    "new_harvester": "Nuova Macchina da Raccolta",
+    "info_default_values": "Queste configurazioni sono valori predefiniti e possono essere modificati se necessario."
+  },
+  "tillage_equipment": {
+    "new_equipment": "Nuova Attrezzatura per la Lavorazione del Terreno"
+  },
+  "fertilizer_spreaders": {
+    "new_spreader": "Nuovo Spandiconcime",
+    "only_same_unit_warning": "Attenzione: Per utilizzare una macchina per un fertilizzante, deve avere la stessa unità di misura."
+  },
+  "field_calendar": {
+    "field_calendar": "Calendario dei campi",
+    "crops": "Colture",
+    "sowings": "Semine",
+    "tillages": "Lavorazioni del terreno",
+    "fertilizers": "Fertilizzanti",
+    "fertilizer_applications": "Applicazioni di fertilizzanti",
+    "harvests": "Raccolti",
+    "crop_protection_products": "Prodotti fitosanitari",
+    "crop_protection_applications": "Trattamenti fitosanitari",
+    "export": "Genera report"
+  },
+  "harvests": {
+    "harvest": "Raccolto",
+    "harvest_year": "Raccolto {{year}}",
+    "harvest_date": "Raccolto del {{date}}",
+    "harvest_plot_name": "Raccolto - {{name}}",
+    "divide_on_plots": {
+      "header_title": "Distribuzione",
+      "heading": "Come deve essere distribuito il raccolto?"
+    },
+    "select_crop": {
+      "heading": "Cos'è stato raccolto?"
+    },
+    "labels": {
+      "unit": {
+        "none": "Carico",
+        "round_bale": "Rotoballa",
+        "square_bale": "Ballone",
+        "other": "Unità"
+      },
+      "conservation_method": {
+        "dried": "Fieno",
+        "silage": "Insilato",
+        "haylage": "Fieno-silo",
+        "other": "Altro",
+        "none": ""
+      },
+      "processing_type": {
+        "none": "Sfuso",
+        "round_bale": "Rotoballa",
+        "square_bale": "Ballone",
+        "other": "Altro"
+      },
+      "select_date": {
+        "heading": "Quando è stato raccolto?"
+      },
+      "select_machinery": {
+        "heading": "Quale macchina è stata utilizzata?",
+        "no_machinery": "Non hai ancora aggiunto macchine. Questo semplifica il tracciamento del raccolto definendo valori standard."
+      }
+    }
+  },
+  "fertilizers": {
+    "fertilizer": "Fertilizzante",
+    "new_fertilizer": "Nuovo Fertilizzante",
+    "product_in_use_warning": "Attenzione, questo fertilizzante è in uso e pertanto può essere modificato solo in misura limitata e non può essere eliminato.",
+    "warning_unit_not_editable": "Attenzione, l'unità non può essere modificata! Dovrebbe corrispondere all'unità in cui viene applicato il fertilizzante."
+  },
+  "fertilizer_application": {
+    "fertilizer_application": "Distribuzione del fertilizzante",
+    "fertilizer_application_date": "Distribuzione del fertilizzante del {{date}}",
+    "fertilizer_application_year": "Distribuzione del fertilizzante {{year}}",
+    "fertilizer_application_plot_name": "Distribuzione del fertilizzante - {{name}}",
+    "select_quantity": {
+      "heading": "Quanto è stato distribuito?"
+    },
+    "divide_on_plots": {
+      "header_title": "Distribuzione",
+      "heading": "Come deve essere distribuita la quantità applicata?"
+    },
+    "select_date": {
+      "heading": "Quando è stato distribuito?"
+    },
+    "select_fertilizer": {
+      "header_title": "Fertilizzante",
+      "heading": "Quale fertilizzante è stato utilizzato?",
+      "no_fertilizers": "Nessun fertilizzante registrato"
+    },
+    "select_machine": {
+      "heading": "Quale macchina è stata utilizzata?",
+      "no_machines": "Non hai ancora registrato macchine. Questo può semplificare l'immissione dei dati predefinendo i valori standard.",
+      "only_same_unit_warning": "Attenzione: Puoi utilizzare solo macchine che usano la stessa unità del fertilizzante selezionato."
+    },
+    "methods": {
+      "spread": "Spargimento",
+      "spray": "Spruzzatura",
+      "other": "Altro"
+    }
+  },
+  "tillages": {
+    "tillages": "Lavorazioni del terreno",
+    "tillage": "Lavorazione del terreno",
+    "tillage_year": "Lavorazione del terreno {{year}}",
+    "tillage_date": "Lavorazione del terreno del {{date}}",
+    "tillage_plot_name": "Lavorazione del terreno - {{name}}",
+    "select_date": {
+      "heading": "Quando è stata eseguita la lavorazione?"
+    },
+    "select_equipment": {
+      "heading": "Quale macchina è stata utilizzata?",
+      "no_machinery": "Non hai ancora registrato macchine. Questo può semplificare l'immissione dei dati predefinendo i valori standard."
+    },
+    "reasons": {
+      "soil_loosening": "Decompattazione del terreno",
+      "weed_control": "Controllo delle infestanti",
+      "other": "Altro"
+    },
+    "actions": {
+      "plowing": "Aratura",
+      "tilling": "Erpicatura",
+      "harrowing": "Estirpatura",
+      "rolling": "Rullatura",
+      "rotavating": "Fresatura",
+      "hoeing": "Sarchiatura",
+      "weed_harrowing": "Erpicatura per controllo infestanti",
+      "flame_weeding": "Diserbo termico",
+      "other": "Altro"
+    }
+  },
+  "crops": {
+    "crop": "Coltura",
+    "crops": "Colture",
+    "crop_name": "Coltura {{name}}",
+    "new_crop": "Nuova Coltura",
+    "categories": {
+      "grass": "Erba",
+      "grain": "Cereale",
+      "none": "Nessuno"
+    },
+    "no_variety": "Nessuna Varietà"
+  },
+  "crop_protection_applications": {
+    "crop_protection": "Trattamento fitosanitario",
+    "crop_protection_year": "Trattamento fitosanitario {{year}}",
+    "crop_protection_plot_name": "Trattamento fitosanitario - {{name}}",
+    "crop_protection_date": "Trattamento fitosanitario del {{date}}",
+    "select_date": {
+      "heading": "Quando è stato effettuato il trattamento?"
+    },
+    "select_product": {
+      "heading": "Quale prodotto fitosanitario è stato utilizzato?",
+      "no_products_message": "Nessun prodotto fitosanitario registrato"
+    },
+    "select_equipment": {
+      "heading": "Quale attrezzatura è stata utilizzata?",
+      "only_same_unit_warning": "Attenzione, puoi utilizzare solo attrezzature che corrispondono all'unità di misura del prodotto fitosanitario.",
+      "no_matching_equipment_message": "Nessuna attrezzatura corrispondente registrata. Questo può semplificare l'immissione dei dati predefinendo i valori standard."
+    },
+    "select_quantity": {
+      "heading": "Quanto è stato utilizzato?"
+    },
+    "divide_on_plots": {
+      "header_title": "Distribuzione",
+      "heading": "Come deve essere distribuita la quantità applicata?"
+    },
+    "list": {
+      "title": "Campo {{plotName}} - {{date}}",
+      "body": "{{totalAmount}}{{unit}} {{product}} ({{method}})"
+    },
+    "methods": {
+      "broadcasting": "Spargimento",
+      "injecting": "Iniezione",
+      "misting": "Nebulizzazione",
+      "spraying": "Irrorazione",
+      "other": "Altro"
+    }
+  },
+  "crop_protection_product": {
+    "add_product": "Nuovo prodotto fitosanitario",
+    "product_in_use_warning": "Attenzione, questo prodotto fitosanitario è in uso e non può essere eliminato.",
+    "warning_unit_not_editable": "Attenzione, l'unità non può essere modificata! Dovrebbe corrispondere all'unità in cui viene applicato il prodotto fitosanitario."
+  },
+  "crop_rotations": {
+    "crop_rotation": "Rotazione colturale",
+    "crop_rotation_year": "Rotazione colturale {{year}}",
+    "crop_rotation_plot_name": "Rotazione colturale - {{name}}",
+    "crop_rotation_date": "Rotazione colturale del {{date}}",
+    "sowing": "Semina",
+    "sowings": "Semine",
+    "sowings_year": "Semine {{year}}",
+    "sowing_date": "Semina del {{date}}",
+    "new_crop": "Nuova Coltura",
+    "select_crop": {
+      "heading": "Cos'è stato seminato?"
+    },
+    "select_date": {
+      "heading": "Quando è stato seminato?"
+    },
+    "cannot_delete_warning": "Questa è l'unica coltura su questo campo e pertanto non può essere eliminata."
+  },
+  "reports": {
+    "field_calendar": {
+      "heading": "Esportazione Calendario Campi",
+      "subheading": "Esporta il calendario dei campi come documento Excel.",
+      "select_sections": "Seleziona cosa esportare",
+      "confirmation": "Il documento Excel generato ti sarà inviato via email a {{email}}.",
+      "export_success_heading": "Calendario campi esportato con successo",
+      "export_sent_to": "Il documento è stato inviato a {{email}}.",
+      "export_mail_being_deliverd": "Potrebbe volerci un momento prima che l'email arrivi. Se non la trovi, controlla la cartella spam."
+    }
+  },
+  "agri_coltivio": {
+    "subheading": "Insieme per un'agricoltura libera e indipendente",
+    "section_1": "AgriColtivio, che ha sviluppato questa app, è un'associazione non profit volta a rafforzare le piccole e medie aziende agricole.",
+    "section_2": "Questa app è open source, il che significa che il codice sorgente è accessibile pubblicamente - trasparente e verificabile.",
+    "section_3_bold": "La sicurezza dei dati è una priorità assoluta.",
+    "section_3": "Tutti i dati sono conservati esclusivamente su server all'interno dell'UE e sono soggetti alle rigorose normative GDPR sulla protezione dei dati.",
+    "section_4": "Il funzionamento e lo sviluppo di questa app sono finanziati esclusivamente tramite donazioni volontarie.",
+    "section_5_title": "Aiuta a mantenere l'app gratuita e indipendente per tutti.",
+    "section_5": "Diventa membro o supportaci con una donazione. Ogni contributo è utile, grande o piccolo.",
+    "section_6": "Grazie per farne parte."
+  },
+  "permissions": {
+    "location": {
+      "error": {
+        "title": "Localizzazione disattivata!",
+        "message": "Abbiamo bisogno della tua posizione per visualizzarla sulla mappa."
+      }
+    }
+  }
+}

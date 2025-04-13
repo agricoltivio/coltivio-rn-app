@@ -1,0 +1,508 @@
+{
+  "buttons": {
+    "signup": "Sign Up",
+    "login": "Log In",
+    "signout": "Log Out",
+    "next": "Next",
+    "back": "Back",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "add": "Add",
+    "ok": "OK",
+    "delete": "Delete",
+    "parcel_select": "Select Parcel",
+    "draw_area": "Draw Area",
+    "edit_area": "Edit Area",
+    "show_entries": "Show Entries",
+    "export": "Export",
+    "finish": "Finish",
+    "send_email": "Send Email",
+    "forgot_password": "Forgot Password"
+  },
+  "forms": {
+    "labels": {
+      "name": "Name",
+      "description_optional": "Description (optional)",
+      "display_name": "Display Name",
+      "select_date": "Select date",
+      "email": "Email",
+      "password": "Password",
+      "password_repeat": "Repeat Password",
+      "date": "Date",
+      "farm_name": "Farm Name",
+      "location": "Location",
+      "location_search": "Search Location",
+      "federal_farm_number": "Farm Registration Number",
+      "crop": "Crop",
+      "size_m2": "Size (m²)",
+      "area": "Area",
+      "divide_by_plot_size": "Divide by Field Size",
+      "plot_w_size": "Field {{name}} ({{size}}a)",
+      "device": "Device",
+      "none": "None",
+      "method": "Method",
+      "capacity_per_unit": "{{unit}} per {{loadUnit}}",
+      "crop_protection_product": "Crop Protection Product",
+      "load": "Load",
+      "balls": "Bales",
+      "amount_unit": "Quantity {{unit}}",
+      "amount_of_loads": "Number of Loads",
+      "amount_per_load": "Quantity per Load",
+      "unit_per_load": "{{unit}} per Load",
+      "total": "Total",
+      "total_unit": "Total {{unit}}",
+      "total_w_amount_unit": "Total {{amount}}{{unit}}",
+      "additional_notes": "Additional Notes",
+      "additional_notes_optional": "Additional Notes (optional)",
+      "unit": "Unit",
+      "kind": "Variety",
+      "kind_optional": "Variety (optional)",
+      "sowing": "Sowing",
+      "end_optional": "End (optional)",
+      "category": "Category",
+      "type": "Type",
+      "fertiliser": "Fertilizer",
+      "reason": "Reason",
+      "action": "Action",
+      "conservation": "Conservation Method",
+      "processing_type": "Processing Type",
+      "weight_kg_per_harvest_unit": "Weight per Unit (kg)",
+      "machine": "Machine",
+      "default_machine": "Default Machine",
+      "organic": "Organic",
+      "mineralic": "Mineral",
+      "produced_units": "Produced Units",
+      "please_select": "Please select",
+      "from": "From",
+      "to": "To"
+    },
+    "placeholders": {
+      "location_search": "e.g., Street, House Number, City",
+      "federal_farm_number": "e.g., 123/555/4/1",
+      "search": "Search...",
+      "weight_kg_per_harvest_unit": "e.g., 20kg per square bale",
+      "password_requirements": "At least 6 characters"
+    },
+    "validation": {
+      "name_mismatch": "Name does not match",
+      "password_min_length": "Password must be at least 6 characters long",
+      "password_repeat_invalid": "Passwords do not match",
+      "divided_amount_too_big": "The distributed quantity exceeds the available amount",
+      "not_all_divided": "You have not distributed the entire amount",
+      "required": "This field is required"
+    }
+  },
+  "common": {
+    "no_entries": "No entries yet",
+    "area_acres": "Area: {{area}}a",
+    "dont_show_again": "Don't show this again",
+    "danger_zone": "Caution!",
+    "all_entries_will_be_deleted": "All entries will be permanently deleted.",
+    "remaining_quantity": "{{quantity}} {{quantityLabel}} still available",
+    "total_amount_w_unit": "Total {{amount}}{{unit}}",
+    "if_problem_contact_support": "If you have any problems, please contact our support.",
+    "unknown": "unknown",
+    "parcel_number": "Parcel Number"
+  },
+  "errors": {
+    "unexpected_retry": "Oops, something went wrong. Please try again.",
+    "unexpected_retry_later": "Oops, something went wrong. Please try again later.",
+    "unexpected": "Oops, something went wrong.",
+    "try_again_later": "Please try again later..."
+  },
+  "units": {
+    "long": {
+      "load": "Load",
+      "g": "Gram",
+      "kg": "Kilogram",
+      "dt": "Decitonne",
+      "t": "Tonne",
+      "l": "Liter",
+      "ml": "Milliliter",
+      "m3": "Cubic Meter"
+    },
+    "short": {
+      "load": "Load",
+      "g": "g",
+      "kg": "kg",
+      "dt": "dt",
+      "t": "t",
+      "l": "l",
+      "ml": "ml",
+      "m3": "m³"
+    }
+  },
+  "tips": {
+    "select_or_draw_area": {
+      "select_area": "Select your area",
+      "chose_select_or_draw": "Choose existing parcels or draw a custom area.",
+      "draw_tip": "Use these symbols to start and finish drawing. Move corner points by holding them until they appear above your finger, then dragging it to the desired location."
+    },
+    "select_plots": {
+      "heading": "Select Fields",
+      "content": "Select one or more fields"
+    }
+  },
+  "signup": {
+    "create_account": "Create Your Account",
+    "errors": {
+      "email_taken": "This email is already in use",
+      "unexpected": "An unexpected error occurred"
+    }
+  },
+  "signin": {
+    "signup_text": "Don't have an account yet?"
+  },
+  "forgot_password": {
+    "reset_password": "Reset Password",
+    "enter_email": "Please enter your email to reset your password.",
+    "reset_link_sent": "An email has been sent to {{email}} to reset your password.",
+    "mail_being_deliverd": "It may take a moment for the email to arrive. If it doesn't appear, please check your spam folder.",
+    "link_expired": "The link has expired. Please try again."
+  },
+  "onboarding": {
+    "farm_name": {
+      "heading": "Welcome to Coltivio!",
+      "subheading": "Enter a name for your farm"
+    },
+    "location": {
+      "heading": "Where is {{farmName}} located?",
+      "subheading": "Search for your address."
+    },
+    "federal_farm_number": {
+      "modal": {
+        "heading": "Your Farm Registration Number",
+        "body": "Tap a parcel or manually enter your registration number."
+      },
+      "confirmation": "Is {{federalFarmId}} your farm registration number?"
+    },
+    "summary": {
+      "heading": "All set!",
+      "content": "Your parcels will be added as fields based on your registration number {{federalFarmId}}. You can edit them at any time.",
+      "press_save_to_finish": "Tap Save to create your farm."
+    }
+  },
+  "users": {
+    "change_email": "Change Email Address",
+    "verify_new_email_before_in_effect": "You must verify your new email address before the change takes effect.",
+    "email_not_verified": "Email address not verified!",
+    "resend_verification_email": "Resend Verification Email",
+    "new_password": "New Password",
+    "change_display_name": "Edit Name"
+  },
+  "home": {
+    "welcome_text": "Hello {{displayName}},",
+    "tiles": {
+      "farm": "My Farm",
+      "plots": "Fields",
+      "machines": "Equipment",
+      "field_calendar": "Field Calendar",
+      "animal_husbandry": "Animal Husbandry",
+      "community": "Community"
+    }
+  },
+  "farm": {
+    "farm": "Farm",
+    "farm_name": "Farm Name",
+    "location": "Location",
+    "delete_farm": "Delete Farm",
+    "enter_farm_name_to_delete": "To delete your farm, enter the farm name.",
+    "chose_option_to_delete_account": "To also delete your account, enable 'Delete Account'.",
+    "delete_account": "Delete Account"
+  },
+  "plots": {
+    "plots": "Fields",
+    "plot_name": "Field {{name}}",
+    "plot_name_date": "{{date}} - Field {{name}}",
+    "common": {
+      "draw_area_overlap_info": "Overlapping an existing field will automatically reduce the area.",
+      "affected_plots_warning": "Warning: Overlapping fields will be reduced."
+    },
+    "map": {
+      "selected_plot": {
+        "size": "Area: {{size}}a",
+        "crop": "Crop: {{crop}}"
+      }
+    },
+    "add": {
+      "map": {
+        "mode_select": {
+          "message": "Select a parcel or draw a new area to create a field."
+        },
+        "tips": {
+          "parcel_select": {
+            "heading": "Select a Parcel",
+            "overlap_info": "Overlapping an existing field will automatically reduce the area."
+          },
+          "draw_area": {
+            "heading": "Draw a New Field",
+            "drawing_info": "Use these symbols to start and finish drawing. Move corner points by holding them until they appear above your finger, then drag to the desired position."
+          }
+        }
+      }
+    },
+    "edit": {
+      "map": {
+        "tips": {
+          "edit_area": {
+            "heading": "Edit Field",
+            "move_markers": "Hold corner points until they appear above your finger, then drag them to the desired location."
+          },
+          "delete": {
+            "heading": "Delete field {{name}}?",
+            "entries_warning": "Warning: All records for this field will be permanently deleted.",
+            "confirm_by_typing_name": "Type the field name to confirm deletion."
+          }
+        }
+      },
+      "details": {}
+    }
+  },
+  "farm_equipment": {
+    "farm_equipment": "Farm Equipment",
+    "new_equipment": "New Equipment",
+    "device_types": {
+      "harvest": "Harvesting",
+      "tillage": "Tillage",
+      "crop_protection": "Crop Protection",
+      "fertilization": "Fertilizer Application"
+    }
+  },
+  "crop_protection_equipments": {
+    "new_equipment": "New Crop Protection Equipment",
+    "only_same_unit_warning": "Attention: To use a machine for a plant protection product, it must have the same unit."
+  },
+  "harvest_equipments": {
+    "new_harvester": "New Harvesting Equipment",
+    "info_default_values": "Default values can be adjusted as needed."
+  },
+  "tillage_equipment": {
+    "new_equipment": "New Tillage Equipment"
+  },
+  "fertilizer_spreaders": {
+    "new_spreader": "New Fertilizer Spreader",
+    "only_same_unit_warning": "Attention: To use a machine for a fertilizer, it must have the same unit."
+  },
+  "field_calendar": {
+    "field_calendar": "Field Calendar",
+    "crops": "Crops",
+    "sowings": "Sowings",
+    "tillages": "Tillages",
+    "fertilizers": "Fertilizers",
+    "fertilizer_applications": "Fertilizer Applications",
+    "harvests": "Harvests",
+    "crop_protection_products": "Crop Protection Products",
+    "crop_protection_applications": "Crop Protection",
+    "export": "Generate reports"
+  },
+  "harvests": {
+    "harvest": "Harvest",
+    "harvest_year": "Harvest {{year}}",
+    "harvest_date": "Harvest {{date}}",
+    "harvest_plot_name": "Harvest - {{name}}",
+    "divide_on_plots": {
+      "header_title": "Distribution",
+      "heading": "How should the harvest be distributed?"
+    },
+    "select_crop": {
+      "heading": "What was harvested?"
+    },
+    "labels": {
+      "unit": {
+        "none": "Load",
+        "round_bale": "Round Bale",
+        "square_bale": "Square Bale",
+        "other": "Unit"
+      },
+      "conservation_method": {
+        "dried": "Hay",
+        "silage": "Silage",
+        "haylage": "Haylage",
+        "other": "Other",
+        "none": "None"
+      },
+      "processing_type": {
+        "none": "Loose",
+        "round_bale": "Round Bale",
+        "square_bale": "Square Bale",
+        "other": "Other"
+      },
+      "select_date": {
+        "heading": "When was it harvested?"
+      },
+      "select_machinery": {
+        "heading": "Which machine was used?",
+        "no_machinery": "Add machines to simplify harvest tracking."
+      }
+    }
+  },
+  "fertilizers": {
+    "fertilizer": "Fertilizer",
+    "new_fertilizer": "New Fertilizer",
+    "product_in_use_warning": "This fertilizer is in use and cannot be deleted.",
+    "warning_unit_not_editable": "Attention, the unit cannot be edited! It should correspond to the unit in which the fertilizer is applied."
+  },
+  "fertilizer_application": {
+    "fertilizer_application": "Fertilizer Application",
+    "fertilizer_application_date": "Fertilizer Application {{date}}",
+    "fertilizer_application_year": "Fertilizer Application {{year}}",
+    "fertilizer_application_plot_name": "Fertilizer Application - {{name}}",
+    "select_quantity": {
+      "heading": "How much was applied?"
+    },
+    "divide_on_plots": {
+      "header_title": "Distribution",
+      "heading": "How should the applied amount be distributed?"
+    },
+    "select_date": {
+      "heading": "When was it applied?"
+    },
+    "select_fertilizer": {
+      "header_title": "Fertilizer",
+      "heading": "Which fertilizer was used?",
+      "no_fertilizers": "No fertilizers recorded yet"
+    },
+    "select_machine": {
+      "heading": "Which machine was used?",
+      "no_machines": "Record machines to simplify data entry.",
+      "only_same_unit_warning": "Use equipment matching the fertilizer's unit."
+    },
+    "methods": {
+      "spread": "Spread",
+      "spray": "Spreay",
+      "other": "Other"
+    }
+  },
+  "tillages": {
+    "tillages": "Tillage Operations",
+    "tillage": "Tillage",
+    "tillage_year": "Tillage {{year}}",
+    "tillage_date": "Tillage {{date}}",
+    "tillage_plot_name": "Tillage - {{name}}",
+    "select_date": {
+      "heading": "When was the work carried out?"
+    },
+    "select_equipment": {
+      "heading": "Which equipment was used?",
+      "no_machinery": "Record machines to simplify data entry."
+    },
+    "reasons": {
+      "soil_loosening": "Soil Loosening",
+      "weed_control": "Weed Control",
+      "other": "Other"
+    },
+    "actions": {
+      "plowing": "Plowing",
+      "tilling": "Tilling",
+      "harrowing": "Harrowing",
+      "rolling": "Rolling",
+      "rotavating": "Rotavating",
+      "hoeing": "Hoeing",
+      "weed_harrowing": "Weed Harrowing",
+      "flame_weeding": "Flame Weeding",
+      "other": "Other"
+    }
+  },
+  "crops": {
+    "crop": "Crop",
+    "crops": "Crops",
+    "crop_name": "Crop {{name}}",
+    "new_crop": "New Crop",
+    "categories": {
+      "grass": "Grass",
+      "grain": "Grain",
+      "none": "None"
+    },
+    "no_variety": "No Variety"
+  },
+  "crop_protection_applications": {
+    "crop_protection": "Crop Protection",
+    "crop_protection_year": "Crop Protection {{year}}",
+    "crop_protection_plot_name": "Crop Protection - {{name}}",
+    "crop_protection_date": "Crop Protection - {{date}}",
+    "select_date": {
+      "heading": "When was the treatment applied?"
+    },
+    "select_product": {
+      "heading": "Which crop protection product was used?",
+      "no_products_message": "No crop protection products recorded yet"
+    },
+    "select_equipment": {
+      "heading": "Which equipment was used?",
+      "only_same_unit_warning": "Use equipment matching the product's unit.",
+      "no_matching_equipment_message": "No matching equipment recorded. Record equipment to simplify data entry."
+    },
+    "select_quantity": {
+      "heading": "How much was used?"
+    },
+    "divide_on_plots": {
+      "header_title": "Distribution",
+      "heading": "How should the applied amount be distributed?"
+    },
+    "list": {
+      "title": "Field {{plotName}} - {{date}}",
+      "body": "{{totalAmount}}{{unit}} {{product}} ({{method}})"
+    },
+    "methods": {
+      "broadcasting": "Broadcasting",
+      "injecting": "Injecting",
+      "misting": "Misting",
+      "spraying": "Spraying",
+      "other": "Other"
+    }
+  },
+  "crop_protection_product": {
+    "add_product": "New Crop Protection Product",
+    "product_in_use_warning": "This product is in use and cannot be deleted.",
+    "warning_unit_not_editable": "Attention, the unit cannot be edited! It should correspond to the unit in which the plant protection product is applied."
+  },
+  "crop_rotations": {
+    "crop_rotation": "Crop Rotation",
+    "crop_rotation_year": "Crop Rotation {{year}}",
+    "crop_rotation_plot_name": "Crop Rotation - {{name}}",
+    "crop_rotation_date": "Crop Rotation - {{date}}",
+    "sowing": "Sowing",
+    "sowings": "Sowings",
+    "sowings_year": "Sowings {{year}}",
+    "sowing_date": "Sowing {{date}}",
+    "new_crop": "New Crop",
+    "select_crop": {
+      "heading": "What was sown?"
+    },
+    "select_date": {
+      "heading": "When was it sown?"
+    },
+    "cannot_delete_warning": "This is the only crop on this field and therefore cannot be deleted."
+  },
+  "reports": {
+    "field_calendar": {
+      "heading": "Field Calendar Export",
+      "subheading": "Export the field calendar as an Excel document.",
+      "select_sections": "Select what should be exported",
+      "confirmation": "The generated Excel document will be sent to you via email at {{email}}.",
+      "export_success_heading": "Field calendar successfully exported",
+      "export_sent_to": "The document has been sent to {{email}}.",
+      "export_mail_being_deliverd": "It may take a moment for the email to arrive. If it doesn't appear, please check your spam folder."
+    }
+  },
+  "agri_coltivio": {
+    "subheading": "Together for free and independent agriculture",
+    "section_1": "AgriColtivio, which developed this app, is a non-profit association aimed at strengthening small and medium-sized farms.",
+    "section_2": "This app is open source, meaning that the source code is publicly accessible - transparent and verifiable.",
+    "section_3_bold": "Data security is a top priority.",
+    "section_3": "All data is stored exclusively on servers within the EU and is subject to strict GDPR data protection regulations.",
+    "section_4": "The operation and further development of this app are funded solely through voluntary donations.",
+    "section_5_title": "Help ensure the app remains free and independent for everyone.",
+    "section_5": "Become a member or support us with a donation. Every contribution helps – big or small.",
+    "section_6": "Thank you for being part of it."
+  },
+  "permissions": {
+    "location": {
+      "error": {
+        "title": "Location Disabled!",
+        "message": "We need your location to display it on the map."
+      }
+    }
+  }
+}
