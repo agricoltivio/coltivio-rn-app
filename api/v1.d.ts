@@ -1766,13 +1766,13 @@ export interface components {
                     /** Format: uuid */
                     farmId: string;
                     name: string;
-                    description: string | null;
                     localId: string | null;
                     /** Format: double */
                     usage: number | null;
                     additionalUsages: string | null;
                     /** Format: double */
                     size: number;
+                    additionalNotes: string | null;
                     geometry: {
                         /** @constant */
                         type: "MultiPolygon";
@@ -1813,7 +1813,6 @@ export interface components {
                             /** Format: uuid */
                             farmId: string;
                             name: string;
-                            naturalMeadow: boolean;
                             /** @enum {string} */
                             category: "grass" | "grain" | "vegetable" | "fruit" | "other";
                             variety: string | null;
@@ -1842,13 +1841,13 @@ export interface components {
                 /** Format: uuid */
                 farmId: string;
                 name: string;
-                description: string | null;
                 localId: string | null;
                 /** Format: double */
                 usage: number | null;
                 additionalUsages: string | null;
                 /** Format: double */
                 size: number;
+                additionalNotes: string | null;
                 geometry: {
                     /** @constant */
                     type: "MultiPolygon";
@@ -1889,7 +1888,6 @@ export interface components {
                         /** Format: uuid */
                         farmId: string;
                         name: string;
-                        naturalMeadow: boolean;
                         /** @enum {string} */
                         category: "grass" | "grain" | "vegetable" | "fruit" | "other";
                         variety: string | null;
@@ -1908,13 +1906,13 @@ export interface components {
         };
         PostV1PlotsRequestBody: {
             name: string;
-            description?: string | null;
             localId?: string | null;
             /** Format: double */
             usage?: number | null;
             additionalUsages?: string | null;
             /** Format: double */
             size: number;
+            additionalNotes?: string | null;
             geometry: {
                 /** @constant */
                 type: "MultiPolygon";
@@ -1937,13 +1935,13 @@ export interface components {
                 /** Format: uuid */
                 farmId: string;
                 name: string;
-                description: string | null;
                 localId: string | null;
                 /** Format: double */
                 usage: number | null;
                 additionalUsages: string | null;
                 /** Format: double */
                 size: number;
+                additionalNotes: string | null;
                 geometry: {
                     /** @constant */
                     type: "MultiPolygon";
@@ -1984,7 +1982,6 @@ export interface components {
                         /** Format: uuid */
                         farmId: string;
                         name: string;
-                        naturalMeadow: boolean;
                         /** @enum {string} */
                         category: "grass" | "grain" | "vegetable" | "fruit" | "other";
                         variety: string | null;
@@ -2024,13 +2021,13 @@ export interface components {
                 /** Format: uuid */
                 farmId: string;
                 name: string;
-                description: string | null;
                 localId: string | null;
                 /** Format: double */
                 usage: number | null;
                 additionalUsages: string | null;
                 /** Format: double */
                 size: number;
+                additionalNotes: string | null;
                 geometry: {
                     /** @constant */
                     type: "MultiPolygon";
@@ -2071,7 +2068,6 @@ export interface components {
                         /** Format: uuid */
                         farmId: string;
                         name: string;
-                        naturalMeadow: boolean;
                         /** @enum {string} */
                         category: "grass" | "grain" | "vegetable" | "fruit" | "other";
                         variety: string | null;
@@ -2090,13 +2086,13 @@ export interface components {
         };
         PatchV1PlotsByIdPlotIdRequestBody: {
             name?: string;
-            description?: string | null;
             localId?: string | null;
             /** Format: double */
             usage?: number | null;
             additionalUsages?: string | null;
             /** Format: double */
             size?: number;
+            additionalNotes?: string | null;
             geometry?: {
                 /** @constant */
                 type: "MultiPolygon";
@@ -2144,7 +2140,6 @@ export interface components {
                         /** Format: uuid */
                         farmId: string;
                         name: string;
-                        naturalMeadow: boolean;
                         /** @enum {string} */
                         category: "grass" | "grain" | "vegetable" | "fruit" | "other";
                         variety: string | null;
@@ -2218,13 +2213,13 @@ export interface components {
                         /** Format: uuid */
                         farmId: string;
                         name: string;
-                        description: string | null;
                         localId: string | null;
                         /** Format: double */
                         usage: number | null;
                         additionalUsages: string | null;
                         /** Format: double */
                         size: number;
+                        additionalNotes: string | null;
                         /**
                          * Format: date-time
                          * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -2317,13 +2312,13 @@ export interface components {
                         /** Format: uuid */
                         farmId: string;
                         name: string;
-                        description: string | null;
                         localId: string | null;
                         /** Format: double */
                         usage: number | null;
                         additionalUsages: string | null;
                         /** Format: double */
                         size: number;
+                        additionalNotes: string | null;
                         /**
                          * Format: date-time
                          * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -2543,7 +2538,6 @@ export interface components {
                         /** Format: uuid */
                         farmId: string;
                         name: string;
-                        naturalMeadow: boolean;
                         /** @enum {string} */
                         category: "grass" | "grain" | "vegetable" | "fruit" | "other";
                         variety: string | null;
@@ -2618,7 +2612,6 @@ export interface components {
                     /** Format: uuid */
                     farmId: string;
                     name: string;
-                    naturalMeadow: boolean;
                     /** @enum {string} */
                     category: "grass" | "grain" | "vegetable" | "fruit" | "other";
                     variety: string | null;
@@ -2645,7 +2638,6 @@ export interface components {
                 /** Format: uuid */
                 farmId: string;
                 name: string;
-                naturalMeadow: boolean;
                 /** @enum {string} */
                 category: "grass" | "grain" | "vegetable" | "fruit" | "other";
                 variety: string | null;
@@ -2662,7 +2654,6 @@ export interface components {
         };
         PostV1CropsRequestBody: {
             name: string;
-            naturalMeadow?: boolean;
             /** @enum {string} */
             category: "grass" | "grain" | "vegetable" | "fruit" | "other";
             variety?: string | null;
@@ -2679,7 +2670,6 @@ export interface components {
                 /** Format: uuid */
                 farmId: string;
                 name: string;
-                naturalMeadow: boolean;
                 /** @enum {string} */
                 category: "grass" | "grain" | "vegetable" | "fruit" | "other";
                 variety: string | null;
@@ -2717,7 +2707,6 @@ export interface components {
                 /** Format: uuid */
                 farmId: string;
                 name: string;
-                naturalMeadow: boolean;
                 /** @enum {string} */
                 category: "grass" | "grain" | "vegetable" | "fruit" | "other";
                 variety: string | null;
@@ -2734,7 +2723,6 @@ export interface components {
         };
         PatchV1CropsByIdCropIdRequestBody: {
             name?: string;
-            naturalMeadow?: boolean;
             /** @enum {string} */
             category?: "grass" | "grain" | "vegetable" | "fruit" | "other";
             variety?: string | null;
@@ -3097,13 +3085,13 @@ export interface components {
                     /** Format: uuid */
                     farmId: string;
                     name: string;
-                    description: string | null;
                     localId: string | null;
                     /** Format: double */
                     usage: number | null;
                     additionalUsages: string | null;
                     /** Format: double */
                     size: number;
+                    additionalNotes: string | null;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -3233,13 +3221,13 @@ export interface components {
                         /** Format: uuid */
                         farmId: string;
                         name: string;
-                        description: string | null;
                         localId: string | null;
                         /** Format: double */
                         usage: number | null;
                         additionalUsages: string | null;
                         /** Format: double */
                         size: number;
+                        additionalNotes: string | null;
                         /**
                          * Format: date-time
                          * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -3331,13 +3319,13 @@ export interface components {
                         /** Format: uuid */
                         farmId: string;
                         name: string;
-                        description: string | null;
                         localId: string | null;
                         /** Format: double */
                         usage: number | null;
                         additionalUsages: string | null;
                         /** Format: double */
                         size: number;
+                        additionalNotes: string | null;
                         /**
                          * Format: date-time
                          * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -3364,7 +3352,7 @@ export interface components {
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
             dateTime: string;
-            equipmentId: string;
+            equipmentId?: string;
             productId: string;
             /** @enum {string} */
             unit: "ml" | "l" | "g" | "kg";
@@ -3457,13 +3445,13 @@ export interface components {
                     /** Format: uuid */
                     farmId: string;
                     name: string;
-                    description: string | null;
                     localId: string | null;
                     /** Format: double */
                     usage: number | null;
                     additionalUsages: string | null;
                     /** Format: double */
                     size: number;
+                    additionalNotes: string | null;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -3565,13 +3553,13 @@ export interface components {
                     /** Format: uuid */
                     farmId: string;
                     name: string;
-                    description: string | null;
                     localId: string | null;
                     /** Format: double */
                     usage: number | null;
                     additionalUsages: string | null;
                     /** Format: double */
                     size: number;
+                    additionalNotes: string | null;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -3830,13 +3818,13 @@ export interface components {
                     /** Format: uuid */
                     farmId: string;
                     name: string;
-                    description: string | null;
                     localId: string | null;
                     /** Format: double */
                     usage: number | null;
                     additionalUsages: string | null;
                     /** Format: double */
                     size: number;
+                    additionalNotes: string | null;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -3941,13 +3929,13 @@ export interface components {
                         /** Format: uuid */
                         farmId: string;
                         name: string;
-                        description: string | null;
                         localId: string | null;
                         /** Format: double */
                         usage: number | null;
                         additionalUsages: string | null;
                         /** Format: double */
                         size: number;
+                        additionalNotes: string | null;
                         /**
                          * Format: date-time
                          * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -4020,13 +4008,13 @@ export interface components {
                         /** Format: uuid */
                         farmId: string;
                         name: string;
-                        description: string | null;
                         localId: string | null;
                         /** Format: double */
                         usage: number | null;
                         additionalUsages: string | null;
                         /** Format: double */
                         size: number;
+                        additionalNotes: string | null;
                         /**
                          * Format: date-time
                          * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -4121,13 +4109,13 @@ export interface components {
                     /** Format: uuid */
                     farmId: string;
                     name: string;
-                    description: string | null;
                     localId: string | null;
                     /** Format: double */
                     usage: number | null;
                     additionalUsages: string | null;
                     /** Format: double */
                     size: number;
+                    additionalNotes: string | null;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -4210,13 +4198,13 @@ export interface components {
                     /** Format: uuid */
                     farmId: string;
                     name: string;
-                    description: string | null;
                     localId: string | null;
                     /** Format: double */
                     usage: number | null;
                     additionalUsages: string | null;
                     /** Format: double */
                     size: number;
+                    additionalNotes: string | null;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -4281,8 +4269,6 @@ export interface components {
          * @default 4999-12-31T23:00:00.000Z
          */
         GetV1CropRotationsParameterToDate: string;
-        /** @default true */
-        GetV1CropRotationsParameterSkipNaturalMeadows: string;
         GetV1CropRotationsPositiveResponse: {
             /** @constant */
             status: "success";
@@ -4317,7 +4303,6 @@ export interface components {
                         /** Format: uuid */
                         farmId: string;
                         name: string;
-                        naturalMeadow: boolean;
                         /** @enum {string} */
                         category: "grass" | "grain" | "vegetable" | "fruit" | "other";
                         variety: string | null;
@@ -4372,7 +4357,6 @@ export interface components {
                     /** Format: uuid */
                     farmId: string;
                     name: string;
-                    naturalMeadow: boolean;
                     /** @enum {string} */
                     category: "grass" | "grain" | "vegetable" | "fruit" | "other";
                     variety: string | null;
@@ -4445,7 +4429,6 @@ export interface components {
                         /** Format: uuid */
                         farmId: string;
                         name: string;
-                        naturalMeadow: boolean;
                         /** @enum {string} */
                         category: "grass" | "grain" | "vegetable" | "fruit" | "other";
                         variety: string | null;
@@ -4513,7 +4496,6 @@ export interface components {
                         /** Format: uuid */
                         farmId: string;
                         name: string;
-                        naturalMeadow: boolean;
                         /** @enum {string} */
                         category: "grass" | "grain" | "vegetable" | "fruit" | "other";
                         variety: string | null;
@@ -4566,7 +4548,6 @@ export interface components {
                     /** Format: uuid */
                     farmId: string;
                     name: string;
-                    naturalMeadow: boolean;
                     /** @enum {string} */
                     category: "grass" | "grain" | "vegetable" | "fruit" | "other";
                     variety: string | null;
@@ -4629,7 +4610,6 @@ export interface components {
                     /** Format: uuid */
                     farmId: string;
                     name: string;
-                    naturalMeadow: boolean;
                     /** @enum {string} */
                     category: "grass" | "grain" | "vegetable" | "fruit" | "other";
                     variety: string | null;
@@ -4757,7 +4737,6 @@ export interface components {
                         /** Format: uuid */
                         farmId: string;
                         name: string;
-                        naturalMeadow: boolean;
                         /** @enum {string} */
                         category: "grass" | "grain" | "vegetable" | "fruit" | "other";
                         variety: string | null;
@@ -4770,13 +4749,13 @@ export interface components {
                         /** Format: uuid */
                         farmId: string;
                         name: string;
-                        description: string | null;
                         localId: string | null;
                         /** Format: double */
                         usage: number | null;
                         additionalUsages: string | null;
                         /** Format: double */
                         size: number;
+                        additionalNotes: string | null;
                         geometry: {
                             /** @constant */
                             type: "MultiPolygon";
@@ -4865,7 +4844,6 @@ export interface components {
                         /** Format: uuid */
                         farmId: string;
                         name: string;
-                        naturalMeadow: boolean;
                         /** @enum {string} */
                         category: "grass" | "grain" | "vegetable" | "fruit" | "other";
                         variety: string | null;
@@ -4878,13 +4856,13 @@ export interface components {
                         /** Format: uuid */
                         farmId: string;
                         name: string;
-                        description: string | null;
                         localId: string | null;
                         /** Format: double */
                         usage: number | null;
                         additionalUsages: string | null;
                         /** Format: double */
                         size: number;
+                        additionalNotes: string | null;
                         geometry: {
                             /** @constant */
                             type: "MultiPolygon";
@@ -5003,7 +4981,6 @@ export interface components {
                     /** Format: uuid */
                     farmId: string;
                     name: string;
-                    naturalMeadow: boolean;
                     /** @enum {string} */
                     category: "grass" | "grain" | "vegetable" | "fruit" | "other";
                     variety: string | null;
@@ -5016,13 +4993,13 @@ export interface components {
                     /** Format: uuid */
                     farmId: string;
                     name: string;
-                    description: string | null;
                     localId: string | null;
                     /** Format: double */
                     usage: number | null;
                     additionalUsages: string | null;
                     /** Format: double */
                     size: number;
+                    additionalNotes: string | null;
                     geometry: {
                         /** @constant */
                         type: "MultiPolygon";
@@ -5162,7 +5139,6 @@ export interface components {
                     plot: {
                         id: string;
                         name: string;
-                        description: string | null;
                     };
                     spreader: {
                         /** Format: uuid */
@@ -5247,7 +5223,6 @@ export interface components {
                     plot: {
                         id: string;
                         name: string;
-                        description: string | null;
                     };
                     spreader: {
                         /** Format: uuid */
@@ -5360,7 +5335,6 @@ export interface components {
                 plot: {
                     id: string;
                     name: string;
-                    description: string | null;
                 };
                 spreader: {
                     /** Format: uuid */
@@ -8234,8 +8208,6 @@ export interface operations {
                 fromDate?: components["schemas"]["GetV1CropRotationsParameterFromDate"];
                 /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
                 toDate?: components["schemas"]["GetV1CropRotationsParameterToDate"];
-                /** @description GET /v1/cropRotations Parameter */
-                skipNaturalMeadows?: components["schemas"]["GetV1CropRotationsParameterSkipNaturalMeadows"];
             };
             header?: never;
             path?: never;

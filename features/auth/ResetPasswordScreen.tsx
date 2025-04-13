@@ -1,3 +1,4 @@
+import React from "react";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -45,7 +46,6 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
         setUrlError(t("forgot_password.link_expired"));
         return;
       }
-      console.log("queryParams", queryParams);
       if (queryParams.error) {
         switch (queryParams.error) {
           case "access_denied":

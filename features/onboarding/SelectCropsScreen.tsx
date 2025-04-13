@@ -10,11 +10,13 @@ import { useTheme } from "styled-components/native";
 import { NavigationButton } from "./NavigationButton";
 import { useOnboarding } from "./OnboardingContext";
 import { Stepper } from "./Stepper";
+import { useTranslation } from "react-i18next";
 
 export function SelectCropsScreen({ navigation }: SelectCropsScreenProps) {
   const { data, setData } = useOnboarding();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  const { t } = useTranslation();
 
   const [cropOptions, setCropOptions] = useState<CropCreateInput[]>([
     {

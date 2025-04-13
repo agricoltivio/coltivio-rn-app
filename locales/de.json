@@ -7,6 +7,7 @@
     "back": "Zurück",
     "cancel": "Abbrechen",
     "confirm": "Bestätigen",
+    "edit": "Bearbeiten",
     "save": "Speichern",
     "add": "Hinzufügen",
     "ok": "OK",
@@ -263,15 +264,14 @@
           "edit_area": {
             "heading": "Bearbeite den Schlag",
             "move_markers": "Halte die Eckpunkte gedrückt, bis sie vor dem Finger sichtbar sind, und ziehe sie an den gewünschten Ort."
-          },
-          "delete": {
-            "heading": "Schlag {{name}} wirklich löschen?",
-            "entries_warning": "Achtung: Alle Einträge für diesen Schlag werden unwiderruflich gelöscht.",
-            "confirm_by_typing_name": "Um diesen Schlag zu löschen, gib den Namen ein und bestätige den Vorgang."
           }
         }
-      },
-      "details": {}
+      }
+    },
+    "delete": {
+      "heading": "Schlag {{name}} wirklich löschen?",
+      "entries_warning": "Achtung: Alle Einträge für diesen Schlag werden unwiderruflich gelöscht.",
+      "confirm_by_typing_name": "Um diesen Schlag zu löschen, gib den Namen ein und bestätige den Vorgang."
     },
     "usage_codes": {
       "501": "Sommergerste",
@@ -464,7 +464,7 @@
   "field_calendar": {
     "field_calendar": "Feldkalender",
     "crops": "Kulturen",
-    "sowings": "Aussaaten",
+    "crop_rotations": "Fruchtfolgen",
     "tillages": "Bodenbearbeitungen",
     "fertilizers": "Dünger",
     "fertilizer_applications": "Düngung",

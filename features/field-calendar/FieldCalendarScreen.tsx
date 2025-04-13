@@ -25,7 +25,7 @@ export function FieldCalendarScreen({ navigation }: FieldCalendarScreenProps) {
         </List>
         <List style={{ marginTop: theme.spacing.l }}>
           <List.Item
-            title={t("field_calendar.sowings")}
+            title={t("field_calendar.crop_rotations")}
             onPress={() => navigation.navigate("CropRotations")}
           />
           <List.Item

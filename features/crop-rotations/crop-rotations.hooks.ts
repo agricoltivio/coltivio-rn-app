@@ -20,14 +20,12 @@ export function useCropRotationQuery(rotationId: string) {
 export function useCropRotationsQuery(
   fromDate?: Date,
   toDate?: Date,
-  skipNaturalMeadows?: boolean,
   enabled: boolean = true
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
     queryKey: queryKeys.cropRotations.all(fromDate, toDate).queryKey,
-    queryFn: () =>
-      api.cropRotations.getCropRotations(fromDate, toDate, skipNaturalMeadows),
+    queryFn: () => api.cropRotations.getCropRotations(fromDate, toDate),
     enabled,
   });
   return { cropRotations: data, ...rest };

@@ -28,7 +28,7 @@ import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 
 type EditPlotFormValues = {
   name: string;
-  description?: string | null;
+  additionalNotes?: string | null;
   localId?: string | null;
   usage?: string | null;
   cuttingDate?: Date | null;
@@ -55,7 +55,7 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
     values: plot
       ? {
           name: plot.name,
-          description: plot.description,
+          additionalNotes: plot.additionalNotes,
           size: area?.toString() || plot.size.toString(),
           usage: plot.usage?.toString(),
           localId: plot.localId,
@@ -240,7 +240,7 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
             error={errors.size?.message}
           />
           <RHTextAreaInput
-            name="description"
+            name="additionalNotes"
             control={control}
             label={t("forms.labels.additional_notes_optional")}
           />

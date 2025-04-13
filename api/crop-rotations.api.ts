@@ -24,17 +24,12 @@ export function cropRotationsApi(client: FetchClient) {
       return data!.data;
     },
 
-    async getCropRotations(
-      fromDate?: Date,
-      toDate?: Date,
-      skipNaturalMeadows?: boolean
-    ) {
+    async getCropRotations(fromDate?: Date, toDate?: Date) {
       const { data } = await client.GET("/v1/cropRotations", {
         params: {
           query: {
             fromDate: fromDate?.toISOString(),
             toDate: toDate?.toISOString(),
-            skipNaturalMeadows,
           },
         },
       });

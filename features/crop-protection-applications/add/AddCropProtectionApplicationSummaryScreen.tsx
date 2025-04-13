@@ -42,7 +42,7 @@ export function AddCropProtectionApplicationSummaryScreen({
   function onSave() {
     createCropProtectionApplicationMutation.mutate({
       dateTime,
-      equipmentId: selectedEquipment?.id!,
+      equipmentId: selectedEquipment?.id,
       productId: selectedProduct?.id!,
       unit,
       amountPerApplication,

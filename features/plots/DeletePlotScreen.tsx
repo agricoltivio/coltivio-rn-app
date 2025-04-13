@@ -58,19 +58,17 @@ export function DeletePlotScreen({ navigation, route }: DeletePlotScreenProps) {
             marginTop: theme.spacing.m,
           }}
         >
-          <Card.Content>
-            <H2 style={{ color: theme.colors.white }}>Danger Zone!</H2>
-            <Subtitle
-              style={{ color: theme.colors.white, marginTop: theme.spacing.m }}
-            >
-              {t("plots.delete.entries_warning")}
-            </Subtitle>
-            <Subtitle
-              style={{ color: theme.colors.white, marginTop: theme.spacing.s }}
-            >
-              {t("plots.delete.confirm_by_typing_name")}
-            </Subtitle>
-          </Card.Content>
+          <H2 style={{ color: theme.colors.white }}>Danger Zone!</H2>
+          <Subtitle
+            style={{ color: theme.colors.white, marginTop: theme.spacing.m }}
+          >
+            {t("plots.delete.entries_warning")}
+          </Subtitle>
+          <Subtitle
+            style={{ color: theme.colors.white, marginTop: theme.spacing.s }}
+          >
+            {t("plots.delete.confirm_by_typing_name")}
+          </Subtitle>
         </Card>
         <View style={{ marginTop: theme.spacing.l }}>
           <RHTextInput

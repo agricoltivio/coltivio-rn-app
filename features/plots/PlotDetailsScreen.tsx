@@ -16,6 +16,8 @@ import { usePlotByIdQuery } from "./plots.hooks";
 import { UsageCode } from "./usage-codes";
 import { formatLocalizedDate } from "@/utils/date";
 import { locale } from "@/locales/i18n";
+import { Button } from "@/components/buttons/Button";
+import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 
 export function PlotDetailsScreen({
   route,
@@ -45,7 +47,28 @@ export function PlotDetailsScreen({
   }
 
   return (
-    <ContentView>
+    <ContentView
+      footerComponent={
+        <BottomActionContainer>
+          <View style={{ gap: theme.spacing.s, flexDirection: "row" }}>
+            <Button
+              style={{ flexGrow: 1 }}
+              type="danger"
+              title={t("buttons.delete")}
+              onPress={() =>
+                navigation.navigate("DeletePlot", { plotId, name: plot.name })
+              }
+            />
+            <Button
+              style={{ flexGrow: 1 }}
+              type="accent"
+              title={t("buttons.edit")}
+              onPress={() => navigation.navigate("EditPlot", { plotId })}
+            />
+          </View>
+        </BottomActionContainer>
+      }
+    >
       <ScrollView
         showHeaderOnScroll
         headerTitleOnScroll={t("plots.plot_name", { name: plot.name })}
@@ -112,14 +135,14 @@ export function PlotDetailsScreen({
                 : ""
             }
           />
-          {plot.description ? (
+          {plot.additionalNotes ? (
             <>
               <Label style={{ marginTop: theme.spacing.m }}>
                 {t("forms.labels.additional_notes")}
               </Label>
 
               <Label>
-                <Body>{plot.description}</Body>
+                <Body>{plot.additionalNotes}</Body>
               </Label>
             </>
           ) : null}
@@ -215,10 +238,10 @@ export function PlotDetailsScreen({
           </ListItem>
         </View>
       </ScrollView>
-      <FAB
+      {/* <FAB
         icon={{ name: "pencil", color: theme.colors.white }}
         onPress={() => navigation.navigate("EditPlot", { plotId })}
-      />
+      /> */}
     </ContentView>
   );
 }

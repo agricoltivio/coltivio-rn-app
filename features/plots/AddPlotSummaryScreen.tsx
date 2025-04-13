@@ -25,7 +25,7 @@ import { getUsageCodeSelectData } from "./usage-codes";
 
 type AddPlotFormValues = {
   name: string;
-  description?: string;
+  additionalNotes?: string;
   localId?: string;
   usage?: string;
   cuttingDate?: Date;
@@ -228,7 +228,7 @@ export function AddPlotSummaryScreen({
             error={errors.size?.message}
           />
           <RHTextAreaInput
-            name="description"
+            name="additionalNotes"
             control={control}
             label={t("forms.labels.additional_notes_optional")}
           />

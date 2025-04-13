@@ -89,7 +89,7 @@ export function FieldCalendarExportScreen({
           <RHDatePicker
             control={control}
             name="fromDate"
-            mode="datetime"
+            mode="date"
             label={t("forms.labels.from")}
             rules={{
               required: {
@@ -102,7 +102,7 @@ export function FieldCalendarExportScreen({
           <RHDatePicker
             control={control}
             name="toDate"
-            mode="datetime"
+            mode="date"
             label={t("forms.labels.to")}
             rules={{
               required: {

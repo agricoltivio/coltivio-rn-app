@@ -21,7 +21,7 @@ export function CropRotationsOfYearListScreen({
   const theme = useTheme();
   const fromDate = new Date(year, 0, 1); // January 1st of the specified year
   const toDate = new Date(year + 1, 0, 1); // January 1st of the next year
-  const { cropRotations } = useCropRotationsQuery(fromDate, toDate, true);
+  const { cropRotations } = useCropRotationsQuery(fromDate, toDate);
   const [searchText, setSearchText] = useState("");
 
   if (!cropRotations) {
