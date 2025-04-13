@@ -26,6 +26,12 @@ export const H3 = styled.Text`
   color: ${(props) => props.theme.colors.primary};
 `;
 
+export const H4 = styled.Text`
+  font-size: 16px;
+  font-weight: 600;
+  color: ${(props) => props.theme.colors.primary};
+`;
+
 export const Title = styled.Text`
   font-size: 17px;
   font-weight: 600;

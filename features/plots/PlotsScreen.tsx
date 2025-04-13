@@ -18,13 +18,14 @@ export function PlotsScreen({ navigation }: PlotsScreenProps) {
   const { plots } = useFarmPlotsQuery();
   const [searchText, setSearchText] = useState("");
 
-  const sanitizedPlots = plots?.map((plot) => ({
-    ...plot,
-    usageName: plot.usage
-      ? //@ts-ignore
-        t(`plots.usage_codes.${plot.usage}`)
-      : t("common.unknown"),
-  }));
+  const sanitizedPlots: Array<Plot & { usageName: string }> =
+    plots?.map((plot) => ({
+      ...plot,
+      usageName: plot.usage
+        ? //@ts-ignore
+          t(`plots.usage_codes.${plot.usage}`)
+        : t("common.unknown"),
+    })) ?? [];
 
   const fuse = new Fuse(sanitizedPlots ?? [], {
     minMatchCharLength: 1,

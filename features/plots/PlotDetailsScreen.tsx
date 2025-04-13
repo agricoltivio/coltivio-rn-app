@@ -1,17 +1,21 @@
 import { FAB } from "@/components/buttons/FAB";
+import { Card } from "@/components/card/Card";
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { MultiPolygon } from "@/components/map/MultiPolygon";
 import { ScrollView } from "@/components/views/ScrollView";
 import { PlotDetailsScreenProps } from "@/navigation/rootStackTypes";
 import { hexToRgba } from "@/theme/theme";
-import { H2, H3 } from "@/theme/Typography";
+import { Body, H2, H3, Label } from "@/theme/Typography";
 import * as turf from "@turf/turf";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
 import { usePlotByIdQuery } from "./plots.hooks";
-import { useTranslation } from "react-i18next";
+import { UsageCode } from "./usage-codes";
+import { formatLocalizedDate } from "@/utils/date";
+import { locale } from "@/locales/i18n";
 
 export function PlotDetailsScreen({
   route,
@@ -48,7 +52,9 @@ export function PlotDetailsScreen({
       >
         <H2>{t("plots.plot_name", { name: plot.name })}</H2>
         <H3>
-          {size / 100}a - {plot?.cropRotations[0]?.crop.name}{" "}
+          {plot.usage
+            ? `${t(`plots.usage_codes.${plot.usage as UsageCode}`)}`
+            : ""}
         </H3>
         {initialRegion && (
           <View
@@ -80,6 +86,44 @@ export function PlotDetailsScreen({
             </MapView>
           </View>
         )}
+        <Card style={{ marginTop: theme.spacing.m }}>
+          <SummaryItem
+            label={t("forms.labels.local_id")}
+            value={plot.localId ?? t("common.unknown")}
+          />
+          <SummaryItem
+            label={t("forms.labels.area")}
+            value={`${size / 100}a`}
+          />
+          <SummaryItem
+            label={t("forms.labels.usagecode")}
+            value={plot.usage ? plot.usage : t("common.unknown")}
+          />
+          <SummaryItem
+            label={t("forms.labels.cutting_date")}
+            value={
+              plot.cuttingDate
+                ? formatLocalizedDate(
+                    new Date(plot.cuttingDate),
+                    locale,
+                    "long",
+                    false
+                  )
+                : ""
+            }
+          />
+          {plot.description ? (
+            <>
+              <Label style={{ marginTop: theme.spacing.m }}>
+                {t("forms.labels.additional_notes")}
+              </Label>
+
+              <Label>
+                <Body>{plot.description}</Body>
+              </Label>
+            </>
+          ) : null}
+        </Card>
         <View
           style={{
             marginTop: theme.spacing.m,
@@ -176,5 +220,27 @@ export function PlotDetailsScreen({
         onPress={() => navigation.navigate("EditPlot", { plotId })}
       />
     </ContentView>
+  );
+}
+
+function SummaryItem({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | number;
+}) {
+  const theme = useTheme();
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        marginBottom: theme.spacing.s,
+        gap: theme.spacing.m,
+      }}
+    >
+      <Label style={{ flex: 1 }}>{label}</Label>
+      <Label style={{ fontSize: 18 }}>{value}</Label>
+    </View>
   );
 }

@@ -22,13 +22,16 @@ import { hexToRgba } from "@/theme/theme";
 import { Card } from "@/components/card/Card";
 import { useTranslation } from "react-i18next";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
+import { RHSelect } from "@/components/select/RHSelect";
+import { getUsageCodeSelectData } from "./usage-codes";
+import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 
 type EditPlotFormValues = {
   name: string;
   description?: string | null;
   localId?: string | null;
   usage?: string | null;
-  cuttingDate?: string | null;
+  cuttingDate?: Date | null;
   size: string;
 };
 
@@ -54,6 +57,9 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
           name: plot.name,
           description: plot.description,
           size: area?.toString() || plot.size.toString(),
+          usage: plot.usage?.toString(),
+          localId: plot.localId,
+          cuttingDate: plot.cuttingDate ? new Date(plot.cuttingDate) : null,
         }
       : undefined,
   });
@@ -95,6 +101,7 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
         ...rest,
         size: Number(size),
         usage: Number(usage),
+        cuttingDate: rest.cuttingDate?.toISOString() ?? null,
         geometry: polygon,
       },
     });
@@ -125,8 +132,12 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
         </BottomActionContainer>
       }
     >
-      <ScrollView showHeaderOnScroll headerTitleOnScroll={plot?.name}>
-        <H2>{plot?.name}</H2>
+      <ScrollView
+        showHeaderOnScroll
+        headerTitleOnScroll={plot?.name}
+        keyboardAware
+      >
+        <H2>{t("plots.plot_name", { name: plot?.name })}</H2>
 
         <View
           style={{
@@ -177,6 +188,12 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
             </Subtitle>
           </Card>
         ) : null}
+        <Button
+          style={{ marginTop: theme.spacing.m }}
+          type="accent"
+          title={t("buttons.edit_area")}
+          onPress={() => navigation.navigate("EditPlotMap", { plotId })}
+        />
         <View
           style={{ gap: theme.spacing.xs, flex: 1, marginTop: theme.spacing.m }}
         >
@@ -193,17 +210,14 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
             error={errors.name?.message}
           />
           <RHTextInput
-            name="description"
-            control={control}
-            label={t("forms.labels.description_optional")}
-          />
-          <RHTextInput
             name="localId"
             control={control}
             label={t("forms.labels.local_id_optional")}
           />
-          <RHNumberInput
+          <RHSelect
             name="usage"
+            data={getUsageCodeSelectData(t)}
+            enableSearch
             control={control}
             label={t("forms.labels.usage_optional")}
           />
@@ -225,13 +239,12 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
             }}
             error={errors.size?.message}
           />
+          <RHTextAreaInput
+            name="description"
+            control={control}
+            label={t("forms.labels.additional_notes_optional")}
+          />
         </View>
-        <Button
-          style={{ marginTop: theme.spacing.xl }}
-          type="accent"
-          title={t("buttons.edit_area")}
-          onPress={() => navigation.navigate("EditPlotMap", { plotId })}
-        />
       </ScrollView>
     </ContentView>
   );

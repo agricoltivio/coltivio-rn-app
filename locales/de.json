@@ -23,6 +23,7 @@
   "forms": {
     "labels": {
       "name": "Name",
+      "description": "Beschreibung",
       "description_optional": "Beschreibung (optional)",
       "display_name": "Anzeigename",
       "select_date": "Datum wählen",
@@ -76,8 +77,12 @@
       "please_select": "Bitte auswählen",
       "from": "Von",
       "to": "Bis",
+      "local_id": "Parzelle",
       "local_id_optional": "Parzelle (optional)",
-      "usage_optional": "Nutzungscode (optional)",
+      "usage": "Nutzung",
+      "usage_optional": "Nutzung (optional)",
+      "usagecode": "Nutzungscode",
+      "cutting_date": "Schnittzeit",
       "cutting_date_optional": "Schnittzeit (optional)"
     },
     "placeholders": {
@@ -630,10 +635,10 @@
     "warning_unit_not_editable": "Achtung, die Einheit kann nicht bearbeitet werden! Sie sollte der Einheit entsprechen in welchem das Pflanzenschutzmittel ausgebracht wird."
   },
   "crop_rotations": {
-    "crop_rotation": "Fruchtfolge",
-    "crop_rotation_year": "Fruchtfolge {{year}}",
-    "crop_rotation_plot_name": "Fruchtfolge - {{name}}",
-    "crop_rotation_date": "Fruchtfolge - {{date}}",
+    "crop_rotation": "Kulturen",
+    "crop_rotation_year": "Kulturen {{year}}",
+    "crop_rotation_plot_name": "Kulturen - {{name}}",
+    "crop_rotation_date": "Kulturen - {{date}}",
     "sowing": "Aussaat",
     "sowings": "Aussaaten",
     "sowings_year": "Aussaaten {{year}}",

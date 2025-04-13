@@ -20,6 +20,8 @@ import { useCropsQuery } from "../crops/crops.hooks";
 import { useCreatePlotMutation, useFarmPlotsQuery } from "./plots.hooks";
 import { useTranslation } from "react-i18next";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
+import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
+import { getUsageCodeSelectData } from "./usage-codes";
 
 type AddPlotFormValues = {
   name: string;
@@ -178,17 +180,14 @@ export function AddPlotSummaryScreen({
             error={errors.name?.message}
           />
           <RHTextInput
-            name="description"
-            control={control}
-            label={t("forms.labels.description_optional")}
-          />
-          <RHTextInput
             name="localId"
             control={control}
             label={t("forms.labels.local_id_optional")}
           />
-          <RHNumberInput
+          <RHSelect
             name="usage"
+            data={getUsageCodeSelectData(t)}
+            enableSearch
             control={control}
             label={t("forms.labels.usage_optional")}
           />
@@ -227,6 +226,11 @@ export function AddPlotSummaryScreen({
               },
             }}
             error={errors.size?.message}
+          />
+          <RHTextAreaInput
+            name="description"
+            control={control}
+            label={t("forms.labels.additional_notes_optional")}
           />
         </View>
       </ScrollView>
