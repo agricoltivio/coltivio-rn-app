@@ -75,7 +75,10 @@
       "produced_units": "Produzierte Einheiten",
       "please_select": "Bitte auswählen",
       "from": "Von",
-      "to": "Bis"
+      "to": "Bis",
+      "local_id_optional": "Parzelle (optional)",
+      "usage_optional": "Nutzungscode (optional)",
+      "cutting_date_optional": "Schnittzeit (optional)"
     },
     "placeholders": {
       "location_search": "z.B. Straße, Hausnummer, Ort",

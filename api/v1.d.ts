@@ -1924,7 +1924,7 @@ export interface components {
              * Format: date-time
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
-            cuttingDate?: string;
+            cuttingDate?: string | null;
             cropId: string;
         };
         GetV1PlotsByIdPlotIdParameterPlotId: string;
@@ -2106,7 +2106,7 @@ export interface components {
              * Format: date-time
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
-            cuttingDate?: string;
+            cuttingDate?: string | null;
             cropId?: string;
         };
         GetV1PlotsByIdPlotIdCropRotationsParameterPlotId: string;

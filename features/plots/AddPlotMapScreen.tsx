@@ -41,7 +41,6 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
   const frame = useSafeAreaFrame();
   const { farm } = useFarmQuery();
   const { plots } = useFarmPlotsQuery();
-  const { parcels } = useFarmParcels();
   const [mapVisible, setMapVisible] = useState(false);
   const [showModeSelect, setShowModeSelect] = useState(true);
   const [showModeInfo, setShowModeInfo] = useState(false);
@@ -52,9 +51,9 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
     geometry: GeoJSON.MultiPolygon;
     centroid: GeoJSON.Point;
     size: number;
-    name?: string | null;
-    usage?: number | null;
-    localId?: string | null;
+    usage?: number;
+    localId?: string;
+    cuttingDate?: string;
   } | null>(null);
   const polygonDrawingToolRef = useRef<PolygonDrawingToolActions>(null);
 
@@ -128,9 +127,9 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
       geometry: parcel.geometry,
       centroid: centroid.geometry,
       size: round(area, 0),
-      name: parcel.localId,
-      usage: parcel.usage,
-      localId: parcel.localId,
+      usage: parcel.usage ?? undefined,
+      localId: parcel.localId ?? undefined,
+      cuttingDate: parcel.cuttingDate ?? undefined,
     });
   }
 
@@ -238,8 +237,8 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
                 }}
               >
                 <Subtitle style={{ fontSize: 14 }}>
-                  {newPolygon.name
-                    ? `${newPolygon.name} (${newPolygon.size / 100}a)`
+                  {newPolygon.localId
+                    ? `${newPolygon.localId} (${newPolygon.size / 100}a)`
                     : `${newPolygon.size / 100}a`}
                 </Subtitle>
               </Card>

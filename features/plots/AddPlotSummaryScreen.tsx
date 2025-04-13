@@ -19,10 +19,14 @@ import { useTheme } from "styled-components/native";
 import { useCropsQuery } from "../crops/crops.hooks";
 import { useCreatePlotMutation, useFarmPlotsQuery } from "./plots.hooks";
 import { useTranslation } from "react-i18next";
+import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 
 type AddPlotFormValues = {
   name: string;
   description?: string;
+  localId?: string;
+  usage?: string;
+  cuttingDate?: Date;
   size: string;
   cropId: string;
 };
@@ -31,7 +35,8 @@ export function AddPlotSummaryScreen({
   route,
   navigation,
 }: AddPlotSummaryScreenProps) {
-  const { geometry, centroid, size } = route.params;
+  const { geometry, centroid, size, localId, cuttingDate, usage } =
+    route.params;
   const { t } = useTranslation();
   const theme = useTheme();
   const { plots } = useFarmPlotsQuery();
@@ -41,8 +46,8 @@ export function AddPlotSummaryScreen({
   const initialRegion: Region = {
     latitude,
     longitude,
-    latitudeDelta: 0.001,
-    longitudeDelta: 0.001,
+    latitudeDelta: 0.005,
+    longitudeDelta: 0.005,
   };
 
   const {
@@ -50,7 +55,12 @@ export function AddPlotSummaryScreen({
     handleSubmit,
     formState: { errors, isDirty },
   } = useForm<AddPlotFormValues>({
-    defaultValues: { size: size.toString() },
+    defaultValues: {
+      size: size.toString(),
+      localId,
+      usage: usage?.toString(),
+      cuttingDate: cuttingDate ? new Date(cuttingDate) : undefined,
+    },
   });
 
   const createPlotMutation = useCreatePlotMutation(
@@ -75,13 +85,13 @@ export function AddPlotSummaryScreen({
     [plots]
   );
 
-  function onSubmit(values: AddPlotFormValues) {
+  function onSubmit({ size, usage, cuttingDate, ...rest }: AddPlotFormValues) {
     createPlotMutation.mutate({
-      name: values.name,
-      description: values.description,
+      ...rest,
       geometry,
-      cropId: values.cropId,
-      size: Number(values.size),
+      usage: Number(usage),
+      size: Number(size),
+      cuttingDate: cuttingDate?.toISOString(),
     });
   }
 
@@ -171,6 +181,22 @@ export function AddPlotSummaryScreen({
             name="description"
             control={control}
             label={t("forms.labels.description_optional")}
+          />
+          <RHTextInput
+            name="localId"
+            control={control}
+            label={t("forms.labels.local_id_optional")}
+          />
+          <RHNumberInput
+            name="usage"
+            control={control}
+            label={t("forms.labels.usage_optional")}
+          />
+          <RHDatePicker
+            name="cuttingDate"
+            control={control}
+            mode="date"
+            label={t("forms.labels.cutting_date_optional")}
           />
           <RHSelect
             name="cropId"

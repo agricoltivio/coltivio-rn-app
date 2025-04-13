@@ -21,10 +21,14 @@ import { MultiPolygon } from "@/components/map/MultiPolygon";
 import { hexToRgba } from "@/theme/theme";
 import { Card } from "@/components/card/Card";
 import { useTranslation } from "react-i18next";
+import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 
 type EditPlotFormValues = {
   name: string;
   description?: string | null;
+  localId?: string | null;
+  usage?: string | null;
+  cuttingDate?: string | null;
   size: string;
 };
 
@@ -84,10 +88,15 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
     longitudeDelta: 0.0025,
   };
 
-  function onSubmit(data: EditPlotFormValues) {
+  function onSubmit({ size, usage, ...rest }: EditPlotFormValues) {
     updatePlotMutation.mutate({
       plotId,
-      data: { ...data, size: parseInt(data.size), geometry: polygon },
+      data: {
+        ...rest,
+        size: Number(size),
+        usage: Number(usage),
+        geometry: polygon,
+      },
     });
   }
 
@@ -187,6 +196,22 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
             name="description"
             control={control}
             label={t("forms.labels.description_optional")}
+          />
+          <RHTextInput
+            name="localId"
+            control={control}
+            label={t("forms.labels.local_id_optional")}
+          />
+          <RHNumberInput
+            name="usage"
+            control={control}
+            label={t("forms.labels.usage_optional")}
+          />
+          <RHDatePicker
+            name="cuttingDate"
+            control={control}
+            mode="date"
+            label={t("forms.labels.cutting_date_optional")}
           />
           <RHNumberInput
             name="size"
