@@ -1041,14 +1041,26 @@ export interface components {
             status: "success";
             data: {
                 result: {
+                    /** Format: uuid */
                     id: string;
                     federalFarmId: string;
                     localId: string | null;
+                    /** Format: double */
+                    usage: number;
+                    additionalUsages: string | null;
+                    /** Format: double */
+                    area: number;
+                    canton: string;
                     geometry: {
                         /** @constant */
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    cuttingDate: string | null;
                 }[];
                 /** Format: double */
                 count: number;
@@ -1073,14 +1085,26 @@ export interface components {
             status: "success";
             data: {
                 result: {
+                    /** Format: uuid */
                     id: string;
                     federalFarmId: string;
                     localId: string | null;
+                    /** Format: double */
+                    usage: number;
+                    additionalUsages: string | null;
+                    /** Format: double */
+                    area: number;
+                    canton: string;
                     geometry: {
                         /** @constant */
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    cuttingDate: string | null;
                 }[];
                 /** Format: double */
                 count: number;
@@ -1101,14 +1125,26 @@ export interface components {
             status: "success";
             data: {
                 result: {
+                    /** Format: uuid */
                     id: string;
                     federalFarmId: string;
                     localId: string | null;
+                    /** Format: double */
+                    usage: number;
+                    additionalUsages: string | null;
+                    /** Format: double */
+                    area: number;
+                    canton: string;
                     geometry: {
                         /** @constant */
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    cuttingDate: string | null;
                 }[];
                 /** Format: double */
                 count: number;
@@ -1129,14 +1165,26 @@ export interface components {
             status: "success";
             data: {
                 result: {
+                    /** Format: uuid */
                     id: string;
                     federalFarmId: string;
                     localId: string | null;
+                    /** Format: double */
+                    usage: number;
+                    additionalUsages: string | null;
+                    /** Format: double */
+                    area: number;
+                    canton: string;
                     geometry: {
                         /** @constant */
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    cuttingDate: string | null;
                 }[];
                 /** Format: double */
                 count: number;
@@ -1199,7 +1247,7 @@ export interface components {
         };
         PostV1FarmRequestBody: {
             name: string;
-            federalId: string;
+            federalId?: string;
             address: string;
             location: {
                 /** @constant */
@@ -1209,44 +1257,6 @@ export interface components {
                     number
                 ];
             };
-            tvdNumber?: string;
-            parcelGisIds: number[];
-            /** @default true */
-            createParcelPlots: boolean;
-            customPlots: {
-                name: string;
-                description?: string | null;
-                localId?: string | null;
-                /** Format: double */
-                usage?: number | null;
-                additionalUsages?: string | null;
-                cuttingDate?: string | null;
-                /** Format: double */
-                size: number;
-                geometry: {
-                    /** @constant */
-                    type: "MultiPolygon";
-                    coordinates: number[][][][];
-                };
-                cropId: string;
-            }[];
-            fertilizers: {
-                name: string;
-                description?: string | null;
-                /** @enum {string} */
-                type: "mineral" | "organic";
-                /** @enum {string} */
-                unit: "l" | "kg" | "dt" | "t" | "m3";
-            }[];
-            crops: {
-                name: string;
-                naturalMeadow?: boolean;
-                /** @enum {string} */
-                category: "grass" | "grain" | "vegetable" | "fruit" | "other";
-                variety?: string | null;
-                usageCodes?: number[];
-                additionalNotes?: string | null;
-            }[];
         };
         GetV1FarmPositiveResponse: {
             /** @constant */
@@ -1761,7 +1771,6 @@ export interface components {
                     /** Format: double */
                     usage: number | null;
                     additionalUsages: string | null;
-                    cuttingDate: string | null;
                     /** Format: double */
                     size: number;
                     geometry: {
@@ -1769,6 +1778,11 @@ export interface components {
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    cuttingDate: string | null;
                     cropRotations: {
                         /** Format: uuid */
                         id: string;
@@ -1833,7 +1847,6 @@ export interface components {
                 /** Format: double */
                 usage: number | null;
                 additionalUsages: string | null;
-                cuttingDate: string | null;
                 /** Format: double */
                 size: number;
                 geometry: {
@@ -1841,6 +1854,11 @@ export interface components {
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                cuttingDate: string | null;
                 cropRotations: {
                     /** Format: uuid */
                     id: string;
@@ -1895,7 +1913,6 @@ export interface components {
             /** Format: double */
             usage?: number | null;
             additionalUsages?: string | null;
-            cuttingDate?: string | null;
             /** Format: double */
             size: number;
             geometry: {
@@ -1903,6 +1920,11 @@ export interface components {
                 type: "MultiPolygon";
                 coordinates: number[][][][];
             };
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            cuttingDate?: string;
             cropId: string;
         };
         GetV1PlotsByIdPlotIdParameterPlotId: string;
@@ -1920,7 +1942,6 @@ export interface components {
                 /** Format: double */
                 usage: number | null;
                 additionalUsages: string | null;
-                cuttingDate: string | null;
                 /** Format: double */
                 size: number;
                 geometry: {
@@ -1928,6 +1949,11 @@ export interface components {
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                cuttingDate: string | null;
                 cropRotations: {
                     /** Format: uuid */
                     id: string;
@@ -2003,7 +2029,6 @@ export interface components {
                 /** Format: double */
                 usage: number | null;
                 additionalUsages: string | null;
-                cuttingDate: string | null;
                 /** Format: double */
                 size: number;
                 geometry: {
@@ -2011,6 +2036,11 @@ export interface components {
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                cuttingDate: string | null;
                 cropRotations: {
                     /** Format: uuid */
                     id: string;
@@ -2065,7 +2095,6 @@ export interface components {
             /** Format: double */
             usage?: number | null;
             additionalUsages?: string | null;
-            cuttingDate?: string | null;
             /** Format: double */
             size?: number;
             geometry?: {
@@ -2073,6 +2102,11 @@ export interface components {
                 type: "MultiPolygon";
                 coordinates: number[][][][];
             };
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            cuttingDate?: string;
             cropId?: string;
         };
         GetV1PlotsByIdPlotIdCropRotationsParameterPlotId: string;
@@ -2189,9 +2223,13 @@ export interface components {
                         /** Format: double */
                         usage: number | null;
                         additionalUsages: string | null;
-                        cuttingDate: string | null;
                         /** Format: double */
                         size: number;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        cuttingDate: string | null;
                     };
                 }[];
                 /** Format: double */
@@ -2284,9 +2322,13 @@ export interface components {
                         /** Format: double */
                         usage: number | null;
                         additionalUsages: string | null;
-                        cuttingDate: string | null;
                         /** Format: double */
                         size: number;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        cuttingDate: string | null;
                     };
                 }[];
                 /** Format: double */
@@ -3060,9 +3102,13 @@ export interface components {
                     /** Format: double */
                     usage: number | null;
                     additionalUsages: string | null;
-                    cuttingDate: string | null;
                     /** Format: double */
                     size: number;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    cuttingDate: string | null;
                 };
             };
         };
@@ -3192,9 +3238,13 @@ export interface components {
                         /** Format: double */
                         usage: number | null;
                         additionalUsages: string | null;
-                        cuttingDate: string | null;
                         /** Format: double */
                         size: number;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        cuttingDate: string | null;
                     };
                 }[];
                 /** Format: double */
@@ -3286,9 +3336,13 @@ export interface components {
                         /** Format: double */
                         usage: number | null;
                         additionalUsages: string | null;
-                        cuttingDate: string | null;
                         /** Format: double */
                         size: number;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        cuttingDate: string | null;
                     };
                 }[];
                 /** Format: double */
@@ -3408,9 +3462,13 @@ export interface components {
                     /** Format: double */
                     usage: number | null;
                     additionalUsages: string | null;
-                    cuttingDate: string | null;
                     /** Format: double */
                     size: number;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    cuttingDate: string | null;
                 };
             };
         };
@@ -3512,9 +3570,13 @@ export interface components {
                     /** Format: double */
                     usage: number | null;
                     additionalUsages: string | null;
-                    cuttingDate: string | null;
                     /** Format: double */
                     size: number;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    cuttingDate: string | null;
                 };
             };
         };
@@ -3773,9 +3835,13 @@ export interface components {
                     /** Format: double */
                     usage: number | null;
                     additionalUsages: string | null;
-                    cuttingDate: string | null;
                     /** Format: double */
                     size: number;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    cuttingDate: string | null;
                 };
             };
         };
@@ -3880,9 +3946,13 @@ export interface components {
                         /** Format: double */
                         usage: number | null;
                         additionalUsages: string | null;
-                        cuttingDate: string | null;
                         /** Format: double */
                         size: number;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        cuttingDate: string | null;
                     };
                 }[];
                 /** Format: double */
@@ -3955,9 +4025,13 @@ export interface components {
                         /** Format: double */
                         usage: number | null;
                         additionalUsages: string | null;
-                        cuttingDate: string | null;
                         /** Format: double */
                         size: number;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        cuttingDate: string | null;
                     };
                 }[];
                 /** Format: double */
@@ -4052,9 +4126,13 @@ export interface components {
                     /** Format: double */
                     usage: number | null;
                     additionalUsages: string | null;
-                    cuttingDate: string | null;
                     /** Format: double */
                     size: number;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    cuttingDate: string | null;
                 };
             };
         };
@@ -4137,9 +4215,13 @@ export interface components {
                     /** Format: double */
                     usage: number | null;
                     additionalUsages: string | null;
-                    cuttingDate: string | null;
                     /** Format: double */
                     size: number;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    cuttingDate: string | null;
                 };
             };
         };
@@ -4693,7 +4775,6 @@ export interface components {
                         /** Format: double */
                         usage: number | null;
                         additionalUsages: string | null;
-                        cuttingDate: string | null;
                         /** Format: double */
                         size: number;
                         geometry: {
@@ -4701,6 +4782,11 @@ export interface components {
                             type: "MultiPolygon";
                             coordinates: number[][][][];
                         };
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        cuttingDate: string | null;
                     };
                 }[];
                 /** Format: double */
@@ -4797,7 +4883,6 @@ export interface components {
                         /** Format: double */
                         usage: number | null;
                         additionalUsages: string | null;
-                        cuttingDate: string | null;
                         /** Format: double */
                         size: number;
                         geometry: {
@@ -4805,6 +4890,11 @@ export interface components {
                             type: "MultiPolygon";
                             coordinates: number[][][][];
                         };
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        cuttingDate: string | null;
                     };
                 }[];
                 /** Format: double */
@@ -4931,7 +5021,6 @@ export interface components {
                     /** Format: double */
                     usage: number | null;
                     additionalUsages: string | null;
-                    cuttingDate: string | null;
                     /** Format: double */
                     size: number;
                     geometry: {
@@ -4939,6 +5028,11 @@ export interface components {
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    cuttingDate: string | null;
                 };
             };
         };

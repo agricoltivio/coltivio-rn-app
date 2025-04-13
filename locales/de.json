@@ -244,6 +244,9 @@
             "drawing_info": "Benutze diese Symbole, um mit dem Zeichnen zu beginnen und abzuschließen. Du kannst die Eckpunkte verschieben, indem du einen Punkt gedrückt hältst, bis er vor dem Finger sichtbar wird, und ihn dann an den gewünschten Ort ziehst."
           }
         }
+      },
+      "summary": {
+        "heading": "Schlag hinzufügen"
       }
     },
     "edit": {
