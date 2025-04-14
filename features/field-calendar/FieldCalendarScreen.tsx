@@ -20,17 +20,10 @@ export function FieldCalendarScreen({ navigation }: FieldCalendarScreenProps) {
           <List.Item
             title={t("field_calendar.crops")}
             onPress={() => navigation.navigate("Crops")}
-            hideBottomDivider
           />
-        </List>
-        <List style={{ marginTop: theme.spacing.l }}>
           <List.Item
             title={t("field_calendar.crop_rotations")}
             onPress={() => navigation.navigate("CropRotations")}
-          />
-          <List.Item
-            title={t("field_calendar.tillages")}
-            onPress={() => navigation.navigate("Tillages")}
             hideBottomDivider
           />
         </List>
@@ -38,6 +31,13 @@ export function FieldCalendarScreen({ navigation }: FieldCalendarScreenProps) {
           <List.Item
             title={t("field_calendar.harvests")}
             onPress={() => navigation.navigate("Harvests")}
+            hideBottomDivider
+          />
+        </List>
+        <List style={{ marginTop: theme.spacing.l }}>
+          <List.Item
+            title={t("field_calendar.tillages")}
+            onPress={() => navigation.navigate("Tillages")}
             hideBottomDivider
           />
         </List>

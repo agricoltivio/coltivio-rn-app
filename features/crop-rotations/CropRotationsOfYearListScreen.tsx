@@ -80,7 +80,7 @@ export function CropRotationsOfYearListScreen({
     <ContentView headerVisible>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <H2 style={{ flex: 1 }}>
-          {t("crop_rotations.sowings_year", { year: route.params.year })}
+          {t("crop_rotations.crop_rotation_year", { year: route.params.year })}
         </H2>
       </View>
       <View style={{ marginVertical: theme.spacing.m }}>

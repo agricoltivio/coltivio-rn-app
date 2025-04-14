@@ -635,10 +635,10 @@
     "warning_unit_not_editable": "Achtung, die Einheit kann nicht bearbeitet werden! Sie sollte der Einheit entsprechen in welchem das Pflanzenschutzmittel ausgebracht wird."
   },
   "crop_rotations": {
-    "crop_rotation": "Kulturen",
-    "crop_rotation_year": "Kulturen {{year}}",
-    "crop_rotation_plot_name": "Kulturen - {{name}}",
-    "crop_rotation_date": "Kulturen - {{date}}",
+    "crop_rotation": "Fruchtfolgen",
+    "crop_rotation_year": "Fruchtfolge {{year}}",
+    "crop_rotation_plot_name": "Fruchtfolge - {{name}}",
+    "crop_rotation_date": "Fruchtfolge - {{date}}",
     "sowing": "Aussaat",
     "sowings": "Aussaaten",
     "sowings_year": "Aussaaten {{year}}",
