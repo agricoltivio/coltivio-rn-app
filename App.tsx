@@ -22,6 +22,7 @@ import "./theme/theme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { LocalSettingsProvider } from "./features/user/LocalSettingsContext";
 import { KeyboardProvider } from "react-native-keyboard-controller";
+import { StatusBar } from "react-native";
 
 // TODO: remove this once issue is resolved
 // configureReanimatedLogger({
@@ -55,6 +56,10 @@ export default function App() {
                               },
                             }}
                           >
+                            <StatusBar
+                              barStyle="dark-content"
+                              backgroundColor="#f6f6f6"
+                            />
                             <RootStack />
                           </NavigationContainer>
                         </KeyboardProvider>

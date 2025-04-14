@@ -30,7 +30,7 @@ export function MachineConfigsScreen({
         showHeaderOnScroll
         headerTitleOnScroll={t("farm_equipment.farm_equipment")}
       >
-        <H2>{t("farm_equipment.new_equipment")}</H2>
+        <H2>{t("farm_equipment.farm_equipment")}</H2>
         <View style={{ marginTop: theme.spacing.m }}>
           <View style={{ marginBottom: theme.spacing.m }}>
             <H3>{t("harvests.harvest")}</H3>

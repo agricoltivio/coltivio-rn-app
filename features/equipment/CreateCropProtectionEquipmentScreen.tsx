@@ -71,6 +71,7 @@ export function CreateCropProtectionEquipmentScreen({
       <ScrollView
         showHeaderOnScroll
         headerTitleOnScroll={t("farm_equipment.new_equipment")}
+        keyboardAware
       >
         <H2>{t("crop_protection_equipments.new_equipment")}</H2>
         <Card

@@ -68,6 +68,7 @@ export function CreateFertilizerSpreaderScreen({
       <ScrollView
         showHeaderOnScroll
         headerTitleOnScroll={t("farm_equipment.new_equipment")}
+        keyboardAware
       >
         <H2>{t("fertilizer_spreaders.new_spreader")}</H2>
         <Card
