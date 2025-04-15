@@ -6,7 +6,7 @@ export default {
   icon: "./assets/images/icon.png",
   scheme: process.env.SCHEME,
   userInterfaceStyle: "automatic",
-  newArchEnabled: false,
+  newArchEnabled: true,
   splash: {
     image: "./assets/images/splash-icon.png",
     resizeMode: "contain",
@@ -48,6 +48,7 @@ export default {
     "expo-font",
     "expo-location",
     "expo-apple-authentication",
+    "./react-native-maps-fix-plugin",
   ],
   extra: {
     eas: {

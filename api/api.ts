@@ -26,7 +26,7 @@ import { reportsApi } from "./reports.api";
 // const baseUrl = "http://localhost:8000/";
 const uri =
   Constants.expoConfig?.hostUri?.split(":").shift()?.concat(":8000") ??
-  "yourapi.com";
+  process.env.EXPO_PUBLIC_API_URI;
 const baseUrl = `http://${uri}`;
 
 export type FetchClient = typeof client;
