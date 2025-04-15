@@ -22,6 +22,7 @@ export default {
       ITSAppUsesNonExemptEncryption: false,
     },
     usesAppleSignIn: true,
+    privacyManifest: "./privacy-manifest.json",
   },
   android: {
     adaptiveIcon: {
@@ -48,6 +49,14 @@ export default {
     "expo-font",
     "expo-location",
     "expo-apple-authentication",
+    [
+      "@sentry/react-native/expo",
+      {
+        url: "https://sentry.io/",
+        project: "react-native",
+        organization: "agricoltivio",
+      },
+    ],
     "./react-native-maps-fix-plugin",
   ],
   extra: {

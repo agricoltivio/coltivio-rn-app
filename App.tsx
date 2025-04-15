@@ -23,6 +23,20 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { LocalSettingsProvider } from "./features/user/LocalSettingsContext";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { StatusBar } from "react-native";
+import * as Sentry from "@sentry/react-native";
+
+Sentry.init({
+  dsn: "https://9c83469da59d07c1442766ef1f55abd0@o4509156353638400.ingest.de.sentry.io/4509156358488144",
+
+  // Configure Session Replay
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1,
+  integrations: [Sentry.mobileReplayIntegration()],
+  enabled: process.env.EXPO_PUBLIC_SENTRY_DISABLED === "true",
+
+  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
+  // spotlight: __DEV__,
+});
 
 // TODO: remove this once issue is resolved
 // configureReanimatedLogger({
@@ -34,7 +48,7 @@ const prefix = Linking.createURL("/");
 
 const queryClient = new QueryClient();
 
-export default function App() {
+export default Sentry.wrap(function App() {
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <GestureHandlerRootView style={{ flex: 1 }}>
@@ -76,4 +90,4 @@ export default function App() {
       </GestureHandlerRootView>
     </SafeAreaProvider>
   );
-}
+});
