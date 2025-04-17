@@ -50,10 +50,7 @@ export function AddFertilizerApplicationSelectSpreaderScreen({
   } = useForm<FormValues>({
     defaultValues: {
       unit: selectedFertilizer?.unit,
-      spreaderId:
-        selectedSpreader?.id || fertilizerApplication?.amountPerApplication
-          ? "none"
-          : undefined,
+      spreaderId: selectedSpreader?.id || "none",
       capacity:
         selectedSpreader?.capacity.toString() ||
         fertilizerApplication?.amountPerApplication?.toString(),
@@ -117,7 +114,7 @@ export function AddFertilizerApplicationSelectSpreaderScreen({
         <H2>{t("fertilizer_application.select_machine.heading")}</H2>
         <Card
           style={{
-            backgroundColor: theme.colors.danger,
+            backgroundColor: theme.colors.secondary,
             marginTop: theme.spacing.m,
           }}
         >
@@ -144,7 +141,11 @@ export function AddFertilizerApplicationSelectSpreaderScreen({
                 type="accent"
                 fontSize={16}
                 title={t("buttons.add")}
-                onPress={() => navigation.navigate("CreateFertilizerSpreader")}
+                onPress={() =>
+                  navigation.navigate("CreateFertilizerSpreader", {
+                    unit: selectedFertilizer?.unit,
+                  })
+                }
               />
             </Card>
           )}

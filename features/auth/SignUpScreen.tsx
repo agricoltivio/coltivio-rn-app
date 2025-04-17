@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react-native";
 import { useSession } from "@/auth/SessionProvider";
 import { Button } from "@/components/buttons/Button";
 import { ContentView } from "@/components/containers/ContentView";
@@ -59,6 +60,8 @@ export function SignUpScreen() {
       setSession(data?.session);
     }
     setFetching(false);
+    console.error(error);
+    Sentry.captureException(error);
   }
 
   return (

@@ -11,17 +11,12 @@ import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../farms/farms.hooks";
 import { useUserQuery } from "../user/users.hooks";
 import { HomeTile } from "./HomeTile";
-import { useSyncMissingLocalIdsMutation } from "../plots/plots.hooks";
 
 export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { t } = useTranslation();
   const { user } = useUserQuery();
   const { farm } = useFarmQuery();
   const theme = useTheme();
-  const syncMissingLocalIdsMutation = useSyncMissingLocalIdsMutation(
-    () => {},
-    (error) => console.error(error)
-  );
 
   return (
     <ScrollView showHeaderOnScroll headerTitleOnScroll={farm?.name}>
@@ -137,7 +132,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
             gap: theme.spacing.m,
           }}
         >
-          <HomeTile title={t("home.tiles.animal_husbandry")}>
+          <HomeTile title={t("home.tiles.animal_husbandry")} disabled>
             <Image
               source={require("@/assets/images/animals-icon.png")}
               contentFit="contain"
@@ -149,10 +144,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
               }}
             />
           </HomeTile>
-          <HomeTile
-            title={t("home.tiles.community")}
-            onPress={() => syncMissingLocalIdsMutation.mutate()}
-          >
+          <HomeTile title={t("home.tiles.community")} disabled>
             <View style={{ overflow: "hidden" }}>
               <Image
                 source={require("@/assets/images/community-icon-3.png")}

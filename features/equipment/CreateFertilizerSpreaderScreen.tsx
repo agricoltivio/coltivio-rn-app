@@ -16,14 +16,16 @@ import { useTheme } from "styled-components/native";
 
 export function CreateFertilizerSpreaderScreen({
   navigation,
+  route,
 }: CreateFertilizerSpreaderScreenProps) {
   const theme = useTheme();
   const { t } = useTranslation();
+  const { unit } = route.params;
   const {
     control,
     handleSubmit,
     formState: { errors, isDirty },
-  } = useForm<FertilizerSpreaderFormValues>();
+  } = useForm<FertilizerSpreaderFormValues>({ defaultValues: { unit } });
 
   function onSuccess() {
     const navigationState = navigation.getState();
@@ -73,7 +75,7 @@ export function CreateFertilizerSpreaderScreen({
         <H2>{t("fertilizer_spreaders.new_spreader")}</H2>
         <Card
           style={{
-            backgroundColor: theme.colors.danger,
+            backgroundColor: theme.colors.secondary,
             marginTop: theme.spacing.m,
           }}
         >

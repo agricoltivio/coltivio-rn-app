@@ -1,3 +1,4 @@
+import { FertilizerUnit } from "@/api/fertilizers.api";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 export type RootStackParamList = {
@@ -119,7 +120,7 @@ export type RootStackParamList = {
     type?: "forage" | "fertilization" | "tillage" | "cropProtection";
   };
   CreateHarvestingMachinery: undefined;
-  CreateFertilizerSpreader: undefined;
+  CreateFertilizerSpreader: { unit?: FertilizerUnit };
   EditHarvestingMachinery: { harvestingMachineryId: string };
   EditFertilizerSpreader: { fertilizerSpreaderId: string };
   CreateCropProtectionEquipment: undefined;

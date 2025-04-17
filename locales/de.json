@@ -443,12 +443,12 @@
       "harvest": "Ernte",
       "tillage": "Bodenbearbeitung",
       "crop_protection": "Pflanzenschutz",
-      "fertilization": "Düngung"
+      "fertilization": "Düngeraustrag"
     }
   },
   "crop_protection_equipments": {
     "new_equipment": "Neues Pflanzenschutzgerät",
-    "only_same_unit_warning": "Achtung: Um eine Maschine für einen Pflanzenschutzmittel zu verwenden muss sie die selbe Einheit haben."
+    "only_same_unit_warning": "Um eine Maschine für einen Pflanzenschutzmittel zu verwenden, muss sie die selbe Einheit verwenden."
   },
   "harvest_equipments": {
     "new_harvester": "Neue Erntemaschine",
@@ -458,8 +458,8 @@
     "new_equipment": "Neues Gerät zur Bodenbearbeitung"
   },
   "fertilizer_spreaders": {
-    "new_spreader": "Neue Maschine für Düngung",
-    "only_same_unit_warning": "Achtung: Um eine Maschine für einen Dünger zu verwenden muss sie die selbe Einheit haben."
+    "new_spreader": "Neue Maschine für Düngeraustrag",
+    "only_same_unit_warning": "Um eine Maschine für einen Dünger zu verwenden, muss sie die selbe Einheit haben."
   },
   "field_calendar": {
     "field_calendar": "Feldkalender",
@@ -467,7 +467,7 @@
     "crop_rotations": "Fruchtfolgen",
     "tillages": "Bodenbearbeitungen",
     "fertilizers": "Dünger",
-    "fertilizer_applications": "Düngung",
+    "fertilizer_applications": "Düngeraustrag",
     "harvests": "Ernte",
     "crop_protection_products": "Pflanzenschutzmittel",
     "crop_protection_applications": "Pflanzenschutz",
@@ -518,13 +518,13 @@
     "fertilizer": "Dünger",
     "new_fertilizer": "Neuer Dünger",
     "product_in_use_warning": "Achtung: Dieser Dünger wird verwendet und kann deshalb nur beschränkt bearbeitet und nicht gelöscht werden.",
-    "warning_unit_not_editable": "Achtung, die Einheit kann nicht bearbeitet werden! Sie sollte der Einheit entsprechen in welchem der Dünger ausgebracht wird."
+    "warning_unit_not_editable": "Die Einheit definiert, in welcher Einheit der Dünger ausgebracht wird."
   },
   "fertilizer_application": {
-    "fertilizer_application": "Düngung",
-    "fertilizer_application_date": "Düngung {{date}}",
-    "fertilizer_application_year": "Düngung {{year}}",
-    "fertilizer_application_plot_name": "Düngung - {{name}}",
+    "fertilizer_application": "Düngeraustrag",
+    "fertilizer_application_date": "Düngeraustrag {{date}}",
+    "fertilizer_application_year": "Düngeraustrag {{year}}",
+    "fertilizer_application_plot_name": "Düngeraustrag - {{name}}",
     "select_quantity": {
       "heading": "Wie viel wurde ausgebracht?"
     },
@@ -543,7 +543,7 @@
     "select_machine": {
       "heading": "Welche Maschine wurde verwendet?",
       "no_machines": "Du hast noch keine Maschine erfasst. Diese vereinfachen die Erfassung, indem du Standardwerte vordefinieren kannst.",
-      "only_same_unit_warning": "Achtung: Du kannst nur Geräte verwenden, welche die gleiche Einheit verwendet wie der gewählte Dünger."
+      "only_same_unit_warning": "Du kannst nur Maschinen verwenden, welche die gleiche Einheit verwendet wie der gewählte Dünger."
     },
     "methods": {
       "spread": "Streuen",

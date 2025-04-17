@@ -16,8 +16,8 @@ import { useUserQuery } from "./users.hooks";
 export function UserAccountScreen({ navigation }: UserAccountScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const queryClient = useQueryClient();
   const { user } = useUserQuery();
+  const queryClient = useQueryClient();
   const { clearSession } = useSession();
   return (
     <ContentView

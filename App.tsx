@@ -32,7 +32,7 @@ Sentry.init({
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1,
   integrations: [Sentry.mobileReplayIntegration()],
-  enabled: process.env.EXPO_PUBLIC_SENTRY_DISABLED === "true",
+  enabled: process.env.EXPO_PUBLIC_SENTRY_DISABLED !== "true",
 
   // uncomment the line below to enable Spotlight (https://spotlightjs.com)
   // spotlight: __DEV__,

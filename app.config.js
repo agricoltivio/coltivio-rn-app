@@ -6,7 +6,7 @@ export default {
   icon: "./assets/images/icon.png",
   scheme: process.env.SCHEME,
   userInterfaceStyle: "automatic",
-  newArchEnabled: true,
+  newArchEnabled: false,
   splash: {
     image: "./assets/images/splash-icon.png",
     resizeMode: "contain",
@@ -57,7 +57,7 @@ export default {
         organization: "agricoltivio",
       },
     ],
-    "./react-native-maps-fix-plugin",
+    // "./react-native-maps-fix-plugin",
   ],
   extra: {
     eas: {

@@ -32,7 +32,7 @@ export function CreateFarmEquipmentScreen({
         break;
       }
       case "fertilization": {
-        navigation.navigate("CreateFertilizerSpreader");
+        navigation.navigate("CreateFertilizerSpreader", { unit: undefined });
         break;
       }
     }

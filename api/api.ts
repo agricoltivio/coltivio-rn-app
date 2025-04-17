@@ -23,11 +23,11 @@ import { cropProtectionEquipmentsApi } from "./cropProtectionEquipments.api";
 import { locale } from "@/locales/i18n";
 import { reportsApi } from "./reports.api";
 
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 // const baseUrl = "http://localhost:8000/";
-const uri =
-  Constants.expoConfig?.hostUri?.split(":").shift()?.concat(":8000") ??
-  process.env.EXPO_PUBLIC_API_URI;
-const baseUrl = `http://${uri}`;
+const localUrl = `http://${Constants.expoConfig?.hostUri?.split(":").shift()?.concat(":8000")}`;
+
+const baseUrl = apiUrl ?? localUrl;
 
 export type FetchClient = typeof client;
 

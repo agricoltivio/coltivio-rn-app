@@ -51,7 +51,7 @@ export function CreateFertilizerScreen({
         <H2>{t("fertilizers.new_fertilizer")}</H2>
         <Card
           style={{
-            backgroundColor: theme.colors.danger,
+            backgroundColor: theme.colors.secondary,
             marginTop: theme.spacing.m,
           }}
         >
