@@ -54,14 +54,13 @@ export function SignUpScreen() {
           setError(t("signup.errors.unexpected"));
         }
       }
+      Sentry.captureException(error);
     } else if (!data?.session) {
       setError(t("signup.errors.unexpected"));
     } else {
       setSession(data?.session);
     }
     setFetching(false);
-    console.error(error);
-    Sentry.captureException(error);
   }
 
   return (

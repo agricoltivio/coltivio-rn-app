@@ -18,9 +18,8 @@ export function RHSelect<T extends FieldValues>({
       control={control}
       name={name}
       defaultValue={defaultValue}
-      disabled={disabled}
       rules={rules}
-      render={({ field: { onChange, onBlur, value, disabled } }) => (
+      render={({ field: { onChange, onBlur, value } }) => (
         <Select
           onBlur={onBlur}
           onChange={onChange}

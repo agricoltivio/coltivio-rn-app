@@ -50,7 +50,8 @@ export function AddFertilizerApplicationSelectSpreaderScreen({
   } = useForm<FormValues>({
     defaultValues: {
       unit: selectedFertilizer?.unit,
-      spreaderId: selectedSpreader?.id || "none",
+      spreaderId:
+        selectedSpreader?.id || selectedFertilizer?.defaultSpreaderId || "none",
       capacity:
         selectedSpreader?.capacity.toString() ||
         fertilizerApplication?.amountPerApplication?.toString(),

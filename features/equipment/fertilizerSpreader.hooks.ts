@@ -7,12 +7,16 @@ import {
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-export function useFertilizerSpreadersQuery(enabled: boolean = true) {
+export function useFertilizerSpreadersQuery(
+  initialData?: FertilizerSpreader[],
+  enabled: boolean = true
+) {
   const api = useApi();
   const { data, ...rest } = useQuery({
     queryKey: queryKeys.fertilizerSpreaders.all.queryKey,
     queryFn: () => api.fertilizerSpreaders.getFertilizerSpreaders(),
     enabled,
+    initialData: initialData,
   });
   return { fertilizerSpreaders: data, ...rest };
 }
