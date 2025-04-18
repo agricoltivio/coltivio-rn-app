@@ -6,6 +6,8 @@ import { Control, FieldErrors } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
+import { FertilizerSpreader } from "@/api/fertilizerSpreaders.api";
+import { useFertilizerSpreadersQuery } from "../equipment/fertilizerSpreader.hooks";
 
 export type FertilizerFormValues = FertilizerCreateInput;
 
@@ -13,12 +15,14 @@ type FertilizerFormProps = {
   control: Control<FertilizerFormValues>;
   errors: FieldErrors<FertilizerFormValues>;
   restrictedMode?: boolean;
+  spreaders: FertilizerSpreader[];
 };
 
 export function FertilizerForm({
   control,
   errors,
   restrictedMode = false,
+  spreaders,
 }: FertilizerFormProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -77,6 +81,18 @@ export function FertilizerForm({
             },
           }}
           error={errors.type?.message}
+        />
+        <RHSelect
+          name="defaultSpreaderId"
+          control={control}
+          label={t("forms.labels.default_machine")}
+          data={[
+            { label: t("forms.labels.none"), value: "none" },
+            ...spreaders!.map((config) => ({
+              label: config.name,
+              value: config.id,
+            })),
+          ]}
         />
       </View>
     </>

@@ -10,6 +10,7 @@ import { useCreateFertilizerMutation } from "./fertilizers.hooks";
 import { useTranslation } from "react-i18next";
 import { Card } from "@/components/card/Card";
 import { useTheme } from "styled-components/native";
+import { useFertilizerSpreadersQuery } from "../equipment/fertilizerSpreader.hooks";
 
 export function CreateFertilizerScreen({
   navigation,
@@ -19,6 +20,7 @@ export function CreateFertilizerScreen({
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors, isDirty },
   } = useForm<FertilizerFormValues>();
 
@@ -26,8 +28,21 @@ export function CreateFertilizerScreen({
     navigation.goBack()
   );
 
-  function onSubmitFertilizer(data: FertilizerFormValues) {
-    createFertilizerMutation.mutate(data);
+  const fertilizerUnit = watch("unit");
+  const { fertilizerSpreaders, isFetched } = useFertilizerSpreadersQuery([]);
+  const availableSpreaders = fertilizerSpreaders!.filter(
+    (spreader) => spreader.unit === fertilizerUnit
+  );
+
+  function onSubmitFertilizer({
+    defaultSpreaderId,
+    ...data
+  }: FertilizerFormValues) {
+    createFertilizerMutation.mutate({
+      ...data,
+      defaultSpreaderId:
+        defaultSpreaderId !== "none" ? defaultSpreaderId : null,
+    });
   }
 
   return (
@@ -47,6 +62,7 @@ export function CreateFertilizerScreen({
       <ScrollView
         showHeaderOnScroll
         headerTitleOnScroll={t("fertilizers.new_fertilizer")}
+        keyboardAware
       >
         <H2>{t("fertilizers.new_fertilizer")}</H2>
         <Card
@@ -59,7 +75,11 @@ export function CreateFertilizerScreen({
             {t("fertilizers.warning_unit_not_editable")}
           </H3>
         </Card>
-        <FertilizerForm control={control} errors={errors} />
+        <FertilizerForm
+          control={control}
+          errors={errors}
+          spreaders={availableSpreaders}
+        />
       </ScrollView>
     </ContentView>
   );
