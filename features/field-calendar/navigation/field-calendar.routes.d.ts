@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackScreenProps } from "@react-navigation/native-stack";
 
 export type FieldCalendarStackParamList = {
   FieldCalendar: undefined;
@@ -6,17 +6,10 @@ export type FieldCalendarStackParamList = {
   FieldCalendarExportSuccess: undefined;
 };
 
-export type FieldCalendarScreenProps = NativeStackScreenProps<
-  FieldCalendarStackParamList,
-  "FieldCalendar"
->;
+export type FieldCalendarScreenProps = StackScreenProps<"FieldCalendar">;
 
-export type FieldCalendarExportScreenProps = NativeStackScreenProps<
-  FieldCalendarStackParamList,
-  "FieldCalendarExport"
->;
+export type FieldCalendarExportScreenProps =
+  StackScreenProps<"FieldCalendarExport">;
 
-export type FieldCalendarExportSuccessScreenProps = NativeStackScreenProps<
-  FieldCalendarStackParamList,
-  "FieldCalendarExportSuccess"
->;
+export type FieldCalendarExportSuccessScreenProps =
+  StackScreenProps<"FieldCalendarExportSuccess">;

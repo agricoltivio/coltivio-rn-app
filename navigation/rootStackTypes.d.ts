@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { CropProtectionUnit } from "@/api/cropProtectionProducts.api";
 import { FertilizerUnit } from "@/api/fertilizers.api";
 import { AgriColtivioStackParamList } from "@/features/agri-coltivio/navigation/agri-coltivio-routes";
@@ -19,6 +18,7 @@ import { OnboardingStackParamList } from "@/features/onboarding/navigation/onboa
 import { PlotsStackParamList } from "@/features/plots/navigation/plots-routes";
 import { TillagesStackParamList } from "@/features/tillages/navigation/tillages-routes";
 import { UserStackParamList } from "@/features/user/navigation/user-routes";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 export type RootStackParamList = AuthStackParamList &
   ErrorStackParamList &
@@ -44,3 +44,8 @@ declare global {
     interface RootParamList extends RootStackParamList {}
   }
 }
+
+export type StackScreenProps<T> = NativeStackScreenProps<
+  ReactNavigation.RootParamList,
+  T
+>;

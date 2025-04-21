@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type FarmStackParamList = {
   Farm: undefined;
@@ -8,26 +8,12 @@ export type FarmStackParamList = {
   DeleteFarm: undefined;
 };
 
-export type FarmScreenProps = NativeStackScreenProps<
-  FarmStackParamList,
-  "Farm"
->;
-export type EditFarmNameScreenProps = NativeStackScreenProps<
-  FarmStackParamList,
-  "EditFarmName"
->;
+export type FarmScreenProps = StackScreenProps<"Farm">;
+export type EditFarmNameScreenProps = StackScreenProps<"EditFarmName">;
 
-export type EditFarmLocationScreenProps = NativeStackScreenProps<
-  FarmStackParamList,
-  "EditFarmLocation"
->;
+export type EditFarmLocationScreenProps = StackScreenProps<"EditFarmLocation">;
 
-export type SearchFarmLocationModalProps = NativeStackScreenProps<
-  FarmStackParamList,
-  "SearchFarmLocation"
->;
+export type SearchFarmLocationModalProps =
+  StackScreenProps<"SearchFarmLocation">;
 
-export type DeleteFarmScreenProps = NativeStackScreenProps<
-  FarmStackParamList,
-  "DeleteFarm"
->;
+export type DeleteFarmScreenProps = StackScreenProps<"DeleteFarm">;

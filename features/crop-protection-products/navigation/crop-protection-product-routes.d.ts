@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type CropProtectionProductsStackParamList = {
   CropProtectionProducts: undefined;
@@ -6,17 +6,11 @@ export type CropProtectionProductsStackParamList = {
   EditCropProtectionProduct: { cropProtectionProductId: string };
 };
 
-export type CropProtectionProductsScreenProps = NativeStackScreenProps<
-  CropProtectionProductsStackParamList,
-  "CropProtectionProducts"
->;
+export type CropProtectionProductsScreenProps =
+  StackScreenProps<"CropProtectionProducts">;
 
-export type CreateCropProtectionProductScreenProps = NativeStackScreenProps<
-  CropProtectionProductsStackParamList,
-  "CreateCropProtectionProduct"
->;
+export type CreateCropProtectionProductScreenProps =
+  StackScreenProps<"CreateCropProtectionProduct">;
 
-export type EditCropProtectionProductScreenProps = NativeStackScreenProps<
-  CropProtectionProductsStackParamList,
-  "EditCropProtectionProduct"
->;
+export type EditCropProtectionProductScreenProps =
+  StackScreenProps<"EditCropProtectionProduct">;

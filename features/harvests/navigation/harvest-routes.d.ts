@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type HarvestStackParamList = {
   Harvests: undefined;
@@ -13,53 +13,27 @@ export type HarvestStackParamList = {
   DivideHarvestOnPlots: undefined;
   HarvestSummary: undefined;
 };
-export type HarvestsScreenProps = NativeStackScreenProps<
-  HarvestStackParamList,
-  "Harvests"
->;
+export type HarvestsScreenProps = StackScreenProps<"Harvests">;
 
-export type HarvestsOfYearScreenProps = NativeStackScreenProps<
-  HarvestStackParamList,
-  "HarvestsOfYear"
->;
+export type HarvestsOfYearScreenProps = StackScreenProps<"HarvestsOfYear">;
 
-export type HarvestOfYearListScreenProps = NativeStackScreenProps<
-  HarvestStackParamList,
-  "HarvestsOfYearList"
->;
-export type HarvestDetailsScreenProps = NativeStackScreenProps<
-  HarvestStackParamList,
-  "HarvestDetails"
->;
+export type HarvestOfYearListScreenProps =
+  StackScreenProps<"HarvestsOfYearList">;
+export type HarvestDetailsScreenProps = StackScreenProps<"HarvestDetails">;
 
-export type SelectHarvestDateScreenProps = NativeStackScreenProps<
-  HarvestStackParamList,
-  "SelectHarvestDate"
->;
+export type SelectHarvestDateScreenProps =
+  StackScreenProps<"SelectHarvestDate">;
 
-export type SelectHarvestPlantScreenProps = NativeStackScreenProps<
-  HarvestStackParamList,
-  "SelectHarvestCrop"
->;
-export type SelectHarvestingMachineryScreenProps = NativeStackScreenProps<
-  HarvestStackParamList,
-  "SelectHarvestingMachinery"
->;
+export type SelectHarvestPlantScreenProps =
+  StackScreenProps<"SelectHarvestCrop">;
+export type SelectHarvestingMachineryScreenProps =
+  StackScreenProps<"SelectHarvestingMachinery">;
 
-export type SelectHarvestQuantityScreenprops = NativeStackScreenProps<
-  HarvestStackParamList,
-  "SelectHarvestQuantity"
->;
+export type SelectHarvestQuantityScreenprops =
+  StackScreenProps<"SelectHarvestQuantity">;
 
-export type SelectHarvestPlotsScreenProps = NativeStackScreenProps<
-  HarvestStackParamList,
-  "SelectHarvstPlots"
->;
-export type DivideHarvestOnPlotsScreenProps = NativeStackScreenProps<
-  HarvestStackParamList,
-  "DivideHarvestOnPlots"
->;
-export type HarvestSummaryScreenProps = NativeStackScreenProps<
-  HarvestStackParamList,
-  "HarvestSummary"
->;
+export type SelectHarvestPlotsScreenProps =
+  StackScreenProps<"SelectHarvstPlots">;
+export type DivideHarvestOnPlotsScreenProps =
+  StackScreenProps<"DivideHarvestOnPlots">;
+export type HarvestSummaryScreenProps = StackScreenProps<"HarvestSummary">;

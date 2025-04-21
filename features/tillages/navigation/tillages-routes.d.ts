@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type TillagesStackParamList = {
   Tillages: undefined;
@@ -10,34 +10,18 @@ export type TillagesStackParamList = {
   AddTillageSummary: undefined;
 };
 
-export type TillagesScreenProps = NativeStackScreenProps<
-  TillagesStackParamList,
-  "Tillages"
->;
+export type TillagesScreenProps = StackScreenProps<"Tillages">;
 
-export type TillagesOfYearListScreenProps = NativeStackScreenProps<
-  TillagesStackParamList,
-  "TillagesOfYearList"
->;
+export type TillagesOfYearListScreenProps =
+  StackScreenProps<"TillagesOfYearList">;
 
-export type TillageDetailsScreenProps = NativeStackScreenProps<
-  TillagesStackParamList,
-  "TillageDetails"
->;
+export type TillageDetailsScreenProps = StackScreenProps<"TillageDetails">;
 
-export type AddTillageSelectDateScreenProps = NativeStackScreenProps<
-  TillagesStackParamList,
-  "AddTillageSelectDate"
->;
-export type AddTillageSelectEquipmentScreenProps = NativeStackScreenProps<
-  TillagesStackParamList,
-  "AddTillageSelectEquipment"
->;
-export type AddTillageSelectPlotsScreenProps = NativeStackScreenProps<
-  TillagesStackParamList,
-  "AddTillageSelectPlots"
->;
-export type AddTillageSummaryScreenProps = NativeStackScreenProps<
-  TillagesStackParamList,
-  "AddTillageSummary"
->;
+export type AddTillageSelectDateScreenProps =
+  StackScreenProps<"AddTillageSelectDate">;
+export type AddTillageSelectEquipmentScreenProps =
+  StackScreenProps<"AddTillageSelectEquipment">;
+export type AddTillageSelectPlotsScreenProps =
+  StackScreenProps<"AddTillageSelectPlots">;
+export type AddTillageSummaryScreenProps =
+  StackScreenProps<"AddTillageSummary">;

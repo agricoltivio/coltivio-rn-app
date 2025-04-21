@@ -1,5 +1,4 @@
-import { PlotsStackParamList } from "@/navigation/PlotsStackTypes";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type PlotsStackParamList = {
   PlotsMap: undefined;
@@ -72,98 +71,46 @@ export type PlotsStackParamList = {
   };
 };
 
-export type PlotsMapScreenProps = NativeStackScreenProps<
-  PlotsStackParamList,
-  "PlotsMap"
->;
+export type PlotsMapScreenProps = StackScreenProps<"PlotsMap">;
 
-export type AddPlotMapScreenProps = NativeStackScreenProps<
-  PlotsStackParamList,
-  "AddPlotMap"
->;
+export type AddPlotMapScreenProps = StackScreenProps<"AddPlotMap">;
 
-export type AddPlotSummaryScreenProps = NativeStackScreenProps<
-  PlotsStackParamList,
-  "AddPlotSummary"
->;
+export type AddPlotSummaryScreenProps = StackScreenProps<"AddPlotSummary">;
 
-export type EditPlotScreenProps = NativeStackScreenProps<
-  PlotsStackParamList,
-  "EditPlot"
->;
+export type EditPlotScreenProps = StackScreenProps<"EditPlot">;
 
-export type EditPlotMapScreenProps = NativeStackScreenProps<
-  PlotsStackParamList,
-  "EditPlotMap"
->;
+export type EditPlotMapScreenProps = StackScreenProps<"EditPlotMap">;
 
-export type DeletePlotScreenProps = NativeStackScreenProps<
-  PlotsStackParamList,
-  "DeletePlot"
->;
+export type DeletePlotScreenProps = StackScreenProps<"DeletePlot">;
 
-export type PlotsScreenProps = NativeStackScreenProps<
-  PlotsStackParamList,
-  "Plots"
->;
+export type PlotsScreenProps = StackScreenProps<"Plots">;
 
-export type PlotDetailsScreenProps = NativeStackScreenProps<
-  PlotsStackParamList,
-  "PlotDetails"
->;
-export type PlotFertilizerApplicationsScreenProps = NativeStackScreenProps<
-  PlotsStackParamList,
-  "PlotFertilizerApplications"
->;
+export type PlotDetailsScreenProps = StackScreenProps<"PlotDetails">;
+export type PlotFertilizerApplicationsScreenProps =
+  StackScreenProps<"PlotFertilizerApplications">;
 
 export type PlotFertilizerApplicationsOfYearScreenProps =
-  NativeStackScreenProps<
-    PlotsStackParamList,
-    "PlotFertilizerApplicationsOfYear"
-  >;
+  StackScreenProps<"PlotFertilizerApplicationsOfYear">;
 
 export type PlotFertilizerApplicationsOfYearListScreenProps =
-  NativeStackScreenProps<
-    PlotsStackParamList,
-    "PlotFertilizerApplicationsOfYearList"
-  >;
+  StackScreenProps<"PlotFertilizerApplicationsOfYearList">;
 
-export type PlotCropProtectionApplicationsScreenProps = NativeStackScreenProps<
-  PlotsStackParamList,
-  "PlotCropProtectionApplications"
->;
+export type PlotCropProtectionApplicationsScreenProps =
+  StackScreenProps<"PlotCropProtectionApplications">;
 
 export type PlotCropProtectionApplicationsOfYearScreenProps =
-  NativeStackScreenProps<
-    PlotsStackParamList,
-    "PlotCropProtectionApplicationsOfYear"
-  >;
+  StackScreenProps<"PlotCropProtectionApplicationsOfYear">;
 
 export type PlotCropProtectionApplicationsOfYearListScreenProps =
-  NativeStackScreenProps<
-    PlotsStackParamList,
-    "PlotCropProtectionApplicationsOfYearList"
-  >;
+  StackScreenProps<"PlotCropProtectionApplicationsOfYearList">;
 
-export type PlotHarvestsScreenProps = NativeStackScreenProps<
-  PlotsStackParamList,
-  "PlotHarvests"
->;
-export type PlotHarvestsOfYearListScreenProps = NativeStackScreenProps<
-  PlotsStackParamList,
-  "PlotHarvestsOfYearList"
->;
+export type PlotHarvestsScreenProps = StackScreenProps<"PlotHarvests">;
+export type PlotHarvestsOfYearListScreenProps =
+  StackScreenProps<"PlotHarvestsOfYearList">;
 
-export type PlotHarvestsOfYearScreenProps = NativeStackScreenProps<
-  PlotsStackParamList,
-  "PlotHarvestsOfYear"
->;
+export type PlotHarvestsOfYearScreenProps =
+  StackScreenProps<"PlotHarvestsOfYear">;
 
-export type PlotTillagesScreenProps = NativeStackScreenProps<
-  PlotsStackParamList,
-  "PlotTillages"
->;
-export type PlotTillagesOfYearListScreenProps = NativeStackScreenProps<
-  PlotsStackParamList,
-  "PlotTillagesOfYearList"
->;
+export type PlotTillagesScreenProps = StackScreenProps<"PlotTillages">;
+export type PlotTillagesOfYearListScreenProps =
+  StackScreenProps<"PlotTillagesOfYearList">;

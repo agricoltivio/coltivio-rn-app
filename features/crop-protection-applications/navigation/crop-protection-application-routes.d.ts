@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type CropProtectionApplicationStackParamList = {
   AddCropProtectionApplicationSelectDate: undefined;
@@ -7,6 +7,7 @@ export type CropProtectionApplicationStackParamList = {
   AddCropProtectionApplicationSelectQuantity: undefined;
   AddCropProtectionApplicationSelectPlots: undefined;
   AddCropProtectionApplicationDivideOnPlots: undefined;
+  AddCropProtectionApplicationAdditionalNotes: undefined;
   AddCropProtectionApplicationSummary: undefined;
 
   CropProtectionApplications: undefined;
@@ -15,69 +16,34 @@ export type CropProtectionApplicationStackParamList = {
   CropProtectionApplicationDetails: { cropProtectionApplicationId: string };
 };
 
-export type CropProtectionApplicationsScreenProps = NativeStackScreenProps<
-  CropProtectionApplicationStackParamList,
-  "CropProtectionApplications"
->;
+export type CropProtectionApplicationsScreenProps =
+  StackScreenProps<"CropProtectionApplications">;
 
 export type CropProtectionApplicationDetailsScreenProps =
-  NativeStackScreenProps<
-    CropProtectionApplicationStackParamList,
-    "CropProtectionApplicationDetails"
-  >;
+  StackScreenProps<"CropProtectionApplicationDetails">;
 
 export type AddCropProtectionApplicationSelectDateScreenProps =
-  NativeStackScreenProps<
-    CropProtectionApplicationStackParamList,
-    "AddCropProtectionApplicationSelectDate"
-  >;
+  StackScreenProps<"AddCropProtectionApplicationSelectDate">;
 
 export type AddCropProtectionApplicationSelectProductScreenProps =
-  NativeStackScreenProps<
-    CropProtectionApplicationStackParamList,
-    "AddCropProtectionApplicationSelectProduct"
-  >;
+  StackScreenProps<"AddCropProtectionApplicationSelectProduct">;
 
 export type AddCropProtectionApplicationSelectMachineConfigScreenProps =
-  NativeStackScreenProps<
-    CropProtectionApplicationStackParamList,
-    "AddCropProtectionApplicationSelectMachineConfig"
-  >;
+  StackScreenProps<"AddCropProtectionApplicationSelectMachineConfig">;
 
 export type AddCropProtectionApplicationSelectQuantityScreenProps =
-  NativeStackScreenProps<
-    CropProtectionApplicationStackParamList,
-    "AddCropProtectionApplicationSelectQuantity"
-  >;
+  StackScreenProps<"AddCropProtectionApplicationSelectQuantity">;
 export type AddCropProtectionApplicationSelectPlotsScreenProps =
-  NativeStackScreenProps<
-    CropProtectionApplicationStackParamList,
-    "AddCropProtectionApplicationSelectPlots"
-  >;
+  StackScreenProps<"AddCropProtectionApplicationSelectPlots">;
 export type AddCropProtectionApplicationDivideOnPlotsScreenProps =
-  NativeStackScreenProps<
-    CropProtectionApplicationStackParamList,
-    "AddCropProtectionApplicationDivideOnPlots"
-  >;
+  StackScreenProps<"AddCropProtectionApplicationDivideOnPlots">;
 export type AddCropProtectionApplicationAdditionalNotesScreenProps =
-  NativeStackScreenProps<
-    CropProtectionApplicationStackParamList,
-    "AddCropProtectionApplicationAdditionalNotes"
-  >;
+  StackScreenProps<"AddCropProtectionApplicationAdditionalNotes">;
 export type AddCropProtectionApplicationSummaryScreenProps =
-  NativeStackScreenProps<
-    CropProtectionApplicationStackParamList,
-    "AddCropProtectionApplicationSummary"
-  >;
+  StackScreenProps<"AddCropProtectionApplicationSummary">;
 
 export type CropProtectionApplicationsOfYearScreenProps =
-  NativeStackScreenProps<
-    CropProtectionApplicationStackParamList,
-    "CropProtectionApplicationsOfYear"
-  >;
+  StackScreenProps<"CropProtectionApplicationsOfYear">;
 
 export type CropProtectionApplicationsOfYearListScreenProps =
-  NativeStackScreenProps<
-    CropProtectionApplicationStackParamList,
-    "CropProtectionApplicationsOfYearList"
-  >;
+  StackScreenProps<"CropProtectionApplicationsOfYearList">;

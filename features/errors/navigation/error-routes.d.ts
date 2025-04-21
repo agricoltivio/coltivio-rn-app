@@ -1,10 +1,7 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type ErrorStackParamList = {
   UnexpectedError: undefined;
 };
 
-export type UnexpectedErrorScreenProps = NativeStackScreenProps<
-  ErrorStackParamList,
-  "UnexpectedError"
->;
+export type UnexpectedErrorScreenProps = StackScreenProps<"UnexpectedError">;

@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type UserStackParamList = {
   UserAccount: undefined;
@@ -7,20 +7,8 @@ export type UserStackParamList = {
   ChangePassword: undefined;
 };
 
-export type UserAccountScreenProps = NativeStackScreenProps<
-  UserStackParamList,
-  "UserAccount"
->;
-export type ChangeUserNameScreenProps = NativeStackScreenProps<
-  UserStackParamList,
-  "ChangeUserName"
->;
+export type UserAccountScreenProps = StackScreenProps<"UserAccount">;
+export type ChangeUserNameScreenProps = StackScreenProps<"ChangeUserName">;
 
-export type ChangeEmailScreenProps = NativeStackScreenProps<
-  UserStackParamList,
-  "ChangeEmail"
->;
-export type ChangePasswordScreenProps = NativeStackScreenProps<
-  UserStackParamList,
-  "ChangePassword"
->;
+export type ChangeEmailScreenProps = StackScreenProps<"ChangeEmail">;
+export type ChangePasswordScreenProps = StackScreenProps<"ChangePassword">;

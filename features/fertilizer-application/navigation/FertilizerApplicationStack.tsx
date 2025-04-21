@@ -10,6 +10,7 @@ import { FertilizerApplicationDetailsScreen } from "../FertilizerApplicationDeta
 import { FertilizerApplicationsOfYearListScreen } from "../FertilizerApplicationsListScreen";
 import { FertilizerApplicationsOfYearScreen } from "../FertilizerApplicationsOfYearScreen";
 import { FertilizerApplicationsScreen } from "../FertilizerApplicationsScreen";
+import { AddFertilizerApplicationAdditionalNotesScreen } from "../add/AddFertilizerApplicationAdditionalNotesScreen";
 
 export function renderFertilizerApplicationStack() {
   return [
@@ -74,6 +75,12 @@ export function renderFertilizerApplicationStack() {
       name="AddFertilizerApplicationDivideOnPlots"
       options={{ title: "" }}
       component={AddFertilizerApplicationDivideOnPlotsScreen}
+    />,
+    <Stack.Screen
+      key="add-fertilizer-application-additional-notes"
+      name="AddFertilizerApplicationAdditionalNotes"
+      options={{ title: "" }}
+      component={AddFertilizerApplicationAdditionalNotesScreen}
     />,
     <Stack.Screen
       key="add-fertilizer-application-summary"

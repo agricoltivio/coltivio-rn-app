@@ -10,6 +10,7 @@ import { CropProtectionApplicationDetailsScreen } from "../CropProtectionApplica
 import { CropProtectionApplicationsOfYearListScreen } from "../CropProtectionApplicationsListScreen";
 import { CropProtectionApplicationsOfYearScreen } from "../CropProtectionApplicationsOfYearScreen";
 import { CropProtectionApplicationsScreen } from "../CropProtectionApplicationsScreen";
+import { AddCropProtectionApplicationAdditionalNotesScreen } from "../add/AddCropProtectionApplicationAdditionalNotesScreen";
 
 export function renderCropProtectionApplicationStack() {
   return [
@@ -74,6 +75,12 @@ export function renderCropProtectionApplicationStack() {
       name="AddCropProtectionApplicationDivideOnPlots"
       options={{ title: "" }}
       component={AddCropProtectionApplicationDivideOnPlotsScreen}
+    />,
+    <Stack.Screen
+      key="add-crop-protection-application-additional-notes"
+      name="AddCropProtectionApplicationAdditionalNotes"
+      options={{ title: "" }}
+      component={AddCropProtectionApplicationAdditionalNotesScreen}
     />,
     <Stack.Screen
       key="add-crop-protection-application-summary"

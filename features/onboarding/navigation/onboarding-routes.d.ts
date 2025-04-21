@@ -1,6 +1,6 @@
 import { CropProtectionUnit } from "@/api/cropProtectionProducts.api";
 import { FertilizerUnit } from "@/api/fertilizers.api";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type OnboardingStackParamList = {
   SelectFarmName: undefined;
@@ -16,56 +16,28 @@ export type OnboardingStackParamList = {
   FarmSummary: undefined;
 };
 
-export type SelectFarmNameScreenProps = NativeStackScreenProps<
-  OnboardingStackParamList,
-  "SelectFarmName"
->;
+export type SelectFarmNameScreenProps = StackScreenProps<"SelectFarmName">;
 
-export type SelectFarmLocationScreenProps = NativeStackScreenProps<
-  OnboardingStackParamList,
-  "SelectFarmLocation"
->;
+export type SelectFarmLocationScreenProps =
+  StackScreenProps<"SelectFarmLocation">;
 
-export type SelectFarmLocationSearchModalProps = NativeStackScreenProps<
-  OnboardingStackParamList,
-  "SelectFarmLocationSearch"
->;
-export type SelectFederalFarmIdScreenProps = NativeStackScreenProps<
-  OnboardingStackParamList,
-  "SelectFederalFarmId"
->;
+export type SelectFarmLocationSearchModalProps =
+  StackScreenProps<"SelectFarmLocationSearch">;
+export type SelectFederalFarmIdScreenProps =
+  StackScreenProps<"SelectFederalFarmId">;
 
-export type SelectFederalFarmIdMapScreenProps = NativeStackScreenProps<
-  OnboardingStackParamList,
-  "SelectFederalFarmIdMap"
->;
+export type SelectFederalFarmIdMapScreenProps =
+  StackScreenProps<"SelectFederalFarmIdMap">;
 
-export type SelectParcelsScreenProps = NativeStackScreenProps<
-  OnboardingStackParamList,
-  "SelectParcels"
->;
+export type SelectParcelsScreenProps = StackScreenProps<"SelectParcels">;
 
-export type SelectParcelsMapScreenProps = NativeStackScreenProps<
-  OnboardingStackParamList,
-  "SelectParcelsMap"
->;
+export type SelectParcelsMapScreenProps = StackScreenProps<"SelectParcelsMap">;
 
-export type SelectPlotsScreenProps = NativeStackScreenProps<
-  OnboardingStackParamList,
-  "SelectPlots"
->;
+export type SelectPlotsScreenProps = StackScreenProps<"SelectPlots">;
 
-export type SelectCropsScreenProps = NativeStackScreenProps<
-  OnboardingStackParamList,
-  "SelectCrops"
->;
+export type SelectCropsScreenProps = StackScreenProps<"SelectCrops">;
 
-export type SelectFertilizersScreenProps = NativeStackScreenProps<
-  OnboardingStackParamList,
-  "SelectFertilizers"
->;
+export type SelectFertilizersScreenProps =
+  StackScreenProps<"SelectFertilizers">;
 
-export type FarmSummaryScreenProps = NativeStackScreenProps<
-  OnboardingStackParamList,
-  "FarmSummary"
->;
+export type FarmSummaryScreenProps = StackScreenProps<"FarmSummary">;

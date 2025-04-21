@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type FertilizerStackParamList = {
   Fertilizers: undefined;
@@ -6,17 +6,8 @@ export type FertilizerStackParamList = {
   EditFertilizer: { fertilizerId: string };
 };
 
-export type FertilizersScreenProps = NativeStackScreenProps<
-  FertilizerStackParamList,
-  "Fertilizers"
->;
+export type FertilizersScreenProps = StackScreenProps<"Fertilizers">;
 
-export type CreateFertilizerScreenProps = NativeStackScreenProps<
-  FertilizerStackParamList,
-  "CreateFertilizer"
->;
+export type CreateFertilizerScreenProps = StackScreenProps<"CreateFertilizer">;
 
-export type EditFertilizerScreenProps = NativeStackScreenProps<
-  FertilizerStackParamList,
-  "EditFertilizer"
->;
+export type EditFertilizerScreenProps = StackScreenProps<"EditFertilizer">;

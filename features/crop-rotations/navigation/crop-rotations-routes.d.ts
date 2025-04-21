@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type CropRotationsStackParamList = {
   CropRotations: undefined;
@@ -17,43 +17,24 @@ export type CropRotationsStackParamList = {
   AddCropRotationSummary: undefined;
 };
 
-export type CropRotationsScreenProps = NativeStackScreenProps<
-  CropRotationsStackParamList,
-  "CropRotations"
->;
-export type CropRotationsOfYearListScreenProps = NativeStackScreenProps<
-  CropRotationsStackParamList,
-  "CropRotationsOfYearList"
->;
+export type CropRotationsScreenProps = StackScreenProps<"CropRotations">;
+export type CropRotationsOfYearListScreenProps =
+  StackScreenProps<"CropRotationsOfYearList">;
 
-export type PlotCropRotationsScreenProps = NativeStackScreenProps<
-  CropRotationsStackParamList,
-  "PlotCropRotations"
->;
+export type PlotCropRotationsScreenProps =
+  StackScreenProps<"PlotCropRotations">;
 
-export type AddCropRotationScreenProps = NativeStackScreenProps<
-  CropRotationsStackParamList,
-  "AddPlotCropRotation"
->;
+export type AddCropRotationScreenProps =
+  StackScreenProps<"AddPlotCropRotation">;
 
-export type EditCropRotationScreenProps = NativeStackScreenProps<
-  CropRotationsStackParamList,
-  "EditPlotCropRotation"
->;
+export type EditCropRotationScreenProps =
+  StackScreenProps<"EditPlotCropRotation">;
 
-export type AddCropRotationSelectStartDateScreenProps = NativeStackScreenProps<
-  CropRotationsStackParamList,
-  "AddCropRotationSelectStartDate"
->;
-export type AddCropRotationSelectCropScreenProps = NativeStackScreenProps<
-  CropRotationsStackParamList,
-  "AddCropRotationSelectCrop"
->;
-export type AddCropRotationSelectPlotsScreenProps = NativeStackScreenProps<
-  CropRotationsStackParamList,
-  "AddCropRotationSelectPlots"
->;
-export type AddCropRotationSummaryScreenProps = NativeStackScreenProps<
-  CropRotationsStackParamList,
-  "AddCropRotationSummary"
->;
+export type AddCropRotationSelectStartDateScreenProps =
+  StackScreenProps<"AddCropRotationSelectStartDate">;
+export type AddCropRotationSelectCropScreenProps =
+  StackScreenProps<"AddCropRotationSelectCrop">;
+export type AddCropRotationSelectPlotsScreenProps =
+  StackScreenProps<"AddCropRotationSelectPlots">;
+export type AddCropRotationSummaryScreenProps =
+  StackScreenProps<"AddCropRotationSummary">;

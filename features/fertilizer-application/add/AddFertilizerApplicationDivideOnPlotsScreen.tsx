@@ -124,7 +124,7 @@ export function AddFertilizerApplicationDivideOnPlotsScreen({
         removePlot(fertilizerApplicationArea.plotId);
       }
     }
-    navigation.navigate("AddFertilizerApplicationSummary");
+    navigation.navigate("AddFertilizerApplicationAdditionalNotes");
   }
 
   return (

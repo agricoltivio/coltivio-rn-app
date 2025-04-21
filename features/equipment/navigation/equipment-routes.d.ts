@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type EquipmentStackParamList = {
   MachineConfigs: undefined;
@@ -14,52 +14,31 @@ export type EquipmentStackParamList = {
   CreateTillageEquipment: undefined;
   EditTillageEquipment: { tillageEquipmentId: string };
 };
-export type MachineConfigsScreenProps = NativeStackScreenProps<
-  EquipmentStackParamList,
-  "MachineConfigs"
->;
+export type MachineConfigsScreenProps = StackScreenProps<"MachineConfigs">;
 
-export type CreateFarmEquipmentScreenProps = NativeStackScreenProps<
-  EquipmentStackParamList,
-  "CreateFarmEquipment"
->;
+export type CreateFarmEquipmentScreenProps =
+  StackScreenProps<"CreateFarmEquipment">;
 
-export type CreateHarvestingMachineryScreenProps = NativeStackScreenProps<
-  EquipmentStackParamList,
-  "CreateHarvestingMachinery"
->;
+export type CreateHarvestingMachineryScreenProps =
+  StackScreenProps<"CreateHarvestingMachinery">;
 
-export type EditHarvestingMachineryScreenProps = NativeStackScreenProps<
-  EquipmentStackParamList,
-  "EditHarvestingMachinery"
->;
+export type EditHarvestingMachineryScreenProps =
+  StackScreenProps<"EditHarvestingMachinery">;
 
-export type CreateFertilizerSpreaderScreenProps = NativeStackScreenProps<
-  EquipmentStackParamList,
-  "CreateFertilizerSpreader"
->;
+export type CreateFertilizerSpreaderScreenProps =
+  StackScreenProps<"CreateFertilizerSpreader">;
 
-export type EditFertilizerSpreaderScreenProps = NativeStackScreenProps<
-  EquipmentStackParamList,
-  "EditFertilizerSpreader"
->;
+export type EditFertilizerSpreaderScreenProps =
+  StackScreenProps<"EditFertilizerSpreader">;
 
-export type CreateCropProtectionEquipmentScreenProps = NativeStackScreenProps<
-  EquipmentStackParamList,
-  "CreateCropProtectionEquipment"
->;
+export type CreateCropProtectionEquipmentScreenProps =
+  StackScreenProps<"CreateCropProtectionEquipment">;
 
-export type EditCropProtectionEquipmentScreenProps = NativeStackScreenProps<
-  EquipmentStackParamList,
-  "EditCropProtectionEquipment"
->;
+export type EditCropProtectionEquipmentScreenProps =
+  StackScreenProps<"EditCropProtectionEquipment">;
 
-export type CreateTillageEquipmentScreenProps = NativeStackScreenProps<
-  EquipmentStackParamList,
-  "CreateTillageEquipment"
->;
+export type CreateTillageEquipmentScreenProps =
+  StackScreenProps<"CreateTillageEquipment">;
 
-export type EditTillageEquipmentScreenProps = NativeStackScreenProps<
-  EquipmentStackParamList,
-  "EditTillageEquipment"
->;
+export type EditTillageEquipmentScreenProps =
+  StackScreenProps<"EditTillageEquipment">;

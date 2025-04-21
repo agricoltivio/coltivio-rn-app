@@ -124,7 +124,7 @@ export function AddCropProtectionApplicationDivideOnPlotsScreen({
         removePlot(cropProtectionApplicationArea.plotId);
       }
     }
-    navigation.navigate("AddCropProtectionApplicationSummary");
+    navigation.navigate("AddCropProtectionApplicationAdditionalNotes");
   }
 
   return (

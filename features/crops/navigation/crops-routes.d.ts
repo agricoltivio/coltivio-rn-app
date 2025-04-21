@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type CropsStackParamList = {
   Crops: undefined;
@@ -6,17 +6,8 @@ export type CropsStackParamList = {
   EditCrop: undefined;
 };
 
-export type CropsScreenProps = NativeStackScreenProps<
-  CropsStackParamList,
-  "Crops"
->;
+export type CropsScreenProps = StackScreenProps<"Crops">;
 
-export type CreateCropScreenProps = NativeStackScreenProps<
-  CropsStackParamList,
-  "CreateCrop"
->;
+export type CreateCropScreenProps = StackScreenProps<"CreateCrop">;
 
-export type EditCropScreenProps = NativeStackScreenProps<
-  CropsStackParamList,
-  "EditCrop"
->;
+export type EditCropScreenProps = StackScreenProps<"EditCrop">;
