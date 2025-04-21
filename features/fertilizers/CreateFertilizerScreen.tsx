@@ -8,15 +8,12 @@ import { useForm } from "react-hook-form";
 import { FertilizerForm, FertilizerFormValues } from "./FertilizerForm";
 import { useCreateFertilizerMutation } from "./fertilizers.hooks";
 import { useTranslation } from "react-i18next";
-import { Card } from "@/components/card/Card";
-import { useTheme } from "styled-components/native";
 import { useFertilizerSpreadersQuery } from "../equipment/fertilizerSpreader.hooks";
 
 export function CreateFertilizerScreen({
   navigation,
 }: CreateFertilizerScreenProps) {
   const { t } = useTranslation();
-  const theme = useTheme();
   const {
     control,
     handleSubmit,
@@ -24,9 +21,18 @@ export function CreateFertilizerScreen({
     formState: { errors, isDirty },
   } = useForm<FertilizerFormValues>();
 
-  const createFertilizerMutation = useCreateFertilizerMutation(() =>
-    navigation.goBack()
-  );
+  const previousRoute =
+    navigation.getState().routes[navigation.getState().index - 1];
+
+  const createFertilizerMutation = useCreateFertilizerMutation((fertilizer) => {
+    if (previousRoute.name === "AddFertilizerApplicationSelectFertilizer") {
+      navigation.popTo("AddFertilizerApplicationSelectFertilizer", {
+        fertilizerId: fertilizer.id,
+      });
+    } else {
+      navigation.goBack();
+    }
+  });
 
   const fertilizerUnit = watch("unit");
   const { fertilizerSpreaders, isFetched } = useFertilizerSpreadersQuery([]);
@@ -65,16 +71,6 @@ export function CreateFertilizerScreen({
         keyboardAware
       >
         <H2>{t("fertilizers.new_fertilizer")}</H2>
-        <Card
-          style={{
-            backgroundColor: theme.colors.secondary,
-            marginTop: theme.spacing.m,
-          }}
-        >
-          <H3 style={{ color: theme.colors.white }}>
-            {t("fertilizers.warning_unit_not_editable")}
-          </H3>
-        </Card>
         <FertilizerForm
           control={control}
           errors={errors}

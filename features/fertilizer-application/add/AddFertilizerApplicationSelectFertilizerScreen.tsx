@@ -7,7 +7,7 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { useFertilizersQuery } from "@/features/fertilizers/fertilizers.hooks";
 import { AddFertilizerApplicationSelectFertilizerScreenProps } from "@/navigation/rootStackTypes";
 import { Body, H2 } from "@/theme/Typography";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -19,10 +19,12 @@ type FormValues = {
 };
 export function AddFertilizerApplicationSelectFertilizerScreen({
   navigation,
+  route,
 }: AddFertilizerApplicationSelectFertilizerScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { fertilizers } = useFertilizersQuery();
+  const createdFertilizerId = route.params.fertilizerId;
 
   const {
     setFertilizerApplication,
@@ -34,9 +36,16 @@ export function AddFertilizerApplicationSelectFertilizerScreen({
     control,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<FormValues>({
     defaultValues: { fertilizerId: selectedFertilizer?.id },
   });
+
+  useEffect(() => {
+    if (createdFertilizerId) {
+      setValue("fertilizerId", createdFertilizerId);
+    }
+  }, [route.params.fertilizerId]);
 
   function onSubmit({ fertilizerId }: FormValues) {
     const selectedFertilizer = fertilizers?.find(
@@ -45,7 +54,7 @@ export function AddFertilizerApplicationSelectFertilizerScreen({
     setFertilizerApplication({ fertilizerId, unit: selectedFertilizer.unit });
     setSelectedFertilizer(selectedFertilizer);
 
-    navigation.navigate("AddFertilizerApplicationSelectSpreader");
+    navigation.navigate("AddFertilizerApplicationSelectSpreader", {});
   }
 
   return (
@@ -111,6 +120,12 @@ export function AddFertilizerApplicationSelectFertilizerScreen({
               }
             />
           )}
+          <Button
+            title={t("fertilizers.new_fertilizer")}
+            type="accent"
+            style={{ marginTop: theme.spacing.m }}
+            onPress={() => navigation.navigate("CreateFertilizer")}
+          />
         </View>
       </ScrollView>
     </ContentView>

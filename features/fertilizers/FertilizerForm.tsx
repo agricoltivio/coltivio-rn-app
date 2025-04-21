@@ -8,6 +8,8 @@ import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { FertilizerSpreader } from "@/api/fertilizerSpreaders.api";
 import { useFertilizerSpreadersQuery } from "../equipment/fertilizerSpreader.hooks";
+import { Card } from "@/components/card/Card";
+import { H3, H4 } from "@/theme/Typography";
 
 export type FertilizerFormValues = FertilizerCreateInput;
 
@@ -47,6 +49,31 @@ export function FertilizerForm({
           error={errors.description?.message}
         />
         <RHSelect
+          name="type"
+          control={control}
+          label="Typ"
+          data={[
+            { label: t("forms.labels.organic"), value: "organic" },
+            { label: t("forms.labels.mineralic"), value: "mineralic" },
+          ]}
+          rules={{
+            required: {
+              value: true,
+              message: t("forms.validation.required"),
+            },
+          }}
+          error={errors.type?.message}
+        />
+        <Card
+          elevated
+          style={{
+            backgroundColor: theme.colors.accent,
+            margin: theme.spacing.s,
+          }}
+        >
+          <H4>{t("fertilizers.unit_info")}</H4>
+        </Card>
+        <RHSelect
           name="unit"
           control={control}
           label={t("forms.labels.unit")}
@@ -66,22 +93,15 @@ export function FertilizerForm({
           }}
           error={errors.unit?.message}
         />
-        <RHSelect
-          name="type"
-          control={control}
-          label="Typ"
-          data={[
-            { label: t("forms.labels.organic"), value: "organic" },
-            { label: t("forms.labels.mineralic"), value: "mineralic" },
-          ]}
-          rules={{
-            required: {
-              value: true,
-              message: t("forms.validation.required"),
-            },
+        <Card
+          elevated
+          style={{
+            backgroundColor: theme.colors.accent,
+            margin: theme.spacing.s,
           }}
-          error={errors.type?.message}
-        />
+        >
+          <H4>{t("fertilizers.default_machine_info")}</H4>
+        </Card>
         <RHSelect
           name="defaultSpreaderId"
           control={control}

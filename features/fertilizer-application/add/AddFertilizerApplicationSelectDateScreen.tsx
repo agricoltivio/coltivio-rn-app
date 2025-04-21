@@ -41,7 +41,7 @@ export function AddFertilizerApplicationSelectDateScreen({
   function onSubmit({ date }: FormValues) {
     setFertilizerApplication({ date: date.toISOString().split("T")[0] });
 
-    navigation.navigate("AddFertilizerApplicationSelectFertilizer");
+    navigation.navigate("AddFertilizerApplicationSelectFertilizer", {});
   }
 
   return (

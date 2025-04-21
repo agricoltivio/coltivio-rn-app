@@ -11,6 +11,7 @@ import {
 } from "./CropProtectionProductForm";
 import { useCreateCropProtectionProductMutation } from "./cropProtectionProduct.hooks";
 import { useTranslation } from "react-i18next";
+import { useCropProtectionEquipmentsQuery } from "../equipment/cropProtectionEquipment.hooks";
 
 export function CreateCropProtectionProductScreen({
   navigation,
@@ -19,11 +20,19 @@ export function CreateCropProtectionProductScreen({
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors, isDirty },
   } = useForm<CropProtectionProductFormValues>();
 
   const createCropProtectionProductMutation =
     useCreateCropProtectionProductMutation(() => navigation.goBack());
+
+  const productUnit = watch("unit");
+  const { cropProtectionEquipments, isFetched } =
+    useCropProtectionEquipmentsQuery([]);
+  const availableEquipment = cropProtectionEquipments!.filter(
+    (equipment) => equipment.unit === productUnit
+  );
 
   function onSubmitCropProtectionProduct(
     data: CropProtectionProductFormValues
@@ -50,7 +59,11 @@ export function CreateCropProtectionProductScreen({
         headerTitleOnScroll={t("crop_protection_product.add_product")}
       >
         <H2>{t("crop_protection_product.add_product")}</H2>
-        <CropProtectionProductForm control={control} errors={errors} />
+        <CropProtectionProductForm
+          equipments={availableEquipment}
+          control={control}
+          errors={errors}
+        />
       </ScrollView>
     </ContentView>
   );

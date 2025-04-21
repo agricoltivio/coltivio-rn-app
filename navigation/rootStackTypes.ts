@@ -157,8 +157,8 @@ export type RootStackParamList = {
   EditFertilizer: { fertilizerId: string };
 
   AddFertilizerApplicationSelectDate: undefined;
-  AddFertilizerApplicationSelectFertilizer: undefined;
-  AddFertilizerApplicationSelectSpreader: undefined;
+  AddFertilizerApplicationSelectFertilizer: { fertilizerId?: string };
+  AddFertilizerApplicationSelectSpreader: { spreaderId?: string };
   AddFertilizerApplicationSelectQuantity: undefined;
   AddFertilizerApplicationSelectPlots: undefined;
   AddFertilizerApplicationDivideOnPlots: undefined;

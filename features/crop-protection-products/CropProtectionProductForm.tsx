@@ -1,6 +1,9 @@
+import { CropProtectionEquipment } from "@/api/cropProtectionEquipments.api";
 import { CropProtectionProductCreateInput } from "@/api/cropProtectionProducts.api";
+import { Card } from "@/components/card/Card";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
+import { H4 } from "@/theme/Typography";
 import React from "react";
 import { Control, FieldErrors } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -10,12 +13,14 @@ import { useTheme } from "styled-components/native";
 export type CropProtectionProductFormValues = CropProtectionProductCreateInput;
 
 type CropProtectionProductFormProps = {
+  equipments: CropProtectionEquipment[];
   control: Control<CropProtectionProductFormValues>;
   errors: FieldErrors<CropProtectionProductFormValues>;
   restrictedMode?: boolean;
 };
 
 export function CropProtectionProductForm({
+  equipments,
   control,
   errors,
   restrictedMode = false,
@@ -42,6 +47,15 @@ export function CropProtectionProductForm({
           label={t("forms.labels.description_optional")}
           error={errors.description?.message}
         />
+        <Card
+          elevated
+          style={{
+            backgroundColor: theme.colors.accent,
+            margin: theme.spacing.s,
+          }}
+        >
+          <H4>{t("crop_protection_product.unit_info")}</H4>
+        </Card>
         <RHSelect
           name="unit"
           control={control}
@@ -60,6 +74,27 @@ export function CropProtectionProductForm({
             },
           }}
           error={errors.unit?.message}
+        />
+        <Card
+          elevated
+          style={{
+            backgroundColor: theme.colors.accent,
+            margin: theme.spacing.s,
+          }}
+        >
+          <H4>{t("crop_protection_product.default_machine_info")}</H4>
+        </Card>
+        <RHSelect
+          name="defaultEquipmentId"
+          control={control}
+          label={t("forms.labels.default_machine")}
+          data={[
+            { label: t("forms.labels.none"), value: "none" },
+            ...equipments!.map((equipment) => ({
+              label: equipment.name,
+              value: equipment.id,
+            })),
+          ]}
         />
       </View>
     </>

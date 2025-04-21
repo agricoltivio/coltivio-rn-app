@@ -114,7 +114,8 @@
     "unknown": "Unbekannt",
     "parcel_number": "Parzelle: {{number}}",
     "usage": "Nutzung",
-    "federal_farm_id": "Betriebsnummer: {{number}}"
+    "federal_farm_id": "Betriebsnummer: {{number}}",
+    "new_machine": "Neue Maschine"
   },
   "errors": {
     "unexpected_retry": "Ups, etwas ist schief gelaufen. Bitte versuche es erneut.",
@@ -231,7 +232,7 @@
     "plot_name_date": "{{date}} - Schlag {{name}}",
     "common": {
       "draw_area_overlap_info": "Wenn die Fläche einen existierenden Schlag überlappt, wird dieser automatisch verkleinert.",
-      "affected_plots_warning": "Achtung: Folgende Schläge werden durch diesen Schlag verkleinert."
+      "affected_plots_warning": "Folgende Schläge werden durch diesen Schlag verkleinert."
     },
     "map": {
       "selected_plot": {
@@ -271,7 +272,7 @@
     },
     "delete": {
       "heading": "Schlag {{name}} wirklich löschen?",
-      "entries_warning": "Achtung: Alle Einträge für diesen Schlag werden unwiderruflich gelöscht.",
+      "entries_warning": "Alle Einträge für diesen Schlag werden unwiderruflich gelöscht.",
       "confirm_by_typing_name": "Um diesen Schlag zu löschen, gib den Namen ein und bestätige den Vorgang."
     },
     "usage_codes": {
@@ -438,8 +439,8 @@
     }
   },
   "farm_equipment": {
-    "farm_equipment": "Landmaschinen & Geräte",
-    "new_equipment": "Neues Gerät",
+    "farm_equipment": "Maschinen",
+    "new_equipment": "Neue Maschine",
     "device_types": {
       "harvest": "Ernte",
       "tillage": "Bodenbearbeitung",
@@ -518,8 +519,10 @@
   "fertilizers": {
     "fertilizer": "Dünger",
     "new_fertilizer": "Neuer Dünger",
-    "product_in_use_warning": "Achtung: Dieser Dünger wird verwendet und kann deshalb nur beschränkt bearbeitet und nicht gelöscht werden.",
-    "warning_unit_not_editable": "Die Einheit definiert, in welcher Einheit der Dünger ausgebracht wird."
+    "product_in_use_warning": "Dieser Dünger wird verwendet und kann deshalb nur beschränkt bearbeitet und nicht gelöscht werden.",
+    "warning_unit_not_editable": "Die Einheit definiert, in welcher Einheit der Dünger ausgebracht wird.",
+    "unit_info": "Wähle in welcher Einheit (z.B Liter) der Dünger ausgebracht wird.",
+    "default_machine_info": "Um die Erfassung zu erleichtern kann eine Maschine definiert werden, mit welcher dieser Dünger ausgebracht wird. Die Kapazität der Maschine muss der Einheit des Düngers entsprechen."
   },
   "fertilizer_application": {
     "fertilizer_application": "Düngeraustrag",
@@ -593,7 +596,7 @@
       "none": "Keine"
     },
     "no_variety": "Keine Sorte",
-    "crop_in_use_warning": "Achtung: Diese Kultur wird verwendet und kann deshalb nicht gelöscht werden."
+    "crop_in_use_warning": "Diese Kultur wird verwendet und kann deshalb nicht gelöscht werden."
   },
   "crop_protection_applications": {
     "crop_protection": "Pflanzenschutz",
@@ -609,7 +612,7 @@
     },
     "select_equipment": {
       "heading": "Welches Gerät wurde verwendet?",
-      "only_same_unit_warning": "Achtung: Du kannst nur Geräte verwenden, welche die gleiche Einheit wie das Pflanzenschutzmittel verwenden.",
+      "only_same_unit_warning": "Du kannst nur Geräte verwenden, welche die gleiche Einheit wie das Pflanzenschutzmittel verwenden.",
       "no_matching_equipment_message": "Noch kein passendes Gerät erfasst. Diese vereinfachen die Erfassung, indem du Standardwerte vordefinieren kannst."
     },
     "select_quantity": {
@@ -633,8 +636,10 @@
   },
   "crop_protection_product": {
     "add_product": "Neues Pflanzenschutzmittel",
-    "product_in_use_warning": "Achtung: Dieses Pflanzenschutzmittel wird verwendet und kann deshalb nicht gelöscht werden.",
-    "warning_unit_not_editable": "Achtung, die Einheit kann nicht bearbeitet werden! Sie sollte der Einheit entsprechen in welchem das Pflanzenschutzmittel ausgebracht wird."
+    "product_in_use_warning": "Dieses Pflanzenschutzmittel wird verwendet und kann deshalb nicht gelöscht werden.",
+    "warning_unit_not_editable": "Die Einheit kann nicht bearbeitet werden! Sie sollte der Einheit entsprechen in welchem das Pflanzenschutzmittel ausgebracht wird.",
+    "unit_info": "Wähle in welcher Einheit (z.B Liter) das Mittel ausgebracht wird.",
+    "default_machine_info": "Um die Erfassung zu erleichtern kann eine Maschine definiert werden, mit welcher dieses Mittel ausgebracht wird. Die Kapazität der Maschine muss der Einheit des Mittels entsprechen."
   },
   "crop_rotations": {
     "crop_rotation": "Fruchtfolgen",
