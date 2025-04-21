@@ -5,7 +5,7 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Headline } from "@/theme/Typography";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { PlotTillagesScreenProps } from "@/navigation/rootStackTypes";
+import { PlotTillagesScreenProps } from "./navigation/plots-routes";
 import { useTranslation } from "react-i18next";
 
 export function PlotTillagesScreen({

@@ -1,6 +1,6 @@
 import { CropCreateInput } from "@/api/crops.api";
 import { ListItem } from "@/components/list/ListItem";
-import { SelectCropsScreenProps } from "@/navigation/rootStackTypes";
+import { SelectCropsScreenProps } from "@/features/onboarding/navigation/onboarding-routes";
 import { H2, H3 } from "@/theme/Typography";
 import { Image } from "expo-image";
 import React, { useState } from "react";

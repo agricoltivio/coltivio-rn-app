@@ -1,6 +1,6 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
-import { FarmScreenProps } from "@/navigation/rootStackTypes";
+import { FarmScreenProps } from "./navigation/farm-routes";
 import { useTheme } from "styled-components/native";
 import { List } from "../../components/list/List";
 import { H2 } from "@/theme/Typography";

@@ -1,8 +1,8 @@
 import { Button } from "@/components/buttons/Button";
 import { ContentView } from "@/components/containers/ContentView";
 import { getYearRange } from "@/utils/date";
-import { useGeneratePlotsReportMutation } from "./reports.hooks";
-import { FieldCalendarExportScreenProps } from "@/navigation/rootStackTypes";
+import { useGeneratePlotsReportMutation } from "./field-calendar.hooks";
+import { FieldCalendarExportScreenProps } from "./navigation/field-calendar.routes";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { GenerateFieldCalendarReportInput } from "@/api/reports.api";

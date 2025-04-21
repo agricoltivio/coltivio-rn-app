@@ -1,7 +1,7 @@
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
-import { HarvestSummaryScreenProps } from "@/navigation/rootStackTypes";
+import { HarvestSummaryScreenProps } from "../navigation/harvest-routes";
 import { useCreateHarvestMutation } from "../harvests.hooks";
 import { HarvestSummary } from "../HarvestSummary";
 import { Harvest, useCreateHarvestStore } from "./harvest.store";

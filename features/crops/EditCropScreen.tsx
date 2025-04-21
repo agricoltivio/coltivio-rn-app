@@ -7,7 +7,7 @@ import {
   useUpdateCropMutation,
 } from "./crops.hooks";
 import { CropFormValues, CropForm } from "./CropsForm";
-import { EditCropScreenProps } from "@/navigation/rootStackTypes";
+import { EditCropScreenProps } from "./navigation/crops-routes";
 import { useForm } from "react-hook-form";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { View } from "react-native";

@@ -2,7 +2,7 @@ import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
-import { CreateTillageEquipmentScreenProps } from "@/navigation/rootStackTypes";
+import { CreateTillageEquipmentScreenProps } from "./navigation/equipment-routes";
 import { H2 } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
 import {

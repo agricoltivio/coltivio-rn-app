@@ -3,7 +3,7 @@ import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
-import { PlotsScreenProps } from "@/navigation/rootStackTypes";
+import { PlotsScreenProps } from "./navigation/plots-routes";
 import { H2 } from "@/theme/Typography";
 import Fuse from "fuse.js";
 import { useCallback, useState } from "react";

@@ -2,7 +2,7 @@ import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
-import { AgriColtivioInfoScreenProps } from "@/navigation/rootStackTypes";
+import { AgriColtivioInfoScreenProps } from "./navigation/agri-coltivio-routes";
 import { Body, H2, H3 } from "@/theme/Typography";
 import { useTranslation } from "react-i18next";
 import { Linking } from "react-native";

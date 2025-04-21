@@ -3,7 +3,7 @@ import { queryKeys } from "@/cache/query-keys";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
-import { UnexpectedErrorScreenProps } from "@/navigation/rootStackTypes";
+import { UnexpectedErrorScreenProps } from "./navigation/error-routes";
 import { H1, H3 } from "@/theme/Typography";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";

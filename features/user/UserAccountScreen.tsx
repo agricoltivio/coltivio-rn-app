@@ -4,7 +4,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
-import { UserAccountScreenProps } from "@/navigation/rootStackTypes";
+import { UserAccountScreenProps } from "./navigation/user-routes";
 import { Body } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
 import { useQueryClient } from "@tanstack/react-query";

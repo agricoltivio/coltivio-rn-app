@@ -5,7 +5,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ScrollView } from "@/components/views/ScrollView";
-import { SignInScreenProps } from "@/navigation/rootStackTypes";
+import { SignInScreenProps } from "@/features/auth/navigation/auth-routes";
 import { supabase } from "@/supabase/supabase";
 import { Body, H2 } from "@/theme/Typography";
 import { Image } from "expo-image";

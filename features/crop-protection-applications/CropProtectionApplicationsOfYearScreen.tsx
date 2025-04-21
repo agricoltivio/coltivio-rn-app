@@ -4,7 +4,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { locale } from "@/locales/i18n";
-import { CropProtectionApplicationsOfYearScreenProps } from "@/navigation/rootStackTypes";
+import { CropProtectionApplicationsOfYearScreenProps } from "./navigation/crop-protection-application-routes";
 import { stringToColor } from "@/theme/theme";
 import { H2, Subtitle } from "@/theme/Typography";
 import React, { useState } from "react";

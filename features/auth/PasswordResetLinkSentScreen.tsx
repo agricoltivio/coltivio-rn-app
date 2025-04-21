@@ -5,7 +5,7 @@ import { H3 } from "@/theme/Typography";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "styled-components/native";
 import { useUserQuery } from "../user/users.hooks";
-import { PasswordResetLinkSentScreenProps } from "@/navigation/rootStackTypes";
+import { PasswordResetLinkSentScreenProps } from "@/features/auth/navigation/auth-routes";
 
 export function PasswordResetLinkSentScreen({
   navigation,

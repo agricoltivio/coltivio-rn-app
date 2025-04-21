@@ -8,7 +8,7 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { AddCropProtectionApplicationSelectDateScreenProps } from "@/navigation/rootStackTypes";
+import { AddCropProtectionApplicationSelectDateScreenProps } from "../navigation/crop-protection-application-routes";
 import { useAddCropProtectionApplicationStore } from "./cropProtectionApplication.store";
 import { useTranslation } from "react-i18next";
 

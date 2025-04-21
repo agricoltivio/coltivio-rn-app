@@ -1,5 +1,5 @@
 import { TextInput } from "@/components/inputs/TextInput";
-import { SelectFarmNameScreenProps } from "@/navigation/rootStackTypes";
+import { SelectFarmNameScreenProps } from "@/features/onboarding/navigation/onboarding-routes";
 import { H1, H2, H3 } from "@/theme/Typography";
 import { Image } from "expo-image";
 import { View } from "react-native";

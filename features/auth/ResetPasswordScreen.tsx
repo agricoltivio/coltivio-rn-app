@@ -11,7 +11,7 @@ import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { supabase } from "@/supabase/supabase";
 import { useEffect, useState } from "react";
-import { ResetPasswordScreenProps } from "@/navigation/rootStackTypes";
+import { ResetPasswordScreenProps } from "@/features/auth/navigation/auth-routes";
 import { useSession } from "@/auth/SessionProvider";
 import * as Linking from "expo-linking";
 

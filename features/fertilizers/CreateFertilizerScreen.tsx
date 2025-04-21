@@ -2,7 +2,7 @@ import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
-import { CreateFertilizerScreenProps } from "@/navigation/rootStackTypes";
+import { CreateFertilizerScreenProps } from "./navigation/fertilizer-routes";
 import { H2, H3 } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
 import { FertilizerForm, FertilizerFormValues } from "./FertilizerForm";

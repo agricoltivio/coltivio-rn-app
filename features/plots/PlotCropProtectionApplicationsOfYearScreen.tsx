@@ -10,7 +10,7 @@ import React, { useState } from "react";
 import { LayoutChangeEvent, View } from "react-native";
 import { BarChart, barDataItem } from "react-native-gifted-charts";
 import { useTheme } from "styled-components/native";
-import { PlotCropProtectionApplicationsOfYearScreenProps } from "@/navigation/rootStackTypes";
+import { PlotCropProtectionApplicationsOfYearScreenProps } from "./navigation/plots-routes";
 import { useCropProtectionApplicationSummariesOfPlotQuery } from "../crop-protection-applications/cropProtectionApplications.hooks";
 import { useTranslation } from "react-i18next";
 

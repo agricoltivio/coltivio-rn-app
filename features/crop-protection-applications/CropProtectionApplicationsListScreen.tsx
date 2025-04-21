@@ -3,7 +3,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
 import { locale } from "@/locales/i18n";
-import { CropProtectionApplicationsOfYearListScreenProps } from "@/navigation/rootStackTypes";
+import { CropProtectionApplicationsOfYearListScreenProps } from "./navigation/crop-protection-application-routes";
 import { H2 } from "@/theme/Typography";
 import { formatLocalizedDateTime } from "@/utils/date";
 import Fuse from "fuse.js";

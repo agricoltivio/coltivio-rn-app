@@ -4,7 +4,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
-import { DeletePlotScreenProps } from "@/navigation/rootStackTypes";
+import { DeletePlotScreenProps } from "./navigation/plots-routes";
 import { H2, Subtitle } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
 import { View } from "react-native";

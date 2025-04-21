@@ -11,7 +11,7 @@ import { useTheme } from "styled-components/native";
 import { makeRedirectUri } from "expo-auth-session";
 import { supabase } from "@/supabase/supabase";
 import { useState } from "react";
-import { ForgotPasswordScreenProps } from "@/navigation/rootStackTypes";
+import { ForgotPasswordScreenProps } from "@/features/auth/navigation/auth-routes";
 
 const redirectTo = makeRedirectUri({
   scheme: "ch.coltivio",

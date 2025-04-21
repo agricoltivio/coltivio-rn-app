@@ -4,7 +4,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { MultiPolygon } from "@/components/map/MultiPolygon";
 import { ScrollView } from "@/components/views/ScrollView";
-import { PlotDetailsScreenProps } from "@/navigation/rootStackTypes";
+import { PlotDetailsScreenProps } from "./navigation/plots-routes";
 import { hexToRgba } from "@/theme/theme";
 import { Body, H2, H3, Label } from "@/theme/Typography";
 import * as turf from "@turf/turf";

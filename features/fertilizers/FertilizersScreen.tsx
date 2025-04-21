@@ -2,7 +2,7 @@ import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
-import { FertilizersScreenProps } from "@/navigation/rootStackTypes";
+import { FertilizersScreenProps } from "./navigation/fertilizer-routes";
 import { H2, Subtitle } from "@/theme/Typography";
 import React from "react";
 import { View } from "react-native";

@@ -9,7 +9,7 @@ import {
   PolygonDrawingTool,
   PolygonDrawingToolActions,
 } from "@/components/map/PolygonDrawingTool";
-import { SelectHarvestPlotsScreenProps } from "@/navigation/rootStackTypes";
+import { SelectHarvestPlotsScreenProps } from "../navigation/harvest-routes";
 import { hexToRgba } from "@/theme/theme";
 import { GeoSpatials } from "@/utils/geo-spatials";
 import { round } from "@/utils/math";

@@ -1,6 +1,6 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
-import { EditFarmLocationScreenProps } from "@/navigation/rootStackTypes";
+import { EditFarmLocationScreenProps } from "./navigation/farm-routes";
 import { H2 } from "@/theme/Typography";
 import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";

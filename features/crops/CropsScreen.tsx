@@ -7,7 +7,7 @@ import React from "react";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCropsQuery } from "./crops.hooks";
-import { CropsScreenProps } from "@/navigation/rootStackTypes";
+import { CropsScreenProps } from "./navigation/crops-routes";
 import { useTranslation } from "react-i18next";
 
 export function CropsScreen({ navigation }: CropsScreenProps) {

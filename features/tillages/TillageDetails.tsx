@@ -1,6 +1,6 @@
 import { Button } from "@/components/buttons/Button";
 import { ContentView } from "@/components/containers/ContentView";
-import { TillageDetailsScreenProps } from "@/navigation/rootStackTypes";
+import { TillageDetailsScreenProps } from "./navigation/tillages-routes";
 import { useTheme } from "styled-components/native";
 import { useDeleteTillageMutation, useTillageQuery } from "./tillages.hooks";
 import { TillageSummary } from "./TillageSummary";

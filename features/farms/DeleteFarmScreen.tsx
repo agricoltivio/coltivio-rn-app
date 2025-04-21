@@ -5,7 +5,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
-import { DeleteFarmScreenProps } from "@/navigation/rootStackTypes";
+import { DeleteFarmScreenProps } from "./navigation/farm-routes";
 import { H2, Label, Subtitle } from "@/theme/Typography";
 import { useState } from "react";
 import { useForm } from "react-hook-form";

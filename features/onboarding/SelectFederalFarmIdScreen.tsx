@@ -1,5 +1,5 @@
 import { AutocompleteInput } from "@/components/inputs/AutocompleteInput";
-import { SelectFederalFarmIdScreenProps } from "@/navigation/rootStackTypes";
+import { SelectFederalFarmIdScreenProps } from "@/features/onboarding/navigation/onboarding-routes";
 import { H2, H3 } from "@/theme/Typography";
 import { useDebounce } from "@uidotdev/usehooks";
 import { Image } from "expo-image";

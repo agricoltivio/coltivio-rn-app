@@ -1,6 +1,6 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { H2 } from "@/theme/Typography";
-import { EditCropProtectionEquipmentScreenProps } from "@/navigation/rootStackTypes";
+import { EditCropProtectionEquipmentScreenProps } from "./navigation/equipment-routes";
 import {
   CropProtectionEquipmentFormValues,
   CropProtectionEquipmentForm,

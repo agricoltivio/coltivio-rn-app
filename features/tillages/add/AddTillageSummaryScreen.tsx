@@ -1,7 +1,7 @@
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
-import { AddTillageSummaryScreenProps } from "@/navigation/rootStackTypes";
+import { AddTillageSummaryScreenProps } from "../navigation/tillages-routes";
 import { useCreateTillagesMutation } from "../tillages.hooks";
 import { TillageSummary } from "../TillageSummary";
 import { TillageBase, useAddTillageStore } from "./add-tillage.store";

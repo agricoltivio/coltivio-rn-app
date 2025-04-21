@@ -2,7 +2,7 @@ import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
-import { CreateCropProtectionProductScreenProps } from "@/navigation/rootStackTypes";
+import { CreateCropProtectionProductScreenProps } from "./navigation/crop-protection-product-routes";
 import { H2 } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
 import {

@@ -23,7 +23,7 @@ import { useEffect, useRef, useState } from "react";
 import { StyleSheet } from "react-native";
 import { LatLng, MapPressEvent, Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
-import { AddCropProtectionApplicationSelectPlotsScreenProps } from "@/navigation/rootStackTypes";
+import { AddCropProtectionApplicationSelectPlotsScreenProps } from "../navigation/crop-protection-application-routes";
 import { useAddCropProtectionApplicationStore } from "./cropProtectionApplication.store";
 import { useTranslation } from "react-i18next";
 

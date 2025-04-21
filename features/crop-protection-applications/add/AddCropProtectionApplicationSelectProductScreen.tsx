@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useAddCropProtectionApplicationStore } from "./cropProtectionApplication.store";
-import { AddCropProtectionApplicationSelectProductScreenProps } from "@/navigation/rootStackTypes";
+import { AddCropProtectionApplicationSelectProductScreenProps } from "../navigation/crop-protection-application-routes";
 import { useTranslation } from "react-i18next";
 
 type FormValues = {

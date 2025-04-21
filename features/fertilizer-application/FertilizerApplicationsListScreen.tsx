@@ -2,7 +2,7 @@ import { FertilizerApplication } from "@/api/fertilizerApplications.api";
 import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
-import { FertilizerApplicationsOfYearListScreenProps } from "@/navigation/rootStackTypes";
+import { FertilizerApplicationsOfYearListScreenProps } from "./navigation/fertilizer-application-routes";
 import { H2 } from "@/theme/Typography";
 import Fuse from "fuse.js";
 import { useState } from "react";

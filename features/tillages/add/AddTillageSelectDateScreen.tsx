@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useAddTillageStore } from "./add-tillage.store";
-import { AddTillageSelectDateScreenProps } from "@/navigation/rootStackTypes";
+import { AddTillageSelectDateScreenProps } from "../navigation/tillages-routes";
 import { useTranslation } from "react-i18next";
 
 type FormValues = {

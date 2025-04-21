@@ -2,7 +2,7 @@ import { LocationSearchResult } from "@/api/geo-admin";
 import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
-import { SelectFarmLocationSearchModalProps } from "@/navigation/rootStackTypes";
+import { SelectFarmLocationSearchModalProps } from "@/features/onboarding/navigation/onboarding-routes";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";

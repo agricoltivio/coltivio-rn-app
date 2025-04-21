@@ -11,7 +11,7 @@ import { LayoutChangeEvent, View } from "react-native";
 import { BarChart, barDataItem } from "react-native-gifted-charts";
 import { useTheme } from "styled-components/native";
 import { useFertilizerApplicationSummaryForPlotQuery } from "../fertilizer-application/fertilizerApplications.hooks";
-import { PlotFertilizerApplicationsOfYearScreenProps } from "@/navigation/rootStackTypes";
+import { PlotFertilizerApplicationsOfYearScreenProps } from "./navigation/plots-routes";
 import { useTranslation } from "react-i18next";
 
 export function PlotFertilizerApplicationsOfYearScreen({

@@ -6,7 +6,7 @@ import { ScrollView } from "@/components/views/ScrollView";
 import {
   SelectHarvestQuantityScreenprops,
   DivideHarvestOnPlotsScreenProps,
-} from "@/navigation/rootStackTypes";
+} from "../navigation/harvest-routes";
 import { Body, H2, Subtitle, Title } from "@/theme/Typography";
 import { round } from "@/utils/math";
 import React, { useEffect, useState } from "react";

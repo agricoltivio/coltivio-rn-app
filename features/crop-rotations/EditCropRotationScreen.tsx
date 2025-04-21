@@ -4,7 +4,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
-import { EditCropRotationScreenProps } from "@/navigation/rootStackTypes";
+import { EditCropRotationScreenProps } from "./navigation/crop-rotations-routes";
 import { H2, H3 } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
 import { View } from "react-native";

@@ -7,7 +7,7 @@ import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { MultiPolygon } from "@/components/map/MultiPolygon";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
-import { AddPlotSummaryScreenProps } from "@/navigation/rootStackTypes";
+import { AddPlotSummaryScreenProps } from "./navigation/plots-routes";
 import { hexToRgba } from "@/theme/theme";
 import { H2, Subtitle } from "@/theme/Typography";
 import * as turf from "@turf/turf";

@@ -10,7 +10,7 @@ import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { useFertilizerSpreadersQuery } from "@/features/equipment/fertilizerSpreader.hooks";
-import { AddFertilizerApplicationSelectSpreaderScreenProps } from "@/navigation/rootStackTypes";
+import { AddFertilizerApplicationSelectSpreaderScreenProps } from "../navigation/fertilizer-application-routes";
 import { Body, H2, H3, H4 } from "@/theme/Typography";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";

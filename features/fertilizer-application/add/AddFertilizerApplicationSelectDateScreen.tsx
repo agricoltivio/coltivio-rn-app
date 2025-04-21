@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCreateFertilizerApplicationStore } from "./fertilizerApplication.store";
-import { AddFertilizerApplicationSelectDateScreenProps } from "@/navigation/rootStackTypes";
+import { AddFertilizerApplicationSelectDateScreenProps } from "../navigation/fertilizer-application-routes";
 import { useTranslation } from "react-i18next";
 
 type FormValues = {

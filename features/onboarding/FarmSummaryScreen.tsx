@@ -8,7 +8,7 @@ import { useOnboarding } from "./OnboardingContext";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Card } from "@/components/card/Card";
 import { useCreateFarmMutation } from "../farms/farms.hooks";
-import { FarmSummaryScreenProps } from "@/navigation/rootStackTypes";
+import { FarmSummaryScreenProps } from "@/features/onboarding/navigation/onboarding-routes";
 import { useTranslation } from "react-i18next";
 import { ContentView } from "@/components/containers/ContentView";
 import { useSyncMissingLocalIdsMutation } from "../plots/plots.hooks";

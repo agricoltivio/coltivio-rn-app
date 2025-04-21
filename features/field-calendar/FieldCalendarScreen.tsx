@@ -1,6 +1,6 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
-import { FieldCalendarScreenProps } from "@/navigation/rootStackTypes";
+import { FieldCalendarScreenProps } from "./navigation/field-calendar.routes";
 import { H2 } from "@/theme/Typography";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "styled-components/native";

@@ -2,7 +2,7 @@ import { Button } from "@/components/buttons/Button";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
 import { Select } from "@/components/select/Select";
-import { SelectFertilizersScreenProps } from "@/navigation/rootStackTypes";
+import { SelectFertilizersScreenProps } from "@/features/onboarding/navigation/onboarding-routes";
 import { H2, H3 } from "@/theme/Typography";
 import BottomSheet, {
   BottomSheetBackdrop,

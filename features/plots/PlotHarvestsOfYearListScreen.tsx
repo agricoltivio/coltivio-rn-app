@@ -2,7 +2,7 @@ import { PlotHarvest } from "@/api/harvests.api";
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { locale } from "@/locales/i18n";
-import { PlotHarvestsOfYearListScreenProps } from "@/navigation/rootStackTypes";
+import { PlotHarvestsOfYearListScreenProps } from "./navigation/plots-routes";
 import { H2, H3 } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
 import { useTranslation } from "react-i18next";

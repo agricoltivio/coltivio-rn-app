@@ -1,6 +1,6 @@
 import { Button } from "@/components/buttons/Button";
 import { ContentView } from "@/components/containers/ContentView";
-import { FertilizerApplicationDetailsScreenProps } from "@/navigation/rootStackTypes";
+import { FertilizerApplicationDetailsScreenProps } from "./navigation/fertilizer-application-routes";
 import { useTheme } from "styled-components/native";
 import {
   useDeleteFertilizerApplicationMutation,

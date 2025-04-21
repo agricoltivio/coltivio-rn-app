@@ -1,5 +1,5 @@
 import { ContentView } from "@/components/containers/ContentView";
-import { EditFertilizerScreenProps } from "@/navigation/rootStackTypes";
+import { EditFertilizerScreenProps } from "./navigation/fertilizer-routes";
 import { H2, H3 } from "@/theme/Typography";
 import { FertilizerForm, FertilizerFormValues } from "./FertilizerForm";
 import {

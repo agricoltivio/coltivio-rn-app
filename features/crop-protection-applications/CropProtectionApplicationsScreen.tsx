@@ -1,7 +1,7 @@
 import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
 import { List } from "@/components/list/List";
-import { CropProtectionApplicationsScreenProps } from "@/navigation/rootStackTypes";
+import { CropProtectionApplicationsScreenProps } from "./navigation/crop-protection-application-routes";
 import { H2, Headline } from "@/theme/Typography";
 import React from "react";
 import { ScrollView, View } from "react-native";

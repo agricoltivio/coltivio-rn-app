@@ -7,7 +7,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
-import { SelectHarvestingMachineryScreenProps } from "@/navigation/rootStackTypes";
+import { SelectHarvestingMachineryScreenProps } from "../navigation/harvest-routes";
 import { Body, H2 } from "@/theme/Typography";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";

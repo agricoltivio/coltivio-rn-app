@@ -3,7 +3,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { useCreateCropProtectionApplicationsMutation } from "../cropProtectionApplications.hooks";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { CropProtectionApplicationSummary } from "../CropProtectionApplicationSummary";
-import { AddCropProtectionApplicationSummaryScreenProps } from "@/navigation/rootStackTypes";
+import { AddCropProtectionApplicationSummaryScreenProps } from "../navigation/crop-protection-application-routes";
 import {
   AddCropProtectionApplicationBase,
   useAddCropProtectionApplicationStore,

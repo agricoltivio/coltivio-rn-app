@@ -5,7 +5,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { useFertilizersQuery } from "@/features/fertilizers/fertilizers.hooks";
-import { AddFertilizerApplicationSelectFertilizerScreenProps } from "@/navigation/rootStackTypes";
+import { AddFertilizerApplicationSelectFertilizerScreenProps } from "../navigation/fertilizer-application-routes";
 import { Body, H2 } from "@/theme/Typography";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";

@@ -1,7 +1,7 @@
 import { Button } from "@/components/buttons/Button";
 import { AutocompleteInput } from "@/components/inputs/AutocompleteInput";
 import { MapView } from "@/components/map/Map";
-import { SelectFederalFarmIdMapScreenProps } from "@/navigation/rootStackTypes";
+import { SelectFederalFarmIdMapScreenProps } from "@/features/onboarding/navigation/onboarding-routes";
 import { hexToRgba } from "@/theme/theme";
 import { H3 } from "@/theme/Typography";
 import BottomSheet, {

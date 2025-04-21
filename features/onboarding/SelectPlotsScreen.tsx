@@ -3,7 +3,7 @@ import {
   SelectFarmNameScreenProps,
   SelectFederalFarmIdScreenProps,
   SelectPlotsScreenProps,
-} from "@/navigation/rootStackTypes";
+} from "@/features/onboarding/navigation/onboarding-routes";
 import { Body, H2, H3, Subtitle } from "@/theme/Typography";
 import { useDebounce } from "@uidotdev/usehooks";
 import { Image } from "expo-image";

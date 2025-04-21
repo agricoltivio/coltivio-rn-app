@@ -9,7 +9,7 @@ import { useTheme } from "styled-components/native";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
-import { CreateHarvestingMachineryScreenProps } from "@/navigation/rootStackTypes";
+import { CreateHarvestingMachineryScreenProps } from "./navigation/equipment-routes";
 import { Card } from "@/components/card/Card";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { useTranslation } from "react-i18next";

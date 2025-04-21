@@ -7,7 +7,7 @@ import {
 } from "@/components/map/PolygonDrawingTool";
 import { deviceHeight, deviceWidth } from "@/constants/Screen";
 import { HomeMarker } from "@/features/map/layers/HomeMarker";
-import { PlotsMapScreenProps } from "@/navigation/rootStackTypes";
+import { PlotsMapScreenProps } from "../plots/navigation/plots-routes";
 import { hexToRgba } from "@/theme/theme";
 import { H3, Subtitle } from "@/theme/Typography";
 import {

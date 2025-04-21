@@ -3,7 +3,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { ScrollView } from "@/components/views/ScrollView";
-import { SelectHarvestDateScreenProps } from "@/navigation/rootStackTypes";
+import { SelectHarvestDateScreenProps } from "../navigation/harvest-routes";
 import { H2 } from "@/theme/Typography";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";

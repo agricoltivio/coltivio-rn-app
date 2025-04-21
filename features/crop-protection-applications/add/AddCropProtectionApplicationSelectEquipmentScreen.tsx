@@ -7,7 +7,7 @@ import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { useCropProtectionEquipmentsQuery } from "@/features/equipment/cropProtectionEquipment.hooks";
-import { AddCropProtectionApplicationSelectMachineConfigScreenProps } from "@/navigation/rootStackTypes";
+import { AddCropProtectionApplicationSelectMachineConfigScreenProps } from "../navigation/crop-protection-application-routes";
 import { Body, H2, H3, H4 } from "@/theme/Typography";
 import React, { createElement, useEffect } from "react";
 import { useForm } from "react-hook-form";

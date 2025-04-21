@@ -13,7 +13,7 @@ import {
   PolygonDrawingToolActions,
 } from "@/components/map/PolygonDrawingTool";
 import { HomeMarker } from "@/features/map/layers/HomeMarker";
-import { AddPlotMapScreenProps } from "@/navigation/rootStackTypes";
+import { AddPlotMapScreenProps } from "./navigation/plots-routes";
 import { hexToRgba } from "@/theme/theme";
 import { Subtitle, Title } from "@/theme/Typography";
 import { GeoSpatials } from "@/utils/geo-spatials";

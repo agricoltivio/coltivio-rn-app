@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { ChangeUserNameScreenProps } from "@/navigation/rootStackTypes";
+import { ChangeUserNameScreenProps } from "./navigation/user-routes";
 import { Button } from "@/components/buttons/Button";
 import { useSession } from "@/auth/SessionProvider";
 import { Body, H2 } from "@/theme/Typography";

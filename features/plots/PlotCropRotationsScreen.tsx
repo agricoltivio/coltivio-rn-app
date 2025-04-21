@@ -3,7 +3,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { locale } from "@/locales/i18n";
-import { PlotCropRotationsScreenProps } from "@/navigation/rootStackTypes";
+import { PlotCropRotationsScreenProps } from "../crop-rotations/navigation/crop-rotations-routes";
 import { H2, H3 } from "@/theme/Typography";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";

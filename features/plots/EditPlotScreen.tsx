@@ -1,7 +1,7 @@
 import * as turf from "@turf/turf";
 import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
-import { EditPlotScreenProps } from "@/navigation/rootStackTypes";
+import { EditPlotScreenProps } from "./navigation/plots-routes";
 import { useForm } from "react-hook-form";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";

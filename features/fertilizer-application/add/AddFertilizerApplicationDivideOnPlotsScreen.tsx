@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 import { Switch, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCreateFertilizerApplicationStore } from "./fertilizerApplication.store";
-import { AddFertilizerApplicationDivideOnPlotsScreenProps } from "@/navigation/rootStackTypes";
+import { AddFertilizerApplicationDivideOnPlotsScreenProps } from "../navigation/fertilizer-application-routes";
 import { useTranslation } from "react-i18next";
 
 export function AddFertilizerApplicationDivideOnPlotsScreen({

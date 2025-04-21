@@ -1,7 +1,7 @@
 import { Button } from "@/components/buttons/Button";
 import { ContentView } from "@/components/containers/ContentView";
 import { Select } from "@/components/select/Select";
-import { CreateFarmEquipmentScreenProps } from "@/navigation/rootStackTypes";
+import { CreateFarmEquipmentScreenProps } from "./navigation/equipment-routes";
 import { H2 } from "@/theme/Typography";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";

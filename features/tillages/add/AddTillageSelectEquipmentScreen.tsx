@@ -6,7 +6,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { useTillageEquipmentsQuery } from "@/features/equipment/tillageEquipment.hooks";
-import { AddTillageSelectEquipmentScreenProps } from "@/navigation/rootStackTypes";
+import { AddTillageSelectEquipmentScreenProps } from "../navigation/tillages-routes";
 import { Body, H2 } from "@/theme/Typography";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";

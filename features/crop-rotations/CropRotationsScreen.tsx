@@ -1,7 +1,7 @@
 import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
 import { List } from "@/components/list/List";
-import { CropRotationsScreenProps } from "@/navigation/rootStackTypes";
+import { CropRotationsScreenProps } from "./navigation/crop-rotations-routes";
 import { H2, Headline } from "@/theme/Typography";
 import React from "react";
 import { View } from "react-native";

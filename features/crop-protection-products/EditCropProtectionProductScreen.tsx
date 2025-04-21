@@ -3,7 +3,7 @@ import { Card } from "@/components/card/Card";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
-import { EditCropProtectionProductScreenProps } from "@/navigation/rootStackTypes";
+import { EditCropProtectionProductScreenProps } from "./navigation/crop-protection-product-routes";
 import { H2, H3 } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";

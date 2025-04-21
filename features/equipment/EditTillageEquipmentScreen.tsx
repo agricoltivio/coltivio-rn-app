@@ -6,7 +6,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { Button } from "@/components/buttons/Button";
 import { useTheme } from "styled-components/native";
 import { View } from "react-native";
-import { EditTillageEquipmentScreenProps } from "@/navigation/rootStackTypes";
+import { EditTillageEquipmentScreenProps } from "./navigation/equipment-routes";
 import {
   useDeleteTillageEquipmentMutation,
   useTillageEquipmentByIdQuery,
@@ -36,10 +36,10 @@ export function EditTillageEquipmentScreen({
   });
 
   const updateMachineConfigMutation = useUpdateTillageEquipmentMutation(() =>
-    navigation.goBack(),
+    navigation.goBack()
   );
   const deleteMachineConfigMutation = useDeleteTillageEquipmentMutation(() =>
-    navigation.goBack(),
+    navigation.goBack()
   );
 
   function onSubmit(data: TillageEquipmentFormValues) {

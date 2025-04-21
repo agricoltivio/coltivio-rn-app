@@ -1,7 +1,7 @@
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
-import { AddFertilizerApplicationSummaryScreenProps } from "@/navigation/rootStackTypes";
+import { AddFertilizerApplicationSummaryScreenProps } from "../navigation/fertilizer-application-routes";
 import { useCreateFertilizerApplicationsMutation } from "../fertilizerApplications.hooks";
 import { FertilizerApplicationSummary } from "../FertilizerApplicationSummary";
 import {

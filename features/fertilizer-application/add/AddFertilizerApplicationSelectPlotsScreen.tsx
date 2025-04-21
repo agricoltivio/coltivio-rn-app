@@ -15,7 +15,7 @@ import { MapShowLocationToggle } from "@/features/map/MapShowLocationToggle";
 import { PlotSelectionOrDrawTip } from "@/features/map/tips/PlotSelectionOrDrawTip";
 import { TopLeftBackButton } from "@/features/map/TopLeftBackButton";
 import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
-import { AddFertilizerApplicationSelectPlotsScreenProps } from "@/navigation/rootStackTypes";
+import { AddFertilizerApplicationSelectPlotsScreenProps } from "../navigation/fertilizer-application-routes";
 import { hexToRgba } from "@/theme/theme";
 import { GeoSpatials } from "@/utils/geo-spatials";
 import { round } from "@/utils/math";

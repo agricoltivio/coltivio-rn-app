@@ -1,7 +1,7 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { MapTile } from "@/features/map/MapTile";
-import { HomeScreenProps } from "@/navigation/rootStackTypes";
+import { HomeScreenProps } from "./navigation/home-routes";
 import { H1, H2 } from "@/theme/Typography";
 import { Image } from "expo-image";
 import React from "react";
