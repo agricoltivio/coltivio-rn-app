@@ -33,7 +33,12 @@ export function DivideHarvestOnPlotsScreen({
     Record<string, string>
   >({});
   const [divideByArea, setDivideByArea] = useState(false);
-  const [divisionPrecision, setDivisionPrecision] = useState(1);
+  const [divisionPrecision, setDivisionPrecision] = useState(
+    harvest?.processingType === "round_bale" ||
+      harvest?.processingType === "square_bale"
+      ? 0
+      : 1
+  );
   const [error, setError] = useState<string | null>(null);
 
   const harvestAreas = Object.values(selectedHarvestPlotsById);

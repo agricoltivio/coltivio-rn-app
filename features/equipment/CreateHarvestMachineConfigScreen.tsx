@@ -1,18 +1,19 @@
+import { HarvestingMachinery } from "@/api/harvestingMachinery.api";
+import { Button } from "@/components/buttons/Button";
+import { Card } from "@/components/card/Card";
+import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
+import { ContentView } from "@/components/containers/ContentView";
+import { ScrollView } from "@/components/views/ScrollView";
+import { H2, Subtitle } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { useTheme } from "styled-components/native";
 import {
   HarvestingMachineryForm,
   HarvestingMachineryFormValues,
 } from "./HarvestingMachineryForm";
 import { useCreateHarvestingMachineryMutation } from "./harvestingMachinery.hooks";
-import { Button } from "@/components/buttons/Button";
-import { useTheme } from "styled-components/native";
-import { ContentView } from "@/components/containers/ContentView";
-import { ScrollView } from "@/components/views/ScrollView";
-import { H2, Subtitle } from "@/theme/Typography";
 import { CreateHarvestingMachineryScreenProps } from "./navigation/equipment-routes";
-import { Card } from "@/components/card/Card";
-import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
-import { useTranslation } from "react-i18next";
 
 export function CreateHarvestingMachineryScreen({
   navigation,
@@ -24,15 +25,18 @@ export function CreateHarvestingMachineryScreen({
     handleSubmit,
     formState: { errors, isDirty },
   } = useForm<HarvestingMachineryFormValues>();
-  function onSuccess() {
-    const navigationState = navigation.getState();
-    if (
-      navigationState.routes[navigationState.index - 1].name ===
-      "CreateFarmEquipment"
-    ) {
+  function onSuccess(machine: HarvestingMachinery) {
+    const previousRoute =
+      navigation.getState().routes[navigation.getState().index - 1].name;
+
+    if (previousRoute === "CreateFarmEquipment") {
       navigation.reset({
         index: 1,
         routes: [{ name: "Home" }, { name: "MachineConfigs" }],
+      });
+    } else if (previousRoute === "SelectHarvestingMachinery") {
+      navigation.popTo("SelectHarvestingMachinery", {
+        machineId: machine.id,
       });
     } else {
       navigation.goBack();

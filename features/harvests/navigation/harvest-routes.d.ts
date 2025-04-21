@@ -7,7 +7,7 @@ export type HarvestStackParamList = {
   HarvestsOfYearList: { year: number };
   SelectHarvestDate: undefined;
   SelectHarvestCrop: undefined;
-  SelectHarvestingMachinery: undefined;
+  SelectHarvestingMachinery: { machineId?: string };
   SelectHarvestQuantity: undefined;
   SelectHarvstPlots: undefined;
   DivideHarvestOnPlots: undefined;

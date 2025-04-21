@@ -11,9 +11,9 @@ import {
 } from "./TillageEquipmentForm";
 import { useCreateTillageEquipmentMutation } from "./tillageEquipment.hooks";
 import { useTranslation } from "react-i18next";
+import { TillageEquipment } from "@/api/tillageEquipment.api";
 
 export function CreatetillageEquipmentScreen({
-  route,
   navigation,
 }: CreateTillageEquipmentScreenProps) {
   const { t } = useTranslation();
@@ -23,15 +23,18 @@ export function CreatetillageEquipmentScreen({
     formState: { errors, isDirty },
   } = useForm<TillageEquipmentFormValues>();
 
-  function onSuccess() {
-    const navigationState = navigation.getState();
-    if (
-      navigationState.routes[navigationState.index - 1].name ===
-      "CreateFarmEquipment"
-    ) {
+  function onSuccess(equipment: TillageEquipment) {
+    const previousRoute =
+      navigation.getState().routes[navigation.getState().index - 1].name;
+
+    if (previousRoute === "CreateFarmEquipment") {
       navigation.reset({
         index: 1,
         routes: [{ name: "Home" }, { name: "MachineConfigs" }],
+      });
+    } else if (previousRoute === "AddTillageSelectEquipment") {
+      navigation.popTo("AddTillageSelectEquipment", {
+        equipmentId: equipment.id,
       });
     } else {
       navigation.goBack();

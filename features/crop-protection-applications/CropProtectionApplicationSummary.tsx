@@ -15,6 +15,7 @@ import { PROVIDER_GOOGLE, Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
 import { getMethodLabel } from "./cropProtectionApplication.utils";
 import { useTranslation } from "react-i18next";
+import { round } from "@/utils/math";
 
 function SummaryItem({
   label,
@@ -131,7 +132,7 @@ export function CropProtectionApplicationSummary({
         />
         <SummaryItem
           label={t("forms.labels.total")}
-          value={`${amountPerApplication * totalNumberOfApplications}${unit}`}
+          value={`${round(amountPerApplication * totalNumberOfApplications, 2)}${unit}`}
         />
         <SummaryItem
           label={t("forms.labels.crop_protection_product")}

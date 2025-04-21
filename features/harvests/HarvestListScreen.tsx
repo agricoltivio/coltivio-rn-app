@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { FlatList, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useHarvestsQuery } from "./harvests.hooks";
+import { round } from "@/utils/math";
 
 export function HarvestListScreen({
   route,
@@ -84,8 +85,9 @@ export function HarvestListScreen({
           })}
         </ListItem.Title>
         <ListItem.Body>
-          {harvest.producedUnits * harvest.kilosPerUnit}kg, {harvest.cropName},{" "}
-          {harvest.conservationMethod}, {harvest.processingType}
+          {round(harvest.producedUnits * harvest.kilosPerUnit, 2)}kg,{" "}
+          {harvest.cropName}, {harvest.conservationMethod},{" "}
+          {harvest.processingType}
         </ListItem.Body>
       </ListItem.Content>
       <ListItem.Chevron />

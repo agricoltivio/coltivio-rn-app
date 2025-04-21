@@ -34,7 +34,7 @@ export function SelectHarvestCropScreen({
     setHarvest({ cropId });
     setSelectedCrop(crops?.find((crops) => crops.id === cropId)!);
 
-    navigation.navigate("SelectHarvestingMachinery");
+    navigation.navigate("SelectHarvestingMachinery", {});
   }
 
   if (!isFetched) {

@@ -5,7 +5,7 @@ export type TillagesStackParamList = {
   TillagesOfYearList: { year: number };
   TillageDetails: { tillageId: string };
   AddTillageSelectDate: undefined;
-  AddTillageSelectEquipment: undefined;
+  AddTillageSelectEquipment: { equipmentId?: string };
   AddTillageSelectPlots: undefined;
   AddTillageAdditionalNotes: undefined;
   AddTillageSummary: undefined;

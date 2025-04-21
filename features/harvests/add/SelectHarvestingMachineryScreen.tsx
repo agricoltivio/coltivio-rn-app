@@ -26,6 +26,7 @@ type FormValues = {
 };
 export function SelectHarvestingMachineryScreen({
   navigation,
+  route,
 }: SelectHarvestingMachineryScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -38,7 +39,7 @@ export function SelectHarvestingMachineryScreen({
     control,
     handleSubmit,
     watch,
-    formState: { errors, isDirty },
+    formState: { errors },
     setValue,
   } = useForm<FormValues>({
     defaultValues: {
@@ -47,6 +48,14 @@ export function SelectHarvestingMachineryScreen({
       kilosPerUnit: harvest?.kilosPerUnit?.toString(),
     },
   });
+  const createdMachineId = route.params.machineId;
+
+  useEffect(() => {
+    if (createdMachineId) {
+      setValue("machineId", createdMachineId);
+    }
+  }, [createdMachineId]);
+
   const machineId = watch("machineId");
 
   const currentSelectedHarvestingMachinery = harvestingMachinery?.find(
@@ -54,6 +63,10 @@ export function SelectHarvestingMachineryScreen({
   );
 
   useEffect(() => {
+    // if a machine got created, we take it instead of default machine
+    if (createdMachineId) {
+      return;
+    }
     const defaultMachineConfig = harvestingMachinery?.find(
       (config) => config.default
     );
@@ -77,7 +90,7 @@ export function SelectHarvestingMachineryScreen({
         currentSelectedHarvestingMachinery.defaultKilosPerUnit.toString()
       );
     }
-  }, [machineId]);
+  }, [currentSelectedHarvestingMachinery]);
 
   const processingType = watch("processingType");
   const [kilosPerUnitLabel, setKilosPerUnitLabel] = useState(
@@ -224,6 +237,15 @@ export function SelectHarvestingMachineryScreen({
               />
             </>
           )}
+
+          {harvestingMachinery?.length ? (
+            <Button
+              title={t("common.new_machine")}
+              type="accent"
+              style={{ marginTop: theme.spacing.m }}
+              onPress={() => navigation.navigate("CreateHarvestingMachinery")}
+            />
+          ) : null}
         </View>
       </ScrollView>
     </ContentView>

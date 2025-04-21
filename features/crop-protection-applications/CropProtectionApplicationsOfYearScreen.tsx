@@ -13,6 +13,7 @@ import { BarChart, barDataItem } from "react-native-gifted-charts";
 import { useTheme } from "styled-components/native";
 import { useCropProtectionApplicationSummariesOfFarmQuery } from "./cropProtectionApplications.hooks";
 import { useTranslation } from "react-i18next";
+import { round } from "@/utils/math";
 
 function Legend({ labels }: { labels: string[] }) {
   const theme = useTheme();
@@ -105,19 +106,19 @@ export function CropProtectionApplicationsOfYearScreen({
         <BarChart
           data={chartByProduct[cropProtectionName].data}
           spacing={35}
-          width={width - 80}
+          width={width - 130}
           rulesThickness={1}
           rulesColor={theme.colors.gray4}
           height={100}
           formatYLabel={(value) =>
-            `${value}${chartByProduct[cropProtectionName].unit}`
+            `${round(Number(value), 2)}${chartByProduct[cropProtectionName].unit}`
           }
           xAxisThickness={1}
           xAxisColor={theme.colors.gray4}
           xAxisType="dashed"
           yAxisThickness={0}
           yAxisTextStyle={{ color: theme.colors.gray2 }}
-          yAxisLabelWidth={45}
+          yAxisLabelWidth={60}
           xAxisLabelTextStyle={{ color: theme.colors.gray2 }}
           noOfSections={3}
           disablePress

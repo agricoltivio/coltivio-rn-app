@@ -40,7 +40,7 @@ export function AddTillageSelectDateScreen({
   function onSubmit({ date }: FormValues) {
     setData({ date: date.toISOString().split("T")[0] });
 
-    navigation.navigate("AddTillageSelectEquipment");
+    navigation.navigate("AddTillageSelectEquipment", {});
   }
 
   return (
