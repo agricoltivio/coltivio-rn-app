@@ -24,12 +24,25 @@ export function CreateCropProtectionProductScreen({
     formState: { errors, isDirty },
   } = useForm<CropProtectionProductFormValues>();
 
-  const createCropProtectionProductMutation =
-    useCreateCropProtectionProductMutation(() => navigation.goBack());
+  const previousRoute =
+    navigation.getState().routes[navigation.getState().index - 1];
 
-  const productUnit = watch("unit");
+  const createCropProtectionProductMutation =
+    useCreateCropProtectionProductMutation((product) => {
+      if (previousRoute.name === "AddCropProtectionApplicationSelectProduct") {
+        navigation.popTo("AddCropProtectionApplicationSelectProduct", {
+          productId: product.id,
+        });
+      } else {
+        navigation.goBack();
+      }
+    });
+
   const { cropProtectionEquipments, isFetched } =
     useCropProtectionEquipmentsQuery([]);
+
+  const productUnit = watch("unit");
+
   const availableEquipment = cropProtectionEquipments!.filter(
     (equipment) => equipment.unit === productUnit
   );

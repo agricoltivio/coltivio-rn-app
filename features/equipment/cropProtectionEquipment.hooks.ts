@@ -8,7 +8,7 @@ import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useCropProtectionEquipmentsQuery(
-  initialData: CropProtectionEquipment[],
+  initialData?: CropProtectionEquipment[],
   enabled: boolean = true
 ) {
   const api = useApi();

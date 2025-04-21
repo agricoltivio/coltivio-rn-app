@@ -123,13 +123,12 @@ export function AddFertilizerApplicationSelectSpreaderScreen({
         {/* <H2>Neue Ernte</H2> */}
         <H2>{t("fertilizer_application.select_machine.heading")}</H2>
         <Card
-          elevated
           style={{
-            backgroundColor: theme.colors.accent,
-            margin: theme.spacing.s,
+            backgroundColor: theme.colors.secondary,
+            marginTop: theme.spacing.m,
           }}
         >
-          <H4>
+          <H4 style={{ color: theme.colors.white }}>
             {t("fertilizer_application.select_machine.only_same_unit_warning")}
           </H4>
         </Card>
@@ -231,16 +230,19 @@ export function AddFertilizerApplicationSelectSpreaderScreen({
               />
             </>
           )}
-          <Button
-            title={t("common.new_machine")}
-            type="accent"
-            style={{ marginTop: theme.spacing.m }}
-            onPress={() =>
-              navigation.navigate("CreateFertilizerSpreader", {
-                unit: selectedFertilizer?.unit,
-              })
-            }
-          />
+
+          {fertilizerSpreaders?.length ? (
+            <Button
+              title={t("common.new_machine")}
+              type="accent"
+              style={{ marginTop: theme.spacing.m }}
+              onPress={() =>
+                navigation.navigate("CreateFertilizerSpreader", {
+                  unit: selectedFertilizer?.unit,
+                })
+              }
+            />
+          ) : null}
         </View>
       </ScrollView>
     </ContentView>

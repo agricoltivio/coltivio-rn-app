@@ -3,7 +3,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { CreateCropProtectionEquipmentScreenProps } from "@/navigation/rootStackTypes";
-import { H2, H3 } from "@/theme/Typography";
+import { H2, H3, H4 } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
 import {
   CropProtectionEquipmentForm,
@@ -13,6 +13,7 @@ import { useCreateCropProtectionEquipmentMutation } from "./cropProtectionEquipm
 import { useTranslation } from "react-i18next";
 import { Card } from "@/components/card/Card";
 import { useTheme } from "styled-components/native";
+import { CropProtectionEquipment } from "@/api/cropProtectionEquipments.api";
 
 export function CreateCropProtectionEquipmentScreen({
   route,
@@ -20,21 +21,27 @@ export function CreateCropProtectionEquipmentScreen({
 }: CreateCropProtectionEquipmentScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const unit = route.params.unit;
   const {
     control,
     handleSubmit,
     formState: { errors, isDirty },
-  } = useForm<CropProtectionEquipmentFormValues>();
+  } = useForm<CropProtectionEquipmentFormValues>({ defaultValues: { unit } });
 
-  function onSuccess() {
+  function onSuccess(equipment: CropProtectionEquipment) {
     const navigationState = navigation.getState();
-    if (
-      navigationState.routes[navigationState.index - 1].name ===
-      "CreateFarmEquipment"
-    ) {
+    const previousRoute =
+      navigationState.routes[navigationState.index - 1].name;
+    if (previousRoute === "CreateFarmEquipment") {
       navigation.reset({
         index: 1,
         routes: [{ name: "Home" }, { name: "MachineConfigs" }],
+      });
+    } else if (
+      previousRoute === "AddCropProtectionApplicationSelectMachineConfig"
+    ) {
+      navigation.popTo("AddCropProtectionApplicationSelectMachineConfig", {
+        equipmentId: equipment.id,
       });
     } else {
       navigation.goBack();
@@ -75,14 +82,13 @@ export function CreateCropProtectionEquipmentScreen({
       >
         <H2>{t("crop_protection_equipments.new_equipment")}</H2>
         <Card
+          elevated
           style={{
-            backgroundColor: theme.colors.danger,
-            marginTop: theme.spacing.m,
+            backgroundColor: theme.colors.accent,
+            margin: theme.spacing.s,
           }}
         >
-          <H3 style={{ color: theme.colors.white }}>
-            {t("crop_protection_equipments.only_same_unit_warning")}
-          </H3>
+          <H4>{t("crop_protection_equipments.only_same_unit_warning")}</H4>
         </Card>
         <CropProtectionEquipmentForm control={control} errors={errors} />
       </ScrollView>

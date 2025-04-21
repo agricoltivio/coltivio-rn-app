@@ -1,3 +1,4 @@
+import { CropProtectionUnit } from "@/api/cropProtectionProducts.api";
 import { FertilizerUnit } from "@/api/fertilizers.api";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
@@ -127,7 +128,7 @@ export type RootStackParamList = {
   CreateFertilizerSpreader: { unit?: FertilizerUnit };
   EditHarvestingMachinery: { harvestingMachineryId: string };
   EditFertilizerSpreader: { fertilizerSpreaderId: string };
-  CreateCropProtectionEquipment: undefined;
+  CreateCropProtectionEquipment: { unit?: CropProtectionUnit };
   EditCropProtectionEquipment: { cropProtectionEquipmentId: string };
   CreateTillageEquipment: undefined;
   EditTillageEquipment: { tillageEquipmentId: string };
@@ -170,8 +171,8 @@ export type RootStackParamList = {
   FertilizerApplicationDetails: { fertilizerApplicationId: string };
 
   AddCropProtectionApplicationSelectDate: undefined;
-  AddCropProtectionApplicationSelectProduct: undefined;
-  AddCropProtectionApplicationSelectMachineConfig: undefined;
+  AddCropProtectionApplicationSelectProduct: { productId?: string };
+  AddCropProtectionApplicationSelectMachineConfig: { equipmentId?: string };
   AddCropProtectionApplicationSelectQuantity: undefined;
   AddCropProtectionApplicationSelectPlots: undefined;
   AddCropProtectionApplicationDivideOnPlots: undefined;

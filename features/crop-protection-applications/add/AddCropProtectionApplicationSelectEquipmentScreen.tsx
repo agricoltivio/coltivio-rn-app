@@ -8,8 +8,8 @@ import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { useCropProtectionEquipmentsQuery } from "@/features/equipment/cropProtectionEquipment.hooks";
 import { AddCropProtectionApplicationSelectMachineConfigScreenProps } from "@/navigation/rootStackTypes";
-import { Body, H2, H3 } from "@/theme/Typography";
-import React, { useEffect } from "react";
+import { Body, H2, H3, H4 } from "@/theme/Typography";
+import React, { createElement, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -28,6 +28,7 @@ type FormValues = {
 };
 export function AddCropProtectionApplicationSelectMachineConfigScreen({
   navigation,
+  route,
 }: AddCropProtectionApplicationSelectMachineConfigScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -62,6 +63,14 @@ export function AddCropProtectionApplicationSelectMachineConfigScreen({
     },
   });
 
+  const createdEquipment = route.params.equipmentId;
+
+  useEffect(() => {
+    if (createdEquipment) {
+      setValue("equipmentId", createdEquipment);
+    }
+  }, [createdEquipment]);
+
   const equipmentId = watch("equipmentId");
 
   const currentSelectedEquipment = cropProtectionEquipments?.find(
@@ -76,7 +85,7 @@ export function AddCropProtectionApplicationSelectMachineConfigScreen({
       setValue("capacity", currentSelectedEquipment.capacity.toString());
       setValue("method", currentSelectedEquipment.method);
     }
-  }, [equipmentId]);
+  }, [currentSelectedEquipment]);
 
   function onSubmit({ capacity, method }: FormValues) {
     if (currentSelectedEquipment) {
@@ -114,15 +123,15 @@ export function AddCropProtectionApplicationSelectMachineConfigScreen({
         <H2>{t("crop_protection_applications.select_equipment.heading")}</H2>
         <Card
           style={{
-            backgroundColor: theme.colors.danger,
+            backgroundColor: theme.colors.secondary,
             marginTop: theme.spacing.m,
           }}
         >
-          <H3 style={{ color: theme.colors.white }}>
+          <H4 style={{ color: theme.colors.white }}>
             {t(
               "crop_protection_applications.select_equipment.only_same_unit_warning"
             )}
-          </H3>
+          </H4>
         </Card>
         <View
           style={{ gap: theme.spacing.s, flex: 1, marginTop: theme.spacing.m }}
@@ -146,7 +155,9 @@ export function AddCropProtectionApplicationSelectMachineConfigScreen({
                 fontSize={16}
                 title={t("buttons.add")}
                 onPress={() =>
-                  navigation.navigate("CreateCropProtectionEquipment")
+                  navigation.navigate("CreateCropProtectionEquipment", {
+                    unit: selectedProduct?.unit,
+                  })
                 }
               />
             </Card>
@@ -223,6 +234,18 @@ export function AddCropProtectionApplicationSelectMachineConfigScreen({
               />
             </>
           )}
+          {availableEquipments?.length ? (
+            <Button
+              title={t("common.new_device")}
+              type="accent"
+              style={{ marginTop: theme.spacing.m }}
+              onPress={() =>
+                navigation.navigate("CreateCropProtectionEquipment", {
+                  unit: selectedProduct?.unit,
+                })
+              }
+            />
+          ) : null}
         </View>
       </ScrollView>
     </ContentView>

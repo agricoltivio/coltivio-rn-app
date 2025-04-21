@@ -24,7 +24,6 @@ export function AddFertilizerApplicationSelectFertilizerScreen({
   const { t } = useTranslation();
   const theme = useTheme();
   const { fertilizers } = useFertilizersQuery();
-  const createdFertilizerId = route.params.fertilizerId;
 
   const {
     setFertilizerApplication,
@@ -41,11 +40,13 @@ export function AddFertilizerApplicationSelectFertilizerScreen({
     defaultValues: { fertilizerId: selectedFertilizer?.id },
   });
 
+  const createdFertilizerId = route.params.fertilizerId;
+
   useEffect(() => {
     if (createdFertilizerId) {
       setValue("fertilizerId", createdFertilizerId);
     }
-  }, [route.params.fertilizerId]);
+  }, [createdFertilizerId]);
 
   function onSubmit({ fertilizerId }: FormValues) {
     const selectedFertilizer = fertilizers?.find(
@@ -120,12 +121,15 @@ export function AddFertilizerApplicationSelectFertilizerScreen({
               }
             />
           )}
-          <Button
-            title={t("fertilizers.new_fertilizer")}
-            type="accent"
-            style={{ marginTop: theme.spacing.m }}
-            onPress={() => navigation.navigate("CreateFertilizer")}
-          />
+
+          {fertilizers?.length ? (
+            <Button
+              title={t("fertilizers.new_fertilizer")}
+              type="accent"
+              style={{ marginTop: theme.spacing.m }}
+              onPress={() => navigation.navigate("CreateFertilizer")}
+            />
+          ) : null}
         </View>
       </ScrollView>
     </ContentView>

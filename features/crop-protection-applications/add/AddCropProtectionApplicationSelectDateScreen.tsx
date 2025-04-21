@@ -40,7 +40,7 @@ export function AddCropProtectionApplicationSelectDateScreen({
   function onSubmit({ date }: FormValues) {
     setData({ dateTime: date.toISOString() });
 
-    navigation.navigate("AddCropProtectionApplicationSelectProduct");
+    navigation.navigate("AddCropProtectionApplicationSelectProduct", {});
   }
 
   return (

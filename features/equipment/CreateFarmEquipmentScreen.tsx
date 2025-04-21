@@ -28,11 +28,11 @@ export function CreateFarmEquipmentScreen({
         break;
       }
       case "cropProtection": {
-        navigation.navigate("CreateCropProtectionEquipment");
+        navigation.navigate("CreateCropProtectionEquipment", {});
         break;
       }
       case "fertilization": {
-        navigation.navigate("CreateFertilizerSpreader", { unit: undefined });
+        navigation.navigate("CreateFertilizerSpreader", {});
         break;
       }
     }

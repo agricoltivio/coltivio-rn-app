@@ -115,7 +115,8 @@
     "parcel_number": "Parzelle: {{number}}",
     "usage": "Nutzung",
     "federal_farm_id": "Betriebsnummer: {{number}}",
-    "new_machine": "Neue Maschine"
+    "new_machine": "Neue Maschine",
+    "new_device": "Neues Gerät"
   },
   "errors": {
     "unexpected_retry": "Ups, etwas ist schief gelaufen. Bitte versuche es erneut.",
@@ -461,7 +462,7 @@
   },
   "fertilizer_spreaders": {
     "new_spreader": "Neue Maschine für Düngeraustrag",
-    "only_same_unit_warning": "Um eine Maschine für einen Dünger zu verwenden, muss sie die selbe Einheit haben."
+    "only_same_unit_warning": "Um eine Maschine für einen Dünger zu verwenden, muss sie die selbe Einheit verwenden."
   },
   "field_calendar": {
     "field_calendar": "Feldkalender",
