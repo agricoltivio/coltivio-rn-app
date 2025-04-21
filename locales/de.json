@@ -32,6 +32,7 @@
       "password": "Passwort",
       "password_repeat": "Passwort wiederholen",
       "date": "Datum",
+      "time": "Uhrzeit",
       "farm_name": "Hofname",
       "location": "Standort",
       "location_search": "Standort suchen",
