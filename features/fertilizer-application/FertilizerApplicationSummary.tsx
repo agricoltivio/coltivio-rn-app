@@ -117,6 +117,9 @@ export function FertilizerApplicationSummary({
         </MapView>
       </View>
       <Card style={{ marginTop: theme.spacing.m }}>
+        {hidePlotList && (
+          <SummaryItem label={t("plots.plot")} value={plots[0]?.name} />
+        )}
         <SummaryItem label={t("forms.labels.area")} value={`${size / 100}a`} />
         {spreaderName && (
           <SummaryItem label={t("forms.labels.machine")} value={spreaderName} />

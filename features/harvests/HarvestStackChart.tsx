@@ -57,7 +57,7 @@ export function HarvestStackChart({
 
   function onLayout(event: LayoutChangeEvent) {
     const width = event.nativeEvent.layout.width;
-    setWidth(width - 45);
+    setWidth(width);
   }
   const spacing = stackChartData.length > 9 ? 2 : 5;
   const barWidth = width / stackChartData.length - spacing;
@@ -67,7 +67,7 @@ export function HarvestStackChart({
         stackData={stackChartData}
         barWidth={barWidth > 30 ? 30 : barWidth}
         spacing={spacing}
-        width={width}
+        width={width - 70}
         rulesThickness={1}
         rulesColor={theme.colors.gray4}
         height={100}

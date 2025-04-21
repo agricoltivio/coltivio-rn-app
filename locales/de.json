@@ -226,6 +226,7 @@
   },
   "plots": {
     "plots": "Schläge",
+    "plot": "Schlag",
     "plot_name": "Schlag {{name}}",
     "plot_name_date": "{{date}} - Schlag {{name}}",
     "common": {
