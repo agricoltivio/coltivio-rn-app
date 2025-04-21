@@ -54,7 +54,11 @@ export type RootStackParamList = {
   CropRotationsOfYearList: { year: number };
   PlotCropRotations: { plotId: string; name: string };
   AddPlotCropRotation: { plotId: string };
-  EditPlotCropRotation: { rotationId: string; canDelete?: boolean };
+  EditPlotCropRotation: {
+    plotName?: string;
+    rotationId: string;
+    canDelete?: boolean;
+  };
 
   AddCropRotationSelectStartDate: undefined;
   AddCropRotationSelectCrop: undefined;

@@ -31,7 +31,7 @@ export function EditCropRotationScreen({
 }: EditCropRotationScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { rotationId, canDelete } = route.params;
+  const { plotName, rotationId, canDelete } = route.params;
   const { crops } = useCropsQuery();
   const { cropRotation } = useCropRotationQuery(rotationId);
 
@@ -109,12 +109,13 @@ export function EditCropRotationScreen({
       <ScrollView
         keyboardAware
         showHeaderOnScroll
-        headerTitleOnScroll={t("crops.crop_name", {
-          name: cropRotation.crop.name,
-        })}
+        headerTitleOnScroll={`${plotName ? `${t("plots.plot_name", { name: plotName })} - ${cropRotation?.crop.name}` : cropRotation?.crop.name}`}
       >
         <H2>{t("crops.crop")}</H2>
-        <H3>{cropRotation?.crop.name}</H3>
+        <H3>
+          {`${plotName ? `${t("plots.plot_name", { name: plotName })} - ` : ""}`}
+          {cropRotation?.crop.name}
+        </H3>
         {!canDelete ? (
           <Card
             style={{

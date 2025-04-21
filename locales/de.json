@@ -216,7 +216,7 @@
     }
   },
   "farm": {
-    "farm": "Hof",
+    "farm": "Mein Hof",
     "farm_name": "Hofname",
     "location": "Standort",
     "delete_farm": "Hof löschen",
@@ -592,7 +592,8 @@
       "grain": "Getreide",
       "none": "Keine"
     },
-    "no_variety": "Keine Sorte"
+    "no_variety": "Keine Sorte",
+    "crop_in_use_warning": "Achtung: Diese Kultur wird verwendet und kann deshalb nicht gelöscht werden."
   },
   "crop_protection_applications": {
     "crop_protection": "Pflanzenschutz",

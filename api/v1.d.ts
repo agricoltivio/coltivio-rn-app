@@ -1945,6 +1945,8 @@ export interface components {
                         /** @enum {string} */
                         unit: "ml" | "l" | "g" | "kg";
                         description: string | null;
+                        /** Format: uuid */
+                        defaultEquipmentId: string | null;
                     };
                     plot: {
                         /** Format: uuid */
@@ -2321,6 +2323,8 @@ export interface components {
                     /** @enum {string} */
                     unit: "ml" | "l" | "g" | "kg";
                     description: string | null;
+                    /** Format: uuid */
+                    defaultEquipmentId: string | null;
                 }[];
                 /** Format: double */
                 count: number;
@@ -2339,6 +2343,8 @@ export interface components {
                 /** @enum {string} */
                 unit: "ml" | "l" | "g" | "kg";
                 description: string | null;
+                /** Format: uuid */
+                defaultEquipmentId: string | null;
             };
         };
         PostV1CropProtectionProductsNegativeResponse: {
@@ -2349,6 +2355,8 @@ export interface components {
             /** @enum {string} */
             unit: "ml" | "l" | "g" | "kg";
             description?: string | null;
+            /** Format: uuid */
+            defaultEquipmentId?: string | null;
         };
         GetV1CropProtectionProductsByIdCropProtectionProductIdParameterCropProtectionProductId: string;
         GetV1CropProtectionProductsByIdCropProtectionProductIdPositiveResponse: {
@@ -2361,6 +2369,8 @@ export interface components {
                 /** @enum {string} */
                 unit: "ml" | "l" | "g" | "kg";
                 description: string | null;
+                /** Format: uuid */
+                defaultEquipmentId: string | null;
             };
         };
         GetV1CropProtectionProductsByIdCropProtectionProductIdNegativeResponse: {
@@ -2377,6 +2387,8 @@ export interface components {
                 /** @enum {string} */
                 unit: "ml" | "l" | "g" | "kg";
                 description: string | null;
+                /** Format: uuid */
+                defaultEquipmentId: string | null;
             };
         };
         PatchV1CropProtectionProductsByIdCropProtectionProductIdNegativeResponse: {
@@ -2387,6 +2399,8 @@ export interface components {
             /** @enum {string} */
             unit?: "ml" | "l" | "g" | "kg";
             description?: string | null;
+            /** Format: uuid */
+            defaultEquipmentId?: string | null;
         };
         DeleteV1CropProtectionProductsByIdCropProtectionProductIdParameterCropProtectionProductId: string;
         DeleteV1CropProtectionProductsByIdCropProtectionProductIdPositiveResponse: {
@@ -2576,6 +2590,8 @@ export interface components {
                     /** @enum {string} */
                     unit: "ml" | "l" | "g" | "kg";
                     description: string | null;
+                    /** Format: uuid */
+                    defaultEquipmentId: string | null;
                 };
                 plot: {
                     /** Format: uuid */
@@ -2706,6 +2722,8 @@ export interface components {
                         /** @enum {string} */
                         unit: "ml" | "l" | "g" | "kg";
                         description: string | null;
+                        /** Format: uuid */
+                        defaultEquipmentId: string | null;
                     };
                     plot: {
                         /** Format: uuid */
@@ -2798,6 +2816,8 @@ export interface components {
                         /** @enum {string} */
                         unit: "ml" | "l" | "g" | "kg";
                         description: string | null;
+                        /** Format: uuid */
+                        defaultEquipmentId: string | null;
                     };
                     plot: {
                         /** Format: uuid */
@@ -2918,6 +2938,8 @@ export interface components {
                     /** @enum {string} */
                     unit: "ml" | "l" | "g" | "kg";
                     description: string | null;
+                    /** Format: uuid */
+                    defaultEquipmentId: string | null;
                 };
                 plot: {
                     /** Format: uuid */
@@ -3014,6 +3036,8 @@ export interface components {
                     /** @enum {string} */
                     unit: "ml" | "l" | "g" | "kg";
                     description: string | null;
+                    /** Format: uuid */
+                    defaultEquipmentId: string | null;
                 };
                 plot: {
                     /** Format: uuid */

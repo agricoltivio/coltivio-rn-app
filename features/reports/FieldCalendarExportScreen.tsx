@@ -35,16 +35,16 @@ export function FieldCalendarExportScreen({
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<FormValues>({
     defaultValues: {
       fromDate: from,
       toDate: to,
-      generateCropRotations: true,
-      generateTillages: true,
-      generateFertilizerApplications: true,
-      generateCropProtectionApplications: true,
-      generateHarvests: true,
+      generateCropRotations: false,
+      generateTillages: false,
+      generateFertilizerApplications: false,
+      generateCropProtectionApplications: false,
+      generateHarvests: false,
     },
   });
   const [error, setError] = useState<string | null>(null);
@@ -73,7 +73,7 @@ export function FieldCalendarExportScreen({
           <Button
             title={t("buttons.export")}
             onPress={handleSubmit(onSubmit)}
-            disabled={generateReportMutation.isPending}
+            disabled={!isDirty || generateReportMutation.isPending}
             loading={generateReportMutation.isPending}
           />
         </BottomActionContainer>

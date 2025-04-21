@@ -61,6 +61,7 @@ export function CropRotationsOfYearListScreen({
       onPress={() =>
         navigation.navigate("EditPlotCropRotation", {
           rotationId: cropRotation.id,
+          plotName: cropRotation.plot.name,
         })
       }
     >

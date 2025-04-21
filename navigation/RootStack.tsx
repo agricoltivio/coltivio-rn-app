@@ -751,6 +751,16 @@ export function RootStack() {
             name="FieldCalendar"
             options={{
               title: "",
+              headerRight(props) {
+                return (
+                  <Ionicons
+                    size={35}
+                    name="download-outline"
+                    color={theme.colors.primary}
+                    onPress={() => navigation.navigate("FieldCalendarExport")}
+                  />
+                );
+              },
             }}
             component={FieldCalendarScreen}
           />
