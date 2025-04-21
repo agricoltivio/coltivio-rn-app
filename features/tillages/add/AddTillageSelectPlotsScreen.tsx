@@ -1,3 +1,4 @@
+import * as turf from "@turf/turf";
 import { Plot } from "@/api/plots.api";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -26,6 +27,7 @@ import { LatLng, MapPressEvent, Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
 import { useAddTillageStore } from "./add-tillage.store";
 import { useTranslation } from "react-i18next";
+import { LabelMarker } from "@/features/map/LabelMarker";
 
 export function AddTillageSelectPlotsScreen({
   navigation,
@@ -73,8 +75,9 @@ export function AddTillageSelectPlotsScreen({
     />
   ));
 
-  const fertilizerApplicationPolygons = Object.values(selectedPlotsById).map(
-    (plot) => (
+  const tillagePolygons = Object.values(selectedPlotsById).flatMap((plot) => {
+    const centroid = turf.centroid(plot.geometry);
+    return [
       <MultiPolygon
         key={`plot-${plot.plotId}`}
         polygon={plot.geometry}
@@ -84,9 +87,15 @@ export function AddTillageSelectPlotsScreen({
           theme.colors.secondary,
           theme.map.defaultFillAlpha
         )}
-      />
-    )
-  );
+      />,
+      <LabelMarker
+        key={`plot-${plot.plotId}-marker`}
+        latitude={centroid.geometry.coordinates[1]}
+        longitude={centroid.geometry.coordinates[0]}
+        text={plot.name}
+      />,
+    ];
+  });
 
   const handleMapPress = (event: MapPressEvent) => {
     if (drawingAction === "draw") {
@@ -164,7 +173,7 @@ export function AddTillageSelectPlotsScreen({
         showsUserLocation={showUserLocation}
       >
         {plotPolygons}
-        {fertilizerApplicationPolygons}
+        {tillagePolygons}
         <PolygonDrawingTool
           portalName="AddTillageMap"
           ref={polygonDrawingToolRef}

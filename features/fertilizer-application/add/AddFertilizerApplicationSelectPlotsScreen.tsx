@@ -1,3 +1,4 @@
+import * as turf from "@turf/turf";
 import { Plot } from "@/api/plots.api";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -26,6 +27,7 @@ import { LatLng, MapPressEvent, Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
 import { useCreateFertilizerApplicationStore } from "./fertilizerApplication.store";
 import { useTranslation } from "react-i18next";
+import { LabelMarker } from "@/features/map/LabelMarker";
 
 export type SelectedFertilizerApplicationArea = {
   plotId: string;
@@ -80,8 +82,11 @@ export function AddFertilizerApplicationSelectPlotsScreen({
     />
   ));
 
-  const fertilizerApplicationPolygons = Object.values(selectedPlotsById).map(
-    (plot) => (
+  const fertilizerApplicationPolygons = Object.values(
+    selectedPlotsById
+  ).flatMap((plot) => {
+    const centroid = turf.centroid(plot.geometry);
+    return [
       <MultiPolygon
         key={`fertilizerApplication-${plot.plotId}`}
         polygon={plot.geometry}
@@ -91,9 +96,15 @@ export function AddFertilizerApplicationSelectPlotsScreen({
           theme.colors.secondary,
           theme.map.defaultFillAlpha
         )}
-      />
-    )
-  );
+      />,
+      <LabelMarker
+        key={`fertilizerApplication-${plot.plotId}-marker`}
+        latitude={centroid.geometry.coordinates[1]}
+        longitude={centroid.geometry.coordinates[0]}
+        text={plot.name}
+      />,
+    ];
+  });
 
   const handleMapPress = (event: MapPressEvent) => {
     if (drawingAction === "draw") {

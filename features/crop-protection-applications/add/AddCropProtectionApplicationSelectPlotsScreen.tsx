@@ -1,3 +1,4 @@
+import * as turf from "@turf/turf";
 import { Plot } from "@/api/plots.api";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -26,6 +27,7 @@ import { useTheme } from "styled-components/native";
 import { AddCropProtectionApplicationSelectPlotsScreenProps } from "../navigation/crop-protection-application-routes";
 import { useAddCropProtectionApplicationStore } from "./cropProtectionApplication.store";
 import { useTranslation } from "react-i18next";
+import { LabelMarker } from "@/features/map/LabelMarker";
 
 export type SelectedCropProtectionApplicationArea = {
   plotId: string;
@@ -82,15 +84,27 @@ export function AddCropProtectionApplicationSelectPlotsScreen({
 
   const cropProtectionApplicationPolygons = Object.values(
     selectedPlotsById
-  ).map((plot) => (
-    <MultiPolygon
-      key={`cropProtectionApplication-${plot.plotId}`}
-      polygon={plot.geometry}
-      strokeWidth={theme.map.defaultStrokeWidth}
-      strokeColor={"white"}
-      fillColor={hexToRgba(theme.colors.secondary, theme.map.defaultFillAlpha)}
-    />
-  ));
+  ).flatMap((plot) => {
+    const centroid = turf.centroid(plot.geometry);
+    return [
+      <MultiPolygon
+        key={`cropProtectionApplication-${plot.plotId}`}
+        polygon={plot.geometry}
+        strokeWidth={theme.map.defaultStrokeWidth}
+        strokeColor={"white"}
+        fillColor={hexToRgba(
+          theme.colors.secondary,
+          theme.map.defaultFillAlpha
+        )}
+      />,
+      <LabelMarker
+        key={`plot-${plot.plotId}-marker`}
+        latitude={centroid.geometry.coordinates[1]}
+        longitude={centroid.geometry.coordinates[0]}
+        text={plot.name}
+      />,
+    ];
+  });
 
   const handleMapPress = (event: MapPressEvent) => {
     if (drawingAction === "draw") {

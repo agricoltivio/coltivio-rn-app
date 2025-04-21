@@ -1,3 +1,4 @@
+import * as turf from "@turf/turf";
 import { Plot } from "@/api/plots.api";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -26,6 +27,7 @@ import { TopLeftBackButton } from "../../map/TopLeftBackButton";
 import { useFarmPlotsQuery } from "../../plots/plots.hooks";
 import { useCreateHarvestStore } from "./harvest.store";
 import { useTranslation } from "react-i18next";
+import { LabelMarker } from "@/features/map/LabelMarker";
 
 export type SelectedHarvestArea = {
   plotId: string;
@@ -89,19 +91,28 @@ export function SelectHarvestPlotsScreen({
     />
   ));
 
-  const harvestPolygons = Object.values(selectedHarvestPlotsById).map(
-    (harvestPlot) => (
-      <MultiPolygon
-        key={`harvest-${harvestPlot.plotId}`}
-        polygon={harvestPlot.harvestArea}
-        strokeWidth={theme.map.defaultStrokeWidth}
-        strokeColor={"white"}
-        fillColor={hexToRgba(
-          theme.colors.secondary,
-          theme.map.defaultFillAlpha
-        )}
-      />
-    )
+  const harvestPolygons = Object.values(selectedHarvestPlotsById).flatMap(
+    (harvestPlot) => {
+      const centroid = turf.centroid(harvestPlot.harvestArea);
+      return [
+        <MultiPolygon
+          key={`harvest-${harvestPlot.plotId}`}
+          polygon={harvestPlot.harvestArea}
+          strokeWidth={theme.map.defaultStrokeWidth}
+          strokeColor={"white"}
+          fillColor={hexToRgba(
+            theme.colors.secondary,
+            theme.map.defaultFillAlpha
+          )}
+        />,
+        <LabelMarker
+          key={`harvest-${harvestPlot.plotId}-marker`}
+          latitude={centroid.geometry.coordinates[1]}
+          longitude={centroid.geometry.coordinates[0]}
+          text={harvestPlot.name}
+        />,
+      ];
+    }
   );
 
   const handleMapPress = (event: MapPressEvent) => {
