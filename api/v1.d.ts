@@ -3471,6 +3471,7 @@ export interface components {
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
             date: string;
+            additionalNotes?: string;
             equipmentId?: string;
             plots: {
                 plotId: string;

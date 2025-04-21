@@ -11,6 +11,7 @@ export type HarvestStackParamList = {
   SelectHarvestQuantity: undefined;
   SelectHarvstPlots: undefined;
   DivideHarvestOnPlots: undefined;
+  AddHarvestAdditionalNotes: undefined;
   HarvestSummary: undefined;
 };
 export type HarvestsScreenProps = StackScreenProps<"Harvests">;
@@ -36,4 +37,8 @@ export type SelectHarvestPlotsScreenProps =
   StackScreenProps<"SelectHarvstPlots">;
 export type DivideHarvestOnPlotsScreenProps =
   StackScreenProps<"DivideHarvestOnPlots">;
+
+export type AddHarvestAdditionalNotesScreenProps =
+  StackScreenProps<"AddHarvestAdditionalNotes">;
+
 export type HarvestSummaryScreenProps = StackScreenProps<"HarvestSummary">;

@@ -10,6 +10,7 @@ import { HarvestDetailsScreen } from "../HarvestDetailsScreen";
 import { HarvestListScreen } from "../HarvestListScreen";
 import { HarvestsOfYearScreen } from "../HarvestOfYearScreen";
 import { HarvestsScreen } from "../HarvestsScreen";
+import { AddHarvestAdditionalNotesScreen } from "../add/AddHarvestAdditionalNotesScreen";
 
 export function renderHarvestStack() {
   return [
@@ -83,6 +84,14 @@ export function renderHarvestStack() {
         title: "",
       }}
       component={DivideHarvestOnPlotsScreen}
+    />,
+    <Stack.Screen
+      key="add-harvest-additional-notes"
+      name="AddHarvestAdditionalNotes"
+      options={{
+        title: "",
+      }}
+      component={AddHarvestAdditionalNotesScreen}
     />,
     <Stack.Screen
       key="harvest-summary"

@@ -12,7 +12,7 @@ export function AddTillageSummaryScreen({
 }: AddTillageSummaryScreenProps) {
   const { t } = useTranslation();
   const { selectedPlotsById, selectedEquipment, data } = useAddTillageStore();
-  const { date, action, reason } = data as TillageBase;
+  const { date, action, reason, additionalNotes } = data as TillageBase;
 
   const selectedPlots = Object.values(selectedPlotsById);
 
@@ -33,6 +33,7 @@ export function AddTillageSummaryScreen({
       reason,
       date,
       equipmentId: selectedEquipment?.id,
+      additionalNotes,
       plots: selectedPlots.map((plot) => ({
         plotId: plot.plotId,
         geometry: plot.geometry,
@@ -55,6 +56,7 @@ export function AddTillageSummaryScreen({
         action={action}
         reason={reason}
         plots={selectedPlots}
+        additionalNotes={additionalNotes}
       />
     </ContentView>
   );

@@ -177,9 +177,9 @@ export function RootStack() {
           {renderHomeStack(theme, navigation)}
           {renderUserStack()}
           {renderFarmStack()}
-          {renderPlotsStack(theme)}
-          {renderCropsRotationStack(theme)}
-          {renderTillagesStack(theme)}
+          {renderPlotsStack()}
+          {renderCropsRotationStack()}
+          {renderTillagesStack()}
           {renderEquipmentStack()}
           {renderFieldCalendarStack(theme, navigation)}
           {renderCropsStack()}

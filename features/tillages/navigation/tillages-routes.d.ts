@@ -7,6 +7,7 @@ export type TillagesStackParamList = {
   AddTillageSelectDate: undefined;
   AddTillageSelectEquipment: undefined;
   AddTillageSelectPlots: undefined;
+  AddTillageAdditionalNotes: undefined;
   AddTillageSummary: undefined;
 };
 
@@ -19,9 +20,15 @@ export type TillageDetailsScreenProps = StackScreenProps<"TillageDetails">;
 
 export type AddTillageSelectDateScreenProps =
   StackScreenProps<"AddTillageSelectDate">;
+
 export type AddTillageSelectEquipmentScreenProps =
   StackScreenProps<"AddTillageSelectEquipment">;
+
 export type AddTillageSelectPlotsScreenProps =
   StackScreenProps<"AddTillageSelectPlots">;
+
+export type AddTillageAdditionalNotesScreenProps =
+  StackScreenProps<"AddTillageAdditionalNotes">;
+
 export type AddTillageSummaryScreenProps =
   StackScreenProps<"AddTillageSummary">;

@@ -20,7 +20,7 @@ import { PlotHarvestsOfYearScreen } from "../PlotHarvestsOfYearScreen";
 import { PlotHarvestsScreen } from "../PlotHarvestsScreen";
 import { PlotTillagesOfYearListScreen } from "../PlotTillagesOfYearListScreen";
 
-export function renderPlotsStack(theme: DefaultTheme) {
+export function renderPlotsStack() {
   return [
     <Stack.Screen
       key="plots-map"
@@ -76,7 +76,6 @@ export function renderPlotsStack(theme: DefaultTheme) {
       name="Plots"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={PlotsScreen}
     />,
@@ -85,7 +84,6 @@ export function renderPlotsStack(theme: DefaultTheme) {
       name="PlotDetails"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={PlotDetailsScreen}
     />,
@@ -94,7 +92,6 @@ export function renderPlotsStack(theme: DefaultTheme) {
       name="PlotHarvests"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={PlotHarvestsScreen}
     />,
@@ -103,7 +100,6 @@ export function renderPlotsStack(theme: DefaultTheme) {
       name="PlotHarvestsOfYear"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={PlotHarvestsOfYearScreen}
     />,
@@ -112,7 +108,6 @@ export function renderPlotsStack(theme: DefaultTheme) {
       name="PlotHarvestsOfYearList"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={PlotHarvestsOfYearListScreen}
     />,
@@ -158,7 +153,6 @@ export function renderPlotsStack(theme: DefaultTheme) {
       name="PlotTillages"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={PlotTillagesScreen}
     />,
@@ -167,7 +161,6 @@ export function renderPlotsStack(theme: DefaultTheme) {
       name="PlotTillagesOfYearList"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={PlotTillagesOfYearListScreen}
     />,

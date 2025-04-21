@@ -148,7 +148,7 @@ export function AddTillageSelectPlotsScreen({
         <BottomActionContainer>
           <Button
             title={t("buttons.next")}
-            onPress={() => navigation.navigate("AddTillageSummary")}
+            onPress={() => navigation.navigate("AddTillageAdditionalNotes")}
             disabled={!Object.values(selectedPlotsById).length}
           />
         </BottomActionContainer>

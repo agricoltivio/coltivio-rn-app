@@ -1,4 +1,5 @@
 import { Stack } from "@/navigation/stack";
+import { AddTillageAdditionalNotesScreen } from "../add/AddTillageAdditionalNotesScreen";
 import { AddTillageSelectDateScreen } from "../add/AddTillageSelectDateScreen";
 import { AddTillageSelectEquipmentScreen } from "../add/AddTillageSelectEquipmentScreen";
 import { AddTillageSelectPlotsScreen } from "../add/AddTillageSelectPlotsScreen";
@@ -6,16 +7,14 @@ import { AddTillageSummaryScreen } from "../add/AddTillageSummaryScreen";
 import { TillageDetailsScreen } from "../TillageDetails";
 import { TillagesOfYearListScreen } from "../TillagesOfYearListScreen";
 import { TillagesScreen } from "../TillagesScreen";
-import { DefaultTheme } from "styled-components";
 
-export function renderTillagesStack(theme: DefaultTheme) {
+export function renderTillagesStack() {
   return [
     <Stack.Screen
       key="tillages"
       name="Tillages"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={TillagesScreen}
     />,
@@ -24,7 +23,6 @@ export function renderTillagesStack(theme: DefaultTheme) {
       name="TillagesOfYearList"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={TillagesOfYearListScreen}
     />,
@@ -33,7 +31,6 @@ export function renderTillagesStack(theme: DefaultTheme) {
       name="TillageDetails"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={TillageDetailsScreen}
     />,
@@ -42,7 +39,6 @@ export function renderTillagesStack(theme: DefaultTheme) {
       name="AddTillageSelectDate"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={AddTillageSelectDateScreen}
     />,
@@ -51,7 +47,6 @@ export function renderTillagesStack(theme: DefaultTheme) {
       name="AddTillageSelectEquipment"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={AddTillageSelectEquipmentScreen}
     />,
@@ -61,16 +56,22 @@ export function renderTillagesStack(theme: DefaultTheme) {
       options={{
         title: "",
         headerShown: false,
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={AddTillageSelectPlotsScreen}
+    />,
+    <Stack.Screen
+      key="add-tillage-additional-notes"
+      name="AddTillageAdditionalNotes"
+      options={{
+        title: "",
+      }}
+      component={AddTillageAdditionalNotesScreen}
     />,
     <Stack.Screen
       key="add-tillage-summary"
       name="AddTillageSummary"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={AddTillageSummaryScreen}
     />,

@@ -22,12 +22,7 @@ export function AddFertilizerApplicationAdditionalNotesScreen({
   const { t } = useTranslation();
   const theme = useTheme();
 
-  const { setFertilizerApplication, reset } =
-    useCreateFertilizerApplicationStore();
-
-  useEffect(() => {
-    return () => reset();
-  }, []);
+  const { setFertilizerApplication } = useCreateFertilizerApplicationStore();
 
   const {
     control,

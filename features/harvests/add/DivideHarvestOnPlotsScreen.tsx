@@ -138,7 +138,7 @@ export function DivideHarvestOnPlotsScreen({
         removeHarvestPlot(harvestArea.plotId);
       }
     }
-    navigation.navigate("HarvestSummary");
+    navigation.navigate("AddHarvestAdditionalNotes");
   }
 
   return (

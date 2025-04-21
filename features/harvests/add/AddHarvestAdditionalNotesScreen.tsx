@@ -1,7 +1,6 @@
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
-import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2 } from "@/theme/Typography";
 import React, { useEffect } from "react";
@@ -9,20 +8,20 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { AddCropProtectionApplicationAdditionalNotesScreenProps } from "../navigation/crop-protection-application-routes";
-import { useAddCropProtectionApplicationStore } from "./cropProtectionApplication.store";
 import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
+import { useCreateHarvestStore } from "./harvest.store";
+import { AddHarvestAdditionalNotesScreenProps } from "../navigation/harvest-routes";
 
 type FormValues = {
   additionalNotes?: string;
 };
-export function AddCropProtectionApplicationAdditionalNotesScreen({
+export function AddHarvestAdditionalNotesScreen({
   navigation,
-}: AddCropProtectionApplicationAdditionalNotesScreenProps) {
+}: AddHarvestAdditionalNotesScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
 
-  const { setData } = useAddCropProtectionApplicationStore();
+  const { setHarvest } = useCreateHarvestStore();
 
   const {
     control,
@@ -31,9 +30,9 @@ export function AddCropProtectionApplicationAdditionalNotesScreen({
   } = useForm<FormValues>();
 
   function onSubmit({ additionalNotes }: FormValues) {
-    setData({ additionalNotes });
+    setHarvest({ additionalNotes });
 
-    navigation.navigate("AddCropProtectionApplicationSummary");
+    navigation.navigate("HarvestSummary");
   }
 
   return (

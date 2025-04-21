@@ -10,14 +10,13 @@ import { CropRotationsScreen } from "../CropRotationsScreen";
 import { EditCropRotationScreen } from "../EditCropRotationScreen";
 import { DefaultTheme } from "styled-components";
 
-export function renderCropsRotationStack(theme: DefaultTheme) {
+export function renderCropsRotationStack() {
   return [
     <Stack.Screen
       key="crop-rotations"
       name="CropRotations"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={CropRotationsScreen}
     />,
@@ -26,7 +25,6 @@ export function renderCropsRotationStack(theme: DefaultTheme) {
       name="CropRotationsOfYearList"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={CropRotationsOfYearListScreen}
     />,
@@ -35,7 +33,6 @@ export function renderCropsRotationStack(theme: DefaultTheme) {
       name="PlotCropRotations"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={PlotCropRotationsScreen}
     />,
@@ -44,7 +41,6 @@ export function renderCropsRotationStack(theme: DefaultTheme) {
       name="AddPlotCropRotation"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={AddCropRotationScreen}
     />,
@@ -53,7 +49,6 @@ export function renderCropsRotationStack(theme: DefaultTheme) {
       name="EditPlotCropRotation"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={EditCropRotationScreen}
     />,
@@ -62,7 +57,6 @@ export function renderCropsRotationStack(theme: DefaultTheme) {
       name="AddCropRotationSelectStartDate"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={AddCropRotationSelectStartDateScreen}
     />,
@@ -71,7 +65,6 @@ export function renderCropsRotationStack(theme: DefaultTheme) {
       name="AddCropRotationSelectCrop"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={AddCropRotationSelectCropScreen}
     />,
@@ -81,7 +74,6 @@ export function renderCropsRotationStack(theme: DefaultTheme) {
       options={{
         title: "",
         headerShown: false,
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={AddCropRotationSelectPlotsScreen}
     />,
@@ -90,7 +82,6 @@ export function renderCropsRotationStack(theme: DefaultTheme) {
       name="AddCropRotationSummary"
       options={{
         title: "",
-        headerTitleStyle: { color: theme.colors.primary },
       }}
       component={AddCropRotationSummaryScreen}
     />,
