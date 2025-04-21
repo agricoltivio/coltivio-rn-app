@@ -7,12 +7,14 @@ import {
   useFertilizerApplicationQuery,
 } from "./fertilizerApplications.hooks";
 import { FertilizerApplicationSummary } from "./FertilizerApplicationSummary";
+import { useTranslation } from "react-i18next";
 
 export function FertilizerApplicationDetailsScreen({
   route,
   navigation,
 }: FertilizerApplicationDetailsScreenProps) {
   const theme = useTheme();
+  const { t } = useTranslation();
   const fertilizerApplicationId = route.params.fertilizerApplicationId;
   const { fertilizerApplication } = useFertilizerApplicationQuery(
     fertilizerApplicationId

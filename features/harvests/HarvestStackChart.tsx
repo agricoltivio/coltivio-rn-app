@@ -71,13 +71,13 @@ export function HarvestStackChart({
         rulesThickness={1}
         rulesColor={theme.colors.gray4}
         height={100}
-        formatYLabel={(value) => `${value} dt`}
+        formatYLabel={(value) => `${Math.round(Number(value) * 100) / 100} dt`}
         xAxisThickness={1}
         xAxisColor={theme.colors.gray4}
         xAxisType="dashed"
         yAxisThickness={0}
         yAxisTextStyle={{ color: theme.colors.gray2 }}
-        yAxisLabelWidth={45}
+        yAxisLabelWidth={60}
         xAxisLabelTextStyle={{ color: theme.colors.gray2 }}
         noOfSections={3}
         disablePress
