@@ -53,9 +53,7 @@ export function AddCropProtectionApplicationSelectMachineConfigScreen({
     defaultValues: {
       unit: selectedProduct?.unit,
       equipmentId:
-        selectedEquipment?.id || data?.amountPerApplication
-          ? "none"
-          : undefined,
+        selectedEquipment?.id || selectedProduct?.defaultEquipmentId || "none",
       capacity:
         selectedEquipment?.capacity.toString() ||
         data?.amountPerApplication?.toString(),

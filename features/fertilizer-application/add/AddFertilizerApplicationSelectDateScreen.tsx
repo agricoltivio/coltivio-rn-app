@@ -6,11 +6,11 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { H2 } from "@/theme/Typography";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { useCreateFertilizerApplicationStore } from "./fertilizerApplication.store";
 import { AddFertilizerApplicationSelectDateScreenProps } from "../navigation/fertilizer-application-routes";
-import { useTranslation } from "react-i18next";
+import { useCreateFertilizerApplicationStore } from "./fertilizerApplication.store";
 
 type FormValues = {
   date: Date;
