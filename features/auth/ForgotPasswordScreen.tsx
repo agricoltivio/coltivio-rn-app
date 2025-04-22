@@ -14,7 +14,7 @@ import { useState } from "react";
 import { ForgotPasswordScreenProps } from "@/features/auth/navigation/auth-routes";
 
 const redirectTo = makeRedirectUri({
-  scheme: "ch.coltivio",
+  scheme: "ch.agricoltivio.coltivio",
   path: "ResetPassword",
 });
 
