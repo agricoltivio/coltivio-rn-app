@@ -27,14 +27,17 @@ import { Stepper } from "./Stepper";
 
 export function SelectFederalFarmIdMapScreen({
   navigation,
-  route,
 }: SelectFederalFarmIdMapScreenProps) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   const [mapVisible, setMapVisible] = useState(false);
   const { data, setData } = useOnboarding();
-  const { plots } = usePlotsByLocationQuery(data.location!, 1, !!data.location);
+  const { plots, isFetching: isFetchingPlots } = usePlotsByLocationQuery(
+    data.location!,
+    1,
+    !!data.location
+  );
 
   const [federalFarmId, setFederalFarmId] = useState<string | undefined>();
   const [federalFarmIdSearchText, setFederalFarmIdSearchText] = useState(
@@ -46,7 +49,7 @@ export function SelectFederalFarmIdMapScreen({
     800
   );
 
-  const { federalFarmIds, isFetching, status } = useFederalFarmIdSearchQuery(
+  const { federalFarmIds, isFetching } = useFederalFarmIdSearchQuery(
     debouncedFederalFarmIdSearchText,
     data.location?.lng!,
     data.location?.lat!,
@@ -112,8 +115,7 @@ export function SelectFederalFarmIdMapScreen({
   return (
     <View style={{ flex: 1, paddingBottom: insets.bottom }}>
       <MapView
-        loadingEnabled
-        loading={!mapVisible}
+        loading={!mapVisible || isFetchingPlots}
         mapType="satellite"
         initialRegion={initialRegion}
       >
@@ -160,12 +162,20 @@ export function SelectFederalFarmIdMapScreen({
         />
       </View>
 
-      {mapVisible && (
+      {mapVisible && plots?.length > 0 ? (
         <MapInfoModal
           title={t("onboarding.federal_farm_number.modal.heading")}
           text={t("onboarding.federal_farm_number.modal.body")}
         />
-      )}
+      ) : null}
+
+      {mapVisible && !isFetchingPlots && plots?.length === 0 ? (
+        <MapInfoModal
+          title={t("onboarding.federal_farm_number.modal_not_found.heading")}
+          text={t("onboarding.federal_farm_number.modal_not_found.body")}
+          onClose={() => navigation.navigate("FarmSummary")}
+        />
+      ) : null}
 
       <View
         style={{

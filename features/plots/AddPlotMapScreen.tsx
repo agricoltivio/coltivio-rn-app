@@ -34,6 +34,7 @@ import { useFarmPlotsQuery } from "./plots.hooks";
 import { useTranslation } from "react-i18next";
 import { usePlotsByLocationQuery } from "../federal-plots/federalPlots.hooks";
 import { FederalFarmPlot } from "@/api/layers.api";
+import { useAddPlotStore } from "./add-plots.store";
 
 export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
   const { t } = useTranslation();
@@ -45,8 +46,10 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
   const [showModeSelect, setShowModeSelect] = useState(true);
   const [showModeInfo, setShowModeInfo] = useState(false);
   const [showsUserLocation, setShowsUserLocation] = useState<boolean>(false);
+
   const [mode, setMode] = useState<"parcel" | "custom" | "none">("none");
   const [drawingAction, setDrawingAction] = useState<DrawAction>("select");
+
   const [newPolygon, setNewPolygon] = useState<{
     geometry: GeoJSON.MultiPolygon;
     centroid: GeoJSON.Point;
@@ -55,6 +58,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
     localId?: string;
     cuttingDate?: string;
   } | null>(null);
+
   const polygonDrawingToolRef = useRef<PolygonDrawingToolActions>(null);
 
   const [currentRegion, setCurrentRegion] = useState<Region | null>(null);
@@ -68,6 +72,14 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
     mode === "parcel" && currentViewPoint.latitude !== 0
   );
 
+  const addPlotStore = useAddPlotStore();
+
+  useEffect(() => {
+    return () => {
+      return addPlotStore.reset();
+    };
+  }, []);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener("transitionEnd", () => {
       setMapVisible(true);
@@ -75,6 +87,13 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
 
     return unsubscribe;
   }, [navigation]);
+
+  const handleOnComplete = () => {
+    if (newPolygon) {
+      addPlotStore.setData(newPolygon);
+      navigation.navigate("AddPlotSummary", {});
+    }
+  };
 
   const handleRegionChangeComplete = (region: Region) => {
     setCurrentRegion(region);
@@ -312,9 +331,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
         <Button
           disabled={!newPolygon}
           title={t("buttons.next")}
-          onPress={() =>
-            navigation.navigate("AddPlotSummary", { ...newPolygon! })
-          }
+          onPress={handleOnComplete}
         />
       </BottomActionContainer>
     </ContentView>

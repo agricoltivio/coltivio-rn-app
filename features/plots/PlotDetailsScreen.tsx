@@ -41,8 +41,8 @@ export function PlotDetailsScreen({
     initialRegion = {
       latitude,
       longitude,
-      latitudeDelta: 0.0025,
-      longitudeDelta: 0.0025,
+      latitudeDelta: 0.0045,
+      longitudeDelta: 0.0045,
     };
   }
 

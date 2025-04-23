@@ -18,7 +18,15 @@ export function CreateCropScreen({ navigation }: CreateCropScreenProps) {
   } = useForm<CropFormValues>();
 
   const createForageMutation = useCreateCropMutation(
-    () => navigation.goBack(),
+    (crop) => {
+      const previousScreen =
+        navigation.getState().routes[navigation.getState().index - 1];
+      if (previousScreen.name === "AddPlotSummary") {
+        navigation.popTo("AddPlotSummary", { cropId: crop.id });
+      } else {
+        navigation.goBack();
+      }
+    },
     (error) => console.error(error)
   );
 

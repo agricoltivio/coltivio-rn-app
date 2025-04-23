@@ -34,11 +34,8 @@ export type FetchClient = typeof client;
 const middleware: Middleware = {
   async onResponse({ request, response, options }) {
     if (!response.ok) {
-      // Will produce error messages like "https://example.org/api/v1/example: 404 Not Found".
       const content = await response.json();
-      throw new Error(
-        `${response.url}: ${response.status} - ${content.error.message}`
-      );
+      throw new Error(`${response.url}: ${response.status} - ${content.error}`);
     }
   },
   async onRequest({ request, options }) {

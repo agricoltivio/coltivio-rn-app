@@ -189,6 +189,10 @@
         "heading": "Deine Betriebsnummer",
         "body": "Tippe entweder auf eine deiner Parzellen oder suche manuell nach deiner Betriebsnummer."
       },
+      "modal_not_found": {
+        "heading": "Deine Betriebsnummer",
+        "body": "Leider haben wir keine Parzellen an deinem Standort gefunden. Die Kantone Obwalden, Nidwalden und Waadt sind leider noch nicht unterstützt. Du kannst diesen Schritt überspringen und die Flächen manuell einzeichnen."
+      },
       "confirmation": "Ist {{federalFarmId}} deine Betriebsnummer?"
     },
     "summary": {
@@ -196,7 +200,8 @@
       "plots_info": "Deine Flächen werden basierend auf deiner Betriebsnummer als Schläge hinzugefügt.",
       "crops_info": "Die momentane Kultur wird vom Nutzungscode abgeleitet.",
       "edit_plots_info": "Du kannst deine Flächen jederzeit unter 'Schläge' oder über die Karte bearbeiten.",
-      "press_save_to_finish": "Drücke 'Speichern', um deinen Hof zu erstellen."
+      "press_save_to_finish": "Drücke 'Speichern', um deinen Hof zu erstellen.",
+      "no_federal_farm_id": "Leider konnten wir deine Flächen nicht automatisch hinzufügen. Du kannst deine Flächen unter 'Schläge' oder unter der Karte manuell hinzufügen. Wir arbeiten daran, sobald wie möglich alle Standorte zu unterstützen."
     }
   },
   "users": {

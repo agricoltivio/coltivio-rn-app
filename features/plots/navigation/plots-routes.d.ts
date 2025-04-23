@@ -4,12 +4,7 @@ export type PlotsStackParamList = {
   PlotsMap: undefined;
   AddPlotMap: undefined;
   AddPlotSummary: {
-    geometry: GeoJSON.MultiPolygon;
-    centroid: GeoJSON.Point;
-    size: number;
-    usage?: number;
-    localId?: string;
-    cuttingDate?: string;
+    cropId?: string;
   };
   EditPlot: { plotId: string; area?: number; polygon?: GeoJSON.MultiPolygon };
   EditPlotMap: { plotId: string };

@@ -11,7 +11,7 @@ import { AddPlotSummaryScreenProps } from "./navigation/plots-routes";
 import { hexToRgba } from "@/theme/theme";
 import { H2, Subtitle } from "@/theme/Typography";
 import * as turf from "@turf/turf";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { View } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Region } from "react-native-maps";
@@ -22,6 +22,7 @@ import { useTranslation } from "react-i18next";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 import { getUsageCodeSelectData } from "./usage-codes";
+import { useAddPlotStore } from "./add-plots.store";
 
 type AddPlotFormValues = {
   name: string;
@@ -37,10 +38,13 @@ export function AddPlotSummaryScreen({
   route,
   navigation,
 }: AddPlotSummaryScreenProps) {
-  const { geometry, centroid, size, localId, cuttingDate, usage } =
-    route.params;
   const { t } = useTranslation();
   const theme = useTheme();
+  const { cropId } = route.params;
+
+  const { data } = useAddPlotStore();
+  const { geometry, centroid, size, localId, cuttingDate, usage } = data!;
+
   const { plots } = useFarmPlotsQuery();
   const { crops } = useCropsQuery();
 
@@ -55,6 +59,7 @@ export function AddPlotSummaryScreen({
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors, isDirty },
   } = useForm<AddPlotFormValues>({
     defaultValues: {
@@ -64,6 +69,12 @@ export function AddPlotSummaryScreen({
       cuttingDate: cuttingDate ? new Date(cuttingDate) : undefined,
     },
   });
+
+  useEffect(() => {
+    if (cropId) {
+      setValue("cropId", cropId);
+    }
+  }, [cropId]);
 
   const createPlotMutation = useCreatePlotMutation(
     () =>
@@ -214,6 +225,12 @@ export function AddPlotSummaryScreen({
                 value: crop.id,
               })) ?? []
             }
+          />
+          <Button
+            title={t("crops.new_crop")}
+            onPress={() => navigation.navigate("CreateCrop")}
+            type="accent"
+            style={{ marginBottom: theme.spacing.m }}
           />
           <RHNumberInput
             name="size"
