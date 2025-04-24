@@ -5,7 +5,7 @@ export type AuthStackParamList = {
   SignIn: undefined;
   SignUp: undefined;
   ForgotPassword: undefined;
-  PasswordResetLinkSent: undefined;
+  PasswordResetLinkSent: { email: string };
   ResetPassword: undefined;
 
   UnexpectedError: undefined;

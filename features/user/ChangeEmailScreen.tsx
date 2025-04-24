@@ -77,8 +77,9 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
             name="email"
             control={control}
             label={t("forms.labels.email")}
+            disabled={authUser!.app_metadata.provider === "apple"}
           />
-          {authUser?.email_confirmed_at && (
+          {!authUser!.email_confirmed_at && (
             <>
               <View
                 style={{

@@ -28,7 +28,6 @@ export function NativeAppleSignInButton() {
               provider: "apple",
               token: credential.identityToken,
             });
-            console.log(JSON.stringify({ error, user }, null, 2));
             if (!error && session) {
               // User is signed in.
               setSession(session);

@@ -22,7 +22,9 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
     <ScrollView showHeaderOnScroll headerTitleOnScroll={farm?.name}>
       <ContentView headerVisible={true}>
         <View>
-          <H1>{t("home.welcome_text", { displayName: user?.fullName })}</H1>
+          {user?.fullName ? (
+            <H1>{t("home.welcome_text", { displayName: user?.fullName })}</H1>
+          ) : null}
           <H2>{farm?.name}</H2>
           <View
             style={{

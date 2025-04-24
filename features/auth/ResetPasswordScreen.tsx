@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react-native";
 import React from "react";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -14,6 +15,8 @@ import { useEffect, useState } from "react";
 import { ResetPasswordScreenProps } from "@/features/auth/navigation/auth-routes";
 import { useSession } from "@/auth/SessionProvider";
 import * as Linking from "expo-linking";
+import { useUrl } from "@/utils/url-context";
+import { Session } from "@supabase/supabase-js";
 
 type FromValues = {
   password: string;
@@ -31,8 +34,11 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
   const [urlError, setUrlError] = useState<string | null>(null);
   const { t } = useTranslation();
   const theme = useTheme();
-  const { setUser, setSession } = useSession();
-  const url = Linking.useURL();
+  const [authState, setAutState] = useState<{
+    accessToken: string;
+    refreshToken: string;
+  } | null>(null);
+  const { url } = useUrl();
 
   const password = watch("password");
 
@@ -68,46 +74,54 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
         setUrlError(t("errors.unexpected"));
         return;
       }
-      const { data, error } = await supabase.auth.setSession({
-        access_token: access_token as string,
-        refresh_token: refresh_token as string,
+      setAutState({
+        accessToken: access_token as string,
+        refreshToken: refresh_token as string,
       });
-      if (error) {
-        console.error(error);
-        setError(t("errors.unexpected"));
-        return;
-      }
-      if (!data.session) {
-        console.error("Missing session");
-        setError(t("errors.unexpected"));
-        return;
-      }
-      setSession(data.session!);
+      // if (!data.session) {
+      //   console.error("Missing session");
+      //   setError(t("errors.unexpected"));
+      //   return;
+      // }
     };
     createSessionFromUrl();
   }, [url]);
 
   async function onSubmit({ password }: FromValues) {
-    const { error, data } = await supabase.auth.updateUser({
+    const { error } = await supabase.auth.setSession({
+      access_token: authState!.accessToken,
+      refresh_token: authState!.refreshToken,
+    });
+    if (error) {
+      console.error("set session error", error);
+      Sentry.captureException(error);
+      setError(t("errors.unexpected"));
+      return;
+    }
+    const { error: passwordUpdateError } = await supabase.auth.updateUser({
       password,
     });
-    if (error || !data) {
-      console.error(error?.code || error?.message);
-      setError(t("errors.unexpected_retry"));
-    } else {
-      setUser(data.user);
-      navigation.goBack();
+    if (passwordUpdateError) {
+      console.error(passwordUpdateError);
+      Sentry.captureException(passwordUpdateError);
     }
   }
   return (
     <ContentView
       footerComponent={
         <BottomActionContainer>
-          <Button
-            title={t("buttons.save")}
-            onPress={handleSubmit(onSubmit)}
-            disabled={!isDirty || urlError != null}
-          />
+          {urlError != null ? (
+            <Button
+              title={t("buttons.back")}
+              onPress={() => navigation.navigate("SignIn")}
+            />
+          ) : (
+            <Button
+              title={t("buttons.save")}
+              onPress={handleSubmit(onSubmit)}
+              disabled={!isDirty || urlError != null}
+            />
+          )}
         </BottomActionContainer>
       }
     >
