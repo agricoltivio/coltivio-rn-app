@@ -18,7 +18,9 @@ export function UserAccountScreen({ navigation }: UserAccountScreenProps) {
   const theme = useTheme();
   const { user } = useUserQuery();
   const queryClient = useQueryClient();
-  const { clearSession } = useSession();
+  const { clearSession, authUser } = useSession();
+  const usesSocialLogin = authUser?.app_metadata.provider !== "email";
+
   return (
     <ContentView
       footerComponent={
@@ -73,6 +75,7 @@ export function UserAccountScreen({ navigation }: UserAccountScreenProps) {
               onPress={() => {
                 navigation.navigate("ChangeEmail");
               }}
+              hideBottomDivider={usesSocialLogin}
             >
               <ListItem.Content>
                 <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
@@ -81,20 +84,22 @@ export function UserAccountScreen({ navigation }: UserAccountScreenProps) {
               </ListItem.Content>
               <ListItem.Chevron />
             </ListItem>
-            <ListItem
-              onPress={() => {
-                navigation.navigate("ChangePassword");
-              }}
-              style={{ backgroundColor: theme.colors.white }}
-              hideBottomDivider
-            >
-              <ListItem.Content>
-                <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
-                  {t("forms.labels.password")}
-                </ListItem.Title>
-              </ListItem.Content>
-              <ListItem.Chevron />
-            </ListItem>
+            {!usesSocialLogin ? (
+              <ListItem
+                onPress={() => {
+                  navigation.navigate("ChangePassword");
+                }}
+                style={{ backgroundColor: theme.colors.white }}
+                hideBottomDivider
+              >
+                <ListItem.Content>
+                  <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
+                    {t("forms.labels.password")}
+                  </ListItem.Title>
+                </ListItem.Content>
+                <ListItem.Chevron />
+              </ListItem>
+            ) : null}
           </View>
         </View>
       </ScrollView>

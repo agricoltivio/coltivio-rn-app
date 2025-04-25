@@ -79,6 +79,7 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
     }
   }
 
+  const usesSocialLogin = authUser!.app_metadata.provider !== "email";
   return (
     <ContentView
       footerComponent={
@@ -102,35 +103,37 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
             name="email"
             control={control}
             label={t("forms.labels.email")}
-            disabled={authUser!.app_metadata.provider === "apple"}
+            disabled={usesSocialLogin}
           />
-          {!user?.emailVerified && !verificationMailSent && (
-            <>
-              <View
-                style={{
-                  borderRadius: 10,
-                  backgroundColor: theme.colors.yellow,
-                  opacity: 0.7,
-                  marginTop: theme.spacing.m,
-                  padding: theme.spacing.s,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Body style={{ fontWeight: 800 }}>
-                  {t("users.email_not_verified")}
-                </Body>
-              </View>
-              <Button
-                type="accent"
-                style={{
-                  marginTop: theme.spacing.m,
-                }}
-                title={t("users.resend_verification_email")}
-                onPress={sendVerificationEmail}
-              />
-            </>
-          )}
+          {!usesSocialLogin &&
+            !user?.emailVerified &&
+            !verificationMailSent && (
+              <>
+                <View
+                  style={{
+                    borderRadius: 10,
+                    backgroundColor: theme.colors.yellow,
+                    opacity: 0.7,
+                    marginTop: theme.spacing.m,
+                    padding: theme.spacing.s,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Body style={{ fontWeight: 800 }}>
+                    {t("users.email_not_verified")}
+                  </Body>
+                </View>
+                <Button
+                  type="accent"
+                  style={{
+                    marginTop: theme.spacing.m,
+                  }}
+                  title={t("users.resend_verification_email")}
+                  onPress={sendVerificationEmail}
+                />
+              </>
+            )}
           {verificationMailSent && (
             <View
               style={{
