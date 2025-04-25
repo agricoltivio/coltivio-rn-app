@@ -1,28 +1,33 @@
 import { useSession } from "@/auth/SessionProvider";
-import { queryKeys } from "@/cache/query-keys";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
-import { ChangeEmailScreenProps } from "./navigation/user-routes";
 import { supabase } from "@/supabase/supabase";
 import { Body, H2 } from "@/theme/Typography";
-import { useQueryClient } from "@tanstack/react-query";
-import React, { useState } from "react";
+import { makeRedirectUri } from "expo-auth-session";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { useUserQuery } from "./users.hooks";
-import { useTranslation } from "react-i18next";
+import { ChangeEmailScreenProps } from "./navigation/user-routes";
+import { useUpdateUserMutation, useUserQuery } from "./users.hooks";
+
+const redirectTo = makeRedirectUri({
+  scheme: "ch.agricoltivio.coltivio",
+  path: "EmailVerified",
+});
 
 export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { user } = useUserQuery();
   const { setUser, authUser } = useSession();
+
+  const [verificationMailSent, setVerificationMailSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const queryClient = useQueryClient();
   const {
     control,
     handleSubmit,
@@ -31,24 +36,47 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
     defaultValues: { email: user?.email ?? undefined },
   });
 
+  const updateUserMutation = useUpdateUserMutation();
+
+  useEffect(() => {
+    if (verificationMailSent && user?.emailVerified) {
+      setVerificationMailSent(false);
+      setError(null);
+    }
+  }, [user]);
+
   async function onSubmit({ email }: { email: string }) {
-    const { error, data } = await supabase.auth.updateUser({
-      email,
-    });
+    const { error, data } = await supabase.auth.updateUser(
+      {
+        email,
+      },
+      {
+        emailRedirectTo: redirectTo,
+      }
+    );
     if (error || !data) {
       console.error(error?.code || error?.message);
       setError(t("errors.unexpected_retry"));
     } else {
-      queryClient.invalidateQueries({ queryKey: queryKeys.users._def });
       setUser(data.user);
-      navigation.goBack();
+      updateUserMutation.mutate({ emailVerified: false });
+      navigation.navigate("ChangeEmailPending", { newEmail: email });
     }
   }
-  async function resendConfirmationEmail() {
-    supabase.auth.resend({
-      email: authUser!.email!,
-      type: "email_change",
+  async function sendVerificationEmail() {
+    const { error } = await supabase.auth.signInWithOtp({
+      email: user!.email,
+      options: {
+        emailRedirectTo: redirectTo,
+      },
     });
+    if (error) {
+      console.error(error);
+      setError(t("errors.unexpected_retry"));
+    } else {
+      setVerificationMailSent(true);
+      setError(null);
+    }
   }
 
   return (
@@ -66,12 +94,9 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
       <ScrollView
         keyboardAware
         showHeaderOnScroll
-        headerTitleOnScroll={t("users.change_email")}
+        headerTitleOnScroll={t("users.email")}
       >
-        <H2>{t("users.change_email")}</H2>
-        <Body style={{ marginTop: theme.spacing.m }}>
-          {t("users.verify_new_email_before_in_effect")}
-        </Body>
+        <H2>{t("users.email")}</H2>
         <View style={{ flex: 1, marginTop: theme.spacing.m }}>
           <RHTextInput
             name="email"
@@ -79,7 +104,7 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
             label={t("forms.labels.email")}
             disabled={authUser!.app_metadata.provider === "apple"}
           />
-          {!authUser!.email_confirmed_at && (
+          {!user?.emailVerified && !verificationMailSent && (
             <>
               <View
                 style={{
@@ -102,9 +127,26 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
                   marginTop: theme.spacing.m,
                 }}
                 title={t("users.resend_verification_email")}
-                onPress={resendConfirmationEmail}
+                onPress={sendVerificationEmail}
               />
             </>
+          )}
+          {verificationMailSent && (
+            <View
+              style={{
+                borderRadius: 10,
+                backgroundColor: theme.colors.yellow,
+                opacity: 0.7,
+                marginTop: theme.spacing.m,
+                padding: theme.spacing.s,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Body style={{ fontWeight: 800 }}>
+                {t("users.verification_mail_sent", { email: authUser!.email })}
+              </Body>
+            </View>
           )}
           {error && (
             <View

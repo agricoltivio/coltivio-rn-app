@@ -123,7 +123,8 @@
     "unexpected_retry": "Ups, etwas ist schief gelaufen. Bitte versuche es erneut.",
     "unexpected_retry_later": "Ups, etwas ist schief gelaufen. Bitte versuche es später erneut.",
     "unexpected": "Ups, etwas ist schief gelaufen.",
-    "try_again_later": "Bitte versuche es später nochmals..."
+    "try_again_later": "Bitte versuche es später nochmals...",
+    "link_expired": "Der Link ist abgelaufen. Bitte versuche es erneut."
   },
   "units": {
     "long": {
@@ -172,8 +173,7 @@
     "reset_password": "Passwort zurücksetzen",
     "enter_email": "Bitte gib deine E-Mail an, um dein Passwort zurückzusetzen.",
     "reset_link_sent": "Eine Email wurde an {{email}} gesendet, um dein Passwort zurückzusetzen.",
-    "mail_being_deliverd": "Es kann einen Moment dauern, bis das Mail im Postfach ist. Falls das Mail nicht ankommt, schaue bitte in deinen Spam Ordner.",
-    "link_expired": "Der Link ist abgelaufen. Bitte versuche es erneut."
+    "mail_being_deliverd": "Es kann einen Moment dauern, bis das Mail im Postfach ist. Falls das Mail nicht ankommt, schaue bitte in deinen Spam Ordner."
   },
   "onboarding": {
     "farm_name": {
@@ -205,12 +205,16 @@
     }
   },
   "users": {
-    "change_email": "E-Mail-Adresse ändern",
-    "verify_new_email_before_in_effect": "Deine neue E-Mail-Adresse muss zuerst verifiziert werden, bevor die Änderung übernommen wird.",
-    "email_not_verified": "E-Mail-Adresse noch nicht verifiziert!",
-    "resend_verification_email": "E-Mail erneut senden",
+    "email": "Email Adresse",
+    "verify_new_email_before_in_effect": "Deine neue Email Adresse muss zuerst verifiziert werden, bevor die Änderung übernommen wird.",
+    "email_verified": "Deine Email Adresse wurde erfolgreich verifiziert",
+    "email_not_verified": "Email Adresse noch nicht verifiziert!",
+    "email_change_pending": "Verifizieren deine neue Email Adresse",
+    "email_change_verification_sent": "Eine Email wurde versendet, um deine neue Adresse zu verifizieren. Sobald diese bestätigt ist, wird die neue Adresse aktiviert.",
+    "resend_verification_email": "Email verifizieren",
     "new_password": "Neues Passwort",
-    "change_display_name": "Namen bearbeiten"
+    "change_display_name": "Namen bearbeiten",
+    "verification_mail_sent": "Eine Email wurde an {{email}} gesendet, um deine E-Mail-Adresse zu verifizieren."
   },
   "home": {
     "welcome_text": "Hallo {{displayName}},",

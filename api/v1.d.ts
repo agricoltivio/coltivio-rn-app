@@ -1193,7 +1193,7 @@ export interface components {
         };
         PostV1FarmRequestBody: {
             name: string;
-            federalId?: string;
+            federalId?: string | null;
             address: string;
             location: {
                 /** @constant */
@@ -1274,6 +1274,7 @@ export interface components {
                     id: string;
                     email: string;
                     fullName: string | null;
+                    emailVerified: boolean;
                     /** Format: uuid */
                     farmId: string | null;
                 }[];
@@ -1291,6 +1292,7 @@ export interface components {
                 id: string;
                 email: string;
                 fullName: string | null;
+                emailVerified: boolean;
                 /** Format: uuid */
                 farmId: string | null;
             };
@@ -1304,6 +1306,7 @@ export interface components {
                 id: string;
                 email: string;
                 fullName: string | null;
+                emailVerified: boolean;
                 /** Format: uuid */
                 farmId: string | null;
             };
@@ -1314,9 +1317,9 @@ export interface components {
         PatchV1MeRequestBody: {
             email?: string;
             fullName?: string | null;
+            emailVerified?: boolean;
             /** Format: uuid */
             farmId?: string | null;
-            userId: string;
         };
         GetV1MePositiveResponse: {
             data: {
@@ -1324,6 +1327,7 @@ export interface components {
                 id: string;
                 email: string;
                 fullName: string | null;
+                emailVerified: boolean;
                 /** Format: uuid */
                 farmId: string | null;
             };
@@ -5406,7 +5410,7 @@ export interface operations {
             cookie?: never;
         };
         /** @description PATCH /v1/me Request body */
-        requestBody: {
+        requestBody?: {
             content: {
                 "application/json": components["schemas"]["PatchV1MeRequestBody"];
             };

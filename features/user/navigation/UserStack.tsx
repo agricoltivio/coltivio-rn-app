@@ -3,6 +3,8 @@ import { ChangeEmailScreen } from "../ChangeEmailScreen";
 import { ChangePasswordScren } from "../ChangePasswordScreen";
 import { ChangeUserNameScreen } from "../ChangeUserNameScreen";
 import { UserAccountScreen } from "../UserAccountScreen";
+import { EmailVerifiedScreen } from "../EmailVerifiedScreen";
+import { ChangeEmailPendingScreen } from "../ChangeEmailPendingScreen";
 
 export function renderUserStack() {
   return [
@@ -29,6 +31,20 @@ export function renderUserStack() {
       options={{
         title: "",
       }}
+    />,
+    <Stack.Screen
+      key="change-email-pending"
+      name="ChangeEmailPending"
+      component={ChangeEmailPendingScreen}
+      options={{
+        title: "",
+      }}
+    />,
+    <Stack.Screen
+      key="email-verified"
+      name="EmailVerified"
+      component={EmailVerifiedScreen}
+      options={{ title: "" }}
     />,
     <Stack.Screen
       key="change-password"

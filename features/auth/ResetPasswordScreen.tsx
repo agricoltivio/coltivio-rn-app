@@ -1,22 +1,19 @@
-import * as Sentry from "@sentry/react-native";
-import React from "react";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
+import { ResetPasswordScreenProps } from "@/features/auth/navigation/auth-routes";
+import { supabase } from "@/supabase/supabase";
 import { Body, H2 } from "@/theme/Typography";
+import { useUrl } from "@/utils/url-context";
+import * as Sentry from "@sentry/react-native";
+import * as Linking from "expo-linking";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { supabase } from "@/supabase/supabase";
-import { useEffect, useState } from "react";
-import { ResetPasswordScreenProps } from "@/features/auth/navigation/auth-routes";
-import { useSession } from "@/auth/SessionProvider";
-import * as Linking from "expo-linking";
-import { useUrl } from "@/utils/url-context";
-import { Session } from "@supabase/supabase-js";
 
 type FromValues = {
   password: string;
@@ -38,10 +35,10 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
     accessToken: string;
     refreshToken: string;
   } | null>(null);
-  const { url } = useUrl();
 
   const password = watch("password");
 
+  const { url } = useUrl();
   useEffect(() => {
     const createSessionFromUrl = async () => {
       if (!url) {
@@ -49,13 +46,13 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
       }
       const { queryParams } = Linking.parse(url.replaceAll("#", "?"));
       if (!queryParams) {
-        setUrlError(t("forgot_password.link_expired"));
+        setUrlError(t("errors.unexpected"));
         return;
       }
       if (queryParams.error) {
         switch (queryParams.error) {
           case "access_denied":
-            setUrlError(t("forgot_password.link_expired"));
+            setUrlError(t("errors.link_expired"));
             break;
           default: {
             setError(t("errors.unexpected"));
@@ -78,11 +75,6 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
         accessToken: access_token as string,
         refreshToken: refresh_token as string,
       });
-      // if (!data.session) {
-      //   console.error("Missing session");
-      //   setError(t("errors.unexpected"));
-      //   return;
-      // }
     };
     createSessionFromUrl();
   }, [url]);

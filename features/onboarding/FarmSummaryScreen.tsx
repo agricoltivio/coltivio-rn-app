@@ -9,10 +9,19 @@ import { useSyncMissingLocalIdsMutation } from "../plots/plots.hooks";
 import { NavigationButton } from "./NavigationButton";
 import { useOnboarding } from "./OnboardingContext";
 import { Stepper } from "./Stepper";
+import { makeRedirectUri } from "expo-auth-session";
+import { supabase } from "@/supabase/supabase";
+import { useSession } from "@/auth/SessionProvider";
+
+const redirectTo = makeRedirectUri({
+  scheme: "ch.agricoltivio.coltivio",
+  path: "EmailVerified",
+});
 
 export function FarmSummaryScreen({ navigation }: FarmSummaryScreenProps) {
   const { t } = useTranslation();
   const { data } = useOnboarding();
+  const { authUser } = useSession();
   const theme = useTheme();
 
   const syncMissingLocalIdsMutation = useSyncMissingLocalIdsMutation(
@@ -21,6 +30,13 @@ export function FarmSummaryScreen({ navigation }: FarmSummaryScreenProps) {
   );
   const createFarmMutation = useCreateFarmMutation(() => {
     syncMissingLocalIdsMutation.mutate();
+
+    supabase.auth.signInWithOtp({
+      email: authUser!.email!,
+      options: {
+        emailRedirectTo: redirectTo,
+      },
+    });
   });
 
   function onFinish() {
