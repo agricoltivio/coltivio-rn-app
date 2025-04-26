@@ -2889,21 +2889,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/auth-js@npm:2.65.1":
-  version: 2.65.1
-  resolution: "@supabase/auth-js@npm:2.65.1"
+"@supabase/auth-js@npm:2.69.1":
+  version: 2.69.1
+  resolution: "@supabase/auth-js@npm:2.69.1"
   dependencies:
     "@supabase/node-fetch": "npm:^2.6.14"
-  checksum: 10c0/af9708fb959d77e0dd50543163b42c3441b27a3024899fd96c7c55ceda755b338247a82d17947abc37cbc918f5d83ea28df4d00cbe0cd95ebe76a458444fdd1d
+  checksum: 10c0/efc08fc6be48769efc84105617f2cb681791641ba86480d29a316ae83beac8cf4f747bf00b4947c32992f9b7b0b40e3c2bf74013f01e070c38558169ab68b6f1
   languageName: node
   linkType: hard
 
-"@supabase/functions-js@npm:2.4.3":
-  version: 2.4.3
-  resolution: "@supabase/functions-js@npm:2.4.3"
+"@supabase/functions-js@npm:2.4.4":
+  version: 2.4.4
+  resolution: "@supabase/functions-js@npm:2.4.4"
   dependencies:
     "@supabase/node-fetch": "npm:^2.6.14"
-  checksum: 10c0/b8560d4506e70875c2259751a8e578a9541631b9f16607dd1c4f9d5827178b3ddacd22f42549301a293aa4ed10bc4c9dc8273ea5d100b762a54d925dcff933ef
+  checksum: 10c0/35871341ca96c35a416d81a6f035bd0d594d278f5cbe4492173766b3d6b9acfc52374b0a2b50e31a900a8e3a9dcb131d1eadf3808a9a9e1c10bbab7a2045d2d3
   languageName: node
   linkType: hard
 
@@ -2916,24 +2916,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/postgrest-js@npm:1.16.3":
-  version: 1.16.3
-  resolution: "@supabase/postgrest-js@npm:1.16.3"
+"@supabase/postgrest-js@npm:1.19.4":
+  version: 1.19.4
+  resolution: "@supabase/postgrest-js@npm:1.19.4"
   dependencies:
     "@supabase/node-fetch": "npm:^2.6.14"
-  checksum: 10c0/bc84dbf90bda96d05c7887ca1d6725e2ef03a2519d299087a43001442ba047ecdda9c454cc9208d320a6ec05a77b3649232f17a82e518d1ac3a8aaaa445b193f
+  checksum: 10c0/1d14adc841f720e0035045f8b06cf2cb9f3b0a83ac903e268d5afb80b64d240ae64cb24372e0e9c857420b07010bfdb9a806f024fe60ac13468fd791ada2eb7f
   languageName: node
   linkType: hard
 
-"@supabase/realtime-js@npm:2.10.9":
-  version: 2.10.9
-  resolution: "@supabase/realtime-js@npm:2.10.9"
+"@supabase/realtime-js@npm:2.11.2":
+  version: 2.11.2
+  resolution: "@supabase/realtime-js@npm:2.11.2"
   dependencies:
     "@supabase/node-fetch": "npm:^2.6.14"
     "@types/phoenix": "npm:^1.5.4"
     "@types/ws": "npm:^8.5.10"
     ws: "npm:^8.18.0"
-  checksum: 10c0/8667bcc4f2763e7821f112b805cf2845cb6ce6e4db8e03174ae3f4d2129b37f7c93d64c4621d7728fb5ebd2d9c896691a8940c16913ee1dea6ad32b2bd5cfc8d
+  checksum: 10c0/1e91c8e70d4bf2cd25ed9d7d8c75c0fcc2ef4f53d03647cbaac790cf9f359295b5aa6ce0876f12e7e15804cfe9979398cd57fc92f19a43ee4e691d29abbe8e14
   languageName: node
   linkType: hard
 
@@ -2946,17 +2946,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@supabase/supabase-js@npm:^2.46.2":
-  version: 2.46.2
-  resolution: "@supabase/supabase-js@npm:2.46.2"
+"@supabase/supabase-js@npm:^2.49.4":
+  version: 2.49.4
+  resolution: "@supabase/supabase-js@npm:2.49.4"
   dependencies:
-    "@supabase/auth-js": "npm:2.65.1"
-    "@supabase/functions-js": "npm:2.4.3"
+    "@supabase/auth-js": "npm:2.69.1"
+    "@supabase/functions-js": "npm:2.4.4"
     "@supabase/node-fetch": "npm:2.6.15"
-    "@supabase/postgrest-js": "npm:1.16.3"
-    "@supabase/realtime-js": "npm:2.10.9"
+    "@supabase/postgrest-js": "npm:1.19.4"
+    "@supabase/realtime-js": "npm:2.11.2"
     "@supabase/storage-js": "npm:2.7.1"
-  checksum: 10c0/83f9bbeb7005da886fcb3fefbcf4105f52230c6b0545a222be463a84d4a1c2755c410d6972bb0ac2f139a0415e96115c266ee2291c0c077f365ba35616a02eae
+  checksum: 10c0/43f5500b4cee89fa975ef13036846e6406d7719c79e1c9563b9e6a54529aa7b8d17e86bd0cd2cd2394ce6894e85628f43a29809572a438d2fc493175bb25ac25
   languageName: node
   linkType: hard
 
@@ -10793,7 +10793,7 @@ __metadata:
     "@react-navigation/native-stack": "npm:^7.1.14"
     "@sentry/react-native": "npm:^6.10.0"
     "@shopify/react-native-skia": "npm:1.5.0"
-    "@supabase/supabase-js": "npm:^2.46.2"
+    "@supabase/supabase-js": "npm:^2.49.4"
     "@tanstack/query-core": "npm:^5.73.3"
     "@tanstack/react-query": "npm:^5.59.19"
     "@turf/turf": "npm:^7.1.0"
