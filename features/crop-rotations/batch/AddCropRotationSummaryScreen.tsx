@@ -89,7 +89,12 @@ export function AddCropRotationSummaryScreen({
     <ContentView
       footerComponent={
         <BottomActionContainer>
-          <Button title={t("buttons.save")} onPress={onSave} />
+          <Button
+            title={t("buttons.save")}
+            onPress={onSave}
+            disabled={createCropRotationsMutation.isPending}
+            loading={createCropRotationsMutation.isPending}
+          />
         </BottomActionContainer>
       }
     >

@@ -45,6 +45,7 @@ export function CreateCropScreen({ navigation }: CreateCropScreenProps) {
             title={t("buttons.save")}
             onPress={handleSubmit(onCreateCrop)}
             disabled={!isDirty || createForageMutation.isPending}
+            loading={createForageMutation.isPending}
           />
         </BottomActionContainer>
       }

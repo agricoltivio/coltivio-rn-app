@@ -46,7 +46,12 @@ export function AddTillageSummaryScreen({
     <ContentView
       footerComponent={
         <BottomActionContainer>
-          <Button title={t("buttons.save")} onPress={onSave} />
+          <Button
+            title={t("buttons.save")}
+            onPress={onSave}
+            disabled={createTillagesMutation.isPending}
+            loading={createTillagesMutation.isPending}
+          />
         </BottomActionContainer>
       }
     >

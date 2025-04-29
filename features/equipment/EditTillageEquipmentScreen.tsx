@@ -73,12 +73,14 @@ export function EditTillageEquipmentScreen({
               title={t("buttons.delete")}
               onPress={onDelete}
               disabled={submitting}
+              loading={deleteMachineConfigMutation.isPending}
             />
             <Button
               style={{ flexGrow: 1 }}
               title={t("buttons.save")}
               onPress={handleSubmit(onSubmit)}
               disabled={!isDirty || submitting}
+              loading={updateMachineConfigMutation.isPending}
             />
           </View>
         </BottomActionContainer>

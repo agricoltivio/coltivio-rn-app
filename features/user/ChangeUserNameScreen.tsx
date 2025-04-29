@@ -1,21 +1,20 @@
-import { supabase } from "@/supabase/supabase";
+import { useSession } from "@/auth/SessionProvider";
+import { queryKeys } from "@/cache/query-keys";
+import { Button } from "@/components/buttons/Button";
+import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
-import { TextInput } from "@/components/inputs/TextInput";
-import { useUserQuery } from "./users.hooks";
+import { RHTextInput } from "@/components/inputs/RHTextnput";
+import { ScrollView } from "@/components/views/ScrollView";
+import { supabase } from "@/supabase/supabase";
+import { Body, H2 } from "@/theme/Typography";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { RHTextInput } from "@/components/inputs/RHTextnput";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { ChangeUserNameScreenProps } from "./navigation/user-routes";
-import { Button } from "@/components/buttons/Button";
-import { useSession } from "@/auth/SessionProvider";
-import { Body, H2 } from "@/theme/Typography";
-import { useQueryClient } from "@tanstack/react-query";
-import { queryKeys } from "@/cache/query-keys";
-import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
-import { ScrollView } from "@/components/views/ScrollView";
-import { useTranslation } from "react-i18next";
+import { useUserQuery } from "./users.hooks";
 
 export function ChangeUserNameScreen({
   navigation,

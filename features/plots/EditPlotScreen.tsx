@@ -127,6 +127,7 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
               title={t("buttons.save")}
               onPress={handleSubmit(onSubmit)}
               disabled={(!isDirty && !polygon) || updatePlotMutation.isPending}
+              loading={updatePlotMutation.isPending}
             />
           </View>
         </BottomActionContainer>

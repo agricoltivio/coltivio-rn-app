@@ -58,6 +58,7 @@ export function AddCropRotationScreen({
             title={t("buttons.save")}
             style={{ flexGrow: 1 }}
             disabled={!isDirty || createPlotCropRotationMutation.isPending}
+            loading={createPlotCropRotationMutation.isPending}
           />
         </BottomActionContainer>
       }

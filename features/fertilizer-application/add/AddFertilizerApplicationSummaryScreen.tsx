@@ -62,7 +62,12 @@ export function AddFertilizerApplicationSummaryScreen({
     <ContentView
       footerComponent={
         <BottomActionContainer>
-          <Button title={t("buttons.save")} onPress={onSave} />
+          <Button
+            title={t("buttons.save")}
+            onPress={onSave}
+            disabled={createFertilizerApplicationMutation.isPending}
+            loading={createFertilizerApplicationMutation.isPending}
+          />
         </BottomActionContainer>
       }
     >

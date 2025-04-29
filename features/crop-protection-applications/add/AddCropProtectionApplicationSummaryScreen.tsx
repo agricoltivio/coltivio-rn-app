@@ -61,7 +61,12 @@ export function AddCropProtectionApplicationSummaryScreen({
     <ContentView
       footerComponent={
         <BottomActionContainer>
-          <Button title={t("buttons.save")} onPress={onSave} />
+          <Button
+            title={t("buttons.save")}
+            onPress={onSave}
+            disabled={createCropProtectionApplicationMutation.isPending}
+            loading={createCropProtectionApplicationMutation.isPending}
+          />
         </BottomActionContainer>
       }
     >

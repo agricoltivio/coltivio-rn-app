@@ -102,6 +102,10 @@ export function EditCropRotationScreen({
               updatePlotCropRotationMutation.isPending ||
               deletePlotCropRotationMutation.isPending
             }
+            loading={
+              updatePlotCropRotationMutation.isPending ||
+              deletePlotCropRotationMutation.isPending
+            }
           />
         </BottomActionContainer>
       }

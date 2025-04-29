@@ -87,7 +87,8 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
           <Button
             onPress={handleSubmit(onSubmit)}
             title={t("buttons.save")}
-            disabled={!isDirty || !!error}
+            disabled={!isDirty || !!error || updateUserMutation.isPending}
+            loading={updateUserMutation.isPending}
           />
         </BottomActionContainer>
       }

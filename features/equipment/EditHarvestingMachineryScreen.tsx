@@ -42,7 +42,7 @@ export function EditHarvestingMachineryScreen({
       : undefined,
   });
 
-  const updateTractorMutation = useUpdateHarvestingMachineryMutation(() =>
+  const updateHarvestingMachinery = useUpdateHarvestingMachineryMutation(() =>
     navigation.goBack()
   );
   const deleteHarvestingMachineryMutation =
@@ -52,7 +52,7 @@ export function EditHarvestingMachineryScreen({
     defaultKilosPerUnit,
     ...data
   }: HarvestingMachineryFormValues) {
-    updateTractorMutation.mutate({
+    updateHarvestingMachinery.mutate({
       id: harvestingMachineryId,
       defaultKilosPerUnit: Number(defaultKilosPerUnit),
       ...data,
@@ -68,7 +68,7 @@ export function EditHarvestingMachineryScreen({
   }
 
   const submitting =
-    updateTractorMutation.isPending ||
+    updateHarvestingMachinery.isPending ||
     deleteHarvestingMachineryMutation.isPending;
 
   return (
@@ -88,6 +88,7 @@ export function EditHarvestingMachineryScreen({
               title={t("buttons.delete")}
               onPress={onDelete}
               disabled={submitting}
+              loading={deleteHarvestingMachineryMutation.isPending}
             />
 
             <Button
@@ -95,6 +96,7 @@ export function EditHarvestingMachineryScreen({
               title={t("buttons.save")}
               onPress={handleSubmit(onSubmit)}
               disabled={!isDirty || submitting}
+              loading={updateHarvestingMachinery.isPending}
             />
           </View>
         </BottomActionContainer>

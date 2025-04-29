@@ -65,7 +65,12 @@ export function HarvestSummaryScreen({
     <ContentView
       footerComponent={
         <BottomActionContainer>
-          <Button title={t("buttons.save")} onPress={onSave} />
+          <Button
+            title={t("buttons.save")}
+            onPress={onSave}
+            disabled={createHarvestMutation.isPending}
+            loading={createHarvestMutation.isPending}
+          />
         </BottomActionContainer>
       }
     >

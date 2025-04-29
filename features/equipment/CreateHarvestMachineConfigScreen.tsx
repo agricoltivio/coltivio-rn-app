@@ -61,6 +61,7 @@ export function CreateHarvestingMachineryScreen({
             title={t("buttons.save")}
             onPress={handleSubmit(onSubmitHarvestingMachinery)}
             disabled={!isDirty || createHarvestingMachineryMutation.isPending}
+            loading={createHarvestingMachineryMutation.isPending}
           />
         </BottomActionContainer>
       }

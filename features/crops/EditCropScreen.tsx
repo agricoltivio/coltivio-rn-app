@@ -69,6 +69,7 @@ export function EditCropScreen({ route, navigation }: EditCropScreenProps) {
                 updateCropMutation.isPending ||
                 deleteCropMutation.isPending
               }
+              loading={deleteCropMutation.isPending}
             />
 
             <Button
@@ -79,6 +80,9 @@ export function EditCropScreen({ route, navigation }: EditCropScreenProps) {
                 !isDirty ||
                 updateCropMutation.isPending ||
                 deleteCropMutation.isPending
+              }
+              loading={
+                updateCropMutation.isPending || deleteCropMutation.isPending
               }
             />
           </View>

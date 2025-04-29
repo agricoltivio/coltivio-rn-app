@@ -116,6 +116,8 @@ export function AddPlotSummaryScreen({
             type="primary"
             title={t("buttons.save")}
             onPress={handleSubmit(onSubmit)}
+            disabled={createPlotMutation.isPending}
+            loading={createPlotMutation.isPending}
           />
         </BottomActionContainer>
       }
