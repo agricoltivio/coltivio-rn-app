@@ -7,8 +7,8 @@
     "back": "Retour",
     "cancel": "Annuler",
     "confirm": "Confirmer",
-    "save": "Enregistrer",
     "edit": "Modifier",
+    "save": "Enregistrer",
     "add": "Ajouter",
     "ok": "OK",
     "delete": "Supprimer",
@@ -24,6 +24,7 @@
   "forms": {
     "labels": {
       "name": "Nom",
+      "description": "Description",
       "description_optional": "Description (facultative)",
       "display_name": "Nom d'affichage",
       "select_date": "Sélectionner une date",
@@ -31,6 +32,7 @@
       "password": "Mot de passe",
       "password_repeat": "Répéter le mot de passe",
       "date": "Date",
+      "time": "Heure",
       "farm_name": "Nom de la ferme",
       "location": "Localisation",
       "location_search": "Rechercher une localisation",
@@ -77,8 +79,6 @@
       "please_select": "Veuillez sélectionner",
       "from": "De",
       "to": "À",
-      "description": "Description",
-      "time": "Heure",
       "local_id": "Parcelle",
       "local_id_optional": "Parcelle (optionnel)",
       "usage": "Utilisation",
@@ -173,8 +173,7 @@
     "reset_password": "Réinitialiser le mot de passe",
     "enter_email": "Veuillez entrer votre email pour réinitialiser votre mot de passe.",
     "reset_link_sent": "Un email a été envoyé à {{email}} pour réinitialiser votre mot de passe.",
-    "mail_being_deliverd": "Cela peut prendre un moment avant que l'email arrive. S'il ne s'affiche pas, vérifiez votre dossier spam.",
-    "link_expired": "Le lien a expiré. Veuillez réessayer."
+    "mail_being_deliverd": "Cela peut prendre un moment avant que l'email arrive. S'il ne s'affiche pas, vérifiez votre dossier spam."
   },
   "onboarding": {
     "farm_name": {
@@ -198,25 +197,23 @@
     },
     "summary": {
       "heading": "Tout est prêt !",
-      "content": "Vos champs seront ajoutées en tant que champs en fonction de votre numéro d'enregistrement {{federalFarmId}}. Vous pouvez les modifier à tout moment.",
-      "press_save_to_finish": "Appuyez sur Enregistrer pour créer votre ferme.",
       "plots_info": "Vos surfaces seront ajoutées en tant que champs sur la base de votre numéro d'exploitation.",
       "crops_info": "La culture actuelle est dérivée du code d'utilisation.",
       "edit_plots_info": "Vous pouvez modifier vos surfaces à tout moment sous 'Champs' ou via la carte.",
+      "press_save_to_finish": "Appuyez sur Enregistrer pour créer votre ferme.",
       "no_federal_farm_id": "Malheureusement, nous n'avons pas pu ajouter automatiquement vos surfaces. Vous pouvez les ajouter manuellement sous 'Champs' ou via la carte. Nous travaillons à supporter tous les emplacements dès que possible."
     }
   },
   "users": {
-    "change_email": "Modifier l'adresse e-mail",
+    "email": "Adresse e-mail",
     "verify_new_email_before_in_effect": "Votre nouvelle adresse e-mail doit être vérifiée avant que la modification ne prenne effet.",
+    "email_verified": "Votre adresse e-mail a été vérifiée avec succès",
     "email_not_verified": "Adresse e-mail non vérifiée !",
+    "email_change_pending": "Veuillez vérifier votre nouvelle adresse e-mail",
+    "email_change_verification_sent": "Un e-mail a été envoyé pour vérifier votre nouvelle adresse. Une fois confirmée, la nouvelle adresse sera activée.",
     "resend_verification_email": "Renvoyer l'e-mail",
     "new_password": "Nouveau mot de passe",
     "change_display_name": "Modifier le nom d'affichage",
-    "email": "Adresse e-mail",
-    "email_verified": "Votre adresse e-mail a été vérifiée avec succès",
-    "email_change_pending": "Veuillez vérifier votre nouvelle adresse e-mail",
-    "email_change_verification_sent": "Un e-mail a été envoyé pour vérifier votre nouvelle adresse. Une fois confirmée, la nouvelle adresse sera activée.",
     "verification_mail_sent": "Un e-mail a été envoyé à {{email}} pour vérifier votre adresse e-mail."
   },
   "home": {
@@ -240,8 +237,8 @@
     "delete_account": "Supprimer le compte"
   },
   "plots": {
-    "plot": "Champ",
     "plots": "Champs",
+    "plot": "Champ",
     "plot_name": "Champ {{name}}",
     "plot_name_date": "{{date}} - Champ {{name}}",
     "common": {
@@ -280,11 +277,6 @@
           "edit_area": {
             "heading": "Modifier le champ",
             "move_markers": "Maintenez les points d'angle enfoncés jusqu'à ce qu'ils apparaissent devant votre doigt et déplacez-les vers l'emplacement souhaité."
-          },
-          "delete": {
-            "heading": "Voulez-vous vraiment supprimer le champ {{name}} ?",
-            "entries_warning": "Attention, tous les enregistrements de ce champ seront définitivement supprimés.",
-            "confirm_by_typing_name": "Pour supprimer ce champ, tapez le nom et confirmez l'action."
           }
         }
       }
@@ -485,14 +477,13 @@
   "field_calendar": {
     "field_calendar": "Calendrier cultural",
     "crops": "Cultures",
-    "sowings": "Semis",
+    "crop_rotations": "Rotations culturales",
     "tillages": "Travaux du sol",
     "fertilizers": "Engrais",
     "fertilizer_applications": "Applications d'engrais",
     "harvests": "Récoltes",
     "crop_protection_products": "Produits phytosanitaires",
     "crop_protection_applications": "Protection des cultures",
-    "crop_rotations": "Rotations culturales",
     "export": "Générer des rapports"
   },
   "harvests": {

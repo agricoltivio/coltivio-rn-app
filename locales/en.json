@@ -7,8 +7,8 @@
     "back": "Back",
     "cancel": "Cancel",
     "confirm": "Confirm",
-    "save": "Save",
     "edit": "Edit",
+    "save": "Save",
     "add": "Add",
     "ok": "OK",
     "delete": "Delete",
@@ -24,14 +24,15 @@
   "forms": {
     "labels": {
       "name": "Name",
-      "description_optional": "Description (optional)",
       "description": "Description",
+      "description_optional": "Description (optional)",
       "display_name": "Display Name",
       "select_date": "Select date",
       "email": "Email",
       "password": "Password",
       "password_repeat": "Repeat Password",
       "date": "Date",
+      "time": "Time",
       "farm_name": "Farm Name",
       "location": "Location",
       "location_search": "Search Location",
@@ -78,7 +79,6 @@
       "please_select": "Please select",
       "from": "From",
       "to": "To",
-      "time": "Time",
       "local_id": "Parcel",
       "local_id_optional": "Parcel (optional)",
       "usage": "Usage",
@@ -173,8 +173,7 @@
     "reset_password": "Reset Password",
     "enter_email": "Please enter your email to reset your password.",
     "reset_link_sent": "An email has been sent to {{email}} to reset your password.",
-    "mail_being_deliverd": "It may take a moment for the email to arrive. If it doesn't appear, please check your spam folder.",
-    "link_expired": "The link has expired. Please try again."
+    "mail_being_deliverd": "It may take a moment for the email to arrive. If it doesn't appear, please check your spam folder."
   },
   "onboarding": {
     "farm_name": {
@@ -198,25 +197,23 @@
     },
     "summary": {
       "heading": "All set!",
-      "content": "Your parcels will be added as plots based on your registration number {{federalFarmId}}. You can edit them at any time.",
-      "press_save_to_finish": "Tap Save to create your farm.",
       "plots_info": "Deine Flächen werden basierend auf deiner Betriebsnummer als Schläge hinzugefügt.",
       "crops_info": "Die momentane Kultur wird vom Nutzungscode abgeleitet.",
       "edit_plots_info": "Du kannst deine Flächen jederzeit unter 'Schläge' oder über die Karte bearbeiten.",
+      "press_save_to_finish": "Tap Save to create your farm.",
       "no_federal_farm_id": "Leider konnten wir deine Flächen nicht automatisch hinzufügen. Du kannst deine Flächen unter 'Schläge' oder unter der Karte manuell hinzufügen. Wir arbeiten daran, sobald wie möglich alle Standorte zu unterstützen."
     }
   },
   "users": {
-    "change_email": "Change Email Address",
+    "email": "Email Address",
     "verify_new_email_before_in_effect": "You must verify your new email address before the change takes effect.",
+    "email_verified": "Your email address has been successfully verified.",
     "email_not_verified": "Email address not verified!",
+    "email_change_pending": "Verify your new email address",
+    "email_change_verification_sent": "An email has been sent to verify your new address. Once verified, your new address will be active.",
     "resend_verification_email": "Resend Verification Email",
     "new_password": "New Password",
     "change_display_name": "Edit Name",
-    "email": "Email Address",
-    "email_verified": "Your email address has been successfully verified.",
-    "email_change_pending": "Verify your new email address",
-    "email_change_verification_sent": "An email has been sent to verify your new address. Once verified, your new address will be active.",
     "verification_mail_sent": "An email has been sent to {{email}} to verify your address."
   },
   "home": {
@@ -240,8 +237,8 @@
     "delete_account": "Delete Account"
   },
   "plots": {
-    "plot": "Plot",
     "plots": "Plots",
+    "plot": "Plot",
     "plot_name": "Plot {{name}}",
     "plot_name_date": "{{date}} - Plot {{name}}",
     "common": {
@@ -280,11 +277,6 @@
           "edit_area": {
             "heading": "Edit Plot",
             "move_markers": "Hold corner points until they appear above your finger, then drag them to the desired location."
-          },
-          "delete": {
-            "heading": "Delete plot {{name}}?",
-            "entries_warning": "Warning: All records for this plot will be permanently deleted.",
-            "confirm_by_typing_name": "Type the plot name to confirm deletion."
           }
         }
       }
@@ -485,14 +477,13 @@
   "field_calendar": {
     "field_calendar": "Field Calendar",
     "crops": "Crops",
-    "sowings": "Sowings",
+    "crop_rotations": "Crop rotations",
     "tillages": "Tillages",
     "fertilizers": "Fertilizers",
     "fertilizer_applications": "Fertilizer Applications",
     "harvests": "Harvests",
     "crop_protection_products": "Crop Protection Products",
     "crop_protection_applications": "Crop Protection",
-    "crop_rotations": "Crop rotations",
     "export": "Generate reports"
   },
   "harvests": {

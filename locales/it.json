@@ -7,8 +7,8 @@
     "back": "Indietro",
     "cancel": "Annulla",
     "confirm": "Conferma",
-    "save": "Salva",
     "edit": "Modifica",
+    "save": "Salva",
     "add": "Aggiungi",
     "ok": "OK",
     "delete": "Elimina",
@@ -24,6 +24,7 @@
   "forms": {
     "labels": {
       "name": "Nome",
+      "description": "Descrizione",
       "description_optional": "Descrizione (facoltativa)",
       "display_name": "Nome visualizzato",
       "select_date": "Seleziona data",
@@ -31,6 +32,7 @@
       "password": "Password",
       "password_repeat": "Ripeti Password",
       "date": "Data",
+      "time": "Orario",
       "farm_name": "Nome dell'Azienda Agricola",
       "location": "Posizione",
       "location_search": "Cerca Posizione",
@@ -77,8 +79,6 @@
       "please_select": "Seleziona per favore",
       "from": "Da",
       "to": "A",
-      "description": "Descrizione",
-      "time": "Orario",
       "local_id": "Particella",
       "local_id_optional": "Particella (opzionale)",
       "usage": "Utilizzo",
@@ -173,8 +173,7 @@
     "reset_password": "Reimposta password",
     "enter_email": "Inserisci la tua email per reimpostare la password.",
     "reset_link_sent": "Un'email è stata inviata a {{email}} per reimpostare la password.",
-    "mail_being_deliverd": "Potrebbe volerci un momento perché l'email arrivi. Se non compare, controlla la cartella spam.",
-    "link_expired": "Il link è scaduto. Per favore, riprova."
+    "mail_being_deliverd": "Potrebbe volerci un momento perché l'email arrivi. Se non compare, controlla la cartella spam."
   },
   "onboarding": {
     "farm_name": {
@@ -198,25 +197,23 @@
     },
     "summary": {
       "heading": "Tutto pronto!",
-      "content": "I tuoi campi verranno aggiunti come particelle in base al tuo codice di registrazione {{federalFarmId}}. Puoi modificarli in qualsiasi momento.",
-      "press_save_to_finish": "Premi Salva per creare la tua azienda agricola.",
       "plots_info": "Le tue superfici verranno aggiunte come appezzamenti in base al tuo numero azienda.",
       "crops_info": "La coltura attuale viene derivata dal codice utilizzo.",
       "edit_plots_info": "Puoi modificare le tue superfici in qualsiasi momento sotto 'Appezzamenti' o tramite la mappa.",
+      "press_save_to_finish": "Premi Salva per creare la tua azienda agricola.",
       "no_federal_farm_id": "Purtroppo non siamo riusciti ad aggiungere automaticamente le tue superfici. Puoi aggiungerle manualmente sotto 'Appezzamenti' o tramite la mappa. Stiamo lavorando per supportare tutte le località il prima possibile."
     }
   },
   "users": {
-    "change_email": "Cambia indirizzo email",
+    "email": "Indirizzo email",
     "verify_new_email_before_in_effect": "Il tuo nuovo indirizzo email deve essere verificato prima che la modifica abbia effetto.",
+    "email_verified": "Il tuo indirizzo email è stato verificato con successo",
     "email_not_verified": "Indirizzo email non verificato!",
+    "email_change_pending": "Verifica il tuo nuovo indirizzo email",
+    "email_change_verification_sent": "È stata inviata un'email per verificare il nuovo indirizzo. Una volta confermato, il nuovo indirizzo sarà attivato.",
     "resend_verification_email": "Reinvia Email",
     "new_password": "Nuova Password",
     "change_display_name": "Modifica Nome Visualizzato",
-    "email": "Indirizzo email",
-    "email_verified": "Il tuo indirizzo email è stato verificato con successo",
-    "email_change_pending": "Verifica il tuo nuovo indirizzo email",
-    "email_change_verification_sent": "È stata inviata un'email per verificare il nuovo indirizzo. Una volta confermato, il nuovo indirizzo sarà attivato.",
     "verification_mail_sent": "Una email è stata inviata a {{email}} per verificare il tuo indirizzo email."
   },
   "home": {
@@ -240,8 +237,8 @@
     "delete_account": "Elimina Account"
   },
   "plots": {
-    "plot": "Campo",
     "plots": "Campi",
+    "plot": "Campo",
     "plot_name": "Campo {{name}}",
     "plot_name_date": "{{date}} - Campo {{name}}",
     "common": {
@@ -280,11 +277,6 @@
           "edit_area": {
             "heading": "Modifica il Campo",
             "move_markers": "Tieni premuti i punti finché non appaiono sopra il dito e spostali nella posizione desiderata."
-          },
-          "delete": {
-            "heading": "Eliminare il campo {{name}}?",
-            "entries_warning": "Attenzione, tutti i dati relativi a questo campo verranno eliminati definitivamente.",
-            "confirm_by_typing_name": "Per eliminare questo campo, digita il nome e conferma l'azione."
           }
         }
       }
@@ -485,14 +477,13 @@
   "field_calendar": {
     "field_calendar": "Calendario dei campi",
     "crops": "Colture",
-    "sowings": "Semine",
+    "crop_rotations": "Rotazioni colturali",
     "tillages": "Lavorazioni del terreno",
     "fertilizers": "Fertilizzanti",
     "fertilizer_applications": "Applicazioni di fertilizzanti",
     "harvests": "Raccolti",
     "crop_protection_products": "Prodotti fitosanitari",
     "crop_protection_applications": "Trattamenti fitosanitari",
-    "crop_rotations": "Rotazioni colturali",
     "export": "Genera report"
   },
   "harvests": {
