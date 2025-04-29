@@ -1,7 +1,7 @@
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
-import { FieldCalendarExportSuccessScreenProps } from "@/navigation/rootStackTypes";
+import { FieldCalendarExportSuccessScreenProps } from "./navigation/field-calendar.routes";
 import { Body, H2, H3, Subtitle } from "@/theme/Typography";
 import { useTranslation } from "react-i18next";
 import { useUserQuery } from "../user/users.hooks";

@@ -4,7 +4,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
-import { AddCropRotationScreenProps } from "@/navigation/rootStackTypes";
+import { AddCropRotationScreenProps } from "./navigation/crop-rotations-routes";
 import { H2 } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
 import { View } from "react-native";
@@ -58,6 +58,7 @@ export function AddCropRotationScreen({
             title={t("buttons.save")}
             style={{ flexGrow: 1 }}
             disabled={!isDirty || createPlotCropRotationMutation.isPending}
+            loading={createPlotCropRotationMutation.isPending}
           />
         </BottomActionContainer>
       }

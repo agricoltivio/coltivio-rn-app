@@ -2,7 +2,7 @@ import { FertilizerApplication } from "@/api/fertilizerApplications.api";
 import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
-import { FertilizerApplicationsOfYearListScreenProps } from "@/navigation/rootStackTypes";
+import { FertilizerApplicationsOfYearListScreenProps } from "./navigation/fertilizer-application-routes";
 import { H2 } from "@/theme/Typography";
 import Fuse from "fuse.js";
 import { useState } from "react";
@@ -12,6 +12,7 @@ import { useFertilizerApplicationsQuery } from "./fertilizerApplications.hooks";
 import { locale } from "@/locales/i18n";
 import { formatLocalizedDate } from "@/utils/date";
 import { useTranslation } from "react-i18next";
+import { round } from "@/utils/math";
 
 export function FertilizerApplicationsOfYearListScreen({
   route,
@@ -75,8 +76,11 @@ export function FertilizerApplicationsOfYearListScreen({
           })}
         </ListItem.Title>
         <ListItem.Body>
-          {fertilizerApplication.numberOfApplications *
-            fertilizerApplication.amountPerApplication}
+          {round(
+            fertilizerApplication.numberOfApplications *
+              fertilizerApplication.amountPerApplication,
+            2
+          )}
           {fertilizerApplication.unit} {fertilizerApplication.fertilizer.name}
         </ListItem.Body>
       </ListItem.Content>

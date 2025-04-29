@@ -1,7 +1,7 @@
 import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
 import { List } from "@/components/list/List";
-import { CropRotationsScreenProps } from "@/navigation/rootStackTypes";
+import { CropRotationsScreenProps } from "./navigation/crop-rotations-routes";
 import { H2, Headline } from "@/theme/Typography";
 import React from "react";
 import { View } from "react-native";
@@ -22,9 +22,9 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
     <ContentView headerVisible>
       <ScrollView
         showHeaderOnScroll
-        headerTitleOnScroll={t("crop_rotations.sowings")}
+        headerTitleOnScroll={t("crop_rotations.crop_rotation")}
       >
-        <H2>{t("crop_rotations.sowings")}</H2>
+        <H2>{t("crop_rotations.crop_rotation")}</H2>
         <View
           style={{
             marginTop: theme.spacing.m,

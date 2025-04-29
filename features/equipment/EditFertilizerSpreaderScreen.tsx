@@ -2,7 +2,7 @@ import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
-import { EditFertilizerSpreaderScreenProps } from "@/navigation/rootStackTypes";
+import { EditFertilizerSpreaderScreenProps } from "./navigation/equipment-routes";
 import { H2 } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -84,12 +84,14 @@ export function EditFertilizerSpreaderScreen({
               title={t("buttons.delete")}
               onPress={onDelete}
               disabled={submitting}
+              loading={deleteMachineConfigMutation.isPending}
             />
             <Button
               style={{ flexGrow: 1 }}
               title={t("buttons.save")}
               onPress={handleSubmit(onSubmit)}
               disabled={!isDirty || submitting}
+              loading={updateMachineConfigMutation.isPending}
             />
           </View>
         </BottomActionContainer>

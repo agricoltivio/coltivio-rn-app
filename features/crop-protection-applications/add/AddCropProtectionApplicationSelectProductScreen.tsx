@@ -6,12 +6,12 @@ import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { useCropProtectionProductsQuery } from "@/features/crop-protection-products/cropProtectionProduct.hooks";
 import { Body, H2 } from "@/theme/Typography";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useAddCropProtectionApplicationStore } from "./cropProtectionApplication.store";
-import { AddCropProtectionApplicationSelectProductScreenProps } from "@/navigation/rootStackTypes";
+import { AddCropProtectionApplicationSelectProductScreenProps } from "../navigation/crop-protection-application-routes";
 import { useTranslation } from "react-i18next";
 
 type FormValues = {
@@ -19,6 +19,7 @@ type FormValues = {
 };
 export function AddCropProtectionApplicationSelectProductScreen({
   navigation,
+  route,
 }: AddCropProtectionApplicationSelectProductScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -30,10 +31,19 @@ export function AddCropProtectionApplicationSelectProductScreen({
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors, isDirty },
   } = useForm<FormValues>({
     defaultValues: { productId: selectedProduct?.id },
   });
+
+  const createdProductId = route.params.productId;
+
+  useEffect(() => {
+    if (createdProductId) {
+      setValue("productId", createdProductId);
+    }
+  }, [createdProductId]);
 
   function onSubmit({ productId }: FormValues) {
     const selectedProduct = products?.find(
@@ -45,7 +55,7 @@ export function AddCropProtectionApplicationSelectProductScreen({
     });
     setSelectedProduct(selectedProduct);
 
-    navigation.navigate("AddCropProtectionApplicationSelectMachineConfig");
+    navigation.navigate("AddCropProtectionApplicationSelectMachineConfig", {});
   }
 
   return (
@@ -115,6 +125,15 @@ export function AddCropProtectionApplicationSelectProductScreen({
               }
             />
           )}
+
+          {products?.length ? (
+            <Button
+              title={t("crop_protection_product.add_product")}
+              type="accent"
+              style={{ marginTop: theme.spacing.m }}
+              onPress={() => navigation.navigate("CreateCropProtectionProduct")}
+            />
+          ) : null}
         </View>
       </ScrollView>
     </ContentView>

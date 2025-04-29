@@ -1,18 +1,20 @@
 import { Button } from "@/components/buttons/Button";
 import { ContentView } from "@/components/containers/ContentView";
-import { FertilizerApplicationDetailsScreenProps } from "@/navigation/rootStackTypes";
+import { FertilizerApplicationDetailsScreenProps } from "./navigation/fertilizer-application-routes";
 import { useTheme } from "styled-components/native";
 import {
   useDeleteFertilizerApplicationMutation,
   useFertilizerApplicationQuery,
 } from "./fertilizerApplications.hooks";
 import { FertilizerApplicationSummary } from "./FertilizerApplicationSummary";
+import { useTranslation } from "react-i18next";
 
 export function FertilizerApplicationDetailsScreen({
   route,
   navigation,
 }: FertilizerApplicationDetailsScreenProps) {
   const theme = useTheme();
+  const { t } = useTranslation();
   const fertilizerApplicationId = route.params.fertilizerApplicationId;
   const { fertilizerApplication } = useFertilizerApplicationQuery(
     fertilizerApplicationId

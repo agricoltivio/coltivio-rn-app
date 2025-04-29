@@ -12,7 +12,7 @@ import { MapShowLocationToggle } from "@/features/map/MapShowLocationToggle";
 import { TopLeftBackButton } from "@/features/map/TopLeftBackButton";
 import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
 import { useLocalSettings } from "@/features/user/LocalSettingsContext";
-import { AddCropRotationSelectPlotsScreenProps } from "@/navigation/rootStackTypes";
+import { AddCropRotationSelectPlotsScreenProps } from "../navigation/crop-rotations-routes";
 import { hexToRgba } from "@/theme/theme";
 import { Subtitle, Title } from "@/theme/Typography";
 import { PortalHost } from "@gorhom/portal";
@@ -64,7 +64,7 @@ export function AddCropRotationSelectPlotsScreen({
       strokeColor={theme.colors.white}
       fillColor={hexToRgba(
         theme.map.defaultFillColor,
-        theme.map.defaultFillAlpha,
+        theme.map.defaultFillAlpha
       )}
       tappable
       onPress={(e) => {

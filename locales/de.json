@@ -7,6 +7,7 @@
     "back": "Zurück",
     "cancel": "Abbrechen",
     "confirm": "Bestätigen",
+    "edit": "Bearbeiten",
     "save": "Speichern",
     "add": "Hinzufügen",
     "ok": "OK",
@@ -23,6 +24,7 @@
   "forms": {
     "labels": {
       "name": "Name",
+      "description": "Beschreibung",
       "description_optional": "Beschreibung (optional)",
       "display_name": "Anzeigename",
       "select_date": "Datum wählen",
@@ -30,6 +32,7 @@
       "password": "Passwort",
       "password_repeat": "Passwort wiederholen",
       "date": "Datum",
+      "time": "Uhrzeit",
       "farm_name": "Hofname",
       "location": "Standort",
       "location_search": "Standort suchen",
@@ -75,7 +78,14 @@
       "produced_units": "Produzierte Einheiten",
       "please_select": "Bitte auswählen",
       "from": "Von",
-      "to": "Bis"
+      "to": "Bis",
+      "local_id": "Parzelle",
+      "local_id_optional": "Parzelle (optional)",
+      "usage": "Nutzung",
+      "usage_optional": "Nutzung (optional)",
+      "usagecode": "Nutzungscode",
+      "cutting_date": "Schnittzeit",
+      "cutting_date_optional": "Schnittzeit (optional)"
     },
     "placeholders": {
       "location_search": "z.B. Straße, Hausnummer, Ort",
@@ -105,13 +115,16 @@
     "unknown": "Unbekannt",
     "parcel_number": "Parzelle: {{number}}",
     "usage": "Nutzung",
-    "federal_farm_id": "Betriebsnummer: {{number}}"
+    "federal_farm_id": "Betriebsnummer: {{number}}",
+    "new_machine": "Neue Maschine",
+    "new_device": "Neues Gerät"
   },
   "errors": {
     "unexpected_retry": "Ups, etwas ist schief gelaufen. Bitte versuche es erneut.",
     "unexpected_retry_later": "Ups, etwas ist schief gelaufen. Bitte versuche es später erneut.",
     "unexpected": "Ups, etwas ist schief gelaufen.",
-    "try_again_later": "Bitte versuche es später nochmals..."
+    "try_again_later": "Bitte versuche es später nochmals...",
+    "link_expired": "Der Link ist abgelaufen. Bitte versuche es erneut."
   },
   "units": {
     "long": {
@@ -139,7 +152,7 @@
     "select_or_draw_area": {
       "select_area": "Wähle deine Fläche",
       "chose_select_or_draw": "Wähle entweder ganze Schläge aus oder zeichne eine eigene Fläche.",
-      "draw_tip": "Benutze diese Symbole, um mit dem Zeichnen zu beginnen und abzuschließen. Du kannst die Eckpunkte verschieben, indem du einen Punkt gedrückt hältst bis er vor deinem Finger sichtbar wird und ihn dann an den gewünschten Ort ziehst."
+      "draw_tip": "Benutze diese Symbole, um mit dem Zeichnen zu beginnen und abzuschließen. Tippe auf die Karte um Eckpunkte zu setzen. Du kannst sie verschieben, indem du einen Punkt gedrückt hältst bis er vor deinem Finger sichtbar wird und ihn dann an den gewünschten Ort ziehst."
     },
     "select_plots": {
       "heading": "Wähle die verwendeten Schläge",
@@ -160,8 +173,7 @@
     "reset_password": "Passwort zurücksetzen",
     "enter_email": "Bitte gib deine E-Mail an, um dein Passwort zurückzusetzen.",
     "reset_link_sent": "Eine Email wurde an {{email}} gesendet, um dein Passwort zurückzusetzen.",
-    "mail_being_deliverd": "Es kann einen Moment dauern, bis das Mail im Postfach ist. Falls das Mail nicht ankommt, schaue bitte in deinen Spam Ordner.",
-    "link_expired": "Der Link ist abgelaufen. Bitte versuche es erneut."
+    "mail_being_deliverd": "Es kann einen Moment dauern, bis das Mail im Postfach ist. Falls das Mail nicht ankommt, schaue bitte in deinen Spam Ordner."
   },
   "onboarding": {
     "farm_name": {
@@ -177,6 +189,10 @@
         "heading": "Deine Betriebsnummer",
         "body": "Tippe entweder auf eine deiner Parzellen oder suche manuell nach deiner Betriebsnummer."
       },
+      "modal_not_found": {
+        "heading": "Deine Betriebsnummer",
+        "body": "Leider haben wir keine Parzellen an deinem Standort gefunden. Die Kantone Obwalden, Nidwalden und Waadt sind leider noch nicht unterstützt. Du kannst diesen Schritt überspringen und die Flächen manuell einzeichnen."
+      },
       "confirmation": "Ist {{federalFarmId}} deine Betriebsnummer?"
     },
     "summary": {
@@ -184,16 +200,21 @@
       "plots_info": "Deine Flächen werden basierend auf deiner Betriebsnummer als Schläge hinzugefügt.",
       "crops_info": "Die momentane Kultur wird vom Nutzungscode abgeleitet.",
       "edit_plots_info": "Du kannst deine Flächen jederzeit unter 'Schläge' oder über die Karte bearbeiten.",
-      "press_save_to_finish": "Drücke 'Speichern', um deinen Hof zu erstellen."
+      "press_save_to_finish": "Drücke 'Speichern', um deinen Hof zu erstellen.",
+      "no_federal_farm_id": "Leider konnten wir deine Flächen nicht automatisch hinzufügen. Du kannst deine Flächen unter 'Schläge' oder unter der Karte manuell hinzufügen. Wir arbeiten daran, sobald wie möglich alle Standorte zu unterstützen."
     }
   },
   "users": {
-    "change_email": "E-Mail-Adresse ändern",
-    "verify_new_email_before_in_effect": "Deine neue E-Mail-Adresse muss zuerst verifiziert werden, bevor die Änderung übernommen wird.",
-    "email_not_verified": "E-Mail-Adresse noch nicht verifiziert!",
-    "resend_verification_email": "E-Mail erneut senden",
+    "email": "Email Adresse",
+    "verify_new_email_before_in_effect": "Deine neue Email Adresse muss zuerst verifiziert werden, bevor die Änderung übernommen wird.",
+    "email_verified": "Deine Email Adresse wurde erfolgreich verifiziert",
+    "email_not_verified": "Email Adresse noch nicht verifiziert!",
+    "email_change_pending": "Verifizieren deine neue Email Adresse",
+    "email_change_verification_sent": "Eine Email wurde versendet, um deine neue Adresse zu verifizieren. Sobald diese bestätigt ist, wird die neue Adresse aktiviert.",
+    "resend_verification_email": "Email verifizieren",
     "new_password": "Neues Passwort",
-    "change_display_name": "Namen bearbeiten"
+    "change_display_name": "Namen bearbeiten",
+    "verification_mail_sent": "Eine Email wurde an {{email}} gesendet, um deine E-Mail-Adresse zu verifizieren."
   },
   "home": {
     "welcome_text": "Hallo {{displayName}},",
@@ -207,7 +228,7 @@
     }
   },
   "farm": {
-    "farm": "Hof",
+    "farm": "Mein Hof",
     "farm_name": "Hofname",
     "location": "Standort",
     "delete_farm": "Hof löschen",
@@ -217,11 +238,12 @@
   },
   "plots": {
     "plots": "Schläge",
+    "plot": "Schlag",
     "plot_name": "Schlag {{name}}",
     "plot_name_date": "{{date}} - Schlag {{name}}",
     "common": {
       "draw_area_overlap_info": "Wenn die Fläche einen existierenden Schlag überlappt, wird dieser automatisch verkleinert.",
-      "affected_plots_warning": "Achtung: Folgende Schläge werden durch diesen Schlag verkleinert."
+      "affected_plots_warning": "Folgende Schläge werden durch diesen Schlag verkleinert."
     },
     "map": {
       "selected_plot": {
@@ -244,6 +266,9 @@
             "drawing_info": "Benutze diese Symbole, um mit dem Zeichnen zu beginnen und abzuschließen. Du kannst die Eckpunkte verschieben, indem du einen Punkt gedrückt hältst, bis er vor dem Finger sichtbar wird, und ihn dann an den gewünschten Ort ziehst."
           }
         }
+      },
+      "summary": {
+        "heading": "Schlag hinzufügen"
       }
     },
     "edit": {
@@ -252,15 +277,14 @@
           "edit_area": {
             "heading": "Bearbeite den Schlag",
             "move_markers": "Halte die Eckpunkte gedrückt, bis sie vor dem Finger sichtbar sind, und ziehe sie an den gewünschten Ort."
-          },
-          "delete": {
-            "heading": "Schlag {{name}} wirklich löschen?",
-            "entries_warning": "Achtung: Alle Einträge für diesen Schlag werden unwiderruflich gelöscht.",
-            "confirm_by_typing_name": "Um diesen Schlag zu löschen, gib den Namen ein und bestätige den Vorgang."
           }
         }
-      },
-      "details": {}
+      }
+    },
+    "delete": {
+      "heading": "Schlag {{name}} wirklich löschen?",
+      "entries_warning": "Alle Einträge für diesen Schlag werden unwiderruflich gelöscht.",
+      "confirm_by_typing_name": "Um diesen Schlag zu löschen, gib den Namen ein und bestätige den Vorgang."
     },
     "usage_codes": {
       "501": "Sommergerste",
@@ -426,18 +450,18 @@
     }
   },
   "farm_equipment": {
-    "farm_equipment": "Landmaschinen & Geräte",
-    "new_equipment": "Neues Gerät",
+    "farm_equipment": "Maschinen",
+    "new_equipment": "Neue Maschine",
     "device_types": {
       "harvest": "Ernte",
       "tillage": "Bodenbearbeitung",
       "crop_protection": "Pflanzenschutz",
-      "fertilization": "Düngung"
+      "fertilization": "Düngeraustrag"
     }
   },
   "crop_protection_equipments": {
     "new_equipment": "Neues Pflanzenschutzgerät",
-    "only_same_unit_warning": "Achtung: Um eine Maschine für einen Pflanzenschutzmittel zu verwenden muss sie die selbe Einheit haben."
+    "only_same_unit_warning": "Um eine Maschine für einen Pflanzenschutzmittel zu verwenden, muss sie die selbe Einheit verwenden."
   },
   "harvest_equipments": {
     "new_harvester": "Neue Erntemaschine",
@@ -447,16 +471,16 @@
     "new_equipment": "Neues Gerät zur Bodenbearbeitung"
   },
   "fertilizer_spreaders": {
-    "new_spreader": "Neue Maschine für Düngung",
-    "only_same_unit_warning": "Achtung: Um eine Maschine für einen Dünger zu verwenden muss sie die selbe Einheit haben."
+    "new_spreader": "Neue Maschine für Düngeraustrag",
+    "only_same_unit_warning": "Um eine Maschine für einen Dünger zu verwenden, muss sie die selbe Einheit verwenden."
   },
   "field_calendar": {
     "field_calendar": "Feldkalender",
     "crops": "Kulturen",
-    "sowings": "Aussaaten",
+    "crop_rotations": "Fruchtfolgen",
     "tillages": "Bodenbearbeitungen",
     "fertilizers": "Dünger",
-    "fertilizer_applications": "Düngung",
+    "fertilizer_applications": "Düngeraustrag",
     "harvests": "Ernte",
     "crop_protection_products": "Pflanzenschutzmittel",
     "crop_protection_applications": "Pflanzenschutz",
@@ -506,14 +530,16 @@
   "fertilizers": {
     "fertilizer": "Dünger",
     "new_fertilizer": "Neuer Dünger",
-    "product_in_use_warning": "Achtung: Dieser Dünger wird verwendet und kann deshalb nur beschränkt bearbeitet und nicht gelöscht werden.",
-    "warning_unit_not_editable": "Achtung, die Einheit kann nicht bearbeitet werden! Sie sollte der Einheit entsprechen in welchem der Dünger ausgebracht wird."
+    "product_in_use_warning": "Dieser Dünger wird verwendet und kann deshalb nur beschränkt bearbeitet und nicht gelöscht werden.",
+    "warning_unit_not_editable": "Die Einheit definiert, in welcher Einheit der Dünger ausgebracht wird.",
+    "unit_info": "Wähle in welcher Einheit (z.B Liter) der Dünger ausgebracht wird.",
+    "default_machine_info": "Um die Erfassung zu erleichtern kann eine Maschine definiert werden, mit welcher dieser Dünger ausgebracht wird. Die Kapazität der Maschine muss der Einheit des Düngers entsprechen."
   },
   "fertilizer_application": {
-    "fertilizer_application": "Düngung",
-    "fertilizer_application_date": "Düngung {{date}}",
-    "fertilizer_application_year": "Düngung {{year}}",
-    "fertilizer_application_plot_name": "Düngung - {{name}}",
+    "fertilizer_application": "Düngeraustrag",
+    "fertilizer_application_date": "Düngeraustrag {{date}}",
+    "fertilizer_application_year": "Düngeraustrag {{year}}",
+    "fertilizer_application_plot_name": "Düngeraustrag - {{name}}",
     "select_quantity": {
       "heading": "Wie viel wurde ausgebracht?"
     },
@@ -532,7 +558,7 @@
     "select_machine": {
       "heading": "Welche Maschine wurde verwendet?",
       "no_machines": "Du hast noch keine Maschine erfasst. Diese vereinfachen die Erfassung, indem du Standardwerte vordefinieren kannst.",
-      "only_same_unit_warning": "Achtung: Du kannst nur Geräte verwenden, welche die gleiche Einheit verwendet wie der gewählte Dünger."
+      "only_same_unit_warning": "Du kannst nur Maschinen verwenden, welche die gleiche Einheit verwendet wie der gewählte Dünger."
     },
     "methods": {
       "spread": "Streuen",
@@ -580,7 +606,8 @@
       "grain": "Getreide",
       "none": "Keine"
     },
-    "no_variety": "Keine Sorte"
+    "no_variety": "Keine Sorte",
+    "crop_in_use_warning": "Diese Kultur wird verwendet und kann deshalb nicht gelöscht werden."
   },
   "crop_protection_applications": {
     "crop_protection": "Pflanzenschutz",
@@ -596,7 +623,7 @@
     },
     "select_equipment": {
       "heading": "Welches Gerät wurde verwendet?",
-      "only_same_unit_warning": "Achtung: Du kannst nur Geräte verwenden, welche die gleiche Einheit wie das Pflanzenschutzmittel verwenden.",
+      "only_same_unit_warning": "Du kannst nur Geräte verwenden, welche die gleiche Einheit wie das Pflanzenschutzmittel verwenden.",
       "no_matching_equipment_message": "Noch kein passendes Gerät erfasst. Diese vereinfachen die Erfassung, indem du Standardwerte vordefinieren kannst."
     },
     "select_quantity": {
@@ -620,11 +647,13 @@
   },
   "crop_protection_product": {
     "add_product": "Neues Pflanzenschutzmittel",
-    "product_in_use_warning": "Achtung: Dieses Pflanzenschutzmittel wird verwendet und kann deshalb nicht gelöscht werden.",
-    "warning_unit_not_editable": "Achtung, die Einheit kann nicht bearbeitet werden! Sie sollte der Einheit entsprechen in welchem das Pflanzenschutzmittel ausgebracht wird."
+    "product_in_use_warning": "Dieses Pflanzenschutzmittel wird verwendet und kann deshalb nicht gelöscht werden.",
+    "warning_unit_not_editable": "Die Einheit kann nicht bearbeitet werden! Sie sollte der Einheit entsprechen in welchem das Pflanzenschutzmittel ausgebracht wird.",
+    "unit_info": "Wähle in welcher Einheit (z.B Liter) das Mittel ausgebracht wird.",
+    "default_machine_info": "Um die Erfassung zu erleichtern kann eine Maschine definiert werden, mit welcher dieses Mittel ausgebracht wird. Die Kapazität der Maschine muss der Einheit des Mittels entsprechen."
   },
   "crop_rotations": {
-    "crop_rotation": "Fruchtfolge",
+    "crop_rotation": "Fruchtfolgen",
     "crop_rotation_year": "Fruchtfolge {{year}}",
     "crop_rotation_plot_name": "Fruchtfolge - {{name}}",
     "crop_rotation_date": "Fruchtfolge - {{date}}",

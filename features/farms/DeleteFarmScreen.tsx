@@ -5,7 +5,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
-import { DeleteFarmScreenProps } from "@/navigation/rootStackTypes";
+import { DeleteFarmScreenProps } from "./navigation/farm-routes";
 import { H2, Label, Subtitle } from "@/theme/Typography";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -62,24 +62,22 @@ export function DeleteFarmScreen({}: DeleteFarmScreenProps) {
             marginTop: theme.spacing.m,
           }}
         >
-          <Card.Content>
-            <H2 style={{ color: theme.colors.white }}>Danger Zone!</H2>
-            <Subtitle
-              style={{ color: theme.colors.white, marginTop: theme.spacing.m }}
-            >
-              {t("common.all_entries_will_be_deleted")}
-            </Subtitle>
-            <Subtitle
-              style={{ color: theme.colors.white, marginTop: theme.spacing.s }}
-            >
-              {t("farm.enter_farm_name_to_delete")}
-            </Subtitle>
-            <Subtitle
-              style={{ color: theme.colors.white, marginTop: theme.spacing.s }}
-            >
-              {t("farm.chose_option_to_delete_account")}
-            </Subtitle>
-          </Card.Content>
+          <H2 style={{ color: theme.colors.white }}>Danger Zone!</H2>
+          <Subtitle
+            style={{ color: theme.colors.white, marginTop: theme.spacing.m }}
+          >
+            {t("common.all_entries_will_be_deleted")}
+          </Subtitle>
+          <Subtitle
+            style={{ color: theme.colors.white, marginTop: theme.spacing.s }}
+          >
+            {t("farm.enter_farm_name_to_delete")}
+          </Subtitle>
+          <Subtitle
+            style={{ color: theme.colors.white, marginTop: theme.spacing.s }}
+          >
+            {t("farm.chose_option_to_delete_account")}
+          </Subtitle>
         </Card>
         <View style={{ flexDirection: "row", marginTop: theme.spacing.xl }}>
           <Label style={{ flex: 1 }}>{t("farm.delete_account")}</Label>

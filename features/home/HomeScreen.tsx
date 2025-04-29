@@ -1,7 +1,7 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { MapTile } from "@/features/map/MapTile";
-import { HomeScreenProps } from "@/navigation/rootStackTypes";
+import { HomeScreenProps } from "./navigation/home-routes";
 import { H1, H2 } from "@/theme/Typography";
 import { Image } from "expo-image";
 import React from "react";
@@ -11,23 +11,20 @@ import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../farms/farms.hooks";
 import { useUserQuery } from "../user/users.hooks";
 import { HomeTile } from "./HomeTile";
-import { useSyncMissingLocalIdsMutation } from "../plots/plots.hooks";
 
 export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { t } = useTranslation();
   const { user } = useUserQuery();
   const { farm } = useFarmQuery();
   const theme = useTheme();
-  const syncMissingLocalIdsMutation = useSyncMissingLocalIdsMutation(
-    () => {},
-    (error) => console.error(error)
-  );
 
   return (
     <ScrollView showHeaderOnScroll headerTitleOnScroll={farm?.name}>
       <ContentView headerVisible={true}>
         <View>
-          <H1>{t("home.welcome_text", { displayName: user?.fullName })}</H1>
+          {user?.fullName ? (
+            <H1>{t("home.welcome_text", { displayName: user?.fullName })}</H1>
+          ) : null}
           <H2>{farm?.name}</H2>
           <View
             style={{
@@ -137,7 +134,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
             gap: theme.spacing.m,
           }}
         >
-          <HomeTile title={t("home.tiles.animal_husbandry")}>
+          <HomeTile title={t("home.tiles.animal_husbandry")} disabled>
             <Image
               source={require("@/assets/images/animals-icon.png")}
               contentFit="contain"
@@ -149,10 +146,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
               }}
             />
           </HomeTile>
-          <HomeTile
-            title={t("home.tiles.community")}
-            onPress={() => syncMissingLocalIdsMutation.mutate()}
-          >
+          <HomeTile title={t("home.tiles.community")} disabled>
             <View style={{ overflow: "hidden" }}>
               <Image
                 source={require("@/assets/images/community-icon-3.png")}

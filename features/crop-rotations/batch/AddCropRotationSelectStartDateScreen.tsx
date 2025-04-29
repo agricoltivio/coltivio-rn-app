@@ -9,7 +9,7 @@ import { useTheme } from "styled-components";
 import { useCreateCropRotationStore } from "./crop-rotations.store";
 import { ScrollView } from "@/components/views/ScrollView";
 import { View } from "react-native";
-import { AddCropRotationSelectStartDateScreenProps } from "@/navigation/rootStackTypes";
+import { AddCropRotationSelectStartDateScreenProps } from "../navigation/crop-rotations-routes";
 import { useTranslation } from "react-i18next";
 
 type FormValues = {

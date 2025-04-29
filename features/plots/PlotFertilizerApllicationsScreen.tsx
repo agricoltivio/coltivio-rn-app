@@ -4,7 +4,7 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Headline } from "@/theme/Typography";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { PlotFertilizerApplicationsScreenProps } from "@/navigation/rootStackTypes";
+import { PlotFertilizerApplicationsScreenProps } from "./navigation/plots-routes";
 import { useFertilizerApplicationsForPlotQuery } from "../fertilizer-application/fertilizerApplications.hooks";
 import { useTranslation } from "react-i18next";
 

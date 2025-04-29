@@ -2,7 +2,7 @@ import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
 import { List } from "@/components/list/List";
 import { ScrollView } from "@/components/views/ScrollView";
-import { HarvestsScreenProps } from "@/navigation/rootStackTypes";
+import { HarvestsScreenProps } from "./navigation/harvest-routes";
 import { H2, Headline } from "@/theme/Typography";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";

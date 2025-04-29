@@ -1,6 +1,6 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { H2 } from "@/theme/Typography";
-import { EditCropProtectionEquipmentScreenProps } from "@/navigation/rootStackTypes";
+import { EditCropProtectionEquipmentScreenProps } from "./navigation/equipment-routes";
 import {
   CropProtectionEquipmentFormValues,
   CropProtectionEquipmentForm,
@@ -42,10 +42,10 @@ export function EditCropProtectionEquipmentScreen({
   });
 
   const updateMachineConfigMutation = useUpdateCropProtectionEquipmentMutation(
-    () => navigation.goBack(),
+    () => navigation.goBack()
   );
   const deleteMachineConfigMutation = useDeleteCropProtectionEquipmentMutation(
-    () => navigation.goBack(),
+    () => navigation.goBack()
   );
 
   function onSubmit(data: CropProtectionEquipmentFormValues) {
@@ -73,19 +73,21 @@ export function EditCropProtectionEquipmentScreen({
       headerVisible
       footerComponent={
         <BottomActionContainer>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row", gap: theme.spacing.s }}>
             <Button
               style={{ flexGrow: 1 }}
               type="secondary"
               title={t("buttons.delete")}
               onPress={onDelete}
               disabled={submitting}
+              loading={deleteMachineConfigMutation.isPending}
             />
             <Button
               style={{ flexGrow: 1 }}
               title={t("buttons.save")}
               onPress={handleSubmit(onSubmit)}
               disabled={!isDirty || submitting}
+              loading={updateMachineConfigMutation.isPending}
             />
           </View>
         </BottomActionContainer>

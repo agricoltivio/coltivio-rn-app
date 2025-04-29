@@ -3,16 +3,17 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
+import { ResetPasswordScreenProps } from "@/features/auth/navigation/auth-routes";
+import { supabase } from "@/supabase/supabase";
 import { Body, H2 } from "@/theme/Typography";
+import { useUrl } from "@/utils/url-context";
+import * as Sentry from "@sentry/react-native";
+import * as Linking from "expo-linking";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { supabase } from "@/supabase/supabase";
-import { useEffect, useState } from "react";
-import { ResetPasswordScreenProps } from "@/navigation/rootStackTypes";
-import { useSession } from "@/auth/SessionProvider";
-import * as Linking from "expo-linking";
 
 type FromValues = {
   password: string;
@@ -30,11 +31,14 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
   const [urlError, setUrlError] = useState<string | null>(null);
   const { t } = useTranslation();
   const theme = useTheme();
-  const { setUser, setSession } = useSession();
-  const url = Linking.useURL();
+  const [authState, setAutState] = useState<{
+    accessToken: string;
+    refreshToken: string;
+  } | null>(null);
 
   const password = watch("password");
 
+  const { url } = useUrl();
   useEffect(() => {
     const createSessionFromUrl = async () => {
       if (!url) {
@@ -42,14 +46,13 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
       }
       const { queryParams } = Linking.parse(url.replaceAll("#", "?"));
       if (!queryParams) {
-        setUrlError(t("forgot_password.link_expired"));
+        setUrlError(t("errors.unexpected"));
         return;
       }
-      console.log("queryParams", queryParams);
       if (queryParams.error) {
         switch (queryParams.error) {
           case "access_denied":
-            setUrlError(t("forgot_password.link_expired"));
+            setUrlError(t("errors.link_expired"));
             break;
           default: {
             setError(t("errors.unexpected"));
@@ -68,46 +71,49 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
         setUrlError(t("errors.unexpected"));
         return;
       }
-      const { data, error } = await supabase.auth.setSession({
-        access_token: access_token as string,
-        refresh_token: refresh_token as string,
+      setAutState({
+        accessToken: access_token as string,
+        refreshToken: refresh_token as string,
       });
-      if (error) {
-        console.error(error);
-        setError(t("errors.unexpected"));
-        return;
-      }
-      if (!data.session) {
-        console.error("Missing session");
-        setError(t("errors.unexpected"));
-        return;
-      }
-      setSession(data.session!);
     };
     createSessionFromUrl();
   }, [url]);
 
   async function onSubmit({ password }: FromValues) {
-    const { error, data } = await supabase.auth.updateUser({
+    const { error } = await supabase.auth.setSession({
+      access_token: authState!.accessToken,
+      refresh_token: authState!.refreshToken,
+    });
+    if (error) {
+      console.error("set session error", error);
+      Sentry.captureException(error);
+      setError(t("errors.unexpected"));
+      return;
+    }
+    const { error: passwordUpdateError } = await supabase.auth.updateUser({
       password,
     });
-    if (error || !data) {
-      console.error(error?.code || error?.message);
-      setError(t("errors.unexpected_retry"));
-    } else {
-      setUser(data.user);
-      navigation.goBack();
+    if (passwordUpdateError) {
+      console.error(passwordUpdateError);
+      Sentry.captureException(passwordUpdateError);
     }
   }
   return (
     <ContentView
       footerComponent={
         <BottomActionContainer>
-          <Button
-            title={t("buttons.save")}
-            onPress={handleSubmit(onSubmit)}
-            disabled={!isDirty || urlError != null}
-          />
+          {urlError != null ? (
+            <Button
+              title={t("buttons.back")}
+              onPress={() => navigation.navigate("SignIn")}
+            />
+          ) : (
+            <Button
+              title={t("buttons.save")}
+              onPress={handleSubmit(onSubmit)}
+              disabled={!isDirty || urlError != null}
+            />
+          )}
         </BottomActionContainer>
       }
     >

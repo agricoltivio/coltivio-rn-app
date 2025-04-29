@@ -2,7 +2,7 @@ import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
-import { EditHarvestingMachineryScreenProps } from "@/navigation/rootStackTypes";
+import { EditHarvestingMachineryScreenProps } from "./navigation/equipment-routes";
 import { H2 } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
 import { View } from "react-native";
@@ -26,7 +26,7 @@ export function EditHarvestingMachineryScreen({
   const theme = useTheme();
   const harvestingMachineryId = route.params.harvestingMachineryId;
   const { harvestingMachinery } = useHarvestingMachineryByIdQuery(
-    harvestingMachineryId,
+    harvestingMachineryId
   );
 
   const {
@@ -42,8 +42,8 @@ export function EditHarvestingMachineryScreen({
       : undefined,
   });
 
-  const updateTractorMutation = useUpdateHarvestingMachineryMutation(() =>
-    navigation.goBack(),
+  const updateHarvestingMachinery = useUpdateHarvestingMachineryMutation(() =>
+    navigation.goBack()
   );
   const deleteHarvestingMachineryMutation =
     useDeleteHarvestingMachineryMutation(() => navigation.goBack());
@@ -52,7 +52,7 @@ export function EditHarvestingMachineryScreen({
     defaultKilosPerUnit,
     ...data
   }: HarvestingMachineryFormValues) {
-    updateTractorMutation.mutate({
+    updateHarvestingMachinery.mutate({
       id: harvestingMachineryId,
       defaultKilosPerUnit: Number(defaultKilosPerUnit),
       ...data,
@@ -68,7 +68,7 @@ export function EditHarvestingMachineryScreen({
   }
 
   const submitting =
-    updateTractorMutation.isPending ||
+    updateHarvestingMachinery.isPending ||
     deleteHarvestingMachineryMutation.isPending;
 
   return (
@@ -88,6 +88,7 @@ export function EditHarvestingMachineryScreen({
               title={t("buttons.delete")}
               onPress={onDelete}
               disabled={submitting}
+              loading={deleteHarvestingMachineryMutation.isPending}
             />
 
             <Button
@@ -95,6 +96,7 @@ export function EditHarvestingMachineryScreen({
               title={t("buttons.save")}
               onPress={handleSubmit(onSubmit)}
               disabled={!isDirty || submitting}
+              loading={updateHarvestingMachinery.isPending}
             />
           </View>
         </BottomActionContainer>

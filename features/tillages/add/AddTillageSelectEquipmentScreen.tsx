@@ -6,7 +6,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { useTillageEquipmentsQuery } from "@/features/equipment/tillageEquipment.hooks";
-import { AddTillageSelectEquipmentScreenProps } from "@/navigation/rootStackTypes";
+import { AddTillageSelectEquipmentScreenProps } from "../navigation/tillages-routes";
 import { Body, H2 } from "@/theme/Typography";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -23,6 +23,7 @@ type FormValues = {
 };
 export function AddTillageSelectEquipmentScreen({
   navigation,
+  route,
 }: AddTillageSelectEquipmentScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -45,6 +46,14 @@ export function AddTillageSelectEquipmentScreen({
     },
   });
 
+  const createdEquipmentId = route.params.equipmentId;
+
+  useEffect(() => {
+    if (createdEquipmentId) {
+      setValue("equipmentId", createdEquipmentId);
+    }
+  }, [createdEquipmentId]);
+
   const equipmentId = watch("equipmentId");
 
   const currentSelectedEquipment = tillageEquipments?.find(
@@ -56,7 +65,7 @@ export function AddTillageSelectEquipmentScreen({
       setValue("reason", currentSelectedEquipment.reason);
       setValue("action", currentSelectedEquipment.action);
     }
-  }, [equipmentId]);
+  }, [currentSelectedEquipment]);
 
   function onSubmit({ equipmentId, action, reason }: FormValues) {
     if (currentSelectedEquipment) {
@@ -86,11 +95,10 @@ export function AddTillageSelectEquipmentScreen({
     >
       <ScrollView
         showHeaderOnScroll
-        headerTitleOnScroll={t("tillages.select_date.heading")}
+        headerTitleOnScroll={t("tillages.select_equipment.heading")}
         keyboardAware
       >
-        {/* <H2>Neue Ernte</H2> */}
-        <H2>{t("tillages.select_date.heading")}</H2>
+        <H2>{t("tillages.select_equipment.heading")}</H2>
         <View
           style={{ gap: theme.spacing.s, flex: 1, marginTop: theme.spacing.m }}
         >
@@ -167,6 +175,14 @@ export function AddTillageSelectEquipmentScreen({
               />
             </>
           )}
+          {tillageEquipments?.length ? (
+            <Button
+              title={t("common.new_machine")}
+              type="accent"
+              style={{ marginTop: theme.spacing.m }}
+              onPress={() => navigation.navigate("CreateTillageEquipment")}
+            />
+          ) : null}
         </View>
       </ScrollView>
     </ContentView>

@@ -3,7 +3,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
 import { locale } from "@/locales/i18n";
-import { CropProtectionApplicationsOfYearListScreenProps } from "@/navigation/rootStackTypes";
+import { CropProtectionApplicationsOfYearListScreenProps } from "./navigation/crop-protection-application-routes";
 import { H2 } from "@/theme/Typography";
 import { formatLocalizedDateTime } from "@/utils/date";
 import Fuse from "fuse.js";
@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { FlatList, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCropProtectionApplicationsQuery } from "./cropProtectionApplications.hooks";
+import { round } from "@/utils/math";
 
 export function CropProtectionApplicationsOfYearListScreen({
   route,
@@ -76,9 +77,11 @@ export function CropProtectionApplicationsOfYearListScreen({
         </ListItem.Title>
         <ListItem.Body>
           {t("crop_protection_applications.list.body", {
-            totalAmount:
+            totalAmount: round(
               cropProtectionApplication.numberOfApplications *
-              cropProtectionApplication.amountPerApplication,
+                cropProtectionApplication.amountPerApplication,
+              2
+            ),
             unit: cropProtectionApplication.unit,
             product: cropProtectionApplication.product.name,
             method: t(

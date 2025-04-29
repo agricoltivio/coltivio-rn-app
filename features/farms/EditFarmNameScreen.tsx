@@ -7,7 +7,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { H2, Body } from "@/theme/Typography";
 import { View } from "react-native";
-import { EditFarmNameScreenProps } from "@/navigation/rootStackTypes";
+import { EditFarmNameScreenProps } from "./navigation/farm-routes";
 import { Button } from "@/components/buttons/Button";
 import { ScrollView } from "@/components/views/ScrollView";
 import { useTranslation } from "react-i18next";

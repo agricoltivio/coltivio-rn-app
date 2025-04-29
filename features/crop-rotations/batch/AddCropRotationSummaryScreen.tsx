@@ -17,7 +17,7 @@ import {
   CropRotationBase,
   useCreateCropRotationStore,
 } from "./crop-rotations.store";
-import { AddCropRotationSummaryScreenProps } from "@/navigation/rootStackTypes";
+import { AddCropRotationSummaryScreenProps } from "../navigation/crop-rotations-routes";
 import { Card } from "@/components/card/Card";
 import { useTranslation } from "react-i18next";
 
@@ -89,7 +89,12 @@ export function AddCropRotationSummaryScreen({
     <ContentView
       footerComponent={
         <BottomActionContainer>
-          <Button title={t("buttons.save")} onPress={onSave} />
+          <Button
+            title={t("buttons.save")}
+            onPress={onSave}
+            disabled={createCropRotationsMutation.isPending}
+            loading={createCropRotationsMutation.isPending}
+          />
         </BottomActionContainer>
       }
     >

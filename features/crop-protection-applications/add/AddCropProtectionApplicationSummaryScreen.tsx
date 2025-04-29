@@ -3,7 +3,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { useCreateCropProtectionApplicationsMutation } from "../cropProtectionApplications.hooks";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { CropProtectionApplicationSummary } from "../CropProtectionApplicationSummary";
-import { AddCropProtectionApplicationSummaryScreenProps } from "@/navigation/rootStackTypes";
+import { AddCropProtectionApplicationSummaryScreenProps } from "../navigation/crop-protection-application-routes";
 import {
   AddCropProtectionApplicationBase,
   useAddCropProtectionApplicationStore,
@@ -42,7 +42,7 @@ export function AddCropProtectionApplicationSummaryScreen({
   function onSave() {
     createCropProtectionApplicationMutation.mutate({
       dateTime,
-      equipmentId: selectedEquipment?.id!,
+      equipmentId: selectedEquipment?.id,
       productId: selectedProduct?.id!,
       unit,
       amountPerApplication,
@@ -61,7 +61,12 @@ export function AddCropProtectionApplicationSummaryScreen({
     <ContentView
       footerComponent={
         <BottomActionContainer>
-          <Button title={t("buttons.save")} onPress={onSave} />
+          <Button
+            title={t("buttons.save")}
+            onPress={onSave}
+            disabled={createCropProtectionApplicationMutation.isPending}
+            loading={createCropProtectionApplicationMutation.isPending}
+          />
         </BottomActionContainer>
       }
     >

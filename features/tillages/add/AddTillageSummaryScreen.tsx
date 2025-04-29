@@ -1,7 +1,7 @@
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
-import { AddTillageSummaryScreenProps } from "@/navigation/rootStackTypes";
+import { AddTillageSummaryScreenProps } from "../navigation/tillages-routes";
 import { useCreateTillagesMutation } from "../tillages.hooks";
 import { TillageSummary } from "../TillageSummary";
 import { TillageBase, useAddTillageStore } from "./add-tillage.store";
@@ -12,7 +12,7 @@ export function AddTillageSummaryScreen({
 }: AddTillageSummaryScreenProps) {
   const { t } = useTranslation();
   const { selectedPlotsById, selectedEquipment, data } = useAddTillageStore();
-  const { date, action, reason } = data as TillageBase;
+  const { date, action, reason, additionalNotes } = data as TillageBase;
 
   const selectedPlots = Object.values(selectedPlotsById);
 
@@ -33,6 +33,7 @@ export function AddTillageSummaryScreen({
       reason,
       date,
       equipmentId: selectedEquipment?.id,
+      additionalNotes,
       plots: selectedPlots.map((plot) => ({
         plotId: plot.plotId,
         geometry: plot.geometry,
@@ -45,7 +46,12 @@ export function AddTillageSummaryScreen({
     <ContentView
       footerComponent={
         <BottomActionContainer>
-          <Button title={t("buttons.save")} onPress={onSave} />
+          <Button
+            title={t("buttons.save")}
+            onPress={onSave}
+            disabled={createTillagesMutation.isPending}
+            loading={createTillagesMutation.isPending}
+          />
         </BottomActionContainer>
       }
     >
@@ -55,6 +61,7 @@ export function AddTillageSummaryScreen({
         action={action}
         reason={reason}
         plots={selectedPlots}
+        additionalNotes={additionalNotes}
       />
     </ContentView>
   );

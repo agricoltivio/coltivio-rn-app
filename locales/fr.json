@@ -7,6 +7,7 @@
     "back": "Retour",
     "cancel": "Annuler",
     "confirm": "Confirmer",
+    "edit": "Modifier",
     "save": "Enregistrer",
     "add": "Ajouter",
     "ok": "OK",
@@ -23,6 +24,7 @@
   "forms": {
     "labels": {
       "name": "Nom",
+      "description": "Description",
       "description_optional": "Description (facultative)",
       "display_name": "Nom d'affichage",
       "select_date": "Sélectionner une date",
@@ -30,6 +32,7 @@
       "password": "Mot de passe",
       "password_repeat": "Répéter le mot de passe",
       "date": "Date",
+      "time": "Heure",
       "farm_name": "Nom de la ferme",
       "location": "Localisation",
       "location_search": "Rechercher une localisation",
@@ -75,7 +78,14 @@
       "produced_units": "Unités produites",
       "please_select": "Veuillez sélectionner",
       "from": "De",
-      "to": "À"
+      "to": "À",
+      "local_id": "Parcelle",
+      "local_id_optional": "Parcelle (optionnel)",
+      "usage": "Utilisation",
+      "usage_optional": "Utilisation (optionnel)",
+      "usagecode": "Code d'utilisation",
+      "cutting_date": "Date de coupe",
+      "cutting_date_optional": "Date de coupe (optionnel)"
     },
     "placeholders": {
       "location_search": "ex. Rue, Numéro, Ville",
@@ -103,13 +113,18 @@
     "total_amount_w_unit": "Total {{amount}}{{unit}}",
     "if_problem_contact_support": "En cas de problème, veuillez contacter notre support.",
     "unknown": "unknown",
-    "parcel_number": "Parcel Number"
+    "parcel_number": "Parcel Number",
+    "usage": "Utilisation",
+    "federal_farm_id": "Numéro d'exploitation : {{number}}",
+    "new_machine": "Nouvelle machine",
+    "new_device": "Nouveau dispositif"
   },
   "errors": {
     "unexpected_retry": "Oups, une erreur s'est produite. Veuillez réessayer.",
     "unexpected_retry_later": "Oups, une erreur s'est produite. Veuillez réessayer plus tard.",
     "unexpected": "Oups, une erreur s'est produite.",
-    "try_again_later": "Veuillez réessayer plus tard..."
+    "try_again_later": "Veuillez réessayer plus tard...",
+    "link_expired": "Le lien a expiré. Veuillez réessayer."
   },
   "units": {
     "long": {
@@ -158,8 +173,7 @@
     "reset_password": "Réinitialiser le mot de passe",
     "enter_email": "Veuillez entrer votre email pour réinitialiser votre mot de passe.",
     "reset_link_sent": "Un email a été envoyé à {{email}} pour réinitialiser votre mot de passe.",
-    "mail_being_deliverd": "Cela peut prendre un moment avant que l'email arrive. S'il ne s'affiche pas, vérifiez votre dossier spam.",
-    "link_expired": "Le lien a expiré. Veuillez réessayer."
+    "mail_being_deliverd": "Cela peut prendre un moment avant que l'email arrive. S'il ne s'affiche pas, vérifiez votre dossier spam."
   },
   "onboarding": {
     "farm_name": {
@@ -175,21 +189,32 @@
         "heading": "Votre numéro d'enregistrement de l'exploitation agricole",
         "body": "Appuyez sur l'un de vos champs ou recherchez manuellement votre numéro d'enregistrement."
       },
+      "modal_not_found": {
+        "heading": "Votre numéro d'exploitation",
+        "body": "Malheureusement, nous n'avons trouvé aucun champ à votre emplacement. Les cantons Obwald, Nidwald et Vaud ne sont pas encore pris en charge. Vous pouvez passer cette étape et dessiner les champs manuellement."
+      },
       "confirmation": "Est-ce que {{federalFarmId}} est votre numéro d'enregistrement de l'exploitation agricole ?"
     },
     "summary": {
       "heading": "Tout est prêt !",
-      "content": "Vos champs seront ajoutées en tant que champs en fonction de votre numéro d'enregistrement {{federalFarmId}}. Vous pouvez les modifier à tout moment.",
-      "press_save_to_finish": "Appuyez sur Enregistrer pour créer votre ferme."
+      "plots_info": "Vos surfaces seront ajoutées en tant que champs sur la base de votre numéro d'exploitation.",
+      "crops_info": "La culture actuelle est dérivée du code d'utilisation.",
+      "edit_plots_info": "Vous pouvez modifier vos surfaces à tout moment sous 'Champs' ou via la carte.",
+      "press_save_to_finish": "Appuyez sur Enregistrer pour créer votre ferme.",
+      "no_federal_farm_id": "Malheureusement, nous n'avons pas pu ajouter automatiquement vos surfaces. Vous pouvez les ajouter manuellement sous 'Champs' ou via la carte. Nous travaillons à supporter tous les emplacements dès que possible."
     }
   },
   "users": {
-    "change_email": "Modifier l'adresse e-mail",
+    "email": "Adresse e-mail",
     "verify_new_email_before_in_effect": "Votre nouvelle adresse e-mail doit être vérifiée avant que la modification ne prenne effet.",
+    "email_verified": "Votre adresse e-mail a été vérifiée avec succès",
     "email_not_verified": "Adresse e-mail non vérifiée !",
+    "email_change_pending": "Veuillez vérifier votre nouvelle adresse e-mail",
+    "email_change_verification_sent": "Un e-mail a été envoyé pour vérifier votre nouvelle adresse. Une fois confirmée, la nouvelle adresse sera activée.",
     "resend_verification_email": "Renvoyer l'e-mail",
     "new_password": "Nouveau mot de passe",
-    "change_display_name": "Modifier le nom d'affichage"
+    "change_display_name": "Modifier le nom d'affichage",
+    "verification_mail_sent": "Un e-mail a été envoyé à {{email}} pour vérifier votre adresse e-mail."
   },
   "home": {
     "welcome_text": "Salut {{displayName}},",
@@ -213,6 +238,7 @@
   },
   "plots": {
     "plots": "Champs",
+    "plot": "Champ",
     "plot_name": "Champ {{name}}",
     "plot_name_date": "{{date}} - Champ {{name}}",
     "common": {
@@ -240,6 +266,9 @@
             "drawing_info": "Utilisez ces symboles pour commencer et terminer le dessin. Vous pouvez déplacer les points d'angle en les maintenant enfoncés jusqu'à ce qu'ils apparaissent devant votre doigt, puis en les faisant glisser vers la position souhaitée."
           }
         }
+      },
+      "summary": {
+        "heading": "Ajouter un champ"
       }
     },
     "edit": {
@@ -248,15 +277,176 @@
           "edit_area": {
             "heading": "Modifier le champ",
             "move_markers": "Maintenez les points d'angle enfoncés jusqu'à ce qu'ils apparaissent devant votre doigt et déplacez-les vers l'emplacement souhaité."
-          },
-          "delete": {
-            "heading": "Voulez-vous vraiment supprimer le champ {{name}} ?",
-            "entries_warning": "Attention, tous les enregistrements de ce champ seront définitivement supprimés.",
-            "confirm_by_typing_name": "Pour supprimer ce champ, tapez le nom et confirmez l'action."
           }
         }
-      },
-      "details": {}
+      }
+    },
+    "delete": {
+      "heading": "Voulez-vous vraiment supprimer le champ {{name}} ?",
+      "entries_warning": "Toutes les entrées pour ce champ seront supprimées de façon irréversible.",
+      "confirm_by_typing_name": "Pour supprimer ce champ, saisissez le nom et confirmez l'opération."
+    },
+    "usage_codes": {
+      "501": "Orge de printemps",
+      "502": "Orge d'hiver",
+      "504": "Avoine",
+      "505": "Triticale",
+      "506": "Mélange de céréales fourragères",
+      "507": "Blé fourrager selon la liste variétale Swiss granum",
+      "508": "Maïs grain",
+      "510": "Blé dur",
+      "511": "Épeautre, engrain",
+      "512": "Blé de printemps (hors blé fourrager de la liste variétale Swiss granum)",
+      "513": "Blé d'hiver (hors blé fourrager de la liste variétale Swiss granum)",
+      "514": "Seigle",
+      "515": "Mélange de céréales panifiables",
+      "516": "Épeautre",
+      "519": "Maïs semence (culture contractuelle)",
+      "520": "Riz sec",
+      "521": "Maïs ensilage et vert",
+      "522": "Betterave sucrière",
+      "523": "Betterave fourragère",
+      "524": "Pommes de terre",
+      "525": "Pommes de terre de semence (culture contractuelle)",
+      "526": "Colza de printemps pour huile alimentaire",
+      "527": "Colza d'hiver pour huile alimentaire",
+      "528": "Soja",
+      "529": "Riz humide",
+      "531": "Tournesol pour huile alimentaire",
+      "534": "Lin",
+      "536": "Haricots et vesces pour grain (ex. féveroles)",
+      "537": "Pois pour grain (ex. pois protéagineux)",
+      "538": "Lupins",
+      "539": "Courges oléagineuses",
+      "540": "Pois chiches",
+      "541": "Tabac",
+      "543": "Céréales ensilées",
+      "544": "Cameline",
+      "545": "Légumes annuels en plein champ, hors légumes pour conserve",
+      "546": "Légumes pour conserve en plein champ",
+      "547": "Racines de chicorée forcée",
+      "548": "Sarrasin",
+      "551": "Baies annuelles (ex. fraises)",
+      "552": "Matières premières renouvelables annuelles (kenaf, etc.)",
+      "553": "Plantes aromatiques et médicinales annuelles",
+      "554": "Cultures horticoles annuelles en plein champ (fleurs, gazon en rouleaux, etc.)",
+      "556": "Jachère fleurie",
+      "557": "Jachère en rotation",
+      "559": "Bande tampon sur terres arables",
+      "566": "Pavot",
+      "567": "Carthame",
+      "568": "Lentilles",
+      "569": "Mélanges de haricots, vesces, pois, pois chiches et lupins avec céréales ou cameline, au moins 30 % de légumineuses à la récolte (pour grain)",
+      "570": "Mélanges de lentilles avec céréales ou cameline, au moins 30 % de lentilles à la récolte (pour grain)",
+      "572": "Bandes favorables aux auxiliaires sur terres arables ouvertes",
+      "573": "Moutarde",
+      "574": "Quinoa",
+      "575": "Chanvre pour usage semence",
+      "576": "Chanvre pour usage fibre",
+      "577": "Autre chanvre",
+      "578": "Millet pour grain",
+      "579": "Millet pour usage plante entière",
+      "580": "Sorgho pour grain",
+      "581": "Sorgho pour usage plante entière",
+      "591": "Colza d'hiver comme matière première renouvelable",
+      "592": "Tournesol comme matière première renouvelable",
+      "594": "Terres arables ouvertes, éligibles au paiement (zone de promotion de la biodiversité spécifique à la région)",
+      "595": "Autres terres arables ouvertes, non éligibles au paiement (zone de promotion de la biodiversité spécifique à la région)",
+      "597": "Autres terres arables ouvertes, éligibles au paiement",
+      "598": "Autres terres arables ouvertes, non éligibles au paiement",
+      "601": "Prairies artificielles (hors pâturages)",
+      "602": "Autres prairies artificielles, éligibles au paiement (ex. pâturage porcin, pâturage avicole)",
+      "611": "Prairies extensivement exploitées (hors pâturages)",
+      "612": "Prairies peu intensivement exploitées (hors pâturages)",
+      "613": "Autres prairies permanentes (hors pâturages)",
+      "616": "Pâturages (pâturages d'exploitation, autres pâturages hors pâturages d'alpage)",
+      "617": "Pâturages extensivement exploités",
+      "618": "Pâturages forestiers (hors surface boisée)",
+      "621": "Prairies à foin en zone d'alpage, autres prairies",
+      "622": "Prairies à foin en zone d'alpage, type prairie extensivement exploitée",
+      "623": "Prairies à foin en zone d'alpage, type prairie peu intensivement exploitée",
+      "625": "Pâturages forestiers (hors surface boisée)",
+      "631": "Légumineuses fourragères pour production de semences (culture contractuelle)",
+      "632": "Graminées fourragères pour production de semences (culture contractuelle)",
+      "635": "Prairies riveraines (hors pâturages)",
+      "660": "Autres pâturages permanents, éligibles au paiement agrégés",
+      "693": "Zones de promotion de la biodiversité spécifiques à la région (pâturages)",
+      "694": "Zone de promotion de la biodiversité spécifique à la région (espaces verts hors pâturages)",
+      "697": "Autres espaces verts (espaces verts permanents), éligibles au paiement",
+      "698": "Autres espaces verts (espaces verts permanents), non éligibles au paiement",
+      "701": "Vignobles",
+      "702": "Vergers (pommiers)",
+      "703": "Vergers (poirier)",
+      "704": "Vergers (arbres à noyaux)",
+      "705": "Baies pérennes",
+      "706": "Plantes aromatiques et médicinales pérennes",
+      "707": "Matières premières renouvelables pérennes (miscanthus, etc.)",
+      "708": "Houblon",
+      "709": "Rhubarbe",
+      "710": "Asperges",
+      "711": "Champignons (plein champ)",
+      "712": "Sapin de Noël",
+      "713": "Pépinières forestières hors zone forestière",
+      "714": "Arbustes ornementaux, arbres ornementaux et plantes vivaces ornementales",
+      "717": "Vignobles avec biodiversité naturelle",
+      "718": "Plantations de truffes",
+      "719": "Plantations de mûriers (élevage de vers à soie)",
+      "720": "Bois gérés (châtaigniers)",
+      "721": "Cultures horticoles pérennes en plein champ (hors serre)",
+      "722": "Pépinières de vignes",
+      "723": "Pépinières de fruits et baies",
+      "724": "Autres pépinières (roses, plantes vivaces ornementales, etc.)",
+      "725": "Permaculture",
+      "730": "Vergers agrégés",
+      "731": "Autres vergers (kiwis, sureaux, etc.)",
+      "735": "Vignobles (zones de promotion de la biodiversité spécifiques à la région)",
+      "797": "Autres surfaces avec cultures pérennes, éligibles au paiement",
+      "798": "Autres surfaces avec cultures pérennes, non éligibles au paiement",
+      "801": "Cultures maraîchères en serres avec fondation solide",
+      "802": "Autres cultures spéciales en serres avec fondation solide",
+      "803": "Cultures horticoles en serres avec fondation solide",
+      "804": "Cultures de baies en serres avec fondation solide",
+      "807": "Autres cultures spéciales en cultures protégées sans fondation solide",
+      "808": "Cultures horticoles en cultures protégées sans fondation solide",
+      "810": "Champignons en cultures protégées avec fondation solide",
+      "811": "Cultures maraîchères en cultures protégées sans fondation solide ; en sol naturel",
+      "812": "Cultures maraîchères en cultures protégées sans fondation solide ; sur tables ou étagères",
+      "813": "Cultures de baies en cultures protégées sans fondation solide ; en sol naturel",
+      "814": "Cultures de baies en cultures protégées sans fondation solide ; sur tables ou étagères",
+      "830": "Cultures en cultures protégées toute l'année, éligibles au paiement agrégés",
+      "847": "Autres cultures en cultures protégées sans fondation solide, éligibles au paiement",
+      "848": "Autres cultures en cultures protégées avec fondation solide",
+      "849": "Autres cultures en cultures protégées sans fondation solide, non éligibles au paiement",
+      "851": "Zones de litière en zone agricole",
+      "852": "Haies, bosquets de champs et ripisylves (avec bande herbacée)",
+      "857": "Haies, bosquets de champs et ripisylves (avec bande tampon)",
+      "858": "Haies, bosquets de champs et ripisylves (avec bande tampon) (zone de promotion de la biodiversité spécifique à la région)",
+      "897": "Autres surfaces à l'intérieur de la zone agricole, éligibles au paiement",
+      "898": "Autres surfaces à l'intérieur de la zone agricole, non éligibles au paiement",
+      "901": "Forêt",
+      "902": "Autres surfaces improductives (ex. surfaces paillées, surfaces fortement envahies, haies sans bande tampon)",
+      "903": "Surfaces sans destination agricole principale (zones constructibles aménagées, aires de jeux, équitation, camping, golf, aérodromes ou zones délimitées de chemins de fer, routes publiques et eaux)",
+      "904": "Fossés, mares, étangs",
+      "905": "Zones rudérales, tas et murets de pierres",
+      "906": "Murs en pierres sèches",
+      "907": "Sentiers naturels non revêtus",
+      "908": "Zones de promotion de la biodiversité spécifiques à la région",
+      "909": "Jardins familiaux",
+      "911": "Production agricole en bâtiments (ex. champignons, choux de Bruxelles)",
+      "921": "Arbres fruitiers haute tige (points ou surfaces)",
+      "922": "Noyers (points ou surfaces)",
+      "923": "Châtaigniers",
+      "924": "Arbres isolés indigènes adaptés au site et allées (points ou surfaces)",
+      "926": "Autres arbres",
+      "927": "Autres arbres (zone de promotion de la biodiversité spécifique à la région)",
+      "928": "Autres éléments (zone de promotion de la biodiversité spécifique à la région)",
+      "930": "Pâturages d'alpage",
+      "933": "Pâturages communautaires",
+      "935": "Prairies à foin avec alimentation complémentaire durant l'alpage",
+      "936": "Zones de litière en zone d'alpage",
+      "950": "Bandes de protection sur terres arables",
+      "951": "Céréales en rangs larges",
+      "998": "Autres surfaces hors zone agricole et pâturages d'alpage"
     }
   },
   "farm_equipment": {
@@ -287,7 +477,7 @@
   "field_calendar": {
     "field_calendar": "Calendrier cultural",
     "crops": "Cultures",
-    "sowings": "Semis",
+    "crop_rotations": "Rotations culturales",
     "tillages": "Travaux du sol",
     "fertilizers": "Engrais",
     "fertilizer_applications": "Applications d'engrais",
@@ -341,7 +531,9 @@
     "fertilizer": "Engrais",
     "new_fertilizer": "Nouvel engrais",
     "product_in_use_warning": "Attention, cet engrais est en cours d'utilisation et ne peut donc être modifié que dans une mesure limitée et ne peut pas être supprimé.",
-    "warning_unit_not_editable": "Attention, l'unité ne peut pas être modifiée ! Elle doit correspondre à l'unité dans laquelle l'engrais est appliqué."
+    "warning_unit_not_editable": "Attention, l'unité ne peut pas être modifiée ! Elle doit correspondre à l'unité dans laquelle l'engrais est appliqué.",
+    "unit_info": "Sélectionnez l'unité dans laquelle l'engrais est appliqué (ex. litres).",
+    "default_machine_info": "Pour faciliter l'enregistrement, une machine peut être définie pour appliquer cet engrais. La capacité de la machine doit correspondre à l'unité de l'engrais."
   },
   "fertilizer_application": {
     "fertilizer_application": "Application d'engrais",
@@ -414,7 +606,8 @@
       "grain": "Céréale",
       "none": "Aucun"
     },
-    "no_variety": "Aucune variété"
+    "no_variety": "Aucune variété",
+    "crop_in_use_warning": "Cette culture est utilisée et ne peut donc pas être supprimée."
   },
   "crop_protection_applications": {
     "crop_protection": "Protection des cultures",
@@ -455,7 +648,9 @@
   "crop_protection_product": {
     "add_product": "Nouveau produit de protection des cultures",
     "product_in_use_warning": "Attention, cet produit de protection des cultures est en cours d'utilisation et ne peut donc pas être supprimé.",
-    "warning_unit_not_editable": "Attention, l'unité ne peut pas être modifiée ! Elle doit correspondre à l'unité dans laquelle le produit phytosanitaire est appliqué."
+    "warning_unit_not_editable": "Attention, l'unité ne peut pas être modifiée ! Elle doit correspondre à l'unité dans laquelle le produit phytosanitaire est appliqué.",
+    "unit_info": "Sélectionnez l'unité dans laquelle le produit est appliqué (ex. litres).",
+    "default_machine_info": "Pour faciliter l'enregistrement, une machine peut être définie pour appliquer ce produit. La capacité de la machine doit correspondre à l'unité du produit."
   },
   "crop_rotations": {
     "crop_rotation": "Rotation des cultures",

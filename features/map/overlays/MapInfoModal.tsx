@@ -9,9 +9,10 @@ import { useTheme } from "styled-components/native";
 type MapInfoModalProps = {
   title: string;
   text: string;
+  onClose?: () => void;
 };
 
-export function MapInfoModal({ title, text }: MapInfoModalProps) {
+export function MapInfoModal({ title, text, onClose }: MapInfoModalProps) {
   const theme = useTheme();
   const frame = useSafeAreaFrame();
 
@@ -23,6 +24,7 @@ export function MapInfoModal({ title, text }: MapInfoModalProps) {
 
   function onDone() {
     setVisible(false);
+    onClose && onClose();
   }
   return (
     <Card

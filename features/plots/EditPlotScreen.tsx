@@ -1,7 +1,7 @@
 import * as turf from "@turf/turf";
 import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
-import { EditPlotScreenProps } from "@/navigation/rootStackTypes";
+import { EditPlotScreenProps } from "./navigation/plots-routes";
 import { useForm } from "react-hook-form";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -21,10 +21,17 @@ import { MultiPolygon } from "@/components/map/MultiPolygon";
 import { hexToRgba } from "@/theme/theme";
 import { Card } from "@/components/card/Card";
 import { useTranslation } from "react-i18next";
+import { RHDatePicker } from "@/components/inputs/RHDatePicker";
+import { RHSelect } from "@/components/select/RHSelect";
+import { getUsageCodeSelectData } from "./usage-codes";
+import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 
 type EditPlotFormValues = {
   name: string;
-  description?: string | null;
+  additionalNotes?: string | null;
+  localId?: string | null;
+  usage?: string | null;
+  cuttingDate?: Date | null;
   size: string;
 };
 
@@ -48,8 +55,11 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
     values: plot
       ? {
           name: plot.name,
-          description: plot.description,
+          additionalNotes: plot.additionalNotes,
           size: area?.toString() || plot.size.toString(),
+          usage: plot.usage?.toString(),
+          localId: plot.localId,
+          cuttingDate: plot.cuttingDate ? new Date(plot.cuttingDate) : null,
         }
       : undefined,
   });
@@ -84,10 +94,16 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
     longitudeDelta: 0.0025,
   };
 
-  function onSubmit(data: EditPlotFormValues) {
+  function onSubmit({ size, usage, ...rest }: EditPlotFormValues) {
     updatePlotMutation.mutate({
       plotId,
-      data: { ...data, size: parseInt(data.size), geometry: polygon },
+      data: {
+        ...rest,
+        size: Number(size),
+        usage: Number(usage),
+        cuttingDate: rest.cuttingDate?.toISOString() ?? null,
+        geometry: polygon,
+      },
     });
   }
 
@@ -111,13 +127,18 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
               title={t("buttons.save")}
               onPress={handleSubmit(onSubmit)}
               disabled={(!isDirty && !polygon) || updatePlotMutation.isPending}
+              loading={updatePlotMutation.isPending}
             />
           </View>
         </BottomActionContainer>
       }
     >
-      <ScrollView showHeaderOnScroll headerTitleOnScroll={plot?.name}>
-        <H2>{plot?.name}</H2>
+      <ScrollView
+        showHeaderOnScroll
+        headerTitleOnScroll={plot?.name}
+        keyboardAware
+      >
+        <H2>{t("plots.plot_name", { name: plot?.name })}</H2>
 
         <View
           style={{
@@ -168,6 +189,12 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
             </Subtitle>
           </Card>
         ) : null}
+        <Button
+          style={{ marginTop: theme.spacing.m }}
+          type="accent"
+          title={t("buttons.edit_area")}
+          onPress={() => navigation.navigate("EditPlotMap", { plotId })}
+        />
         <View
           style={{ gap: theme.spacing.xs, flex: 1, marginTop: theme.spacing.m }}
         >
@@ -184,9 +211,22 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
             error={errors.name?.message}
           />
           <RHTextInput
-            name="description"
+            name="localId"
             control={control}
-            label={t("forms.labels.description_optional")}
+            label={t("forms.labels.local_id_optional")}
+          />
+          <RHSelect
+            name="usage"
+            data={getUsageCodeSelectData(t)}
+            enableSearch
+            control={control}
+            label={t("forms.labels.usage_optional")}
+          />
+          <RHDatePicker
+            name="cuttingDate"
+            control={control}
+            mode="date"
+            label={t("forms.labels.cutting_date_optional")}
           />
           <RHNumberInput
             name="size"
@@ -200,13 +240,12 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
             }}
             error={errors.size?.message}
           />
+          <RHTextAreaInput
+            name="additionalNotes"
+            control={control}
+            label={t("forms.labels.additional_notes_optional")}
+          />
         </View>
-        <Button
-          style={{ marginTop: theme.spacing.xl }}
-          type="accent"
-          title={t("buttons.edit_area")}
-          onPress={() => navigation.navigate("EditPlotMap", { plotId })}
-        />
       </ScrollView>
     </ContentView>
   );

@@ -53,5 +53,15 @@ export function cropsApi(client: FetchClient) {
         },
       });
     },
+    async isCropInUse(cropId: string) {
+      const { data } = await client.GET("/v1/crops/byId/{cropId}/inUse", {
+        params: {
+          path: {
+            cropId,
+          },
+        },
+      });
+      return data!.data.inUse;
+    },
   };
 }

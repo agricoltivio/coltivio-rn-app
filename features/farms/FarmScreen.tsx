@@ -1,6 +1,6 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
-import { FarmScreenProps } from "@/navigation/rootStackTypes";
+import { FarmScreenProps } from "./navigation/farm-routes";
 import { useTheme } from "styled-components/native";
 import { List } from "../../components/list/List";
 import { H2 } from "@/theme/Typography";
@@ -33,8 +33,24 @@ export function FarmScreen({ navigation }: FarmScreenProps) {
           <List.Item
             title={t("farm.location")}
             onPress={() => navigation.navigate("EditFarmLocation")}
+            hideBottomDivider
           />
           {/* <List.Item title="Mitarbeiter" hideBottomDivider disabled /> */}
+        </List>
+        <List style={{ marginTop: theme.spacing.l }}>
+          <List.Item
+            title={t("field_calendar.crops")}
+            onPress={() => navigation.navigate("Crops")}
+          />
+          <List.Item
+            title={t("field_calendar.fertilizers")}
+            onPress={() => navigation.navigate("Fertilizers")}
+          />
+          <List.Item
+            title={t("field_calendar.crop_protection_products")}
+            onPress={() => navigation.navigate("CropProtectionProducts")}
+            hideBottomDivider
+          />
         </List>
       </ScrollView>
     </ContentView>

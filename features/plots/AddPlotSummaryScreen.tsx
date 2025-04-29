@@ -7,11 +7,11 @@ import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { MultiPolygon } from "@/components/map/MultiPolygon";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
-import { AddPlotSummaryScreenProps } from "@/navigation/rootStackTypes";
+import { AddPlotSummaryScreenProps } from "./navigation/plots-routes";
 import { hexToRgba } from "@/theme/theme";
 import { H2, Subtitle } from "@/theme/Typography";
 import * as turf from "@turf/turf";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { View } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Region } from "react-native-maps";
@@ -19,10 +19,17 @@ import { useTheme } from "styled-components/native";
 import { useCropsQuery } from "../crops/crops.hooks";
 import { useCreatePlotMutation, useFarmPlotsQuery } from "./plots.hooks";
 import { useTranslation } from "react-i18next";
+import { RHDatePicker } from "@/components/inputs/RHDatePicker";
+import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
+import { getUsageCodeSelectData } from "./usage-codes";
+import { useAddPlotStore } from "./add-plots.store";
 
 type AddPlotFormValues = {
   name: string;
-  description?: string;
+  additionalNotes?: string;
+  localId?: string;
+  usage?: string;
+  cuttingDate?: Date;
   size: string;
   cropId: string;
 };
@@ -31,9 +38,13 @@ export function AddPlotSummaryScreen({
   route,
   navigation,
 }: AddPlotSummaryScreenProps) {
-  const { geometry, centroid, size } = route.params;
   const { t } = useTranslation();
   const theme = useTheme();
+  const { cropId } = route.params;
+
+  const { data } = useAddPlotStore();
+  const { geometry, centroid, size, localId, cuttingDate, usage } = data!;
+
   const { plots } = useFarmPlotsQuery();
   const { crops } = useCropsQuery();
 
@@ -41,17 +52,29 @@ export function AddPlotSummaryScreen({
   const initialRegion: Region = {
     latitude,
     longitude,
-    latitudeDelta: 0.001,
-    longitudeDelta: 0.001,
+    latitudeDelta: 0.005,
+    longitudeDelta: 0.005,
   };
 
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors, isDirty },
   } = useForm<AddPlotFormValues>({
-    defaultValues: { size: size.toString() },
+    defaultValues: {
+      size: size.toString(),
+      localId,
+      usage: usage?.toString(),
+      cuttingDate: cuttingDate ? new Date(cuttingDate) : undefined,
+    },
   });
+
+  useEffect(() => {
+    if (cropId) {
+      setValue("cropId", cropId);
+    }
+  }, [cropId]);
 
   const createPlotMutation = useCreatePlotMutation(
     () =>
@@ -75,13 +98,13 @@ export function AddPlotSummaryScreen({
     [plots]
   );
 
-  function onSubmit(values: AddPlotFormValues) {
+  function onSubmit({ size, usage, cuttingDate, ...rest }: AddPlotFormValues) {
     createPlotMutation.mutate({
-      name: values.name,
-      description: values.description,
+      ...rest,
       geometry,
-      cropId: values.cropId,
-      size: Number(values.size),
+      usage: Number(usage),
+      size: Number(size),
+      cuttingDate: cuttingDate?.toISOString(),
     });
   }
 
@@ -93,6 +116,8 @@ export function AddPlotSummaryScreen({
             type="primary"
             title={t("buttons.save")}
             onPress={handleSubmit(onSubmit)}
+            disabled={createPlotMutation.isPending}
+            loading={createPlotMutation.isPending}
           />
         </BottomActionContainer>
       }
@@ -168,9 +193,22 @@ export function AddPlotSummaryScreen({
             error={errors.name?.message}
           />
           <RHTextInput
-            name="description"
+            name="localId"
             control={control}
-            label={t("forms.labels.description_optional")}
+            label={t("forms.labels.local_id_optional")}
+          />
+          <RHSelect
+            name="usage"
+            data={getUsageCodeSelectData(t)}
+            enableSearch
+            control={control}
+            label={t("forms.labels.usage_optional")}
+          />
+          <RHDatePicker
+            name="cuttingDate"
+            control={control}
+            mode="date"
+            label={t("forms.labels.cutting_date_optional")}
           />
           <RHSelect
             name="cropId"
@@ -190,6 +228,12 @@ export function AddPlotSummaryScreen({
               })) ?? []
             }
           />
+          <Button
+            title={t("crops.new_crop")}
+            onPress={() => navigation.navigate("CreateCrop")}
+            type="accent"
+            style={{ marginBottom: theme.spacing.m }}
+          />
           <RHNumberInput
             name="size"
             control={control}
@@ -201,6 +245,11 @@ export function AddPlotSummaryScreen({
               },
             }}
             error={errors.size?.message}
+          />
+          <RHTextAreaInput
+            name="additionalNotes"
+            control={control}
+            label={t("forms.labels.additional_notes_optional")}
           />
         </View>
       </ScrollView>

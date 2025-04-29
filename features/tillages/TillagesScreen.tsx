@@ -1,7 +1,7 @@
 import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
 import { List } from "@/components/list/List";
-import { TillagesScreenProps } from "@/navigation/rootStackTypes";
+import { TillagesScreenProps } from "./navigation/tillages-routes";
 import { H2, Headline } from "@/theme/Typography";
 import React from "react";
 import { View } from "react-native";

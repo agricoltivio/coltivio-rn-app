@@ -16,6 +16,7 @@ export type SelectProps = {
   data: { label: string; value: string }[];
   style?: any;
   error?: string;
+  enableSearch?: boolean;
 };
 export function Select({
   label,
@@ -25,6 +26,7 @@ export function Select({
   onBlur,
   onFocus,
   disabled,
+  enableSearch,
   placeholder,
   style,
   error,
@@ -49,7 +51,7 @@ export function Select({
           backgroundColor: theme.colors.white,
         }}
         containerStyle={{
-          backgroundColor: theme.colors.primary,
+          backgroundColor: theme.colors.white,
         }}
         itemTextStyle={{ color: theme.colors.gray0, fontSize: 17 }}
         placeholderStyle={{
@@ -66,6 +68,9 @@ export function Select({
         // maxHeight={300}
         labelField="label"
         valueField="value"
+        search={enableSearch}
+        searchPlaceholder={t("forms.placeholders.search")}
+        searchField={"label"}
         disable={disabled}
         placeholder={placeholder || t("forms.labels.please_select")}
         value={value}

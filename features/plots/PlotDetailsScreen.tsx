@@ -1,17 +1,23 @@
 import { FAB } from "@/components/buttons/FAB";
+import { Card } from "@/components/card/Card";
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { MultiPolygon } from "@/components/map/MultiPolygon";
 import { ScrollView } from "@/components/views/ScrollView";
-import { PlotDetailsScreenProps } from "@/navigation/rootStackTypes";
+import { PlotDetailsScreenProps } from "./navigation/plots-routes";
 import { hexToRgba } from "@/theme/theme";
-import { H2, H3 } from "@/theme/Typography";
+import { Body, H2, H3, Label } from "@/theme/Typography";
 import * as turf from "@turf/turf";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
 import { usePlotByIdQuery } from "./plots.hooks";
-import { useTranslation } from "react-i18next";
+import { UsageCode } from "./usage-codes";
+import { formatLocalizedDate } from "@/utils/date";
+import { locale } from "@/locales/i18n";
+import { Button } from "@/components/buttons/Button";
+import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 
 export function PlotDetailsScreen({
   route,
@@ -35,20 +41,43 @@ export function PlotDetailsScreen({
     initialRegion = {
       latitude,
       longitude,
-      latitudeDelta: 0.0025,
-      longitudeDelta: 0.0025,
+      latitudeDelta: 0.0045,
+      longitudeDelta: 0.0045,
     };
   }
 
   return (
-    <ContentView>
+    <ContentView
+      footerComponent={
+        <BottomActionContainer>
+          <View style={{ gap: theme.spacing.s, flexDirection: "row" }}>
+            <Button
+              style={{ flexGrow: 1 }}
+              type="danger"
+              title={t("buttons.delete")}
+              onPress={() =>
+                navigation.navigate("DeletePlot", { plotId, name: plot.name })
+              }
+            />
+            <Button
+              style={{ flexGrow: 1 }}
+              type="accent"
+              title={t("buttons.edit")}
+              onPress={() => navigation.navigate("EditPlot", { plotId })}
+            />
+          </View>
+        </BottomActionContainer>
+      }
+    >
       <ScrollView
         showHeaderOnScroll
         headerTitleOnScroll={t("plots.plot_name", { name: plot.name })}
       >
         <H2>{t("plots.plot_name", { name: plot.name })}</H2>
         <H3>
-          {size / 100}a - {plot?.cropRotations[0]?.crop.name}{" "}
+          {plot.usage
+            ? `${t(`plots.usage_codes.${plot.usage as UsageCode}`)}`
+            : ""}
         </H3>
         {initialRegion && (
           <View
@@ -80,6 +109,44 @@ export function PlotDetailsScreen({
             </MapView>
           </View>
         )}
+        <Card style={{ marginTop: theme.spacing.m }}>
+          <SummaryItem
+            label={t("forms.labels.local_id")}
+            value={plot.localId ?? t("common.unknown")}
+          />
+          <SummaryItem
+            label={t("forms.labels.area")}
+            value={`${size / 100}a`}
+          />
+          <SummaryItem
+            label={t("forms.labels.usagecode")}
+            value={plot.usage ? plot.usage : t("common.unknown")}
+          />
+          <SummaryItem
+            label={t("forms.labels.cutting_date")}
+            value={
+              plot.cuttingDate
+                ? formatLocalizedDate(
+                    new Date(plot.cuttingDate),
+                    locale,
+                    "long",
+                    false
+                  )
+                : ""
+            }
+          />
+          {plot.additionalNotes ? (
+            <>
+              <Label style={{ marginTop: theme.spacing.m }}>
+                {t("forms.labels.additional_notes")}
+              </Label>
+
+              <Label>
+                <Body>{plot.additionalNotes}</Body>
+              </Label>
+            </>
+          ) : null}
+        </Card>
         <View
           style={{
             marginTop: theme.spacing.m,
@@ -171,10 +238,32 @@ export function PlotDetailsScreen({
           </ListItem>
         </View>
       </ScrollView>
-      <FAB
+      {/* <FAB
         icon={{ name: "pencil", color: theme.colors.white }}
         onPress={() => navigation.navigate("EditPlot", { plotId })}
-      />
+      /> */}
     </ContentView>
+  );
+}
+
+function SummaryItem({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | number;
+}) {
+  const theme = useTheme();
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        marginBottom: theme.spacing.s,
+        gap: theme.spacing.m,
+      }}
+    >
+      <Label style={{ flex: 1 }}>{label}</Label>
+      <Label style={{ fontSize: 18 }}>{value}</Label>
+    </View>
   );
 }

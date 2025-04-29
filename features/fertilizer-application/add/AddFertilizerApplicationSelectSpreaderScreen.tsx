@@ -10,8 +10,8 @@ import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { useFertilizerSpreadersQuery } from "@/features/equipment/fertilizerSpreader.hooks";
-import { AddFertilizerApplicationSelectSpreaderScreenProps } from "@/navigation/rootStackTypes";
-import { Body, H2, H3 } from "@/theme/Typography";
+import { AddFertilizerApplicationSelectSpreaderScreenProps } from "../navigation/fertilizer-application-routes";
+import { Body, H2, H3, H4 } from "@/theme/Typography";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -28,6 +28,7 @@ type FormValues = {
 };
 export function AddFertilizerApplicationSelectSpreaderScreen({
   navigation,
+  route,
 }: AddFertilizerApplicationSelectSpreaderScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -51,14 +52,20 @@ export function AddFertilizerApplicationSelectSpreaderScreen({
     defaultValues: {
       unit: selectedFertilizer?.unit,
       spreaderId:
-        selectedSpreader?.id || fertilizerApplication?.amountPerApplication
-          ? "none"
-          : undefined,
+        selectedSpreader?.id || selectedFertilizer?.defaultSpreaderId || "none",
       capacity:
         selectedSpreader?.capacity.toString() ||
         fertilizerApplication?.amountPerApplication?.toString(),
     },
   });
+
+  const createdSpreaderId = route.params.spreaderId;
+
+  useEffect(() => {
+    if (createdSpreaderId) {
+      setValue("spreaderId", createdSpreaderId);
+    }
+  }, [createdSpreaderId]);
 
   const spreaderId = watch("spreaderId");
 
@@ -80,7 +87,7 @@ export function AddFertilizerApplicationSelectSpreaderScreen({
       setValue("capacity", currentSelectedSpreader.capacity.toString());
       setValue("method", currentSelectedSpreader.defaultMethod);
     }
-  }, [spreaderId]);
+  }, [spreaderId, currentSelectedSpreader]);
 
   function onSubmit({ capacity, method, spreaderId }: FormValues) {
     if (currentSelectedSpreader) {
@@ -117,16 +124,16 @@ export function AddFertilizerApplicationSelectSpreaderScreen({
         <H2>{t("fertilizer_application.select_machine.heading")}</H2>
         <Card
           style={{
-            backgroundColor: theme.colors.danger,
+            backgroundColor: theme.colors.secondary,
             marginTop: theme.spacing.m,
           }}
         >
-          <H3 style={{ color: theme.colors.white }}>
+          <H4 style={{ color: theme.colors.white }}>
             {t("fertilizer_application.select_machine.only_same_unit_warning")}
-          </H3>
+          </H4>
         </Card>
         <View
-          style={{ gap: theme.spacing.s, flex: 1, marginTop: theme.spacing.m }}
+          style={{ gap: theme.spacing.s, flex: 1, marginTop: theme.spacing.s }}
         >
           {fertilizerSpreaders?.length === 0 && (
             <Card
@@ -144,7 +151,11 @@ export function AddFertilizerApplicationSelectSpreaderScreen({
                 type="accent"
                 fontSize={16}
                 title={t("buttons.add")}
-                onPress={() => navigation.navigate("CreateFertilizerSpreader")}
+                onPress={() =>
+                  navigation.navigate("CreateFertilizerSpreader", {
+                    unit: selectedFertilizer?.unit,
+                  })
+                }
               />
             </Card>
           )}
@@ -219,6 +230,19 @@ export function AddFertilizerApplicationSelectSpreaderScreen({
               />
             </>
           )}
+
+          {fertilizerSpreaders?.length ? (
+            <Button
+              title={t("common.new_machine")}
+              type="accent"
+              style={{ marginTop: theme.spacing.m }}
+              onPress={() =>
+                navigation.navigate("CreateFertilizerSpreader", {
+                  unit: selectedFertilizer?.unit,
+                })
+              }
+            />
+          ) : null}
         </View>
       </ScrollView>
     </ContentView>

@@ -1,7 +1,7 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
-import { CropRotationsOfYearListScreenProps } from "@/navigation/rootStackTypes";
+import { CropRotationsOfYearListScreenProps } from "./navigation/crop-rotations-routes";
 import { H2 } from "@/theme/Typography";
 import Fuse from "fuse.js";
 import { useState } from "react";
@@ -21,7 +21,7 @@ export function CropRotationsOfYearListScreen({
   const theme = useTheme();
   const fromDate = new Date(year, 0, 1); // January 1st of the specified year
   const toDate = new Date(year + 1, 0, 1); // January 1st of the next year
-  const { cropRotations } = useCropRotationsQuery(fromDate, toDate, true);
+  const { cropRotations } = useCropRotationsQuery(fromDate, toDate);
   const [searchText, setSearchText] = useState("");
 
   if (!cropRotations) {
@@ -61,6 +61,7 @@ export function CropRotationsOfYearListScreen({
       onPress={() =>
         navigation.navigate("EditPlotCropRotation", {
           rotationId: cropRotation.id,
+          plotName: cropRotation.plot.name,
         })
       }
     >
@@ -80,7 +81,7 @@ export function CropRotationsOfYearListScreen({
     <ContentView headerVisible>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <H2 style={{ flex: 1 }}>
-          {t("crop_rotations.sowings_year", { year: route.params.year })}
+          {t("crop_rotations.crop_rotation_year", { year: route.params.year })}
         </H2>
       </View>
       <View style={{ marginVertical: theme.spacing.m }}>

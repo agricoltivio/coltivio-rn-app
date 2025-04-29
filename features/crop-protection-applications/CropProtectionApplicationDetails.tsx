@@ -1,6 +1,6 @@
 import { Button } from "@/components/buttons/Button";
 import { ContentView } from "@/components/containers/ContentView";
-import { CropProtectionApplicationDetailsScreenProps } from "@/navigation/rootStackTypes";
+import { CropProtectionApplicationDetailsScreenProps } from "./navigation/crop-protection-application-routes";
 import { useTheme } from "styled-components/native";
 import {
   useDeleteCropProtectionApplicationMutation,

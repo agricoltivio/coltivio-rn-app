@@ -11,7 +11,7 @@ import { LayoutChangeEvent, View } from "react-native";
 import { BarChart, barDataItem } from "react-native-gifted-charts";
 import { useTheme } from "styled-components/native";
 import { useFertilizerApplicationSummaryForPlotQuery } from "../fertilizer-application/fertilizerApplications.hooks";
-import { PlotFertilizerApplicationsOfYearScreenProps } from "@/navigation/rootStackTypes";
+import { PlotFertilizerApplicationsOfYearScreenProps } from "./navigation/plots-routes";
 import { useTranslation } from "react-i18next";
 
 export function PlotFertilizerApplicationsOfYearScreen({
@@ -70,19 +70,19 @@ export function PlotFertilizerApplicationsOfYearScreen({
         <BarChart
           data={chartByFertilizer[fertilizerName].data}
           spacing={35}
-          width={width - 80}
+          width={width - 130}
           rulesThickness={1}
           rulesColor={theme.colors.gray4}
           height={100}
           formatYLabel={(value) =>
-            `${value}${chartByFertilizer[fertilizerName].unit}`
+            `${Math.round(Number(value) * 100) / 100}${chartByFertilizer[fertilizerName].unit}`
           }
           xAxisThickness={1}
           xAxisColor={theme.colors.gray4}
           xAxisType="dashed"
           yAxisThickness={0}
           yAxisTextStyle={{ color: theme.colors.gray2 }}
-          yAxisLabelWidth={45}
+          yAxisLabelWidth={60}
           xAxisLabelTextStyle={{ color: theme.colors.gray2 }}
           noOfSections={3}
           disablePress

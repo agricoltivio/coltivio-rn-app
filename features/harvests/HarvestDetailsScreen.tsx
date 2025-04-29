@@ -1,10 +1,11 @@
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
-import { HarvestDetailsScreenProps } from "@/navigation/rootStackTypes";
+import { HarvestDetailsScreenProps } from "./navigation/harvest-routes";
 import { useDeleteHarvestMutation, useHarvestQuery } from "./harvests.hooks";
 import { HarvestSummary } from "./HarvestSummary";
 import { useTranslation } from "react-i18next";
+import { round } from "@/utils/math";
 
 export function HarvestDetailsScreen({
   route,
@@ -67,7 +68,7 @@ export function HarvestDetailsScreen({
         conservationMethod={conservationMethod}
         processingType={processingType}
         machineryName={machinery?.name}
-        producedKilos={producedUnits * kilosPerUnit}
+        producedKilos={round(producedUnits * kilosPerUnit, 2)}
         producedUnits={producedUnits}
         hidePlotList
         additionalNotes={additionalNotes}

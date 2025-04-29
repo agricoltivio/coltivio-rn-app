@@ -8,6 +8,7 @@ import { locale } from "@/locales/i18n";
 import { hexToRgba } from "@/theme/theme";
 import { Body, H2, H3 } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
+import { round } from "@/utils/math";
 import * as turf from "@turf/turf";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -117,6 +118,9 @@ export function FertilizerApplicationSummary({
         </MapView>
       </View>
       <Card style={{ marginTop: theme.spacing.m }}>
+        {hidePlotList && (
+          <SummaryItem label={t("plots.plot")} value={plots[0]?.name} />
+        )}
         <SummaryItem label={t("forms.labels.area")} value={`${size / 100}a`} />
         {spreaderName && (
           <SummaryItem label={t("forms.labels.machine")} value={spreaderName} />
@@ -131,7 +135,7 @@ export function FertilizerApplicationSummary({
         />
         <SummaryItem
           label={t("forms.labels.total")}
-          value={`${amountPerApplication * totalNumberOfApplications}${unit}`}
+          value={`${round(amountPerApplication * totalNumberOfApplications, 2)}${unit}`}
         />
         <SummaryItem
           label={t("forms.labels.fertiliser")}

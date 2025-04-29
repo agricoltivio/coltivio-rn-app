@@ -11,10 +11,11 @@ import { useTheme } from "styled-components/native";
 import { makeRedirectUri } from "expo-auth-session";
 import { supabase } from "@/supabase/supabase";
 import { useState } from "react";
-import { ForgotPasswordScreenProps } from "@/navigation/rootStackTypes";
+import { ForgotPasswordScreenProps } from "@/features/auth/navigation/auth-routes";
+import { isLength } from "lodash";
 
 const redirectTo = makeRedirectUri({
-  scheme: "ch.coltivio",
+  scheme: "ch.agricoltivio.coltivio",
   path: "ResetPassword",
 });
 
@@ -29,22 +30,23 @@ export function ForgotPasswordScreen({
   const [error, setError] = useState<string | null>(null);
   const { t } = useTranslation();
   const theme = useTheme();
+  const [loading, setLoading] = useState(false);
 
-  console.log("redireto", redirectTo);
-  console.log("foo");
   async function onSubmit({ email }: { email: string }) {
     // const { error } = await supabase.auth.signInWithOtp({
     //   email: email,
     //   options: { emailRedirectTo: redirectTo },
     // });
+    setLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo,
     });
+    setLoading(false);
     if (error) {
       console.error(error);
       setError(t("errors.unexpected"));
     } else {
-      navigation.navigate("PasswordResetLinkSent");
+      navigation.navigate("PasswordResetLinkSent", { email });
     }
   }
   return (
@@ -54,7 +56,7 @@ export function ForgotPasswordScreen({
           <Button
             title={t("buttons.send_email")}
             onPress={handleSubmit(onSubmit)}
-            disabled={!isDirty}
+            disabled={!isDirty || loading}
           />
         </BottomActionContainer>
       }

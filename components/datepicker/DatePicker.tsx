@@ -4,7 +4,7 @@ import RnDatePicker, {
 import { TextInput } from "../inputs/TextInput";
 import { useState } from "react";
 import React from "react";
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "styled-components/native";
 import { useTranslation } from "react-i18next";
@@ -59,16 +59,21 @@ export function DatePicker({
       minute: "numeric",
     }).format(date);
   }
+
   return (
     <View>
-      <TextInput
-        value={formatDate(date)}
-        label={label}
-        error={error}
-        onPress={() => setOpen(true)}
-        disabled={disabled}
-        onBlur={onBlur}
-      />
+      <Pressable onPress={() => setOpen(true)}>
+        <TextInput
+          value={formatDate(date)}
+          label={label}
+          error={error}
+          onPress={() => {
+            setOpen(true);
+          }}
+          disabled={disabled}
+          onBlur={onBlur}
+        />
+      </Pressable>
       <RnDatePicker
         modal
         open={open}

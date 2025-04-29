@@ -2,7 +2,7 @@ import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
-import { MachineConfigsScreenProps } from "@/navigation/rootStackTypes";
+import { MachineConfigsScreenProps } from "./navigation/equipment-routes";
 import { H2, H3, Subtitle } from "@/theme/Typography";
 import React from "react";
 import { View } from "react-native";
@@ -30,7 +30,7 @@ export function MachineConfigsScreen({
         showHeaderOnScroll
         headerTitleOnScroll={t("farm_equipment.farm_equipment")}
       >
-        <H2>{t("farm_equipment.new_equipment")}</H2>
+        <H2>{t("farm_equipment.farm_equipment")}</H2>
         <View style={{ marginTop: theme.spacing.m }}>
           <View style={{ marginBottom: theme.spacing.m }}>
             <H3>{t("harvests.harvest")}</H3>

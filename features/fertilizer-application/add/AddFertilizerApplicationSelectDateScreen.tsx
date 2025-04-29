@@ -6,11 +6,11 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { H2 } from "@/theme/Typography";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
+import { AddFertilizerApplicationSelectDateScreenProps } from "../navigation/fertilizer-application-routes";
 import { useCreateFertilizerApplicationStore } from "./fertilizerApplication.store";
-import { AddFertilizerApplicationSelectDateScreenProps } from "@/navigation/rootStackTypes";
-import { useTranslation } from "react-i18next";
 
 type FormValues = {
   date: Date;
@@ -41,7 +41,7 @@ export function AddFertilizerApplicationSelectDateScreen({
   function onSubmit({ date }: FormValues) {
     setFertilizerApplication({ date: date.toISOString().split("T")[0] });
 
-    navigation.navigate("AddFertilizerApplicationSelectFertilizer");
+    navigation.navigate("AddFertilizerApplicationSelectFertilizer", {});
   }
 
   return (

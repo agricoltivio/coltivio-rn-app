@@ -10,7 +10,7 @@ import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCropsQuery } from "../../crops/crops.hooks";
 import { useCreateCropRotationStore } from "./crop-rotations.store";
-import { AddCropRotationSelectCropScreenProps } from "@/navigation/rootStackTypes";
+import { AddCropRotationSelectCropScreenProps } from "../navigation/crop-rotations-routes";
 import { useTranslation } from "react-i18next";
 
 type FormValues = {

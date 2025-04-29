@@ -2,7 +2,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
 import { locale } from "@/locales/i18n";
-import { PlotTillagesOfYearListScreenProps } from "@/navigation/rootStackTypes";
+import { PlotTillagesOfYearListScreenProps } from "./navigation/plots-routes";
 import { H2, H3 } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
 import Fuse from "fuse.js";

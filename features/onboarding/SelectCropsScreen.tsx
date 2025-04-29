@@ -1,6 +1,6 @@
 import { CropCreateInput } from "@/api/crops.api";
 import { ListItem } from "@/components/list/ListItem";
-import { SelectCropsScreenProps } from "@/navigation/rootStackTypes";
+import { SelectCropsScreenProps } from "@/features/onboarding/navigation/onboarding-routes";
 import { H2, H3 } from "@/theme/Typography";
 import { Image } from "expo-image";
 import React, { useState } from "react";
@@ -10,11 +10,13 @@ import { useTheme } from "styled-components/native";
 import { NavigationButton } from "./NavigationButton";
 import { useOnboarding } from "./OnboardingContext";
 import { Stepper } from "./Stepper";
+import { useTranslation } from "react-i18next";
 
 export function SelectCropsScreen({ navigation }: SelectCropsScreenProps) {
   const { data, setData } = useOnboarding();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  const { t } = useTranslation();
 
   const [cropOptions, setCropOptions] = useState<CropCreateInput[]>([
     {

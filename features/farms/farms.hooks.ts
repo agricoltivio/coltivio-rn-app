@@ -57,11 +57,6 @@ export function useCreateFarmMutation(
         },
         name: data.name,
         address: data.location!.label,
-        createParcelPlots: data.createParcelPlots,
-        customPlots: data.customPlots,
-        crops: data.crops,
-        fertilizers: data.fertilizers,
-        parcelGisIds: [],
       });
       return { farm };
     },

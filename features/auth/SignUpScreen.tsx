@@ -5,7 +5,8 @@ import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
 import { supabase } from "@/supabase/supabase";
 import { Body, H2 } from "@/theme/Typography";
-import { useEffect, useState } from "react";
+import * as Sentry from "@sentry/react-native";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -53,6 +54,7 @@ export function SignUpScreen() {
           setError(t("signup.errors.unexpected"));
         }
       }
+      Sentry.captureException(error);
     } else if (!data?.session) {
       setError(t("signup.errors.unexpected"));
     } else {
@@ -75,7 +77,7 @@ export function SignUpScreen() {
           <RHTextInput
             control={control}
             name="name"
-            label={t("forms.labels.display_name")}
+            label={t("forms.labels.name")}
             rules={{
               required: {
                 value: true,

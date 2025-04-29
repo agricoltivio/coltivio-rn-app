@@ -1,6 +1,7 @@
 export default {
   name: "coltivio",
   slug: "coltivio",
+  owner: "agricoltivio",
   version: "1.0.0",
   orientation: "portrait",
   icon: "./assets/images/icon.png",
@@ -22,10 +23,11 @@ export default {
       ITSAppUsesNonExemptEncryption: false,
     },
     usesAppleSignIn: true,
+    privacyManifest: "./privacy-manifest.json",
   },
   android: {
     adaptiveIcon: {
-      foregroundImage: "./assets/images/icon.png",
+      foregroundImage: "./assets/images/adaptive-icon.png",
       backgroundColor: "#ffffff",
     },
     package: process.env.ANDROID_PACKAGE,
@@ -48,6 +50,15 @@ export default {
     "expo-font",
     "expo-location",
     "expo-apple-authentication",
+    [
+      "@sentry/react-native/expo",
+      {
+        url: "https://sentry.io/",
+        project: "react-native",
+        organization: "agricoltivio",
+      },
+    ],
+    // "./react-native-maps-fix-plugin",
   ],
   extra: {
     eas: {

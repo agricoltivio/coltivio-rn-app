@@ -1,12 +1,13 @@
 import { ContentView } from "@/components/containers/ContentView";
-import { H2 } from "@/theme/Typography";
+import { H2, H3 } from "@/theme/Typography";
 import {
   useCropByIdQuery,
   useDeleteCropMutation,
+  useIsCropInUseQuery,
   useUpdateCropMutation,
 } from "./crops.hooks";
 import { CropFormValues, CropForm } from "./CropsForm";
-import { EditCropScreenProps } from "@/navigation/rootStackTypes";
+import { EditCropScreenProps } from "./navigation/crops-routes";
 import { useForm } from "react-hook-form";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { View } from "react-native";
@@ -14,12 +15,14 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { Button } from "@/components/buttons/Button";
 import { useTheme } from "styled-components/native";
 import { useTranslation } from "react-i18next";
+import { Card } from "@/components/card/Card";
 
 export function EditCropScreen({ route, navigation }: EditCropScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const cropId = route.params.cropId;
   const { crop } = useCropByIdQuery(cropId);
+  const { inUse } = useIsCropInUseQuery(cropId);
 
   const {
     control,
@@ -62,8 +65,11 @@ export function EditCropScreen({ route, navigation }: EditCropScreenProps) {
               title={t("buttons.delete")}
               onPress={onDelete}
               disabled={
-                updateCropMutation.isPending || deleteCropMutation.isPending
+                inUse ||
+                updateCropMutation.isPending ||
+                deleteCropMutation.isPending
               }
+              loading={deleteCropMutation.isPending}
             />
 
             <Button
@@ -75,6 +81,9 @@ export function EditCropScreen({ route, navigation }: EditCropScreenProps) {
                 updateCropMutation.isPending ||
                 deleteCropMutation.isPending
               }
+              loading={
+                updateCropMutation.isPending || deleteCropMutation.isPending
+              }
             />
           </View>
         </BottomActionContainer>
@@ -82,6 +91,18 @@ export function EditCropScreen({ route, navigation }: EditCropScreenProps) {
     >
       <ScrollView showHeaderOnScroll headerTitleOnScroll={crop.name}>
         <H2>{crop.name}</H2>
+        {inUse ? (
+          <Card
+            style={{
+              backgroundColor: theme.colors.danger,
+              marginTop: theme.spacing.m,
+            }}
+          >
+            <H3 style={{ color: theme.colors.white }}>
+              {t("crops.crop_in_use_warning")}
+            </H3>
+          </Card>
+        ) : null}
         <CropForm control={control} errors={errors} />
       </ScrollView>
     </ContentView>

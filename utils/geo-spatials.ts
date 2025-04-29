@@ -1,6 +1,6 @@
 import { Plot } from "@/api/plots.api";
 import * as turf from "@turf/turf";
-import { LatLng } from "react-native-maps";
+import { LatLng, Region } from "react-native-maps";
 
 export interface BoundingBox {
   xmin: number;
@@ -76,6 +76,20 @@ export class GeoSpatials {
       turf.multiPolygon(polygon.coordinates),
       turf.multiPolygon(otherPolygon.coordinates)
     );
+  }
+
+  static getRegionCenter(region: Region): LatLng {
+    const bbox: GeoJSON.BBox = [
+      region.longitude - region.longitudeDelta / 2,
+      region.latitude - region.latitudeDelta / 2,
+      region.longitude + region.longitudeDelta / 2,
+      region.latitude + region.latitudeDelta / 2,
+    ];
+    const [lng, lat] = turf.center(turf.bboxPolygon(bbox)).geometry.coordinates;
+    return {
+      latitude: lat,
+      longitude: lng,
+    };
   }
 
   static latLngToMultiPolygon(coordinates: LatLng[][]): GeoJSON.MultiPolygon {

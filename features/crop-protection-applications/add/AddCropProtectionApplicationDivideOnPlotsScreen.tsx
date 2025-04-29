@@ -4,7 +4,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { NumberInput } from "@/components/inputs/NumberInput";
 import { ScrollView } from "@/components/views/ScrollView";
-import { AddCropProtectionApplicationDivideOnPlotsScreenProps } from "@/navigation/rootStackTypes";
+import { AddCropProtectionApplicationDivideOnPlotsScreenProps } from "../navigation/crop-protection-application-routes";
 import { Body, H2, Subtitle, Title } from "@/theme/Typography";
 import { round } from "@/utils/math";
 import React, { useEffect, useState } from "react";
@@ -124,7 +124,7 @@ export function AddCropProtectionApplicationDivideOnPlotsScreen({
         removePlot(cropProtectionApplicationArea.plotId);
       }
     }
-    navigation.navigate("AddCropProtectionApplicationSummary");
+    navigation.navigate("AddCropProtectionApplicationAdditionalNotes");
   }
 
   return (

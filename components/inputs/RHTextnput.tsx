@@ -19,8 +19,7 @@ export function RHTextInput<T extends FieldValues>({
       name={name}
       defaultValue={defaultValue}
       rules={rules}
-      disabled={disabled}
-      render={({ field: { onChange, onBlur, value, disabled } }) => (
+      render={({ field: { onChange, onBlur, value } }) => (
         <TextInput
           onBlur={onBlur}
           onChangeText={onChange}

@@ -78,7 +78,6 @@ export const MapView = ({ loading, ...props }: MapProps) => {
           showsCompass={false}
           rotateEnabled={false}
           {...props}
-          showsUserLocation={false}
         />
       )}
       {loading && (

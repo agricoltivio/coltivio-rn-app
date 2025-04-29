@@ -23,22 +23,19 @@ import { cropProtectionEquipmentsApi } from "./cropProtectionEquipments.api";
 import { locale } from "@/locales/i18n";
 import { reportsApi } from "./reports.api";
 
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 // const baseUrl = "http://localhost:8000/";
-const uri =
-  Constants.expoConfig?.hostUri?.split(":").shift()?.concat(":8000") ??
-  "yourapi.com";
-const baseUrl = `http://${uri}`;
+const localUrl = `http://${Constants.expoConfig?.hostUri?.split(":").shift()?.concat(":8000")}`;
+
+const baseUrl = apiUrl ?? localUrl;
 
 export type FetchClient = typeof client;
 
 const middleware: Middleware = {
   async onResponse({ request, response, options }) {
     if (!response.ok) {
-      // Will produce error messages like "https://example.org/api/v1/example: 404 Not Found".
       const content = await response.json();
-      throw new Error(
-        `${response.url}: ${response.status} - ${content.error.message}`
-      );
+      throw new Error(`${response.url}: ${response.status} - ${content.error}`);
     }
   },
   async onRequest({ request, options }) {

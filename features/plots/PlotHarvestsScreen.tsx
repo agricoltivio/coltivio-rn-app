@@ -4,7 +4,7 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Headline } from "@/theme/Typography";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { PlotHarvestsScreenProps } from "@/navigation/rootStackTypes";
+import { PlotHarvestsScreenProps } from "./navigation/plots-routes";
 import { useHarvestsOfPlotQuery } from "../harvests/harvests.hooks";
 import { useTranslation } from "react-i18next";
 

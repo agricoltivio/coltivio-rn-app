@@ -3,7 +3,7 @@ import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
-import { PlotsScreenProps } from "@/navigation/rootStackTypes";
+import { PlotsScreenProps } from "./navigation/plots-routes";
 import { H2 } from "@/theme/Typography";
 import Fuse from "fuse.js";
 import { useCallback, useState } from "react";
@@ -18,13 +18,14 @@ export function PlotsScreen({ navigation }: PlotsScreenProps) {
   const { plots } = useFarmPlotsQuery();
   const [searchText, setSearchText] = useState("");
 
-  const sanitizedPlots = plots?.map((plot) => ({
-    ...plot,
-    usageName: plot.usage
-      ? //@ts-ignore
-        t(`plots.usage_codes.${plot.usage}`)
-      : t("common.unknown"),
-  }));
+  const sanitizedPlots: Array<Plot & { usageName: string }> =
+    plots?.map((plot) => ({
+      ...plot,
+      usageName: plot.usage
+        ? //@ts-ignore
+          t(`plots.usage_codes.${plot.usage}`)
+        : t("common.unknown"),
+    })) ?? [];
 
   const fuse = new Fuse(sanitizedPlots ?? [], {
     minMatchCharLength: 1,

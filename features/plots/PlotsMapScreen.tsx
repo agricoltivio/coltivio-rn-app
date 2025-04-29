@@ -6,7 +6,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { MapView } from "@/components/map/Map";
 import { MultiPolygon } from "@/components/map/MultiPolygon";
 import { HomeMarker } from "@/features/map/layers/HomeMarker";
-import { PlotsMapScreenProps } from "@/navigation/rootStackTypes";
+import { PlotsMapScreenProps } from "./navigation/plots-routes";
 import { hexToRgba } from "@/theme/theme";
 import { H3, Subtitle } from "@/theme/Typography";
 import {

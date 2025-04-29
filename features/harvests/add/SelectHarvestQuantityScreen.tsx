@@ -3,7 +3,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { ScrollView } from "@/components/views/ScrollView";
-import { SelectHarvestQuantityScreenprops } from "@/navigation/rootStackTypes";
+import { SelectHarvestQuantityScreenprops } from "../navigation/harvest-routes";
 import { H2 } from "@/theme/Typography";
 import React from "react";
 import { useForm } from "react-hook-form";

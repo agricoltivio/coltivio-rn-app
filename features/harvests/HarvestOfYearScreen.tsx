@@ -5,7 +5,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { locale } from "@/locales/i18n";
-import { HarvestsOfYearScreenProps } from "@/navigation/rootStackTypes";
+import { HarvestsOfYearScreenProps } from "./navigation/harvest-routes";
 import { stringToColor } from "@/theme/theme";
 import { H2 } from "@/theme/Typography";
 import { useTranslation } from "react-i18next";

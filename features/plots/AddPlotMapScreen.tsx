@@ -13,7 +13,7 @@ import {
   PolygonDrawingToolActions,
 } from "@/components/map/PolygonDrawingTool";
 import { HomeMarker } from "@/features/map/layers/HomeMarker";
-import { AddPlotMapScreenProps } from "@/navigation/rootStackTypes";
+import { AddPlotMapScreenProps } from "./navigation/plots-routes";
 import { hexToRgba } from "@/theme/theme";
 import { Subtitle, Title } from "@/theme/Typography";
 import { GeoSpatials } from "@/utils/geo-spatials";
@@ -22,7 +22,7 @@ import { PortalHost } from "@gorhom/portal";
 import * as turf from "@turf/turf";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { LatLng, MapPressEvent, Marker } from "react-native-maps";
+import { LatLng, MapPressEvent, Marker, Region } from "react-native-maps";
 import { useSafeAreaFrame } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 import { useFarmParcels } from "../farm-parcels/farmParcels.hooks";
@@ -32,6 +32,9 @@ import { TopLeftBackButton } from "../map/TopLeftBackButton";
 import { useLocalSettings } from "../user/LocalSettingsContext";
 import { useFarmPlotsQuery } from "./plots.hooks";
 import { useTranslation } from "react-i18next";
+import { usePlotsByLocationQuery } from "../federal-plots/federalPlots.hooks";
+import { FederalFarmPlot } from "@/api/layers.api";
+import { useAddPlotStore } from "./add-plots.store";
 
 export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
   const { t } = useTranslation();
@@ -39,19 +42,43 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
   const frame = useSafeAreaFrame();
   const { farm } = useFarmQuery();
   const { plots } = useFarmPlotsQuery();
-  const { parcels } = useFarmParcels();
-  const [mapVisible, setMapVisible] = useState(true);
+  const [mapVisible, setMapVisible] = useState(false);
   const [showModeSelect, setShowModeSelect] = useState(true);
   const [showModeInfo, setShowModeInfo] = useState(false);
   const [showsUserLocation, setShowsUserLocation] = useState<boolean>(false);
-  const [mode, setMode] = useState<"parcel" | "custom">("parcel");
+
+  const [mode, setMode] = useState<"parcel" | "custom" | "none">("none");
   const [drawingAction, setDrawingAction] = useState<DrawAction>("select");
+
   const [newPolygon, setNewPolygon] = useState<{
     geometry: GeoJSON.MultiPolygon;
     centroid: GeoJSON.Point;
     size: number;
+    usage?: number;
+    localId?: string;
+    cuttingDate?: string;
   } | null>(null);
+
   const polygonDrawingToolRef = useRef<PolygonDrawingToolActions>(null);
+
+  const [currentRegion, setCurrentRegion] = useState<Region | null>(null);
+  const [currentViewPoint, setCurrentViewPoint] = useState<LatLng>({
+    latitude: 0,
+    longitude: 0,
+  });
+  const { plots: federalPlots } = usePlotsByLocationQuery(
+    { lat: currentViewPoint.latitude, lng: currentViewPoint.longitude },
+    1,
+    mode === "parcel" && currentViewPoint.latitude !== 0
+  );
+
+  const addPlotStore = useAddPlotStore();
+
+  useEffect(() => {
+    return () => {
+      return addPlotStore.reset();
+    };
+  }, []);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("transitionEnd", () => {
@@ -60,6 +87,23 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
 
     return unsubscribe;
   }, [navigation]);
+
+  const handleOnComplete = () => {
+    if (newPolygon) {
+      addPlotStore.setData(newPolygon);
+      navigation.navigate("AddPlotSummary", {});
+    }
+  };
+
+  const handleRegionChangeComplete = (region: Region) => {
+    setCurrentRegion(region);
+  };
+
+  const handleLoadPlots = () => {
+    if (currentRegion) {
+      setCurrentViewPoint(GeoSpatials.getRegionCenter(currentRegion));
+    }
+  };
 
   const handleMapPress = (event: MapPressEvent) => {
     if (drawingAction === "draw") {
@@ -75,6 +119,9 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
     if (mode === "custom") {
       setDrawingAction("draw");
     }
+    if (mode === "parcel" && currentRegion) {
+      setCurrentViewPoint(GeoSpatials.getRegionCenter(currentRegion));
+    }
   }
 
   function onFinishDrawing(coordinates: LatLng[]) {
@@ -88,7 +135,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
     });
   }
 
-  function onParcelSelect(parcel: Parcel) {
+  function onParcelSelect(parcel: FederalFarmPlot) {
     if (mode !== "parcel") {
       return;
     }
@@ -99,6 +146,9 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
       geometry: parcel.geometry,
       centroid: centroid.geometry,
       size: round(area, 0),
+      usage: parcel.usage ?? undefined,
+      localId: parcel.localId ?? undefined,
+      cuttingDate: parcel.cuttingDate ?? undefined,
     });
   }
 
@@ -110,7 +160,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
         newPolygon!.geometry.coordinates[0][0].map(([longitude, latitude]) => ({
           longitude,
           latitude,
-        })),
+        }))
       );
     }
   }
@@ -118,7 +168,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
     if (mode === "custom") {
       return null;
     }
-    return parcels?.map((parcel) => {
+    return federalPlots?.map((parcel) => {
       return (
         <MultiPolygon
           key={parcel.id}
@@ -133,7 +183,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
         />
       );
     });
-  }, [mode, parcels]);
+  }, [mode, federalPlots]);
 
   if (!farm || !plots) {
     return null;
@@ -155,7 +205,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
       strokeColor={"white"}
       fillColor={hexToRgba(
         theme.map.defaultFillColor,
-        theme.map.defaultFillAlpha,
+        theme.map.defaultFillAlpha
       )}
     />
   ));
@@ -170,6 +220,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
         onPress={handleMapPress}
         initialRegion={initialRegion}
         showsUserLocation={showsUserLocation}
+        onRegionChangeComplete={handleRegionChangeComplete}
       >
         {!showModeSelect && mode === "parcel" ? parcelPolygons : null}
         {plotPolygons}
@@ -188,7 +239,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
               strokeColor={"white"}
               fillColor={hexToRgba(
                 theme.colors.success,
-                theme.map.defaultFillAlpha,
+                theme.map.defaultFillAlpha
               )}
               tappable
               onPress={onSelectPolygon}
@@ -205,7 +256,9 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
                 }}
               >
                 <Subtitle style={{ fontSize: 14 }}>
-                  {newPolygon.size}m²
+                  {newPolygon.localId
+                    ? `${newPolygon.localId} (${newPolygon.size / 100}a)`
+                    : `${newPolygon.size / 100}a`}
                 </Subtitle>
               </Card>
             </Marker>
@@ -224,6 +277,14 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
           />
         ) : null}
       </MapView>
+      {mode === "parcel" ? (
+        <Button
+          title="Parzellen laden"
+          type="secondary"
+          style={{ position: "absolute", bottom: 150, right: theme.spacing.m }}
+          onPress={() => handleLoadPlots()}
+        />
+      ) : null}
       <PortalHost name="PlotsMap" />
       {mapVisible ? (
         <MapShowLocationToggle onShowLocationChange={setShowsUserLocation} />
@@ -268,17 +329,9 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
 
       <BottomActionContainer floating>
         <Button
-          // style={{
-          //   position: "absolute",
-          //   left: theme.spacing.m,
-          //   right: theme.spacing.m,
-          //   bottom: insets.bottom,
-          // }}
           disabled={!newPolygon}
           title={t("buttons.next")}
-          onPress={() =>
-            navigation.navigate("AddPlotSummary", { ...newPolygon! })
-          }
+          onPress={handleOnComplete}
         />
       </BottomActionContainer>
     </ContentView>
@@ -290,11 +343,11 @@ function ParcelSelectTipp() {
   const theme = useTheme();
   const frame = useSafeAreaFrame();
   const [showTip, setShowTip] = useState(
-    localSettings.addPlotMapShowParcelSelectTip,
+    localSettings.addPlotMapShowParcelSelectTip
   );
 
   const [visible, setVisible] = useState(
-    localSettings.addPlotMapShowParcelSelectTip,
+    localSettings.addPlotMapShowParcelSelectTip
   );
 
   if (!visible) {
@@ -352,11 +405,11 @@ function DrawingTipp() {
   const theme = useTheme();
   const frame = useSafeAreaFrame();
   const [showTip, setShowTip] = useState(
-    localSettings.addPlotMapShowDrawingTip,
+    localSettings.addPlotMapShowDrawingTip
   );
 
   const [visible, setVisible] = useState(
-    localSettings.addPlotMapShowDrawingTip,
+    localSettings.addPlotMapShowDrawingTip
   );
 
   if (!visible) {

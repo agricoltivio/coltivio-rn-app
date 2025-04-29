@@ -6,7 +6,7 @@ import { ScrollView } from "@/components/views/ScrollView";
 import {
   SelectHarvestQuantityScreenprops,
   DivideHarvestOnPlotsScreenProps,
-} from "@/navigation/rootStackTypes";
+} from "../navigation/harvest-routes";
 import { Body, H2, Subtitle, Title } from "@/theme/Typography";
 import { round } from "@/utils/math";
 import React, { useEffect, useState } from "react";
@@ -33,7 +33,12 @@ export function DivideHarvestOnPlotsScreen({
     Record<string, string>
   >({});
   const [divideByArea, setDivideByArea] = useState(false);
-  const [divisionPrecision, setDivisionPrecision] = useState(1);
+  const [divisionPrecision, setDivisionPrecision] = useState(
+    harvest?.processingType === "round_bale" ||
+      harvest?.processingType === "square_bale"
+      ? 0
+      : 1
+  );
   const [error, setError] = useState<string | null>(null);
 
   const harvestAreas = Object.values(selectedHarvestPlotsById);
@@ -138,7 +143,7 @@ export function DivideHarvestOnPlotsScreen({
         removeHarvestPlot(harvestArea.plotId);
       }
     }
-    navigation.navigate("HarvestSummary");
+    navigation.navigate("AddHarvestAdditionalNotes");
   }
 
   return (

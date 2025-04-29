@@ -4,7 +4,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
-import { EditCropRotationScreenProps } from "@/navigation/rootStackTypes";
+import { EditCropRotationScreenProps } from "./navigation/crop-rotations-routes";
 import { H2, H3 } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
 import { View } from "react-native";
@@ -31,7 +31,7 @@ export function EditCropRotationScreen({
 }: EditCropRotationScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { rotationId, canDelete } = route.params;
+  const { plotName, rotationId, canDelete } = route.params;
   const { crops } = useCropsQuery();
   const { cropRotation } = useCropRotationQuery(rotationId);
 
@@ -102,6 +102,10 @@ export function EditCropRotationScreen({
               updatePlotCropRotationMutation.isPending ||
               deletePlotCropRotationMutation.isPending
             }
+            loading={
+              updatePlotCropRotationMutation.isPending ||
+              deletePlotCropRotationMutation.isPending
+            }
           />
         </BottomActionContainer>
       }
@@ -109,12 +113,13 @@ export function EditCropRotationScreen({
       <ScrollView
         keyboardAware
         showHeaderOnScroll
-        headerTitleOnScroll={t("crops.crop_name", {
-          name: cropRotation.crop.name,
-        })}
+        headerTitleOnScroll={`${plotName ? `${t("plots.plot_name", { name: plotName })} - ${cropRotation?.crop.name}` : cropRotation?.crop.name}`}
       >
         <H2>{t("crops.crop")}</H2>
-        <H3>{cropRotation?.crop.name}</H3>
+        <H3>
+          {`${plotName ? `${t("plots.plot_name", { name: plotName })} - ` : ""}`}
+          {cropRotation?.crop.name}
+        </H3>
         {!canDelete ? (
           <Card
             style={{

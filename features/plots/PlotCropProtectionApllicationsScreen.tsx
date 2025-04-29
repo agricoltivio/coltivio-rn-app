@@ -4,7 +4,7 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Headline } from "@/theme/Typography";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { PlotCropProtectionApplicationsScreenProps } from "@/navigation/rootStackTypes";
+import { PlotCropProtectionApplicationsScreenProps } from "./navigation/plots-routes";
 import { useCropProtectionApplicationsForPlotQuery } from "../crop-protection-applications/cropProtectionApplications.hooks";
 import { useTranslation } from "react-i18next";
 

@@ -3,7 +3,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
-import { SelectHarvestPlantScreenProps } from "@/navigation/rootStackTypes";
+import { SelectHarvestPlantScreenProps } from "../navigation/harvest-routes";
 import { H2 } from "@/theme/Typography";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -34,7 +34,7 @@ export function SelectHarvestCropScreen({
     setHarvest({ cropId });
     setSelectedCrop(crops?.find((crops) => crops.id === cropId)!);
 
-    navigation.navigate("SelectHarvestingMachinery");
+    navigation.navigate("SelectHarvestingMachinery", {});
   }
 
   if (!isFetched) {

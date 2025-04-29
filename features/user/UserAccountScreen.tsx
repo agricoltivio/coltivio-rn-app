@@ -4,7 +4,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
-import { UserAccountScreenProps } from "@/navigation/rootStackTypes";
+import { UserAccountScreenProps } from "./navigation/user-routes";
 import { Body } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
 import { useQueryClient } from "@tanstack/react-query";
@@ -16,9 +16,11 @@ import { useUserQuery } from "./users.hooks";
 export function UserAccountScreen({ navigation }: UserAccountScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const queryClient = useQueryClient();
   const { user } = useUserQuery();
-  const { clearSession } = useSession();
+  const queryClient = useQueryClient();
+  const { clearSession, authUser } = useSession();
+  const usesSocialLogin = authUser?.app_metadata.provider !== "email";
+
   return (
     <ContentView
       footerComponent={
@@ -73,6 +75,7 @@ export function UserAccountScreen({ navigation }: UserAccountScreenProps) {
               onPress={() => {
                 navigation.navigate("ChangeEmail");
               }}
+              hideBottomDivider={usesSocialLogin}
             >
               <ListItem.Content>
                 <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
@@ -81,20 +84,22 @@ export function UserAccountScreen({ navigation }: UserAccountScreenProps) {
               </ListItem.Content>
               <ListItem.Chevron />
             </ListItem>
-            <ListItem
-              onPress={() => {
-                navigation.navigate("ChangePassword");
-              }}
-              style={{ backgroundColor: theme.colors.white }}
-              hideBottomDivider
-            >
-              <ListItem.Content>
-                <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
-                  {t("forms.labels.password")}
-                </ListItem.Title>
-              </ListItem.Content>
-              <ListItem.Chevron />
-            </ListItem>
+            {!usesSocialLogin ? (
+              <ListItem
+                onPress={() => {
+                  navigation.navigate("ChangePassword");
+                }}
+                style={{ backgroundColor: theme.colors.white }}
+                hideBottomDivider
+              >
+                <ListItem.Content>
+                  <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
+                    {t("forms.labels.password")}
+                  </ListItem.Title>
+                </ListItem.Content>
+                <ListItem.Chevron />
+              </ListItem>
+            ) : null}
           </View>
         </View>
       </ScrollView>

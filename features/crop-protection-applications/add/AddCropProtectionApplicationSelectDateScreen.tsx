@@ -8,12 +8,13 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { AddCropProtectionApplicationSelectDateScreenProps } from "@/navigation/rootStackTypes";
+import { AddCropProtectionApplicationSelectDateScreenProps } from "../navigation/crop-protection-application-routes";
 import { useAddCropProtectionApplicationStore } from "./cropProtectionApplication.store";
 import { useTranslation } from "react-i18next";
 
 type FormValues = {
   date: Date;
+  time: Date;
 };
 export function AddCropProtectionApplicationSelectDateScreen({
   navigation,
@@ -34,13 +35,23 @@ export function AddCropProtectionApplicationSelectDateScreen({
   } = useForm<FormValues>({
     defaultValues: {
       date: new Date(),
+      time: new Date(),
     },
   });
 
-  function onSubmit({ date }: FormValues) {
-    setData({ dateTime: date.toISOString() });
+  function onSubmit({ date, time }: FormValues) {
+    const combined = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      time.getHours(),
+      time.getMinutes(),
+      time.getSeconds(),
+      time.getMilliseconds()
+    );
+    setData({ dateTime: combined.toISOString() });
 
-    navigation.navigate("AddCropProtectionApplicationSelectProduct");
+    navigation.navigate("AddCropProtectionApplicationSelectProduct", {});
   }
 
   return (
@@ -67,7 +78,20 @@ export function AddCropProtectionApplicationSelectDateScreen({
             name="date"
             control={control}
             label={t("forms.labels.date")}
-            mode="datetime"
+            mode="date"
+            rules={{
+              required: {
+                value: true,
+                message: t("forms.validation.required"),
+              },
+            }}
+            error={errors.date?.message}
+          />
+          <RHDatePicker
+            name="time"
+            control={control}
+            label={t("forms.labels.time")}
+            mode="time"
             rules={{
               required: {
                 value: true,

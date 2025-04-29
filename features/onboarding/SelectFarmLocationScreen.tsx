@@ -1,7 +1,7 @@
 import { LocationSearchResult } from "@/api/geo-admin";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ScrollView } from "@/components/views/ScrollView";
-import { SelectFarmLocationScreenProps } from "@/navigation/rootStackTypes";
+import { SelectFarmLocationScreenProps } from "@/features/onboarding/navigation/onboarding-routes";
 import { H1, H2, H3 } from "@/theme/Typography";
 import { useDebounce } from "@uidotdev/usehooks";
 import { Image } from "expo-image";

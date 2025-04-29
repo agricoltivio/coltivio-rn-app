@@ -86,3 +86,13 @@ export function useDeleteCropMutation(
     onError,
   });
 }
+
+export function useIsCropInUseQuery(cropId: string, enabled: boolean = true) {
+  const api = useApi();
+  const { data, ...rest } = useQuery({
+    queryKey: queryKeys.crops.inUse(cropId).queryKey,
+    queryFn: () => api.crops.isCropInUse(cropId),
+    enabled,
+  });
+  return { inUse: data, ...rest };
+}

@@ -18,7 +18,7 @@ import { Card } from "@/components/card/Card";
 import { Subtitle, Title } from "@/theme/Typography";
 import { NavigationButton } from "./NavigationButton";
 import { Stepper } from "./Stepper";
-import { SelectParcelsMapScreenProps } from "@/navigation/rootStackTypes";
+import { SelectParcelsMapScreenProps } from "@/features/onboarding/navigation/onboarding-routes";
 
 export function SelectParcelsMapScreen({
   navigation,

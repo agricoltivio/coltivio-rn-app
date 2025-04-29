@@ -1,8 +1,8 @@
 import { Button } from "@/components/buttons/Button";
 import { ContentView } from "@/components/containers/ContentView";
 import { getYearRange } from "@/utils/date";
-import { useGeneratePlotsReportMutation } from "./reports.hooks";
-import { FieldCalendarExportScreenProps } from "@/navigation/rootStackTypes";
+import { useGeneratePlotsReportMutation } from "./field-calendar.hooks";
+import { FieldCalendarExportScreenProps } from "./navigation/field-calendar.routes";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { GenerateFieldCalendarReportInput } from "@/api/reports.api";
@@ -35,16 +35,16 @@ export function FieldCalendarExportScreen({
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<FormValues>({
     defaultValues: {
       fromDate: from,
       toDate: to,
-      generateCropRotations: true,
-      generateTillages: true,
-      generateFertilizerApplications: true,
-      generateCropProtectionApplications: true,
-      generateHarvests: true,
+      generateCropRotations: false,
+      generateTillages: false,
+      generateFertilizerApplications: false,
+      generateCropProtectionApplications: false,
+      generateHarvests: false,
     },
   });
   const [error, setError] = useState<string | null>(null);
@@ -73,7 +73,7 @@ export function FieldCalendarExportScreen({
           <Button
             title={t("buttons.export")}
             onPress={handleSubmit(onSubmit)}
-            disabled={generateReportMutation.isPending}
+            disabled={!isDirty || generateReportMutation.isPending}
             loading={generateReportMutation.isPending}
           />
         </BottomActionContainer>
@@ -89,7 +89,7 @@ export function FieldCalendarExportScreen({
           <RHDatePicker
             control={control}
             name="fromDate"
-            mode="datetime"
+            mode="date"
             label={t("forms.labels.from")}
             rules={{
               required: {
@@ -102,7 +102,7 @@ export function FieldCalendarExportScreen({
           <RHDatePicker
             control={control}
             name="toDate"
-            mode="datetime"
+            mode="date"
             label={t("forms.labels.to")}
             rules={{
               required: {

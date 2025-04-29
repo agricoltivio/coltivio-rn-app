@@ -7,7 +7,7 @@ import React from "react";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCropProtectionProductsQuery } from "./cropProtectionProduct.hooks";
-import { CropProtectionProductsScreenProps } from "@/navigation/rootStackTypes";
+import { CropProtectionProductsScreenProps } from "./navigation/crop-protection-product-routes";
 import { useTranslation } from "react-i18next";
 
 export function CropProtectionProductsScreen({

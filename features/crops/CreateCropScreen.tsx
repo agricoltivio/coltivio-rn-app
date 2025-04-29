@@ -1,5 +1,5 @@
 import { ContentView } from "@/components/containers/ContentView";
-import { CreateCropScreenProps as CreateCropScreenProps } from "@/navigation/rootStackTypes";
+import { CreateCropScreenProps as CreateCropScreenProps } from "./navigation/crops-routes";
 import { H2 } from "@/theme/Typography";
 import { useCreateCropMutation } from "./crops.hooks";
 import { CropForm, CropFormValues } from "./CropsForm";
@@ -18,8 +18,16 @@ export function CreateCropScreen({ navigation }: CreateCropScreenProps) {
   } = useForm<CropFormValues>();
 
   const createForageMutation = useCreateCropMutation(
-    () => navigation.goBack(),
-    (error) => console.error(error),
+    (crop) => {
+      const previousScreen =
+        navigation.getState().routes[navigation.getState().index - 1];
+      if (previousScreen.name === "AddPlotSummary") {
+        navigation.popTo("AddPlotSummary", { cropId: crop.id });
+      } else {
+        navigation.goBack();
+      }
+    },
+    (error) => console.error(error)
   );
 
   function onCreateCrop(data: CropFormValues) {
@@ -37,6 +45,7 @@ export function CreateCropScreen({ navigation }: CreateCropScreenProps) {
             title={t("buttons.save")}
             onPress={handleSubmit(onCreateCrop)}
             disabled={!isDirty || createForageMutation.isPending}
+            loading={createForageMutation.isPending}
           />
         </BottomActionContainer>
       }

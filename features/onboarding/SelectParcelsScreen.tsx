@@ -1,7 +1,7 @@
 import { FederalFarmPlot } from "@/api/layers.api";
 import { ListItem } from "@/components/list/ListItem";
 import { MapView } from "@/components/map/Map";
-import { SelectParcelsScreenProps } from "@/navigation/rootStackTypes";
+import { SelectParcelsScreenProps } from "@/features/onboarding/navigation/onboarding-routes";
 import { hexToRgba } from "@/theme/theme";
 import { H2, H3 } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
