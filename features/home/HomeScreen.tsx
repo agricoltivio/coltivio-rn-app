@@ -1,7 +1,6 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { MapTile } from "@/features/map/MapTile";
-import { HomeScreenProps } from "./navigation/home-routes";
 import { H1, H2 } from "@/theme/Typography";
 import { Image } from "expo-image";
 import React from "react";
@@ -11,6 +10,7 @@ import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../farms/farms.hooks";
 import { useUserQuery } from "../user/users.hooks";
 import { HomeTile } from "./HomeTile";
+import { HomeScreenProps } from "./navigation/home-routes";
 
 export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { t } = useTranslation();
@@ -127,7 +127,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
             />
           </HomeTile>
         </View>
-        <View
+        {/* <View
           style={{
             flexDirection: "row",
             marginTop: theme.spacing.m,
@@ -162,8 +162,8 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
               />
             </View>
           </HomeTile>
-        </View>
-        <View
+        </View> */}
+        {/* <View
           style={{
             flexDirection: "row",
             marginTop: theme.spacing.m,
@@ -172,27 +172,11 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
         >
           <HomeTile onPress={() => navigation.navigate("AgriColtivioInfo")}>
             <View style={{ padding: theme.spacing.m }}>
-              {/* <Image
-                source={require("@/assets/images/agri_coltivio_logo_text.png")}
-                contentFit="contain"
-                style={{
-                  // margin: theme.spacing.m,
-                  height: 40,
-                  opacity: 0.9,
-                  borderBottomLeftRadius: 10,
-                  borderBottomRightRadius: 10,
-                }}
-              /> */}
               <H1 style={{ textAlign: "center" }}>AgriColtivio</H1>
             </View>
-            {/* <Button
-              type="accent"
-              fontSize={24}
-              title={t("buttons.about_us")}
-              onPress={() => navigation.navigate("AgriColtivioInfo")}
-            /> */}
           </HomeTile>
-        </View>
+          <Button title="Agri Coltivio" />
+        </View> */}
       </ContentView>
     </ScrollView>
   );

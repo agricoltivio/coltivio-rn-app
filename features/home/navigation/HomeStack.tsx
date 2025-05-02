@@ -2,6 +2,7 @@ import { Stack } from "@/navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
 import { DefaultTheme } from "styled-components";
 import { HomeScreen } from "../HomeScreen";
+import { View } from "react-native";
 
 export function renderHomeStack(theme: DefaultTheme, navigation: any) {
   return (
@@ -14,12 +15,20 @@ export function renderHomeStack(theme: DefaultTheme, navigation: any) {
 
         headerRight(props) {
           return (
-            <Ionicons
-              size={35}
-              name="person-circle-outline"
-              color={theme.colors.primary}
-              onPress={() => navigation.navigate("UserAccount")}
-            />
+            <View style={{ flexDirection: "row" }}>
+              <Ionicons
+                size={40}
+                name="information-circle-outline"
+                color={theme.colors.primary}
+                onPress={() => navigation.navigate("AgriColtivioInfo")}
+              />
+              <Ionicons
+                size={40}
+                name="person-circle-outline"
+                color={theme.colors.primary}
+                onPress={() => navigation.navigate("UserAccount")}
+              />
+            </View>
           );
         },
       }}
