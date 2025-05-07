@@ -54,7 +54,7 @@ export function FertilizerForm({
           label="Typ"
           data={[
             { label: t("forms.labels.organic"), value: "organic" },
-            { label: t("forms.labels.mineralic"), value: "mineralic" },
+            { label: t("forms.labels.mineralic"), value: "mineral" },
           ]}
           rules={{
             required: {
