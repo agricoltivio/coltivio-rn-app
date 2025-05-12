@@ -31,7 +31,6 @@ export function EditFertilizerScreen({
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors, isDirty },
   } = useForm<FertilizerFormValues>({ values: fertilizer });
 

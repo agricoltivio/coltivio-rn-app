@@ -12,6 +12,8 @@ export type FertilizerCreateInput =
 
 export type FertilizerUnit = FertilizerCreateInput["unit"];
 
+export type FertilizerType = FertilizerCreateInput["type"];
+
 export function fertilizersApi(client: FetchClient) {
   return {
     async getFertilizers(): Promise<Fertilizer[]> {

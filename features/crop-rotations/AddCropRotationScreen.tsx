@@ -44,7 +44,7 @@ export function AddCropRotationScreen({
       plotId,
       cropId,
       fromDate: fromDate.toISOString(),
-      toDate: toDate?.toDateString(),
+      toDate: toDate?.toISOString(),
       sowingDate: sowingDate?.toISOString(),
     });
   }
