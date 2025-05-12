@@ -533,7 +533,7 @@
     "product_in_use_warning": "Dieser Dünger wird verwendet und kann deshalb nur beschränkt bearbeitet und nicht gelöscht werden.",
     "warning_unit_not_editable": "Die Einheit definiert, in welcher Einheit der Dünger ausgebracht wird.",
     "unit_info": "Wähle in welcher Einheit (z.B Liter) der Dünger ausgebracht wird.",
-    "default_machine_info": "Um die Erfassung zu erleichtern kann eine Maschine definiert werden, mit welcher dieser Dünger ausgebracht wird. Die Kapazität der Maschine muss der Einheit des Düngers entsprechen."
+    "default_machine_info": "Um die Erfassung zu erleichtern kann eine Maschine definiert werden, mit welcher dieser Dünger ausgebracht wird."
   },
   "fertilizer_application": {
     "fertilizer_application": "Düngeraustrag",
@@ -650,7 +650,7 @@
     "product_in_use_warning": "Dieses Pflanzenschutzmittel wird verwendet und kann deshalb nicht gelöscht werden.",
     "warning_unit_not_editable": "Die Einheit kann nicht bearbeitet werden! Sie sollte der Einheit entsprechen in welchem das Pflanzenschutzmittel ausgebracht wird.",
     "unit_info": "Wähle in welcher Einheit (z.B Liter) das Mittel ausgebracht wird.",
-    "default_machine_info": "Um die Erfassung zu erleichtern kann eine Maschine definiert werden, mit welcher dieses Mittel ausgebracht wird. Die Kapazität der Maschine muss der Einheit des Mittels entsprechen."
+    "default_machine_info": "Um die Erfassung zu erleichtern kann eine Maschine definiert werden, mit welcher dieses Mittel ausgebracht wird."
   },
   "crop_rotations": {
     "crop_rotation": "Fruchtfolgen",

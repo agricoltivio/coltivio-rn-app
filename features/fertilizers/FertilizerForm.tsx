@@ -64,15 +64,6 @@ export function FertilizerForm({
           }}
           error={errors.type?.message}
         />
-        <Card
-          elevated
-          style={{
-            backgroundColor: theme.colors.accent,
-            margin: theme.spacing.s,
-          }}
-        >
-          <H4>{t("fertilizers.unit_info")}</H4>
-        </Card>
         <RHSelect
           name="unit"
           control={control}
@@ -83,7 +74,6 @@ export function FertilizerForm({
             { label: t("units.long.kg"), value: "kg" },
             { label: t("units.long.dt"), value: "dt" },
             { label: t("units.long.t"), value: "t" },
-            { label: t("units.long.m3"), value: "m3" },
           ]}
           rules={{
             required: {

@@ -10,15 +10,16 @@ import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { useFertilizerSpreadersQuery } from "@/features/equipment/fertilizerSpreader.hooks";
-import { AddFertilizerApplicationSelectSpreaderScreenProps } from "../navigation/fertilizer-application-routes";
-import { Body, H2, H3, H4 } from "@/theme/Typography";
+import { Body, H2 } from "@/theme/Typography";
+import { areUnitsCompatible, convertUnit } from "@/utils/units";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { useCreateFertilizerApplicationStore } from "./fertilizerApplication.store";
 import { fertilizerApplicationMethods } from "../fertilizerApplications.utils";
+import { AddFertilizerApplicationSelectSpreaderScreenProps } from "../navigation/fertilizer-application-routes";
+import { useCreateFertilizerApplicationStore } from "./fertilizerApplication.store";
 
 type FormValues = {
   spreaderId: string;
@@ -62,10 +63,16 @@ export function AddFertilizerApplicationSelectSpreaderScreen({
   const createdSpreaderId = route.params.spreaderId;
 
   useEffect(() => {
-    if (createdSpreaderId) {
-      setValue("spreaderId", createdSpreaderId);
+    const createdSpreader = fertilizerSpreaders?.find(
+      (config) => config.id === createdSpreaderId
+    );
+    if (
+      createdSpreader &&
+      areUnitsCompatible(createdSpreader.unit, selectedFertilizer!.unit)
+    ) {
+      setValue("spreaderId", createdSpreader.id);
     }
-  }, [createdSpreaderId]);
+  }, [createdSpreaderId, fertilizerSpreaders, selectedFertilizer]);
 
   const spreaderId = watch("spreaderId");
 
@@ -73,8 +80,8 @@ export function AddFertilizerApplicationSelectSpreaderScreen({
     (config) => config.id === spreaderId
   );
 
-  const availableSpreaders = fertilizerSpreaders?.filter(
-    (config) => config.unit === selectedFertilizer?.unit
+  const availableSpreaders = fertilizerSpreaders?.filter((config) =>
+    areUnitsCompatible(config.unit, selectedFertilizer!.unit)
   );
 
   const methodSelectOptions = fertilizerApplicationMethods.map((method) => ({
@@ -84,7 +91,14 @@ export function AddFertilizerApplicationSelectSpreaderScreen({
 
   useEffect(() => {
     if (currentSelectedSpreader) {
-      setValue("capacity", currentSelectedSpreader.capacity.toString());
+      setValue(
+        "capacity",
+        convertUnit(
+          currentSelectedSpreader.capacity,
+          currentSelectedSpreader.unit,
+          selectedFertilizer!.unit
+        ).toString()
+      );
       setValue("method", currentSelectedSpreader.defaultMethod);
     }
   }, [spreaderId, currentSelectedSpreader]);
@@ -120,18 +134,7 @@ export function AddFertilizerApplicationSelectSpreaderScreen({
         headerTitleOnScroll={t("fertilizer_application.select_machine.heading")}
         keyboardAware
       >
-        {/* <H2>Neue Ernte</H2> */}
         <H2>{t("fertilizer_application.select_machine.heading")}</H2>
-        <Card
-          style={{
-            backgroundColor: theme.colors.secondary,
-            marginTop: theme.spacing.m,
-          }}
-        >
-          <H4 style={{ color: theme.colors.white }}>
-            {t("fertilizer_application.select_machine.only_same_unit_warning")}
-          </H4>
-        </Card>
         <View
           style={{ gap: theme.spacing.s, flex: 1, marginTop: theme.spacing.s }}
         >
@@ -217,6 +220,7 @@ export function AddFertilizerApplicationSelectSpreaderScreen({
                 name="capacity"
                 control={control}
                 keyboardType="numeric"
+                float
                 label={t("forms.labels.unit_per_load", {
                   unit: selectedFertilizer?.unit,
                 })}

@@ -1021,14 +1021,14 @@ export interface components {
         GetV1LayersPlotsBboxPositiveResponse: {
             data: {
                 result: {
-                    /** Format: double */
+                    /** Format: int64 */
                     id: number;
                     federalFarmId: string;
                     localId: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     usage: number;
                     additionalUsages: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     area: number;
                     canton: string;
                     geometry: {
@@ -1059,14 +1059,14 @@ export interface components {
         GetV1LayersPlotsFarmsFederalFarmIdOnlyPositiveResponse: {
             data: {
                 result: {
-                    /** Format: double */
+                    /** Format: int64 */
                     id: number;
                     federalFarmId: string;
                     localId: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     usage: number;
                     additionalUsages: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     area: number;
                     canton: string;
                     geometry: {
@@ -1093,14 +1093,14 @@ export interface components {
         GetV1LayersPlotsFarmsFederalFarmIdBboxPositiveResponse: {
             data: {
                 result: {
-                    /** Format: double */
+                    /** Format: int64 */
                     id: number;
                     federalFarmId: string;
                     localId: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     usage: number;
                     additionalUsages: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     area: number;
                     canton: string;
                     geometry: {
@@ -1127,14 +1127,14 @@ export interface components {
         GetV1LayersPlotsRadiusPositiveResponse: {
             data: {
                 result: {
-                    /** Format: double */
+                    /** Format: int64 */
                     id: number;
                     federalFarmId: string;
                     localId: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     usage: number;
                     additionalUsages: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     area: number;
                     canton: string;
                     geometry: {
@@ -1348,7 +1348,7 @@ export interface components {
                     defaultConservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
                     /** @enum {string} */
                     defaultProcessingType: "none" | "square_bale" | "round_bale" | "other";
-                    /** Format: double */
+                    /** Format: int64 */
                     defaultKilosPerUnit: number;
                 }[];
                 /** Format: double */
@@ -1370,7 +1370,7 @@ export interface components {
                 defaultConservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
                 /** @enum {string} */
                 defaultProcessingType: "none" | "square_bale" | "round_bale" | "other";
-                /** Format: double */
+                /** Format: int64 */
                 defaultKilosPerUnit: number;
             };
         };
@@ -1384,7 +1384,7 @@ export interface components {
             defaultConservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
             /** @enum {string} */
             defaultProcessingType: "none" | "square_bale" | "round_bale" | "other";
-            /** Format: double */
+            /** Format: int64 */
             defaultKilosPerUnit: number;
         };
         GetV1HarvestingMachineryByIdHarvestingMachineryIdParameterHarvestingMachineryId: string;
@@ -1400,7 +1400,7 @@ export interface components {
                 defaultConservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
                 /** @enum {string} */
                 defaultProcessingType: "none" | "square_bale" | "round_bale" | "other";
-                /** Format: double */
+                /** Format: int64 */
                 defaultKilosPerUnit: number;
             };
         };
@@ -1427,7 +1427,7 @@ export interface components {
                 defaultConservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
                 /** @enum {string} */
                 defaultProcessingType: "none" | "square_bale" | "round_bale" | "other";
-                /** Format: double */
+                /** Format: int64 */
                 defaultKilosPerUnit: number;
             };
         };
@@ -1441,7 +1441,7 @@ export interface components {
             defaultConservationMethod?: "dried" | "silage" | "haylage" | "other" | "none";
             /** @enum {string} */
             defaultProcessingType?: "none" | "square_bale" | "round_bale" | "other";
-            /** Format: double */
+            /** Format: int64 */
             defaultKilosPerUnit?: number;
         };
         GetV1PlotsPositiveResponse: {
@@ -1453,10 +1453,10 @@ export interface components {
                     farmId: string;
                     name: string;
                     localId: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     usage: number | null;
                     additionalUsages: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     size: number;
                     additionalNotes: string | null;
                     geometry: {
@@ -1522,10 +1522,10 @@ export interface components {
                 farmId: string;
                 name: string;
                 localId: string | null;
-                /** Format: double */
+                /** Format: int64 */
                 usage: number | null;
                 additionalUsages: string | null;
-                /** Format: double */
+                /** Format: int64 */
                 size: number;
                 additionalNotes: string | null;
                 geometry: {
@@ -1583,10 +1583,10 @@ export interface components {
         PostV1PlotsRequestBody: {
             name: string;
             localId?: string | null;
-            /** Format: double */
+            /** Format: int64 */
             usage?: number | null;
             additionalUsages?: string | null;
-            /** Format: double */
+            /** Format: int64 */
             size: number;
             additionalNotes?: string | null;
             geometry: {
@@ -1610,10 +1610,10 @@ export interface components {
                 farmId: string;
                 name: string;
                 localId: string | null;
-                /** Format: double */
+                /** Format: int64 */
                 usage: number | null;
                 additionalUsages: string | null;
-                /** Format: double */
+                /** Format: int64 */
                 size: number;
                 additionalNotes: string | null;
                 geometry: {
@@ -1684,10 +1684,10 @@ export interface components {
                 farmId: string;
                 name: string;
                 localId: string | null;
-                /** Format: double */
+                /** Format: int64 */
                 usage: number | null;
                 additionalUsages: string | null;
-                /** Format: double */
+                /** Format: int64 */
                 size: number;
                 additionalNotes: string | null;
                 geometry: {
@@ -1745,10 +1745,10 @@ export interface components {
         PatchV1PlotsByIdPlotIdRequestBody: {
             name?: string;
             localId?: string | null;
-            /** Format: double */
+            /** Format: int64 */
             usage?: number | null;
             additionalUsages?: string | null;
-            /** Format: double */
+            /** Format: int64 */
             size?: number;
             additionalNotes?: string | null;
             geometry?: {
@@ -1832,7 +1832,7 @@ export interface components {
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    /** Format: double */
+                    /** Format: int64 */
                     size: number;
                     /** @enum {string} */
                     reason: "weed_control" | "soil_loosening" | "other";
@@ -1864,10 +1864,10 @@ export interface components {
                         farmId: string;
                         name: string;
                         localId: string | null;
-                        /** Format: double */
+                        /** Format: int64 */
                         usage: number | null;
                         additionalUsages: string | null;
-                        /** Format: double */
+                        /** Format: int64 */
                         size: number;
                         additionalNotes: string | null;
                         /**
@@ -1915,7 +1915,7 @@ export interface components {
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    /** Format: double */
+                    /** Format: int64 */
                     size: number;
                     /** @enum {string} */
                     method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
@@ -1959,10 +1959,10 @@ export interface components {
                         farmId: string;
                         name: string;
                         localId: string | null;
-                        /** Format: double */
+                        /** Format: int64 */
                         usage: number | null;
                         additionalUsages: string | null;
-                        /** Format: double */
+                        /** Format: int64 */
                         size: number;
                         additionalNotes: string | null;
                         /**
@@ -2023,7 +2023,7 @@ export interface components {
                      */
                     date: string;
                     /** @enum {string} */
-                    unit: "l" | "kg" | "dt" | "t" | "m3";
+                    unit: "l" | "kg" | "dt" | "t";
                     /** @enum {string} */
                     method: "spray" | "spread" | "other";
                     /** Format: double */
@@ -2039,7 +2039,7 @@ export interface components {
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    /** Format: double */
+                    /** Format: int64 */
                     size: number;
                     additionalNotes: string | null;
                     spreader: {
@@ -2049,7 +2049,7 @@ export interface components {
                         farmId: string;
                         name: string;
                         /** @enum {string} */
-                        unit: "l" | "kg" | "dt" | "t" | "m3";
+                        unit: "l" | "kg" | "dt" | "t";
                         /** @enum {string} */
                         defaultMethod: "spray" | "spread" | "other";
                         /** Format: double */
@@ -2065,7 +2065,7 @@ export interface components {
                         /** @enum {string} */
                         type: "mineral" | "organic";
                         /** @enum {string} */
-                        unit: "l" | "kg" | "dt" | "t" | "m3";
+                        unit: "l" | "kg" | "dt" | "t";
                         /** Format: uuid */
                         defaultSpreaderId: string | null;
                     };
@@ -2090,7 +2090,7 @@ export interface components {
                         totalAmount: number;
                         fertilizerName: string;
                         /** @enum {string} */
-                        unit: "l" | "kg" | "dt" | "t" | "m3";
+                        unit: "l" | "kg" | "dt" | "t";
                     }[];
                 }[];
             };
@@ -2130,11 +2130,11 @@ export interface components {
                     kilosPerUnit: number;
                     /** Format: double */
                     producedUnits: number;
-                    /** Format: double */
+                    /** Format: int64 */
                     harvestCount: number | null;
                     /** Format: uuid */
                     machineryId: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     size: number;
                     additionalNotes: string | null;
                     geometry: {
@@ -2153,7 +2153,7 @@ export interface components {
                         defaultConservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
                         /** @enum {string} */
                         defaultProcessingType: "none" | "square_bale" | "round_bale" | "other";
-                        /** Format: double */
+                        /** Format: int64 */
                         defaultKilosPerUnit: number;
                     } | null;
                     crop: {
@@ -2253,7 +2253,7 @@ export interface components {
             /** @enum {string} */
             category: "grass" | "grain" | "vegetable" | "fruit" | "other";
             variety?: string | null;
-            usageCodes?: number[];
+            usageCodes?: (number | null)[];
             additionalNotes?: string | null;
         };
         GetV1CropsByIdCropIdParameterCropId: string;
@@ -2304,7 +2304,7 @@ export interface components {
             /** @enum {string} */
             category?: "grass" | "grain" | "vegetable" | "fruit" | "other";
             variety?: string | null;
-            usageCodes?: number[];
+            usageCodes?: (number | null)[];
             additionalNotes?: string | null;
         };
         GetV1CropsByIdCropIdInUseParameterCropId: string;
@@ -2560,7 +2560,7 @@ export interface components {
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
-                /** Format: double */
+                /** Format: int64 */
                 size: number;
                 /** @enum {string} */
                 method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
@@ -2604,10 +2604,10 @@ export interface components {
                     farmId: string;
                     name: string;
                     localId: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     usage: number | null;
                     additionalUsages: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     size: number;
                     additionalNotes: string | null;
                     /**
@@ -2638,7 +2638,7 @@ export interface components {
                 type: "MultiPolygon";
                 coordinates: number[][][][];
             };
-            /** Format: double */
+            /** Format: int64 */
             size: number;
             /** @enum {string} */
             method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
@@ -2692,7 +2692,7 @@ export interface components {
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    /** Format: double */
+                    /** Format: int64 */
                     size: number;
                     /** @enum {string} */
                     method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
@@ -2736,10 +2736,10 @@ export interface components {
                         farmId: string;
                         name: string;
                         localId: string | null;
-                        /** Format: double */
+                        /** Format: int64 */
                         usage: number | null;
                         additionalUsages: string | null;
-                        /** Format: double */
+                        /** Format: int64 */
                         size: number;
                         additionalNotes: string | null;
                         /**
@@ -2786,7 +2786,7 @@ export interface components {
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    /** Format: double */
+                    /** Format: int64 */
                     size: number;
                     /** @enum {string} */
                     method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
@@ -2830,10 +2830,10 @@ export interface components {
                         farmId: string;
                         name: string;
                         localId: string | null;
-                        /** Format: double */
+                        /** Format: int64 */
                         usage: number | null;
                         additionalUsages: string | null;
-                        /** Format: double */
+                        /** Format: int64 */
                         size: number;
                         additionalNotes: string | null;
                         /**
@@ -2908,7 +2908,7 @@ export interface components {
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
-                /** Format: double */
+                /** Format: int64 */
                 size: number;
                 /** @enum {string} */
                 method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
@@ -2952,10 +2952,10 @@ export interface components {
                     farmId: string;
                     name: string;
                     localId: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     usage: number | null;
                     additionalUsages: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     size: number;
                     additionalNotes: string | null;
                     /**
@@ -3006,7 +3006,7 @@ export interface components {
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
-                /** Format: double */
+                /** Format: int64 */
                 size: number;
                 /** @enum {string} */
                 method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
@@ -3050,10 +3050,10 @@ export interface components {
                     farmId: string;
                     name: string;
                     localId: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     usage: number | null;
                     additionalUsages: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     size: number;
                     additionalNotes: string | null;
                     /**
@@ -3082,7 +3082,7 @@ export interface components {
                 type: "MultiPolygon";
                 coordinates: number[][][][];
             };
-            /** Format: double */
+            /** Format: int64 */
             size?: number;
             /** @enum {string} */
             method?: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
@@ -3235,7 +3235,7 @@ export interface components {
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
-                /** Format: double */
+                /** Format: int64 */
                 size: number;
                 /** @enum {string} */
                 reason: "weed_control" | "soil_loosening" | "other";
@@ -3267,10 +3267,10 @@ export interface components {
                     farmId: string;
                     name: string;
                     localId: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     usage: number | null;
                     additionalUsages: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     size: number;
                     additionalNotes: string | null;
                     /**
@@ -3292,7 +3292,7 @@ export interface components {
                 type: "MultiPolygon";
                 coordinates: number[][][][];
             };
-            /** Format: double */
+            /** Format: int64 */
             size: number;
             /** @enum {string} */
             reason: "weed_control" | "soil_loosening" | "other";
@@ -3340,7 +3340,7 @@ export interface components {
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    /** Format: double */
+                    /** Format: int64 */
                     size: number;
                     /** @enum {string} */
                     reason: "weed_control" | "soil_loosening" | "other";
@@ -3372,10 +3372,10 @@ export interface components {
                         farmId: string;
                         name: string;
                         localId: string | null;
-                        /** Format: double */
+                        /** Format: int64 */
                         usage: number | null;
                         additionalUsages: string | null;
-                        /** Format: double */
+                        /** Format: int64 */
                         size: number;
                         additionalNotes: string | null;
                         /**
@@ -3413,7 +3413,7 @@ export interface components {
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    /** Format: double */
+                    /** Format: int64 */
                     size: number;
                     /** @enum {string} */
                     reason: "weed_control" | "soil_loosening" | "other";
@@ -3445,10 +3445,10 @@ export interface components {
                         farmId: string;
                         name: string;
                         localId: string | null;
-                        /** Format: double */
+                        /** Format: int64 */
                         usage: number | null;
                         additionalUsages: string | null;
-                        /** Format: double */
+                        /** Format: int64 */
                         size: number;
                         additionalNotes: string | null;
                         /**
@@ -3509,7 +3509,7 @@ export interface components {
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
-                /** Format: double */
+                /** Format: int64 */
                 size: number;
                 /** @enum {string} */
                 reason: "weed_control" | "soil_loosening" | "other";
@@ -3541,10 +3541,10 @@ export interface components {
                     farmId: string;
                     name: string;
                     localId: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     usage: number | null;
                     additionalUsages: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     size: number;
                     additionalNotes: string | null;
                     /**
@@ -3586,7 +3586,7 @@ export interface components {
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
-                /** Format: double */
+                /** Format: int64 */
                 size: number;
                 /** @enum {string} */
                 reason: "weed_control" | "soil_loosening" | "other";
@@ -3618,10 +3618,10 @@ export interface components {
                     farmId: string;
                     name: string;
                     localId: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     usage: number | null;
                     additionalUsages: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     size: number;
                     additionalNotes: string | null;
                     /**
@@ -3641,7 +3641,7 @@ export interface components {
                 type: "MultiPolygon";
                 coordinates: number[][][][];
             };
-            /** Format: double */
+            /** Format: int64 */
             size?: number;
             /** @enum {string} */
             reason?: "weed_control" | "soil_loosening" | "other";
@@ -4064,11 +4064,11 @@ export interface components {
                     kilosPerUnit: number;
                     /** Format: double */
                     producedUnits: number;
-                    /** Format: double */
+                    /** Format: int64 */
                     harvestCount: number | null;
                     /** Format: uuid */
                     machineryId: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     size: number;
                     additionalNotes: string | null;
                     geometry: {
@@ -4087,7 +4087,7 @@ export interface components {
                         defaultConservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
                         /** @enum {string} */
                         defaultProcessingType: "none" | "square_bale" | "round_bale" | "other";
-                        /** Format: double */
+                        /** Format: int64 */
                         defaultKilosPerUnit: number;
                     } | null;
                     crop: {
@@ -4109,10 +4109,10 @@ export interface components {
                         farmId: string;
                         name: string;
                         localId: string | null;
-                        /** Format: double */
+                        /** Format: int64 */
                         usage: number | null;
                         additionalUsages: string | null;
-                        /** Format: double */
+                        /** Format: int64 */
                         size: number;
                         additionalNotes: string | null;
                         geometry: {
@@ -4165,11 +4165,11 @@ export interface components {
                     kilosPerUnit: number;
                     /** Format: double */
                     producedUnits: number;
-                    /** Format: double */
+                    /** Format: int64 */
                     harvestCount: number | null;
                     /** Format: uuid */
                     machineryId: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     size: number;
                     additionalNotes: string | null;
                     geometry: {
@@ -4188,7 +4188,7 @@ export interface components {
                         defaultConservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
                         /** @enum {string} */
                         defaultProcessingType: "none" | "square_bale" | "round_bale" | "other";
-                        /** Format: double */
+                        /** Format: int64 */
                         defaultKilosPerUnit: number;
                     } | null;
                     crop: {
@@ -4210,10 +4210,10 @@ export interface components {
                         farmId: string;
                         name: string;
                         localId: string | null;
-                        /** Format: double */
+                        /** Format: int64 */
                         usage: number | null;
                         additionalUsages: string | null;
-                        /** Format: double */
+                        /** Format: int64 */
                         size: number;
                         additionalNotes: string | null;
                         geometry: {
@@ -4296,11 +4296,11 @@ export interface components {
                 kilosPerUnit: number;
                 /** Format: double */
                 producedUnits: number;
-                /** Format: double */
+                /** Format: int64 */
                 harvestCount: number | null;
                 /** Format: uuid */
                 machineryId: string | null;
-                /** Format: double */
+                /** Format: int64 */
                 size: number;
                 additionalNotes: string | null;
                 geometry: {
@@ -4319,7 +4319,7 @@ export interface components {
                     defaultConservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
                     /** @enum {string} */
                     defaultProcessingType: "none" | "square_bale" | "round_bale" | "other";
-                    /** Format: double */
+                    /** Format: int64 */
                     defaultKilosPerUnit: number;
                 } | null;
                 crop: {
@@ -4341,10 +4341,10 @@ export interface components {
                     farmId: string;
                     name: string;
                     localId: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     usage: number | null;
                     additionalUsages: string | null;
-                    /** Format: double */
+                    /** Format: int64 */
                     size: number;
                     additionalNotes: string | null;
                     geometry: {
@@ -4440,7 +4440,7 @@ export interface components {
                      */
                     date: string;
                     /** @enum {string} */
-                    unit: "l" | "kg" | "dt" | "t" | "m3";
+                    unit: "l" | "kg" | "dt" | "t";
                     /** @enum {string} */
                     method: "spray" | "spread" | "other";
                     /** Format: double */
@@ -4456,7 +4456,7 @@ export interface components {
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    /** Format: double */
+                    /** Format: int64 */
                     size: number;
                     additionalNotes: string | null;
                     plot: {
@@ -4470,7 +4470,7 @@ export interface components {
                         farmId: string;
                         name: string;
                         /** @enum {string} */
-                        unit: "l" | "kg" | "dt" | "t" | "m3";
+                        unit: "l" | "kg" | "dt" | "t";
                         /** @enum {string} */
                         defaultMethod: "spray" | "spread" | "other";
                         /** Format: double */
@@ -4486,7 +4486,7 @@ export interface components {
                         /** @enum {string} */
                         type: "mineral" | "organic";
                         /** @enum {string} */
-                        unit: "l" | "kg" | "dt" | "t" | "m3";
+                        unit: "l" | "kg" | "dt" | "t";
                         /** Format: uuid */
                         defaultSpreaderId: string | null;
                     };
@@ -4520,7 +4520,7 @@ export interface components {
                      */
                     date: string;
                     /** @enum {string} */
-                    unit: "l" | "kg" | "dt" | "t" | "m3";
+                    unit: "l" | "kg" | "dt" | "t";
                     /** @enum {string} */
                     method: "spray" | "spread" | "other";
                     /** Format: double */
@@ -4536,7 +4536,7 @@ export interface components {
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    /** Format: double */
+                    /** Format: int64 */
                     size: number;
                     additionalNotes: string | null;
                     plot: {
@@ -4550,7 +4550,7 @@ export interface components {
                         farmId: string;
                         name: string;
                         /** @enum {string} */
-                        unit: "l" | "kg" | "dt" | "t" | "m3";
+                        unit: "l" | "kg" | "dt" | "t";
                         /** @enum {string} */
                         defaultMethod: "spray" | "spread" | "other";
                         /** Format: double */
@@ -4566,7 +4566,7 @@ export interface components {
                         /** @enum {string} */
                         type: "mineral" | "organic";
                         /** @enum {string} */
-                        unit: "l" | "kg" | "dt" | "t" | "m3";
+                        unit: "l" | "kg" | "dt" | "t";
                         /** Format: uuid */
                         defaultSpreaderId: string | null;
                     };
@@ -4585,7 +4585,7 @@ export interface components {
              */
             date: string;
             /** @enum {string} */
-            unit: "l" | "kg" | "dt" | "t" | "m3";
+            unit: "l" | "kg" | "dt" | "t";
             /** @enum {string} */
             method: "spray" | "spread" | "other";
             /** Format: double */
@@ -4628,7 +4628,7 @@ export interface components {
                  */
                 date: string;
                 /** @enum {string} */
-                unit: "l" | "kg" | "dt" | "t" | "m3";
+                unit: "l" | "kg" | "dt" | "t";
                 /** @enum {string} */
                 method: "spray" | "spread" | "other";
                 /** Format: double */
@@ -4644,7 +4644,7 @@ export interface components {
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
-                /** Format: double */
+                /** Format: int64 */
                 size: number;
                 additionalNotes: string | null;
                 plot: {
@@ -4658,7 +4658,7 @@ export interface components {
                     farmId: string;
                     name: string;
                     /** @enum {string} */
-                    unit: "l" | "kg" | "dt" | "t" | "m3";
+                    unit: "l" | "kg" | "dt" | "t";
                     /** @enum {string} */
                     defaultMethod: "spray" | "spread" | "other";
                     /** Format: double */
@@ -4674,7 +4674,7 @@ export interface components {
                     /** @enum {string} */
                     type: "mineral" | "organic";
                     /** @enum {string} */
-                    unit: "l" | "kg" | "dt" | "t" | "m3";
+                    unit: "l" | "kg" | "dt" | "t";
                     /** Format: uuid */
                     defaultSpreaderId: string | null;
                 };
@@ -4702,7 +4702,7 @@ export interface components {
                         totalAmount: number;
                         fertilizerName: string;
                         /** @enum {string} */
-                        unit: "l" | "kg" | "dt" | "t" | "m3";
+                        unit: "l" | "kg" | "dt" | "t";
                     }[];
                 }[];
             };
@@ -4732,7 +4732,7 @@ export interface components {
                     /** @enum {string} */
                     type: "mineral" | "organic";
                     /** @enum {string} */
-                    unit: "l" | "kg" | "dt" | "t" | "m3";
+                    unit: "l" | "kg" | "dt" | "t";
                     /** Format: uuid */
                     defaultSpreaderId: string | null;
                 }[];
@@ -4754,7 +4754,7 @@ export interface components {
                 /** @enum {string} */
                 type: "mineral" | "organic";
                 /** @enum {string} */
-                unit: "l" | "kg" | "dt" | "t" | "m3";
+                unit: "l" | "kg" | "dt" | "t";
                 /** Format: uuid */
                 defaultSpreaderId: string | null;
             };
@@ -4768,7 +4768,7 @@ export interface components {
             /** @enum {string} */
             type: "mineral" | "organic";
             /** @enum {string} */
-            unit: "l" | "kg" | "dt" | "t" | "m3";
+            unit: "l" | "kg" | "dt" | "t";
             /** Format: uuid */
             defaultSpreaderId?: string | null;
         };
@@ -4784,7 +4784,7 @@ export interface components {
                 /** @enum {string} */
                 type: "mineral" | "organic";
                 /** @enum {string} */
-                unit: "l" | "kg" | "dt" | "t" | "m3";
+                unit: "l" | "kg" | "dt" | "t";
                 /** Format: uuid */
                 defaultSpreaderId: string | null;
             };
@@ -4804,7 +4804,7 @@ export interface components {
                 /** @enum {string} */
                 type: "mineral" | "organic";
                 /** @enum {string} */
-                unit: "l" | "kg" | "dt" | "t" | "m3";
+                unit: "l" | "kg" | "dt" | "t";
                 /** Format: uuid */
                 defaultSpreaderId: string | null;
             };
@@ -4818,7 +4818,7 @@ export interface components {
             /** @enum {string} */
             type?: "mineral" | "organic";
             /** @enum {string} */
-            unit?: "l" | "kg" | "dt" | "t" | "m3";
+            unit?: "l" | "kg" | "dt" | "t";
             /** Format: uuid */
             defaultSpreaderId?: string | null;
         };
@@ -4847,7 +4847,7 @@ export interface components {
                     farmId: string;
                     name: string;
                     /** @enum {string} */
-                    unit: "l" | "kg" | "dt" | "t" | "m3";
+                    unit: "l" | "kg" | "dt" | "t";
                     /** @enum {string} */
                     defaultMethod: "spray" | "spread" | "other";
                     /** Format: double */
@@ -4868,7 +4868,7 @@ export interface components {
                 farmId: string;
                 name: string;
                 /** @enum {string} */
-                unit: "l" | "kg" | "dt" | "t" | "m3";
+                unit: "l" | "kg" | "dt" | "t";
                 /** @enum {string} */
                 defaultMethod: "spray" | "spread" | "other";
                 /** Format: double */
@@ -4881,7 +4881,7 @@ export interface components {
         PostV1FertilizerSpreadersRequestBody: {
             name: string;
             /** @enum {string} */
-            unit: "l" | "kg" | "dt" | "t" | "m3";
+            unit: "l" | "kg" | "dt" | "t";
             /** @enum {string} */
             defaultMethod: "spray" | "spread" | "other";
             /** Format: double */
@@ -4896,7 +4896,7 @@ export interface components {
                 farmId: string;
                 name: string;
                 /** @enum {string} */
-                unit: "l" | "kg" | "dt" | "t" | "m3";
+                unit: "l" | "kg" | "dt" | "t";
                 /** @enum {string} */
                 defaultMethod: "spray" | "spread" | "other";
                 /** Format: double */
@@ -4915,7 +4915,7 @@ export interface components {
                 farmId: string;
                 name: string;
                 /** @enum {string} */
-                unit: "l" | "kg" | "dt" | "t" | "m3";
+                unit: "l" | "kg" | "dt" | "t";
                 /** @enum {string} */
                 defaultMethod: "spray" | "spread" | "other";
                 /** Format: double */
@@ -4928,7 +4928,7 @@ export interface components {
         PatchV1FertilizerSpreadersByIdFertilizerSpreaderIdRequestBody: {
             name?: string;
             /** @enum {string} */
-            unit?: "l" | "kg" | "dt" | "t" | "m3";
+            unit?: "l" | "kg" | "dt" | "t";
             /** @enum {string} */
             defaultMethod?: "spray" | "spread" | "other";
             /** Format: double */

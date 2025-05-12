@@ -81,15 +81,6 @@ export function CreateCropProtectionEquipmentScreen({
         keyboardAware
       >
         <H2>{t("crop_protection_equipments.new_equipment")}</H2>
-        <Card
-          elevated
-          style={{
-            backgroundColor: theme.colors.accent,
-            margin: theme.spacing.s,
-          }}
-        >
-          <H4>{t("crop_protection_equipments.only_same_unit_warning")}</H4>
-        </Card>
         <CropProtectionEquipmentForm control={control} errors={errors} />
       </ScrollView>
     </ContentView>

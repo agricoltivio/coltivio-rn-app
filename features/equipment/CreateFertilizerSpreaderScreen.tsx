@@ -77,15 +77,6 @@ export function CreateFertilizerSpreaderScreen({
         keyboardAware
       >
         <H2>{t("fertilizer_spreaders.new_spreader")}</H2>
-        <Card
-          elevated
-          style={{
-            backgroundColor: theme.colors.accent,
-            margin: theme.spacing.s,
-          }}
-        >
-          <H4>{t("fertilizer_spreaders.only_same_unit_warning")}</H4>
-        </Card>
         <FertilizerSpreaderForm control={control} errors={errors} />
       </ScrollView>
     </ContentView>

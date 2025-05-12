@@ -65,13 +65,21 @@ export function FertilizerSpreaderForm({
           { label: t("units.long.kg"), value: "kg" },
           { label: t("units.long.dt"), value: "dt" },
           { label: t("units.long.t"), value: "t" },
-          { label: t("units.long.m3"), value: "m3" },
         ]}
+        rules={{
+          required: { value: true, message: t("forms.validation.required") },
+        }}
+        error={errors.unit?.message}
       />
       <RHNumberInput
         name="capacity"
         control={control}
         label={t("forms.labels.amount_per_load")}
+        float
+        rules={{
+          required: { value: true, message: t("forms.validation.required") },
+        }}
+        error={errors.capacity?.message}
       />
     </View>
   );

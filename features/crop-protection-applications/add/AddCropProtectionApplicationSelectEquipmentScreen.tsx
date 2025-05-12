@@ -7,18 +7,16 @@ import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { useCropProtectionEquipmentsQuery } from "@/features/equipment/cropProtectionEquipment.hooks";
-import { AddCropProtectionApplicationSelectMachineConfigScreenProps } from "../navigation/crop-protection-application-routes";
-import { Body, H2, H3, H4 } from "@/theme/Typography";
-import React, { createElement, useEffect } from "react";
+import { Body, H2, H4 } from "@/theme/Typography";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import {
-  getUnitLabel,
-  methodSelectData,
-} from "../cropProtectionApplication.utils";
+import { methodSelectData } from "../cropProtectionApplication.utils";
+import { AddCropProtectionApplicationSelectMachineConfigScreenProps } from "../navigation/crop-protection-application-routes";
 import { useAddCropProtectionApplicationStore } from "./cropProtectionApplication.store";
+import { areUnitsCompatible, convertUnit } from "@/utils/units";
 
 type FormValues = {
   equipmentId: string;
@@ -61,13 +59,19 @@ export function AddCropProtectionApplicationSelectMachineConfigScreen({
     },
   });
 
-  const createdEquipment = route.params.equipmentId;
+  const createdEquipmentId = route.params.equipmentId;
 
   useEffect(() => {
-    if (createdEquipment) {
-      setValue("equipmentId", createdEquipment);
+    const createdEquipment = cropProtectionEquipments?.find(
+      (config) => config.id === createdEquipmentId
+    );
+    if (
+      createdEquipment &&
+      areUnitsCompatible(createdEquipment.unit, selectedProduct!.unit)
+    ) {
+      setValue("equipmentId", createdEquipment.id);
     }
-  }, [createdEquipment]);
+  }, [createdEquipmentId, cropProtectionEquipments, selectedProduct]);
 
   const equipmentId = watch("equipmentId");
 
@@ -75,12 +79,19 @@ export function AddCropProtectionApplicationSelectMachineConfigScreen({
     (config) => config.id === equipmentId
   );
 
-  const availableEquipments = cropProtectionEquipments?.filter(
-    (equipment) => equipment.unit === selectedProduct?.unit
+  const availableEquipments = cropProtectionEquipments?.filter((equipment) =>
+    areUnitsCompatible(equipment.unit, selectedProduct!.unit)
   );
   useEffect(() => {
     if (currentSelectedEquipment) {
-      setValue("capacity", currentSelectedEquipment.capacity.toString());
+      setValue(
+        "capacity",
+        convertUnit(
+          currentSelectedEquipment.capacity,
+          currentSelectedEquipment.unit,
+          selectedProduct!.unit
+        ).toString()
+      );
       setValue("method", currentSelectedEquipment.method);
     }
   }, [currentSelectedEquipment]);
@@ -119,18 +130,6 @@ export function AddCropProtectionApplicationSelectMachineConfigScreen({
       >
         {/* <H2>Neue Ernte</H2> */}
         <H2>{t("crop_protection_applications.select_equipment.heading")}</H2>
-        <Card
-          style={{
-            backgroundColor: theme.colors.secondary,
-            marginTop: theme.spacing.m,
-          }}
-        >
-          <H4 style={{ color: theme.colors.white }}>
-            {t(
-              "crop_protection_applications.select_equipment.only_same_unit_warning"
-            )}
-          </H4>
-        </Card>
         <View
           style={{ gap: theme.spacing.s, flex: 1, marginTop: theme.spacing.m }}
         >
@@ -181,25 +180,6 @@ export function AddCropProtectionApplicationSelectMachineConfigScreen({
           />
           {equipmentId && (
             <>
-              {/* <RHSelect
-                name="unit"
-                control={control}
-                label={t('forms.labels.unit')}
-                disabled
-                data={[
-                  { label: "ml", value: "ml" },
-                  { label: "l", value: "l" },
-                  { label: "g", value: "g" },
-                  { label: "kg", value: "kg" },
-                ]}
-                rules={{
-                  required: {
-                    value: true,
-                    message: "Einheit ist erforderlich",
-                  },
-                }}
-                error={errors.unit?.message}
-              /> */}
               <RHSelect
                 name="method"
                 control={control}
@@ -218,6 +198,7 @@ export function AddCropProtectionApplicationSelectMachineConfigScreen({
                 name="capacity"
                 control={control}
                 keyboardType="numeric"
+                float
                 label={t("forms.labels.capacity_per_unit", {
                   unit: t(`units.long.${selectedProduct!.unit}`),
                   loadUnit: t(`units.long.load`),

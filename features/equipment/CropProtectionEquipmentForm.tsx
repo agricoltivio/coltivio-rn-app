@@ -50,6 +50,10 @@ export function CropProtectionEquipmentForm({
         control={control}
         label={t("forms.labels.method")}
         data={methodSelectData}
+        rules={{
+          required: { value: true, message: t("forms.validation.required") },
+        }}
+        error={errors.method?.message}
       />
       <RHSelect
         name="unit"
@@ -62,11 +66,23 @@ export function CropProtectionEquipmentForm({
           { label: t("units.long.g"), value: "g" },
           { label: t("units.long.kg"), value: "kg" },
         ]}
+        rules={{
+          required: { value: true, message: t("forms.validation.required") },
+        }}
+        error={errors.unit?.message}
       />
       <RHNumberInput
         name="capacity"
         control={control}
         label={t("forms.labels.amount_per_load")}
+        float
+        rules={{
+          required: {
+            value: true,
+            message: t("forms.validation.required"),
+          },
+        }}
+        error={errors.capacity?.message}
       />
     </View>
   );
