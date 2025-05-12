@@ -152,7 +152,7 @@
     "select_or_draw_area": {
       "select_area": "Wähle deine Fläche",
       "chose_select_or_draw": "Wähle entweder ganze Schläge aus oder zeichne eine eigene Fläche.",
-      "draw_tip": "Benutze diese Symbole, um mit dem Zeichnen zu beginnen und abzuschließen. Tippe auf die Karte um Eckpunkte zu setzen. Du kannst sie verschieben, indem du einen Punkt gedrückt hältst bis er vor deinem Finger sichtbar wird und ihn dann an den gewünschten Ort ziehst."
+      "draw_tip": "Benutze diese Symbole, um mit dem Zeichnen zu beginnen und abzuschließen. Tippe auf die Karte um Eckpunkte zu setzen. Drücke und halte die Eckpunkte um sie zu verschieben."
     },
     "select_plots": {
       "heading": "Wähle die verwendeten Schläge",
@@ -263,7 +263,8 @@
           },
           "draw_area": {
             "heading": "Zeichne einen neuen Schlag",
-            "drawing_info": "Benutze diese Symbole, um mit dem Zeichnen zu beginnen und abzuschließen. Du kannst die Eckpunkte verschieben, indem du einen Punkt gedrückt hältst, bis er vor dem Finger sichtbar wird, und ihn dann an den gewünschten Ort ziehst."
+            "drawing_info": "Tippe auf die Karte um Eckpunkte deiner Fläche zu setzen. Drücke und halte die Eckpunkte um sie zu verschieben.",
+            "finish": "Drücke folgendes Symbol um die Fläche zu bestätigen."
           }
         }
       },

@@ -152,7 +152,7 @@
     "select_or_draw_area": {
       "select_area": "Sélectionnez votre zone",
       "chose_select_or_draw": "Choisissez des champs entiers ou dessinez une zone personnalisée.",
-      "draw_tip": "Utilisez ces symboles pour commencer et terminer le dessin. Vous pouvez déplacer les points d'angle en les maintenant enfoncés jusqu'à ce qu'ils apparaissent devant votre doigt, puis en le faisant glisser à l'endroit souhaité."
+      "draw_tip": "Utilise ces icônes pour commencer et terminer le dessin. Appuie sur la carte pour placer les points d'angle. Appuie sur les points d'angle et maintiens la pression pour les déplacer."
     },
     "select_plots": {
       "heading": "Sélectionner les champs utilisés",
@@ -263,7 +263,8 @@
           },
           "draw_area": {
             "heading": "Dessiner un nouveau champ",
-            "drawing_info": "Utilisez ces symboles pour commencer et terminer le dessin. Vous pouvez déplacer les points d'angle en les maintenant enfoncés jusqu'à ce qu'ils apparaissent devant votre doigt, puis en les faisant glisser vers la position souhaitée."
+            "drawing_info": "Appuie sur la carte pour placer les coins de ta surface. Appuie et maintiens les points d'angle pour les déplacer.",
+            "finish": "Appuie sur l'icône suivante pour confirmer la surface."
           }
         }
       },

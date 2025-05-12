@@ -14,11 +14,11 @@ export function PlotSelectionOrDrawTip() {
   const { localSettings, updateLocalSettings } = useLocalSettings();
   const theme = useTheme();
   const [showTip, setShowTip] = useState(
-    localSettings.showSelectPlotsOrDrawTip,
+    localSettings.showSelectPlotsOrDrawTip
   );
 
   const [visible, setVisible] = useState(
-    localSettings.showSelectPlotsOrDrawTip,
+    localSettings.showSelectPlotsOrDrawTip
   );
 
   if (!visible) {
@@ -35,7 +35,7 @@ export function PlotSelectionOrDrawTip() {
     <Card
       style={{
         position: "absolute",
-        top: 200,
+        top: 170,
         left: theme.spacing.m,
         right: theme.spacing.m,
         zIndex: 100,
@@ -53,7 +53,6 @@ export function PlotSelectionOrDrawTip() {
           style={{
             flexDirection: "row",
             gap: theme.spacing.s,
-            marginBottom: theme.spacing.s,
             justifyContent: "center",
           }}
         >
@@ -81,7 +80,7 @@ export function PlotSelectionOrDrawTip() {
           />
         </View>
       </View>
-      <View style={{ marginTop: theme.spacing.l }}>
+      <View style={{ marginTop: theme.spacing.m }}>
         <View
           style={{
             flexDirection: "row",

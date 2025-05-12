@@ -426,7 +426,7 @@ function DrawingTipp() {
     <Card
       style={{
         position: "absolute",
-        top: frame.height / 2 - 100,
+        top: frame.height / 2 - 200,
         left: theme.spacing.m,
         right: theme.spacing.m,
       }}
@@ -438,23 +438,12 @@ function DrawingTipp() {
         </Subtitle>
         <View
           style={{
-            flexDirection: "row",
-            gap: theme.spacing.s,
-            marginBottom: theme.spacing.s,
+            // flexDirection: "row",
+            gap: theme.spacing.m,
             justifyContent: "center",
           }}
         >
-          <MaterialCommunityIconButton
-            style={{
-              width: 45,
-              backgroundColor: "white",
-              alignSelf: "center",
-            }}
-            type="accent"
-            color="black"
-            iconSize={30}
-            icon="vector-polyline-plus"
-          />
+          <Subtitle>{t("plots.add.map.tips.draw_area.finish")}</Subtitle>
           <MaterialCommunityIconButton
             style={{
               width: 45,
@@ -467,9 +456,8 @@ function DrawingTipp() {
             icon="check"
           />
         </View>
-        <Subtitle>{t("plots.common.draw_area_overlap_info")}</Subtitle>
       </View>
-      <View style={{ marginTop: theme.spacing.l }}>
+      <View style={{ marginTop: theme.spacing.m }}>
         <View
           style={{
             flexDirection: "row",

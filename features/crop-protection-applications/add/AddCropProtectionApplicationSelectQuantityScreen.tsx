@@ -62,7 +62,7 @@ export function AddCropProtectionApplicationSelectQuantityScreen({
         >
           <RHNumberInput
             name="totalNumberOfApplications"
-            keyboardType="number-pad"
+            keyboardType="numeric"
             control={control}
             label={t("forms.labels.amount_of_loads")}
             float

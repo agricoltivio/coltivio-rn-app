@@ -58,7 +58,7 @@ export function SelectHarvestQuantityScreen({
         >
           <RHNumberInput
             name="totalProducedUnits"
-            keyboardType="number-pad"
+            keyboardType="numeric"
             control={control}
             label={t("forms.labels.amount_unit", {
               unit: t(`harvests.labels.unit.${harvest?.processingType!}`),

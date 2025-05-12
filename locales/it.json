@@ -152,7 +152,7 @@
     "select_or_draw_area": {
       "select_area": "Seleziona la tua area",
       "chose_select_or_draw": "Scegli tra campi interi o disegna un'area personalizzata.",
-      "draw_tip": "Usa questi simboli per iniziare e terminare il disegno. Puoi muovere i punti tenendoli premuti finché non appaiono sopra il dito, quindi trascinandolo nella posizione desiderata."
+      "draw_tip": "Utilizzare questi simboli per iniziare e terminare il disegno. Toccare la mappa per impostare i punti d'angolo. Tenere premuti i punti d'angolo per spostarli."
     },
     "select_plots": {
       "heading": "Seleziona gli campi utilizzati",
@@ -263,7 +263,8 @@
           },
           "draw_area": {
             "heading": "Disegna un Nuovo Campo",
-            "drawing_info": "Usa questi simboli per iniziare e finire di disegnare. Puoi muovere i punti tenendoli premuti finché non appaiono sopra il dito, poi trascinali nella posizione desiderata."
+            "drawing_info": "Toccare la mappa per impostare i punti d'angolo dell'area. Tenere premuti i punti d'angolo per spostarli.",
+            "finish": "Premere il simbolo seguente per confermare l'area."
           }
         }
       },

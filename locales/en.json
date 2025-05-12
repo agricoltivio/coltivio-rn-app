@@ -152,7 +152,7 @@
     "select_or_draw_area": {
       "select_area": "Select your area",
       "chose_select_or_draw": "Choose existing parcels or draw a custom area.",
-      "draw_tip": "Use these symbols to start and finish drawing. Move corner points by holding them until they appear above your finger, then dragging it to the desired location."
+      "draw_tip": "Use these symbols to start and finish drawing. Tap on the map to set corner points. Press and hold the corner points to move them."
     },
     "select_plots": {
       "heading": "Select Plots",
@@ -263,7 +263,8 @@
           },
           "draw_area": {
             "heading": "Draw a New Plot",
-            "drawing_info": "Use these symbols to start and finish drawing. Move corner points by holding them until they appear above your finger, then drag to the desired position."
+            "drawing_info": "Tap on the map to set the corner points of your area. Press and hold the corner points to move them.",
+            "finish": "Press the following symbol to confirm the area."
           }
         }
       },
