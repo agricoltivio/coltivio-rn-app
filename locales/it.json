@@ -48,6 +48,7 @@
       "capacity_per_unit": "{{unit}} per {{loadUnit}}",
       "crop_protection_product": "Prodotto fitosanitario",
       "load": "Carico",
+      "loads": "Carichi",
       "balls": "Rotoballe/Ballette",
       "amount_unit": "Quantità {{unit}}",
       "amount_of_loads": "Numero di Carichi",
@@ -498,6 +499,9 @@
     },
     "select_crop": {
       "heading": "Cos'è stato raccolto?"
+    },
+    "select_quantity": {
+      "heading": "Quanto è stato raccolto?"
     },
     "labels": {
       "unit": {

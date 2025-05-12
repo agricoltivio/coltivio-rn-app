@@ -48,6 +48,7 @@
       "capacity_per_unit": "{{unit}} par {{loadUnit}}",
       "crop_protection_product": "Produit de protection des cultures",
       "load": "Charge",
+      "lodas": "Charges",
       "balls": "Ballots",
       "amount_unit": "Quantité {{unit}}",
       "amount_of_loads": "Nombre de charges",
@@ -498,6 +499,9 @@
     },
     "select_crop": {
       "heading": "Qu'est-ce qui a été récolté ?"
+    },
+    "select_quantity": {
+      "heading": "Quelle est la quantité récoltée ?"
     },
     "labels": {
       "unit": {

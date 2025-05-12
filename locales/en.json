@@ -48,6 +48,7 @@
       "capacity_per_unit": "{{unit}} per {{loadUnit}}",
       "crop_protection_product": "Crop Protection Product",
       "load": "Load",
+      "loads": "Loads",
       "balls": "Bales",
       "amount_unit": "Quantity {{unit}}",
       "amount_of_loads": "Number of Loads",
@@ -498,6 +499,9 @@
     },
     "select_crop": {
       "heading": "What was harvested?"
+    },
+    "select_quantity": {
+      "heading": "How much was harvested?"
     },
     "labels": {
       "unit": {

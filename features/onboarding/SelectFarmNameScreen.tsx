@@ -1,17 +1,16 @@
+import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
+import { ScrollView } from "@/components/views/ScrollView";
 import { SelectFarmNameScreenProps } from "@/features/onboarding/navigation/onboarding-routes";
-import { H1, H2, H3 } from "@/theme/Typography";
-import { Image } from "expo-image";
+import { H1, H3 } from "@/theme/Typography";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 import { NavigationButton } from "./NavigationButton";
 import { useOnboarding } from "./OnboardingContext";
 import { Stepper } from "./Stepper";
-import { useEffect } from "react";
-import { ScrollView } from "@/components/views/ScrollView";
-import { useTranslation } from "react-i18next";
-import { ContentView } from "@/components/containers/ContentView";
 
 export function SelectFarmNameScreen({
   navigation,

@@ -46,7 +46,7 @@ export function DivideHarvestOnPlotsScreen({
   let quantityLabel: string = "";
   switch (harvest!.processingType) {
     case "none":
-      quantityLabel = t("forms.labels.load");
+      quantityLabel = t("forms.labels.loads");
       break;
     case "round_bale":
     case "square_bale":

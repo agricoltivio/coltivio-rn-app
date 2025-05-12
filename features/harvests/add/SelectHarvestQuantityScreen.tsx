@@ -49,10 +49,10 @@ export function SelectHarvestQuantityScreen({
     >
       <ScrollView
         showHeaderOnScroll
-        headerTitleOnScroll="Wieviel wurde geerntet?"
+        headerTitleOnScroll={t("harvests.select_quantity.heading")}
         keyboardAware
       >
-        <H2>Wieviel wurde geerntet?</H2>
+        <H2>{t("harvests.select_quantity.heading")}</H2>
         <View
           style={{ gap: theme.spacing.s, flex: 1, marginTop: theme.spacing.m }}
         >

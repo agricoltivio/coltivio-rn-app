@@ -48,6 +48,7 @@
       "capacity_per_unit": "{{unit}} pro {{loadUnit}}",
       "crop_protection_product": "Pflanzenschutzmittel",
       "load": "Fuder",
+      "loads": "Fuder",
       "balls": "Ballen",
       "amount_unit": "Anzahl {{unit}}",
       "amount_of_loads": "Anzahl Fuder",
@@ -498,6 +499,9 @@
     },
     "select_crop": {
       "heading": "Was wurde geerntet?"
+    },
+    "select_quantity": {
+      "heading": "Wie viel wurde geerntet?"
     },
     "labels": {
       "unit": {
