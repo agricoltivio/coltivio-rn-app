@@ -61,7 +61,7 @@ export const PolygonDrawingTool = forwardRef<
       magnifierMapContent,
       onFinish,
     }: PolygonDrawingToolProps,
-    ref
+    ref,
   ) => {
     const theme = useTheme();
     const [polygon, setPolygon] = useState<MapPolygonProps>({
@@ -77,7 +77,7 @@ export const PolygonDrawingTool = forwardRef<
         coordinates: [],
         fillColor: hexToRgba(
           theme.colors.secondary,
-          theme.map.defaultFillAlpha
+          theme.map.defaultFillAlpha,
         ),
         strokeColor: theme.colors.yellow,
         strokeWidth: 2,
@@ -119,7 +119,7 @@ export const PolygonDrawingTool = forwardRef<
           coordinates: initialPolygonCoordinates,
           fillColor: hexToRgba(
             theme.colors.success,
-            theme.map.defaultFillAlpha
+            theme.map.defaultFillAlpha,
           ),
           strokeColor: theme.colors.yellow,
           strokeWidth: 2,
@@ -237,9 +237,9 @@ export const PolygonDrawingTool = forwardRef<
             });
           },
           50,
-          { leading: true, trailing: false }
+          { leading: true, trailing: false },
         ),
-      []
+      [],
     );
 
     function onDrag(coordinate: LatLng, position: Point) {
@@ -262,13 +262,13 @@ export const PolygonDrawingTool = forwardRef<
     function onCircleDragStart(
       index: number,
       coordinate: LatLng,
-      position?: Point
+      position?: Point,
     ) {
       setEditOverlayPolygon((prev) => ({
         ...prev,
         coordinates: polygon.coordinates.slice(
           0,
-          polygon.coordinates.length - 1
+          polygon.coordinates.length - 1,
         ),
       }));
     }
@@ -276,7 +276,7 @@ export const PolygonDrawingTool = forwardRef<
     function onCircleDragEnd(
       index: number,
       coordinate: LatLng,
-      position?: Point
+      position?: Point,
     ) {
       setEditOverlayPolygon((prev) => ({
         ...prev,
@@ -327,7 +327,7 @@ export const PolygonDrawingTool = forwardRef<
     function onMidcircleDrag(
       index: number,
       coordinate: LatLng,
-      position: Point
+      position: Point,
     ) {
       onDrag(coordinate, position);
       drawModifiedPolygon(index, coordinate);
@@ -336,12 +336,12 @@ export const PolygonDrawingTool = forwardRef<
     function onMidpointCircleDragStart(
       index: number,
       coordinate: LatLng,
-      position?: Point
+      position?: Point,
     ) {
       setEditOverlayPolygon((prev) => {
         const coordinates = polygon.coordinates.slice(
           0,
-          polygon.coordinates.length - 1
+          polygon.coordinates.length - 1,
         );
 
         coordinates.splice(index, 0, coordinate);
@@ -355,7 +355,7 @@ export const PolygonDrawingTool = forwardRef<
     function onMidpointCircleDragEnd(
       index: number,
       coordinate: LatLng,
-      position?: Point
+      position?: Point,
     ) {
       setEditOverlayPolygon((prev) => ({
         ...prev,
@@ -383,7 +383,7 @@ export const PolygonDrawingTool = forwardRef<
       // first and last are the same so we have to remove one of them
       markerCoordinates = markerCoordinates.slice(
         0,
-        markerCoordinates.length - 1
+        markerCoordinates.length - 1,
       );
     }
 
@@ -416,7 +416,7 @@ export const PolygonDrawingTool = forwardRef<
             {action === "draw" ? (
               <Polyline
                 coordinates={polygon.coordinates}
-                strokeColor={polygon.strokeColor}
+                fillColor={polygon.strokeColor}
                 strokeWidth={2}
               />
             ) : (
@@ -448,5 +448,5 @@ export const PolygonDrawingTool = forwardRef<
         ) : null}
       </>
     );
-  }
+  },
 );
