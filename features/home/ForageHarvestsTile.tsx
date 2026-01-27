@@ -19,15 +19,15 @@ export function ForagesHarvestTile() {
   }
   const currentYear = new Date().getFullYear();
   const harvestSummariesForCurrentYear = harvestSummaries.filter(
-    (summary) => summary.year === currentYear
+    (summary) => summary.year === currentYear,
   );
 
   const forageNames = new Set(
     harvestSummariesForCurrentYear.flatMap((summary) =>
       summary.producedQuantities.map(
-        (producedQuantity) => producedQuantity.forageName
-      )
-    )
+        (producedQuantity) => producedQuantity.forageName,
+      ),
+    ),
   );
   const data: stackDataItem[] = [];
   for (let {
@@ -54,7 +54,7 @@ export function ForagesHarvestTile() {
       onPress={() => navigation.navigate("FieldCalendar")}
     >
       <View style={{ padding: theme.spacing.m }}>
-        <HarvestStackChart stackChartData={data} labels={[...forageNames]} />
+        {/* <HarvestStackChart stackChartData={data} labels={[...forageNames]} /> */}
         {data.length === 0 ? (
           <Subtitle
             style={{

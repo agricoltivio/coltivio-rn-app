@@ -1,6 +1,6 @@
 import { Stack } from "@/navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
-import { DefaultTheme } from "styled-components";
+import { DefaultTheme } from "styled-components/native";
 import { HomeScreen } from "../HomeScreen";
 import { View } from "react-native";
 

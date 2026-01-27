@@ -3,7 +3,7 @@ import { FarmSummaryScreenProps } from "@/features/onboarding/navigation/onboard
 import { H2, H3 } from "@/theme/Typography";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { useTheme } from "styled-components";
+import { useTheme } from "styled-components/native";
 import { useCreateFarmMutation } from "../farms/farms.hooks";
 import { useSyncMissingLocalIdsMutation } from "../plots/plots.hooks";
 import { NavigationButton } from "./NavigationButton";
@@ -26,7 +26,7 @@ export function FarmSummaryScreen({ navigation }: FarmSummaryScreenProps) {
 
   const syncMissingLocalIdsMutation = useSyncMissingLocalIdsMutation(
     () => {},
-    (error) => console.error(error)
+    (error) => console.error(error),
   );
   const createFarmMutation = useCreateFarmMutation(() => {
     syncMissingLocalIdsMutation.mutate();

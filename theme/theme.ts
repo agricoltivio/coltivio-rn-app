@@ -45,9 +45,6 @@ export interface ColtivioTheme {
     xxl: number;
   };
 }
-declare module "styled-components/native" {
-  export interface DefaultTheme extends ColtivioTheme {}
-}
 
 const colorPalette = {
   purple: "#5A31F4",

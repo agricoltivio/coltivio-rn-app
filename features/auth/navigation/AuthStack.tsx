@@ -1,13 +1,12 @@
 import { Stack } from "@/navigation/stack";
-import { DefaultTheme } from "styled-components";
+import { DefaultTheme } from "styled-components/native";
 import { ForgotPasswordScreen } from "../ForgotPasswordScreen";
 import { PasswordResetLinkSentScreen } from "../PasswordResetLinkSentScreen";
 import { ResetPasswordScreen } from "../ResetPasswordScreen";
 import { SignInScreen } from "../SignInScreen";
 import { SignUpScreen } from "../SignUpScreen";
-import { ColtivioTheme } from "@/theme/theme";
 
-export function renderAuthStack(theme: ColtivioTheme) {
+export function renderAuthStack(theme: DefaultTheme) {
   return (
     <Stack.Group>
       <Stack.Screen

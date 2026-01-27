@@ -3,7 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { FieldCalendarExportScreen } from "../FieldCalendarExportScreen";
 import { FieldCalendarExportSuccessScreen } from "../FieldCalendarExportSuccessScreen";
 import { FieldCalendarScreen } from "../FieldCalendarScreen";
-import { DefaultTheme } from "styled-components";
+import { DefaultTheme } from "styled-components/native";
 
 export function renderFieldCalendarStack(theme: DefaultTheme, navigation: any) {
   return [

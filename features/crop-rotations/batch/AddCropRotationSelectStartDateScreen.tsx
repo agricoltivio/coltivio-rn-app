@@ -5,7 +5,7 @@ import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { H2 } from "@/theme/Typography";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useTheme } from "styled-components";
+import { useTheme } from "styled-components/native";
 import { useCreateCropRotationStore } from "./crop-rotations.store";
 import { ScrollView } from "@/components/views/ScrollView";
 import { View } from "react-native";
@@ -56,7 +56,7 @@ export function AddCropRotationSelectStartDateScreen({
       <ScrollView
         showHeaderOnScroll
         headerTitleOnScroll={t(
-          "crop_protection_applications.select_date.heading"
+          "crop_protection_applications.select_date.heading",
         )}
         keyboardAware
       >

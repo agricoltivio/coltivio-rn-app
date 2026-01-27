@@ -1,5 +1,4 @@
 import { FarmSummaryScreen } from "@/features/onboarding/FarmSummaryScreen";
-import { SelectCropsScreen } from "@/features/onboarding/SelectCropsScreen";
 import { SelectFarmLocationScreen } from "@/features/onboarding/SelectFarmLocationScreen";
 import { SelectFarmLocationSearchModal } from "@/features/onboarding/SelectFarmLocationSearchModal";
 import { SelectFarmNameScreen } from "@/features/onboarding/SelectFarmNameScreen";
@@ -7,7 +6,7 @@ import { SelectFederalFarmIdMapScreen } from "@/features/onboarding/SelectFedera
 import { SelectFederalFarmIdScreen } from "@/features/onboarding/SelectFederalFarmIdScreen";
 import React from "react";
 import { Stack } from "@/navigation/stack";
-import { DefaultTheme } from "styled-components";
+import { DefaultTheme } from "styled-components/native";
 
 export function renderOnboardingStack(theme: DefaultTheme) {
   return (
