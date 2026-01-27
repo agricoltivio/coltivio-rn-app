@@ -35,7 +35,7 @@ export function PlotFertilizerApplicationsOfYearScreen({
   }
 
   const summariesForSelectedYear = applicationSummaries.filter(
-    (summary) => summary.year === year
+    (summary) => summary.year === year,
   );
 
   const chartByFertilizer: Record<
@@ -98,8 +98,8 @@ export function PlotFertilizerApplicationsOfYearScreen({
           <Subtitle>
             Total{" "}
             {chartByFertilizer[fertilizerName].data.reduce(
-              (total, item) => total + item.value,
-              0
+              (total, item) => total + (item.value || 0),
+              0,
             )}
             {chartByFertilizer[fertilizerName].unit}
           </Subtitle>
@@ -134,7 +134,7 @@ export function PlotFertilizerApplicationsOfYearScreen({
           "fertilizer_application.fertilizer_application_year",
           {
             year,
-          }
+          },
         )}
       >
         <View>

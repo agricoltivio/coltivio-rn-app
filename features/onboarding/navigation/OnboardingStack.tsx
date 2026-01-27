@@ -5,10 +5,6 @@ import { SelectFarmLocationSearchModal } from "@/features/onboarding/SelectFarmL
 import { SelectFarmNameScreen } from "@/features/onboarding/SelectFarmNameScreen";
 import { SelectFederalFarmIdMapScreen } from "@/features/onboarding/SelectFederalFarmIdMapScreen";
 import { SelectFederalFarmIdScreen } from "@/features/onboarding/SelectFederalFarmIdScreen";
-import { SelectFertilizersScreen } from "@/features/onboarding/SelectFertilizersScreen";
-import { SelectParcelsMapScreen } from "@/features/onboarding/SelectParcelsMapScreen";
-import { SelectParcelsScreen } from "@/features/onboarding/SelectParcelsScreen";
-import { SelectPlotsScreens } from "@/features/onboarding/SelectPlotsScreen";
 import React from "react";
 import { Stack } from "@/navigation/stack";
 import { DefaultTheme } from "styled-components";
@@ -39,37 +35,6 @@ export function renderOnboardingStack(theme: DefaultTheme) {
             animation: "fade",
             headerShown: false,
           }}
-        />
-        <Stack.Screen
-          name="SelectParcels"
-          component={SelectParcelsScreen}
-          options={{ title: "", headerShown: false }}
-        />
-        <Stack.Screen
-          name="SelectParcelsMap"
-          component={SelectParcelsMapScreen}
-          options={{
-            // animation: "fade",
-            headerShown: false,
-            // title: "Parzellen",
-          }}
-        />
-        <Stack.Screen
-          name="SelectPlots"
-          component={SelectPlotsScreens}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="SelectCrops"
-          component={SelectCropsScreen}
-          options={{ title: "", headerShown: false }}
-        />
-        <Stack.Screen
-          name="SelectFertilizers"
-          component={SelectFertilizersScreen}
-          options={{ title: "", headerShown: false }}
         />
         <Stack.Screen
           name="FarmSummary"

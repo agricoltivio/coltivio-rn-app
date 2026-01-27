@@ -96,7 +96,7 @@ export function PlotCropProtectionApplicationsOfYearScreen({
           <Subtitle>
             Total{" "}
             {chartByProduct[productName].data.reduce(
-              (total, item) => total + item.value,
+              (total, item) => total + (item.value || 0),
               0
             )}
             {chartByProduct[productName].unit}

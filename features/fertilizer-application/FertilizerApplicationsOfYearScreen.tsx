@@ -71,7 +71,7 @@ export function FertilizerApplicationsOfYearScreen({
   }
 
   const summariesForSelectedYear = applicationSummaries.filter(
-    (summary) => summary.year === year
+    (summary) => summary.year === year,
   );
 
   const chartByFertilizer: Record<
@@ -134,8 +134,8 @@ export function FertilizerApplicationsOfYearScreen({
           <Subtitle>
             {t("common.total_amount_w_unit", {
               amount: chartByFertilizer[fertilizerName].data.reduce(
-                (total, item) => total + item.value,
-                0
+                (total, item) => total + (item.value || 0),
+                0,
               ),
               unit: chartByFertilizer[fertilizerName].unit,
             })}
@@ -167,7 +167,7 @@ export function FertilizerApplicationsOfYearScreen({
         showHeaderOnScroll
         headerTitleOnScroll={t(
           "fertilizer_application.fertilizer_application_year",
-          { year }
+          { year },
         )}
       >
         <View style={{ flexDirection: "row", alignItems: "center" }}>

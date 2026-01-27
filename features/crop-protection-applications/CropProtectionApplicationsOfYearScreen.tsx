@@ -73,7 +73,7 @@ export function CropProtectionApplicationsOfYearScreen({
   }
 
   const summariesForSelectedYear = applicationSummaries.filter(
-    (summary) => summary.year === year
+    (summary) => summary.year === year,
   );
 
   const chartByProduct: Record<string, { unit: string; data: barDataItem[] }> =
@@ -135,8 +135,8 @@ export function CropProtectionApplicationsOfYearScreen({
             Total{" "}
             {t("forms.labels.total_w_amount_unit", {
               amount: chartByProduct[cropProtectionName].data.reduce(
-                (total, item) => total + item.value,
-                0
+                (total, item) => total + (item.value || 0),
+                0,
               ),
               unit: chartByProduct[cropProtectionName].unit,
             })}
@@ -170,7 +170,7 @@ export function CropProtectionApplicationsOfYearScreen({
           "crop_protection_applications.crop_protection_year",
           {
             year,
-          }
+          },
         )}
       >
         <View style={{ flexDirection: "row", alignItems: "center" }}>

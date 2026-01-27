@@ -1,4 +1,3 @@
-import { Parcel } from "@/api/parcels.api";
 import { Button } from "@/components/buttons/Button";
 import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import { Card } from "@/components/card/Card";
@@ -25,7 +24,6 @@ import { StyleSheet, View } from "react-native";
 import { LatLng, MapPressEvent, Marker, Region } from "react-native-maps";
 import { useSafeAreaFrame } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
-import { useFarmParcels } from "../farm-parcels/farmParcels.hooks";
 import { useFarmQuery } from "../farms/farms.hooks";
 import { MapShowLocationToggle } from "../map/MapShowLocationToggle";
 import { TopLeftBackButton } from "../map/TopLeftBackButton";

@@ -3,7 +3,7 @@ import { StackScreenProps } from "@/navigation/rootStackTypes";
 export type CropsStackParamList = {
   Crops: undefined;
   CreateCrop: undefined;
-  EditCrop: undefined;
+  EditCrop: { cropId: string };
 };
 
 export type CropsScreenProps = StackScreenProps<"Crops">;

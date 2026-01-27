@@ -5,8 +5,9 @@ import { PasswordResetLinkSentScreen } from "../PasswordResetLinkSentScreen";
 import { ResetPasswordScreen } from "../ResetPasswordScreen";
 import { SignInScreen } from "../SignInScreen";
 import { SignUpScreen } from "../SignUpScreen";
+import { ColtivioTheme } from "@/theme/theme";
 
-export function renderAuthStack(theme: DefaultTheme) {
+export function renderAuthStack(theme: ColtivioTheme) {
   return (
     <Stack.Group>
       <Stack.Screen

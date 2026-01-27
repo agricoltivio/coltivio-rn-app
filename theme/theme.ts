@@ -1,5 +1,3 @@
-import { useTheme } from "styled-components/native";
-
 export interface ColtivioTheme {
   colors: {
     background: string;
