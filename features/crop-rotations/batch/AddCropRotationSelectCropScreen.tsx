@@ -4,7 +4,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2 } from "@/theme/Typography";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -22,17 +22,21 @@ export function AddCropRotationSelectCropScreen({
   const { t } = useTranslation();
   const theme = useTheme();
   const { crops, isFetched } = useCropsQuery();
-  const { setCropRotation, setSelectedCrop, cropRotations } =
+  const { setCropId, setSelectedCrop, cropId, reset } =
     useCreateCropRotationStore();
+
+  useEffect(() => {
+    return () => reset();
+  }, []);
 
   const {
     control,
     handleSubmit,
     formState: { errors, isDirty },
-  } = useForm<FormValues>({ defaultValues: { cropId: cropRotations?.cropId } });
+  } = useForm<FormValues>({ defaultValues: { cropId } });
 
   function onSubmit({ cropId }: FormValues) {
-    setCropRotation({ cropId });
+    setCropId(cropId);
     setSelectedCrop(crops?.find((crops) => crops.id === cropId)!);
 
     navigation.navigate("AddCropRotationSelectPlots");

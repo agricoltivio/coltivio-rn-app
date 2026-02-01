@@ -1,10 +1,9 @@
 import { CropCreateInput } from "@/api/crops.api";
-import { Button } from "@/components/buttons/Button";
 import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
 import React from "react";
-import { Control, FieldErrors, useForm } from "react-hook-form";
+import { Control, FieldErrors } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -50,7 +49,9 @@ export function CropForm({ control, errors }: CropFormProps) {
           data={[
             { label: t("crops.categories.grass"), value: "grass" },
             { label: t("crops.categories.grain"), value: "grain" },
-            { label: t("crops.categories.none"), value: "none" },
+            { label: t("crops.categories.vegetable"), value: "vegetable" },
+            { label: t("crops.categories.fruit"), value: "fruit" },
+            { label: t("crops.categories.other"), value: "other" },
           ]}
         />
 

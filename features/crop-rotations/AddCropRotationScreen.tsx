@@ -12,6 +12,7 @@ import { useTheme } from "styled-components/native";
 import { useCropsQuery } from "../crops/crops.hooks";
 import { useCreateCropRotationMutation } from "./crop-rotations.hooks";
 import { useTranslation } from "react-i18next";
+import { INFINITE_DATE } from "@/utils/date";
 
 type FormValues = {
   cropId: string;
@@ -44,7 +45,7 @@ export function AddCropRotationScreen({
       plotId,
       cropId,
       fromDate: fromDate.toISOString(),
-      toDate: toDate?.toISOString(),
+      toDate: (toDate ?? INFINITE_DATE).toISOString(),
       sowingDate: sowingDate?.toISOString(),
     });
   }

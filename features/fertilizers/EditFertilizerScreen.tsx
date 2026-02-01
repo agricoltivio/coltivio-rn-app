@@ -32,18 +32,26 @@ export function EditFertilizerScreen({
     control,
     handleSubmit,
     formState: { errors, isDirty },
-  } = useForm<FertilizerFormValues>({ values: fertilizer });
+  } = useForm<FertilizerFormValues>({
+    values: fertilizer
+      ? {
+          ...fertilizer,
+          description: fertilizer.description ?? undefined,
+          defaultSpreaderId: fertilizer.defaultSpreaderId ?? "none",
+        }
+      : undefined,
+  });
 
   const updateFertilizerMutation = useUpdateFertilizerMutation(() =>
-    navigation.goBack()
+    navigation.goBack(),
   );
   const deleteFertilizerMutation = useDeleteFertilizerMutation(() =>
-    navigation.goBack()
+    navigation.goBack(),
   );
 
   const { fertilizerSpreaders, isFetched } = useFertilizerSpreadersQuery([]);
   const availableSpreaders = fertilizerSpreaders!.filter(
-    (spreader) => spreader.unit === fertilizer?.unit
+    (spreader) => spreader.unit === fertilizer?.unit,
   );
 
   function onSubmit({ defaultSpreaderId, ...data }: FertilizerFormValues) {
@@ -51,7 +59,7 @@ export function EditFertilizerScreen({
       id: fertilizerId,
       ...data,
       defaultSpreaderId:
-        defaultSpreaderId !== "none" ? defaultSpreaderId : null,
+        defaultSpreaderId !== "none" ? defaultSpreaderId : undefined,
     });
   }
 

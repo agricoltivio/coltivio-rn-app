@@ -34,7 +34,8 @@ export function OnboardingProvider({
     createParcelPlots: true,
     customPlots: [],
     fertilizers: [],
-    crops: [{ name: "Naturwiese", category: "grass" }],
+    // crops: [{ name: "Naturwiese", category: "grass" }],
+    crops: [],
   });
   function clear() {
     setData({
@@ -45,7 +46,8 @@ export function OnboardingProvider({
       createParcelPlots: true,
       customPlots: [],
       fertilizers: [],
-      crops: [{ name: "Naturwiese", category: "grass" }],
+      // crops: [{ name: "Naturwiese", category: "grass" }],
+      crops: [],
     });
   }
 

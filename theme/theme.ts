@@ -80,7 +80,7 @@ export const coltivioTheme: ColtivioTheme = {
     yellow: "#FFC745",
     darkBlue: "1E3A8A",
     blue: "#4285F4",
-    error: "#FEE8C7",
+    error: "#CD0E61",
     black: "#212123",
     gray0: "#111111",
     gray1: "#555555",

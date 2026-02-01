@@ -29,7 +29,7 @@ export function EditCropProtectionProductScreen({
   const { t } = useTranslation();
   const cropProtectionProductId = route.params.cropProtectionProductId;
   const { cropProtectionProduct } = useCropProtectionProductByIdQuery(
-    cropProtectionProductId
+    cropProtectionProductId,
   );
   const { inUse, isFetching: isFetchingInUse } =
     useIsCropProtectionProductInUseQuery(cropProtectionProductId);
@@ -39,7 +39,14 @@ export function EditCropProtectionProductScreen({
     watch,
     formState: { errors, isDirty },
   } = useForm<CropProtectionProductFormValues>({
-    values: cropProtectionProduct,
+    values: cropProtectionProduct
+      ? {
+          ...cropProtectionProduct,
+          description: cropProtectionProduct?.description ?? undefined,
+          defaultEquipmentId:
+            cropProtectionProduct?.defaultEquipmentId ?? undefined,
+        }
+      : undefined,
   });
 
   const updateCropProtectionProductMutation =
@@ -51,7 +58,7 @@ export function EditCropProtectionProductScreen({
   const { cropProtectionEquipments, isFetched } =
     useCropProtectionEquipmentsQuery([]);
   const availableEquipment = cropProtectionEquipments!.filter(
-    (equipment) => equipment.unit === productUnit
+    (equipment) => equipment.unit === productUnit,
   );
 
   function onSubmit(data: CropProtectionProductFormValues) {

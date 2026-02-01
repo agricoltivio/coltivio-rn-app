@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useAddTillageStore } from "./add-tillage.store";
+import { dateToDateString } from "@/utils/date";
 import { AddTillageSelectDateScreenProps } from "../navigation/tillages-routes";
 import { useTranslation } from "react-i18next";
 
@@ -38,7 +39,7 @@ export function AddTillageSelectDateScreen({
   });
 
   function onSubmit({ date }: FormValues) {
-    setData({ date: date.toISOString().split("T")[0] });
+    setData({ date: dateToDateString(date) });
 
     navigation.navigate("AddTillageSelectEquipment", {});
   }

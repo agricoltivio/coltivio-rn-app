@@ -36,16 +36,17 @@ export function EditCropProtectionEquipmentScreen({
     values: cropProtectionEquipment
       ? {
           ...cropProtectionEquipment,
+          description: cropProtectionEquipment.description ?? undefined,
           capacity: cropProtectionEquipment.capacity.toString(),
         }
       : undefined,
   });
 
   const updateMachineConfigMutation = useUpdateCropProtectionEquipmentMutation(
-    () => navigation.goBack()
+    () => navigation.goBack(),
   );
   const deleteMachineConfigMutation = useDeleteCropProtectionEquipmentMutation(
-    () => navigation.goBack()
+    () => navigation.goBack(),
   );
 
   function onSubmit(data: CropProtectionEquipmentFormValues) {

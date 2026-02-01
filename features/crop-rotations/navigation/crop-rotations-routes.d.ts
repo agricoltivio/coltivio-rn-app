@@ -11,7 +11,6 @@ export type CropRotationsStackParamList = {
     canDelete?: boolean;
   };
 
-  AddCropRotationSelectStartDate: undefined;
   AddCropRotationSelectCrop: undefined;
   AddCropRotationSelectPlots: undefined;
   AddCropRotationSummary: undefined;
@@ -30,8 +29,6 @@ export type AddCropRotationScreenProps =
 export type EditCropRotationScreenProps =
   StackScreenProps<"EditPlotCropRotation">;
 
-export type AddCropRotationSelectStartDateScreenProps =
-  StackScreenProps<"AddCropRotationSelectStartDate">;
 export type AddCropRotationSelectCropScreenProps =
   StackScreenProps<"AddCropRotationSelectCrop">;
 export type AddCropRotationSelectPlotsScreenProps =

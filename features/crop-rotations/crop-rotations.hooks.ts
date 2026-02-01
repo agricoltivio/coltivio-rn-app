@@ -2,7 +2,7 @@ import { useApi } from "@/api/api";
 import {
   CropRotation,
   CropRotationCreateInput,
-  CropRotationCreateManyInput,
+  CropRotationCreateManyByCropInput,
   CropRotationUpdateInput,
 } from "@/api/crop-rotations.api";
 import { queryKeys } from "@/cache/query-keys";
@@ -56,15 +56,15 @@ export function useCreateCropRotationMutation(
   });
 }
 
-export function useCreateCropRotationsMutation(
+export function useCreateCropRotationsByCropMutation(
   onSuccess?: (cropRotations: CropRotation[]) => void,
   onError?: (error: Error) => void
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
-    mutationFn: (input: CropRotationCreateManyInput) =>
-      api.cropRotations.createCropRotations(input),
+    mutationFn: (input: CropRotationCreateManyByCropInput) =>
+      api.cropRotations.createCropRotationsByCrop(input),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.cropRotations._def,
@@ -79,6 +79,20 @@ export function useCreateCropRotationsMutation(
       onError && onError(error);
     },
   });
+}
+
+export function useCropRotationsByPlotIdsQuery(
+  plotIds: string[],
+  onlyCurrent: boolean = false,
+  enabled: boolean = true
+) {
+  const api = useApi();
+  const { data, ...rest } = useQuery({
+    queryKey: queryKeys.cropRotations.byPlotIds(plotIds, onlyCurrent).queryKey,
+    queryFn: () => api.cropRotations.getCropRotationsByPlotIds(plotIds, onlyCurrent),
+    enabled: enabled && plotIds.length > 0,
+  });
+  return { plotCropRotations: data, ...rest };
 }
 
 export function useUpdateCropRotationMutation(

@@ -609,7 +609,9 @@
     "categories": {
       "grass": "Grass",
       "grain": "Grain",
-      "none": "None"
+      "vegetable": "Vegetable",
+      "fruit": "Fuit",
+      "other": "Other"
     },
     "no_variety": "No Variety",
     "crop_in_use_warning": "This crop is in use and therefore cannot be deleted."
@@ -673,7 +675,12 @@
     "select_date": {
       "heading": "When was it sown?"
     },
-    "cannot_delete_warning": "This is the only crop on this plot and therefore cannot be deleted."
+    "cannot_delete_warning": "This is the only crop on this plot and therefore cannot be deleted.",
+    "set_dates_for_all": "Set dates for all",
+    "overlap_warning": "Date range overlaps with an existing crop rotation.",
+    "view_list": "List",
+    "view_timeline": "Timeline",
+    "last_rotation": "Last: {{crop}} ({{from}} – {{to}})"
   },
   "reports": {
     "field_calendar": {

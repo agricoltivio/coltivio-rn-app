@@ -28,7 +28,15 @@ export function EditCropScreen({ route, navigation }: EditCropScreenProps) {
     control,
     handleSubmit,
     formState: { errors, isDirty },
-  } = useForm<CropFormValues>({ values: crop });
+  } = useForm<CropFormValues>({
+    values: crop
+      ? {
+          ...crop,
+          variety: crop.variety ?? undefined,
+          additionalNotes: crop.additionalNotes ?? undefined,
+        }
+      : undefined,
+  });
 
   const updateCropMutation = useUpdateCropMutation(() => navigation.goBack());
   const deleteCropMutation = useDeleteCropMutation(() => navigation.goBack());

@@ -609,7 +609,9 @@
     "categories": {
       "grass": "Gras",
       "grain": "Getreide",
-      "none": "Keine"
+      "vegetable": "Gemüse",
+      "fruit": "Frucht",
+      "other": "Andere"
     },
     "no_variety": "Keine Sorte",
     "crop_in_use_warning": "Diese Kultur wird verwendet und kann deshalb nicht gelöscht werden."
@@ -659,6 +661,7 @@
   },
   "crop_rotations": {
     "crop_rotation": "Fruchtfolgen",
+    "crop_rotation_crop_name": "Fruchtfolge - {{name}}",
     "crop_rotation_year": "Fruchtfolge {{year}}",
     "crop_rotation_plot_name": "Fruchtfolge - {{name}}",
     "crop_rotation_date": "Fruchtfolge - {{date}}",
@@ -668,12 +671,17 @@
     "sowing_date": "Aussaat {{date}}",
     "new_crop": "Neue Kultur",
     "select_crop": {
-      "heading": "Was wurde gesät"
+      "heading": "Plane die Fruchtfolge für eine Kultur"
     },
     "select_date": {
       "heading": "Wann wurde gesät?"
     },
-    "cannot_delete_warning": "Dies ist die einzige Kultur auf diesem Schlag und kann desshalb nicht gelöscht werden."
+    "cannot_delete_warning": "Dies ist die einzige Kultur auf diesem Schlag und kann desshalb nicht gelöscht werden.",
+    "set_dates_for_all": "Daten für alle setzen",
+    "overlap_warning": "Der Zeitraum überschneidet sich mit einer bestehenden Fruchtfolge.",
+    "view_list": "Liste",
+    "view_timeline": "Zeitstrahl",
+    "last_rotation": "Letzte: {{crop}} ({{from}} – {{to}})"
   },
   "reports": {
     "field_calendar": {

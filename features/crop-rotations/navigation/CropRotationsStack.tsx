@@ -3,7 +3,6 @@ import { Stack } from "@/navigation/stack";
 import { AddCropRotationScreen } from "../AddCropRotationScreen";
 import { AddCropRotationSelectCropScreen } from "../batch/AddCropRotationSelectCropScreen";
 import { AddCropRotationSelectPlotsScreen } from "../batch/AddCropRotationSelectPlotsScreen";
-import { AddCropRotationSelectStartDateScreen } from "../batch/AddCropRotationSelectStartDateScreen";
 import { AddCropRotationSummaryScreen } from "../batch/AddCropRotationSummaryScreen";
 import { CropRotationsOfYearListScreen } from "../CropRotationsOfYearListScreen";
 import { CropRotationsScreen } from "../CropRotationsScreen";
@@ -51,14 +50,6 @@ export function renderCropsRotationStack() {
         title: "",
       }}
       component={EditCropRotationScreen}
-    />,
-    <Stack.Screen
-      key="add-crop-rotation-select-start-date"
-      name="AddCropRotationSelectStartDate"
-      options={{
-        title: "",
-      }}
-      component={AddCropRotationSelectStartDateScreen}
     />,
     <Stack.Screen
       key="add-crop-rotation-select-crop"

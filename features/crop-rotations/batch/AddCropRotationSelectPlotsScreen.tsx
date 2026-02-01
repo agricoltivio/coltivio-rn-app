@@ -1,3 +1,4 @@
+import * as turf from "@turf/turf";
 import { Plot } from "@/api/plots.api";
 import { Button } from "@/components/buttons/Button";
 import { Card } from "@/components/card/Card";
@@ -22,6 +23,7 @@ import { Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
 import { useCreateCropRotationStore } from "./crop-rotations.store";
 import { useTranslation } from "react-i18next";
+import { LabelMarker } from "@/features/map/LabelMarker";
 
 export type SelectedFertilizerApplicationArea = {
   plotId: string;
@@ -56,32 +58,57 @@ export function AddCropRotationSelectPlotsScreen({
     return unsubscribe;
   }, [navigation]);
 
-  const plotPolygons = plots?.map((plot) => (
-    <MultiPolygon
-      key={plot.id}
-      polygon={plot.geometry}
-      strokeWidth={theme.map.defaultStrokeWidth}
-      strokeColor={theme.colors.white}
-      fillColor={hexToRgba(
-        theme.map.defaultFillColor,
-        theme.map.defaultFillAlpha
-      )}
-      tappable
-      onPress={(e) => {
-        handleSelectPlot(plot);
-      }}
-    />
-  ));
-
-  const selectedPolygons = Object.values(selectedPlotsById).map((plot) => (
-    <MultiPolygon
-      key={`fertilizerApplication-${plot.plotId}`}
-      polygon={plot.geometry}
-      strokeWidth={theme.map.defaultStrokeWidth}
-      strokeColor={"white"}
-      fillColor={hexToRgba(theme.colors.secondary, theme.map.defaultFillAlpha)}
-    />
-  ));
+  // Render all plots in a single pass — selected plots get a different fill color
+  const plotPolygons = plots?.map((plot) => {
+    const isSelected = plot.id in selectedPlotsById;
+    if (isSelected) {
+      return (
+        <MultiPolygon
+          key={plot.id}
+          polygon={plot.geometry}
+          strokeWidth={theme.map.defaultStrokeWidth}
+          strokeColor={theme.colors.white}
+          fillColor={hexToRgba(
+            theme.colors.secondary,
+            theme.map.defaultFillAlpha,
+          )}
+          tappable
+          onPress={() => {
+            handleSelectPlot(plot);
+          }}
+        />
+      );
+    }
+    return (
+      <MultiPolygon
+        key={plot.id}
+        polygon={plot.geometry}
+        strokeWidth={theme.map.defaultStrokeWidth}
+        strokeColor={theme.colors.white}
+        fillColor={hexToRgba(
+          theme.map.defaultFillColor,
+          theme.map.defaultFillAlpha,
+        )}
+        tappable
+        onPress={() => {
+          handleSelectPlot(plot);
+        }}
+      />
+    );
+  });
+  const markers = Object.values(selectedPlotsById).map((plot) => {
+    const centroid = turf.centroid(plot.geometry);
+    return (
+      <LabelMarker
+        key={`harvest-${plot.plotId}-marker`}
+        latitude={centroid.geometry.coordinates[1]}
+        longitude={centroid.geometry.coordinates[0]}
+        text={plot.name}
+      />
+    );
+  });
+  console.log("polygons", Object.keys(selectedPlotsById)?.length);
+  console.log("markers", markers?.length);
 
   if (!farm || !plots) {
     return null;
@@ -128,8 +155,8 @@ export function AddCropRotationSelectPlotsScreen({
         initialRegion={initialRegion}
         showsUserLocation={showUserLocation}
       >
+        {markers}
         {plotPolygons}
-        {selectedPolygons}
         <HomeMarker latitude={latitude} longitude={longitude} />
       </MapView>
       <TopLeftBackButton />

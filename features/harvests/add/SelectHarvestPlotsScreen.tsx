@@ -71,7 +71,9 @@ export function SelectHarvestPlotsScreen({
   }, [navigation]);
 
   const availablePlots = plots?.filter(
-    (plot) => plot.cropRotations[0]?.cropId === harvest?.cropId
+    (plot) =>
+      plot.cropRotations[0]?.cropId === harvest?.cropId &&
+      !Object.keys(selectedHarvestPlotsById).includes(plot.id),
   );
 
   const plotPolygons = availablePlots?.map((plot) => (
@@ -82,7 +84,7 @@ export function SelectHarvestPlotsScreen({
       strokeColor={theme.colors.white}
       fillColor={hexToRgba(
         theme.map.defaultFillColor,
-        theme.map.defaultFillAlpha
+        theme.map.defaultFillAlpha,
       )}
       tappable={drawingAction === "select"}
       onPress={(e) => {
@@ -102,7 +104,7 @@ export function SelectHarvestPlotsScreen({
           strokeColor={"white"}
           fillColor={hexToRgba(
             theme.colors.secondary,
-            theme.map.defaultFillAlpha
+            theme.map.defaultFillAlpha,
           )}
         />,
         <LabelMarker
@@ -112,7 +114,7 @@ export function SelectHarvestPlotsScreen({
           text={harvestPlot.name}
         />,
       ];
-    }
+    },
   );
 
   const handleMapPress = (event: MapPressEvent) => {
@@ -159,7 +161,7 @@ export function SelectHarvestPlotsScreen({
     }
     const plotIntersections = GeoSpatials.plotIntersections(
       availablePlots,
-      GeoSpatials.latLngToMultiPolygon([coordinates])
+      GeoSpatials.latLngToMultiPolygon([coordinates]),
     );
     for (const plotIntersection of plotIntersections) {
       putHarvestPlot({

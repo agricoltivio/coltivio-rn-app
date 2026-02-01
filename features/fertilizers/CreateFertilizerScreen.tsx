@@ -37,7 +37,7 @@ export function CreateFertilizerScreen({
   const fertilizerUnit = watch("unit");
   const { fertilizerSpreaders, isFetched } = useFertilizerSpreadersQuery([]);
   const availableSpreaders = fertilizerSpreaders!.filter(
-    (spreader) => spreader.unit === fertilizerUnit
+    (spreader) => spreader.unit === fertilizerUnit,
   );
 
   function onSubmitFertilizer({
@@ -47,7 +47,7 @@ export function CreateFertilizerScreen({
     createFertilizerMutation.mutate({
       ...data,
       defaultSpreaderId:
-        defaultSpreaderId !== "none" ? defaultSpreaderId : null,
+        defaultSpreaderId !== "none" ? defaultSpreaderId : undefined,
     });
   }
 

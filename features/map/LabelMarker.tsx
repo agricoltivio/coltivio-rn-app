@@ -17,6 +17,8 @@ export function LabelMarker({ latitude, longitude, text }: LabelMarkerProps) {
         longitude,
         latitude,
       }}
+      tracksViewChanges
+      zIndex={100}
     >
       <Card
         style={{

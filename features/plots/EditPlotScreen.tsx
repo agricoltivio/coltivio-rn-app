@@ -28,10 +28,10 @@ import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 
 type EditPlotFormValues = {
   name: string;
-  additionalNotes?: string | null;
-  localId?: string | null;
-  usage?: string | null;
-  cuttingDate?: Date | null;
+  additionalNotes?: string;
+  localId?: string;
+  usage?: string;
+  cuttingDate?: Date;
   size: string;
 };
 
@@ -44,7 +44,7 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
 
   const updatePlotMutation = useUpdatePlotMutation(
     () => navigation.goBack(),
-    (error) => console.error(error)
+    (error) => console.error(error),
   );
 
   const {
@@ -55,11 +55,13 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
     values: plot
       ? {
           name: plot.name,
-          additionalNotes: plot.additionalNotes,
+          additionalNotes: plot.additionalNotes ?? undefined,
           size: area?.toString() || plot.size.toString(),
           usage: plot.usage?.toString(),
-          localId: plot.localId,
-          cuttingDate: plot.cuttingDate ? new Date(plot.cuttingDate) : null,
+          localId: plot.localId ?? undefined,
+          cuttingDate: plot.cuttingDate
+            ? new Date(plot.cuttingDate)
+            : undefined,
         }
       : undefined,
   });
@@ -71,10 +73,10 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
           return false;
         }
         const bufferedPolygons = plot.geometry.coordinates.map((polygon) =>
-          turf.buffer(turf.polygon(polygon), -2, { units: "meters" })
+          turf.buffer(turf.polygon(polygon), -2, { units: "meters" }),
         );
         return bufferedPolygons.some(
-          (feature) => feature && turf.booleanIntersects(polygon, feature)
+          (feature) => feature && turf.booleanIntersects(polygon, feature),
         );
       });
     } else {
@@ -162,7 +164,7 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
                 strokeColor="white"
                 fillColor={hexToRgba(
                   theme.colors.danger,
-                  theme.map.defaultFillAlpha
+                  theme.map.defaultFillAlpha,
                 )}
               />
             ))}

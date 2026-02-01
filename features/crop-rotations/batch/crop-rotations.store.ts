@@ -1,4 +1,3 @@
-import { CropRotationCreateManyInput } from "@/api/crop-rotations.api";
 import { Crop } from "@/api/crops.api";
 import { create } from "zustand";
 
@@ -8,13 +7,19 @@ export type SelectedCropRotationPlot = {
   geometry: GeoJSON.MultiPolygon;
 };
 
-export type CropRotationBase = Omit<CropRotationCreateManyInput, "plotIds">;
+export type PlotDates = {
+  fromDate: string;
+  toDate: string;
+};
 
 type CreateCropRotation = {
   selectedCrop?: Crop;
   setSelectedCrop: (crop: Crop) => void;
-  cropRotations?: Partial<CropRotationBase>;
-  setCropRotation: (cropRotation: Partial<CropRotationBase>) => void;
+  cropId?: string;
+  setCropId: (id: string) => void;
+  plotDatesById: Record<string, PlotDates>;
+  setPlotDate: (plotId: string, fromDate: string, toDate: string) => void;
+  setAllPlotDates: (fromDate: string, toDate: string) => void;
   selectedPlotsById: Record<string, SelectedCropRotationPlot>;
   putPlot: (plot: SelectedCropRotationPlot) => void;
   removePlot: (plotId: string) => void;
@@ -24,14 +29,24 @@ type CreateCropRotation = {
 };
 
 export const useCreateCropRotationStore = create<CreateCropRotation>((set) => ({
-  setCropRotation: (rotation) =>
+  setCropId: (id) => set({ cropId: id }),
+  setSelectedCrop: (crop) => set({ selectedCrop: crop }),
+  plotDatesById: {},
+  setPlotDate: (plotId, fromDate, toDate) =>
     set((state) => ({
-      cropRotations: {
-        ...state.cropRotations,
-        ...rotation,
+      plotDatesById: {
+        ...state.plotDatesById,
+        [plotId]: { fromDate, toDate },
       },
     })),
-  setSelectedCrop: (crop) => set({ selectedCrop: crop }),
+  setAllPlotDates: (fromDate, toDate) =>
+    set((state) => {
+      const plotDatesById: Record<string, PlotDates> = {};
+      for (const plotId of Object.keys(state.selectedPlotsById)) {
+        plotDatesById[plotId] = { fromDate, toDate };
+      }
+      return { plotDatesById };
+    }),
   selectedPlotsById: {},
   putPlot: (plot: SelectedCropRotationPlot) =>
     set((state) => ({
@@ -66,8 +81,8 @@ export const useCreateCropRotationStore = create<CreateCropRotation>((set) => ({
     set(() => ({
       selectedPlotsById: {},
       selectedCrop: undefined,
-      totalNumberOfApplications: undefined,
-      cropRotations: undefined,
+      cropId: undefined,
+      plotDatesById: {},
     })),
   resetSelectedPlots: () =>
     set(() => ({

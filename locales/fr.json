@@ -609,7 +609,9 @@
     "categories": {
       "grass": "Herbe",
       "grain": "Céréale",
-      "none": "Aucun"
+      "vegetable": "Vegetable",
+      "fruit": "Fuit",
+      "other": "Other"
     },
     "no_variety": "Aucune variété",
     "crop_in_use_warning": "Cette culture est utilisée et ne peut donc pas être supprimée."
@@ -673,7 +675,12 @@
     "select_date": {
       "heading": "Quand a-t-il été semé ?"
     },
-    "cannot_delete_warning": "C'est la seule culture sur cette parcelle et ne peut donc pas être supprimée."
+    "cannot_delete_warning": "C'est la seule culture sur cette parcelle et ne peut donc pas être supprimée.",
+    "set_dates_for_all": "Définir les dates pour tous",
+    "overlap_warning": "La période chevauche une rotation de culture existante.",
+    "view_list": "Liste",
+    "view_timeline": "Chronologie",
+    "last_rotation": "Dernière : {{crop}} ({{from}} – {{to}})"
   },
   "reports": {
     "field_calendar": {

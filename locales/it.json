@@ -609,7 +609,9 @@
     "categories": {
       "grass": "Erba",
       "grain": "Cereale",
-      "none": "Nessuno"
+      "vegetable": "Vegetable",
+      "fruit": "Fuit",
+      "other": "Other"
     },
     "no_variety": "Nessuna Varietà",
     "crop_in_use_warning": "Questa coltura è in uso e quindi non può essere eliminata."
@@ -673,7 +675,12 @@
     "select_date": {
       "heading": "Quando è stato seminato?"
     },
-    "cannot_delete_warning": "Questa è l'unica coltura su questo campo e pertanto non può essere eliminata."
+    "cannot_delete_warning": "Questa è l'unica coltura su questo campo e pertanto non può essere eliminata.",
+    "set_dates_for_all": "Imposta le date per tutti",
+    "overlap_warning": "Il periodo si sovrappone a una rotazione colturale esistente.",
+    "view_list": "Lista",
+    "view_timeline": "Cronologia",
+    "last_rotation": "Ultima: {{crop}} ({{from}} – {{to}})"
   },
   "reports": {
     "field_calendar": {
