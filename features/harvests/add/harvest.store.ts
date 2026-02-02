@@ -12,8 +12,9 @@ export type SelectedHarvestPlot = {
   amountInKilos: number;
 };
 
-export type Harvest = Omit<HarvestBatchCreateInput, "geometry"> & {
+export type Harvest = Omit<HarvestBatchCreateInput, "geometry" | "date"> & {
   kilosPerUnit: number;
+  date: Date;
 };
 
 type CreateHarvestStore = {

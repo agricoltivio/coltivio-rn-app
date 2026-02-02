@@ -681,7 +681,9 @@
     "overlap_warning": "Der Zeitraum überschneidet sich mit einer bestehenden Fruchtfolge.",
     "view_list": "Liste",
     "view_timeline": "Zeitstrahl",
-    "last_rotation": "Letzte: {{crop}} ({{from}} – {{to}})"
+    "last_rotation": "Letzte: {{crop}} ({{from}} – {{to}})",
+    "last_rotation_permanent": "Aktuelle: {{crop}} ({{from}} – unbefristet)",
+    "permanent_end_date_info": "Das Enddatum der bestehenden Fruchtfolge wird automatisch auf den Tag vor dem neuen Startdatum gesetzt."
   },
   "reports": {
     "field_calendar": {

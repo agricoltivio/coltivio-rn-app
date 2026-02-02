@@ -1,3 +1,4 @@
+import { isWithinInterval } from "date-fns";
 import * as turf from "@turf/turf";
 import { Plot } from "@/api/plots.api";
 import { Button } from "@/components/buttons/Button";
@@ -15,7 +16,7 @@ import { hexToRgba } from "@/theme/theme";
 import { GeoSpatials } from "@/utils/geo-spatials";
 import { round } from "@/utils/math";
 import { PortalHost } from "@gorhom/portal";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { StyleSheet } from "react-native";
 import { LatLng, MapPressEvent, Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
@@ -70,52 +71,51 @@ export function SelectHarvestPlotsScreen({
     return unsubscribe;
   }, [navigation]);
 
-  const availablePlots = plots?.filter(
-    (plot) =>
-      plot.cropRotations[0]?.cropId === harvest?.cropId &&
-      !Object.keys(selectedHarvestPlotsById).includes(plot.id),
-  );
+  // all plots with matching crop rotation or no crop rotation are available
+  const availablePlots = useMemo(() => {
+    if (!harvest?.date) return [];
+    return plots?.filter((plot) => {
+      const currentRotation = plot.cropRotations.find((rotation) =>
+        isWithinInterval(new Date(harvest.date!), {
+          start: new Date(rotation.fromDate),
+          end: new Date(rotation.toDate),
+        }),
+      );
+      return !currentRotation || currentRotation.cropId === harvest?.cropId;
+    });
+  }, [plots, harvest]);
 
-  const plotPolygons = availablePlots?.map((plot) => (
-    <MultiPolygon
-      key={plot.id}
-      polygon={plot.geometry}
-      strokeWidth={theme.map.defaultStrokeWidth}
-      strokeColor={theme.colors.white}
-      fillColor={hexToRgba(
-        theme.map.defaultFillColor,
-        theme.map.defaultFillAlpha,
-      )}
-      tappable={drawingAction === "select"}
-      onPress={(e) => {
-        handleSelectPlot(plot);
-      }}
-    />
-  ));
+  const plotPolygons = availablePlots?.map((plot) => {
+    const isSelected = plot.id in selectedHarvestPlotsById;
+    return (
+      <MultiPolygon
+        key={plot.id}
+        polygon={plot.geometry}
+        strokeWidth={theme.map.defaultStrokeWidth}
+        strokeColor={theme.colors.white}
+        fillColor={hexToRgba(
+          isSelected ? theme.colors.secondary : theme.map.defaultFillColor,
+          theme.map.defaultFillAlpha,
+        )}
+        tappable={isSelected || drawingAction === "select"}
+        onPress={(e) => {
+          handleSelectPlot(plot);
+        }}
+      />
+    );
+  });
 
-  const harvestPolygons = Object.values(selectedHarvestPlotsById).flatMap(
-    (harvestPlot) => {
-      const centroid = turf.centroid(harvestPlot.harvestArea);
-      return [
-        <MultiPolygon
-          key={`harvest-${harvestPlot.plotId}`}
-          polygon={harvestPlot.harvestArea}
-          strokeWidth={theme.map.defaultStrokeWidth}
-          strokeColor={"white"}
-          fillColor={hexToRgba(
-            theme.colors.secondary,
-            theme.map.defaultFillAlpha,
-          )}
-        />,
-        <LabelMarker
-          key={`harvest-${harvestPlot.plotId}-marker`}
-          latitude={centroid.geometry.coordinates[1]}
-          longitude={centroid.geometry.coordinates[0]}
-          text={harvestPlot.name}
-        />,
-      ];
-    },
-  );
+  const markers = Object.values(selectedHarvestPlotsById).map((harvestPlot) => {
+    const centroid = turf.centroid(harvestPlot.harvestArea);
+    return (
+      <LabelMarker
+        key={`harvest-${harvestPlot.plotId}-marker`}
+        latitude={centroid.geometry.coordinates[1]}
+        longitude={centroid.geometry.coordinates[0]}
+        text={harvestPlot.name}
+      />
+    );
+  });
 
   const handleMapPress = (event: MapPressEvent) => {
     if (drawingAction === "draw") {
@@ -197,7 +197,7 @@ export function SelectHarvestPlotsScreen({
         showsUserLocation={showUserLocation}
       >
         {plotPolygons}
-        {harvestPolygons}
+        {markers}
         <PolygonDrawingTool
           portalName="HarvestMap"
           ref={polygonDrawingToolRef}

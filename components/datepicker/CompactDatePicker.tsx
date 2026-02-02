@@ -7,6 +7,8 @@ import { locale } from "@/locales/i18n";
 
 type CompactDatePickerProps = {
   date: Date;
+  minimumDate?: Date;
+  maximumDate?: Date;
   onDateChange: (date: Date) => void;
   label?: string;
 };
@@ -20,12 +22,20 @@ export function CompactDatePicker({
   date,
   onDateChange,
   label,
+  minimumDate,
+  maximumDate,
 }: CompactDatePickerProps) {
   const theme = useTheme();
 
   if (Platform.OS === "ios") {
     return (
-      <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: theme.spacing.xs,
+        }}
+      >
         {label && (
           <Text style={{ fontSize: 14, color: theme.colors.gray2 }}>
             {label}
@@ -35,6 +45,8 @@ export function CompactDatePicker({
           value={date}
           mode="date"
           display="compact"
+          minimumDate={minimumDate}
+          maximumDate={maximumDate}
           onChange={(_event, selectedDate) => {
             if (selectedDate) {
               onDateChange(selectedDate);
@@ -45,7 +57,13 @@ export function CompactDatePicker({
     );
   }
 
-  return <AndroidCompactDatePicker date={date} onDateChange={onDateChange} label={label} />;
+  return (
+    <AndroidCompactDatePicker
+      date={date}
+      onDateChange={onDateChange}
+      label={label}
+    />
+  );
 }
 
 function AndroidCompactDatePicker({
@@ -67,11 +85,15 @@ function AndroidCompactDatePicker({
   }, []);
 
   return (
-    <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}>
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        gap: theme.spacing.xs,
+      }}
+    >
       {label && (
-        <Text style={{ fontSize: 14, color: theme.colors.gray2 }}>
-          {label}
-        </Text>
+        <Text style={{ fontSize: 14, color: theme.colors.gray2 }}>{label}</Text>
       )}
       <Pressable
         onPress={handlePress}

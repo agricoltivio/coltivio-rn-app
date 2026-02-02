@@ -13,8 +13,8 @@ export type SelectedFertilizerApplicationPlot = {
 
 export type FertilizerApplication = Omit<
   FertilizerApplicationBatchCreateInput,
-  "plots" | "geometry"
->;
+  "plots" | "geometry" | "date"
+> & { date: Date };
 type CreateFertilizerApplicationStore = {
   selectedSpreader?: FertilizerSpreader;
   setSelectedSpreader: (machine: FertilizerSpreader) => void;

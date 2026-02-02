@@ -47,7 +47,7 @@ export function HarvestSummaryScreen({
       processingType,
       additionalNotes,
       cropId,
-      date,
+      date: date.toISOString(),
       machineryId: harvest?.machineryId,
       harvestCount: harvest?.harvestCount,
       kilosPerUnit,

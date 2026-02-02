@@ -8,8 +8,8 @@ export type SelectedCropRotationPlot = {
 };
 
 export type PlotDates = {
-  fromDate: string;
-  toDate: string;
+  fromDate: Date;
+  toDate: Date;
 };
 
 type CreateCropRotation = {
@@ -18,8 +18,8 @@ type CreateCropRotation = {
   cropId?: string;
   setCropId: (id: string) => void;
   plotDatesById: Record<string, PlotDates>;
-  setPlotDate: (plotId: string, fromDate: string, toDate: string) => void;
-  setAllPlotDates: (fromDate: string, toDate: string) => void;
+  setPlotDate: (plotId: string, fromDate: Date, toDate: Date) => void;
+  setAllPlotDates: (fromDate: Date, toDate: Date) => void;
   selectedPlotsById: Record<string, SelectedCropRotationPlot>;
   putPlot: (plot: SelectedCropRotationPlot) => void;
   removePlot: (plotId: string) => void;

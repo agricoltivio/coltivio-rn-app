@@ -680,7 +680,9 @@
     "overlap_warning": "Date range overlaps with an existing crop rotation.",
     "view_list": "List",
     "view_timeline": "Timeline",
-    "last_rotation": "Last: {{crop}} ({{from}} – {{to}})"
+    "last_rotation": "Last: {{crop}} ({{from}} – {{to}})",
+    "last_rotation_permanent": "Current: {{crop}} ({{from}} – permanent)",
+    "permanent_end_date_info": "The end date of the existing crop rotation will be automatically set to the day before the new start date."
   },
   "reports": {
     "field_calendar": {

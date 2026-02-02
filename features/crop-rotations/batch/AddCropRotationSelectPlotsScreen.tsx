@@ -107,8 +107,6 @@ export function AddCropRotationSelectPlotsScreen({
       />
     );
   });
-  console.log("polygons", Object.keys(selectedPlotsById)?.length);
-  console.log("markers", markers?.length);
 
   if (!farm || !plots) {
     return null;

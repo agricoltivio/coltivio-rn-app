@@ -680,7 +680,9 @@
     "overlap_warning": "Il periodo si sovrappone a una rotazione colturale esistente.",
     "view_list": "Lista",
     "view_timeline": "Cronologia",
-    "last_rotation": "Ultima: {{crop}} ({{from}} – {{to}})"
+    "last_rotation": "Ultima: {{crop}} ({{from}} – {{to}})",
+    "last_rotation_permanent": "Attuale: {{crop}} ({{from}} – permanente)",
+    "permanent_end_date_info": "La data di fine della rotazione attuale verrà impostata automaticamente al giorno prima della nuova data di inizio."
   },
   "reports": {
     "field_calendar": {

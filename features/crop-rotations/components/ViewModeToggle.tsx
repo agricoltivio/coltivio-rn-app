@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, View } from "react-native";
 import { useTheme } from "styled-components/native";
 
 export type ViewMode = "list" | "timeline";
@@ -24,23 +24,7 @@ export function ViewModeToggle({
         padding: 2,
       }}
     >
-      <TouchableOpacity
-        onPress={() => onChangeViewMode("list")}
-        style={{
-          paddingVertical: 6,
-          paddingHorizontal: 10,
-          borderRadius: theme.radii.l - 2,
-          backgroundColor:
-            viewMode === "list" ? theme.colors.primary : "transparent",
-        }}
-      >
-        <Ionicons
-          name="list-outline"
-          size={18}
-          color={viewMode === "list" ? theme.colors.white : theme.colors.gray2}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity
+      <Pressable
         onPress={() => onChangeViewMode("timeline")}
         style={{
           paddingVertical: 6,
@@ -57,7 +41,23 @@ export function ViewModeToggle({
             viewMode === "timeline" ? theme.colors.white : theme.colors.gray2
           }
         />
-      </TouchableOpacity>
+      </Pressable>
+      <Pressable
+        onPress={() => onChangeViewMode("list")}
+        style={{
+          paddingVertical: 6,
+          paddingHorizontal: 10,
+          borderRadius: theme.radii.l - 2,
+          backgroundColor:
+            viewMode === "list" ? theme.colors.primary : "transparent",
+        }}
+      >
+        <Ionicons
+          name="list-outline"
+          size={18}
+          color={viewMode === "list" ? theme.colors.white : theme.colors.gray2}
+        />
+      </Pressable>
     </View>
   );
 }

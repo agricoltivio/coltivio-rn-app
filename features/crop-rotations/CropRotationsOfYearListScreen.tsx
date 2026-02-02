@@ -11,10 +11,7 @@ import { useCropRotationsQuery } from "./crop-rotations.hooks";
 import { locale } from "@/locales/i18n";
 import { formatLocalizedDate } from "@/utils/date";
 import { useTranslation } from "react-i18next";
-import {
-  ViewMode,
-  ViewModeToggle,
-} from "./components/ViewModeToggle";
+import { ViewMode, ViewModeToggle } from "./components/ViewModeToggle";
 import { CropFilterChips } from "./components/CropFilterChips";
 import { CropRotationTimeline } from "./timeline/CropRotationTimeline";
 import { buildTimelineData } from "./timeline/timeline-utils";
@@ -30,9 +27,9 @@ export function CropRotationsOfYearListScreen({
   const toDate = new Date(year + 1, 0, 1);
   const { cropRotations } = useCropRotationsQuery(fromDate, toDate);
   const [searchText, setSearchText] = useState("");
-  const [viewMode, setViewMode] = useState<ViewMode>("list");
+  const [viewMode, setViewMode] = useState<ViewMode>("timeline");
   const [selectedCropNames, setSelectedCropNames] = useState<Set<string>>(
-    new Set()
+    new Set(),
   );
 
   // Unique crop names sorted alphabetically for filter chips
@@ -71,7 +68,7 @@ export function CropRotationsOfYearListScreen({
       new Date(cropRotation.fromDate),
       locale,
       "long",
-      false
+      false,
     ),
     toDate: cropRotation.toDate
       ? formatLocalizedDate(new Date(cropRotation.toDate), locale)

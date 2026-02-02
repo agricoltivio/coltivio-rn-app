@@ -9,7 +9,9 @@ export type SelectedTillagePlot = {
   geometry: GeoJSON.MultiPolygon;
 };
 
-export type TillageBase = Omit<TillagesBatchCreateInput, "plots">;
+export type TillageBase = Omit<TillagesBatchCreateInput, "plots" | "date"> & {
+  date: Date;
+};
 
 type AddTillage = {
   data?: Partial<TillageBase>;

@@ -31,7 +31,7 @@ export function AddTillageSummaryScreen({
     createTillagesMutation.mutate({
       action,
       reason,
-      date,
+      date: date.toISOString(),
       equipmentId: selectedEquipment?.id,
       additionalNotes,
       plots: selectedPlots.map((plot) => ({

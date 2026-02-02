@@ -62,7 +62,7 @@ export function HarvestDetailsScreen({
             producedUnits,
           },
         ]}
-        date={date}
+        date={new Date(date)}
         cropName={crop.name}
         kilosPerUnit={kilosPerUnit}
         conservationMethod={conservationMethod}

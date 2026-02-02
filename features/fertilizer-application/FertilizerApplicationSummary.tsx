@@ -48,7 +48,7 @@ type FertilizerApplicationSummaryProps = {
   }[];
   totalNumberOfApplications: number;
   amountPerApplication: number;
-  date: string;
+  date: Date;
   spreaderName?: string;
   fertilizerName: string;
   additionalNotes?: string | null;
@@ -79,7 +79,7 @@ export function FertilizerApplicationSummary({
     latitudeDelta: 0.002,
     longitudeDelta: 0.002,
   };
-  const formattedDate = formatLocalizedDate(new Date(date), locale, "long");
+  const formattedDate = formatLocalizedDate(date, locale, "long");
   return (
     <ScrollView
       showHeaderOnScroll

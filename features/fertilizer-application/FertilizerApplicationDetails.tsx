@@ -35,7 +35,7 @@ export function FertilizerApplicationDetailsScreen({
   return (
     <ContentView>
       <FertilizerApplicationSummary
-        date={date}
+        date={new Date(date)}
         spreaderName={fertilizerApplication.spreader?.name}
         fertilizerName={fertilizerApplication.fertilizer.name!}
         amountPerApplication={fertilizerApplication.amountPerApplication}

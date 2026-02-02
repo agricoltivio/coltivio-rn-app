@@ -62,7 +62,6 @@ export type PlotsStackParamList = {
   EditPlotCropRotation: {
     plotName?: string;
     rotationId: string;
-    canDelete?: boolean;
   };
 };
 

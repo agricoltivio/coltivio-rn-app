@@ -11,7 +11,6 @@ import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { AddFertilizerApplicationSelectDateScreenProps } from "../navigation/fertilizer-application-routes";
 import { useCreateFertilizerApplicationStore } from "./fertilizerApplication.store";
-import { dateToDateString } from "@/utils/date";
 
 type FormValues = {
   date: Date;
@@ -40,7 +39,7 @@ export function AddFertilizerApplicationSelectDateScreen({
   });
 
   function onSubmit({ date }: FormValues) {
-    setFertilizerApplication({ date: dateToDateString(date) });
+    setFertilizerApplication({ date });
 
     navigation.navigate("AddFertilizerApplicationSelectFertilizer", {});
   }

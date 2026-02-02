@@ -44,7 +44,7 @@ type SummaryProps = {
     geometry: GeoJSON.MultiPolygon;
     size: number;
   }[];
-  date: string;
+  date: Date;
   reason: TillageReason;
   action: TillageAction;
   equipmentName?: string;
@@ -73,7 +73,7 @@ export function TillageSummary({
     latitudeDelta: 0.002,
     longitudeDelta: 0.002,
   };
-  const formattedDate = formatLocalizedDate(new Date(date), locale, "long");
+  const formattedDate = formatLocalizedDate(date, locale, "long");
   return (
     <ScrollView
       showHeaderOnScroll

@@ -11,7 +11,6 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCreateHarvestStore } from "./harvest.store";
-import { dateToDateString } from "@/utils/date";
 
 type FormValues = {
   date: Date;
@@ -39,7 +38,7 @@ export function SelectHarvestDateScreen({
   });
 
   function onSubmit({ date }: FormValues) {
-    setHarvest({ date: dateToDateString(date) });
+    setHarvest({ date });
 
     navigation.navigate("SelectHarvestCrop");
   }

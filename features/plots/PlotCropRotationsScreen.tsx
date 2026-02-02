@@ -39,7 +39,6 @@ export function PlotCropRotationsScreen({
               onPress={() =>
                 navigation.navigate("EditPlotCropRotation", {
                   rotationId: rotation.id,
-                  canDelete: plot.cropRotations.length > 1,
                 })
               }
             >

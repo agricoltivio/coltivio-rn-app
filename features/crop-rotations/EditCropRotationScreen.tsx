@@ -16,7 +16,7 @@ import {
   useUpdateCropRotationMutation,
 } from "./crop-rotations.hooks";
 import { useTranslation } from "react-i18next";
-import { Card } from "@/components/card/Card";
+
 
 type FormValues = {
   cropId: string;
@@ -31,7 +31,7 @@ export function EditCropRotationScreen({
 }: EditCropRotationScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { plotName, rotationId, canDelete } = route.params;
+  const { plotName, rotationId } = route.params;
   const { crops } = useCropsQuery();
   const { cropRotation } = useCropRotationQuery(rotationId);
 
@@ -89,8 +89,7 @@ export function EditCropRotationScreen({
             style={{ flexGrow: 1 }}
             disabled={
               updatePlotCropRotationMutation.isPending ||
-              deletePlotCropRotationMutation.isPending ||
-              !canDelete
+              deletePlotCropRotationMutation.isPending
             }
           />
           <Button
@@ -120,18 +119,6 @@ export function EditCropRotationScreen({
           {`${plotName ? `${t("plots.plot_name", { name: plotName })} - ` : ""}`}
           {cropRotation?.crop.name}
         </H3>
-        {!canDelete ? (
-          <Card
-            style={{
-              backgroundColor: theme.colors.danger,
-              marginTop: theme.spacing.m,
-            }}
-          >
-            <H3 style={{ color: theme.colors.white }}>
-              {t("crop_rotations.cannot_delete_warning")}
-            </H3>
-          </Card>
-        ) : null}
         <View style={{ marginTop: theme.spacing.m, gap: theme.spacing.s }}>
           <RHSelect
             name="cropId"

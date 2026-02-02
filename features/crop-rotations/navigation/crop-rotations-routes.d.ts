@@ -8,7 +8,6 @@ export type CropRotationsStackParamList = {
   EditPlotCropRotation: {
     plotName?: string;
     rotationId: string;
-    canDelete?: boolean;
   };
 
   AddCropRotationSelectCrop: undefined;

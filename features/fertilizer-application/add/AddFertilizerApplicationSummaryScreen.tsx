@@ -42,7 +42,7 @@ export function AddFertilizerApplicationSummaryScreen({
 
   function onSave() {
     createFertilizerApplicationMutation.mutate({
-      date,
+      date: date.toISOString(),
       spreaderId: selectedSpreader?.id,
       fertilizerId: selectedFertilizer?.id!,
       method,
