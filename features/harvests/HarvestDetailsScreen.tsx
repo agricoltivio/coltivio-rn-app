@@ -55,7 +55,7 @@ export function HarvestDetailsScreen({
         harvestAreas={[
           {
             amountInKilos: producedUnits * kilosPerUnit,
-            harvestArea: geometry,
+            geometry: geometry,
             harvestSize: size,
             name: plot.name,
             plotId: plot.id,

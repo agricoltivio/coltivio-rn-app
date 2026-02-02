@@ -12,7 +12,7 @@ export function HarvestSummaryScreen({
 }: HarvestSummaryScreenProps) {
   const { t } = useTranslation();
   const {
-    selectedPlotsById: selectedHarvestPlotsById,
+    selectedPlotsById,
     selectedHarvestingMachinery,
     selectedCrop,
     totalProducedUnits = 0,
@@ -29,7 +29,7 @@ export function HarvestSummaryScreen({
   } = harvest as Harvest;
 
   const totalProducedKilos = totalProducedUnits * kilosPerUnit;
-  const plotHarvests = Object.values(selectedHarvestPlotsById);
+  const plotHarvests = Object.values(selectedPlotsById);
 
   const createHarvestMutation = useCreateHarvestMutation(() =>
     navigation.reset({

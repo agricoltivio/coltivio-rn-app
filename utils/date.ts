@@ -1,5 +1,9 @@
 export const INFINITE_DATE = new Date("4999-12-31T00:00:00Z");
 
+export function isInfiniteDate(date: Date) {
+  return date.getTime() >= INFINITE_DATE.getTime();
+}
+
 export function formatLocalizedDate(
   date: Date,
   locale: string,

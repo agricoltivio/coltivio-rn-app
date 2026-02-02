@@ -9,6 +9,7 @@ import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { usePlotByIdQuery } from "./plots.hooks";
 import { useTranslation } from "react-i18next";
+import { isInfiniteDate } from "@/utils/date";
 
 export function PlotCropRotationsScreen({
   route,
@@ -50,12 +51,13 @@ export function PlotCropRotationsScreen({
                     month: "2-digit",
                     day: "numeric",
                   }).format(new Date(rotation.fromDate))}
-                  {rotation.toDate &&
-                    ` - ${new Intl.DateTimeFormat(locale, {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "numeric",
-                    }).format(new Date(rotation.toDate))}`}
+                  {rotation.toDate && isInfiniteDate(new Date(rotation.toDate))
+                    ? ` - ${t("crop_rotations.permanent")}`
+                    : ` - ${new Intl.DateTimeFormat(locale, {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "numeric",
+                      }).format(new Date(rotation.toDate))}`}
                 </ListItem.Body>
               </ListItem.Content>
               <ListItem.Chevron />

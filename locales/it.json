@@ -682,7 +682,9 @@
     "view_timeline": "Cronologia",
     "last_rotation": "Ultima: {{crop}} ({{from}} – {{to}})",
     "last_rotation_permanent": "Attuale: {{crop}} ({{from}} – permanente)",
-    "permanent_end_date_info": "La data di fine della rotazione attuale verrà impostata automaticamente al giorno prima della nuova data di inizio."
+    "permanent_end_date_info": "La data di fine della rotazione attuale verrà impostata automaticamente al giorno prima della nuova data di inizio.",
+    "add_rotation": "Aggiungi rotazione",
+    "permanent": "Permanente"
   },
   "reports": {
     "field_calendar": {

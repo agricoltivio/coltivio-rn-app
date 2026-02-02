@@ -11,6 +11,9 @@ export type CropRotationUpdateInput =
 export type CropRotationCreateManyByCropInput =
   components["schemas"]["PostV1CropRotationsBatchByCropRequestBody"];
 
+export type CropRotationCreateManyByPlotInput =
+  components["schemas"]["PostV1CropRotationsBatchByPlotRequestBody"];
+
 export type PlotCropRotation =
   components["schemas"]["GetV1CropRotationsPlotsPositiveResponse"]["data"]["result"][number];
 
@@ -52,6 +55,15 @@ export function cropRotationsApi(client: FetchClient) {
       input: CropRotationCreateManyByCropInput,
     ): Promise<CropRotation[]> {
       const { data } = await client.POST("/v1/cropRotations/batch/byCrop", {
+        body: input,
+      });
+      return data!.data.result;
+    },
+
+    async createCropRotationsByPlot(
+      input: CropRotationCreateManyByPlotInput,
+    ): Promise<CropRotation[]> {
+      const { data } = await client.POST("/v1/cropRotations/batch/byPlot", {
         body: input,
       });
       return data!.data.result;

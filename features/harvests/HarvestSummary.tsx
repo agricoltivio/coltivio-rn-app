@@ -40,7 +40,7 @@ type HarvestSummaryProps = {
   harvestAreas: {
     plotId: string;
     name: string;
-    harvestArea: GeoJSON.MultiPolygon;
+    geometry: GeoJSON.MultiPolygon;
     harvestSize: number;
     producedUnits: number;
     amountInKilos: number;
@@ -75,7 +75,7 @@ export function HarvestSummary({
   const size = harvestAreas.reduce((acc, plot) => acc + plot.harvestSize, 0);
   const unitLabel = t(`harvests.labels.unit.${processingType}`);
 
-  const harvestCentroid = turf.centroid(harvestAreas[0].harvestArea);
+  const harvestCentroid = turf.centroid(harvestAreas[0].geometry);
   const [longitude, latitude] = harvestCentroid.geometry.coordinates;
   const initialRegion: Region = {
     latitude,
@@ -115,7 +115,7 @@ export function HarvestSummary({
                   features: [
                     {
                       type: "Feature",
-                      geometry: plot.harvestArea,
+                      geometry: plot.geometry,
                       properties: {},
                     },
                   ],
@@ -124,7 +124,7 @@ export function HarvestSummary({
                 strokeColor={"white"}
                 fillColor={hexToRgba(
                   theme.map.defaultFillColor,
-                  theme.map.defaultFillAlpha
+                  theme.map.defaultFillAlpha,
                 )}
               />
             );

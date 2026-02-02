@@ -9,7 +9,7 @@ import { FlatList, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCropRotationsQuery } from "./crop-rotations.hooks";
 import { locale } from "@/locales/i18n";
-import { formatLocalizedDate } from "@/utils/date";
+import { formatLocalizedDate, isInfiniteDate } from "@/utils/date";
 import { useTranslation } from "react-i18next";
 import { ViewMode, ViewModeToggle } from "./components/ViewModeToggle";
 import { CropFilterChips } from "./components/CropFilterChips";
@@ -64,15 +64,10 @@ export function CropRotationsOfYearListScreen({
   // Build formatted list data for the list view
   const sanitizedCropRotations = filteredCropRotations.map((cropRotation) => ({
     ...cropRotation,
-    fromDate: formatLocalizedDate(
-      new Date(cropRotation.fromDate),
-      locale,
-      "long",
-      false,
-    ),
-    toDate: cropRotation.toDate
-      ? formatLocalizedDate(new Date(cropRotation.toDate), locale)
-      : undefined,
+    fromDate: formatLocalizedDate(new Date(cropRotation.fromDate), locale),
+    toDate: isInfiniteDate(new Date(cropRotation.toDate))
+      ? "∞"
+      : formatLocalizedDate(new Date(cropRotation.toDate), locale),
   }));
 
   const fuse = new Fuse(sanitizedCropRotations ?? [], {
@@ -111,12 +106,14 @@ export function CropRotationsOfYearListScreen({
     >
       <ListItem.Content>
         <ListItem.Title style={{ flex: 1 }}>
-          {t("plots.plot_name_date", {
+          {t("plots.plot_name", {
             name: cropRotation.plot.name,
-            date: cropRotation.fromDate,
           })}
         </ListItem.Title>
-        <ListItem.Body>{cropRotation.crop.name}</ListItem.Body>
+        <ListItem.Body>
+          {cropRotation.crop.name}: {cropRotation.fromDate} -{" "}
+          {cropRotation.toDate}
+        </ListItem.Body>
       </ListItem.Content>
       <ListItem.Chevron />
     </ListItem>

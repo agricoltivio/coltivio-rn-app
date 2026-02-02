@@ -86,7 +86,8 @@
       "usage_optional": "Nutzung (optional)",
       "usagecode": "Nutzungscode",
       "cutting_date": "Schnittzeit",
-      "cutting_date_optional": "Schnittzeit (optional)"
+      "cutting_date_optional": "Schnittzeit (optional)",
+      "permanent": "Unbefristet"
     },
     "placeholders": {
       "location_search": "z.B. Straße, Hausnummer, Ort",
@@ -683,7 +684,9 @@
     "view_timeline": "Zeitstrahl",
     "last_rotation": "Letzte: {{crop}} ({{from}} – {{to}})",
     "last_rotation_permanent": "Aktuelle: {{crop}} ({{from}} – unbefristet)",
-    "permanent_end_date_info": "Das Enddatum der bestehenden Fruchtfolge wird automatisch auf den Tag vor dem neuen Startdatum gesetzt."
+    "permanent_end_date_info": "Das Enddatum der bestehenden Fruchtfolge wird automatisch auf den Tag vor dem neuen Startdatum gesetzt.",
+    "add_rotation": "Fruchtfolge hinzufügen",
+    "permanent": "unbefristet"
   },
   "reports": {
     "field_calendar": {

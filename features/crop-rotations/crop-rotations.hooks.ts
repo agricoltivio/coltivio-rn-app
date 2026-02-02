@@ -3,6 +3,7 @@ import {
   CropRotation,
   CropRotationCreateInput,
   CropRotationCreateManyByCropInput,
+  CropRotationCreateManyByPlotInput,
   CropRotationUpdateInput,
 } from "@/api/crop-rotations.api";
 import { queryKeys } from "@/cache/query-keys";
@@ -65,6 +66,31 @@ export function useCreateCropRotationsByCropMutation(
   return useMutation({
     mutationFn: (input: CropRotationCreateManyByCropInput) =>
       api.cropRotations.createCropRotationsByCrop(input),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.cropRotations._def,
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.plots._def,
+      });
+      onSuccess && onSuccess(data);
+    },
+    onError: (error) => {
+      console.error(error);
+      onError && onError(error);
+    },
+  });
+}
+
+export function useCreateCropRotationsByPlotMutation(
+  onSuccess?: (cropRotations: CropRotation[]) => void,
+  onError?: (error: Error) => void
+) {
+  const queryClient = useQueryClient();
+  const api = useApi();
+  return useMutation({
+    mutationFn: (input: CropRotationCreateManyByPlotInput) =>
+      api.cropRotations.createCropRotationsByPlot(input),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.cropRotations._def,

@@ -86,7 +86,8 @@
       "usage_optional": "Usage (optional)",
       "usagecode": "Usage Code",
       "cutting_date": "Cutting Date",
-      "cutting_date_optional": "Cutting Date (optional)"
+      "cutting_date_optional": "Cutting Date (optional)",
+      "permanent": "Permanent"
     },
     "placeholders": {
       "location_search": "e.g., Street, House Number, City",
@@ -682,7 +683,9 @@
     "view_timeline": "Timeline",
     "last_rotation": "Last: {{crop}} ({{from}} – {{to}})",
     "last_rotation_permanent": "Current: {{crop}} ({{from}} – permanent)",
-    "permanent_end_date_info": "The end date of the existing crop rotation will be automatically set to the day before the new start date."
+    "permanent_end_date_info": "The end date of the existing crop rotation will be automatically set to the day before the new start date.",
+    "add_rotation": "Add rotation",
+    "permanent": "Permanent"
   },
   "reports": {
     "field_calendar": {
