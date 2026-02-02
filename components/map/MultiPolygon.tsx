@@ -29,7 +29,7 @@ export function MultiPolygon({
             hole.map((coordinate) => ({
               latitude: coordinate[1],
               longitude: coordinate[0],
-            }))
+            })),
           );
         }
 
@@ -43,7 +43,7 @@ export function MultiPolygon({
           />
         );
       }),
-    [polygon, rest]
+    [polygon, rest],
   );
 
   return polygons;

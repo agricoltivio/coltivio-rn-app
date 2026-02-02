@@ -52,15 +52,15 @@ export function SelectHarvestPlotsScreen({
     harvest,
     putHarvestPlot,
     removeHarvestPlot,
-    selectedHarvestPlotsById,
-    resetSelectedHarvestPlots,
+    selectedPlotsById,
+    resetSelectedPlots,
   } = useCreateHarvestStore();
 
   const polygonDrawingToolRef = useRef<PolygonDrawingToolActions>(null);
 
   // in case the total quantity is changed we reset the selected areas when navigating back
   useEffect(() => {
-    return resetSelectedHarvestPlots;
+    return resetSelectedPlots;
   }, []);
 
   useEffect(() => {
@@ -85,36 +85,52 @@ export function SelectHarvestPlotsScreen({
     });
   }, [plots, harvest]);
 
-  const plotPolygons = availablePlots?.map((plot) => {
-    const isSelected = plot.id in selectedHarvestPlotsById;
-    return (
+  const mapLayer = availablePlots?.flatMap((plot) => {
+    const isSelected = plot.id in selectedPlotsById;
+    const polygons = [
       <MultiPolygon
         key={plot.id}
         polygon={plot.geometry}
         strokeWidth={theme.map.defaultStrokeWidth}
         strokeColor={theme.colors.white}
         fillColor={hexToRgba(
-          isSelected ? theme.colors.secondary : theme.map.defaultFillColor,
+          theme.map.defaultFillColor,
           theme.map.defaultFillAlpha,
         )}
-        tappable={isSelected || drawingAction === "select"}
+        tappable={!isSelected && drawingAction === "select"}
         onPress={(e) => {
-          handleSelectPlot(plot);
+          if (!isSelected) {
+            handleSelectPlot(plot);
+          }
         }}
-      />
-    );
-  });
-
-  const markers = Object.values(selectedHarvestPlotsById).map((harvestPlot) => {
-    const centroid = turf.centroid(harvestPlot.harvestArea);
-    return (
-      <LabelMarker
-        key={`harvest-${harvestPlot.plotId}-marker`}
-        latitude={centroid.geometry.coordinates[1]}
-        longitude={centroid.geometry.coordinates[0]}
-        text={harvestPlot.name}
-      />
-    );
+      />,
+    ];
+    if (isSelected) {
+      const centroid = turf.centroid(plot.geometry);
+      polygons.push(
+        <MultiPolygon
+          key={`selected-area-${plot.id}`}
+          polygon={selectedPlotsById[plot.id].geometry}
+          strokeWidth={theme.map.defaultStrokeWidth}
+          strokeColor={"white"}
+          fillColor={hexToRgba(
+            theme.colors.secondary,
+            theme.map.defaultFillAlpha,
+          )}
+          tappable={drawingAction === "select"}
+          onPress={(e) => {
+            handleSelectPlot(plot);
+          }}
+        />,
+        <LabelMarker
+          key={`selected-area-${plot.id}-marker`}
+          latitude={centroid.geometry.coordinates[1]}
+          longitude={centroid.geometry.coordinates[0]}
+          text={plot.name}
+        />,
+      );
+    }
+    return polygons;
   });
 
   const handleMapPress = (event: MapPressEvent) => {
@@ -141,13 +157,13 @@ export function SelectHarvestPlotsScreen({
     if (drawingAction === "draw") {
       return;
     }
-    if (plot.id in selectedHarvestPlotsById) {
+    if (plot.id in selectedPlotsById) {
       removeHarvestPlot(plot.id);
     } else {
       putHarvestPlot({
         plotId: plot.id,
         name: plot.name,
-        harvestArea: plot.geometry,
+        geometry: plot.geometry,
         harvestSize: round(plot.size, 0),
         amountInKilos: 0,
         producedUnits: 0,
@@ -167,7 +183,7 @@ export function SelectHarvestPlotsScreen({
       putHarvestPlot({
         name: plotIntersection.plot.name,
         plotId: plotIntersection.plot.id,
-        harvestArea: plotIntersection.intersection.geometry,
+        geometry: plotIntersection.intersection.geometry,
         harvestSize: round(plotIntersection.intersection.size, 0),
         amountInKilos: 0,
         producedUnits: 0,
@@ -182,7 +198,7 @@ export function SelectHarvestPlotsScreen({
           <Button
             title={t("buttons.next")}
             onPress={() => navigation.navigate("DivideHarvestOnPlots")}
-            disabled={!Object.values(selectedHarvestPlotsById).length}
+            disabled={!Object.values(selectedPlotsById).length}
           />
         </BottomActionContainer>
       }
@@ -196,15 +212,14 @@ export function SelectHarvestPlotsScreen({
         initialRegion={initialRegion}
         showsUserLocation={showUserLocation}
       >
-        {plotPolygons}
-        {markers}
+        {mapLayer}
         <PolygonDrawingTool
           portalName="HarvestMap"
           ref={polygonDrawingToolRef}
           onDrawActionChange={(action) => {
             setDrawingAction(action);
           }}
-          magnifierMapContent={plotPolygons}
+          magnifierMapContent={mapLayer}
           onFinish={onHarvestAreaDrawComplete}
         />
         <HomeMarker latitude={latitude} longitude={longitude} />

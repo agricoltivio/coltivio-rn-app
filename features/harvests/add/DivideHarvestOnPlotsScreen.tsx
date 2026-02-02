@@ -26,7 +26,7 @@ export function DivideHarvestOnPlotsScreen({
     putHarvestPlot,
     removeHarvestPlot,
     totalProducedUnits = 0,
-    selectedHarvestPlotsById,
+    selectedPlotsById: selectedHarvestPlotsById,
   } = useCreateHarvestStore();
 
   const [quantityByPlotId, setQuantityByPlotId] = useState<
@@ -37,7 +37,7 @@ export function DivideHarvestOnPlotsScreen({
     harvest?.processingType === "round_bale" ||
       harvest?.processingType === "square_bale"
       ? 0
-      : 1
+      : 1,
   );
   const [error, setError] = useState<string | null>(null);
 
@@ -73,17 +73,17 @@ export function DivideHarvestOnPlotsScreen({
           if (index === harvestAreas.length - 1) {
             quantity = round(
               totalProducedUnits - totalDivided,
-              divisionPrecision
+              divisionPrecision,
             );
           } else if (harvest?.processingType === "none") {
             quantity = round(
               (totalProducedUnits - totalDivided) * fraction,
-              divisionPrecision
+              divisionPrecision,
             );
           } else {
             quantity = round(
               (totalProducedUnits - totalDivided) * fraction,
-              divisionPrecision
+              divisionPrecision,
             );
           }
           if (quantity === 0) {

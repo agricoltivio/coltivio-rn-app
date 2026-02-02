@@ -65,45 +65,52 @@ export function AddCropProtectionApplicationSelectPlotsScreen({
     return unsubscribe;
   }, [navigation]);
 
-  const plotPolygons = plots?.map((plot) => (
-    <MultiPolygon
-      key={plot.id}
-      polygon={plot.geometry}
-      strokeWidth={theme.map.defaultStrokeWidth}
-      strokeColor={theme.colors.white}
-      fillColor={hexToRgba(
-        theme.map.defaultFillColor,
-        theme.map.defaultFillAlpha
-      )}
-      tappable={drawingAction === "select"}
-      onPress={(e) => {
-        handleSelectPlot(plot);
-      }}
-    />
-  ));
-
-  const cropProtectionApplicationPolygons = Object.values(
-    selectedPlotsById
-  ).flatMap((plot) => {
-    const centroid = turf.centroid(plot.geometry);
-    return [
+  const mapLayer = plots?.flatMap((plot) => {
+    const isSelected = plot.id in selectedPlotsById;
+    const polygons = [
       <MultiPolygon
-        key={`cropProtectionApplication-${plot.plotId}`}
+        key={plot.id}
         polygon={plot.geometry}
         strokeWidth={theme.map.defaultStrokeWidth}
-        strokeColor={"white"}
+        strokeColor={theme.colors.white}
         fillColor={hexToRgba(
-          theme.colors.secondary,
-          theme.map.defaultFillAlpha
+          theme.map.defaultFillColor,
+          theme.map.defaultFillAlpha,
         )}
-      />,
-      <LabelMarker
-        key={`plot-${plot.plotId}-marker`}
-        latitude={centroid.geometry.coordinates[1]}
-        longitude={centroid.geometry.coordinates[0]}
-        text={plot.name}
+        tappable={!isSelected && drawingAction === "select"}
+        onPress={(e) => {
+          if (!isSelected) {
+            handleSelectPlot(plot);
+          }
+        }}
       />,
     ];
+    if (isSelected) {
+      const centroid = turf.centroid(plot.geometry);
+      polygons.push(
+        <MultiPolygon
+          key={`selected-area-${plot.id}`}
+          polygon={selectedPlotsById[plot.id].geometry}
+          strokeWidth={theme.map.defaultStrokeWidth}
+          strokeColor={"white"}
+          fillColor={hexToRgba(
+            theme.colors.secondary,
+            theme.map.defaultFillAlpha,
+          )}
+          tappable={drawingAction === "select"}
+          onPress={(e) => {
+            handleSelectPlot(plot);
+          }}
+        />,
+        <LabelMarker
+          key={`selected-area-${plot.id}-marker`}
+          latitude={centroid.geometry.coordinates[1]}
+          longitude={centroid.geometry.coordinates[0]}
+          text={plot.name}
+        />,
+      );
+    }
+    return polygons;
   });
 
   const handleMapPress = (event: MapPressEvent) => {
@@ -149,7 +156,7 @@ export function AddCropProtectionApplicationSelectPlotsScreen({
     }
     const plotIntersections = GeoSpatials.plotIntersections(
       plots,
-      GeoSpatials.latLngToMultiPolygon([coordinates])
+      GeoSpatials.latLngToMultiPolygon([coordinates]),
     );
     for (const plotIntersection of plotIntersections) {
       putPlot({
@@ -185,8 +192,7 @@ export function AddCropProtectionApplicationSelectPlotsScreen({
         initialRegion={initialRegion}
         showsUserLocation={showUserLocation}
       >
-        {plotPolygons}
-        {cropProtectionApplicationPolygons}
+        {mapLayer}
         <PolygonDrawingTool
           portalName="CropProtectionApplicationMap"
           ref={polygonDrawingToolRef}

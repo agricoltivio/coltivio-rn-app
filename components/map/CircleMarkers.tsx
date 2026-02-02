@@ -14,13 +14,13 @@ type MarkerHandlers = {
   onDragStart?: (
     markerIndex: number,
     coordinate: LatLng,
-    position?: Point
+    position?: Point,
   ) => void;
   onDrag?: (markerIndex: number, coordinate: LatLng, position: Point) => void;
   onDragEnd?: (
     markerIndex: number,
     coordinate: LatLng,
-    position?: Point
+    position?: Point,
   ) => void;
   onPress?: (markerIndex: number, coordinate: LatLng) => void;
 };
@@ -49,13 +49,13 @@ function CircleMarker({
       centerOffset={{ x: 0.5, y: 0.5 }}
       draggable
       stopPropagation
-      tracksViewChanges={false}
+      tracksViewChanges={true}
       onDragStart={(e) =>
         onDragStart &&
         onDragStart(
           markerIndex,
           e.nativeEvent.coordinate,
-          e.nativeEvent.position
+          e.nativeEvent.position,
         )
       }
       onDrag={(e) =>
@@ -90,7 +90,7 @@ export const CircleMarkers = ({
   return coordinates.map((coordinate: LatLng, coordIndex: number) =>
     coordinate ? (
       <CircleMarker
-        key={coordIndex}
+        key={`circle-marker-${coordIndex}`}
         markerIndex={coordIndex}
         coordinate={coordinate}
         strokeColor={"white"}
@@ -99,6 +99,6 @@ export const CircleMarkers = ({
         onDragEnd={onDragEnd}
         onPress={onPress}
       />
-    ) : null
+    ) : null,
   );
 };

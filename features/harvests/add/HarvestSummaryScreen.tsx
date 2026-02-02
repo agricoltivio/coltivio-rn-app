@@ -12,7 +12,7 @@ export function HarvestSummaryScreen({
 }: HarvestSummaryScreenProps) {
   const { t } = useTranslation();
   const {
-    selectedHarvestPlotsById,
+    selectedPlotsById: selectedHarvestPlotsById,
     selectedHarvestingMachinery,
     selectedCrop,
     totalProducedUnits = 0,
@@ -39,7 +39,7 @@ export function HarvestSummaryScreen({
         { name: "FieldCalendar" },
         { name: "Harvests" },
       ],
-    })
+    }),
   );
 
   function onSave() {
@@ -53,7 +53,7 @@ export function HarvestSummaryScreen({
       kilosPerUnit,
       conservationMethod,
       plots: plotHarvests.map((plot) => ({
-        geometry: plot.harvestArea,
+        geometry: plot.geometry,
         plotId: plot.plotId,
         size: plot.harvestSize,
         producedUnits: plot.producedUnits!,

@@ -378,15 +378,14 @@ export const PolygonDrawingTool = forwardRef<
       });
       // setDragging(false);
     }
-    let markerCoordinates = [...polygon.coordinates];
-    if (action === "edit") {
-      // first and last are the same so we have to remove one of them
-      markerCoordinates = markerCoordinates.slice(
-        0,
-        markerCoordinates.length - 1,
-      );
-    }
-
+    let markerCoordinates = useMemo(() => {
+      if (action === "edit") {
+        const coordinates = [...polygon.coordinates];
+        // first and last are the same so we have to remove one of them
+        return coordinates.slice(0, coordinates.length - 1);
+      }
+      return polygon.coordinates;
+    }, [polygon, action]);
     return (
       <>
         <Portal hostName={portalName}>
@@ -437,13 +436,15 @@ export const PolygonDrawingTool = forwardRef<
                 ) : null}
               </>
             )}
-            <CircleMarkers
-              coordinates={markerCoordinates}
-              onDrag={onCircleDrag}
-              onDragStart={onCircleDragStart}
-              onDragEnd={onCircleDragEnd}
-              onPress={onCirclePress}
-            />
+            {markerCoordinates.length > 0 ? (
+              <CircleMarkers
+                coordinates={markerCoordinates}
+                onDrag={onCircleDrag}
+                onDragStart={onCircleDragStart}
+                onDragEnd={onCircleDragEnd}
+                onPress={onCirclePress}
+              />
+            ) : null}
           </>
         ) : null}
       </>

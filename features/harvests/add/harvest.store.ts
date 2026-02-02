@@ -6,7 +6,7 @@ import { HarvestBatchCreateInput } from "@/api/harvests.api";
 export type SelectedHarvestPlot = {
   plotId: string;
   name: string;
-  harvestArea: GeoJSON.MultiPolygon;
+  geometry: GeoJSON.MultiPolygon;
   harvestSize: number;
   producedUnits: number;
   amountInKilos: number;
@@ -20,7 +20,7 @@ export type Harvest = Omit<HarvestBatchCreateInput, "geometry" | "date"> & {
 type CreateHarvestStore = {
   selectedHarvestingMachinery?: HarvestingMachinery;
   setSelectedHarvestingMachinery: (
-    harvestingMachinery: HarvestingMachinery
+    harvestingMachinery: HarvestingMachinery,
   ) => void;
   selectedCrop?: Crop;
   setSelectedCrop: (crop: Crop) => void;
@@ -28,57 +28,57 @@ type CreateHarvestStore = {
   setHarvest: (harvest: Partial<Harvest>) => void;
   totalProducedUnits?: number;
   setTotalProducedUnits: (quantity: number) => void;
-  selectedHarvestPlotsById: Record<string, SelectedHarvestPlot>;
+  selectedPlotsById: Record<string, SelectedHarvestPlot>;
   putHarvestPlot: (harvestPlot: SelectedHarvestPlot) => void;
   removeHarvestPlot: (plotId: string) => void;
   removeHarvestPlots: (plotIds: string[]) => void;
   reset: () => void;
-  resetSelectedHarvestPlots: () => void;
+  resetSelectedPlots: () => void;
 };
 
 export const useCreateHarvestStore = create<CreateHarvestStore>((set) => ({
   putHarvestPlot: (plot: SelectedHarvestPlot) =>
     set((state) => ({
-      selectedHarvestPlotsById: {
-        ...state.selectedHarvestPlotsById,
+      selectedPlotsById: {
+        ...state.selectedPlotsById,
         [plot.plotId]: plot,
       },
     })),
   removeHarvestPlot: (plotId: string) =>
     set((state) => {
       const selectedHarvestPlotsById = {
-        ...state.selectedHarvestPlotsById,
+        ...state.selectedPlotsById,
       };
       delete selectedHarvestPlotsById[plotId];
       return {
-        selectedHarvestPlotsById: selectedHarvestPlotsById,
+        selectedPlotsById: selectedHarvestPlotsById,
       };
     }),
   removeHarvestPlots: (plotIds: string[]) =>
     set((state) => {
       const selectedHarvestPlotsById = {
-        ...state.selectedHarvestPlotsById,
+        ...state.selectedPlotsById,
       };
       plotIds.forEach((parcelId) => {
         delete selectedHarvestPlotsById[parcelId];
       });
       return {
-        selectedHarvestPlotsById,
+        selectedPlotsById: selectedHarvestPlotsById,
       };
     }),
   reset: () =>
     set(() => ({
-      selectedHarvestPlotsById: {},
+      selectedPlotsById: {},
       totalProducedUnits: undefined,
       selectedHarvestingMachinery: undefined,
       selectedCrop: undefined,
       harvest: undefined,
     })),
-  resetSelectedHarvestPlots: () =>
+  resetSelectedPlots: () =>
     set(() => ({
-      selectedHarvestPlotsById: {},
+      selectedPlotsById: {},
     })),
-  selectedHarvestPlotsById: {},
+  selectedPlotsById: {},
   setTotalProducedUnits: (quantity: number) =>
     set({ totalProducedUnits: quantity }),
   setHarvest: (harvest) =>
