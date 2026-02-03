@@ -1,5 +1,6 @@
 import { useSession } from "@/auth/SessionProvider";
 import { renderAgriColtivioStack } from "@/features/agri-coltivio/navigation/AgriColtivioStack";
+import { renderAnimalsStack } from "@/features/animals/navigation/AnimalsStack";
 import { renderAuthStack } from "@/features/auth/navigation/AuthStack";
 import { renderCropProtectionApplicationStack } from "@/features/crop-protection-applications/navigation/CropProtectionApplicationStack";
 import { renderCropProtectionProductStack } from "@/features/crop-protection-products/navigation/CropProtectionProductStack";
@@ -96,6 +97,7 @@ export function RootStack() {
           {renderFertilizerApplicationStack()}
           {renderCropProtectionApplicationStack()}
           {renderCropProtectionProductStack()}
+          {renderAnimalsStack()}
           {renderAgriColtivioStack()}
         </Stack.Group>
 

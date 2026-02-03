@@ -708,6 +708,48 @@
     "section_5": "Diventa membro o supportaci con una donazione. Ogni contributo è utile, grande o piccolo.",
     "section_6": "Grazie per farne parte."
   },
+  "animals": {
+    "animals": "Animali",
+    "animal": "Animale",
+    "new_animal": "Nuovo animale",
+    "ear_tags": "Marche auricolari",
+    "ear_tag": "Marca auricolare",
+    "new_ear_tag_range": "Nuove marche auricolari",
+    "from_number": "Dal numero",
+    "to_number": "Al numero",
+    "animal_types": {
+      "goat": "Capra",
+      "sheep": "Pecora",
+      "cow": "Mucca",
+      "horse": "Cavallo",
+      "donkey": "Asino",
+      "pig": "Maiale",
+      "deer": "Cervo"
+    },
+    "sex": {
+      "male": "Maschio",
+      "female": "Femmina"
+    },
+    "registered": "Registrato",
+    "date_of_birth": "Data di nascita",
+    "date_of_death": "Data di morte",
+    "death_reason": "Causa di morte",
+    "death_reasons": {
+      "died": "Deceduto",
+      "slaughtered": "Macellato"
+    },
+    "mother": "Madre",
+    "father": "Padre",
+    "children": "Discendenti",
+    "add_child": "Aggiungi discendente",
+    "no_children": "Nessun discendente",
+    "no_ear_tag": "Nessuna marca auricolare",
+    "animal_husbandry": "Allevamento",
+    "unregistered_count": "{{count}} animali non registrati",
+    "show_dead": "Mostra deceduti",
+    "only_unregistered": "Solo non registrati",
+    "select_children": "Seleziona discendenti"
+  },
   "permissions": {
     "location": {
       "error": {

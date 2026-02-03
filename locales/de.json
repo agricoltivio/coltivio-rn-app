@@ -87,7 +87,8 @@
       "usagecode": "Nutzungscode",
       "cutting_date": "Schnittzeit",
       "cutting_date_optional": "Schnittzeit (optional)",
-      "permanent": "Unbefristet"
+      "permanent": "Unbefristet",
+      "sex": "Geschlecht"
     },
     "placeholders": {
       "location_search": "z.B. Straße, Hausnummer, Ort",
@@ -106,6 +107,8 @@
     }
   },
   "common": {
+    "yes": "Ja",
+    "no": "Nein",
     "no_entries": "Noch keine Einträge",
     "area_acres": "Fläche: {{area}}a",
     "dont_show_again": "Nicht mehr anzeigen",
@@ -709,6 +712,51 @@
     "section_5_title": "Hilf mit damit die App weiterhin frei und unabhängig für alle zur Verfügung steht.",
     "section_5": "Werde Mitglied oder unterstütze uns mit einer Spende. Jeder Beitrag hilft – ob klein oder gross.",
     "section_6": "Danke, dass du Teil davon bist."
+  },
+  "ear_tags": {
+    "ear_tags": "Ohrmarken",
+    "ear_tag": "Ohrmarke",
+    "new_ear_tag_range": "Neue Ohrmarken",
+    "from_number": "Von Nummer",
+    "to_number": "Bis Nummer",
+    "no_ear_tag": "Keine Ohrmarke",
+    "no_animal_assigned": "Kein Tier zugewiesen"
+  },
+  "animals": {
+    "animals": "Tiere",
+    "animal": "Tier",
+    "new_animal": "Neues Tier",
+    "animal_types": {
+      "goat": "Ziege",
+      "sheep": "Schaf",
+      "cow": "Kuh",
+      "horse": "Pferd",
+      "donkey": "Esel",
+      "pig": "Schwein",
+      "deer": "Hirsch"
+    },
+    "sex": {
+      "male": "Männlich",
+      "female": "Weiblich"
+    },
+    "registered": "Gemeldet (TVD)",
+    "date_of_birth": "Geburtsdatum",
+    "date_of_death": "Todesdatum",
+    "death_reason": "Todesursache",
+    "death_reasons": {
+      "died": "Gestorben",
+      "slaughtered": "Geschlachtet"
+    },
+    "mother": "Mutter",
+    "father": "Vater",
+    "children": "Nachkommen",
+    "add_child": "Nachkommen hinzufügen",
+    "no_children": "Keine Nachkommen",
+    "animal_husbandry": "Tierhaltung",
+    "unregistered_count": "{{count}} nicht gemeldete Tiere",
+    "show_dead": "Tote anzeigen",
+    "only_unregistered": "Nur nicht registrierte",
+    "select_children": "Nachkommen auswählen"
   },
   "permissions": {
     "location": {

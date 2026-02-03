@@ -1028,6 +1028,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/animals/batch": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["PatchV1AnimalsBatch"];
+        trace?: never;
+    };
     "/v1/animals/import": {
         parameters: {
             query?: never;
@@ -3853,7 +3869,8 @@ export interface components {
                 toDate: string;
             }[];
         };
-        GetV1CropRotationsPlotsParameterPlotIds: string[];
+        /** Format: array (preprocessed) */
+        GetV1CropRotationsPlotsParameterPlotIds: unknown;
         GetV1CropRotationsPlotsPositiveResponse: {
             data: {
                 result: {
@@ -4666,6 +4683,7 @@ export interface components {
             generateCropProtectionApplications: boolean;
             generateHarvests: boolean;
         };
+        GetV1AnimalsParameterAnimalTypes: ("goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer")[];
         GetV1AnimalsPositiveResponse: {
             data: {
                 result: {
@@ -4681,6 +4699,7 @@ export interface components {
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     dateOfBirth: string | null;
+                    registered: boolean;
                     earTagId: string | null;
                     earTag: {
                         id: string;
@@ -4714,6 +4733,7 @@ export interface components {
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 dateOfBirth: string | null;
+                registered: boolean;
                 earTagId: string | null;
                 earTag: {
                     id: string;
@@ -4742,16 +4762,78 @@ export interface components {
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
             dateOfBirth?: string;
-            earTagId?: string;
-            motherId?: string;
-            fatherId?: string;
+            registered: boolean;
+            earTagId?: string | null;
+            motherId?: string | null;
+            fatherId?: string | null;
             /**
              * Format: date-time
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
-            dateOfDeath?: string;
-            /** @enum {string} */
-            deathReason?: "died" | "slaughtered";
+            dateOfDeath?: string | null;
+            /** @enum {string|null} */
+            deathReason?: "died" | "slaughtered" | null;
+        };
+        PatchV1AnimalsBatchPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    /** @enum {string} */
+                    type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                    /** @enum {string} */
+                    sex: "male" | "female";
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfBirth: string | null;
+                    registered: boolean;
+                    earTagId: string | null;
+                    earTag: {
+                        id: string;
+                        farmId: string;
+                        number: string;
+                    } | null;
+                    motherId: string | null;
+                    fatherId: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfDeath: string | null;
+                    /** @enum {string|null} */
+                    deathReason: "died" | "slaughtered" | null;
+                }[];
+                count: number;
+            };
+        };
+        PatchV1AnimalsBatchRequestBody: {
+            animals: {
+                name?: string;
+                /** @enum {string} */
+                type?: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                /** @enum {string} */
+                sex?: "male" | "female";
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                dateOfBirth?: string;
+                registered?: boolean;
+                earTagId?: string | null;
+                motherId?: string | null;
+                fatherId?: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                dateOfDeath?: string | null;
+                /** @enum {string|null} */
+                deathReason?: "died" | "slaughtered" | null;
+                id: string;
+            }[];
         };
         PostV1AnimalsImportPositiveResponse: {
             data: {
@@ -4790,6 +4872,7 @@ export interface components {
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     dateOfBirth: string | null;
+                    registered: boolean;
                     earTagId: string | null;
                     earTag: {
                         id: string;
@@ -4823,6 +4906,7 @@ export interface components {
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 dateOfBirth: string | null;
+                registered: boolean;
                 earTagId: string | null;
                 earTag: {
                     id: string;
@@ -4851,6 +4935,7 @@ export interface components {
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     dateOfBirth: string | null;
+                    registered: boolean;
                     earTagId: string | null;
                     earTag: {
                         id: string;
@@ -4880,6 +4965,7 @@ export interface components {
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     dateOfBirth: string | null;
+                    registered: boolean;
                     earTagId: string | null;
                     earTag: {
                         id: string;
@@ -4909,6 +4995,7 @@ export interface components {
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     dateOfBirth: string | null;
+                    registered: boolean;
                     earTagId: string | null;
                     earTag: {
                         id: string;
@@ -4938,6 +5025,7 @@ export interface components {
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     dateOfBirth: string | null;
+                    registered: boolean;
                     earTagId: string | null;
                     earTag: {
                         id: string;
@@ -5000,6 +5088,7 @@ export interface components {
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 dateOfBirth: string | null;
+                registered: boolean;
                 earTagId: string | null;
                 earTag: {
                     id: string;
@@ -5028,16 +5117,17 @@ export interface components {
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
             dateOfBirth?: string;
-            earTagId?: string;
-            motherId?: string;
-            fatherId?: string;
+            registered?: boolean;
+            earTagId?: string | null;
+            motherId?: string | null;
+            fatherId?: string | null;
             /**
              * Format: date-time
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
-            dateOfDeath?: string;
-            /** @enum {string} */
-            deathReason?: "died" | "slaughtered";
+            dateOfDeath?: string | null;
+            /** @enum {string|null} */
+            deathReason?: "died" | "slaughtered" | null;
         };
         DeleteV1AnimalsByIdAnimalIdPositiveResponse: {
             data: Record<string, never>;
@@ -5057,6 +5147,7 @@ export interface components {
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     dateOfBirth: string | null;
+                    registered: boolean;
                     earTagId: string | null;
                     earTag: {
                         id: string;
@@ -5210,6 +5301,7 @@ export interface components {
                          * @description YYYY-MM-DDTHH:mm:ss.sssZ
                          */
                         dateOfBirth: string | null;
+                        registered: boolean;
                         earTagId: string | null;
                         earTag: {
                             id: string;
@@ -5406,6 +5498,7 @@ export interface components {
                          * @description YYYY-MM-DDTHH:mm:ss.sssZ
                          */
                         dateOfBirth: string | null;
+                        registered: boolean;
                         earTagId: string | null;
                         earTag: {
                             id: string;
@@ -5538,6 +5631,7 @@ export interface components {
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     dateOfBirth: string | null;
+                    registered: boolean;
                     earTagId: string | null;
                     earTag: {
                         id: string;
@@ -5739,6 +5833,7 @@ export interface components {
                          * @description YYYY-MM-DDTHH:mm:ss.sssZ
                          */
                         dateOfBirth: string | null;
+                        registered: boolean;
                         earTagId: string | null;
                         motherId: string | null;
                         fatherId: string | null;
@@ -5904,6 +5999,7 @@ export interface components {
                          * @description YYYY-MM-DDTHH:mm:ss.sssZ
                          */
                         dateOfBirth: string | null;
+                        registered: boolean;
                         earTagId: string | null;
                         motherId: string | null;
                         fatherId: string | null;
@@ -6686,6 +6782,7 @@ export interface components {
                          * @description YYYY-MM-DDTHH:mm:ss.sssZ
                          */
                         dateOfBirth: string | null;
+                        registered: boolean;
                         earTagId: string | null;
                         motherId: string | null;
                         fatherId: string | null;
@@ -6812,6 +6909,7 @@ export interface components {
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     dateOfBirth: string | null;
+                    registered: boolean;
                     earTagId: string | null;
                     motherId: string | null;
                     fatherId: string | null;
@@ -12017,6 +12115,8 @@ export interface operations {
         parameters: {
             query?: {
                 /** @description GET /v1/animals Parameter */
+                animalTypes?: components["schemas"]["GetV1AnimalsParameterAnimalTypes"];
+                /** @description GET /v1/animals Parameter */
                 onlyLiving?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             header?: never;
@@ -12083,6 +12183,8 @@ export interface operations {
         parameters: {
             query?: {
                 /** @description HEAD /v1/animals Parameter */
+                animalTypes?: components["schemas"]["GetV1AnimalsParameterAnimalTypes"];
+                /** @description HEAD /v1/animals Parameter */
                 onlyLiving?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             header?: never;
@@ -12104,6 +12206,40 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    PatchV1AnimalsBatch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description PATCH /v1/animals/batch Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PatchV1AnimalsBatchRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/animals/batch Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1AnimalsBatchPositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/animals/batch Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
             };
         };
     };

@@ -1,6 +1,7 @@
 import { useSession } from "@/auth/SessionProvider";
 import Constants from "expo-constants";
 import createClient, { Middleware } from "openapi-fetch";
+import { animalsApi } from "./animals.api";
 import { cropsApi } from "./crops.api";
 import { farmApi } from "./farms.api";
 import { fertilizerSpreadersApi } from "./fertilizerSpreaders.api";
@@ -19,6 +20,7 @@ import { cropProtectionApplicationsApi } from "./cropProtectionApplications.api"
 import { tillageEquipmentsApi } from "./tillageEquipment.api";
 import { cropProtectionProductsApi } from "./cropProtectionProducts.api";
 import { cropProtectionEquipmentsApi } from "./cropProtectionEquipments.api";
+import { earTagsApi } from "./earTags.api";
 import { locale } from "@/locales/i18n";
 import { reportsApi } from "./reports.api";
 
@@ -74,6 +76,8 @@ export function useApi() {
 
 export function api(client: FetchClient) {
   return {
+    animals: animalsApi(client),
+    earTags: earTagsApi(client),
     layers: layersApi(client),
     farms: farmApi(client),
     users: userApi(client),

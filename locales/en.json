@@ -106,6 +106,8 @@
     }
   },
   "common": {
+    "yes": "Yes",
+    "no": "No",
     "no_entries": "No entries yet",
     "area_acres": "Area: {{area}}a",
     "dont_show_again": "Don't show this again",
@@ -708,6 +710,48 @@
     "section_5_title": "Help ensure the app remains free and independent for everyone.",
     "section_5": "Become a member or support us with a donation. Every contribution helps – big or small.",
     "section_6": "Thank you for being part of it."
+  },
+  "animals": {
+    "animals": "Animals",
+    "animal": "Animal",
+    "new_animal": "New Animal",
+    "ear_tags": "Ear Tags",
+    "ear_tag": "Ear Tag",
+    "new_ear_tag_range": "New Ear Tag Range",
+    "from_number": "From Number",
+    "to_number": "To Number",
+    "animal_types": {
+      "goat": "Goat",
+      "sheep": "Sheep",
+      "cow": "Cow",
+      "horse": "Horse",
+      "donkey": "Donkey",
+      "pig": "Pig",
+      "deer": "Deer"
+    },
+    "sex": {
+      "male": "Male",
+      "female": "Female"
+    },
+    "registered": "Registered",
+    "date_of_birth": "Date of Birth",
+    "date_of_death": "Date of Death",
+    "death_reason": "Cause of Death",
+    "death_reasons": {
+      "died": "Died",
+      "slaughtered": "Slaughtered"
+    },
+    "mother": "Mother",
+    "father": "Father",
+    "children": "Children",
+    "add_child": "Add Child",
+    "no_children": "No children",
+    "no_ear_tag": "No ear tag",
+    "animal_husbandry": "Animal Husbandry",
+    "unregistered_count": "{{count}} unregistered animals",
+    "show_dead": "Show dead",
+    "only_unregistered": "Unregistered only",
+    "select_children": "Select Children"
   },
   "permissions": {
     "location": {

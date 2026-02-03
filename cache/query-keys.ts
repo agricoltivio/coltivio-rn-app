@@ -1,3 +1,5 @@
+import { animalsQueryKeys } from "@/features/animals/animals.querykeys";
+import { earTagsQueryKeys } from "@/features/animals/earTags.querykeys";
 import { farmParcelsQueryKeys } from "@/features/farm-parcels/farmParcels.querykeys";
 import { farmsQueryKeys } from "@/features/farms/farms.querykeys";
 import { federalParcelsQueryKeys } from "@/features/federal-plots/federalPlots.querykeys";
@@ -20,6 +22,8 @@ import { cropProtectionApplicationsQueryKeys } from "@/features/crop-protection-
 import { cropProtectionEquipmentsQueryKeys } from "@/features/equipment/cropProtectionEquipment.querykeys";
 
 export const queryKeys = mergeQueryKeys(
+  animalsQueryKeys,
+  earTagsQueryKeys,
   parcelLayerQueryKeys,
   federalParcelsQueryKeys,
   farmsQueryKeys,

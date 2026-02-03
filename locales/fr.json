@@ -708,6 +708,48 @@
     "section_5": "Devenez membre ou soutenez-nous par un don. Chaque contribution compte – grande ou petite.",
     "section_6": "Merci de faire partie de l'aventure."
   },
+  "animals": {
+    "animals": "Animaux",
+    "animal": "Animal",
+    "new_animal": "Nouvel animal",
+    "ear_tags": "Marques auriculaires",
+    "ear_tag": "Marque auriculaire",
+    "new_ear_tag_range": "Nouvelles marques auriculaires",
+    "from_number": "Du numéro",
+    "to_number": "Au numéro",
+    "animal_types": {
+      "goat": "Chèvre",
+      "sheep": "Mouton",
+      "cow": "Vache",
+      "horse": "Cheval",
+      "donkey": "Âne",
+      "pig": "Cochon",
+      "deer": "Cerf"
+    },
+    "sex": {
+      "male": "Mâle",
+      "female": "Femelle"
+    },
+    "registered": "Enregistré",
+    "date_of_birth": "Date de naissance",
+    "date_of_death": "Date de décès",
+    "death_reason": "Cause du décès",
+    "death_reasons": {
+      "died": "Décédé",
+      "slaughtered": "Abattu"
+    },
+    "mother": "Mère",
+    "father": "Père",
+    "children": "Descendants",
+    "add_child": "Ajouter un descendant",
+    "no_children": "Aucun descendant",
+    "no_ear_tag": "Pas de marque auriculaire",
+    "animal_husbandry": "Élevage",
+    "unregistered_count": "{{count}} animaux non enregistrés",
+    "show_dead": "Afficher les morts",
+    "only_unregistered": "Non enregistrés uniquement",
+    "select_children": "Sélectionner les descendants"
+  },
   "permissions": {
     "location": {
       "error": {

@@ -127,14 +127,17 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
             />
           </HomeTile>
         </View>
-        {/* <View
+        <View
           style={{
             flexDirection: "row",
             marginTop: theme.spacing.m,
             gap: theme.spacing.m,
           }}
         >
-          <HomeTile title={t("home.tiles.animal_husbandry")} disabled>
+          <HomeTile
+            title={t("home.tiles.animal_husbandry")}
+            onPress={() => navigation.navigate("AnimalsHub")}
+          >
             <Image
               source={require("@/assets/images/animals-icon.png")}
               contentFit="contain"
@@ -162,7 +165,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
               />
             </View>
           </HomeTile>
-        </View> */}
+        </View>
         {/* <View
           style={{
             flexDirection: "row",
