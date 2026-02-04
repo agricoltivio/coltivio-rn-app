@@ -15,14 +15,18 @@ import {
   useCreateCropRotationsByCropMutation,
   useCropRotationsByPlotIdsQuery,
 } from "../crop-rotations.hooks";
-import { useCreateCropRotationStore } from "./crop-rotations.store";
+import {
+  SelectedCropRotationPlot,
+  useCreateCropRotationStore,
+} from "./crop-rotations.store";
 import { AddCropRotationSummaryScreenProps } from "../navigation/crop-rotations-routes";
 import { Card } from "@/components/card/Card";
 import { useTranslation } from "react-i18next";
-import { CompactDatePicker } from "@/components/datepicker/CompactDatePicker";
+import { CropRotationDatePicker } from "@/components/datepicker/CropRotationDatePicker";
 import { PlotCropRotation } from "@/api/crop-rotations.api";
 import { formatLocalizedDate, INFINITE_DATE } from "@/utils/date";
 import { locale } from "@/locales/i18n";
+import { isAfter } from "date-fns";
 
 /** Returns true if the existing rotation is "permanent" (toDate is INFINITE_DATE) */
 function isPermanentRotation(rotation: PlotCropRotation): boolean {
@@ -131,13 +135,26 @@ export function AddCropRotationSummaryScreen({
   );
 
   // Precompute last rotation info and default dates for each plot
-  const plotsWithDates = useMemo(
+  const plotsWithDatesAndRotations: Array<
+    SelectedCropRotationPlot & {
+      fromDate?: Date;
+      toDate?: Date;
+      rotations: PlotCropRotation[];
+      lastRotation?: PlotCropRotation;
+      lastIsPermanent: boolean;
+      defaultDate: Date;
+    }
+  > = useMemo(
     () =>
       selectedPlots.map((plot) => {
-        const lastRotation = getLastRotationForPlot(
-          plotCropRotations,
-          plot.plotId,
-        );
+        const rotations =
+          plotCropRotations
+            ?.filter((r) => r.plotId === plot.plotId)
+            .sort(
+              (a, b) =>
+                new Date(b.fromDate).getTime() - new Date(a.fromDate).getTime(),
+            ) ?? [];
+        const lastRotation = rotations[0];
         const lastIsPermanent = lastRotation
           ? isPermanentRotation(lastRotation)
           : false;
@@ -149,6 +166,7 @@ export function AddCropRotationSummaryScreen({
           ...plot,
           fromDate: plotDatesById[plot.plotId]?.fromDate,
           toDate: plotDatesById[plot.plotId]?.toDate,
+          rotations,
           lastRotation,
           lastIsPermanent,
           defaultDate,
@@ -191,7 +209,7 @@ export function AddCropRotationSummaryScreen({
     if (!cropId) return;
     createCropRotationsMutation.mutate({
       cropId,
-      plots: plotsWithDates.map((plot) => ({
+      plots: plotsWithDatesAndRotations.map((plot) => ({
         plotId: plot.plotId,
         cropId: cropId,
         fromDate: plot.fromDate?.toISOString() ?? new Date().toISOString(),
@@ -261,7 +279,7 @@ export function AddCropRotationSummaryScreen({
 
         {/* Per-plot date list */}
         <View style={{ marginTop: theme.spacing.m, gap: theme.spacing.s }}>
-          {plotsWithDates.map((plot) => {
+          {plotsWithDatesAndRotations.map((plot) => {
             const hasOverlap = overlappingPlotIds.has(plot.plotId);
             return (
               <Card
@@ -325,19 +343,27 @@ export function AddCropRotationSummaryScreen({
                     flexWrap: "wrap",
                   }}
                 >
-                  <CompactDatePicker
+                  <CropRotationDatePicker
                     label={t("forms.labels.from")}
+                    mode="from"
+                    plotId={plot.plotId}
+                    existingRotations={plot.rotations}
                     date={plot.fromDate ?? plot.defaultDate}
                     onDateChange={(date) => {
                       setPlotDate(
                         plot.plotId,
                         date,
-                        plot.toDate ?? plot.defaultDate,
+                        isAfter(date, plot.toDate || plot.defaultDate)
+                          ? date
+                          : plot.toDate || plot.defaultDate,
                       );
                     }}
                   />
-                  <CompactDatePicker
+                  <CropRotationDatePicker
                     label={t("forms.labels.to")}
+                    mode="to"
+                    plotId={plot.plotId}
+                    existingRotations={plot.rotations}
                     date={plot.toDate ?? plot.defaultDate}
                     minimumDate={plot.fromDate ?? plot.defaultDate}
                     onDateChange={(date) => {

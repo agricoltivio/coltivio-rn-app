@@ -71,7 +71,6 @@ export function EditPlotMapScreen({
   };
 
   const handleMapPress = (event: MapPressEvent) => {
-    console.log("draw action", drawingAction);
     if (drawingAction === "draw") {
       event.stopPropagation();
       polygonDrawingToolRef.current?.drawToPoint(event.nativeEvent.coordinate);
@@ -82,8 +81,8 @@ export function EditPlotMapScreen({
     if (polygonIndex < plot!.geometry.coordinates.length - 1) {
       polygonDrawingToolRef.current?.editPolygon(
         GeoSpatials.coordinatesToLatLng(
-          plot!.geometry.coordinates[polygonIndex + 1][0]
-        )
+          plot!.geometry.coordinates[polygonIndex + 1][0],
+        ),
       );
       setEditedCoordinates((prev) => [...prev, coordinates]);
       setPolygonIndex((prev) => prev + 1);
@@ -109,7 +108,7 @@ export function EditPlotMapScreen({
       strokeColor={"white"}
       fillColor={hexToRgba(
         theme.map.defaultFillColor,
-        theme.map.defaultFillAlpha
+        theme.map.defaultFillAlpha,
       )}
     />
   ));
@@ -144,7 +143,7 @@ export function EditPlotMapScreen({
             ([longitude, latitude]) => ({
               longitude,
               latitude,
-            })
+            }),
           )}
           portalName="PlotsMap"
           ref={polygonDrawingToolRef}
@@ -169,11 +168,11 @@ function EditAreaTipp() {
   const theme = useTheme();
   const frame = useSafeAreaFrame();
   const [showTip, setShowTip] = useState(
-    localSettings.editPlotMapShowEditDrawingTipp
+    localSettings.editPlotMapShowEditDrawingTipp,
   );
 
   const [visible, setVisible] = useState(
-    localSettings.editPlotMapShowEditDrawingTipp
+    localSettings.editPlotMapShowEditDrawingTipp,
   );
 
   if (!visible) {
