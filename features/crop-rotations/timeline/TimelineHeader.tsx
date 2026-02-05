@@ -21,7 +21,13 @@ export const TimelineHeader = memo(function TimelineHeader({
   const theme = useTheme();
 
   return (
-    <View style={{ width: contentWidth, height: HEADER_HEIGHT, position: "relative" }}>
+    <View
+      style={{
+        width: contentWidth,
+        height: HEADER_HEIGHT,
+        position: "relative",
+      }}
+    >
       {gridLines.map((line) => {
         const x = line.day * scale;
         return (

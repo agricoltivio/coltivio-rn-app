@@ -1,16 +1,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState, memo } from "react";
-import { View, Text, LayoutChangeEvent, Pressable, ScrollView } from "react-native";
+import { View, Text, LayoutChangeEvent, Pressable } from "react-native";
 import { useTheme } from "styled-components/native";
 import Animated, {
   useSharedValue,
   useAnimatedScrollHandler,
   useAnimatedRef,
   scrollTo,
-  runOnJS,
   useAnimatedStyle,
   type SharedValue,
 } from "react-native-reanimated";
-import { TimelineData, TimelinePlotData, getGridLines, getWeekLines } from "./timeline-utils";
+import { TimelineData, getGridLines, getWeekLines } from "./timeline-utils";
 import { TimelinePlotRow, ROW_HEIGHT } from "./TimelinePlotRow";
 import { TimelineHeader, TIMELINE_HEADER_HEIGHT } from "./TimelineHeader";
 import {
@@ -18,6 +17,7 @@ import {
   ZoomLevelToggle,
   getScaleForZoomLevel,
 } from "./ZoomLevelToggle";
+import { runOnJS } from "react-native-worklets";
 
 type CropRotationTimelineProps = {
   timelineData: TimelineData;
@@ -146,7 +146,6 @@ export function CropRotationTimeline({
 }: CropRotationTimelineProps) {
   const theme = useTheme();
   const [viewportWidth, setViewportWidth] = useState(0);
-  const [viewportHeight, setViewportHeight] = useState(0);
   const [zoomLevel, setZoomLevel] = useState<ZoomLevel>("years");
   // Header visible range - updated during scroll for real-time header
   const [headerRange, setHeaderRange] = useState({ start: 0, end: 0 });
@@ -162,19 +161,21 @@ export function CropRotationTimeline({
   const bodyHorizontalScrollRef = useAnimatedRef<Animated.ScrollView>();
   const bodyVerticalScrollRef = useAnimatedRef<Animated.ScrollView>();
 
-
   // Shared values for scroll position (no re-renders)
   const scrollX = useSharedValue(0);
   const scrollY = useSharedValue(0);
 
   // Programmatic scroll helper - uses native .scrollTo() via animated ref .current
-  const scrollAllHorizontalTo = useCallback((x: number) => {
-    scrollX.value = x;
-    const opts = { x, y: 0, animated: false };
-    (headerScrollRef.current as unknown as ScrollView)?.scrollTo?.(opts);
-    (weekHeaderScrollRef.current as unknown as ScrollView)?.scrollTo?.(opts);
-    (bodyHorizontalScrollRef.current as unknown as ScrollView)?.scrollTo?.(opts);
-  }, [scrollX, headerScrollRef, weekHeaderScrollRef, bodyHorizontalScrollRef]);
+  const scrollAllHorizontalTo = useCallback(
+    (x: number) => {
+      scrollX.value = x;
+      const opts = { x, y: 0, animated: false };
+      (headerScrollRef.current as any)?.scrollTo?.(opts);
+      (weekHeaderScrollRef.current as any)?.scrollTo?.(opts);
+      (bodyHorizontalScrollRef.current as any)?.scrollTo?.(opts);
+    },
+    [scrollX, headerScrollRef, weekHeaderScrollRef, bodyHorizontalScrollRef],
+  );
 
   // Debounce timer ref for body grid lines
   const gridUpdateTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -202,7 +203,10 @@ export function CropRotationTimeline({
     const newContentWidth = totalDays * scale;
     return Math.max(
       0,
-      Math.min(todayDay * scale - viewportWidth / 2, newContentWidth - viewportWidth),
+      Math.min(
+        todayDay * scale - viewportWidth / 2,
+        newContentWidth - viewportWidth,
+      ),
     );
   }, [viewportWidth, totalDays, scale, todayDay]);
 
@@ -219,23 +223,16 @@ export function CropRotationTimeline({
     }
   }, [viewportWidth, totalDays, initialScrollX, scale, scrollAllHorizontalTo]);
 
-  // Reset vertical scroll when plots change (e.g. after filtering)
-  const prevPlotsRef = useRef(plots);
-  useEffect(() => {
-    if (prevPlotsRef.current !== plots) {
-      prevPlotsRef.current = plots;
-      scrollY.value = 0;
-      (plotNamesScrollRef.current as unknown as ScrollView)?.scrollTo?.({ x: 0, y: 0, animated: false });
-      (bodyVerticalScrollRef.current as unknown as ScrollView)?.scrollTo?.({ x: 0, y: 0, animated: false });
-    }
-  }, [plots, scrollY, plotNamesScrollRef, bodyVerticalScrollRef]);
-
   // Get all years in the timeline data for the animated year row (pre-compute pixel positions)
   const allYearsWithPx = useMemo(() => {
     if (zoomLevel === "years") return [];
     return timelineData.years.map((year) => {
-      const startDay = Math.round((new Date(year, 0, 1).getTime() - epochStart.getTime()) / MS_PER_DAY);
-      const endDay = Math.round((new Date(year, 11, 31).getTime() - epochStart.getTime()) / MS_PER_DAY);
+      const startDay = Math.round(
+        (new Date(year, 0, 1).getTime() - epochStart.getTime()) / MS_PER_DAY,
+      );
+      const endDay = Math.round(
+        (new Date(year, 11, 31).getTime() - epochStart.getTime()) / MS_PER_DAY,
+      );
       return {
         year,
         startPx: startDay * scale,
@@ -248,39 +245,74 @@ export function CropRotationTimeline({
   // Use initialScrollX-based range when headerRange hasn't been set yet
   const headerGridLines = useMemo(() => {
     const hasInitialRange = headerRange.end > headerRange.start;
-    const startDay = hasInitialRange ? headerRange.start : initialScrollX / scale;
-    const endDay = hasInitialRange ? headerRange.end : (initialScrollX + viewportWidth) / scale;
+    const startDay = hasInitialRange
+      ? headerRange.start
+      : initialScrollX / scale;
+    const endDay = hasInitialRange
+      ? headerRange.end
+      : (initialScrollX + viewportWidth) / scale;
     const span = endDay - startDay;
     const padding = Math.max(span, 30);
     return getGridLines(startDay - padding, endDay + padding, epochStart);
-  }, [headerRange.start, headerRange.end, initialScrollX, viewportWidth, scale, epochStart]);
+  }, [
+    headerRange.start,
+    headerRange.end,
+    initialScrollX,
+    viewportWidth,
+    scale,
+    epochStart,
+  ]);
 
   // Body grid lines - only recalculated when scroll ends (debounced)
   // Use initialScrollX-based range when bodyGridRange hasn't been set yet
   const bodyGridLines = useMemo(() => {
     const hasInitialRange = bodyGridRange.end > bodyGridRange.start;
-    const startDay = hasInitialRange ? bodyGridRange.start : initialScrollX / scale;
-    const endDay = hasInitialRange ? bodyGridRange.end : (initialScrollX + viewportWidth) / scale;
+    const startDay = hasInitialRange
+      ? bodyGridRange.start
+      : initialScrollX / scale;
+    const endDay = hasInitialRange
+      ? bodyGridRange.end
+      : (initialScrollX + viewportWidth) / scale;
     const span = endDay - startDay;
     const padding = Math.max(span, 30);
     return getGridLines(startDay - padding, endDay + padding, epochStart);
-  }, [bodyGridRange.start, bodyGridRange.end, initialScrollX, viewportWidth, scale, epochStart]);
+  }, [
+    bodyGridRange.start,
+    bodyGridRange.end,
+    initialScrollX,
+    viewportWidth,
+    scale,
+    epochStart,
+  ]);
 
   // Week number lines - for the week header row in weeks view
   const weekLines = useMemo(() => {
     if (zoomLevel !== "weeks") return [];
     const hasInitialRange = headerRange.end > headerRange.start;
-    const startDay = hasInitialRange ? headerRange.start : initialScrollX / scale;
-    const endDay = hasInitialRange ? headerRange.end : (initialScrollX + viewportWidth) / scale;
+    const startDay = hasInitialRange
+      ? headerRange.start
+      : initialScrollX / scale;
+    const endDay = hasInitialRange
+      ? headerRange.end
+      : (initialScrollX + viewportWidth) / scale;
     const span = endDay - startDay;
     const padding = Math.max(span, 30);
     return getWeekLines(startDay - padding, endDay + padding, epochStart);
-  }, [zoomLevel, headerRange.start, headerRange.end, initialScrollX, viewportWidth, scale, epochStart]);
+  }, [
+    zoomLevel,
+    headerRange.start,
+    headerRange.end,
+    initialScrollX,
+    viewportWidth,
+    scale,
+    epochStart,
+  ]);
 
   // Calculate total header height based on zoom level
-  const totalHeaderHeight = TIMELINE_HEADER_HEIGHT
-    + (zoomLevel !== "years" ? YEAR_ROW_HEIGHT : 0)
-    + (zoomLevel === "weeks" ? WEEK_ROW_HEIGHT : 0);
+  const totalHeaderHeight =
+    TIMELINE_HEADER_HEIGHT +
+    (zoomLevel !== "years" ? YEAR_ROW_HEIGHT : 0) +
+    (zoomLevel === "weeks" ? WEEK_ROW_HEIGHT : 0);
 
   // Throttled update of header range (called during scroll, ~15fps to reduce re-renders)
   const updateHeaderRange = useCallback(
@@ -339,14 +371,9 @@ export function CropRotationTimeline({
     },
   });
 
-  const handleLayout = useCallback(
-    (event: LayoutChangeEvent) => {
-      const { width, height } = event.nativeEvent.layout;
-      setViewportWidth(width);
-      setViewportHeight(height - TIMELINE_HEADER_HEIGHT);
-    },
-    [],
-  );
+  const handleLayout = useCallback((event: LayoutChangeEvent) => {
+    setViewportWidth(event.nativeEvent.layout.width);
+  }, []);
 
   // Jump to today's date
   const handleTodayPress = useCallback(() => {
@@ -391,32 +418,14 @@ export function CropRotationTimeline({
   );
 
   // Visible range for bar culling - use headerRange (updates during scroll) for real-time bar visibility
-  const visibleStartDay = headerRange.end > headerRange.start
-    ? headerRange.start
-    : initialScrollX / scale;
-  const visibleEndDay = headerRange.end > headerRange.start
-    ? headerRange.end
-    : (initialScrollX + viewportWidth) / scale;
-
-  // Render item for FlatList - just the bars, no grid lines
-  const renderPlotRow = useCallback(
-    ({ item }: { item: TimelinePlotData }) => (
-      <TimelinePlotRow
-        bars={item.bars}
-        scale={scale}
-        visibleStartDay={visibleStartDay}
-        visibleEndDay={visibleEndDay}
-        onBarPress={onBarPress}
-      />
-    ),
-    [scale, visibleStartDay, visibleEndDay, onBarPress],
-  );
-
-  const keyExtractor = useCallback(
-    (item: TimelinePlotData) => item.plotId,
-    [],
-  );
-
+  const visibleStartDay =
+    headerRange.end > headerRange.start
+      ? headerRange.start
+      : initialScrollX / scale;
+  const visibleEndDay =
+    headerRange.end > headerRange.start
+      ? headerRange.end
+      : (initialScrollX + viewportWidth) / scale;
 
   if (totalDays === 0 || plots.length === 0) {
     return null;
@@ -425,7 +434,14 @@ export function CropRotationTimeline({
   return (
     <View style={{ flex: 1 }}>
       {/* Zoom level toggle and Today button */}
-      <View style={{ flexDirection: "row", alignItems: "center", marginBottom: theme.spacing.s, gap: theme.spacing.s }}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginBottom: theme.spacing.s,
+          gap: theme.spacing.s,
+        }}
+      >
         <ZoomLevelToggle
           zoomLevel={zoomLevel}
           onChangeZoomLevel={handleZoomLevelChange}
@@ -439,7 +455,13 @@ export function CropRotationTimeline({
             borderRadius: theme.radii.l,
           }}
         >
-          <Text style={{ fontSize: 12, fontWeight: "600", color: theme.colors.gray1 }}>
+          <Text
+            style={{
+              fontSize: 12,
+              fontWeight: "600",
+              color: theme.colors.gray1,
+            }}
+          >
             Today
           </Text>
         </Pressable>
@@ -512,12 +534,23 @@ export function CropRotationTimeline({
           </View>
 
           {/* Right area: scrollable timeline */}
-          <View style={{ flex: 1 }} onLayout={handleLayout}>
+          <View
+            style={{
+              flex: 1,
+            }}
+            onLayout={handleLayout}
+          >
             {viewportWidth > 0 && (
               <>
                 {/* Year context row - non-scrolling overlay, positioned by animated styles */}
                 {zoomLevel !== "years" && (
-                  <View style={{ height: YEAR_ROW_HEIGHT, position: "relative", overflow: "hidden", backgroundColor: theme.colors.gray5 }}>
+                  <View
+                    style={{
+                      height: YEAR_ROW_HEIGHT,
+                      position: "relative",
+                      overflow: "hidden",
+                    }}
+                  >
                     {allYearsWithPx.map(({ year, startPx }) => (
                       <YearDivider
                         key={`divider-${year}`}
@@ -542,75 +575,83 @@ export function CropRotationTimeline({
                 )}
 
                 {/* Header row — months/years labels, horizontal scroll synced with body */}
-                <Animated.ScrollView
-                  ref={headerScrollRef}
-                  horizontal
-                  scrollEnabled={false}
-                  showsHorizontalScrollIndicator={false}
-                  style={{
-                    height: TIMELINE_HEADER_HEIGHT,
-                    borderBottomWidth: zoomLevel === "weeks" ? 0 : 1,
-                    borderBottomColor: theme.colors.gray4,
-                  }}
-                >
-                  <TimelineHeader
-                    gridLines={headerGridLines}
-                    scale={scale}
-                    contentWidth={contentWidth}
-                  />
-                </Animated.ScrollView>
-
-                {/* Week number row — only in weeks view */}
-                {zoomLevel === "weeks" && (
+                <View style={{ height: TIMELINE_HEADER_HEIGHT }}>
                   <Animated.ScrollView
-                    ref={weekHeaderScrollRef}
+                    ref={headerScrollRef}
                     horizontal
                     scrollEnabled={false}
                     showsHorizontalScrollIndicator={false}
-                      style={{
-                      height: WEEK_ROW_HEIGHT,
-                      borderBottomWidth: 1,
+                    style={{
+                      borderBottomWidth: zoomLevel === "weeks" ? 0 : 1,
                       borderBottomColor: theme.colors.gray4,
                     }}
                   >
-                    <View style={{ width: contentWidth, height: WEEK_ROW_HEIGHT, position: "relative" }}>
-                      {weekLines.map((line) => (
-                        <View
-                          key={line.day}
-                          style={{
-                            position: "absolute",
-                            left: line.day * scale,
-                            top: 0,
-                            bottom: 0,
-                          }}
-                        >
+                    <TimelineHeader
+                      gridLines={headerGridLines}
+                      scale={scale}
+                      contentWidth={contentWidth}
+                    />
+                  </Animated.ScrollView>
+                </View>
+
+                {/* Week number row — only in weeks view */}
+                {zoomLevel === "weeks" && (
+                  <View style={{ height: WEEK_ROW_HEIGHT }}>
+                    <Animated.ScrollView
+                      ref={weekHeaderScrollRef}
+                      horizontal
+                      scrollEnabled={false}
+                      showsHorizontalScrollIndicator={false}
+                      style={{
+                        borderBottomWidth: 1,
+                        borderBottomColor: theme.colors.gray4,
+                      }}
+                    >
+                      <View
+                        style={{
+                          width: contentWidth,
+                          height: WEEK_ROW_HEIGHT,
+                          position: "relative",
+                        }}
+                      >
+                        {weekLines.map((line) => (
                           <View
+                            key={line.day}
                             style={{
                               position: "absolute",
-                              left: 0,
+                              left: line.day * scale,
                               top: 0,
                               bottom: 0,
-                              width: 1,
-                              backgroundColor: theme.colors.gray3,
                             }}
-                          />
-                          <Text
-                            style={{
-                              fontSize: 9,
-                              fontWeight: "500",
-                              color: theme.colors.gray2,
-                              position: "absolute",
-                              left: 4,
-                              top: 3,
-                            }}
-                            numberOfLines={1}
                           >
-                            {line.label}
-                          </Text>
-                        </View>
-                      ))}
-                    </View>
-                  </Animated.ScrollView>
+                            <View
+                              style={{
+                                position: "absolute",
+                                left: 0,
+                                top: 0,
+                                bottom: 0,
+                                width: 1,
+                                backgroundColor: theme.colors.gray3,
+                              }}
+                            />
+                            <Text
+                              style={{
+                                fontSize: 9,
+                                fontWeight: "500",
+                                color: theme.colors.gray2,
+                                position: "absolute",
+                                left: 4,
+                                top: 3,
+                              }}
+                              numberOfLines={1}
+                            >
+                              {line.label}
+                            </Text>
+                          </View>
+                        ))}
+                      </View>
+                    </Animated.ScrollView>
+                  </View>
                 )}
 
                 {/* Body — horizontal scroll wrapping vertical FlatList */}
@@ -621,7 +662,11 @@ export function CropRotationTimeline({
                   scrollEventThrottle={16}
                   showsHorizontalScrollIndicator={false}
                 >
-                  <View style={{ width: contentWidth }}>
+                  <View
+                    style={{
+                      width: contentWidth,
+                    }}
+                  >
                     {/* Grid lines layer - single render for all rows */}
                     <View
                       style={{
@@ -656,24 +701,24 @@ export function CropRotationTimeline({
                       })}
                     </View>
 
-                    {/* Rows - virtualized */}
-                    <Animated.FlatList
-                      ref={bodyVerticalScrollRef as any}
-                      data={plots}
-                      renderItem={renderPlotRow}
-                      keyExtractor={keyExtractor}
+                    {/* Rows */}
+                    <Animated.ScrollView
+                      ref={bodyVerticalScrollRef}
                       onScroll={verticalScrollHandler}
                       scrollEventThrottle={16}
                       showsVerticalScrollIndicator={false}
-                      initialNumToRender={Math.ceil(viewportHeight / ROW_HEIGHT) + 2}
-                      maxToRenderPerBatch={10}
-                      windowSize={5}
-                      getItemLayout={(_, index) => ({
-                        length: ROW_HEIGHT,
-                        offset: ROW_HEIGHT * index,
-                        index,
-                      })}
-                    />
+                    >
+                      {plots.map((plot) => (
+                        <TimelinePlotRow
+                          key={plot.plotId}
+                          bars={plot.bars}
+                          scale={scale}
+                          visibleStartDay={visibleStartDay}
+                          visibleEndDay={visibleEndDay}
+                          onBarPress={onBarPress}
+                        />
+                      ))}
+                    </Animated.ScrollView>
                   </View>
                 </Animated.ScrollView>
               </>
