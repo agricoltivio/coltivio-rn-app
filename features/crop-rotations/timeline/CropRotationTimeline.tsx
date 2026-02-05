@@ -12,6 +12,7 @@ import Animated, {
 import {
   TimelineData,
   TimelinePlotData,
+  GridLine,
   getAllGridLines,
   getAllWeekLines,
 } from "./timeline-utils";
@@ -229,17 +230,27 @@ export function CropRotationTimeline({
     });
   }, [zoomLevel, timelineData.years, epochStart, scale]);
 
-  // All grid lines — precomputed (cheap date math), recomputed only on zoom/data change
-  const allGridLines = useMemo(
-    () => getAllGridLines(totalDays, epochStart, zoomLevel),
-    [totalDays, epochStart, zoomLevel],
-  );
+  // Lazy cache: grid lines computed once per zoom level on first use, instant on re-toggle.
+  // Invalidated when timeline data changes (totalDays/epochStart).
+  const gridCache = useRef<{
+    key: number;
+    grids: Partial<Record<ZoomLevel, GridLine[]>>;
+    weeks: GridLine[] | null;
+  }>({ key: 0, grids: {}, weeks: null });
 
-  // All week lines — precomputed, only in weeks view
-  const allWeekLines = useMemo(
-    () => (zoomLevel === "weeks" ? getAllWeekLines(totalDays, epochStart) : []),
-    [zoomLevel, totalDays, epochStart],
-  );
+  const cacheKey = totalDays + epochStart.getTime();
+  if (gridCache.current.key !== cacheKey) {
+    gridCache.current = { key: cacheKey, grids: {}, weeks: null };
+  }
+  if (!gridCache.current.grids[zoomLevel]) {
+    gridCache.current.grids[zoomLevel] = getAllGridLines(totalDays, epochStart, zoomLevel);
+  }
+  const allGridLines = gridCache.current.grids[zoomLevel]!;
+
+  if (zoomLevel === "weeks" && !gridCache.current.weeks) {
+    gridCache.current.weeks = getAllWeekLines(totalDays, epochStart);
+  }
+  const allWeekLines = zoomLevel === "weeks" ? gridCache.current.weeks! : [];
 
   // Helper: compute center/halfSpan from barVisibleRange or fallback to todayDay
   const rangeCenter = barVisibleRange.end > barVisibleRange.start
@@ -259,14 +270,14 @@ export function CropRotationTimeline({
     );
   }, [zoomLevel, allGridLines, rangeCenter, rangeHalfSpan]);
 
-  // Header week lines — same large buffer
+  // Header week lines — same large buffer, only in weeks view
   const headerWeekLines = useMemo(() => {
-    if (allWeekLines.length === 0) return [];
+    if (zoomLevel !== "weeks") return [];
     const buffer = rangeHalfSpan * 20;
     return allWeekLines.filter(
       (line) => line.day >= rangeCenter - buffer && line.day <= rangeCenter + buffer,
     );
-  }, [allWeekLines, rangeCenter, rangeHalfSpan]);
+  }, [zoomLevel, allWeekLines, rangeCenter, rangeHalfSpan]);
 
   // Body grid lines — smaller buffer, updates lazily (grid lines can pop in)
   const bodyGridLines = useMemo(() => {
