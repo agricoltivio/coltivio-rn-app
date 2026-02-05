@@ -59,7 +59,7 @@ export function SelectHarvestingMachineryScreen({
   const machineId = watch("machineId");
 
   const currentSelectedHarvestingMachinery = harvestingMachinery?.find(
-    (harvestingMachinery) => harvestingMachinery.id === machineId
+    (harvestingMachinery) => harvestingMachinery.id === machineId,
   );
 
   useEffect(() => {
@@ -68,7 +68,7 @@ export function SelectHarvestingMachineryScreen({
       return;
     }
     const defaultMachineConfig = harvestingMachinery?.find(
-      (config) => config.default
+      (config) => config.default,
     );
     if (defaultMachineConfig) {
       setValue("machineId", defaultMachineConfig.id);
@@ -79,28 +79,28 @@ export function SelectHarvestingMachineryScreen({
     if (currentSelectedHarvestingMachinery) {
       setValue(
         "processingType",
-        currentSelectedHarvestingMachinery.defaultProcessingType
+        currentSelectedHarvestingMachinery.defaultProcessingType,
       );
       setValue(
         "conservationMethod",
-        currentSelectedHarvestingMachinery.defaultConservationMethod
+        currentSelectedHarvestingMachinery.defaultConservationMethod,
       );
       setValue(
         "kilosPerUnit",
-        currentSelectedHarvestingMachinery.defaultKilosPerUnit.toString()
+        currentSelectedHarvestingMachinery.defaultKilosPerUnit.toString(),
       );
     }
   }, [currentSelectedHarvestingMachinery]);
 
   const processingType = watch("processingType");
   const [kilosPerUnitLabel, setKilosPerUnitLabel] = useState(
-    `${t("units.short.kg")}/${t("harvests.labels.unit.other")}`
+    `${t("units.short.kg")}/${t("harvests.labels.unit.other")}`,
   );
 
   useEffect(() => {
     if (processingType) {
       setKilosPerUnitLabel(
-        `${t("units.short.kg")}/${t(`harvests.labels.unit.${processingType}`)}`
+        `${t("units.short.kg")}/${t(`harvests.labels.unit.${processingType}`)}`,
       );
     }
     if (
@@ -144,11 +144,11 @@ export function SelectHarvestingMachineryScreen({
     >
       <ScrollView
         showHeaderOnScroll
-        headerTitleOnScroll={t("harvests.labels.select_machinery.heading")}
+        headerTitleOnScroll={t("harvests.labels.select_how.heading")}
         keyboardAware
       >
         {/* <H2>Neue Ernte</H2> */}
-        <H2>{t("harvests.labels.select_machinery.heading")}</H2>
+        <H2>{t("harvests.labels.select_how.heading")}</H2>
         <View
           style={{ gap: theme.spacing.s, flex: 1, marginTop: theme.spacing.m }}
         >

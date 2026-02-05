@@ -228,6 +228,90 @@ export function getWeekLines(
   return lines;
 }
 
+// Returns all grid lines for the entire content, granularity based on zoom level.
+// Unlike getGridLines (which windows to a visible range), this renders everything.
+export function getAllGridLines(
+  totalDays: number,
+  epochStart: Date,
+  zoomLevel: "years" | "months" | "weeks",
+): GridLine[] {
+  const lines: GridLine[] = [];
+
+  if (zoomLevel === "years") {
+    const startYear = epochStart.getFullYear();
+    const endDate = new Date(epochStart.getTime() + totalDays * MS_PER_DAY);
+    const endYear = endDate.getFullYear();
+    for (let year = startYear; year <= endYear + 1; year++) {
+      const day = daysBetween(epochStart, new Date(year, 0, 1));
+      if (day >= 0 && day <= totalDays) {
+        lines.push({ day, label: String(year), isMajor: true });
+      }
+    }
+  } else if (zoomLevel === "months") {
+    const endDate = new Date(epochStart.getTime() + totalDays * MS_PER_DAY);
+    const current = new Date(epochStart.getFullYear(), 0, 1);
+    while (current <= endDate) {
+      const day = daysBetween(epochStart, current);
+      if (day >= 0 && day <= totalDays) {
+        const isJanuary = current.getMonth() === 0;
+        const label = isJanuary
+          ? `${MONTH_SHORT[current.getMonth()]} ${current.getFullYear()}`
+          : MONTH_SHORT[current.getMonth()];
+        lines.push({ day, label, isMajor: isJanuary });
+      }
+      current.setMonth(current.getMonth() + 1);
+    }
+  } else {
+    // Week boundaries (every Monday)
+    const startDate = new Date(epochStart.getTime());
+    const dayOfWeek = startDate.getDay();
+    const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+    const monday = new Date(startDate);
+    monday.setDate(monday.getDate() - daysToMonday);
+    while (true) {
+      const day = daysBetween(epochStart, monday);
+      if (day > totalDays) break;
+      if (day >= 0) {
+        const weekNum = getISOWeekNumber(monday);
+        const isFirstWeekOfMonth = monday.getDate() <= 7;
+        lines.push({
+          day,
+          label: isFirstWeekOfMonth
+            ? `${MONTH_SHORT[monday.getMonth()]} W${weekNum}`
+            : `W${weekNum}`,
+          isMajor: isFirstWeekOfMonth,
+        });
+      }
+      monday.setDate(monday.getDate() + 7);
+    }
+  }
+
+  return lines;
+}
+
+// Returns all week lines for the entire content (for the week number header row).
+export function getAllWeekLines(
+  totalDays: number,
+  epochStart: Date,
+): GridLine[] {
+  const lines: GridLine[] = [];
+  const startDate = new Date(epochStart.getTime());
+  const dayOfWeek = startDate.getDay();
+  const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+  const monday = new Date(startDate);
+  monday.setDate(monday.getDate() - daysToMonday);
+  while (true) {
+    const day = daysBetween(epochStart, monday);
+    if (day > totalDays) break;
+    if (day >= 0) {
+      const weekNum = getISOWeekNumber(monday);
+      lines.push({ day, label: `W${weekNum}`, isMajor: false });
+    }
+    monday.setDate(monday.getDate() + 7);
+  }
+  return lines;
+}
+
 export function getISOWeekNumber(date: Date): number {
   const d = new Date(
     Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),

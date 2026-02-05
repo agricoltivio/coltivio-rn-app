@@ -531,8 +531,8 @@
       "select_date": {
         "heading": "Wann wurde geerntet?"
       },
-      "select_machinery": {
-        "heading": "Welche Maschine wurde verwendet?",
+      "select_how": {
+        "heading": "Wie wurde geerntet?",
         "no_machinery": "Du hast noch keine Maschine erfasst. Diese vereinfachen die Erfassung der Ernte, indem du Standardwerte vordefinieren kannst."
       }
     }

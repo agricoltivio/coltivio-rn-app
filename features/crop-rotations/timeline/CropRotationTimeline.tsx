@@ -9,7 +9,12 @@ import Animated, {
   useAnimatedStyle,
   type SharedValue,
 } from "react-native-reanimated";
-import { TimelineData, getGridLines, getWeekLines } from "./timeline-utils";
+import {
+  TimelineData,
+  TimelinePlotData,
+  getAllGridLines,
+  getAllWeekLines,
+} from "./timeline-utils";
 import { TimelinePlotRow, ROW_HEIGHT } from "./TimelinePlotRow";
 import { TimelineHeader, TIMELINE_HEADER_HEIGHT } from "./TimelineHeader";
 import {
@@ -17,7 +22,7 @@ import {
   ZoomLevelToggle,
   getScaleForZoomLevel,
 } from "./ZoomLevelToggle";
-import { runOnJS } from "react-native-worklets";
+import { scheduleOnRN } from "react-native-worklets";
 
 type CropRotationTimelineProps = {
   timelineData: TimelineData;
@@ -26,8 +31,6 @@ type CropRotationTimelineProps = {
 
 const PLOT_LABEL_WIDTH = 100;
 const MS_PER_DAY = 86_400_000;
-// Debounce delay for grid line updates (ms)
-const GRID_UPDATE_DELAY = 100;
 // Height of the year context row (shown in months/weeks views)
 const YEAR_ROW_HEIGHT = 20;
 // Height of the week number row (shown in weeks view)
@@ -147,11 +150,8 @@ export function CropRotationTimeline({
   const theme = useTheme();
   const [viewportWidth, setViewportWidth] = useState(0);
   const [zoomLevel, setZoomLevel] = useState<ZoomLevel>("years");
-  // Header visible range - updated during scroll for real-time header
-  const [headerRange, setHeaderRange] = useState({ start: 0, end: 0 });
-  // Body grid lines range - updated on scroll end (debounced) for performance
-  const [bodyGridRange, setBodyGridRange] = useState({ start: 0, end: 0 });
-  // Track if initial scroll has been done
+  // Bar culling range — updated on mount, zoom change, and scroll end
+  const [barVisibleRange, setBarVisibleRange] = useState({ start: 0, end: 0 });
   const hasInitialScrolled = useRef(false);
 
   // Animated refs for worklet-based scroll sync (UI thread)
@@ -159,11 +159,14 @@ export function CropRotationTimeline({
   const weekHeaderScrollRef = useAnimatedRef<Animated.ScrollView>();
   const plotNamesScrollRef = useAnimatedRef<Animated.ScrollView>();
   const bodyHorizontalScrollRef = useAnimatedRef<Animated.ScrollView>();
-  const bodyVerticalScrollRef = useAnimatedRef<Animated.ScrollView>();
 
   // Shared values for scroll position (no re-renders)
   const scrollX = useSharedValue(0);
   const scrollY = useSharedValue(0);
+  // Track whether weeks mode is active (guard weekHeaderScrollRef scrollTo in worklet)
+  const isWeeksMounted = useSharedValue(false);
+  // Track scroll position at last range update (for distance-based refresh during momentum)
+  const lastRangeUpdateX = useSharedValue(0);
 
   // Programmatic scroll helper - uses native .scrollTo() via animated ref .current
   const scrollAllHorizontalTo = useCallback(
@@ -176,11 +179,6 @@ export function CropRotationTimeline({
     },
     [scrollX, headerScrollRef, weekHeaderScrollRef, bodyHorizontalScrollRef],
   );
-
-  // Debounce timer ref for body grid lines
-  const gridUpdateTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  // Throttle ref for header updates
-  const lastHeaderUpdate = useRef(0);
 
   const { totalDays, plots, epochStart } = timelineData;
   const scale =
@@ -197,31 +195,21 @@ export function CropRotationTimeline({
     return Math.max(0, Math.min(rawTodayDay, totalDays));
   }, [epochStart, totalDays]);
 
-  // Calculate initial scroll position centered on today
-  const initialScrollX = useMemo(() => {
-    if (viewportWidth <= 0) return 0;
-    const newContentWidth = totalDays * scale;
-    return Math.max(
-      0,
-      Math.min(
-        todayDay * scale - viewportWidth / 2,
-        newContentWidth - viewportWidth,
-      ),
-    );
-  }, [viewportWidth, totalDays, scale, todayDay]);
-
-  // Initialize ranges and scroll position when viewport becomes available
+  // Initialize scroll position centered on today
   useEffect(() => {
     if (viewportWidth > 0 && totalDays > 0 && !hasInitialScrolled.current) {
       hasInitialScrolled.current = true;
-      const startDay = initialScrollX / scale;
-      const endDay = (initialScrollX + viewportWidth) / scale;
-      setHeaderRange({ start: startDay, end: endDay });
-      setBodyGridRange({ start: startDay, end: endDay });
-      // Use setTimeout to ensure ScrollViews are mounted after this render
-      setTimeout(() => scrollAllHorizontalTo(initialScrollX), 0);
+      const x = Math.max(
+        0,
+        Math.min(
+          todayDay * scale - viewportWidth / 2,
+          contentWidth - viewportWidth,
+        ),
+      );
+      setBarVisibleRange({ start: x / scale, end: (x + viewportWidth) / scale });
+      setTimeout(() => scrollAllHorizontalTo(x), 0);
     }
-  }, [viewportWidth, totalDays, initialScrollX, scale, scrollAllHorizontalTo]);
+  }, [viewportWidth, totalDays, todayDay, scale, contentWidth, scrollAllHorizontalTo]);
 
   // Get all years in the timeline data for the animated year row (pre-compute pixel positions)
   const allYearsWithPx = useMemo(() => {
@@ -241,72 +229,52 @@ export function CropRotationTimeline({
     });
   }, [zoomLevel, timelineData.years, epochStart, scale]);
 
-  // Header grid lines - updated during scroll for real-time visibility
-  // Use initialScrollX-based range when headerRange hasn't been set yet
+  // All grid lines — precomputed (cheap date math), recomputed only on zoom/data change
+  const allGridLines = useMemo(
+    () => getAllGridLines(totalDays, epochStart, zoomLevel),
+    [totalDays, epochStart, zoomLevel],
+  );
+
+  // All week lines — precomputed, only in weeks view
+  const allWeekLines = useMemo(
+    () => (zoomLevel === "weeks" ? getAllWeekLines(totalDays, epochStart) : []),
+    [zoomLevel, totalDays, epochStart],
+  );
+
+  // Helper: compute center/halfSpan from barVisibleRange or fallback to todayDay
+  const rangeCenter = barVisibleRange.end > barVisibleRange.start
+    ? (barVisibleRange.start + barVisibleRange.end) / 2
+    : todayDay;
+  const rangeHalfSpan = barVisibleRange.end > barVisibleRange.start
+    ? (barVisibleRange.end - barVisibleRange.start) / 2
+    : (viewportWidth > 0 ? viewportWidth / scale / 2 : 500);
+
+  // Header grid lines — large buffer so labels are visible during fast scrolling.
+  // Years/months have few lines total so render all; weeks gets 10-viewport buffer (~50 elements).
   const headerGridLines = useMemo(() => {
-    const hasInitialRange = headerRange.end > headerRange.start;
-    const startDay = hasInitialRange
-      ? headerRange.start
-      : initialScrollX / scale;
-    const endDay = hasInitialRange
-      ? headerRange.end
-      : (initialScrollX + viewportWidth) / scale;
-    const span = endDay - startDay;
-    const padding = Math.max(span, 30);
-    return getGridLines(startDay - padding, endDay + padding, epochStart);
-  }, [
-    headerRange.start,
-    headerRange.end,
-    initialScrollX,
-    viewportWidth,
-    scale,
-    epochStart,
-  ]);
+    if (zoomLevel !== "weeks") return allGridLines;
+    const buffer = rangeHalfSpan * 20;
+    return allGridLines.filter(
+      (line) => line.day >= rangeCenter - buffer && line.day <= rangeCenter + buffer,
+    );
+  }, [zoomLevel, allGridLines, rangeCenter, rangeHalfSpan]);
 
-  // Body grid lines - only recalculated when scroll ends (debounced)
-  // Use initialScrollX-based range when bodyGridRange hasn't been set yet
+  // Header week lines — same large buffer
+  const headerWeekLines = useMemo(() => {
+    if (allWeekLines.length === 0) return [];
+    const buffer = rangeHalfSpan * 20;
+    return allWeekLines.filter(
+      (line) => line.day >= rangeCenter - buffer && line.day <= rangeCenter + buffer,
+    );
+  }, [allWeekLines, rangeCenter, rangeHalfSpan]);
+
+  // Body grid lines — smaller buffer, updates lazily (grid lines can pop in)
   const bodyGridLines = useMemo(() => {
-    const hasInitialRange = bodyGridRange.end > bodyGridRange.start;
-    const startDay = hasInitialRange
-      ? bodyGridRange.start
-      : initialScrollX / scale;
-    const endDay = hasInitialRange
-      ? bodyGridRange.end
-      : (initialScrollX + viewportWidth) / scale;
-    const span = endDay - startDay;
-    const padding = Math.max(span, 30);
-    return getGridLines(startDay - padding, endDay + padding, epochStart);
-  }, [
-    bodyGridRange.start,
-    bodyGridRange.end,
-    initialScrollX,
-    viewportWidth,
-    scale,
-    epochStart,
-  ]);
-
-  // Week number lines - for the week header row in weeks view
-  const weekLines = useMemo(() => {
-    if (zoomLevel !== "weeks") return [];
-    const hasInitialRange = headerRange.end > headerRange.start;
-    const startDay = hasInitialRange
-      ? headerRange.start
-      : initialScrollX / scale;
-    const endDay = hasInitialRange
-      ? headerRange.end
-      : (initialScrollX + viewportWidth) / scale;
-    const span = endDay - startDay;
-    const padding = Math.max(span, 30);
-    return getWeekLines(startDay - padding, endDay + padding, epochStart);
-  }, [
-    zoomLevel,
-    headerRange.start,
-    headerRange.end,
-    initialScrollX,
-    viewportWidth,
-    scale,
-    epochStart,
-  ]);
+    const buffer = rangeHalfSpan * 5;
+    return allGridLines.filter(
+      (line) => line.day >= rangeCenter - buffer && line.day <= rangeCenter + buffer,
+    );
+  }, [allGridLines, rangeCenter, rangeHalfSpan]);
 
   // Calculate total header height based on zoom level
   const totalHeaderHeight =
@@ -314,53 +282,44 @@ export function CropRotationTimeline({
     (zoomLevel !== "years" ? YEAR_ROW_HEIGHT : 0) +
     (zoomLevel === "weeks" ? WEEK_ROW_HEIGHT : 0);
 
-  // Throttled update of header range (called during scroll, ~15fps to reduce re-renders)
-  const updateHeaderRange = useCallback(
+  // Update bar visible range (called on scroll end and programmatic navigation)
+  const updateBarRange = useCallback(
     (offsetX: number) => {
-      const now = Date.now();
-      if (now - lastHeaderUpdate.current < 66) return; // ~15fps throttle for smoother animation
-      lastHeaderUpdate.current = now;
       const startDay = offsetX / scale;
       const endDay = (offsetX + viewportWidth) / scale;
-      setHeaderRange({ start: startDay, end: endDay });
+      setBarVisibleRange({ start: startDay, end: endDay });
     },
     [scale, viewportWidth],
   );
 
-  // Debounced update of body grid range (called on scroll end)
-  const updateBodyGridRange = useCallback(
-    (offsetX: number) => {
-      if (gridUpdateTimer.current) {
-        clearTimeout(gridUpdateTimer.current);
-      }
-      gridUpdateTimer.current = setTimeout(() => {
-        const startDay = offsetX / scale;
-        const endDay = (offsetX + viewportWidth) / scale;
-        setBodyGridRange({ start: startDay, end: endDay });
-      }, GRID_UPDATE_DELAY);
+  // Native-driven horizontal scroll handler — syncs header on UI thread,
+  // updates bar/grid range on scroll end and during long momentum scrolls
+  const horizontalScrollHandler = useAnimatedScrollHandler(
+    {
+      onScroll: (event) => {
+        scrollX.value = event.contentOffset.x;
+        scrollTo(headerScrollRef, event.contentOffset.x, 0, false);
+        if (isWeeksMounted.value) {
+          scrollTo(weekHeaderScrollRef, event.contentOffset.x, 0, false);
+        }
+        // Refresh ranges if scrolled far from last update (covers long momentum scrolls)
+        const dist = Math.abs(event.contentOffset.x - lastRangeUpdateX.value);
+        if (dist > viewportWidth * 2) {
+          lastRangeUpdateX.value = event.contentOffset.x;
+          scheduleOnRN(updateBarRange, event.contentOffset.x);
+        }
+      },
+      onEndDrag: (event) => {
+        lastRangeUpdateX.value = event.contentOffset.x;
+        scheduleOnRN(updateBarRange, event.contentOffset.x);
+      },
+      onMomentumEnd: (event) => {
+        lastRangeUpdateX.value = event.contentOffset.x;
+        scheduleOnRN(updateBarRange, event.contentOffset.x);
+      },
     },
-    [scale, viewportWidth],
+    [updateBarRange, viewportWidth],
   );
-
-  // Native-driven horizontal scroll handler - syncs header
-  const horizontalScrollHandler = useAnimatedScrollHandler({
-    onScroll: (event) => {
-      scrollX.value = event.contentOffset.x;
-      // Sync header scrolls on UI thread
-      scrollTo(headerScrollRef, event.contentOffset.x, 0, false);
-      scrollTo(weekHeaderScrollRef, event.contentOffset.x, 0, false);
-      // Update header labels during scroll (throttled on JS side)
-      runOnJS(updateHeaderRange)(event.contentOffset.x);
-    },
-    onEndDrag: (event) => {
-      runOnJS(updateHeaderRange)(event.contentOffset.x);
-      runOnJS(updateBodyGridRange)(event.contentOffset.x);
-    },
-    onMomentumEnd: (event) => {
-      runOnJS(updateHeaderRange)(event.contentOffset.x);
-      runOnJS(updateBodyGridRange)(event.contentOffset.x);
-    },
-  });
 
   // Native-driven vertical scroll handler - syncs plot names
   const verticalScrollHandler = useAnimatedScrollHandler({
@@ -385,47 +344,62 @@ export function CropRotationTimeline({
         contentWidth - viewportWidth,
       ),
     );
-    const startDay = targetScrollX / scale;
-    const endDay = (targetScrollX + viewportWidth) / scale;
-    setHeaderRange({ start: startDay, end: endDay });
-    setBodyGridRange({ start: startDay, end: endDay });
+    setBarVisibleRange({
+      start: targetScrollX / scale,
+      end: (targetScrollX + viewportWidth) / scale,
+    });
     scrollAllHorizontalTo(targetScrollX);
   }, [viewportWidth, todayDay, scale, contentWidth, scrollAllHorizontalTo]);
 
-  // When zoom level changes, scroll to center on current year
+  // When zoom level changes, re-center on today
   const handleZoomLevelChange = useCallback(
     (level: ZoomLevel) => {
       setZoomLevel(level);
-      if (viewportWidth > 0) {
-        const newScale = getScaleForZoomLevel(level, viewportWidth);
-        const newContentWidth = totalDays * newScale;
-        const targetScrollX = Math.max(
-          0,
-          Math.min(
-            todayDay * newScale - viewportWidth / 2,
-            newContentWidth - viewportWidth,
-          ),
-        );
-        const startDay = targetScrollX / newScale;
-        const endDay = (targetScrollX + viewportWidth) / newScale;
-        setHeaderRange({ start: startDay, end: endDay });
-        setBodyGridRange({ start: startDay, end: endDay });
-        // Scroll after React re-renders with new scale
-        setTimeout(() => scrollAllHorizontalTo(targetScrollX), 0);
-      }
+      const newScale = getScaleForZoomLevel(level, viewportWidth);
+      const x = Math.max(
+        0,
+        Math.min(
+          todayDay * newScale - viewportWidth / 2,
+          totalDays * newScale - viewportWidth,
+        ),
+      );
+      setBarVisibleRange({
+        start: x / newScale,
+        end: (x + viewportWidth) / newScale,
+      });
+      isWeeksMounted.value = level === "weeks";
+      setTimeout(() => scrollAllHorizontalTo(x), 0);
     },
-    [viewportWidth, totalDays, todayDay, scrollAllHorizontalTo],
+    [viewportWidth, totalDays, todayDay, scrollAllHorizontalTo, isWeeksMounted],
   );
 
-  // Visible range for bar culling - use headerRange (updates during scroll) for real-time bar visibility
-  const visibleStartDay =
-    headerRange.end > headerRange.start
-      ? headerRange.start
-      : initialScrollX / scale;
-  const visibleEndDay =
-    headerRange.end > headerRange.start
-      ? headerRange.end
-      : (initialScrollX + viewportWidth) / scale;
+  // FlatList helpers
+  const renderPlotRow = useCallback(
+    ({ item }: { item: TimelinePlotData }) => (
+      <TimelinePlotRow
+        bars={item.bars}
+        scale={scale}
+        visibleStartDay={barVisibleRange.start}
+        visibleEndDay={barVisibleRange.end}
+        onBarPress={onBarPress}
+      />
+    ),
+    [scale, barVisibleRange.start, barVisibleRange.end, onBarPress],
+  );
+
+  const getItemLayout = useCallback(
+    (_: unknown, index: number) => ({
+      length: ROW_HEIGHT,
+      offset: ROW_HEIGHT * index,
+      index,
+    }),
+    [],
+  );
+
+  const keyExtractor = useCallback(
+    (item: TimelinePlotData) => item.plotId,
+    [],
+  );
 
   if (totalDays === 0 || plots.length === 0) {
     return null;
@@ -614,7 +588,7 @@ export function CropRotationTimeline({
                           position: "relative",
                         }}
                       >
-                        {weekLines.map((line) => (
+                        {headerWeekLines.map((line) => (
                           <View
                             key={line.day}
                             style={{
@@ -678,12 +652,11 @@ export function CropRotationTimeline({
                       }}
                     >
                       {bodyGridLines.map((line) => {
-                        // In weeks view, make all week lines more visible
                         const isWeeksView = zoomLevel === "weeks";
                         const lineColor = line.isMajor
                           ? theme.colors.gray3
                           : isWeeksView
-                            ? theme.colors.gray3 // More visible in weeks view
+                            ? theme.colors.gray3
                             : theme.colors.gray4;
                         return (
                           <View
@@ -702,23 +675,18 @@ export function CropRotationTimeline({
                     </View>
 
                     {/* Rows */}
-                    <Animated.ScrollView
-                      ref={bodyVerticalScrollRef}
+                    <Animated.FlatList
+                      data={plots}
+                      renderItem={renderPlotRow}
+                      keyExtractor={keyExtractor}
+                      getItemLayout={getItemLayout}
+                      initialNumToRender={20}
+                      windowSize={5}
                       onScroll={verticalScrollHandler}
                       scrollEventThrottle={16}
                       showsVerticalScrollIndicator={false}
-                    >
-                      {plots.map((plot) => (
-                        <TimelinePlotRow
-                          key={plot.plotId}
-                          bars={plot.bars}
-                          scale={scale}
-                          visibleStartDay={visibleStartDay}
-                          visibleEndDay={visibleEndDay}
-                          onBarPress={onBarPress}
-                        />
-                      ))}
-                    </Animated.ScrollView>
+                      nestedScrollEnabled
+                    />
                   </View>
                 </Animated.ScrollView>
               </>
