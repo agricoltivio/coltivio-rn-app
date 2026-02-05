@@ -23,6 +23,8 @@ import { cropProtectionEquipmentsApi } from "./cropProtectionEquipments.api";
 import { earTagsApi } from "./earTags.api";
 import { locale } from "@/locales/i18n";
 import { reportsApi } from "./reports.api";
+import { drugsApi } from "./drugs.api";
+import { treatmentsApi } from "./treatments.api";
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 // const baseUrl = "http://localhost:8000/";
@@ -78,6 +80,8 @@ export function api(client: FetchClient) {
   return {
     animals: animalsApi(client),
     earTags: earTagsApi(client),
+    drugs: drugsApi(client),
+    treatments: treatmentsApi(client),
     layers: layersApi(client),
     farms: farmApi(client),
     users: userApi(client),

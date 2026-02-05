@@ -110,6 +110,7 @@
     "yes": "Ja",
     "no": "Nein",
     "no_entries": "Noch keine Einträge",
+    "notes": "Notizen",
     "area_acres": "Fläche: {{area}}a",
     "dont_show_again": "Nicht mehr anzeigen",
     "danger_zone": "Vorsicht!",
@@ -758,6 +759,37 @@
     "show_dead": "Tote anzeigen",
     "only_unregistered": "Nur nicht registrierte",
     "select_children": "Nachkommen auswählen"
+  },
+  "drugs": {
+    "drugs": "Medikamente",
+    "drug": "Medikament",
+    "new_drug": "Neues Medikament",
+    "edit_drug": "Medikament bearbeiten",
+    "drug_name": "Medikamentenname",
+    "treatment_definitions": "Behandlungsdefinitionen",
+    "no_treatment_definitions": "Noch keine Behandlungsdefinitionen",
+    "add_animal_type": "Tierart hinzufügen",
+    "dose_per_kg": "Dosis pro kg",
+    "milk_waiting_days": "Wartetage Milch",
+    "meat_waiting_days": "Wartetage Fleisch",
+    "drug_in_use": "Medikament in Verwendung",
+    "drug_in_use_warning": "Dieses Medikament wird verwendet und kann nicht gelöscht werden.",
+    "no_drugs": "Noch keine Medikamente erfasst"
+  },
+  "treatments": {
+    "treatments": "Behandlungen",
+    "treatment": "Behandlung",
+    "new_treatment": "Neue Behandlung",
+    "edit_treatment": "Behandlung bearbeiten",
+    "treatment_name": "Behandlungsname",
+    "select_animal": "Tier auswählen",
+    "select_drug": "Medikament auswählen (optional)",
+    "treatment_date": "Behandlungsdatum",
+    "reason": "Grund",
+    "milk_usable_date": "Milch verwendbar ab",
+    "meat_usable_date": "Fleisch verwendbar ab",
+    "no_treatments": "Noch keine Behandlungen",
+    "auto_calculated": "Automatisch berechnet basierend auf Medikament"
   },
   "permissions": {
     "location": {

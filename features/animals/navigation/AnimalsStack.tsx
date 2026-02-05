@@ -7,6 +7,12 @@ import { AnimalDetailsScreen } from "../AnimalDetailsScreen";
 import { CreateAnimalScreen } from "../CreateAnimalScreen";
 import { EditAnimalScreen } from "../EditAnimalScreen";
 import { SelectChildrenModal } from "../SelectChildrenModal";
+import { DrugsScreen } from "../DrugsScreen";
+import { CreateDrugScreen } from "../CreateDrugScreen";
+import { EditDrugScreen } from "../EditDrugScreen";
+import { TreatmentsScreen } from "../TreatmentsScreen";
+import { CreateTreatmentScreen } from "../CreateTreatmentScreen";
+import { EditTreatmentScreen } from "../EditTreatmentScreen";
 
 export function renderAnimalsStack() {
   return [
@@ -57,6 +63,42 @@ export function renderAnimalsStack() {
       name="SelectChildren"
       options={{ title: "", presentation: "modal" }}
       component={SelectChildrenModal}
+    />,
+    <Stack.Screen
+      key="drugs"
+      name="Drugs"
+      options={{ title: "" }}
+      component={DrugsScreen}
+    />,
+    <Stack.Screen
+      key="create-drug"
+      name="CreateDrug"
+      options={{ title: "", presentation: "modal" }}
+      component={CreateDrugScreen}
+    />,
+    <Stack.Screen
+      key="edit-drug"
+      name="EditDrug"
+      options={{ title: "", presentation: "modal" }}
+      component={EditDrugScreen}
+    />,
+    <Stack.Screen
+      key="treatments"
+      name="Treatments"
+      options={{ title: "" }}
+      component={TreatmentsScreen}
+    />,
+    <Stack.Screen
+      key="create-treatment"
+      name="CreateTreatment"
+      options={{ title: "", presentation: "modal" }}
+      component={CreateTreatmentScreen}
+    />,
+    <Stack.Screen
+      key="edit-treatment"
+      name="EditTreatment"
+      options={{ title: "", presentation: "modal" }}
+      component={EditTreatmentScreen}
     />,
   ];
 }

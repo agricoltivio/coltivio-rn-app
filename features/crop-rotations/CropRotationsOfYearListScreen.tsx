@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 import { ViewMode, ViewModeToggle } from "./components/ViewModeToggle";
 import { CropFilterChips } from "./components/CropFilterChips";
 import { CropRotationTimeline } from "./timeline/CropRotationTimeline";
-import { buildTimelineData } from "./timeline/timeline-utils";
+import { buildMultiYearTimelineData } from "./timeline/timeline-utils";
 
 export function CropRotationsOfYearListScreen({
   route,
@@ -81,7 +81,7 @@ export function CropRotationsOfYearListScreen({
   }
 
   // Build timeline data from filtered rotations
-  const timelinePlotData = buildTimelineData(filteredCropRotations, year);
+  const timelineData = buildMultiYearTimelineData(filteredCropRotations, [year]);
 
   function handleBarPress(rotationId: string, plotName: string) {
     navigation.navigate("EditPlotCropRotation", {
@@ -169,7 +169,7 @@ export function CropRotationsOfYearListScreen({
       ) : (
         <View style={{ flex: 1, marginTop: theme.spacing.m }}>
           <CropRotationTimeline
-            plotData={timelinePlotData}
+            timelineData={timelineData}
             onBarPress={handleBarPress}
           />
         </View>

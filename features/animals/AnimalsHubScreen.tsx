@@ -18,6 +18,14 @@ export function AnimalsHubScreen({ navigation }: AnimalsHubScreenProps) {
         <H2>{t("animals.animal_husbandry")}</H2>
         <List style={{ marginTop: theme.spacing.l }}>
           <List.Item
+            title={t("drugs.drugs")}
+            onPress={() => navigation.navigate("Drugs")}
+          />
+          <List.Item
+            title={t("treatments.treatments")}
+            onPress={() => navigation.navigate("Treatments")}
+          />
+          <List.Item
             title={t("ear_tags.ear_tags")}
             onPress={() => navigation.navigate("EarTags")}
           />

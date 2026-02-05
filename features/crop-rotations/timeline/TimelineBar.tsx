@@ -1,25 +1,30 @@
+import { memo } from "react";
 import { stringToColor, hexToRgba } from "@/theme/theme";
 import { Text, TouchableOpacity, View } from "react-native";
 import { TimelineBar as TimelineBarData } from "./timeline-utils";
 
 type TimelineBarProps = {
   bar: TimelineBarData;
-  totalGridWidth: number;
-  onPress: () => void;
+  left: number;
+  width: number;
+  onPress: (rotationId: string, plotName: string) => void;
 };
 
 const MIN_BAR_WIDTH = 4;
 
-export function TimelineBar({ bar, totalGridWidth, onPress }: TimelineBarProps) {
-  const left = bar.startFraction * totalGridWidth;
-  const rawWidth = (bar.endFraction - bar.startFraction) * totalGridWidth;
-  const barWidth = Math.max(rawWidth, MIN_BAR_WIDTH);
+export const TimelineBar = memo(function TimelineBar({
+  bar,
+  left,
+  width,
+  onPress,
+}: TimelineBarProps) {
+  const barWidth = Math.max(width, MIN_BAR_WIDTH);
   const color = stringToColor(bar.cropName);
   const showLabel = barWidth > 50;
 
   return (
     <TouchableOpacity
-      onPress={onPress}
+      onPress={() => onPress(bar.rotationId, bar.plotName)}
       activeOpacity={0.7}
       style={{
         position: "absolute",
@@ -61,4 +66,4 @@ export function TimelineBar({ bar, totalGridWidth, onPress }: TimelineBarProps) 
       )}
     </TouchableOpacity>
   );
-}
+});

@@ -16,6 +16,9 @@ import {
   useUpdateAnimalMutation,
 } from "./animals.hooks";
 import { AnimalDetailsScreenProps } from "./navigation/animals-routes";
+import { useAnimalTreatmentsQuery } from "./treatments.hooks";
+import { formatLocalizedDate } from "@/utils/date";
+import { locale } from "@/locales/i18n";
 
 export function AnimalDetailsScreen({
   route,
@@ -25,6 +28,7 @@ export function AnimalDetailsScreen({
   const theme = useTheme();
   const animalId = route.params.animalId;
   const { animal } = useAnimalByIdQuery(animalId);
+  const { treatments } = useAnimalTreatmentsQuery(animalId);
 
   const deleteAnimalMutation = useDeleteAnimalMutation(() =>
     navigation.goBack(),
@@ -297,6 +301,63 @@ export function AnimalDetailsScreen({
                       color={theme.colors.danger}
                     />
                   </TouchableOpacity>
+                  <ListItem.Chevron />
+                </ListItem>
+              ))}
+            </View>
+          )}
+        </View>
+
+        {/* Treatments */}
+        <View style={{ marginTop: theme.spacing.l }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <H3>{t("treatments.treatments")}</H3>
+            <IonIconButton
+              icon="add"
+              color="black"
+              iconSize={25}
+              type="accent"
+              onPress={() =>
+                navigation.navigate("CreateTreatment", { animalId })
+              }
+            />
+          </View>
+          {treatments.length === 0 ? (
+            <Subtitle style={{ marginTop: theme.spacing.s }}>
+              {t("treatments.no_treatments")}
+            </Subtitle>
+          ) : (
+            <View
+              style={{
+                marginTop: theme.spacing.s,
+                borderRadius: 10,
+                overflow: "hidden",
+                backgroundColor: theme.colors.white,
+              }}
+            >
+              {treatments.map((treatment) => (
+                <ListItem
+                  key={treatment.id}
+                  style={{ paddingVertical: 5 }}
+                  onPress={() =>
+                    navigation.navigate("EditTreatment", {
+                      treatmentId: treatment.id,
+                    })
+                  }
+                >
+                  <ListItem.Content>
+                    <ListItem.Title>{treatment.name}</ListItem.Title>
+                    <ListItem.Body>
+                      {formatLocalizedDate(new Date(treatment.date), locale)} -{" "}
+                      {treatment.drug?.name || treatment.reason}
+                    </ListItem.Body>
+                  </ListItem.Content>
                   <ListItem.Chevron />
                 </ListItem>
               ))}

@@ -1,4 +1,5 @@
 import { components } from "@/api/v1";
+import { isInfiniteDate } from "@/utils/date";
 
 type CropRotationWithPlot =
   components["schemas"]["GetV1CropRotationsPositiveResponse"]["data"]["result"][number];
@@ -8,8 +9,8 @@ export type TimelineBar = {
   cropName: string;
   plotName: string;
   plotId: string;
-  startFraction: number;
-  endFraction: number;
+  startDay: number; // days since epochStart
+  endDay: number; // days since epochStart
   isOpenEnded: boolean;
 };
 
@@ -19,42 +20,89 @@ export type TimelinePlotData = {
   bars: TimelineBar[];
 };
 
-// Groups crop rotations by plot and calculates bar positions as fractions of the year (0.0 = Jan 1, 1.0 = Dec 31).
-// Open-ended rotations (toDate === null) extend to year end with isOpenEnded flag.
-// Dates are clamped to the year boundaries.
-export function buildTimelineData(
-  cropRotations: CropRotationWithPlot[],
-  year: number
-): TimelinePlotData[] {
-  const yearStart = new Date(year, 0, 1).getTime();
-  const yearEnd = new Date(year, 11, 31, 23, 59, 59, 999).getTime();
-  const yearDuration = yearEnd - yearStart;
+export type TimelineData = {
+  plots: TimelinePlotData[];
+  epochStart: Date; // Jan 1 of earliest year
+  totalDays: number;
+  years: number[];
+};
 
-  const plotMap = new Map<
-    string,
-    { plotName: string; bars: TimelineBar[] }
-  >();
+export type GridLine = {
+  day: number;
+  label: string;
+  isMajor: boolean;
+};
+
+const MS_PER_DAY = 86_400_000;
+
+function daysBetween(a: Date, b: Date): number {
+  return Math.floor((b.getTime() - a.getTime()) / MS_PER_DAY);
+}
+
+const MONTH_SHORT = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+// Groups crop rotations by plot and calculates bar positions as absolute day offsets from epochStart.
+// Open-ended rotations (infinite toDate) extend to epoch end with isOpenEnded flag.
+// Dates are clamped to the epoch boundaries (Jan 1 earliest year .. Dec 31 latest year).
+export function buildMultiYearTimelineData(
+  cropRotations: CropRotationWithPlot[],
+  years: number[],
+): TimelineData {
+  if (cropRotations.length === 0) {
+    return { plots: [], epochStart: new Date(), totalDays: 0, years: [] };
+  }
+
+  const sortedYears = [...years].sort((a, b) => a - b);
+  const epochStart = new Date(sortedYears[0], 0, 1);
+  const epochEnd = new Date(
+    sortedYears[sortedYears.length - 1],
+    11,
+    31,
+    23,
+    59,
+    59,
+    999,
+  );
+  const totalDays = daysBetween(epochStart, epochEnd) + 1;
+
+  const plotMap = new Map<string, { plotName: string; bars: TimelineBar[] }>();
 
   for (const rotation of cropRotations) {
-    const fromTime = Math.max(new Date(rotation.fromDate).getTime(), yearStart);
-    const isOpenEnded = rotation.toDate === null || rotation.toDate === undefined;
-    const toTime = isOpenEnded
-      ? yearEnd
-      : Math.min(new Date(rotation.toDate!).getTime(), yearEnd);
+    const fromDate = new Date(rotation.fromDate);
+    const toDateRaw = new Date(rotation.toDate);
+    const isOpenEnded = isInfiniteDate(toDateRaw);
+    const toDate = isOpenEnded ? epochEnd : toDateRaw;
 
-    // Skip rotations entirely outside the year
-    if (fromTime > yearEnd || toTime < yearStart) continue;
+    // Clamp to epoch boundaries
+    const clampedFrom = fromDate < epochStart ? epochStart : fromDate;
+    const clampedTo = toDate > epochEnd ? epochEnd : toDate;
 
-    const startFraction = (fromTime - yearStart) / yearDuration;
-    const endFraction = (toTime - yearStart) / yearDuration;
+    // Skip rotations entirely outside the epoch
+    if (clampedFrom > epochEnd || clampedTo < epochStart) continue;
+
+    const startDay = daysBetween(epochStart, clampedFrom);
+    const endDay = daysBetween(epochStart, clampedTo);
 
     const bar: TimelineBar = {
       rotationId: rotation.id,
       cropName: rotation.crop.name,
       plotName: rotation.plot.name,
       plotId: rotation.plotId,
-      startFraction,
-      endFraction,
+      startDay,
+      endDay,
       isOpenEnded,
     };
 
@@ -69,12 +117,123 @@ export function buildTimelineData(
     }
   }
 
-  // Sort plots alphabetically by name
-  return Array.from(plotMap.entries())
+  const plots = Array.from(plotMap.entries())
     .sort((a, b) => a[1].plotName.localeCompare(b[1].plotName))
     .map(([plotId, data]) => ({
       plotId,
       plotName: data.plotName,
-      bars: data.bars.sort((a, b) => a.startFraction - b.startFraction),
+      bars: data.bars.sort((a, b) => a.startDay - b.startDay),
     }));
+
+  return { plots, epochStart, totalDays, years: sortedYears };
+}
+
+// Returns grid lines for the visible viewport only.
+// Adapts granularity to zoom level: year → month → week boundaries.
+export function getGridLines(
+  visibleStartDay: number,
+  visibleEndDay: number,
+  epochStart: Date,
+): GridLine[] {
+  const visibleDays = visibleEndDay - visibleStartDay;
+  const lines: GridLine[] = [];
+  const epochMs = epochStart.getTime();
+
+  if (visibleDays > 365 * 2) {
+    // Year-level grid lines
+    const startYear = new Date(
+      epochMs + visibleStartDay * MS_PER_DAY,
+    ).getFullYear();
+    const endYear = new Date(
+      epochMs + visibleEndDay * MS_PER_DAY,
+    ).getFullYear();
+    for (let year = startYear; year <= endYear + 1; year++) {
+      const day = daysBetween(epochStart, new Date(year, 0, 1));
+      if (day >= visibleStartDay - 30 && day <= visibleEndDay + 30) {
+        lines.push({ day, label: String(year), isMajor: true });
+      }
+    }
+  } else if (visibleDays > 60) {
+    // Month-level grid lines
+    const startDate = new Date(epochMs + visibleStartDay * MS_PER_DAY);
+    const endDate = new Date(epochMs + visibleEndDay * MS_PER_DAY);
+    const current = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+    while (current <= endDate) {
+      const day = daysBetween(epochStart, current);
+      if (day >= visibleStartDay - 15 && day <= visibleEndDay + 15) {
+        const isJanuary = current.getMonth() === 0;
+        const label = isJanuary
+          ? `${MONTH_SHORT[current.getMonth()]} ${current.getFullYear()}`
+          : MONTH_SHORT[current.getMonth()];
+        lines.push({ day, label, isMajor: isJanuary });
+      }
+      current.setMonth(current.getMonth() + 1);
+    }
+  } else {
+    // Week-level grid lines
+    const startDate = new Date(epochMs + visibleStartDay * MS_PER_DAY);
+    const dayOfWeek = startDate.getDay();
+    const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+    const monday = new Date(startDate);
+    monday.setDate(monday.getDate() - daysToMonday);
+
+    while (true) {
+      const day = daysBetween(epochStart, monday);
+      if (day > visibleEndDay + 7) break;
+      if (day >= visibleStartDay - 7) {
+        const weekNum = getISOWeekNumber(monday);
+        const isFirstWeekOfMonth = monday.getDate() <= 7;
+        lines.push({
+          day,
+          label: isFirstWeekOfMonth
+            ? `${MONTH_SHORT[monday.getMonth()]} W${weekNum}`
+            : `W${weekNum}`,
+          isMajor: isFirstWeekOfMonth,
+        });
+      }
+      monday.setDate(monday.getDate() + 7);
+    }
+  }
+
+  return lines;
+}
+
+// Generate week-only grid lines (for the week number header row)
+export function getWeekLines(
+  visibleStartDay: number,
+  visibleEndDay: number,
+  epochStart: Date,
+): GridLine[] {
+  const lines: GridLine[] = [];
+  const epochMs = epochStart.getTime();
+  const startDate = new Date(epochMs + visibleStartDay * MS_PER_DAY);
+  const dayOfWeek = startDate.getDay();
+  const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+  const monday = new Date(startDate);
+  monday.setDate(monday.getDate() - daysToMonday);
+
+  while (true) {
+    const day = daysBetween(epochStart, monday);
+    if (day > visibleEndDay + 7) break;
+    if (day >= visibleStartDay - 7) {
+      const weekNum = getISOWeekNumber(monday);
+      lines.push({
+        day,
+        label: `W${weekNum}`,
+        isMajor: false,
+      });
+    }
+    monday.setDate(monday.getDate() + 7);
+  }
+  return lines;
+}
+
+export function getISOWeekNumber(date: Date): number {
+  const d = new Date(
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),
+  );
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil(((d.getTime() - yearStart.getTime()) / MS_PER_DAY + 1) / 7);
 }
