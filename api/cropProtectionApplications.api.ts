@@ -13,8 +13,13 @@ export type CropProtectionApplication =
 export type PlotCropProtectionApplication =
   components["schemas"]["GetV1CropProtectionApplicationsByIdCropProtectionApplicationIdPositiveResponse"]["data"];
 
-export type CropProtectionApplicationMethod =
-  CropProtectionApplication["method"];
+export type CropProtectionApplicationUnit = NonNullable<
+  CropProtectionApplication["unit"]
+>;
+
+export type CropProtectionApplicationMethod = NonNullable<
+  CropProtectionApplication["method"]
+>;
 
 export type CropProtectionApplicationSummary =
   components["schemas"]["GetV1CropProtectionApplicationsSummariesPositiveResponse"]["data"]["monthlyApplications"][0];
@@ -22,7 +27,7 @@ export type CropProtectionApplicationSummary =
 export function cropProtectionApplicationsApi(client: FetchClient) {
   return {
     async createCropProtectionApplication(
-      input: CropProtectionApplicationCreateInput
+      input: CropProtectionApplicationCreateInput,
     ): Promise<CropProtectionApplication> {
       const { data } = await client.POST("/v1/cropProtectionApplications", {
         body: input,
@@ -30,20 +35,20 @@ export function cropProtectionApplicationsApi(client: FetchClient) {
       return data!.data;
     },
     async createCropProtectionApplications(
-      input: CropProtectionApplicationsBatchCreateInput
+      input: CropProtectionApplicationsBatchCreateInput,
     ): Promise<CropProtectionApplication[]> {
       const { data } = await client.POST(
         "/v1/cropProtectionApplications/batch",
         {
           body: input,
-        }
+        },
       );
       return data!.data.result;
     },
 
     async getCropProtectionApplications(
       fromDate?: Date,
-      toDate?: Date
+      toDate?: Date,
     ): Promise<CropProtectionApplication[]> {
       const { data } = await client.GET("/v1/cropProtectionApplications", {
         params: {
@@ -57,7 +62,7 @@ export function cropProtectionApplicationsApi(client: FetchClient) {
     },
 
     async getCropProtectionApplicationById(
-      cropProtectionApplicationId: string
+      cropProtectionApplicationId: string,
     ): Promise<CropProtectionApplication> {
       const { data } = await client.GET(
         "/v1/cropProtectionApplications/byId/{cropProtectionApplicationId}",
@@ -67,12 +72,12 @@ export function cropProtectionApplicationsApi(client: FetchClient) {
               cropProtectionApplicationId,
             },
           },
-        }
+        },
       );
       return data!.data;
     },
     async getCropProtectionApplicationsForPlot(
-      plotId: string
+      plotId: string,
     ): Promise<PlotCropProtectionApplication[]> {
       const { data } = await client.GET(
         "/v1/plots/byId/{plotId}/cropProtectionApplications",
@@ -82,7 +87,7 @@ export function cropProtectionApplicationsApi(client: FetchClient) {
               plotId,
             },
           },
-        }
+        },
       );
       return data!.data.result;
     },
@@ -95,7 +100,7 @@ export function cropProtectionApplicationsApi(client: FetchClient) {
               cropProtectionApplicationId,
             },
           },
-        }
+        },
       );
     },
     async getCropProtectionApplicationYears(): Promise<string[]> {
@@ -106,13 +111,13 @@ export function cropProtectionApplicationsApi(client: FetchClient) {
       CropProtectionApplicationSummary[]
     > {
       const { data } = await client.GET(
-        "/v1/cropProtectionApplications/summaries"
+        "/v1/cropProtectionApplications/summaries",
       );
       return data!.data.monthlyApplications;
     },
 
     async getCropProtectionApplicationSummariesForPlot(
-      plotId: string
+      plotId: string,
     ): Promise<CropProtectionApplicationSummary[]> {
       const { data } = await client.GET(
         "/v1/plots/byId/{plotId}/cropProtectionApplicationSummary",
@@ -122,7 +127,7 @@ export function cropProtectionApplicationsApi(client: FetchClient) {
               plotId,
             },
           },
-        }
+        },
       );
       return data!.data.monthlyApplications;
     },

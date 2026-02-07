@@ -1,7 +1,6 @@
 import { Stack } from "@/navigation/stack";
 import { AddTillageAdditionalNotesScreen } from "../add/AddTillageAdditionalNotesScreen";
-import { AddTillageSelectDateScreen } from "../add/AddTillageSelectDateScreen";
-import { AddTillageSelectEquipmentScreen } from "../add/AddTillageSelectEquipmentScreen";
+import { AddTillageConfigurationScreen } from "../add/AddTillageConfigurationScreen";
 import { AddTillageSelectPlotsScreen } from "../add/AddTillageSelectPlotsScreen";
 import { AddTillageSummaryScreen } from "../add/AddTillageSummaryScreen";
 import { TillageDetailsScreen } from "../TillageDetails";
@@ -35,20 +34,12 @@ export function renderTillagesStack() {
       component={TillageDetailsScreen}
     />,
     <Stack.Screen
-      key="add-tillage-select-date"
-      name="AddTillageSelectDate"
+      key="add-tillage-configuration"
+      name="AddTillageConfiguration"
       options={{
         title: "",
       }}
-      component={AddTillageSelectDateScreen}
-    />,
-    <Stack.Screen
-      key="add-tillage-select-equipment"
-      name="AddTillageSelectEquipment"
-      options={{
-        title: "",
-      }}
-      component={AddTillageSelectEquipmentScreen}
+      component={AddTillageConfigurationScreen}
     />,
     <Stack.Screen
       key="add-tillage-select-plots"

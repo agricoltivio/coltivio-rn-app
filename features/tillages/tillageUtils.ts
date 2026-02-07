@@ -14,5 +14,5 @@ export const tillageActions: TillageAction[] = [
   "hoeing",
   "weed_harrowing",
   "flame_weeding",
-  "other",
+  "custom",
 ];

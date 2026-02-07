@@ -2,13 +2,12 @@ import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
-import { CreateFertilizerScreenProps } from "./navigation/fertilizer-routes";
-import { H2, H3 } from "@/theme/Typography";
+import { H2 } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { FertilizerForm, FertilizerFormValues } from "./FertilizerForm";
 import { useCreateFertilizerMutation } from "./fertilizers.hooks";
-import { useTranslation } from "react-i18next";
-import { useFertilizerSpreadersQuery } from "../equipment/fertilizerSpreader.hooks";
+import { CreateFertilizerScreenProps } from "./navigation/fertilizer-routes";
 
 export function CreateFertilizerScreen({
   navigation,
@@ -17,7 +16,6 @@ export function CreateFertilizerScreen({
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors, isDirty },
   } = useForm<FertilizerFormValues>();
 
@@ -25,20 +23,14 @@ export function CreateFertilizerScreen({
     navigation.getState().routes[navigation.getState().index - 1];
 
   const createFertilizerMutation = useCreateFertilizerMutation((fertilizer) => {
-    if (previousRoute.name === "AddFertilizerApplicationSelectFertilizer") {
-      navigation.popTo("AddFertilizerApplicationSelectFertilizer", {
+    if (previousRoute.name === "AddFertilizerApplicationConfiguration") {
+      navigation.popTo("AddFertilizerApplicationConfiguration", {
         fertilizerId: fertilizer.id,
       });
     } else {
       navigation.goBack();
     }
   });
-
-  const fertilizerUnit = watch("unit");
-  const { fertilizerSpreaders, isFetched } = useFertilizerSpreadersQuery([]);
-  const availableSpreaders = fertilizerSpreaders!.filter(
-    (spreader) => spreader.unit === fertilizerUnit,
-  );
 
   function onSubmitFertilizer({
     defaultSpreaderId,
@@ -71,11 +63,7 @@ export function CreateFertilizerScreen({
         keyboardAware
       >
         <H2>{t("fertilizers.new_fertilizer")}</H2>
-        <FertilizerForm
-          control={control}
-          errors={errors}
-          spreaders={availableSpreaders}
-        />
+        <FertilizerForm control={control} errors={errors} />
       </ScrollView>
     </ContentView>
   );

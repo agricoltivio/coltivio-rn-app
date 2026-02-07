@@ -44,12 +44,11 @@ type FertilizerApplicationSummaryProps = {
     name: string;
     geometry: GeoJSON.MultiPolygon;
     size: number;
-    numberOfApplications: number;
+    numberOfUnits: number;
   }[];
-  totalNumberOfApplications: number;
-  amountPerApplication: number;
+  totalNumberOfUnits: number;
+  amountPerUnit: number;
   date: Date;
-  spreaderName?: string;
   fertilizerName: string;
   additionalNotes?: string | null;
   hidePlotList?: boolean;
@@ -60,9 +59,8 @@ export function FertilizerApplicationSummary({
   date,
   plots,
   fertilizerName,
-  totalNumberOfApplications,
-  amountPerApplication,
-  spreaderName,
+  totalNumberOfUnits,
+  amountPerUnit,
   additionalNotes,
   hidePlotList,
   unit,
@@ -87,7 +85,7 @@ export function FertilizerApplicationSummary({
         "fertilizer_application.fertilizer_application_date",
         {
           date: formattedDate,
-        }
+        },
       )}
     >
       <H2>{t("fertilizer_application.fertilizer_application")}</H2>
@@ -110,7 +108,7 @@ export function FertilizerApplicationSummary({
                 strokeColor={"white"}
                 fillColor={hexToRgba(
                   theme.map.defaultFillColor,
-                  theme.map.defaultFillAlpha
+                  theme.map.defaultFillAlpha,
                 )}
               />
             );
@@ -122,20 +120,17 @@ export function FertilizerApplicationSummary({
           <SummaryItem label={t("plots.plot")} value={plots[0]?.name} />
         )}
         <SummaryItem label={t("forms.labels.area")} value={`${size / 100}a`} />
-        {spreaderName && (
-          <SummaryItem label={t("forms.labels.machine")} value={spreaderName} />
-        )}
         <SummaryItem
           label={t("forms.labels.amount_of_loads")}
-          value={`${totalNumberOfApplications}`}
+          value={`${totalNumberOfUnits}`}
         />
         <SummaryItem
           label={t("forms.labels.amount_per_load")}
-          value={`${amountPerApplication}${unit}`}
+          value={`${amountPerUnit}${unit}`}
         />
         <SummaryItem
           label={t("forms.labels.total")}
-          value={`${round(amountPerApplication * totalNumberOfApplications, 2)}${unit}`}
+          value={`${round(amountPerUnit * totalNumberOfUnits, 2)}${unit}`}
         />
         <SummaryItem
           label={t("forms.labels.fertiliser")}
@@ -172,7 +167,7 @@ export function FertilizerApplicationSummary({
                     {t("plots.plot_name", { name: plot.name })}
                   </ListItem.Title>
                   <ListItem.Body>
-                    {plot.numberOfApplications * amountPerApplication}
+                    {plot.numberOfUnits * amountPerUnit}
                     {unit}
                   </ListItem.Body>
                 </ListItem.Content>

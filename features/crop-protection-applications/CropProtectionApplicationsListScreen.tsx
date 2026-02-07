@@ -25,7 +25,7 @@ export function CropProtectionApplicationsOfYearListScreen({
   const toDate = new Date(year + 1, 0, 1); // January 1st of the next year
   const { cropProtectionApplications } = useCropProtectionApplicationsQuery(
     fromDate,
-    toDate
+    toDate,
   );
   const [searchText, setSearchText] = useState("");
 
@@ -40,9 +40,9 @@ export function CropProtectionApplicationsOfYearListScreen({
         new Date(cropProtectionApplication.dateTime),
         locale,
         "long",
-        false
+        false,
       ),
-    })
+    }),
   );
 
   const fuse = new Fuse(sanitizedCropProtectionApplications ?? [], {
@@ -78,15 +78,17 @@ export function CropProtectionApplicationsOfYearListScreen({
         <ListItem.Body>
           {t("crop_protection_applications.list.body", {
             totalAmount: round(
-              cropProtectionApplication.numberOfApplications *
-                cropProtectionApplication.amountPerApplication,
-              2
+              cropProtectionApplication.numberOfUnits *
+                cropProtectionApplication.amountPerUnit,
+              2,
             ),
             unit: cropProtectionApplication.unit,
             product: cropProtectionApplication.product.name,
-            method: t(
-              `crop_protection_applications.methods.${cropProtectionApplication.method}`
-            ),
+            method: cropProtectionApplication.method
+              ? t(
+                  `crop_protection_applications.methods.${cropProtectionApplication.method}`,
+                )
+              : "",
           })}
         </ListItem.Body>
       </ListItem.Content>

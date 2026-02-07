@@ -31,7 +31,7 @@ export function PlotFertilizerApplicationsOfYearListScreen({
     (fertilizerApplication) => ({
       ...fertilizerApplication,
       date: formatLocalizedDate(new Date(fertilizerApplication.date), locale),
-    })
+    }),
   );
 
   const fuse = new Fuse(sanitizedFertilizerApplications ?? [], {
@@ -62,8 +62,8 @@ export function PlotFertilizerApplicationsOfYearListScreen({
           {fertilizerApplication.date}
         </ListItem.Title>
         <ListItem.Body>
-          {fertilizerApplication.numberOfApplications *
-            fertilizerApplication.amountPerApplication}
+          {fertilizerApplication.numberOfUnits *
+            fertilizerApplication.amountPerUnit}
           {fertilizerApplication.unit} {fertilizerApplication.fertilizer.name}
         </ListItem.Body>
       </ListItem.Content>

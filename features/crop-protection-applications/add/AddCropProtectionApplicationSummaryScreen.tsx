@@ -16,13 +16,12 @@ export function AddCropProtectionApplicationSummaryScreen({
   const { t } = useTranslation();
   const {
     selectedPlotsById,
-    selectedEquipment,
     selectedProduct,
-    totalNumberOfApplications = 0,
+    totalNumberOfUnits: totalNumberOfApplications = 0,
     data,
   } = useAddCropProtectionApplicationStore();
 
-  const { dateTime, method, unit, additionalNotes, amountPerApplication } =
+  const { dateTime, method, unit, additionalNotes, amountPerUnit } =
     data as AddCropProtectionApplicationBase;
 
   const selectedPlots = Object.values(selectedPlotsById);
@@ -36,20 +35,19 @@ export function AddCropProtectionApplicationSummaryScreen({
           { name: "FieldCalendar" },
           { name: "CropProtectionApplications" },
         ],
-      })
+      }),
     );
 
   function onSave() {
     createCropProtectionApplicationMutation.mutate({
       dateTime,
-      equipmentId: selectedEquipment?.id,
       productId: selectedProduct?.id!,
       unit,
-      amountPerApplication,
+      amountPerUnit,
       method,
       additionalNotes,
       plots: selectedPlots.map((plot) => ({
-        numberOfApplications: plot.numberOfApplications,
+        numberOfUnits: plot.numberOfUnits,
         geometry: plot.geometry,
         plotId: plot.plotId,
         size: plot.size,
@@ -72,10 +70,9 @@ export function AddCropProtectionApplicationSummaryScreen({
     >
       <CropProtectionApplicationSummary
         date={dateTime}
-        equipmentName={selectedEquipment?.name}
         productName={selectedProduct?.name!}
-        amountPerApplication={amountPerApplication}
-        totalNumberOfApplications={totalNumberOfApplications}
+        amountPerUnit={amountPerUnit}
+        totalNumberOfUnits={totalNumberOfApplications}
         unit={unit}
         method={method}
         plots={selectedPlots}

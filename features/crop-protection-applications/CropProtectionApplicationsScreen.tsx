@@ -51,7 +51,7 @@ export function CropProtectionApplicationsScreen({
       <FAB
         icon={{ name: "add", color: "white" }}
         onPress={() =>
-          navigation.navigate("AddCropProtectionApplicationSelectDate")
+          navigation.navigate("AddCropProtectionApplicationConfiguration", {})
         }
       />
     </ContentView>

@@ -93,24 +93,6 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
           }}
         >
           <HomeTile
-            title={t("home.tiles.machines")}
-            onPress={() => navigation.navigate("MachineConfigs")}
-          >
-            <View style={{ overflow: "hidden" }}>
-              <Image
-                source={require("@/assets/images/tractor-icon-5.png")}
-                contentFit="contain"
-                style={{
-                  height: 110,
-                  opacity: 0.9,
-                  borderBottomLeftRadius: 10,
-                  borderBottomRightRadius: 10,
-                }}
-              />
-            </View>
-          </HomeTile>
-
-          <HomeTile
             title={t("home.tiles.field_calendar")}
             onPress={() => navigation.navigate("FieldCalendar")}
           >

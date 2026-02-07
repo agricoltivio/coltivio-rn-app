@@ -11,7 +11,7 @@ export function AddTillageSummaryScreen({
   navigation,
 }: AddTillageSummaryScreenProps) {
   const { t } = useTranslation();
-  const { selectedPlotsById, selectedEquipment, data } = useAddTillageStore();
+  const { selectedPlotsById, data } = useAddTillageStore();
   const { date, action, reason, additionalNotes } = data as TillageBase;
 
   const selectedPlots = Object.values(selectedPlotsById);
@@ -24,7 +24,7 @@ export function AddTillageSummaryScreen({
         { name: "FieldCalendar" },
         { name: "Tillages" },
       ],
-    })
+    }),
   );
 
   function onSave() {
@@ -32,7 +32,6 @@ export function AddTillageSummaryScreen({
       action,
       reason,
       date: date.toISOString(),
-      equipmentId: selectedEquipment?.id,
       additionalNotes,
       plots: selectedPlots.map((plot) => ({
         plotId: plot.plotId,
@@ -57,7 +56,6 @@ export function AddTillageSummaryScreen({
     >
       <TillageSummary
         date={date}
-        equipmentName={selectedEquipment?.name}
         action={action}
         reason={reason}
         plots={selectedPlots}

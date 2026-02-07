@@ -47,7 +47,6 @@ type SummaryProps = {
   date: Date;
   reason: TillageReason;
   action: TillageAction;
-  equipmentName?: string;
   additionalNotes?: string | null;
   hidePlotList?: boolean;
 };
@@ -55,7 +54,6 @@ type SummaryProps = {
 export function TillageSummary({
   date,
   plots,
-  equipmentName,
   reason,
   action,
   additionalNotes,
@@ -101,7 +99,7 @@ export function TillageSummary({
                 strokeColor={"white"}
                 fillColor={hexToRgba(
                   theme.map.defaultFillColor,
-                  theme.map.defaultFillAlpha
+                  theme.map.defaultFillAlpha,
                 )}
               />
             );
@@ -110,12 +108,6 @@ export function TillageSummary({
       </View>
       <Card style={{ marginTop: theme.spacing.m }}>
         <SummaryItem label={t("forms.labels.area")} value={`${size / 100}a`} />
-        {equipmentName && (
-          <SummaryItem
-            label={t("forms.labels.machine")}
-            value={equipmentName}
-          />
-        )}
         <SummaryItem
           label={t("forms.labels.reason")}
           value={t(`tillages.reasons.${reason}`)}

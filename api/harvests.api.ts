@@ -4,7 +4,8 @@ import { components } from "./v1";
 export type Harvest =
   components["schemas"]["GetV1HarvestsPositiveResponse"]["data"]["result"][number];
 
-export type ProcessingType = Harvest["processingType"];
+export type HarvestUnit = Harvest["unit"];
+export type ConservationMethod = NonNullable<Harvest["conservationMethod"]>;
 
 export type PlotHarvest =
   components["schemas"]["GetV1PlotsByIdPlotIdHarvestsPositiveResponse"]["data"]["result"][number];
@@ -66,7 +67,7 @@ export function harvestsApi(client: FetchClient) {
         "/v1/plots/byId/{plotId}/harvestSummary",
         {
           params: { path: { plotId } },
-        }
+        },
       );
       return data!.data.monthlyHarvests ?? [];
     },

@@ -23,6 +23,7 @@ export function CreateAnimalScreen({
     formState: { errors, isDirty },
   } = useForm<AnimalFormValues>({
     defaultValues: {
+      dateOfBirth: new Date(),
       registered: false,
       motherId: motherId ?? undefined,
       fatherId: fatherId ?? undefined,
@@ -31,7 +32,7 @@ export function CreateAnimalScreen({
 
   const createAnimalMutation = useCreateAnimalMutation(
     () => navigation.goBack(),
-    (error) => console.error(error)
+    (error) => console.error(error),
   );
 
   function onSubmit(data: AnimalFormValues) {

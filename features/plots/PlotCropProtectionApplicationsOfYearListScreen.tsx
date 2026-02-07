@@ -35,9 +35,9 @@ export function PlotCropProtectionApplicationsOfYearListScreen({
         new Date(cropProtectionApplication.dateTime),
         locale,
         "long",
-        false
+        false,
       ),
-    })
+    }),
   );
 
   const fuse = new Fuse(sanitizedCropProtectionApplications ?? [], {
@@ -68,11 +68,14 @@ export function PlotCropProtectionApplicationsOfYearListScreen({
           {cropProtectionApplication.dateTime}
         </ListItem.Title>
         <ListItem.Body>
-          {cropProtectionApplication.numberOfApplications *
-            cropProtectionApplication.amountPerApplication}
+          {cropProtectionApplication.numberOfUnits *
+            cropProtectionApplication.amountPerUnit}
           {cropProtectionApplication.unit}{" "}
           {cropProtectionApplication.product.name} (
-          {getMethodLabel(cropProtectionApplication.method)})
+          {cropProtectionApplication.method
+            ? getMethodLabel(cropProtectionApplication.method)
+            : ""}
+          )
         </ListItem.Body>
       </ListItem.Content>
       <ListItem.Chevron />

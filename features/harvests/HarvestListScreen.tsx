@@ -31,27 +31,20 @@ export function HarvestListScreen({
   }
 
   const sanitizedHarvests = harvests?.map(
-    ({ date, processingType, conservationMethod, crop, ...harvest }) => ({
+    ({ date, unit, conservationMethod, crop, ...harvest }) => ({
       date: formatLocalizedDate(new Date(date), locale, "long", false),
-      processingType: t(`harvests.labels.processing_type.${processingType}`),
-      conservationMethod: t(
-        `harvests.labels.conservation_method.${conservationMethod}`
-      ),
+      unit: t(`harvests.labels.unit.${unit}`),
+      conservationMethod: conservationMethod
+        ? t(`harvests.labels.conservation_method.${conservationMethod}`)
+        : undefined,
       cropName: crop.name,
-      unit: t(`harvests.labels.unit.${processingType}`),
       ...harvest,
-    })
+    }),
   );
 
   const fuse = new Fuse(sanitizedHarvests ?? [], {
     minMatchCharLength: 1,
-    keys: [
-      "date",
-      "processingType",
-      "conservationMethod",
-      "crop.name",
-      "plot.name",
-    ],
+    keys: ["date", "unit", "conservationMethod", "crop.name", "plot.name"],
   });
 
   let searchResult = sanitizedHarvests;
@@ -62,10 +55,9 @@ export function HarvestListScreen({
   const renderItem = ({
     item: harvest,
   }: {
-    item: Omit<Harvest, "crop" | "processingType" | "conservationMethod"> & {
+    item: Omit<Harvest, "crop" | "unit" | "conservationMethod"> & {
       cropName: string;
-      processingType: string;
-      conservationMethod: string;
+      conservationMethod?: string;
       unit: string;
     };
   }) => (
@@ -85,9 +77,8 @@ export function HarvestListScreen({
           })}
         </ListItem.Title>
         <ListItem.Body>
-          {round(harvest.producedUnits * harvest.kilosPerUnit, 2)}kg,{" "}
-          {harvest.cropName}, {harvest.conservationMethod},{" "}
-          {harvest.processingType}
+          {round(harvest.numberOfUnits * harvest.kilosPerUnit, 2)}kg,{" "}
+          {harvest.cropName}, {harvest.unit}, {harvest.conservationMethod}
         </ListItem.Body>
       </ListItem.Content>
       <ListItem.Chevron />

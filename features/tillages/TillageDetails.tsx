@@ -31,7 +31,6 @@ export function TillageDetailsScreen({
     <ContentView>
       <TillageSummary
         date={new Date(date)}
-        equipmentName={tillage.equipment?.name}
         plots={[
           {
             plotId: tillage.plotId,

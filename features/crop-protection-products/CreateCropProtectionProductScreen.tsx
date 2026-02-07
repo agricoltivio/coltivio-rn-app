@@ -11,7 +11,6 @@ import {
 } from "./CropProtectionProductForm";
 import { useCreateCropProtectionProductMutation } from "./cropProtectionProduct.hooks";
 import { useTranslation } from "react-i18next";
-import { useCropProtectionEquipmentsQuery } from "../equipment/cropProtectionEquipment.hooks";
 
 export function CreateCropProtectionProductScreen({
   navigation,
@@ -29,8 +28,8 @@ export function CreateCropProtectionProductScreen({
 
   const createCropProtectionProductMutation =
     useCreateCropProtectionProductMutation((product) => {
-      if (previousRoute.name === "AddCropProtectionApplicationSelectProduct") {
-        navigation.popTo("AddCropProtectionApplicationSelectProduct", {
+      if (previousRoute.name === "AddCropProtectionApplicationConfiguration") {
+        navigation.popTo("AddCropProtectionApplicationConfiguration", {
           productId: product.id,
         });
       } else {
@@ -38,17 +37,8 @@ export function CreateCropProtectionProductScreen({
       }
     });
 
-  const { cropProtectionEquipments, isFetched } =
-    useCropProtectionEquipmentsQuery([]);
-
-  const productUnit = watch("unit");
-
-  const availableEquipment = cropProtectionEquipments!.filter(
-    (equipment) => equipment.unit === productUnit
-  );
-
   function onSubmitCropProtectionProduct(
-    data: CropProtectionProductFormValues
+    data: CropProtectionProductFormValues,
   ) {
     createCropProtectionProductMutation.mutate(data);
   }
@@ -72,11 +62,7 @@ export function CreateCropProtectionProductScreen({
         headerTitleOnScroll={t("crop_protection_product.add_product")}
       >
         <H2>{t("crop_protection_product.add_product")}</H2>
-        <CropProtectionProductForm
-          equipments={availableEquipment}
-          control={control}
-          errors={errors}
-        />
+        <CropProtectionProductForm control={control} errors={errors} />
       </ScrollView>
     </ContentView>
   );

@@ -1,4 +1,3 @@
-import { CropProtectionEquipment } from "@/api/cropProtectionEquipments.api";
 import { CropProtectionProductCreateInput } from "@/api/cropProtectionProducts.api";
 import { Card } from "@/components/card/Card";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
@@ -13,14 +12,12 @@ import { useTheme } from "styled-components/native";
 export type CropProtectionProductFormValues = CropProtectionProductCreateInput;
 
 type CropProtectionProductFormProps = {
-  equipments: CropProtectionEquipment[];
   control: Control<CropProtectionProductFormValues>;
   errors: FieldErrors<CropProtectionProductFormValues>;
   restrictedMode?: boolean;
 };
 
 export function CropProtectionProductForm({
-  equipments,
   control,
   errors,
   restrictedMode = false,
@@ -74,27 +71,6 @@ export function CropProtectionProductForm({
             },
           }}
           error={errors.unit?.message}
-        />
-        <Card
-          elevated
-          style={{
-            backgroundColor: theme.colors.accent,
-            margin: theme.spacing.s,
-          }}
-        >
-          <H4>{t("crop_protection_product.default_machine_info")}</H4>
-        </Card>
-        <RHSelect
-          name="defaultEquipmentId"
-          control={control}
-          label={t("forms.labels.default_machine")}
-          data={[
-            { label: t("forms.labels.none"), value: "none" },
-            ...equipments!.map((equipment) => ({
-              label: equipment.name,
-              value: equipment.id,
-            })),
-          ]}
         />
       </View>
     </>

@@ -1,15 +1,13 @@
 import { FertilizerCreateInput } from "@/api/fertilizers.api";
+import { Card } from "@/components/card/Card";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
+import { H4 } from "@/theme/Typography";
 import React from "react";
 import { Control, FieldErrors } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { FertilizerSpreader } from "@/api/fertilizerSpreaders.api";
-import { useFertilizerSpreadersQuery } from "../equipment/fertilizerSpreader.hooks";
-import { Card } from "@/components/card/Card";
-import { H3, H4 } from "@/theme/Typography";
 
 export type FertilizerFormValues = FertilizerCreateInput;
 
@@ -17,14 +15,12 @@ type FertilizerFormProps = {
   control: Control<FertilizerFormValues>;
   errors: FieldErrors<FertilizerFormValues>;
   restrictedMode?: boolean;
-  spreaders: FertilizerSpreader[];
 };
 
 export function FertilizerForm({
   control,
   errors,
   restrictedMode = false,
-  spreaders,
 }: FertilizerFormProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -82,27 +78,6 @@ export function FertilizerForm({
             },
           }}
           error={errors.unit?.message}
-        />
-        <Card
-          elevated
-          style={{
-            backgroundColor: theme.colors.accent,
-            margin: theme.spacing.s,
-          }}
-        >
-          <H4>{t("fertilizers.default_machine_info")}</H4>
-        </Card>
-        <RHSelect
-          name="defaultSpreaderId"
-          control={control}
-          label={t("forms.labels.default_machine")}
-          data={[
-            { label: t("forms.labels.none"), value: "none" },
-            ...spreaders!.map((config) => ({
-              label: config.name,
-              value: config.id,
-            })),
-          ]}
         />
       </View>
     </>

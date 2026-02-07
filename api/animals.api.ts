@@ -43,11 +43,6 @@ export function animalsApi(client: FetchClient) {
       return data!.data.result;
     },
 
-    async getLivingAnimals(): Promise<Animal[]> {
-      const { data } = await client.GET("/v1/animals/living");
-      return data!.data.result;
-    },
-
     async getAnimalById(animalId: string): Promise<AnimalDetail> {
       const { data } = await client.GET("/v1/animals/byId/{animalId}", {
         params: {

@@ -47,8 +47,13 @@ export function AddFertilizerApplicationSelectPlotsScreen({
   const [showUserLocation, setShowUserLocation] = useState(false);
   const [drawingAction, setDrawingAction] = useState<DrawAction>("select");
 
-  const { putPlot, removePlot, selectedPlotsById, resetSelectedPlots } =
-    useCreateFertilizerApplicationStore();
+  const {
+    putPlot,
+    removePlot,
+    selectedPlotsById,
+    resetSelectedPlots,
+    totalNumberOfApplications,
+  } = useCreateFertilizerApplicationStore();
 
   const polygonDrawingToolRef = useRef<PolygonDrawingToolActions>(null);
 
@@ -145,7 +150,7 @@ export function AddFertilizerApplicationSelectPlotsScreen({
         name: plot.name,
         geometry: plot.geometry,
         size: round(plot.size, 0),
-        numberOfApplications: 0,
+        numberOfUnits: 0,
       });
     }
   }
@@ -164,7 +169,7 @@ export function AddFertilizerApplicationSelectPlotsScreen({
         plotId: plotIntersection.plot.id,
         geometry: plotIntersection.intersection.geometry,
         size: round(plotIntersection.intersection.size, 0),
-        numberOfApplications: 0,
+        numberOfUnits: 0,
       });
     }
   }
@@ -175,9 +180,20 @@ export function AddFertilizerApplicationSelectPlotsScreen({
         <BottomActionContainer>
           <Button
             title={t("buttons.next")}
-            onPress={() =>
-              navigation.navigate("AddFertilizerApplicationDivideOnPlots")
-            }
+            onPress={() => {
+              const selectedPlots = Object.values(selectedPlotsById);
+              // Skip divide screen if only 1 plot is selected - assign all to that plot
+              if (selectedPlots.length === 1) {
+                const plot = selectedPlots[0];
+                putPlot({
+                  ...plot,
+                  numberOfUnits: totalNumberOfApplications ?? 0,
+                });
+                navigation.navigate("AddFertilizerApplicationAdditionalNotes");
+              } else {
+                navigation.navigate("AddFertilizerApplicationDivideOnPlots");
+              }
+            }}
             disabled={!Object.values(selectedPlotsById).length}
           />
         </BottomActionContainer>

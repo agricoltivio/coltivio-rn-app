@@ -2,10 +2,7 @@ import { StackScreenProps } from "@/navigation/rootStackTypes";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 export type FertilizerApplicationsStackParamList = {
-  AddFertilizerApplicationSelectDate: undefined;
-  AddFertilizerApplicationSelectFertilizer: { fertilizerId?: string };
-  AddFertilizerApplicationSelectSpreader: { spreaderId?: string };
-  AddFertilizerApplicationSelectQuantity: undefined;
+  AddFertilizerApplicationConfiguration: { fertilizerId?: string };
   AddFertilizerApplicationSelectPlots: undefined;
   AddFertilizerApplicationDivideOnPlots: undefined;
   AddFertilizerApplicationAdditionalNotes: undefined;
@@ -23,17 +20,8 @@ export type FertilizerApplicationsScreenProps =
 export type FertilizerApplicationDetailsScreenProps =
   StackScreenProps<"FertilizerApplicationDetails">;
 
-export type AddFertilizerApplicationSelectDateScreenProps =
-  StackScreenProps<"AddFertilizerApplicationSelectDate">;
-
-export type AddFertilizerApplicationSelectFertilizerScreenProps =
-  StackScreenProps<"AddFertilizerApplicationSelectFertilizer">;
-
-export type AddFertilizerApplicationSelectSpreaderScreenProps =
-  StackScreenProps<"AddFertilizerApplicationSelectSpreader">;
-
-export type AddFertilizerApplicationSelectQuantityScreenProps =
-  StackScreenProps<"AddFertilizerApplicationSelectQuantity">;
+export type AddFertilizerApplicationConfigurationScreenProps =
+  StackScreenProps<"AddFertilizerApplicationConfiguration">;
 
 export type AddFertilizerApplicationSelectPlotsScreenProps =
   StackScreenProps<"AddFertilizerApplicationSelectPlots">;

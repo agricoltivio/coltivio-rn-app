@@ -7,14 +7,14 @@ import { Control, FieldErrors, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { useLivingAnimalsQuery } from "./animals.hooks";
+import { useAnimalsQuery } from "./animals.hooks";
 import { useAvailableEarTagsQuery } from "./earTags.hooks";
 
 export type AnimalFormValues = Omit<
   AnimalCreateInput,
   "dateOfBirth" | "dateOfDeath"
 > & {
-  dateOfBirth?: Date;
+  dateOfBirth: Date;
   dateOfDeath?: Date;
 };
 
@@ -33,7 +33,7 @@ export function AnimalForm({
 }: AnimalFormProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { animals } = useLivingAnimalsQuery();
+  const { animals } = useAnimalsQuery(true);
   const { availableEarTags } = useAvailableEarTagsQuery();
 
   // Watch dateOfDeath to conditionally show deathReason

@@ -11,6 +11,7 @@
     "save": "Speichern",
     "add": "Hinzufügen",
     "ok": "OK",
+    "close": "Schliessen",
     "delete": "Löschen",
     "parcel_select": "Parzelle auswählen",
     "draw_area": "Fläche zeichnen",
@@ -50,6 +51,7 @@
       "load": "Fuder",
       "loads": "Fuder",
       "balls": "Ballen",
+      "crate": "Harasse",
       "amount_unit": "Anzahl {{unit}}",
       "amount_of_loads": "Anzahl Fuder",
       "amount_per_load": "Menge pro Fuder",
@@ -103,7 +105,8 @@
       "password_repeat_invalid": "Passwörter stimmen nicht überein",
       "divided_amount_too_big": "Die verteilte Menge ist größer als die verfügbare Menge",
       "not_all_divided": "Du hast noch nicht die gesamte Menge verteilt",
-      "required": "Feld darf nicht leer sein"
+      "required": "Feld darf nicht leer sein",
+      "min": "Mindestens {{min}}"
     }
   },
   "common": {
@@ -123,7 +126,25 @@
     "usage": "Nutzung",
     "federal_farm_id": "Betriebsnummer: {{number}}",
     "new_machine": "Neue Maschine",
-    "new_device": "Neues Gerät"
+    "new_device": "Neues Gerät",
+    "crate": "Kiste",
+    "total_amount": "Gesamtmenge"
+  },
+  "presets": {
+    "preset": "Vorlage",
+    "presets": "Vorlagen",
+    "preset_settings": "Vorlagen-Einstellungen",
+    "select_preset": "Vorlage auswählen",
+    "manage_presets": "Vorlagen verwalten",
+    "manage_harvest_presets": "Ernte-Vorlagen verwalten",
+    "manage_tillage_presets": "Bodenbearbeitungs-Vorlagen verwalten",
+    "manage_fertilizer_presets": "Dünger-Vorlagen verwalten",
+    "manage_crop_protection_presets": "Pflanzenschutz-Vorlagen verwalten",
+    "save_as_preset": "Als Vorlage speichern",
+    "enter_preset_name": "Gib einen Namen für die Vorlage ein",
+    "delete_confirm_title": "Vorlage löschen",
+    "delete_confirm_message": "Möchtest du \"{{name}}\" wirklich löschen?",
+    "no_presets": "Keine Vorlagen vorhanden"
   },
   "errors": {
     "unexpected_retry": "Ups, etwas ist schief gelaufen. Bitte versuche es erneut.",
@@ -483,6 +504,7 @@
   },
   "field_calendar": {
     "field_calendar": "Feldkalender",
+    "crop_families": "Kulturfamilien",
     "crops": "Kulturen",
     "crop_rotations": "Fruchtfolgen",
     "tillages": "Bodenbearbeitungen",
@@ -495,6 +517,7 @@
   },
   "harvests": {
     "harvest": "Ernte",
+    "add_harvest": "Neue Ernte",
     "harvest_year": "Ernte {{year}}",
     "harvest_date": "Ernte {{date}}",
     "harvest_plot_name": "Ernte - {{name}}",
@@ -510,9 +533,11 @@
     },
     "labels": {
       "unit": {
-        "none": "Fuder",
+        "load": "Fuder",
         "round_bale": "Rundballen",
         "square_bale": "Quaderballen",
+        "crate": "Harasse",
+        "total_amount": "Gesamtmenge",
         "other": "Einheit"
       },
       "conservation_method": {
@@ -550,6 +575,12 @@
     "fertilizer_application_date": "Düngeraustrag {{date}}",
     "fertilizer_application_year": "Düngeraustrag {{year}}",
     "fertilizer_application_plot_name": "Düngeraustrag - {{name}}",
+    "add_fertilizer_application": "Neuer Düngeraustrag",
+    "units": {
+      "bag": "Sack",
+      "load": "Fuder",
+      "amount_per_hectare": "Menge pro Hektare"
+    },
     "select_quantity": {
       "heading": "Wie viel wurde ausgebracht?"
     },
@@ -579,16 +610,11 @@
   "tillages": {
     "tillages": "Bodenbearbeitungen",
     "tillage": "Bodenbearbeitung",
+    "add_tillage": "Neue Bodenbearbeitung",
     "tillage_year": "Bodenbearbeitung {{year}}",
     "tillage_date": "Bodenbearbeitung {{date}}",
     "tillage_plot_name": "Bodenbearbeitung - {{name}}",
-    "select_date": {
-      "heading": "Wann wurde die Arbeit durchgeführt?"
-    },
-    "select_equipment": {
-      "heading": "Welche Maschine wurde verwendet?",
-      "no_machinery": "Du hast noch keine Maschine erfasst. Diese vereinfachen die Erfassung der Ernte, indem du Standardwerte vordefinieren kannst."
-    },
+    "custom_action": "Benutzerdefinierte Aktion",
     "reasons": {
       "soil_loosening": "Bodenlockerung",
       "weed_control": "Unkrautbekämpfung",
@@ -603,6 +629,7 @@
       "hoeing": "Hacken",
       "weed_harrowing": "Striegeln",
       "flame_weeding": "Abflammen",
+      "custom": "Benutzerdefiniert",
       "other": "Andere"
     }
   },
@@ -619,10 +646,22 @@
       "other": "Andere"
     },
     "no_variety": "Keine Sorte",
-    "crop_in_use_warning": "Diese Kultur wird verwendet und kann deshalb nicht gelöscht werden."
+    "crop_in_use_warning": "Diese Kultur wird verwendet und kann deshalb nicht gelöscht werden.",
+    "family_optional": "Familie (optional)",
+    "waiting_time_in_years_optional": "Wartezeit in Jahren (optional)"
+  },
+  "crop_families": {
+    "crop_families": "Kulturfamilien",
+    "crop_family": "Kulturfamilie",
+    "new_crop_family": "Neue Kulturfamilie",
+    "waiting_time_in_years": "Wartezeit in Jahren",
+    "waiting_time_years": "{{count}} Jahr Wartezeit",
+    "waiting_time_years_plural": "{{count}} Jahre Wartezeit",
+    "family_in_use_warning": "Diese Kulturfamilie wird verwendet und kann deshalb nicht gelöscht werden."
   },
   "crop_protection_applications": {
     "crop_protection": "Pflanzenschutz",
+    "add_application": "Neue Pflanzenschutzmaßnahme",
     "crop_protection_year": "Pflanzenschutz {{year}}",
     "crop_protection_plot_name": "Pflanzenschutz - {{name}}",
     "crop_protection_date": "Pflanzenschutz - {{date}}",

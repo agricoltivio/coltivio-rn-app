@@ -1,4 +1,3 @@
-import { ConservationMethod } from "@/api/harvestingMachinery.api";
 import { Button } from "@/components/buttons/Button";
 import { Card } from "@/components/card/Card";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -14,6 +13,7 @@ import { PieChart, stackDataItem } from "react-native-gifted-charts";
 import { useTheme } from "styled-components/native";
 import { useHarvestSummariesOfPlotQuery } from "../harvests/harvests.hooks";
 import { HarvestStackChart } from "../harvests/HarvestStackChart";
+import { ConservationMethod } from "@/api/harvests.api";
 
 export function PlotHarvestsOfYearScreen({
   route,
@@ -29,14 +29,14 @@ export function PlotHarvestsOfYearScreen({
   }
 
   const harvestSummariesForSelectedYear = harvestSummaries.filter(
-    (summary) => summary.year === year
+    (summary) => summary.year === year,
   );
 
   const totalAmountsSummary = harvestSummariesForSelectedYear.reduce<{
     [key: string]: {
       amount: number;
       cropName: string;
-      conservationMethod: string;
+      conservationMethod?: string | null;
     };
   }>((acc, { producedQuantities }) => {
     for (const producedQuantity of producedQuantities) {
@@ -90,22 +90,24 @@ export function PlotHarvestsOfYearScreen({
       itemsOfMonthByCropName[producedQuantity.forageName].stacks.push({
         value: producedQuantity.totalAmountInKilos / 100,
         color: stringToColor(
-          producedQuantity.forageName + producedQuantity.conservationMethod
+          producedQuantity.forageName + producedQuantity.conservationMethod,
         ),
       });
       if (!legendByForageType[producedQuantity.forageName]) {
         legendByForageType[producedQuantity.forageName] = {};
       }
-      legendByForageType[producedQuantity.forageName][
-        producedQuantity.conservationMethod
-      ] = {
-        text: t(
-          `harvests.labels.conservation_method.${producedQuantity.conservationMethod as ConservationMethod}`
-        ),
-        color: stringToColor(
-          producedQuantity.forageName + producedQuantity.conservationMethod
-        ),
-      };
+      if (producedQuantity.conservationMethod) {
+        legendByForageType[producedQuantity.forageName][
+          producedQuantity.conservationMethod
+        ] = {
+          text: t(
+            `harvests.labels.conservation_method.${producedQuantity.conservationMethod as ConservationMethod}`,
+          ),
+          color: stringToColor(
+            producedQuantity.forageName + producedQuantity.conservationMethod,
+          ),
+        };
+      }
     }
     Object.entries(itemsOfMonthByCropName).forEach(([cropName, item]) => {
       if (!chartByForageType[cropName]) {
@@ -178,7 +180,7 @@ export function PlotHarvestsOfYearScreen({
                 labels={Object.values(totalAmountsSummary).map((summary) => ({
                   text: `${summary.cropName} (${t(`harvests.labels.conservation_method.${summary.conservationMethod as ConservationMethod}`)}): ${(summary.amount / 1000).toPrecision(2)}t`,
                   color: stringToColor(
-                    summary.cropName + summary.conservationMethod
+                    summary.cropName + summary.conservationMethod,
                   ),
                 }))}
               />

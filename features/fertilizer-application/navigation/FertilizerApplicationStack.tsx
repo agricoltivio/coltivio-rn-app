@@ -1,10 +1,7 @@
 import { Stack } from "@/navigation/stack";
-import { AddFertilizerApplicationSelectQuantityScreen } from "../add/AddFertilizerApplicaationSelectQuantityScreen";
+import { AddFertilizerApplicationConfigurationScreen } from "../add/AddFertilizerApplicationConfigurationScreen";
 import { AddFertilizerApplicationDivideOnPlotsScreen } from "../add/AddFertilizerApplicationDivideOnPlotsScreen";
-import { AddFertilizerApplicationSelectDateScreen } from "../add/AddFertilizerApplicationSelectDateScreen";
-import { AddFertilizerApplicationSelectFertilizerScreen } from "../add/AddFertilizerApplicationSelectFertilizerScreen";
 import { AddFertilizerApplicationSelectPlotsScreen } from "../add/AddFertilizerApplicationSelectPlotsScreen";
-import { AddFertilizerApplicationSelectSpreaderScreen } from "../add/AddFertilizerApplicationSelectSpreaderScreen";
 import { AddFertilizerApplicationSummaryScreen } from "../add/AddFertilizerApplicationSummaryScreen";
 import { FertilizerApplicationDetailsScreen } from "../FertilizerApplicationDetails";
 import { FertilizerApplicationsOfYearListScreen } from "../FertilizerApplicationsListScreen";
@@ -39,30 +36,10 @@ export function renderFertilizerApplicationStack() {
       component={FertilizerApplicationDetailsScreen}
     />,
     <Stack.Screen
-      key="add-fertilizer-application-select-date"
-      name="AddFertilizerApplicationSelectDate"
+      key="add-fertilizer-application-configuration"
+      name="AddFertilizerApplicationConfiguration"
       options={{ title: "" }}
-      component={AddFertilizerApplicationSelectDateScreen}
-    />,
-    <Stack.Screen
-      key="add-fertilizer-application-select-fertilizer"
-      name="AddFertilizerApplicationSelectFertilizer"
-      options={{
-        title: "",
-      }}
-      component={AddFertilizerApplicationSelectFertilizerScreen}
-    />,
-    <Stack.Screen
-      key="add-fertilizer-application-select-spreader"
-      name="AddFertilizerApplicationSelectSpreader"
-      options={{ title: "" }}
-      component={AddFertilizerApplicationSelectSpreaderScreen}
-    />,
-    <Stack.Screen
-      key="add-fertilizer-application-select-quantity"
-      name="AddFertilizerApplicationSelectQuantity"
-      options={{ title: "" }}
-      component={AddFertilizerApplicationSelectQuantityScreen}
+      component={AddFertilizerApplicationConfigurationScreen}
     />,
     <Stack.Screen
       key="add-fertilizer-application-select-plots"

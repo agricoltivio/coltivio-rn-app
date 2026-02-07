@@ -21,7 +21,7 @@ export function AddCropProtectionApplicationDivideOnPlotsScreen({
   const {
     putPlot,
     removePlot,
-    totalNumberOfApplications = 0,
+    totalNumberOfUnits: totalNumberOfApplications = 0,
     selectedPlotsById,
   } = useAddCropProtectionApplicationStore();
 
@@ -55,12 +55,12 @@ export function AddCropProtectionApplicationDivideOnPlotsScreen({
           if (index === selectedPlots.length - 1) {
             quantity = round(
               totalNumberOfApplications - totalDivided,
-              divisionPrecision
+              divisionPrecision,
             );
           } else {
             quantity = round(
               (totalNumberOfApplications - totalDivided) * fraction,
-              divisionPrecision
+              divisionPrecision,
             );
           }
           if (quantity === 0) {
@@ -118,7 +118,7 @@ export function AddCropProtectionApplicationDivideOnPlotsScreen({
       if (quantity > 0) {
         putPlot({
           ...cropProtectionApplicationArea,
-          numberOfApplications: quantity,
+          numberOfUnits: quantity,
         });
       } else {
         removePlot(cropProtectionApplicationArea.plotId);
@@ -139,7 +139,7 @@ export function AddCropProtectionApplicationDivideOnPlotsScreen({
       <ScrollView
         showHeaderOnScroll
         headerTitleOnScroll={t(
-          "crop_protection_applications.divide_on_plots.header_title"
+          "crop_protection_applications.divide_on_plots.header_title",
         )}
         keyboardAware
       >

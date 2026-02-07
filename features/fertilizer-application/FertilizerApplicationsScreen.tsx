@@ -54,7 +54,7 @@ export function FertilizerApplicationsScreen({
       <FAB
         icon={{ name: "add", color: "white" }}
         onPress={() =>
-          navigation.navigate("AddFertilizerApplicationSelectDate")
+          navigation.navigate("AddFertilizerApplicationConfiguration", {})
         }
       />
     </ContentView>

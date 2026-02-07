@@ -14,7 +14,6 @@ import {
   useAnimalByIdQuery,
   useAnimalsQuery,
   useBatchUpdateAnimalsMutation,
-  useLivingAnimalsQuery,
 } from "./animals.hooks";
 import { SelectChildrenScreenProps } from "./navigation/animals-routes";
 

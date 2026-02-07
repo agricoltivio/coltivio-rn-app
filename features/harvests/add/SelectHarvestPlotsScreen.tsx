@@ -54,6 +54,7 @@ export function SelectHarvestPlotsScreen({
     removeHarvestPlot,
     selectedPlotsById,
     resetSelectedPlots,
+    totalProducedUnits,
   } = useCreateHarvestStore();
 
   const polygonDrawingToolRef = useRef<PolygonDrawingToolActions>(null);
@@ -166,7 +167,7 @@ export function SelectHarvestPlotsScreen({
         geometry: plot.geometry,
         harvestSize: round(plot.size, 0),
         amountInKilos: 0,
-        producedUnits: 0,
+        numberOfUnits: 0,
       });
     }
   }
@@ -186,7 +187,7 @@ export function SelectHarvestPlotsScreen({
         geometry: plotIntersection.intersection.geometry,
         harvestSize: round(plotIntersection.intersection.size, 0),
         amountInKilos: 0,
-        producedUnits: 0,
+        numberOfUnits: 0,
       });
     }
   }
@@ -197,7 +198,20 @@ export function SelectHarvestPlotsScreen({
         <BottomActionContainer>
           <Button
             title={t("buttons.next")}
-            onPress={() => navigation.navigate("DivideHarvestOnPlots")}
+            onPress={() => {
+              const selectedPlots = Object.values(selectedPlotsById);
+              // Skip divide screen if only 1 plot is selected - assign all to that plot
+              if (selectedPlots.length === 1) {
+                const plot = selectedPlots[0];
+                putHarvestPlot({
+                  ...plot,
+                  numberOfUnits: totalProducedUnits ?? 0,
+                });
+                navigation.navigate("AddHarvestAdditionalNotes");
+              } else {
+                navigation.navigate("DivideHarvestOnPlots");
+              }
+            }}
             disabled={!Object.values(selectedPlotsById).length}
           />
         </BottomActionContainer>

@@ -5,8 +5,8 @@ import { renderAuthStack } from "@/features/auth/navigation/AuthStack";
 import { renderCropProtectionApplicationStack } from "@/features/crop-protection-applications/navigation/CropProtectionApplicationStack";
 import { renderCropProtectionProductStack } from "@/features/crop-protection-products/navigation/CropProtectionProductStack";
 import { renderCropsRotationStack } from "@/features/crop-rotations/navigation/CropRotationsStack";
+import { renderCropFamiliesStack } from "@/features/crop-families/navigation/CropFamiliesStack";
 import { renderCropsStack } from "@/features/crops/navigation/CropsStack";
-import { renderEquipmentStack } from "@/features/equipment/navigation/EquipmentStack";
 import { renderErrorStack } from "@/features/errors/navigation/ErrorStack";
 import {
   renderFarmModalStack,
@@ -89,9 +89,9 @@ export function RootStack() {
           {renderPlotsStack()}
           {renderCropsRotationStack()}
           {renderTillagesStack()}
-          {renderEquipmentStack()}
           {renderFieldCalendarStack(theme, navigation)}
           {renderCropsStack()}
+          {renderCropFamiliesStack()}
           {renderHarvestStack()}
           {renderFertilizerStack()}
           {renderFertilizerApplicationStack()}

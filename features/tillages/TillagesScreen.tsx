@@ -51,7 +51,7 @@ export function TillagesScreen({ navigation }: TillagesScreenProps) {
       </ScrollView>
       <FAB
         icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("AddTillageSelectDate")}
+        onPress={() => navigation.navigate("AddTillageConfiguration")}
       />
     </ContentView>
   );

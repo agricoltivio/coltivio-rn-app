@@ -25,7 +25,7 @@ export function FertilizerApplicationsOfYearListScreen({
   const toDate = new Date(year + 1, 0, 1); // January 1st of the next year
   const { fertilizerApplications } = useFertilizerApplicationsQuery(
     fromDate,
-    toDate
+    toDate,
   );
   const [searchText, setSearchText] = useState("");
 
@@ -40,9 +40,9 @@ export function FertilizerApplicationsOfYearListScreen({
         new Date(fertilizerApplication.date),
         locale,
         "long",
-        false
+        false,
       ),
-    })
+    }),
   );
 
   const fuse = new Fuse(sanitizedFertilizerApplications ?? [], {
@@ -77,9 +77,9 @@ export function FertilizerApplicationsOfYearListScreen({
         </ListItem.Title>
         <ListItem.Body>
           {round(
-            fertilizerApplication.numberOfApplications *
-              fertilizerApplication.amountPerApplication,
-            2
+            fertilizerApplication.numberOfUnits *
+              fertilizerApplication.amountPerUnit,
+            2,
           )}
           {fertilizerApplication.unit} {fertilizerApplication.fertilizer.name}
         </ListItem.Body>

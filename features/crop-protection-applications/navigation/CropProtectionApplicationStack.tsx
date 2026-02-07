@@ -1,10 +1,7 @@
 import { Stack } from "@/navigation/stack";
+import { AddCropProtectionApplicationConfigurationScreen } from "../add/AddCropProtectionApplicationConfigurationScreen";
 import { AddCropProtectionApplicationDivideOnPlotsScreen } from "../add/AddCropProtectionApplicationDivideOnPlotsScreen";
-import { AddCropProtectionApplicationSelectDateScreen } from "../add/AddCropProtectionApplicationSelectDateScreen";
-import { AddCropProtectionApplicationSelectMachineConfigScreen } from "../add/AddCropProtectionApplicationSelectEquipmentScreen";
 import { AddCropProtectionApplicationSelectPlotsScreen } from "../add/AddCropProtectionApplicationSelectPlotsScreen";
-import { AddCropProtectionApplicationSelectProductScreen } from "../add/AddCropProtectionApplicationSelectProductScreen";
-import { AddCropProtectionApplicationSelectQuantityScreen } from "../add/AddCropProtectionApplicationSelectQuantityScreen";
 import { AddCropProtectionApplicationSummaryScreen } from "../add/AddCropProtectionApplicationSummaryScreen";
 import { CropProtectionApplicationDetailsScreen } from "../CropProtectionApplicationDetails";
 import { CropProtectionApplicationsOfYearListScreen } from "../CropProtectionApplicationsListScreen";
@@ -39,30 +36,10 @@ export function renderCropProtectionApplicationStack() {
       component={CropProtectionApplicationDetailsScreen}
     />,
     <Stack.Screen
-      key="add-crop-protection-application-select-date"
-      name="AddCropProtectionApplicationSelectDate"
+      key="add-crop-protection-application-configuration"
+      name="AddCropProtectionApplicationConfiguration"
       options={{ title: "" }}
-      component={AddCropProtectionApplicationSelectDateScreen}
-    />,
-    <Stack.Screen
-      key="add-crop-protection-application-select-product"
-      name="AddCropProtectionApplicationSelectProduct"
-      options={{
-        title: "",
-      }}
-      component={AddCropProtectionApplicationSelectProductScreen}
-    />,
-    <Stack.Screen
-      key="add-crop-protection-application-select-machine-config"
-      name="AddCropProtectionApplicationSelectMachineConfig"
-      options={{ title: "" }}
-      component={AddCropProtectionApplicationSelectMachineConfigScreen}
-    />,
-    <Stack.Screen
-      key="add-crop-protection-application-select-quantity"
-      name="AddCropProtectionApplicationSelectQuantity"
-      options={{ title: "" }}
-      component={AddCropProtectionApplicationSelectQuantityScreen}
+      component={AddCropProtectionApplicationConfigurationScreen}
     />,
     <Stack.Screen
       key="add-crop-protection-application-select-plots"

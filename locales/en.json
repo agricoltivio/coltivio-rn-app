@@ -11,6 +11,7 @@
     "save": "Save",
     "add": "Add",
     "ok": "OK",
+    "close": "Close",
     "delete": "Delete",
     "parcel_select": "Select Parcel",
     "draw_area": "Draw Area",
@@ -102,7 +103,8 @@
       "password_repeat_invalid": "Passwords do not match",
       "divided_amount_too_big": "The distributed quantity exceeds the available amount",
       "not_all_divided": "You have not distributed the entire amount",
-      "required": "This plot is required"
+      "required": "This plot is required",
+      "min": "Minimum {{min}}"
     }
   },
   "common": {
@@ -121,7 +123,25 @@
     "usage": "Usage",
     "federal_farm_id": "Farm Registration Number: {{number}}",
     "new_machine": "New Machine",
-    "new_device": "New Device"
+    "new_device": "New Device",
+    "crate": "Crate",
+    "total_amount": "Total Amount"
+  },
+  "presets": {
+    "preset": "Preset",
+    "presets": "Presets",
+    "preset_settings": "Preset Settings",
+    "select_preset": "Select preset",
+    "manage_presets": "Manage Presets",
+    "manage_harvest_presets": "Manage Harvest Presets",
+    "manage_tillage_presets": "Manage Tillage Presets",
+    "manage_fertilizer_presets": "Manage Fertilizer Presets",
+    "manage_crop_protection_presets": "Manage Crop Protection Presets",
+    "save_as_preset": "Save as Preset",
+    "enter_preset_name": "Enter a name for the preset",
+    "delete_confirm_title": "Delete Preset",
+    "delete_confirm_message": "Are you sure you want to delete \"{{name}}\"?",
+    "no_presets": "No presets available"
   },
   "errors": {
     "unexpected_retry": "Oops, something went wrong. Please try again.",
@@ -481,6 +501,7 @@
   },
   "field_calendar": {
     "field_calendar": "Field Calendar",
+    "crop_families": "Crop Families",
     "crops": "Crops",
     "crop_rotations": "Crop rotations",
     "tillages": "Tillages",
@@ -493,6 +514,7 @@
   },
   "harvests": {
     "harvest": "Harvest",
+    "add_harvest": "New Harvest",
     "harvest_year": "Harvest {{year}}",
     "harvest_date": "Harvest {{date}}",
     "harvest_plot_name": "Harvest - {{name}}",
@@ -577,16 +599,11 @@
   "tillages": {
     "tillages": "Tillage Operations",
     "tillage": "Tillage",
+    "add_tillage": "New Tillage",
     "tillage_year": "Tillage {{year}}",
     "tillage_date": "Tillage {{date}}",
     "tillage_plot_name": "Tillage - {{name}}",
-    "select_date": {
-      "heading": "When was the work carried out?"
-    },
-    "select_equipment": {
-      "heading": "Which equipment was used?",
-      "no_machinery": "Record machines to simplify data entry."
-    },
+    "custom_action": "Custom Action",
     "reasons": {
       "soil_loosening": "Soil Loosening",
       "weed_control": "Weed Control",
@@ -601,6 +618,7 @@
       "hoeing": "Hoeing",
       "weed_harrowing": "Weed Harrowing",
       "flame_weeding": "Flame Weeding",
+      "custom": "Custom",
       "other": "Other"
     }
   },
@@ -617,10 +635,22 @@
       "other": "Other"
     },
     "no_variety": "No Variety",
-    "crop_in_use_warning": "This crop is in use and therefore cannot be deleted."
+    "crop_in_use_warning": "This crop is in use and therefore cannot be deleted.",
+    "family_optional": "Family (optional)",
+    "waiting_time_in_years_optional": "Waiting Time in Years (optional)"
+  },
+  "crop_families": {
+    "crop_families": "Crop Families",
+    "crop_family": "Crop Family",
+    "new_crop_family": "New Crop Family",
+    "waiting_time_in_years": "Waiting Time in Years",
+    "waiting_time_years": "{{count}} year waiting time",
+    "waiting_time_years_plural": "{{count}} years waiting time",
+    "family_in_use_warning": "This crop family is in use and therefore cannot be deleted."
   },
   "crop_protection_applications": {
     "crop_protection": "Crop Protection",
+    "add_application": "New Crop Protection Application",
     "crop_protection_year": "Crop Protection {{year}}",
     "crop_protection_plot_name": "Crop Protection - {{name}}",
     "crop_protection_date": "Crop Protection - {{date}}",

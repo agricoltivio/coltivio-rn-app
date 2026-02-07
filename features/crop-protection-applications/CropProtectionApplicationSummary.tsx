@@ -1,4 +1,7 @@
-import { CropProtectionApplication } from "@/api/cropProtectionApplications.api";
+import {
+  CropProtectionApplicationMethod,
+  CropProtectionApplicationUnit,
+} from "@/api/cropProtectionApplications.api";
 import { Card } from "@/components/card/Card";
 import { ListItem } from "@/components/list/ListItem";
 import { MapView } from "@/components/map/Map";
@@ -45,16 +48,15 @@ type CropProtectionApplicationSummaryProps = {
     name: string;
     geometry: GeoJSON.MultiPolygon;
     size: number;
-    numberOfApplications: number;
+    numberOfUnits: number;
   }[];
-  totalNumberOfApplications: number;
-  amountPerApplication: number;
+  totalNumberOfUnits: number;
+  amountPerUnit: number;
   date: string;
-  equipmentName?: string;
   productName: string;
   additionalNotes?: string | null;
-  unit: CropProtectionApplication["unit"];
-  method: CropProtectionApplication["method"];
+  unit: CropProtectionApplicationUnit;
+  method?: CropProtectionApplicationMethod | null;
   hidePlotList?: boolean;
 };
 
@@ -62,9 +64,8 @@ export function CropProtectionApplicationSummary({
   date,
   plots,
   productName,
-  totalNumberOfApplications,
-  amountPerApplication,
-  equipmentName,
+  totalNumberOfUnits,
+  amountPerUnit,
   additionalNotes,
   method,
   unit,
@@ -87,7 +88,7 @@ export function CropProtectionApplicationSummary({
     <ScrollView
       showHeaderOnScroll
       headerTitleOnScroll={t(
-        "crop_protection_applications.crop_protection_date"
+        "crop_protection_applications.crop_protection_date",
       )}
     >
       <H2>{t("crop_protection_applications.crop_protection")}</H2>
@@ -110,7 +111,7 @@ export function CropProtectionApplicationSummary({
                 strokeColor={"white"}
                 fillColor={hexToRgba(
                   theme.map.defaultFillColor,
-                  theme.map.defaultFillAlpha
+                  theme.map.defaultFillAlpha,
                 )}
               />
             );
@@ -119,29 +120,28 @@ export function CropProtectionApplicationSummary({
       </View>
       <Card style={{ marginTop: theme.spacing.m }}>
         <SummaryItem label={t("forms.labels.area")} value={`${size / 100}a`} />
-        {equipmentName && (
-          <SummaryItem label={t("forms.labels.device")} value={equipmentName} />
-        )}
         <SummaryItem
           label={t("forms.labels.amount_of_loads")}
-          value={`${totalNumberOfApplications}`}
+          value={`${totalNumberOfUnits}`}
         />
         <SummaryItem
           label={t("forms.labels.amount_per_load")}
-          value={`${amountPerApplication}${unit}`}
+          value={`${amountPerUnit}${unit}`}
         />
         <SummaryItem
           label={t("forms.labels.total")}
-          value={`${round(amountPerApplication * totalNumberOfApplications, 2)}${unit}`}
+          value={`${round(amountPerUnit * totalNumberOfUnits, 2)}${unit}`}
         />
         <SummaryItem
           label={t("forms.labels.crop_protection_product")}
           value={productName}
         />
-        <SummaryItem
-          label={t("forms.labels.method")}
-          value={getMethodLabel(method)}
-        />
+        {method && (
+          <SummaryItem
+            label={t("forms.labels.method")}
+            value={getMethodLabel(method)}
+          />
+        )}
       </Card>
       {additionalNotes && (
         <>
@@ -173,7 +173,7 @@ export function CropProtectionApplicationSummary({
                     {t("plots.plot_name", { name: plot.name })}
                   </ListItem.Title>
                   <ListItem.Body>
-                    {plot.numberOfApplications * amountPerApplication}
+                    {plot.numberOfUnits * amountPerUnit}
                     {unit}
                   </ListItem.Body>
                 </ListItem.Content>

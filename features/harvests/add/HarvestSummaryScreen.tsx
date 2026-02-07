@@ -13,7 +13,6 @@ export function HarvestSummaryScreen({
   const { t } = useTranslation();
   const {
     selectedPlotsById,
-    selectedHarvestingMachinery,
     selectedCrop,
     totalProducedUnits = 0,
     harvest,
@@ -22,7 +21,7 @@ export function HarvestSummaryScreen({
   const {
     date,
     kilosPerUnit,
-    processingType,
+    unit,
     additionalNotes,
     cropId,
     conservationMethod,
@@ -44,11 +43,10 @@ export function HarvestSummaryScreen({
 
   function onSave() {
     createHarvestMutation.mutate({
-      processingType,
+      unit,
       additionalNotes,
       cropId,
       date: date.toISOString(),
-      machineryId: harvest?.machineryId,
       harvestCount: harvest?.harvestCount,
       kilosPerUnit,
       conservationMethod,
@@ -56,7 +54,7 @@ export function HarvestSummaryScreen({
         geometry: plot.geometry,
         plotId: plot.plotId,
         size: plot.harvestSize,
-        producedUnits: plot.producedUnits!,
+        numberOfUnits: plot.numberOfUnits!,
       })),
     });
   }
@@ -78,11 +76,10 @@ export function HarvestSummaryScreen({
         date={date}
         cropName={selectedCrop!.name}
         kilosPerUnit={kilosPerUnit}
-        processingType={processingType}
+        unit={unit}
         conservationMethod={conservationMethod}
-        machineryName={selectedHarvestingMachinery?.name}
         producedKilos={totalProducedKilos}
-        producedUnits={totalProducedUnits}
+        numberOfUnits={totalProducedUnits}
         additionalNotes={additionalNotes}
         harvestAreas={plotHarvests}
       />

@@ -1,5 +1,4 @@
-import { ConservationMethod } from "@/api/harvestingMachinery.api";
-import { ProcessingType } from "@/api/harvests.api";
+import { ConservationMethod, HarvestUnit } from "@/api/harvests.api";
 import { Card } from "@/components/card/Card";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
@@ -42,16 +41,15 @@ type HarvestSummaryProps = {
     name: string;
     geometry: GeoJSON.MultiPolygon;
     harvestSize: number;
-    producedUnits: number;
+    numberOfUnits: number;
     amountInKilos: number;
   }[];
-  producedUnits: number;
+  numberOfUnits: number;
   kilosPerUnit: number;
   producedKilos: number;
-  processingType: ProcessingType;
-  conservationMethod: ConservationMethod;
+  unit: HarvestUnit;
+  conservationMethod?: ConservationMethod | null;
   date: Date;
-  machineryName?: string;
   cropName: string;
   additionalNotes?: string | null;
   hidePlotList?: boolean;
@@ -62,18 +60,17 @@ export function HarvestSummary({
   harvestAreas,
   cropName,
   kilosPerUnit,
-  processingType,
+  unit,
   conservationMethod,
-  machineryName,
   producedKilos,
-  producedUnits,
+  numberOfUnits,
   additionalNotes,
   hidePlotList,
 }: HarvestSummaryProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const size = harvestAreas.reduce((acc, plot) => acc + plot.harvestSize, 0);
-  const unitLabel = t(`harvests.labels.unit.${processingType}`);
+  const unitLabel = t(`harvests.labels.unit.${unit}`);
 
   const harvestCentroid = turf.centroid(harvestAreas[0].geometry);
   const [longitude, latitude] = harvestCentroid.geometry.coordinates;
@@ -139,18 +136,12 @@ export function HarvestSummary({
           <SummaryItem label={t("plots.plot")} value={harvestAreas[0]?.name} />
         )}
         <SummaryItem label={t("forms.labels.area")} value={`${size / 100}a`} />
-        {machineryName && (
-          <SummaryItem
-            label={t("forms.labels.machine")}
-            value={machineryName}
-          />
-        )}
         <SummaryItem
           label={t("forms.labels.produced_units")}
-          value={`${producedUnits} ${unitLabel}`}
+          value={`${numberOfUnits} ${unitLabel}`}
         />
         <SummaryItem
-          label={`${t("units.short.kg")}/${t(`harvests.labels.unit.${processingType}`)}`}
+          label={`${t("units.short.kg")}/${t(`harvests.labels.unit.${unit}`)}`}
           value={`${kilosPerUnit}${t("units.short.kg")}`}
         />
         <SummaryItem
@@ -158,13 +149,17 @@ export function HarvestSummary({
           value={`${producedKilos}${t("units.short.kg")}`}
         />
         <SummaryItem label={t("forms.labels.crop")} value={cropName} />
-        <SummaryItem
-          label={t("forms.labels.conservation")}
-          value={t(`harvests.labels.conservation_method.${conservationMethod}`)}
-        />
+        {conservationMethod && (
+          <SummaryItem
+            label={t("forms.labels.conservation")}
+            value={t(
+              `harvests.labels.conservation_method.${conservationMethod}`,
+            )}
+          />
+        )}
         <SummaryItem
           label={t("forms.labels.processing_type")}
-          value={t(`harvests.labels.processing_type.${processingType}`)}
+          value={t(`harvests.labels.unit.${unit}`)}
         />
       </Card>
       {additionalNotes && (
@@ -197,7 +192,7 @@ export function HarvestSummary({
                     {t("plots.plot_name", { name: plot.name })}
                   </ListItem.Title>
                   <ListItem.Body>
-                    {unitLabel}: {plot.producedUnits}
+                    {unitLabel}: {plot.numberOfUnits}
                   </ListItem.Body>
                 </ListItem.Content>
               </ListItem>

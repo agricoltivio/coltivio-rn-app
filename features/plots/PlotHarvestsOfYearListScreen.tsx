@@ -20,32 +20,27 @@ export function PlotHarvestsOfYearListScreen({
   const { harvests: parcelHarvests } = useHarvestsOfPlotQuery(plotId);
 
   const harvestsOfYear = parcelHarvests?.filter(
-    (harvest) => new Date(harvest.date).getFullYear() === year
+    (harvest) => new Date(harvest.date).getFullYear() === year,
   );
 
   const sanitizedHarvests = harvestsOfYear?.map(
-    ({ date, processingType, conservationMethod, crop, ...harvest }) => ({
+    ({ date, unit, conservationMethod, crop, ...harvest }) => ({
       date: formatLocalizedDate(new Date(date), locale, "long", false),
-      processingType: t(`harvests.labels.processing_type.${processingType}`),
-      conservationMethod: t(
-        `harvests.labels.conservation_method.${conservationMethod}`
-      ),
+      unit: t(`harvests.labels.unit.${unit}`),
+      conservationMethod: conservationMethod
+        ? t(`harvests.labels.conservation_method.${conservationMethod}`)
+        : undefined,
       cropName: crop.name,
-      unit: t(`harvests.labels.unit.${processingType}`),
       ...harvest,
-    })
+    }),
   );
 
   const renderItem = ({
     item: harvest,
   }: {
-    item: Omit<
-      PlotHarvest,
-      "crop" | "processingType" | "conservationMethod"
-    > & {
+    item: Omit<PlotHarvest, "crop" | "unit" | "conservationMethod"> & {
       cropName: string;
-      processingType: string;
-      conservationMethod: string;
+      conservationMethod?: string;
       unit: string;
     };
   }) => (
@@ -60,8 +55,8 @@ export function PlotHarvestsOfYearListScreen({
       <ListItem.Content>
         <ListItem.Title style={{ flex: 1 }}>{harvest.date} </ListItem.Title>
         <ListItem.Body>
-          {harvest.producedUnits * harvest.kilosPerUnit}kg, {harvest.cropName},{" "}
-          {harvest.conservationMethod}, {harvest.processingType}
+          {harvest.numberOfUnits * harvest.kilosPerUnit}kg, {harvest.cropName},{" "}
+          {harvest.conservationMethod}, {harvest.unit}
         </ListItem.Body>
       </ListItem.Content>
       <ListItem.Chevron />

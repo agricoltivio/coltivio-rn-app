@@ -1,7 +1,10 @@
 import { CropCreateInput } from "@/api/crops.api";
+import { IonIconButton } from "@/components/buttons/IconButton";
 import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
+import { useCropFamiliesQuery } from "@/features/crop-families/cropFamilies.hooks";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Control, FieldErrors } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -18,6 +21,14 @@ type CropFormProps = {
 export function CropForm({ control, errors }: CropFormProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const navigation = useNavigation();
+  const { cropFamilies } = useCropFamiliesQuery();
+
+  const familyOptions = (cropFamilies ?? []).map((family) => ({
+    label: family.name,
+    value: family.id,
+  }));
+
   return (
     <>
       <View
@@ -54,12 +65,38 @@ export function CropForm({ control, errors }: CropFormProps) {
             { label: t("crops.categories.other"), value: "other" },
           ]}
         />
-
+        {/* Family select with add button */}
+        <View style={{ flexDirection: "row", alignItems: "flex-end", gap: theme.spacing.xs }}>
+          <View style={{ flex: 1 }}>
+            <RHSelect
+              name="familyId"
+              control={control}
+              label={t("crops.family_optional")}
+              error={errors.familyId?.message}
+              enableSearch
+              data={familyOptions}
+            />
+          </View>
+          <IonIconButton
+            icon="add"
+            type="primary"
+            iconSize={24}
+            onPress={() => navigation.navigate("CreateCropFamily")}
+            style={{ marginBottom: 1 }}
+          />
+        </View>
+        <RHTextInput
+          name="waitingTimeInYears"
+          control={control}
+          label={t("crops.waiting_time_in_years_optional")}
+          keyboardType="numeric"
+          error={errors.waitingTimeInYears?.message}
+        />
         <RHTextAreaInput
           name="additionalNotes"
           control={control}
           label={t("forms.labels.additional_notes_optional")}
-          error={errors.name?.message}
+          error={errors.additionalNotes?.message}
         />
       </View>
     </>

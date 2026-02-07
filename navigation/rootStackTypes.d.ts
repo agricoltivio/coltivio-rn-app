@@ -6,8 +6,8 @@ import { AuthStackParamList } from "@/features/auth/navigation/auth-routes";
 import { CropProtectionApplicationStackParamList } from "@/features/crop-protection-applications/navigation/crop-protection-application-routes";
 import { CropProtectionProductsStackParamList } from "@/features/crop-protection-products/navigation/crop-protection-product-routes";
 import { CropRotationsStackParamList } from "@/features/crop-rotations/navigation/crop-rotations-routes";
+import { CropFamiliesStackParamList } from "@/features/crop-families/navigation/crop-families-routes";
 import { CropsStackParamList } from "@/features/crops/navigation/crops-routes";
-import { EquipmentStackParamList } from "@/features/equipment/navigation/equipment-routes";
 import { ErrorStackParamList } from "@/features/errors/navigation/error-routes";
 import { FarmStackParamList } from "@/features/farms/navigation/farm-routes";
 import { FertilizerApplicationsStackParamList } from "@/features/fertilizer-application/navigation/fertilizer-application-routes";
@@ -29,6 +29,7 @@ export type RootStackParamList = AuthStackParamList &
   FarmStackParamList &
   PlotsStackParamList &
   CropsStackParamList &
+  CropFamiliesStackParamList &
   CropRotationsStackParamList &
   TillagesStackParamList &
   HarvestStackParamList &
@@ -36,7 +37,6 @@ export type RootStackParamList = AuthStackParamList &
   FertilizerStackParamList &
   CropProtectionProductsStackParamList &
   CropProtectionApplicationStackParamList &
-  EquipmentStackParamList &
   FieldCalendarStackParamList &
   AgriColtivioStackParamList &
   AnimalsStackParamList;

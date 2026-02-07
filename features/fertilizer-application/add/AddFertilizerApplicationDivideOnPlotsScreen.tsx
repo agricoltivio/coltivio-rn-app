@@ -55,12 +55,12 @@ export function AddFertilizerApplicationDivideOnPlotsScreen({
           if (index === selectedPlots.length - 1) {
             quantity = round(
               totalNumberOfApplications - totalDivided,
-              divisionPrecision
+              divisionPrecision,
             );
           } else {
             quantity = round(
               (totalNumberOfApplications - totalDivided) * fraction,
-              divisionPrecision
+              divisionPrecision,
             );
           }
           if (quantity === 0) {
@@ -118,7 +118,7 @@ export function AddFertilizerApplicationDivideOnPlotsScreen({
       if (quantity > 0) {
         putPlot({
           ...fertilizerApplicationArea,
-          numberOfApplications: quantity,
+          numberOfUnits: quantity,
         });
       } else {
         removePlot(fertilizerApplicationArea.plotId);
@@ -139,7 +139,7 @@ export function AddFertilizerApplicationDivideOnPlotsScreen({
       <ScrollView
         showHeaderOnScroll
         headerTitleOnScroll={t(
-          "fertilizer_application.divide_on_plots.header_title"
+          "fertilizer_application.divide_on_plots.header_title",
         )}
         keyboardAware
       >

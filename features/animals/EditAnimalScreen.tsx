@@ -35,7 +35,7 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
           sex: animal.sex,
           dateOfBirth: animal.dateOfBirth
             ? new Date(animal.dateOfBirth)
-            : undefined,
+            : new Date(),
           registered: animal.registered,
           earTagId: animal.earTagId ?? undefined,
           motherId: animal.motherId ?? undefined,
@@ -49,10 +49,10 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
   });
 
   const updateAnimalMutation = useUpdateAnimalMutation(() =>
-    navigation.goBack()
+    navigation.goBack(),
   );
   const deleteAnimalMutation = useDeleteAnimalMutation(() =>
-    navigation.goBack()
+    navigation.goBack(),
   );
 
   // Build ear tag data including the currently assigned ear tag alongside available ones
@@ -100,8 +100,7 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
               title={t("buttons.delete")}
               onPress={onDelete}
               disabled={
-                updateAnimalMutation.isPending ||
-                deleteAnimalMutation.isPending
+                updateAnimalMutation.isPending || deleteAnimalMutation.isPending
               }
               loading={deleteAnimalMutation.isPending}
             />

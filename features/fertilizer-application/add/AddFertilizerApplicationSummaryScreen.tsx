@@ -16,14 +16,12 @@ export function AddFertilizerApplicationSummaryScreen({
   const { t } = useTranslation();
   const {
     selectedPlotsById,
-    selectedSpreader,
     selectedFertilizer,
     totalNumberOfApplications = 0,
-
     fertilizerApplication,
   } = useCreateFertilizerApplicationStore();
 
-  const { date, method, unit, additionalNotes, amountPerApplication } =
+  const { date, method, unit, additionalNotes, amountPerUnit } =
     fertilizerApplication as FertilizerApplication;
 
   const selectedPlots = Object.values(selectedPlotsById);
@@ -37,21 +35,20 @@ export function AddFertilizerApplicationSummaryScreen({
           { name: "FieldCalendar" },
           { name: "FertilizerApplications" },
         ],
-      })
+      }),
     );
 
   function onSave() {
     createFertilizerApplicationMutation.mutate({
       date: date.toISOString(),
-      spreaderId: selectedSpreader?.id,
       fertilizerId: selectedFertilizer?.id!,
       method,
       unit,
-      amountPerApplication,
+      amountPerUnit,
       additionalNotes,
       plots: selectedPlots.map((plot) => ({
         plotId: plot.plotId,
-        numberOfApplications: plot.numberOfApplications,
+        numberOfUnits: plot.numberOfUnits,
         geometry: plot.geometry,
         size: plot.size,
       })),
@@ -73,10 +70,9 @@ export function AddFertilizerApplicationSummaryScreen({
     >
       <FertilizerApplicationSummary
         date={date}
-        spreaderName={selectedSpreader?.name}
         fertilizerName={selectedFertilizer?.name!}
-        amountPerApplication={amountPerApplication}
-        totalNumberOfApplications={totalNumberOfApplications}
+        amountPerUnit={amountPerUnit}
+        totalNumberOfUnits={totalNumberOfApplications}
         unit={unit}
         plots={selectedPlots}
         additionalNotes={additionalNotes}

@@ -3,10 +3,7 @@ import { IonIconButton } from "@/components/buttons/IconButton";
 import { ContentView } from "@/components/containers/ContentView";
 import { NumberInput } from "@/components/inputs/NumberInput";
 import { ScrollView } from "@/components/views/ScrollView";
-import {
-  SelectHarvestQuantityScreenprops,
-  DivideHarvestOnPlotsScreenProps,
-} from "../navigation/harvest-routes";
+import { DivideHarvestOnPlotsScreenProps } from "../navigation/harvest-routes";
 import { Body, H2, Subtitle, Title } from "@/theme/Typography";
 import { round } from "@/utils/math";
 import React, { useEffect, useState } from "react";
@@ -34,8 +31,9 @@ export function DivideHarvestOnPlotsScreen({
   >({});
   const [divideByArea, setDivideByArea] = useState(false);
   const [divisionPrecision, setDivisionPrecision] = useState(
-    harvest?.processingType === "round_bale" ||
-      harvest?.processingType === "square_bale"
+    harvest?.unit === "round_bale" ||
+      harvest?.unit === "square_bale" ||
+      harvest?.unit === "crate"
       ? 0
       : 1,
   );
@@ -44,13 +42,16 @@ export function DivideHarvestOnPlotsScreen({
   const harvestAreas = Object.values(selectedHarvestPlotsById);
 
   let quantityLabel: string = "";
-  switch (harvest!.processingType) {
-    case "none":
+  switch (harvest!.unit) {
+    case "load":
       quantityLabel = t("forms.labels.loads");
       break;
     case "round_bale":
     case "square_bale":
       quantityLabel = t("forms.labels.balls");
+      break;
+    case "crate":
+      quantityLabel = t("forms.labels.crate");
       break;
   }
 
@@ -75,7 +76,7 @@ export function DivideHarvestOnPlotsScreen({
               totalProducedUnits - totalDivided,
               divisionPrecision,
             );
-          } else if (harvest?.processingType === "none") {
+          } else if (harvest?.unit === "load") {
             quantity = round(
               (totalProducedUnits - totalDivided) * fraction,
               divisionPrecision,
@@ -137,7 +138,7 @@ export function DivideHarvestOnPlotsScreen({
       if (quantity > 0) {
         putHarvestPlot({
           ...harvestArea,
-          producedUnits: quantity,
+          numberOfUnits: quantity,
         });
       } else {
         removeHarvestPlot(harvestArea.plotId);

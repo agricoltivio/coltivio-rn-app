@@ -25,16 +25,6 @@ export function useAnimalsQuery(
   return { animals: data, ...rest };
 }
 
-export function useLivingAnimalsQuery(enabled: boolean = true) {
-  const api = useApi();
-  const { data, ...rest } = useQuery({
-    queryKey: queryKeys.animals.living.queryKey,
-    queryFn: () => api.animals.getLivingAnimals(),
-    enabled,
-  });
-  return { animals: data, ...rest };
-}
-
 export function useAnimalByIdQuery(animalId: string, enabled: boolean = true) {
   const api = useApi();
   const { data, ...rest } = useQuery({

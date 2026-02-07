@@ -1,6 +1,5 @@
 import { Crop } from "@/api/crops.api";
 import { create } from "zustand";
-import { HarvestingMachinery } from "@/api/harvestingMachinery.api";
 import { HarvestBatchCreateInput } from "@/api/harvests.api";
 
 export type SelectedHarvestPlot = {
@@ -8,20 +7,15 @@ export type SelectedHarvestPlot = {
   name: string;
   geometry: GeoJSON.MultiPolygon;
   harvestSize: number;
-  producedUnits: number;
+  numberOfUnits: number;
   amountInKilos: number;
 };
 
 export type Harvest = Omit<HarvestBatchCreateInput, "geometry" | "date"> & {
-  kilosPerUnit: number;
   date: Date;
 };
 
 type CreateHarvestStore = {
-  selectedHarvestingMachinery?: HarvestingMachinery;
-  setSelectedHarvestingMachinery: (
-    harvestingMachinery: HarvestingMachinery,
-  ) => void;
   selectedCrop?: Crop;
   setSelectedCrop: (crop: Crop) => void;
   harvest?: Partial<Harvest>;
@@ -70,7 +64,6 @@ export const useCreateHarvestStore = create<CreateHarvestStore>((set) => ({
     set(() => ({
       selectedPlotsById: {},
       totalProducedUnits: undefined,
-      selectedHarvestingMachinery: undefined,
       selectedCrop: undefined,
       harvest: undefined,
     })),
@@ -83,7 +76,5 @@ export const useCreateHarvestStore = create<CreateHarvestStore>((set) => ({
     set({ totalProducedUnits: quantity }),
   setHarvest: (harvest) =>
     set((state) => ({ harvest: { ...state.harvest, ...harvest } })),
-  setSelectedHarvestingMachinery: (harvestingMachinery) =>
-    set({ selectedHarvestingMachinery: harvestingMachinery }),
   setSelectedCrop: (forage) => set({ selectedCrop: forage }),
 }));
