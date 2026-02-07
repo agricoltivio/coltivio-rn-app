@@ -6,7 +6,6 @@ export const harvestingUnits: HarvestUnit[] = [
   "round_bale",
   "crate",
   "total_amount",
-  "other",
 ];
 
 export const conservationsMethods: ConservationMethod[] = [

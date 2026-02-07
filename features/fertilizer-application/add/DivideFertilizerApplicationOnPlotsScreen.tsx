@@ -10,12 +10,12 @@ import React, { useEffect, useState } from "react";
 import { Switch, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCreateFertilizerApplicationStore } from "./fertilizerApplication.store";
-import { AddFertilizerApplicationDivideOnPlotsScreenProps } from "../navigation/fertilizer-application-routes";
+import { DivideFertilizerApplicationOnPlotsScreenProps } from "../navigation/fertilizer-application-routes";
 import { useTranslation } from "react-i18next";
 
-export function AddFertilizerApplicationDivideOnPlotsScreen({
+export function DivideFertilizerApplicationOnPlotsScreen({
   navigation,
-}: AddFertilizerApplicationDivideOnPlotsScreenProps) {
+}: DivideFertilizerApplicationOnPlotsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const {
@@ -124,7 +124,7 @@ export function AddFertilizerApplicationDivideOnPlotsScreen({
         removePlot(fertilizerApplicationArea.plotId);
       }
     }
-    navigation.navigate("AddFertilizerApplicationAdditionalNotes");
+    navigation.navigate("FertilizerApplicationSummary");
   }
 
   return (

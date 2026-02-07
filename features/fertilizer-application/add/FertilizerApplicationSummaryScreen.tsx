@@ -1,7 +1,7 @@
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
-import { AddFertilizerApplicationSummaryScreenProps } from "../navigation/fertilizer-application-routes";
+import { FertilizerApplicationSummaryScreenProps } from "../navigation/fertilizer-application-routes";
 import { useCreateFertilizerApplicationsMutation } from "../fertilizerApplications.hooks";
 import { FertilizerApplicationSummary } from "../FertilizerApplicationSummary";
 import {
@@ -10,9 +10,9 @@ import {
 } from "./fertilizerApplication.store";
 import { useTranslation } from "react-i18next";
 
-export function AddFertilizerApplicationSummaryScreen({
+export function FertilizerApplicationSummaryScreen({
   navigation,
-}: AddFertilizerApplicationSummaryScreenProps) {
+}: FertilizerApplicationSummaryScreenProps) {
   const { t } = useTranslation();
   const {
     selectedPlotsById,

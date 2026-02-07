@@ -1,13 +1,14 @@
 import { Stack } from "@/navigation/stack";
-import { AddCropProtectionApplicationConfigurationScreen } from "../add/AddCropProtectionApplicationConfigurationScreen";
-import { AddCropProtectionApplicationDivideOnPlotsScreen } from "../add/AddCropProtectionApplicationDivideOnPlotsScreen";
-import { AddCropProtectionApplicationSelectPlotsScreen } from "../add/AddCropProtectionApplicationSelectPlotsScreen";
-import { AddCropProtectionApplicationSummaryScreen } from "../add/AddCropProtectionApplicationSummaryScreen";
+import { ConfigureCropProtectionApplicationScreen } from "../add/ConfigureCropProtectionApplicationScreen";
+import { DivideCropProtectionApplicationOnPlotsScreen } from "../add/DivideCropProtectionApplicationOnPlotsScreen";
+import { SelectCropProtectionApplicationPlotsScreen } from "../add/SelectCropProtectionApplicationPlotsScreen";
+import { CropProtectionApplicationSummaryScreen } from "../add/CropProtectionApplicationSummaryScreen";
+import { SelectCropProtectionApplicationProductAndDateScreen } from "../add/SelectCropProtectionApplicationProductAndDateScreen";
+import { SetCropProtectionApplicationUnitQuantityScreen } from "../add/SetCropProtectionApplicationUnitQuantityScreen";
 import { CropProtectionApplicationDetailsScreen } from "../CropProtectionApplicationDetails";
 import { CropProtectionApplicationsOfYearListScreen } from "../CropProtectionApplicationsListScreen";
 import { CropProtectionApplicationsOfYearScreen } from "../CropProtectionApplicationsOfYearScreen";
 import { CropProtectionApplicationsScreen } from "../CropProtectionApplicationsScreen";
-import { AddCropProtectionApplicationAdditionalNotesScreen } from "../add/AddCropProtectionApplicationAdditionalNotesScreen";
 
 export function renderCropProtectionApplicationStack() {
   return [
@@ -36,34 +37,40 @@ export function renderCropProtectionApplicationStack() {
       component={CropProtectionApplicationDetailsScreen}
     />,
     <Stack.Screen
-      key="add-crop-protection-application-configuration"
-      name="AddCropProtectionApplicationConfiguration"
+      key="select-crop-protection-application-product-and-date"
+      name="SelectCropProtectionApplicationProductAndDate"
       options={{ title: "" }}
-      component={AddCropProtectionApplicationConfigurationScreen}
+      component={SelectCropProtectionApplicationProductAndDateScreen}
     />,
     <Stack.Screen
-      key="add-crop-protection-application-select-plots"
-      name="AddCropProtectionApplicationSelectPlots"
+      key="configure-crop-protection-application"
+      name="ConfigureCropProtectionApplication"
+      options={{ title: "" }}
+      component={ConfigureCropProtectionApplicationScreen}
+    />,
+    <Stack.Screen
+      key="set-crop-protection-application-unit-quantity"
+      name="SetCropProtectionApplicationUnitQuantity"
+      options={{ title: "" }}
+      component={SetCropProtectionApplicationUnitQuantityScreen}
+    />,
+    <Stack.Screen
+      key="select-crop-protection-application-plots"
+      name="SelectCropProtectionApplicationPlots"
       options={{ title: "", headerShown: false }}
-      component={AddCropProtectionApplicationSelectPlotsScreen}
+      component={SelectCropProtectionApplicationPlotsScreen}
     />,
     <Stack.Screen
-      key="add-crop-protection-application-divide-on-plots"
-      name="AddCropProtectionApplicationDivideOnPlots"
+      key="divide-crop-protection-application-on-plots"
+      name="DivideCropProtectionApplicationOnPlots"
       options={{ title: "" }}
-      component={AddCropProtectionApplicationDivideOnPlotsScreen}
+      component={DivideCropProtectionApplicationOnPlotsScreen}
     />,
     <Stack.Screen
-      key="add-crop-protection-application-additional-notes"
-      name="AddCropProtectionApplicationAdditionalNotes"
+      key="crop-protection-application-summary"
+      name="CropProtectionApplicationSummary"
       options={{ title: "" }}
-      component={AddCropProtectionApplicationAdditionalNotesScreen}
-    />,
-    <Stack.Screen
-      key="add-crop-protection-application-summary"
-      name="AddCropProtectionApplicationSummary"
-      options={{ title: "" }}
-      component={AddCropProtectionApplicationSummaryScreen}
+      component={CropProtectionApplicationSummaryScreen}
     />,
   ];
 }

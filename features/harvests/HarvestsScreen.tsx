@@ -50,7 +50,7 @@ export function HarvestsScreen({ navigation, route }: HarvestsScreenProps) {
       </ScrollView>
       <FAB
         icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("AddHarvestConfiguration")}
+        onPress={() => navigation.navigate("SelectHarvestCropAndDate")}
       />
     </ContentView>
   );

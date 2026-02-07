@@ -1,13 +1,14 @@
 import { Stack } from "@/navigation/stack";
-import { AddHarvestConfigurationScreen } from "../add/AddHarvestConfigurationScreen";
 import { DivideHarvestOnPlotsScreen } from "../add/DivideHarvestOnPlotsScreen";
+import { ConfigureHarvestScreen } from "../add/ConfigureHarvestScreen";
 import { HarvestSummaryScreen } from "../add/HarvestSummaryScreen";
+import { SelectHarvestCropAndDateScreen } from "../add/SelectHarvestCropAndDateScreen";
 import { SelectHarvestPlotsScreen } from "../add/SelectHarvestPlotsScreen";
+import { SetHarvestQuantityScreen } from "../add/SetHarvestQuantityScreen";
 import { HarvestDetailsScreen } from "../HarvestDetailsScreen";
 import { HarvestListScreen } from "../HarvestListScreen";
 import { HarvestsOfYearScreen } from "../HarvestOfYearScreen";
 import { HarvestsScreen } from "../HarvestsScreen";
-import { AddHarvestAdditionalNotesScreen } from "../add/AddHarvestAdditionalNotesScreen";
 
 export function renderHarvestStack() {
   return [
@@ -34,18 +35,34 @@ export function renderHarvestStack() {
       options={{ title: "" }}
     />,
     <Stack.Screen
-      key="add-harvest-configuration"
-      name="AddHarvestConfiguration"
+      key="select-harvest-crop-and-date"
+      name="SelectHarvestCropAndDate"
       options={{
         title: "",
       }}
-      component={AddHarvestConfigurationScreen}
+      component={SelectHarvestCropAndDateScreen}
+    />,
+    <Stack.Screen
+      key="configure-harvest"
+      name="ConfigureHarvest"
+      options={{
+        title: "",
+      }}
+      component={ConfigureHarvestScreen}
+    />,
+    <Stack.Screen
+      key="set-harvest-quantity"
+      name="SetHarvestQuantity"
+      options={{
+        title: "",
+      }}
+      component={SetHarvestQuantityScreen}
     />,
     <Stack.Screen
       key="select-harvest-plots"
-      name="SelectHarvstPlots"
+      name="SelectHarvestPlots"
       options={{
-        title: "Ernte Fläche",
+        title: "",
         headerShown: false,
       }}
       component={SelectHarvestPlotsScreen}
@@ -57,14 +74,6 @@ export function renderHarvestStack() {
         title: "",
       }}
       component={DivideHarvestOnPlotsScreen}
-    />,
-    <Stack.Screen
-      key="add-harvest-additional-notes"
-      name="AddHarvestAdditionalNotes"
-      options={{
-        title: "",
-      }}
-      component={AddHarvestAdditionalNotesScreen}
     />,
     <Stack.Screen
       key="harvest-summary"

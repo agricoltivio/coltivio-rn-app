@@ -16,7 +16,7 @@ import { MapShowLocationToggle } from "@/features/map/MapShowLocationToggle";
 import { PlotSelectionOrDrawTip } from "@/features/map/tips/PlotSelectionOrDrawTip";
 import { TopLeftBackButton } from "@/features/map/TopLeftBackButton";
 import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
-import { AddFertilizerApplicationSelectPlotsScreenProps } from "../navigation/fertilizer-application-routes";
+import { SelectTillagePlotsScreenProps } from "../navigation/tillages-routes";
 import { hexToRgba } from "@/theme/theme";
 import { GeoSpatials } from "@/utils/geo-spatials";
 import { round } from "@/utils/math";
@@ -25,20 +25,13 @@ import { useEffect, useRef, useState } from "react";
 import { StyleSheet } from "react-native";
 import { LatLng, MapPressEvent, Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
-import { useCreateFertilizerApplicationStore } from "./fertilizerApplication.store";
+import { useAddTillageStore } from "./add-tillage.store";
 import { useTranslation } from "react-i18next";
 import { LabelMarker } from "@/features/map/LabelMarker";
 
-export type SelectedFertilizerApplicationArea = {
-  plotId: string;
-  name: string;
-  geometry: GeoJSON.MultiPolygon;
-  size: number;
-};
-
-export function AddFertilizerApplicationSelectPlotsScreen({
+export function SelectTillagePlotsScreen({
   navigation,
-}: AddFertilizerApplicationSelectPlotsScreenProps) {
+}: SelectTillagePlotsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { farm } = useFarmQuery();
@@ -47,13 +40,8 @@ export function AddFertilizerApplicationSelectPlotsScreen({
   const [showUserLocation, setShowUserLocation] = useState(false);
   const [drawingAction, setDrawingAction] = useState<DrawAction>("select");
 
-  const {
-    putPlot,
-    removePlot,
-    selectedPlotsById,
-    resetSelectedPlots,
-    totalNumberOfApplications,
-  } = useCreateFertilizerApplicationStore();
+  const { putPlot, removePlot, selectedPlotsById, resetSelectedPlots } =
+    useAddTillageStore();
 
   const polygonDrawingToolRef = useRef<PolygonDrawingToolActions>(null);
 
@@ -150,7 +138,6 @@ export function AddFertilizerApplicationSelectPlotsScreen({
         name: plot.name,
         geometry: plot.geometry,
         size: round(plot.size, 0),
-        numberOfUnits: 0,
       });
     }
   }
@@ -169,7 +156,6 @@ export function AddFertilizerApplicationSelectPlotsScreen({
         plotId: plotIntersection.plot.id,
         geometry: plotIntersection.intersection.geometry,
         size: round(plotIntersection.intersection.size, 0),
-        numberOfUnits: 0,
       });
     }
   }
@@ -180,20 +166,7 @@ export function AddFertilizerApplicationSelectPlotsScreen({
         <BottomActionContainer>
           <Button
             title={t("buttons.next")}
-            onPress={() => {
-              const selectedPlots = Object.values(selectedPlotsById);
-              // Skip divide screen if only 1 plot is selected - assign all to that plot
-              if (selectedPlots.length === 1) {
-                const plot = selectedPlots[0];
-                putPlot({
-                  ...plot,
-                  numberOfUnits: totalNumberOfApplications ?? 0,
-                });
-                navigation.navigate("AddFertilizerApplicationAdditionalNotes");
-              } else {
-                navigation.navigate("AddFertilizerApplicationDivideOnPlots");
-              }
-            }}
+            onPress={() => navigation.navigate("TillageSummary")}
             disabled={!Object.values(selectedPlotsById).length}
           />
         </BottomActionContainer>
@@ -210,7 +183,7 @@ export function AddFertilizerApplicationSelectPlotsScreen({
       >
         {mapLayer}
         <PolygonDrawingTool
-          portalName="FertilizerApplicationMap"
+          portalName="AddTillageMap"
           ref={polygonDrawingToolRef}
           onDrawActionChange={(action) => {
             setDrawingAction(action);
@@ -222,7 +195,7 @@ export function AddFertilizerApplicationSelectPlotsScreen({
       <TopLeftBackButton />
       <MapShowLocationToggle onShowLocationChange={setShowUserLocation} />
       <PlotSelectionOrDrawTip />
-      <PortalHost name="FertilizerApplicationMap" />
+      <PortalHost name="AddTillageMap" />
     </ContentView>
   );
 }

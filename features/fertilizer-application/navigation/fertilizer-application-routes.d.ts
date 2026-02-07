@@ -1,12 +1,12 @@
 import { StackScreenProps } from "@/navigation/rootStackTypes";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 export type FertilizerApplicationsStackParamList = {
-  AddFertilizerApplicationConfiguration: { fertilizerId?: string };
-  AddFertilizerApplicationSelectPlots: undefined;
-  AddFertilizerApplicationDivideOnPlots: undefined;
-  AddFertilizerApplicationAdditionalNotes: undefined;
-  AddFertilizerApplicationSummary: undefined;
+  SelectFertilizerAndDate: { fertilizerId?: string };
+  ConfigureFertilizerApplication: undefined;
+  SetFertilizerApplicationUnitQuantity: undefined;
+  SelectFertilizerApplicationPlots: undefined;
+  DivideFertilizerApplicationOnPlots: undefined;
+  FertilizerApplicationSummary: undefined;
 
   FertilizerApplications: undefined;
   FertilizerApplicationsOfYear: { year: number };
@@ -20,20 +20,23 @@ export type FertilizerApplicationsScreenProps =
 export type FertilizerApplicationDetailsScreenProps =
   StackScreenProps<"FertilizerApplicationDetails">;
 
-export type AddFertilizerApplicationConfigurationScreenProps =
-  StackScreenProps<"AddFertilizerApplicationConfiguration">;
+export type SelectFertilizerAndDateScreenProps =
+  StackScreenProps<"SelectFertilizerAndDate">;
 
-export type AddFertilizerApplicationSelectPlotsScreenProps =
-  StackScreenProps<"AddFertilizerApplicationSelectPlots">;
+export type ConfigureFertilizerApplicationScreenProps =
+  StackScreenProps<"ConfigureFertilizerApplication">;
 
-export type AddFertilizerApplicationDivideOnPlotsScreenProps =
-  StackScreenProps<"AddFertilizerApplicationDivideOnPlots">;
+export type SetFertilizerApplicationUnitQuantityScreenProps =
+  StackScreenProps<"SetFertilizerApplicationUnitQuantity">;
 
-export type AddFertilizerApplicationAdditionalNotesScreenProps =
-  StackScreenProps<"AddFertilizerApplicationAdditionalNotes">;
+export type SelectFertilizerApplicationPlotsScreenProps =
+  StackScreenProps<"SelectFertilizerApplicationPlots">;
 
-export type AddFertilizerApplicationSummaryScreenProps =
-  StackScreenProps<"AddFertilizerApplicationSummary">;
+export type DivideFertilizerApplicationOnPlotsScreenProps =
+  StackScreenProps<"DivideFertilizerApplicationOnPlots">;
+
+export type FertilizerApplicationSummaryScreenProps =
+  StackScreenProps<"FertilizerApplicationSummary">;
 
 export type FertilizerApplicationsOfYearScreenProps =
   StackScreenProps<"FertilizerApplicationsOfYear">;

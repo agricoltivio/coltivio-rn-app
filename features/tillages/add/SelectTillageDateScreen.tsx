@@ -4,36 +4,47 @@ import { ContentView } from "@/components/containers/ContentView";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2 } from "@/theme/Typography";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { AddCropProtectionApplicationAdditionalNotesScreenProps } from "../navigation/crop-protection-application-routes";
-import { useAddCropProtectionApplicationStore } from "./cropProtectionApplication.store";
-import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
+import { SelectTillageDateScreenProps } from "../navigation/tillages-routes";
+import { useAddTillageStore } from "./add-tillage.store";
 
 type FormValues = {
-  additionalNotes?: string;
+  date: Date;
 };
-export function AddCropProtectionApplicationAdditionalNotesScreen({
+
+export function SelectTillageDateScreen({
   navigation,
-}: AddCropProtectionApplicationAdditionalNotesScreenProps) {
+}: SelectTillageDateScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
 
-  const { setData } = useAddCropProtectionApplicationStore();
+  const { setData, data, reset } = useAddTillageStore();
+
+  // Reset store on mount
+  useEffect(() => {
+    return () => reset();
+  }, []);
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({
+    defaultValues: {
+      date: data?.date ?? new Date(),
+    },
+  });
 
-  function onSubmit({ additionalNotes }: FormValues) {
-    setData({ additionalNotes });
+  function onSubmit(values: FormValues) {
+    setData({
+      date: values.date,
+    });
 
-    navigation.navigate("AddCropProtectionApplicationSummary");
+    navigation.navigate("ConfigureTillage");
   }
 
   return (
@@ -47,17 +58,24 @@ export function AddCropProtectionApplicationAdditionalNotesScreen({
     >
       <ScrollView
         showHeaderOnScroll
-        headerTitleOnScroll={t("forms.labels.additional_notes")}
+        headerTitleOnScroll={t("tillages.add_tillage")}
         keyboardAware
       >
-        <H2>{t("forms.labels.additional_notes")}</H2>
-        <View
-          style={{ gap: theme.spacing.s, flex: 1, marginTop: theme.spacing.l }}
-        >
-          <RHTextAreaInput
-            name="additionalNotes"
+        <H2>{t("tillages.add_tillage")}</H2>
+
+        <View style={{ gap: theme.spacing.m, marginTop: theme.spacing.l }}>
+          <RHDatePicker
+            name="date"
             control={control}
-            label={t("forms.labels.additional_notes_optional")}
+            label={t("forms.labels.date")}
+            mode="date"
+            rules={{
+              required: {
+                value: true,
+                message: t("forms.validation.required"),
+              },
+            }}
+            error={errors.date?.message}
           />
         </View>
       </ScrollView>

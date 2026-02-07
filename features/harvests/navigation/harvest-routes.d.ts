@@ -5,29 +5,36 @@ export type HarvestStackParamList = {
   HarvestDetails: { harvestId: string };
   HarvestsOfYear: { year: number };
   HarvestsOfYearList: { year: number };
-  AddHarvestConfiguration: undefined;
-  SelectHarvstPlots: undefined;
+  SelectHarvestCropAndDate: undefined;
+  ConfigureHarvest: undefined;
+  SetHarvestQuantity: undefined;
+  SelectHarvestPlots: undefined;
   DivideHarvestOnPlots: undefined;
-  AddHarvestAdditionalNotes: undefined;
   HarvestSummary: undefined;
 };
+
 export type HarvestsScreenProps = StackScreenProps<"Harvests">;
 
 export type HarvestsOfYearScreenProps = StackScreenProps<"HarvestsOfYear">;
 
 export type HarvestOfYearListScreenProps =
   StackScreenProps<"HarvestsOfYearList">;
+
 export type HarvestDetailsScreenProps = StackScreenProps<"HarvestDetails">;
 
-export type AddHarvestConfigurationScreenProps =
-  StackScreenProps<"AddHarvestConfiguration">;
+export type SelectHarvestCropAndDateScreenProps =
+  StackScreenProps<"SelectHarvestCropAndDate">;
+
+export type ConfigureHarvestScreenProps =
+  StackScreenProps<"ConfigureHarvest">;
+
+export type SetHarvestQuantityScreenProps =
+  StackScreenProps<"SetHarvestQuantity">;
 
 export type SelectHarvestPlotsScreenProps =
-  StackScreenProps<"SelectHarvstPlots">;
+  StackScreenProps<"SelectHarvestPlots">;
+
 export type DivideHarvestOnPlotsScreenProps =
   StackScreenProps<"DivideHarvestOnPlots">;
-
-export type AddHarvestAdditionalNotesScreenProps =
-  StackScreenProps<"AddHarvestAdditionalNotes">;
 
 export type HarvestSummaryScreenProps = StackScreenProps<"HarvestSummary">;

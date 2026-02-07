@@ -25,6 +25,7 @@ import { KeyboardProvider } from "react-native-keyboard-controller";
 import { StatusBar } from "react-native";
 import * as Sentry from "@sentry/react-native";
 import { UrlProvider } from "./utils/url-context";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 Sentry.init({
   dsn: "https://9c83469da59d07c1442766ef1f55abd0@o4509156353638400.ingest.de.sentry.io/4509156358488144",
@@ -70,7 +71,7 @@ export default Sentry.wrap(function App() {
                                   const sanitizedPath = path.replace("#", "?");
                                   return getStateFromPath(
                                     sanitizedPath,
-                                    config
+                                    config,
                                   );
                                 },
                               }}

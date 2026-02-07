@@ -28,8 +28,8 @@ export function CreateCropProtectionProductScreen({
 
   const createCropProtectionProductMutation =
     useCreateCropProtectionProductMutation((product) => {
-      if (previousRoute.name === "AddCropProtectionApplicationConfiguration") {
-        navigation.popTo("AddCropProtectionApplicationConfiguration", {
+      if (previousRoute.name === "SelectCropProtectionApplicationProductAndDate") {
+        navigation.popTo("SelectCropProtectionApplicationProductAndDate", {
           productId: product.id,
         });
       } else {

@@ -207,7 +207,7 @@ export function SelectHarvestPlotsScreen({
                   ...plot,
                   numberOfUnits: totalProducedUnits ?? 0,
                 });
-                navigation.navigate("AddHarvestAdditionalNotes");
+                navigation.navigate("HarvestSummary");
               } else {
                 navigation.navigate("DivideHarvestOnPlots");
               }

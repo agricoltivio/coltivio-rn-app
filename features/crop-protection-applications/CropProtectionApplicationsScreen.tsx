@@ -50,9 +50,7 @@ export function CropProtectionApplicationsScreen({
       </ScrollView>
       <FAB
         icon={{ name: "add", color: "white" }}
-        onPress={() =>
-          navigation.navigate("AddCropProtectionApplicationConfiguration", {})
-        }
+        onPress={() => navigation.navigate("SelectCropProtectionApplicationProductAndDate", {})}
       />
     </ContentView>
   );

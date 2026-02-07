@@ -138,6 +138,7 @@
     "manage_fertilizer_presets": "Manage Fertilizer Presets",
     "manage_crop_protection_presets": "Manage Crop Protection Presets",
     "save_as_preset": "Save as Preset",
+    "preset_name": "Preset Name",
     "enter_preset_name": "Enter a name for the preset",
     "delete_confirm_title": "Delete Preset",
     "delete_confirm_message": "Are you sure you want to delete \"{{name}}\"?",
@@ -515,6 +516,7 @@
   "harvests": {
     "harvest": "Harvest",
     "add_harvest": "New Harvest",
+    "harvest_configuration": "Harvest Configuration",
     "harvest_year": "Harvest {{year}}",
     "harvest_date": "Harvest {{date}}",
     "harvest_plot_name": "Harvest - {{name}}",
@@ -531,9 +533,11 @@
     "labels": {
       "unit": {
         "none": "Load",
+        "load": "Load",
         "round_bale": "Round Bale",
         "square_bale": "Square Bale",
-        "other": "Unit"
+        "other": "Unit",
+        "custom": "Custom Unit"
       },
       "conservation_method": {
         "dried": "Hay",
@@ -567,6 +571,8 @@
   },
   "fertilizer_application": {
     "fertilizer_application": "Fertilizer Application",
+    "add_fertilizer_application": "New Fertilizer Application",
+    "application_configuration": "Application Configuration",
     "fertilizer_application_date": "Fertilizer Application {{date}}",
     "fertilizer_application_year": "Fertilizer Application {{year}}",
     "fertilizer_application_plot_name": "Fertilizer Application - {{name}}",

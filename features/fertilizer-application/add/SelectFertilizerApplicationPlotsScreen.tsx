@@ -16,6 +16,7 @@ import { MapShowLocationToggle } from "@/features/map/MapShowLocationToggle";
 import { PlotSelectionOrDrawTip } from "@/features/map/tips/PlotSelectionOrDrawTip";
 import { TopLeftBackButton } from "@/features/map/TopLeftBackButton";
 import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
+import { SelectFertilizerApplicationPlotsScreenProps } from "../navigation/fertilizer-application-routes";
 import { hexToRgba } from "@/theme/theme";
 import { GeoSpatials } from "@/utils/geo-spatials";
 import { round } from "@/utils/math";
@@ -24,21 +25,20 @@ import { useEffect, useRef, useState } from "react";
 import { StyleSheet } from "react-native";
 import { LatLng, MapPressEvent, Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
-import { AddCropProtectionApplicationSelectPlotsScreenProps } from "../navigation/crop-protection-application-routes";
-import { useAddCropProtectionApplicationStore } from "./cropProtectionApplication.store";
+import { useCreateFertilizerApplicationStore } from "./fertilizerApplication.store";
 import { useTranslation } from "react-i18next";
 import { LabelMarker } from "@/features/map/LabelMarker";
 
-export type SelectedCropProtectionApplicationArea = {
+export type SelectedFertilizerApplicationArea = {
   plotId: string;
   name: string;
   geometry: GeoJSON.MultiPolygon;
   size: number;
 };
 
-export function AddCropProtectionApplicationSelectPlotsScreen({
+export function SelectFertilizerApplicationPlotsScreen({
   navigation,
-}: AddCropProtectionApplicationSelectPlotsScreenProps) {
+}: SelectFertilizerApplicationPlotsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { farm } = useFarmQuery();
@@ -52,8 +52,8 @@ export function AddCropProtectionApplicationSelectPlotsScreen({
     removePlot,
     selectedPlotsById,
     resetSelectedPlots,
-    totalNumberOfUnits: totalNumberOfApplications,
-  } = useAddCropProtectionApplicationStore();
+    totalNumberOfApplications,
+  } = useCreateFertilizerApplicationStore();
 
   const polygonDrawingToolRef = useRef<PolygonDrawingToolActions>(null);
 
@@ -155,7 +155,7 @@ export function AddCropProtectionApplicationSelectPlotsScreen({
     }
   }
 
-  function onCropProtectionApplicationAreaDrawComplete(coordinates: LatLng[]) {
+  function onFertilizerApplicationAreaDrawComplete(coordinates: LatLng[]) {
     if (!plots) {
       return;
     }
@@ -189,13 +189,9 @@ export function AddCropProtectionApplicationSelectPlotsScreen({
                   ...plot,
                   numberOfUnits: totalNumberOfApplications ?? 0,
                 });
-                navigation.navigate(
-                  "AddCropProtectionApplicationAdditionalNotes",
-                );
+                navigation.navigate("FertilizerApplicationSummary");
               } else {
-                navigation.navigate(
-                  "AddCropProtectionApplicationDivideOnPlots",
-                );
+                navigation.navigate("DivideFertilizerApplicationOnPlots");
               }
             }}
             disabled={!Object.values(selectedPlotsById).length}
@@ -214,19 +210,19 @@ export function AddCropProtectionApplicationSelectPlotsScreen({
       >
         {mapLayer}
         <PolygonDrawingTool
-          portalName="CropProtectionApplicationMap"
+          portalName="FertilizerApplicationMap"
           ref={polygonDrawingToolRef}
           onDrawActionChange={(action) => {
             setDrawingAction(action);
           }}
-          onFinish={onCropProtectionApplicationAreaDrawComplete}
+          onFinish={onFertilizerApplicationAreaDrawComplete}
         />
         <HomeMarker latitude={latitude} longitude={longitude} />
       </MapView>
       <TopLeftBackButton />
       <MapShowLocationToggle onShowLocationChange={setShowUserLocation} />
       <PlotSelectionOrDrawTip />
-      <PortalHost name="CropProtectionApplicationMap" />
+      <PortalHost name="FertilizerApplicationMap" />
     </ContentView>
   );
 }

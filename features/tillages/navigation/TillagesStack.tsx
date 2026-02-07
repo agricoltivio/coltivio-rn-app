@@ -1,8 +1,8 @@
 import { Stack } from "@/navigation/stack";
-import { AddTillageAdditionalNotesScreen } from "../add/AddTillageAdditionalNotesScreen";
-import { AddTillageConfigurationScreen } from "../add/AddTillageConfigurationScreen";
-import { AddTillageSelectPlotsScreen } from "../add/AddTillageSelectPlotsScreen";
-import { AddTillageSummaryScreen } from "../add/AddTillageSummaryScreen";
+import { SelectTillageDateScreen } from "../add/SelectTillageDateScreen";
+import { ConfigureTillageScreen } from "../add/ConfigureTillageScreen";
+import { SelectTillagePlotsScreen } from "../add/SelectTillagePlotsScreen";
+import { TillageSummaryScreen } from "../add/TillageSummaryScreen";
 import { TillageDetailsScreen } from "../TillageDetails";
 import { TillagesOfYearListScreen } from "../TillagesOfYearListScreen";
 import { TillagesScreen } from "../TillagesScreen";
@@ -34,37 +34,37 @@ export function renderTillagesStack() {
       component={TillageDetailsScreen}
     />,
     <Stack.Screen
-      key="add-tillage-configuration"
-      name="AddTillageConfiguration"
+      key="select-tillage-date"
+      name="SelectTillageDate"
       options={{
         title: "",
       }}
-      component={AddTillageConfigurationScreen}
+      component={SelectTillageDateScreen}
     />,
     <Stack.Screen
-      key="add-tillage-select-plots"
-      name="AddTillageSelectPlots"
+      key="configure-tillage"
+      name="ConfigureTillage"
+      options={{
+        title: "",
+      }}
+      component={ConfigureTillageScreen}
+    />,
+    <Stack.Screen
+      key="select-tillage-plots"
+      name="SelectTillagePlots"
       options={{
         title: "",
         headerShown: false,
       }}
-      component={AddTillageSelectPlotsScreen}
+      component={SelectTillagePlotsScreen}
     />,
     <Stack.Screen
-      key="add-tillage-additional-notes"
-      name="AddTillageAdditionalNotes"
+      key="tillage-summary"
+      name="TillageSummary"
       options={{
         title: "",
       }}
-      component={AddTillageAdditionalNotesScreen}
-    />,
-    <Stack.Screen
-      key="add-tillage-summary"
-      name="AddTillageSummary"
-      options={{
-        title: "",
-      }}
-      component={AddTillageSummaryScreen}
+      component={TillageSummaryScreen}
     />,
   ];
 }

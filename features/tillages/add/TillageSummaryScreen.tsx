@@ -1,15 +1,15 @@
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
-import { AddTillageSummaryScreenProps } from "../navigation/tillages-routes";
+import { TillageSummaryScreenProps } from "../navigation/tillages-routes";
 import { useCreateTillagesMutation } from "../tillages.hooks";
 import { TillageSummary } from "../TillageSummary";
 import { TillageBase, useAddTillageStore } from "./add-tillage.store";
 import { useTranslation } from "react-i18next";
 
-export function AddTillageSummaryScreen({
+export function TillageSummaryScreen({
   navigation,
-}: AddTillageSummaryScreenProps) {
+}: TillageSummaryScreenProps) {
   const { t } = useTranslation();
   const { selectedPlotsById, data } = useAddTillageStore();
   const { date, action, reason, additionalNotes } = data as TillageBase;

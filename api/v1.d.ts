@@ -2252,8 +2252,8 @@ export interface components {
                         coordinates: number[][][][];
                     };
                     size: number;
-                    /** @enum {string} */
-                    reason: "weed_control" | "soil_loosening" | "other";
+                    /** @enum {string|null} */
+                    reason: "weed_control" | "soil_loosening" | "other" | null;
                     /** @enum {string} */
                     action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
                     customAction: string | null;
@@ -3036,8 +3036,8 @@ export interface components {
                     id: string;
                     farmId: string;
                     name: string;
-                    /** @enum {string} */
-                    method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
+                    /** @enum {string|null} */
+                    method: "spraying" | "misting" | "broadcasting" | "injecting" | "other" | null;
                     /** @enum {string} */
                     unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
                     customUnit: string | null;
@@ -3051,8 +3051,8 @@ export interface components {
                 id: string;
                 farmId: string;
                 name: string;
-                /** @enum {string} */
-                method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
+                /** @enum {string|null} */
+                method: "spraying" | "misting" | "broadcasting" | "injecting" | "other" | null;
                 /** @enum {string} */
                 unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
                 customUnit: string | null;
@@ -3061,8 +3061,8 @@ export interface components {
         };
         PostV1CropProtectionApplicationsPresetsRequestBody: {
             name: string;
-            /** @enum {string} */
-            method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
+            /** @enum {string|null} */
+            method?: "spraying" | "misting" | "broadcasting" | "injecting" | "other" | null;
             /** @enum {string} */
             unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
             customUnit?: string;
@@ -3073,8 +3073,8 @@ export interface components {
                 id: string;
                 farmId: string;
                 name: string;
-                /** @enum {string} */
-                method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
+                /** @enum {string|null} */
+                method: "spraying" | "misting" | "broadcasting" | "injecting" | "other" | null;
                 /** @enum {string} */
                 unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
                 customUnit: string | null;
@@ -3086,8 +3086,8 @@ export interface components {
                 id: string;
                 farmId: string;
                 name: string;
-                /** @enum {string} */
-                method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
+                /** @enum {string|null} */
+                method: "spraying" | "misting" | "broadcasting" | "injecting" | "other" | null;
                 /** @enum {string} */
                 unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
                 customUnit: string | null;
@@ -3096,8 +3096,8 @@ export interface components {
         };
         PatchV1CropProtectionApplicationsPresetsByIdPresetIdRequestBody: {
             name?: string;
-            /** @enum {string} */
-            method?: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
+            /** @enum {string|null} */
+            method?: "spraying" | "misting" | "broadcasting" | "injecting" | "other" | null;
             /** @enum {string} */
             unit?: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
             customUnit?: string | null;
@@ -3123,8 +3123,8 @@ export interface components {
                     coordinates: number[][][][];
                 };
                 size: number;
-                /** @enum {string} */
-                reason: "weed_control" | "soil_loosening" | "other";
+                /** @enum {string|null} */
+                reason: "weed_control" | "soil_loosening" | "other" | null;
                 /** @enum {string} */
                 action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
                 customAction: string | null;
@@ -3159,8 +3159,8 @@ export interface components {
                 coordinates: number[][][][];
             };
             size: number;
-            /** @enum {string} */
-            reason: "weed_control" | "soil_loosening" | "other";
+            /** @enum {string|null} */
+            reason?: "weed_control" | "soil_loosening" | "other" | null;
             /** @enum {string} */
             action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
             customAction?: string;
@@ -3189,8 +3189,8 @@ export interface components {
                         coordinates: number[][][][];
                     };
                     size: number;
-                    /** @enum {string} */
-                    reason: "weed_control" | "soil_loosening" | "other";
+                    /** @enum {string|null} */
+                    reason: "weed_control" | "soil_loosening" | "other" | null;
                     /** @enum {string} */
                     action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
                     customAction: string | null;
@@ -3237,8 +3237,8 @@ export interface components {
                         coordinates: number[][][][];
                     };
                     size: number;
-                    /** @enum {string} */
-                    reason: "weed_control" | "soil_loosening" | "other";
+                    /** @enum {string|null} */
+                    reason: "weed_control" | "soil_loosening" | "other" | null;
                     /** @enum {string} */
                     action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
                     customAction: string | null;
@@ -3306,8 +3306,8 @@ export interface components {
                     coordinates: number[][][][];
                 };
                 size: number;
-                /** @enum {string} */
-                reason: "weed_control" | "soil_loosening" | "other";
+                /** @enum {string|null} */
+                reason: "weed_control" | "soil_loosening" | "other" | null;
                 /** @enum {string} */
                 action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
                 customAction: string | null;
@@ -3354,8 +3354,8 @@ export interface components {
                     coordinates: number[][][][];
                 };
                 size: number;
-                /** @enum {string} */
-                reason: "weed_control" | "soil_loosening" | "other";
+                /** @enum {string|null} */
+                reason: "weed_control" | "soil_loosening" | "other" | null;
                 /** @enum {string} */
                 action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
                 customAction: string | null;
@@ -3389,8 +3389,8 @@ export interface components {
                 coordinates: number[][][][];
             };
             size?: number;
-            /** @enum {string} */
-            reason?: "weed_control" | "soil_loosening" | "other";
+            /** @enum {string|null} */
+            reason?: "weed_control" | "soil_loosening" | "other" | null;
             /** @enum {string} */
             action?: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
             customAction?: string | null;
@@ -3413,8 +3413,8 @@ export interface components {
                     id: string;
                     farmId: string;
                     name: string;
-                    /** @enum {string} */
-                    reason: "weed_control" | "soil_loosening" | "other";
+                    /** @enum {string|null} */
+                    reason: "weed_control" | "soil_loosening" | "other" | null;
                     /** @enum {string} */
                     action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
                     customAction: string | null;
@@ -3427,8 +3427,8 @@ export interface components {
                 id: string;
                 farmId: string;
                 name: string;
-                /** @enum {string} */
-                reason: "weed_control" | "soil_loosening" | "other";
+                /** @enum {string|null} */
+                reason: "weed_control" | "soil_loosening" | "other" | null;
                 /** @enum {string} */
                 action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
                 customAction: string | null;
@@ -3437,7 +3437,7 @@ export interface components {
         PostV1TillagesPresetsRequestBody: {
             name: string;
             /** @enum {string} */
-            reason: "weed_control" | "soil_loosening" | "other";
+            reason?: "weed_control" | "soil_loosening" | "other";
             /** @enum {string} */
             action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
             customAction?: string;
@@ -3447,8 +3447,8 @@ export interface components {
                 id: string;
                 farmId: string;
                 name: string;
-                /** @enum {string} */
-                reason: "weed_control" | "soil_loosening" | "other";
+                /** @enum {string|null} */
+                reason: "weed_control" | "soil_loosening" | "other" | null;
                 /** @enum {string} */
                 action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
                 customAction: string | null;
@@ -3459,8 +3459,8 @@ export interface components {
                 id: string;
                 farmId: string;
                 name: string;
-                /** @enum {string} */
-                reason: "weed_control" | "soil_loosening" | "other";
+                /** @enum {string|null} */
+                reason: "weed_control" | "soil_loosening" | "other" | null;
                 /** @enum {string} */
                 action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
                 customAction: string | null;
@@ -3468,8 +3468,8 @@ export interface components {
         };
         PatchV1TillagesPresetsByIdPresetIdRequestBody: {
             name?: string;
-            /** @enum {string} */
-            reason?: "weed_control" | "soil_loosening" | "other";
+            /** @enum {string|null} */
+            reason?: "weed_control" | "soil_loosening" | "other" | null;
             /** @enum {string} */
             action?: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
             customAction?: string | null;
@@ -4300,8 +4300,8 @@ export interface components {
             /** @enum {string} */
             unit: "load" | "square_bale" | "round_bale" | "crate" | "total_amount" | "other";
             kilosPerUnit: number;
-            /** @enum {string} */
-            conservationMethod?: "dried" | "silage" | "haylage" | "other" | "none";
+            /** @enum {string|null} */
+            conservationMethod?: "dried" | "silage" | "haylage" | "other" | "none" | null;
         };
         GetV1HarvestsPresetsByIdPresetIdPositiveResponse: {
             data: {

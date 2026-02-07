@@ -2,11 +2,10 @@ import {
   TillagePresetCreateInput,
 } from "@/api/tillagePresets.api";
 import { Button } from "@/components/buttons/Button";
-import { Card } from "@/components/card/Card";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
-import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
+import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 import {
   ManagePresetsModal,
   ManagePresetsModalRef,
@@ -14,7 +13,7 @@ import {
 import { PresetSelect } from "@/components/presets/PresetSelect";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
-import { H2, Body } from "@/theme/Typography";
+import { H2 } from "@/theme/Typography";
 import { useEffect, useRef } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -27,20 +26,20 @@ import {
   useUpdateTillagePresetMutation,
 } from "../tillagePresets.hooks";
 import { useAddTillageStore } from "./add-tillage.store";
-import { AddTillageConfigurationScreenProps } from "../navigation/tillages-routes";
+import { ConfigureTillageScreenProps } from "../navigation/tillages-routes";
 import { tillageActions, tillageReasons } from "../tillageUtils";
 
 type FormValues = {
-  date: Date;
   presetId?: string;
   reason: TillagePresetCreateInput["reason"];
   action: TillagePresetCreateInput["action"];
   customAction?: string;
+  additionalNotes?: string;
 };
 
-export function AddTillageConfigurationScreen({
+export function ConfigureTillageScreen({
   navigation,
-}: AddTillageConfigurationScreenProps) {
+}: ConfigureTillageScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const managePresetsRef = useRef<ManagePresetsModalRef>(null);
@@ -50,12 +49,7 @@ export function AddTillageConfigurationScreen({
   const updatePresetMutation = useUpdateTillagePresetMutation();
   const deletePresetMutation = useDeleteTillagePresetMutation();
 
-  const { setData, data, reset } = useAddTillageStore();
-
-  // Reset store on mount
-  useEffect(() => {
-    return () => reset();
-  }, []);
+  const { setData, data } = useAddTillageStore();
 
   const {
     control,
@@ -65,10 +59,10 @@ export function AddTillageConfigurationScreen({
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      date: data?.date ?? new Date(),
       reason: data?.reason,
       action: data?.action,
       customAction: data?.customAction ?? undefined,
+      additionalNotes: data?.additionalNotes ?? undefined,
     },
   });
 
@@ -142,13 +136,13 @@ export function AddTillageConfigurationScreen({
 
   function onSubmit(values: FormValues) {
     setData({
-      date: values.date,
       reason: values.reason,
       action: values.action,
       customAction: values.action === "custom" ? values.customAction : undefined,
+      additionalNotes: values.additionalNotes,
     });
 
-    navigation.navigate("AddTillageSelectPlots");
+    navigation.navigate("SelectTillagePlots");
   }
 
   if (!presetsLoaded) {
@@ -166,109 +160,82 @@ export function AddTillageConfigurationScreen({
     >
       <ScrollView
         showHeaderOnScroll
-        headerTitleOnScroll={t("tillages.add_tillage")}
+        headerTitleOnScroll={t("tillages.tillage_configuration")}
         keyboardAware
       >
-        <H2>{t("tillages.add_tillage")}</H2>
+        <H2>{t("tillages.tillage_configuration")}</H2>
 
         <View style={{ gap: theme.spacing.m, marginTop: theme.spacing.l }}>
-          {/* Date picker */}
-          <RHDatePicker
-            name="date"
+          <Controller
             control={control}
-            label={t("forms.labels.date")}
-            mode="date"
+            name="presetId"
+            render={({ field: { value, onChange } }) => (
+              <PresetSelect
+                label={t("presets.preset")}
+                value={value}
+                presets={tillagePresets ?? []}
+                onChange={onChange}
+                onManagePress={() => managePresetsRef.current?.open()}
+                placeholder={t("presets.select_preset")}
+              />
+            )}
+          />
+
+          <RHSelect
+            name="reason"
+            control={control}
+            label={t("forms.labels.reason")}
             rules={{
               required: {
                 value: true,
                 message: t("forms.validation.required"),
               },
             }}
-            error={errors.date?.message}
+            error={errors.reason?.message}
+            data={reasonOptions}
           />
 
-          {/* Preset section */}
-          <Card
-            elevated={false}
-            style={{ backgroundColor: theme.colors.gray4 }}
-          >
-            <Body style={{ fontWeight: "600", marginBottom: theme.spacing.s }}>
-              {t("presets.preset_settings")}
-            </Body>
+          <RHSelect
+            name="action"
+            control={control}
+            label={t("forms.labels.action")}
+            rules={{
+              required: {
+                value: true,
+                message: t("forms.validation.required"),
+              },
+            }}
+            error={errors.action?.message}
+            data={actionOptions}
+          />
 
-            {/* Preset selector with manage button */}
-            <Controller
+          {action === "custom" && (
+            <RHTextInput
+              name="customAction"
               control={control}
-              name="presetId"
-              render={({ field: { value, onChange } }) => (
-                <PresetSelect
-                  label={t("presets.preset")}
-                  value={value}
-                  presets={tillagePresets ?? []}
-                  onChange={onChange}
-                  onManagePress={() => managePresetsRef.current?.open()}
-                  placeholder={t("presets.select_preset")}
-                />
-              )}
+              label={t("tillages.custom_action")}
+              rules={{
+                required: {
+                  value: true,
+                  message: t("forms.validation.required"),
+                },
+              }}
+              error={errors.customAction?.message}
             />
+          )}
 
-            <View style={{ gap: theme.spacing.s, marginTop: theme.spacing.m }}>
-              {/* Reason selector */}
-              <RHSelect
-                name="reason"
-                control={control}
-                label={t("forms.labels.reason")}
-                rules={{
-                  required: {
-                    value: true,
-                    message: t("forms.validation.required"),
-                  },
-                }}
-                error={errors.reason?.message}
-                data={reasonOptions}
-              />
+          <RHTextAreaInput
+            name="additionalNotes"
+            control={control}
+            label={t("forms.labels.additional_notes_optional")}
+          />
 
-              {/* Action selector */}
-              <RHSelect
-                name="action"
-                control={control}
-                label={t("forms.labels.action")}
-                rules={{
-                  required: {
-                    value: true,
-                    message: t("forms.validation.required"),
-                  },
-                }}
-                error={errors.action?.message}
-                data={actionOptions}
-              />
-
-              {/* Custom action input (only when action is "custom") */}
-              {action === "custom" && (
-                <RHTextInput
-                  name="customAction"
-                  control={control}
-                  label={t("tillages.custom_action")}
-                  rules={{
-                    required: {
-                      value: true,
-                      message: t("forms.validation.required"),
-                    },
-                  }}
-                  error={errors.customAction?.message}
-                />
-              )}
-            </View>
-
-            {/* Save as preset button */}
-            <Button
-              title={t("presets.save_as_preset")}
-              type="accent"
-              style={{ marginTop: theme.spacing.m }}
-              onPress={handleSaveAsPreset}
-              loading={createPresetMutation.isPending}
-            />
-          </Card>
+          <Button
+            title={t("presets.save_as_preset")}
+            type="accent"
+            onPress={handleSaveAsPreset}
+            loading={createPresetMutation.isPending}
+          />
         </View>
       </ScrollView>
 

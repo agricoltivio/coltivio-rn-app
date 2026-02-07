@@ -1,13 +1,12 @@
 import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type CropProtectionApplicationStackParamList = {
-  AddCropProtectionApplicationConfiguration: {
-    productId?: string;
-  };
-  AddCropProtectionApplicationSelectPlots: undefined;
-  AddCropProtectionApplicationDivideOnPlots: undefined;
-  AddCropProtectionApplicationAdditionalNotes: undefined;
-  AddCropProtectionApplicationSummary: undefined;
+  SelectCropProtectionApplicationProductAndDate: { productId?: string };
+  ConfigureCropProtectionApplication: undefined;
+  SetCropProtectionApplicationUnitQuantity: undefined;
+  SelectCropProtectionApplicationPlots: undefined;
+  DivideCropProtectionApplicationOnPlots: undefined;
+  CropProtectionApplicationSummary: undefined;
 
   CropProtectionApplications: undefined;
   CropProtectionApplicationsOfYear: { year: number };
@@ -18,23 +17,29 @@ export type CropProtectionApplicationStackParamList = {
 export type CropProtectionApplicationsScreenProps =
   StackScreenProps<"CropProtectionApplications">;
 
-export type CropProtectionApplicationDetailsScreenProps =
-  StackScreenProps<"CropProtectionApplicationDetails">;
-
-export type AddCropProtectionApplicationConfigurationScreenProps =
-  StackScreenProps<"AddCropProtectionApplicationConfiguration">;
-
-export type AddCropProtectionApplicationSelectPlotsScreenProps =
-  StackScreenProps<"AddCropProtectionApplicationSelectPlots">;
-export type AddCropProtectionApplicationDivideOnPlotsScreenProps =
-  StackScreenProps<"AddCropProtectionApplicationDivideOnPlots">;
-export type AddCropProtectionApplicationAdditionalNotesScreenProps =
-  StackScreenProps<"AddCropProtectionApplicationAdditionalNotes">;
-export type AddCropProtectionApplicationSummaryScreenProps =
-  StackScreenProps<"AddCropProtectionApplicationSummary">;
-
 export type CropProtectionApplicationsOfYearScreenProps =
   StackScreenProps<"CropProtectionApplicationsOfYear">;
 
 export type CropProtectionApplicationsOfYearListScreenProps =
   StackScreenProps<"CropProtectionApplicationsOfYearList">;
+
+export type CropProtectionApplicationDetailsScreenProps =
+  StackScreenProps<"CropProtectionApplicationDetails">;
+
+export type SelectCropProtectionApplicationProductAndDateScreenProps =
+  StackScreenProps<"SelectCropProtectionApplicationProductAndDate">;
+
+export type ConfigureCropProtectionApplicationScreenProps =
+  StackScreenProps<"ConfigureCropProtectionApplication">;
+
+export type SetCropProtectionApplicationUnitQuantityScreenProps =
+  StackScreenProps<"SetCropProtectionApplicationUnitQuantity">;
+
+export type SelectCropProtectionApplicationPlotsScreenProps =
+  StackScreenProps<"SelectCropProtectionApplicationPlots">;
+
+export type DivideCropProtectionApplicationOnPlotsScreenProps =
+  StackScreenProps<"DivideCropProtectionApplicationOnPlots">;
+
+export type CropProtectionApplicationSummaryScreenProps =
+  StackScreenProps<"CropProtectionApplicationSummary">;

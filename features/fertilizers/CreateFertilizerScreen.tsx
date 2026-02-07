@@ -23,8 +23,8 @@ export function CreateFertilizerScreen({
     navigation.getState().routes[navigation.getState().index - 1];
 
   const createFertilizerMutation = useCreateFertilizerMutation((fertilizer) => {
-    if (previousRoute.name === "AddFertilizerApplicationConfiguration") {
-      navigation.popTo("AddFertilizerApplicationConfiguration", {
+    if (previousRoute.name === "SelectFertilizerAndDate") {
+      navigation.popTo("SelectFertilizerAndDate", {
         fertilizerId: fertilizer.id,
       });
     } else {

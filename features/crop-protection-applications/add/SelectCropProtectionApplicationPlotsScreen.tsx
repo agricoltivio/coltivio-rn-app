@@ -16,7 +16,6 @@ import { MapShowLocationToggle } from "@/features/map/MapShowLocationToggle";
 import { PlotSelectionOrDrawTip } from "@/features/map/tips/PlotSelectionOrDrawTip";
 import { TopLeftBackButton } from "@/features/map/TopLeftBackButton";
 import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
-import { AddTillageSelectPlotsScreenProps } from "../navigation/tillages-routes";
 import { hexToRgba } from "@/theme/theme";
 import { GeoSpatials } from "@/utils/geo-spatials";
 import { round } from "@/utils/math";
@@ -25,13 +24,21 @@ import { useEffect, useRef, useState } from "react";
 import { StyleSheet } from "react-native";
 import { LatLng, MapPressEvent, Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
-import { useAddTillageStore } from "./add-tillage.store";
+import { SelectCropProtectionApplicationPlotsScreenProps } from "../navigation/crop-protection-application-routes";
+import { useAddCropProtectionApplicationStore } from "./cropProtectionApplication.store";
 import { useTranslation } from "react-i18next";
 import { LabelMarker } from "@/features/map/LabelMarker";
 
-export function AddTillageSelectPlotsScreen({
+export type SelectedCropProtectionApplicationArea = {
+  plotId: string;
+  name: string;
+  geometry: GeoJSON.MultiPolygon;
+  size: number;
+};
+
+export function SelectCropProtectionApplicationPlotsScreen({
   navigation,
-}: AddTillageSelectPlotsScreenProps) {
+}: SelectCropProtectionApplicationPlotsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { farm } = useFarmQuery();
@@ -40,8 +47,13 @@ export function AddTillageSelectPlotsScreen({
   const [showUserLocation, setShowUserLocation] = useState(false);
   const [drawingAction, setDrawingAction] = useState<DrawAction>("select");
 
-  const { putPlot, removePlot, selectedPlotsById, resetSelectedPlots } =
-    useAddTillageStore();
+  const {
+    putPlot,
+    removePlot,
+    selectedPlotsById,
+    resetSelectedPlots,
+    totalNumberOfUnits: totalNumberOfApplications,
+  } = useAddCropProtectionApplicationStore();
 
   const polygonDrawingToolRef = useRef<PolygonDrawingToolActions>(null);
 
@@ -138,11 +150,12 @@ export function AddTillageSelectPlotsScreen({
         name: plot.name,
         geometry: plot.geometry,
         size: round(plot.size, 0),
+        numberOfUnits: 0,
       });
     }
   }
 
-  function onFertilizerApplicationAreaDrawComplete(coordinates: LatLng[]) {
+  function onCropProtectionApplicationAreaDrawComplete(coordinates: LatLng[]) {
     if (!plots) {
       return;
     }
@@ -156,6 +169,7 @@ export function AddTillageSelectPlotsScreen({
         plotId: plotIntersection.plot.id,
         geometry: plotIntersection.intersection.geometry,
         size: round(plotIntersection.intersection.size, 0),
+        numberOfUnits: 0,
       });
     }
   }
@@ -166,7 +180,24 @@ export function AddTillageSelectPlotsScreen({
         <BottomActionContainer>
           <Button
             title={t("buttons.next")}
-            onPress={() => navigation.navigate("AddTillageAdditionalNotes")}
+            onPress={() => {
+              const selectedPlots = Object.values(selectedPlotsById);
+              // Skip divide screen if only 1 plot is selected - assign all to that plot
+              if (selectedPlots.length === 1) {
+                const plot = selectedPlots[0];
+                putPlot({
+                  ...plot,
+                  numberOfUnits: totalNumberOfApplications ?? 0,
+                });
+                navigation.navigate(
+                  "CropProtectionApplicationSummary",
+                );
+              } else {
+                navigation.navigate(
+                  "DivideCropProtectionApplicationOnPlots",
+                );
+              }
+            }}
             disabled={!Object.values(selectedPlotsById).length}
           />
         </BottomActionContainer>
@@ -183,19 +214,19 @@ export function AddTillageSelectPlotsScreen({
       >
         {mapLayer}
         <PolygonDrawingTool
-          portalName="AddTillageMap"
+          portalName="CropProtectionApplicationMap"
           ref={polygonDrawingToolRef}
           onDrawActionChange={(action) => {
             setDrawingAction(action);
           }}
-          onFinish={onFertilizerApplicationAreaDrawComplete}
+          onFinish={onCropProtectionApplicationAreaDrawComplete}
         />
         <HomeMarker latitude={latitude} longitude={longitude} />
       </MapView>
       <TopLeftBackButton />
       <MapShowLocationToggle onShowLocationChange={setShowUserLocation} />
       <PlotSelectionOrDrawTip />
-      <PortalHost name="AddTillageMap" />
+      <PortalHost name="CropProtectionApplicationMap" />
     </ContentView>
   );
 }
