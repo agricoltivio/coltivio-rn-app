@@ -1,5 +1,6 @@
 import { Pressable, View, Text } from "react-native";
 import { useTheme } from "styled-components/native";
+import { useTranslation } from "react-i18next";
 
 export type ZoomLevel = "years" | "months" | "weeks";
 
@@ -8,17 +9,18 @@ type ZoomLevelToggleProps = {
   onChangeZoomLevel: (level: ZoomLevel) => void;
 };
 
-const LEVELS: { key: ZoomLevel; label: string }[] = [
-  { key: "years", label: "Years" },
-  { key: "months", label: "Months" },
-  { key: "weeks", label: "Weeks" },
-];
-
 export function ZoomLevelToggle({
   zoomLevel,
   onChangeZoomLevel,
 }: ZoomLevelToggleProps) {
+  const { t } = useTranslation();
   const theme = useTheme();
+
+  const LEVELS: { key: ZoomLevel; label: string }[] = [
+    { key: "years", label: t("crop_rotations.timeline.zoom_years") },
+    { key: "months", label: t("crop_rotations.timeline.zoom_months") },
+    { key: "weeks", label: t("crop_rotations.timeline.zoom_weeks") },
+  ];
 
   return (
     <View

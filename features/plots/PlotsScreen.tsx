@@ -50,7 +50,7 @@ export function PlotsScreen({ navigation }: PlotsScreenProps) {
         <ListItem.Content>
           <ListItem.Title style={{ flex: 1 }}>{plot.name}</ListItem.Title>
           <ListItem.Body>
-            {plot.cropRotations[0].crop.name} ({plot.size / 100}
+            {plot.currentCropRotation?.crop.name} ({plot.size / 100}
             a)
             {/* {t("common.area_acres", { area: plot.size / 100 })} */}
           </ListItem.Body>
@@ -58,7 +58,7 @@ export function PlotsScreen({ navigation }: PlotsScreenProps) {
         <ListItem.Chevron />
       </ListItem>
     ),
-    []
+    [],
   );
   return (
     <ContentView headerVisible>

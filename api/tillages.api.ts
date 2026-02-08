@@ -10,7 +10,6 @@ export type TillagesBatchCreateInput =
 export type Tillage =
   components["schemas"]["GetV1TillagesByIdTillageIdPositiveResponse"]["data"];
 
-export type TillageReason = Tillage["reason"];
 export type TillageAction = Tillage["action"];
 
 export type PlotTillage =

@@ -40,7 +40,7 @@ export function TillageDetailsScreen({
           },
         ]}
         action={tillage.action}
-        reason={tillage.reason}
+        customAction={tillage.customAction}
         hidePlotList
         additionalNotes={additionalNotes}
       />

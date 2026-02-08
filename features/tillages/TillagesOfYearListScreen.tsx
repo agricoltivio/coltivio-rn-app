@@ -31,13 +31,15 @@ export function TillagesOfYearListScreen({
   const sanitizedTillages = tillages.map((tillage) => ({
     ...tillage,
     date: formatLocalizedDate(new Date(tillage.date), locale, "long", false),
-    reason: t(`tillages.reasons.${tillage.reason}`),
-    action: t(`tillages.actions.${tillage.action}`),
+    action:
+      tillage.action === "custom"
+        ? tillage.customAction
+        : t(`tillages.actions.${tillage.action}`),
   }));
 
   const fuse = new Fuse(sanitizedTillages ?? [], {
     minMatchCharLength: 1,
-    keys: ["date", "reason", "action", "plot.name"],
+    keys: ["date", "action", "plot.name"],
   });
 
   let searchResult = sanitizedTillages;
@@ -62,9 +64,7 @@ export function TillagesOfYearListScreen({
         <ListItem.Title style={{ flex: 1 }}>
           {tillage.date} - {t("plots.plot_name", { name: tillage.plot.name })}
         </ListItem.Title>
-        <ListItem.Body>
-          {tillage.action} ({tillage.reason})
-        </ListItem.Body>
+        <ListItem.Body>{tillage.action}</ListItem.Body>
       </ListItem.Content>
       <ListItem.Chevron />
     </ListItem>

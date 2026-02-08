@@ -205,6 +205,9 @@ export function CropRotationCalendar({
               const selected = isSelected(day);
               const rotation = getRotationForDate(day, rotations);
 
+              // Show existing rotations with low opacity as indication only
+              const hasRotation = !!bgColor;
+
               return (
                 <Pressable
                   key={dayIndex}
@@ -217,10 +220,9 @@ export function CropRotationCalendar({
                     borderRadius: 8,
                     backgroundColor: selected
                       ? theme.colors.primary
-                      : bgColor
-                        ? bgColor
+                      : hasRotation
+                        ? bgColor + "30" // 30 = ~19% opacity in hex
                         : "transparent",
-                    opacity: 0.9,
                   }}
                 >
                   <Text

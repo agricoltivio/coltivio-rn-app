@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, memo } from "react";
 import { View, Text, LayoutChangeEvent, Pressable } from "react-native";
 import { useTheme } from "styled-components/native";
+import { useTranslation } from "react-i18next";
 import Animated, {
   useSharedValue,
   useAnimatedScrollHandler,
@@ -28,6 +29,7 @@ import { scheduleOnRN } from "react-native-worklets";
 type CropRotationTimelineProps = {
   timelineData: TimelineData;
   onBarPress: (rotationId: string, plotName: string) => void;
+  onZoomChange?: (zoomLevel: ZoomLevel) => void;
 };
 
 const PLOT_LABEL_WIDTH = 100;
@@ -147,7 +149,9 @@ const YearDivider = memo(function YearDivider({
 export function CropRotationTimeline({
   timelineData,
   onBarPress,
+  onZoomChange,
 }: CropRotationTimelineProps) {
+  const { t } = useTranslation();
   const theme = useTheme();
   const [viewportWidth, setViewportWidth] = useState(0);
   const [zoomLevel, setZoomLevel] = useState<ZoomLevel>("years");
@@ -207,10 +211,20 @@ export function CropRotationTimeline({
           contentWidth - viewportWidth,
         ),
       );
-      setBarVisibleRange({ start: x / scale, end: (x + viewportWidth) / scale });
+      setBarVisibleRange({
+        start: x / scale,
+        end: (x + viewportWidth) / scale,
+      });
       setTimeout(() => scrollAllHorizontalTo(x), 0);
     }
-  }, [viewportWidth, totalDays, todayDay, scale, contentWidth, scrollAllHorizontalTo]);
+  }, [
+    viewportWidth,
+    totalDays,
+    todayDay,
+    scale,
+    contentWidth,
+    scrollAllHorizontalTo,
+  ]);
 
   // Get all years in the timeline data for the animated year row (pre-compute pixel positions)
   const allYearsWithPx = useMemo(() => {
@@ -243,7 +257,11 @@ export function CropRotationTimeline({
     gridCache.current = { key: cacheKey, grids: {}, weeks: null };
   }
   if (!gridCache.current.grids[zoomLevel]) {
-    gridCache.current.grids[zoomLevel] = getAllGridLines(totalDays, epochStart, zoomLevel);
+    gridCache.current.grids[zoomLevel] = getAllGridLines(
+      totalDays,
+      epochStart,
+      zoomLevel,
+    );
   }
   const allGridLines = gridCache.current.grids[zoomLevel]!;
 
@@ -253,12 +271,16 @@ export function CropRotationTimeline({
   const allWeekLines = zoomLevel === "weeks" ? gridCache.current.weeks! : [];
 
   // Helper: compute center/halfSpan from barVisibleRange or fallback to todayDay
-  const rangeCenter = barVisibleRange.end > barVisibleRange.start
-    ? (barVisibleRange.start + barVisibleRange.end) / 2
-    : todayDay;
-  const rangeHalfSpan = barVisibleRange.end > barVisibleRange.start
-    ? (barVisibleRange.end - barVisibleRange.start) / 2
-    : (viewportWidth > 0 ? viewportWidth / scale / 2 : 500);
+  const rangeCenter =
+    barVisibleRange.end > barVisibleRange.start
+      ? (barVisibleRange.start + barVisibleRange.end) / 2
+      : todayDay;
+  const rangeHalfSpan =
+    barVisibleRange.end > barVisibleRange.start
+      ? (barVisibleRange.end - barVisibleRange.start) / 2
+      : viewportWidth > 0
+        ? viewportWidth / scale / 2
+        : 500;
 
   // Header grid lines — large buffer so labels are visible during fast scrolling.
   // Years/months have few lines total so render all; weeks gets 10-viewport buffer (~50 elements).
@@ -266,7 +288,8 @@ export function CropRotationTimeline({
     if (zoomLevel !== "weeks") return allGridLines;
     const buffer = rangeHalfSpan * 20;
     return allGridLines.filter(
-      (line) => line.day >= rangeCenter - buffer && line.day <= rangeCenter + buffer,
+      (line) =>
+        line.day >= rangeCenter - buffer && line.day <= rangeCenter + buffer,
     );
   }, [zoomLevel, allGridLines, rangeCenter, rangeHalfSpan]);
 
@@ -275,7 +298,8 @@ export function CropRotationTimeline({
     if (zoomLevel !== "weeks") return [];
     const buffer = rangeHalfSpan * 20;
     return allWeekLines.filter(
-      (line) => line.day >= rangeCenter - buffer && line.day <= rangeCenter + buffer,
+      (line) =>
+        line.day >= rangeCenter - buffer && line.day <= rangeCenter + buffer,
     );
   }, [zoomLevel, allWeekLines, rangeCenter, rangeHalfSpan]);
 
@@ -283,7 +307,8 @@ export function CropRotationTimeline({
   const bodyGridLines = useMemo(() => {
     const buffer = rangeHalfSpan * 5;
     return allGridLines.filter(
-      (line) => line.day >= rangeCenter - buffer && line.day <= rangeCenter + buffer,
+      (line) =>
+        line.day >= rangeCenter - buffer && line.day <= rangeCenter + buffer,
     );
   }, [allGridLines, rangeCenter, rangeHalfSpan]);
 
@@ -315,7 +340,7 @@ export function CropRotationTimeline({
         }
         // Refresh ranges if scrolled far from last update (covers long momentum scrolls)
         const dist = Math.abs(event.contentOffset.x - lastRangeUpdateX.value);
-        if (dist > viewportWidth * 2) {
+        if (dist > viewportWidth) {
           lastRangeUpdateX.value = event.contentOffset.x;
           scheduleOnRN(updateBarRange, event.contentOffset.x);
         }
@@ -366,6 +391,7 @@ export function CropRotationTimeline({
   const handleZoomLevelChange = useCallback(
     (level: ZoomLevel) => {
       setZoomLevel(level);
+      onZoomChange?.(level);
       const newScale = getScaleForZoomLevel(level, viewportWidth);
       const x = Math.max(
         0,
@@ -381,8 +407,20 @@ export function CropRotationTimeline({
       isWeeksMounted.value = level === "weeks";
       setTimeout(() => scrollAllHorizontalTo(x), 0);
     },
-    [viewportWidth, totalDays, todayDay, scrollAllHorizontalTo, isWeeksMounted],
+    [
+      viewportWidth,
+      totalDays,
+      todayDay,
+      scrollAllHorizontalTo,
+      isWeeksMounted,
+      onZoomChange,
+    ],
   );
+
+  // Notify parent of initial zoom level on mount
+  useEffect(() => {
+    onZoomChange?.(zoomLevel);
+  }, []);
 
   // FlatList helpers
   const renderPlotRow = useCallback(
@@ -407,10 +445,7 @@ export function CropRotationTimeline({
     [],
   );
 
-  const keyExtractor = useCallback(
-    (item: TimelinePlotData) => item.plotId,
-    [],
-  );
+  const keyExtractor = useCallback((item: TimelinePlotData) => item.plotId, []);
 
   if (totalDays === 0 || plots.length === 0) {
     return null;
@@ -447,7 +482,7 @@ export function CropRotationTimeline({
               color: theme.colors.gray1,
             }}
           >
-            Today
+            {t("crop_rotations.timeline.today")}
           </Text>
         </Pressable>
       </View>
@@ -481,7 +516,7 @@ export function CropRotationTimeline({
                   color: theme.colors.gray2,
                 }}
               >
-                Plot
+                {t("crop_rotations.timeline.plot")}
               </Text>
             </View>
             {/* Plot names - synced with body vertical scroll */}

@@ -22,6 +22,10 @@ export const TimelineBar = memo(function TimelineBar({
   const color = stringToColor(bar.cropName);
   const showLabel = barWidth > 50;
 
+  // Use transparency for all bars to show overlaps, more transparent for conflicts
+  const opacity = bar.hasConflict ? 0.5 : 0.75;
+  const bgColor = hexToRgba(color, opacity);
+
   return (
     <TouchableOpacity
       onPress={() => onPress(bar.rotationId, bar.plotName)}
@@ -32,8 +36,11 @@ export const TimelineBar = memo(function TimelineBar({
         width: barWidth,
         top: 4,
         bottom: 4,
-        backgroundColor: color,
+        backgroundColor: bgColor,
         borderRadius: 4,
+        borderWidth: bar.hasConflict ? 2 : bar.isPlanned ? 2 : 0,
+        borderColor: bar.hasConflict ? "#DC2626" : bar.isPlanned ? color : undefined,
+        borderStyle: bar.isPlanned ? "dashed" : "solid",
         justifyContent: "center",
         paddingHorizontal: 4,
         overflow: "hidden",

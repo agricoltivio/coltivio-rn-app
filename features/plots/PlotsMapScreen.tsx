@@ -90,7 +90,7 @@ export function PlotsMapScreen({ navigation }: PlotsMapScreenProps) {
         plot.id === selectedPlot?.id
           ? theme.colors.success
           : theme.map.defaultFillColor,
-        theme.map.defaultFillAlpha
+        theme.map.defaultFillAlpha,
       )}
       tappable
       onPress={(event) => onPlotSelect(plot)}
@@ -140,10 +140,10 @@ export function PlotsMapScreen({ navigation }: PlotsMapScreenProps) {
                   size: Number(selectedPlot?.size) / 100,
                 })}
               </Subtitle>
-              {selectedPlot?.cropRotations[0] ? (
+              {selectedPlot?.currentCropRotation ? (
                 <Subtitle>
                   {t("plots.map.selected_plot.crop", {
-                    crop: selectedPlot?.cropRotations[0].crop.name,
+                    crop: selectedPlot?.currentCropRotation.crop.name,
                   })}
                 </Subtitle>
               ) : null}

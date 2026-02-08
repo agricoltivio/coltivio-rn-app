@@ -1,13 +1,10 @@
 import { PlotCropRotationsScreen } from "@/features/plots/PlotCropRotationsScreen";
 import { Stack } from "@/navigation/stack";
-import { AddCropRotationScreen } from "../AddCropRotationScreen";
-import { AddCropRotationSelectCropScreen } from "../batch/AddCropRotationSelectCropScreen";
-import { AddCropRotationSelectPlotsScreen } from "../batch/AddCropRotationSelectPlotsScreen";
-import { AddCropRotationSummaryScreen } from "../batch/AddCropRotationSummaryScreen";
 import { CropRotationsOfYearListScreen } from "../CropRotationsOfYearListScreen";
 import { CropRotationsScreen } from "../CropRotationsScreen";
 import { EditCropRotationScreen } from "../EditCropRotationScreen";
-import { DefaultTheme } from "styled-components";
+import { PlanCropRotationsScreen } from "../plan/PlanCropRotationsScreen";
+import { SelectPlotsForPlanScreen } from "../plan/SelectPlotsForPlanScreen";
 
 export function renderCropsRotationStack() {
   return [
@@ -36,14 +33,6 @@ export function renderCropsRotationStack() {
       component={PlotCropRotationsScreen}
     />,
     <Stack.Screen
-      key="add-plot-crop-rotation"
-      name="AddPlotCropRotation"
-      options={{
-        title: "",
-      }}
-      component={AddCropRotationScreen}
-    />,
-    <Stack.Screen
       key="edit-plot-crop-rotation"
       name="EditPlotCropRotation"
       options={{
@@ -52,29 +41,21 @@ export function renderCropsRotationStack() {
       component={EditCropRotationScreen}
     />,
     <Stack.Screen
-      key="add-crop-rotation-select-crop"
-      name="AddCropRotationSelectCrop"
+      key="plan-crop-rotations"
+      name="PlanCropRotations"
       options={{
-        title: "",
+        title: "Plan Crop Rotations",
       }}
-      component={AddCropRotationSelectCropScreen}
+      component={PlanCropRotationsScreen}
     />,
     <Stack.Screen
-      key="add-crop-rotation-select-plots"
-      name="AddCropRotationSelectPlots"
+      key="select-plots-for-plan"
+      name="SelectPlotsForPlan"
       options={{
         title: "",
         headerShown: false,
       }}
-      component={AddCropRotationSelectPlotsScreen}
-    />,
-    <Stack.Screen
-      key="add-crop-rotation-summary"
-      name="AddCropRotationSummary"
-      options={{
-        title: "",
-      }}
-      component={AddCropRotationSummaryScreen}
+      component={SelectPlotsForPlanScreen}
     />,
   ];
 }

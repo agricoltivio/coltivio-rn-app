@@ -1,18 +1,20 @@
 import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
+import { CropRotationCalendar } from "@/components/datepicker/CropRotationCalendar";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { locale } from "@/locales/i18n";
-import { PlotCropRotationsScreenProps } from "../crop-rotations/navigation/crop-rotations-routes";
 import { H2, H3 } from "@/theme/Typography";
-import { Pressable, Text, View } from "react-native";
-import { useTheme } from "styled-components/native";
-import { usePlotByIdQuery } from "./plots.hooks";
-import { useTranslation } from "react-i18next";
 import { isInfiniteDate } from "@/utils/date";
-import { CropRotationCalendar } from "@/components/datepicker/CropRotationCalendar";
+import { addYears, subYears } from "date-fns";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { View } from "react-native";
+import { useTheme } from "styled-components/native";
 import { ViewModeToggle } from "../crop-rotations/components/ViewModeToggle";
+import { useCropRotationsByPlotIdsQuery } from "../crop-rotations/crop-rotations.hooks";
+import { PlotCropRotationsScreenProps } from "../crop-rotations/navigation/crop-rotations-routes";
+import { usePlotByIdQuery } from "./plots.hooks";
 
 export function PlotCropRotationsScreen({
   route,
@@ -20,10 +22,14 @@ export function PlotCropRotationsScreen({
 }: PlotCropRotationsScreenProps) {
   const { t } = useTranslation();
   const { plotId, name } = route.params;
-  const { plot } = usePlotByIdQuery(plotId);
+  const { plotCropRotations } = useCropRotationsByPlotIdsQuery(
+    [plotId],
+    subYears(new Date(), 10),
+    addYears(new Date(), 10),
+    {}, // use default options: expand=true
+  );
   const theme = useTheme();
   const [viewMode, setViewMode] = useState<"timeline" | "list">("timeline");
-  console.log(plot?.cropRotations[0]?.crop.name);
 
   return (
     <ContentView>
@@ -117,7 +123,7 @@ export function PlotCropRotationsScreen({
               overflow: "hidden",
             }}
           >
-            {plot?.cropRotations.map((rotation) => (
+            {plotCropRotations?.map((rotation) => (
               <ListItem
                 key={rotation.id}
                 onPress={() =>
@@ -154,7 +160,7 @@ export function PlotCropRotationsScreen({
         {viewMode === "timeline" && (
           <View style={{ marginTop: theme.spacing.l }}>
             <CropRotationCalendar
-              rotations={plot?.cropRotations ?? []}
+              rotations={plotCropRotations ?? []}
               onDatePress={(date, rotation) => {
                 if (rotation) {
                   navigation.navigate("EditPlotCropRotation", {
@@ -168,7 +174,9 @@ export function PlotCropRotationsScreen({
       </ScrollView>
       <FAB
         icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("AddPlotCropRotation", { plotId })}
+        onPress={() =>
+          navigation.navigate("PlanCropRotations", { plotIds: [plotId] })
+        }
       />
     </ContentView>
   );

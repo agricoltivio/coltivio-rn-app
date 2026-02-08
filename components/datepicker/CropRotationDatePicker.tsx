@@ -49,15 +49,12 @@ export function CropRotationDatePicker({
     day: "numeric",
   }).format(date);
 
-  function handleDateSelect(selectedDate: Date, rotation?: PlotCropRotation) {
+  function handleDateSelect(selectedDate: Date) {
     // Check if before minimum date
     if (minimumDate && selectedDate.getTime() < minimumDate.getTime()) {
       return;
     }
-    // Check if occupied by existing rotation
-    if (rotation && !isInfiniteDate(new Date(rotation.toDate))) {
-      return;
-    }
+    // Allow selecting any date - existing rotations are just shown as indication
     onDateChange(selectedDate);
     setIsOpen(false);
   }

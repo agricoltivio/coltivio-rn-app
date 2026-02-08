@@ -736,7 +736,35 @@
     "last_rotation_permanent": "Aktuelle: {{crop}} ({{from}} – unbefristet)",
     "permanent_end_date_info": "Das Enddatum der bestehenden Fruchtfolge wird automatisch auf den Tag vor dem neuen Startdatum gesetzt.",
     "add_rotation": "Fruchtfolge hinzufügen",
-    "permanent": "unbefristet"
+    "permanent": "unbefristet",
+    "plan": {
+      "save_plan": "Plan speichern",
+      "edit_rotation": "Fruchtfolge bearbeiten",
+      "add_rotation_title": "Fruchtfolge hinzufügen",
+      "duration": "Dauer",
+      "recurrence_optional": "Wiederholung (optional)",
+      "every": "Alle",
+      "year": "Jahr",
+      "years": "Jahre",
+      "until": "bis",
+      "add_end_date": "+ Enddatum",
+      "add_recurrence": "+ Wiederholung hinzufügen",
+      "no_rotations_yet": "Noch keine Fruchtfolgen",
+      "overlaps_with": "Überschneidet sich mit {{crop}}",
+      "select_crop_for_all": "Bitte wähle für alle Fruchtfolgen eine Kultur aus",
+      "resolve_conflicts_alert": "Bitte behebe alle Datumskonflikte vor dem Speichern",
+      "resolve_conflicts_warning": "Behebe Datumskonflikte vor dem Speichern",
+      "repeats_every_year": "Wiederholt sich jährlich",
+      "repeats_every_years": "Wiederholt sich alle {{count}} Jahre",
+      "until_date": "bis {{date}}"
+    },
+    "timeline": {
+      "today": "Heute",
+      "plot": "Schlag",
+      "zoom_years": "Jahre",
+      "zoom_months": "Monate",
+      "zoom_weeks": "Wochen"
+    }
   },
   "reports": {
     "field_calendar": {

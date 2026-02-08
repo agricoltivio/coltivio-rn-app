@@ -58,7 +58,7 @@ export type PlotsStackParamList = {
     name: string;
   };
   PlotCropRotations: { plotId: string; name: string };
-  AddPlotCropRotation: { plotId: string };
+  PlanCropRotations: { plotIds: string[] };
   EditPlotCropRotation: {
     plotName?: string;
     rotationId: string;

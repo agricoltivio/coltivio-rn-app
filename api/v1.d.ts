@@ -717,11 +717,11 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["PostV1CropRotationsPlan"];
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
-        patch?: never;
+        patch: operations["PatchV1CropRotationsPlan"];
         trace?: never;
     };
     "/v1/cropRotations/batch/byCrop": {
@@ -1913,7 +1913,7 @@ export interface components {
                     };
                     size: number;
                     additionalNotes: string | null;
-                    cropRotations: {
+                    currentCropRotation: {
                         id: string;
                         farmId: string;
                         plotId: string;
@@ -1952,7 +1952,7 @@ export interface components {
                                 additionalNotes: string | null;
                             } | null;
                         };
-                    }[];
+                    } | null;
                 }[];
                 count: number;
             };
@@ -1977,7 +1977,7 @@ export interface components {
                 };
                 size: number;
                 additionalNotes: string | null;
-                cropRotations: {
+                currentCropRotation: {
                     id: string;
                     farmId: string;
                     plotId: string;
@@ -2016,7 +2016,7 @@ export interface components {
                             additionalNotes: string | null;
                         } | null;
                     };
-                }[];
+                } | null;
             };
         };
         PostV1PlotsRequestBody: {
@@ -2058,7 +2058,7 @@ export interface components {
                 };
                 size: number;
                 additionalNotes: string | null;
-                cropRotations: {
+                currentCropRotation: {
                     id: string;
                     farmId: string;
                     plotId: string;
@@ -2097,7 +2097,7 @@ export interface components {
                             additionalNotes: string | null;
                         } | null;
                     };
-                }[];
+                } | null;
             };
         };
         DeleteV1PlotsByIdPlotIdPositiveResponse: {
@@ -2123,7 +2123,7 @@ export interface components {
                 };
                 size: number;
                 additionalNotes: string | null;
-                cropRotations: {
+                currentCropRotation: {
                     id: string;
                     farmId: string;
                     plotId: string;
@@ -2162,7 +2162,7 @@ export interface components {
                             additionalNotes: string | null;
                         } | null;
                     };
-                }[];
+                } | null;
             };
         };
         PatchV1PlotsByIdPlotIdRequestBody: {
@@ -2252,8 +2252,6 @@ export interface components {
                         coordinates: number[][][][];
                     };
                     size: number;
-                    /** @enum {string|null} */
-                    reason: "weed_control" | "soil_loosening" | "other" | null;
                     /** @enum {string} */
                     action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
                     customAction: string | null;
@@ -2265,18 +2263,7 @@ export interface components {
                     additionalNotes: string | null;
                     plot: {
                         id: string;
-                        farmId: string;
                         name: string;
-                        localId: string | null;
-                        usage: number | null;
-                        additionalUsages: string | null;
-                        /**
-                         * Format: date-time
-                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                         */
-                        cuttingDate: string | null;
-                        size: number;
-                        additionalNotes: string | null;
                     };
                 }[];
                 count: number;
@@ -3123,8 +3110,6 @@ export interface components {
                     coordinates: number[][][][];
                 };
                 size: number;
-                /** @enum {string|null} */
-                reason: "weed_control" | "soil_loosening" | "other" | null;
                 /** @enum {string} */
                 action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
                 customAction: string | null;
@@ -3136,18 +3121,7 @@ export interface components {
                 additionalNotes: string | null;
                 plot: {
                     id: string;
-                    farmId: string;
                     name: string;
-                    localId: string | null;
-                    usage: number | null;
-                    additionalUsages: string | null;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    cuttingDate: string | null;
-                    size: number;
-                    additionalNotes: string | null;
                 };
             };
         };
@@ -3159,8 +3133,6 @@ export interface components {
                 coordinates: number[][][][];
             };
             size: number;
-            /** @enum {string|null} */
-            reason?: "weed_control" | "soil_loosening" | "other" | null;
             /** @enum {string} */
             action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
             customAction?: string;
@@ -3189,8 +3161,6 @@ export interface components {
                         coordinates: number[][][][];
                     };
                     size: number;
-                    /** @enum {string|null} */
-                    reason: "weed_control" | "soil_loosening" | "other" | null;
                     /** @enum {string} */
                     action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
                     customAction: string | null;
@@ -3202,18 +3172,7 @@ export interface components {
                     additionalNotes: string | null;
                     plot: {
                         id: string;
-                        farmId: string;
                         name: string;
-                        localId: string | null;
-                        usage: number | null;
-                        additionalUsages: string | null;
-                        /**
-                         * Format: date-time
-                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                         */
-                        cuttingDate: string | null;
-                        size: number;
-                        additionalNotes: string | null;
                     };
                 }[];
                 count: number;
@@ -3237,8 +3196,6 @@ export interface components {
                         coordinates: number[][][][];
                     };
                     size: number;
-                    /** @enum {string|null} */
-                    reason: "weed_control" | "soil_loosening" | "other" | null;
                     /** @enum {string} */
                     action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
                     customAction: string | null;
@@ -3250,26 +3207,13 @@ export interface components {
                     additionalNotes: string | null;
                     plot: {
                         id: string;
-                        farmId: string;
                         name: string;
-                        localId: string | null;
-                        usage: number | null;
-                        additionalUsages: string | null;
-                        /**
-                         * Format: date-time
-                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                         */
-                        cuttingDate: string | null;
-                        size: number;
-                        additionalNotes: string | null;
                     };
                 }[];
                 count: number;
             };
         };
         PostV1TillagesBatchRequestBody: {
-            /** @enum {string} */
-            reason: "weed_control" | "soil_loosening" | "other";
             /** @enum {string} */
             action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
             customAction?: string;
@@ -3306,8 +3250,6 @@ export interface components {
                     coordinates: number[][][][];
                 };
                 size: number;
-                /** @enum {string|null} */
-                reason: "weed_control" | "soil_loosening" | "other" | null;
                 /** @enum {string} */
                 action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
                 customAction: string | null;
@@ -3319,18 +3261,7 @@ export interface components {
                 additionalNotes: string | null;
                 plot: {
                     id: string;
-                    farmId: string;
                     name: string;
-                    localId: string | null;
-                    usage: number | null;
-                    additionalUsages: string | null;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    cuttingDate: string | null;
-                    size: number;
-                    additionalNotes: string | null;
                 };
             };
         };
@@ -3354,8 +3285,6 @@ export interface components {
                     coordinates: number[][][][];
                 };
                 size: number;
-                /** @enum {string|null} */
-                reason: "weed_control" | "soil_loosening" | "other" | null;
                 /** @enum {string} */
                 action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
                 customAction: string | null;
@@ -3367,18 +3296,7 @@ export interface components {
                 additionalNotes: string | null;
                 plot: {
                     id: string;
-                    farmId: string;
                     name: string;
-                    localId: string | null;
-                    usage: number | null;
-                    additionalUsages: string | null;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    cuttingDate: string | null;
-                    size: number;
-                    additionalNotes: string | null;
                 };
             };
         };
@@ -3389,8 +3307,6 @@ export interface components {
                 coordinates: number[][][][];
             };
             size?: number;
-            /** @enum {string|null} */
-            reason?: "weed_control" | "soil_loosening" | "other" | null;
             /** @enum {string} */
             action?: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
             customAction?: string | null;
@@ -3413,8 +3329,6 @@ export interface components {
                     id: string;
                     farmId: string;
                     name: string;
-                    /** @enum {string|null} */
-                    reason: "weed_control" | "soil_loosening" | "other" | null;
                     /** @enum {string} */
                     action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
                     customAction: string | null;
@@ -3427,8 +3341,6 @@ export interface components {
                 id: string;
                 farmId: string;
                 name: string;
-                /** @enum {string|null} */
-                reason: "weed_control" | "soil_loosening" | "other" | null;
                 /** @enum {string} */
                 action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
                 customAction: string | null;
@@ -3436,8 +3348,6 @@ export interface components {
         };
         PostV1TillagesPresetsRequestBody: {
             name: string;
-            /** @enum {string} */
-            reason?: "weed_control" | "soil_loosening" | "other";
             /** @enum {string} */
             action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
             customAction?: string;
@@ -3447,8 +3357,6 @@ export interface components {
                 id: string;
                 farmId: string;
                 name: string;
-                /** @enum {string|null} */
-                reason: "weed_control" | "soil_loosening" | "other" | null;
                 /** @enum {string} */
                 action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
                 customAction: string | null;
@@ -3459,8 +3367,6 @@ export interface components {
                 id: string;
                 farmId: string;
                 name: string;
-                /** @enum {string|null} */
-                reason: "weed_control" | "soil_loosening" | "other" | null;
                 /** @enum {string} */
                 action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
                 customAction: string | null;
@@ -3468,8 +3374,6 @@ export interface components {
         };
         PatchV1TillagesPresetsByIdPresetIdRequestBody: {
             name?: string;
-            /** @enum {string|null} */
-            reason?: "weed_control" | "soil_loosening" | "other" | null;
             /** @enum {string} */
             action?: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
             customAction?: string | null;
@@ -3586,21 +3490,16 @@ export interface components {
              */
             toDate: string;
             recurrence?: {
-                /** @enum {string} */
-                frequency: "weekly" | "monthly" | "yearly";
                 /** @default 1 */
                 interval: number;
-                byWeekday?: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[];
-                byMonthDay?: number;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 until?: string;
-                count?: number;
             };
         };
-        PostV1CropRotationsPlanPositiveResponse: {
+        PatchV1CropRotationsPlanPositiveResponse: {
             data: {
                 result: {
                     id: string;
@@ -3645,10 +3544,11 @@ export interface components {
                 count: number;
             };
         };
-        PostV1CropRotationsPlanRequestBody: {
+        PatchV1CropRotationsPlanRequestBody: {
             plots: {
                 plotId: string;
-                crops: {
+                rotations: {
+                    id?: string;
                     cropId: string;
                     /**
                      * Format: date-time
@@ -3666,18 +3566,13 @@ export interface components {
                      */
                     toDate: string;
                     recurrence?: {
-                        /** @enum {string} */
-                        frequency: "weekly" | "monthly" | "yearly";
                         /** @default 1 */
                         interval: number;
-                        byWeekday?: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[];
-                        byMonthDay?: number;
                         /**
                          * Format: date-time
                          * @description YYYY-MM-DDTHH:mm:ss.sssZ
                          */
                         until?: string;
-                        count?: number;
                     };
                 }[];
             }[];
@@ -3748,18 +3643,13 @@ export interface components {
                  */
                 toDate: string;
                 recurrence?: {
-                    /** @enum {string} */
-                    frequency: "weekly" | "monthly" | "yearly";
                     /** @default 1 */
                     interval: number;
-                    byWeekday?: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[];
-                    byMonthDay?: number;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     until?: string;
-                    count?: number;
                 };
             }[];
         };
@@ -3828,18 +3718,13 @@ export interface components {
                  */
                 toDate: string;
                 recurrence?: {
-                    /** @enum {string} */
-                    frequency: "weekly" | "monthly" | "yearly";
                     /** @default 1 */
                     interval: number;
-                    byWeekday?: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[];
-                    byMonthDay?: number;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     until?: string;
-                    count?: number;
                 };
             }[];
         };
@@ -3886,6 +3771,15 @@ export interface components {
                             additionalNotes: string | null;
                         } | null;
                     };
+                    recurrence: {
+                        id: string;
+                        interval: number;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        until: string | null;
+                    } | null;
                 }[];
                 count: number;
             };
@@ -3995,18 +3889,13 @@ export interface components {
              */
             toDate?: string;
             recurrence?: {
-                /** @enum {string} */
-                frequency: "weekly" | "monthly" | "yearly";
                 /** @default 1 */
                 interval: number;
-                byWeekday?: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[];
-                byMonthDay?: number;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 until?: string;
-                count?: number;
             } | null;
         };
         GetV1CropRotationsYearsPositiveResponse: {
@@ -4054,23 +3943,7 @@ export interface components {
                     plotId: string;
                     plot: {
                         id: string;
-                        farmId: string;
                         name: string;
-                        localId: string | null;
-                        usage: number | null;
-                        additionalUsages: string | null;
-                        /**
-                         * Format: date-time
-                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                         */
-                        cuttingDate: string | null;
-                        geometry: {
-                            /** @constant */
-                            type: "MultiPolygon";
-                            coordinates: number[][][][];
-                        };
-                        size: number;
-                        additionalNotes: string | null;
                     };
                     size: number;
                     /**
@@ -4122,23 +3995,7 @@ export interface components {
                     plotId: string;
                     plot: {
                         id: string;
-                        farmId: string;
                         name: string;
-                        localId: string | null;
-                        usage: number | null;
-                        additionalUsages: string | null;
-                        /**
-                         * Format: date-time
-                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                         */
-                        cuttingDate: string | null;
-                        geometry: {
-                            /** @constant */
-                            type: "MultiPolygon";
-                            coordinates: number[][][][];
-                        };
-                        size: number;
-                        additionalNotes: string | null;
                     };
                     size: number;
                     /**
@@ -4214,23 +4071,7 @@ export interface components {
                 plotId: string;
                 plot: {
                     id: string;
-                    farmId: string;
                     name: string;
-                    localId: string | null;
-                    usage: number | null;
-                    additionalUsages: string | null;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    cuttingDate: string | null;
-                    geometry: {
-                        /** @constant */
-                        type: "MultiPolygon";
-                        coordinates: number[][][][];
-                    };
-                    size: number;
-                    additionalNotes: string | null;
                 };
                 size: number;
                 /**
@@ -10584,30 +10425,30 @@ export interface operations {
             };
         };
     };
-    PostV1CropRotationsPlan: {
+    PatchV1CropRotationsPlan: {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** @description POST /v1/cropRotations/plan Request body */
+        /** @description PATCH /v1/cropRotations/plan Request body */
         requestBody: {
             content: {
-                "application/json": components["schemas"]["PostV1CropRotationsPlanRequestBody"];
+                "application/json": components["schemas"]["PatchV1CropRotationsPlanRequestBody"];
             };
         };
         responses: {
-            /** @description POST /v1/cropRotations/plan Positive response */
+            /** @description PATCH /v1/cropRotations/plan Positive response */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1CropRotationsPlanPositiveResponse"];
+                    "application/json": components["schemas"]["PatchV1CropRotationsPlanPositiveResponse"];
                 };
             };
-            /** @description POST /v1/cropRotations/plan Negative response */
+            /** @description PATCH /v1/cropRotations/plan Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -10693,6 +10534,10 @@ export interface operations {
                 plotIds: components["schemas"]["GetV1CropRotationsPlotsParameterPlotIds"];
                 /** @description GET /v1/cropRotations/plots Parameter */
                 onlyCurrent?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description GET /v1/cropRotations/plots Parameter */
+                expand?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description GET /v1/cropRotations/plots Parameter */
+                withRecurrences?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
                 /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
                 fromDate: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
                 /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
@@ -10731,6 +10576,10 @@ export interface operations {
                 plotIds: components["schemas"]["GetV1CropRotationsPlotsParameterPlotIds"];
                 /** @description HEAD /v1/cropRotations/plots Parameter */
                 onlyCurrent?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description HEAD /v1/cropRotations/plots Parameter */
+                expand?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description HEAD /v1/cropRotations/plots Parameter */
+                withRecurrences?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
                 /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
                 fromDate: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
                 /** @description YYYY-MM-DDTHH:mm:ss.sssZ */

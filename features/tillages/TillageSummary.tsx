@@ -1,4 +1,4 @@
-import { TillageAction, TillageReason } from "@/api/tillages.api";
+import { TillageAction } from "@/api/tillages.api";
 import { Card } from "@/components/card/Card";
 import { ListItem } from "@/components/list/ListItem";
 import { MapView } from "@/components/map/Map";
@@ -45,8 +45,8 @@ type SummaryProps = {
     size: number;
   }[];
   date: Date;
-  reason: TillageReason;
   action: TillageAction;
+  customAction?: string | null;
   additionalNotes?: string | null;
   hidePlotList?: boolean;
 };
@@ -54,8 +54,8 @@ type SummaryProps = {
 export function TillageSummary({
   date,
   plots,
-  reason,
   action,
+  customAction,
   additionalNotes,
   hidePlotList,
 }: SummaryProps) {
@@ -108,14 +108,17 @@ export function TillageSummary({
       </View>
       <Card style={{ marginTop: theme.spacing.m }}>
         <SummaryItem label={t("forms.labels.area")} value={`${size / 100}a`} />
-        <SummaryItem
-          label={t("forms.labels.reason")}
-          value={t(`tillages.reasons.${reason}`)}
-        />
-        <SummaryItem
-          label={t("forms.labels.action")}
-          value={t(`tillages.actions.${action}`)}
-        />
+        {action === "custom" ? (
+          <SummaryItem
+            label={t("forms.labels.action")}
+            value={customAction || ""}
+          />
+        ) : (
+          <SummaryItem
+            label={t("forms.labels.action")}
+            value={t(`tillages.actions.${action}`)}
+          />
+        )}
       </Card>
       {additionalNotes && (
         <>

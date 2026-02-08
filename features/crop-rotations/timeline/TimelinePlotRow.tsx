@@ -12,7 +12,7 @@ type TimelinePlotRowProps = {
   onBarPress: (rotationId: string, plotName: string) => void;
 };
 
-const ROW_HEIGHT = 36;
+const ROW_HEIGHT = 46;
 
 export const TimelinePlotRow = memo(function TimelinePlotRow({
   bars,
@@ -23,9 +23,9 @@ export const TimelinePlotRow = memo(function TimelinePlotRow({
 }: TimelinePlotRowProps) {
   const theme = useTheme();
 
-  // Cull bars to visible range with padding
+  // Cull bars to visible range with large padding for smoother scrolling
   const visibleBars = useMemo(() => {
-    const padding = (visibleEndDay - visibleStartDay) * 0.5;
+    const padding = (visibleEndDay - visibleStartDay) * 3;
     return bars.filter((bar) => {
       return (
         bar.endDay > visibleStartDay - padding &&
@@ -50,9 +50,9 @@ export const TimelinePlotRow = memo(function TimelinePlotRow({
         borderBottomColor: theme.colors.gray4,
       }}
     >
-      {visibleBars.map((bar) => (
+      {visibleBars.map((bar, index) => (
         <TimelineBar
-          key={bar.rotationId}
+          key={`${bar.rotationId}-${index}`}
           bar={bar}
           left={bar.startDay * scale}
           width={(bar.endDay - bar.startDay) * scale}

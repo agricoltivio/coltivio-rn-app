@@ -10,7 +10,6 @@ export type TillagePresetCreateInput =
 export type TillagePresetUpdateInput =
   components["schemas"]["PatchV1TillagesPresetsByIdPresetIdRequestBody"];
 
-export type TillagePresetReason = TillagePreset["reason"];
 export type TillagePresetAction = TillagePreset["action"];
 
 export function tillagePresetsApi(client: FetchClient) {

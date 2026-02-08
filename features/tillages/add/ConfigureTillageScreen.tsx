@@ -1,6 +1,4 @@
-import {
-  TillagePresetCreateInput,
-} from "@/api/tillagePresets.api";
+import { TillagePresetCreateInput } from "@/api/tillagePresets.api";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -27,11 +25,10 @@ import {
 } from "../tillagePresets.hooks";
 import { useAddTillageStore } from "./add-tillage.store";
 import { ConfigureTillageScreenProps } from "../navigation/tillages-routes";
-import { tillageActions, tillageReasons } from "../tillageUtils";
+import { tillageActions } from "../tillageUtils";
 
 type FormValues = {
   presetId?: string;
-  reason: TillagePresetCreateInput["reason"];
   action: TillagePresetCreateInput["action"];
   customAction?: string;
   additionalNotes?: string;
@@ -59,7 +56,6 @@ export function ConfigureTillageScreen({
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      reason: data?.reason,
       action: data?.action,
       customAction: data?.customAction ?? undefined,
       additionalNotes: data?.additionalNotes ?? undefined,
@@ -74,19 +70,11 @@ export function ConfigureTillageScreen({
     if (presetId && tillagePresets) {
       const preset = tillagePresets.find((p) => p.id === presetId);
       if (preset) {
-        setValue("reason", preset.reason);
         setValue("action", preset.action);
         setValue("customAction", preset.customAction ?? undefined);
       }
     }
   }, [presetId, tillagePresets, setValue]);
-
-  const reasonOptions: { label: string; value: string }[] = tillageReasons.map(
-    (reason) => ({
-      label: t(`tillages.reasons.${reason}`) as string,
-      value: reason,
-    }),
-  );
 
   const actionOptions: { label: string; value: string }[] = tillageActions.map(
     (action) => ({
@@ -97,7 +85,7 @@ export function ConfigureTillageScreen({
 
   const handleSaveAsPreset = () => {
     const values = watch();
-    if (!values.reason || !values.action) {
+    if (!values.action) {
       return;
     }
     Alert.prompt(
@@ -111,7 +99,6 @@ export function ConfigureTillageScreen({
             if (name?.trim()) {
               createPresetMutation.mutate({
                 name: name.trim(),
-                reason: values.reason,
                 action: values.action,
                 customAction: values.customAction,
               });
@@ -136,9 +123,9 @@ export function ConfigureTillageScreen({
 
   function onSubmit(values: FormValues) {
     setData({
-      reason: values.reason,
       action: values.action,
-      customAction: values.action === "custom" ? values.customAction : undefined,
+      customAction:
+        values.action === "custom" ? values.customAction : undefined,
       additionalNotes: values.additionalNotes,
     });
 
@@ -180,21 +167,6 @@ export function ConfigureTillageScreen({
               />
             )}
           />
-
-          <RHSelect
-            name="reason"
-            control={control}
-            label={t("forms.labels.reason")}
-            rules={{
-              required: {
-                value: true,
-                message: t("forms.validation.required"),
-              },
-            }}
-            error={errors.reason?.message}
-            data={reasonOptions}
-          />
-
           <RHSelect
             name="action"
             control={control}

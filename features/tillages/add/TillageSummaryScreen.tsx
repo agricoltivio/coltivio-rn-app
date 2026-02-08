@@ -12,7 +12,7 @@ export function TillageSummaryScreen({
 }: TillageSummaryScreenProps) {
   const { t } = useTranslation();
   const { selectedPlotsById, data } = useAddTillageStore();
-  const { date, action, reason, additionalNotes } = data as TillageBase;
+  const { date, action, customAction, additionalNotes } = data as TillageBase;
 
   const selectedPlots = Object.values(selectedPlotsById);
 
@@ -30,7 +30,6 @@ export function TillageSummaryScreen({
   function onSave() {
     createTillagesMutation.mutate({
       action,
-      reason,
       date: date.toISOString(),
       additionalNotes,
       plots: selectedPlots.map((plot) => ({
@@ -57,7 +56,7 @@ export function TillageSummaryScreen({
       <TillageSummary
         date={date}
         action={action}
-        reason={reason}
+        customAction={customAction}
         plots={selectedPlots}
         additionalNotes={additionalNotes}
       />

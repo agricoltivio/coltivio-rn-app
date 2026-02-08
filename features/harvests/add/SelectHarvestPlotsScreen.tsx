@@ -1,5 +1,3 @@
-import { isWithinInterval } from "date-fns";
-import * as turf from "@turf/turf";
 import { Plot } from "@/api/plots.api";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -11,12 +9,14 @@ import {
   PolygonDrawingTool,
   PolygonDrawingToolActions,
 } from "@/components/map/PolygonDrawingTool";
-import { SelectHarvestPlotsScreenProps } from "../navigation/harvest-routes";
+import { LabelMarker } from "@/features/map/LabelMarker";
 import { hexToRgba } from "@/theme/theme";
 import { GeoSpatials } from "@/utils/geo-spatials";
 import { round } from "@/utils/math";
 import { PortalHost } from "@gorhom/portal";
-import { useEffect, useMemo, useRef, useState } from "react";
+import * as turf from "@turf/turf";
+import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet } from "react-native";
 import { LatLng, MapPressEvent, Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
@@ -26,9 +26,8 @@ import { MapShowLocationToggle } from "../../map/MapShowLocationToggle";
 import { PlotSelectionOrDrawTip } from "../../map/tips/PlotSelectionOrDrawTip";
 import { TopLeftBackButton } from "../../map/TopLeftBackButton";
 import { useFarmPlotsQuery } from "../../plots/plots.hooks";
+import { SelectHarvestPlotsScreenProps } from "../navigation/harvest-routes";
 import { useCreateHarvestStore } from "./harvest.store";
-import { useTranslation } from "react-i18next";
-import { LabelMarker } from "@/features/map/LabelMarker";
 
 export type SelectedHarvestArea = {
   plotId: string;
@@ -72,21 +71,7 @@ export function SelectHarvestPlotsScreen({
     return unsubscribe;
   }, [navigation]);
 
-  // all plots with matching crop rotation or no crop rotation are available
-  const availablePlots = useMemo(() => {
-    if (!harvest?.date) return [];
-    return plots?.filter((plot) => {
-      const currentRotation = plot.cropRotations.find((rotation) =>
-        isWithinInterval(new Date(harvest.date!), {
-          start: new Date(rotation.fromDate),
-          end: new Date(rotation.toDate),
-        }),
-      );
-      return !currentRotation || currentRotation.cropId === harvest?.cropId;
-    });
-  }, [plots, harvest]);
-
-  const mapLayer = availablePlots?.flatMap((plot) => {
+  const mapLayer = plots?.flatMap((plot) => {
     const isSelected = plot.id in selectedPlotsById;
     const polygons = [
       <MultiPolygon
@@ -173,11 +158,11 @@ export function SelectHarvestPlotsScreen({
   }
 
   function onHarvestAreaDrawComplete(coordinates: LatLng[]) {
-    if (!availablePlots) {
+    if (!plots) {
       return;
     }
     const plotIntersections = GeoSpatials.plotIntersections(
-      availablePlots,
+      plots,
       GeoSpatials.latLngToMultiPolygon([coordinates]),
     );
     for (const plotIntersection of plotIntersections) {

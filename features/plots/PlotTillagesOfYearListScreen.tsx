@@ -29,13 +29,12 @@ export function PlotTillagesOfYearListScreen({
   const sanitizedTillages = tillages.map((tillage) => ({
     ...tillage,
     date: formatLocalizedDate(new Date(tillage.date), locale, "long", false),
-    reason: t(`tillages.reasons.${tillage.reason}`),
     action: t(`tillages.actions.${tillage.action}`),
   }));
 
   const fuse = new Fuse(sanitizedTillages ?? [], {
     minMatchCharLength: 1,
-    keys: ["date", "reason", "action"],
+    keys: ["date", "action"],
   });
 
   let searchResult = sanitizedTillages;
@@ -58,9 +57,7 @@ export function PlotTillagesOfYearListScreen({
     >
       <ListItem.Content>
         <ListItem.Title style={{ flex: 1 }}>{tillage.date}</ListItem.Title>
-        <ListItem.Body>
-          {tillage.action} ({tillage.reason})
-        </ListItem.Body>
+        <ListItem.Body>{tillage.action}</ListItem.Body>
       </ListItem.Content>
       <ListItem.Chevron />
     </ListItem>

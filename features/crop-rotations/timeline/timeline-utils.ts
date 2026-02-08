@@ -6,12 +6,15 @@ type CropRotationWithPlot =
 
 export type TimelineBar = {
   rotationId: string;
+  entryId: string; // for editing reference
   cropName: string;
   plotName: string;
   plotId: string;
   startDay: number; // days since epochStart
   endDay: number; // days since epochStart
   isOpenEnded: boolean;
+  isPlanned?: boolean;
+  hasConflict?: boolean;
 };
 
 export type TimelinePlotData = {
@@ -98,6 +101,7 @@ export function buildMultiYearTimelineData(
 
     const bar: TimelineBar = {
       rotationId: rotation.id,
+      entryId: rotation.id, // use rotationId as entryId for existing rotations
       cropName: rotation.crop.name,
       plotName: rotation.plot.name,
       plotId: rotation.plotId,

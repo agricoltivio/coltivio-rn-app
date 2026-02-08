@@ -147,7 +147,7 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
 
       <FAB
         icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("AddCropRotationSelectCrop")}
+        onPress={() => navigation.navigate("SelectPlotsForPlan")}
       />
     </ContentView>
   );

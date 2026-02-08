@@ -4,15 +4,13 @@ export type CropRotationsStackParamList = {
   CropRotations: undefined;
   CropRotationsOfYearList: { year: number };
   PlotCropRotations: { plotId: string; name: string };
-  AddPlotCropRotation: { plotId: string };
   EditPlotCropRotation: {
     plotName?: string;
     rotationId: string;
   };
 
-  AddCropRotationSelectCrop: undefined;
-  AddCropRotationSelectPlots: undefined;
-  AddCropRotationSummary: undefined;
+  PlanCropRotations: { plotIds: string[] };
+  SelectPlotsForPlan: undefined;
 };
 
 export type CropRotationsScreenProps = StackScreenProps<"CropRotations">;
@@ -22,15 +20,10 @@ export type CropRotationsOfYearListScreenProps =
 export type PlotCropRotationsScreenProps =
   StackScreenProps<"PlotCropRotations">;
 
-export type AddCropRotationScreenProps =
-  StackScreenProps<"AddPlotCropRotation">;
-
 export type EditCropRotationScreenProps =
   StackScreenProps<"EditPlotCropRotation">;
 
-export type AddCropRotationSelectCropScreenProps =
-  StackScreenProps<"AddCropRotationSelectCrop">;
-export type AddCropRotationSelectPlotsScreenProps =
-  StackScreenProps<"AddCropRotationSelectPlots">;
-export type AddCropRotationSummaryScreenProps =
-  StackScreenProps<"AddCropRotationSummary">;
+export type PlanCropRotationsScreenProps =
+  StackScreenProps<"PlanCropRotations">;
+export type SelectPlotsForPlanScreenProps =
+  StackScreenProps<"SelectPlotsForPlan">;

@@ -5,6 +5,8 @@ import {
   CropRotationCreateManyByCropInput,
   CropRotationCreateManyByPlotInput,
   CropRotationUpdateInput,
+  CropRotationPlanInput,
+  CropRotationPlanResult,
 } from "@/api/crop-rotations.api";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -21,7 +23,7 @@ export function useCropRotationQuery(rotationId: string) {
 export function useCropRotationsQuery(
   fromDate?: Date,
   toDate?: Date,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
@@ -34,7 +36,7 @@ export function useCropRotationsQuery(
 
 export function useCreateCropRotationMutation(
   onSuccess?: (cropRotation: CropRotation) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
@@ -59,7 +61,7 @@ export function useCreateCropRotationMutation(
 
 export function useCreateCropRotationsByCropMutation(
   onSuccess?: (cropRotations: CropRotation[]) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
@@ -84,7 +86,7 @@ export function useCreateCropRotationsByCropMutation(
 
 export function useCreateCropRotationsByPlotMutation(
   onSuccess?: (cropRotations: CropRotation[]) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
@@ -109,13 +111,26 @@ export function useCreateCropRotationsByPlotMutation(
 
 export function useCropRotationsByPlotIdsQuery(
   plotIds: string[],
-  onlyCurrent: boolean = false,
-  enabled: boolean = true
+  fromDate: Date,
+  toDate: Date,
+  options: {
+    onlyCurrent?: boolean;
+    expand?: boolean;
+    includeRecurrence?: boolean;
+  } = {},
+  enabled: boolean = true,
 ) {
   const api = useApi();
+  const { onlyCurrent = false, expand = true, includeRecurrence = false } = options;
   const { data, ...rest } = useQuery({
-    queryKey: queryKeys.cropRotations.byPlotIds(plotIds, onlyCurrent).queryKey,
-    queryFn: () => api.cropRotations.getCropRotationsByPlotIds(plotIds, onlyCurrent),
+    queryKey: queryKeys.cropRotations.byPlotIds(plotIds, onlyCurrent, expand, includeRecurrence).queryKey,
+    queryFn: () =>
+      api.cropRotations.getCropRotationsByPlotIds(
+        plotIds,
+        fromDate,
+        toDate,
+        { onlyCurrent, expand, includeRecurrence },
+      ),
     enabled: enabled && plotIds.length > 0,
   });
   return { plotCropRotations: data, ...rest };
@@ -123,7 +138,7 @@ export function useCropRotationsByPlotIdsQuery(
 
 export function useUpdateCropRotationMutation(
   onSuccess?: (cropRotation: CropRotation) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
@@ -151,7 +166,7 @@ export function useUpdateCropRotationMutation(
 
 export function useDeleteCropRotationMutation(
   onSuccess?: () => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const api = useApi();
   const queryClient = useQueryClient();
@@ -183,4 +198,29 @@ export function useCropRotationYearsQuery(enabled: boolean = true) {
     enabled,
   });
   return { cropRotationYears: data, ...rest };
+}
+
+export function usePlanCropRotationsMutation(
+  onSuccess?: (rotations: CropRotationPlanResult) => void,
+  onError?: (error: Error) => void,
+) {
+  const queryClient = useQueryClient();
+  const api = useApi();
+  return useMutation({
+    mutationFn: (input: CropRotationPlanInput) =>
+      api.cropRotations.planCropRotations(input),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.cropRotations._def,
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.plots._def,
+      });
+      onSuccess && onSuccess(data);
+    },
+    onError: (error) => {
+      console.error(error);
+      onError && onError(error);
+    },
+  });
 }
