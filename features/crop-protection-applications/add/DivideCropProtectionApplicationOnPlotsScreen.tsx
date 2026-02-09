@@ -23,12 +23,15 @@ export function DivideCropProtectionApplicationOnPlotsScreen({
     removePlot,
     totalNumberOfUnits: totalNumberOfApplications = 0,
     selectedPlotsById,
+    data,
   } = useAddCropProtectionApplicationStore();
+
+  const isAmountPerHectare = data?.unit === "amount_per_hectare";
 
   const [quantityByPlotId, setQuantityByPlotId] = useState<
     Record<string, string>
   >({});
-  const [divideByArea, setDivideByArea] = useState(false);
+  const [divideByArea, setDivideByArea] = useState(isAmountPerHectare);
   const [divisionPrecision, setDivisionPrecision] = useState(1);
   const [error, setError] = useState<string | null>(null);
 

@@ -38,9 +38,11 @@ export function RotationEditModal({
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
   const [hasRecurrence, setHasRecurrence] = useState(false);
-  const [interval, setInterval] = useState(1);
+  const [interval, setInterval] = useState("1");
   const [hasUntil, setHasUntil] = useState(false);
-  const [until, setUntil] = useState<Date>(new Date(new Date().getFullYear() + 3, 11, 31));
+  const [until, setUntil] = useState<Date>(
+    new Date(new Date().getFullYear() + 3, 11, 31),
+  );
 
   // Reset form when modal opens with new rotation
   useEffect(() => {
@@ -51,12 +53,15 @@ export function RotationEditModal({
       setToDate(rotation.toDate);
       if (rotation.recurrence) {
         setHasRecurrence(true);
-        setInterval(rotation.recurrence.interval);
+        setInterval(String(rotation.recurrence.interval));
         setHasUntil(!!rotation.recurrence.until);
-        setUntil(rotation.recurrence.until || new Date(new Date().getFullYear() + 3, 11, 31));
+        setUntil(
+          rotation.recurrence.until ||
+            new Date(new Date().getFullYear() + 3, 11, 31),
+        );
       } else {
         setHasRecurrence(false);
-        setInterval(1);
+        setInterval("1");
         setHasUntil(false);
       }
     } else if (visible && !rotation) {
@@ -66,7 +71,7 @@ export function RotationEditModal({
       setFromDate(new Date());
       setToDate(new Date());
       setHasRecurrence(false);
-      setInterval(1);
+      setInterval("1");
       setHasUntil(false);
       setUntil(new Date(new Date().getFullYear() + 3, 11, 31));
     }
@@ -76,7 +81,7 @@ export function RotationEditModal({
     if (!plotId || !cropId) return;
 
     const recurrence: RecurrenceRule | undefined = hasRecurrence
-      ? { interval, until: hasUntil ? until : undefined }
+      ? { interval: Number(interval), until: hasUntil ? until : undefined }
       : undefined;
 
     const entry: RotationEntry = {
@@ -99,8 +104,8 @@ export function RotationEditModal({
     }
   };
 
-  const plotOptions = plots.map(p => ({ label: p.name, value: p.id }));
-  const cropOptions = crops.map(c => ({ label: c.name, value: c.id }));
+  const plotOptions = plots.map((p) => ({ label: p.name, value: p.id }));
+  const cropOptions = crops.map((c) => ({ label: c.name, value: c.id }));
 
   return (
     <Modal visible={visible} transparent animationType="fade">
@@ -122,7 +127,7 @@ export function RotationEditModal({
             width: "100%",
             maxWidth: 360,
           }}
-          onPress={e => e.stopPropagation()}
+          onPress={(e) => e.stopPropagation()}
         >
           <Text
             style={{
@@ -132,7 +137,9 @@ export function RotationEditModal({
               marginBottom: theme.spacing.m,
             }}
           >
-            {rotation?.rotationId ? t("crop_rotations.plan.edit_rotation") : t("crop_rotations.plan.add_rotation_title")}
+            {rotation?.rotationId
+              ? t("crop_rotations.plan.edit_rotation")
+              : t("crop_rotations.plan.add_rotation_title")}
           </Text>
 
           {/* Plot Select */}
@@ -205,7 +212,11 @@ export function RotationEditModal({
             </Text>
             {hasRecurrence && (
               <Pressable onPress={() => setHasRecurrence(false)}>
-                <Ionicons name="close-circle" size={20} color={theme.colors.gray2} />
+                <Ionicons
+                  name="close-circle"
+                  size={20}
+                  color={theme.colors.gray2}
+                />
               </Pressable>
             )}
           </View>
@@ -220,12 +231,15 @@ export function RotationEditModal({
                 marginBottom: theme.spacing.l,
               }}
             >
-              <Text style={{ fontSize: 14, color: theme.colors.text }}>{t("crop_rotations.plan.every")}</Text>
+              <Text style={{ fontSize: 14, color: theme.colors.text }}>
+                {t("crop_rotations.plan.every")}
+              </Text>
               <TextInput
-                value={String(interval)}
-                onChangeText={text => {
+                value={interval}
+                onChangeText={(text) => {
+                  if (!text) setInterval("");
                   const num = parseInt(text);
-                  if (!isNaN(num) && num > 0) setInterval(num);
+                  if (!isNaN(num) && num > 0) setInterval(String(num));
                 }}
                 keyboardType="number-pad"
                 style={{
@@ -240,18 +254,26 @@ export function RotationEditModal({
                 }}
               />
               <Text style={{ fontSize: 14, color: theme.colors.text }}>
-                {interval === 1 ? t("crop_rotations.plan.year") : t("crop_rotations.plan.years")}
+                {interval === 1
+                  ? t("crop_rotations.plan.year")
+                  : t("crop_rotations.plan.years")}
               </Text>
               {hasUntil ? (
                 <>
-                  <Text style={{ fontSize: 14, color: theme.colors.text }}>{t("crop_rotations.plan.until")}</Text>
+                  <Text style={{ fontSize: 14, color: theme.colors.text }}>
+                    {t("crop_rotations.plan.until")}
+                  </Text>
                   <CompactDatePicker
                     date={until}
                     onDateChange={setUntil}
                     minimumDate={toDate}
                   />
                   <Pressable onPress={() => setHasUntil(false)}>
-                    <Ionicons name="close-circle" size={18} color={theme.colors.gray2} />
+                    <Ionicons
+                      name="close-circle"
+                      size={18}
+                      color={theme.colors.gray2}
+                    />
                   </Pressable>
                 </>
               ) : (
@@ -264,7 +286,9 @@ export function RotationEditModal({
                     borderRadius: 6,
                   }}
                 >
-                  <Text style={{ fontSize: 13, color: theme.colors.gray1 }}>{t("crop_rotations.plan.add_end_date")}</Text>
+                  <Text style={{ fontSize: 13, color: theme.colors.gray1 }}>
+                    {t("crop_rotations.plan.add_end_date")}
+                  </Text>
                 </Pressable>
               )}
             </View>
@@ -297,7 +321,11 @@ export function RotationEditModal({
                   borderRadius: 10,
                 }}
               >
-                <Ionicons name="trash-outline" size={20} color={theme.colors.danger} />
+                <Ionicons
+                  name="trash-outline"
+                  size={20}
+                  color={theme.colors.danger}
+                />
               </Pressable>
             )}
             <Pressable
@@ -310,7 +338,13 @@ export function RotationEditModal({
                 alignItems: "center",
               }}
             >
-              <Text style={{ fontSize: 15, fontWeight: "600", color: theme.colors.gray1 }}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: "600",
+                  color: theme.colors.gray1,
+                }}
+              >
                 {t("buttons.cancel")}
               </Text>
             </Pressable>
@@ -320,12 +354,21 @@ export function RotationEditModal({
               style={{
                 flex: 1,
                 paddingVertical: 12,
-                backgroundColor: !plotId || !cropId ? theme.colors.gray3 : theme.colors.primary,
+                backgroundColor:
+                  !plotId || !cropId
+                    ? theme.colors.gray3
+                    : theme.colors.primary,
                 borderRadius: 10,
                 alignItems: "center",
               }}
             >
-              <Text style={{ fontSize: 15, fontWeight: "600", color: theme.colors.white }}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontWeight: "600",
+                  color: theme.colors.white,
+                }}
+              >
                 {t("buttons.save")}
               </Text>
             </Pressable>

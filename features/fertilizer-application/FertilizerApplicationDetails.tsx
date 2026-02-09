@@ -51,6 +51,7 @@ export function FertilizerApplicationDetailsScreen({
         ]}
         hidePlotList
         additionalNotes={additionalNotes}
+        productUnit={fertilizerApplication.fertilizer.unit ?? "kg"}
       />
       <Button
         style={{ marginBottom: theme.spacing.m }}

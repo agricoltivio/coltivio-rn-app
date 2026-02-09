@@ -41,6 +41,7 @@
       "crop": "Kultur",
       "size_m2": "Größe (m²)",
       "area": "Fläche",
+      "area_hectares": "Fläche (ha)",
       "divide_by_plot_size": "Aufteilung nach Schlaggröße",
       "plot_w_size": "Schlag {{name}} ({{size}}a)",
       "device": "Gerät",
@@ -829,8 +830,10 @@
     "no_children": "Keine Nachkommen",
     "animal_husbandry": "Tierhaltung",
     "unregistered_count": "{{count}} nicht gemeldete Tiere",
+    "waiting_period_count": "{{count}} Tiere mit Absetzfrist",
     "show_dead": "Tote anzeigen",
     "only_unregistered": "Nur nicht registrierte",
+    "only_with_waiting_period": "Nur mit Absetzfrist",
     "select_children": "Nachkommen auswählen"
   },
   "drugs": {
@@ -842,7 +845,7 @@
     "treatment_definitions": "Behandlungsdefinitionen",
     "no_treatment_definitions": "Noch keine Behandlungsdefinitionen",
     "add_animal_type": "Tierart hinzufügen",
-    "dose_per_kg": "Dosis pro kg",
+    "dose_ml_per_kg": "Dosis ml pro kg",
     "milk_waiting_days": "Wartetage Milch",
     "meat_waiting_days": "Wartetage Fleisch",
     "drug_in_use": "Medikament in Verwendung",

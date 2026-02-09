@@ -4616,6 +4616,7 @@ export interface components {
                     /** @enum {string|null} */
                     deathReason: "died" | "slaughtered" | null;
                     herdId: string | null;
+                    milkAndMeatUsable: boolean;
                 }[];
                 count: number;
             };
@@ -4926,7 +4927,6 @@ export interface components {
                      */
                     date: string;
                     name: string;
-                    reason: string;
                     notes: string | null;
                     /**
                      * Format: date-time
@@ -5124,7 +5124,6 @@ export interface components {
                      */
                     date: string;
                     name: string;
-                    reason: string;
                     notes: string | null;
                     /**
                      * Format: date-time
@@ -5152,7 +5151,7 @@ export interface components {
                             drugId: string;
                             /** @enum {string} */
                             animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
-                            dosePerKg: number;
+                            dosePerKgInMl: number;
                             milkWaitingDays: number;
                             meatWaitingDays: number;
                         }[];
@@ -5245,7 +5244,7 @@ export interface components {
                         drugId: string;
                         /** @enum {string} */
                         animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
-                        dosePerKg: number;
+                        dosePerKgInMl: number;
                         milkWaitingDays: number;
                         meatWaitingDays: number;
                     }[];
@@ -5264,7 +5263,7 @@ export interface components {
                     drugId: string;
                     /** @enum {string} */
                     animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
-                    dosePerKg: number;
+                    dosePerKgInMl: number;
                     milkWaitingDays: number;
                     meatWaitingDays: number;
                 }[];
@@ -5276,7 +5275,7 @@ export interface components {
             drugTreatment: {
                 /** @enum {string} */
                 animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
-                dosePerKg: number;
+                dosePerKgInMl: number;
                 milkWaitingDays: number;
                 meatWaitingDays: number;
             }[];
@@ -5292,7 +5291,7 @@ export interface components {
                     drugId: string;
                     /** @enum {string} */
                     animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
-                    dosePerKg: number;
+                    dosePerKgInMl: number;
                     milkWaitingDays: number;
                     meatWaitingDays: number;
                 }[];
@@ -5309,7 +5308,7 @@ export interface components {
                     drugId: string;
                     /** @enum {string} */
                     animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
-                    dosePerKg: number;
+                    dosePerKgInMl: number;
                     milkWaitingDays: number;
                     meatWaitingDays: number;
                 }[];
@@ -5321,7 +5320,7 @@ export interface components {
             drugTreatment?: {
                 /** @enum {string} */
                 animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
-                dosePerKg: number;
+                dosePerKgInMl: number;
                 milkWaitingDays: number;
                 meatWaitingDays: number;
             }[];
@@ -5347,7 +5346,6 @@ export interface components {
                      */
                     date: string;
                     name: string;
-                    reason: string;
                     notes: string | null;
                     /**
                      * Format: date-time
@@ -5406,7 +5404,7 @@ export interface components {
                             drugId: string;
                             /** @enum {string} */
                             animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
-                            dosePerKg: number;
+                            dosePerKgInMl: number;
                             milkWaitingDays: number;
                             meatWaitingDays: number;
                         }[];
@@ -5427,7 +5425,6 @@ export interface components {
                  */
                 date: string;
                 name: string;
-                reason: string;
                 notes: string | null;
                 /**
                  * Format: date-time
@@ -5456,7 +5453,6 @@ export interface components {
              */
             date: string;
             name: string;
-            reason: string;
             notes?: string;
             /**
              * Format: date-time
@@ -5481,7 +5477,6 @@ export interface components {
                  */
                 date: string;
                 name: string;
-                reason: string;
                 notes: string | null;
                 /**
                  * Format: date-time
@@ -5540,7 +5535,7 @@ export interface components {
                         drugId: string;
                         /** @enum {string} */
                         animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
-                        dosePerKg: number;
+                        dosePerKgInMl: number;
                         milkWaitingDays: number;
                         meatWaitingDays: number;
                     }[];
@@ -5559,7 +5554,6 @@ export interface components {
                  */
                 date: string;
                 name: string;
-                reason: string;
                 notes: string | null;
                 /**
                  * Format: date-time
@@ -5588,7 +5582,6 @@ export interface components {
              */
             date?: string;
             name?: string;
-            reason?: string;
             notes?: string;
             /**
              * Format: date-time

@@ -1,18 +1,12 @@
 import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
-import { List } from "@/components/list/List";
 import { CropRotationsScreenProps } from "./navigation/crop-rotations-routes";
-import { H2, Headline } from "@/theme/Typography";
+import { H2 } from "@/theme/Typography";
 import React, { useMemo, useState } from "react";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import {
-  useCropRotationYearsQuery,
-  useCropRotationsQuery,
-} from "./crop-rotations.hooks";
-import { ScrollView } from "@/components/views/ScrollView";
+import { useCropRotationsQuery } from "./crop-rotations.hooks";
 import { useTranslation } from "react-i18next";
-import { ViewMode, ViewModeToggle } from "./components/ViewModeToggle";
 import { CropRotationTimeline } from "./timeline/CropRotationTimeline";
 import { buildMultiYearTimelineData } from "./timeline/timeline-utils";
 import { CropFilterChips } from "./components/CropFilterChips";
@@ -22,9 +16,7 @@ const TIMELINE_RANGE_YEARS = 10;
 export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [selectedCropNames, setSelectedCropNames] = useState<Set<string>>(new Set());
-  const { cropRotationYears } = useCropRotationYearsQuery();
 
   // Fixed ±10 year range for the timeline (avoids permanent rotations with year 5000 end dates)
   const currentYear = new Date().getFullYear();
@@ -50,7 +42,7 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
   const { cropRotations } = useCropRotationsQuery(
     timelineFromDate,
     timelineToDate,
-    viewMode === "timeline",
+    true,
   );
 
   // Unique crop names for filter chips
@@ -85,21 +77,12 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
     navigation.navigate("EditPlotCropRotation", { rotationId, plotName });
   }
 
-  if (!cropRotationYears) {
-    return null;
-  }
-
   return (
     <ContentView headerVisible>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <H2 style={{ flex: 1 }}>{t("crop_rotations.crop_rotation")}</H2>
-        {cropRotationYears.length > 0 && (
-          <ViewModeToggle viewMode={viewMode} onChangeViewMode={setViewMode} />
-        )}
-      </View>
+      <H2>{t("crop_rotations.crop_rotation")}</H2>
 
-      {/* Crop filter chips - shown in timeline mode */}
-      {viewMode === "timeline" && uniqueCropNames.length > 1 && (
+      {/* Crop filter chips */}
+      {uniqueCropNames.length > 1 && (
         <View style={{ marginTop: theme.spacing.s }}>
           <CropFilterChips
             cropNames={uniqueCropNames}
@@ -109,41 +92,14 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
         </View>
       )}
 
-      {viewMode === "list" ? (
-        <ScrollView
-          showHeaderOnScroll
-          headerTitleOnScroll={t("crop_rotations.crop_rotation")}
-        >
-          <View style={{ marginTop: theme.spacing.m }}>
-            {cropRotationYears.length === 0 ? (
-              <Headline>{t("common.no_entries")}</Headline>
-            ) : (
-              <List>
-                {cropRotationYears.map((year) => (
-                  <List.Item
-                    key={year}
-                    title={year}
-                    onPress={() =>
-                      navigation.navigate("CropRotationsOfYearList", {
-                        year: Number(year),
-                      })
-                    }
-                  />
-                ))}
-              </List>
-            )}
-          </View>
-        </ScrollView>
-      ) : (
-        <View style={{ flex: 1, marginTop: theme.spacing.m }}>
-          {timelineData && (
-            <CropRotationTimeline
-              timelineData={timelineData}
-              onBarPress={handleBarPress}
-            />
-          )}
-        </View>
-      )}
+      <View style={{ flex: 1, marginTop: theme.spacing.m }}>
+        {timelineData && (
+          <CropRotationTimeline
+            timelineData={timelineData}
+            onBarPress={handleBarPress}
+          />
+        )}
+      </View>
 
       <FAB
         icon={{ name: "add", color: "white" }}

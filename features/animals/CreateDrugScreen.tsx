@@ -2,89 +2,99 @@ import { Button } from "@/components/buttons/Button";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
-import { NumberInput } from "@/components/inputs/NumberInput";
+import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
+import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Subtitle } from "@/theme/Typography";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCreateDrugMutation } from "./drugs.hooks";
 import { CreateDrugScreenProps } from "./navigation/animals-routes";
-import { Picker } from "@react-native-picker/picker";
 import { DrugCreateInput } from "@/api/drugs.api";
 
-interface DrugFormValues {
-  name: string;
-  notes?: string;
-}
+type AnimalType =
+  | "goat"
+  | "sheep"
+  | "cow"
+  | "horse"
+  | "donkey"
+  | "pig"
+  | "deer";
 
-type AnimalType = "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
-
-interface TreatmentDef {
+interface TreatmentDefFormValues {
   animalType: AnimalType;
-  dosePerKg: string;
+  dosePerKgInMl: string;
   milkWaitingDays: string;
   meatWaitingDays: string;
 }
 
-const ANIMAL_TYPES: AnimalType[] = ["goat", "sheep", "cow", "horse", "donkey", "pig", "deer"];
+interface DrugFormValues {
+  name: string;
+  notes?: string;
+  drugTreatment: TreatmentDefFormValues[];
+}
+
+const ANIMAL_TYPES: AnimalType[] = [
+  "goat",
+  "sheep",
+  "cow",
+  "horse",
+  "donkey",
+  "pig",
+  "deer",
+];
 
 export function CreateDrugScreen({ navigation }: CreateDrugScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const [treatmentDefs, setTreatmentDefs] = useState<TreatmentDef[]>([]);
 
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors },
     watch,
   } = useForm<DrugFormValues>({
     defaultValues: {
       name: "",
       notes: "",
+      drugTreatment: [],
     },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "drugTreatment",
   });
 
   const createDrugMutation = useCreateDrugMutation(
     () => navigation.goBack(),
-    (error) => console.error(error)
+    (error) => console.error(error),
   );
 
+  const watchedTreatments = watch("drugTreatment");
+  const usedTypes = new Set(watchedTreatments?.map((d) => d.animalType) ?? []);
+  const canAddMore = usedTypes.size < ANIMAL_TYPES.length;
+
   function addTreatmentDef() {
-    const usedTypes = new Set(treatmentDefs.map((d) => d.animalType));
     const availableType = ANIMAL_TYPES.find((type) => !usedTypes.has(type));
     if (availableType) {
-      setTreatmentDefs([
-        ...treatmentDefs,
-        {
-          animalType: availableType,
-          dosePerKg: "",
-          milkWaitingDays: "",
-          meatWaitingDays: "",
-        },
-      ]);
+      append({
+        animalType: availableType,
+        dosePerKgInMl: "",
+        milkWaitingDays: "",
+        meatWaitingDays: "",
+      });
     }
   }
 
-  function removeTreatmentDef(index: number) {
-    setTreatmentDefs(treatmentDefs.filter((_, i) => i !== index));
-  }
-
-  function updateTreatmentDef(index: number, field: keyof TreatmentDef, value: string) {
-    const updated = [...treatmentDefs];
-    updated[index] = { ...updated[index], [field]: value };
-    setTreatmentDefs(updated);
-  }
-
   function onSubmit(data: DrugFormValues) {
-    const drugTreatment = treatmentDefs.map((def) => ({
-      animalType: def.animalType as any,
-      dosePerKg: parseFloat(def.dosePerKg),
+    const drugTreatment = data.drugTreatment.map((def) => ({
+      animalType: def.animalType,
+      dosePerKgInMl: parseFloat(def.dosePerKgInMl),
       milkWaitingDays: parseInt(def.milkWaitingDays, 10),
       meatWaitingDays: parseInt(def.meatWaitingDays, 10),
     }));
@@ -96,13 +106,23 @@ export function CreateDrugScreen({ navigation }: CreateDrugScreenProps) {
     } as DrugCreateInput);
   }
 
-  const usedTypes = new Set(treatmentDefs.map((d) => d.animalType));
-  const canAddMore = usedTypes.size < ANIMAL_TYPES.length;
-  const isValid = watch("name")?.length > 0 && treatmentDefs.every((def) =>
-    def.dosePerKg && parseFloat(def.dosePerKg) > 0 &&
-    def.milkWaitingDays && parseInt(def.milkWaitingDays, 10) >= 0 &&
-    def.meatWaitingDays && parseInt(def.meatWaitingDays, 10) >= 0
-  );
+  const nameValue = watch("name");
+  const isValid =
+    nameValue?.length > 0 &&
+    (watchedTreatments ?? []).every(
+      (def) =>
+        def.dosePerKgInMl &&
+        parseFloat(def.dosePerKgInMl) > 0 &&
+        def.milkWaitingDays &&
+        parseInt(def.milkWaitingDays, 10) >= 0 &&
+        def.meatWaitingDays &&
+        parseInt(def.meatWaitingDays, 10) >= 0,
+    );
+
+  const animalTypeOptions = ANIMAL_TYPES.map((type) => ({
+    label: t(`animals.animal_types.${type}`),
+    value: type,
+  }));
 
   return (
     <ContentView
@@ -125,12 +145,17 @@ export function CreateDrugScreen({ navigation }: CreateDrugScreenProps) {
       >
         <H2>{t("drugs.new_drug")}</H2>
 
-        <View style={{ marginTop: theme.spacing.m }}>
+        <View style={{ marginTop: theme.spacing.m, gap: theme.spacing.xs }}>
           <RHTextInput
             label={t("drugs.drug_name")}
             control={control}
             name="name"
-            rules={{ required: true }}
+            rules={{
+              required: {
+                value: true,
+                message: t("forms.validation.required"),
+              },
+            }}
             error={errors.name?.message}
           />
 
@@ -142,7 +167,13 @@ export function CreateDrugScreen({ navigation }: CreateDrugScreenProps) {
         </View>
 
         <View style={{ marginTop: theme.spacing.l }}>
-          <View style={{ flexDirection: "row", alignItems: "center", marginBottom: theme.spacing.s }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginBottom: theme.spacing.s,
+            }}
+          >
             <H3 style={{ flex: 1 }}>{t("drugs.treatment_definitions")}</H3>
             {canAddMore && (
               <IonIconButton
@@ -155,18 +186,22 @@ export function CreateDrugScreen({ navigation }: CreateDrugScreenProps) {
             )}
           </View>
 
-          {treatmentDefs.length === 0 && (
+          {fields.length === 0 && (
             <Subtitle>{t("drugs.no_treatment_definitions")}</Subtitle>
           )}
 
-          {treatmentDefs.map((def, index) => {
+          {fields.map((field, index) => {
+            const currentType = watchedTreatments?.[index]?.animalType;
             const availableTypes = ANIMAL_TYPES.filter(
-              (type) => type === def.animalType || !usedTypes.has(type)
+              (type) => type === currentType || !usedTypes.has(type),
+            );
+            const filteredOptions = animalTypeOptions.filter((opt) =>
+              availableTypes.includes(opt.value as AnimalType),
             );
 
             return (
               <View
-                key={index}
+                key={field.id}
                 style={{
                   backgroundColor: theme.colors.white,
                   borderRadius: 10,
@@ -174,54 +209,65 @@ export function CreateDrugScreen({ navigation }: CreateDrugScreenProps) {
                   marginBottom: theme.spacing.s,
                 }}
               >
-                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: theme.spacing.s }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginBottom: theme.spacing.s,
+                  }}
+                >
                   <Subtitle style={{ flex: 1 }}>
-                    {t(`animals.animal_types.${def.animalType}`)}
+                    {t(`animals.animal_types.${currentType}`)}
                   </Subtitle>
                   <IonIconButton
                     icon="trash"
                     color="red"
-                    iconSize={20}
-                    type="danger"
-                    onPress={() => removeTreatmentDef(index)}
+                    iconSize={25}
+                    type="accent"
+                    onPress={() => remove(index)}
                   />
                 </View>
 
-                <View style={{ height: 50, marginBottom: theme.spacing.s }}>
-                  <Picker
-                    selectedValue={def.animalType}
-                    onValueChange={(value) => updateTreatmentDef(index, "animalType", value)}
-                  >
-                    {availableTypes.map((type) => (
-                      <Picker.Item
-                        key={type}
-                        label={t(`animals.animal_types.${type}`)}
-                        value={type}
-                      />
-                    ))}
-                  </Picker>
+                <View style={{ gap: theme.spacing.xs }}>
+                  <RHSelect
+                    name={`drugTreatment.${index}.animalType`}
+                    control={control}
+                    label={t("forms.labels.type")}
+                    data={filteredOptions}
+                    error={errors.drugTreatment?.[index]?.animalType?.message}
+                  />
+
+                  <RHNumberInput
+                    name={`drugTreatment.${index}.dosePerKgInMl`}
+                    control={control}
+                    label={t("drugs.dose_ml_per_kg")}
+                    placeholder="0.0"
+                    float
+                    error={
+                      errors.drugTreatment?.[index]?.dosePerKgInMl?.message
+                    }
+                  />
+
+                  <RHNumberInput
+                    name={`drugTreatment.${index}.milkWaitingDays`}
+                    control={control}
+                    label={t("drugs.milk_waiting_days")}
+                    placeholder="0"
+                    error={
+                      errors.drugTreatment?.[index]?.milkWaitingDays?.message
+                    }
+                  />
+
+                  <RHNumberInput
+                    name={`drugTreatment.${index}.meatWaitingDays`}
+                    control={control}
+                    label={t("drugs.meat_waiting_days")}
+                    placeholder="0"
+                    error={
+                      errors.drugTreatment?.[index]?.meatWaitingDays?.message
+                    }
+                  />
                 </View>
-
-                <NumberInput
-                  label={t("drugs.dose_per_kg")}
-                  value={def.dosePerKg}
-                  onChangeText={(value) => updateTreatmentDef(index, "dosePerKg", value)}
-                  placeholder="0.0"
-                />
-
-                <NumberInput
-                  label={t("drugs.milk_waiting_days")}
-                  value={def.milkWaitingDays}
-                  onChangeText={(value) => updateTreatmentDef(index, "milkWaitingDays", value)}
-                  placeholder="0"
-                />
-
-                <NumberInput
-                  label={t("drugs.meat_waiting_days")}
-                  value={def.meatWaitingDays}
-                  onChangeText={(value) => updateTreatmentDef(index, "meatWaitingDays", value)}
-                  placeholder="0"
-                />
               </View>
             );
           })}

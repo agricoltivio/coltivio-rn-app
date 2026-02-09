@@ -61,7 +61,7 @@ export function ConfigureFertilizerApplicationScreen({
   const updatePresetMutation = useUpdateFertilizerApplicationPresetMutation();
   const deletePresetMutation = useDeleteFertilizerApplicationPresetMutation();
 
-  const { setFertilizerApplication, fertilizerApplication, selectedFertilizer } =
+  const { setFertilizerApplication, fertilizerApplication, selectedFertilizer, setTotalNumberOfApplications } =
     useCreateFertilizerApplicationStore();
 
   const fertilizerId = fertilizerApplication?.fertilizerId;
@@ -150,6 +150,14 @@ export function ConfigureFertilizerApplicationScreen({
       additionalNotes: values.additionalNotes,
     });
 
+    // Skip quantity screen for special units
+    if (values.unit === "total_amount" || values.unit === "amount_per_hectare") {
+      if (values.unit === "total_amount") {
+        setTotalNumberOfApplications(1);
+      }
+      navigation.navigate("SelectFertilizerApplicationPlots");
+      return;
+    }
     navigation.navigate("SetFertilizerApplicationUnitQuantity");
   }
 

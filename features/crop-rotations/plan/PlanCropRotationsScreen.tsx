@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useTheme } from "styled-components/native";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import {
   usePlanCropRotationsStore,
@@ -103,7 +103,17 @@ export function PlanCropRotationsScreen({
     () => {
       setSaving(false);
       reset();
-      navigation.goBack();
+      // Reset stack to: Home > FieldCalendar > CropRotations
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 2,
+          routes: [
+            { name: "Home" },
+            { name: "FieldCalendar" },
+            { name: "CropRotations" },
+          ],
+        })
+      );
     },
     () => {
       setSaving(false);
@@ -111,8 +121,76 @@ export function PlanCropRotationsScreen({
   );
 
   // Detect conflicts between rotations
+  // For recurring rotations, check both day-of-year overlap AND that they occur in a common year
   const rotationsWithConflicts = useMemo(() => {
     const conflicts = new Map<string, string>();
+
+    // Helper to get day-of-year (0-365)
+    const getDayOfYear = (date: Date) => {
+      const start = new Date(date.getFullYear(), 0, 0);
+      const diff = date.getTime() - start.getTime();
+      return Math.floor(diff / MS_PER_DAY);
+    };
+
+    // Check if two day-of-year ranges overlap
+    const dayRangesOverlap = (
+      aFromDay: number,
+      aToDay: number,
+      bFromDay: number,
+      bToDay: number
+    ) => {
+      if (aFromDay <= aToDay && bFromDay <= bToDay) {
+        return aFromDay <= bToDay && aToDay >= bFromDay;
+      }
+      // If either range wraps (e.g., Nov-Feb), treat as overlapping
+      return true;
+    };
+
+    // Get all years a rotation occurs in (within a range)
+    const getOccurrenceYears = (
+      startYear: number,
+      interval: number,
+      untilYear: number | null,
+      rangeStart: number,
+      rangeEnd: number
+    ): Set<number> => {
+      const years = new Set<number>();
+      const effectiveEnd = untilYear ? Math.min(untilYear, rangeEnd) : rangeEnd;
+      for (let year = startYear; year <= effectiveEnd; year += interval) {
+        if (year >= rangeStart) {
+          years.add(year);
+        }
+      }
+      return years;
+    };
+
+    // Check if two rotations share any common years
+    const shareCommonYear = (a: RotationEntry, b: RotationEntry): boolean => {
+      const rangeStart = new Date().getFullYear() - 10;
+      const rangeEnd = new Date().getFullYear() + 10;
+
+      const aStartYear = a.fromDate.getFullYear();
+      const bStartYear = b.fromDate.getFullYear();
+      const aInterval = a.recurrence?.interval || 1;
+      const bInterval = b.recurrence?.interval || 1;
+      const aUntilYear = a.recurrence?.until?.getFullYear() || null;
+      const bUntilYear = b.recurrence?.until?.getFullYear() || null;
+
+      // If neither has recurrence, they only occur in their start years
+      if (!a.recurrence && !b.recurrence) {
+        return aStartYear === bStartYear;
+      }
+
+      // Get all years each rotation occurs
+      const aYears = getOccurrenceYears(aStartYear, aInterval, aUntilYear, rangeStart, rangeEnd);
+      const bYears = getOccurrenceYears(bStartYear, bInterval, bUntilYear, rangeStart, rangeEnd);
+
+      // Check for any common year
+      for (const year of aYears) {
+        if (bYears.has(year)) return true;
+      }
+      return false;
+    };
 
     plotPlans.forEach((plan) => {
       const rotations = plan.rotations;
@@ -122,8 +200,24 @@ export function PlanCropRotationsScreen({
           const b = rotations[j];
           if (!a.cropId || !b.cropId) continue;
 
-          // Check for overlap
-          if (a.fromDate <= b.toDate && a.toDate >= b.fromDate) {
+          let hasOverlap = false;
+
+          if (a.recurrence || b.recurrence) {
+            // Both must share a common year AND have overlapping day-of-year ranges
+            const aFromDay = getDayOfYear(a.fromDate);
+            const aToDay = getDayOfYear(a.toDate);
+            const bFromDay = getDayOfYear(b.fromDate);
+            const bToDay = getDayOfYear(b.toDate);
+
+            hasOverlap =
+              dayRangesOverlap(aFromDay, aToDay, bFromDay, bToDay) &&
+              shareCommonYear(a, b);
+          } else {
+            // Neither has recurrence - check actual date overlap
+            hasOverlap = a.fromDate <= b.toDate && a.toDate >= b.fromDate;
+          }
+
+          if (hasOverlap) {
             const cropNameA =
               crops?.find((c) => c.id === a.cropId)?.name || t("crop_rotations.crop_rotation");
             const cropNameB =
@@ -136,7 +230,7 @@ export function PlanCropRotationsScreen({
     });
 
     return conflicts;
-  }, [plotPlans, crops]);
+  }, [plotPlans, crops, t]);
 
   const hasConflicts = rotationsWithConflicts.size > 0;
 

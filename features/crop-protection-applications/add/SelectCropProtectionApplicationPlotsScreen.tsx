@@ -53,6 +53,8 @@ export function SelectCropProtectionApplicationPlotsScreen({
     selectedPlotsById,
     resetSelectedPlots,
     totalNumberOfUnits: totalNumberOfApplications,
+    setTotalNumberOfUnits,
+    data,
   } = useAddCropProtectionApplicationStore();
 
   const polygonDrawingToolRef = useRef<PolygonDrawingToolActions>(null);
@@ -182,6 +184,21 @@ export function SelectCropProtectionApplicationPlotsScreen({
             title={t("buttons.next")}
             onPress={() => {
               const selectedPlots = Object.values(selectedPlotsById);
+              const unit = data?.unit;
+
+              // For amount_per_hectare: auto-calculate hectares from plot sizes
+              if (unit === "amount_per_hectare") {
+                const totalHectares = selectedPlots.reduce((acc, p) => acc + p.size, 0) / 10000;
+                setTotalNumberOfUnits(totalHectares);
+                // Pre-fill each plot's numberOfUnits with its individual hectares
+                for (const plot of selectedPlots) {
+                  putPlot({ ...plot, numberOfUnits: plot.size / 10000 });
+                }
+                // Always go to divide screen so user can review/adjust
+                navigation.navigate("DivideCropProtectionApplicationOnPlots");
+                return;
+              }
+
               // Skip divide screen if only 1 plot is selected - assign all to that plot
               if (selectedPlots.length === 1) {
                 const plot = selectedPlots[0];

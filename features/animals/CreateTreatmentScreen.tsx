@@ -24,7 +24,6 @@ interface TreatmentFormValues {
   drugId?: string;
   date: Date;
   name: string;
-  reason: string;
   notes?: string;
   milkUsableDate?: Date;
   meatUsableDate?: Date;
@@ -87,7 +86,6 @@ export function CreateTreatmentScreen({ route, navigation }: CreateTreatmentScre
       drugId: data.drugId || undefined,
       date: data.date.toISOString(),
       name: data.name,
-      reason: data.reason,
       notes: data.notes,
       milkUsableDate: data.milkUsableDate?.toISOString(),
       meatUsableDate: data.meatUsableDate?.toISOString(),
@@ -171,16 +169,6 @@ export function CreateTreatmentScreen({ route, navigation }: CreateTreatmentScre
               required: { value: true, message: t("forms.validation.required") },
             }}
             error={errors.name?.message}
-          />
-
-          <RHTextInput
-            name="reason"
-            control={control}
-            label={t("treatments.reason")}
-            rules={{
-              required: { value: true, message: t("forms.validation.required") },
-            }}
-            error={errors.reason?.message}
           />
 
           <RHDatePicker

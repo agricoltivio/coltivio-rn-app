@@ -71,7 +71,7 @@ export function ConfigureCropProtectionApplicationScreen({
   const deletePresetMutation =
     useDeleteCropProtectionApplicationPresetMutation();
 
-  const { setData, data, selectedProduct } =
+  const { setData, data, selectedProduct, setTotalNumberOfUnits } =
     useAddCropProtectionApplicationStore();
 
   const {
@@ -153,6 +153,14 @@ export function ConfigureCropProtectionApplicationScreen({
       additionalNotes: values.additionalNotes,
     });
 
+    // Skip quantity screen for special units
+    if (values.unit === "total_amount" || values.unit === "amount_per_hectare") {
+      if (values.unit === "total_amount") {
+        setTotalNumberOfUnits(1);
+      }
+      navigation.navigate("SelectCropProtectionApplicationPlots");
+      return;
+    }
     navigation.navigate("SetCropProtectionApplicationUnitQuantity");
   }
 

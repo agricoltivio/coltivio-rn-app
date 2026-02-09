@@ -52,6 +52,7 @@ export function CropProtectionApplicationDetailsScreen({
         ]}
         hidePlotList
         additionalNotes={additionalNotes}
+        productUnit={cropProtectionApplication.product.unit ?? "kg"}
       />
       <Button
         style={{ marginBottom: theme.spacing.m }}

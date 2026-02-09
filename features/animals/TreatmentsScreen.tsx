@@ -1,11 +1,8 @@
-import { Treatment } from "@/api/treatments.api";
 import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
-import { ListItem } from "@/components/list/ListItem";
+import { List } from "@/components/list/List";
 import { ScrollView } from "@/components/views/ScrollView";
-import { locale } from "@/locales/i18n";
-import { H2, H3, Subtitle } from "@/theme/Typography";
-import { formatLocalizedDate } from "@/utils/date";
+import { H2, Headline } from "@/theme/Typography";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -18,27 +15,32 @@ export function TreatmentsScreen({ navigation }: TreatmentsScreenProps) {
   const theme = useTheme();
   const { treatments } = useTreatmentsQuery();
 
-  // Group treatments by date (descending)
-  const groupedTreatments = useMemo(() => {
-    if (!treatments) return [];
-
-    const sorted = [...treatments].sort((a, b) =>
-      new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
-
-    const groups: { date: string; treatments: Treatment[] }[] = [];
-    sorted.forEach((treatment) => {
-      const dateStr = formatLocalizedDate(new Date(treatment.date), locale);
-      const existingGroup = groups.find((g) => g.date === dateStr);
-      if (existingGroup) {
-        existingGroup.treatments.push(treatment);
-      } else {
-        groups.push({ date: dateStr, treatments: [treatment] });
-      }
-    });
-
-    return groups;
+  // Group treatments by year, sorted descending
+  const treatmentsByYear = useMemo(() => {
+    if (!treatments) return {};
+    const grouped: Record<number, typeof treatments> = {};
+    for (const treatment of treatments) {
+      const year = new Date(treatment.date).getFullYear();
+      if (!grouped[year]) grouped[year] = [];
+      grouped[year].push(treatment);
+    }
+    // Sort treatments within each year by date descending
+    for (const year of Object.keys(grouped)) {
+      grouped[Number(year)].sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
+    }
+    return grouped;
   }, [treatments]);
+
+  const years = useMemo(
+    () => Object.keys(treatmentsByYear).map(Number).sort((a, b) => b - a),
+    [treatmentsByYear]
+  );
+
+  if (!treatments) {
+    return null;
+  }
 
   return (
     <ContentView headerVisible>
@@ -49,38 +51,24 @@ export function TreatmentsScreen({ navigation }: TreatmentsScreenProps) {
         <H2>{t("treatments.treatments")}</H2>
 
         <View style={{ marginTop: theme.spacing.m }}>
-          {groupedTreatments.length === 0 && (
-            <Subtitle>{t("treatments.no_treatments")}</Subtitle>
+          {years.length === 0 ? (
+            <Headline>{t("treatments.no_treatments")}</Headline>
+          ) : (
+            <List>
+              {years.map((year) => (
+                <List.Item
+                  key={year}
+                  title={year.toString()}
+                  onPress={() =>
+                    navigation.navigate("TreatmentsOfYear", {
+                      year,
+                      treatments: treatmentsByYear[year],
+                    })
+                  }
+                />
+              ))}
+            </List>
           )}
-
-          {groupedTreatments.map((group) => (
-            <View key={group.date} style={{ marginBottom: theme.spacing.m }}>
-              <H3 style={{ marginBottom: theme.spacing.s }}>{group.date}</H3>
-              <View
-                style={{
-                  borderRadius: 10,
-                  overflow: "hidden",
-                  backgroundColor: theme.colors.white,
-                }}
-              >
-                {group.treatments.map((treatment) => (
-                  <ListItem
-                    key={treatment.id}
-                    style={{ paddingVertical: 5 }}
-                    onPress={() => navigation.navigate("EditTreatment", { treatmentId: treatment.id })}
-                  >
-                    <ListItem.Content>
-                      <ListItem.Title>{treatment.name}</ListItem.Title>
-                      <ListItem.Body>
-                        {treatment.drug?.name || treatment.reason}
-                      </ListItem.Body>
-                    </ListItem.Content>
-                    <ListItem.Chevron />
-                  </ListItem>
-                ))}
-              </View>
-            </View>
-          ))}
         </View>
       </ScrollView>
       <FAB

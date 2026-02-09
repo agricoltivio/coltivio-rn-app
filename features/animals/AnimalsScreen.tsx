@@ -25,12 +25,19 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
   const [searchText, setSearchText] = useState("");
   const [showDead, setShowDead] = useState(false);
   const [unregisteredOnly, setUnregisteredOnly] = useState(false);
+  const [onlyWithWaitingPeriod, setOnlyWithWaitingPeriod] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<Set<string>>(new Set());
 
   // Count unregistered animals (only among living animals by default)
   const unregisteredCount = useMemo(() => {
     if (!animals) return 0;
     return animals.filter((a) => !a.registered && !a.dateOfDeath).length;
+  }, [animals]);
+
+  // Count animals with active waiting period (Absetzfrist)
+  const waitingPeriodCount = useMemo(() => {
+    if (!animals) return 0;
+    return animals.filter((a) => !a.milkAndMeatUsable && !a.dateOfDeath).length;
   }, [animals]);
 
   // Apply filters: dead, unregistered, type
@@ -46,13 +53,22 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
     if (unregisteredOnly) {
       result = result.filter((a) => !a.registered);
     }
+    if (onlyWithWaitingPeriod) {
+      result = result.filter((a) => !a.milkAndMeatUsable);
+    }
 
     if (selectedTypes.size > 0) {
       result = result.filter((a) => selectedTypes.has(a.type));
     }
 
     return result.sort((a, b) => a.name.localeCompare(b.name));
-  }, [animals, showDead, unregisteredOnly, selectedTypes]);
+  }, [
+    animals,
+    showDead,
+    unregisteredOnly,
+    onlyWithWaitingPeriod,
+    selectedTypes,
+  ]);
 
   const animalTypes = useMemo(() => {
     return [...new Set(animals?.map((animal) => animal.type))];
@@ -98,15 +114,24 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
             {animal.earTag ? ` - ${animal.earTag.number}` : ""}
           </ListItem.Body>
         </ListItem.Content>
-        {!animal.registered && (
-          <ListItem.RightIcon>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: theme.spacing.xxs,
+          }}
+        >
+          {!animal.milkAndMeatUsable && (
+            <Ionicons name="time" size={22} color={theme.colors.blue} />
+          )}
+          {!animal.registered && (
             <Ionicons
               name="alert-circle"
               size={22}
               color={theme.colors.yellow}
             />
-          </ListItem.RightIcon>
-        )}
+          )}
+        </View>
         <ListItem.Chevron />
       </ListItem>
     ),
@@ -116,28 +141,6 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
   return (
     <ContentView headerVisible>
       <H2>{t("animals.animals")}</H2>
-
-      {/* Unregistered animals warning card */}
-      {unregisteredCount > 0 && (
-        <View
-          style={{
-            marginTop: theme.spacing.m,
-            backgroundColor: theme.colors.white,
-            borderRadius: 10,
-            padding: theme.spacing.m,
-            borderLeftWidth: 4,
-            borderLeftColor: theme.colors.yellow,
-            flexDirection: "row",
-            alignItems: "center",
-            gap: theme.spacing.xs,
-          }}
-        >
-          <Ionicons name="alert-circle" size={20} color={theme.colors.yellow} />
-          <Subtitle>
-            {t("animals.unregistered_count", { count: unregisteredCount })}
-          </Subtitle>
-        </View>
-      )}
 
       {/* Search bar */}
       <View style={{ marginTop: theme.spacing.m }}>
@@ -168,6 +171,12 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
           onPress={() => setUnregisteredOnly(!unregisteredOnly)}
           theme={theme}
         />
+        <FilterChip
+          label={t("animals.only_with_waiting_period")}
+          active={onlyWithWaitingPeriod}
+          onPress={() => setOnlyWithWaitingPeriod(!onlyWithWaitingPeriod)}
+          theme={theme}
+        />
         {animalTypes?.map((animalType) => (
           <FilterChip
             key={animalType}
@@ -178,6 +187,50 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
           />
         ))}
       </RNScrollView>
+
+      {/* Unregistered animals warning card */}
+      {unregisteredCount > 0 && (
+        <View
+          style={{
+            marginTop: theme.spacing.m,
+            backgroundColor: theme.colors.white,
+            borderRadius: 10,
+            padding: theme.spacing.m,
+            borderLeftWidth: 4,
+            borderLeftColor: theme.colors.yellow,
+            flexDirection: "row",
+            alignItems: "center",
+            gap: theme.spacing.xs,
+          }}
+        >
+          <Ionicons name="alert-circle" size={20} color={theme.colors.yellow} />
+          <Subtitle>
+            {t("animals.unregistered_count", { count: unregisteredCount })}
+          </Subtitle>
+        </View>
+      )}
+
+      {/* Waiting period (Absetzfrist) warning card */}
+      {waitingPeriodCount > 0 && (
+        <View
+          style={{
+            marginTop: theme.spacing.xs,
+            backgroundColor: theme.colors.white,
+            borderRadius: 10,
+            padding: theme.spacing.m,
+            borderLeftWidth: 4,
+            borderLeftColor: theme.colors.blue,
+            flexDirection: "row",
+            alignItems: "center",
+            gap: theme.spacing.xs,
+          }}
+        >
+          <Ionicons name="time" size={20} color={theme.colors.blue} />
+          <Subtitle>
+            {t("animals.waiting_period_count", { count: waitingPeriodCount })}
+          </Subtitle>
+        </View>
+      )}
 
       {/* Animal list */}
       <View style={{ marginTop: theme.spacing.m, flex: 1 }}>

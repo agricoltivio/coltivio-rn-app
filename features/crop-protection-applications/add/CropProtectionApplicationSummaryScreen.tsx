@@ -77,6 +77,7 @@ export function CropProtectionApplicationSummaryScreen({
         method={method}
         plots={selectedPlots}
         additionalNotes={additionalNotes}
+        productUnit={selectedProduct?.unit ?? "kg"}
       />
     </ContentView>
   );

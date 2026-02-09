@@ -24,7 +24,6 @@ interface TreatmentFormValues {
   drugId?: string;
   date: Date;
   name: string;
-  reason: string;
   notes?: string;
   milkUsableDate?: Date;
   meatUsableDate?: Date;
@@ -50,7 +49,6 @@ export function EditTreatmentScreen({ route, navigation }: EditTreatmentScreenPr
           drugId: treatment.drugId || undefined,
           date: new Date(treatment.date),
           name: treatment.name,
-          reason: treatment.reason,
           notes: treatment.notes || undefined,
           milkUsableDate: treatment.milkUsableDate ? new Date(treatment.milkUsableDate) : undefined,
           meatUsableDate: treatment.meatUsableDate ? new Date(treatment.meatUsableDate) : undefined,
@@ -86,28 +84,6 @@ export function EditTreatmentScreen({ route, navigation }: EditTreatmentScreenPr
   const updateTreatmentMutation = useUpdateTreatmentMutation(() => navigation.goBack());
   const deleteTreatmentMutation = useDeleteTreatmentMutation(() => navigation.goBack());
 
-  function onSubmit(data: TreatmentFormValues) {
-    updateTreatmentMutation.mutate({
-      id: treatmentId,
-      animalId: data.animalId,
-      drugId: data.drugId || undefined,
-      date: data.date.toISOString(),
-      name: data.name,
-      reason: data.reason,
-      notes: data.notes,
-      milkUsableDate: data.milkUsableDate?.toISOString(),
-      meatUsableDate: data.meatUsableDate?.toISOString(),
-    } as TreatmentUpdateInput & { id: string });
-  }
-
-  function onDelete() {
-    deleteTreatmentMutation.mutate(treatmentId);
-  }
-
-  if (!treatment) {
-    return null;
-  }
-
   const animalSelectData = useMemo(() => {
     return animals?.map((animal) => ({
       label: `${animal.name} (${t(`animals.animal_types.${animal.type}`)})`,
@@ -121,6 +97,27 @@ export function EditTreatmentScreen({ route, navigation }: EditTreatmentScreenPr
       value: drug.id,
     })) ?? [];
   }, [drugs]);
+
+  if (!treatment) {
+    return null;
+  }
+
+  function onSubmit(data: TreatmentFormValues) {
+    updateTreatmentMutation.mutate({
+      id: treatmentId,
+      animalId: data.animalId,
+      drugId: data.drugId || undefined,
+      date: data.date.toISOString(),
+      name: data.name,
+      notes: data.notes,
+      milkUsableDate: data.milkUsableDate?.toISOString(),
+      meatUsableDate: data.meatUsableDate?.toISOString(),
+    } as TreatmentUpdateInput & { id: string });
+  }
+
+  function onDelete() {
+    deleteTreatmentMutation.mutate(treatmentId);
+  }
 
   return (
     <ContentView
@@ -207,16 +204,6 @@ export function EditTreatmentScreen({ route, navigation }: EditTreatmentScreenPr
               required: { value: true, message: t("forms.validation.required") },
             }}
             error={errors.name?.message}
-          />
-
-          <RHTextInput
-            name="reason"
-            control={control}
-            label={t("treatments.reason")}
-            rules={{
-              required: { value: true, message: t("forms.validation.required") },
-            }}
-            error={errors.reason?.message}
           />
 
           <RHDatePicker

@@ -58,6 +58,7 @@ type CropProtectionApplicationSummaryProps = {
   unit: CropProtectionApplicationUnit;
   method?: CropProtectionApplicationMethod | null;
   hidePlotList?: boolean;
+  productUnit?: string;
 };
 
 export function CropProtectionApplicationSummary({
@@ -70,6 +71,7 @@ export function CropProtectionApplicationSummary({
   method,
   unit,
   hidePlotList,
+  productUnit = "kg",
 }: CropProtectionApplicationSummaryProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -121,17 +123,35 @@ export function CropProtectionApplicationSummary({
       <Card style={{ marginTop: theme.spacing.m }}>
         <SummaryItem label={t("forms.labels.area")} value={`${size / 100}a`} />
         <SummaryItem
-          label={t("forms.labels.amount_of_loads")}
-          value={`${totalNumberOfUnits}`}
+          label={
+            unit === "total_amount"
+              ? t("common.total_amount")
+              : unit === "amount_per_hectare"
+                ? t("forms.labels.area_hectares")
+                : t("forms.labels.amount_of_loads")
+          }
+          value={
+            unit === "amount_per_hectare"
+              ? `${round(totalNumberOfUnits, 2)} ha`
+              : `${totalNumberOfUnits}`
+          }
         />
         <SummaryItem
-          label={t("forms.labels.amount_per_load")}
-          value={`${amountPerUnit}${unit}`}
+          label={
+            unit === "amount_per_hectare"
+              ? t("fertilizer_application.units.amount_per_hectare")
+              : unit === "total_amount"
+                ? t("forms.labels.total")
+                : t("forms.labels.amount_per_load")
+          }
+          value={`${amountPerUnit} ${productUnit}`}
         />
-        <SummaryItem
-          label={t("forms.labels.total")}
-          value={`${round(amountPerUnit * totalNumberOfUnits, 2)}${unit}`}
-        />
+        {unit !== "total_amount" && (
+          <SummaryItem
+            label={t("forms.labels.total")}
+            value={`${round(amountPerUnit * totalNumberOfUnits, 2)} ${productUnit}`}
+          />
+        )}
         <SummaryItem
           label={t("forms.labels.crop_protection_product")}
           value={productName}
@@ -173,8 +193,9 @@ export function CropProtectionApplicationSummary({
                     {t("plots.plot_name", { name: plot.name })}
                   </ListItem.Title>
                   <ListItem.Body>
-                    {plot.numberOfUnits * amountPerUnit}
-                    {unit}
+                    {unit === "amount_per_hectare"
+                      ? `${round(plot.numberOfUnits, 2)} ha → ${round(plot.numberOfUnits * amountPerUnit, 2)} ${productUnit}`
+                      : `${round(plot.numberOfUnits * amountPerUnit, 2)} ${productUnit}`}
                   </ListItem.Body>
                 </ListItem.Content>
               </ListItem>

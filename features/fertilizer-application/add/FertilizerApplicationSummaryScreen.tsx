@@ -76,6 +76,7 @@ export function FertilizerApplicationSummaryScreen({
         unit={unit}
         plots={selectedPlots}
         additionalNotes={additionalNotes}
+        productUnit={selectedFertilizer?.unit ?? "kg"}
       />
     </ContentView>
   );

@@ -23,12 +23,15 @@ export function DivideFertilizerApplicationOnPlotsScreen({
     removePlot,
     totalNumberOfApplications = 0,
     selectedPlotsById,
+    fertilizerApplication,
   } = useCreateFertilizerApplicationStore();
+
+  const isAmountPerHectare = fertilizerApplication?.unit === "amount_per_hectare";
 
   const [quantityByPlotId, setQuantityByPlotId] = useState<
     Record<string, string>
   >({});
-  const [divideByArea, setDivideByArea] = useState(false);
+  const [divideByArea, setDivideByArea] = useState(isAmountPerHectare);
   const [divisionPrecision, setDivisionPrecision] = useState(1);
   const [error, setError] = useState<string | null>(null);
 
