@@ -5,10 +5,11 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { CropProtectionApplicationSummary } from "../CropProtectionApplicationSummary";
 import { CropProtectionApplicationSummaryScreenProps } from "../navigation/crop-protection-application-routes";
 import {
-  AddCropProtectionApplicationBase,
+  AddCropProtectionApplicationData,
   useAddCropProtectionApplicationStore,
 } from "./cropProtectionApplication.store";
 import { useTranslation } from "react-i18next";
+import { combineDateAndTime } from "@/utils/date";
 
 export function CropProtectionApplicationSummaryScreen({
   navigation,
@@ -21,8 +22,11 @@ export function CropProtectionApplicationSummaryScreen({
     data,
   } = useAddCropProtectionApplicationStore();
 
-  const { dateTime, method, unit, additionalNotes, amountPerUnit } =
-    data as AddCropProtectionApplicationBase;
+  const { date, time, method, unit, additionalNotes, amountPerUnit } =
+    data as AddCropProtectionApplicationData;
+
+  // Merge date and time into dateTime string for API
+  const dateTime = combineDateAndTime(date, time).toISOString();
 
   const selectedPlots = Object.values(selectedPlotsById);
 

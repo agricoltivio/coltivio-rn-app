@@ -234,7 +234,13 @@ export function ConfigureCropProtectionApplicationScreen({
           <RHNumberInput
             name="amountPerUnit"
             control={control}
-            label={`${productUnit} / ${unitLabel}`}
+            label={
+              unit === "total_amount"
+                ? `${t("common.total_amount")} (${productUnit})`
+                : unit === "amount_per_hectare"
+                  ? `${productUnit} / ${t("units.short.ha")}`
+                  : `${productUnit} / ${unitLabel}`
+            }
             rules={{
               required: {
                 value: true,

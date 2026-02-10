@@ -22,10 +22,10 @@ export function TreatmentsOfYearScreen({
   const { year, treatments } = route.params;
   const [searchText, setSearchText] = useState("");
 
-  // Fuse.js search on treatment name, animal name, notes
+  // Fuse.js search on treatment name, animal names, notes
   const fuse = new Fuse(treatments, {
     minMatchCharLength: 1,
-    keys: ["name", "animal.name", "notes"],
+    keys: ["name", "animals.name", "notes"],
   });
 
   let searchResult = treatments;
@@ -36,6 +36,13 @@ export function TreatmentsOfYearScreen({
   const renderItem = useCallback(
     ({ item: treatment }: { item: Treatment }) => {
       const dateStr = formatLocalizedDate(new Date(treatment.date), locale);
+      // Show first animal name, or count if multiple
+      const animalDisplay =
+        treatment.animals.length === 1
+          ? treatment.animals[0].name
+          : treatment.animals.length > 1
+            ? `${treatment.animals.length} ${t("animals.animals")}`
+            : "";
       return (
         <ListItem
           key={treatment.id}
@@ -45,7 +52,7 @@ export function TreatmentsOfYearScreen({
         >
           <ListItem.Content>
             <ListItem.Title>
-              {dateStr} · {treatment.animal?.name}
+              {dateStr} · {animalDisplay}
             </ListItem.Title>
             <ListItem.Body>{treatment.name}</ListItem.Body>
           </ListItem.Content>
@@ -53,7 +60,7 @@ export function TreatmentsOfYearScreen({
         </ListItem>
       );
     },
-    [navigation]
+    [navigation, t]
   );
 
   return (

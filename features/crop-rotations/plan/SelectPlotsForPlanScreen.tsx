@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
@@ -19,15 +19,24 @@ import { LabelMarker } from "@/features/map/LabelMarker";
 import { SelectPlotsForPlanScreenProps } from "../navigation/crop-rotations-routes.d";
 import { Plot } from "@/api/plots.api";
 import { useTranslation } from "react-i18next";
+import { useSelectPlotsStore } from "./select-plots.store";
 
-export function SelectPlotsForPlanScreen({ navigation }: SelectPlotsForPlanScreenProps) {
+export function SelectPlotsForPlanScreen({
+  navigation,
+}: SelectPlotsForPlanScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { farm } = useFarmQuery();
   const { plots } = useFarmPlotsQuery();
   const [mapVisible, setMapVisible] = useState(false);
   const [showUserLocation, setShowUserLocation] = useState(false);
-  const [selectedPlotIds, setSelectedPlotIds] = useState<Set<string>>(new Set());
+
+  const { selectedPlotsById, putPlot, removePlot, resetSelectedPlots } =
+    useSelectPlotsStore();
+
+  useEffect(() => {
+    return resetSelectedPlots;
+  }, []);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("transitionEnd", () => {
@@ -36,53 +45,45 @@ export function SelectPlotsForPlanScreen({ navigation }: SelectPlotsForPlanScree
     return unsubscribe;
   }, [navigation]);
 
-  const togglePlot = (plot: Plot) => {
-    setSelectedPlotIds(prev => {
-      const next = new Set(prev);
-      if (next.has(plot.id)) {
-        next.delete(plot.id);
-      } else {
-        next.add(plot.id);
-      }
-      return next;
-    });
-  };
+  function handleSelectPlot(plot: Plot) {
+    if (plot.id in selectedPlotsById) {
+      removePlot(plot.id);
+    } else {
+      putPlot(plot);
+    }
+  }
 
-  const mapLayer = useMemo(() => {
-    if (!plots) return null;
+  const mapLayer = plots?.map((plot) => {
+    const isSelected = plot.id in selectedPlotsById;
+    return (
+      <MultiPolygon
+        key={plot.id}
+        polygon={plot.geometry}
+        strokeWidth={theme.map.defaultStrokeWidth}
+        strokeColor={theme.colors.white}
+        fillColor={hexToRgba(
+          isSelected ? theme.colors.secondary : theme.map.defaultFillColor,
+          theme.map.defaultFillAlpha,
+        )}
+        tappable
+        onPress={(e) => {
+          handleSelectPlot(plot);
+        }}
+      />
+    );
+  });
 
-    return plots.flatMap(plot => {
-      const isSelected = selectedPlotIds.has(plot.id);
-      const layers = [
-        <MultiPolygon
-          key={plot.id}
-          polygon={plot.geometry}
-          strokeWidth={theme.map.defaultStrokeWidth}
-          strokeColor={theme.colors.white}
-          fillColor={hexToRgba(
-            isSelected ? theme.colors.secondary : theme.map.defaultFillColor,
-            theme.map.defaultFillAlpha
-          )}
-          tappable
-          onPress={() => togglePlot(plot)}
-        />,
-      ];
-
-      if (isSelected) {
-        const centroid = turf.centroid(plot.geometry);
-        layers.push(
-          <LabelMarker
-            key={`label-${plot.id}`}
-            latitude={centroid.geometry.coordinates[1]}
-            longitude={centroid.geometry.coordinates[0]}
-            text={plot.name}
-          />
-        );
-      }
-
-      return layers;
-    });
-  }, [plots, selectedPlotIds, theme]);
+  const markers = Object.values(selectedPlotsById).map((plot) => {
+    const centroid = turf.centroid(plot.geometry);
+    return (
+      <LabelMarker
+        key={`selected-area-${plot.id}-marker`}
+        latitude={centroid.geometry.coordinates[1]}
+        longitude={centroid.geometry.coordinates[0]}
+        text={plot.name}
+      />
+    );
+  });
 
   if (!farm || !plots) {
     return null;
@@ -104,10 +105,10 @@ export function SelectPlotsForPlanScreen({ navigation }: SelectPlotsForPlanScree
             title={t("buttons.next")}
             onPress={() => {
               navigation.navigate("PlanCropRotations", {
-                plotIds: Array.from(selectedPlotIds),
+                plotIds: Object.keys(selectedPlotsById),
               });
             }}
-            disabled={selectedPlotIds.size === 0}
+            disabled={Object.keys(selectedPlotsById).length === 0}
           />
         </BottomActionContainer>
       }
@@ -119,11 +120,12 @@ export function SelectPlotsForPlanScreen({ navigation }: SelectPlotsForPlanScree
         showsUserLocation={showUserLocation}
       >
         {mapLayer}
+        {markers}
         <HomeMarker latitude={latitude} longitude={longitude} />
       </MapView>
       <TopLeftBackButton />
       <MapShowLocationToggle onShowLocationChange={setShowUserLocation} />
-      <PortalHost name="SelectPlotsMap" />
+      {/* <PortalHost name="SelectPlotsMap" /> */}
     </ContentView>
   );
 }

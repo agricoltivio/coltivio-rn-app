@@ -1,4 +1,4 @@
-import { Animal } from "@/api/animals.api";
+import { AnimalWithWaitingTimeFlag } from "@/api/animals.api";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -93,7 +93,7 @@ export function SelectChildrenModal({
   }
 
   const renderItem = useCallback(
-    ({ item }: { item: Animal }) => (
+    ({ item }: { item: AnimalWithWaitingTimeFlag }) => (
       <ListItem
         style={{ paddingVertical: 5 }}
         onPress={() => toggleSelection(item.id)}

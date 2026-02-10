@@ -20,7 +20,9 @@
     "export": "Exportieren",
     "finish": "Fertig",
     "send_email": "E-Mail senden",
-    "forgot_password": "Passwort vergessen"
+    "forgot_password": "Passwort vergessen",
+    "apply": "Anwenden",
+    "clear": "Löschen"
   },
   "forms": {
     "labels": {
@@ -175,7 +177,8 @@
       "t": "t",
       "l": "l",
       "ml": "ml",
-      "m3": "m³"
+      "m3": "m³",
+      "ha": "ha"
     }
   },
   "tips": {
@@ -865,7 +868,19 @@
     "milk_usable_date": "Milch verwendbar ab",
     "meat_usable_date": "Fleisch verwendbar ab",
     "no_treatments": "Noch keine Behandlungen",
-    "auto_calculated": "Automatisch berechnet basierend auf Medikament"
+    "auto_calculated": "Automatisch berechnet basierend auf Medikament",
+    "select_animals": "Tiere auswählen",
+    "no_animals_selected": "Keine Tiere ausgewählt",
+    "n_animals_selected": "{{count}} Tiere ausgewählt",
+    "confirm_selection": "Bestätigen ({{count}} ausgewählt)",
+    "select_all": "Alle auswählen ({{count}})",
+    "clear_selection": "Auswahl löschen",
+    "birthday_filter": "Geburtstag",
+    "filter_by_birthday": "Nach Geburtstag filtern",
+    "birthday_from": "Von",
+    "birthday_to": "Bis",
+    "drug_not_defined_for_all_types": "Das Medikament ist nicht für alle ausgewählten Tierarten definiert",
+    "different_waiting_times_for_types": "Die Wartezeiten unterscheiden sich zwischen den Tierarten"
   },
   "permissions": {
     "location": {

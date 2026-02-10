@@ -24,20 +24,27 @@ export function DivideFertilizerApplicationOnPlotsScreen({
     totalNumberOfApplications = 0,
     selectedPlotsById,
     fertilizerApplication,
+    selectedFertilizer,
   } = useCreateFertilizerApplicationStore();
 
-  const isAmountPerHectare = fertilizerApplication?.unit === "amount_per_hectare";
+  const unit = fertilizerApplication?.unit;
+  const fertilizerUnit = selectedFertilizer?.unit ?? "kg";
 
   const [quantityByPlotId, setQuantityByPlotId] = useState<
     Record<string, string>
   >({});
-  const [divideByArea, setDivideByArea] = useState(isAmountPerHectare);
-  const [divisionPrecision, setDivisionPrecision] = useState(1);
+  const [divideByArea, setDivideByArea] = useState(true);
+  const [divisionPrecision, setDivisionPrecision] = useState(2);
   const [error, setError] = useState<string | null>(null);
 
   const selectedPlots = Object.values(selectedPlotsById);
 
-  let quantityLabel: string = t("forms.labels.load");
+  let quantityLabel: string;
+  if (unit === "total_amount" || unit === "amount_per_hectare") {
+    quantityLabel = fertilizerUnit;
+  } else {
+    quantityLabel = t("forms.labels.load");
+  }
 
   useEffect(() => {
     if (divideByArea) {
@@ -66,8 +73,8 @@ export function DivideFertilizerApplicationOnPlotsScreen({
               divisionPrecision,
             );
           }
-          if (quantity === 0) {
-            setDivisionPrecision((prev) => prev + 1);
+          if (quantity === 0 && divisionPrecision < 2) {
+            setDivisionPrecision((prev) => Math.min(prev + 1, 2));
           }
           totalDivided += quantity;
           setQuantityByPlotId((prev) => ({
@@ -86,7 +93,7 @@ export function DivideFertilizerApplicationOnPlotsScreen({
 
   const totalDivided = +Object.values(quantityByPlotId)
     .reduce((total, val) => total + Number(val), 0)
-    .toFixed(1);
+    .toFixed(2);
 
   useEffect(() => {
     if (
@@ -108,7 +115,7 @@ export function DivideFertilizerApplicationOnPlotsScreen({
   }
 
   function handleOnConfirm() {
-    const remaining = totalNumberOfApplications - totalDivided;
+    const remaining = round(totalNumberOfApplications - totalDivided, 2);
     if (remaining < 0) {
       setError("Die verteilte Menge ist größer als die verfügbare Menge");
       return;
@@ -156,7 +163,7 @@ export function DivideFertilizerApplicationOnPlotsScreen({
             }}
           >
             {t("common.remaining_quantity", {
-              quantity: totalNumberOfApplications - totalDivided,
+              quantity: round(totalNumberOfApplications - totalDivided, 2),
               quantityLabel,
             })}
           </Title>

@@ -1,4 +1,5 @@
 import { Button } from "@/components/buttons/Button";
+import { IonIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
@@ -88,7 +89,9 @@ export function SelectFertilizerAndDateScreen({
     >
       <ScrollView
         showHeaderOnScroll
-        headerTitleOnScroll={t("fertilizer_application.add_fertilizer_application")}
+        headerTitleOnScroll={t(
+          "fertilizer_application.add_fertilizer_application",
+        )}
         keyboardAware
       >
         <H2>{t("fertilizer_application.add_fertilizer_application")}</H2>
@@ -108,21 +111,39 @@ export function SelectFertilizerAndDateScreen({
             error={errors.date?.message}
           />
 
-          <RHSelect
-            name="fertilizerId"
-            control={control}
-            label={t("forms.labels.fertiliser")}
-            rules={{
-              required: {
-                value: true,
-                message: t("forms.validation.required"),
-              },
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: theme.spacing.xs,
             }}
-            error={errors.fertilizerId?.message}
-            data={
-              fertilizers?.map((f) => ({ label: f.name, value: f.id })) ?? []
-            }
-          />
+          >
+            <View style={{ flex: 1 }}>
+              <RHSelect
+                name="fertilizerId"
+                control={control}
+                label={t("forms.labels.fertiliser")}
+                rules={{
+                  required: {
+                    value: true,
+                    message: t("forms.validation.required"),
+                  },
+                }}
+                error={errors.fertilizerId?.message}
+                data={
+                  fertilizers?.map((f) => ({ label: f.name, value: f.id })) ??
+                  []
+                }
+              />
+            </View>
+            <IonIconButton
+              icon="add"
+              iconSize={24}
+              color="black"
+              type="accent"
+              onPress={() => navigation.navigate("CreateFertilizer")}
+            />
+          </View>
         </View>
       </ScrollView>
     </ContentView>

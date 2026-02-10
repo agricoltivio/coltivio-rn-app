@@ -48,9 +48,11 @@ const ANIMAL_TYPES: AnimalType[] = [
   "deer",
 ];
 
-export function CreateDrugScreen({ navigation }: CreateDrugScreenProps) {
+export function CreateDrugScreen({ route, navigation }: CreateDrugScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+
+  const previousScreen = route.params?.previousScreen;
 
   const {
     control,
@@ -71,7 +73,19 @@ export function CreateDrugScreen({ navigation }: CreateDrugScreenProps) {
   });
 
   const createDrugMutation = useCreateDrugMutation(
-    () => navigation.goBack(),
+    (drug) => {
+      if (previousScreen) {
+        navigation.popTo(
+          previousScreen,
+          {
+            drugId: drug.id,
+          },
+          { merge: true },
+        );
+      } else {
+        navigation.goBack();
+      }
+    },
     (error) => console.error(error),
   );
 
@@ -103,7 +117,7 @@ export function CreateDrugScreen({ navigation }: CreateDrugScreenProps) {
       name: data.name,
       notes: data.notes,
       drugTreatment,
-    } as DrugCreateInput);
+    });
   }
 
   const nameValue = watch("name");

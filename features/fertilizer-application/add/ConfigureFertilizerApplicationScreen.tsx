@@ -222,7 +222,13 @@ export function ConfigureFertilizerApplicationScreen({
           <RHNumberInput
             name="amountPerUnit"
             control={control}
-            label={`${fertilizerUnit} / ${unitLabel}`}
+            label={
+              unit === "total_amount"
+                ? `${t("common.total_amount")} (${fertilizerUnit})`
+                : unit === "amount_per_hectare"
+                  ? `${fertilizerUnit} / ${t("units.short.ha")}`
+                  : `${fertilizerUnit} / ${unitLabel}`
+            }
             rules={{
               required: {
                 value: true,

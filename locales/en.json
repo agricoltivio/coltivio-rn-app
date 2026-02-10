@@ -20,7 +20,9 @@
     "export": "Export",
     "finish": "Finish",
     "send_email": "Send Email",
-    "forgot_password": "Forgot Password"
+    "forgot_password": "Forgot Password",
+    "apply": "Apply",
+    "clear": "Clear"
   },
   "forms": {
     "labels": {
@@ -170,7 +172,8 @@
       "t": "t",
       "l": "l",
       "ml": "ml",
-      "m3": "m³"
+      "m3": "m³",
+      "ha": "ha"
     }
   },
   "tips": {
@@ -788,6 +791,33 @@
     "show_dead": "Show dead",
     "only_unregistered": "Unregistered only",
     "select_children": "Select Children"
+  },
+  "treatments": {
+    "treatments": "Treatments",
+    "treatment": "Treatment",
+    "new_treatment": "New Treatment",
+    "edit_treatment": "Edit Treatment",
+    "treatment_name": "Treatment Name",
+    "select_animal": "Select Animal",
+    "select_drug": "Select Drug (optional)",
+    "treatment_date": "Treatment Date",
+    "reason": "Reason",
+    "milk_usable_date": "Milk usable from",
+    "meat_usable_date": "Meat usable from",
+    "no_treatments": "No treatments yet",
+    "auto_calculated": "Automatically calculated based on drug",
+    "select_animals": "Select Animals",
+    "no_animals_selected": "No animals selected",
+    "n_animals_selected": "{{count}} animals selected",
+    "confirm_selection": "Confirm ({{count}} selected)",
+    "select_all": "Select All ({{count}})",
+    "clear_selection": "Clear Selection",
+    "birthday_filter": "Birthday",
+    "filter_by_birthday": "Filter by Birthday",
+    "birthday_from": "From",
+    "birthday_to": "To",
+    "drug_not_defined_for_all_types": "The drug is not defined for all selected animal types",
+    "different_waiting_times_for_types": "Waiting times differ between animal types"
   },
   "permissions": {
     "location": {

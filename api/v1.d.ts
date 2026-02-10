@@ -1172,22 +1172,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/animals/byId/{animalId}/treatments": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["GetV1AnimalsByIdAnimalIdTreatments"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head: operations["HeadV1AnimalsByIdAnimalIdTreatments"];
-        patch?: never;
-        trace?: never;
-    };
     "/v1/earTags": {
         parameters: {
             query?: never;
@@ -4919,7 +4903,6 @@ export interface components {
                 treatments: {
                     id: string;
                     farmId: string;
-                    animalId: string;
                     drugId: string | null;
                     /**
                      * Format: date-time
@@ -5111,55 +5094,6 @@ export interface components {
                 count: number;
             };
         };
-        GetV1AnimalsByIdAnimalIdTreatmentsPositiveResponse: {
-            data: {
-                result: {
-                    id: string;
-                    farmId: string;
-                    animalId: string;
-                    drugId: string | null;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    date: string;
-                    name: string;
-                    notes: string | null;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    milkUsableDate: string | null;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    meatUsableDate: string | null;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    createdAt: string;
-                    createdBy: string | null;
-                    drug: {
-                        id: string;
-                        farmId: string;
-                        name: string;
-                        notes: string | null;
-                        drugTreatment: {
-                            id: string;
-                            drugId: string;
-                            /** @enum {string} */
-                            animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
-                            dosePerKgInMl: number;
-                            milkWaitingDays: number;
-                            meatWaitingDays: number;
-                        }[];
-                    } | null;
-                }[];
-                count: number;
-            };
-        };
         GetV1EarTagsPositiveResponse: {
             data: {
                 result: {
@@ -5338,7 +5272,6 @@ export interface components {
                 result: {
                     id: string;
                     farmId: string;
-                    animalId: string;
                     drugId: string | null;
                     /**
                      * Format: date-time
@@ -5363,7 +5296,7 @@ export interface components {
                      */
                     createdAt: string;
                     createdBy: string | null;
-                    animal: {
+                    animals: {
                         id: string;
                         farmId: string;
                         name: string;
@@ -5393,7 +5326,7 @@ export interface components {
                         /** @enum {string|null} */
                         deathReason: "died" | "slaughtered" | null;
                         herdId: string | null;
-                    };
+                    }[];
                     drug: {
                         id: string;
                         farmId: string;
@@ -5417,7 +5350,6 @@ export interface components {
             data: {
                 id: string;
                 farmId: string;
-                animalId: string;
                 drugId: string | null;
                 /**
                  * Format: date-time
@@ -5445,7 +5377,7 @@ export interface components {
             };
         };
         PostV1TreatmentsRequestBody: {
-            animalId: string;
+            animalIds: string[];
             drugId: string | null;
             /**
              * Format: date-time
@@ -5469,7 +5401,6 @@ export interface components {
             data: {
                 id: string;
                 farmId: string;
-                animalId: string;
                 drugId: string | null;
                 /**
                  * Format: date-time
@@ -5494,7 +5425,7 @@ export interface components {
                  */
                 createdAt: string;
                 createdBy: string | null;
-                animal: {
+                animals: {
                     id: string;
                     farmId: string;
                     name: string;
@@ -5524,7 +5455,7 @@ export interface components {
                     /** @enum {string|null} */
                     deathReason: "died" | "slaughtered" | null;
                     herdId: string | null;
-                };
+                }[];
                 drug: {
                     id: string;
                     farmId: string;
@@ -5546,7 +5477,6 @@ export interface components {
             data: {
                 id: string;
                 farmId: string;
-                animalId: string;
                 drugId: string | null;
                 /**
                  * Format: date-time
@@ -5574,7 +5504,7 @@ export interface components {
             };
         };
         PatchV1TreatmentsByIdTreatmentIdRequestBody: {
-            animalId?: string;
+            animalIds?: string[];
             drugId: string | null;
             /**
              * Format: date-time
@@ -12537,66 +12467,6 @@ export interface operations {
                 content?: never;
             };
             /** @description HEAD /v1/animals/byId/:animalId/sponsorships Negative response */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    GetV1AnimalsByIdAnimalIdTreatments: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description GET /v1/animals/byId/:animalId/treatments Parameter */
-                animalId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description GET /v1/animals/byId/:animalId/treatments Positive response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GetV1AnimalsByIdAnimalIdTreatmentsPositiveResponse"];
-                };
-            };
-            /** @description GET /v1/animals/byId/:animalId/treatments Negative response */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
-                };
-            };
-        };
-    };
-    HeadV1AnimalsByIdAnimalIdTreatments: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description HEAD /v1/animals/byId/:animalId/treatments Parameter */
-                animalId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description HEAD /v1/animals/byId/:animalId/treatments Positive response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description HEAD /v1/animals/byId/:animalId/treatments Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;

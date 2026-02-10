@@ -205,8 +205,8 @@ export function ConfigureHarvestScreen({
             control={control}
             label={
               unit === "total_amount"
-                ? t("harvests.labels.unit.total_amount_kg")
-                : `${t("units.short.kg")}/${unitLabel}`
+                ? `${t("common.total_amount")} (${t("units.short.kg")})`
+                : `${t("units.short.kg")} / ${unitLabel}`
             }
             rules={{
               required: {

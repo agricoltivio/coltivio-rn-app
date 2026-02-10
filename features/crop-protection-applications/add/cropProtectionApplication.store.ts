@@ -10,16 +10,20 @@ export type SelectedCropProtectionApplicationPlot = {
   numberOfUnits: number;
 };
 
-export type AddCropProtectionApplicationBase = Omit<
+// Store uses Date objects for date/time, merged to dateTime string on save
+export type AddCropProtectionApplicationData = Omit<
   CropProtectionApplicationsBatchCreateInput,
-  "plots"
->;
+  "plots" | "dateTime"
+> & {
+  date: Date;
+  time: Date;
+};
 
 type AddCropProtectionApplication = {
   totalNumberOfUnits?: number;
   setTotalNumberOfUnits: (amount: number) => void;
-  data?: Partial<AddCropProtectionApplicationBase>;
-  setData: (data: Partial<AddCropProtectionApplicationBase>) => void;
+  data?: Partial<AddCropProtectionApplicationData>;
+  setData: (data: Partial<AddCropProtectionApplicationData>) => void;
   selectedProduct?: CropProtectionProduct;
   setSelectedProduct: (product: CropProtectionProduct) => void;
   selectedPlotsById: Record<string, SelectedCropProtectionApplicationPlot>;

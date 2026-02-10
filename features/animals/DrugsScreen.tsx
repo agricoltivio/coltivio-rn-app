@@ -43,7 +43,8 @@ export function DrugsScreen({ navigation }: DrugsScreenProps) {
         <ListItem.Content>
           <ListItem.Title>{drug.name}</ListItem.Title>
           <ListItem.Body>
-            {drug.notes || `${drug.drugTreatment.length} ${t("drugs.treatment_definitions")}`}
+            {drug.notes ||
+              `${drug.drugTreatment.length} ${t("drugs.treatment_definitions")}`}
           </ListItem.Body>
         </ListItem.Content>
         <ListItem.Chevron />
@@ -54,10 +55,7 @@ export function DrugsScreen({ navigation }: DrugsScreenProps) {
 
   return (
     <ContentView headerVisible>
-      <ScrollView
-        showHeaderOnScroll
-        headerTitleOnScroll={t("drugs.drugs")}
-      >
+      <ScrollView showHeaderOnScroll headerTitleOnScroll={t("drugs.drugs")}>
         <H2>{t("drugs.drugs")}</H2>
 
         <View style={{ marginTop: theme.spacing.m }}>
@@ -90,7 +88,7 @@ export function DrugsScreen({ navigation }: DrugsScreenProps) {
       </ScrollView>
       <FAB
         icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("CreateDrug")}
+        onPress={() => navigation.navigate("CreateDrug", {})}
       />
     </ContentView>
   );

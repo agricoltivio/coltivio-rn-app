@@ -1,9 +1,12 @@
 import { FetchClient } from "./api";
 import { components } from "./v1";
 
-export type Animal =
+export type AnimalWithWaitingTimeFlag =
   components["schemas"]["GetV1AnimalsPositiveResponse"]["data"]["result"][number];
-export type AnimalType = Animal["type"];
+export type AnimalType = AnimalWithWaitingTimeFlag["type"];
+
+export type Animal =
+  components["schemas"]["PostV1AnimalsPositiveResponse"]["data"];
 
 export type AnimalDetail =
   components["schemas"]["GetV1AnimalsByIdAnimalIdPositiveResponse"]["data"];
@@ -31,7 +34,7 @@ export function animalsApi(client: FetchClient) {
     async getAnimals(
       onlyLiving: boolean,
       animalTypes?: AnimalType[],
-    ): Promise<Animal[]> {
+    ): Promise<AnimalWithWaitingTimeFlag[]> {
       const { data } = await client.GET("/v1/animals", {
         params: {
           query: {

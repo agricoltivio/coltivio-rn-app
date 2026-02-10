@@ -1,5 +1,4 @@
 import { PlotCropRotation } from "@/api/crop-rotations.api";
-import { INFINITE_DATE, isInfiniteDate } from "@/utils/date";
 import { useState } from "react";
 import { Modal, Pressable, Text, View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -19,7 +18,6 @@ type CropRotationDatePickerProps = {
 // Check if a date is within a rotation period (excluding permanent rotations)
 function isDateInRotation(date: Date, rotation: PlotCropRotation): boolean {
   const toDate = new Date(rotation.toDate);
-  if (toDate.getTime() >= INFINITE_DATE.getTime()) return false;
   const fromDate = new Date(rotation.fromDate);
   const dateTime = date.getTime();
   return dateTime >= fromDate.getTime() && dateTime <= toDate.getTime();

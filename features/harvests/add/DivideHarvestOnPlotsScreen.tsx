@@ -29,7 +29,7 @@ export function DivideHarvestOnPlotsScreen({
   const [quantityByPlotId, setQuantityByPlotId] = useState<
     Record<string, string>
   >({});
-  const [divideByArea, setDivideByArea] = useState(false);
+  const [divideByArea, setDivideByArea] = useState(true);
   const [divisionPrecision, setDivisionPrecision] = useState(
     harvest?.unit === "round_bale" ||
       harvest?.unit === "square_bale" ||
@@ -87,8 +87,8 @@ export function DivideHarvestOnPlotsScreen({
               divisionPrecision,
             );
           }
-          if (quantity === 0) {
-            setDivisionPrecision((prev) => prev + 1);
+          if (quantity === 0 && divisionPrecision < 2) {
+            setDivisionPrecision((prev) => Math.min(prev + 1, 2));
           }
           totalDivided += quantity;
           setQuantityByPlotId((prev) => ({
@@ -107,7 +107,7 @@ export function DivideHarvestOnPlotsScreen({
 
   const totalDivided = +Object.values(quantityByPlotId)
     .reduce((total, val) => total + Number(val), 0)
-    .toFixed(1);
+    .toFixed(2);
 
   useEffect(() => {
     if (error && totalDivided >= 0 && totalDivided <= totalProducedUnits) {
@@ -125,7 +125,7 @@ export function DivideHarvestOnPlotsScreen({
   }
 
   function handleOnConfirm() {
-    const remaining = totalProducedUnits - totalDivided;
+    const remaining = round(totalProducedUnits - totalDivided, 2);
     if (remaining < 0) {
       setError(t("forms.validation.divided_amount_too_big"));
       return;
@@ -171,7 +171,7 @@ export function DivideHarvestOnPlotsScreen({
             }}
           >
             {t("common.remaining_quantity", {
-              quantity: totalProducedUnits - totalDivided,
+              quantity: round(totalProducedUnits - totalDivided, 2),
               quantityLabel,
             })}
           </Title>

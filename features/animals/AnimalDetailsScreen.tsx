@@ -16,7 +16,6 @@ import {
   useUpdateAnimalMutation,
 } from "./animals.hooks";
 import { AnimalDetailsScreenProps } from "./navigation/animals-routes";
-import { useAnimalTreatmentsQuery } from "./treatments.hooks";
 import { formatLocalizedDate } from "@/utils/date";
 import { locale } from "@/locales/i18n";
 
@@ -28,7 +27,6 @@ export function AnimalDetailsScreen({
   const theme = useTheme();
   const animalId = route.params.animalId;
   const { animal } = useAnimalByIdQuery(animalId);
-  const { treatments } = useAnimalTreatmentsQuery(animalId);
 
   const deleteAnimalMutation = useDeleteAnimalMutation(() =>
     navigation.goBack(),
@@ -324,11 +322,13 @@ export function AnimalDetailsScreen({
               iconSize={25}
               type="accent"
               onPress={() =>
-                navigation.navigate("CreateTreatment", { animalId })
+                navigation.navigate("CreateTreatment", {
+                  animalIds: [animalId],
+                })
               }
             />
           </View>
-          {treatments.length === 0 ? (
+          {animal?.treatments.length === 0 ? (
             <Subtitle style={{ marginTop: theme.spacing.s }}>
               {t("treatments.no_treatments")}
             </Subtitle>
@@ -341,7 +341,7 @@ export function AnimalDetailsScreen({
                 backgroundColor: theme.colors.white,
               }}
             >
-              {treatments.map((treatment) => (
+              {animal.treatments.map((treatment) => (
                 <ListItem
                   key={treatment.id}
                   style={{ paddingVertical: 5 }}
@@ -354,8 +354,7 @@ export function AnimalDetailsScreen({
                   <ListItem.Content>
                     <ListItem.Title>{treatment.name}</ListItem.Title>
                     <ListItem.Body>
-                      {formatLocalizedDate(new Date(treatment.date), locale)} -{" "}
-                      {treatment.drug?.name || treatment.reason}
+                      {formatLocalizedDate(new Date(treatment.date), locale)}
                     </ListItem.Body>
                   </ListItem.Content>
                   <ListItem.Chevron />

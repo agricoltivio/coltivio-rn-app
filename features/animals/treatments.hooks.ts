@@ -1,5 +1,10 @@
 import { useApi } from "@/api/api";
-import { TreatmentCreateInput, TreatmentCreateResponse, TreatmentUpdateInput, TreatmentUpdateResponse } from "@/api/treatments.api";
+import {
+  TreatmentCreateInput,
+  TreatmentCreateResponse,
+  TreatmentUpdateInput,
+  TreatmentUpdateResponse,
+} from "@/api/treatments.api";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -13,17 +18,10 @@ export function useTreatmentsQuery(enabled: boolean = true) {
   return { treatments: data, ...rest };
 }
 
-export function useAnimalTreatmentsQuery(animalId: string, enabled: boolean = true) {
-  const api = useApi();
-  const { data, ...rest } = useQuery({
-    queryKey: queryKeys.treatments.byAnimal(animalId).queryKey,
-    queryFn: () => api.treatments.getAnimalTreatments(animalId),
-    enabled: enabled && !!animalId,
-  });
-  return { treatments: data || [], ...rest };
-}
-
-export function useTreatmentByIdQuery(treatmentId: string, enabled: boolean = true) {
+export function useTreatmentByIdQuery(
+  treatmentId: string,
+  enabled: boolean = true,
+) {
   const api = useApi();
   const { data, ...rest } = useQuery({
     queryKey: queryKeys.treatments.byId(treatmentId).queryKey,
@@ -63,7 +61,10 @@ export function useUpdateTreatmentMutation(
   const api = useApi();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, ...treatment }: TreatmentUpdateInput & { id: string }) => {
+    mutationFn: ({
+      id,
+      ...treatment
+    }: TreatmentUpdateInput & { id: string }) => {
       return api.treatments.updateTreatment(id, treatment);
     },
     onSuccess: (treatment) => {

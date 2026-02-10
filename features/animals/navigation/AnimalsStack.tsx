@@ -7,6 +7,7 @@ import { AnimalDetailsScreen } from "../AnimalDetailsScreen";
 import { CreateAnimalScreen } from "../CreateAnimalScreen";
 import { EditAnimalScreen } from "../EditAnimalScreen";
 import { SelectChildrenModal } from "../SelectChildrenModal";
+import { SelectAnimalsModal } from "../SelectAnimalsModal";
 import { DrugsScreen } from "../DrugsScreen";
 import { CreateDrugScreen } from "../CreateDrugScreen";
 import { EditDrugScreen } from "../EditDrugScreen";
@@ -64,6 +65,12 @@ export function renderAnimalsStack() {
       name="SelectChildren"
       options={{ title: "", presentation: "modal" }}
       component={SelectChildrenModal}
+    />,
+    <Stack.Screen
+      key="select-animals"
+      name="SelectAnimals"
+      options={{ title: "", presentation: "modal" }}
+      component={SelectAnimalsModal}
     />,
     <Stack.Screen
       key="drugs"

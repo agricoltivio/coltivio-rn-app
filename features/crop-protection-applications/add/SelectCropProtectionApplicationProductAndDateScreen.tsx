@@ -1,4 +1,5 @@
 import { Button } from "@/components/buttons/Button";
+import { IonIconButton } from "@/components/buttons/IconButton";
 import { Card } from "@/components/card/Card";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -17,6 +18,7 @@ import { useAddCropProtectionApplicationStore } from "./cropProtectionApplicatio
 
 type FormValues = {
   date: Date;
+  time: Date;
   productId: string;
 };
 
@@ -46,6 +48,7 @@ export function SelectCropProtectionApplicationProductAndDateScreen({
   } = useForm<FormValues>({
     defaultValues: {
       date: data?.date ?? new Date(),
+      time: data?.time ?? new Date(),
       productId: selectedProduct?.id ?? preselectedProductId,
     },
   });
@@ -66,6 +69,7 @@ export function SelectCropProtectionApplicationProductAndDateScreen({
 
     setData({
       date: values.date,
+      time: values.time,
       productId: values.productId,
     });
 
@@ -111,6 +115,20 @@ export function SelectCropProtectionApplicationProductAndDateScreen({
             error={errors.date?.message}
           />
 
+          <RHDatePicker
+            name="time"
+            control={control}
+            label={t("forms.labels.time")}
+            mode="time"
+            rules={{
+              required: {
+                value: true,
+                message: t("forms.validation.required"),
+              },
+            }}
+            error={errors.time?.message}
+          />
+
           {cropProtectionProducts?.length === 0 ? (
             <Card
               elevated={false}
@@ -132,24 +150,43 @@ export function SelectCropProtectionApplicationProductAndDateScreen({
               />
             </Card>
           ) : (
-            <RHSelect
-              name="productId"
-              control={control}
-              label={t("forms.labels.crop_protection_product")}
-              rules={{
-                required: {
-                  value: true,
-                  message: t("forms.validation.required"),
-                },
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: theme.spacing.xs,
               }}
-              error={errors.productId?.message}
-              data={
-                cropProtectionProducts?.map((p) => ({
-                  label: p.name,
-                  value: p.id,
-                })) ?? []
-              }
-            />
+            >
+              <View style={{ flex: 1 }}>
+                <RHSelect
+                  name="productId"
+                  control={control}
+                  label={t("forms.labels.crop_protection_product")}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: t("forms.validation.required"),
+                    },
+                  }}
+                  error={errors.productId?.message}
+                  data={
+                    cropProtectionProducts?.map((p) => ({
+                      label: p.name,
+                      value: p.id,
+                    })) ?? []
+                  }
+                />
+              </View>
+              <IonIconButton
+                icon="add"
+                iconSize={24}
+                color="black"
+                type="accent"
+                onPress={() =>
+                  navigation.navigate("CreateCropProtectionProduct")
+                }
+              />
+            </View>
           )}
         </View>
       </ScrollView>

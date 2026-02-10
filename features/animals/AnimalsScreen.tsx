@@ -1,4 +1,4 @@
-import { Animal } from "@/api/animals.api";
+import { AnimalWithWaitingTimeFlag } from "@/api/animals.api";
 import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
@@ -97,7 +97,7 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
   }
 
   const renderItem = useCallback(
-    ({ item: animal }: { item: Animal }) => (
+    ({ item: animal }: { item: AnimalWithWaitingTimeFlag }) => (
       <ListItem
         key={animal.id}
         style={{ paddingVertical: 5 }}
