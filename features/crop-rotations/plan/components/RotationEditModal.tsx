@@ -254,7 +254,7 @@ export function RotationEditModal({
                 }}
               />
               <Text style={{ fontSize: 14, color: theme.colors.text }}>
-                {interval === 1
+                {parseInt(interval) === 1
                   ? t("crop_rotations.plan.year")
                   : t("crop_rotations.plan.years")}
               </Text>

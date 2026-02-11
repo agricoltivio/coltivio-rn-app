@@ -1,9 +1,10 @@
-import { TreatmentUpdateInput } from "@/api/treatments.api";
 import { Button } from "@/components/buttons/Button";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
+import { RHNumberInput } from "@/components/inputs/RHNumberInput";
+import { RHSwitch } from "@/components/inputs/RHSwitch";
 import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
@@ -25,6 +26,23 @@ import {
   useUpdateTreatmentMutation,
 } from "./treatments.hooks";
 
+type DoseUnit = "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop";
+type DosePerUnit = "kg" | "animal" | "day" | "total_amount";
+
+const DOSE_UNITS: DoseUnit[] = [
+  "ml",
+  "g",
+  "mg",
+  "mcg",
+  "tablet",
+  "capsule",
+  "patch",
+  "dose",
+  "drop",
+];
+
+const DOSE_PER_UNITS: DosePerUnit[] = ["animal", "kg", "day", "total_amount"];
+
 interface TreatmentFormValues {
   drugId?: string;
   date: Date;
@@ -32,6 +50,13 @@ interface TreatmentFormValues {
   notes?: string;
   milkUsableDate?: Date;
   meatUsableDate?: Date;
+  organsUsableDate?: Date;
+  drugDoseValue?: string;
+  drugDoseUnit?: DoseUnit;
+  drugDosePerUnit?: DosePerUnit;
+  drugReceivedFrom?: string;
+  criticalAntibiotic: boolean;
+  antibiogramAvailable: boolean;
 }
 
 export function EditTreatmentScreen({
@@ -71,6 +96,15 @@ export function EditTreatmentScreen({
           meatUsableDate: treatment.meatUsableDate
             ? new Date(treatment.meatUsableDate)
             : undefined,
+          organsUsableDate: treatment.organsUsableDate
+            ? new Date(treatment.organsUsableDate)
+            : undefined,
+          drugDoseValue: treatment.drugDoseValue ? String(treatment.drugDoseValue) : undefined,
+          drugDoseUnit: treatment.drugDoseUnit ?? undefined,
+          drugDosePerUnit: treatment.drugDosePerUnit ?? undefined,
+          drugReceivedFrom: treatment.drugReceivedFrom ?? undefined,
+          criticalAntibiotic: treatment.criticalAntibiotic,
+          antibiogramAvailable: treatment.antibiogramAvailable,
         }
       : undefined,
   });
@@ -93,17 +127,25 @@ export function EditTreatmentScreen({
     }
 
     const animalTypes = [...new Set(selectedAnimals.map((a) => a.type))];
-    const waitingTimes = animalTypes.map((type) => {
+    const drugDefs = animalTypes.map((type) => {
       const def = selectedDrug.drugTreatment.find(
         (dt) => dt.animalType === type,
       );
       return def
-        ? { type, milk: def.milkWaitingDays, meat: def.meatWaitingDays }
+        ? {
+            type,
+            milk: def.milkWaitingDays,
+            meat: def.meatWaitingDays,
+            organs: def.organsWaitingDays,
+            doseValue: def.doseValue,
+            doseUnit: def.doseUnit,
+            dosePerUnit: def.dosePerUnit,
+          }
         : null;
     });
 
     // Check if any type has no definition
-    if (waitingTimes.some((wt) => wt === null)) {
+    if (drugDefs.some((d) => d === null)) {
       return {
         valid: false,
         error: t("treatments.drug_not_defined_for_all_types"),
@@ -111,10 +153,12 @@ export function EditTreatmentScreen({
     }
 
     // Check if all waiting times are the same
-    const firstMilk = waitingTimes[0]!.milk;
-    const firstMeat = waitingTimes[0]!.meat;
-    const allSame = waitingTimes.every(
-      (wt) => wt!.milk === firstMilk && wt!.meat === firstMeat,
+    const first = drugDefs[0]!;
+    const allSame = drugDefs.every(
+      (d) =>
+        d!.milk === first.milk &&
+        d!.meat === first.meat &&
+        d!.organs === first.organs,
     );
 
     if (!allSame) {
@@ -124,7 +168,15 @@ export function EditTreatmentScreen({
       };
     }
 
-    return { valid: true, milkDays: firstMilk, meatDays: firstMeat };
+    return {
+      valid: true,
+      milkDays: first.milk,
+      meatDays: first.meat,
+      organsDays: first.organs,
+      doseValue: first.doseValue,
+      doseUnit: first.doseUnit,
+      dosePerUnit: first.dosePerUnit,
+    };
   }, [selectedDrug, selectedAnimals, t]);
 
   // Auto-calculate usable dates when drug or date changes
@@ -142,6 +194,10 @@ export function EditTreatmentScreen({
         "meatUsableDate",
         addDays(treatmentDate, drugValidation.meatDays!),
       );
+      setValue(
+        "organsUsableDate",
+        addDays(treatmentDate, drugValidation.organsDays!),
+      );
     }
   }, [drugValidation, treatmentDate, setValue]);
 
@@ -153,13 +209,12 @@ export function EditTreatmentScreen({
   );
 
   const drugSelectData = useMemo(() => {
-    return (
-      drugs?.map((drug) => ({
-        label: drug.name,
-        value: drug.id,
-      })) ?? []
-    );
-  }, [drugs]);
+    const options = drugs?.map((drug) => ({
+      label: drug.name,
+      value: drug.id,
+    })) ?? [];
+    return [{ label: t("forms.labels.none"), value: "" }, ...options];
+  }, [drugs, t]);
 
   if (!treatment) {
     return null;
@@ -175,7 +230,14 @@ export function EditTreatmentScreen({
       notes: data.notes,
       milkUsableDate: data.milkUsableDate?.toISOString() ?? null,
       meatUsableDate: data.meatUsableDate?.toISOString() ?? null,
-    } as TreatmentUpdateInput & { id: string });
+      organsUsableDate: data.organsUsableDate?.toISOString() ?? null,
+      drugDoseValue: data.drugDoseValue ? parseFloat(data.drugDoseValue) : null,
+      drugDoseUnit: data.drugDoseUnit ?? null,
+      drugDosePerUnit: data.drugDosePerUnit ?? null,
+      drugReceivedFrom: data.drugReceivedFrom || null,
+      criticalAntibiotic: data.criticalAntibiotic,
+      antibiogramAvailable: data.antibiogramAvailable,
+    });
   }
 
   function onDelete() {
@@ -358,6 +420,65 @@ export function EditTreatmentScreen({
             </View>
           )}
 
+          {/* Dose settings card - only shown when drug is selected */}
+          {selectedDrug && drugValidation.valid && (
+            <View
+              style={{
+                backgroundColor: theme.colors.white,
+                borderRadius: 10,
+                padding: theme.spacing.m,
+                marginTop: theme.spacing.xs,
+              }}
+            >
+              <Subtitle style={{ marginBottom: theme.spacing.s }}>
+                {t("treatments.drug_configuration")}
+              </Subtitle>
+              <View style={{ gap: theme.spacing.xs }}>
+                <RHTextInput
+                  name="drugReceivedFrom"
+                  control={control}
+                  label={t("drugs.received_from")}
+                />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    gap: theme.spacing.xs,
+                  }}
+                >
+                  <View style={{ flex: 1 }}>
+                    <RHNumberInput
+                      name="drugDoseValue"
+                      control={control}
+                      label={t("drugs.dose_value")}
+                      placeholder="0.0"
+                      float
+                    />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <RHSelect
+                      name="drugDoseUnit"
+                      control={control}
+                      label={t("drugs.dose_unit")}
+                      data={DOSE_UNITS.map((u) => ({
+                        label: t(`drugs.dose_units.${u}`),
+                        value: u,
+                      }))}
+                    />
+                  </View>
+                </View>
+                <RHSelect
+                  name="drugDosePerUnit"
+                  control={control}
+                  label={t("drugs.dose_per_unit")}
+                  data={DOSE_PER_UNITS.map((u) => ({
+                    label: t(`drugs.dose_per_units.${u}`),
+                    value: u,
+                  }))}
+                />
+              </View>
+            </View>
+          )}
+
           <RHTextInput
             name="name"
             control={control}
@@ -385,6 +506,26 @@ export function EditTreatmentScreen({
             label={t("treatments.meat_usable_date")}
             mode="date"
             error={errors.meatUsableDate?.message}
+          />
+
+          <RHDatePicker
+            name="organsUsableDate"
+            control={control}
+            label={t("treatments.organs_usable_date")}
+            mode="date"
+            error={errors.organsUsableDate?.message}
+          />
+
+          <RHSwitch
+            label={t("drugs.critical_antibiotic")}
+            control={control}
+            name="criticalAntibiotic"
+          />
+
+          <RHSwitch
+            label={t("treatments.antibiogram_available")}
+            control={control}
+            name="antibiogramAvailable"
           />
 
           <RHTextAreaInput

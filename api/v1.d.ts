@@ -4904,6 +4904,14 @@ export interface components {
                     id: string;
                     farmId: string;
                     drugId: string | null;
+                    /** @enum {string|null} */
+                    drugDoseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop" | null;
+                    /** @enum {string|null} */
+                    drugDosePerUnit: "kg" | "animal" | "day" | "total_amount" | null;
+                    drugDoseValue: number | null;
+                    drugReceivedFrom: string | null;
+                    criticalAntibiotic: boolean;
+                    antibiogramAvailable: boolean;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -4921,6 +4929,11 @@ export interface components {
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     meatUsableDate: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    organsUsableDate: string | null;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -5173,14 +5186,21 @@ export interface components {
                     farmId: string;
                     name: string;
                     notes: string | null;
+                    criticalAntibiotic: boolean;
+                    receivedFrom: string;
                     drugTreatment: {
                         id: string;
                         drugId: string;
                         /** @enum {string} */
                         animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
-                        dosePerKgInMl: number;
+                        /** @enum {string} */
+                        doseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop";
+                        /** @enum {string} */
+                        dosePerUnit: "kg" | "animal" | "day" | "total_amount";
+                        doseValue: number;
                         milkWaitingDays: number;
                         meatWaitingDays: number;
+                        organsWaitingDays: number;
                     }[];
                 }[];
                 count: number;
@@ -5192,26 +5212,40 @@ export interface components {
                 farmId: string;
                 name: string;
                 notes: string | null;
+                criticalAntibiotic: boolean;
+                receivedFrom: string;
                 drugTreatment: {
                     id: string;
                     drugId: string;
                     /** @enum {string} */
                     animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
-                    dosePerKgInMl: number;
+                    /** @enum {string} */
+                    doseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop";
+                    /** @enum {string} */
+                    dosePerUnit: "kg" | "animal" | "day" | "total_amount";
+                    doseValue: number;
                     milkWaitingDays: number;
                     meatWaitingDays: number;
+                    organsWaitingDays: number;
                 }[];
             };
         };
         PostV1DrugsRequestBody: {
             name: string;
+            criticalAntibiotic: boolean;
+            receivedFrom: string;
             notes?: string;
             drugTreatment: {
                 /** @enum {string} */
                 animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
-                dosePerKgInMl: number;
+                doseValue: number;
+                /** @enum {string} */
+                doseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop";
+                /** @enum {string} */
+                dosePerUnit: "kg" | "animal" | "day" | "total_amount";
                 milkWaitingDays: number;
                 meatWaitingDays: number;
+                organsWaitingDays: number;
             }[];
         };
         GetV1DrugsByIdDrugIdPositiveResponse: {
@@ -5220,14 +5254,21 @@ export interface components {
                 farmId: string;
                 name: string;
                 notes: string | null;
+                criticalAntibiotic: boolean;
+                receivedFrom: string;
                 drugTreatment: {
                     id: string;
                     drugId: string;
                     /** @enum {string} */
                     animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
-                    dosePerKgInMl: number;
+                    /** @enum {string} */
+                    doseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop";
+                    /** @enum {string} */
+                    dosePerUnit: "kg" | "animal" | "day" | "total_amount";
+                    doseValue: number;
                     milkWaitingDays: number;
                     meatWaitingDays: number;
+                    organsWaitingDays: number;
                 }[];
             };
         };
@@ -5237,14 +5278,21 @@ export interface components {
                 farmId: string;
                 name: string;
                 notes: string | null;
+                criticalAntibiotic: boolean;
+                receivedFrom: string;
                 drugTreatment: {
                     id: string;
                     drugId: string;
                     /** @enum {string} */
                     animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
-                    dosePerKgInMl: number;
+                    /** @enum {string} */
+                    doseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop";
+                    /** @enum {string} */
+                    dosePerUnit: "kg" | "animal" | "day" | "total_amount";
+                    doseValue: number;
                     milkWaitingDays: number;
                     meatWaitingDays: number;
+                    organsWaitingDays: number;
                 }[];
             };
         };
@@ -5254,9 +5302,14 @@ export interface components {
             drugTreatment?: {
                 /** @enum {string} */
                 animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
-                dosePerKgInMl: number;
+                doseValue: number;
+                /** @enum {string} */
+                doseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop";
+                /** @enum {string} */
+                dosePerUnit: "kg" | "animal" | "day" | "total_amount";
                 milkWaitingDays: number;
                 meatWaitingDays: number;
+                organsWaitingDays: number;
             }[];
         };
         DeleteV1DrugsByIdDrugIdPositiveResponse: {
@@ -5273,6 +5326,14 @@ export interface components {
                     id: string;
                     farmId: string;
                     drugId: string | null;
+                    /** @enum {string|null} */
+                    drugDoseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop" | null;
+                    /** @enum {string|null} */
+                    drugDosePerUnit: "kg" | "animal" | "day" | "total_amount" | null;
+                    drugDoseValue: number | null;
+                    drugReceivedFrom: string | null;
+                    criticalAntibiotic: boolean;
+                    antibiogramAvailable: boolean;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -5290,6 +5351,11 @@ export interface components {
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     meatUsableDate: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    organsUsableDate: string | null;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -5332,14 +5398,21 @@ export interface components {
                         farmId: string;
                         name: string;
                         notes: string | null;
+                        criticalAntibiotic: boolean;
+                        receivedFrom: string;
                         drugTreatment: {
                             id: string;
                             drugId: string;
                             /** @enum {string} */
                             animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
-                            dosePerKgInMl: number;
+                            /** @enum {string|null} */
+                            doseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop" | null;
+                            /** @enum {string|null} */
+                            dosePerUnit: "kg" | "animal" | "day" | "total_amount" | null;
+                            doseValue: number;
                             milkWaitingDays: number;
                             meatWaitingDays: number;
+                            organsWaitingDays: number;
                         }[];
                     } | null;
                 }[];
@@ -5351,6 +5424,14 @@ export interface components {
                 id: string;
                 farmId: string;
                 drugId: string | null;
+                /** @enum {string|null} */
+                drugDoseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop" | null;
+                /** @enum {string|null} */
+                drugDosePerUnit: "kg" | "animal" | "day" | "total_amount" | null;
+                drugDoseValue: number | null;
+                drugReceivedFrom: string | null;
+                criticalAntibiotic: boolean;
+                antibiogramAvailable: boolean;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -5372,13 +5453,18 @@ export interface components {
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
+                organsUsableDate: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
                 createdAt: string;
                 createdBy: string | null;
             };
         };
         PostV1TreatmentsRequestBody: {
             animalIds: string[];
-            drugId: string | null;
+            drugId?: string | null;
             /**
              * Format: date-time
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -5390,18 +5476,39 @@ export interface components {
              * Format: date-time
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
-            milkUsableDate: string | null;
+            milkUsableDate?: string | null;
             /**
              * Format: date-time
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
-            meatUsableDate: string | null;
+            meatUsableDate?: string | null;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            organsUsableDate?: string | null;
+            /** @enum {string|null} */
+            drugDoseUnit?: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop" | null;
+            /** @enum {string|null} */
+            drugDosePerUnit?: "kg" | "animal" | "day" | "total_amount" | null;
+            drugDoseValue?: number | null;
+            drugReceivedFrom?: string | null;
+            criticalAntibiotic: boolean;
+            antibiogramAvailable: boolean;
         };
         GetV1TreatmentsByIdTreatmentIdPositiveResponse: {
             data: {
                 id: string;
                 farmId: string;
                 drugId: string | null;
+                /** @enum {string|null} */
+                drugDoseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop" | null;
+                /** @enum {string|null} */
+                drugDosePerUnit: "kg" | "animal" | "day" | "total_amount" | null;
+                drugDoseValue: number | null;
+                drugReceivedFrom: string | null;
+                criticalAntibiotic: boolean;
+                antibiogramAvailable: boolean;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -5419,6 +5526,11 @@ export interface components {
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 meatUsableDate: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                organsUsableDate: string | null;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -5461,14 +5573,21 @@ export interface components {
                     farmId: string;
                     name: string;
                     notes: string | null;
+                    criticalAntibiotic: boolean;
+                    receivedFrom: string;
                     drugTreatment: {
                         id: string;
                         drugId: string;
                         /** @enum {string} */
                         animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
-                        dosePerKgInMl: number;
+                        /** @enum {string|null} */
+                        doseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop" | null;
+                        /** @enum {string|null} */
+                        dosePerUnit: "kg" | "animal" | "day" | "total_amount" | null;
+                        doseValue: number;
                         milkWaitingDays: number;
                         meatWaitingDays: number;
+                        organsWaitingDays: number;
                     }[];
                 } | null;
             };
@@ -5478,6 +5597,14 @@ export interface components {
                 id: string;
                 farmId: string;
                 drugId: string | null;
+                /** @enum {string|null} */
+                drugDoseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop" | null;
+                /** @enum {string|null} */
+                drugDosePerUnit: "kg" | "animal" | "day" | "total_amount" | null;
+                drugDoseValue: number | null;
+                drugReceivedFrom: string | null;
+                criticalAntibiotic: boolean;
+                antibiogramAvailable: boolean;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -5499,13 +5626,18 @@ export interface components {
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
+                organsUsableDate: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
                 createdAt: string;
                 createdBy: string | null;
             };
         };
         PatchV1TreatmentsByIdTreatmentIdRequestBody: {
             animalIds?: string[];
-            drugId: string | null;
+            drugId?: string | null;
             /**
              * Format: date-time
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -5517,12 +5649,25 @@ export interface components {
              * Format: date-time
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
-            milkUsableDate: string | null;
+            milkUsableDate?: string | null;
             /**
              * Format: date-time
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
-            meatUsableDate: string | null;
+            meatUsableDate?: string | null;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            organsUsableDate?: string | null;
+            /** @enum {string|null} */
+            drugDoseUnit?: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop" | null;
+            /** @enum {string|null} */
+            drugDosePerUnit?: "kg" | "animal" | "day" | "total_amount" | null;
+            drugDoseValue?: number | null;
+            drugReceivedFrom?: string | null;
+            criticalAntibiotic?: boolean;
+            antibiogramAvailable?: boolean;
         };
         DeleteV1TreatmentsByIdTreatmentIdPositiveResponse: {
             data: Record<string, never>;
@@ -13119,7 +13264,7 @@ export interface operations {
             cookie?: never;
         };
         /** @description PATCH /v1/treatments/byId/:treatmentId Request body */
-        requestBody: {
+        requestBody?: {
             content: {
                 "application/json": components["schemas"]["PatchV1TreatmentsByIdTreatmentIdRequestBody"];
             };

@@ -5,6 +5,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
+import { RHSwitch } from "@/components/inputs/RHSwitch";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Subtitle } from "@/theme/Typography";
@@ -14,7 +15,6 @@ import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCreateDrugMutation } from "./drugs.hooks";
 import { CreateDrugScreenProps } from "./navigation/animals-routes";
-import { DrugCreateInput } from "@/api/drugs.api";
 
 type AnimalType =
   | "goat"
@@ -25,16 +25,24 @@ type AnimalType =
   | "pig"
   | "deer";
 
+type DoseUnit = "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop";
+type DosePerUnit = "kg" | "animal" | "day" | "total_amount";
+
 interface TreatmentDefFormValues {
   animalType: AnimalType;
-  dosePerKgInMl: string;
+  doseValue: string;
+  doseUnit: DoseUnit;
+  dosePerUnit: DosePerUnit;
   milkWaitingDays: string;
   meatWaitingDays: string;
+  organsWaitingDays: string;
 }
 
 interface DrugFormValues {
   name: string;
   notes?: string;
+  criticalAntibiotic: boolean;
+  receivedFrom: string;
   drugTreatment: TreatmentDefFormValues[];
 }
 
@@ -47,6 +55,20 @@ const ANIMAL_TYPES: AnimalType[] = [
   "pig",
   "deer",
 ];
+
+const DOSE_UNITS: DoseUnit[] = [
+  "ml",
+  "g",
+  "mg",
+  "mcg",
+  "tablet",
+  "capsule",
+  "patch",
+  "dose",
+  "drop",
+];
+
+const DOSE_PER_UNITS: DosePerUnit[] = ["animal", "kg", "day", "total_amount"];
 
 export function CreateDrugScreen({ route, navigation }: CreateDrugScreenProps) {
   const { t } = useTranslation();
@@ -63,6 +85,8 @@ export function CreateDrugScreen({ route, navigation }: CreateDrugScreenProps) {
     defaultValues: {
       name: "",
       notes: "",
+      criticalAntibiotic: false,
+      receivedFrom: "",
       drugTreatment: [],
     },
   });
@@ -98,9 +122,12 @@ export function CreateDrugScreen({ route, navigation }: CreateDrugScreenProps) {
     if (availableType) {
       append({
         animalType: availableType,
-        dosePerKgInMl: "",
+        doseValue: "",
+        doseUnit: "ml",
+        dosePerUnit: "animal",
         milkWaitingDays: "",
         meatWaitingDays: "",
+        organsWaitingDays: "",
       });
     }
   }
@@ -108,29 +135,40 @@ export function CreateDrugScreen({ route, navigation }: CreateDrugScreenProps) {
   function onSubmit(data: DrugFormValues) {
     const drugTreatment = data.drugTreatment.map((def) => ({
       animalType: def.animalType,
-      dosePerKgInMl: parseFloat(def.dosePerKgInMl),
+      doseValue: parseFloat(def.doseValue),
+      doseUnit: def.doseUnit,
+      dosePerUnit: def.dosePerUnit,
       milkWaitingDays: parseInt(def.milkWaitingDays, 10),
       meatWaitingDays: parseInt(def.meatWaitingDays, 10),
+      organsWaitingDays: parseInt(def.organsWaitingDays, 10),
     }));
 
     createDrugMutation.mutate({
       name: data.name,
       notes: data.notes,
+      criticalAntibiotic: data.criticalAntibiotic,
+      receivedFrom: data.receivedFrom,
       drugTreatment,
     });
   }
 
   const nameValue = watch("name");
+  const receivedFromValue = watch("receivedFrom");
   const isValid =
     nameValue?.length > 0 &&
+    receivedFromValue?.length > 0 &&
     (watchedTreatments ?? []).every(
       (def) =>
-        def.dosePerKgInMl &&
-        parseFloat(def.dosePerKgInMl) > 0 &&
+        def.doseValue &&
+        parseFloat(def.doseValue) > 0 &&
+        def.doseUnit &&
+        def.dosePerUnit &&
         def.milkWaitingDays &&
         parseInt(def.milkWaitingDays, 10) >= 0 &&
         def.meatWaitingDays &&
-        parseInt(def.meatWaitingDays, 10) >= 0,
+        parseInt(def.meatWaitingDays, 10) >= 0 &&
+        def.organsWaitingDays &&
+        parseInt(def.organsWaitingDays, 10) >= 0,
     );
 
   const animalTypeOptions = ANIMAL_TYPES.map((type) => ({
@@ -171,6 +209,25 @@ export function CreateDrugScreen({ route, navigation }: CreateDrugScreenProps) {
               },
             }}
             error={errors.name?.message}
+          />
+
+          <RHTextInput
+            label={t("drugs.received_from")}
+            control={control}
+            name="receivedFrom"
+            rules={{
+              required: {
+                value: true,
+                message: t("forms.validation.required"),
+              },
+            }}
+            error={errors.receivedFrom?.message}
+          />
+
+          <RHSwitch
+            label={t("drugs.critical_antibiotic")}
+            control={control}
+            name="criticalAntibiotic"
           />
 
           <RHTextAreaInput
@@ -251,15 +308,45 @@ export function CreateDrugScreen({ route, navigation }: CreateDrugScreenProps) {
                     error={errors.drugTreatment?.[index]?.animalType?.message}
                   />
 
-                  <RHNumberInput
-                    name={`drugTreatment.${index}.dosePerKgInMl`}
+                  {/* Dose inputs grouped together */}
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      gap: theme.spacing.xs,
+                    }}
+                  >
+                    <View style={{ flex: 1 }}>
+                      <RHNumberInput
+                        name={`drugTreatment.${index}.doseValue`}
+                        control={control}
+                        label={t("drugs.dose_value")}
+                        placeholder="0.0"
+                        float
+                        error={errors.drugTreatment?.[index]?.doseValue?.message}
+                      />
+                    </View>
+                    <View style={{ flex: 1 }}>
+                      <RHSelect
+                        name={`drugTreatment.${index}.doseUnit`}
+                        control={control}
+                        label={t("drugs.dose_unit")}
+                        data={DOSE_UNITS.map((u) => ({
+                          label: t(`drugs.dose_units.${u}`),
+                          value: u,
+                        }))}
+                        error={errors.drugTreatment?.[index]?.doseUnit?.message}
+                      />
+                    </View>
+                  </View>
+                  <RHSelect
+                    name={`drugTreatment.${index}.dosePerUnit`}
                     control={control}
-                    label={t("drugs.dose_ml_per_kg")}
-                    placeholder="0.0"
-                    float
-                    error={
-                      errors.drugTreatment?.[index]?.dosePerKgInMl?.message
-                    }
+                    label={t("drugs.dose_per_unit")}
+                    data={DOSE_PER_UNITS.map((u) => ({
+                      label: t(`drugs.dose_per_units.${u}`),
+                      value: u,
+                    }))}
+                    error={errors.drugTreatment?.[index]?.dosePerUnit?.message}
                   />
 
                   <RHNumberInput
@@ -279,6 +366,16 @@ export function CreateDrugScreen({ route, navigation }: CreateDrugScreenProps) {
                     placeholder="0"
                     error={
                       errors.drugTreatment?.[index]?.meatWaitingDays?.message
+                    }
+                  />
+
+                  <RHNumberInput
+                    name={`drugTreatment.${index}.organsWaitingDays`}
+                    control={control}
+                    label={t("drugs.organs_waiting_days")}
+                    placeholder="0"
+                    error={
+                      errors.drugTreatment?.[index]?.organsWaitingDays?.message
                     }
                   />
                 </View>
