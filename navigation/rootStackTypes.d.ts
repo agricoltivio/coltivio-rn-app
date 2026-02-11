@@ -40,7 +40,7 @@ export type RootStackParamList = AuthStackParamList &
   FieldCalendarStackParamList &
   AgriColtivioStackParamList &
   AnimalsStackParamList & {
-    MapDrawOnboarding: undefined;
+    MapDrawOnboarding: { variant?: "draw" | "parcel" | "edit" } | undefined;
   };
 
 declare global {

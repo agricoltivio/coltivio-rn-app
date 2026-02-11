@@ -834,7 +834,16 @@
     "draw_heading": "Fläche zeichnen",
     "draw_body": "Tippe auf dieses Symbol, um den Zeichenmodus zu starten. Tippe danach auf die Karte, um Eckpunkte zu setzen. Halte einen Eckpunkt gedrückt, um ihn zu verschieben.",
     "finish_heading": "Zeichnung abschliessen",
-    "finish_body": "Tippe auf dieses Symbol, um die Fläche abzuschliessen."
+    "finish_body": "Tippe auf dieses Symbol, um die Fläche abzuschliessen.",
+    "welcome_body_draw": "Du zeichnest gleich einen neuen Schlag auf der Karte. Hier erklären wir dir kurz, wie das funktioniert.",
+    "welcome_body_parcel": "Du wählst gleich eine bestehende Parzelle aus. Hier erklären wir dir kurz, wie das funktioniert.",
+    "parcel_heading": "Parzelle auswählen",
+    "parcel_body": "Tippe auf eine Parzelle, um sie auszuwählen. Falls deine Parzelle nicht sichtbar ist, drücke auf «Parzellen laden», um die Parzellen an der aktuellen Kartenposition zu laden.",
+    "welcome_body_edit": "Du bearbeitest gleich die Form eines Schlags. Hier erklären wir dir kurz, wie das funktioniert.",
+    "edit_intro_heading": "Schlag bearbeiten",
+    "edit_intro_body": "Verschiebe die Eckpunkte, um die Form anzupassen. Halte einen Eckpunkt gedrückt und ziehe ihn an die gewünschte Position.",
+    "overlap_heading": "Überlappungen",
+    "overlap_body": "Falls dein neuer Schlag bestehende Schläge überlappt, werden diese automatisch angepasst."
   },
   "animals": {
     "animals": "Tiere",

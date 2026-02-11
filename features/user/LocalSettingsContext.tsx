@@ -16,16 +16,14 @@ import {
 } from "../field-calendar/field-calendar-settings";
 
 type LocalSettingsData = {
-  addPlotMapShowDrawingTip: boolean;
-  addPlotMapShowParcelSelectTip: boolean;
-  editPlotMapShowEditDrawingTipp: boolean;
-  showSelectPlotsOrDrawTip: boolean;
-  showSelectPlotsTip: boolean;
+  editPlotOnboardingCompleted: boolean;
   fieldCalendarGroups: FieldCalendarGroupConfig[];
   fieldCalendarOnboardingCompleted: boolean;
   animalsGroups: AnimalsGroupConfig[];
   animalsOnboardingCompleted: boolean;
   mapDrawOnboardingCompleted: boolean;
+  addPlotDrawOnboardingCompleted: boolean;
+  addPlotParcelOnboardingCompleted: boolean;
 };
 
 type LocalSettingActions = {
@@ -40,16 +38,14 @@ type LocalSettings = {
 } & LocalSettingActions;
 
 const defaultLocalSettings: LocalSettingsData = {
-  addPlotMapShowDrawingTip: true,
-  addPlotMapShowParcelSelectTip: true,
-  editPlotMapShowEditDrawingTipp: true,
-  showSelectPlotsOrDrawTip: true,
-  showSelectPlotsTip: true,
+  editPlotOnboardingCompleted: false,
   fieldCalendarGroups: DEFAULT_FIELD_CALENDAR_GROUPS,
   fieldCalendarOnboardingCompleted: false,
   animalsGroups: DEFAULT_ANIMALS_GROUPS,
   animalsOnboardingCompleted: false,
   mapDrawOnboardingCompleted: false,
+  addPlotDrawOnboardingCompleted: false,
+  addPlotParcelOnboardingCompleted: false,
 };
 
 export const LocalSettingsContext = createContext<LocalSettings>({

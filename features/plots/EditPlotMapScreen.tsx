@@ -1,7 +1,3 @@
-import { Button } from "@/components/buttons/Button";
-import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
-import { Card } from "@/components/card/Card";
-import { Checkbox } from "@/components/inputs/Checkbox";
 import { MapView } from "@/components/map/Map";
 import { MultiPolygon } from "@/components/map/MultiPolygon";
 import {
@@ -12,7 +8,6 @@ import {
 import { deviceHeight, deviceWidth } from "@/constants/Screen";
 import { EditPlotMapScreenProps } from "./navigation/plots-routes";
 import { hexToRgba } from "@/theme/theme";
-import { Subtitle, Title } from "@/theme/Typography";
 import { GeoSpatials } from "@/utils/geo-spatials";
 import { round } from "@/utils/math";
 import { PortalHost } from "@gorhom/portal";
@@ -25,12 +20,10 @@ import {
   PROVIDER_GOOGLE,
   Region,
 } from "react-native-maps";
-import { useSafeAreaFrame } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 import { TopLeftBackButton } from "../map/TopLeftBackButton";
 import { useLocalSettings } from "../user/LocalSettingsContext";
 import { useFarmPlotsQuery } from "./plots.hooks";
-import { useTranslation } from "react-i18next";
 
 export function EditPlotMapScreen({
   navigation,
@@ -45,7 +38,15 @@ export function EditPlotMapScreen({
   const [polygonIndex, setPolygonIndex] = useState(0);
   const [editedCoordinates, setEditedCoordinates] = useState<LatLng[][]>([]);
 
+  const { localSettings } = useLocalSettings();
   const polygonDrawingToolRef = useRef<PolygonDrawingToolActions>(null);
+
+  // Show edit onboarding on first use
+  useEffect(() => {
+    if (!localSettings.editPlotOnboardingCompleted) {
+      navigation.navigate("MapDrawOnboarding", { variant: "edit" });
+    }
+  }, []);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("transitionEnd", () => {
@@ -152,106 +153,11 @@ export function EditPlotMapScreen({
           }}
           magnifierMapContent={plotPolygons}
           onFinish={onFinishDrawing}
+          onInfo={() => navigation.navigate("MapDrawOnboarding", { variant: "edit" })}
         />
       </MapView>
       <PortalHost name="PlotsMap" />
       <TopLeftBackButton />
-
-      <EditAreaTipp />
     </View>
-  );
-}
-
-function EditAreaTipp() {
-  const { t } = useTranslation();
-  const { localSettings, updateLocalSettings } = useLocalSettings();
-  const theme = useTheme();
-  const frame = useSafeAreaFrame();
-  const [showTip, setShowTip] = useState(
-    localSettings.editPlotMapShowEditDrawingTipp,
-  );
-
-  const [visible, setVisible] = useState(
-    localSettings.editPlotMapShowEditDrawingTipp,
-  );
-
-  if (!visible) {
-    return null;
-  }
-
-  function onDone() {
-    if (!showTip) {
-      updateLocalSettings("editPlotMapShowEditDrawingTipp", false);
-    }
-    setVisible(false);
-  }
-  return (
-    <Card
-      style={{
-        position: "absolute",
-        top: frame.height / 2 - 100,
-        left: theme.spacing.m,
-        right: theme.spacing.m,
-      }}
-    >
-      <Title>{t("plots.edit.map.tips.edit_area.heading")}</Title>
-      <View style={{ marginTop: theme.spacing.m }}>
-        <Subtitle style={{ marginBottom: theme.spacing.s }}>
-          {t("plots.edit.map.tips.edit_area.move_markers")}
-        </Subtitle>
-        <View
-          style={{
-            flexDirection: "row",
-            gap: theme.spacing.s,
-            marginBottom: theme.spacing.s,
-            justifyContent: "center",
-          }}
-        >
-          <MaterialCommunityIconButton
-            style={{
-              width: 45,
-              backgroundColor: "white",
-              alignSelf: "center",
-            }}
-            type="accent"
-            color="black"
-            iconSize={30}
-            icon="vector-polyline-plus"
-          />
-          <MaterialCommunityIconButton
-            style={{
-              width: 45,
-              backgroundColor: "white",
-              alignSelf: "center",
-            }}
-            type="accent"
-            color="black"
-            iconSize={30}
-            icon="check"
-          />
-        </View>
-        <Subtitle>{t("plots.common.draw_area_overlap_info")}</Subtitle>
-      </View>
-      <View style={{ marginTop: theme.spacing.l }}>
-        <View
-          style={{
-            flexDirection: "row",
-            gap: theme.spacing.m,
-            justifyContent: "center",
-            marginBottom: theme.spacing.m,
-          }}
-        >
-          <Subtitle>{t("common.dont_show_again")}</Subtitle>
-          <Checkbox
-            checked={!showTip}
-            onPress={() => {
-              setShowTip((prev) => !prev);
-            }}
-          />
-        </View>
-
-        <Button fontSize={16} title={t("buttons.ok")} onPress={onDone} />
-      </View>
-    </Card>
   );
 }

@@ -16,12 +16,10 @@ const RESETTABLE_KEYS = [
   { key: "animalsOnboardingCompleted", label: "Animals Onboarding" },
   { key: "fieldCalendarGroups", label: "Field Calendar Groups" },
   { key: "animalsGroups", label: "Animals Groups" },
-  { key: "addPlotMapShowDrawingTip", label: "Plot Map Drawing Tip" },
-  { key: "addPlotMapShowParcelSelectTip", label: "Plot Map Parcel Select Tip" },
-  { key: "editPlotMapShowEditDrawingTipp", label: "Edit Plot Map Drawing Tip" },
-  { key: "showSelectPlotsOrDrawTip", label: "Select Plots Or Draw Tip" },
-  { key: "showSelectPlotsTip", label: "Select Plots Tip" },
+  { key: "editPlotOnboardingCompleted", label: "Edit Plot Onboarding" },
   { key: "mapDrawOnboardingCompleted", label: "Map Draw Onboarding" },
+  { key: "addPlotDrawOnboardingCompleted", label: "Add Plot Draw Onboarding" },
+  { key: "addPlotParcelOnboardingCompleted", label: "Add Plot Parcel Onboarding" },
 ] as const;
 
 type ResettableKey = (typeof RESETTABLE_KEYS)[number]["key"];

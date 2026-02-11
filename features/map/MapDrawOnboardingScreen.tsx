@@ -9,9 +9,8 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { NavigationButton } from "../onboarding/NavigationButton";
 import { Stepper } from "../onboarding/Stepper";
 import { useLocalSettings } from "../user/LocalSettingsContext";
-import { useNavigation } from "@react-navigation/native";
-
-const TOTAL_STEPS = 4;
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
+import { RootStackParamList } from "@/navigation/rootStackTypes";
 
 function IconBadge({ name }: { name: keyof typeof MaterialCommunityIcons.glyphMap }) {
   return (
@@ -34,17 +33,48 @@ function IconBadge({ name }: { name: keyof typeof MaterialCommunityIcons.glyphMa
   );
 }
 
+type Step = "welcome" | "select" | "draw" | "finish" | "overlap" | "parcel" | "editIntro";
+
+function getSteps(variant?: "draw" | "parcel" | "edit"): Step[] {
+  switch (variant) {
+    case "draw":
+      return ["welcome", "draw", "finish", "overlap"];
+    case "parcel":
+      return ["welcome", "parcel", "overlap"];
+    case "edit":
+      return ["welcome", "editIntro", "finish", "overlap"];
+    default:
+      return ["welcome", "select", "draw", "finish"];
+  }
+}
+
 export function MapDrawOnboardingScreen() {
   const theme = useTheme();
   const { t } = useTranslation();
   const { updateLocalSettings } = useLocalSettings();
   const navigation = useNavigation();
-  const [step, setStep] = useState(1);
+  const route = useRoute<RouteProp<RootStackParamList, "MapDrawOnboarding">>();
+  const variant = route.params?.variant;
+
+  const steps = getSteps(variant);
+
+  const totalSteps = steps.length;
+  const [stepIndex, setStepIndex] = useState(0);
+  const currentStep = steps[stepIndex];
+
+  // Each variant has its own onboarding key
+  const onboardingKey = variant === "draw"
+    ? "addPlotDrawOnboardingCompleted"
+    : variant === "parcel"
+      ? "addPlotParcelOnboardingCompleted"
+      : variant === "edit"
+        ? "editPlotOnboardingCompleted"
+        : "mapDrawOnboardingCompleted";
 
   // Mark completed on any dismissal (swipe down, back gesture, finish button)
   useEffect(() => {
     const unsubscribe = navigation.addListener("beforeRemove", () => {
-      updateLocalSettings("mapDrawOnboardingCompleted", true);
+      updateLocalSettings(onboardingKey, true);
     });
     return unsubscribe;
   }, [navigation]);
@@ -64,27 +94,27 @@ export function MapDrawOnboardingScreen() {
             borderTopColor: theme.colors.gray4,
           }}
         >
-          <Stepper totalSteps={TOTAL_STEPS} currentStep={step} />
+          <Stepper totalSteps={totalSteps} currentStep={stepIndex + 1} />
           <View
             style={{
               flexDirection: "row",
               alignItems: "center",
-              justifyContent: step > 1 ? "space-between" : "flex-end",
+              justifyContent: stepIndex > 0 ? "space-between" : "flex-end",
               marginHorizontal: theme.spacing.m,
             }}
           >
-            {step > 1 && (
+            {stepIndex > 0 && (
               <NavigationButton
                 title={t("buttons.back")}
                 icon="arrow-back-circle-outline"
-                onPress={() => setStep((s) => s - 1)}
+                onPress={() => setStepIndex((s) => s - 1)}
               />
             )}
-            {step < TOTAL_STEPS ? (
+            {stepIndex < totalSteps - 1 ? (
               <NavigationButton
                 title={t("buttons.next")}
                 icon="arrow-forward-circle-outline"
-                onPress={() => setStep((s) => s + 1)}
+                onPress={() => setStepIndex((s) => s + 1)}
               />
             ) : (
               <NavigationButton
@@ -105,7 +135,7 @@ export function MapDrawOnboardingScreen() {
           paddingHorizontal: theme.spacing.l,
         }}
       >
-        {step === 1 && (
+        {currentStep === "welcome" && (
           <View style={{ alignItems: "center" }}>
             <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
               {t("map_draw_onboarding.welcome_heading")}
@@ -117,12 +147,18 @@ export function MapDrawOnboardingScreen() {
                 textAlign: "center",
               }}
             >
-              {t("map_draw_onboarding.welcome_body")}
+              {t(variant === "draw"
+                ? "map_draw_onboarding.welcome_body_draw"
+                : variant === "parcel"
+                  ? "map_draw_onboarding.welcome_body_parcel"
+                  : variant === "edit"
+                    ? "map_draw_onboarding.welcome_body_edit"
+                    : "map_draw_onboarding.welcome_body")}
             </H3>
           </View>
         )}
 
-        {step === 2 && (
+        {currentStep === "select" && (
           <View style={{ alignItems: "center" }}>
             <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
               {t("map_draw_onboarding.select_heading")}
@@ -139,7 +175,41 @@ export function MapDrawOnboardingScreen() {
           </View>
         )}
 
-        {step === 3 && (
+        {currentStep === "parcel" && (
+          <View style={{ alignItems: "center" }}>
+            <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
+              {t("map_draw_onboarding.parcel_heading")}
+            </H1>
+            <H3
+              style={{
+                color: theme.colors.primary,
+                marginTop: theme.spacing.s,
+                textAlign: "center",
+              }}
+            >
+              {t("map_draw_onboarding.parcel_body")}
+            </H3>
+          </View>
+        )}
+
+        {currentStep === "editIntro" && (
+          <View style={{ alignItems: "center" }}>
+            <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
+              {t("map_draw_onboarding.edit_intro_heading")}
+            </H1>
+            <H3
+              style={{
+                color: theme.colors.primary,
+                marginTop: theme.spacing.s,
+                textAlign: "center",
+              }}
+            >
+              {t("map_draw_onboarding.edit_intro_body")}
+            </H3>
+          </View>
+        )}
+
+        {currentStep === "draw" && (
           <View style={{ alignItems: "center" }}>
             <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
               {t("map_draw_onboarding.draw_heading")}
@@ -156,7 +226,7 @@ export function MapDrawOnboardingScreen() {
           </View>
         )}
 
-        {step === 4 && (
+        {currentStep === "finish" && (
           <View style={{ alignItems: "center" }}>
             <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
               {t("map_draw_onboarding.finish_heading")}
@@ -169,6 +239,23 @@ export function MapDrawOnboardingScreen() {
               }}
             >
               {t("map_draw_onboarding.finish_body")}
+            </H3>
+          </View>
+        )}
+
+        {currentStep === "overlap" && (
+          <View style={{ alignItems: "center" }}>
+            <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
+              {t("map_draw_onboarding.overlap_heading")}
+            </H1>
+            <H3
+              style={{
+                color: theme.colors.primary,
+                marginTop: theme.spacing.s,
+                textAlign: "center",
+              }}
+            >
+              {t("map_draw_onboarding.overlap_body")}
             </H3>
           </View>
         )}

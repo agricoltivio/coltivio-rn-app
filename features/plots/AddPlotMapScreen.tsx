@@ -1,9 +1,7 @@
 import { Button } from "@/components/buttons/Button";
-import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import { Card } from "@/components/card/Card";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
-import { Checkbox } from "@/components/inputs/Checkbox";
 import { MapView } from "@/components/map/Map";
 import { MultiPolygon } from "@/components/map/MultiPolygon";
 import {
@@ -42,7 +40,6 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
   const { plots } = useFarmPlotsQuery();
   const [mapVisible, setMapVisible] = useState(false);
   const [showModeSelect, setShowModeSelect] = useState(true);
-  const [showModeInfo, setShowModeInfo] = useState(false);
   const [showsUserLocation, setShowsUserLocation] = useState<boolean>(false);
 
   const [mode, setMode] = useState<"parcel" | "custom" | "none">("none");
@@ -110,15 +107,25 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
     }
   };
 
+  const { localSettings } = useLocalSettings();
+
   function handleModeSelect(mode: "parcel" | "custom") {
     setShowModeSelect(false);
-    setShowModeInfo(true);
     setMode(mode);
     if (mode === "custom") {
       setDrawingAction("draw");
+      // Show the draw onboarding modal on first use
+      if (!localSettings.addPlotDrawOnboardingCompleted) {
+        navigation.navigate("MapDrawOnboarding", { variant: "draw" });
+      }
     }
-    if (mode === "parcel" && currentRegion) {
-      setCurrentViewPoint(GeoSpatials.getRegionCenter(currentRegion));
+    if (mode === "parcel") {
+      if (!localSettings.addPlotParcelOnboardingCompleted) {
+        navigation.navigate("MapDrawOnboarding", { variant: "parcel" });
+      }
+      if (currentRegion) {
+        setCurrentViewPoint(GeoSpatials.getRegionCenter(currentRegion));
+      }
     }
   }
 
@@ -272,6 +279,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
             }}
             magnifierMapContent={plotPolygons}
             onFinish={onFinishDrawing}
+            onInfo={() => navigation.navigate("MapDrawOnboarding", { variant: "draw" })}
           />
         ) : null}
       </MapView>
@@ -321,10 +329,6 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
           </View>
         </Card>
       ) : null}
-      {showModeInfo && mode === "parcel" ? <ParcelSelectTipp /> : null}
-
-      {showModeInfo && mode === "custom" ? <DrawingTipp /> : null}
-
       <BottomActionContainer floating>
         <Button
           disabled={!newPolygon}
@@ -335,146 +339,4 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
     </ContentView>
   );
 }
-function ParcelSelectTipp() {
-  const { t } = useTranslation();
-  const { localSettings, updateLocalSettings } = useLocalSettings();
-  const theme = useTheme();
-  const frame = useSafeAreaFrame();
-  const [showTip, setShowTip] = useState(
-    localSettings.addPlotMapShowParcelSelectTip
-  );
 
-  const [visible, setVisible] = useState(
-    localSettings.addPlotMapShowParcelSelectTip
-  );
-
-  if (!visible) {
-    return null;
-  }
-
-  function onDone() {
-    if (!showTip) {
-      updateLocalSettings("addPlotMapShowParcelSelectTip", false);
-    }
-    setVisible(false);
-  }
-  return (
-    <Card
-      style={{
-        position: "absolute",
-        top: frame.height / 2 - 100,
-        left: theme.spacing.m,
-        right: theme.spacing.m,
-      }}
-    >
-      <Title>{t("plots.add.map.tips.parcel_select.heading")}</Title>
-      <View style={{ marginTop: theme.spacing.m }}>
-        <Subtitle>
-          {t("plots.add.map.tips.parcel_select.overlap_info")}
-        </Subtitle>
-      </View>
-      <View style={{ marginTop: theme.spacing.l }}>
-        <View
-          style={{
-            flexDirection: "row",
-            gap: theme.spacing.m,
-            justifyContent: "center",
-            marginBottom: theme.spacing.m,
-          }}
-        >
-          <Subtitle>{t("common.dont_show_again")}</Subtitle>
-          <Checkbox
-            checked={!showTip}
-            onPress={() => {
-              setShowTip((prev) => !prev);
-            }}
-          />
-        </View>
-
-        <Button fontSize={16} title={t("buttons.ok")} onPress={onDone} />
-      </View>
-    </Card>
-  );
-}
-
-function DrawingTipp() {
-  const { t } = useTranslation();
-  const { localSettings, updateLocalSettings } = useLocalSettings();
-  const theme = useTheme();
-  const frame = useSafeAreaFrame();
-  const [showTip, setShowTip] = useState(
-    localSettings.addPlotMapShowDrawingTip
-  );
-
-  const [visible, setVisible] = useState(
-    localSettings.addPlotMapShowDrawingTip
-  );
-
-  if (!visible) {
-    return null;
-  }
-
-  function onDone() {
-    if (!showTip) {
-      updateLocalSettings("addPlotMapShowDrawingTip", false);
-    }
-    setVisible(false);
-  }
-  return (
-    <Card
-      style={{
-        position: "absolute",
-        top: frame.height / 2 - 200,
-        left: theme.spacing.m,
-        right: theme.spacing.m,
-      }}
-    >
-      <Title>{t("plots.add.map.tips.draw_area.heading")}</Title>
-      <View style={{ marginTop: theme.spacing.m }}>
-        <Subtitle style={{ marginBottom: theme.spacing.s }}>
-          {t("plots.add.map.tips.draw_area.drawing_info")}
-        </Subtitle>
-        <View
-          style={{
-            // flexDirection: "row",
-            gap: theme.spacing.m,
-            justifyContent: "center",
-          }}
-        >
-          <Subtitle>{t("plots.add.map.tips.draw_area.finish")}</Subtitle>
-          <MaterialCommunityIconButton
-            style={{
-              width: 45,
-              backgroundColor: "white",
-              alignSelf: "center",
-            }}
-            type="accent"
-            color="black"
-            iconSize={30}
-            icon="check"
-          />
-        </View>
-      </View>
-      <View style={{ marginTop: theme.spacing.m }}>
-        <View
-          style={{
-            flexDirection: "row",
-            gap: theme.spacing.m,
-            justifyContent: "center",
-            marginBottom: theme.spacing.m,
-          }}
-        >
-          <Subtitle>{t("common.dont_show_again")}</Subtitle>
-          <Checkbox
-            checked={!showTip}
-            onPress={() => {
-              setShowTip((prev) => !prev);
-            }}
-          />
-        </View>
-
-        <Button fontSize={16} title={t("buttons.ok")} onPress={onDone} />
-      </View>
-    </Card>
-  );
-}
