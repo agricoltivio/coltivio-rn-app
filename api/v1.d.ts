@@ -1172,6 +1172,86 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/animals/outdoorJournal": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1AnimalsOutdoorJournal"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1AnimalsOutdoorJournal"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/animals/herds": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1AnimalsHerds"];
+        put?: never;
+        post: operations["PostV1AnimalsHerds"];
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1AnimalsHerds"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/animals/herds/byId/{herdId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1AnimalsHerdsByIdHerdId"];
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1AnimalsHerdsByIdHerdId"];
+        options?: never;
+        head: operations["HeadV1AnimalsHerdsByIdHerdId"];
+        patch: operations["PatchV1AnimalsHerdsByIdHerdId"];
+        trace?: never;
+    };
+    "/v1/animals/herds/byId/{herdId}/outdoorSchedules": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1AnimalsHerdsByIdHerdIdOutdoorSchedules"];
+        put?: never;
+        post: operations["PostV1AnimalsHerdsByIdHerdIdOutdoorSchedules"];
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1AnimalsHerdsByIdHerdIdOutdoorSchedules"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/animals/herds/outdoorSchedules/byId/{outdoorScheduleId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleId"];
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleId"];
+        options?: never;
+        head: operations["HeadV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleId"];
+        patch: operations["PatchV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleId"];
+        trace?: never;
+    };
     "/v1/earTags": {
         parameters: {
             query?: never;
@@ -4584,6 +4664,11 @@ export interface components {
                      */
                     dateOfBirth: string;
                     registered: boolean;
+                    requiresCategoryOverride: boolean | null;
+                    /** @enum {string|null} */
+                    categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
                     earTagId: string | null;
                     earTag: {
                         id: string;
@@ -4620,6 +4705,11 @@ export interface components {
                  */
                 dateOfBirth: string;
                 registered: boolean;
+                requiresCategoryOverride: boolean | null;
+                /** @enum {string|null} */
+                categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                /** @enum {string} */
+                usage: "milk" | "other";
                 earTagId: string | null;
                 earTag: {
                     id: string;
@@ -4650,6 +4740,10 @@ export interface components {
              */
             dateOfBirth: string;
             registered: boolean;
+            /** @enum {string|null} */
+            categoryOverride?: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+            /** @enum {string} */
+            usage: "milk" | "other";
             earTagId?: string | null;
             motherId?: string | null;
             fatherId?: string | null;
@@ -4660,6 +4754,7 @@ export interface components {
             dateOfDeath?: string | null;
             /** @enum {string|null} */
             deathReason?: "died" | "slaughtered" | null;
+            herdId?: string | null;
         };
         PatchV1AnimalsBatchPositiveResponse: {
             data: {
@@ -4677,6 +4772,11 @@ export interface components {
                      */
                     dateOfBirth: string;
                     registered: boolean;
+                    requiresCategoryOverride: boolean | null;
+                    /** @enum {string|null} */
+                    categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
                     earTagId: string | null;
                     earTag: {
                         id: string;
@@ -4710,6 +4810,10 @@ export interface components {
                  */
                 dateOfBirth?: string;
                 registered?: boolean;
+                /** @enum {string|null} */
+                categoryOverride?: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                /** @enum {string} */
+                usage?: "milk" | "other";
                 earTagId?: string | null;
                 motherId?: string | null;
                 fatherId?: string | null;
@@ -4720,6 +4824,7 @@ export interface components {
                 dateOfDeath?: string | null;
                 /** @enum {string|null} */
                 deathReason?: "died" | "slaughtered" | null;
+                herdId?: string | null;
                 id: string;
             }[];
         };
@@ -4760,6 +4865,11 @@ export interface components {
                  */
                 dateOfBirth: string;
                 registered: boolean;
+                requiresCategoryOverride: boolean | null;
+                /** @enum {string|null} */
+                categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                /** @enum {string} */
+                usage: "milk" | "other";
                 earTagId: string | null;
                 earTag: {
                     id: string;
@@ -4790,6 +4900,11 @@ export interface components {
                      */
                     dateOfBirth: string;
                     registered: boolean;
+                    requiresCategoryOverride: boolean | null;
+                    /** @enum {string|null} */
+                    categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
                     earTagId: string | null;
                     earTag: {
                         id: string;
@@ -4821,6 +4936,11 @@ export interface components {
                      */
                     dateOfBirth: string;
                     registered: boolean;
+                    requiresCategoryOverride: boolean | null;
+                    /** @enum {string|null} */
+                    categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
                     earTagId: string | null;
                     earTag: {
                         id: string;
@@ -4852,6 +4972,11 @@ export interface components {
                      */
                     dateOfBirth: string;
                     registered: boolean;
+                    requiresCategoryOverride: boolean | null;
+                    /** @enum {string|null} */
+                    categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
                     earTagId: string | null;
                     earTag: {
                         id: string;
@@ -4883,6 +5008,11 @@ export interface components {
                      */
                     dateOfBirth: string;
                     registered: boolean;
+                    requiresCategoryOverride: boolean | null;
+                    /** @enum {string|null} */
+                    categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
                     earTagId: string | null;
                     earTag: {
                         id: string;
@@ -4943,6 +5073,7 @@ export interface components {
                 }[];
                 herd?: {
                     id: string;
+                    farmId: string;
                     name: string;
                 } | null;
             };
@@ -4962,6 +5093,11 @@ export interface components {
                  */
                 dateOfBirth: string;
                 registered: boolean;
+                requiresCategoryOverride: boolean | null;
+                /** @enum {string|null} */
+                categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                /** @enum {string} */
+                usage: "milk" | "other";
                 earTagId: string | null;
                 earTag: {
                     id: string;
@@ -4992,6 +5128,10 @@ export interface components {
              */
             dateOfBirth?: string;
             registered?: boolean;
+            /** @enum {string|null} */
+            categoryOverride?: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+            /** @enum {string} */
+            usage?: "milk" | "other";
             earTagId?: string | null;
             motherId?: string | null;
             fatherId?: string | null;
@@ -5002,6 +5142,7 @@ export interface components {
             dateOfDeath?: string | null;
             /** @enum {string|null} */
             deathReason?: "died" | "slaughtered" | null;
+            herdId?: string | null;
         };
         DeleteV1AnimalsByIdAnimalIdPositiveResponse: {
             data: Record<string, never>;
@@ -5022,6 +5163,11 @@ export interface components {
                      */
                     dateOfBirth: string;
                     registered: boolean;
+                    requiresCategoryOverride: boolean | null;
+                    /** @enum {string|null} */
+                    categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
                     earTagId: string | null;
                     earTag: {
                         id: string;
@@ -5107,6 +5253,354 @@ export interface components {
                 count: number;
             };
         };
+        GetV1AnimalsOutdoorJournalPositiveResponse: {
+            data: {
+                entries: {
+                    /** @enum {string} */
+                    category: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2";
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    startDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    endDate: string;
+                    animalCount: number;
+                }[];
+                uncategorizedAnimalCount: number;
+            };
+        };
+        GetV1AnimalsHerdsPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    animals: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        /** @enum {string} */
+                        type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                        /** @enum {string} */
+                        sex: "male" | "female";
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        dateOfBirth: string;
+                        registered: boolean;
+                        requiresCategoryOverride: boolean | null;
+                        /** @enum {string|null} */
+                        categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                        /** @enum {string} */
+                        usage: "milk" | "other";
+                        earTagId: string | null;
+                        earTag: {
+                            id: string;
+                            farmId: string;
+                            number: string;
+                        } | null;
+                        motherId: string | null;
+                        fatherId: string | null;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        dateOfDeath: string | null;
+                        /** @enum {string|null} */
+                        deathReason: "died" | "slaughtered" | null;
+                        herdId: string | null;
+                    }[];
+                    outdoorSchedules: {
+                        id: string;
+                        farmId: string;
+                        herdId: string;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        startDate: string;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        endDate: string | null;
+                        notes: string | null;
+                        recurrence: {
+                            id: string;
+                            /** @enum {string} */
+                            frequency: "weekly" | "monthly" | "yearly";
+                            interval: number;
+                            byWeekday: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                            byMonthDay: number | null;
+                            until: string | null;
+                            count: number | null;
+                        } | null;
+                    }[];
+                }[];
+                count: number;
+            };
+        };
+        PostV1AnimalsHerdsPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+            };
+        };
+        PostV1AnimalsHerdsRequestBody: {
+            name: string;
+            animalIds: string[];
+        };
+        GetV1AnimalsHerdsByIdHerdIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                animals: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    /** @enum {string} */
+                    type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                    /** @enum {string} */
+                    sex: "male" | "female";
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfBirth: string;
+                    registered: boolean;
+                    requiresCategoryOverride: boolean | null;
+                    /** @enum {string|null} */
+                    categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
+                    earTagId: string | null;
+                    earTag: {
+                        id: string;
+                        farmId: string;
+                        number: string;
+                    } | null;
+                    motherId: string | null;
+                    fatherId: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfDeath: string | null;
+                    /** @enum {string|null} */
+                    deathReason: "died" | "slaughtered" | null;
+                    herdId: string | null;
+                }[];
+                outdoorSchedules: {
+                    id: string;
+                    farmId: string;
+                    herdId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    startDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    endDate: string | null;
+                    notes: string | null;
+                    recurrence: {
+                        id: string;
+                        /** @enum {string} */
+                        frequency: "weekly" | "monthly" | "yearly";
+                        interval: number;
+                        byWeekday: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                        byMonthDay: number | null;
+                        until: string | null;
+                        count: number | null;
+                    } | null;
+                }[];
+            };
+        };
+        PatchV1AnimalsHerdsByIdHerdIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+            };
+        };
+        PatchV1AnimalsHerdsByIdHerdIdRequestBody: {
+            name?: string;
+            animalIds?: string[];
+        };
+        DeleteV1AnimalsHerdsByIdHerdIdPositiveResponse: {
+            data: Record<string, never>;
+        };
+        GetV1AnimalsHerdsByIdHerdIdOutdoorSchedulesPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    herdId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    startDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    endDate: string | null;
+                    notes: string | null;
+                    recurrence: {
+                        id: string;
+                        /** @enum {string} */
+                        frequency: "weekly" | "monthly" | "yearly";
+                        interval: number;
+                        byWeekday: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                        byMonthDay: number | null;
+                        until: string | null;
+                        count: number | null;
+                    } | null;
+                }[];
+                count: number;
+            };
+        };
+        PostV1AnimalsHerdsByIdHerdIdOutdoorSchedulesPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                herdId: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate: string | null;
+                notes: string | null;
+                recurrence: {
+                    id: string;
+                    /** @enum {string} */
+                    frequency: "weekly" | "monthly" | "yearly";
+                    interval: number;
+                    byWeekday: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                    byMonthDay: number | null;
+                    until: string | null;
+                    count: number | null;
+                } | null;
+            };
+        };
+        PostV1AnimalsHerdsByIdHerdIdOutdoorSchedulesRequestBody: {
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            startDate: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            endDate?: string | null;
+            notes?: string | null;
+            recurrence?: {
+                /** @enum {string} */
+                frequency: "weekly" | "monthly" | "yearly";
+                interval: number;
+                byWeekday?: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                byMonthDay?: number | null;
+                until?: string | null;
+                count?: number | null;
+            } | null;
+        };
+        GetV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                herdId: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate: string | null;
+                notes: string | null;
+                recurrence: {
+                    id: string;
+                    /** @enum {string} */
+                    frequency: "weekly" | "monthly" | "yearly";
+                    interval: number;
+                    byWeekday: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                    byMonthDay: number | null;
+                    until: string | null;
+                    count: number | null;
+                } | null;
+            };
+        };
+        PatchV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                herdId: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate: string | null;
+                notes: string | null;
+                recurrence: {
+                    id: string;
+                    /** @enum {string} */
+                    frequency: "weekly" | "monthly" | "yearly";
+                    interval: number;
+                    byWeekday: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                    byMonthDay: number | null;
+                    until: string | null;
+                    count: number | null;
+                } | null;
+            };
+        };
+        PatchV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleIdRequestBody: {
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            startDate?: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            endDate?: string | null;
+            notes?: string | null;
+            recurrence?: {
+                /** @enum {string} */
+                frequency: "weekly" | "monthly" | "yearly";
+                interval: number;
+                byWeekday?: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                byMonthDay?: number | null;
+                until?: string | null;
+                count?: number | null;
+            } | null;
+        };
+        DeleteV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleIdPositiveResponse: {
+            data: Record<string, never>;
+        };
         GetV1EarTagsPositiveResponse: {
             data: {
                 result: {
@@ -5127,6 +5621,11 @@ export interface components {
                          */
                         dateOfBirth: string;
                         registered: boolean;
+                        requiresCategoryOverride: boolean | null;
+                        /** @enum {string|null} */
+                        categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                        /** @enum {string} */
+                        usage: "milk" | "other";
                         earTagId: string | null;
                         earTag: {
                             id: string;
@@ -5376,6 +5875,11 @@ export interface components {
                          */
                         dateOfBirth: string;
                         registered: boolean;
+                        requiresCategoryOverride: boolean | null;
+                        /** @enum {string|null} */
+                        categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                        /** @enum {string} */
+                        usage: "milk" | "other";
                         earTagId: string | null;
                         earTag: {
                             id: string;
@@ -5551,6 +6055,11 @@ export interface components {
                      */
                     dateOfBirth: string;
                     registered: boolean;
+                    requiresCategoryOverride: boolean | null;
+                    /** @enum {string|null} */
+                    categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
                     earTagId: string | null;
                     earTag: {
                         id: string;
@@ -5784,6 +6293,11 @@ export interface components {
                          */
                         dateOfBirth: string;
                         registered: boolean;
+                        requiresCategoryOverride: boolean | null;
+                        /** @enum {string|null} */
+                        categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                        /** @enum {string} */
+                        usage: "milk" | "other";
                         earTagId: string | null;
                         motherId: string | null;
                         fatherId: string | null;
@@ -5951,6 +6465,11 @@ export interface components {
                          */
                         dateOfBirth: string;
                         registered: boolean;
+                        requiresCategoryOverride: boolean | null;
+                        /** @enum {string|null} */
+                        categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                        /** @enum {string} */
+                        usage: "milk" | "other";
                         earTagId: string | null;
                         motherId: string | null;
                         fatherId: string | null;
@@ -6735,6 +7254,11 @@ export interface components {
                          */
                         dateOfBirth: string;
                         registered: boolean;
+                        requiresCategoryOverride: boolean | null;
+                        /** @enum {string|null} */
+                        categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                        /** @enum {string} */
+                        usage: "milk" | "other";
                         earTagId: string | null;
                         motherId: string | null;
                         fatherId: string | null;
@@ -6863,6 +7387,11 @@ export interface components {
                      */
                     dateOfBirth: string;
                     registered: boolean;
+                    requiresCategoryOverride: boolean | null;
+                    /** @enum {string|null} */
+                    categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
                     earTagId: string | null;
                     motherId: string | null;
                     fatherId: string | null;
@@ -12617,6 +13146,513 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    GetV1AnimalsOutdoorJournal: {
+        parameters: {
+            query: {
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                fromDate: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                toDate: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/animals/outdoorJournal Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1AnimalsOutdoorJournalPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/animals/outdoorJournal Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1AnimalsOutdoorJournal: {
+        parameters: {
+            query: {
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                fromDate: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                toDate: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/animals/outdoorJournal Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/animals/outdoorJournal Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1AnimalsHerds: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/animals/herds Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1AnimalsHerdsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/animals/herds Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1AnimalsHerds: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/animals/herds Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1AnimalsHerdsRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/animals/herds Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1AnimalsHerdsPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/animals/herds Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1AnimalsHerds: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/animals/herds Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/animals/herds Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1AnimalsHerdsByIdHerdId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/animals/herds/byId/:herdId Parameter */
+                herdId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/animals/herds/byId/:herdId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1AnimalsHerdsByIdHerdIdPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/animals/herds/byId/:herdId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1AnimalsHerdsByIdHerdId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description DELETE /v1/animals/herds/byId/:herdId Parameter */
+                herdId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/animals/herds/byId/:herdId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1AnimalsHerdsByIdHerdIdPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/animals/herds/byId/:herdId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1AnimalsHerdsByIdHerdId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/animals/herds/byId/:herdId Parameter */
+                herdId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/animals/herds/byId/:herdId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/animals/herds/byId/:herdId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1AnimalsHerdsByIdHerdId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/animals/herds/byId/:herdId Parameter */
+                herdId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/animals/herds/byId/:herdId Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchV1AnimalsHerdsByIdHerdIdRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/animals/herds/byId/:herdId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1AnimalsHerdsByIdHerdIdPositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/animals/herds/byId/:herdId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    GetV1AnimalsHerdsByIdHerdIdOutdoorSchedules: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/animals/herds/byId/:herdId/outdoorSchedules Parameter */
+                herdId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/animals/herds/byId/:herdId/outdoorSchedules Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1AnimalsHerdsByIdHerdIdOutdoorSchedulesPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/animals/herds/byId/:herdId/outdoorSchedules Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1AnimalsHerdsByIdHerdIdOutdoorSchedules: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description POST /v1/animals/herds/byId/:herdId/outdoorSchedules Parameter */
+                herdId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description POST /v1/animals/herds/byId/:herdId/outdoorSchedules Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1AnimalsHerdsByIdHerdIdOutdoorSchedulesRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/animals/herds/byId/:herdId/outdoorSchedules Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1AnimalsHerdsByIdHerdIdOutdoorSchedulesPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/animals/herds/byId/:herdId/outdoorSchedules Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1AnimalsHerdsByIdHerdIdOutdoorSchedules: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/animals/herds/byId/:herdId/outdoorSchedules Parameter */
+                herdId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/animals/herds/byId/:herdId/outdoorSchedules Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/animals/herds/byId/:herdId/outdoorSchedules Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Parameter */
+                outdoorScheduleId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleIdPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description DELETE /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Parameter */
+                outdoorScheduleId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleIdPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Parameter */
+                outdoorScheduleId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Parameter */
+                outdoorScheduleId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleIdRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleIdPositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
             };
         };
     };

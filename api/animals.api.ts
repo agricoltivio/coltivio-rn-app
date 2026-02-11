@@ -29,6 +29,12 @@ export type AnimalBatchUpdateInput =
 export type AnimalBatchUpdateResponse =
   components["schemas"]["PatchV1AnimalsBatchPositiveResponse"]["data"];
 
+export type AnimalImportInput =
+  components["schemas"]["PostV1AnimalsImportRequestBody"];
+
+export type AnimalImportResponse =
+  components["schemas"]["PostV1AnimalsImportPositiveResponse"]["data"];
+
 export function animalsApi(client: FetchClient) {
   return {
     async getAnimals(
@@ -96,6 +102,22 @@ export function animalsApi(client: FetchClient) {
     ): Promise<AnimalBatchUpdateResponse> {
       const { data } = await client.PATCH("/v1/animals/batch", {
         body: input,
+      });
+      return data!.data;
+    },
+
+    async importAnimals(body: AnimalImportInput): Promise<AnimalImportResponse> {
+      const { data } = await client.POST("/v1/animals/import", {
+        body,
+        bodySerializer: (body) => {
+          const formData = new FormData();
+          formData.append("file", body.file as unknown as Blob);
+          formData.append("type", body.type);
+          if (body.skipHeaderRow) {
+            formData.append("skipHeaderRow", body.skipHeaderRow);
+          }
+          return formData;
+        },
       });
       return data!.data;
     },

@@ -14,6 +14,7 @@ import {
   DEFAULT_FIELD_CALENDAR_GROUPS,
   FieldCalendarGroupConfig,
 } from "../field-calendar/field-calendar-settings";
+import { merge } from "lodash";
 
 type LocalSettingsData = {
   editPlotOnboardingCompleted: boolean;
@@ -29,7 +30,7 @@ type LocalSettingsData = {
 type LocalSettingActions = {
   updateLocalSettings: <K extends keyof LocalSettingsData>(
     setting: K,
-    value: LocalSettingsData[K]
+    value: LocalSettingsData[K],
   ) => void;
 };
 
@@ -67,7 +68,7 @@ export function LocalSettingsProvider({ children }: PropsWithChildren) {
       if (isMounted) {
         setLoading(false);
         if (value) {
-          setLocalSettings({ ...defaultLocalSettings, ...JSON.parse(value) });
+          setLocalSettings(merge({}, defaultLocalSettings, JSON.parse(value)));
         }
       }
     });
@@ -79,12 +80,12 @@ export function LocalSettingsProvider({ children }: PropsWithChildren) {
 
   function updateLocalSettings<K extends keyof LocalSettingsData>(
     setting: K,
-    value: LocalSettingsData[K]
+    value: LocalSettingsData[K],
   ) {
     setLocalSettings((prev) => ({ ...prev, [setting]: value }));
     AsyncStorage.setItem(
       localSettingsStorageKey,
-      JSON.stringify({ ...localSettings, [setting]: value })
+      JSON.stringify({ ...localSettings, [setting]: value }),
     );
   }
 

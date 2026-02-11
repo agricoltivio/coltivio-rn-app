@@ -39,6 +39,7 @@ export function SelectAnimalsModal({
     new Set(initialSelectedIds),
   );
   const [selectedTypes, setSelectedTypes] = useState<Set<string>>(new Set());
+  const [showSelectedOnly, setShowSelectedOnly] = useState(false);
   const [birthdayFrom, setBirthdayFrom] = useState<Date | null>(null);
   const [birthdayTo, setBirthdayTo] = useState<Date | null>(null);
   const [showDateRangeModal, setShowDateRangeModal] = useState(false);
@@ -60,6 +61,11 @@ export function SelectAnimalsModal({
       result = result.filter((a) => selectedTypes.has(a.type));
     }
 
+    // Filter by selected only
+    if (showSelectedOnly) {
+      result = result.filter((a) => selectedIds.has(a.id));
+    }
+
     // Filter by birthday range
     if (birthdayFrom) {
       result = result.filter((a) => new Date(a.dateOfBirth) >= birthdayFrom);
@@ -69,7 +75,7 @@ export function SelectAnimalsModal({
     }
 
     return result.sort((a, b) => a.name.localeCompare(b.name));
-  }, [animals, selectedTypes, birthdayFrom, birthdayTo]);
+  }, [animals, selectedTypes, showSelectedOnly, selectedIds, birthdayFrom, birthdayTo]);
 
   // Fuse.js search
   const fuse = new Fuse(filteredAnimals, {
@@ -164,7 +170,7 @@ export function SelectAnimalsModal({
               count: selectedIds.size,
             })}
             onPress={handleConfirm}
-            disabled={selectedIds.size === 0}
+            disabled={false}
           />
         </BottomActionContainer>
       }
@@ -188,6 +194,12 @@ export function SelectAnimalsModal({
         style={{ marginTop: theme.spacing.s, flexGrow: 0 }}
         contentContainerStyle={{ gap: theme.spacing.xs }}
       >
+        <FilterChip
+          label={t("animals.selected_only")}
+          active={showSelectedOnly}
+          onPress={() => setShowSelectedOnly((prev) => !prev)}
+          theme={theme}
+        />
         <FilterChip
           label={t("treatments.birthday_filter")}
           active={hasDateFilter}

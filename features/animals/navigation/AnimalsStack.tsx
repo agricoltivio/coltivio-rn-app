@@ -17,6 +17,10 @@ import { CreateTreatmentScreen } from "../CreateTreatmentScreen";
 import { EditTreatmentScreen } from "../EditTreatmentScreen";
 import { AnimalsOnboardingScreen } from "../AnimalsOnboardingScreen";
 import { AnimalsSettingsScreen } from "../AnimalsSettingsScreen";
+import { TvdImportScreen } from "../TvdImportScreen";
+import { HerdsScreen } from "../HerdsScreen";
+import { CreateHerdScreen } from "../CreateHerdScreen";
+import { HerdEditScreen } from "../HerdEditScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { DefaultTheme } from "styled-components/native";
 
@@ -135,6 +139,30 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
       name="AnimalsSettings"
       options={{ title: "" }}
       component={AnimalsSettingsScreen}
+    />,
+    <Stack.Screen
+      key="tvd-import"
+      name="TvdImport"
+      options={{ title: "" }}
+      component={TvdImportScreen}
+    />,
+    <Stack.Screen
+      key="herds"
+      name="Herds"
+      options={{ title: "" }}
+      component={HerdsScreen}
+    />,
+    <Stack.Screen
+      key="create-herd"
+      name="CreateHerd"
+      options={{ title: "" }}
+      component={CreateHerdScreen}
+    />,
+    <Stack.Screen
+      key="herd-edit"
+      name="HerdEdit"
+      options={{ title: "" }}
+      component={HerdEditScreen}
     />,
   ];
 }

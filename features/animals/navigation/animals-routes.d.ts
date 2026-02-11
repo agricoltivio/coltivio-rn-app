@@ -8,12 +8,16 @@ export type AnimalsStackParamList = {
   CreateEarTagRange: undefined;
   Animals: undefined;
   AnimalDetails: { animalId: string };
-  CreateAnimal: { motherId?: string; fatherId?: string } | undefined;
-  EditAnimal: { animalId: string };
+  CreateAnimal: {
+    motherId?: string;
+    fatherId?: string;
+    herdId?: string;
+  } | undefined;
+  EditAnimal: { animalId?: string; herdId?: string };
   SelectChildren: { animalId: string; sex: "male" | "female" };
   SelectAnimals: {
     initialSelectedIds: string[];
-    previousScreen: "CreateTreatment" | "EditTreatment";
+    previousScreen: "CreateTreatment" | "EditTreatment" | "HerdEdit" | "CreateHerd";
   };
   Drugs: undefined;
   CreateDrug: { previousScreen?: "CreateTreatment" | "EditTreatment" };
@@ -28,6 +32,10 @@ export type AnimalsStackParamList = {
     animalIds?: string[];
     drugId?: string;
   };
+  TvdImport: undefined;
+  Herds: undefined;
+  CreateHerd: { previousScreen?: "CreateAnimal" | "EditAnimal"; animalIds?: string[] };
+  HerdEdit: { herdId: string; animalIds?: string[] };
 };
 
 export type AnimalsHubScreenProps = StackScreenProps<"AnimalsHub">;
@@ -50,3 +58,7 @@ export type AnimalsOnboardingScreenProps =
   StackScreenProps<"AnimalsOnboarding">;
 export type AnimalsSettingsScreenProps =
   StackScreenProps<"AnimalsSettings">;
+export type TvdImportScreenProps = StackScreenProps<"TvdImport">;
+export type HerdsScreenProps = StackScreenProps<"Herds">;
+export type CreateHerdScreenProps = StackScreenProps<"CreateHerd">;
+export type HerdEditScreenProps = StackScreenProps<"HerdEdit">;

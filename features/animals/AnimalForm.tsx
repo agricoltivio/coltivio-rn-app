@@ -1,14 +1,17 @@
 import { AnimalCreateInput } from "@/api/animals.api";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { RHSwitch } from "@/components/inputs/RHSwitch";
+import { Switch } from "@/components/inputs/Switch";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
-import { Control, FieldErrors, useWatch } from "react-hook-form";
+import { IonIconButton } from "@/components/buttons/IconButton";
+import { Control, FieldErrors, UseFormSetValue, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
 import { useAvailableEarTagsQuery } from "./earTags.hooks";
+import { useHerdsQuery } from "./herds.hooks";
 
 export type AnimalFormValues = Omit<
   AnimalCreateInput,
@@ -21,23 +24,31 @@ export type AnimalFormValues = Omit<
 type AnimalFormProps = {
   control: Control<AnimalFormValues>;
   errors: FieldErrors<AnimalFormValues>;
+  setValue: UseFormSetValue<AnimalFormValues>;
   earTagData?: { label: string; value: string }[];
   showDeathFields?: boolean;
+  requiresCategoryOverride?: boolean | null;
+  onNavigateToCreateHerd?: () => void;
 };
 
 export function AnimalForm({
   control,
   errors,
+  setValue,
   earTagData,
   showDeathFields,
+  requiresCategoryOverride,
+  onNavigateToCreateHerd,
 }: AnimalFormProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { animals } = useAnimalsQuery(true);
   const { availableEarTags } = useAvailableEarTagsQuery();
+  const { herds } = useHerdsQuery();
 
   // Watch dateOfDeath to conditionally show deathReason
   const dateOfDeath = useWatch({ control, name: "dateOfDeath" });
+  const categoryOverride = useWatch({ control, name: "categoryOverride" });
 
   const animalTypeData = [
     { label: t("animals.animal_types.goat"), value: "goat" },
@@ -58,6 +69,30 @@ export function AnimalForm({
     { label: t("animals.death_reasons.died"), value: "died" },
     { label: t("animals.death_reasons.slaughtered"), value: "slaughtered" },
   ];
+
+  const usageData = [
+    { label: t("animals.usage_types.milk"), value: "milk" },
+    { label: t("animals.usage_types.other"), value: "other" },
+  ];
+
+  const categoryOverrideData = [
+    "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9",
+    "B1", "B2", "B3",
+    "C1", "C2",
+    "D1", "D2", "D3",
+    "E1", "E2", "E3", "E4",
+    "F1", "F2",
+  ].map((val) => ({ label: val, value: val }));
+
+  const herdData =
+    herds?.map((herd) => ({
+      label: herd.name,
+      value: herd.id,
+    })) ?? [];
+
+  // Show override controls when server says override is required OR when user has already set one
+  const showCategoryOverride =
+    requiresCategoryOverride || categoryOverride != null;
 
   // Use provided earTagData (for edit screen with current tag) or available ear tags
   const earTagSelectData =
@@ -138,6 +173,72 @@ export function AnimalForm({
         control={control}
         label={t("animals.registered")}
       />
+      <RHSelect
+        name="usage"
+        control={control}
+        label={t("animals.usage")}
+        rules={{
+          required: { value: true, message: t("forms.validation.required") },
+        }}
+        error={errors.usage?.message}
+        data={usageData}
+      />
+      {showCategoryOverride && (
+        <>
+          <Switch
+            style={{ marginTop: theme.spacing.m, marginBottom: theme.spacing.xs }}
+            value={categoryOverride != null}
+            onChange={() => {
+              if (categoryOverride != null) {
+                setValue("categoryOverride", null, { shouldDirty: true });
+              } else {
+                setValue("categoryOverride", "A1", { shouldDirty: true });
+              }
+            }}
+            label={
+              requiresCategoryOverride
+                ? t("animals.requires_category_override")
+                : t("animals.category_override")
+            }
+          />
+          {categoryOverride != null && (
+            <RHSelect
+              name="categoryOverride"
+              control={control}
+              label={t("animals.category")}
+              data={categoryOverrideData}
+              error={errors.categoryOverride?.message}
+            />
+          )}
+        </>
+      )}
+      {/* Herd select with + button */}
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: theme.spacing.xs,
+        }}
+      >
+        <View style={{ flex: 1 }}>
+          <RHSelect
+            name="herdId"
+            control={control}
+            label={t("animals.herd")}
+            data={herdData}
+            error={errors.herdId?.message}
+          />
+        </View>
+        {onNavigateToCreateHerd && (
+          <IonIconButton
+            icon="add"
+            color="black"
+            iconSize={25}
+            type="accent"
+            onPress={onNavigateToCreateHerd}
+          />
+        )}
+      </View>
       <RHSelect
         name="motherId"
         control={control}

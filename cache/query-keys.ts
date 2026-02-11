@@ -23,6 +23,7 @@ import { tillagePresetsQueryKeys } from "@/features/tillages/tillagePresets.quer
 import { cropProtectionProductsQueryKeys } from "@/features/crop-protection-products/cropProtectionProduct.querykeys";
 import { cropProtectionApplicationsQueryKeys } from "@/features/crop-protection-applications/cropProtectionApplications.querykeys";
 import { cropProtectionApplicationPresetsQueryKeys } from "@/features/crop-protection-applications/cropProtectionApplicationPresets.querykeys";
+import { herdsQueryKeys } from "@/features/animals/herds.querykeys";
 
 export const queryKeys = mergeQueryKeys(
   animalsQueryKeys,
@@ -49,4 +50,5 @@ export const queryKeys = mergeQueryKeys(
   cropProtectionProductsQueryKeys,
   cropProtectionApplicationsQueryKeys,
   cropProtectionApplicationPresetsQueryKeys,
+  herdsQueryKeys,
 );

@@ -151,6 +151,36 @@ export function AnimalDetailsScreen({
               }
             />
           </ListItem>
+          <ListItem style={{ paddingVertical: 5 }}>
+            <ListItem.Content>
+              <ListItem.Title>{t("animals.usage")}</ListItem.Title>
+              <ListItem.Body>
+                {t(`animals.usage_types.${animal.usage}`)}
+              </ListItem.Body>
+            </ListItem.Content>
+          </ListItem>
+          {animal.categoryOverride && (
+            <ListItem style={{ paddingVertical: 5 }}>
+              <ListItem.Content>
+                <ListItem.Title>{t("animals.category")}</ListItem.Title>
+                <ListItem.Body>{animal.categoryOverride}</ListItem.Body>
+              </ListItem.Content>
+            </ListItem>
+          )}
+          {animal.herd && (
+            <ListItem
+              style={{ paddingVertical: 5 }}
+              onPress={() =>
+                navigation.navigate("HerdEdit", { herdId: animal.herd!.id })
+              }
+            >
+              <ListItem.Content>
+                <ListItem.Title>{t("animals.herd")}</ListItem.Title>
+                <ListItem.Body>{animal.herd.name}</ListItem.Body>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
+          )}
           {formattedDateOfDeath && (
             <>
               <ListItem style={{ paddingVertical: 5 }}>
