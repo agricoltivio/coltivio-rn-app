@@ -14,8 +14,6 @@ import {
   DEFAULT_FIELD_CALENDAR_GROUPS,
   FieldCalendarGroupConfig,
 } from "../field-calendar/field-calendar-settings";
-import { merge } from "lodash";
-
 type LocalSettingsData = {
   editPlotOnboardingCompleted: boolean;
   fieldCalendarGroups: FieldCalendarGroupConfig[];
@@ -56,6 +54,26 @@ export const LocalSettingsContext = createContext<LocalSettings>({
 
 const localSettingsStorageKey = "localSettings";
 
+// Preserves stored order and visibility, appends new defaults not yet in storage
+function mergeGroups(
+  stored: AnimalsGroupConfig[] | FieldCalendarGroupConfig[],
+  defaults: AnimalsGroupConfig[] | FieldCalendarGroupConfig[],
+) {
+  const defaultMap = new Map(defaults.map((g) => [g.groupId, g]));
+  // Start from stored order, injecting any new default items into each group
+  const merged = stored.map((saved) => {
+    const def = defaultMap.get(saved.groupId);
+    if (!def) return saved;
+    const savedItemIds = new Set(saved.items.map((i) => i.itemId));
+    const newItems = def.items.filter((i) => !savedItemIds.has(i.itemId));
+    return { ...saved, items: [...saved.items, ...newItems] };
+  });
+  // Append any entirely new groups not yet in storage
+  const storedIds = new Set(stored.map((g) => g.groupId));
+  const newGroups = defaults.filter((g) => !storedIds.has(g.groupId));
+  return [...merged, ...newGroups];
+}
+
 export function LocalSettingsProvider({ children }: PropsWithChildren) {
   const [loading, setLoading] = useState(true);
   const [localSettings, setLocalSettings] =
@@ -68,7 +86,13 @@ export function LocalSettingsProvider({ children }: PropsWithChildren) {
       if (isMounted) {
         setLoading(false);
         if (value) {
-          setLocalSettings(merge({}, defaultLocalSettings, JSON.parse(value)));
+          const stored = JSON.parse(value);
+          setLocalSettings({
+            ...defaultLocalSettings,
+            ...stored,
+            animalsGroups: mergeGroups(stored.animalsGroups ?? [], DEFAULT_ANIMALS_GROUPS),
+            fieldCalendarGroups: mergeGroups(stored.fieldCalendarGroups ?? [], DEFAULT_FIELD_CALENDAR_GROUPS),
+          });
         }
       }
     });
