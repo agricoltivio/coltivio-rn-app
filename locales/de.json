@@ -94,7 +94,8 @@
       "cutting_date": "Schnittzeit",
       "cutting_date_optional": "Schnittzeit (optional)",
       "permanent": "Unbefristet",
-      "sex": "Geschlecht"
+      "sex": "Geschlecht",
+      "date_range": "Zeitraum"
     },
     "placeholders": {
       "location_search": "z.B. Straße, Hausnummer, Ort",
@@ -132,7 +133,9 @@
     "new_machine": "Neue Maschine",
     "new_device": "Neues Gerät",
     "crate": "Kiste",
-    "total_amount": "Gesamtmenge"
+    "total_amount": "Gesamtmenge",
+    "dashboard": "Dashboard",
+    "list": "Liste"
   },
   "presets": {
     "preset": "Vorlage",
@@ -569,7 +572,11 @@
         "heading": "Wie wurde geerntet?",
         "no_machinery": "Du hast noch keine Maschine erfasst. Diese vereinfachen die Erfassung der Ernte, indem du Standardwerte vordefinieren kannst."
       }
-    }
+    },
+    "comparison_year": "Vergleichsjahr",
+    "select_comparison_year": "Vergleichsjahr wählen",
+    "total_amount": "Totale Menge",
+    "amount_per_month": "Menge pro Monat"
   },
   "fertilizers": {
     "fertilizer": "Dünger",

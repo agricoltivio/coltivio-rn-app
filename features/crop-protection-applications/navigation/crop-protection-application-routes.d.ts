@@ -9,19 +9,11 @@ export type CropProtectionApplicationStackParamList = {
   CropProtectionApplicationSummary: undefined;
 
   CropProtectionApplications: undefined;
-  CropProtectionApplicationsOfYear: { year: number };
-  CropProtectionApplicationsOfYearList: { year: number };
   CropProtectionApplicationDetails: { cropProtectionApplicationId: string };
 };
 
 export type CropProtectionApplicationsScreenProps =
   StackScreenProps<"CropProtectionApplications">;
-
-export type CropProtectionApplicationsOfYearScreenProps =
-  StackScreenProps<"CropProtectionApplicationsOfYear">;
-
-export type CropProtectionApplicationsOfYearListScreenProps =
-  StackScreenProps<"CropProtectionApplicationsOfYearList">;
 
 export type CropProtectionApplicationDetailsScreenProps =
   StackScreenProps<"CropProtectionApplicationDetails">;

@@ -2,7 +2,6 @@ import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type TillagesStackParamList = {
   Tillages: undefined;
-  TillagesOfYearList: { year: number };
   TillageDetails: { tillageId: string };
   SelectTillageDate: undefined;
   ConfigureTillage: undefined;
@@ -11,9 +10,6 @@ export type TillagesStackParamList = {
 };
 
 export type TillagesScreenProps = StackScreenProps<"Tillages">;
-
-export type TillagesOfYearListScreenProps =
-  StackScreenProps<"TillagesOfYearList">;
 
 export type TillageDetailsScreenProps = StackScreenProps<"TillageDetails">;
 

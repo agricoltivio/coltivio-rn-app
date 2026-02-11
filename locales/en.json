@@ -90,7 +90,8 @@
       "usagecode": "Usage Code",
       "cutting_date": "Cutting Date",
       "cutting_date_optional": "Cutting Date (optional)",
-      "permanent": "Permanent"
+      "permanent": "Permanent",
+      "date_range": "Date Range"
     },
     "placeholders": {
       "location_search": "e.g., Street, House Number, City",
@@ -127,7 +128,9 @@
     "new_machine": "New Machine",
     "new_device": "New Device",
     "crate": "Crate",
-    "total_amount": "Total Amount"
+    "total_amount": "Total Amount",
+    "dashboard": "Dashboard",
+    "list": "List"
   },
   "presets": {
     "preset": "Preset",
@@ -562,7 +565,9 @@
         "heading": "Which machine was used?",
         "no_machinery": "Add machines to simplify harvest tracking."
       }
-    }
+    },
+    "comparison_year": "Comparison Year",
+    "select_comparison_year": "Select comparison year"
   },
   "fertilizers": {
     "fertilizer": "Fertilizer",

@@ -6,8 +6,6 @@ import { CropProtectionApplicationSummaryScreen } from "../add/CropProtectionApp
 import { SelectCropProtectionApplicationProductAndDateScreen } from "../add/SelectCropProtectionApplicationProductAndDateScreen";
 import { SetCropProtectionApplicationUnitQuantityScreen } from "../add/SetCropProtectionApplicationUnitQuantityScreen";
 import { CropProtectionApplicationDetailsScreen } from "../CropProtectionApplicationDetails";
-import { CropProtectionApplicationsOfYearListScreen } from "../CropProtectionApplicationsListScreen";
-import { CropProtectionApplicationsOfYearScreen } from "../CropProtectionApplicationsOfYearScreen";
 import { CropProtectionApplicationsScreen } from "../CropProtectionApplicationsScreen";
 
 export function renderCropProtectionApplicationStack() {
@@ -17,18 +15,6 @@ export function renderCropProtectionApplicationStack() {
       name="CropProtectionApplications"
       options={{ title: "" }}
       component={CropProtectionApplicationsScreen}
-    />,
-    <Stack.Screen
-      key="crop-protection-applications-of-year"
-      name="CropProtectionApplicationsOfYear"
-      options={{ title: "" }}
-      component={CropProtectionApplicationsOfYearScreen}
-    />,
-    <Stack.Screen
-      key="crop-protection-applications-of-year-list"
-      name="CropProtectionApplicationsOfYearList"
-      options={{ title: "" }}
-      component={CropProtectionApplicationsOfYearListScreen}
     />,
     <Stack.Screen
       key="crop-protection-application-details"

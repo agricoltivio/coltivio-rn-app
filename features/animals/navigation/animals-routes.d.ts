@@ -1,4 +1,3 @@
-import { Treatment } from "@/api/treatments.api";
 import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type AnimalsStackParamList = {
@@ -21,7 +20,6 @@ export type AnimalsStackParamList = {
     previousScreen?: "CreateTreatment" | "EditTreatment";
   };
   Treatments: undefined;
-  TreatmentsOfYear: { year: number; treatments: Treatment[] };
   CreateTreatment: { animalIds?: string[]; drugId?: string };
   EditTreatment: {
     treatmentId?: string;
@@ -44,6 +42,5 @@ export type DrugsScreenProps = StackScreenProps<"Drugs">;
 export type CreateDrugScreenProps = StackScreenProps<"CreateDrug">;
 export type EditDrugScreenProps = StackScreenProps<"EditDrug">;
 export type TreatmentsScreenProps = StackScreenProps<"Treatments">;
-export type TreatmentsOfYearScreenProps = StackScreenProps<"TreatmentsOfYear">;
 export type CreateTreatmentScreenProps = StackScreenProps<"CreateTreatment">;
 export type EditTreatmentScreenProps = StackScreenProps<"EditTreatment">;

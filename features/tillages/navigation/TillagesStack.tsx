@@ -4,7 +4,6 @@ import { ConfigureTillageScreen } from "../add/ConfigureTillageScreen";
 import { SelectTillagePlotsScreen } from "../add/SelectTillagePlotsScreen";
 import { TillageSummaryScreen } from "../add/TillageSummaryScreen";
 import { TillageDetailsScreen } from "../TillageDetails";
-import { TillagesOfYearListScreen } from "../TillagesOfYearListScreen";
 import { TillagesScreen } from "../TillagesScreen";
 
 export function renderTillagesStack() {
@@ -17,15 +16,7 @@ export function renderTillagesStack() {
       }}
       component={TillagesScreen}
     />,
-    <Stack.Screen
-      key="tillages-of-year-list"
-      name="TillagesOfYearList"
-      options={{
-        title: "",
-      }}
-      component={TillagesOfYearListScreen}
-    />,
-    <Stack.Screen
+<Stack.Screen
       key="tillage-details"
       name="TillageDetails"
       options={{

@@ -9,8 +9,6 @@ export type FertilizerApplicationsStackParamList = {
   FertilizerApplicationSummary: undefined;
 
   FertilizerApplications: undefined;
-  FertilizerApplicationsOfYear: { year: number };
-  FertilizerApplicationsOfYearList: { year: number };
   FertilizerApplicationDetails: { fertilizerApplicationId: string };
 };
 
@@ -37,9 +35,3 @@ export type DivideFertilizerApplicationOnPlotsScreenProps =
 
 export type FertilizerApplicationSummaryScreenProps =
   StackScreenProps<"FertilizerApplicationSummary">;
-
-export type FertilizerApplicationsOfYearScreenProps =
-  StackScreenProps<"FertilizerApplicationsOfYear">;
-
-export type FertilizerApplicationsOfYearListScreenProps =
-  StackScreenProps<"FertilizerApplicationsOfYearList">;

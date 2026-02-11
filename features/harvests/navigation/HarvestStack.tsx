@@ -6,8 +6,6 @@ import { SelectHarvestCropAndDateScreen } from "../add/SelectHarvestCropAndDateS
 import { SelectHarvestPlotsScreen } from "../add/SelectHarvestPlotsScreen";
 import { SetHarvestQuantityScreen } from "../add/SetHarvestQuantityScreen";
 import { HarvestDetailsScreen } from "../HarvestDetailsScreen";
-import { HarvestListScreen } from "../HarvestListScreen";
-import { HarvestsOfYearScreen } from "../HarvestOfYearScreen";
 import { HarvestsScreen } from "../HarvestsScreen";
 
 export function renderHarvestStack() {
@@ -19,14 +17,6 @@ export function renderHarvestStack() {
         title: "",
       }}
       component={HarvestsScreen}
-    />,
-    <Stack.Screen
-      key="harvests-of-year"
-      name="HarvestsOfYear"
-      options={{
-        title: "",
-      }}
-      component={HarvestsOfYearScreen}
     />,
     <Stack.Screen
       key="harvest-details"
@@ -82,14 +72,6 @@ export function renderHarvestStack() {
         title: "",
       }}
       component={HarvestSummaryScreen}
-    />,
-    <Stack.Screen
-      key="harvests-of-year-list"
-      name="HarvestsOfYearList"
-      component={HarvestListScreen}
-      options={{
-        title: "",
-      }}
     />,
   ];
 }

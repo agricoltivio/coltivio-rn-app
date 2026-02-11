@@ -12,7 +12,7 @@ import { DrugsScreen } from "../DrugsScreen";
 import { CreateDrugScreen } from "../CreateDrugScreen";
 import { EditDrugScreen } from "../EditDrugScreen";
 import { TreatmentsScreen } from "../TreatmentsScreen";
-import { TreatmentsOfYearScreen } from "../TreatmentsOfYearScreen";
+
 import { CreateTreatmentScreen } from "../CreateTreatmentScreen";
 import { EditTreatmentScreen } from "../EditTreatmentScreen";
 
@@ -96,13 +96,7 @@ export function renderAnimalsStack() {
       options={{ title: "" }}
       component={TreatmentsScreen}
     />,
-    <Stack.Screen
-      key="treatments-of-year"
-      name="TreatmentsOfYear"
-      options={{ title: "" }}
-      component={TreatmentsOfYearScreen}
-    />,
-    <Stack.Screen
+<Stack.Screen
       key="create-treatment"
       name="CreateTreatment"
       options={{ title: "" }}

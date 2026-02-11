@@ -18,7 +18,7 @@ import {
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
 import { SelectAnimalsScreenProps } from "./navigation/animals-routes";
-import { DateRangeFilterModal } from "./components/DateRangeFilterModal";
+import { DateRangeFilterModal } from "@/components/filters/DateRangeFilterModal";
 
 export function SelectAnimalsModal({
   route,

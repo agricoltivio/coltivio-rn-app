@@ -6,8 +6,6 @@ import { ConfigureFertilizerApplicationScreen } from "../add/ConfigureFertilizer
 import { SelectFertilizerAndDateScreen } from "../add/SelectFertilizerAndDateScreen";
 import { SetFertilizerApplicationUnitQuantityScreen } from "../add/SetFertilizerApplicationUnitQuantityScreen";
 import { FertilizerApplicationDetailsScreen } from "../FertilizerApplicationDetails";
-import { FertilizerApplicationsOfYearListScreen } from "../FertilizerApplicationsListScreen";
-import { FertilizerApplicationsOfYearScreen } from "../FertilizerApplicationsOfYearScreen";
 import { FertilizerApplicationsScreen } from "../FertilizerApplicationsScreen";
 
 export function renderFertilizerApplicationStack() {
@@ -17,18 +15,6 @@ export function renderFertilizerApplicationStack() {
       name="FertilizerApplications"
       options={{ title: "" }}
       component={FertilizerApplicationsScreen}
-    />,
-    <Stack.Screen
-      key="fertilizer-applications-of-year"
-      name="FertilizerApplicationsOfYear"
-      options={{ title: "" }}
-      component={FertilizerApplicationsOfYearScreen}
-    />,
-    <Stack.Screen
-      key="fertilizer-applications-of-year-list"
-      name="FertilizerApplicationsOfYearList"
-      options={{ title: "" }}
-      component={FertilizerApplicationsOfYearListScreen}
     />,
     <Stack.Screen
       key="fertilizer-application-details"

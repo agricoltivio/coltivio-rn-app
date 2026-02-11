@@ -3,8 +3,6 @@ import { StackScreenProps } from "@/navigation/rootStackTypes";
 export type HarvestStackParamList = {
   Harvests: undefined;
   HarvestDetails: { harvestId: string };
-  HarvestsOfYear: { year: number };
-  HarvestsOfYearList: { year: number };
   SelectHarvestCropAndDate: undefined;
   ConfigureHarvest: undefined;
   SetHarvestQuantity: undefined;
@@ -14,11 +12,6 @@ export type HarvestStackParamList = {
 };
 
 export type HarvestsScreenProps = StackScreenProps<"Harvests">;
-
-export type HarvestsOfYearScreenProps = StackScreenProps<"HarvestsOfYear">;
-
-export type HarvestOfYearListScreenProps =
-  StackScreenProps<"HarvestsOfYearList">;
 
 export type HarvestDetailsScreenProps = StackScreenProps<"HarvestDetails">;
 
