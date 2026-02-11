@@ -12,51 +12,15 @@ export type PlotsStackParamList = {
   Plots: undefined;
   PlotDetails: { plotId: string };
   PlotHarvests: { plotId: string; name: string };
-  PlotHarvestsOfYear: {
-    plotId: string;
-    year: number;
-    name: string;
-  };
-  PlotHarvestsOfYearList: {
-    plotId: string;
-    year: number;
-    name: string;
-  };
   PlotFertilizerApplications: {
     plotId: string;
     name: string;
   };
-  PlotFertilizerApplicationsOfYear: {
-    plotId: string;
-    year: number;
-    name: string;
-  };
-  PlotFertilizerApplicationsOfYearList: {
-    plotId: string;
-    year: number;
-    name: string;
-  };
-
   PlotCropProtectionApplications: {
     plotId: string;
     name: string;
   };
-  PlotCropProtectionApplicationsOfYear: {
-    plotId: string;
-    year: number;
-    name: string;
-  };
-  PlotCropProtectionApplicationsOfYearList: {
-    plotId: string;
-    year: number;
-    name: string;
-  };
   PlotTillages: { plotId: string; name: string };
-  PlotTillagesOfYearList: {
-    plotId: string;
-    year: number;
-    name: string;
-  };
   PlotCropRotations: { plotId: string; name: string };
   PlanCropRotations: { plotIds: string[] };
   EditPlotCropRotation: {
@@ -83,28 +47,9 @@ export type PlotDetailsScreenProps = StackScreenProps<"PlotDetails">;
 export type PlotFertilizerApplicationsScreenProps =
   StackScreenProps<"PlotFertilizerApplications">;
 
-export type PlotFertilizerApplicationsOfYearScreenProps =
-  StackScreenProps<"PlotFertilizerApplicationsOfYear">;
-
-export type PlotFertilizerApplicationsOfYearListScreenProps =
-  StackScreenProps<"PlotFertilizerApplicationsOfYearList">;
-
 export type PlotCropProtectionApplicationsScreenProps =
   StackScreenProps<"PlotCropProtectionApplications">;
 
-export type PlotCropProtectionApplicationsOfYearScreenProps =
-  StackScreenProps<"PlotCropProtectionApplicationsOfYear">;
-
-export type PlotCropProtectionApplicationsOfYearListScreenProps =
-  StackScreenProps<"PlotCropProtectionApplicationsOfYearList">;
-
 export type PlotHarvestsScreenProps = StackScreenProps<"PlotHarvests">;
-export type PlotHarvestsOfYearListScreenProps =
-  StackScreenProps<"PlotHarvestsOfYearList">;
-
-export type PlotHarvestsOfYearScreenProps =
-  StackScreenProps<"PlotHarvestsOfYear">;
 
 export type PlotTillagesScreenProps = StackScreenProps<"PlotTillages">;
-export type PlotTillagesOfYearListScreenProps =
-  StackScreenProps<"PlotTillagesOfYearList">;

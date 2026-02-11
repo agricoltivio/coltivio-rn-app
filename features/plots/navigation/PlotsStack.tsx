@@ -7,18 +7,10 @@ import { EditPlotScreen } from "../EditPlotScreen";
 import { PlotDetailsScreen } from "../PlotDetailsScreen";
 import { PlotsMapScreen } from "../PlotsMapScreen";
 import { PlotsScreen } from "../PlotsScreen";
-import { DefaultTheme } from "styled-components";
 import { PlotTillagesScreen } from "../PlotTillagesScreen";
 import { PlotCropProtectionApplicationsScreen } from "../PlotCropProtectionApllicationsScreen";
-import { PlotCropProtectionApplicationsOfYearListScreen } from "../PlotCropProtectionApplicationsOfYearListScreen";
-import { PlotCropProtectionApplicationsOfYearScreen } from "../PlotCropProtectionApplicationsOfYearScreen";
 import { PlotFertilizerApplicationsScreen } from "../PlotFertilizerApllicationsScreen";
-import { PlotFertilizerApplicationsOfYearListScreen } from "../PlotFertilizerApplicationsOfYearListScreen";
-import { PlotFertilizerApplicationsOfYearScreen } from "../PlotFertilizerApplicationsOfYearScreen";
-import { PlotHarvestsOfYearListScreen } from "../PlotHarvestsOfYearListScreen";
-import { PlotHarvestsOfYearScreen } from "../PlotHarvestsOfYearScreen";
 import { PlotHarvestsScreen } from "../PlotHarvestsScreen";
-import { PlotTillagesOfYearListScreen } from "../PlotTillagesOfYearListScreen";
 
 export function renderPlotsStack() {
   return [
@@ -96,39 +88,10 @@ export function renderPlotsStack() {
       component={PlotHarvestsScreen}
     />,
     <Stack.Screen
-      key="plot-harvests-of-year"
-      name="PlotHarvestsOfYear"
-      options={{
-        title: "",
-      }}
-      component={PlotHarvestsOfYearScreen}
-    />,
-    <Stack.Screen
-      key="plot-harvests-of-year-list"
-      name="PlotHarvestsOfYearList"
-      options={{
-        title: "",
-      }}
-      component={PlotHarvestsOfYearListScreen}
-    />,
-
-    <Stack.Screen
       key="plot-fertilizer-applications"
       name="PlotFertilizerApplications"
       options={{ title: "" }}
       component={PlotFertilizerApplicationsScreen}
-    />,
-    <Stack.Screen
-      key="plot-fertilizer-applications-of-year"
-      name="PlotFertilizerApplicationsOfYear"
-      options={{ title: "" }}
-      component={PlotFertilizerApplicationsOfYearScreen}
-    />,
-    <Stack.Screen
-      key="plot-fertilizer-applications-of-year-list"
-      name="PlotFertilizerApplicationsOfYearList"
-      options={{ title: "" }}
-      component={PlotFertilizerApplicationsOfYearListScreen}
     />,
     <Stack.Screen
       key="plot-crop-protection-applications"
@@ -137,32 +100,12 @@ export function renderPlotsStack() {
       component={PlotCropProtectionApplicationsScreen}
     />,
     <Stack.Screen
-      key="plot-crop-protection-applications-of-year"
-      name="PlotCropProtectionApplicationsOfYear"
-      options={{ title: "" }}
-      component={PlotCropProtectionApplicationsOfYearScreen}
-    />,
-    <Stack.Screen
-      key="plot-crop-protection-applications-of-year-list"
-      name="PlotCropProtectionApplicationsOfYearList"
-      options={{ title: "" }}
-      component={PlotCropProtectionApplicationsOfYearListScreen}
-    />,
-    <Stack.Screen
       key="plot-tillages"
       name="PlotTillages"
       options={{
         title: "",
       }}
       component={PlotTillagesScreen}
-    />,
-    <Stack.Screen
-      key="plot-tillages-of-year-list"
-      name="PlotTillagesOfYearList"
-      options={{
-        title: "",
-      }}
-      component={PlotTillagesOfYearListScreen}
     />,
   ];
 }
