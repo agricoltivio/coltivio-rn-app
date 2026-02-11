@@ -20,6 +20,7 @@ export const ANIMALS_ITEMS = {
   },
   tvdImport: { translationKey: "animals.tvd_import.title", route: "TvdImport" },
   herds: { translationKey: "animals.herds", route: "Herds" },
+  outdoorJournal: { translationKey: "animals.outdoor_journal", route: "OutdoorJournal" },
 } as const;
 
 // Maps groupId → translation key
@@ -36,6 +37,7 @@ export const DEFAULT_ANIMALS_GROUPS: AnimalsGroupConfig[] = [
       { itemId: "animals", visible: true },
       { itemId: "earTags", visible: true },
       { itemId: "herds", visible: true },
+      { itemId: "outdoorJournal", visible: true },
       { itemId: "tvdImport", visible: true },
     ],
   },

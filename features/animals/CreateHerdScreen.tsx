@@ -1,29 +1,39 @@
+import { OutdoorScheduleCreateInput } from "@/api/herds.api";
 import { Button } from "@/components/buttons/Button";
+import { IonIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Subtitle } from "@/theme/Typography";
-import { useState } from "react";
+import { formatLocalizedDate } from "@/utils/date";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { FlatList, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
-import { useCreateHerdMutation } from "./herds.hooks";
+import { useCreateHerdMutation, useCreateOutdoorScheduleMutation } from "./herds.hooks";
 import { CreateHerdScreenProps } from "./navigation/animals-routes";
+import { OutdoorScheduleEditModal } from "./OutdoorScheduleEditModal";
+import { OutdoorScheduleTimeline } from "./timeline/OutdoorScheduleTimeline";
+import { buildOutdoorTimelineData } from "./timeline/outdoor-timeline-utils";
 
 interface CreateHerdFormValues {
   name: string;
 }
 
+// Local schedule with a temp id for list keys
+type LocalSchedule = OutdoorScheduleCreateInput & { tempId: string };
+
 export function CreateHerdScreen({
   route,
   navigation,
 }: CreateHerdScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const theme = useTheme();
+  const locale = i18n.language;
   const previousScreen = route.params?.previousScreen;
   const { animals } = useAnimalsQuery(true);
 
@@ -45,24 +55,99 @@ export function CreateHerdScreen({
     return t("treatments.n_animals_selected", { count: selectedAnimals.length });
   })();
 
+  // Local outdoor schedules state
+  const [localSchedules, setLocalSchedules] = useState<LocalSchedule[]>([]);
+  const [scheduleModalVisible, setScheduleModalVisible] = useState(false);
+  const [editingScheduleIndex, setEditingScheduleIndex] = useState<number | null>(null);
+
   const {
     control,
     handleSubmit,
+    getValues,
     formState: { errors, isDirty },
   } = useForm<CreateHerdFormValues>({
     defaultValues: { name: "" },
   });
 
+  // Build timeline data from local schedules
+  const timelineData = useMemo(() => {
+    const herdName = getValues("name") || t("animals.new_herd");
+    return buildOutdoorTimelineData([
+      {
+        herdId: "new",
+        herdName,
+        schedules: localSchedules.map((s) => ({
+          id: s.tempId,
+          startDate: s.startDate,
+          endDate: s.endDate ?? null,
+          notes: s.notes ?? null,
+          recurrence: s.recurrence
+            ? {
+                frequency: s.recurrence.frequency,
+                interval: s.recurrence.interval,
+                until: s.recurrence.until ?? null,
+              }
+            : null,
+        })),
+      },
+    ]);
+  }, [localSchedules, getValues, t]);
+
+  // After herd creation, batch-create all outdoor schedules
+  const [createdHerdId, setCreatedHerdId] = useState<string | null>(null);
+  const [pendingSchedules, setPendingSchedules] = useState<OutdoorScheduleCreateInput[]>([]);
+
+  const createScheduleMutation = useCreateOutdoorScheduleMutation(
+    createdHerdId ?? "",
+    () => {
+      // Pop the next schedule off the pending queue
+      setPendingSchedules((prev) => {
+        const remaining = prev.slice(1);
+        if (remaining.length > 0) {
+          // Trigger next creation
+          setTimeout(() => createScheduleMutation.mutate(remaining[0]), 0);
+        } else {
+          // All done, navigate away
+          finishNavigation();
+        }
+        return remaining;
+      });
+    },
+  );
+
+  function finishNavigation() {
+    if (previousScreen && createdHerdId) {
+      navigation.popTo(
+        previousScreen,
+        { herdId: createdHerdId },
+        { merge: true },
+      );
+    } else {
+      navigation.goBack();
+    }
+  }
+
   const createHerdMutation = useCreateHerdMutation(
     (herd) => {
-      if (previousScreen) {
-        navigation.popTo(
-          previousScreen,
-          { herdId: herd.id },
-          { merge: true },
+      if (localSchedules.length > 0) {
+        // Batch-create schedules sequentially
+        const schedulesToCreate: OutdoorScheduleCreateInput[] = localSchedules.map(
+          ({ tempId: _, ...rest }) => rest,
         );
+        setCreatedHerdId(herd.id);
+        setPendingSchedules(schedulesToCreate);
+        // Kick off first creation (useCreateOutdoorScheduleMutation needs herdId set first)
+        setTimeout(() => createScheduleMutation.mutate(schedulesToCreate[0]), 0);
       } else {
-        navigation.goBack();
+        if (previousScreen) {
+          navigation.popTo(
+            previousScreen,
+            { herdId: herd.id },
+            { merge: true },
+          );
+        } else {
+          navigation.goBack();
+        }
       }
     },
     (error) => console.error(error),
@@ -71,6 +156,44 @@ export function CreateHerdScreen({
   function onSubmit(data: CreateHerdFormValues) {
     createHerdMutation.mutate({ name: data.name, animalIds: selectedAnimalIds });
   }
+
+  function formatScheduleSummary(schedule: LocalSchedule): string {
+    const start = formatLocalizedDate(new Date(schedule.startDate), locale);
+    const end = schedule.endDate
+      ? formatLocalizedDate(new Date(schedule.endDate), locale)
+      : "–";
+    let summary = `${start} - ${end}`;
+    if (schedule.recurrence) {
+      const freq = t(
+        `animals.frequency_types.${schedule.recurrence.frequency}` as const,
+      );
+      summary += ` (${freq})`;
+    }
+    return summary;
+  }
+
+  // Build a fake OutdoorSchedule-like object for the edit modal
+  const editingScheduleForModal = editingScheduleIndex !== null
+    ? {
+        id: localSchedules[editingScheduleIndex].tempId,
+        farmId: "",
+        herdId: "",
+        startDate: localSchedules[editingScheduleIndex].startDate,
+        endDate: localSchedules[editingScheduleIndex].endDate ?? null,
+        notes: localSchedules[editingScheduleIndex].notes ?? null,
+        recurrence: localSchedules[editingScheduleIndex].recurrence
+          ? {
+              id: "",
+              frequency: localSchedules[editingScheduleIndex].recurrence!.frequency,
+              interval: localSchedules[editingScheduleIndex].recurrence!.interval,
+              byWeekday: null,
+              byMonthDay: null,
+              until: localSchedules[editingScheduleIndex].recurrence!.until ?? null,
+              count: null,
+            }
+          : null,
+      }
+    : null;
 
   return (
     <ContentView
@@ -152,7 +275,113 @@ export function CreateHerdScreen({
             </View>
           </View>
         )}
+
+        {/* Outdoor schedules section */}
+        <View style={{ marginTop: theme.spacing.l }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginBottom: theme.spacing.s,
+            }}
+          >
+            <H3 style={{ flex: 1 }}>{t("animals.outdoor_schedules")}</H3>
+            <IonIconButton
+              icon="add"
+              color="black"
+              iconSize={25}
+              type="accent"
+              onPress={() => {
+                setEditingScheduleIndex(null);
+                setScheduleModalVisible(true);
+              }}
+            />
+          </View>
+          {/* Outdoor schedule timeline */}
+          {localSchedules.length > 0 && (
+            <View style={{ height: 200, marginBottom: theme.spacing.s }}>
+              <OutdoorScheduleTimeline
+                timelineData={timelineData}
+                onBarPress={(scheduleId) => {
+                  const idx = localSchedules.findIndex(
+                    (s) => s.tempId === scheduleId,
+                  );
+                  if (idx !== -1) {
+                    setEditingScheduleIndex(idx);
+                    setScheduleModalVisible(true);
+                  }
+                }}
+              />
+            </View>
+          )}
+          {localSchedules.length === 0 && (
+            <Subtitle>{t("common.no_entries")}</Subtitle>
+          )}
+          {localSchedules.length > 0 && (
+            <FlatList
+              scrollEnabled={false}
+              contentContainerStyle={{
+                borderRadius: 10,
+                overflow: "hidden",
+                backgroundColor: theme.colors.white,
+              }}
+              data={localSchedules}
+              keyExtractor={(item) => item.tempId}
+              renderItem={({ item, index }) => (
+                <ListItem
+                  style={{ paddingVertical: 5 }}
+                  onPress={() => {
+                    setEditingScheduleIndex(index);
+                    setScheduleModalVisible(true);
+                  }}
+                >
+                  <ListItem.Content>
+                    <ListItem.Title>
+                      {formatScheduleSummary(item)}
+                    </ListItem.Title>
+                    {item.notes && (
+                      <ListItem.Body>{item.notes}</ListItem.Body>
+                    )}
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+              )}
+            />
+          )}
+        </View>
       </ScrollView>
+
+      <OutdoorScheduleEditModal
+        visible={scheduleModalVisible}
+        schedule={editingScheduleForModal}
+        herdId=""
+        onSave={(input) => {
+          if (editingScheduleIndex !== null) {
+            // Update existing local schedule
+            setLocalSchedules((prev) =>
+              prev.map((s, i) =>
+                i === editingScheduleIndex
+                  ? { ...input, tempId: s.tempId }
+                  : s,
+              ),
+            );
+          } else {
+            // Add new local schedule
+            setLocalSchedules((prev) => [
+              ...prev,
+              { ...input, tempId: `temp-${Date.now()}` },
+            ]);
+          }
+          setScheduleModalVisible(false);
+        }}
+        onDelete={(scheduleId) => {
+          setLocalSchedules((prev) =>
+            prev.filter((s) => s.tempId !== scheduleId),
+          );
+          setScheduleModalVisible(false);
+        }}
+        onClose={() => setScheduleModalVisible(false)}
+      />
     </ContentView>
   );
 }

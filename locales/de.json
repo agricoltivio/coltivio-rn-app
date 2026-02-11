@@ -931,6 +931,9 @@
     "year": "Jahr",
     "years": "Jahre",
     "selected_only": "Nur ausgewählte",
+    "outdoor_journal": "Auslaufjournal",
+    "outdoor_journal_info": "Dieses Journal wird automatisch aus den Auslaufplänen der Herden und den definierten Tierkategorien erstellt.",
+    "uncategorized_animals_warning": "{{count}} Tiere ohne Kategorie",
     "tvd_import": {
       "title": "TVD Import",
       "experimental": "Diese Funktion ist experimentell.",

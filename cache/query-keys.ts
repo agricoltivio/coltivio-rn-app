@@ -24,6 +24,7 @@ import { cropProtectionProductsQueryKeys } from "@/features/crop-protection-prod
 import { cropProtectionApplicationsQueryKeys } from "@/features/crop-protection-applications/cropProtectionApplications.querykeys";
 import { cropProtectionApplicationPresetsQueryKeys } from "@/features/crop-protection-applications/cropProtectionApplicationPresets.querykeys";
 import { herdsQueryKeys } from "@/features/animals/herds.querykeys";
+import { outdoorJournalQueryKeys } from "@/features/animals/outdoor-journal.querykeys";
 
 export const queryKeys = mergeQueryKeys(
   animalsQueryKeys,
@@ -51,4 +52,5 @@ export const queryKeys = mergeQueryKeys(
   cropProtectionApplicationsQueryKeys,
   cropProtectionApplicationPresetsQueryKeys,
   herdsQueryKeys,
+  outdoorJournalQueryKeys,
 );

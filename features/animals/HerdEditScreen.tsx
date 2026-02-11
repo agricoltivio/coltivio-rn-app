@@ -8,7 +8,7 @@ import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList, View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -22,6 +22,8 @@ import {
 } from "./herds.hooks";
 import { HerdEditScreenProps } from "./navigation/animals-routes";
 import { OutdoorScheduleEditModal } from "./OutdoorScheduleEditModal";
+import { OutdoorScheduleTimeline } from "./timeline/OutdoorScheduleTimeline";
+import { buildSingleHerdTimelineData } from "./timeline/outdoor-timeline-utils";
 
 export function HerdEditScreen({
   route,
@@ -104,6 +106,14 @@ export function HerdEditScreen({
     }
     return summary;
   }
+
+  const timelineData = useMemo(
+    () =>
+      herd
+        ? buildSingleHerdTimelineData(herd.id, herd.name, herd.outdoorSchedules)
+        : null,
+    [herd],
+  );
 
   const animalsText = (() => {
     if (selectedAnimalIds.length === 0) return t("common.no_entries");
@@ -221,6 +231,23 @@ export function HerdEditScreen({
               }}
             />
           </View>
+          {/* Outdoor schedule timeline */}
+          {timelineData && timelineData.herds.length > 0 && timelineData.herds[0].bars.length > 0 && (
+            <View style={{ height: 200, marginBottom: theme.spacing.s }}>
+              <OutdoorScheduleTimeline
+                timelineData={timelineData}
+                onBarPress={(scheduleId) => {
+                  const schedule = herd!.outdoorSchedules.find(
+                    (s) => s.id === scheduleId,
+                  );
+                  if (schedule) {
+                    setEditingSchedule(schedule);
+                    setScheduleModalVisible(true);
+                  }
+                }}
+              />
+            </View>
+          )}
           {herd.outdoorSchedules.length === 0 && (
             <Subtitle>{t("common.no_entries")}</Subtitle>
           )}

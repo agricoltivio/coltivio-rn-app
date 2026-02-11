@@ -12,34 +12,33 @@ import Animated, {
   type SharedValue,
 } from "react-native-reanimated";
 import {
-  TimelineData,
-  TimelinePlotData,
   GridLine,
   getAllGridLines,
   getAllWeekLines,
-} from "./timeline-utils";
-import { TimelinePlotRow, ROW_HEIGHT } from "./TimelinePlotRow";
-import { TimelineHeader, TIMELINE_HEADER_HEIGHT } from "./TimelineHeader";
+} from "@/features/crop-rotations/timeline/timeline-utils";
+import {
+  TimelineHeader,
+  TIMELINE_HEADER_HEIGHT,
+} from "@/features/crop-rotations/timeline/TimelineHeader";
 import {
   ZoomLevel,
   getScaleForZoomLevel,
-} from "./ZoomLevelToggle";
+} from "@/features/crop-rotations/timeline/ZoomLevelToggle";
+import { OutdoorTimelineData, OutdoorHerdData } from "./outdoor-timeline-utils";
+import { OutdoorTimelineHerdRow, ROW_HEIGHT } from "./OutdoorTimelineHerdRow";
 import { scheduleOnRN } from "react-native-worklets";
 
-type CropRotationTimelineProps = {
-  timelineData: TimelineData;
-  onBarPress: (rotationId: string, plotName: string) => void;
-  onZoomChange?: (zoomLevel: ZoomLevel) => void;
+type OutdoorScheduleTimelineProps = {
+  timelineData: OutdoorTimelineData;
+  onBarPress: (scheduleId: string) => void;
 };
 
-const PLOT_LABEL_WIDTH = 100;
+const LABEL_WIDTH = 100;
 const MS_PER_DAY = 86_400_000;
-// Height of the year context row (shown in months/weeks views)
 const YEAR_ROW_HEIGHT = 20;
-// Height of the week number row (shown in weeks view)
 const WEEK_ROW_HEIGHT = 20;
 
-// Animated sticky year label - positions itself smoothly on UI thread
+// Animated sticky year label
 type StickyYearLabelProps = {
   year: number;
   yearStartPx: number;
@@ -49,7 +48,6 @@ type StickyYearLabelProps = {
   color: string;
 };
 
-// Labels are rendered OUTSIDE the ScrollView, so positions are viewport-relative
 const StickyYearLabel = memo(function StickyYearLabel({
   year,
   yearStartPx,
@@ -67,7 +65,6 @@ const StickyYearLabel = memo(function StickyYearLabel({
       return { opacity: 0, transform: [{ translateX: 0 }] };
     }
 
-    // Centered in the visible portion, converted to viewport-relative coords
     const visibleStartPx = Math.max(yearStartPx, viewportStartPx);
     const visibleEndPx = Math.min(yearEndPx, viewportEndPx);
     const labelX = (visibleStartPx + visibleEndPx) / 2 - viewportStartPx;
@@ -107,7 +104,6 @@ type YearDividerProps = {
   color: string;
 };
 
-// Dividers rendered OUTSIDE the ScrollView, viewport-relative
 const YearDivider = memo(function YearDivider({
   dividerX,
   scrollX,
@@ -154,7 +150,7 @@ const ZOOM_LABELS = {
   weeks: "crop_rotations.timeline.zoom_weeks",
 } as const;
 
-function CropRotationZoomLevelToggle({
+function OutdoorZoomLevelToggle({
   zoomLevel,
   onChangeZoomLevel,
 }: {
@@ -202,34 +198,27 @@ function CropRotationZoomLevelToggle({
   );
 }
 
-export function CropRotationTimeline({
+export function OutdoorScheduleTimeline({
   timelineData,
   onBarPress,
-  onZoomChange,
-}: CropRotationTimelineProps) {
+}: OutdoorScheduleTimelineProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const [viewportWidth, setViewportWidth] = useState(0);
-  const [zoomLevel, setZoomLevel] = useState<ZoomLevel>("years");
-  // Bar culling range — updated on mount, zoom change, and scroll end
+  const [zoomLevel, setZoomLevel] = useState<ZoomLevel>("months");
   const [barVisibleRange, setBarVisibleRange] = useState({ start: 0, end: 0 });
   const hasInitialScrolled = useRef(false);
 
-  // Animated refs for worklet-based scroll sync (UI thread)
   const headerScrollRef = useAnimatedRef<Animated.ScrollView>();
   const weekHeaderScrollRef = useAnimatedRef<Animated.ScrollView>();
-  const plotNamesScrollRef = useAnimatedRef<Animated.ScrollView>();
+  const herdNamesScrollRef = useAnimatedRef<Animated.ScrollView>();
   const bodyHorizontalScrollRef = useAnimatedRef<Animated.ScrollView>();
 
-  // Shared values for scroll position (no re-renders)
   const scrollX = useSharedValue(0);
   const scrollY = useSharedValue(0);
-  // Track whether weeks mode is active (guard weekHeaderScrollRef scrollTo in worklet)
   const isWeeksMounted = useSharedValue(false);
-  // Track scroll position at last range update (for distance-based refresh during momentum)
   const lastRangeUpdateX = useSharedValue(0);
 
-  // Programmatic scroll helper - uses native .scrollTo() via animated ref .current
   const scrollAllHorizontalTo = useCallback(
     (x: number) => {
       scrollX.value = x;
@@ -241,13 +230,12 @@ export function CropRotationTimeline({
     [scrollX, headerScrollRef, weekHeaderScrollRef, bodyHorizontalScrollRef],
   );
 
-  const { totalDays, plots, epochStart } = timelineData;
+  const { totalDays, herds, epochStart } = timelineData;
   const scale =
     viewportWidth > 0 ? getScaleForZoomLevel(zoomLevel, viewportWidth) : 1;
   const contentWidth = totalDays * scale;
-  const contentHeight = plots.length * ROW_HEIGHT;
+  const contentHeight = herds.length * ROW_HEIGHT;
 
-  // Today's day offset from epoch start
   const todayDay = useMemo(() => {
     const today = new Date();
     const rawTodayDay = Math.round(
@@ -256,7 +244,7 @@ export function CropRotationTimeline({
     return Math.max(0, Math.min(rawTodayDay, totalDays));
   }, [epochStart, totalDays]);
 
-  // Initialize scroll position centered on today
+  // Initialize scroll centered on today
   useEffect(() => {
     if (viewportWidth > 0 && totalDays > 0 && !hasInitialScrolled.current) {
       hasInitialScrolled.current = true;
@@ -282,7 +270,6 @@ export function CropRotationTimeline({
     scrollAllHorizontalTo,
   ]);
 
-  // Get all years in the timeline data for the animated year row (pre-compute pixel positions)
   const allYearsWithPx = useMemo(() => {
     if (zoomLevel === "years") return [];
     return timelineData.years.map((year) => {
@@ -292,16 +279,11 @@ export function CropRotationTimeline({
       const endDay = Math.round(
         (new Date(year, 11, 31).getTime() - epochStart.getTime()) / MS_PER_DAY,
       );
-      return {
-        year,
-        startPx: startDay * scale,
-        endPx: endDay * scale,
-      };
+      return { year, startPx: startDay * scale, endPx: endDay * scale };
     });
   }, [zoomLevel, timelineData.years, epochStart, scale]);
 
-  // Lazy cache: grid lines computed once per zoom level on first use, instant on re-toggle.
-  // Invalidated when timeline data changes (totalDays/epochStart).
+  // Grid line caching
   const gridCache = useRef<{
     key: number;
     grids: Partial<Record<ZoomLevel, GridLine[]>>;
@@ -326,7 +308,6 @@ export function CropRotationTimeline({
   }
   const allWeekLines = zoomLevel === "weeks" ? gridCache.current.weeks! : [];
 
-  // Helper: compute center/halfSpan from barVisibleRange or fallback to todayDay
   const rangeCenter =
     barVisibleRange.end > barVisibleRange.start
       ? (barVisibleRange.start + barVisibleRange.end) / 2
@@ -338,8 +319,6 @@ export function CropRotationTimeline({
         ? viewportWidth / scale / 2
         : 500;
 
-  // Header grid lines — large buffer so labels are visible during fast scrolling.
-  // Years/months have few lines total so render all; weeks gets 10-viewport buffer (~50 elements).
   const headerGridLines = useMemo(() => {
     if (zoomLevel !== "weeks") return allGridLines;
     const buffer = rangeHalfSpan * 20;
@@ -349,7 +328,6 @@ export function CropRotationTimeline({
     );
   }, [zoomLevel, allGridLines, rangeCenter, rangeHalfSpan]);
 
-  // Header week lines — same large buffer, only in weeks view
   const headerWeekLines = useMemo(() => {
     if (zoomLevel !== "weeks") return [];
     const buffer = rangeHalfSpan * 20;
@@ -359,7 +337,6 @@ export function CropRotationTimeline({
     );
   }, [zoomLevel, allWeekLines, rangeCenter, rangeHalfSpan]);
 
-  // Body grid lines — smaller buffer, updates lazily (grid lines can pop in)
   const bodyGridLines = useMemo(() => {
     const buffer = rangeHalfSpan * 5;
     return allGridLines.filter(
@@ -368,13 +345,11 @@ export function CropRotationTimeline({
     );
   }, [allGridLines, rangeCenter, rangeHalfSpan]);
 
-  // Calculate total header height based on zoom level
   const totalHeaderHeight =
     TIMELINE_HEADER_HEIGHT +
     (zoomLevel !== "years" ? YEAR_ROW_HEIGHT : 0) +
     (zoomLevel === "weeks" ? WEEK_ROW_HEIGHT : 0);
 
-  // Update bar visible range (called on scroll end and programmatic navigation)
   const updateBarRange = useCallback(
     (offsetX: number) => {
       const startDay = offsetX / scale;
@@ -384,8 +359,6 @@ export function CropRotationTimeline({
     [scale, viewportWidth],
   );
 
-  // Native-driven horizontal scroll handler — syncs header on UI thread,
-  // updates bar/grid range on scroll end and during long momentum scrolls
   const horizontalScrollHandler = useAnimatedScrollHandler(
     {
       onScroll: (event) => {
@@ -394,7 +367,6 @@ export function CropRotationTimeline({
         if (isWeeksMounted.value) {
           scrollTo(weekHeaderScrollRef, event.contentOffset.x, 0, false);
         }
-        // Refresh ranges if scrolled far from last update (covers long momentum scrolls)
         const dist = Math.abs(event.contentOffset.x - lastRangeUpdateX.value);
         if (dist > viewportWidth) {
           lastRangeUpdateX.value = event.contentOffset.x;
@@ -413,12 +385,10 @@ export function CropRotationTimeline({
     [updateBarRange, viewportWidth],
   );
 
-  // Native-driven vertical scroll handler - syncs plot names
   const verticalScrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
       scrollY.value = event.contentOffset.y;
-      // Sync plot names scroll on UI thread
-      scrollTo(plotNamesScrollRef, 0, event.contentOffset.y, false);
+      scrollTo(herdNamesScrollRef, 0, event.contentOffset.y, false);
     },
   });
 
@@ -426,7 +396,6 @@ export function CropRotationTimeline({
     setViewportWidth(event.nativeEvent.layout.width);
   }, []);
 
-  // Jump to today's date
   const handleTodayPress = useCallback(() => {
     if (viewportWidth <= 0) return;
     const targetScrollX = Math.max(
@@ -443,13 +412,12 @@ export function CropRotationTimeline({
     scrollAllHorizontalTo(targetScrollX);
   }, [viewportWidth, todayDay, scale, contentWidth, scrollAllHorizontalTo]);
 
-  // Keep the current center day in view when changing zoom
   const handleZoomLevelChange = useCallback(
     (level: ZoomLevel) => {
+      // Keep the current center day in view when changing zoom
       const oldScale = getScaleForZoomLevel(zoomLevel, viewportWidth);
       const centerDay = (scrollX.value + viewportWidth / 2) / oldScale;
       setZoomLevel(level);
-      onZoomChange?.(level);
       const newScale = getScaleForZoomLevel(level, viewportWidth);
       const x = Math.max(
         0,
@@ -472,19 +440,12 @@ export function CropRotationTimeline({
       scrollX,
       scrollAllHorizontalTo,
       isWeeksMounted,
-      onZoomChange,
     ],
   );
 
-  // Notify parent of initial zoom level on mount
-  useEffect(() => {
-    onZoomChange?.(zoomLevel);
-  }, []);
-
-  // FlatList helpers
-  const renderPlotRow = useCallback(
-    ({ item }: { item: TimelinePlotData }) => (
-      <TimelinePlotRow
+  const renderHerdRow = useCallback(
+    ({ item }: { item: OutdoorHerdData }) => (
+      <OutdoorTimelineHerdRow
         bars={item.bars}
         scale={scale}
         visibleStartDay={barVisibleRange.start}
@@ -504,9 +465,9 @@ export function CropRotationTimeline({
     [],
   );
 
-  const keyExtractor = useCallback((item: TimelinePlotData) => item.plotId, []);
+  const keyExtractor = useCallback((item: OutdoorHerdData) => item.herdId, []);
 
-  if (totalDays === 0 || plots.length === 0) {
+  if (totalDays === 0 || herds.length === 0) {
     return null;
   }
 
@@ -521,7 +482,7 @@ export function CropRotationTimeline({
           gap: theme.spacing.s,
         }}
       >
-        <CropRotationZoomLevelToggle
+        <OutdoorZoomLevelToggle
           zoomLevel={zoomLevel}
           onChangeZoomLevel={handleZoomLevelChange}
         />
@@ -556,8 +517,8 @@ export function CropRotationTimeline({
         }}
       >
         <View style={{ flexDirection: "row", flex: 1 }}>
-          {/* Left column: plot names */}
-          <View style={{ width: PLOT_LABEL_WIDTH }}>
+          {/* Left column: herd names */}
+          <View style={{ width: LABEL_WIDTH }}>
             <View
               style={{
                 height: totalHeaderHeight,
@@ -575,18 +536,17 @@ export function CropRotationTimeline({
                   color: theme.colors.gray2,
                 }}
               >
-                {t("crop_rotations.timeline.plot")}
+                {t("animals.herd")}
               </Text>
             </View>
-            {/* Plot names - synced with body vertical scroll */}
             <Animated.ScrollView
-              ref={plotNamesScrollRef}
+              ref={herdNamesScrollRef}
               scrollEnabled={false}
               showsVerticalScrollIndicator={false}
             >
-              {plots.map((plot) => (
+              {herds.map((herd) => (
                 <View
-                  key={plot.plotId}
+                  key={herd.herdId}
                   style={{
                     height: ROW_HEIGHT,
                     justifyContent: "center",
@@ -605,7 +565,7 @@ export function CropRotationTimeline({
                       color: theme.colors.gray1,
                     }}
                   >
-                    {plot.plotName}
+                    {herd.herdName}
                   </Text>
                 </View>
               ))}
@@ -613,15 +573,10 @@ export function CropRotationTimeline({
           </View>
 
           {/* Right area: scrollable timeline */}
-          <View
-            style={{
-              flex: 1,
-            }}
-            onLayout={handleLayout}
-          >
+          <View style={{ flex: 1 }} onLayout={handleLayout}>
             {viewportWidth > 0 && (
               <>
-                {/* Year context row - non-scrolling overlay, positioned by animated styles */}
+                {/* Year context row */}
                 {zoomLevel !== "years" && (
                   <View
                     style={{
@@ -653,7 +608,7 @@ export function CropRotationTimeline({
                   </View>
                 )}
 
-                {/* Header row — months/years labels, horizontal scroll synced with body */}
+                {/* Header row */}
                 <View style={{ height: TIMELINE_HEADER_HEIGHT }}>
                   <Animated.ScrollView
                     ref={headerScrollRef}
@@ -673,7 +628,7 @@ export function CropRotationTimeline({
                   </Animated.ScrollView>
                 </View>
 
-                {/* Week number row — only in weeks view */}
+                {/* Week number row */}
                 {zoomLevel === "weeks" && (
                   <View style={{ height: WEEK_ROW_HEIGHT }}>
                     <Animated.ScrollView
@@ -733,7 +688,7 @@ export function CropRotationTimeline({
                   </View>
                 )}
 
-                {/* Body — horizontal scroll wrapping vertical FlatList */}
+                {/* Body */}
                 <Animated.ScrollView
                   ref={bodyHorizontalScrollRef}
                   horizontal
@@ -741,12 +696,8 @@ export function CropRotationTimeline({
                   scrollEventThrottle={16}
                   showsHorizontalScrollIndicator={false}
                 >
-                  <View
-                    style={{
-                      width: contentWidth,
-                    }}
-                  >
-                    {/* Grid lines layer - single render for all rows */}
+                  <View style={{ width: contentWidth }}>
+                    {/* Grid lines layer */}
                     <View
                       style={{
                         position: "absolute",
@@ -781,8 +732,8 @@ export function CropRotationTimeline({
 
                     {/* Rows */}
                     <Animated.FlatList
-                      data={plots}
-                      renderItem={renderPlotRow}
+                      data={herds}
+                      renderItem={renderHerdRow}
                       keyExtractor={keyExtractor}
                       getItemLayout={getItemLayout}
                       initialNumToRender={20}

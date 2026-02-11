@@ -27,6 +27,7 @@ import { drugsApi } from "./drugs.api";
 import { treatmentsApi } from "./treatments.api";
 import { cropFamiliesApi } from "./crop-families.api";
 import { herdsApi } from "./herds.api";
+import { outdoorJournalApi } from "./outdoor-journal.api";
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 // const baseUrl = "http://localhost:8000/";
@@ -104,5 +105,6 @@ export function api(client: FetchClient) {
     cropProtectionApplicationPresets: cropProtectionApplicationPresetsApi(client),
     reports: reportsApi(client),
     herds: herdsApi(client),
+    outdoorJournal: outdoorJournalApi(client),
   };
 }

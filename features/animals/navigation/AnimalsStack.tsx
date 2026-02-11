@@ -21,6 +21,7 @@ import { TvdImportScreen } from "../TvdImportScreen";
 import { HerdsScreen } from "../HerdsScreen";
 import { CreateHerdScreen } from "../CreateHerdScreen";
 import { HerdEditScreen } from "../HerdEditScreen";
+import { OutdoorJournalScreen } from "../OutdoorJournalScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { DefaultTheme } from "styled-components/native";
 
@@ -163,6 +164,12 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
       name="HerdEdit"
       options={{ title: "" }}
       component={HerdEditScreen}
+    />,
+    <Stack.Screen
+      key="outdoor-journal"
+      name="OutdoorJournal"
+      options={{ title: "" }}
+      component={OutdoorJournalScreen}
     />,
   ];
 }
