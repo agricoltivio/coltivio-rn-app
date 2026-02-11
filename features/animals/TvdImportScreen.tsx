@@ -6,8 +6,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { Select } from "@/components/select/Select";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3 } from "@/theme/Typography";
-// TODO: re-enable after rebuild with expo-document-picker
-// import * as DocumentPicker from "expo-document-picker";
+import * as DocumentPicker from "expo-document-picker";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, View } from "react-native";
@@ -34,18 +33,16 @@ export function TvdImportScreen() {
   ];
 
   async function handlePickFile() {
-    // TODO: re-enable after rebuild with expo-document-picker
-    // const result = await DocumentPicker.getDocumentAsync({
-    //   type: [
-    //     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    //     "application/vnd.ms-excel",
-    //   ],
-    //   copyToCacheDirectory: true,
-    // });
-    // if (!result.canceled && result.assets.length > 0) {
-    //   setSelectedFile(result.assets[0]);
-    // }
-    Alert.alert("TODO", "Rebuild required for expo-document-picker");
+    const result = await DocumentPicker.getDocumentAsync({
+      type: [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/vnd.ms-excel",
+      ],
+      copyToCacheDirectory: true,
+    });
+    if (!result.canceled && result.assets.length > 0) {
+      setSelectedFile(result.assets[0]);
+    }
   }
 
   async function handleImport() {

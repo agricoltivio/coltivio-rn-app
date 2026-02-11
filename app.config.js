@@ -3,7 +3,7 @@ export default {
   slug: "coltivio",
   owner: "agricoltivio",
   version: "1.0.0",
-  orientation: "portrait",
+  orientation: "default",
   icon: "./assets/images/icon.png",
   scheme: process.env.SCHEME,
   userInterfaceStyle: "automatic",
