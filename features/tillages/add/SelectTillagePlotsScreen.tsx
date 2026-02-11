@@ -13,7 +13,7 @@ import {
 import { useFarmQuery } from "@/features/farms/farms.hooks";
 import { HomeMarker } from "@/features/map/layers/HomeMarker";
 import { MapShowLocationToggle } from "@/features/map/MapShowLocationToggle";
-import { PlotSelectionOrDrawTip } from "@/features/map/tips/PlotSelectionOrDrawTip";
+import { useLocalSettings } from "@/features/user/LocalSettingsContext";
 import { TopLeftBackButton } from "@/features/map/TopLeftBackButton";
 import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
 import { SelectTillagePlotsScreenProps } from "../navigation/tillages-routes";
@@ -43,7 +43,15 @@ export function SelectTillagePlotsScreen({
   const { putPlot, removePlot, selectedPlotsById, resetSelectedPlots } =
     useAddTillageStore();
 
+  const { localSettings } = useLocalSettings();
   const polygonDrawingToolRef = useRef<PolygonDrawingToolActions>(null);
+
+  // show map draw onboarding on first visit
+  useEffect(() => {
+    if (!localSettings.mapDrawOnboardingCompleted) {
+      navigation.navigate("MapDrawOnboarding");
+    }
+  }, []);
 
   // in case the total quantity is changed we reset the selected areas when navigating back
   useEffect(() => {
@@ -189,12 +197,12 @@ export function SelectTillagePlotsScreen({
             setDrawingAction(action);
           }}
           onFinish={onFertilizerApplicationAreaDrawComplete}
+          onInfo={() => navigation.navigate("MapDrawOnboarding")}
         />
         <HomeMarker latitude={latitude} longitude={longitude} />
       </MapView>
       <TopLeftBackButton />
       <MapShowLocationToggle onShowLocationChange={setShowUserLocation} />
-      <PlotSelectionOrDrawTip />
       <PortalHost name="AddTillageMap" />
     </ContentView>
   );

@@ -37,6 +37,7 @@ export type PolygonDrawingToolProps = {
   magnifierMapContent?: React.ReactNode[];
   portalName?: string;
   onFinish?: (coordinates: LatLng[]) => void;
+  onInfo?: () => void;
   showActions?: boolean;
 };
 
@@ -60,6 +61,7 @@ export const PolygonDrawingTool = forwardRef<
       strokeWidth,
       magnifierMapContent,
       onFinish,
+      onInfo,
     }: PolygonDrawingToolProps,
     ref,
   ) => {
@@ -396,6 +398,7 @@ export const PolygonDrawingTool = forwardRef<
               onUndo={onUndo}
               onDelete={onDelete}
               onFinish={finish}
+              onInfo={onInfo}
               canFinish={polygon.coordinates.length > 2}
             />
           ) : null}

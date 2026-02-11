@@ -39,7 +39,9 @@ export type RootStackParamList = AuthStackParamList &
   CropProtectionApplicationStackParamList &
   FieldCalendarStackParamList &
   AgriColtivioStackParamList &
-  AnimalsStackParamList;
+  AnimalsStackParamList & {
+    MapDrawOnboarding: undefined;
+  };
 
 declare global {
   namespace ReactNavigation {

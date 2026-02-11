@@ -23,7 +23,7 @@ import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../../farms/farms.hooks";
 import { HomeMarker } from "../../map/layers/HomeMarker";
 import { MapShowLocationToggle } from "../../map/MapShowLocationToggle";
-import { PlotSelectionOrDrawTip } from "../../map/tips/PlotSelectionOrDrawTip";
+import { useLocalSettings } from "../../user/LocalSettingsContext";
 import { TopLeftBackButton } from "../../map/TopLeftBackButton";
 import { useFarmPlotsQuery } from "../../plots/plots.hooks";
 import { SelectHarvestPlotsScreenProps } from "../navigation/harvest-routes";
@@ -56,7 +56,15 @@ export function SelectHarvestPlotsScreen({
     totalProducedUnits,
   } = useCreateHarvestStore();
 
+  const { localSettings } = useLocalSettings();
   const polygonDrawingToolRef = useRef<PolygonDrawingToolActions>(null);
+
+  // show map draw onboarding on first visit
+  useEffect(() => {
+    if (!localSettings.mapDrawOnboardingCompleted) {
+      navigation.navigate("MapDrawOnboarding");
+    }
+  }, []);
 
   // in case the total quantity is changed we reset the selected areas when navigating back
   useEffect(() => {
@@ -220,12 +228,12 @@ export function SelectHarvestPlotsScreen({
           }}
           magnifierMapContent={mapLayer}
           onFinish={onHarvestAreaDrawComplete}
+          onInfo={() => navigation.navigate("MapDrawOnboarding")}
         />
         <HomeMarker latitude={latitude} longitude={longitude} />
       </MapView>
       <TopLeftBackButton />
       <MapShowLocationToggle onShowLocationChange={setShowUserLocation} />
-      <PlotSelectionOrDrawTip />
       <PortalHost name="HarvestMap" />
     </ContentView>
   );

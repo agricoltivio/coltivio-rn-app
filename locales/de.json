@@ -513,7 +513,7 @@
   },
   "field_calendar": {
     "field_calendar": "Feldkalender",
-    "crop_families": "Kulturfamilien",
+    "crop_families": "Pflanzenfamilien",
     "crops": "Kulturen",
     "crop_rotations": "Fruchtfolgen",
     "tillages": "Bodenbearbeitungen",
@@ -522,7 +522,23 @@
     "harvests": "Ernte",
     "crop_protection_products": "Pflanzenschutzmittel",
     "crop_protection_applications": "Pflanzenschutz",
-    "export": "Exportieren"
+    "export": "Exportieren",
+    "settings": "Feldkalender Einstellungen",
+    "groups": {
+      "crops": "Kulturen",
+      "soil": "Bodenbearbeitung",
+      "fertilization": "Düngung",
+      "protection": "Pflanzenschutz",
+      "harvest": "Ernte",
+      "export": "Export"
+    },
+    "onboarding": {
+      "welcome_heading": "Willkommen im Feldkalender",
+      "welcome_body": "Hier verwaltest du alle Aktivitäten rund um deine Felder: Kulturen, Bodenbearbeitung, Düngung, Pflanzenschutz und Ernte.",
+      "configure_heading": "Passe deinen Feldkalender an",
+      "done_heading": "Geschafft!",
+      "done_body": "Du kannst die Einstellungen jederzeit über das Zahnrad-Symbol ändern."
+    }
   },
   "harvests": {
     "harvest": "Ernte",
@@ -669,13 +685,13 @@
     "waiting_time_in_years_optional": "Wartezeit in Jahren (optional)"
   },
   "crop_families": {
-    "crop_families": "Kulturfamilien",
-    "crop_family": "Kulturfamilie",
-    "new_crop_family": "Neue Kulturfamilie",
+    "crop_families": "Pflanzenfamilien",
+    "crop_family": "Pflanzenfamilie",
+    "new_crop_family": "Neue Pflanzenfamilie",
     "waiting_time_in_years": "Wartezeit in Jahren",
     "waiting_time_years": "{{count}} Jahr Wartezeit",
     "waiting_time_years_plural": "{{count}} Jahre Wartezeit",
-    "family_in_use_warning": "Diese Kulturfamilie wird verwendet und kann deshalb nicht gelöscht werden."
+    "family_in_use_warning": "Diese Pflanzenfamilie wird verwendet und kann deshalb nicht gelöscht werden."
   },
   "crop_protection_applications": {
     "crop_protection": "Pflanzenschutz",
@@ -810,6 +826,16 @@
     "no_ear_tag": "Keine Ohrmarke",
     "no_animal_assigned": "Kein Tier zugewiesen"
   },
+  "map_draw_onboarding": {
+    "welcome_heading": "Schläge & Flächen",
+    "welcome_body": "Du wählst gleich deine Schläge aus oder zeichnest eine Fläche auf der Karte. Hier erklären wir dir kurz, wie das funktioniert.",
+    "select_heading": "Schläge auswählen",
+    "select_body": "Tippe auf deine Schläge, um sie auszuwählen oder abzuwählen.",
+    "draw_heading": "Fläche zeichnen",
+    "draw_body": "Tippe auf dieses Symbol, um den Zeichenmodus zu starten. Tippe danach auf die Karte, um Eckpunkte zu setzen. Halte einen Eckpunkt gedrückt, um ihn zu verschieben.",
+    "finish_heading": "Zeichnung abschliessen",
+    "finish_body": "Tippe auf dieses Symbol, um die Fläche abzuschliessen."
+  },
   "animals": {
     "animals": "Tiere",
     "animal": "Tier",
@@ -846,7 +872,19 @@
     "show_dead": "Tote anzeigen",
     "only_unregistered": "Nur nicht registrierte",
     "only_with_waiting_period": "Nur mit Absetzfrist",
-    "select_children": "Nachkommen auswählen"
+    "select_children": "Nachkommen auswählen",
+    "settings": "Tierhaltung Einstellungen",
+    "groups": {
+      "animals": "Tiere",
+      "health": "Gesundheit"
+    },
+    "onboarding": {
+      "welcome_heading": "Willkommen in der Tierhaltung",
+      "welcome_body": "Hier verwaltest du deine Tiere, Ohrmarken, Medikamente und Behandlungen.",
+      "configure_heading": "Passe die Tierhaltung an",
+      "done_heading": "Geschafft!",
+      "done_body": "Du kannst die Einstellungen jederzeit über das Zahnrad-Symbol ändern."
+    }
   },
   "drugs": {
     "drugs": "Medikamente",

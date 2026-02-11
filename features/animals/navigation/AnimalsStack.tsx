@@ -15,13 +15,29 @@ import { TreatmentsScreen } from "../TreatmentsScreen";
 
 import { CreateTreatmentScreen } from "../CreateTreatmentScreen";
 import { EditTreatmentScreen } from "../EditTreatmentScreen";
+import { AnimalsOnboardingScreen } from "../AnimalsOnboardingScreen";
+import { AnimalsSettingsScreen } from "../AnimalsSettingsScreen";
+import { Ionicons } from "@expo/vector-icons";
+import { DefaultTheme } from "styled-components/native";
 
-export function renderAnimalsStack() {
+export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
   return [
     <Stack.Screen
       key="animals-hub"
       name="AnimalsHub"
-      options={{ title: "" }}
+      options={{
+        title: "",
+        headerRight() {
+          return (
+            <Ionicons
+              size={35}
+              name="settings-outline"
+              color={theme.colors.primary}
+              onPress={() => navigation.navigate("AnimalsSettings")}
+            />
+          );
+        },
+      }}
       component={AnimalsHubScreen}
     />,
     <Stack.Screen
@@ -107,6 +123,18 @@ export function renderAnimalsStack() {
       name="EditTreatment"
       options={{ title: "" }}
       component={EditTreatmentScreen}
+    />,
+    <Stack.Screen
+      key="animals-onboarding"
+      name="AnimalsOnboarding"
+      options={{ headerShown: false }}
+      component={AnimalsOnboardingScreen}
+    />,
+    <Stack.Screen
+      key="animals-settings"
+      name="AnimalsSettings"
+      options={{ title: "" }}
+      component={AnimalsSettingsScreen}
     />,
   ];
 }

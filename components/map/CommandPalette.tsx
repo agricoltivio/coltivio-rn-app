@@ -9,6 +9,7 @@ type CommandPaletteProps = {
   onUndo: () => void;
   onDraw: () => void;
   onDelete: () => void;
+  onInfo?: () => void;
   action: DrawAction;
   canFinish: boolean;
 };
@@ -17,6 +18,7 @@ export function CommandPalette({
   onDraw,
   onUndo,
   onDelete,
+  onInfo,
   action,
   canFinish,
 }: CommandPaletteProps) {
@@ -60,6 +62,15 @@ export function CommandPalette({
         disabled={action === "select" || !canFinish}
         onPress={onFinish}
       />
+      {onInfo && (
+        <MaterialCommunityIconButton
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="information-outline"
+          onPress={onInfo}
+        />
+      )}
     </MapControls>
   );
 }

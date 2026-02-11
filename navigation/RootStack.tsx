@@ -25,6 +25,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect, useState } from "react";
 import { useTheme } from "styled-components/native";
+import { MapDrawOnboardingScreen } from "../features/map/MapDrawOnboardingScreen";
 import { renderOnboardingStack } from "../features/onboarding/navigation/OnboardingStack";
 import { Stack } from "./stack";
 
@@ -97,7 +98,7 @@ export function RootStack() {
           {renderFertilizerApplicationStack()}
           {renderCropProtectionApplicationStack()}
           {renderCropProtectionProductStack()}
-          {renderAnimalsStack()}
+          {renderAnimalsStack(theme, navigation)}
           {renderAgriColtivioStack()}
         </Stack.Group>
 
@@ -111,6 +112,11 @@ export function RootStack() {
           }}
         >
           {renderFarmModalStack()}
+          <Stack.Screen
+            name="MapDrawOnboarding"
+            component={MapDrawOnboardingScreen}
+            options={{ headerShown: false }}
+          />
         </Stack.Group>
       </>
     );

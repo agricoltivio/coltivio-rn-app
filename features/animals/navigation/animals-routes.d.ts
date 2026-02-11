@@ -1,7 +1,9 @@
-import { StackScreenProps } from "@/navigation/rootStackTypes";
+import { StackScreenProps } from "@react-navigation/native-stack";
 
 export type AnimalsStackParamList = {
   AnimalsHub: undefined;
+  AnimalsOnboarding: undefined;
+  AnimalsSettings: undefined;
   EarTags: undefined;
   CreateEarTagRange: undefined;
   Animals: undefined;
@@ -44,3 +46,7 @@ export type EditDrugScreenProps = StackScreenProps<"EditDrug">;
 export type TreatmentsScreenProps = StackScreenProps<"Treatments">;
 export type CreateTreatmentScreenProps = StackScreenProps<"CreateTreatment">;
 export type EditTreatmentScreenProps = StackScreenProps<"EditTreatment">;
+export type AnimalsOnboardingScreenProps =
+  StackScreenProps<"AnimalsOnboarding">;
+export type AnimalsSettingsScreenProps =
+  StackScreenProps<"AnimalsSettings">;

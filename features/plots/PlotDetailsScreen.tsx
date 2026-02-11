@@ -158,9 +158,9 @@ export function PlotDetailsScreen({
           <ListItem
             style={{ backgroundColor: theme.colors.white }}
             onPress={() =>
-              navigation.navigate("PlotCropRotations", {
-                plotId: plotId,
-                name: plot!.name,
+              navigation.navigate("PlanCropRotations", {
+                plotIds: [plotId],
+                previousScreen: "PlotDetails",
               })
             }
           >

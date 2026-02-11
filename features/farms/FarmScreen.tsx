@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 export function FarmScreen({ navigation }: FarmScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+
   return (
     <ContentView
       footerComponent={
@@ -35,8 +36,17 @@ export function FarmScreen({ navigation }: FarmScreenProps) {
             onPress={() => navigation.navigate("EditFarmLocation")}
             hideBottomDivider
           />
-          {/* <List.Item title="Mitarbeiter" hideBottomDivider disabled /> */}
         </List>
+
+        {__DEV__ && (
+          <List title="Developer" style={{ marginTop: theme.spacing.l }}>
+            <List.Item
+              title="Developer Settings"
+              onPress={() => navigation.navigate("DevSettings")}
+              hideBottomDivider
+            />
+          </List>
+        )}
       </ScrollView>
     </ContentView>
   );

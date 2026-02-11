@@ -171,24 +171,10 @@ const palette = [
   "#3498DB", // Blue
 ];
 
-const colorMap = new Map();
-
 export function stringToColor(str: string) {
-  if (colorMap.has(str)) return colorMap.get(str);
-
-  // Generate hash and map to the palette
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
-  let index = Math.abs(hash) % palette.length;
-
-  // Collision resolution: find the next available color
-  while ([...colorMap.values()].includes(palette[index])) {
-    index = (index + 1) % palette.length;
-  }
-
-  const color = palette[index];
-  colorMap.set(str, color);
-  return color;
+  return palette[Math.abs(hash) % palette.length];
 }

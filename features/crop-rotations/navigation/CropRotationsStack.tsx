@@ -1,4 +1,3 @@
-import { PlotCropRotationsScreen } from "@/features/plots/PlotCropRotationsScreen";
 import { Stack } from "@/navigation/stack";
 import { CropRotationsOfYearListScreen } from "../CropRotationsOfYearListScreen";
 import { CropRotationsScreen } from "../CropRotationsScreen";
@@ -24,15 +23,7 @@ export function renderCropsRotationStack() {
       }}
       component={CropRotationsOfYearListScreen}
     />,
-    <Stack.Screen
-      key="plot-crop-rotations"
-      name="PlotCropRotations"
-      options={{
-        title: "",
-      }}
-      component={PlotCropRotationsScreen}
-    />,
-    <Stack.Screen
+<Stack.Screen
       key="edit-plot-crop-rotation"
       name="EditPlotCropRotation"
       options={{

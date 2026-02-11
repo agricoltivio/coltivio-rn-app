@@ -6,6 +6,14 @@ import {
   useEffect,
   useState,
 } from "react";
+import {
+  AnimalsGroupConfig,
+  DEFAULT_ANIMALS_GROUPS,
+} from "../animals/animals-settings";
+import {
+  DEFAULT_FIELD_CALENDAR_GROUPS,
+  FieldCalendarGroupConfig,
+} from "../field-calendar/field-calendar-settings";
 
 type LocalSettingsData = {
   addPlotMapShowDrawingTip: boolean;
@@ -13,6 +21,11 @@ type LocalSettingsData = {
   editPlotMapShowEditDrawingTipp: boolean;
   showSelectPlotsOrDrawTip: boolean;
   showSelectPlotsTip: boolean;
+  fieldCalendarGroups: FieldCalendarGroupConfig[];
+  fieldCalendarOnboardingCompleted: boolean;
+  animalsGroups: AnimalsGroupConfig[];
+  animalsOnboardingCompleted: boolean;
+  mapDrawOnboardingCompleted: boolean;
 };
 
 type LocalSettingActions = {
@@ -32,6 +45,11 @@ const defaultLocalSettings: LocalSettingsData = {
   editPlotMapShowEditDrawingTipp: true,
   showSelectPlotsOrDrawTip: true,
   showSelectPlotsTip: true,
+  fieldCalendarGroups: DEFAULT_FIELD_CALENDAR_GROUPS,
+  fieldCalendarOnboardingCompleted: false,
+  animalsGroups: DEFAULT_ANIMALS_GROUPS,
+  animalsOnboardingCompleted: false,
+  mapDrawOnboardingCompleted: false,
 };
 
 export const LocalSettingsContext = createContext<LocalSettings>({
@@ -53,7 +71,7 @@ export function LocalSettingsProvider({ children }: PropsWithChildren) {
       if (isMounted) {
         setLoading(false);
         if (value) {
-          setLocalSettings(JSON.parse(value));
+          setLocalSettings({ ...defaultLocalSettings, ...JSON.parse(value) });
         }
       }
     });

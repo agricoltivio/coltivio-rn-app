@@ -12,7 +12,7 @@ import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
 import { addDays } from "date-fns";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -76,8 +76,6 @@ export function EditTreatmentScreen({
     treatment?.animals.map((animal) => animal.id) ??
     [];
 
-  const [initialized, setInitialized] = useState(false);
-
   const {
     control,
     handleSubmit,
@@ -108,6 +106,13 @@ export function EditTreatmentScreen({
         }
       : undefined,
   });
+
+  // Apply preselected drug (e.g. after creating a new drug via the + button)
+  useEffect(() => {
+    if (preselectedDrugId) {
+      setValue("drugId", preselectedDrugId);
+    }
+  }, [preselectedDrugId, setValue]);
 
   const selectedDrugId = useWatch({ control, name: "drugId" });
   const treatmentDate = useWatch({ control, name: "date" });
@@ -270,7 +275,7 @@ export function EditTreatmentScreen({
   const initialAnimalIds = treatment.animals?.map((a) => a.id) ?? [];
   const animalsChanged =
     selectedAnimalIds.length !== initialAnimalIds.length ||
-    selectedAnimalIds.some((id) => !initialAnimalIds.includes(id));
+    selectedAnimalIds.some((id: string) => !initialAnimalIds.includes(id));
 
   const canSave =
     selectedAnimalIds.length > 0 &&

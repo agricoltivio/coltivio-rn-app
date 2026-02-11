@@ -21,12 +21,6 @@ export type PlotsStackParamList = {
     name: string;
   };
   PlotTillages: { plotId: string; name: string };
-  PlotCropRotations: { plotId: string; name: string };
-  PlanCropRotations: { plotIds: string[] };
-  EditPlotCropRotation: {
-    plotName?: string;
-    rotationId: string;
-  };
 };
 
 export type PlotsMapScreenProps = StackScreenProps<"PlotsMap">;

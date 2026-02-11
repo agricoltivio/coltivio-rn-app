@@ -66,7 +66,13 @@ export function CropForm({ control, errors }: CropFormProps) {
           ]}
         />
         {/* Family select with add button */}
-        <View style={{ flexDirection: "row", alignItems: "flex-end", gap: theme.spacing.xs }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: theme.spacing.xs,
+          }}
+        >
           <View style={{ flex: 1 }}>
             <RHSelect
               name="familyId"
@@ -79,7 +85,8 @@ export function CropForm({ control, errors }: CropFormProps) {
           </View>
           <IonIconButton
             icon="add"
-            type="primary"
+            type="accent"
+            color="black"
             iconSize={24}
             onPress={() => navigation.navigate("CreateCropFamily")}
             style={{ marginBottom: 1 }}

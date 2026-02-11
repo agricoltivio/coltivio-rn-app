@@ -37,7 +37,8 @@ export function PlanCropRotationsScreen({
   const { t } = useTranslation();
   const theme = useTheme();
   const navigation = useNavigation();
-  const plotIdsFromParams = route.params.plotIds;
+  const plotIdsFromParams = route.params.plotIds!;
+  const previousScreen = route.params.previousScreen;
 
   const {
     plotPlans,
@@ -103,17 +104,21 @@ export function PlanCropRotationsScreen({
     () => {
       setSaving(false);
       reset();
-      // Reset stack to: Home > FieldCalendar > CropRotations
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 2,
-          routes: [
-            { name: "Home" },
-            { name: "FieldCalendar" },
-            { name: "CropRotations" },
-          ],
-        })
-      );
+      if (previousScreen === "PlotDetails") {
+        navigation.goBack();
+      } else {
+        // Reset stack to: Home > FieldCalendar > CropRotations
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 2,
+            routes: [
+              { name: "Home" },
+              { name: "FieldCalendar" },
+              { name: "CropRotations" },
+            ],
+          }),
+        );
+      }
     },
     () => {
       setSaving(false);
@@ -137,7 +142,7 @@ export function PlanCropRotationsScreen({
       aFromDay: number,
       aToDay: number,
       bFromDay: number,
-      bToDay: number
+      bToDay: number,
     ) => {
       if (aFromDay <= aToDay && bFromDay <= bToDay) {
         return aFromDay <= bToDay && aToDay >= bFromDay;
@@ -152,7 +157,7 @@ export function PlanCropRotationsScreen({
       interval: number,
       untilYear: number | null,
       rangeStart: number,
-      rangeEnd: number
+      rangeEnd: number,
     ): Set<number> => {
       const years = new Set<number>();
       const effectiveEnd = untilYear ? Math.min(untilYear, rangeEnd) : rangeEnd;
@@ -181,9 +186,13 @@ export function PlanCropRotationsScreen({
         return aStartYear === bStartYear;
       }
 
-      // Get all years each rotation occurs
-      const aYears = getOccurrenceYears(aStartYear, aInterval, aUntilYear, rangeStart, rangeEnd);
-      const bYears = getOccurrenceYears(bStartYear, bInterval, bUntilYear, rangeStart, rangeEnd);
+      // Get all years each rotation occurs (non-recurring = single year only)
+      const aYears = a.recurrence
+        ? getOccurrenceYears(aStartYear, aInterval, aUntilYear, rangeStart, rangeEnd)
+        : new Set([aStartYear]);
+      const bYears = b.recurrence
+        ? getOccurrenceYears(bStartYear, bInterval, bUntilYear, rangeStart, rangeEnd)
+        : new Set([bStartYear]);
 
       // Check for any common year
       for (const year of aYears) {
@@ -219,11 +228,19 @@ export function PlanCropRotationsScreen({
 
           if (hasOverlap) {
             const cropNameA =
-              crops?.find((c) => c.id === a.cropId)?.name || t("crop_rotations.crop_rotation");
+              crops?.find((c) => c.id === a.cropId)?.name ||
+              t("crop_rotations.crop_rotation");
             const cropNameB =
-              crops?.find((c) => c.id === b.cropId)?.name || t("crop_rotations.crop_rotation");
-            conflicts.set(a.entryId, t("crop_rotations.plan.overlaps_with", { crop: cropNameB }));
-            conflicts.set(b.entryId, t("crop_rotations.plan.overlaps_with", { crop: cropNameA }));
+              crops?.find((c) => c.id === b.cropId)?.name ||
+              t("crop_rotations.crop_rotation");
+            conflicts.set(
+              a.entryId,
+              t("crop_rotations.plan.overlaps_with", { crop: cropNameB }),
+            );
+            conflicts.set(
+              b.entryId,
+              t("crop_rotations.plan.overlaps_with", { crop: cropNameA }),
+            );
           }
         }
       }
@@ -359,7 +376,7 @@ export function PlanCropRotationsScreen({
 
   // Handle bar press - find rotation and open modal
   const handleBarPress = useCallback(
-    (rotationId: string, plotName: string) => {
+    (rotationId: string, _plotName: string) => {
       // Find the rotation entry by entryId or rotationId
       for (const plan of plotPlans) {
         const rotation = plan.rotations.find(
@@ -537,6 +554,7 @@ export function PlanCropRotationsScreen({
             />
           );
         })}
+
       </ScrollView>
 
       {/* Save Button */}
@@ -599,6 +617,10 @@ export function PlanCropRotationsScreen({
         onSave={handleModalSave}
         onDelete={editingRotation ? handleModalDelete : undefined}
         onClose={() => setEditModalVisible(false)}
+        onNavigateToCreateCrop={() => {
+          setEditModalVisible(false);
+          navigation.navigate("CreateCrop");
+        }}
       />
     </View>
   );

@@ -8,6 +8,7 @@ import { CompactDatePicker } from "@/components/datepicker/CompactDatePicker";
 import { RotationEntry, RecurrenceRule } from "../plan-crop-rotations.store";
 import { Plot } from "@/api/plots.api";
 import { Crop } from "@/api/crops.api";
+import { IonIconButton } from "@/components/buttons/IconButton";
 
 type RotationEditModalProps = {
   visible: boolean;
@@ -18,6 +19,7 @@ type RotationEditModalProps = {
   onSave: (plotId: string, rotation: RotationEntry) => void;
   onDelete?: (entryId: string) => void;
   onClose: () => void;
+  onNavigateToCreateCrop?: () => void;
 };
 
 export function RotationEditModal({
@@ -29,6 +31,7 @@ export function RotationEditModal({
   onSave,
   onDelete,
   onClose,
+  onNavigateToCreateCrop,
 }: RotationEditModalProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -154,14 +157,32 @@ export function RotationEditModal({
           </View>
 
           {/* Crop Select */}
-          <View style={{ marginBottom: theme.spacing.m }}>
-            <Select
-              label={t("crops.crop")}
-              value={cropId}
-              data={cropOptions}
-              onChange={setCropId}
-              enableSearch
-            />
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: theme.spacing.xs,
+              marginBottom: theme.spacing.m,
+            }}
+          >
+            <View style={{ flex: 1 }}>
+              <Select
+                label={t("crops.crop")}
+                value={cropId}
+                data={cropOptions}
+                onChange={setCropId}
+                enableSearch
+              />
+            </View>
+            {onNavigateToCreateCrop && (
+              <IonIconButton
+                icon="add"
+                color="black"
+                iconSize={25}
+                type="accent"
+                onPress={onNavigateToCreateCrop}
+              />
+            )}
           </View>
 
           {/* Duration */}

@@ -1,5 +1,6 @@
 import { Stack } from "@/navigation/stack";
 import { DeleteFarmScreen } from "../DeleteFarmScreen";
+import { DevSettingsScreen } from "../DevSettingsScreen";
 import { EditFarmLocationScreen } from "../EditFarmLocationScreen";
 import { EditFarmNameScreen } from "../EditFarmNameScreen";
 import { FarmScreen } from "../FarmScreen";
@@ -35,6 +36,14 @@ export function renderFarmStack() {
       key="delete-farm"
       name="DeleteFarm"
       component={DeleteFarmScreen}
+      options={{
+        title: "",
+      }}
+    />,
+    <Stack.Screen
+      key="dev-settings"
+      name="DevSettings"
+      component={DevSettingsScreen}
       options={{
         title: "",
       }}

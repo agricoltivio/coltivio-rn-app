@@ -3,7 +3,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { FieldCalendarExportScreen } from "../FieldCalendarExportScreen";
 import { FieldCalendarExportSuccessScreen } from "../FieldCalendarExportSuccessScreen";
 import { FieldCalendarScreen } from "../FieldCalendarScreen";
+import { FieldCalendarSettingsScreen } from "../FieldCalendarSettingsScreen";
+import { FieldCalendarOnboardingScreen } from "../FieldCalendarOnboardingScreen";
 import { DefaultTheme } from "styled-components/native";
+import { View } from "react-native";
 
 export function renderFieldCalendarStack(theme: DefaultTheme, navigation: any) {
   return [
@@ -12,18 +15,34 @@ export function renderFieldCalendarStack(theme: DefaultTheme, navigation: any) {
       name="FieldCalendar"
       options={{
         title: "",
-        headerRight(props) {
+        headerRight() {
           return (
-            <Ionicons
-              size={35}
-              name="download-outline"
-              color={theme.colors.primary}
-              onPress={() => navigation.navigate("FieldCalendarExport")}
-            />
+            <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.m }}>
+              <Ionicons
+                size={35}
+                name="settings-outline"
+                color={theme.colors.primary}
+                onPress={() => navigation.navigate("FieldCalendarSettings")}
+              />
+              <Ionicons
+                size={35}
+                name="download-outline"
+                color={theme.colors.primary}
+                onPress={() => navigation.navigate("FieldCalendarExport")}
+              />
+            </View>
           );
         },
       }}
       component={FieldCalendarScreen}
+    />,
+    <Stack.Screen
+      key="field-calendar-settings"
+      name="FieldCalendarSettings"
+      options={{
+        title: "",
+      }}
+      component={FieldCalendarSettingsScreen}
     />,
     <Stack.Screen
       key="field-calendar-export"
@@ -40,6 +59,14 @@ export function renderFieldCalendarStack(theme: DefaultTheme, navigation: any) {
         title: "",
       }}
       component={FieldCalendarExportSuccessScreen}
+    />,
+    <Stack.Screen
+      key="field-calendar-onboarding"
+      name="FieldCalendarOnboarding"
+      options={{
+        headerShown: false,
+      }}
+      component={FieldCalendarOnboardingScreen}
     />,
   ];
 }
