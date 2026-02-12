@@ -23,7 +23,7 @@ export function NumberInput({
     <TextInput
       onChangeText={handleOnChange}
       {...props}
-      // keyboardType="numeric"
+      keyboardType="numbers-and-punctuation"
     />
   );
 }

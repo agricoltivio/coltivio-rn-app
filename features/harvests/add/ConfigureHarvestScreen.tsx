@@ -75,7 +75,7 @@ export function ConfigureHarvestScreen({
   const presetId = watch("presetId");
   const unit = watch("unit");
 
-  // When preset is selected, populate fields from preset
+  // When preset is selected, populate fields; when cleared, reset them
   useEffect(() => {
     if (presetId && harvestPresets) {
       const preset = harvestPresets.find((p) => p.id === presetId);
@@ -84,6 +84,10 @@ export function ConfigureHarvestScreen({
         setValue("conservationMethod", preset.conservationMethod ?? undefined);
         setValue("kilosPerUnit", preset.kilosPerUnit.toString());
       }
+    } else if (!presetId) {
+      setValue("unit", "load");
+      setValue("conservationMethod", undefined);
+      setValue("kilosPerUnit", "");
     }
   }, [presetId, harvestPresets, setValue]);
 
@@ -174,6 +178,7 @@ export function ConfigureHarvestScreen({
                 onChange={onChange}
                 onManagePress={() => managePresetsRef.current?.open()}
                 placeholder={t("presets.select_preset")}
+                noneLabel={t("presets.no_preset")}
               />
             )}
           />
@@ -217,16 +222,16 @@ export function ConfigureHarvestScreen({
             error={errors.kilosPerUnit?.message}
           />
 
-          <RHTextAreaInput
-            name="additionalNotes"
-            control={control}
-            label={t("forms.labels.additional_notes_optional")}
-          />
-
           <Button
             title={t("presets.save_as_preset")}
             type="accent"
             onPress={() => savePresetRef.current?.open()}
+          />
+
+          <RHTextAreaInput
+            name="additionalNotes"
+            control={control}
+            label={t("forms.labels.additional_notes_optional")}
           />
         </View>
       </ScrollView>

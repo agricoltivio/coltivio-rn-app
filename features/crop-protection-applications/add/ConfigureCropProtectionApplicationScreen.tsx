@@ -92,7 +92,7 @@ export function ConfigureCropProtectionApplicationScreen({
   const presetId = watch("presetId");
   const unit = watch("unit");
 
-  // When preset is selected, populate fields
+  // When preset is selected, populate fields; when cleared, reset them
   useEffect(() => {
     if (presetId && cropProtectionApplicationPresets) {
       const preset = cropProtectionApplicationPresets.find(
@@ -103,6 +103,10 @@ export function ConfigureCropProtectionApplicationScreen({
         setValue("unit", preset.unit);
         setValue("amountPerUnit", preset.amountPerUnit.toString());
       }
+    } else if (!presetId) {
+      setValue("method", "spraying");
+      setValue("unit", "load");
+      setValue("amountPerUnit", "");
     }
   }, [presetId, cropProtectionApplicationPresets, setValue]);
 
@@ -199,6 +203,7 @@ export function ConfigureCropProtectionApplicationScreen({
                 onChange={onChange}
                 onManagePress={() => managePresetsRef.current?.open()}
                 placeholder={t("presets.select_preset")}
+                noneLabel={t("presets.no_preset")}
               />
             )}
           />
@@ -251,16 +256,16 @@ export function ConfigureCropProtectionApplicationScreen({
             float
           />
 
-          <RHTextAreaInput
-            name="additionalNotes"
-            control={control}
-            label={t("forms.labels.additional_notes_optional")}
-          />
-
           <Button
             title={t("presets.save_as_preset")}
             type="accent"
             onPress={() => savePresetRef.current?.open()}
+          />
+
+          <RHTextAreaInput
+            name="additionalNotes"
+            control={control}
+            label={t("forms.labels.additional_notes_optional")}
           />
         </View>
       </ScrollView>

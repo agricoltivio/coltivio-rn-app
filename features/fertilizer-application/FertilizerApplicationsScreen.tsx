@@ -11,7 +11,7 @@ import { round } from "@/utils/math";
 import Fuse from "fuse.js";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { SectionList, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, SectionList, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { FertilizerApplicationDashboard } from "./components/FertilizerApplicationDashboard";
 import {
@@ -34,9 +34,9 @@ export function FertilizerApplicationsScreen({
 
   const { fertilizerApplicationYears } =
     useFertilizerApplicationYearsQuery();
-  const { applicationSummaries } =
+  const { applicationSummaries, isLoading: summariesLoading } =
     useFertilizerApplicationSummaryOfFarmQuery();
-  const { fertilizerApplications } = useFertilizerApplicationsQuery();
+  const { fertilizerApplications, isLoading: applicationsLoading } = useFertilizerApplicationsQuery();
 
   const availableYears = useMemo(
     () =>
@@ -99,7 +99,9 @@ export function FertilizerApplicationsScreen({
             "fertilizer_application.fertilizer_application",
           )}
         >
-          {!applicationSummaries || applicationSummaries.length === 0 ? (
+          {summariesLoading ? (
+            <ActivityIndicator style={{ marginTop: 40 }} size="large" />
+          ) : !applicationSummaries || applicationSummaries.length === 0 ? (
             <Headline>{t("common.no_entries")}</Headline>
           ) : (
             <FertilizerApplicationDashboard
@@ -120,7 +122,9 @@ export function FertilizerApplicationsScreen({
               value={searchText}
             />
           </View>
-          {sections.length === 0 ? (
+          {applicationsLoading ? (
+            <ActivityIndicator style={{ marginTop: 40 }} size="large" />
+          ) : sections.length === 0 ? (
             <Headline>{t("common.no_entries")}</Headline>
           ) : (
             <SectionList

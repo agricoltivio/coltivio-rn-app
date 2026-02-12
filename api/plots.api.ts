@@ -8,6 +8,28 @@ export type PlotCreateInput = components["schemas"]["PostV1PlotsRequestBody"];
 export type PlotUpdateInput =
   components["schemas"]["PatchV1PlotsByIdPlotIdRequestBody"];
 
+export type SplitPlotInput = {
+  strategy: "keep_reference";
+  originalPlotName?: string;
+  subPlots: {
+    geometry: { type: "MultiPolygon"; coordinates: number[][][][] };
+    name: string;
+    size: number;
+  }[];
+};
+
+export type MergePlotsInput = {
+  strategy: "keep_reference";
+  plotIds: string[];
+  name: string;
+  localId?: string;
+  usage?: number;
+  cuttingDate?: string;
+  geometry: { type: "MultiPolygon"; coordinates: number[][][][] };
+  size: number;
+  additionalNotes?: string;
+};
+
 export function plotsApi(client: FetchClient) {
   return {
     async getPlots(): Promise<Plot[]> {
@@ -49,6 +71,19 @@ export function plotsApi(client: FetchClient) {
           },
         },
       });
+      return data!.data;
+    },
+    async splitPlot(plotId: string, body: SplitPlotInput) {
+      const { data } = await client.POST("/v1/plots/byId/{plotId}/split", {
+        params: { path: { plotId } },
+        // @ts-expect-error generated discriminated union type is broken (Record<string, never> intersection)
+        body,
+      });
+      return data!.data;
+    },
+    async mergePlots(body: MergePlotsInput) {
+      // @ts-expect-error generated discriminated union type is broken (Record<string, never> intersection)
+      const { data } = await client.POST("/v1/plots/merge", { body });
       return data!.data;
     },
     async syncMissingLocalIds() {

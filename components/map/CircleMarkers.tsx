@@ -71,7 +71,7 @@ function CircleMarker({
       //   onPress && onPress(markerIndex, e.nativeEvent.coordinate)
       // }
     >
-      <Circle size={20} color={strokeColor} />
+      <Circle size={15} color={strokeColor} />
     </Marker>
   );
 }

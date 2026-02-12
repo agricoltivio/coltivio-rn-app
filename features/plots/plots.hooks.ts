@@ -1,5 +1,11 @@
 import { useApi } from "@/api/api";
-import { Plot, PlotCreateInput, PlotUpdateInput } from "@/api/plots.api";
+import {
+  MergePlotsInput,
+  Plot,
+  PlotCreateInput,
+  PlotUpdateInput,
+  SplitPlotInput,
+} from "@/api/plots.api";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -68,6 +74,43 @@ export function useDeletePlotMutation(
   const api = useApi();
   return useMutation({
     mutationFn: (plotId: string) => api.plots.deletePlot(plotId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.plots._def,
+      });
+      onSuccess && onSuccess();
+    },
+    onError,
+  });
+}
+
+export function useSplitPlotMutation(
+  onSuccess?: () => void,
+  onError?: (error: Error) => void
+) {
+  const queryClient = useQueryClient();
+  const api = useApi();
+  return useMutation({
+    mutationFn: ({ plotId, data }: { plotId: string; data: SplitPlotInput }) =>
+      api.plots.splitPlot(plotId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.plots._def,
+      });
+      onSuccess && onSuccess();
+    },
+    onError,
+  });
+}
+
+export function useMergePlotsMutation(
+  onSuccess?: () => void,
+  onError?: (error: Error) => void
+) {
+  const queryClient = useQueryClient();
+  const api = useApi();
+  return useMutation({
+    mutationFn: (data: MergePlotsInput) => api.plots.mergePlots(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.plots._def,

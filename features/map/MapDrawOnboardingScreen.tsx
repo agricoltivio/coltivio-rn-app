@@ -12,7 +12,11 @@ import { useLocalSettings } from "../user/LocalSettingsContext";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "@/navigation/rootStackTypes";
 
-function IconBadge({ name }: { name: keyof typeof MaterialCommunityIcons.glyphMap }) {
+function IconBadge({
+  name,
+}: {
+  name: keyof typeof MaterialCommunityIcons.glyphMap;
+}) {
   return (
     <View
       style={{
@@ -33,9 +37,20 @@ function IconBadge({ name }: { name: keyof typeof MaterialCommunityIcons.glyphMa
   );
 }
 
-type Step = "welcome" | "select" | "draw" | "finish" | "overlap" | "parcel" | "editIntro" | "cropRotationWelcome";
+type Step =
+  | "welcome"
+  | "select"
+  | "draw"
+  | "finish"
+  | "overlap"
+  | "parcel"
+  | "editIntro"
+  | "cropRotationWelcome"
+  | "plotsMapWelcome";
 
-function getSteps(variant?: "draw" | "parcel" | "edit" | "cropRotation"): Step[] {
+function getSteps(
+  variant?: "draw" | "parcel" | "edit" | "cropRotation" | "plotsMap",
+): Step[] {
   switch (variant) {
     case "draw":
       return ["welcome", "draw", "finish", "overlap"];
@@ -45,6 +60,8 @@ function getSteps(variant?: "draw" | "parcel" | "edit" | "cropRotation"): Step[]
       return ["welcome", "editIntro", "finish", "overlap"];
     case "cropRotation":
       return ["cropRotationWelcome"];
+    case "plotsMap":
+      return ["plotsMapWelcome"];
     default:
       return ["welcome", "select", "draw", "finish"];
   }
@@ -65,15 +82,18 @@ export function MapDrawOnboardingScreen() {
   const currentStep = steps[stepIndex];
 
   // Each variant has its own onboarding key
-  const onboardingKey = variant === "draw"
-    ? "addPlotDrawOnboardingCompleted"
-    : variant === "parcel"
-      ? "addPlotParcelOnboardingCompleted"
-      : variant === "edit"
-        ? "editPlotOnboardingCompleted"
-        : variant === "cropRotation"
-          ? "selectPlotsForPlanOnboardingCompleted"
-          : "mapDrawOnboardingCompleted";
+  const onboardingKey =
+    variant === "draw"
+      ? "addPlotDrawOnboardingCompleted"
+      : variant === "parcel"
+        ? "addPlotParcelOnboardingCompleted"
+        : variant === "edit"
+          ? "editPlotOnboardingCompleted"
+          : variant === "cropRotation"
+            ? "selectPlotsForPlanOnboardingCompleted"
+            : variant === "plotsMap"
+              ? "plotsMapOnboardingCompleted"
+              : "mapDrawOnboardingCompleted";
 
   // Mark completed on any dismissal (swipe down, back gesture, finish button)
   useEffect(() => {
@@ -151,13 +171,15 @@ export function MapDrawOnboardingScreen() {
                 textAlign: "center",
               }}
             >
-              {t(variant === "draw"
-                ? "map_draw_onboarding.welcome_body_draw"
-                : variant === "parcel"
-                  ? "map_draw_onboarding.welcome_body_parcel"
-                  : variant === "edit"
-                    ? "map_draw_onboarding.welcome_body_edit"
-                    : "map_draw_onboarding.welcome_body")}
+              {t(
+                variant === "draw"
+                  ? "map_draw_onboarding.welcome_body_draw"
+                  : variant === "parcel"
+                    ? "map_draw_onboarding.welcome_body_parcel"
+                    : variant === "edit"
+                      ? "map_draw_onboarding.welcome_body_edit"
+                      : "map_draw_onboarding.welcome_body",
+              )}
             </H3>
           </View>
         )}
@@ -260,6 +282,52 @@ export function MapDrawOnboardingScreen() {
               }}
             >
               {t("map_draw_onboarding.crop_rotation_welcome_body")}
+            </H3>
+          </View>
+        )}
+
+        {currentStep === "plotsMapWelcome" && (
+          <View style={{ alignItems: "center" }}>
+            <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
+              {t("map_draw_onboarding.plots_map_welcome_heading")}
+            </H1>
+            <H3
+              style={{
+                color: theme.colors.primary,
+                marginTop: theme.spacing.s,
+                textAlign: "center",
+              }}
+            >
+              {t("map_draw_onboarding.plots_map_tap_body")}
+            </H3>
+
+            {/* FAB preview */}
+            <View
+              style={{
+                marginTop: theme.spacing.xl,
+                width: 64,
+                height: 64,
+                borderRadius: 32,
+                backgroundColor: theme.colors.blue,
+                alignItems: "center",
+                justifyContent: "center",
+                elevation: 4,
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.3,
+                shadowRadius: 4,
+              }}
+            >
+              <MaterialCommunityIcons name="plus" size={28} color="white" />
+            </View>
+            <H3
+              style={{
+                color: theme.colors.primary,
+                marginTop: theme.spacing.m,
+                textAlign: "center",
+              }}
+            >
+              {t("map_draw_onboarding.plots_map_add_body")}
             </H3>
           </View>
         )}

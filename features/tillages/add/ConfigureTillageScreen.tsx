@@ -65,7 +65,7 @@ export function ConfigureTillageScreen({
   const presetId = watch("presetId");
   const action = watch("action");
 
-  // When preset is selected, populate fields from preset
+  // When preset is selected, populate fields; when cleared, reset them
   useEffect(() => {
     if (presetId && tillagePresets) {
       const preset = tillagePresets.find((p) => p.id === presetId);
@@ -73,6 +73,9 @@ export function ConfigureTillageScreen({
         setValue("action", preset.action);
         setValue("customAction", preset.customAction ?? undefined);
       }
+    } else if (!presetId) {
+      setValue("action", undefined as unknown as FormValues["action"]);
+      setValue("customAction", undefined);
     }
   }, [presetId, tillagePresets, setValue]);
 
@@ -164,6 +167,7 @@ export function ConfigureTillageScreen({
                 onChange={onChange}
                 onManagePress={() => managePresetsRef.current?.open()}
                 placeholder={t("presets.select_preset")}
+                noneLabel={t("presets.no_preset")}
               />
             )}
           />
@@ -196,17 +200,17 @@ export function ConfigureTillageScreen({
             />
           )}
 
-          <RHTextAreaInput
-            name="additionalNotes"
-            control={control}
-            label={t("forms.labels.additional_notes_optional")}
-          />
-
           <Button
             title={t("presets.save_as_preset")}
             type="accent"
             onPress={handleSaveAsPreset}
             loading={createPresetMutation.isPending}
+          />
+
+          <RHTextAreaInput
+            name="additionalNotes"
+            control={control}
+            label={t("forms.labels.additional_notes_optional")}
           />
         </View>
       </ScrollView>

@@ -324,6 +324,38 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/plots/byId/{plotId}/split": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1PlotsByIdPlotIdSplit"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/plots/merge": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1PlotsMerge"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/plots/syncMissingLocalIds": {
         parameters: {
             query?: never;
@@ -2100,7 +2132,6 @@ export interface components {
             };
             size: number;
             additionalNotes?: string;
-            cropId: string;
         };
         GetV1PlotsByIdPlotIdPositiveResponse: {
             data: {
@@ -2246,7 +2277,6 @@ export interface components {
             };
             size?: number;
             additionalNotes?: string;
-            cropId?: string;
         };
         /**
          * Format: date-time
@@ -2519,6 +2549,196 @@ export interface components {
                 }[];
             };
         };
+        PostV1PlotsByIdPlotIdSplitPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    localId: string | null;
+                    usage: number | null;
+                    additionalUsages: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    cuttingDate: string | null;
+                    geometry: {
+                        /** @constant */
+                        type: "MultiPolygon";
+                        coordinates: number[][][][];
+                    };
+                    size: number;
+                    additionalNotes: string | null;
+                    currentCropRotation: {
+                        id: string;
+                        farmId: string;
+                        plotId: string;
+                        cropId: string;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        sowingDate: string | null;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        fromDate: string;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        toDate: string;
+                        crop: {
+                            id: string;
+                            farmId: string;
+                            name: string;
+                            /** @enum {string} */
+                            category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                            familyId: string | null;
+                            variety: string | null;
+                            usageCodes: number[];
+                            waitingTimeInYears: number | null;
+                            additionalNotes: string | null;
+                            family: {
+                                id: string;
+                                farmId: string;
+                                name: string;
+                                waitingTimeInYears: number;
+                                additionalNotes: string | null;
+                            } | null;
+                        };
+                    } | null;
+                }[];
+            };
+        };
+        PostV1PlotsByIdPlotIdSplitRequestBody: {
+            strategy: "PostV1PlotsByIdPlotIdSplitRequestBody";
+        } & (Record<string, never> & Record<string, never> & Record<string, never> & Omit<{
+            /** @constant */
+            strategy: "keep_reference";
+            originalPlotName?: string;
+            subPlots: {
+                geometry: {
+                    /** @constant */
+                    type: "MultiPolygon";
+                    coordinates: number[][][][];
+                };
+                name: string;
+                size: number;
+            }[];
+        } | {
+            /** @constant */
+            strategy: "delete_and_migrate";
+            migrateToIndex: number;
+            subPlots: {
+                geometry: {
+                    /** @constant */
+                    type: "MultiPolygon";
+                    coordinates: number[][][][];
+                };
+                name: string;
+                size: number;
+            }[];
+        }, "strategy">);
+        PostV1PlotsMergePositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                localId: string | null;
+                usage: number | null;
+                additionalUsages: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                cuttingDate: string | null;
+                geometry: {
+                    /** @constant */
+                    type: "MultiPolygon";
+                    coordinates: number[][][][];
+                };
+                size: number;
+                additionalNotes: string | null;
+                currentCropRotation: {
+                    id: string;
+                    farmId: string;
+                    plotId: string;
+                    cropId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    sowingDate: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    fromDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    toDate: string;
+                    crop: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        /** @enum {string} */
+                        category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                        familyId: string | null;
+                        variety: string | null;
+                        usageCodes: number[];
+                        waitingTimeInYears: number | null;
+                        additionalNotes: string | null;
+                        family: {
+                            id: string;
+                            farmId: string;
+                            name: string;
+                            waitingTimeInYears: number;
+                            additionalNotes: string | null;
+                        } | null;
+                    };
+                } | null;
+            };
+        };
+        PostV1PlotsMergeRequestBody: {
+            strategy: "PostV1PlotsMergeRequestBody";
+        } & (Record<string, never> & Record<string, never> & Record<string, never> & Omit<{
+            /** @constant */
+            strategy: "keep_reference";
+            plotIds: string[];
+            name: string;
+            localId?: string;
+            usage?: number;
+            additionalUsages?: string;
+            cuttingDate?: unknown;
+            geometry: {
+                /** @constant */
+                type: "MultiPolygon";
+                coordinates: number[][][][];
+            };
+            size: number;
+            additionalNotes?: string;
+        } | {
+            /** @constant */
+            strategy: "delete_and_migrate";
+            plotIds: string[];
+            name: string;
+            localId?: string;
+            usage?: number;
+            additionalUsages?: string;
+            cuttingDate?: unknown;
+            geometry: {
+                /** @constant */
+                type: "MultiPolygon";
+                coordinates: number[][][][];
+            };
+            size: number;
+            additionalNotes?: string;
+        }, "strategy">);
         PostV1PlotsSyncMissingLocalIdsPositiveResponse: {
             data: Record<string, never>;
         };
@@ -8938,6 +9158,77 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    PostV1PlotsByIdPlotIdSplit: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description POST /v1/plots/byId/:plotId/split Parameter */
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description POST /v1/plots/byId/:plotId/split Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1PlotsByIdPlotIdSplitRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/plots/byId/:plotId/split Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1PlotsByIdPlotIdSplitPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/plots/byId/:plotId/split Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1PlotsMerge: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/plots/merge Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1PlotsMergeRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/plots/merge Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1PlotsMergePositiveResponse"];
+                };
+            };
+            /** @description POST /v1/plots/merge Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
             };
         };
     };

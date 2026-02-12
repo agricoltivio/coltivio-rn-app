@@ -1,5 +1,6 @@
 import { Card } from "@/components/card/Card";
 import { Subtitle } from "@/theme/Typography";
+import { Platform } from "react-native";
 import { Marker } from "react-native-maps";
 import { useTheme } from "styled-components/native";
 
@@ -11,6 +12,9 @@ export type LabelMarkerProps = {
 
 export function LabelMarker({ latitude, longitude, text }: LabelMarkerProps) {
   const theme = useTheme();
+  // if (Platform.OS === "android") {
+  //   return null;
+  // }
   return (
     <Marker
       coordinate={{
@@ -22,10 +26,10 @@ export function LabelMarker({ latitude, longitude, text }: LabelMarkerProps) {
     >
       <Card
         style={{
-          padding: theme.spacing.s,
+          padding: theme.spacing.xxs,
         }}
       >
-        <Subtitle style={{ fontSize: 14 }}>{text}</Subtitle>
+        <Subtitle style={{ fontSize: 13 }}>{text}</Subtitle>
       </Card>
     </Marker>
   );

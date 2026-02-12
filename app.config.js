@@ -75,6 +75,13 @@ export default {
         // },
       },
     ],
+    // [
+    //   "react-native-maps",
+    //   {
+    //     iosGoogleMapsApiKey: process.env.IOS_GOOGLE_MAPS_API_KEY,
+    //     androidGoogleMapsApiKey: process.env.ANDROID_GOOGLE_MAPS_API_KEY,
+    //   },
+    // ],
     // "./react-native-maps-fix-plugin",
   ],
   extra: {

@@ -13,8 +13,8 @@
     "ok": "OK",
     "close": "Schliessen",
     "delete": "Löschen",
-    "parcel_select": "Parzelle auswählen",
-    "draw_area": "Fläche zeichnen",
+    "parcel_select": "Parzelle ",
+    "draw_area": "Neue Fläche",
     "edit_area": "Fläche bearbeiten",
     "show_entries": "Einträge anzeigen",
     "export": "Exportieren",
@@ -135,7 +135,7 @@
     "federal_farm_id": "Betriebsnummer: {{number}}",
     "new_machine": "Neue Maschine",
     "new_device": "Neues Gerät",
-    "crate": "Kiste",
+    "crate": "Harasse",
     "total_amount": "Gesamtmenge",
     "dashboard": "Dashboard",
     "list": "Liste"
@@ -155,7 +155,8 @@
     "enter_preset_name": "Gib einen Namen für die Vorlage ein",
     "delete_confirm_title": "Vorlage löschen",
     "delete_confirm_message": "Möchtest du \"{{name}}\" wirklich löschen?",
-    "no_presets": "Keine Vorlagen vorhanden"
+    "no_presets": "Keine Vorlagen vorhanden",
+    "no_preset": "Keine Vorlage"
   },
   "errors": {
     "unexpected_retry": "Ups, etwas ist schief gelaufen. Bitte versuche es erneut.",
@@ -325,6 +326,32 @@
       "heading": "Schlag {{name}} wirklich löschen?",
       "entries_warning": "Alle Einträge für diesen Schlag werden unwiderruflich gelöscht.",
       "confirm_by_typing_name": "Um diesen Schlag zu löschen, gib den Namen ein und bestätige den Vorgang."
+    },
+    "actions": {
+      "adjust": "Anpassen",
+      "split": "Aufteilen",
+      "merge": "Zusammenführen"
+    },
+    "split": {
+      "heading": "Schlag aufteilen",
+      "mode_line": "Linie",
+      "mode_polygon": "Fläche",
+      "mode_select_message": "Wähle, wie du den Schlag aufteilen möchtest.",
+      "line_tip": "Zeichne eine Linie über den Schlag, um ihn zu teilen.",
+      "polygon_tip": "Zeichne eine Fläche innerhalb des Schlags, um sie auszuschneiden.",
+      "split_failed": "Aufteilung fehlgeschlagen. Stelle sicher, dass die Linie den Schlag vollständig kreuzt.",
+      "summary": {
+        "heading": "Aufteilung bestätigen",
+        "sub_plot_name": "Teilschlag {{index}}"
+      }
+    },
+    "merge": {
+      "heading": "Schläge zusammenführen",
+      "select_plots": "Wähle die Schläge aus, die zusammengeführt werden sollen.",
+      "min_two_plots": "Wähle mindestens 2 Schläge aus.",
+      "summary": {
+        "heading": "Zusammenführung bestätigen"
+      }
     },
     "usage_codes": {
       "501": "Sommergerste",
@@ -848,7 +875,10 @@
     "overlap_heading": "Überlappungen",
     "overlap_body": "Falls dein neuer Schlag bestehende Schläge überlappt, werden diese automatisch angepasst.",
     "crop_rotation_welcome_heading": "Plane deine Fruchtfolgen",
-    "crop_rotation_welcome_body": "Wähle die Schläge aus, für die du Fruchtfolgen planen möchtest."
+    "crop_rotation_welcome_body": "Wähle die Schläge aus, für die du Fruchtfolgen planen möchtest.",
+    "plots_map_welcome_heading": "Deine Schläge",
+    "plots_map_tap_body": "Tippe auf einen Schlag, um Details zu sehen.",
+    "plots_map_add_body": "Drücke diesen Button, um neue Schläge hinzuzufügen."
   },
   "animals": {
     "animals": "Tiere",

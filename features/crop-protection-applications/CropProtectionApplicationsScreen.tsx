@@ -10,7 +10,7 @@ import { round } from "@/utils/math";
 import Fuse from "fuse.js";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { SectionList, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, SectionList, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { CropProtectionApplicationDashboard } from "./components/CropProtectionApplicationDashboard";
 import {
@@ -33,9 +33,9 @@ export function CropProtectionApplicationsScreen({
 
   const { cropProtectionApplicationYears } =
     useCropProtectionApplicationYearsQuery();
-  const { applicationSummaries } =
+  const { applicationSummaries, isLoading: summariesLoading } =
     useCropProtectionApplicationSummariesOfFarmQuery();
-  const { cropProtectionApplications } =
+  const { cropProtectionApplications, isLoading: applicationsLoading } =
     useCropProtectionApplicationsQuery();
 
   const availableYears = useMemo(
@@ -100,7 +100,9 @@ export function CropProtectionApplicationsScreen({
             "crop_protection_applications.crop_protection",
           )}
         >
-          {!applicationSummaries || applicationSummaries.length === 0 ? (
+          {summariesLoading ? (
+            <ActivityIndicator style={{ marginTop: 40 }} size="large" />
+          ) : !applicationSummaries || applicationSummaries.length === 0 ? (
             <Headline>{t("common.no_entries")}</Headline>
           ) : (
             <CropProtectionApplicationDashboard
@@ -121,7 +123,9 @@ export function CropProtectionApplicationsScreen({
               value={searchText}
             />
           </View>
-          {sections.length === 0 ? (
+          {applicationsLoading ? (
+            <ActivityIndicator style={{ marginTop: 40 }} size="large" />
+          ) : sections.length === 0 ? (
             <Headline>{t("common.no_entries")}</Headline>
           ) : (
             <SectionList

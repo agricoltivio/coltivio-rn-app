@@ -17,6 +17,8 @@ type PresetSelectProps = {
   placeholder?: string;
   error?: string;
   disabled?: boolean;
+  /** Label for a "None" option that clears the selection */
+  noneLabel?: string;
 };
 
 export function PresetSelect({
@@ -28,13 +30,19 @@ export function PresetSelect({
   placeholder,
   error,
   disabled,
+  noneLabel,
 }: PresetSelectProps) {
   const theme = useTheme();
 
-  const selectData = presets.map((preset) => ({
-    label: preset.name,
-    value: preset.id,
-  }));
+  const NONE_VALUE = "__none__";
+
+  const selectData = [
+    ...(noneLabel ? [{ label: noneLabel, value: NONE_VALUE }] : []),
+    ...presets.map((preset) => ({
+      label: preset.name,
+      value: preset.id,
+    })),
+  ];
 
   return (
     <View style={{ flexDirection: "row", alignItems: "flex-start", gap: theme.spacing.s }}>
@@ -43,7 +51,7 @@ export function PresetSelect({
           label={label}
           value={value}
           data={selectData}
-          onChange={(val) => onChange(val === "" ? undefined : val)}
+          onChange={(val) => onChange(val === "" || val === NONE_VALUE ? undefined : val)}
           placeholder={placeholder}
           error={error}
           disabled={disabled}

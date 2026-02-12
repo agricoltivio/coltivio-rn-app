@@ -1,6 +1,7 @@
 import { ConservationMethod, HarvestUnit } from "@/api/harvests.api";
 import { Card } from "@/components/card/Card";
 import { ListItem } from "@/components/list/ListItem";
+import { MapView } from "@/components/map/Map";
 import { ScrollView } from "@/components/views/ScrollView";
 import { locale } from "@/locales/i18n";
 import { hexToRgba } from "@/theme/theme";
@@ -10,7 +11,7 @@ import * as turf from "@turf/turf";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
-import MapView, { Geojson, PROVIDER_GOOGLE, Region } from "react-native-maps";
+import { Geojson, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
 
 function SummaryItem({
@@ -157,10 +158,6 @@ export function HarvestSummary({
             )}
           />
         )}
-        <SummaryItem
-          label={t("forms.labels.processing_type")}
-          value={t(`harvests.labels.unit.${unit}`)}
-        />
       </Card>
       {additionalNotes && (
         <>

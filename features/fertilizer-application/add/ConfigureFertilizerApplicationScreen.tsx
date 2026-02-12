@@ -90,7 +90,7 @@ export function ConfigureFertilizerApplicationScreen({
   const presetId = watch("presetId");
   const unit = watch("unit");
 
-  // When preset is selected, populate fields
+  // When preset is selected, populate fields; when cleared, reset them
   useEffect(() => {
     if (presetId && fertilizerApplicationPresets) {
       const preset = fertilizerApplicationPresets.find(
@@ -101,6 +101,10 @@ export function ConfigureFertilizerApplicationScreen({
         setValue("method", preset.method ?? undefined);
         setValue("amountPerUnit", preset.amountPerUnit.toString());
       }
+    } else if (!presetId) {
+      setValue("unit", "load");
+      setValue("method", undefined);
+      setValue("amountPerUnit", "");
     }
   }, [presetId, fertilizerApplicationPresets, setValue]);
 
@@ -194,6 +198,7 @@ export function ConfigureFertilizerApplicationScreen({
                 onChange={onChange}
                 onManagePress={() => managePresetsRef.current?.open()}
                 placeholder={t("presets.select_preset")}
+                noneLabel={t("presets.no_preset")}
               />
             )}
           />
@@ -239,16 +244,16 @@ export function ConfigureFertilizerApplicationScreen({
             float
           />
 
-          <RHTextAreaInput
-            name="additionalNotes"
-            control={control}
-            label={t("forms.labels.additional_notes_optional")}
-          />
-
           <Button
             title={t("presets.save_as_preset")}
             type="accent"
             onPress={() => savePresetRef.current?.open()}
+          />
+
+          <RHTextAreaInput
+            name="additionalNotes"
+            control={control}
+            label={t("forms.labels.additional_notes_optional")}
           />
         </View>
       </ScrollView>

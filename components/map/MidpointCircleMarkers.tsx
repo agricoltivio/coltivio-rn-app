@@ -126,6 +126,6 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 2,
     borderStyle: "dotted",
-    padding: 20,
+    padding: 15,
   },
 });

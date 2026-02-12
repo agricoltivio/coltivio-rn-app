@@ -13,7 +13,7 @@ import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../farms/farms.hooks";
@@ -21,12 +21,14 @@ import { MapShowLocationToggle } from "../map/MapShowLocationToggle";
 import { TopLeftBackButton } from "../map/TopLeftBackButton";
 import { useFarmPlotsQuery } from "./plots.hooks";
 import { useTranslation } from "react-i18next";
+import { useLocalSettings } from "../user/LocalSettingsContext";
 
 export function PlotsMapScreen({ navigation }: PlotsMapScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { farm } = useFarmQuery();
   const { plots } = useFarmPlotsQuery();
+  const { localSettings } = useLocalSettings();
   const [mapVisible, setMapVisible] = useState(false);
   const [showsUserLocation, setShowsUserLocation] = useState<boolean>(false);
   const [selectedPlotId, setSelectedPlotId] = useState<string | null>(null);
@@ -34,10 +36,14 @@ export function PlotsMapScreen({ navigation }: PlotsMapScreenProps) {
   useEffect(() => {
     const unsubscribe = navigation.addListener("transitionEnd", () => {
       setMapVisible(true);
+      // Show onboarding on first visit
+      if (!localSettings.plotsMapOnboardingCompleted) {
+        navigation.navigate("MapDrawOnboarding", { variant: "plotsMap" });
+      }
     });
 
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, localSettings.plotsMapOnboardingCompleted]);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 

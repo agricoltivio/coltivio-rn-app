@@ -21,6 +21,10 @@ export type PlotsStackParamList = {
     name: string;
   };
   PlotTillages: { plotId: string; name: string };
+  SplitPlotMap: { plotId: string };
+  SplitPlotSummary: { plotId: string };
+  MergePlotsMap: { plotId: string };
+  MergePlotSummary: { plotIds: string[] };
 };
 
 export type PlotsMapScreenProps = StackScreenProps<"PlotsMap">;
@@ -47,3 +51,8 @@ export type PlotCropProtectionApplicationsScreenProps =
 export type PlotHarvestsScreenProps = StackScreenProps<"PlotHarvests">;
 
 export type PlotTillagesScreenProps = StackScreenProps<"PlotTillages">;
+
+export type SplitPlotMapScreenProps = StackScreenProps<"SplitPlotMap">;
+export type SplitPlotSummaryScreenProps = StackScreenProps<"SplitPlotSummary">;
+export type MergePlotsMapScreenProps = StackScreenProps<"MergePlotsMap">;
+export type MergePlotSummaryScreenProps = StackScreenProps<"MergePlotSummary">;

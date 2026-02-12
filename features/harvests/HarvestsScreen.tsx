@@ -10,7 +10,7 @@ import { round } from "@/utils/math";
 import Fuse from "fuse.js";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { SectionList, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, SectionList, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { HarvestDashboard } from "./components/HarvestDashboard";
 import {
@@ -30,8 +30,8 @@ export function HarvestsScreen({ navigation }: HarvestsScreenProps) {
   const [searchText, setSearchText] = useState("");
 
   const { harvestYears } = useHarvestYearsQuery();
-  const { harvestSummaries } = useHarvestSummariesOfFarm();
-  const { harvests } = useHarvestsQuery();
+  const { harvestSummaries, isLoading: summariesLoading } = useHarvestSummariesOfFarm();
+  const { harvests, isLoading: harvestsLoading } = useHarvestsQuery();
 
   const availableYears = useMemo(
     () => (harvestYears ?? []).map(Number).sort((a, b) => b - a),
@@ -97,7 +97,9 @@ export function HarvestsScreen({ navigation }: HarvestsScreenProps) {
           showHeaderOnScroll
           headerTitleOnScroll={t("harvests.harvest")}
         >
-          {!harvestSummaries || harvestSummaries.length === 0 ? (
+          {summariesLoading ? (
+            <ActivityIndicator style={{ marginTop: 40 }} size="large" />
+          ) : !harvestSummaries || harvestSummaries.length === 0 ? (
             <Headline>{t("common.no_entries")}</Headline>
           ) : (
             <HarvestDashboard
@@ -119,7 +121,9 @@ export function HarvestsScreen({ navigation }: HarvestsScreenProps) {
               value={searchText}
             />
           </View>
-          {sections.length === 0 ? (
+          {harvestsLoading ? (
+            <ActivityIndicator style={{ marginTop: 40 }} size="large" />
+          ) : sections.length === 0 ? (
             <Headline>{t("common.no_entries")}</Headline>
           ) : (
             <SectionList
