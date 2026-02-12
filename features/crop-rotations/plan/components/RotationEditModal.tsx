@@ -214,33 +214,16 @@ export function RotationEditModal({
           </View>
 
           {/* Recurrence */}
-          <View
+          <Text
             style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
+              fontSize: 14,
+              fontWeight: "600",
+              color: theme.colors.gray1,
               marginBottom: theme.spacing.xs,
             }}
           >
-            <Text
-              style={{
-                fontSize: 14,
-                fontWeight: "600",
-                color: theme.colors.gray1,
-              }}
-            >
-              {t("crop_rotations.plan.recurrence_optional")}
-            </Text>
-            {hasRecurrence && (
-              <Pressable onPress={() => setHasRecurrence(false)}>
-                <Ionicons
-                  name="close-circle"
-                  size={20}
-                  color={theme.colors.gray2}
-                />
-              </Pressable>
-            )}
-          </View>
+            {t("crop_rotations.plan.recurrence_optional")}
+          </Text>
 
           {hasRecurrence ? (
             <View
@@ -279,52 +262,39 @@ export function RotationEditModal({
                   ? t("crop_rotations.plan.year")
                   : t("crop_rotations.plan.years")}
               </Text>
-              {hasUntil ? (
-                <>
-                  <Text style={{ fontSize: 14, color: theme.colors.text }}>
-                    {t("crop_rotations.plan.until")}
-                  </Text>
-                  <CompactDatePicker
-                    date={until}
-                    onDateChange={setUntil}
-                    minimumDate={toDate}
-                  />
-                  <Pressable onPress={() => setHasUntil(false)}>
-                    <Ionicons
-                      name="close-circle"
-                      size={18}
-                      color={theme.colors.gray2}
-                    />
-                  </Pressable>
-                </>
-              ) : (
-                <Pressable
-                  onPress={() => setHasUntil(true)}
-                  style={{
-                    paddingVertical: 4,
-                    paddingHorizontal: 8,
-                    backgroundColor: theme.colors.gray5,
-                    borderRadius: 6,
-                  }}
-                >
-                  <Text style={{ fontSize: 13, color: theme.colors.gray1 }}>
-                    {t("crop_rotations.plan.add_end_date")}
-                  </Text>
-                </Pressable>
-              )}
+              <Pressable onPress={() => setHasRecurrence(false)}>
+                <Ionicons
+                  name="close-circle"
+                  size={24}
+                  color={theme.colors.gray2}
+                />
+              </Pressable>
+              <CompactDatePicker
+                date={until}
+                onDateChange={(d) => {
+                  setUntil(d);
+                  setHasUntil(true);
+                }}
+                minimumDate={toDate}
+                label={hasUntil ? t("crop_rotations.plan.until") : undefined}
+                placeholder={t("crop_rotations.plan.add_end_date")}
+                hasValue={hasUntil}
+                onClear={() => setHasUntil(false)}
+              />
             </View>
           ) : (
             <Pressable
               onPress={() => setHasRecurrence(true)}
               style={{
-                paddingVertical: 10,
-                paddingHorizontal: 12,
                 backgroundColor: theme.colors.gray5,
+                paddingHorizontal: theme.spacing.s,
+                paddingVertical: theme.spacing.xs,
                 borderRadius: 8,
+                alignSelf: "flex-start",
                 marginBottom: theme.spacing.l,
               }}
             >
-              <Text style={{ fontSize: 14, color: theme.colors.gray1 }}>
+              <Text style={{ fontSize: 15, color: theme.colors.text }}>
                 {t("crop_rotations.plan.add_recurrence")}
               </Text>
             </Pressable>

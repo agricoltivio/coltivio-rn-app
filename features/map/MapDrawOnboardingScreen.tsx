@@ -33,9 +33,9 @@ function IconBadge({ name }: { name: keyof typeof MaterialCommunityIcons.glyphMa
   );
 }
 
-type Step = "welcome" | "select" | "draw" | "finish" | "overlap" | "parcel" | "editIntro";
+type Step = "welcome" | "select" | "draw" | "finish" | "overlap" | "parcel" | "editIntro" | "cropRotationWelcome";
 
-function getSteps(variant?: "draw" | "parcel" | "edit"): Step[] {
+function getSteps(variant?: "draw" | "parcel" | "edit" | "cropRotation"): Step[] {
   switch (variant) {
     case "draw":
       return ["welcome", "draw", "finish", "overlap"];
@@ -43,6 +43,8 @@ function getSteps(variant?: "draw" | "parcel" | "edit"): Step[] {
       return ["welcome", "parcel", "overlap"];
     case "edit":
       return ["welcome", "editIntro", "finish", "overlap"];
+    case "cropRotation":
+      return ["cropRotationWelcome"];
     default:
       return ["welcome", "select", "draw", "finish"];
   }
@@ -69,7 +71,9 @@ export function MapDrawOnboardingScreen() {
       ? "addPlotParcelOnboardingCompleted"
       : variant === "edit"
         ? "editPlotOnboardingCompleted"
-        : "mapDrawOnboardingCompleted";
+        : variant === "cropRotation"
+          ? "selectPlotsForPlanOnboardingCompleted"
+          : "mapDrawOnboardingCompleted";
 
   // Mark completed on any dismissal (swipe down, back gesture, finish button)
   useEffect(() => {
@@ -239,6 +243,23 @@ export function MapDrawOnboardingScreen() {
               }}
             >
               {t("map_draw_onboarding.finish_body")}
+            </H3>
+          </View>
+        )}
+
+        {currentStep === "cropRotationWelcome" && (
+          <View style={{ alignItems: "center" }}>
+            <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
+              {t("map_draw_onboarding.crop_rotation_welcome_heading")}
+            </H1>
+            <H3
+              style={{
+                color: theme.colors.primary,
+                marginTop: theme.spacing.s,
+                textAlign: "center",
+              }}
+            >
+              {t("map_draw_onboarding.crop_rotation_welcome_body")}
             </H3>
           </View>
         )}

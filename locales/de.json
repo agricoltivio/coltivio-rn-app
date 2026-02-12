@@ -845,7 +845,9 @@
     "edit_intro_heading": "Schlag bearbeiten",
     "edit_intro_body": "Verschiebe die Eckpunkte, um die Form anzupassen. Halte einen Eckpunkt gedrückt und ziehe ihn an die gewünschte Position.",
     "overlap_heading": "Überlappungen",
-    "overlap_body": "Falls dein neuer Schlag bestehende Schläge überlappt, werden diese automatisch angepasst."
+    "overlap_body": "Falls dein neuer Schlag bestehende Schläge überlappt, werden diese automatisch angepasst.",
+    "crop_rotation_welcome_heading": "Plane deine Fruchtfolgen",
+    "crop_rotation_welcome_body": "Wähle die Schläge aus, für die du Fruchtfolgen planen möchtest."
   },
   "animals": {
     "animals": "Tiere",
@@ -915,8 +917,11 @@
     "edit_outdoor_schedule": "Auslauf bearbeiten",
     "start_date": "Startdatum",
     "end_date": "Enddatum",
+    "end_date_optional": "Enddatum (optional)",
     "notes": "Notizen",
     "recurrence": "Wiederholung",
+    "recurrence_optional": "Wiederholung (optional)",
+    "until": "bis",
     "frequency": "Häufigkeit",
     "frequency_types": {
       "weekly": "Wöchentlich",

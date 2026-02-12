@@ -23,6 +23,7 @@ type LocalSettingsData = {
   mapDrawOnboardingCompleted: boolean;
   addPlotDrawOnboardingCompleted: boolean;
   addPlotParcelOnboardingCompleted: boolean;
+  selectPlotsForPlanOnboardingCompleted: boolean;
 };
 
 type LocalSettingActions = {
@@ -45,6 +46,7 @@ const defaultLocalSettings: LocalSettingsData = {
   mapDrawOnboardingCompleted: false,
   addPlotDrawOnboardingCompleted: false,
   addPlotParcelOnboardingCompleted: false,
+  selectPlotsForPlanOnboardingCompleted: false,
 };
 
 export const LocalSettingsContext = createContext<LocalSettings>({

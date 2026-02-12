@@ -795,7 +795,72 @@
     "unregistered_count": "{{count}} unregistered animals",
     "show_dead": "Show dead",
     "only_unregistered": "Unregistered only",
-    "select_children": "Select Children"
+    "select_children": "Select Children",
+    "settings": "Animal Husbandry Settings",
+    "groups": {
+      "animals": "Animals",
+      "health": "Health"
+    },
+    "onboarding": {
+      "welcome_heading": "Welcome to Animal Husbandry",
+      "welcome_body": "Here you manage your animals, ear tags, medications and treatments.",
+      "configure_heading": "Configure Animal Husbandry",
+      "done_heading": "Done!",
+      "done_body": "You can change the settings at any time via the gear icon."
+    },
+    "usage": "Usage",
+    "usage_types": {
+      "milk": "Milk",
+      "other": "Other"
+    },
+    "category_override": "Set category manually",
+    "category": "Category",
+    "requires_category_override": "Category could not be determined",
+    "herd": "Herd",
+    "herds": "Herds",
+    "new_herd": "New Herd",
+    "herd_name": "Herd Name",
+    "no_herds": "No herds",
+    "animals_in_herd": "Animals in herd",
+    "outdoor_schedules": "Outdoor Schedules",
+    "new_outdoor_schedule": "New Outdoor Schedule",
+    "edit_outdoor_schedule": "Edit Outdoor Schedule",
+    "start_date": "Start Date",
+    "end_date": "End Date",
+    "end_date_optional": "End Date (optional)",
+    "notes": "Notes",
+    "recurrence": "Recurrence",
+    "recurrence_optional": "Recurrence (optional)",
+    "until": "until",
+    "frequency": "Frequency",
+    "frequency_types": {
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "yearly": "Yearly"
+    },
+    "every": "Every",
+    "week": "week",
+    "weeks": "weeks",
+    "month": "month",
+    "months": "months",
+    "year": "year",
+    "years": "years",
+    "selected_only": "Selected only",
+    "outdoor_journal": "Outdoor Journal",
+    "outdoor_journal_info": "This journal is automatically generated from the outdoor schedules of the herds and the defined animal categories.",
+    "uncategorized_animals_warning": "{{count}} animals without category",
+    "waiting_period_count": "{{count}} animals with waiting period",
+    "only_with_waiting_period": "With waiting period only",
+    "tvd_import": {
+      "title": "TVD Import",
+      "experimental": "This feature is experimental.",
+      "instructions": "Download the livestock as an Excel file from the TVD and upload it here.",
+      "select_file": "Select Excel file",
+      "import_button": "Import",
+      "success_title": "Import completed",
+      "success_message": "{{imported}} of {{total}} animals were imported.",
+      "skipped_message": "{{count}} animals were skipped."
+    }
   },
   "treatments": {
     "treatments": "Treatments",

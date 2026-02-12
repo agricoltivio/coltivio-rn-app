@@ -20,6 +20,7 @@ import { SelectPlotsForPlanScreenProps } from "../navigation/crop-rotations-rout
 import { Plot } from "@/api/plots.api";
 import { useTranslation } from "react-i18next";
 import { useSelectPlotsStore } from "./select-plots.store";
+import { useLocalSettings } from "@/features/user/LocalSettingsContext";
 
 export function SelectPlotsForPlanScreen({
   navigation,
@@ -30,12 +31,20 @@ export function SelectPlotsForPlanScreen({
   const { plots } = useFarmPlotsQuery();
   const [mapVisible, setMapVisible] = useState(false);
   const [showUserLocation, setShowUserLocation] = useState(false);
+  const { localSettings } = useLocalSettings();
 
   const { selectedPlotsById, putPlot, removePlot, resetSelectedPlots } =
     useSelectPlotsStore();
 
   useEffect(() => {
     return resetSelectedPlots;
+  }, []);
+
+  // Show onboarding modal on first visit
+  useEffect(() => {
+    if (!localSettings.selectPlotsForPlanOnboardingCompleted) {
+      navigation.navigate("MapDrawOnboarding", { variant: "cropRotation" });
+    }
   }, []);
 
   useEffect(() => {

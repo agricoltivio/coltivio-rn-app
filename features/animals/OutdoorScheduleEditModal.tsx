@@ -2,7 +2,7 @@ import { OutdoorSchedule, OutdoorScheduleCreateInput } from "@/api/herds.api";
 import { CompactDatePicker } from "@/components/datepicker/CompactDatePicker";
 import { Select } from "@/components/select/Select";
 import { Ionicons } from "@expo/vector-icons";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, Pressable, Text, TextInput, View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -30,7 +30,6 @@ export function OutdoorScheduleEditModal({
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [hasEndDate, setHasEndDate] = useState(false);
-  const [notes, setNotes] = useState("");
   const [hasRecurrence, setHasRecurrence] = useState(false);
   const [frequency, setFrequency] = useState<
     "weekly" | "monthly" | "yearly"
@@ -48,7 +47,6 @@ export function OutdoorScheduleEditModal({
       setStartDate(new Date(schedule.startDate));
       setEndDate(schedule.endDate ? new Date(schedule.endDate) : null);
       setHasEndDate(!!schedule.endDate);
-      setNotes(schedule.notes ?? "");
       setHasRecurrence(!!schedule.recurrence);
       if (schedule.recurrence) {
         setFrequency(schedule.recurrence.frequency);
@@ -62,7 +60,6 @@ export function OutdoorScheduleEditModal({
       setStartDate(new Date());
       setEndDate(null);
       setHasEndDate(false);
-      setNotes("");
       setHasRecurrence(false);
       setFrequency("weekly");
       setInterval("1");
@@ -71,11 +68,33 @@ export function OutdoorScheduleEditModal({
     }
   }, [visible, schedule]);
 
-  const frequencyData = [
-    { label: t("animals.frequency_types.weekly"), value: "weekly" },
-    { label: t("animals.frequency_types.monthly"), value: "monthly" },
-    { label: t("animals.frequency_types.yearly"), value: "yearly" },
-  ];
+  // Compute duration in days and filter frequency options accordingly
+  const durationDays = useMemo(() => {
+    if (!hasEndDate || !endDate) return null;
+    return Math.round((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+  }, [hasEndDate, endDate, startDate]);
+
+  const frequencyData = useMemo(() => {
+    const allFrequencies: Array<{ label: string; value: "weekly" | "monthly" | "yearly" }> = [
+      { label: t("animals.frequency_types.weekly"), value: "weekly" },
+      { label: t("animals.frequency_types.monthly"), value: "monthly" },
+      { label: t("animals.frequency_types.yearly"), value: "yearly" },
+    ];
+    if (durationDays === null) return allFrequencies;
+    return allFrequencies.filter((f) => {
+      if (f.value === "weekly" && durationDays > 7) return false;
+      if (f.value === "monthly" && durationDays > 31) return false;
+      return true;
+    });
+  }, [durationDays, t]);
+
+  // Auto-switch frequency if current selection becomes invalid
+  useEffect(() => {
+    const validValues = frequencyData.map((f) => f.value);
+    if (!validValues.includes(frequency)) {
+      setFrequency(validValues[validValues.length - 1]);
+    }
+  }, [frequencyData, frequency]);
 
   // Get the interval label based on frequency and count
   function getIntervalLabel(): string {
@@ -94,7 +113,7 @@ export function OutdoorScheduleEditModal({
     const input: OutdoorScheduleCreateInput = {
       startDate: startDate.toISOString(),
       endDate: hasEndDate && endDate ? endDate.toISOString() : null,
-      notes: notes || null,
+      notes: null,
       recurrence: hasRecurrence
         ? {
             frequency,
@@ -111,6 +130,13 @@ export function OutdoorScheduleEditModal({
       onDelete(schedule.id);
     }
   }
+
+  const chipStyle = {
+    backgroundColor: theme.colors.gray5,
+    paddingHorizontal: theme.spacing.s,
+    paddingVertical: theme.spacing.xs,
+    borderRadius: 8,
+  } as const;
 
   return (
     <Modal visible={visible} transparent animationType="fade">
@@ -163,67 +189,6 @@ export function OutdoorScheduleEditModal({
           </View>
 
           {/* End date (optional) */}
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              marginBottom: theme.spacing.xs,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 14,
-                fontWeight: "600",
-                color: theme.colors.gray1,
-              }}
-            >
-              {t("animals.end_date")}
-            </Text>
-            {hasEndDate && (
-              <Pressable
-                onPress={() => {
-                  setHasEndDate(false);
-                  setEndDate(null);
-                }}
-              >
-                <Ionicons
-                  name="close-circle"
-                  size={20}
-                  color={theme.colors.gray2}
-                />
-              </Pressable>
-            )}
-          </View>
-          {hasEndDate ? (
-            <View style={{ marginBottom: theme.spacing.m }}>
-              <CompactDatePicker
-                date={endDate ?? new Date()}
-                onDateChange={(d) => setEndDate(d)}
-                minimumDate={startDate}
-              />
-            </View>
-          ) : (
-            <Pressable
-              onPress={() => {
-                setHasEndDate(true);
-                setEndDate(new Date());
-              }}
-              style={{
-                paddingVertical: 10,
-                paddingHorizontal: 12,
-                backgroundColor: theme.colors.gray5,
-                borderRadius: 8,
-                marginBottom: theme.spacing.m,
-              }}
-            >
-              <Text style={{ fontSize: 14, color: theme.colors.gray1 }}>
-                {t("animals.end_date")}
-              </Text>
-            </Pressable>
-          )}
-
-          {/* Notes */}
           <Text
             style={{
               fontSize: 14,
@@ -232,53 +197,36 @@ export function OutdoorScheduleEditModal({
               marginBottom: theme.spacing.xs,
             }}
           >
-            {t("animals.notes")}
+            {t("animals.end_date_optional")}
           </Text>
-          <TextInput
-            value={notes}
-            onChangeText={setNotes}
-            placeholder={t("animals.notes")}
-            multiline
-            style={{
-              borderWidth: 1,
-              borderColor: theme.colors.gray3,
-              borderRadius: 8,
-              paddingHorizontal: 10,
-              paddingVertical: 8,
-              fontSize: 14,
-              minHeight: 60,
-              marginBottom: theme.spacing.m,
-            }}
-          />
+          <View style={{ marginBottom: theme.spacing.m }}>
+            <CompactDatePicker
+              date={endDate ?? new Date()}
+              onDateChange={(d) => {
+                setEndDate(d);
+                setHasEndDate(true);
+              }}
+              minimumDate={startDate}
+              placeholder={t("animals.end_date")}
+              hasValue={hasEndDate}
+              onClear={() => {
+                setHasEndDate(false);
+                setEndDate(null);
+              }}
+            />
+          </View>
 
           {/* Recurrence (optional) */}
-          <View
+          <Text
             style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
+              fontSize: 14,
+              fontWeight: "600",
+              color: theme.colors.gray1,
               marginBottom: theme.spacing.xs,
             }}
           >
-            <Text
-              style={{
-                fontSize: 14,
-                fontWeight: "600",
-                color: theme.colors.gray1,
-              }}
-            >
-              {t("animals.recurrence")}
-            </Text>
-            {hasRecurrence && (
-              <Pressable onPress={() => setHasRecurrence(false)}>
-                <Ionicons
-                  name="close-circle"
-                  size={20}
-                  color={theme.colors.gray2}
-                />
-              </Pressable>
-            )}
-          </View>
+            {t("animals.recurrence_optional")}
+          </Text>
 
           {hasRecurrence ? (
             <View
@@ -287,14 +235,32 @@ export function OutdoorScheduleEditModal({
                 marginBottom: theme.spacing.l,
               }}
             >
-              <Select
-                label={t("animals.frequency")}
-                value={frequency}
-                data={frequencyData}
-                onChange={(val) =>
-                  setFrequency(val as "weekly" | "monthly" | "yearly")
-                }
-              />
+              {/* Frequency + clear button row */}
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: theme.spacing.xs,
+                }}
+              >
+                <View style={{ flex: 1 }}>
+                  <Select
+                    label={t("animals.frequency")}
+                    value={frequency}
+                    data={frequencyData}
+                    onChange={(val) =>
+                      setFrequency(val as "weekly" | "monthly" | "yearly")
+                    }
+                  />
+                </View>
+                <Pressable onPress={() => setHasRecurrence(false)}>
+                  <Ionicons
+                    name="close-circle"
+                    size={24}
+                    color={theme.colors.gray2}
+                  />
+                </Pressable>
+              </View>
 
               {/* Interval row: "Every N weeks/months/years" */}
               <View
@@ -332,56 +298,25 @@ export function OutdoorScheduleEditModal({
               </View>
 
               {/* Until date */}
-              {hasUntil ? (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: theme.spacing.s,
-                  }}
-                >
-                  <CompactDatePicker
-                    date={until}
-                    onDateChange={setUntil}
-                    minimumDate={startDate}
-                  />
-                  <Pressable onPress={() => setHasUntil(false)}>
-                    <Ionicons
-                      name="close-circle"
-                      size={18}
-                      color={theme.colors.gray2}
-                    />
-                  </Pressable>
-                </View>
-              ) : (
-                <Pressable
-                  onPress={() => setHasUntil(true)}
-                  style={{
-                    paddingVertical: 4,
-                    paddingHorizontal: 8,
-                    backgroundColor: theme.colors.gray5,
-                    borderRadius: 6,
-                    alignSelf: "flex-start",
-                  }}
-                >
-                  <Text style={{ fontSize: 13, color: theme.colors.gray1 }}>
-                    {t("animals.end_date")}
-                  </Text>
-                </Pressable>
-              )}
+              <CompactDatePicker
+                date={until}
+                onDateChange={(d) => {
+                  setUntil(d);
+                  setHasUntil(true);
+                }}
+                minimumDate={startDate}
+                label={hasUntil ? t("animals.until") : undefined}
+                placeholder={t("animals.until")}
+                hasValue={hasUntil}
+                onClear={() => setHasUntil(false)}
+              />
             </View>
           ) : (
             <Pressable
               onPress={() => setHasRecurrence(true)}
-              style={{
-                paddingVertical: 10,
-                paddingHorizontal: 12,
-                backgroundColor: theme.colors.gray5,
-                borderRadius: 8,
-                marginBottom: theme.spacing.l,
-              }}
+              style={{ ...chipStyle, alignSelf: "flex-start", marginBottom: theme.spacing.l }}
             >
-              <Text style={{ fontSize: 14, color: theme.colors.gray1 }}>
+              <Text style={{ fontSize: 15, color: theme.colors.text }}>
                 {t("animals.recurrence")}
               </Text>
             </Pressable>

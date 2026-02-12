@@ -8,7 +8,7 @@ import { H2, H3, Subtitle } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Switch, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import {
   useAnimalByIdQuery,
@@ -18,6 +18,7 @@ import {
 import { AnimalDetailsScreenProps } from "./navigation/animals-routes";
 import { formatLocalizedDate } from "@/utils/date";
 import { locale } from "@/locales/i18n";
+import { Switch } from "@/components/inputs/Switch";
 
 export function AnimalDetailsScreen({
   route,

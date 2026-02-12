@@ -15,8 +15,7 @@ import { FlatList, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
 import { useCreateHerdMutation, useCreateOutdoorScheduleMutation } from "./herds.hooks";
-import { CreateHerdScreenProps } from "./navigation/animals-routes";
-import { OutdoorScheduleEditModal } from "./OutdoorScheduleEditModal";
+import { CreateHerdScreenProps, OutdoorScheduleEditResult } from "./navigation/animals-routes";
 import { OutdoorScheduleTimeline } from "./timeline/OutdoorScheduleTimeline";
 import { buildOutdoorTimelineData } from "./timeline/outdoor-timeline-utils";
 
@@ -57,8 +56,35 @@ export function CreateHerdScreen({
 
   // Local outdoor schedules state
   const [localSchedules, setLocalSchedules] = useState<LocalSchedule[]>([]);
-  const [scheduleModalVisible, setScheduleModalVisible] = useState(false);
-  const [editingScheduleIndex, setEditingScheduleIndex] = useState<number | null>(null);
+
+  // Handle schedule result returned from OutdoorScheduleEdit screen
+  const scheduleResult = route.params?.scheduleResult;
+  const [lastProcessedResult, setLastProcessedResult] = useState<OutdoorScheduleEditResult | null>(null);
+  if (scheduleResult && scheduleResult !== lastProcessedResult) {
+    setLastProcessedResult(scheduleResult);
+    if (scheduleResult.action === "save" && scheduleResult.input) {
+      if (scheduleResult.scheduleId) {
+        // Update existing local schedule by tempId
+        setLocalSchedules((prev) =>
+          prev.map((s) =>
+            s.tempId === scheduleResult.scheduleId
+              ? { ...scheduleResult.input!, tempId: s.tempId }
+              : s,
+          ),
+        );
+      } else {
+        // Add new local schedule
+        setLocalSchedules((prev) => [
+          ...prev,
+          { ...scheduleResult.input!, tempId: `temp-${Date.now()}` },
+        ]);
+      }
+    } else if (scheduleResult.action === "delete" && scheduleResult.scheduleId) {
+      setLocalSchedules((prev) =>
+        prev.filter((s) => s.tempId !== scheduleResult.scheduleId),
+      );
+    }
+  }
 
   const {
     control,
@@ -172,28 +198,25 @@ export function CreateHerdScreen({
     return summary;
   }
 
-  // Build a fake OutdoorSchedule-like object for the edit modal
-  const editingScheduleForModal = editingScheduleIndex !== null
-    ? {
-        id: localSchedules[editingScheduleIndex].tempId,
-        farmId: "",
-        herdId: "",
-        startDate: localSchedules[editingScheduleIndex].startDate,
-        endDate: localSchedules[editingScheduleIndex].endDate ?? null,
-        notes: localSchedules[editingScheduleIndex].notes ?? null,
-        recurrence: localSchedules[editingScheduleIndex].recurrence
-          ? {
-              id: "",
-              frequency: localSchedules[editingScheduleIndex].recurrence!.frequency,
-              interval: localSchedules[editingScheduleIndex].recurrence!.interval,
-              byWeekday: null,
-              byMonthDay: null,
-              until: localSchedules[editingScheduleIndex].recurrence!.until ?? null,
-              count: null,
-            }
-          : null,
-      }
-    : null;
+  function navigateToScheduleEdit(schedule?: LocalSchedule) {
+    navigation.navigate("OutdoorScheduleEdit", {
+      previousScreen: "CreateHerd",
+      scheduleId: schedule?.tempId,
+      schedule: schedule
+        ? {
+            startDate: schedule.startDate,
+            endDate: schedule.endDate ?? null,
+            recurrence: schedule.recurrence
+              ? {
+                  frequency: schedule.recurrence.frequency,
+                  interval: schedule.recurrence.interval,
+                  until: schedule.recurrence.until ?? null,
+                }
+              : null,
+          }
+        : undefined,
+    });
+  }
 
   return (
     <ContentView
@@ -291,10 +314,7 @@ export function CreateHerdScreen({
               color="black"
               iconSize={25}
               type="accent"
-              onPress={() => {
-                setEditingScheduleIndex(null);
-                setScheduleModalVisible(true);
-              }}
+              onPress={() => navigateToScheduleEdit()}
             />
           </View>
           {/* Outdoor schedule timeline */}
@@ -303,13 +323,10 @@ export function CreateHerdScreen({
               <OutdoorScheduleTimeline
                 timelineData={timelineData}
                 onBarPress={(scheduleId) => {
-                  const idx = localSchedules.findIndex(
+                  const schedule = localSchedules.find(
                     (s) => s.tempId === scheduleId,
                   );
-                  if (idx !== -1) {
-                    setEditingScheduleIndex(idx);
-                    setScheduleModalVisible(true);
-                  }
+                  if (schedule) navigateToScheduleEdit(schedule);
                 }}
               />
             </View>
@@ -327,13 +344,10 @@ export function CreateHerdScreen({
               }}
               data={localSchedules}
               keyExtractor={(item) => item.tempId}
-              renderItem={({ item, index }) => (
+              renderItem={({ item }) => (
                 <ListItem
                   style={{ paddingVertical: 5 }}
-                  onPress={() => {
-                    setEditingScheduleIndex(index);
-                    setScheduleModalVisible(true);
-                  }}
+                  onPress={() => navigateToScheduleEdit(item)}
                 >
                   <ListItem.Content>
                     <ListItem.Title>
@@ -350,38 +364,6 @@ export function CreateHerdScreen({
           )}
         </View>
       </ScrollView>
-
-      <OutdoorScheduleEditModal
-        visible={scheduleModalVisible}
-        schedule={editingScheduleForModal}
-        herdId=""
-        onSave={(input) => {
-          if (editingScheduleIndex !== null) {
-            // Update existing local schedule
-            setLocalSchedules((prev) =>
-              prev.map((s, i) =>
-                i === editingScheduleIndex
-                  ? { ...input, tempId: s.tempId }
-                  : s,
-              ),
-            );
-          } else {
-            // Add new local schedule
-            setLocalSchedules((prev) => [
-              ...prev,
-              { ...input, tempId: `temp-${Date.now()}` },
-            ]);
-          }
-          setScheduleModalVisible(false);
-        }}
-        onDelete={(scheduleId) => {
-          setLocalSchedules((prev) =>
-            prev.filter((s) => s.tempId !== scheduleId),
-          );
-          setScheduleModalVisible(false);
-        }}
-        onClose={() => setScheduleModalVisible(false)}
-      />
     </ContentView>
   );
 }

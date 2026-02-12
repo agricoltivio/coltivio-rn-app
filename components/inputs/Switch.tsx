@@ -24,7 +24,14 @@ export function Switch({
   return (
     <View style={[{ flexDirection: "row" }, style]}>
       <Label style={{ flex: 1 }}>{label}</Label>
-      <RnSwitch value={value} onChange={onChange} disabled={disabled} />
+      <RnSwitch
+        value={value}
+        onChange={onChange}
+        disabled={disabled}
+        trackColor={{ false: "#e0e0e0", true: "#2a5159" }}
+        thumbColor="#ffffff"
+        ios_backgroundColor="#e0e0e0"
+      />
     </View>
   );
 }

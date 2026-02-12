@@ -110,6 +110,7 @@ export function DatePicker({
                 }}
                 display={mode === "date" ? "inline" : "spinner"}
                 mode={mode}
+                themeVariant="light"
               />
               <Button
                 title={t("buttons.confirm")}

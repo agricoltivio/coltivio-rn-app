@@ -22,6 +22,7 @@ import { HerdsScreen } from "../HerdsScreen";
 import { CreateHerdScreen } from "../CreateHerdScreen";
 import { HerdEditScreen } from "../HerdEditScreen";
 import { OutdoorJournalScreen } from "../OutdoorJournalScreen";
+import { OutdoorScheduleEditScreen } from "../OutdoorScheduleEditScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { DefaultTheme } from "styled-components/native";
 
@@ -170,6 +171,12 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
       name="OutdoorJournal"
       options={{ title: "" }}
       component={OutdoorJournalScreen}
+    />,
+    <Stack.Screen
+      key="outdoor-schedule-edit"
+      name="OutdoorScheduleEdit"
+      options={{ title: "" }}
+      component={OutdoorScheduleEditScreen}
     />,
   ];
 }

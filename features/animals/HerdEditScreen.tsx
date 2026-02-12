@@ -21,7 +21,6 @@ import {
   useDeleteOutdoorScheduleMutation,
 } from "./herds.hooks";
 import { HerdEditScreenProps } from "./navigation/animals-routes";
-import { OutdoorScheduleEditModal } from "./OutdoorScheduleEditModal";
 import { OutdoorScheduleTimeline } from "./timeline/OutdoorScheduleTimeline";
 import { buildSingleHerdTimelineData } from "./timeline/outdoor-timeline-utils";
 
@@ -32,7 +31,7 @@ export function HerdEditScreen({
   const { t, i18n } = useTranslation();
   const theme = useTheme();
   const locale = i18n.language;
-  const { herdId } = route.params;
+  const herdId = route.params?.herdId!;
   const { herd } = useHerdByIdQuery(herdId);
 
   const [name, setName] = useState("");
@@ -48,23 +47,28 @@ export function HerdEditScreen({
     herd?.animals.map((a) => a.id) ??
     [];
 
-  const [scheduleModalVisible, setScheduleModalVisible] = useState(false);
-  const [editingSchedule, setEditingSchedule] =
-    useState<OutdoorSchedule | null>(null);
-
   const updateHerdMutation = useUpdateHerdMutation(() => navigation.goBack());
   const deleteHerdMutation = useDeleteHerdMutation(() => navigation.goBack());
 
-  const createScheduleMutation = useCreateOutdoorScheduleMutation(
-    herdId,
-    () => setScheduleModalVisible(false),
-  );
-  const updateScheduleMutation = useUpdateOutdoorScheduleMutation(() =>
-    setScheduleModalVisible(false),
-  );
-  const deleteScheduleMutation = useDeleteOutdoorScheduleMutation(() =>
-    setScheduleModalVisible(false),
-  );
+  const createScheduleMutation = useCreateOutdoorScheduleMutation(herdId);
+  const updateScheduleMutation = useUpdateOutdoorScheduleMutation();
+  const deleteScheduleMutation = useDeleteOutdoorScheduleMutation();
+
+  // Handle schedule result returned from OutdoorScheduleEdit screen
+  const scheduleResult = route.params?.scheduleResult;
+  const [lastProcessedResult, setLastProcessedResult] = useState<typeof scheduleResult | null>(null);
+  if (scheduleResult && scheduleResult !== lastProcessedResult) {
+    setLastProcessedResult(scheduleResult);
+    if (scheduleResult.action === "save" && scheduleResult.input) {
+      if (scheduleResult.scheduleId) {
+        updateScheduleMutation.mutate({ id: scheduleResult.scheduleId, ...scheduleResult.input });
+      } else {
+        createScheduleMutation.mutate(scheduleResult.input);
+      }
+    } else if (scheduleResult.action === "delete" && scheduleResult.scheduleId) {
+      deleteScheduleMutation.mutate(scheduleResult.scheduleId);
+    }
+  }
 
   // Dirty check: name changed or animals changed from initial
   const initialAnimalIds = herd?.animals.map((a) => a.id) ?? [];
@@ -89,6 +93,27 @@ export function HerdEditScreen({
     navigation.navigate("SelectAnimals", {
       initialSelectedIds: selectedAnimalIds,
       previousScreen: "HerdEdit",
+    });
+  }
+
+  function navigateToScheduleEdit(schedule?: OutdoorSchedule) {
+    navigation.navigate("OutdoorScheduleEdit", {
+      previousScreen: "HerdEdit",
+      herdId,
+      scheduleId: schedule?.id,
+      schedule: schedule
+        ? {
+            startDate: schedule.startDate,
+            endDate: schedule.endDate,
+            recurrence: schedule.recurrence
+              ? {
+                  frequency: schedule.recurrence.frequency,
+                  interval: schedule.recurrence.interval,
+                  until: schedule.recurrence.until,
+                }
+              : null,
+          }
+        : undefined,
     });
   }
 
@@ -225,10 +250,7 @@ export function HerdEditScreen({
               color="black"
               iconSize={25}
               type="accent"
-              onPress={() => {
-                setEditingSchedule(null);
-                setScheduleModalVisible(true);
-              }}
+              onPress={() => navigateToScheduleEdit()}
             />
           </View>
           {/* Outdoor schedule timeline */}
@@ -240,10 +262,7 @@ export function HerdEditScreen({
                   const schedule = herd!.outdoorSchedules.find(
                     (s) => s.id === scheduleId,
                   );
-                  if (schedule) {
-                    setEditingSchedule(schedule);
-                    setScheduleModalVisible(true);
-                  }
+                  if (schedule) navigateToScheduleEdit(schedule);
                 }}
               />
             </View>
@@ -264,10 +283,7 @@ export function HerdEditScreen({
               renderItem={({ item: schedule }) => (
                 <ListItem
                   style={{ paddingVertical: 5 }}
-                  onPress={() => {
-                    setEditingSchedule(schedule);
-                    setScheduleModalVisible(true);
-                  }}
+                  onPress={() => navigateToScheduleEdit(schedule)}
                 >
                   <ListItem.Content>
                     <ListItem.Title>
@@ -284,23 +300,6 @@ export function HerdEditScreen({
           )}
         </View>
       </ScrollView>
-
-      <OutdoorScheduleEditModal
-        visible={scheduleModalVisible}
-        schedule={editingSchedule}
-        herdId={herdId}
-        onSave={(input) => {
-          if (editingSchedule) {
-            updateScheduleMutation.mutate({ id: editingSchedule.id, ...input });
-          } else {
-            createScheduleMutation.mutate(input);
-          }
-        }}
-        onDelete={(scheduleId) => {
-          deleteScheduleMutation.mutate(scheduleId);
-        }}
-        onClose={() => setScheduleModalVisible(false)}
-      />
     </ContentView>
   );
 }
