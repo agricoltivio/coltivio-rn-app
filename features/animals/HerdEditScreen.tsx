@@ -10,7 +10,7 @@ import { H2, H3, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FlatList, View } from "react-native";
+import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import {
   useDeleteHerdMutation,
@@ -21,6 +21,7 @@ import {
   useDeleteOutdoorScheduleMutation,
 } from "./herds.hooks";
 import { HerdEditScreenProps } from "./navigation/animals-routes";
+import { OutdoorScheduleEditModal } from "./OutdoorScheduleEditModal";
 import { OutdoorScheduleTimeline } from "./timeline/OutdoorScheduleTimeline";
 import { buildSingleHerdTimelineData } from "./timeline/outdoor-timeline-utils";
 
@@ -50,25 +51,19 @@ export function HerdEditScreen({
   const updateHerdMutation = useUpdateHerdMutation(() => navigation.goBack());
   const deleteHerdMutation = useDeleteHerdMutation(() => navigation.goBack());
 
-  const createScheduleMutation = useCreateOutdoorScheduleMutation(herdId);
-  const updateScheduleMutation = useUpdateOutdoorScheduleMutation();
-  const deleteScheduleMutation = useDeleteOutdoorScheduleMutation();
+  const [scheduleModalVisible, setScheduleModalVisible] = useState(false);
+  const [editingSchedule, setEditingSchedule] = useState<OutdoorSchedule | null>(null);
 
-  // Handle schedule result returned from OutdoorScheduleEdit screen
-  const scheduleResult = route.params?.scheduleResult;
-  const [lastProcessedResult, setLastProcessedResult] = useState<typeof scheduleResult | null>(null);
-  if (scheduleResult && scheduleResult !== lastProcessedResult) {
-    setLastProcessedResult(scheduleResult);
-    if (scheduleResult.action === "save" && scheduleResult.input) {
-      if (scheduleResult.scheduleId) {
-        updateScheduleMutation.mutate({ id: scheduleResult.scheduleId, ...scheduleResult.input });
-      } else {
-        createScheduleMutation.mutate(scheduleResult.input);
-      }
-    } else if (scheduleResult.action === "delete" && scheduleResult.scheduleId) {
-      deleteScheduleMutation.mutate(scheduleResult.scheduleId);
-    }
-  }
+  const createScheduleMutation = useCreateOutdoorScheduleMutation(
+    herdId,
+    () => setScheduleModalVisible(false),
+  );
+  const updateScheduleMutation = useUpdateOutdoorScheduleMutation(() =>
+    setScheduleModalVisible(false),
+  );
+  const deleteScheduleMutation = useDeleteOutdoorScheduleMutation(() =>
+    setScheduleModalVisible(false),
+  );
 
   // Dirty check: name changed or animals changed from initial
   const initialAnimalIds = herd?.animals.map((a) => a.id) ?? [];
@@ -96,25 +91,9 @@ export function HerdEditScreen({
     });
   }
 
-  function navigateToScheduleEdit(schedule?: OutdoorSchedule) {
-    navigation.navigate("OutdoorScheduleEdit", {
-      previousScreen: "HerdEdit",
-      herdId,
-      scheduleId: schedule?.id,
-      schedule: schedule
-        ? {
-            startDate: schedule.startDate,
-            endDate: schedule.endDate,
-            recurrence: schedule.recurrence
-              ? {
-                  frequency: schedule.recurrence.frequency,
-                  interval: schedule.recurrence.interval,
-                  until: schedule.recurrence.until,
-                }
-              : null,
-          }
-        : undefined,
-    });
+  function openScheduleModal(schedule?: OutdoorSchedule) {
+    setEditingSchedule(schedule ?? null);
+    setScheduleModalVisible(true);
   }
 
   function formatScheduleSummary(schedule: OutdoorSchedule): string {
@@ -250,7 +229,7 @@ export function HerdEditScreen({
               color="black"
               iconSize={25}
               type="accent"
-              onPress={() => navigateToScheduleEdit()}
+              onPress={() => openScheduleModal()}
             />
           </View>
           {/* Outdoor schedule timeline */}
@@ -262,7 +241,7 @@ export function HerdEditScreen({
                   const schedule = herd!.outdoorSchedules.find(
                     (s) => s.id === scheduleId,
                   );
-                  if (schedule) navigateToScheduleEdit(schedule);
+                  if (schedule) openScheduleModal(schedule);
                 }}
               />
             </View>
@@ -271,19 +250,18 @@ export function HerdEditScreen({
             <Subtitle>{t("common.no_entries")}</Subtitle>
           )}
           {herd.outdoorSchedules.length > 0 && (
-            <FlatList
-              scrollEnabled={false}
-              contentContainerStyle={{
+            <View
+              style={{
                 borderRadius: 10,
                 overflow: "hidden",
                 backgroundColor: theme.colors.white,
               }}
-              data={herd.outdoorSchedules}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item: schedule }) => (
+            >
+              {herd.outdoorSchedules.map((schedule) => (
                 <ListItem
+                  key={schedule.id}
                   style={{ paddingVertical: 5 }}
-                  onPress={() => navigateToScheduleEdit(schedule)}
+                  onPress={() => openScheduleModal(schedule)}
                 >
                   <ListItem.Content>
                     <ListItem.Title>
@@ -295,11 +273,27 @@ export function HerdEditScreen({
                   </ListItem.Content>
                   <ListItem.Chevron />
                 </ListItem>
-              )}
-            />
+              ))}
+            </View>
           )}
         </View>
       </ScrollView>
+
+      <OutdoorScheduleEditModal
+        visible={scheduleModalVisible}
+        schedule={editingSchedule}
+        onSave={(input) => {
+          if (editingSchedule) {
+            updateScheduleMutation.mutate({ id: editingSchedule.id, ...input });
+          } else {
+            createScheduleMutation.mutate(input);
+          }
+        }}
+        onDelete={(scheduleId) => {
+          deleteScheduleMutation.mutate(scheduleId);
+        }}
+        onClose={() => setScheduleModalVisible(false)}
+      />
     </ContentView>
   );
 }

@@ -1,4 +1,4 @@
-import { OutdoorSchedule, OutdoorScheduleCreateInput } from "@/api/herds.api";
+import { OutdoorScheduleCreateInput } from "@/api/herds.api";
 import { CompactDatePicker } from "@/components/datepicker/CompactDatePicker";
 import { Select } from "@/components/select/Select";
 import { Ionicons } from "@expo/vector-icons";
@@ -7,10 +7,20 @@ import { useTranslation } from "react-i18next";
 import { Modal, Pressable, Text, TextInput, View } from "react-native";
 import { useTheme } from "styled-components/native";
 
+export type ScheduleEditData = {
+  id: string;
+  startDate: string;
+  endDate: string | null;
+  recurrence: {
+    frequency: "weekly" | "monthly" | "yearly";
+    interval: number;
+    until?: string | null;
+  } | null | undefined;
+};
+
 type OutdoorScheduleEditModalProps = {
   visible: boolean;
-  schedule: OutdoorSchedule | null;
-  herdId: string;
+  schedule: ScheduleEditData | null;
   onSave: (input: OutdoorScheduleCreateInput) => void;
   onDelete?: (scheduleId: string) => void;
   onClose: () => void;
@@ -19,7 +29,6 @@ type OutdoorScheduleEditModalProps = {
 export function OutdoorScheduleEditModal({
   visible,
   schedule,
-  herdId,
   onSave,
   onDelete,
   onClose,
@@ -140,7 +149,9 @@ export function OutdoorScheduleEditModal({
 
   return (
     <Modal visible={visible} transparent animationType="fade">
-      <Pressable
+      {/* Only render content when visible so CompactDatePickers get fresh
+          instances each time — prevents stale native state across open/close */}
+      {visible && <Pressable
         style={{
           flex: 1,
           backgroundColor: "rgba(0,0,0,0.5)",
@@ -383,7 +394,7 @@ export function OutdoorScheduleEditModal({
             </Pressable>
           </View>
         </Pressable>
-      </Pressable>
+      </Pressable>}
     </Modal>
   );
 }

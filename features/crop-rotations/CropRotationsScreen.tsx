@@ -73,8 +73,12 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
     });
   }
 
-  function handleBarPress(rotationId: string, plotName: string) {
-    navigation.navigate("EditPlotCropRotation", { rotationId, plotName });
+  // All recurrences of the same rotation share the same plotId, so first match is fine
+  function handleBarPress(rotationId: string, _plotName: string) {
+    const plotId = cropRotations?.find((cr) => cr.id === rotationId)?.plotId;
+    if (plotId) {
+      navigation.navigate("PlanCropRotations", { plotIds: [plotId] });
+    }
   }
 
   return (
@@ -102,7 +106,7 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
       </View>
 
       <FAB
-        icon={{ name: "add", color: "white" }}
+        icon={{ name: "create-outline", color: "white" }}
         onPress={() => navigation.navigate("SelectPlotsForPlan")}
       />
     </ContentView>

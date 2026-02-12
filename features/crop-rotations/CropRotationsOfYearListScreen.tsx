@@ -83,11 +83,11 @@ export function CropRotationsOfYearListScreen({
   // Build timeline data from filtered rotations
   const timelineData = buildMultiYearTimelineData(filteredCropRotations, [year]);
 
-  function handleBarPress(rotationId: string, plotName: string) {
-    navigation.navigate("EditPlotCropRotation", {
-      rotationId,
-      plotName,
-    });
+  function handleBarPress(rotationId: string, _plotName: string) {
+    const plotId = cropRotations?.find((cr) => cr.id === rotationId)?.plotId;
+    if (plotId) {
+      navigation.navigate("PlanCropRotations", { plotIds: [plotId] });
+    }
   }
 
   const renderItem = ({
@@ -98,9 +98,8 @@ export function CropRotationsOfYearListScreen({
     <ListItem
       key={cropRotation.id}
       onPress={() =>
-        navigation.navigate("EditPlotCropRotation", {
-          rotationId: cropRotation.id,
-          plotName: cropRotation.plot.name,
+        navigation.navigate("PlanCropRotations", {
+          plotIds: [cropRotation.plotId],
         })
       }
     >

@@ -95,7 +95,8 @@
       "cutting_date_optional": "Schnittzeit (optional)",
       "permanent": "Unbefristet",
       "sex": "Geschlecht",
-      "date_range": "Zeitraum"
+      "date_range": "Zeitraum",
+      "duration": "Dauer"
     },
     "placeholders": {
       "location_search": "z.B. Straße, Hausnummer, Ort",

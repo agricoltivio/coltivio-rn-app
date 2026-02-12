@@ -15,7 +15,8 @@ import { FlatList, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
 import { useCreateHerdMutation, useCreateOutdoorScheduleMutation } from "./herds.hooks";
-import { CreateHerdScreenProps, OutdoorScheduleEditResult } from "./navigation/animals-routes";
+import { CreateHerdScreenProps } from "./navigation/animals-routes";
+import { OutdoorScheduleEditModal } from "./OutdoorScheduleEditModal";
 import { OutdoorScheduleTimeline } from "./timeline/OutdoorScheduleTimeline";
 import { buildOutdoorTimelineData } from "./timeline/outdoor-timeline-utils";
 
@@ -56,35 +57,8 @@ export function CreateHerdScreen({
 
   // Local outdoor schedules state
   const [localSchedules, setLocalSchedules] = useState<LocalSchedule[]>([]);
-
-  // Handle schedule result returned from OutdoorScheduleEdit screen
-  const scheduleResult = route.params?.scheduleResult;
-  const [lastProcessedResult, setLastProcessedResult] = useState<OutdoorScheduleEditResult | null>(null);
-  if (scheduleResult && scheduleResult !== lastProcessedResult) {
-    setLastProcessedResult(scheduleResult);
-    if (scheduleResult.action === "save" && scheduleResult.input) {
-      if (scheduleResult.scheduleId) {
-        // Update existing local schedule by tempId
-        setLocalSchedules((prev) =>
-          prev.map((s) =>
-            s.tempId === scheduleResult.scheduleId
-              ? { ...scheduleResult.input!, tempId: s.tempId }
-              : s,
-          ),
-        );
-      } else {
-        // Add new local schedule
-        setLocalSchedules((prev) => [
-          ...prev,
-          { ...scheduleResult.input!, tempId: `temp-${Date.now()}` },
-        ]);
-      }
-    } else if (scheduleResult.action === "delete" && scheduleResult.scheduleId) {
-      setLocalSchedules((prev) =>
-        prev.filter((s) => s.tempId !== scheduleResult.scheduleId),
-      );
-    }
-  }
+  const [scheduleModalVisible, setScheduleModalVisible] = useState(false);
+  const [editingSchedule, setEditingSchedule] = useState<LocalSchedule | null>(null);
 
   const {
     control,
@@ -198,24 +172,9 @@ export function CreateHerdScreen({
     return summary;
   }
 
-  function navigateToScheduleEdit(schedule?: LocalSchedule) {
-    navigation.navigate("OutdoorScheduleEdit", {
-      previousScreen: "CreateHerd",
-      scheduleId: schedule?.tempId,
-      schedule: schedule
-        ? {
-            startDate: schedule.startDate,
-            endDate: schedule.endDate ?? null,
-            recurrence: schedule.recurrence
-              ? {
-                  frequency: schedule.recurrence.frequency,
-                  interval: schedule.recurrence.interval,
-                  until: schedule.recurrence.until ?? null,
-                }
-              : null,
-          }
-        : undefined,
-    });
+  function openScheduleModal(schedule?: LocalSchedule) {
+    setEditingSchedule(schedule ?? null);
+    setScheduleModalVisible(true);
   }
 
   return (
@@ -314,7 +273,7 @@ export function CreateHerdScreen({
               color="black"
               iconSize={25}
               type="accent"
-              onPress={() => navigateToScheduleEdit()}
+              onPress={() => openScheduleModal()}
             />
           </View>
           {/* Outdoor schedule timeline */}
@@ -326,7 +285,7 @@ export function CreateHerdScreen({
                   const schedule = localSchedules.find(
                     (s) => s.tempId === scheduleId,
                   );
-                  if (schedule) navigateToScheduleEdit(schedule);
+                  if (schedule) openScheduleModal(schedule);
                 }}
               />
             </View>
@@ -347,7 +306,7 @@ export function CreateHerdScreen({
               renderItem={({ item }) => (
                 <ListItem
                   style={{ paddingVertical: 5 }}
-                  onPress={() => navigateToScheduleEdit(item)}
+                  onPress={() => openScheduleModal(item)}
                 >
                   <ListItem.Content>
                     <ListItem.Title>
@@ -364,6 +323,44 @@ export function CreateHerdScreen({
           )}
         </View>
       </ScrollView>
+
+      <OutdoorScheduleEditModal
+        visible={scheduleModalVisible}
+        schedule={
+          editingSchedule
+            ? {
+                id: editingSchedule.tempId,
+                startDate: editingSchedule.startDate,
+                endDate: editingSchedule.endDate ?? null,
+                recurrence: editingSchedule.recurrence,
+              }
+            : null
+        }
+        onSave={(input) => {
+          if (editingSchedule) {
+            setLocalSchedules((prev) =>
+              prev.map((s) =>
+                s.tempId === editingSchedule.tempId
+                  ? { ...input, tempId: s.tempId }
+                  : s,
+              ),
+            );
+          } else {
+            setLocalSchedules((prev) => [
+              ...prev,
+              { ...input, tempId: `temp-${Date.now()}` },
+            ]);
+          }
+          setScheduleModalVisible(false);
+        }}
+        onDelete={(scheduleId) => {
+          setLocalSchedules((prev) =>
+            prev.filter((s) => s.tempId !== scheduleId),
+          );
+          setScheduleModalVisible(false);
+        }}
+        onClose={() => setScheduleModalVisible(false)}
+      />
     </ContentView>
   );
 }

@@ -214,54 +214,25 @@ export function RotationEditModal({
           </View>
 
           {/* Recurrence */}
-          <Text
+          <View
             style={{
-              fontSize: 14,
-              fontWeight: "600",
-              color: theme.colors.gray1,
-              marginBottom: theme.spacing.xs,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginTop: theme.spacing.m,
             }}
           >
-            {t("crop_rotations.plan.recurrence_optional")}
-          </Text>
-
-          {hasRecurrence ? (
-            <View
+            <Text
               style={{
-                flexDirection: "row",
-                alignItems: "center",
-                flexWrap: "wrap",
-                gap: theme.spacing.s,
-                marginBottom: theme.spacing.l,
+                fontSize: 14,
+                fontWeight: "600",
+                color: theme.colors.gray1,
+                marginBottom: theme.spacing.xs,
               }}
             >
-              <Text style={{ fontSize: 14, color: theme.colors.text }}>
-                {t("crop_rotations.plan.every")}
-              </Text>
-              <TextInput
-                value={interval}
-                onChangeText={(text) => {
-                  if (!text) setInterval("");
-                  const num = parseInt(text);
-                  if (!isNaN(num) && num > 0) setInterval(String(num));
-                }}
-                keyboardType="number-pad"
-                style={{
-                  width: 50,
-                  borderWidth: 1,
-                  borderColor: theme.colors.gray3,
-                  borderRadius: 8,
-                  paddingHorizontal: 8,
-                  paddingVertical: 6,
-                  fontSize: 14,
-                  textAlign: "center",
-                }}
-              />
-              <Text style={{ fontSize: 14, color: theme.colors.text }}>
-                {parseInt(interval) === 1
-                  ? t("crop_rotations.plan.year")
-                  : t("crop_rotations.plan.years")}
-              </Text>
+              {t("crop_rotations.plan.recurrence_optional")}
+            </Text>
+
+            {hasRecurrence && (
               <Pressable onPress={() => setHasRecurrence(false)}>
                 <Ionicons
                   name="close-circle"
@@ -269,6 +240,47 @@ export function RotationEditModal({
                   color={theme.colors.gray2}
                 />
               </Pressable>
+            )}
+          </View>
+          {hasRecurrence ? (
+            <>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: theme.spacing.s,
+                  marginBottom: theme.spacing.xs,
+                }}
+              >
+                <Text style={{ fontSize: 14, color: theme.colors.text }}>
+                  {t("crop_rotations.plan.every")}
+                </Text>
+                <TextInput
+                  value={interval}
+                  onChangeText={(text) => {
+                    if (!text) setInterval("");
+                    const num = parseInt(text);
+                    if (!isNaN(num) && num > 0) setInterval(String(num));
+                  }}
+                  keyboardType="number-pad"
+                  style={{
+                    width: 50,
+                    borderWidth: 1,
+                    borderColor: theme.colors.gray3,
+                    borderRadius: 8,
+                    paddingHorizontal: 8,
+                    paddingVertical: 6,
+                    fontSize: 14,
+                    textAlign: "center",
+                  }}
+                />
+                <Text style={{ fontSize: 14, color: theme.colors.text }}>
+                  {parseInt(interval) === 1
+                    ? t("crop_rotations.plan.year")
+                    : t("crop_rotations.plan.years")}
+                </Text>
+              </View>
               <CompactDatePicker
                 date={until}
                 onDateChange={(d) => {
@@ -281,7 +293,7 @@ export function RotationEditModal({
                 hasValue={hasUntil}
                 onClear={() => setHasUntil(false)}
               />
-            </View>
+            </>
           ) : (
             <Pressable
               onPress={() => setHasRecurrence(true)}
@@ -291,7 +303,6 @@ export function RotationEditModal({
                 paddingVertical: theme.spacing.xs,
                 borderRadius: 8,
                 alignSelf: "flex-start",
-                marginBottom: theme.spacing.l,
               }}
             >
               <Text style={{ fontSize: 15, color: theme.colors.text }}>
@@ -301,7 +312,13 @@ export function RotationEditModal({
           )}
 
           {/* Actions */}
-          <View style={{ flexDirection: "row", gap: theme.spacing.s }}>
+          <View
+            style={{
+              flexDirection: "row",
+              gap: theme.spacing.s,
+              marginTop: theme.spacing.l,
+            }}
+          >
             {rotation && onDelete && (
               <Pressable
                 onPress={handleDelete}

@@ -1,10 +1,12 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import React from "react";
 import { Dimensions, Platform, Pressable, Text, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { locale } from "@/locales/i18n";
 import { Ionicons } from "@expo/vector-icons";
+import { Button } from "@/components/buttons/Button";
 
 type CompactDatePickerProps = {
   date: Date;
@@ -23,7 +25,11 @@ type CompactDatePickerProps = {
 };
 
 const POPOVER_HEIGHT = 370;
+// Extra height for the confirm button + its margin
+const BUTTON_HEIGHT = 52;
+const TOTAL_POPOVER_HEIGHT = POPOVER_HEIGHT + BUTTON_HEIGHT;
 const HORIZONTAL_MARGIN = 16;
+const SCREEN_VERTICAL_PADDING = 8;
 
 /**
  * A compact inline date picker rendered as a tappable chip.
@@ -42,9 +48,11 @@ export function CompactDatePicker({
   autoOpen,
 }: CompactDatePickerProps) {
   const theme = useTheme();
+  const { t } = useTranslation();
   const containerRef = useRef<View>(null);
+  const mountedRef = useRef(true);
+  const pendingTimers = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
   const [visible, setVisible] = useState(false);
-  // Offset relative to the chip for popover positioning
   const [popoverStyle, setPopoverStyle] = useState<{
     top?: number;
     bottom?: number;
@@ -53,6 +61,45 @@ export function CompactDatePicker({
   } | null>(null);
   const [androidOpen, setAndroidOpen] = useState(autoOpen ?? false);
   const hasAutoOpened = useRef(false);
+  // Deferred mount: the native UIDatePicker is only mounted one frame after
+  // the popover becomes visible. This ensures any previous native instance is
+  // fully deallocated (iOS pools/reuses UIDatePicker and leaks state like
+  // the year/month picker mode otherwise).
+  const [pickerMounted, setPickerMounted] = useState(false);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      for (const t of pendingTimers.current) clearTimeout(t);
+      pendingTimers.current.clear();
+    };
+  }, []);
+
+  // Mount the native DateTimePicker one frame after the popover opens,
+  // unmount immediately when it closes
+  useEffect(() => {
+    if (visible) {
+      const raf = requestAnimationFrame(() => {
+        if (mountedRef.current) setPickerMounted(true);
+      });
+      return () => {
+        cancelAnimationFrame(raf);
+        setPickerMounted(false);
+      };
+    } else {
+      setPickerMounted(false);
+    }
+  }, [visible]);
+
+  const safeTimeout = useCallback((fn: () => void, ms: number) => {
+    const id = setTimeout(() => {
+      pendingTimers.current.delete(id);
+      if (mountedRef.current) fn();
+    }, ms);
+    pendingTimers.current.add(id);
+    return id;
+  }, []);
 
   const formattedDate = new Intl.DateTimeFormat(locale, {
     year: "numeric",
@@ -62,26 +109,69 @@ export function CompactDatePicker({
 
   const chipText = hasValue ? formattedDate : (placeholder ?? formattedDate);
 
-  // Measure container and compute popover position relative to it
   const openPicker = useCallback(() => {
     if (Platform.OS === "ios") {
-      containerRef.current?.measureInWindow((containerX, containerY, containerW, containerH) => {
-        const screen = Dimensions.get("window");
-        const spaceBelow = screen.height - (containerY + containerH);
-        const showBelow = spaceBelow >= POPOVER_HEIGHT + 8;
+      containerRef.current?.measureInWindow(
+        (containerX, containerY, containerW, containerH) => {
+          if (!mountedRef.current) return;
+          if (containerW === 0 && containerH === 0) return;
 
-        // Calculate left/right offsets so the popover is screen-centered
-        // with HORIZONTAL_MARGIN on each side, relative to the container
-        const popoverLeft = -(containerX - HORIZONTAL_MARGIN);
-        const popoverRight = -(screen.width - containerX - containerW - HORIZONTAL_MARGIN);
+          const screen = Dimensions.get("window");
+          const popoverLeft = -(containerX - HORIZONTAL_MARGIN);
+          const popoverRight = -(
+            screen.width -
+            containerX -
+            containerW -
+            HORIZONTAL_MARGIN
+          );
 
-        setPopoverStyle(
-          showBelow
-            ? { top: containerH + 8, left: popoverLeft, right: popoverRight }
-            : { bottom: containerH + 8, left: popoverLeft, right: popoverRight },
-        );
-        setVisible(true);
-      });
+          // Try below first, then above, then clamp to keep fully on-screen
+          const spaceBelow = screen.height - (containerY + containerH);
+          const spaceAbove = containerY;
+
+          let style: {
+            top?: number;
+            bottom?: number;
+            left: number;
+            right: number;
+          };
+
+          if (spaceBelow >= TOTAL_POPOVER_HEIGHT + SCREEN_VERTICAL_PADDING) {
+            style = {
+              top: containerH + 8,
+              left: popoverLeft,
+              right: popoverRight,
+            };
+          } else if (
+            spaceAbove >=
+            TOTAL_POPOVER_HEIGHT + SCREEN_VERTICAL_PADDING
+          ) {
+            style = {
+              bottom: containerH + 8,
+              left: popoverLeft,
+              right: popoverRight,
+            };
+          } else {
+            // Neither side fits — position so the popover stays within the screen
+            // by computing an absolute top and converting to chip-relative offset
+            const absoluteTop = Math.max(
+              SCREEN_VERTICAL_PADDING,
+              Math.min(
+                screen.height - TOTAL_POPOVER_HEIGHT - SCREEN_VERTICAL_PADDING,
+                containerY + containerH + 8,
+              ),
+            );
+            style = {
+              top: absoluteTop - containerY,
+              left: popoverLeft,
+              right: popoverRight,
+            };
+          }
+
+          setPopoverStyle(style);
+          setVisible(true);
+        },
+      );
     } else {
       setAndroidOpen(true);
     }
@@ -89,21 +179,26 @@ export function CompactDatePicker({
 
   const dismiss = useCallback(() => setVisible(false), []);
 
-  // Auto-open on mount for iOS
   useEffect(() => {
     if (autoOpen && !hasAutoOpened.current && Platform.OS === "ios") {
       hasAutoOpened.current = true;
-      const timer = setTimeout(() => openPicker(), 100);
-      return () => clearTimeout(timer);
+      const id = safeTimeout(() => openPicker(), 100);
+      return () => clearTimeout(id);
     }
-  }, [autoOpen, openPicker]);
+  }, [autoOpen, openPicker, safeTimeout]);
 
   return (
-    <View ref={containerRef} style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs, zIndex: visible ? 9999 : 0 }}>
+    <View
+      ref={containerRef}
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        gap: theme.spacing.xs,
+        zIndex: visible ? 9999 : 0,
+      }}
+    >
       {label && (
-        <Text style={{ fontSize: 14, color: theme.colors.gray2 }}>
-          {label}
-        </Text>
+        <Text style={{ fontSize: 14, color: theme.colors.gray2 }}>{label}</Text>
       )}
       <Pressable
         onPress={visible ? dismiss : openPicker}
@@ -133,7 +228,11 @@ export function CompactDatePicker({
             }}
             hitSlop={8}
           >
-            <Ionicons name="close-circle" size={18} color={theme.colors.gray2} />
+            <Ionicons
+              name="close-circle"
+              size={18}
+              color={theme.colors.gray2}
+            />
           </Pressable>
         )}
       </Pressable>
@@ -141,50 +240,57 @@ export function CompactDatePicker({
       {/* iOS: popover calendar anchored to chip — no Modal, uses absolute positioning */}
       {Platform.OS === "ios" && visible && popoverStyle && (
         <>
-          {/* Invisible full-screen dismiss area */}
           <Pressable
             onPress={dismiss}
             style={{
               position: "absolute",
-              top: -5000,
-              bottom: -5000,
-              left: -5000,
-              right: -5000,
+              top: -1000,
+              bottom: -1000,
+              left: -1000,
+              right: -1000,
               zIndex: 9998,
             }}
           />
-          {/* Calendar popover */}
           <View
             style={{
               position: "absolute",
               ...popoverStyle,
               zIndex: 9999,
-              backgroundColor: theme.colors.white,
+              backgroundColor: "rgba(40,40,40, 0.9)",
               borderRadius: 12,
-              borderWidth: 1,
-              borderColor: theme.colors.gray4,
               shadowColor: "#000",
               shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.15,
+              shadowOpacity: 0.3,
               shadowRadius: 12,
               elevation: 8,
               overflow: "hidden",
             }}
           >
-            <DateTimePicker
-              value={date}
-              mode="date"
-              display="inline"
-              minimumDate={minimumDate}
-              maximumDate={maximumDate}
-              themeVariant="light"
-              onChange={(_event, selectedDate) => {
-                if (selectedDate) {
-                  onDateChange(selectedDate);
-                  setVisible(false);
-                }
-              }}
-            />
+            {pickerMounted && (
+              <>
+                <DateTimePicker
+                  value={date}
+                  mode="date"
+                  display="inline"
+                  minimumDate={minimumDate}
+                  maximumDate={maximumDate}
+                  themeVariant="dark"
+                  onChange={(_event, selectedDate) => {
+                    if (!selectedDate) return;
+                    // Defer so the native UIDatePicker finishes its delegate
+                    // callback before React re-renders
+                    safeTimeout(() => onDateChange(selectedDate), 0);
+                  }}
+                />
+                <Button
+                  title={t("buttons.confirm")}
+                  onPress={dismiss}
+                  style={{ margin: theme.spacing.s }}
+                  type="accent"
+                  fontSize={16}
+                />
+              </>
+            )}
           </View>
         </>
       )}
