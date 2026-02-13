@@ -16,7 +16,7 @@ import { PortalHost } from "@gorhom/portal";
 import * as turf from "@turf/turf";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { InteractionManager, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import {
   LatLng,
   MapPressEvent,
@@ -46,14 +46,14 @@ export function EditPlotMapScreen({
   const polygonDrawingToolRef = useRef<PolygonDrawingToolActions>(null);
 
   useEffect(() => {
-    const task = InteractionManager.runAfterInteractions(() => {
+    const raf = requestAnimationFrame(() => {
       setMapVisible(true);
       // Show edit onboarding on first use
       if (!localSettings.editPlotOnboardingCompleted) {
         navigation.navigate("MapDrawOnboarding", { variant: "edit" });
       }
     });
-    return () => task.cancel();
+    return () => cancelAnimationFrame(raf);
   }, [navigation, localSettings.editPlotOnboardingCompleted]);
 
   const plot = plots?.find((plot) => plot.id === plotId);
@@ -159,7 +159,9 @@ export function EditPlotMapScreen({
           }}
           magnifierMapContent={plotPolygons}
           onFinish={onFinishDrawing}
-          onInfo={() => navigation.navigate("MapDrawOnboarding", { variant: "edit" })}
+          onInfo={() =>
+            navigation.navigate("MapDrawOnboarding", { variant: "edit" })
+          }
         />
       </MapView>
       <PortalHost name="PlotsMap" />

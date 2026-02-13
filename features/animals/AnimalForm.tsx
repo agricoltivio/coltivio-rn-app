@@ -78,15 +78,13 @@ export function AnimalForm({
   ];
 
   const categoryOverrideData = [
-    { label: "-", value: "" },
-    ...["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9",
+    "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9",
     "B1", "B2", "B3",
     "C1", "C2",
     "D1", "D2", "D3",
     "E1", "E2", "E3", "E4",
     "F1", "F2",
-    ].map((val) => ({ label: val, value: val })),
-  ];
+  ].map((val) => ({ label: val, value: val }));
 
   const herdData =
     herds?.map((herd) => ({
@@ -216,8 +214,8 @@ export function AnimalForm({
             value={categoryOverride == null}
             onChange={() => {
               if (categoryOverride == null) {
-                // Switching to manual — show dropdown without pre-selecting
-                setValue("categoryOverride", "", { shouldDirty: true });
+                // Switching to manual
+                setValue("categoryOverride", "A1", { shouldDirty: true });
               } else {
                 // Switching to auto
                 setValue("categoryOverride", null, { shouldDirty: true });

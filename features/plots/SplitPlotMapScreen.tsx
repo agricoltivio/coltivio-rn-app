@@ -23,7 +23,7 @@ import { Portal, PortalHost } from "@gorhom/portal";
 import * as turf from "@turf/turf";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, InteractionManager, StyleSheet } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import { LatLng, MapPressEvent, Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
 import { MapShowLocationToggle } from "../map/MapShowLocationToggle";
@@ -56,10 +56,8 @@ export function SplitPlotMapScreen({
   const polygonRef = useRef<PolygonDrawingToolActions>(null);
 
   useEffect(() => {
-    const task = InteractionManager.runAfterInteractions(() => {
-      setMapVisible(true);
-    });
-    return () => task.cancel();
+    const raf = requestAnimationFrame(() => setMapVisible(true));
+    return () => cancelAnimationFrame(raf);
   }, [navigation]);
 
   useEffect(() => {

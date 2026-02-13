@@ -986,6 +986,14 @@
     "outdoor_journal": "Auslaufjournal",
     "outdoor_journal_info": "Dieses Journal wird automatisch aus den Auslaufplänen der Herden und den definierten Tierkategorien erstellt.",
     "uncategorized_animals_warning": "{{count}} Tiere ohne Kategorie",
+    "auto_category": "Automatische Kategorie",
+    "category_override_info": "Diesem Tier konnte keine automatische Kategorie zugewiesen werden. Eine Kategorie kann manuell festgelegt werden.",
+    "outdoor_journal_onboarding": {
+      "welcome_heading": "Auslaufjournal",
+      "welcome_body": "Das Journal wird automatisch aus den Auslaufplänen deiner Herden und den Tierkategorien erstellt.",
+      "done_heading": "Geschafft!",
+      "done_body": "Du kannst das Journal jederzeit über die Tierhaltung aufrufen."
+    },
     "tvd_import": {
       "title": "TVD Import",
       "experimental": "Diese Funktion ist experimentell.",

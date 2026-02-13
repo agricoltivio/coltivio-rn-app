@@ -50,9 +50,7 @@ export type MergePlotsInput =
 export function plotsApi(client: FetchClient) {
   return {
     async getPlots(): Promise<Plot[]> {
-      console.log("query plots ...");
       const { data } = await client.GET("/v1/plots");
-      console.log("query plots done");
       return data!.data.result;
     },
     async getPlotById(plotId: string): Promise<Plot> {

@@ -41,7 +41,9 @@ export const MapTile = ({ showMap = true }: { showMap?: boolean }) => {
         // shadowRadius: 5,
       }}
     >
-      <TouchableWithoutFeedback onPress={() => navigation.navigate("PlotsMap")}>
+      <TouchableWithoutFeedback
+        onPress={() => navigation.navigate("PlotsMap", {})}
+      >
         <View
           style={{
             width: "100%",
@@ -71,7 +73,7 @@ export const MapTile = ({ showMap = true }: { showMap?: boolean }) => {
                 strokeColor={"white"}
                 fillColor={hexToRgba(
                   theme.map.defaultFillColor,
-                  theme.map.defaultFillAlpha
+                  theme.map.defaultFillAlpha,
                 )}
                 tappable
               />

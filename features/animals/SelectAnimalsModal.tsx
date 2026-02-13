@@ -28,7 +28,7 @@ export function SelectAnimalsModal({
   const theme = useTheme();
   const locale = i18n.language;
   const { initialSelectedIds, previousScreen } = route.params;
-  const { animals } = useAnimalsQuery();
+  const { animals, isLoading } = useAnimalsQuery();
 
   const minMaxDateOfBirth = getMinMaxIso(
     animals?.map((a) => a.dateOfBirth) ?? [],
@@ -239,7 +239,7 @@ export function SelectAnimalsModal({
 
       {/* Animal list */}
       <View style={{ marginTop: theme.spacing.s, flex: 1 }}>
-        {searchResult.length === 0 && (
+        {!isLoading && searchResult.length === 0 && (
           <Subtitle>{t("common.no_entries")}</Subtitle>
         )}
         <FlatList

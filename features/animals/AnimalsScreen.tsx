@@ -21,7 +21,7 @@ import { AnimalsScreenProps } from "./navigation/animals-routes";
 export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { animals } = useAnimalsQuery();
+  const { animals, isLoading } = useAnimalsQuery();
   const [searchText, setSearchText] = useState("");
   const [showDead, setShowDead] = useState(false);
   const [unregisteredOnly, setUnregisteredOnly] = useState(false);
@@ -234,7 +234,7 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
 
       {/* Animal list */}
       <View style={{ marginTop: theme.spacing.m, flex: 1 }}>
-        {searchResult.length === 0 && (
+        {!isLoading && searchResult.length === 0 && (
           <Subtitle>{t("common.no_entries")}</Subtitle>
         )}
         <FlatList

@@ -10,7 +10,7 @@ import { formatLocalizedDate } from "@/utils/date";
 import Fuse from "fuse.js";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { SectionList, View } from "react-native";
+import { ActivityIndicator, SectionList, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useTreatmentsQuery } from "./treatments.hooks";
 import { TreatmentsScreenProps } from "./navigation/animals-routes";
@@ -112,7 +112,14 @@ export function TreatmentsScreen({ navigation }: TreatmentsScreenProps) {
     [navigation],
   );
 
-  if (!treatments) return null;
+  if (!treatments) {
+    return (
+      <ContentView headerVisible>
+        <H2>{t("treatments.treatments")}</H2>
+        <ActivityIndicator style={{ marginTop: 40 }} size="large" />
+      </ContentView>
+    );
+  }
 
   return (
     <ContentView headerVisible>

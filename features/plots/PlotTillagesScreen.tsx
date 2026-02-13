@@ -8,7 +8,7 @@ import { formatLocalizedDate } from "@/utils/date";
 import Fuse from "fuse.js";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { SectionList, View } from "react-native";
+import { ActivityIndicator, SectionList, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { PlotTillagesScreenProps } from "./navigation/plots-routes";
 import { useTillagesForPlotQuery } from "../tillages/tillages.hooks";
@@ -139,7 +139,15 @@ export function PlotTillagesScreen({
     [navigation],
   );
 
-  if (!tillages) return null;
+  if (!tillages) {
+    return (
+      <ContentView headerVisible>
+        <H2>{t("tillages.tillage")}</H2>
+        <H3>{t("plots.plot_name", { name })}</H3>
+        <ActivityIndicator style={{ marginTop: 40 }} size="large" />
+      </ContentView>
+    );
+  }
 
   return (
     <ContentView headerVisible>

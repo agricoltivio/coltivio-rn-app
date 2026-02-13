@@ -14,7 +14,7 @@ import { HerdsScreenProps } from "./navigation/animals-routes";
 export function HerdsScreen({ navigation }: HerdsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { herds: unsortedHerds } = useHerdsQuery();
+  const { herds: unsortedHerds, isLoading } = useHerdsQuery();
   const herds = unsortedHerds?.slice().sort((a, b) => a.name.localeCompare(b.name));
 
   const renderItem = useCallback(
@@ -42,7 +42,7 @@ export function HerdsScreen({ navigation }: HerdsScreenProps) {
         <H2>{t("animals.herds")}</H2>
 
         <View style={{ marginTop: theme.spacing.m, flex: 1 }}>
-          {(!herds || herds.length === 0) && (
+          {!isLoading && (!herds || herds.length === 0) && (
             <Subtitle>{t("animals.no_herds")}</Subtitle>
           )}
           {herds && herds.length > 0 && (

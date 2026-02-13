@@ -9,7 +9,7 @@ import { round } from "@/utils/math";
 import Fuse from "fuse.js";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { SectionList, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, SectionList, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { PlotHarvestsScreenProps } from "./navigation/plots-routes";
 import {
@@ -31,8 +31,8 @@ export function PlotHarvestsScreen({
   const [viewMode, setViewMode] = useState<ViewMode>("dashboard");
   const [searchText, setSearchText] = useState("");
 
-  const { harvests } = useHarvestsOfPlotQuery(plotId);
-  const { harvestSummaries } = useHarvestSummariesOfPlotQuery(plotId);
+  const { harvests, isLoading: harvestsLoading } = useHarvestsOfPlotQuery(plotId);
+  const { harvestSummaries, isLoading: summariesLoading } = useHarvestSummariesOfPlotQuery(plotId);
 
   const availableYears = useMemo(() => {
     if (!harvests) return [];
@@ -99,7 +99,14 @@ export function PlotHarvestsScreen({
     [navigation],
   );
 
-  if (!harvests) return null;
+  if (!harvests) {
+    return (
+      <ContentView headerVisible>
+        <H2>{t("harvests.harvest")}</H2>
+        <ActivityIndicator style={{ marginTop: 40 }} size="large" />
+      </ContentView>
+    );
+  }
 
   return (
     <ContentView headerVisible>
@@ -123,7 +130,9 @@ export function PlotHarvestsScreen({
           showHeaderOnScroll
           headerTitleOnScroll={t("harvests.harvest")}
         >
-          {!harvestSummaries || harvestSummaries.length === 0 ? (
+          {summariesLoading ? (
+            <ActivityIndicator style={{ marginTop: 40 }} size="large" />
+          ) : !harvestSummaries || harvestSummaries.length === 0 ? (
             <Headline>{t("common.no_entries")}</Headline>
           ) : (
             <HarvestDashboard

@@ -26,13 +26,7 @@ import React, {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  InteractionManager,
-  Modal,
-  Pressable,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Modal, Pressable, StyleSheet, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../farms/farms.hooks";
 import { MapShowLocationToggle } from "../map/MapShowLocationToggle";
@@ -60,14 +54,14 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
   const snapPoints = useMemo(() => [200, "85%"], []);
 
   useEffect(() => {
-    const task = InteractionManager.runAfterInteractions(() => {
+    const raf = requestAnimationFrame(() => {
       setMapVisible(true);
       // Show onboarding on first visit
       if (!localSettings.plotsMapOnboardingCompleted) {
         navigation.navigate("MapDrawOnboarding", { variant: "plotsMap" });
       }
     });
-    return () => task.cancel();
+    return () => cancelAnimationFrame(raf);
   }, [navigation, localSettings.plotsMapOnboardingCompleted]);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);

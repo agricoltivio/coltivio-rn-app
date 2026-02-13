@@ -9,7 +9,7 @@ import { PortalHost } from "@gorhom/portal";
 import * as turf from "@turf/turf";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { InteractionManager, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../farms/farms.hooks";
@@ -33,10 +33,8 @@ export function MergePlotsMapScreen({
   const [selectedPlotIds, setSelectedPlotIds] = useState<string[]>([plotId]);
 
   useEffect(() => {
-    const task = InteractionManager.runAfterInteractions(() => {
-      setMapVisible(true);
-    });
-    return () => task.cancel();
+    const raf = requestAnimationFrame(() => setMapVisible(true));
+    return () => cancelAnimationFrame(raf);
   }, [navigation]);
 
   if (!farm || !plots) {
@@ -53,8 +51,8 @@ export function MergePlotsMapScreen({
   const initialRegion: Region = {
     latitude,
     longitude,
-    latitudeDelta: 0.004,
-    longitudeDelta: 0.004,
+    latitudeDelta: 0.0025,
+    longitudeDelta: 0.0025,
   };
 
   function togglePlot(id: string) {

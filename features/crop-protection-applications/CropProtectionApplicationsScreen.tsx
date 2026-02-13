@@ -10,7 +10,7 @@ import { round } from "@/utils/math";
 import Fuse from "fuse.js";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, InteractionManager, SectionList, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, SectionList, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { CropProtectionApplicationDashboard } from "./components/CropProtectionApplicationDashboard";
 import {
@@ -33,11 +33,10 @@ export function CropProtectionApplicationsScreen({
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const task = InteractionManager.runAfterInteractions(() => {
-      setReady(true);
+    return navigation.addListener("transitionEnd", (e) => {
+      if (!e.data.closing) setReady(true);
     });
-    return () => task.cancel();
-  }, []);
+  }, [navigation]);
 
   const { cropProtectionApplicationYears } =
     useCropProtectionApplicationYearsQuery();
