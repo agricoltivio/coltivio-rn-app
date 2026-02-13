@@ -1,3 +1,6 @@
+import { Button } from "@/components/buttons/Button";
+import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
+import { ContentView } from "@/components/containers/ContentView";
 import { MapView } from "@/components/map/Map";
 import { MultiPolygon } from "@/components/map/MultiPolygon";
 import {
@@ -5,7 +8,6 @@ import {
   PolygonDrawingTool,
   PolygonDrawingToolActions,
 } from "@/components/map/PolygonDrawingTool";
-import { deviceHeight, deviceWidth } from "@/constants/Screen";
 import { EditPlotMapScreenProps } from "./navigation/plots-routes";
 import { hexToRgba } from "@/theme/theme";
 import { GeoSpatials } from "@/utils/geo-spatials";
@@ -13,7 +15,8 @@ import { round } from "@/utils/math";
 import { PortalHost } from "@gorhom/portal";
 import * as turf from "@turf/turf";
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { useTranslation } from "react-i18next";
+import { InteractionManager, StyleSheet } from "react-native";
 import {
   LatLng,
   MapPressEvent,
@@ -29,6 +32,7 @@ export function EditPlotMapScreen({
   navigation,
   route,
 }: EditPlotMapScreenProps) {
+  const { t } = useTranslation();
   const theme = useTheme();
   const { plotId } = route.params;
 
@@ -41,20 +45,16 @@ export function EditPlotMapScreen({
   const { localSettings } = useLocalSettings();
   const polygonDrawingToolRef = useRef<PolygonDrawingToolActions>(null);
 
-  // Show edit onboarding on first use
   useEffect(() => {
-    if (!localSettings.editPlotOnboardingCompleted) {
-      navigation.navigate("MapDrawOnboarding", { variant: "edit" });
-    }
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("transitionEnd", () => {
-      setMapVisible(true); // Render the map only after the transition ends
+    const task = InteractionManager.runAfterInteractions(() => {
+      setMapVisible(true);
+      // Show edit onboarding on first use
+      if (!localSettings.editPlotOnboardingCompleted) {
+        navigation.navigate("MapDrawOnboarding", { variant: "edit" });
+      }
     });
-
-    return unsubscribe;
-  }, [navigation]);
+    return () => task.cancel();
+  }, [navigation, localSettings.editPlotOnboardingCompleted]);
 
   const plot = plots?.find((plot) => plot.id === plotId);
 
@@ -101,6 +101,13 @@ export function EditPlotMapScreen({
     }
   }
 
+  function handleContinue() {
+    const coordinates = polygonDrawingToolRef.current?.coordinates;
+    if (coordinates) {
+      onFinishDrawing(coordinates);
+    }
+  }
+
   const plotPolygons = plots?.map((plot) => (
     <MultiPolygon
       key={plot.id}
@@ -115,13 +122,13 @@ export function EditPlotMapScreen({
   ));
 
   return (
-    <View
-      style={{
-        justifyContent: "center",
-        alignItems: "center",
-        width: deviceWidth,
-        height: deviceHeight,
-      }}
+    <ContentView
+      headerVisible={false}
+      footerComponent={
+        <BottomActionContainer floating>
+          <Button title={t("buttons.next")} onPress={handleContinue} />
+        </BottomActionContainer>
+      }
     >
       <MapView
         provider={PROVIDER_GOOGLE}
@@ -129,9 +136,7 @@ export function EditPlotMapScreen({
         showsCompass={false}
         loadingEnabled
         loading={!mapVisible}
-        style={{
-          ...StyleSheet.absoluteFillObject,
-        }}
+        style={StyleSheet.absoluteFillObject}
         onPress={handleMapPress}
         mapType="satellite"
         initialRegion={initialRegion}
@@ -148,6 +153,7 @@ export function EditPlotMapScreen({
           )}
           portalName="PlotsMap"
           ref={polygonDrawingToolRef}
+          showActions={false}
           onDrawActionChange={(action) => {
             setDrawingAction(action);
           }}
@@ -158,6 +164,6 @@ export function EditPlotMapScreen({
       </MapView>
       <PortalHost name="PlotsMap" />
       <TopLeftBackButton />
-    </View>
+    </ContentView>
   );
 }

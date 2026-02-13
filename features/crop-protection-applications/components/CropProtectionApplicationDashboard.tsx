@@ -1,7 +1,7 @@
 import { Card } from "@/components/card/Card";
 import { locale } from "@/locales/i18n";
 import { Subtitle } from "@/theme/Typography";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import {
@@ -149,34 +149,46 @@ export function CropProtectionApplicationDashboard({ summaries, availableYears }
   const [selectedYears, setSelectedYears] = useState<number[]>(defaultYears);
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
 
-  function toggleYear(year: number) {
+  const toggleYear = useCallback((year: number) => {
     setSelectedYears((prev) => {
       if (prev.includes(year)) { if (prev.length === 1) return prev; return prev.filter((y) => y !== year); }
       return [...prev, year].sort((a, b) => a - b);
     });
-  }
+  }, []);
 
-  const allProducts = [...new Set(summaries.flatMap((s) => s.appliedCropProtections.filter((ap) => ap.totalAmount > 0).map((ap) => ap.productName)))];
+  const toggleProduct = useCallback((name: string) => {
+    setSelectedProducts((prev) =>
+      prev.includes(name) ? prev.filter((n) => n !== name) : [...prev, name],
+    );
+  }, []);
+
+  const allProducts = useMemo(
+    () => [...new Set(summaries.flatMap((s) => s.appliedCropProtections.filter((ap) => ap.totalAmount > 0).map((ap) => ap.productName)))],
+    [summaries],
+  );
   const visibleProducts = selectedProducts.length === 0 ? allProducts : selectedProducts;
 
   type ProdData = Record<string, { unit: string; monthly: Record<number, number[]> }>;
-  const prodData: ProdData = {};
-  for (const s of summaries) {
-    if (!selectedYears.includes(s.year)) continue;
-    for (const ap of s.appliedCropProtections) {
-      if (ap.totalAmount === 0) continue;
-      if (!prodData[ap.productName]) prodData[ap.productName] = { unit: ap.unit, monthly: {} };
-      const entry = prodData[ap.productName];
-      if (!entry.monthly[s.year]) { entry.monthly[s.year] = new Array(12).fill(0); }
-      entry.monthly[s.year][s.month] += ap.totalAmount;
+  const prodData = useMemo(() => {
+    const result: ProdData = {};
+    for (const s of summaries) {
+      if (!selectedYears.includes(s.year)) continue;
+      for (const ap of s.appliedCropProtections) {
+        if (ap.totalAmount === 0) continue;
+        if (!result[ap.productName]) result[ap.productName] = { unit: ap.unit, monthly: {} };
+        const entry = result[ap.productName];
+        if (!entry.monthly[s.year]) { entry.monthly[s.year] = new Array(12).fill(0); }
+        entry.monthly[s.year][s.month] += ap.totalAmount;
+      }
     }
-  }
+    return result;
+  }, [summaries, selectedYears]);
 
   return (
     <View style={{ gap: theme.spacing.m }}>
       <YearMultiSelect years={availableYears} selectedYears={selectedYears} onToggle={toggleYear} />
       {allProducts.length > 1 && (
-        <ProductFilter products={allProducts} selected={selectedProducts} onToggle={(name) => setSelectedProducts((prev) => prev.includes(name) ? prev.filter((n) => n !== name) : [...prev, name])} />
+        <ProductFilter products={allProducts} selected={selectedProducts} onToggle={toggleProduct} />
       )}
       <Legend labels={selectedYears.map((year) => ({ text: year.toString(), color: getYearColor(availableYears.indexOf(year)) }))} />
 

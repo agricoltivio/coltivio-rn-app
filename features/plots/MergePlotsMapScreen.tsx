@@ -9,7 +9,7 @@ import { PortalHost } from "@gorhom/portal";
 import * as turf from "@turf/turf";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { StyleSheet } from "react-native";
+import { InteractionManager, StyleSheet } from "react-native";
 import { Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../farms/farms.hooks";
@@ -33,10 +33,10 @@ export function MergePlotsMapScreen({
   const [selectedPlotIds, setSelectedPlotIds] = useState<string[]>([plotId]);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener("transitionEnd", () => {
+    const task = InteractionManager.runAfterInteractions(() => {
       setMapVisible(true);
     });
-    return unsubscribe;
+    return () => task.cancel();
   }, [navigation]);
 
   if (!farm || !plots) {

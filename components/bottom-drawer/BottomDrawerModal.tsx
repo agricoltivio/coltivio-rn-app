@@ -1,6 +1,7 @@
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
+  BottomSheetScrollView,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { forwardRef } from "react";
@@ -13,6 +14,8 @@ type BottomDrawerModalProps = {
   backdropDisappearsOnIndex?: number;
   containerStyle?: ViewStyle;
   children: React.ReactNode;
+  snapPoints?: (string | number)[];
+  onChange?: (index: number) => void;
 };
 
 export const BottomDrawerModal = forwardRef<
@@ -20,35 +23,50 @@ export const BottomDrawerModal = forwardRef<
   BottomDrawerModalProps
 >(
   (
-    { onClose, containerStyle, backdropDisappearsOnIndex = -1, children },
+    {
+      onClose,
+      containerStyle,
+      backdropDisappearsOnIndex = -1,
+      snapPoints,
+      onChange,
+      children,
+    },
     ref
   ) => {
     const theme = useTheme();
     const insets = useSafeAreaInsets();
+
+    const contentStyle = {
+      paddingBottom: insets.bottom + theme.spacing.s,
+      paddingHorizontal: theme.spacing.l,
+      ...containerStyle,
+    };
 
     return (
       <BottomSheetModal
         ref={ref}
         enablePanDownToClose
         onDismiss={onClose}
-        backdropComponent={(props) => {
-          return (
-            <BottomSheetBackdrop
-              disappearsOnIndex={backdropDisappearsOnIndex}
-              {...props}
-            />
-          );
-        }}
+        onChange={onChange}
+        {...(snapPoints
+          ? { snapPoints, enableDynamicSizing: false }
+          : {})}
+        backdropComponent={(props) => (
+          <BottomSheetBackdrop
+            disappearsOnIndex={backdropDisappearsOnIndex}
+            {...props}
+          />
+        )}
       >
-        <BottomSheetView
-          style={{
-            paddingBottom: insets.bottom + theme.spacing.s,
-            paddingHorizontal: theme.spacing.l,
-            ...containerStyle,
-          }}
-        >
-          {children}
-        </BottomSheetView>
+        {snapPoints ? (
+          <BottomSheetScrollView contentContainerStyle={contentStyle}>
+            {children}
+          </BottomSheetScrollView>
+        ) : (
+          <BottomSheetView style={contentStyle}>
+            {children}
+          </BottomSheetView>
+        )}
       </BottomSheetModal>
     );
   }

@@ -13,6 +13,7 @@
     "ok": "OK",
     "close": "Schliessen",
     "delete": "Löschen",
+    "details": "Details",
     "parcel_select": "Parzelle ",
     "draw_area": "Neue Fläche",
     "edit_area": "Fläche bearbeiten",
@@ -330,6 +331,7 @@
     "actions": {
       "adjust": "Anpassen",
       "adjust_area": "Fläche anpassen",
+      "manage_area": "Fläche verwalten",
       "split": "Aufteilen",
       "merge": "Zusammenführen"
     },

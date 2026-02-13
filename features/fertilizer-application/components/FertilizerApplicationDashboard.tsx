@@ -1,7 +1,7 @@
 import { Card } from "@/components/card/Card";
 import { locale } from "@/locales/i18n";
 import { Subtitle } from "@/theme/Typography";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import {
@@ -302,7 +302,7 @@ export function FertilizerApplicationDashboard({
   const [selectedYears, setSelectedYears] = useState<number[]>(defaultYears);
   const [selectedFertilizers, setSelectedFertilizers] = useState<string[]>([]);
 
-  function toggleYear(year: number) {
+  const toggleYear = useCallback((year: number) => {
     setSelectedYears((prev) => {
       if (prev.includes(year)) {
         if (prev.length === 1) return prev;
@@ -310,24 +310,27 @@ export function FertilizerApplicationDashboard({
       }
       return [...prev, year].sort((a, b) => a - b);
     });
-  }
+  }, []);
 
-  function toggleFertilizer(name: string) {
+  const toggleFertilizer = useCallback((name: string) => {
     setSelectedFertilizers((prev) =>
       prev.includes(name) ? prev.filter((n) => n !== name) : [...prev, name],
     );
-  }
+  }, []);
 
   // Discover all fertilizer names
-  const allFertilizers = [
-    ...new Set(
-      summaries.flatMap((s) =>
-        s.appliedFertilizers
-          .filter((af) => af.totalAmount > 0)
-          .map((af) => af.fertilizerName),
+  const allFertilizers = useMemo(
+    () => [
+      ...new Set(
+        summaries.flatMap((s) =>
+          s.appliedFertilizers
+            .filter((af) => af.totalAmount > 0)
+            .map((af) => af.fertilizerName),
+        ),
       ),
-    ),
-  ];
+    ],
+    [summaries],
+  );
   const visibleFertilizers =
     selectedFertilizers.length === 0 ? allFertilizers : selectedFertilizers;
 
@@ -336,21 +339,24 @@ export function FertilizerApplicationDashboard({
     string,
     { unit: string; monthly: Record<number, number[]> }
   >;
-  const fertData: FertData = {};
-  for (const s of summaries) {
-    if (!selectedYears.includes(s.year)) continue;
-    for (const af of s.appliedFertilizers) {
-      if (af.totalAmount === 0) continue;
-      if (!fertData[af.fertilizerName]) {
-        fertData[af.fertilizerName] = { unit: af.unit, monthly: {} };
+  const fertData = useMemo(() => {
+    const result: FertData = {};
+    for (const s of summaries) {
+      if (!selectedYears.includes(s.year)) continue;
+      for (const af of s.appliedFertilizers) {
+        if (af.totalAmount === 0) continue;
+        if (!result[af.fertilizerName]) {
+          result[af.fertilizerName] = { unit: af.unit, monthly: {} };
+        }
+        const entry = result[af.fertilizerName];
+        if (!entry.monthly[s.year]) {
+          entry.monthly[s.year] = new Array(12).fill(0);
+        }
+        entry.monthly[s.year][s.month] += af.totalAmount;
       }
-      const entry = fertData[af.fertilizerName];
-      if (!entry.monthly[s.year]) {
-        entry.monthly[s.year] = new Array(12).fill(0);
-      }
-      entry.monthly[s.year][s.month] += af.totalAmount;
     }
-  }
+    return result;
+  }, [summaries, selectedYears]);
 
   return (
     <View style={{ gap: theme.spacing.m }}>

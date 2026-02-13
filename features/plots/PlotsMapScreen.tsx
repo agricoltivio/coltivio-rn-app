@@ -8,7 +8,12 @@ import { MultiPolygon } from "@/components/map/MultiPolygon";
 import { HomeMarker } from "@/features/map/layers/HomeMarker";
 import { PlotsMapScreenProps } from "./navigation/plots-routes";
 import { hexToRgba } from "@/theme/theme";
-import { H3, Subtitle } from "@/theme/Typography";
+import { Body, H3, Label, Subtitle } from "@/theme/Typography";
+import { Card } from "@/components/card/Card";
+import { ListItem } from "@/components/list/ListItem";
+import { formatLocalizedDate } from "@/utils/date";
+import { locale } from "@/locales/i18n";
+import { UsageCode } from "./usage-codes";
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
@@ -20,7 +25,14 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { StyleSheet, View } from "react-native";
+import {
+  InteractionManager,
+  Modal,
+  Pressable,
+  StyleSheet,
+  View,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../farms/farms.hooks";
 import { MapShowLocationToggle } from "../map/MapShowLocationToggle";
@@ -38,17 +50,19 @@ export function PlotsMapScreen({ navigation }: PlotsMapScreenProps) {
   const [mapVisible, setMapVisible] = useState(false);
   const [showsUserLocation, setShowsUserLocation] = useState<boolean>(false);
   const [selectedPlotId, setSelectedPlotId] = useState<string | null>(null);
+  const [sheetIndex, setSheetIndex] = useState(0);
+  const [areaModalVisible, setAreaModalVisible] = useState(false);
+  const snapPoints = useMemo(() => [200, "85%"], []);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener("transitionEnd", () => {
+    const task = InteractionManager.runAfterInteractions(() => {
       setMapVisible(true);
       // Show onboarding on first visit
       if (!localSettings.plotsMapOnboardingCompleted) {
         navigation.navigate("MapDrawOnboarding", { variant: "plotsMap" });
       }
     });
-
-    return unsubscribe;
+    return () => task.cancel();
   }, [navigation, localSettings.plotsMapOnboardingCompleted]);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -59,6 +73,10 @@ export function PlotsMapScreen({ navigation }: PlotsMapScreenProps) {
 
   const handleDismissBottomDrawer = useCallback(() => {
     bottomSheetModalRef.current?.dismiss();
+  }, []);
+
+  const handleSheetChange = useCallback((index: number) => {
+    if (index >= 0) setSheetIndex(index);
   }, []);
 
   navigation.addListener("focus", () => {
@@ -74,6 +92,7 @@ export function PlotsMapScreen({ navigation }: PlotsMapScreenProps) {
     } else {
       setSelectedPlotId(plot.id);
       handleExpandBottomDrawer();
+      bottomSheetModalRef.current?.snapToIndex(0);
     }
   }
 
@@ -139,40 +158,292 @@ export function PlotsMapScreen({ navigation }: PlotsMapScreenProps) {
           onClose={() => setSelectedPlotId(null)}
           ref={bottomSheetModalRef}
           backdropDisappearsOnIndex={0}
+          snapPoints={snapPoints}
+          onChange={handleSheetChange}
         >
-          <View style={{ flexDirection: "row" }}>
-            <View
-              style={{
-                flexGrow: 1,
+          {/* Header with expand toggle */}
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{ flex: 1 }}>
+              <H3>{t("plots.plot_name", { name: selectedPlot?.name })}</H3>
+            </View>
+            <Pressable
+              onPress={() => {
+                bottomSheetModalRef.current?.snapToIndex(
+                  sheetIndex === 1 ? 0 : 1,
+                );
               }}
             >
-              <H3>{t("plots.plot_name", { name: selectedPlot?.name })}</H3>
-              <Subtitle>
-                {t("plots.map.selected_plot.size", {
-                  size: Number(selectedPlot?.size) / 100,
-                })}
-              </Subtitle>
-              {selectedPlot?.currentCropRotation ? (
-                <Subtitle>
-                  {selectedPlot.currentCropRotation.crop.name}
-                </Subtitle>
-              ) : null}
-            </View>
-            <View>
-              <Button
-                title="Details"
-                fontSize={16}
-                type="accent"
-                onPress={() => {
-                  navigation.navigate("PlotDetails", {
-                    plotId: selectedPlot!.id,
-                  });
-                }}
+              <Ionicons
+                name={sheetIndex === 1 ? "chevron-down" : "chevron-up"}
+                size={24}
+                color={theme.colors.gray2}
               />
-            </View>
+            </Pressable>
           </View>
+
+          {/* Detail content */}
+          {selectedPlot && (
+            <>
+              <Card style={{ marginTop: theme.spacing.m }}>
+                {/* Area row with inline edit icon */}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginBottom: theme.spacing.s,
+                    gap: theme.spacing.m,
+                  }}
+                >
+                  <Label style={{ flex: 1 }}>{t("forms.labels.area")}</Label>
+                  <Label style={{ fontSize: 18 }}>
+                    {`${(selectedPlot.size ?? 0) / 100}a`}
+                  </Label>
+                  <Pressable
+                    onPress={() => setAreaModalVisible(true)}
+                    // style={{ padding: theme.spacing.xs }}
+                  >
+                    <Ionicons
+                      name="create-outline"
+                      size={20}
+                      // color={theme.colors.gray2}
+                    />
+                  </Pressable>
+                </View>
+                {selectedPlot.currentCropRotation ? (
+                  <SummaryItem
+                    label={t("crops.crop")}
+                    value={selectedPlot.currentCropRotation.crop.name}
+                  />
+                ) : null}
+                <SummaryItem
+                  label={t("forms.labels.local_id")}
+                  value={selectedPlot.localId ?? t("common.unknown")}
+                />
+                {selectedPlot.cuttingDate ? (
+                  <SummaryItem
+                    label={t("forms.labels.cutting_date")}
+                    value={formatLocalizedDate(
+                      new Date(selectedPlot.cuttingDate),
+                      locale,
+                      "long",
+                      false,
+                    )}
+                  />
+                ) : null}
+                {selectedPlot.additionalNotes ? (
+                  <>
+                    <Label style={{ marginTop: theme.spacing.m }}>
+                      {t("forms.labels.additional_notes")}
+                    </Label>
+                    <Body>{selectedPlot.additionalNotes}</Body>
+                  </>
+                ) : null}
+              </Card>
+
+              <View
+                style={{
+                  marginTop: theme.spacing.m,
+                  borderRadius: 10,
+                  overflow: "hidden",
+                  backgroundColor: theme.colors.white,
+                }}
+              >
+                <ListItem
+                  style={{ backgroundColor: theme.colors.white }}
+                  onPress={() =>
+                    navigation.navigate("PlanCropRotations", {
+                      plotIds: [selectedPlot.id],
+                      previousScreen: "PlotDetails",
+                    })
+                  }
+                >
+                  <ListItem.Content>
+                    <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
+                      {t("crop_rotations.crop_rotation")}
+                    </ListItem.Title>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+                <ListItem
+                  style={{ backgroundColor: theme.colors.white }}
+                  onPress={() =>
+                    navigation.navigate("PlotHarvests", {
+                      plotId: selectedPlot.id,
+                      name: selectedPlot.name,
+                    })
+                  }
+                >
+                  <ListItem.Content>
+                    <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
+                      {t("harvests.harvest")}
+                    </ListItem.Title>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+                <ListItem
+                  style={{ backgroundColor: theme.colors.white }}
+                  onPress={() =>
+                    navigation.navigate("PlotFertilizerApplications", {
+                      plotId: selectedPlot.id,
+                      name: selectedPlot.name,
+                    })
+                  }
+                >
+                  <ListItem.Content>
+                    <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
+                      {t("fertilizer_application.fertilizer_application")}
+                    </ListItem.Title>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+                <ListItem
+                  style={{ backgroundColor: theme.colors.white }}
+                  onPress={() =>
+                    navigation.navigate("PlotTillages", {
+                      plotId: selectedPlot.id,
+                      name: selectedPlot.name,
+                    })
+                  }
+                >
+                  <ListItem.Content>
+                    <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
+                      {t("tillages.tillage")}
+                    </ListItem.Title>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+                <ListItem
+                  style={{ backgroundColor: theme.colors.white }}
+                  onPress={() =>
+                    navigation.navigate("PlotCropProtectionApplications", {
+                      plotId: selectedPlot.id,
+                      name: selectedPlot.name,
+                    })
+                  }
+                  hideBottomDivider
+                >
+                  <ListItem.Content>
+                    <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
+                      {t("crop_protection_applications.crop_protection")}
+                    </ListItem.Title>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+              </View>
+
+              <Button
+                style={{ marginTop: theme.spacing.m }}
+                type="accent"
+                title={t("buttons.edit")}
+                onPress={() =>
+                  navigation.navigate("EditPlot", {
+                    plotId: selectedPlot.id,
+                  })
+                }
+              />
+            </>
+          )}
         </BottomDrawerModal>
       </BottomSheetModalProvider>
+
+      {/* Area edit actions modal */}
+      <Modal
+        visible={areaModalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setAreaModalVisible(false)}
+      >
+        <Pressable
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(0,0,0,0.5)",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onPress={() => setAreaModalVisible(false)}
+        >
+          <View
+            style={{
+              backgroundColor: theme.colors.white,
+              borderRadius: 12,
+              width: "80%",
+              overflow: "hidden",
+            }}
+          >
+            {selectedPlot && (
+              <>
+                <Pressable
+                  style={{
+                    padding: theme.spacing.m,
+                    borderBottomWidth: StyleSheet.hairlineWidth,
+                  }}
+                  onPress={() => {
+                    setAreaModalVisible(false);
+                    navigation.navigate("EditPlotMap", {
+                      plotId: selectedPlot.id,
+                    });
+                  }}
+                >
+                  <Label style={{ fontSize: 16, textAlign: "center" }}>
+                    {t("plots.actions.adjust_area")}
+                  </Label>
+                </Pressable>
+                <Pressable
+                  style={{
+                    padding: theme.spacing.m,
+                    borderBottomWidth: StyleSheet.hairlineWidth,
+                  }}
+                  onPress={() => {
+                    setAreaModalVisible(false);
+                    navigation.navigate("SplitPlotMap", {
+                      plotId: selectedPlot.id,
+                    });
+                  }}
+                >
+                  <Label style={{ fontSize: 16, textAlign: "center" }}>
+                    {t("plots.actions.split")}
+                  </Label>
+                </Pressable>
+                <Pressable
+                  style={{ padding: theme.spacing.m }}
+                  onPress={() => {
+                    setAreaModalVisible(false);
+                    navigation.navigate("MergePlotsMap", {
+                      plotId: selectedPlot.id,
+                    });
+                  }}
+                >
+                  <Label style={{ fontSize: 16, textAlign: "center" }}>
+                    {t("plots.actions.merge")}
+                  </Label>
+                </Pressable>
+              </>
+            )}
+          </View>
+        </Pressable>
+      </Modal>
     </ContentView>
+  );
+}
+
+function SummaryItem({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | number;
+}) {
+  const theme = useTheme();
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        marginBottom: theme.spacing.s,
+        gap: theme.spacing.m,
+      }}
+    >
+      <Label style={{ flex: 1 }}>{label}</Label>
+      <Label style={{ fontSize: 18 }}>{value}</Label>
+    </View>
   );
 }

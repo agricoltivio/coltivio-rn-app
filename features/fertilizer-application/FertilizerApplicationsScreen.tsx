@@ -9,9 +9,9 @@ import { H2, H3, Headline, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
 import { round } from "@/utils/math";
 import Fuse from "fuse.js";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, SectionList, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, InteractionManager, SectionList, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { FertilizerApplicationDashboard } from "./components/FertilizerApplicationDashboard";
 import {
@@ -31,12 +31,20 @@ export function FertilizerApplicationsScreen({
 
   const [viewMode, setViewMode] = useState<ViewMode>("dashboard");
   const [searchText, setSearchText] = useState("");
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const task = InteractionManager.runAfterInteractions(() => {
+      setReady(true);
+    });
+    return () => task.cancel();
+  }, []);
 
   const { fertilizerApplicationYears } =
     useFertilizerApplicationYearsQuery();
   const { applicationSummaries, isLoading: summariesLoading } =
     useFertilizerApplicationSummaryOfFarmQuery();
-  const { fertilizerApplications, isLoading: applicationsLoading } = useFertilizerApplicationsQuery();
+  const { fertilizerApplications, isLoading: applicationsLoading } = useFertilizerApplicationsQuery(undefined, undefined, viewMode === "list");
 
   const availableYears = useMemo(
     () =>
@@ -99,7 +107,7 @@ export function FertilizerApplicationsScreen({
             "fertilizer_application.fertilizer_application",
           )}
         >
-          {summariesLoading ? (
+          {!ready || summariesLoading ? (
             <ActivityIndicator style={{ marginTop: 40 }} size="large" />
           ) : !applicationSummaries || applicationSummaries.length === 0 ? (
             <Headline>{t("common.no_entries")}</Headline>

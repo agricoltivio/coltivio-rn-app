@@ -1,7 +1,7 @@
 import { Card } from "@/components/card/Card";
 import { locale } from "@/locales/i18n";
 import { Subtitle } from "@/theme/Typography";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import {
@@ -309,7 +309,7 @@ export function HarvestDashboard({
   const [selectedYears, setSelectedYears] = useState<number[]>(defaultYears);
   const [selectedCrops, setSelectedCrops] = useState<string[]>([]);
 
-  function toggleYear(year: number) {
+  const toggleYear = useCallback((year: number) => {
     setSelectedYears((prev) => {
       if (prev.includes(year)) {
         if (prev.length === 1) return prev;
@@ -317,24 +317,27 @@ export function HarvestDashboard({
       }
       return [...prev, year].sort((a, b) => a - b);
     });
-  }
+  }, []);
 
-  function toggleCrop(crop: string) {
+  const toggleCrop = useCallback((crop: string) => {
     setSelectedCrops((prev) =>
       prev.includes(crop) ? prev.filter((c) => c !== crop) : [...prev, crop],
     );
-  }
+  }, []);
 
   // Discover all crops
-  const allCrops = [
-    ...new Set(
-      harvestSummaries.flatMap((s) =>
-        s.producedQuantities
-          .filter((pq) => pq.totalAmountInKilos > 0)
-          .map((pq) => pq.forageName),
+  const allCrops = useMemo(
+    () => [
+      ...new Set(
+        harvestSummaries.flatMap((s) =>
+          s.producedQuantities
+            .filter((pq) => pq.totalAmountInKilos > 0)
+            .map((pq) => pq.forageName),
+        ),
       ),
-    ),
-  ];
+    ],
+    [harvestSummaries],
+  );
   const visibleCrops = selectedCrops.length === 0 ? allCrops : selectedCrops;
 
   // Build data: crop → conservationMethod → { total per year, monthly per year }
@@ -342,26 +345,29 @@ export function HarvestDashboard({
     string,
     Record<string, { total: Record<number, number>; monthly: Record<number, number[]> }>
   >;
-  const cropData: CropData = {};
-  for (const s of harvestSummaries) {
-    if (!selectedYears.includes(s.year)) continue;
-    for (const pq of s.producedQuantities) {
-      if (pq.totalAmountInKilos === 0) continue;
-      const cm = pq.conservationMethod ?? "none";
-      if (!cropData[pq.forageName]) cropData[pq.forageName] = {};
-      if (!cropData[pq.forageName][cm]) {
-        cropData[pq.forageName][cm] = { total: {}, monthly: {} };
+  const cropData = useMemo(() => {
+    const result: CropData = {};
+    for (const s of harvestSummaries) {
+      if (!selectedYears.includes(s.year)) continue;
+      for (const pq of s.producedQuantities) {
+        if (pq.totalAmountInKilos === 0) continue;
+        const cm = pq.conservationMethod ?? "none";
+        if (!result[pq.forageName]) result[pq.forageName] = {};
+        if (!result[pq.forageName][cm]) {
+          result[pq.forageName][cm] = { total: {}, monthly: {} };
+        }
+        const entry = result[pq.forageName][cm];
+        if (!entry.monthly[s.year]) {
+          entry.monthly[s.year] = new Array(12).fill(0);
+          entry.total[s.year] = 0;
+        }
+        const valueInDt = pq.totalAmountInKilos / 100;
+        entry.monthly[s.year][s.month] += valueInDt;
+        entry.total[s.year] += valueInDt;
       }
-      const entry = cropData[pq.forageName][cm];
-      if (!entry.monthly[s.year]) {
-        entry.monthly[s.year] = new Array(12).fill(0);
-        entry.total[s.year] = 0;
-      }
-      const valueInDt = pq.totalAmountInKilos / 100;
-      entry.monthly[s.year][s.month] += valueInDt;
-      entry.total[s.year] += valueInDt;
     }
-  }
+    return result;
+  }, [harvestSummaries, selectedYears]);
 
   return (
     <View style={{ gap: theme.spacing.m }}>

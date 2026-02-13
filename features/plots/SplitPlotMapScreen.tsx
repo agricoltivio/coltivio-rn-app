@@ -23,7 +23,7 @@ import { Portal, PortalHost } from "@gorhom/portal";
 import * as turf from "@turf/turf";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, StyleSheet } from "react-native";
+import { Alert, InteractionManager, StyleSheet } from "react-native";
 import { LatLng, MapPressEvent, Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
 import { MapShowLocationToggle } from "../map/MapShowLocationToggle";
@@ -56,10 +56,10 @@ export function SplitPlotMapScreen({
   const polygonRef = useRef<PolygonDrawingToolActions>(null);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener("transitionEnd", () => {
+    const task = InteractionManager.runAfterInteractions(() => {
       setMapVisible(true);
     });
-    return unsubscribe;
+    return () => task.cancel();
   }, [navigation]);
 
   useEffect(() => {
@@ -164,11 +164,13 @@ export function SplitPlotMapScreen({
     <ContentView
       headerVisible={false}
       footerComponent={
-        hasMultiplePolygons ? (
-          <BottomActionContainer floating>
-            <Button title={t("buttons.finish")} onPress={handleDone} />
-          </BottomActionContainer>
-        ) : undefined
+        <BottomActionContainer floating>
+          <Button
+            title={t("buttons.next")}
+            onPress={handleDone}
+            disabled={!hasMultiplePolygons}
+          />
+        </BottomActionContainer>
       }
     >
       <MapView
