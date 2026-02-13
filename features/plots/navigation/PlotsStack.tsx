@@ -4,6 +4,8 @@ import { AddPlotSummaryScreen } from "../AddPlotSummaryScreen";
 import { DeletePlotScreen } from "../DeletePlotScreen";
 import { EditPlotMapScreen } from "../EditPlotMapScreen";
 import { EditPlotScreen } from "../EditPlotScreen";
+import { MergePlotsMapScreen } from "../MergePlotsMapScreen";
+import { MergePlotSummaryScreen } from "../MergePlotSummaryScreen";
 import { PlotDetailsScreen } from "../PlotDetailsScreen";
 import { PlotsMapScreen } from "../PlotsMapScreen";
 import { PlotsScreen } from "../PlotsScreen";
@@ -11,6 +13,8 @@ import { PlotTillagesScreen } from "../PlotTillagesScreen";
 import { PlotCropProtectionApplicationsScreen } from "../PlotCropProtectionApllicationsScreen";
 import { PlotFertilizerApplicationsScreen } from "../PlotFertilizerApllicationsScreen";
 import { PlotHarvestsScreen } from "../PlotHarvestsScreen";
+import { SplitPlotMapScreen } from "../SplitPlotMapScreen";
+import { SplitPlotSummaryScreen } from "../SplitPlotSummaryScreen";
 
 export function renderPlotsStack() {
   return [
@@ -106,6 +110,30 @@ export function renderPlotsStack() {
         title: "",
       }}
       component={PlotTillagesScreen}
+    />,
+    <Stack.Screen
+      key="split-plot-map"
+      name="SplitPlotMap"
+      component={SplitPlotMapScreen}
+      options={{ headerShown: false }}
+    />,
+    <Stack.Screen
+      key="split-plot-summary"
+      name="SplitPlotSummary"
+      component={SplitPlotSummaryScreen}
+      options={{ title: "" }}
+    />,
+    <Stack.Screen
+      key="merge-plots-map"
+      name="MergePlotsMap"
+      component={MergePlotsMapScreen}
+      options={{ headerShown: false }}
+    />,
+    <Stack.Screen
+      key="merge-plot-summary"
+      name="MergePlotSummary"
+      component={MergePlotSummaryScreen}
+      options={{ title: "" }}
     />,
   ];
 }

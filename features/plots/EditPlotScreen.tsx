@@ -15,7 +15,7 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { Button } from "@/components/buttons/Button";
-import { useMemo } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import MapView, { PROVIDER_GOOGLE, Region } from "react-native-maps";
 import { MultiPolygon } from "@/components/map/MultiPolygon";
 import { hexToRgba } from "@/theme/theme";
@@ -25,6 +25,12 @@ import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { RHSelect } from "@/components/select/RHSelect";
 import { getUsageCodeSelectData } from "./usage-codes";
 import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
+import { BottomDrawerModal } from "@/components/bottom-drawer/BottomDrawerModal";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
+import { Portal } from "@gorhom/portal";
 
 type EditPlotFormValues = {
   name: string;
@@ -41,6 +47,16 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
   const theme = useTheme();
   const { plots } = useFarmPlotsQuery();
   const { plot } = usePlotByIdQuery(plotId);
+
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  const handleOpenActionSheet = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
+  const handleDismissActionSheet = useCallback(() => {
+    bottomSheetModalRef.current?.dismiss();
+  }, []);
 
   const updatePlotMutation = useUpdatePlotMutation(
     () => navigation.goBack(),
@@ -195,7 +211,7 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
           style={{ marginTop: theme.spacing.m }}
           type="accent"
           title={t("buttons.edit_area")}
-          onPress={() => navigation.navigate("EditPlotMap", { plotId })}
+          onPress={handleOpenActionSheet}
         />
         <View
           style={{ gap: theme.spacing.xs, flex: 1, marginTop: theme.spacing.m }}
@@ -249,6 +265,38 @@ export function EditPlotScreen({ route, navigation }: EditPlotScreenProps) {
           />
         </View>
       </ScrollView>
+      <Portal>
+        <BottomSheetModalProvider>
+          <BottomDrawerModal ref={bottomSheetModalRef}>
+            <View style={{ gap: theme.spacing.s }}>
+              <Button
+                type="accent"
+                title={t("plots.actions.adjust_area")}
+                onPress={() => {
+                  handleDismissActionSheet();
+                  navigation.navigate("EditPlotMap", { plotId });
+                }}
+              />
+              <Button
+                type="accent"
+                title={t("plots.actions.split")}
+                onPress={() => {
+                  handleDismissActionSheet();
+                  navigation.navigate("SplitPlotMap", { plotId });
+                }}
+              />
+              <Button
+                type="accent"
+                title={t("plots.actions.merge")}
+                onPress={() => {
+                  handleDismissActionSheet();
+                  navigation.navigate("MergePlotsMap", { plotId });
+                }}
+              />
+            </View>
+          </BottomDrawerModal>
+        </BottomSheetModalProvider>
+      </Portal>
     </ContentView>
   );
 }

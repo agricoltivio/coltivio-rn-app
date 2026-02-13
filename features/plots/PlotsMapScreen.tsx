@@ -13,7 +13,13 @@ import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { StyleSheet, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../farms/farms.hooks";
@@ -141,16 +147,14 @@ export function PlotsMapScreen({ navigation }: PlotsMapScreenProps) {
               }}
             >
               <H3>{t("plots.plot_name", { name: selectedPlot?.name })}</H3>
-              <Subtitle style={{ marginTop: theme.spacing.s }}>
+              <Subtitle>
                 {t("plots.map.selected_plot.size", {
                   size: Number(selectedPlot?.size) / 100,
                 })}
               </Subtitle>
               {selectedPlot?.currentCropRotation ? (
                 <Subtitle>
-                  {t("plots.map.selected_plot.crop", {
-                    crop: selectedPlot?.currentCropRotation.crop.name,
-                  })}
+                  {selectedPlot.currentCropRotation.crop.name}
                 </Subtitle>
               ) : null}
             </View>

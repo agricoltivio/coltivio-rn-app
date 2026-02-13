@@ -8,25 +8,31 @@ export type LabelMarkerProps = {
   longitude: number;
   latitude: number;
   text: string;
+  hidden?: boolean;
 };
 
-export function LabelMarker({ latitude, longitude, text }: LabelMarkerProps) {
+export function LabelMarker({
+  latitude,
+  longitude,
+  text,
+  hidden,
+}: LabelMarkerProps) {
   const theme = useTheme();
-  // if (Platform.OS === "android") {
-  //   return null;
-  // }
   return (
     <Marker
       coordinate={{
         longitude,
         latitude,
       }}
-      tracksViewChanges
+      tracksViewChanges={true}
       zIndex={100}
+      tappable={false}
     >
       <Card
         style={{
           padding: theme.spacing.xxs,
+          // display: hidden ? "none" : "flex",
+          opacity: hidden ? 0 : 1,
         }}
       >
         <Subtitle style={{ fontSize: 13 }}>{text}</Subtitle>

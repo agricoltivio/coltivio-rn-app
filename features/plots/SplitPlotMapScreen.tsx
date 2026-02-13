@@ -1,32 +1,38 @@
 import { Button } from "@/components/buttons/Button";
-import { Card } from "@/components/card/Card";
+import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { MapView } from "@/components/map/Map";
 import { MultiPolygon } from "@/components/map/MultiPolygon";
 import {
-  DrawAction,
   PolygonDrawingTool,
   PolygonDrawingToolActions,
 } from "@/components/map/PolygonDrawingTool";
-import { hexToRgba } from "@/theme/theme";
-import { Title } from "@/theme/Typography";
+import {
+  PolylineDrawingTool,
+  PolylineDrawingToolActions,
+} from "@/components/map/PolylineDrawingTool";
+import { MapControls } from "@/features/map/overlays/MapControls";
+import { hexToRgba, indexToDistinctColor } from "@/theme/theme";
+import {
+  cutPolygonFromMultiPolygon,
+  splitMultiPolygonByLine,
+} from "@/utils/geo-spatials";
 import { round } from "@/utils/math";
-import { PortalHost } from "@gorhom/portal";
+import { Portal, PortalHost } from "@gorhom/portal";
 import * as turf from "@turf/turf";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import { LatLng, MapPressEvent, Region } from "react-native-maps";
-import { useSafeAreaFrame } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
-import { TopLeftBackButton } from "../map/TopLeftBackButton";
 import { MapShowLocationToggle } from "../map/MapShowLocationToggle";
+import { TopLeftBackButton } from "../map/TopLeftBackButton";
 import { SplitPlotMapScreenProps } from "./navigation/plots-routes";
 import { useFarmPlotsQuery } from "./plots.hooks";
 import { SubPlotData, useSplitPlotStore } from "./split-plot.store";
 
-type SplitMode = "line" | "polygon" | "none";
+type ActiveToolMode = "polyline" | "polygon" | "none";
 
 export function SplitPlotMapScreen({
   navigation,
@@ -34,18 +40,20 @@ export function SplitPlotMapScreen({
 }: SplitPlotMapScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const frame = useSafeAreaFrame();
   const { plotId } = route.params;
   const { plots } = useFarmPlotsQuery();
   const splitPlotStore = useSplitPlotStore();
 
   const [mapVisible, setMapVisible] = useState(false);
   const [showsUserLocation, setShowsUserLocation] = useState(false);
-  const [splitMode, setSplitMode] = useState<SplitMode>("none");
-  const [drawingAction, setDrawingAction] = useState<DrawAction>("select");
-  const [subPlots, setSubPlots] = useState<SubPlotData[] | null>(null);
+  const [activeToolMode, setActiveToolMode] = useState<ActiveToolMode>("none");
+  // Iterative cut state: starts with [plot.geometry], grows after each cut
+  const [currentPolygons, setCurrentPolygons] = useState<
+    GeoJSON.MultiPolygon[]
+  >([]);
 
-  const polygonDrawingToolRef = useRef<PolygonDrawingToolActions>(null);
+  const polylineRef = useRef<PolylineDrawingToolActions>(null);
+  const polygonRef = useRef<PolygonDrawingToolActions>(null);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("transitionEnd", () => {
@@ -59,6 +67,13 @@ export function SplitPlotMapScreen({
   }, []);
 
   const plot = plots?.find((p) => p.id === plotId);
+
+  // Initialize currentPolygons with the plot geometry once available
+  useEffect(() => {
+    if (plot && currentPolygons.length === 0) {
+      setCurrentPolygons([plot.geometry]);
+    }
+  }, [plot]);
 
   if (!plot || !plots) {
     return null;
@@ -74,112 +89,86 @@ export function SplitPlotMapScreen({
   };
 
   const handleMapPress = (event: MapPressEvent) => {
-    if (drawingAction === "draw") {
+    if (activeToolMode === "polyline") {
       event.stopPropagation();
-      polygonDrawingToolRef.current?.drawToPoint(event.nativeEvent.coordinate);
+      polylineRef.current?.drawToPoint(event.nativeEvent.coordinate);
+    } else if (activeToolMode === "polygon") {
+      event.stopPropagation();
+      polygonRef.current?.drawToPoint(event.nativeEvent.coordinate);
     }
   };
 
-  function handleModeSelect(mode: "line" | "polygon") {
-    setSplitMode(mode);
-    setDrawingAction("draw");
-    setSubPlots(null);
-  }
-
-  // Compute sub-plots from the drawn coordinates depending on the split mode
-  function onFinishDrawing(coordinates: LatLng[]) {
-    const plotFeature = turf.multiPolygon(plot!.geometry.coordinates);
-
-    if (splitMode === "line") {
-      // Interpret drawn coordinates as a line, buffer it, then subtract from plot
-      const lineCoords = coordinates.map((c) => [c.longitude, c.latitude]);
-      const line = turf.lineString(lineCoords);
-      const buffered = turf.buffer(line, 0.5, { units: "meters" });
-      if (!buffered) {
-        Alert.alert(t("plots.split.split_failed"));
-        return;
-      }
-      const result = turf.difference(
-        turf.featureCollection([plotFeature, buffered])
-      );
-      if (!result) {
-        Alert.alert(t("plots.split.split_failed"));
-        return;
-      }
-      const extracted = extractSubPlots(result.geometry);
-      if (extracted.length < 2) {
-        Alert.alert(t("plots.split.split_failed"));
-        return;
-      }
-      setSubPlots(extracted);
-    } else {
-      // Polygon carve-out: intersect and difference
-      const drawnPolygon = turf.polygon([
-        [
-          ...coordinates.map((c) => [c.longitude, c.latitude]),
-          [coordinates[0].longitude, coordinates[0].latitude],
-        ],
-      ]);
-      const intersection = turf.intersect(
-        turf.featureCollection([plotFeature, drawnPolygon])
-      );
-      const remainder = turf.difference(
-        turf.featureCollection([plotFeature, drawnPolygon])
-      );
-      if (!intersection || !remainder) {
-        Alert.alert(t("plots.split.split_failed"));
-        return;
-      }
-      const subPlotA = toMultiPolygon(intersection.geometry);
-      const subPlotB = toMultiPolygon(remainder.geometry);
-      setSubPlots([
-        { geometry: subPlotA, size: round(turf.area(subPlotA), 0) },
-        { geometry: subPlotB, size: round(turf.area(subPlotB), 0) },
-      ]);
+  function handlePolylineCut() {
+    const coords = polylineRef.current?.getCoordinates();
+    if (!coords || coords.length < 2) {
+      Alert.alert(t("plots.split.split_failed"));
+      return;
     }
+    const newPolygons: GeoJSON.MultiPolygon[] = [];
+    for (const polygon of currentPolygons) {
+      const result = splitMultiPolygonByLine(polygon, {
+        type: "LineString",
+        coordinates: coords.map(({ longitude, latitude }) => [
+          longitude,
+          latitude,
+        ]),
+      });
+      if (result) {
+        newPolygons.push(...result);
+      } else {
+        newPolygons.push(polygon);
+      }
+    }
+    setCurrentPolygons(newPolygons);
+
+    polylineRef.current?.reset();
+    setActiveToolMode("none");
   }
 
-  function handleNext() {
-    if (!subPlots) return;
+  function handlePolygonCut(drawnCoordinates: LatLng[]) {
+    if (!drawnCoordinates?.length || drawnCoordinates.length < 4) {
+      Alert.alert(t("plots.split.split_failed"));
+      return;
+    }
+
+    const newPolygons: GeoJSON.MultiPolygon[] = [];
+    for (const currentPolygon of currentPolygons) {
+      const result = cutPolygonFromMultiPolygon(
+        currentPolygon,
+        drawnCoordinates,
+      );
+      if (result) {
+        newPolygons.push(result.remaining, result.plots);
+      } else {
+        newPolygons.push(currentPolygon);
+      }
+    }
+    setCurrentPolygons(newPolygons);
+
+    setActiveToolMode("none");
+  }
+
+  function handleDone() {
+    if (currentPolygons.length < 2) return;
+    const subPlots: SubPlotData[] = currentPolygons.map((geom) => ({
+      geometry: geom,
+      size: round(turf.area(geom), 0),
+    }));
     splitPlotStore.setData(subPlots, plot!.name);
     navigation.navigate("SplitPlotSummary", { plotId });
   }
 
-  // Background plot polygons (all plots except current)
-  const otherPlotPolygons = plots
-    .filter((p) => p.id !== plotId)
-    .map((p) => (
-      <MultiPolygon
-        key={p.id}
-        polygon={p.geometry}
-        strokeWidth={theme.map.defaultStrokeWidth}
-        strokeColor="white"
-        fillColor={hexToRgba(
-          theme.map.defaultFillColor,
-          theme.map.defaultFillAlpha
-        )}
-      />
-    ));
-
-  // Sub-plot preview colors
-  const subPlotColors = [
-    theme.colors.success,
-    theme.colors.accent,
-    theme.colors.secondary,
-    theme.colors.danger,
-  ];
+  const hasMultiplePolygons = currentPolygons.length >= 2;
 
   return (
     <ContentView
       headerVisible={false}
       footerComponent={
-        <BottomActionContainer floating>
-          <Button
-            title={t("buttons.next")}
-            onPress={handleNext}
-            disabled={!subPlots || subPlots.length < 2}
-          />
-        </BottomActionContainer>
+        hasMultiplePolygons ? (
+          <BottomActionContainer floating>
+            <Button title={t("buttons.finish")} onPress={handleDone} />
+          </BottomActionContainer>
+        ) : undefined
       }
     >
       <MapView
@@ -189,106 +178,106 @@ export function SplitPlotMapScreen({
         initialRegion={initialRegion}
         showsUserLocation={showsUserLocation}
       >
-        {otherPlotPolygons}
-        {/* Target plot */}
-        <MultiPolygon
-          polygon={plot.geometry}
-          strokeWidth={theme.map.defaultStrokeWidth}
-          strokeColor="white"
-          fillColor={hexToRgba(
-            theme.map.defaultFillColor,
-            theme.map.defaultFillAlpha
-          )}
-        />
-        {/* Sub-plot preview */}
-        {subPlots?.map((sp, i) => (
+        {/* Show current polygon pieces */}
+        {currentPolygons.map((geom, i) => (
           <MultiPolygon
-            key={`sub-${i}`}
-            polygon={sp.geometry}
-            strokeWidth={2}
+            key={`poly-${i}`}
+            polygon={geom}
+            strokeWidth={theme.map.defaultStrokeWidth}
             strokeColor="white"
             fillColor={hexToRgba(
-              subPlotColors[i % subPlotColors.length],
-              0.6
+              hasMultiplePolygons
+                ? indexToDistinctColor(i)
+                : theme.map.defaultFillColor,
+              hasMultiplePolygons ? 0.6 : theme.map.defaultFillAlpha,
             )}
           />
         ))}
-        {splitMode !== "none" && (
+        {/* Polyline drawing tool */}
+        {activeToolMode === "polyline" && (
+          <PolylineDrawingTool ref={polylineRef} />
+        )}
+        {/* Polygon drawing tool */}
+        {activeToolMode === "polygon" && (
           <PolygonDrawingTool
+            ref={polygonRef}
             initialAction="draw"
             portalName="SplitPlotMap"
-            ref={polygonDrawingToolRef}
-            onDrawActionChange={setDrawingAction}
-            magnifierMapContent={otherPlotPolygons}
-            onFinish={onFinishDrawing}
+            onFinish={handlePolygonCut}
+            finishIcon="content-cut"
+            onDrawActionChange={(action) => {
+              if (action !== "draw") {
+                setActiveToolMode("none");
+              }
+            }}
           />
         )}
       </MapView>
       <TopLeftBackButton />
       <MapShowLocationToggle onShowLocationChange={setShowsUserLocation} />
       <PortalHost name="SplitPlotMap" />
-      {/* Mode select card */}
-      {splitMode === "none" && (
-        <Card
-          style={{
-            position: "absolute",
-            top: frame.height / 2 - 100,
-            left: theme.spacing.m,
-            right: theme.spacing.m,
-          }}
-        >
-          <Title>{t("plots.split.mode_select_message")}</Title>
-          <View
-            style={{
-              marginTop: theme.spacing.m,
-              flexDirection: "row",
-              gap: theme.spacing.m,
-              justifyContent: "center",
-            }}
-          >
-            <Button
+      {/* Custom toolbar */}
+      <Portal hostName="SplitPlotMap">
+        {activeToolMode !== "polygon" && (
+          <MapControls>
+            {/* Polyline mode toggle */}
+            <MaterialCommunityIconButton
+              style={{
+                backgroundColor:
+                  activeToolMode === "polyline"
+                    ? theme.colors.primary
+                    : theme.colors.accent,
+              }}
               type="accent"
-              fontSize={17}
-              title={t("plots.split.mode_line")}
-              onPress={() => handleModeSelect("line")}
+              color={activeToolMode === "polyline" ? "white" : "black"}
+              iconSize={30}
+              icon="vector-polyline-plus"
+              onPress={() =>
+                setActiveToolMode((prev) =>
+                  prev === "polyline" ? "none" : "polyline",
+                )
+              }
             />
-            <Button
+            {/* Polygon mode toggle */}
+            {activeToolMode === "none" && (
+              <MaterialCommunityIconButton
+                style={{
+                  backgroundColor: theme.colors.accent,
+                }}
+                type="accent"
+                color={"black"}
+                iconSize={30}
+                icon="vector-polygon"
+                onPress={() =>
+                  setActiveToolMode((prev) =>
+                    prev === "polygon" ? "none" : "polygon",
+                  )
+                }
+              />
+            )}
+            {/* Undo */}
+            {/* <MaterialCommunityIconButton
               type="accent"
-              fontSize={17}
-              title={t("plots.split.mode_polygon")}
-              onPress={() => handleModeSelect("polygon")}
-            />
-          </View>
-        </Card>
-      )}
+              color="black"
+              iconSize={30}
+              icon="undo-variant"
+              disabled={activeToolMode === "none"}
+              onPress={handleUndo}
+            /> */}
+            {/* Cut / Scissor */}
+            {activeToolMode === "polyline" && (
+              <MaterialCommunityIconButton
+                type="accent"
+                color="green"
+                iconSize={30}
+                icon="content-cut"
+                disabled={activeToolMode !== "polyline"}
+                onPress={handlePolylineCut}
+              />
+            )}
+          </MapControls>
+        )}
+      </Portal>
     </ContentView>
   );
-}
-
-// Extract individual polygons from a geometry result as MultiPolygon sub-plots
-function extractSubPlots(
-  geometry: GeoJSON.Polygon | GeoJSON.MultiPolygon
-): SubPlotData[] {
-  if (geometry.type === "Polygon") {
-    const mp: GeoJSON.MultiPolygon = {
-      type: "MultiPolygon",
-      coordinates: [geometry.coordinates],
-    };
-    return [{ geometry: mp, size: round(turf.area(mp), 0) }];
-  }
-  // MultiPolygon: each set of coordinates is a separate sub-plot
-  return geometry.coordinates.map((coords) => {
-    const mp: GeoJSON.MultiPolygon = {
-      type: "MultiPolygon",
-      coordinates: [coords],
-    };
-    return { geometry: mp, size: round(turf.area(mp), 0) };
-  });
-}
-
-function toMultiPolygon(
-  geometry: GeoJSON.Polygon | GeoJSON.MultiPolygon
-): GeoJSON.MultiPolygon {
-  if (geometry.type === "MultiPolygon") return geometry;
-  return { type: "MultiPolygon", coordinates: [geometry.coordinates] };
 }

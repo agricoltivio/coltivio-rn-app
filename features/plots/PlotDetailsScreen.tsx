@@ -1,4 +1,3 @@
-import { BottomDrawerModal } from "@/components/bottom-drawer/BottomDrawerModal";
 import { Card } from "@/components/card/Card";
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
@@ -8,11 +7,9 @@ import { PlotDetailsScreenProps } from "./navigation/plots-routes";
 import { hexToRgba } from "@/theme/theme";
 import { Body, H2, H3, Label } from "@/theme/Typography";
 import * as turf from "@turf/turf";
-import { useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Region } from "react-native-maps";
-import { BottomSheetModal, BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { useTheme } from "styled-components/native";
 import { usePlotByIdQuery } from "./plots.hooks";
 import { UsageCode } from "./usage-codes";
@@ -240,10 +237,6 @@ export function PlotDetailsScreen({
           </ListItem>
         </View>
       </ScrollView>
-      {/* <FAB
-        icon={{ name: "pencil", color: theme.colors.white }}
-        onPress={() => navigation.navigate("EditPlot", { plotId })}
-      /> */}
     </ContentView>
   );
 }

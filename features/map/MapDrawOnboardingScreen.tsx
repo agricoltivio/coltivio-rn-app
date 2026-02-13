@@ -240,7 +240,7 @@ export function MapDrawOnboardingScreen() {
             <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
               {t("map_draw_onboarding.draw_heading")}
             </H1>
-            <IconBadge name="vector-polyline-plus" />
+            <IconBadge name="vector-polygon" />
             <H3
               style={{
                 color: theme.colors.primary,

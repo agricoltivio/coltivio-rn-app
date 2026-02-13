@@ -287,7 +287,7 @@
     },
     "map": {
       "selected_plot": {
-        "size": "Fläche: {{size}}a",
+        "size": "{{size}}a",
         "crop": "Kultur: {{crop}}"
       }
     },
@@ -329,6 +329,7 @@
     },
     "actions": {
       "adjust": "Anpassen",
+      "adjust_area": "Fläche anpassen",
       "split": "Aufteilen",
       "merge": "Zusammenführen"
     },

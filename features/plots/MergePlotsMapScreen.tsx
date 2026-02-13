@@ -7,7 +7,7 @@ import { LabelMarker } from "@/features/map/LabelMarker";
 import { hexToRgba } from "@/theme/theme";
 import { PortalHost } from "@gorhom/portal";
 import * as turf from "@turf/turf";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet } from "react-native";
 import { Region } from "react-native-maps";
@@ -17,6 +17,7 @@ import { TopLeftBackButton } from "../map/TopLeftBackButton";
 import { MapShowLocationToggle } from "../map/MapShowLocationToggle";
 import { MergePlotsMapScreenProps } from "./navigation/plots-routes";
 import { useFarmPlotsQuery } from "./plots.hooks";
+import { PolygonDrawingTool } from "@/components/map/PolygonDrawingTool";
 
 export function MergePlotsMapScreen({
   navigation,
@@ -29,9 +30,7 @@ export function MergePlotsMapScreen({
   const { plots } = useFarmPlotsQuery();
   const [mapVisible, setMapVisible] = useState(false);
   const [showsUserLocation, setShowsUserLocation] = useState(false);
-  const [selectedPlotIds, setSelectedPlotIds] = useState<Set<string>>(
-    new Set([plotId])
-  );
+  const [selectedPlotIds, setSelectedPlotIds] = useState<string[]>([plotId]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("transitionEnd", () => {
@@ -44,7 +43,13 @@ export function MergePlotsMapScreen({
     return null;
   }
 
-  const [longitude, latitude] = farm.location.coordinates;
+  const plot = plots.find((plot) => plot.id === plotId);
+  if (!plot) {
+    return null;
+  }
+
+  const initialPlotCentroid = turf.centroid(plot.geometry);
+  const [longitude, latitude] = initialPlotCentroid.geometry.coordinates;
   const initialRegion: Region = {
     latitude,
     longitude,
@@ -53,14 +58,13 @@ export function MergePlotsMapScreen({
   };
 
   function togglePlot(id: string) {
+    if (id === plotId) return;
     setSelectedPlotIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
+      if (prev.includes(id)) {
+        return prev.filter((prevId) => prevId !== id);
       } else {
-        next.add(id);
+        return [...prev, id];
       }
-      return next;
     });
   }
 
@@ -70,35 +74,40 @@ export function MergePlotsMapScreen({
     });
   }
 
-  const mapLayer = plots.flatMap((plot) => {
-    const isSelected = selectedPlotIds.has(plot.id);
-    const elements = [
-      <MultiPolygon
-        key={plot.id}
-        polygon={plot.geometry}
-        strokeWidth={theme.map.defaultStrokeWidth}
-        strokeColor="white"
-        fillColor={hexToRgba(
-          isSelected ? theme.colors.secondary : theme.map.defaultFillColor,
-          theme.map.defaultFillAlpha
-        )}
-        tappable
-        onPress={() => togglePlot(plot.id)}
-      />,
-    ];
-    if (isSelected) {
-      const centroid = turf.centroid(plot.geometry);
-      elements.push(
-        <LabelMarker
-          key={`label-${plot.id}`}
-          latitude={centroid.geometry.coordinates[1]}
-          longitude={centroid.geometry.coordinates[0]}
-          text={plot.name}
-        /> as any
-      );
-    }
-    return elements;
-  });
+  const plotsLayer = useMemo(() => {
+    return plots
+      .filter((plot) => plot.size > 0)
+      .flatMap((plot) => {
+        const isSelected = selectedPlotIds.includes(plot.id);
+        const elements = [
+          <MultiPolygon
+            key={plot.id}
+            polygon={plot.geometry}
+            strokeWidth={theme.map.defaultStrokeWidth}
+            strokeColor="white"
+            fillColor={hexToRgba(
+              isSelected ? theme.colors.secondary : theme.map.defaultFillColor,
+              theme.map.defaultFillAlpha,
+            )}
+            tappable
+            onPress={() => togglePlot(plot.id)}
+          />,
+        ];
+        const centroid = turf.centroid(plot.geometry);
+        elements.push(
+          <LabelMarker
+            key={`selected-area-${plot.id}-marker`}
+            latitude={centroid.geometry.coordinates[1]}
+            longitude={centroid.geometry.coordinates[0]}
+            text={plot.name}
+            hidden={!isSelected}
+          />,
+        );
+        if (isSelected) {
+        }
+        return elements;
+      });
+  }, [plots, selectedPlotIds, theme]);
 
   return (
     <ContentView
@@ -108,7 +117,7 @@ export function MergePlotsMapScreen({
           <Button
             title={t("buttons.next")}
             onPress={handleNext}
-            disabled={selectedPlotIds.size < 2}
+            disabled={selectedPlotIds.length < 2}
           />
         </BottomActionContainer>
       }
@@ -119,7 +128,8 @@ export function MergePlotsMapScreen({
         initialRegion={initialRegion}
         showsUserLocation={showsUserLocation}
       >
-        {mapLayer}
+        {plotsLayer}
+        <PolygonDrawingTool showActions={false} />
       </MapView>
       <TopLeftBackButton />
       <MapShowLocationToggle onShowLocationChange={setShowsUserLocation} />

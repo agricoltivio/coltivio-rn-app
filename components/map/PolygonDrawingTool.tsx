@@ -18,11 +18,13 @@ import { useTheme } from "styled-components/native";
 import { CircleMarkers } from "./CircleMarkers";
 import { CommandPalette } from "./CommandPalette";
 import { MidpointCircleMarkers } from "./MidpointCircleMarkers";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export type PolygonDrawingToolActions = {
   createPolygon: () => void;
   editPolygon: (coordinates: LatLng[]) => void;
   drawToPoint: (coordinate: LatLng) => void;
+  coordinates: LatLng[];
 };
 
 export type DrawAction = "select" | "edit" | "draw";
@@ -36,6 +38,7 @@ export type PolygonDrawingToolProps = {
   onDrawActionChange?: (action: DrawAction) => void;
   magnifierMapContent?: React.ReactNode[];
   portalName?: string;
+  finishIcon?: keyof typeof MaterialCommunityIcons.glyphMap;
   onFinish?: (coordinates: LatLng[]) => void;
   onInfo?: () => void;
   showActions?: boolean;
@@ -60,6 +63,7 @@ export const PolygonDrawingTool = forwardRef<
       fillColor,
       strokeWidth,
       magnifierMapContent,
+      finishIcon,
       onFinish,
       onInfo,
     }: PolygonDrawingToolProps,
@@ -98,6 +102,7 @@ export const PolygonDrawingTool = forwardRef<
       createPolygon: onDraw,
       editPolygon,
       drawToPoint,
+      coordinates: polygon.coordinates,
     }));
 
     // const mapContentWithPolygon = useMemo(
@@ -400,6 +405,7 @@ export const PolygonDrawingTool = forwardRef<
               onFinish={finish}
               onInfo={onInfo}
               canFinish={polygon.coordinates.length > 2}
+              finishIcon={finishIcon}
             />
           ) : null}
           {/* {action === "edit" && Platform.OS === "ios" ? (

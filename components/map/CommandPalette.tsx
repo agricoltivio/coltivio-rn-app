@@ -3,6 +3,7 @@ import React from "react";
 import { MaterialCommunityIconButton } from "../buttons/IconButton";
 import { DrawAction } from "./PolygonDrawingTool";
 import { useTheme } from "styled-components/native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 type CommandPaletteProps = {
   onFinish: () => void;
@@ -12,6 +13,7 @@ type CommandPaletteProps = {
   onInfo?: () => void;
   action: DrawAction;
   canFinish: boolean;
+  finishIcon?: keyof typeof MaterialCommunityIcons.glyphMap;
 };
 export function CommandPalette({
   onFinish,
@@ -21,6 +23,7 @@ export function CommandPalette({
   onInfo,
   action,
   canFinish,
+  finishIcon,
 }: CommandPaletteProps) {
   const theme = useTheme();
   return (
@@ -33,7 +36,7 @@ export function CommandPalette({
         type="accent"
         color={action !== "select" ? "white" : "black"}
         iconSize={30}
-        icon="vector-polyline-plus"
+        icon="vector-polygon"
         // disabled={action !== "select"}
         onPress={onDraw}
       />
@@ -56,9 +59,9 @@ export function CommandPalette({
       <MaterialCommunityIconButton
         // type={action === "draw" ? "success" : "accent"}
         type="accent"
-        color={action !== "select" && canFinish ? "green" : "black"}
+        color={"green"}
         iconSize={30}
-        icon="check"
+        icon={finishIcon ?? "check"}
         disabled={action === "select" || !canFinish}
         onPress={onFinish}
       />
