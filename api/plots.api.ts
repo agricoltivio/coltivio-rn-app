@@ -8,18 +8,25 @@ export type PlotCreateInput = components["schemas"]["PostV1PlotsRequestBody"];
 export type PlotUpdateInput =
   components["schemas"]["PatchV1PlotsByIdPlotIdRequestBody"];
 
-export type SplitPlotInput = {
-  strategy: "keep_reference";
-  originalPlotName?: string;
-  subPlots: {
-    geometry: { type: "MultiPolygon"; coordinates: number[][][][] };
-    name: string;
-    size: number;
-  }[];
+export type SplitPlotSubPlot = {
+  geometry: { type: "MultiPolygon"; coordinates: number[][][][] };
+  name: string;
+  size: number;
 };
 
-export type MergePlotsInput = {
-  strategy: "keep_reference";
+export type SplitPlotInput =
+  | {
+      strategy: "keep_reference";
+      originalPlotName?: string;
+      subPlots: SplitPlotSubPlot[];
+    }
+  | {
+      strategy: "delete_and_migrate";
+      migrateToIndex: number;
+      subPlots: SplitPlotSubPlot[];
+    };
+
+type MergePlotsBase = {
   plotIds: string[];
   name: string;
   localId?: string;
@@ -29,6 +36,10 @@ export type MergePlotsInput = {
   size: number;
   additionalNotes?: string;
 };
+
+export type MergePlotsInput =
+  | (MergePlotsBase & { strategy: "keep_reference" })
+  | (MergePlotsBase & { strategy: "delete_and_migrate" });
 
 export function plotsApi(client: FetchClient) {
   return {

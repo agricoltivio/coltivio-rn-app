@@ -1,4 +1,6 @@
+import { MergePlotsInput } from "@/api/plots.api";
 import { Button } from "@/components/buttons/Button";
+import { Card } from "@/components/card/Card";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
@@ -9,7 +11,7 @@ import { MultiPolygon } from "@/components/map/MultiPolygon";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { hexToRgba } from "@/theme/theme";
-import { H2 } from "@/theme/Typography";
+import { Body, H2 } from "@/theme/Typography";
 import { round } from "@/utils/math";
 import * as turf from "@turf/turf";
 import { useMemo } from "react";
@@ -22,6 +24,8 @@ import { MergePlotSummaryScreenProps } from "./navigation/plots-routes";
 import { useFarmPlotsQuery, useMergePlotsMutation } from "./plots.hooks";
 import { getUsageCodeSelectData } from "./usage-codes";
 
+type Strategy = "keep_reference" | "delete_and_migrate";
+
 type MergeFormValues = {
   name: string;
   localId?: string;
@@ -29,6 +33,7 @@ type MergeFormValues = {
   cuttingDate?: Date;
   size: string;
   additionalNotes?: string;
+  strategy: Strategy;
 };
 
 export function MergePlotSummaryScreen({
@@ -42,19 +47,19 @@ export function MergePlotSummaryScreen({
 
   const selectedPlots = useMemo(
     () => plots?.filter((p) => plotIds.includes(p.id)) ?? [],
-    [plots, plotIds]
+    [plots, plotIds],
   );
 
   // Compute merged geometry by unioning all selected plots
   const mergedGeometry = useMemo(() => {
     if (selectedPlots.length === 0) return null;
     const features = selectedPlots.map((p) =>
-      turf.multiPolygon(p.geometry.coordinates)
+      turf.multiPolygon(p.geometry.coordinates),
     );
     let merged = features[0];
     for (let i = 1; i < features.length; i++) {
       const result = turf.union(
-        turf.featureCollection([merged, features[i]])
+        turf.featureCollection([merged, features[i]]),
       );
       if (result) {
         merged =
@@ -67,19 +72,22 @@ export function MergePlotSummaryScreen({
   }, [selectedPlots]);
 
   const mergedSize = mergedGeometry ? round(turf.area(mergedGeometry), 0) : 0;
-
   const mergedName = selectedPlots.map((p) => p.name).join(" + ");
 
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<MergeFormValues>({
     defaultValues: {
       name: mergedName,
       size: mergedSize.toString(),
+      strategy: "keep_reference",
     },
   });
+
+  const strategy = watch("strategy");
 
   const mergeMutation = useMergePlotsMutation(
     () =>
@@ -87,7 +95,7 @@ export function MergePlotSummaryScreen({
         index: 1,
         routes: [{ name: "Home" }, { name: "PlotsMap" }],
       }),
-    (error) => console.error(error)
+    (error) => console.error(error),
   );
 
   let initialRegion: Region | undefined;
@@ -102,18 +110,35 @@ export function MergePlotSummaryScreen({
     };
   }
 
-  function onSubmit({ size, usage, cuttingDate, ...rest }: MergeFormValues) {
+  function onSubmit({ size, usage, cuttingDate, strategy, ...rest }: MergeFormValues) {
     if (!mergedGeometry) return;
-    mergeMutation.mutate({
-      strategy: "keep_reference",
+    const base = {
       plotIds,
       ...rest,
       usage: usage ? Number(usage) : undefined,
       cuttingDate: cuttingDate?.toISOString(),
       geometry: mergedGeometry,
       size: Number(size),
-    });
+    };
+
+    const data: MergePlotsInput =
+      strategy === "delete_and_migrate"
+        ? { ...base, strategy: "delete_and_migrate" }
+        : { ...base, strategy: "keep_reference" };
+
+    mergeMutation.mutate(data);
   }
+
+  const strategySelectData = [
+    {
+      value: "keep_reference",
+      label: t("plots.merge.summary.strategy_keep_reference"),
+    },
+    {
+      value: "delete_and_migrate",
+      label: t("plots.merge.summary.strategy_delete_and_migrate"),
+    },
+  ];
 
   return (
     <ContentView
@@ -159,6 +184,30 @@ export function MergePlotSummaryScreen({
             </MapView>
           </View>
         )}
+
+        {/* Strategy selector + info */}
+        <View style={{ marginTop: theme.spacing.m, gap: theme.spacing.m }}>
+          <RHSelect
+            name="strategy"
+            data={strategySelectData}
+            control={control}
+            label={t("plots.merge.summary.strategy_label")}
+          />
+          <Card>
+            <Body>
+              {strategy === "keep_reference"
+                ? t("plots.merge.summary.strategy_keep_reference_info")
+                : t("plots.merge.summary.strategy_delete_and_migrate_info")}
+            </Body>
+            {strategy === "delete_and_migrate" && (
+              <Body style={{ fontWeight: "bold", marginTop: theme.spacing.xs }}>
+                {t("plots.merge.summary.strategy_delete_crop_rotation_warning")}
+              </Body>
+            )}
+          </Card>
+        </View>
+
+        {/* Form fields */}
         <View
           style={{ gap: theme.spacing.xs, flex: 1, marginTop: theme.spacing.m }}
         >

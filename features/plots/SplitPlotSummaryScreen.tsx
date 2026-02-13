@@ -1,23 +1,32 @@
+import { SplitPlotInput } from "@/api/plots.api";
 import { Button } from "@/components/buttons/Button";
+import { Card } from "@/components/card/Card";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { MultiPolygon } from "@/components/map/MultiPolygon";
+import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
-import { hexToRgba } from "@/theme/theme";
-import { H2, Subtitle } from "@/theme/Typography";
+import { hexToRgba, indexToDistinctColor } from "@/theme/theme";
+import { Body, H2, H3, Subtitle } from "@/theme/Typography";
 import * as turf from "@turf/turf";
+import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
 import { SplitPlotSummaryScreenProps } from "./navigation/plots-routes";
 import { useSplitPlotMutation } from "./plots.hooks";
 import { useSplitPlotStore } from "./split-plot.store";
 
+const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+type Strategy = "keep_reference" | "delete_and_migrate";
+
 type SplitFormValues = {
   originalPlotName: string;
+  strategy: Strategy;
   subPlots: { name: string }[];
 };
 
@@ -30,18 +39,24 @@ export function SplitPlotSummaryScreen({
   const { plotId } = route.params;
   const { subPlots, originalPlotName } = useSplitPlotStore();
 
+  const [migrateToIndex, setMigrateToIndex] = useState(0);
+
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<SplitFormValues>({
     defaultValues: {
       originalPlotName,
+      strategy: "keep_reference",
       subPlots: subPlots.map((_, i) => ({
-        name: t("plots.split.summary.sub_plot_name", { index: i + 1 }),
+        name: `${originalPlotName} ${LETTERS[i] ?? i + 1}`,
       })),
     },
   });
+
+  const strategy = watch("strategy");
 
   const { fields } = useFieldArray({ control, name: "subPlots" });
 
@@ -51,19 +66,14 @@ export function SplitPlotSummaryScreen({
         index: 1,
         routes: [{ name: "Home" }, { name: "PlotsMap" }],
       }),
-    (error) => console.error(error)
+    (error) => console.error(error),
   );
 
   // Compute a region that covers all sub-plots
-  const allCoords = subPlots.flatMap((sp) =>
-    sp.geometry.coordinates.flatMap((poly) =>
-      poly.flatMap((ring) => ring.map(([lng, lat]) => [lng, lat]))
-    )
-  );
   let initialRegion: Region | undefined;
-  if (allCoords.length > 0) {
+  if (subPlots.length > 0) {
     const collection = turf.featureCollection(
-      subPlots.map((sp) => turf.multiPolygon(sp.geometry.coordinates))
+      subPlots.map((sp) => turf.multiPolygon(sp.geometry.coordinates)),
     );
     const center = turf.center(collection);
     const [lng, lat] = center.geometry.coordinates;
@@ -75,27 +85,41 @@ export function SplitPlotSummaryScreen({
     };
   }
 
-  const subPlotColors = [
-    theme.colors.success,
-    theme.colors.accent,
-    theme.colors.secondary,
-    theme.colors.danger,
-  ];
-
   function onSubmit(values: SplitFormValues) {
-    splitMutation.mutate({
-      plotId,
-      data: {
+    const subPlotsPayload = subPlots.map((sp, i) => ({
+      geometry: sp.geometry,
+      name: values.subPlots[i].name,
+      size: sp.size,
+    }));
+
+    let data: SplitPlotInput;
+    if (values.strategy === "delete_and_migrate") {
+      data = {
+        strategy: "delete_and_migrate",
+        migrateToIndex,
+        subPlots: subPlotsPayload,
+      };
+    } else {
+      data = {
         strategy: "keep_reference",
         originalPlotName: values.originalPlotName,
-        subPlots: subPlots.map((sp, i) => ({
-          geometry: sp.geometry,
-          name: values.subPlots[i].name,
-          size: sp.size,
-        })),
-      },
-    });
+        subPlots: subPlotsPayload,
+      };
+    }
+
+    splitMutation.mutate({ plotId, data });
   }
+
+  const strategySelectData = [
+    {
+      value: "keep_reference",
+      label: t("plots.split.summary.strategy_keep_reference"),
+    },
+    {
+      value: "delete_and_migrate",
+      label: t("plots.split.summary.strategy_delete_and_migrate"),
+    },
+  ];
 
   return (
     <ContentView
@@ -138,44 +162,106 @@ export function SplitPlotSummaryScreen({
                   polygon={sp.geometry}
                   strokeWidth={2}
                   strokeColor="white"
-                  fillColor={hexToRgba(
-                    subPlotColors[i % subPlotColors.length],
-                    0.6
-                  )}
+                  fillColor={hexToRgba(indexToDistinctColor(i), 0.6)}
                 />
               ))}
             </MapView>
           </View>
         )}
-        <View
-          style={{ gap: theme.spacing.xs, flex: 1, marginTop: theme.spacing.m }}
-        >
-          <RHTextInput
-            name="originalPlotName"
+
+        {/* Strategy selector + info */}
+        <View style={{ marginTop: theme.spacing.m, gap: theme.spacing.m }}>
+          <RHSelect
+            name="strategy"
+            data={strategySelectData}
             control={control}
-            label={t("forms.labels.name")}
+            label={t("plots.split.summary.strategy_label")}
           />
-          {fields.map((field, index) => (
-            <View key={field.id}>
-              <RHTextInput
-                name={`subPlots.${index}.name`}
-                control={control}
-                label={t("plots.split.summary.sub_plot_name", {
-                  index: index + 1,
-                })}
-                rules={{
-                  required: {
-                    value: true,
-                    message: t("forms.validation.required"),
-                  },
+          <Card>
+            <Body>
+              {strategy === "keep_reference"
+                ? t("plots.split.summary.strategy_keep_reference_info")
+                : t("plots.split.summary.strategy_delete_and_migrate_info")}
+            </Body>
+          </Card>
+
+          {/* Original plot name — only for keep_reference */}
+          {strategy === "keep_reference" && (
+            <RHTextInput
+              name="originalPlotName"
+              control={control}
+              label={t("plots.split.summary.original_plot_name")}
+            />
+          )}
+        </View>
+
+        {/* Sub-plot cards */}
+        <View style={{ gap: theme.spacing.s, marginTop: theme.spacing.m }}>
+          {fields.map((field, index) => {
+            const letter = LETTERS[index] ?? `${index + 1}`;
+            return (
+              <Card
+                key={field.id}
+                style={{
+                  borderLeftWidth: 4,
+                  borderLeftColor: indexToDistinctColor(index),
                 }}
-                error={errors.subPlots?.[index]?.name?.message}
-              />
-              <Subtitle style={{ marginTop: theme.spacing.xxs }}>
-                {subPlots[index].size / 100}a ({subPlots[index].size}m²)
-              </Subtitle>
-            </View>
-          ))}
+              >
+                <H3>{t("plots.split.summary.sub_plot_name", { letter })}</H3>
+                <Subtitle style={{ marginBottom: theme.spacing.xs }}>
+                  {subPlots[index].size / 100}a ({subPlots[index].size}m²)
+                </Subtitle>
+                <RHTextInput
+                  name={`subPlots.${index}.name`}
+                  control={control}
+                  label={t("forms.labels.name")}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: t("forms.validation.required"),
+                    },
+                  }}
+                  error={errors.subPlots?.[index]?.name?.message}
+                />
+                {/* Migrate-to toggle — only for delete_and_migrate */}
+                {strategy === "delete_and_migrate" && (
+                  <TouchableOpacity
+                    onPress={() => setMigrateToIndex(index)}
+                    style={{
+                      marginTop: theme.spacing.xs,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: theme.spacing.xs,
+                    }}
+                  >
+                    <View
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: 10,
+                        borderWidth: 2,
+                        borderColor: theme.colors.primary,
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {migrateToIndex === index && (
+                        <View
+                          style={{
+                            width: 12,
+                            height: 12,
+                            borderRadius: 6,
+                            backgroundColor: theme.colors.primary,
+                          }}
+                        />
+                      )}
+                    </View>
+                    <Body>{t("plots.split.summary.migrate_to_label")}</Body>
+                  </TouchableOpacity>
+                )}
+              </Card>
+            );
+          })}
         </View>
       </ScrollView>
     </ContentView>

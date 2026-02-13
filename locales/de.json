@@ -343,7 +343,14 @@
       "split_failed": "Aufteilung fehlgeschlagen. Stelle sicher, dass die Linie den Schlag vollständig kreuzt.",
       "summary": {
         "heading": "Aufteilung bestätigen",
-        "sub_plot_name": "Teilschlag {{index}}"
+        "sub_plot_name": "Teilschlag {{letter}}",
+        "strategy_label": "Strategie",
+        "strategy_keep_reference": "Referenz behalten",
+        "strategy_keep_reference_info": "Der ursprüngliche Schlag wird als Referenz behalten. Alle bestehenden Einträge (Fruchtfolgen, Ernten, etc.) bleiben dem Referenzschlag zugeordnet.",
+        "strategy_delete_and_migrate": "Referenz löschen",
+        "strategy_delete_and_migrate_info": "Der ursprüngliche Schlag wird gelöscht. Alle bestehenden Einträge werden auf den gewählten Teilschlag übertragen.",
+        "original_plot_name": "Name des Referenzschlags",
+        "migrate_to_label": "Einträge übertragen auf"
       }
     },
     "merge": {
@@ -351,7 +358,13 @@
       "select_plots": "Wähle die Schläge aus, die zusammengeführt werden sollen.",
       "min_two_plots": "Wähle mindestens 2 Schläge aus.",
       "summary": {
-        "heading": "Zusammenführung bestätigen"
+        "heading": "Zusammenführung bestätigen",
+        "strategy_label": "Strategie",
+        "strategy_keep_reference": "Referenz behalten",
+        "strategy_keep_reference_info": "Die ursprünglichen Schläge werden als Referenz behalten. Alle bestehenden Einträge bleiben den Referenzschlägen zugeordnet.",
+        "strategy_delete_and_migrate": "Referenz löschen",
+        "strategy_delete_and_migrate_info": "Die ursprünglichen Schläge werden gelöscht. Alle bestehenden Einträge werden auf den neuen Schlag übertragen.",
+        "strategy_delete_crop_rotation_warning": "Fruchtfolgen werden nicht übertragen und gehen verloren."
       }
     },
     "usage_codes": {
