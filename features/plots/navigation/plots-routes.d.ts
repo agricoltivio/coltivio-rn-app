@@ -1,7 +1,7 @@
 import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type PlotsStackParamList = {
-  PlotsMap: undefined;
+  PlotsMap: { selectedPlotId?: string };
   AddPlotMap: undefined;
   AddPlotSummary: {
     cropId?: string;

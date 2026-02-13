@@ -1,19 +1,19 @@
+import * as turf from "@turf/turf";
 import { Plot } from "@/api/plots.api";
 import { BottomDrawerModal } from "@/components/bottom-drawer/BottomDrawerModal";
 import { Button } from "@/components/buttons/Button";
 import { FAB } from "@/components/buttons/FAB";
+import { Card } from "@/components/card/Card";
 import { ContentView } from "@/components/containers/ContentView";
+import { ListItem } from "@/components/list/ListItem";
 import { MapView } from "@/components/map/Map";
 import { MultiPolygon } from "@/components/map/MultiPolygon";
 import { HomeMarker } from "@/features/map/layers/HomeMarker";
-import { PlotsMapScreenProps } from "./navigation/plots-routes";
-import { hexToRgba } from "@/theme/theme";
-import { Body, H3, Label, Subtitle } from "@/theme/Typography";
-import { Card } from "@/components/card/Card";
-import { ListItem } from "@/components/list/ListItem";
-import { formatLocalizedDate } from "@/utils/date";
 import { locale } from "@/locales/i18n";
-import { UsageCode } from "./usage-codes";
+import { hexToRgba } from "@/theme/theme";
+import { Body, H3, Label } from "@/theme/Typography";
+import { formatLocalizedDate } from "@/utils/date";
+import { Ionicons } from "@expo/vector-icons";
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
@@ -25,6 +25,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { useTranslation } from "react-i18next";
 import {
   InteractionManager,
   Modal,
@@ -32,24 +33,28 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../farms/farms.hooks";
 import { MapShowLocationToggle } from "../map/MapShowLocationToggle";
 import { TopLeftBackButton } from "../map/TopLeftBackButton";
-import { useFarmPlotsQuery } from "./plots.hooks";
-import { useTranslation } from "react-i18next";
 import { useLocalSettings } from "../user/LocalSettingsContext";
+import { PlotsMapScreenProps } from "./navigation/plots-routes";
+import { useFarmPlotsQuery } from "./plots.hooks";
+import RnMapView, { Region } from "react-native-maps";
 
-export function PlotsMapScreen({ navigation }: PlotsMapScreenProps) {
+export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { farm } = useFarmQuery();
-  const { plots } = useFarmPlotsQuery();
+  const { plots, isFetching: plotsLoading } = useFarmPlotsQuery();
   const { localSettings } = useLocalSettings();
   const [mapVisible, setMapVisible] = useState(false);
+  const mapRef = useRef<RnMapView>(null);
   const [showsUserLocation, setShowsUserLocation] = useState<boolean>(false);
-  const [selectedPlotId, setSelectedPlotId] = useState<string | null>(null);
+  const preselectedPlotId = route.params?.selectedPlotId;
+  const [selectedPlotId, setSelectedPlotId] = useState<string | null>(
+    preselectedPlotId || null,
+  );
   const [sheetIndex, setSheetIndex] = useState(0);
   const [areaModalVisible, setAreaModalVisible] = useState(false);
   const snapPoints = useMemo(() => [200, "85%"], []);
@@ -90,6 +95,14 @@ export function PlotsMapScreen({ navigation }: PlotsMapScreenProps) {
       handleDismissBottomDrawer();
       setSelectedPlotId(null);
     } else {
+      const centroid = turf.centroid(plot.geometry);
+      const [longitude, latitude] = centroid.geometry.coordinates;
+      mapRef.current?.animateToRegion({
+        latitude,
+        longitude,
+        latitudeDelta: 0.0025,
+        longitudeDelta: 0.0025,
+      });
       setSelectedPlotId(plot.id);
       handleExpandBottomDrawer();
       bottomSheetModalRef.current?.snapToIndex(0);
@@ -100,16 +113,28 @@ export function PlotsMapScreen({ navigation }: PlotsMapScreenProps) {
     return null;
   }
 
-  const [longitude, latitude] = farm.location.coordinates;
-
-  const initialRegion = {
-    latitude,
-    longitude,
-    latitudeDelta: 0.0025,
-    longitudeDelta: 0.0025,
-  };
-
   const selectedPlot = plots?.find((plot) => plot.id === selectedPlotId);
+
+  const initialRegion: Region = useMemo(() => {
+    const preselectedPlot = plots.find((plot) => plot.id === preselectedPlotId);
+    if (preselectedPlot && preselectedPlot.geometry.coordinates.length > 0) {
+      const centroid = turf.centroid(preselectedPlot.geometry);
+      const [longitude, latitude] = centroid.geometry.coordinates;
+      return {
+        latitude,
+        longitude,
+        latitudeDelta: 0.0025,
+        longitudeDelta: 0.0025,
+      };
+    } else {
+      return {
+        latitude: farm.location.coordinates[1],
+        longitude: farm.location.coordinates[0],
+        latitudeDelta: 0.0025,
+        longitudeDelta: 0.0025,
+      };
+    }
+  }, [plots, preselectedPlotId]);
 
   const plotPolygons = plots.map((plot) => (
     <MultiPolygon
@@ -131,7 +156,11 @@ export function PlotsMapScreen({ navigation }: PlotsMapScreenProps) {
   return (
     <ContentView headerVisible={false}>
       <MapView
-        loading={!mapVisible}
+        ref={mapRef}
+        loading={
+          !mapVisible || plotsLoading
+          // (preselectedPlotId != null && !selectedPlot)
+        }
         style={{
           ...StyleSheet.absoluteFillObject,
         }}
@@ -141,8 +170,8 @@ export function PlotsMapScreen({ navigation }: PlotsMapScreenProps) {
         {plotPolygons}
         {initialRegion && (
           <HomeMarker
-            latitude={initialRegion.latitude}
-            longitude={initialRegion.longitude}
+            latitude={farm.location.coordinates[1]}
+            longitude={farm.location.coordinates[0]}
           />
         )}
       </MapView>

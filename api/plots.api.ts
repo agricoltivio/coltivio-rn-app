@@ -8,6 +8,12 @@ export type PlotCreateInput = components["schemas"]["PostV1PlotsRequestBody"];
 export type PlotUpdateInput =
   components["schemas"]["PatchV1PlotsByIdPlotIdRequestBody"];
 
+export type SplitPlotResult =
+  components["schemas"]["PostV1PlotsByIdPlotIdSplitPositiveResponse"]["data"]["result"][number];
+
+export type MergePlotResult =
+  components["schemas"]["PostV1PlotsMergePositiveResponse"]["data"];
+
 export type SplitPlotSubPlot = {
   geometry: { type: "MultiPolygon"; coordinates: number[][][][] };
   name: string;
@@ -44,7 +50,9 @@ export type MergePlotsInput =
 export function plotsApi(client: FetchClient) {
   return {
     async getPlots(): Promise<Plot[]> {
+      console.log("query plots ...");
       const { data } = await client.GET("/v1/plots");
+      console.log("query plots done");
       return data!.data.result;
     },
     async getPlotById(plotId: string): Promise<Plot> {
@@ -84,13 +92,16 @@ export function plotsApi(client: FetchClient) {
       });
       return data!.data;
     },
-    async splitPlot(plotId: string, body: SplitPlotInput) {
+    async splitPlot(
+      plotId: string,
+      body: SplitPlotInput,
+    ): Promise<SplitPlotResult[]> {
       const { data } = await client.POST("/v1/plots/byId/{plotId}/split", {
         params: { path: { plotId } },
         // @ts-expect-error generated discriminated union type is broken (Record<string, never> intersection)
         body,
       });
-      return data!.data;
+      return data!.data.result;
     },
     async mergePlots(body: MergePlotsInput) {
       // @ts-expect-error generated discriminated union type is broken (Record<string, never> intersection)

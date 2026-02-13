@@ -1,10 +1,12 @@
 import { useApi } from "@/api/api";
 import {
+  MergePlotResult,
   MergePlotsInput,
   Plot,
   PlotCreateInput,
   PlotUpdateInput,
   SplitPlotInput,
+  SplitPlotResult,
 } from "@/api/plots.api";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -30,7 +32,7 @@ export function usePlotByIdQuery(plotId: string) {
 
 export function useCreatePlotMutation(
   onSuccess?: (plot: Plot) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
@@ -49,7 +51,7 @@ export function useCreatePlotMutation(
 
 export function useUpdatePlotMutation(
   onSuccess?: (plot: Plot) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
@@ -68,7 +70,7 @@ export function useUpdatePlotMutation(
 
 export function useDeletePlotMutation(
   onSuccess?: () => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
@@ -85,37 +87,37 @@ export function useDeletePlotMutation(
 }
 
 export function useSplitPlotMutation(
-  onSuccess?: () => void,
-  onError?: (error: Error) => void
+  onSuccess?: (plots: SplitPlotResult[]) => void,
+  onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
     mutationFn: ({ plotId, data }: { plotId: string; data: SplitPlotInput }) =>
       api.plots.splitPlot(plotId, data),
-    onSuccess: () => {
+    onSuccess: (result) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.plots._def,
       });
-      onSuccess && onSuccess();
+      onSuccess && onSuccess(result);
     },
     onError,
   });
 }
 
 export function useMergePlotsMutation(
-  onSuccess?: () => void,
-  onError?: (error: Error) => void
+  onSuccess?: (plot: MergePlotResult) => void,
+  onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
     mutationFn: (data: MergePlotsInput) => api.plots.mergePlots(data),
-    onSuccess: () => {
+    onSuccess: (plot) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.plots._def,
       });
-      onSuccess && onSuccess();
+      onSuccess && onSuccess(plot);
     },
     onError,
   });
@@ -123,7 +125,7 @@ export function useMergePlotsMutation(
 
 export function useSyncMissingLocalIdsMutation(
   onSuccess?: () => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const api = useApi();
   const queryClient = useQueryClient();
@@ -138,3 +140,22 @@ export function useSyncMissingLocalIdsMutation(
     onError,
   });
 }
+// useEffect(() => {
+//   if (!preselectedPlotId || preselectedPlotId !== selectedPlotId) {
+//     return;
+//   }
+//   const preselectedPlot = plots?.find(
+//     (plot) => plot.id === preselectedPlotId,
+//   );
+//   if (preselectedPlot) {
+//     const centroid = turf.centroid(preselectedPlot.geometry);
+//     const [longitude, latitude] = centroid.geometry.coordinates;
+//     const region = {
+//       latitude,
+//       longitude,
+//       latitudeDelta: 0.0025,
+//       longitudeDelta: 0.0025,
+//     };
+//     mapRef.current?.animateToRegion(region);
+//   }
+// }, [preselectedPlotId, plots, selectedPlotId]);

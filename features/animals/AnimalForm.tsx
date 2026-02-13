@@ -5,10 +5,12 @@ import { Switch } from "@/components/inputs/Switch";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { IonIconButton } from "@/components/buttons/IconButton";
+import { Ionicons } from "@expo/vector-icons";
 import { Control, FieldErrors, UseFormSetValue, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
+import { Subtitle } from "@/theme/Typography";
 import { useAnimalsQuery } from "./animals.hooks";
 import { useAvailableEarTagsQuery } from "./earTags.hooks";
 import { useHerdsQuery } from "./herds.hooks";
@@ -76,13 +78,15 @@ export function AnimalForm({
   ];
 
   const categoryOverrideData = [
-    "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9",
+    { label: "-", value: "" },
+    ...["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9",
     "B1", "B2", "B3",
     "C1", "C2",
     "D1", "D2", "D3",
     "E1", "E2", "E3", "E4",
     "F1", "F2",
-  ].map((val) => ({ label: val, value: val }));
+    ].map((val) => ({ label: val, value: val })),
+  ];
 
   const herdData =
     herds?.map((herd) => ({
@@ -185,21 +189,41 @@ export function AnimalForm({
       />
       {showCategoryOverride && (
         <>
+          {/* Yellow info box when auto-category failed */}
+          {requiresCategoryOverride && (
+            <View
+              style={{
+                marginTop: theme.spacing.m,
+                backgroundColor: theme.colors.white,
+                borderRadius: 10,
+                padding: theme.spacing.m,
+                borderLeftWidth: 4,
+                borderLeftColor: theme.colors.yellow,
+                flexDirection: "row",
+                alignItems: "center",
+                gap: theme.spacing.xs,
+              }}
+            >
+              <Ionicons name="alert-circle" size={20} color={theme.colors.yellow} />
+              <Subtitle style={{ flex: 1 }}>
+                {t("animals.category_override_info")}
+              </Subtitle>
+            </View>
+          )}
+          {/* Inverted switch: ON = auto category, OFF = manual override */}
           <Switch
             style={{ marginTop: theme.spacing.m, marginBottom: theme.spacing.xs }}
-            value={categoryOverride != null}
+            value={categoryOverride == null}
             onChange={() => {
-              if (categoryOverride != null) {
-                setValue("categoryOverride", null, { shouldDirty: true });
+              if (categoryOverride == null) {
+                // Switching to manual — show dropdown without pre-selecting
+                setValue("categoryOverride", "", { shouldDirty: true });
               } else {
-                setValue("categoryOverride", "A1", { shouldDirty: true });
+                // Switching to auto
+                setValue("categoryOverride", null, { shouldDirty: true });
               }
             }}
-            label={
-              requiresCategoryOverride
-                ? t("animals.requires_category_override")
-                : t("animals.category_override")
-            }
+            label={t("animals.auto_category")}
           />
           {categoryOverride != null && (
             <RHSelect

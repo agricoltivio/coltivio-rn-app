@@ -61,10 +61,13 @@ export function SplitPlotSummaryScreen({
   const { fields } = useFieldArray({ control, name: "subPlots" });
 
   const splitMutation = useSplitPlotMutation(
-    () =>
+    (plots) =>
       navigation.reset({
         index: 1,
-        routes: [{ name: "Home" }, { name: "PlotsMap" }],
+        routes: [
+          { name: "Home" },
+          { name: "PlotsMap", params: { selectedPlotId: plots[0]?.id } },
+        ],
       }),
     (error) => console.error(error),
   );

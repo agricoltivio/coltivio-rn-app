@@ -101,6 +101,28 @@ export function AnimalDetailsScreen({
       <ScrollView showHeaderOnScroll headerTitleOnScroll={animal.name}>
         <H2>{animal.name}</H2>
 
+        {/* Category override warning */}
+        {animal.requiresCategoryOverride && (
+          <View
+            style={{
+              marginTop: theme.spacing.m,
+              backgroundColor: theme.colors.white,
+              borderRadius: 10,
+              padding: theme.spacing.m,
+              borderLeftWidth: 4,
+              borderLeftColor: theme.colors.yellow,
+              flexDirection: "row",
+              alignItems: "center",
+              gap: theme.spacing.xs,
+            }}
+          >
+            <Ionicons name="alert-circle" size={20} color={theme.colors.yellow} />
+            <Subtitle style={{ flex: 1 }}>
+              {t("animals.category_override_info")}
+            </Subtitle>
+          </View>
+        )}
+
         {/* Basic info */}
         <View
           style={{

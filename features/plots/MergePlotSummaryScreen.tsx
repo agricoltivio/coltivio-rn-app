@@ -58,9 +58,7 @@ export function MergePlotSummaryScreen({
     );
     let merged = features[0];
     for (let i = 1; i < features.length; i++) {
-      const result = turf.union(
-        turf.featureCollection([merged, features[i]]),
-      );
+      const result = turf.union(turf.featureCollection([merged, features[i]]));
       if (result) {
         merged =
           result.geometry.type === "Polygon"
@@ -90,10 +88,13 @@ export function MergePlotSummaryScreen({
   const strategy = watch("strategy");
 
   const mergeMutation = useMergePlotsMutation(
-    () =>
+    (plot) =>
       navigation.reset({
         index: 1,
-        routes: [{ name: "Home" }, { name: "PlotsMap" }],
+        routes: [
+          { name: "Home" },
+          { name: "PlotsMap", params: { selectedPlotId: plot.id } },
+        ],
       }),
     (error) => console.error(error),
   );
@@ -110,7 +111,13 @@ export function MergePlotSummaryScreen({
     };
   }
 
-  function onSubmit({ size, usage, cuttingDate, strategy, ...rest }: MergeFormValues) {
+  function onSubmit({
+    size,
+    usage,
+    cuttingDate,
+    strategy,
+    ...rest
+  }: MergeFormValues) {
     if (!mergedGeometry) return;
     const base = {
       plotIds,
