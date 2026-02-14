@@ -50,7 +50,8 @@ const DOSE_PER_UNITS: DosePerUnit[] = ["animal", "kg", "day", "total_amount"];
 
 interface TreatmentFormValues {
   drugId?: string;
-  date: Date;
+  startDate: Date;
+  endDate: Date;
   name: string;
   notes?: string;
   milkUsableDate?: Date;
@@ -78,19 +79,20 @@ export function CreateTreatmentScreen({
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, dirtyFields },
     watch,
     setValue,
   } = useForm<TreatmentFormValues>({
     defaultValues: {
-      date: new Date(),
+      startDate: new Date(),
+      endDate: new Date(),
       criticalAntibiotic: false,
       antibiogramAvailable: false,
     },
   });
 
   const selectedDrugId = watch("drugId");
-  const treatmentDate = watch("date");
+  const treatmentDate = watch("startDate");
 
   useEffect(() => {
     if (preselectedDrugId) {
@@ -105,6 +107,13 @@ export function CreateTreatmentScreen({
   const selectedDrug = useMemo(() => {
     return drugs?.find((d) => d.id === selectedDrugId);
   }, [drugs, selectedDrugId]);
+
+  // Auto-sync endDate to startDate if endDate hasn't been manually changed
+  useEffect(() => {
+    if (!dirtyFields.endDate) {
+      setValue("endDate", treatmentDate);
+    }
+  }, [treatmentDate, setValue, dirtyFields.endDate]);
 
   // Validation for drug + multiple animal types
   const drugValidation = useMemo(() => {
@@ -203,7 +212,8 @@ export function CreateTreatmentScreen({
     createTreatmentMutation.mutate({
       animalIds: selectedAnimalIds,
       drugId: data.drugId || null,
-      date: data.date.toISOString(),
+      startDate: data.startDate.toISOString(),
+      endDate: data.endDate.toISOString(),
       name: data.name,
       notes: data.notes,
       milkUsableDate: data.milkUsableDate?.toISOString() ?? null,
@@ -313,9 +323,9 @@ export function CreateTreatmentScreen({
             </ListItem>
           </View>
 
-          <View style={{ marginTop: theme.spacing.m }}>
+          <View style={{ marginTop: theme.spacing.m, gap: theme.spacing.xs }}>
             <RHDatePicker
-              name="date"
+              name="startDate"
               control={control}
               label={t("treatments.treatment_date")}
               mode="date"
@@ -325,7 +335,20 @@ export function CreateTreatmentScreen({
                   message: t("forms.validation.required"),
                 },
               }}
-              error={errors.date?.message}
+              error={errors.startDate?.message}
+            />
+            <RHDatePicker
+              name="endDate"
+              control={control}
+              label={t("treatments.treatment_end_date")}
+              mode="date"
+              rules={{
+                required: {
+                  value: true,
+                  message: t("forms.validation.required"),
+                },
+              }}
+              error={errors.endDate?.message}
             />
           </View>
           <View

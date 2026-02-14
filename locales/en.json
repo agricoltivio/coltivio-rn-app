@@ -871,6 +871,7 @@
     "select_animal": "Select Animal",
     "select_drug": "Select Drug (optional)",
     "treatment_date": "Treatment Date",
+    "treatment_end_date": "End Date",
     "reason": "Reason",
     "milk_usable_date": "Milk usable from",
     "meat_usable_date": "Meat usable from",

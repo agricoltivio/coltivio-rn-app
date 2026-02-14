@@ -97,11 +97,12 @@ export function HerdEditScreen({
   }
 
   function formatScheduleSummary(schedule: OutdoorSchedule): string {
+    const typeLabel = t(`animals.outdoor_types.${schedule.type}` as const);
     const start = formatLocalizedDate(new Date(schedule.startDate), locale);
     const end = schedule.endDate
       ? formatLocalizedDate(new Date(schedule.endDate), locale)
       : "–";
-    let summary = `${start} - ${end}`;
+    let summary = `${typeLabel}: ${start} - ${end}`;
     if (schedule.recurrence) {
       const freq = t(
         `animals.frequency_types.${schedule.recurrence.frequency}` as const,

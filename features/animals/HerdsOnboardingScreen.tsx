@@ -8,19 +8,20 @@ import { useTheme } from "styled-components/native";
 import { NavigationButton } from "../onboarding/NavigationButton";
 import { Stepper } from "../onboarding/Stepper";
 import { useLocalSettings } from "../user/LocalSettingsContext";
-import { OutdoorJournalOnboardingScreenProps } from "./navigation/animals-routes";
+import { HerdsOnboardingScreenProps } from "./navigation/animals-routes";
 
-export function OutdoorJournalOnboardingScreen({
+export function HerdsOnboardingScreen({
   navigation,
-}: OutdoorJournalOnboardingScreenProps) {
+}: HerdsOnboardingScreenProps) {
   const theme = useTheme();
   const { t } = useTranslation();
   const { updateLocalSettings } = useLocalSettings();
   const [step, setStep] = useState(1);
+  const totalSteps = 3;
 
   function handleFinish() {
-    updateLocalSettings("outdoorJournalOnboardingCompleted", true);
-    navigation.replace("OutdoorJournal");
+    updateLocalSettings("herdsOnboardingCompleted", true);
+    navigation.replace("Herds");
   }
 
   return (
@@ -34,7 +35,7 @@ export function OutdoorJournalOnboardingScreen({
             borderTopColor: theme.colors.gray4,
           }}
         >
-          <Stepper totalSteps={2} currentStep={step} />
+          <Stepper totalSteps={totalSteps} currentStep={step} />
           <View
             style={{
               flexDirection: "row",
@@ -50,7 +51,7 @@ export function OutdoorJournalOnboardingScreen({
                 onPress={() => setStep((s) => s - 1)}
               />
             )}
-            {step < 2 ? (
+            {step < totalSteps ? (
               <NavigationButton
                 title={t("buttons.next")}
                 icon="arrow-forward-circle-outline"
@@ -74,7 +75,7 @@ export function OutdoorJournalOnboardingScreen({
           {step === 1 && (
             <View>
               <H1 style={{ color: theme.colors.primary }}>
-                {t("animals.outdoor_journal_onboarding.welcome_heading")}
+                {t("animals.herds_onboarding.step1_heading")}
               </H1>
               <H3
                 style={{
@@ -82,7 +83,7 @@ export function OutdoorJournalOnboardingScreen({
                   marginTop: theme.spacing.s,
                 }}
               >
-                {t("animals.outdoor_journal_onboarding.welcome_body")}
+                {t("animals.herds_onboarding.step1_body")}
               </H3>
             </View>
           )}
@@ -90,7 +91,7 @@ export function OutdoorJournalOnboardingScreen({
           {step === 2 && (
             <View>
               <H1 style={{ color: theme.colors.primary }}>
-                {t("animals.outdoor_journal_onboarding.done_heading")}
+                {t("animals.herds_onboarding.step2_heading")}
               </H1>
               <H3
                 style={{
@@ -98,7 +99,23 @@ export function OutdoorJournalOnboardingScreen({
                   marginTop: theme.spacing.s,
                 }}
               >
-                {t("animals.outdoor_journal_onboarding.done_body")}
+                {t("animals.herds_onboarding.step2_body")}
+              </H3>
+            </View>
+          )}
+
+          {step === 3 && (
+            <View>
+              <H1 style={{ color: theme.colors.primary }}>
+                {t("animals.herds_onboarding.step3_heading")}
+              </H1>
+              <H3
+                style={{
+                  color: theme.colors.primary,
+                  marginTop: theme.spacing.s,
+                }}
+              >
+                {t("animals.herds_onboarding.step3_body")}
               </H3>
             </View>
           )}

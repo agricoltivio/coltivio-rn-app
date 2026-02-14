@@ -28,7 +28,7 @@ export function TreatmentsScreen({ navigation }: TreatmentsScreenProps) {
     if (!treatments) return [];
     const years = new Set<string>();
     for (const treatment of treatments) {
-      years.add(new Date(treatment.date).getFullYear().toString());
+      years.add(new Date(treatment.startDate).getFullYear().toString());
     }
     return [...years].sort((a, b) => Number(b) - Number(a));
   }, [treatments]);
@@ -49,7 +49,7 @@ export function TreatmentsScreen({ navigation }: TreatmentsScreenProps) {
     const sanitized = treatments.map((tr) => ({
       ...tr,
       formattedDate: formatLocalizedDate(
-        new Date(tr.date),
+        new Date(tr.startDate),
         locale,
         "long",
         false,
@@ -66,7 +66,7 @@ export function TreatmentsScreen({ navigation }: TreatmentsScreenProps) {
     let filtered = sanitized;
     if (selectedYears.size > 0) {
       filtered = filtered.filter((tr) =>
-        selectedYears.has(new Date(tr.date).getFullYear().toString()),
+        selectedYears.has(new Date(tr.startDate).getFullYear().toString()),
       );
     }
 
@@ -82,7 +82,7 @@ export function TreatmentsScreen({ navigation }: TreatmentsScreenProps) {
     // Group by year
     const grouped: Record<number, typeof filtered> = {};
     for (const item of filtered) {
-      const year = new Date(item.date).getFullYear();
+      const year = new Date(item.startDate).getFullYear();
       if (!grouped[year]) grouped[year] = [];
       grouped[year].push(item);
     }

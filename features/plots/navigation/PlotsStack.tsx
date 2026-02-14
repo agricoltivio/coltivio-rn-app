@@ -14,6 +14,7 @@ import { PlotCropProtectionApplicationsScreen } from "../PlotCropProtectionAplli
 import { PlotFertilizerApplicationsScreen } from "../PlotFertilizerApllicationsScreen";
 import { PlotHarvestsScreen } from "../PlotHarvestsScreen";
 import { SplitPlotMapScreen } from "../SplitPlotMapScreen";
+import { SplitPlotOnboardingScreen } from "../SplitPlotOnboardingScreen";
 import { SplitPlotSummaryScreen } from "../SplitPlotSummaryScreen";
 
 export function renderPlotsStack() {
@@ -110,6 +111,12 @@ export function renderPlotsStack() {
         title: "",
       }}
       component={PlotTillagesScreen}
+    />,
+    <Stack.Screen
+      key="split-plot-onboarding"
+      name="SplitPlotOnboarding"
+      component={SplitPlotOnboardingScreen}
+      options={{ headerShown: false }}
     />,
     <Stack.Screen
       key="split-plot-map"

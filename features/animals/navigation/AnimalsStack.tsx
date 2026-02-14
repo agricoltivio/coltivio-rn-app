@@ -22,7 +22,7 @@ import { HerdsScreen } from "../HerdsScreen";
 import { CreateHerdScreen } from "../CreateHerdScreen";
 import { HerdEditScreen } from "../HerdEditScreen";
 import { OutdoorJournalScreen } from "../OutdoorJournalScreen";
-import { OutdoorJournalOnboardingScreen } from "../OutdoorJournalOnboardingScreen";
+import { HerdsOnboardingScreen } from "../HerdsOnboardingScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { DefaultTheme } from "styled-components/native";
 
@@ -173,10 +173,10 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
       component={OutdoorJournalScreen}
     />,
     <Stack.Screen
-      key="outdoor-journal-onboarding"
-      name="OutdoorJournalOnboarding"
+      key="herds-onboarding"
+      name="HerdsOnboarding"
       options={{ headerShown: false }}
-      component={OutdoorJournalOnboardingScreen}
+      component={HerdsOnboardingScreen}
     />,
   ];
 }

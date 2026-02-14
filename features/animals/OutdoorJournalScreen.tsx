@@ -9,25 +9,17 @@ import {
 } from "react-native";
 import { useTheme } from "styled-components/native";
 import { Ionicons } from "@expo/vector-icons";
-import { useMemo, useCallback, useState, useEffect } from "react";
+import { useMemo, useCallback, useState } from "react";
 import { useOutdoorJournalQuery } from "./outdoor-journal.hooks";
 import { buildJournalTimelineData } from "./timeline/outdoor-journal-timeline-utils";
 import { OutdoorScheduleTimeline } from "./timeline/OutdoorScheduleTimeline";
-import { useLocalSettings } from "../user/LocalSettingsContext";
 import { OutdoorJournalScreenProps } from "./navigation/animals-routes";
 
 export function OutdoorJournalScreen({ navigation }: OutdoorJournalScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { localSettings } = useLocalSettings();
   const { data } = useOutdoorJournalQuery();
 
-  // Redirect to onboarding on first visit
-  useEffect(() => {
-    if (!localSettings.outdoorJournalOnboardingCompleted) {
-      navigation.replace("OutdoorJournalOnboarding");
-    }
-  }, []);
   const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set());
 
   // Categories present in the data

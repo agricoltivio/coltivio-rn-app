@@ -4,17 +4,26 @@ import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList, View } from "react-native";
 import { useTheme } from "styled-components/native";
+import { useLocalSettings } from "../user/LocalSettingsContext";
 import { useHerdsQuery } from "./herds.hooks";
 import { HerdsScreenProps } from "./navigation/animals-routes";
 
 export function HerdsScreen({ navigation }: HerdsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { localSettings } = useLocalSettings();
   const { herds: unsortedHerds, isLoading } = useHerdsQuery();
+
+  // Redirect to onboarding on first visit
+  useEffect(() => {
+    if (!localSettings.herdsOnboardingCompleted) {
+      navigation.replace("HerdsOnboarding" as never);
+    }
+  }, []);
   const herds = unsortedHerds?.slice().sort((a, b) => a.name.localeCompare(b.name));
 
   const renderItem = useCallback(

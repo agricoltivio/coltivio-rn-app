@@ -26,7 +26,7 @@ export function renderFieldCalendarStack(theme: DefaultTheme, navigation: any) {
               />
               <Ionicons
                 size={35}
-                name="download-outline"
+                name="share-outline"
                 color={theme.colors.primary}
                 onPress={() => navigation.navigate("FieldCalendarExport")}
               />

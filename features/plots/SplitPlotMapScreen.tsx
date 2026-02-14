@@ -28,6 +28,7 @@ import { LatLng, MapPressEvent, Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
 import { MapShowLocationToggle } from "../map/MapShowLocationToggle";
 import { TopLeftBackButton } from "../map/TopLeftBackButton";
+import { useLocalSettings } from "../user/LocalSettingsContext";
 import { SplitPlotMapScreenProps } from "./navigation/plots-routes";
 import { useFarmPlotsQuery } from "./plots.hooks";
 import { SubPlotData, useSplitPlotStore } from "./split-plot.store";
@@ -40,9 +41,17 @@ export function SplitPlotMapScreen({
 }: SplitPlotMapScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { localSettings } = useLocalSettings();
   const { plotId } = route.params;
   const { plots } = useFarmPlotsQuery();
   const splitPlotStore = useSplitPlotStore();
+
+  // Show onboarding on first visit
+  useEffect(() => {
+    if (!localSettings.splitPlotOnboardingCompleted) {
+      navigation.navigate("SplitPlotOnboarding" as never);
+    }
+  }, []);
 
   const [mapVisible, setMapVisible] = useState(false);
   const [showsUserLocation, setShowsUserLocation] = useState(false);

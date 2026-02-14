@@ -335,6 +335,14 @@
       "split": "Aufteilen",
       "merge": "Zusammenführen"
     },
+    "split_onboarding": {
+      "welcome_heading": "Schlag aufteilen",
+      "welcome_body": "Teile einen Schlag in mehrere Teile auf. Du kannst eine Linie zeichnen oder eine Fläche ausschneiden.",
+      "line_heading": "Linie zeichnen",
+      "line_body": "Zeichne eine Linie quer über den Schlag, um ihn in zwei Teile zu teilen. Tippe auf die Karte, um Punkte zu setzen, und bestätige mit dem Schneiden-Symbol.",
+      "area_heading": "Fläche ausschneiden",
+      "area_body": "Zeichne ein Polygon innerhalb des Schlags, um eine neue Fläche auszuschneiden. Dies ist nützlich, wenn du einen bestimmten Bereich abtrennen möchtest."
+    },
     "split": {
       "heading": "Schlag aufteilen",
       "mode_line": "Linie",
@@ -960,6 +968,11 @@
     "no_herds": "Keine Herden",
     "animals_in_herd": "Tiere in der Herde",
     "outdoor_schedules": "Auslauf",
+    "outdoor_type": "Typ",
+    "outdoor_types": {
+      "pasture": "Weide",
+      "exercise_yard": "Laufhof"
+    },
     "new_outdoor_schedule": "Neuer Auslauf",
     "edit_outdoor_schedule": "Auslauf bearbeiten",
     "start_date": "Startdatum",
@@ -988,11 +1001,13 @@
     "uncategorized_animals_warning": "{{count}} Tiere ohne Kategorie",
     "auto_category": "Automatische Kategorie",
     "category_override_info": "Diesem Tier konnte keine automatische Kategorie zugewiesen werden. Eine Kategorie kann manuell festgelegt werden.",
-    "outdoor_journal_onboarding": {
-      "welcome_heading": "Auslaufjournal",
-      "welcome_body": "Das Journal wird automatisch aus den Auslaufplänen deiner Herden und den Tierkategorien erstellt.",
-      "done_heading": "Geschafft!",
-      "done_body": "Du kannst das Journal jederzeit über die Tierhaltung aufrufen."
+    "herds_onboarding": {
+      "step1_heading": "Herden & Auslauf",
+      "step1_body": "Gruppiere deine Tiere in Herden und erstelle Auslaufpläne. Diese werden automatisch für das Auslaufjournal verwendet.",
+      "step2_heading": "Auslaufpläne verwalten",
+      "step2_body": "Wenn sich ein Auslaufplan ändert, bearbeite den bestehenden Plan nicht. Setze stattdessen das «Bis»-Datum und erstelle einen neuen Plan. So bleibt die Historie im Auslaufjournal erhalten.",
+      "step3_heading": "Geschafft!",
+      "step3_body": "Du kannst jetzt Herden erstellen und Auslaufpläne definieren."
     },
     "tvd_import": {
       "title": "TVD Import",
@@ -1052,6 +1067,7 @@
     "select_animal": "Tier auswählen",
     "select_drug": "Medikament auswählen (optional)",
     "treatment_date": "Behandlungsdatum",
+    "treatment_end_date": "Enddatum",
     "reason": "Grund",
     "milk_usable_date": "Milch verwendbar ab",
     "meat_usable_date": "Fleisch verwendbar ab",

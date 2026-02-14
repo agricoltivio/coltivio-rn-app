@@ -407,7 +407,7 @@ export function AnimalDetailsScreen({
                   <ListItem.Content>
                     <ListItem.Title>{treatment.name}</ListItem.Title>
                     <ListItem.Body>
-                      {formatLocalizedDate(new Date(treatment.date), locale)}
+                      {formatLocalizedDate(new Date(treatment.startDate), locale)}
                     </ListItem.Body>
                   </ListItem.Content>
                   <ListItem.Chevron />

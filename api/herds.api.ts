@@ -20,6 +20,7 @@ export type HerdUpdateResponse =
   components["schemas"]["PatchV1AnimalsHerdsByIdHerdIdPositiveResponse"]["data"];
 
 export type OutdoorSchedule = Herd["outdoorSchedules"][number];
+export type OutdoorScheduleType = OutdoorSchedule["type"];
 
 export type OutdoorScheduleCreateInput =
   components["schemas"]["PostV1AnimalsHerdsByIdHerdIdOutdoorSchedulesRequestBody"];
@@ -71,9 +72,7 @@ export function herdsApi(client: FetchClient) {
       });
     },
 
-    async getOutdoorSchedules(
-      herdId: string,
-    ): Promise<OutdoorSchedule[]> {
+    async getOutdoorSchedules(herdId: string): Promise<OutdoorSchedule[]> {
       const { data } = await client.GET(
         "/v1/animals/herds/byId/{herdId}/outdoorSchedules",
         { params: { path: { herdId } } },

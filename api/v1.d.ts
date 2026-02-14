@@ -1092,7 +1092,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/reports/fieldcalendar": {
+    "/v1/reports/fieldcalendar/email": {
         parameters: {
             query?: never;
             header?: never;
@@ -1101,7 +1101,39 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["PostV1ReportsFieldcalendar"];
+        post: operations["PostV1ReportsFieldcalendarEmail"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/reports/fieldcalendar/download": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1ReportsFieldcalendarDownload"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/reports/treatments/download": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1ReportsTreatmentsDownload"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2714,7 +2746,11 @@ export interface components {
             localId?: string;
             usage?: number;
             additionalUsages?: string;
-            cuttingDate?: unknown;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            cuttingDate?: string | null;
             geometry: {
                 /** @constant */
                 type: "MultiPolygon";
@@ -2730,7 +2766,11 @@ export interface components {
             localId?: string;
             usage?: number;
             additionalUsages?: string;
-            cuttingDate?: unknown;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            cuttingDate?: string | null;
             geometry: {
                 /** @constant */
                 type: "MultiPolygon";
@@ -4847,10 +4887,10 @@ export interface components {
                 inUse: boolean;
             };
         };
-        PostV1ReportsFieldcalendarPositiveResponse: {
+        PostV1ReportsFieldcalendarEmailPositiveResponse: {
             data: Record<string, never>;
         };
-        PostV1ReportsFieldcalendarRequestBody: {
+        PostV1ReportsFieldcalendarEmailRequestBody: {
             /**
              * Format: date-time
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -4866,6 +4906,48 @@ export interface components {
             generateFertilizerApplications: boolean;
             generateCropProtectionApplications: boolean;
             generateHarvests: boolean;
+        };
+        PostV1ReportsFieldcalendarDownloadPositiveResponse: {
+            data: {
+                base64: string;
+                fileName: string;
+            };
+        };
+        PostV1ReportsFieldcalendarDownloadRequestBody: {
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            fromDate: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            toDate: string;
+            generateCropRotations: boolean;
+            generateTillages: boolean;
+            generateFertilizerApplications: boolean;
+            generateCropProtectionApplications: boolean;
+            generateHarvests: boolean;
+        };
+        PostV1ReportsTreatmentsDownloadPositiveResponse: {
+            data: {
+                base64: string;
+                fileName: string;
+            };
+        };
+        PostV1ReportsTreatmentsDownloadRequestBody: {
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            fromDate: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            toDate: string;
+            animalTypes?: ("goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer")[];
         };
         GetV1AnimalsParameterAnimalTypes: ("goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer")[];
         GetV1AnimalsPositiveResponse: {
@@ -5266,7 +5348,12 @@ export interface components {
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
-                    date: string;
+                    startDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    endDate: string;
                     name: string;
                     notes: string | null;
                     /**
@@ -5549,6 +5636,8 @@ export interface components {
                          * @description YYYY-MM-DDTHH:mm:ss.sssZ
                          */
                         endDate: string | null;
+                        /** @enum {string} */
+                        type: "pasture" | "exercise_yard";
                         notes: string | null;
                         recurrence: {
                             id: string;
@@ -5631,6 +5720,8 @@ export interface components {
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     endDate: string | null;
+                    /** @enum {string} */
+                    type: "pasture" | "exercise_yard";
                     notes: string | null;
                     recurrence: {
                         id: string;
@@ -5675,6 +5766,8 @@ export interface components {
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     endDate: string | null;
+                    /** @enum {string} */
+                    type: "pasture" | "exercise_yard";
                     notes: string | null;
                     recurrence: {
                         id: string;
@@ -5705,6 +5798,8 @@ export interface components {
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 endDate: string | null;
+                /** @enum {string} */
+                type: "pasture" | "exercise_yard";
                 notes: string | null;
                 recurrence: {
                     id: string;
@@ -5729,6 +5824,8 @@ export interface components {
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
             endDate?: string | null;
+            /** @enum {string} */
+            type: "pasture" | "exercise_yard";
             notes?: string | null;
             recurrence?: {
                 /** @enum {string} */
@@ -5755,6 +5852,8 @@ export interface components {
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 endDate: string | null;
+                /** @enum {string} */
+                type: "pasture" | "exercise_yard";
                 notes: string | null;
                 recurrence: {
                     id: string;
@@ -5783,6 +5882,8 @@ export interface components {
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 endDate: string | null;
+                /** @enum {string} */
+                type: "pasture" | "exercise_yard";
                 notes: string | null;
                 recurrence: {
                     id: string;
@@ -5807,6 +5908,8 @@ export interface components {
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
             endDate?: string | null;
+            /** @enum {string} */
+            type?: "pasture" | "exercise_yard";
             notes?: string | null;
             recurrence?: {
                 /** @enum {string} */
@@ -6057,7 +6160,12 @@ export interface components {
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
-                    date: string;
+                    startDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    endDate: string;
                     name: string;
                     notes: string | null;
                     /**
@@ -6160,7 +6268,12 @@ export interface components {
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
-                date: string;
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate: string;
                 name: string;
                 notes: string | null;
                 /**
@@ -6193,7 +6306,12 @@ export interface components {
              * Format: date-time
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
-            date: string;
+            startDate: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            endDate: string;
             name: string;
             notes?: string;
             /**
@@ -6237,7 +6355,12 @@ export interface components {
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
-                date: string;
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate: string;
                 name: string;
                 notes: string | null;
                 /**
@@ -6338,7 +6461,12 @@ export interface components {
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
-                date: string;
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate: string;
                 name: string;
                 notes: string | null;
                 /**
@@ -6371,7 +6499,12 @@ export interface components {
              * Format: date-time
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
-            date?: string;
+            startDate?: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            endDate?: string;
             name?: string;
             notes?: string;
             /**
@@ -12985,30 +13118,98 @@ export interface operations {
             };
         };
     };
-    PostV1ReportsFieldcalendar: {
+    PostV1ReportsFieldcalendarEmail: {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** @description POST /v1/reports/fieldcalendar Request body */
+        /** @description POST /v1/reports/fieldcalendar/email Request body */
         requestBody: {
             content: {
-                "application/json": components["schemas"]["PostV1ReportsFieldcalendarRequestBody"];
+                "application/json": components["schemas"]["PostV1ReportsFieldcalendarEmailRequestBody"];
             };
         };
         responses: {
-            /** @description POST /v1/reports/fieldcalendar Positive response */
+            /** @description POST /v1/reports/fieldcalendar/email Positive response */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1ReportsFieldcalendarPositiveResponse"];
+                    "application/json": components["schemas"]["PostV1ReportsFieldcalendarEmailPositiveResponse"];
                 };
             };
-            /** @description POST /v1/reports/fieldcalendar Negative response */
+            /** @description POST /v1/reports/fieldcalendar/email Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1ReportsFieldcalendarDownload: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/reports/fieldcalendar/download Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1ReportsFieldcalendarDownloadRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/reports/fieldcalendar/download Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1ReportsFieldcalendarDownloadPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/reports/fieldcalendar/download Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1ReportsTreatmentsDownload: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/reports/treatments/download Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1ReportsTreatmentsDownloadRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/reports/treatments/download Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1ReportsTreatmentsDownloadPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/reports/treatments/download Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;

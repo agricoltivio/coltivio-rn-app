@@ -45,7 +45,8 @@ const DOSE_PER_UNITS: DosePerUnit[] = ["animal", "kg", "day", "total_amount"];
 
 interface TreatmentFormValues {
   drugId?: string;
-  date: Date;
+  startDate: Date;
+  endDate: Date;
   name: string;
   notes?: string;
   milkUsableDate?: Date;
@@ -85,7 +86,8 @@ export function EditTreatmentScreen({
     values: treatment
       ? {
           drugId: treatment.drugId || undefined,
-          date: new Date(treatment.date),
+          startDate: new Date(treatment.startDate),
+          endDate: new Date(treatment.endDate),
           name: treatment.name,
           notes: treatment.notes || undefined,
           milkUsableDate: treatment.milkUsableDate
@@ -115,7 +117,7 @@ export function EditTreatmentScreen({
   }, [preselectedDrugId, setValue]);
 
   const selectedDrugId = useWatch({ control, name: "drugId" });
-  const treatmentDate = useWatch({ control, name: "date" });
+  const treatmentDate = useWatch({ control, name: "startDate" });
 
   const selectedAnimals = useMemo(() => {
     return animals?.filter((a) => selectedAnimalIds.includes(a.id)) ?? [];
@@ -230,7 +232,8 @@ export function EditTreatmentScreen({
       id: treatmentId,
       animalIds: selectedAnimalIds,
       drugId: data.drugId || null,
-      date: data.date.toISOString(),
+      startDate: data.startDate.toISOString(),
+      endDate: data.endDate.toISOString(),
       name: data.name,
       notes: data.notes,
       milkUsableDate: data.milkUsableDate?.toISOString() ?? null,
@@ -365,7 +368,7 @@ export function EditTreatmentScreen({
           </View>
 
           <RHDatePicker
-            name="date"
+            name="startDate"
             control={control}
             label={t("treatments.treatment_date")}
             mode="date"
@@ -375,7 +378,20 @@ export function EditTreatmentScreen({
                 message: t("forms.validation.required"),
               },
             }}
-            error={errors.date?.message}
+            error={errors.startDate?.message}
+          />
+          <RHDatePicker
+            name="endDate"
+            control={control}
+            label={t("treatments.treatment_end_date")}
+            mode="date"
+            rules={{
+              required: {
+                value: true,
+                message: t("forms.validation.required"),
+              },
+            }}
+            error={errors.endDate?.message}
           />
 
           <View
