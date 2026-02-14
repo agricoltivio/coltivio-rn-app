@@ -6,7 +6,12 @@ import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { Ionicons } from "@expo/vector-icons";
-import { Control, FieldErrors, UseFormSetValue, useWatch } from "react-hook-form";
+import {
+  Control,
+  FieldErrors,
+  UseFormSetValue,
+  useWatch,
+} from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -78,12 +83,29 @@ export function AnimalForm({
   ];
 
   const categoryOverrideData = [
-    "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9",
-    "B1", "B2", "B3",
-    "C1", "C2",
-    "D1", "D2", "D3",
-    "E1", "E2", "E3", "E4",
-    "F1", "F2",
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "A6",
+    "A7",
+    "A8",
+    "A9",
+    "B1",
+    "B2",
+    "B3",
+    "C1",
+    "C2",
+    "D1",
+    "D2",
+    "D3",
+    "E1",
+    "E2",
+    "E3",
+    "E4",
+    "F1",
+    "F2",
   ].map((val) => ({ label: val, value: val }));
 
   const herdData =
@@ -94,7 +116,7 @@ export function AnimalForm({
 
   // Show override controls when server says override is required OR when user has already set one
   const showCategoryOverride =
-    requiresCategoryOverride || categoryOverride != null;
+    true || requiresCategoryOverride || categoryOverride != null;
 
   // Use provided earTagData (for edit screen with current tag) or available ear tags
   const earTagSelectData =
@@ -202,7 +224,11 @@ export function AnimalForm({
                 gap: theme.spacing.xs,
               }}
             >
-              <Ionicons name="alert-circle" size={20} color={theme.colors.yellow} />
+              <Ionicons
+                name="alert-circle"
+                size={20}
+                color={theme.colors.yellow}
+              />
               <Subtitle style={{ flex: 1 }}>
                 {t("animals.category_override_info")}
               </Subtitle>
@@ -210,7 +236,10 @@ export function AnimalForm({
           )}
           {/* Inverted switch: ON = auto category, OFF = manual override */}
           <Switch
-            style={{ marginTop: theme.spacing.m, marginBottom: theme.spacing.xs }}
+            style={{
+              marginTop: theme.spacing.m,
+              marginBottom: theme.spacing.xs,
+            }}
             value={categoryOverride == null}
             onChange={() => {
               if (categoryOverride == null) {

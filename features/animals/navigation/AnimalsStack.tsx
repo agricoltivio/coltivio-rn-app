@@ -22,6 +22,8 @@ import { HerdsScreen } from "../HerdsScreen";
 import { CreateHerdScreen } from "../CreateHerdScreen";
 import { HerdEditScreen } from "../HerdEditScreen";
 import { OutdoorJournalScreen } from "../OutdoorJournalScreen";
+import { OutdoorJournalExportScreen } from "../OutdoorJournalExportScreen";
+import { TreatmentsExportScreen } from "../TreatmentsExportScreen";
 import { HerdsOnboardingScreen } from "../HerdsOnboardingScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { DefaultTheme } from "styled-components/native";
@@ -115,8 +117,26 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
     <Stack.Screen
       key="treatments"
       name="Treatments"
-      options={{ title: "" }}
+      options={{
+        title: "",
+        headerRight() {
+          return (
+            <Ionicons
+              size={35}
+              name="share-outline"
+              color={theme.colors.primary}
+              onPress={() => navigation.navigate("TreatmentsExport")}
+            />
+          );
+        },
+      }}
       component={TreatmentsScreen}
+    />,
+    <Stack.Screen
+      key="treatments-export"
+      name="TreatmentsExport"
+      options={{ title: "" }}
+      component={TreatmentsExportScreen}
     />,
 <Stack.Screen
       key="create-treatment"
@@ -169,8 +189,26 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
     <Stack.Screen
       key="outdoor-journal"
       name="OutdoorJournal"
-      options={{ title: "" }}
+      options={{
+        title: "",
+        headerRight() {
+          return (
+            <Ionicons
+              size={35}
+              name="share-outline"
+              color={theme.colors.primary}
+              onPress={() => navigation.navigate("OutdoorJournalExport")}
+            />
+          );
+        },
+      }}
       component={OutdoorJournalScreen}
+    />,
+    <Stack.Screen
+      key="outdoor-journal-export"
+      name="OutdoorJournalExport"
+      options={{ title: "" }}
+      component={OutdoorJournalExportScreen}
     />,
     <Stack.Screen
       key="herds-onboarding"

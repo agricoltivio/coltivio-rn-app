@@ -28,34 +28,46 @@ export function CommandPalette({
   const theme = useTheme();
   return (
     <MapControls>
-      <MaterialCommunityIconButton
-        style={{
-          backgroundColor:
-            action !== "select" ? theme.colors.primary : theme.colors.accent,
-        }}
-        type="accent"
-        color={action !== "select" ? "white" : "black"}
-        iconSize={30}
-        icon="vector-polygon"
-        // disabled={action !== "select"}
-        onPress={onDraw}
-      />
-      <MaterialCommunityIconButton
+      {action === "select" ? (
+        <MaterialCommunityIconButton
+          style={{
+            // backgroundColor:
+            //   action !== "select" ? theme.colors.primary : theme.colors.accent,
+            backgroundColor: theme.colors.accent,
+          }}
+          type="accent"
+          // color={action !== "select" ? "white" : "black"}
+          color="black"
+          iconSize={30}
+          icon="vector-polygon"
+          // disabled={action !== "select"}
+          onPress={onDraw}
+        />
+      ) : (
+        <MaterialCommunityIconButton
+          type="accent"
+          color="red"
+          iconSize={30}
+          icon="close-circle-outline"
+          onPress={onDraw}
+        />
+      )}
+      {/* <MaterialCommunityIconButton
         type="accent"
         color="black"
         iconSize={30}
         icon="undo-variant"
         disabled={action === "select"}
         onPress={onUndo}
-      />
-      <MaterialCommunityIconButton
+      /> */}
+      {/* <MaterialCommunityIconButton
         type="accent"
         color={action !== "select" ? "red" : "black"}
         iconSize={30}
         icon="trash-can-outline"
         disabled={action === "select"}
         onPress={onDelete}
-      />
+      /> */}
       <MaterialCommunityIconButton
         // type={action === "draw" ? "success" : "accent"}
         type="accent"

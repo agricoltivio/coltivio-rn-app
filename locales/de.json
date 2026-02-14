@@ -858,6 +858,13 @@
       "export_success_heading": "Feldkalender erfolgreich exportiert",
       "export_sent_to": "Das Dokument wurde an {{email}} gesendet.",
       "export_mail_being_deliverd": "Es kann einen Moment dauern, bis das Mail im Postfach ist. Falls das Mail nicht ankommt, schaue bitte in deinen Spam Ordner."
+    },
+    "treatments": {
+      "heading": "Behandlungen Export",
+      "select_animal_types": "Tierarten auswählen"
+    },
+    "outdoor_journal": {
+      "heading": "Auslaufjournal Export"
     }
   },
   "agri_coltivio": {

@@ -230,23 +230,26 @@ export function SplitPlotMapScreen({
         {activeToolMode !== "polygon" && (
           <MapControls>
             {/* Polyline mode toggle */}
-            <MaterialCommunityIconButton
-              style={{
-                backgroundColor:
-                  activeToolMode === "polyline"
-                    ? theme.colors.primary
-                    : theme.colors.accent,
-              }}
-              type="accent"
-              color={activeToolMode === "polyline" ? "white" : "black"}
-              iconSize={30}
-              icon="vector-polyline-plus"
-              onPress={() =>
-                setActiveToolMode((prev) =>
-                  prev === "polyline" ? "none" : "polyline",
-                )
-              }
-            />
+            {activeToolMode === "none" ? (
+              <MaterialCommunityIconButton
+                style={{
+                  backgroundColor: theme.colors.accent,
+                }}
+                type="accent"
+                color={"black"}
+                iconSize={30}
+                icon="vector-polyline-plus"
+                onPress={() => setActiveToolMode("polyline")}
+              />
+            ) : (
+              <MaterialCommunityIconButton
+                type="accent"
+                color="red"
+                iconSize={30}
+                icon="close-circle-outline"
+                onPress={() => setActiveToolMode("none")}
+              />
+            )}
             {/* Polygon mode toggle */}
             {activeToolMode === "none" && (
               <MaterialCommunityIconButton

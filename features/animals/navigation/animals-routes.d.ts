@@ -26,6 +26,7 @@ export type AnimalsStackParamList = {
     previousScreen?: "CreateTreatment" | "EditTreatment";
   };
   Treatments: undefined;
+  TreatmentsExport: undefined;
   CreateTreatment: { animalIds?: string[]; drugId?: string };
   EditTreatment: {
     treatmentId?: string;
@@ -35,6 +36,7 @@ export type AnimalsStackParamList = {
   TvdImport: undefined;
   Herds: undefined;
   OutdoorJournal: undefined;
+  OutdoorJournalExport: undefined;
   HerdsOnboarding: undefined;
   CreateHerd: { previousScreen?: "CreateAnimal" | "EditAnimal"; animalIds?: string[] };
   HerdEdit: { herdId?: string; animalIds?: string[] };
@@ -63,6 +65,8 @@ export type AnimalsSettingsScreenProps =
 export type TvdImportScreenProps = StackScreenProps<"TvdImport">;
 export type HerdsScreenProps = StackScreenProps<"Herds">;
 export type OutdoorJournalScreenProps = StackScreenProps<"OutdoorJournal">;
+export type OutdoorJournalExportScreenProps = StackScreenProps<"OutdoorJournalExport">;
+export type TreatmentsExportScreenProps = StackScreenProps<"TreatmentsExport">;
 export type HerdsOnboardingScreenProps =
   StackScreenProps<"HerdsOnboarding">;
 export type CreateHerdScreenProps = StackScreenProps<"CreateHerd">;

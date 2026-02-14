@@ -52,6 +52,10 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
   const [sheetIndex, setSheetIndex] = useState(0);
   const [areaModalVisible, setAreaModalVisible] = useState(false);
   const snapPoints = useMemo(() => [200, "85%"], []);
+  const regionRef = useRef({
+    latitudeDelta: 0.0025,
+    longitudeDelta: 0.0025,
+  });
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => {
@@ -89,13 +93,14 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
       handleDismissBottomDrawer();
       setSelectedPlotId(null);
     } else {
+      const currentRegion = regionRef?.current;
       const centroid = turf.centroid(plot.geometry);
       const [longitude, latitude] = centroid.geometry.coordinates;
       mapRef.current?.animateToRegion({
         latitude,
         longitude,
-        latitudeDelta: 0.0025,
-        longitudeDelta: 0.0025,
+        latitudeDelta: currentRegion.latitudeDelta,
+        longitudeDelta: currentRegion.longitudeDelta,
       });
       setSelectedPlotId(plot.id);
       handleExpandBottomDrawer();
@@ -157,6 +162,9 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
         }
         style={{
           ...StyleSheet.absoluteFillObject,
+        }}
+        onRegionChangeComplete={(region) => {
+          regionRef.current = region;
         }}
         initialRegion={initialRegion}
         showsUserLocation={showsUserLocation}
@@ -242,6 +250,12 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
                   label={t("forms.labels.local_id")}
                   value={selectedPlot.localId ?? t("common.unknown")}
                 />
+                {selectedPlot.usage && (
+                  <SummaryItem
+                    label={t("forms.labels.usagecode")}
+                    value={selectedPlot.usage}
+                  />
+                )}
                 {selectedPlot.cuttingDate ? (
                   <SummaryItem
                     label={t("forms.labels.cutting_date")}

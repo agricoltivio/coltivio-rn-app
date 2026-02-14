@@ -1140,6 +1140,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/reports/outdoorjournal/download": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1ReportsOutdoorjournalDownload"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/animals": {
         parameters: {
             query?: never;
@@ -1790,8 +1806,7 @@ export interface components {
                     federalFarmId: string;
                     localId: string | null;
                     usage: number;
-                    additionalUsages: string | null;
-                    area: number;
+                    size: number;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -1823,8 +1838,7 @@ export interface components {
                     federalFarmId: string;
                     localId: string | null;
                     usage: number;
-                    additionalUsages: string | null;
-                    area: number;
+                    size: number;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -1848,8 +1862,7 @@ export interface components {
                     federalFarmId: string;
                     localId: string | null;
                     usage: number;
-                    additionalUsages: string | null;
-                    area: number;
+                    size: number;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -1872,8 +1885,7 @@ export interface components {
                     federalFarmId: string;
                     localId: string | null;
                     usage: number;
-                    additionalUsages: string | null;
-                    area: number;
+                    size: number;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -2028,7 +2040,6 @@ export interface components {
                     name: string;
                     localId: string | null;
                     usage: number | null;
-                    additionalUsages: string | null;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -2092,7 +2103,6 @@ export interface components {
                 name: string;
                 localId: string | null;
                 usage: number | null;
-                additionalUsages: string | null;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -2172,7 +2182,6 @@ export interface components {
                 name: string;
                 localId: string | null;
                 usage: number | null;
-                additionalUsages: string | null;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -2237,7 +2246,6 @@ export interface components {
                 name: string;
                 localId: string | null;
                 usage: number | null;
-                additionalUsages: string | null;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -2589,7 +2597,6 @@ export interface components {
                     name: string;
                     localId: string | null;
                     usage: number | null;
-                    additionalUsages: string | null;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -2681,7 +2688,6 @@ export interface components {
                 name: string;
                 localId: string | null;
                 usage: number | null;
-                additionalUsages: string | null;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -4948,6 +4954,24 @@ export interface components {
              */
             toDate: string;
             animalTypes?: ("goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer")[];
+        };
+        PostV1ReportsOutdoorjournalDownloadPositiveResponse: {
+            data: {
+                base64: string;
+                fileName: string;
+            };
+        };
+        PostV1ReportsOutdoorjournalDownloadRequestBody: {
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            fromDate: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            toDate: string;
         };
         GetV1AnimalsParameterAnimalTypes: ("goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer")[];
         GetV1AnimalsPositiveResponse: {
@@ -13210,6 +13234,40 @@ export interface operations {
                 };
             };
             /** @description POST /v1/reports/treatments/download Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1ReportsOutdoorjournalDownload: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/reports/outdoorjournal/download Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1ReportsOutdoorjournalDownloadRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/reports/outdoorjournal/download Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1ReportsOutdoorjournalDownloadPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/reports/outdoorjournal/download Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;

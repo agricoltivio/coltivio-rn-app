@@ -13,7 +13,7 @@
     "eas:build-sim": "eas build -p ios --profile development-simulator",
     "eas:build-dev-ios": "eas build --profile development --platform ios",
     "eas:build-preview-ios": "eas build --profile preview --platform ios",
-    "eas:build-dev-android": "eas build --profile development --platform android",
+    "eas:build-dev-android": "APP_VARIANT=development eas build --profile development --platform android",
     "eas:install": "eas build:run -p ios",
     "expo:update": "yarn expo install expo@latest && npx expo install --fix"
   },
