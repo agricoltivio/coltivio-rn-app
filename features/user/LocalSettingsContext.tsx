@@ -4,6 +4,7 @@ import {
   PropsWithChildren,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import {
@@ -28,6 +29,7 @@ type LocalSettingsData = {
   splitPlotOnboardingCompleted: boolean;
   mergePlotsOnboardingCompleted: boolean;
   herdsOnboardingCompleted: boolean;
+  onboardingsDisabled: boolean;
 };
 
 type LocalSettingActions = {
@@ -55,6 +57,7 @@ export const defaultLocalSettings: LocalSettingsData = {
   splitPlotOnboardingCompleted: false,
   mergePlotsOnboardingCompleted: false,
   herdsOnboardingCompleted: false,
+  onboardingsDisabled: false,
 };
 
 export const LocalSettingsContext = createContext<LocalSettings>({
@@ -133,6 +136,28 @@ export function LocalSettingsProvider({ children }: PropsWithChildren) {
 }
 
 export function useLocalSettings() {
-  const value = useContext(LocalSettingsContext);
-  return value;
+  const { localSettings, updateLocalSettings } =
+    useContext(LocalSettingsContext);
+
+  // When onboardingsDisabled is true, all onboarding flags appear as completed
+  // without overwriting the real stored values
+  const effectiveSettings = useMemo(() => {
+    if (!localSettings.onboardingsDisabled) return localSettings;
+    return {
+      ...localSettings,
+      editPlotOnboardingCompleted: true,
+      fieldCalendarOnboardingCompleted: true,
+      animalsOnboardingCompleted: true,
+      mapDrawOnboardingCompleted: true,
+      addPlotDrawOnboardingCompleted: true,
+      addPlotParcelOnboardingCompleted: true,
+      selectPlotsForPlanOnboardingCompleted: true,
+      plotsMapOnboardingCompleted: true,
+      splitPlotOnboardingCompleted: true,
+      mergePlotsOnboardingCompleted: true,
+      herdsOnboardingCompleted: true,
+    };
+  }, [localSettings]);
+
+  return { localSettings: effectiveSettings, updateLocalSettings };
 }

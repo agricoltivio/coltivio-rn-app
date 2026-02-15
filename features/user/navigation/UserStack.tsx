@@ -3,6 +3,7 @@ import { ChangeEmailScreen } from "../ChangeEmailScreen";
 import { ChangePasswordScren } from "../ChangePasswordScreen";
 import { ChangeUserNameScreen } from "../ChangeUserNameScreen";
 import { UserAccountScreen } from "../UserAccountScreen";
+import { UserSettingsScreen } from "../UserSettingsScreen";
 import { EmailVerifiedScreen } from "../EmailVerifiedScreen";
 import { ChangeEmailPendingScreen } from "../ChangeEmailPendingScreen";
 
@@ -12,6 +13,14 @@ export function renderUserStack() {
       key="user-account"
       name="UserAccount"
       component={UserAccountScreen}
+      options={{
+        title: "",
+      }}
+    />,
+    <Stack.Screen
+      key="user-settings"
+      name="UserSettings"
+      component={UserSettingsScreen}
       options={{
         title: "",
       }}

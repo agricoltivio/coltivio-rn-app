@@ -2,6 +2,7 @@ import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type UserStackParamList = {
   UserAccount: undefined;
+  UserSettings: undefined;
   ChangeUserName: undefined;
   ChangeEmail: undefined;
   ChangeEmailPending: { newEmail: string };
@@ -10,6 +11,7 @@ export type UserStackParamList = {
 };
 
 export type UserAccountScreenProps = StackScreenProps<"UserAccount">;
+export type UserSettingsScreenProps = StackScreenProps<"UserSettings">;
 export type ChangeUserNameScreenProps = StackScreenProps<"ChangeUserName">;
 
 export type ChangeEmailScreenProps = StackScreenProps<"ChangeEmail">;

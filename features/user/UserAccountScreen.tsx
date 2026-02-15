@@ -55,6 +55,27 @@ export function UserAccountScreen({ navigation }: UserAccountScreenProps) {
               borderRadius: 10,
               overflow: "hidden",
               backgroundColor: theme.colors.white,
+              marginBottom: theme.spacing.m,
+            }}
+          >
+            <ListItem
+              style={{ backgroundColor: theme.colors.white }}
+              onPress={() => navigation.navigate("UserSettings")}
+              hideBottomDivider
+            >
+              <ListItem.Content>
+                <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
+                  {t("settings.settings")}
+                </ListItem.Title>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
+          </View>
+          <View
+            style={{
+              borderRadius: 10,
+              overflow: "hidden",
+              backgroundColor: theme.colors.white,
             }}
           >
             <ListItem

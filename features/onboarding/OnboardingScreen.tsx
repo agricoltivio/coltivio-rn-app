@@ -45,7 +45,7 @@ export function OnboardingScreen({ steps, onFinish }: OnboardingScreenProps) {
                 onPress={() => setStepIndex((s) => s - 1)}
               />
             )}
-{stepIndex < totalSteps - 1 ? (
+            {stepIndex < totalSteps - 1 ? (
               <NavigationButton
                 title={t("buttons.next")}
                 icon="arrow-forward-circle-outline"

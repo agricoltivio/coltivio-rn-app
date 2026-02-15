@@ -67,6 +67,31 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
     longitudeDelta: 0.0025,
   });
 
+  const initialRegion: Region | undefined = useMemo(() => {
+    const preselectedPlot = plots?.find(
+      (plot) => plot.id === preselectedPlotId,
+    );
+    if (preselectedPlot && preselectedPlot.geometry.coordinates.length > 0) {
+      const centroid = turf.centroid(preselectedPlot.geometry);
+      const [longitude, latitude] = centroid.geometry.coordinates;
+      return {
+        latitude,
+        longitude,
+        latitudeDelta: 0.0025,
+        longitudeDelta: 0.0025,
+      };
+    } else {
+      if (!farm) return;
+
+      return {
+        latitude: farm?.location.coordinates[1],
+        longitude: farm?.location.coordinates[0],
+        latitudeDelta: 0.0025,
+        longitudeDelta: 0.0025,
+      };
+    }
+  }, [plots, preselectedPlotId, farm]);
+
   const selectedPlot = plots?.find((plot) => plot.id === selectedPlotId);
 
   useEffect(() => {
@@ -144,32 +169,11 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
     (error) => console.error(error),
   );
 
-  if (!farm || !plots) {
+  if (!initialRegion || !farm || !plots) {
     return null;
   }
 
   const hasSelection = !!selectedPlot;
-
-  const initialRegion: Region = useMemo(() => {
-    const preselectedPlot = plots.find((plot) => plot.id === preselectedPlotId);
-    if (preselectedPlot && preselectedPlot.geometry.coordinates.length > 0) {
-      const centroid = turf.centroid(preselectedPlot.geometry);
-      const [longitude, latitude] = centroid.geometry.coordinates;
-      return {
-        latitude,
-        longitude,
-        latitudeDelta: 0.0025,
-        longitudeDelta: 0.0025,
-      };
-    } else {
-      return {
-        latitude: farm.location.coordinates[1],
-        longitude: farm.location.coordinates[0],
-        latitudeDelta: 0.0025,
-        longitudeDelta: 0.0025,
-      };
-    }
-  }, [plots, preselectedPlotId]);
 
   const plotPolygons = plots.map((plot) => (
     <MultiPolygon

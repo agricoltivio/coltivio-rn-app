@@ -1118,6 +1118,11 @@
     "drug_not_defined_for_all_types": "Das Medikament ist nicht für alle ausgewählten Tierarten definiert",
     "different_waiting_times_for_types": "Die Wartezeiten unterscheiden sich zwischen den Tierarten"
   },
+  "settings": {
+    "settings": "Einstellungen",
+    "disable_onboardings": "Anleitungen deaktivieren",
+    "disable_onboardings_info": "Deaktiviert alle Anleitungen, die beim erstmaligen Öffnen einer Funktion angezeigt werden."
+  },
   "permissions": {
     "location": {
       "error": {
