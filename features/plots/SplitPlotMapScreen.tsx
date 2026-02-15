@@ -14,6 +14,7 @@ import { MapControls } from "@/features/map/overlays/MapControls";
 import { hexToRgba, indexToDistinctColor } from "@/theme/theme";
 import {
   cutPolygonFromMultiPolygon,
+  extractSubPolygonByPoint,
   splitMultiPolygonByLine,
 } from "@/utils/geo-spatials";
 import { round } from "@/utils/math";
@@ -29,7 +30,7 @@ import { SplitPlotMapScreenProps } from "./navigation/plots-routes";
 import { useFarmPlotsQuery } from "./plots.hooks";
 import { SubPlotData, useSplitPlotStore } from "./split-plot.store";
 
-type ActiveToolMode = "polyline" | "polygon" | "none";
+type ActiveToolMode = "polyline" | "polygon" | "select" | "none";
 
 export function SplitPlotMapScreen({
   navigation,
@@ -97,6 +98,9 @@ export function SplitPlotMapScreen({
     } else if (activeToolMode === "polygon") {
       event.stopPropagation();
       polygonRef.current?.drawToPoint(event.nativeEvent.coordinate);
+    } else if (activeToolMode === "select") {
+      event.stopPropagation();
+      handleSelectExtract(event.nativeEvent.coordinate);
     }
   };
 
@@ -150,6 +154,20 @@ export function SplitPlotMapScreen({
     setActiveToolMode("none");
   }
 
+  function handleSelectExtract(coordinate: LatLng) {
+    for (let i = 0; i < currentPolygons.length; i++) {
+      const result = extractSubPolygonByPoint(currentPolygons[i], coordinate);
+      if (!result) continue;
+
+      const newPolygons = [...currentPolygons];
+      newPolygons[i] = result.remaining;
+      newPolygons.push(result.extracted);
+      setCurrentPolygons(newPolygons);
+      setActiveToolMode("none");
+      return;
+    }
+  }
+
   function handleDone() {
     if (currentPolygons.length < 2) return;
     const subPlots: SubPlotData[] = currentPolygons.map((geom) => ({
@@ -161,6 +179,9 @@ export function SplitPlotMapScreen({
   }
 
   const hasMultiplePolygons = currentPolygons.length >= 2;
+  const hasMultiPolygonWithMultipleParts = currentPolygons.some(
+    (mp) => mp.coordinates.length > 1,
+  );
 
   return (
     <ContentView headerVisible={false}>
@@ -268,6 +289,21 @@ export function SplitPlotMapScreen({
                     prev === "polygon" ? "none" : "polygon",
                   )
                 }
+              />
+            )}
+            {/* Select mode: tap a polygon within a MultiPolygon to split it out */}
+            {activeToolMode === "none" && (
+              <MaterialCommunityIconButton
+                style={{
+                  backgroundColor: theme.colors.accent,
+                  opacity: hasMultiPolygonWithMultipleParts ? 1 : 0.4,
+                }}
+                type="accent"
+                color={"black"}
+                iconSize={30}
+                icon="vector-difference-ba"
+                disabled={!hasMultiPolygonWithMultipleParts}
+                onPress={() => setActiveToolMode("select")}
               />
             )}
             {/* Cut / Scissor */}

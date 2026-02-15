@@ -266,6 +266,36 @@ export function splitMultiPolygonByLine(
   return result.length >= 2 ? result : null;
 }
 
+/**
+ * Extract a sub-polygon from a MultiPolygon by point.
+ * Returns the remaining MultiPolygon and the extracted one, or null if the
+ * point doesn't hit any sub-polygon or there's only one.
+ */
+export function extractSubPolygonByPoint(
+  multiPolygon: GeoJSON.MultiPolygon,
+  point: { latitude: number; longitude: number },
+): { remaining: GeoJSON.MultiPolygon; extracted: GeoJSON.MultiPolygon } | null {
+  if (multiPolygon.coordinates.length <= 1) return null;
+
+  const turfPoint = turf.point([point.longitude, point.latitude]);
+  for (let j = 0; j < multiPolygon.coordinates.length; j++) {
+    const poly = turf.polygon(multiPolygon.coordinates[j]);
+    if (!turf.booleanPointInPolygon(turfPoint, poly)) continue;
+
+    return {
+      remaining: {
+        type: "MultiPolygon",
+        coordinates: multiPolygon.coordinates.filter((_, idx) => idx !== j),
+      },
+      extracted: {
+        type: "MultiPolygon",
+        coordinates: [multiPolygon.coordinates[j]],
+      },
+    };
+  }
+  return null;
+}
+
 export function cutPolygonFromMultiPolygon(
   multiPolygon: GeoJSON.MultiPolygon,
   drawnPolygon: { latitude: number; longitude: number }[],
