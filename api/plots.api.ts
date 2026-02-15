@@ -38,8 +38,6 @@ type MergePlotsBase = {
   localId?: string;
   usage?: number;
   cuttingDate?: string;
-  geometry: { type: "MultiPolygon"; coordinates: number[][][][] };
-  size: number;
   additionalNotes?: string;
 };
 

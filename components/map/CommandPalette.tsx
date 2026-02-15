@@ -46,9 +46,9 @@ export function CommandPalette({
       ) : (
         <MaterialCommunityIconButton
           type="accent"
-          color="red"
+          color="black"
           iconSize={30}
-          icon="close-circle-outline"
+          icon="undo"
           onPress={onDraw}
         />
       )}

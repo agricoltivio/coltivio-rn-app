@@ -1,18 +1,16 @@
 import { Plot } from "@/api/plots.api";
-import { FAB } from "@/components/buttons/FAB";
-import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
-import { PlotsScreenProps } from "./navigation/plots-routes";
 import { H2 } from "@/theme/Typography";
 import Fuse from "fuse.js";
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FlatList, View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { useFarmPlotsQuery } from "./plots.hooks";
-import { useTranslation } from "react-i18next";
+import { PlotListScreenProps } from "../navigation/plots-routes";
+import { useFarmPlotsQuery } from "../plots.hooks";
 
-export function PlotsScreen({ navigation }: PlotsScreenProps) {
+export function PlotListScreen({ navigation }: PlotListScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { plots } = useFarmPlotsQuery();
@@ -27,7 +25,7 @@ export function PlotsScreen({ navigation }: PlotsScreenProps) {
         : t("common.unknown"),
     })) ?? [];
 
-  const fuse = new Fuse(sanitizedPlots ?? [], {
+  const fuse = new Fuse(sanitizedPlots, {
     minMatchCharLength: 1,
     keys: ["name", "usage", "usageName", "cropRotations[0].crop.name"],
   });
@@ -37,31 +35,36 @@ export function PlotsScreen({ navigation }: PlotsScreenProps) {
     searchResult = fuse.search(searchText).map((result) => result.item);
   }
 
+  const handlePlotSelect = useCallback(
+    (plot: Plot) => {
+      navigation.navigate("PlotsMap", { selectedPlotId: plot.id });
+    },
+    [navigation],
+  );
+
   const renderItem = useCallback(
     ({ item: plot }: { item: Plot & { usageName: string } }) => (
-      <ListItem
-        key={plot.id}
-        onPress={() =>
-          navigation.navigate("PlotDetails", {
-            plotId: plot.id,
-          })
-        }
-      >
+      <ListItem key={plot.id} onPress={() => handlePlotSelect(plot)}>
         <ListItem.Content>
           <ListItem.Title style={{ flex: 1 }}>{plot.name}</ListItem.Title>
           <ListItem.Body>
-            {plot.currentCropRotation?.crop.name} ({plot.size / 100}
-            a)
-            {/* {t("common.area_acres", { area: plot.size / 100 })} */}
+            {plot.currentCropRotation?.crop.name} ({plot.size / 100}a)
           </ListItem.Body>
         </ListItem.Content>
         <ListItem.Chevron />
       </ListItem>
     ),
-    [],
+    [handlePlotSelect],
   );
+
   return (
-    <ContentView headerVisible>
+    <View
+      style={{
+        flex: 1,
+        paddingHorizontal: theme.spacing.m,
+        backgroundColor: theme.colors.background,
+      }}
+    >
       <H2>{t("plots.plots")}</H2>
       <View style={{ marginVertical: theme.spacing.m }}>
         <TextInput
@@ -82,11 +85,6 @@ export function PlotsScreen({ navigation }: PlotsScreenProps) {
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
       />
-
-      <FAB
-        icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("AddPlotMap")}
-      />
-    </ContentView>
+    </View>
   );
 }

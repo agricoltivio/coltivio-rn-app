@@ -1,5 +1,4 @@
-import { Button } from "@/components/buttons/Button";
-import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
+import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import { ContentView } from "@/components/containers/ContentView";
 import { MapView } from "@/components/map/Map";
 import { MultiPolygon } from "@/components/map/MultiPolygon";
@@ -8,14 +7,13 @@ import {
   PolygonDrawingTool,
   PolygonDrawingToolActions,
 } from "@/components/map/PolygonDrawingTool";
-import { EditPlotMapScreenProps } from "./navigation/plots-routes";
+import { MapControls } from "@/features/map/overlays/MapControls";
 import { hexToRgba } from "@/theme/theme";
 import { GeoSpatials } from "@/utils/geo-spatials";
 import { round } from "@/utils/math";
 import { PortalHost } from "@gorhom/portal";
 import * as turf from "@turf/turf";
 import React, { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { StyleSheet } from "react-native";
 import {
   LatLng,
@@ -24,15 +22,14 @@ import {
   Region,
 } from "react-native-maps";
 import { useTheme } from "styled-components/native";
-import { TopLeftBackButton } from "../map/TopLeftBackButton";
 import { useLocalSettings } from "../user/LocalSettingsContext";
-import { useFarmPlotsQuery } from "./plots.hooks";
+import { EditPlotMapScreenProps } from "./navigation/plots-routes";
+import { useFarmPlotsQuery, useUpdatePlotMutation } from "./plots.hooks";
 
 export function EditPlotMapScreen({
   navigation,
   route,
 }: EditPlotMapScreenProps) {
-  const { t } = useTranslation();
   const theme = useTheme();
   const { plotId } = route.params;
 
@@ -45,10 +42,14 @@ export function EditPlotMapScreen({
   const { localSettings } = useLocalSettings();
   const polygonDrawingToolRef = useRef<PolygonDrawingToolActions>(null);
 
+  const updatePlotMutation = useUpdatePlotMutation(
+    () => navigation.navigate("PlotsMap", { selectedPlotId: plotId }),
+    (error) => console.error(error),
+  );
+
   useEffect(() => {
     const raf = requestAnimationFrame(() => {
       setMapVisible(true);
-      // Show edit onboarding on first use
       if (!localSettings.editPlotOnboardingCompleted) {
         navigation.navigate("MapDrawOnboarding", { variant: "edit" });
       }
@@ -64,7 +65,7 @@ export function EditPlotMapScreen({
 
   const centroid = turf.centroid(plot.geometry);
   const [longitude, latitude] = centroid.geometry.coordinates;
-  const initialRegion: Region = {
+  const initialRegion: Region = route.params?.initialRegion ?? {
     latitude,
     longitude,
     latitudeDelta: 0.0025,
@@ -90,18 +91,16 @@ export function EditPlotMapScreen({
     } else {
       const finalCoordinates = [...editedCoordinates, coordinates];
       const polygon = GeoSpatials.latLngToMultiPolygon(finalCoordinates);
-      const area = turf.area(polygon);
-
-      // navigate back and pass polygon and size
-      navigation.popTo("EditPlot", {
-        area: round(area, 0),
-        polygon,
+      const size = round(turf.area(polygon), 0);
+      // Save directly and navigate back to PlotsMap
+      updatePlotMutation.mutate({
         plotId,
+        data: { geometry: polygon, size },
       });
     }
   }
 
-  function handleContinue() {
+  function handleConfirm() {
     const coordinates = polygonDrawingToolRef.current?.coordinates;
     if (coordinates) {
       onFinishDrawing(coordinates);
@@ -122,14 +121,7 @@ export function EditPlotMapScreen({
   ));
 
   return (
-    <ContentView
-      headerVisible={false}
-      footerComponent={
-        <BottomActionContainer floating>
-          <Button title={t("buttons.next")} onPress={handleContinue} />
-        </BottomActionContainer>
-      }
-    >
+    <ContentView headerVisible={false}>
       <MapView
         provider={PROVIDER_GOOGLE}
         rotateEnabled={false}
@@ -140,7 +132,6 @@ export function EditPlotMapScreen({
         onPress={handleMapPress}
         mapType="satellite"
         initialRegion={initialRegion}
-        followsUserLocation={true}
       >
         {plotPolygons}
         <PolygonDrawingTool
@@ -165,7 +156,24 @@ export function EditPlotMapScreen({
         />
       </MapView>
       <PortalHost name="PlotsMap" />
-      <TopLeftBackButton />
+      <MapControls>
+        <MaterialCommunityIconButton
+          type="accent"
+          color="red"
+          iconSize={30}
+          icon="cancel"
+          onPress={() => navigation.goBack()}
+        />
+        <MaterialCommunityIconButton
+          style={{ backgroundColor: theme.colors.accent }}
+          type="accent"
+          color="green"
+          iconSize={30}
+          icon="check"
+          disabled={updatePlotMutation.isPending}
+          onPress={handleConfirm}
+        />
+      </MapControls>
     </ContentView>
   );
 }

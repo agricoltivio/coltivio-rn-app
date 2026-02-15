@@ -2,7 +2,10 @@ import * as turf from "@turf/turf";
 import { Plot } from "@/api/plots.api";
 import { BottomDrawerModal } from "@/components/bottom-drawer/BottomDrawerModal";
 import { Button } from "@/components/buttons/Button";
-import { FAB } from "@/components/buttons/FAB";
+import {
+  IonIconButton,
+  MaterialCommunityIconButton,
+} from "@/components/buttons/IconButton";
 import { Card } from "@/components/card/Card";
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
@@ -27,18 +30,23 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, Pressable, StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import styled from "styled-components/native";
 import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../farms/farms.hooks";
 import { MapShowLocationToggle } from "../map/MapShowLocationToggle";
+import { MapControls } from "../map/overlays/MapControls";
 import { TopLeftBackButton } from "../map/TopLeftBackButton";
 import { useLocalSettings } from "../user/LocalSettingsContext";
 import { PlotsMapScreenProps } from "./navigation/plots-routes";
-import { useFarmPlotsQuery } from "./plots.hooks";
+import { useDeletePlotMutation, useFarmPlotsQuery } from "./plots.hooks";
 import RnMapView, { Region } from "react-native-maps";
+import { InsetsProps } from "@/constants/Screen";
 
 export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
   const { farm } = useFarmQuery();
   const { plots, isFetching: plotsLoading } = useFarmPlotsQuery();
   const { localSettings } = useLocalSettings();
@@ -50,12 +58,16 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
     preselectedPlotId || null,
   );
   const [sheetIndex, setSheetIndex] = useState(0);
-  const [areaModalVisible, setAreaModalVisible] = useState(false);
+  const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
   const snapPoints = useMemo(() => [200, "85%"], []);
-  const regionRef = useRef({
+  const regionRef = useRef<Region>({
+    latitude: 0,
+    longitude: 0,
     latitudeDelta: 0.0025,
     longitudeDelta: 0.0025,
   });
+
+  const selectedPlot = plots?.find((plot) => plot.id === selectedPlotId);
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => {
@@ -82,11 +94,25 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
     if (index >= 0) setSheetIndex(index);
   }, []);
 
-  navigation.addListener("focus", () => {
-    if (selectedPlotId) {
+  // Sync selectedPlotId from route params (e.g. when navigating back from PlotList)
+  useEffect(() => {
+    if (preselectedPlotId) {
+      setSelectedPlotId(preselectedPlotId);
+      // Animate map to the selected plot
+      const plot = plots?.find((p) => p.id === preselectedPlotId);
+      if (plot) {
+        const centroid = turf.centroid(plot.geometry);
+        const [lng, lat] = centroid.geometry.coordinates;
+        mapRef.current?.animateToRegion({
+          latitude: lat,
+          longitude: lng,
+          latitudeDelta: regionRef.current.latitudeDelta,
+          longitudeDelta: regionRef.current.longitudeDelta,
+        });
+      }
       handleExpandBottomDrawer();
     }
-  });
+  }, [preselectedPlotId]);
 
   function onPlotSelect(plot: Plot) {
     if (selectedPlotId === plot.id) {
@@ -108,11 +134,21 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
     }
   }
 
+  // Delete mutation — clears selection on success
+  const deletePlotMutation = useDeletePlotMutation(
+    () => {
+      setSelectedPlotId(null);
+      handleDismissBottomDrawer();
+      setDeleteDialogVisible(false);
+    },
+    (error) => console.error(error),
+  );
+
   if (!farm || !plots) {
     return null;
   }
 
-  const selectedPlot = plots?.find((plot) => plot.id === selectedPlotId);
+  const hasSelection = !!selectedPlot;
 
   const initialRegion: Region = useMemo(() => {
     const preselectedPlot = plots.find((plot) => plot.id === preselectedPlotId);
@@ -156,10 +192,7 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
     <ContentView headerVisible={false}>
       <MapView
         ref={mapRef}
-        loading={
-          !mapVisible || plotsLoading
-          // (preselectedPlotId != null && !selectedPlot)
-        }
+        loading={!mapVisible || plotsLoading}
         style={{
           ...StyleSheet.absoluteFillObject,
         }}
@@ -178,12 +211,103 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
         )}
       </MapView>
       <MapShowLocationToggle onShowLocationChange={setShowsUserLocation} />
-      <TopLeftBackButton />
-      <FAB
-        icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("AddPlotMap")}
-        color="blue"
-      />
+      <TopLeftBackButton onPress={() => navigation.popTo("Home")} />
+
+      {/* Plot list button — below location toggle on the left side */}
+      <PlotListButtonContainer insets={insets}>
+        <IonIconButton
+          type="accent"
+          color={theme.colors.black}
+          iconSize={30}
+          onPress={() => navigation.navigate("PlotList")}
+          icon="list"
+        />
+      </PlotListButtonContainer>
+
+      {/* Map controls sidebar (right side) */}
+      <MapControls>
+        <MaterialCommunityIconButton
+          style={{
+            backgroundColor: theme.colors.accent,
+            opacity: !hasSelection ? 1 : 0.4,
+          }}
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="pencil-plus-outline"
+          disabled={hasSelection}
+          onPress={() =>
+            navigation.navigate("AddPlotMap", {
+              initialRegion: regionRef.current,
+            })
+          }
+        />
+        <MaterialCommunityIconButton
+          style={{
+            backgroundColor: theme.colors.accent,
+            opacity: hasSelection ? 1 : 0.4,
+          }}
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="scissors-cutting"
+          disabled={!hasSelection}
+          onPress={() =>
+            navigation.navigate("SplitPlotMap", {
+              plotId: selectedPlot!.id,
+              initialRegion: regionRef.current,
+            })
+          }
+        />
+        <MaterialCommunityIconButton
+          style={{
+            backgroundColor: theme.colors.accent,
+            opacity: hasSelection ? 1 : 0.4,
+          }}
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="table-merge-cells"
+          disabled={!hasSelection}
+          onPress={() =>
+            navigation.navigate("MergePlotsMap", {
+              plotId: selectedPlot!.id,
+              initialRegion: regionRef.current,
+            })
+          }
+        />
+        <MaterialCommunityIconButton
+          style={{
+            backgroundColor: theme.colors.accent,
+            opacity: hasSelection ? 1 : 0.4,
+          }}
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="vector-square-edit"
+          disabled={!hasSelection}
+          onPress={() =>
+            navigation.navigate("EditPlotMap", {
+              plotId: selectedPlot!.id,
+              initialRegion: regionRef.current,
+            })
+          }
+        />
+        <MaterialCommunityIconButton
+          style={{
+            backgroundColor: theme.colors.accent,
+            opacity: hasSelection ? 1 : 0.4,
+          }}
+          type="accent"
+          color="red"
+          iconSize={30}
+          icon="delete-outline"
+          disabled={!hasSelection}
+          onPress={() => setDeleteDialogVisible(true)}
+        />
+      </MapControls>
+
+      {/* Bottom drawer with plot details */}
       <BottomSheetModalProvider>
         <BottomDrawerModal
           onClose={() => setSelectedPlotId(null)}
@@ -216,7 +340,7 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
           {selectedPlot && (
             <>
               <Card style={{ marginTop: theme.spacing.m }}>
-                {/* Area row with inline edit icon */}
+                {/* Area row */}
                 <View
                   style={{
                     flexDirection: "row",
@@ -229,16 +353,6 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
                   <Label style={{ fontSize: 18 }}>
                     {`${(selectedPlot.size ?? 0) / 100}a`}
                   </Label>
-                  <Pressable
-                    onPress={() => setAreaModalVisible(true)}
-                    // style={{ padding: theme.spacing.xs }}
-                  >
-                    <Ionicons
-                      name="create-outline"
-                      size={20}
-                      // color={theme.colors.gray2}
-                    />
-                  </Pressable>
                 </View>
                 {selectedPlot.currentCropRotation ? (
                   <SummaryItem
@@ -383,82 +497,63 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
         </BottomDrawerModal>
       </BottomSheetModalProvider>
 
-      {/* Area edit actions modal */}
-      <Modal
-        visible={areaModalVisible}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setAreaModalVisible(false)}
-      >
-        <Pressable
-          style={{
-            flex: 1,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          onPress={() => setAreaModalVisible(false)}
+      {/* Delete plot confirmation dialog */}
+      {selectedPlot && (
+        <Modal
+          visible={deleteDialogVisible}
+          transparent
+          animationType="fade"
+          onRequestClose={() => setDeleteDialogVisible(false)}
         >
-          <View
+          <Pressable
             style={{
-              backgroundColor: theme.colors.white,
-              borderRadius: 12,
-              width: "80%",
-              overflow: "hidden",
+              flex: 1,
+              backgroundColor: "rgba(0,0,0,0.5)",
+              justifyContent: "center",
+              alignItems: "center",
             }}
+            onPress={() => setDeleteDialogVisible(false)}
           >
-            {selectedPlot && (
-              <>
-                <Pressable
-                  style={{
-                    padding: theme.spacing.m,
-                    borderBottomWidth: StyleSheet.hairlineWidth,
-                  }}
-                  onPress={() => {
-                    setAreaModalVisible(false);
-                    navigation.navigate("EditPlotMap", {
-                      plotId: selectedPlot.id,
-                    });
-                  }}
-                >
-                  <Label style={{ fontSize: 16, textAlign: "center" }}>
-                    {t("plots.actions.adjust_area")}
-                  </Label>
-                </Pressable>
-                <Pressable
-                  style={{
-                    padding: theme.spacing.m,
-                    borderBottomWidth: StyleSheet.hairlineWidth,
-                  }}
-                  onPress={() => {
-                    setAreaModalVisible(false);
-                    navigation.navigate("SplitPlotMap", {
-                      plotId: selectedPlot.id,
-                    });
-                  }}
-                >
-                  <Label style={{ fontSize: 16, textAlign: "center" }}>
-                    {t("plots.actions.split")}
-                  </Label>
-                </Pressable>
-                <Pressable
-                  style={{ padding: theme.spacing.m }}
-                  onPress={() => {
-                    setAreaModalVisible(false);
-                    navigation.navigate("MergePlotsMap", {
-                      plotId: selectedPlot.id,
-                    });
-                  }}
-                >
-                  <Label style={{ fontSize: 16, textAlign: "center" }}>
-                    {t("plots.actions.merge")}
-                  </Label>
-                </Pressable>
-              </>
-            )}
-          </View>
-        </Pressable>
-      </Modal>
+            <View
+              style={{
+                backgroundColor: theme.colors.white,
+                borderRadius: 12,
+                width: "80%",
+                padding: theme.spacing.l,
+              }}
+            >
+              <H3>{t("plots.delete.heading", { name: selectedPlot.name })}</H3>
+              <Body style={{ marginTop: theme.spacing.m }}>
+                {t("plots.delete.entries_warning")}
+              </Body>
+              <View
+                style={{
+                  flexDirection: "row",
+                  gap: theme.spacing.m,
+                  marginTop: theme.spacing.l,
+                }}
+              >
+                <Button
+                  style={{ flex: 1 }}
+                  type="accent"
+                  fontSize={15}
+                  title={t("buttons.cancel")}
+                  onPress={() => setDeleteDialogVisible(false)}
+                />
+                <Button
+                  style={{ flex: 1 }}
+                  type="danger"
+                  fontSize={15}
+                  title={t("buttons.delete")}
+                  onPress={() => deletePlotMutation.mutate(selectedPlot.id)}
+                  loading={deletePlotMutation.isPending}
+                  disabled={deletePlotMutation.isPending}
+                />
+              </View>
+            </View>
+          </Pressable>
+        </Modal>
+      )}
     </ContentView>
   );
 }
@@ -484,3 +579,10 @@ function SummaryItem({
     </View>
   );
 }
+
+const PlotListButtonContainer = styled.View<InsetsProps>`
+  position: absolute;
+  left: ${({ theme }) => theme.spacing.m}px;
+  top: ${({ insets, theme }) => insets.top + theme.spacing.s + 100}px;
+  align-items: center;
+`;

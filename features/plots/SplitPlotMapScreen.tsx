@@ -1,6 +1,4 @@
-import { Button } from "@/components/buttons/Button";
 import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
-import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { MapView } from "@/components/map/Map";
 import { MultiPolygon } from "@/components/map/MultiPolygon";
@@ -26,8 +24,6 @@ import { useTranslation } from "react-i18next";
 import { Alert, StyleSheet } from "react-native";
 import { LatLng, MapPressEvent, Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
-import { MapShowLocationToggle } from "../map/MapShowLocationToggle";
-import { TopLeftBackButton } from "../map/TopLeftBackButton";
 import { useLocalSettings } from "../user/LocalSettingsContext";
 import { SplitPlotMapScreenProps } from "./navigation/plots-routes";
 import { useFarmPlotsQuery } from "./plots.hooks";
@@ -54,7 +50,6 @@ export function SplitPlotMapScreen({
   }, []);
 
   const [mapVisible, setMapVisible] = useState(false);
-  const [showsUserLocation, setShowsUserLocation] = useState(false);
   const [activeToolMode, setActiveToolMode] = useState<ActiveToolMode>("none");
   // Iterative cut state: starts with [plot.geometry], grows after each cut
   const [currentPolygons, setCurrentPolygons] = useState<
@@ -88,7 +83,7 @@ export function SplitPlotMapScreen({
 
   const centroid = turf.centroid(plot.geometry);
   const [longitude, latitude] = centroid.geometry.coordinates;
-  const initialRegion: Region = {
+  const initialRegion: Region = route.params?.initialRegion ?? {
     latitude,
     longitude,
     latitudeDelta: 0.0025,
@@ -168,24 +163,13 @@ export function SplitPlotMapScreen({
   const hasMultiplePolygons = currentPolygons.length >= 2;
 
   return (
-    <ContentView
-      headerVisible={false}
-      footerComponent={
-        <BottomActionContainer floating>
-          <Button
-            title={t("buttons.next")}
-            onPress={handleDone}
-            disabled={!hasMultiplePolygons}
-          />
-        </BottomActionContainer>
-      }
-    >
+    <ContentView headerVisible={false}>
       <MapView
         loading={!mapVisible}
         style={StyleSheet.absoluteFillObject}
         onPress={handleMapPress}
         initialRegion={initialRegion}
-        showsUserLocation={showsUserLocation}
+        showsUserLocation={false}
       >
         {/* Show current polygon pieces */}
         {currentPolygons.map((geom, i) => (
@@ -222,13 +206,32 @@ export function SplitPlotMapScreen({
           />
         )}
       </MapView>
-      <TopLeftBackButton />
-      <MapShowLocationToggle onShowLocationChange={setShowsUserLocation} />
       <PortalHost name="SplitPlotMap" />
       {/* Custom toolbar */}
       <Portal hostName="SplitPlotMap">
         {activeToolMode !== "polygon" && (
           <MapControls>
+            {activeToolMode === "none" && (
+              <>
+                <MaterialCommunityIconButton
+                  style={{ backgroundColor: theme.colors.accent }}
+                  type="accent"
+                  color="green"
+                  iconSize={30}
+                  icon="check"
+                  disabled={!hasMultiplePolygons}
+                  onPress={handleDone}
+                />
+
+                <MaterialCommunityIconButton
+                  type="accent"
+                  color="red"
+                  iconSize={30}
+                  icon="cancel"
+                  onPress={() => navigation.goBack()}
+                />
+              </>
+            )}
             {/* Polyline mode toggle */}
             {activeToolMode === "none" ? (
               <MaterialCommunityIconButton
@@ -244,9 +247,9 @@ export function SplitPlotMapScreen({
             ) : (
               <MaterialCommunityIconButton
                 type="accent"
-                color="red"
+                color="black"
                 iconSize={30}
-                icon="close-circle-outline"
+                icon="undo"
                 onPress={() => setActiveToolMode("none")}
               />
             )}
@@ -267,15 +270,6 @@ export function SplitPlotMapScreen({
                 }
               />
             )}
-            {/* Undo */}
-            {/* <MaterialCommunityIconButton
-              type="accent"
-              color="black"
-              iconSize={30}
-              icon="undo-variant"
-              disabled={activeToolMode === "none"}
-              onPress={handleUndo}
-            /> */}
             {/* Cut / Scissor */}
             {activeToolMode === "polyline" && (
               <MaterialCommunityIconButton

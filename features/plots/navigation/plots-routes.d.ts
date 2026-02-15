@@ -1,15 +1,18 @@
 import { StackScreenProps } from "@/navigation/rootStackTypes";
+import { Region } from "react-native-maps";
 
 export type PlotsStackParamList = {
   PlotsMap: { selectedPlotId?: string };
-  AddPlotMap: undefined;
+  AddPlotMap: { initialRegion?: Region };
+  EditPlotMap: { plotId: string; initialRegion?: Region };
+  SplitPlotMap: { plotId: string; initialRegion?: Region };
+  MergePlotsMap: { plotId: string; initialRegion?: Region };
   AddPlotSummary: {
     cropId?: string;
   };
-  EditPlot: { plotId: string; area?: number; polygon?: GeoJSON.MultiPolygon };
-  EditPlotMap: { plotId: string };
+  EditPlot: { plotId: string };
+  EditPlotModal: { plotId: string };
   DeletePlot: { plotId: string; name: string };
-  Plots: undefined;
   PlotDetails: { plotId: string };
   PlotHarvests: { plotId: string; name: string };
   PlotFertilizerApplications: {
@@ -22,25 +25,23 @@ export type PlotsStackParamList = {
   };
   PlotTillages: { plotId: string; name: string };
   SplitPlotOnboarding: undefined;
-  SplitPlotMap: { plotId: string };
   SplitPlotSummary: { plotId: string };
-  MergePlotsMap: { plotId: string };
-  MergePlotSummary: { plotIds: string[] };
+  MergePlotSummary: { plotIds: string[]; primaryPlotId: string };
+  PlotList: undefined;
 };
 
 export type PlotsMapScreenProps = StackScreenProps<"PlotsMap">;
 
 export type AddPlotMapScreenProps = StackScreenProps<"AddPlotMap">;
+export type EditPlotMapScreenProps = StackScreenProps<"EditPlotMap">;
+export type SplitPlotMapScreenProps = StackScreenProps<"SplitPlotMap">;
+export type MergePlotsMapScreenProps = StackScreenProps<"MergePlotsMap">;
 
 export type AddPlotSummaryScreenProps = StackScreenProps<"AddPlotSummary">;
 
-export type EditPlotScreenProps = StackScreenProps<"EditPlot">;
-
-export type EditPlotMapScreenProps = StackScreenProps<"EditPlotMap">;
+export type EditPlotScreenProps = StackScreenProps<"EditPlot"> | StackScreenProps<"EditPlotModal">;
 
 export type DeletePlotScreenProps = StackScreenProps<"DeletePlot">;
-
-export type PlotsScreenProps = StackScreenProps<"Plots">;
 
 export type PlotDetailsScreenProps = StackScreenProps<"PlotDetails">;
 export type PlotFertilizerApplicationsScreenProps =
@@ -54,7 +55,6 @@ export type PlotHarvestsScreenProps = StackScreenProps<"PlotHarvests">;
 export type PlotTillagesScreenProps = StackScreenProps<"PlotTillages">;
 
 export type SplitPlotOnboardingScreenProps = StackScreenProps<"SplitPlotOnboarding">;
-export type SplitPlotMapScreenProps = StackScreenProps<"SplitPlotMap">;
 export type SplitPlotSummaryScreenProps = StackScreenProps<"SplitPlotSummary">;
-export type MergePlotsMapScreenProps = StackScreenProps<"MergePlotsMap">;
 export type MergePlotSummaryScreenProps = StackScreenProps<"MergePlotSummary">;
+export type PlotListScreenProps = StackScreenProps<"PlotList">;

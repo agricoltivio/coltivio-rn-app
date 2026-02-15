@@ -1,6 +1,6 @@
 import { Button } from "@/components/buttons/Button";
+import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import { Card } from "@/components/card/Card";
-import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { MapView } from "@/components/map/Map";
 import { MultiPolygon } from "@/components/map/MultiPolygon";
@@ -23,8 +23,8 @@ import { LatLng, MapPressEvent, Marker, Region } from "react-native-maps";
 import { useSafeAreaFrame } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../farms/farms.hooks";
+import { MapControls } from "../map/overlays/MapControls";
 import { MapShowLocationToggle } from "../map/MapShowLocationToggle";
-import { TopLeftBackButton } from "../map/TopLeftBackButton";
 import { useLocalSettings } from "../user/LocalSettingsContext";
 import { useFarmPlotsQuery } from "./plots.hooks";
 import { useTranslation } from "react-i18next";
@@ -32,7 +32,7 @@ import { usePlotsByLocationQuery } from "../federal-plots/federalPlots.hooks";
 import { FederalFarmPlot } from "@/api/layers.api";
 import { useAddPlotStore } from "./add-plots.store";
 
-export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
+export function AddPlotMapScreen({ navigation, route }: AddPlotMapScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const frame = useSafeAreaFrame();
@@ -40,7 +40,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
   const { plots } = useFarmPlotsQuery();
   const [mapVisible, setMapVisible] = useState(false);
   const [showModeSelect, setShowModeSelect] = useState(true);
-  const [showsUserLocation, setShowsUserLocation] = useState<boolean>(false);
+  const [canFinish, setCanFinish] = useState(false);
 
   const [mode, setMode] = useState<"parcel" | "custom" | "none">("none");
   const [drawingAction, setDrawingAction] = useState<DrawAction>("select");
@@ -64,7 +64,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
   const { plots: federalPlots } = usePlotsByLocationQuery(
     { lat: currentViewPoint.latitude, lng: currentViewPoint.longitude },
     1,
-    mode === "parcel" && currentViewPoint.latitude !== 0
+    mode === "parcel" && currentViewPoint.latitude !== 0,
   );
 
   const addPlotStore = useAddPlotStore();
@@ -86,8 +86,19 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
   const handleOnComplete = () => {
     if (newPolygon) {
       addPlotStore.setData(newPolygon);
-      navigation.navigate("AddPlotSummary", {});
+    } else {
+      const newPolygonCoordinates = polygonDrawingToolRef.current?.coordinates;
+      if (!newPolygonCoordinates) return;
+      const polygon = GeoSpatials.latLngToMultiPolygon([newPolygonCoordinates]);
+      const centroid = turf.centroid(polygon);
+      const area = turf.area(polygon);
+      addPlotStore.setData({
+        geometry: polygon,
+        centroid: centroid.geometry,
+        size: round(area, 0),
+      });
     }
+    navigation.navigate("AddPlotSummary", {});
   };
 
   const handleRegionChangeComplete = (region: Region) => {
@@ -129,16 +140,16 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
     }
   }
 
-  function onFinishDrawing(coordinates: LatLng[]) {
-    const polygon = GeoSpatials.latLngToMultiPolygon([coordinates]);
-    const centroid = turf.centroid(polygon);
-    const area = turf.area(polygon);
-    setNewPolygon({
-      geometry: polygon,
-      centroid: centroid.geometry,
-      size: round(area, 0),
-    });
-  }
+  // function onFinishDrawing(coordinates: LatLng[]) {
+  //   const polygon = GeoSpatials.latLngToMultiPolygon([coordinates]);
+  //   const centroid = turf.centroid(polygon);
+  //   const area = turf.area(polygon);
+  //   setNewPolygon({
+  //     geometry: polygon,
+  //     centroid: centroid.geometry,
+  //     size: round(area, 0),
+  //   });
+  // }
 
   function onParcelSelect(parcel: FederalFarmPlot) {
     if (mode !== "parcel") {
@@ -155,6 +166,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
       localId: parcel.localId ?? undefined,
       cuttingDate: parcel.cuttingDate ?? undefined,
     });
+    setCanFinish(true);
   }
 
   function onSelectPolygon() {
@@ -165,7 +177,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
         newPolygon!.geometry.coordinates[0][0].map(([longitude, latitude]) => ({
           longitude,
           latitude,
-        }))
+        })),
       );
     }
   }
@@ -195,7 +207,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
   }
   const [longitude, latitude] = farm.location.coordinates;
 
-  const initialRegion = {
+  const initialRegion = route.params?.initialRegion ?? {
     latitude,
     longitude,
     latitudeDelta: 0.0015,
@@ -210,7 +222,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
       strokeColor={"white"}
       fillColor={hexToRgba(
         theme.map.defaultFillColor,
-        theme.map.defaultFillAlpha
+        theme.map.defaultFillAlpha,
       )}
     />
   ));
@@ -224,7 +236,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
         }}
         onPress={handleMapPress}
         initialRegion={initialRegion}
-        showsUserLocation={showsUserLocation}
+        showsUserLocation={false}
         onRegionChangeComplete={handleRegionChangeComplete}
       >
         {!showModeSelect && mode === "parcel" ? parcelPolygons : null}
@@ -244,7 +256,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
               strokeColor={"white"}
               fillColor={hexToRgba(
                 theme.colors.success,
-                theme.map.defaultFillAlpha
+                theme.map.defaultFillAlpha,
               )}
               tappable
               onPress={onSelectPolygon}
@@ -277,9 +289,11 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
             onDrawActionChange={(action) => {
               setDrawingAction(action);
             }}
-            magnifierMapContent={plotPolygons}
-            onFinish={onFinishDrawing}
-            onInfo={() => navigation.navigate("MapDrawOnboarding", { variant: "draw" })}
+            showActions={false}
+            onCanFinishChange={setCanFinish}
+            onInfo={() =>
+              navigation.navigate("MapDrawOnboarding", { variant: "draw" })
+            }
           />
         ) : null}
       </MapView>
@@ -292,10 +306,27 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
         />
       ) : null}
       <PortalHost name="PlotsMap" />
-      {mapVisible ? (
-        <MapShowLocationToggle onShowLocationChange={setShowsUserLocation} />
-      ) : null}
-      <TopLeftBackButton />
+      <MapControls>
+        <MaterialCommunityIconButton
+          type="accent"
+          color="red"
+          iconSize={30}
+          icon="cancel"
+          onPress={() => navigation.goBack()}
+        />
+        <MaterialCommunityIconButton
+          style={{
+            backgroundColor: theme.colors.accent,
+            opacity: canFinish ? 1 : 0.4,
+          }}
+          type="accent"
+          color="green"
+          iconSize={30}
+          icon="check"
+          disabled={!canFinish}
+          onPress={handleOnComplete}
+        />
+      </MapControls>
       {showModeSelect ? (
         <Card
           style={{
@@ -329,14 +360,6 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
           </View>
         </Card>
       ) : null}
-      <BottomActionContainer floating>
-        <Button
-          disabled={!newPolygon}
-          title={t("buttons.next")}
-          onPress={handleOnComplete}
-        />
-      </BottomActionContainer>
     </ContentView>
   );
 }
-

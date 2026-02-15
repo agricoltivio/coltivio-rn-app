@@ -1,5 +1,3 @@
-import { Button } from "@/components/buttons/Button";
-import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { MapView } from "@/components/map/Map";
 import { MultiPolygon } from "@/components/map/MultiPolygon";
@@ -8,22 +6,21 @@ import { hexToRgba } from "@/theme/theme";
 import { PortalHost } from "@gorhom/portal";
 import * as turf from "@turf/turf";
 import { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { StyleSheet } from "react-native";
 import { Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../farms/farms.hooks";
-import { TopLeftBackButton } from "../map/TopLeftBackButton";
 import { MapShowLocationToggle } from "../map/MapShowLocationToggle";
 import { MergePlotsMapScreenProps } from "./navigation/plots-routes";
 import { useFarmPlotsQuery } from "./plots.hooks";
 import { PolygonDrawingTool } from "@/components/map/PolygonDrawingTool";
+import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
+import { MapControls } from "../map/overlays/MapControls";
 
 export function MergePlotsMapScreen({
   navigation,
   route,
 }: MergePlotsMapScreenProps) {
-  const { t } = useTranslation();
   const theme = useTheme();
   const { plotId } = route.params;
   const { farm } = useFarmQuery();
@@ -48,7 +45,7 @@ export function MergePlotsMapScreen({
 
   const initialPlotCentroid = turf.centroid(plot.geometry);
   const [longitude, latitude] = initialPlotCentroid.geometry.coordinates;
-  const initialRegion: Region = {
+  const initialRegion: Region = route.params?.initialRegion ?? {
     latitude,
     longitude,
     latitudeDelta: 0.0025,
@@ -69,6 +66,7 @@ export function MergePlotsMapScreen({
   function handleNext() {
     navigation.navigate("MergePlotSummary", {
       plotIds: Array.from(selectedPlotIds),
+      primaryPlotId: plotId,
     });
   }
 
@@ -108,18 +106,7 @@ export function MergePlotsMapScreen({
   }, [plots, selectedPlotIds, theme]);
 
   return (
-    <ContentView
-      headerVisible={false}
-      footerComponent={
-        <BottomActionContainer floating>
-          <Button
-            title={t("buttons.next")}
-            onPress={handleNext}
-            disabled={selectedPlotIds.length < 2}
-          />
-        </BottomActionContainer>
-      }
-    >
+    <ContentView headerVisible={false}>
       <MapView
         loading={!mapVisible}
         style={StyleSheet.absoluteFillObject}
@@ -129,9 +116,25 @@ export function MergePlotsMapScreen({
         {plotsLayer}
         <PolygonDrawingTool showActions={false} />
       </MapView>
-      <TopLeftBackButton />
-      <MapShowLocationToggle onShowLocationChange={setShowsUserLocation} />
       <PortalHost name="MergePlotsMap" />
+      <MapControls>
+        <MaterialCommunityIconButton
+          type="accent"
+          color="red"
+          iconSize={30}
+          icon="cancel"
+          onPress={() => navigation.goBack()}
+        />
+        <MaterialCommunityIconButton
+          style={{ backgroundColor: theme.colors.accent }}
+          type="accent"
+          color="green"
+          iconSize={30}
+          icon="check"
+          disabled={selectedPlotIds.length < 2}
+          onPress={handleNext}
+        />
+      </MapControls>
     </ContentView>
   );
 }

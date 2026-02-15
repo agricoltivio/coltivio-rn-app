@@ -1,5 +1,6 @@
 import { MergePlotsInput } from "@/api/plots.api";
 import { Button } from "@/components/buttons/Button";
+import { IonIconButton } from "@/components/buttons/IconButton";
 import { Card } from "@/components/card/Card";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -7,10 +8,9 @@ import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
-import { MultiPolygon } from "@/components/map/MultiPolygon";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
-import { hexToRgba } from "@/theme/theme";
+import { InsetsProps } from "@/constants/Screen";
 import { Body, H2 } from "@/theme/Typography";
 import { round } from "@/utils/math";
 import * as turf from "@turf/turf";
@@ -18,8 +18,8 @@ import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import MapView, { PROVIDER_GOOGLE, Region } from "react-native-maps";
-import { useTheme } from "styled-components/native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import styled, { useTheme } from "styled-components/native";
 import { MergePlotSummaryScreenProps } from "./navigation/plots-routes";
 import { useFarmPlotsQuery, useMergePlotsMutation } from "./plots.hooks";
 import { getUsageCodeSelectData } from "./usage-codes";
@@ -42,13 +42,16 @@ export function MergePlotSummaryScreen({
 }: MergePlotSummaryScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { plotIds } = route.params;
+  const insets = useSafeAreaInsets();
+  const { plotIds, primaryPlotId } = route.params;
   const { plots } = useFarmPlotsQuery();
 
   const selectedPlots = useMemo(
     () => plots?.filter((p) => plotIds.includes(p.id)) ?? [],
     [plots, plotIds],
   );
+
+  const primaryPlot = selectedPlots.find((p) => p.id === primaryPlotId);
 
   // Compute merged geometry by unioning all selected plots
   const mergedGeometry = useMemo(() => {
@@ -70,7 +73,11 @@ export function MergePlotSummaryScreen({
   }, [selectedPlots]);
 
   const mergedSize = mergedGeometry ? round(turf.area(mergedGeometry), 0) : 0;
-  const mergedName = selectedPlots.map((p) => p.name).join(" + ");
+  const mergedName = selectedPlots.map((p) => p.localId ?? p.name).join(" + ");
+  const mergedLocalIds = selectedPlots
+    .map((p) => p.localId)
+    .filter(Boolean)
+    .join(" + ");
 
   const {
     control,
@@ -80,8 +87,13 @@ export function MergePlotSummaryScreen({
   } = useForm<MergeFormValues>({
     defaultValues: {
       name: mergedName,
+      localId: mergedLocalIds,
       size: mergedSize.toString(),
       strategy: "keep_reference",
+      usage: primaryPlot?.usage?.toString(),
+      cuttingDate: primaryPlot?.cuttingDate
+        ? new Date(primaryPlot.cuttingDate)
+        : undefined,
     },
   });
 
@@ -99,18 +111,6 @@ export function MergePlotSummaryScreen({
     (error) => console.error(error),
   );
 
-  let initialRegion: Region | undefined;
-  if (mergedGeometry) {
-    const center = turf.center(turf.multiPolygon(mergedGeometry.coordinates));
-    const [lng, lat] = center.geometry.coordinates;
-    initialRegion = {
-      latitude: lat,
-      longitude: lng,
-      latitudeDelta: 0.005,
-      longitudeDelta: 0.005,
-    };
-  }
-
   function onSubmit({
     size,
     usage,
@@ -118,14 +118,12 @@ export function MergePlotSummaryScreen({
     strategy,
     ...rest
   }: MergeFormValues) {
-    if (!mergedGeometry) return;
     const base = {
       plotIds,
       ...rest,
       usage: usage ? Number(usage) : undefined,
       cuttingDate: cuttingDate?.toISOString(),
       geometry: mergedGeometry,
-      size: Number(size),
     };
 
     const data: MergePlotsInput =
@@ -167,30 +165,6 @@ export function MergePlotSummaryScreen({
         keyboardAware
       >
         <H2>{t("plots.merge.summary.heading")}</H2>
-        {initialRegion && mergedGeometry && (
-          <View
-            style={{
-              height: 250,
-              borderRadius: 10,
-              overflow: "hidden",
-              marginTop: theme.spacing.m,
-            }}
-          >
-            <MapView
-              provider={PROVIDER_GOOGLE}
-              initialRegion={initialRegion}
-              mapType="satellite"
-              style={{ height: "100%" }}
-            >
-              <MultiPolygon
-                polygon={mergedGeometry}
-                strokeWidth={theme.map.defaultStrokeWidth}
-                strokeColor="white"
-                fillColor={hexToRgba(theme.map.defaultFillColor, 0.8)}
-              />
-            </MapView>
-          </View>
-        )}
 
         {/* Strategy selector + info */}
         <View style={{ marginTop: theme.spacing.m, gap: theme.spacing.m }}>
@@ -251,6 +225,7 @@ export function MergePlotSummaryScreen({
           <RHNumberInput
             name="size"
             control={control}
+            disabled
             label={t("forms.labels.size_m2")}
             rules={{
               required: {

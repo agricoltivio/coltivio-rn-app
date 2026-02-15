@@ -1,5 +1,10 @@
 import { throttle } from "lodash";
-import React, { forwardRef, useImperativeHandle, useMemo, useState } from "react";
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from "react";
 import { LatLng, Point, Polyline } from "react-native-maps";
 import { useTheme } from "styled-components/native";
 import { CircleMarkers } from "./CircleMarkers";
@@ -71,32 +76,30 @@ export const PolylineDrawingTool = forwardRef<
     [coordinates],
   );
 
-  return (
-    <>
-      <Polyline
-        coordinates={dragOverlay ?? coordinates}
-        fillColor={resolvedStrokeColor}
-        strokeWidth={resolvedStrokeWidth}
-      />
-      {coordinates.length > 0 && (
-        <CircleMarkers
-          coordinates={coordinates}
-          onDragStart={(index) => {
-            setDragOverlay([...coordinates]);
-          }}
-          onDrag={(index, coordinate) => {
-            throttledDragUpdate(index, coordinate);
-          }}
-          onDragEnd={(index, coordinate) => {
-            setDragOverlay(null);
-            setCoordinatesStack((prev) => {
-              const updated = [...prev[prev.length - 1]];
-              updated[index] = coordinate;
-              return [...prev, updated];
-            });
-          }}
-        />
-      )}
-    </>
-  );
+  return [
+    <Polyline
+      key="polyline"
+      coordinates={dragOverlay ?? coordinates}
+      fillColor={resolvedStrokeColor}
+      strokeWidth={resolvedStrokeWidth}
+    />,
+    <CircleMarkers
+      key="marker"
+      coordinates={coordinates}
+      onDragStart={(index) => {
+        setDragOverlay([...coordinates]);
+      }}
+      onDrag={(index, coordinate) => {
+        throttledDragUpdate(index, coordinate);
+      }}
+      onDragEnd={(index, coordinate) => {
+        setDragOverlay(null);
+        setCoordinatesStack((prev) => {
+          const updated = [...prev[prev.length - 1]];
+          updated[index] = coordinate;
+          return [...prev, updated];
+        });
+      }}
+    />,
+  ];
 });

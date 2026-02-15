@@ -1,21 +1,21 @@
 import { SplitPlotInput } from "@/api/plots.api";
 import { Button } from "@/components/buttons/Button";
+import { IonIconButton } from "@/components/buttons/IconButton";
 import { Card } from "@/components/card/Card";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
-import { MultiPolygon } from "@/components/map/MultiPolygon";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
-import { hexToRgba, indexToDistinctColor } from "@/theme/theme";
+import { InsetsProps } from "@/constants/Screen";
+import { indexToDistinctColor } from "@/theme/theme";
 import { Body, H2, H3, Subtitle } from "@/theme/Typography";
-import * as turf from "@turf/turf";
 import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
-import MapView, { PROVIDER_GOOGLE, Region } from "react-native-maps";
-import { useTheme } from "styled-components/native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import styled, { useTheme } from "styled-components/native";
 import { SplitPlotSummaryScreenProps } from "./navigation/plots-routes";
 import { useSplitPlotMutation } from "./plots.hooks";
 import { useSplitPlotStore } from "./split-plot.store";
@@ -36,6 +36,7 @@ export function SplitPlotSummaryScreen({
 }: SplitPlotSummaryScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
   const { plotId } = route.params;
   const { subPlots, originalPlotName } = useSplitPlotStore();
 
@@ -71,22 +72,6 @@ export function SplitPlotSummaryScreen({
       }),
     (error) => console.error(error),
   );
-
-  // Compute a region that covers all sub-plots
-  let initialRegion: Region | undefined;
-  if (subPlots.length > 0) {
-    const collection = turf.featureCollection(
-      subPlots.map((sp) => turf.multiPolygon(sp.geometry.coordinates)),
-    );
-    const center = turf.center(collection);
-    const [lng, lat] = center.geometry.coordinates;
-    initialRegion = {
-      latitude: lat,
-      longitude: lng,
-      latitudeDelta: 0.003,
-      longitudeDelta: 0.003,
-    };
-  }
 
   function onSubmit(values: SplitFormValues) {
     const subPlotsPayload = subPlots.map((sp, i) => ({
@@ -144,33 +129,6 @@ export function SplitPlotSummaryScreen({
         keyboardAware
       >
         <H2>{t("plots.split.summary.heading")}</H2>
-        {initialRegion && (
-          <View
-            style={{
-              height: 250,
-              borderRadius: 10,
-              overflow: "hidden",
-              marginTop: theme.spacing.m,
-            }}
-          >
-            <MapView
-              provider={PROVIDER_GOOGLE}
-              initialRegion={initialRegion}
-              mapType="satellite"
-              style={{ height: "100%" }}
-            >
-              {subPlots.map((sp, i) => (
-                <MultiPolygon
-                  key={`sub-${i}`}
-                  polygon={sp.geometry}
-                  strokeWidth={2}
-                  strokeColor="white"
-                  fillColor={hexToRgba(indexToDistinctColor(i), 0.6)}
-                />
-              ))}
-            </MapView>
-          </View>
-        )}
 
         {/* Strategy selector + info */}
         <View style={{ marginTop: theme.spacing.m, gap: theme.spacing.m }}>

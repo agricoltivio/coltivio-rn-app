@@ -2757,12 +2757,6 @@ export interface components {
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
             cuttingDate?: string | null;
-            geometry: {
-                /** @constant */
-                type: "MultiPolygon";
-                coordinates: number[][][][];
-            };
-            size: number;
             additionalNotes?: string;
         } | {
             /** @constant */
@@ -2777,12 +2771,6 @@ export interface components {
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
             cuttingDate?: string | null;
-            geometry: {
-                /** @constant */
-                type: "MultiPolygon";
-                coordinates: number[][][][];
-            };
-            size: number;
             additionalNotes?: string;
         }, "strategy">);
         PostV1PlotsSyncMissingLocalIdsPositiveResponse: {

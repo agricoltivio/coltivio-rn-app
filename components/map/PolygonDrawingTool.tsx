@@ -19,12 +19,14 @@ import { CircleMarkers } from "./CircleMarkers";
 import { CommandPalette } from "./CommandPalette";
 import { MidpointCircleMarkers } from "./MidpointCircleMarkers";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { View } from "react-native";
 
 export type PolygonDrawingToolActions = {
   createPolygon: () => void;
   editPolygon: (coordinates: LatLng[]) => void;
   drawToPoint: (coordinate: LatLng) => void;
   coordinates: LatLng[];
+  canFinish: boolean;
 };
 
 export type DrawAction = "select" | "edit" | "draw";
@@ -39,6 +41,7 @@ export type PolygonDrawingToolProps = {
   magnifierMapContent?: React.ReactNode[];
   portalName?: string;
   finishIcon?: keyof typeof MaterialCommunityIcons.glyphMap;
+  onCanFinishChange?: (canFinish: boolean) => void;
   onFinish?: (coordinates: LatLng[]) => void;
   onInfo?: () => void;
   showActions?: boolean;
@@ -65,6 +68,7 @@ export const PolygonDrawingTool = forwardRef<
       magnifierMapContent,
       finishIcon,
       onFinish,
+      onCanFinishChange,
       onInfo,
     }: PolygonDrawingToolProps,
     ref,
@@ -103,6 +107,7 @@ export const PolygonDrawingTool = forwardRef<
       editPolygon,
       drawToPoint,
       coordinates: polygon.coordinates,
+      canFinish: polygon.coordinates.length > 2,
     }));
 
     // const mapContentWithPolygon = useMemo(
@@ -184,6 +189,7 @@ export const PolygonDrawingTool = forwardRef<
       if (action !== "draw") {
         setAction("draw");
         onDrawActionChange && onDrawActionChange("draw");
+        onCanFinishChange && onCanFinishChange(false);
       }
       setCoordinatesStack([[]]);
     }
@@ -328,6 +334,7 @@ export const PolygonDrawingTool = forwardRef<
           [...prev[prev.length - 1], prev[prev.length - 1][0]],
         ]);
         setAction("edit");
+        onCanFinishChange && onCanFinishChange(true);
       }
     }
 
@@ -407,7 +414,21 @@ export const PolygonDrawingTool = forwardRef<
               canFinish={polygon.coordinates.length > 2}
               finishIcon={finishIcon}
             />
-          ) : null}
+          ) : (
+            // currently the polygon does not render properly without the command palette, dont ask me why
+            <View style={{ opacity: 0 }}>
+              <CommandPalette
+                action={action}
+                onDraw={onDraw}
+                onUndo={onUndo}
+                onDelete={onDelete}
+                onFinish={finish}
+                onInfo={onInfo}
+                canFinish={polygon.coordinates.length > 2}
+                finishIcon={finishIcon}
+              />
+            </View>
+          )}
           {/* {action === "edit" && Platform.OS === "ios" ? (
             <MagnifierGlass
               ref={magnifierMapRef}

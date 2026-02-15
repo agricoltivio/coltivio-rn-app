@@ -52,8 +52,6 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
         >
           <HomeTile
             title={t("home.tiles.farm")}
-            // style={{ shadowOpacity: 0.4 }}
-            // style={{ width: 150 }}
             onPress={() => navigation.navigate("Farm")}
           >
             <Image
@@ -68,30 +66,6 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
               }}
             />
           </HomeTile>
-          <HomeTile
-            title={t("home.tiles.plots")}
-            onPress={() => navigation.navigate("Plots")}
-          >
-            <Image
-              source={require("@/assets/images/field-calendar-icon-4.png")}
-              contentFit="contain"
-              style={{
-                marginBottom: theme.spacing.xs,
-                height: 110,
-                opacity: 0.9,
-                borderBottomLeftRadius: 10,
-                borderBottomRightRadius: 10,
-              }}
-            />
-          </HomeTile>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            marginTop: theme.spacing.m,
-            gap: theme.spacing.m,
-          }}
-        >
           <HomeTile
             title={t("home.tiles.field_calendar")}
             onPress={() => navigation.navigate("FieldCalendar")}
@@ -108,7 +82,14 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
               }}
             />
           </HomeTile>
-
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            marginTop: theme.spacing.m,
+            gap: theme.spacing.m,
+          }}
+        >
           <HomeTile
             title={t("home.tiles.animal_husbandry")}
             onPress={() => navigation.navigate("AnimalsHub")}
