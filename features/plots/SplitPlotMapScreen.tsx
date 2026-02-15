@@ -306,6 +306,18 @@ export function SplitPlotMapScreen({
                 onPress={() => setActiveToolMode("select")}
               />
             )}
+            {activeToolMode === "none" && (
+              <MaterialCommunityIconButton
+                style={{ backgroundColor: theme.colors.accent }}
+                type="accent"
+                color="black"
+                iconSize={30}
+                icon="information-outline"
+                onPress={() =>
+                  navigation.navigate("SplitPlotOnboarding" as never)
+                }
+              />
+            )}
             {/* Cut / Scissor */}
             {activeToolMode === "polyline" && (
               <MaterialCommunityIconButton

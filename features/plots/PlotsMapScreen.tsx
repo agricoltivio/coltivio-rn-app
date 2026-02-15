@@ -305,6 +305,14 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
           disabled={!hasSelection}
           onPress={() => setDeleteDialogVisible(true)}
         />
+        <MaterialCommunityIconButton
+          style={{ backgroundColor: theme.colors.accent }}
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="information-outline"
+          onPress={() => navigation.navigate("PlotsMapOnboarding")}
+        />
       </MapControls>
 
       {/* Bottom drawer with plot details */}

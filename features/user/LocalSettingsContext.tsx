@@ -41,7 +41,7 @@ type LocalSettings = {
   localSettings: LocalSettingsData;
 } & LocalSettingActions;
 
-const defaultLocalSettings: LocalSettingsData = {
+export const defaultLocalSettings: LocalSettingsData = {
   editPlotOnboardingCompleted: false,
   fieldCalendarGroups: DEFAULT_FIELD_CALENDAR_GROUPS,
   fieldCalendarOnboardingCompleted: false,
@@ -116,11 +116,11 @@ export function LocalSettingsProvider({ children }: PropsWithChildren) {
     setting: K,
     value: LocalSettingsData[K],
   ) {
-    setLocalSettings((prev) => ({ ...prev, [setting]: value }));
-    AsyncStorage.setItem(
-      localSettingsStorageKey,
-      JSON.stringify({ ...localSettings, [setting]: value }),
-    );
+    setLocalSettings((prev) => {
+      const next = { ...prev, [setting]: value };
+      AsyncStorage.setItem(localSettingsStorageKey, JSON.stringify(next));
+      return next;
+    });
   }
 
   return (

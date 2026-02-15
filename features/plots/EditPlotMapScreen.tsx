@@ -173,6 +173,14 @@ export function EditPlotMapScreen({
           disabled={updatePlotMutation.isPending}
           onPress={handleConfirm}
         />
+        <MaterialCommunityIconButton
+          style={{ backgroundColor: theme.colors.accent }}
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="information-outline"
+          onPress={() => navigation.navigate("EditPlotOnboarding")}
+        />
       </MapControls>
     </ContentView>
   );

@@ -117,7 +117,7 @@ export function PlotsMapOnboardingScreen() {
       >
         {t("plots.map_onboarding.tools_body")}
       </H3>
-      <IconBadge name="toolbox-outline" />
+      <IconBadge name="tools" />
       <View
         style={{
           width: "100%",

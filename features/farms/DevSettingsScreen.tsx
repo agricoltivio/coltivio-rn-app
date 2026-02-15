@@ -8,18 +8,23 @@ import { useState } from "react";
 import { Alert } from "react-native";
 import { useTheme } from "styled-components/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useLocalSettings } from "../user/LocalSettingsContext";
+import { defaultLocalSettings, useLocalSettings } from "../user/LocalSettingsContext";
 
 // All resettable local settings keys with human-readable labels
 const RESETTABLE_KEYS = [
   { key: "fieldCalendarOnboardingCompleted", label: "Field Calendar Onboarding" },
-  { key: "animalsOnboardingCompleted", label: "Animals Onboarding" },
   { key: "fieldCalendarGroups", label: "Field Calendar Groups" },
+  { key: "animalsOnboardingCompleted", label: "Animals Onboarding" },
   { key: "animalsGroups", label: "Animals Groups" },
-  { key: "editPlotOnboardingCompleted", label: "Edit Plot Onboarding" },
+  { key: "herdsOnboardingCompleted", label: "Herds Onboarding" },
   { key: "mapDrawOnboardingCompleted", label: "Map Draw Onboarding" },
+  { key: "plotsMapOnboardingCompleted", label: "Plots Map Onboarding" },
   { key: "addPlotDrawOnboardingCompleted", label: "Add Plot Draw Onboarding" },
   { key: "addPlotParcelOnboardingCompleted", label: "Add Plot Parcel Onboarding" },
+  { key: "editPlotOnboardingCompleted", label: "Edit Plot Onboarding" },
+  { key: "splitPlotOnboardingCompleted", label: "Split Plot Onboarding" },
+  { key: "mergePlotsOnboardingCompleted", label: "Merge Plots Onboarding" },
+  { key: "selectPlotsForPlanOnboardingCompleted", label: "Crop Rotation Plot Selection Onboarding" },
 ] as const;
 
 type ResettableKey = (typeof RESETTABLE_KEYS)[number]["key"];
@@ -54,28 +59,14 @@ export function DevSettingsScreen() {
           text: "Reset",
           style: "destructive",
           onPress: async () => {
-            // Read current stored settings
-            const raw = await AsyncStorage.getItem("localSettings");
-            const stored = raw ? JSON.parse(raw) : {};
-
-            // Delete selected keys from stored object
+            // Reset each selected key to its default value in-memory
+            // This also persists each change to AsyncStorage
             for (const key of selected) {
-              delete stored[key];
-            }
-
-            // Save back — on next load, defaults will apply for deleted keys
-            await AsyncStorage.setItem("localSettings", JSON.stringify(stored));
-
-            // Also update in-memory state by re-reading defaults
-            for (const { key } of RESETTABLE_KEYS) {
-              if (selected.has(key)) {
-                // Force re-read from defaults by updating context
-                updateLocalSettings(key, undefined as never);
-              }
+              updateLocalSettings(key, defaultLocalSettings[key]);
             }
 
             setSelected(new Set());
-            Alert.alert("Done", "Selected settings have been reset. Restart the app for full effect.");
+            Alert.alert("Done", "Selected settings have been reset.");
           },
         },
       ],

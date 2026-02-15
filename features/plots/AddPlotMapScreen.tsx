@@ -326,6 +326,18 @@ export function AddPlotMapScreen({ navigation, route }: AddPlotMapScreenProps) {
           disabled={!canFinish}
           onPress={handleOnComplete}
         />
+        <MaterialCommunityIconButton
+          style={{ backgroundColor: theme.colors.accent }}
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="information-outline"
+          onPress={() =>
+            navigation.navigate("AddPlotOnboarding", {
+              variant: mode === "parcel" ? "parcel" : "draw",
+            })
+          }
+        />
       </MapControls>
       {showModeSelect ? (
         <Card

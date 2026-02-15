@@ -141,6 +141,16 @@ export function MergePlotsMapScreen({
           disabled={selectedPlotIds.length < 2}
           onPress={handleNext}
         />
+        <MaterialCommunityIconButton
+          style={{ backgroundColor: theme.colors.accent }}
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="information-outline"
+          onPress={() =>
+            navigation.navigate("MergePlotsOnboarding" as never)
+          }
+        />
       </MapControls>
     </ContentView>
   );

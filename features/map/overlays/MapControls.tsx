@@ -78,9 +78,14 @@ export const MapControls = ({
     <>
       <MapControlsContainer insets={insets} style={[animatedStyle]}>
         <ExpandedToggleButton onPress={toggleOverlay}>
-          <Text style={{ color: "#ddd", fontWeight: "bold", fontSize: 25 }}>
+          {/* <Text style={{ color: "#ddd", fontWeight: "bold", fontSize: 25 }}>
             →
-          </Text>
+          </Text> */}
+          <MaterialCommunityIcons
+            name="window-minimize"
+            size={30}
+            color="#ddd"
+          />
         </ExpandedToggleButton>
         <MapControlsContent>{children}</MapControlsContent>
       </MapControlsContainer>

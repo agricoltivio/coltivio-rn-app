@@ -62,6 +62,20 @@ export function SplitPlotOnboardingScreen({
         {t("plots.split_onboarding.area_body")}
       </H3>
     </View>,
+    <View key="extract" style={{ alignItems: "center" }}>
+      <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
+        {t("plots.split_onboarding.extract_heading")}
+      </H1>
+      <IconBadge name="vector-difference-ba" />
+      <H3
+        style={{
+          color: theme.colors.primary,
+          textAlign: "center",
+        }}
+      >
+        {t("plots.split_onboarding.extract_body")}
+      </H3>
+    </View>,
   ];
 
   return <OnboardingScreen steps={steps} onFinish={handleFinish} />;

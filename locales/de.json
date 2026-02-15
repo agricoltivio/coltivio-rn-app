@@ -342,7 +342,9 @@
       "line_heading": "Linie zeichnen",
       "line_body": "Zeichne eine Linie quer über den Schlag, um ihn in zwei Teile zu teilen. Tippe auf die Karte, um Punkte zu setzen, und bestätige mit dem Schneiden-Symbol.",
       "area_heading": "Fläche ausschneiden",
-      "area_body": "Zeichne ein Polygon innerhalb des Schlags, um eine neue Fläche auszuschneiden. Dies ist nützlich, wenn du einen bestimmten Bereich abtrennen möchtest."
+      "area_body": "Zeichne ein Polygon innerhalb des Schlags, um eine neue Fläche auszuschneiden. Dies ist nützlich, wenn du einen bestimmten Bereich abtrennen möchtest.",
+      "extract_heading": "Schlag herauslösen",
+      "extract_body": "Wenn eine Fläche aus mehreren Schlägen besteht, kannst du einen einzelnen Schlag auswählen und herauslösen."
     },
     "split": {
       "heading": "Schlag aufteilen",
@@ -387,7 +389,7 @@
     "map_onboarding": {
       "browse_heading": "Deine Schläge",
       "browse_body": "Tippe auf einen Schlag auf der Karte oder suche ihn über das Listen-Symbol, um Details anzuzeigen.",
-      "browse_expand_info": "Ziehe die Schublade nach oben, um weitere Informationen zu sehen.",
+      "browse_expand_info": "Du kannst die Detailsansicht maximieren in dem du sie nach oben ziehst.",
       "tools_heading": "Werkzeuge",
       "tools_body": "Verwende die Werkzeugleiste, um deine Schlagflächen zu verwalten.",
       "tool_add": "Neuen Schlag hinzufügen",
@@ -912,7 +914,7 @@
     "select_heading": "Schläge auswählen",
     "select_body": "Tippe auf deine Schläge, um sie auszuwählen oder abzuwählen.",
     "draw_heading": "Fläche zeichnen",
-    "draw_body": "Tippe auf dieses Symbol, um den Zeichenmodus zu starten. Tippe danach auf die Karte, um Eckpunkte zu setzen. Halte einen Eckpunkt gedrückt, um ihn zu verschieben.",
+    "draw_body": "Tippe auf die Karte, um Eckpunkte zu setzen. Halte einen Eckpunkt gedrückt, um ihn zu verschieben.",
     "finish_heading": "Zeichnung abschliessen",
     "finish_body": "Tippe auf dieses Symbol, um die Fläche abzuschliessen.",
     "welcome_body_draw": "Du zeichnest gleich einen neuen Schlag auf der Karte. Hier erklären wir dir kurz, wie das funktioniert.",
