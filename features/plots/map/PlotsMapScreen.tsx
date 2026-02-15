@@ -77,7 +77,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
   useEffect(() => {
     if (mode.type !== "view" || !mode.selectedPlotId || !plots) return;
     const selectedPlot = plots.find((p) => p.id === mode.selectedPlotId);
-    if (!selectedPlot) return;
+    if (!selectedPlot || selectedPlot.geometry.coordinates.length === 0) return;
     const centroid = turf.centroid(selectedPlot.geometry);
     const [longitude, latitude] = centroid.geometry.coordinates;
     mapRef.current?.animateToRegion({
@@ -200,7 +200,9 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
           visible={plotListVisible}
           onClose={() => setPlotListVisible(false)}
           plots={plots ?? []}
-          onSelectPlot={(plot) => dispatch({ type: "SELECT_PLOT", plotId: plot.id })}
+          onSelectPlot={(plot) =>
+            dispatch({ type: "SELECT_PLOT", plotId: plot.id })
+          }
           mapRef={mapRef}
         />
 

@@ -37,7 +37,7 @@ export function PlotListScreen({ navigation }: PlotListScreenProps) {
 
   const handlePlotSelect = useCallback(
     (plot: Plot) => {
-      navigation.navigate("PlotsMap", { selectedPlotId: plot.id });
+      navigation.popTo("PlotsMap", { selectedPlotId: plot.id });
     },
     [navigation],
   );

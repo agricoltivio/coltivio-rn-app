@@ -100,7 +100,7 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
       setSelectedPlotId(preselectedPlotId);
       // Animate map to the selected plot
       const plot = plots?.find((p) => p.id === preselectedPlotId);
-      if (plot) {
+      if (plot && plot.geometry.coordinates.length > 0) {
         const centroid = turf.centroid(plot.geometry);
         const [lng, lat] = centroid.geometry.coordinates;
         mapRef.current?.animateToRegion({
