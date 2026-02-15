@@ -57,9 +57,14 @@ export function FarmSummaryScreen({ navigation }: FarmSummaryScreenProps) {
           {data.federalFarmId ? (
             <>
               <H2 style={{ color: theme.colors.primary }}>
-                {t("common.federal_farm_id", { number: data.federalFarmId })}
+                {t("onboarding.summary.heading")}
               </H2>
               <H3 style={{ marginTop: theme.spacing.s }}>
+                {t("onboarding.summary.subheading", {
+                  federalFarmId: data.federalFarmId,
+                })}
+              </H3>
+              {/* <H3 style={{ marginTop: theme.spacing.s }}>
                 {t("onboarding.summary.plots_info")}
               </H3>
               <H3 style={{ marginTop: theme.spacing.s }}>
@@ -67,7 +72,7 @@ export function FarmSummaryScreen({ navigation }: FarmSummaryScreenProps) {
               </H3>
               <H3 style={{ marginTop: theme.spacing.s }}>
                 {t("onboarding.summary.edit_plots_info")}
-              </H3>
+              </H3> */}
             </>
           ) : (
             <H3 style={{ marginTop: theme.spacing.s }}>
@@ -77,7 +82,7 @@ export function FarmSummaryScreen({ navigation }: FarmSummaryScreenProps) {
           <H3
             style={{
               color: theme.colors.primary,
-              marginTop: theme.spacing.xxl,
+              marginTop: theme.spacing.xl,
             }}
           >
             {t("onboarding.summary.press_save_to_finish")}

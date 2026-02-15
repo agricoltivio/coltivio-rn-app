@@ -127,12 +127,12 @@ export function AddPlotMapScreen({ navigation, route }: AddPlotMapScreenProps) {
       setDrawingAction("draw");
       // Show the draw onboarding modal on first use
       if (!localSettings.addPlotDrawOnboardingCompleted) {
-        navigation.navigate("MapDrawOnboarding", { variant: "draw" });
+        navigation.navigate("AddPlotOnboarding", { variant: "draw" });
       }
     }
     if (mode === "parcel") {
       if (!localSettings.addPlotParcelOnboardingCompleted) {
-        navigation.navigate("MapDrawOnboarding", { variant: "parcel" });
+        navigation.navigate("AddPlotOnboarding", { variant: "parcel" });
       }
       if (currentRegion) {
         setCurrentViewPoint(GeoSpatials.getRegionCenter(currentRegion));
@@ -292,7 +292,7 @@ export function AddPlotMapScreen({ navigation, route }: AddPlotMapScreenProps) {
             showActions={false}
             onCanFinishChange={setCanFinish}
             onInfo={() =>
-              navigation.navigate("MapDrawOnboarding", { variant: "draw" })
+              navigation.navigate("AddPlotOnboarding", { variant: "draw" })
             }
           />
         ) : null}

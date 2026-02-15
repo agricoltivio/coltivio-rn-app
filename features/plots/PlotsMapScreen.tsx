@@ -74,7 +74,7 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
       setMapVisible(true);
       // Show onboarding on first visit
       if (!localSettings.plotsMapOnboardingCompleted) {
-        navigation.navigate("MapDrawOnboarding", { variant: "plotsMap" });
+        navigation.navigate("PlotsMapOnboarding");
       }
     });
     return () => cancelAnimationFrame(raf);
@@ -225,7 +225,7 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
       </PlotListButtonContainer>
 
       {/* Map controls sidebar (right side) */}
-      <MapControls>
+      <MapControls initiallyExpanded={!!preselectedPlotId}>
         <MaterialCommunityIconButton
           style={{
             backgroundColor: theme.colors.accent,

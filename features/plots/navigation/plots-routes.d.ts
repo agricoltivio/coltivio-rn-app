@@ -24,7 +24,11 @@ export type PlotsStackParamList = {
     name: string;
   };
   PlotTillages: { plotId: string; name: string };
+  PlotsMapOnboarding: undefined;
+  AddPlotOnboarding: { variant: "draw" | "parcel" };
+  EditPlotOnboarding: undefined;
   SplitPlotOnboarding: undefined;
+  MergePlotsOnboarding: undefined;
   SplitPlotSummary: { plotId: string };
   MergePlotSummary: { plotIds: string[]; primaryPlotId: string };
   PlotList: undefined;

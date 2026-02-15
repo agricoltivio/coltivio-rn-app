@@ -51,7 +51,7 @@ export function EditPlotMapScreen({
     const raf = requestAnimationFrame(() => {
       setMapVisible(true);
       if (!localSettings.editPlotOnboardingCompleted) {
-        navigation.navigate("MapDrawOnboarding", { variant: "edit" });
+        navigation.navigate("EditPlotOnboarding");
       }
     });
     return () => cancelAnimationFrame(raf);
@@ -151,7 +151,7 @@ export function EditPlotMapScreen({
           magnifierMapContent={plotPolygons}
           onFinish={onFinishDrawing}
           onInfo={() =>
-            navigation.navigate("MapDrawOnboarding", { variant: "edit" })
+            navigation.navigate("EditPlotOnboarding")
           }
         />
       </MapView>

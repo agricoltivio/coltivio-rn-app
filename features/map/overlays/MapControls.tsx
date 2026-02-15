@@ -1,3 +1,4 @@
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import React, { useEffect } from "react";
 import { Text } from "react-native";
 import Animated, {
@@ -5,10 +6,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import {
-  EdgeInsets,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { EdgeInsets, useSafeAreaInsets } from "react-native-safe-area-context";
 import styled, { useTheme } from "styled-components/native";
 
 type MapControlsProps = {
@@ -28,7 +26,9 @@ export const MapControls = ({
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   const isControlled = expanded !== undefined;
-  const isExpanded = useSharedValue(isControlled ? expanded : initiallyExpanded);
+  const isExpanded = useSharedValue(
+    isControlled ? expanded : initiallyExpanded,
+  );
 
   // Sync shared value with controlled prop
   useEffect(() => {
@@ -89,9 +89,10 @@ export const MapControls = ({
         style={[expanButtonStyle]}
       >
         <CollapsedToggleButton onPress={toggleOverlay}>
-          <Text style={{ color: "#ddd", fontWeight: "bold", fontSize: 25 }}>
-            ←
-          </Text>
+          <MaterialCommunityIcons name="tools" size={30} color="#ddd" />
+          {/* <Text style={{ color: "#ddd", fontWeight: "bold", fontSize: 25 }}> */}
+          {/* ← */}
+          {/* </Text> */}
         </CollapsedToggleButton>
       </CollapsedToggleButtonContainer>
     </>
@@ -125,7 +126,7 @@ const CollapsedToggleButtonContainer = styled(Animated.View)<{
   position: absolute;
   right: 0px;
   top: ${({ insets, theme }) => insets.top + theme.spacing.s}px;
-  background-color: rgba(52, 52, 52, 0.4);
+  background-color: rgba(52, 52, 52, 0.8);
   border-color: #ddd;
   border-width: 2px;
   border-radius: 20px;

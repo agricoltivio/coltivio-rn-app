@@ -14,7 +14,7 @@
     "close": "Schliessen",
     "delete": "Löschen",
     "details": "Details",
-    "parcel_select": "Parzelle ",
+    "parcel_select": "Parzelle auswählen",
     "draw_area": "Neue Fläche",
     "edit_area": "Fläche bearbeiten",
     "show_entries": "Einträge anzeigen",
@@ -238,10 +238,11 @@
     },
     "summary": {
       "heading": "Geschafft!",
+      "subheading": "Dein Hof mit der Betriebsnummer {{federalFarmId}} ist bereit.",
       "plots_info": "Deine Flächen werden basierend auf deiner Betriebsnummer als Schläge hinzugefügt.",
       "crops_info": "Die momentane Kultur wird vom Nutzungscode abgeleitet.",
       "edit_plots_info": "Du kannst deine Flächen jederzeit unter 'Schläge' oder über die Karte bearbeiten.",
-      "press_save_to_finish": "Drücke 'Speichern', um deinen Hof zu erstellen.",
+      "press_save_to_finish": "Drücke 'Speichern', um ihn zu erstellen.",
       "no_federal_farm_id": "Leider konnten wir deine Flächen nicht automatisch hinzufügen. Du kannst deine Flächen unter 'Schläge' oder unter der Karte manuell hinzufügen. Wir arbeiten daran, sobald wie möglich alle Standorte zu unterstützen."
     }
   },
@@ -376,6 +377,24 @@
         "strategy_delete_and_migrate_info": "Die ursprünglichen Schläge werden gelöscht. Alle bestehenden Einträge werden auf den neuen Schlag übertragen.",
         "strategy_delete_crop_rotation_warning": "Fruchtfolgen werden nicht übertragen und gehen verloren."
       }
+    },
+    "merge_onboarding": {
+      "welcome_heading": "Schläge zusammenführen",
+      "welcome_body": "Wähle die Schläge aus, die zusammengeführt werden sollen. Der aktive Schlag ist bereits ausgewählt.",
+      "confirm_heading": "Bestätigen",
+      "confirm_body": "Drücke das Bestätigungs-Symbol, wenn mindestens 2 Schläge ausgewählt sind."
+    },
+    "map_onboarding": {
+      "browse_heading": "Deine Schläge",
+      "browse_body": "Tippe auf einen Schlag auf der Karte oder suche ihn über das Listen-Symbol, um Details anzuzeigen.",
+      "browse_expand_info": "Ziehe die Schublade nach oben, um weitere Informationen zu sehen.",
+      "tools_heading": "Werkzeuge",
+      "tools_body": "Verwende die Werkzeugleiste, um deine Schlagflächen zu verwalten.",
+      "tool_add": "Neuen Schlag hinzufügen",
+      "tool_split": "Bestehenden Schlag aufteilen",
+      "tool_merge": "Schläge zusammenführen",
+      "tool_edit": "Schlagfläche bearbeiten",
+      "tool_delete": "Schlag löschen"
     },
     "usage_codes": {
       "501": "Sommergerste",

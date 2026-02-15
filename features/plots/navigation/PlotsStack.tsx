@@ -18,6 +18,10 @@ import { PlotHarvestsScreen } from "../PlotHarvestsScreen";
 import { PlotsMapScreen } from "../PlotsMapScreen";
 import { PlotTillagesScreen } from "../PlotTillagesScreen";
 import { SplitPlotMapScreen } from "../SplitPlotMapScreen";
+import { AddPlotOnboardingScreen } from "../AddPlotOnboardingScreen";
+import { EditPlotOnboardingScreen } from "../EditPlotOnboardingScreen";
+import { MergePlotsOnboardingScreen } from "../MergePlotsOnboardingScreen";
+import { PlotsMapOnboardingScreen } from "../PlotsMapOnboardingScreen";
 import { SplitPlotOnboardingScreen } from "../SplitPlotOnboardingScreen";
 import { SplitPlotSummaryScreen } from "../SplitPlotSummaryScreen";
 import { PlotListScreen } from "../map/PlotListScreen";
@@ -141,9 +145,33 @@ export function renderPlotsStack(
       component={PlotTillagesScreen}
     />,
     <Stack.Screen
+      key="plots-map-onboarding"
+      name="PlotsMapOnboarding"
+      component={PlotsMapOnboardingScreen}
+      options={{ headerShown: false }}
+    />,
+    <Stack.Screen
+      key="add-plot-onboarding"
+      name="AddPlotOnboarding"
+      component={AddPlotOnboardingScreen}
+      options={{ headerShown: false }}
+    />,
+    <Stack.Screen
+      key="edit-plot-onboarding"
+      name="EditPlotOnboarding"
+      component={EditPlotOnboardingScreen}
+      options={{ headerShown: false }}
+    />,
+    <Stack.Screen
       key="split-plot-onboarding"
       name="SplitPlotOnboarding"
       component={SplitPlotOnboardingScreen}
+      options={{ headerShown: false }}
+    />,
+    <Stack.Screen
+      key="merge-plots-onboarding"
+      name="MergePlotsOnboarding"
+      component={MergePlotsOnboardingScreen}
       options={{ headerShown: false }}
     />,
     <Stack.Screen

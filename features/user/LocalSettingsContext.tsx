@@ -26,6 +26,7 @@ type LocalSettingsData = {
   selectPlotsForPlanOnboardingCompleted: boolean;
   plotsMapOnboardingCompleted: boolean;
   splitPlotOnboardingCompleted: boolean;
+  mergePlotsOnboardingCompleted: boolean;
   herdsOnboardingCompleted: boolean;
 };
 
@@ -52,6 +53,7 @@ const defaultLocalSettings: LocalSettingsData = {
   selectPlotsForPlanOnboardingCompleted: false,
   plotsMapOnboardingCompleted: false,
   splitPlotOnboardingCompleted: false,
+  mergePlotsOnboardingCompleted: false,
   herdsOnboardingCompleted: false,
 };
 

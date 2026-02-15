@@ -5,6 +5,7 @@ import { LabelMarker } from "@/features/map/LabelMarker";
 import { hexToRgba } from "@/theme/theme";
 import { PortalHost } from "@gorhom/portal";
 import * as turf from "@turf/turf";
+import { useLocalSettings } from "../user/LocalSettingsContext";
 import { useEffect, useMemo, useState } from "react";
 import { StyleSheet } from "react-native";
 import { Region } from "react-native-maps";
@@ -25,14 +26,20 @@ export function MergePlotsMapScreen({
   const { plotId } = route.params;
   const { farm } = useFarmQuery();
   const { plots } = useFarmPlotsQuery();
+  const { localSettings } = useLocalSettings();
   const [mapVisible, setMapVisible] = useState(false);
   const [showsUserLocation, setShowsUserLocation] = useState(false);
   const [selectedPlotIds, setSelectedPlotIds] = useState<string[]>([plotId]);
 
   useEffect(() => {
-    const raf = requestAnimationFrame(() => setMapVisible(true));
+    const raf = requestAnimationFrame(() => {
+      setMapVisible(true);
+      if (!localSettings.mergePlotsOnboardingCompleted) {
+        navigation.navigate("MergePlotsOnboarding" as never);
+      }
+    });
     return () => cancelAnimationFrame(raf);
-  }, [navigation]);
+  }, [navigation, localSettings.mergePlotsOnboardingCompleted]);
 
   if (!farm || !plots) {
     return null;

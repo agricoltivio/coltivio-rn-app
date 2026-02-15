@@ -67,16 +67,15 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
             />
           </HomeTile>
           <HomeTile
-            title={t("home.tiles.field_calendar")}
-            onPress={() => navigation.navigate("FieldCalendar")}
+            title={t("home.tiles.plots")}
+            onPress={() => navigation.navigate("PlotsMap", {})}
           >
             <Image
-              source={require("@/assets/images/harvest-icon.png")}
+              source={require("@/assets/images/field-calendar-icon-4.png")}
               contentFit="contain"
               style={{
                 height: 110,
                 opacity: 0.9,
-                marginBottom: theme.spacing.xxs,
                 borderBottomLeftRadius: 10,
                 borderBottomRightRadius: 10,
               }}
@@ -100,6 +99,22 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
               style={{
                 height: 110,
                 opacity: 0.9,
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+              }}
+            />
+          </HomeTile>
+          <HomeTile
+            title={t("home.tiles.field_calendar")}
+            onPress={() => navigation.navigate("FieldCalendar")}
+          >
+            <Image
+              source={require("@/assets/images/harvest-icon.png")}
+              contentFit="contain"
+              style={{
+                height: 110,
+                opacity: 0.9,
+                marginBottom: theme.spacing.xxs,
                 borderBottomLeftRadius: 10,
                 borderBottomRightRadius: 10,
               }}
