@@ -97,6 +97,16 @@ export function animalsApi(client: FetchClient) {
       });
     },
 
+    async deleteAnimals(animalIds: string[]) {
+      await client.DELETE("/v1/animals", {
+        params: {
+          query: {
+            animalIds,
+          },
+        },
+      });
+    },
+
     async batchUpdateAnimals(
       input: AnimalBatchUpdateInput,
     ): Promise<AnimalBatchUpdateResponse> {
@@ -106,7 +116,9 @@ export function animalsApi(client: FetchClient) {
       return data!.data;
     },
 
-    async importAnimals(body: AnimalImportInput): Promise<AnimalImportResponse> {
+    async importAnimals(
+      body: AnimalImportInput,
+    ): Promise<AnimalImportResponse> {
       const { data } = await client.POST("/v1/animals/import", {
         body,
         bodySerializer: (body) => {

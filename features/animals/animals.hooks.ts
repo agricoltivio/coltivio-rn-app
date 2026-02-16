@@ -101,6 +101,23 @@ export function useBatchUpdateAnimalsMutation(
   });
 }
 
+export function useDeleteAnimalsMutation(
+  onSuccess?: () => void,
+  onError?: (error: Error) => void,
+) {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (animalIds: string[]) => api.animals.deleteAnimals(animalIds),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.animals._def });
+      queryClient.invalidateQueries({ queryKey: queryKeys.earTags._def });
+      onSuccess?.();
+    },
+    onError,
+  });
+}
+
 export function useDeleteAnimalMutation(
   onSuccess?: () => void,
   onError?: (error: Error) => void,

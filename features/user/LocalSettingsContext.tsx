@@ -15,6 +15,10 @@ import {
   DEFAULT_FIELD_CALENDAR_GROUPS,
   FieldCalendarGroupConfig,
 } from "../field-calendar/field-calendar-settings";
+import {
+  DEFAULT_SPEED_DIAL_ITEMS,
+  SpeedDialActionConfig,
+} from "../home/speed-dial-settings";
 type LocalSettingsData = {
   editPlotOnboardingCompleted: boolean;
   fieldCalendarGroups: FieldCalendarGroupConfig[];
@@ -30,6 +34,9 @@ type LocalSettingsData = {
   mergePlotsOnboardingCompleted: boolean;
   herdsOnboardingCompleted: boolean;
   onboardingsDisabled: boolean;
+  speedDialEnabled: boolean;
+  speedDialOnboardingCompleted: boolean;
+  speedDialItems: SpeedDialActionConfig[];
 };
 
 type LocalSettingActions = {
@@ -58,6 +65,9 @@ export const defaultLocalSettings: LocalSettingsData = {
   mergePlotsOnboardingCompleted: false,
   herdsOnboardingCompleted: false,
   onboardingsDisabled: false,
+  speedDialEnabled: true,
+  speedDialOnboardingCompleted: false,
+  speedDialItems: DEFAULT_SPEED_DIAL_ITEMS,
 };
 
 export const LocalSettingsContext = createContext<LocalSettings>({
@@ -66,6 +76,16 @@ export const LocalSettingsContext = createContext<LocalSettings>({
 });
 
 const localSettingsStorageKey = "localSettings";
+
+// Preserves stored order, appends new items not yet in storage
+function mergeSpeedDialItems(
+  stored: SpeedDialActionConfig[],
+  defaults: SpeedDialActionConfig[],
+): SpeedDialActionConfig[] {
+  const storedIds = new Set(stored.map((i) => i.id));
+  const newItems = defaults.filter((i) => !storedIds.has(i.id));
+  return [...stored, ...newItems];
+}
 
 // Preserves stored order and visibility, appends new defaults not yet in storage
 function mergeGroups(
@@ -105,6 +125,7 @@ export function LocalSettingsProvider({ children }: PropsWithChildren) {
             ...stored,
             animalsGroups: mergeGroups(stored.animalsGroups ?? [], DEFAULT_ANIMALS_GROUPS),
             fieldCalendarGroups: mergeGroups(stored.fieldCalendarGroups ?? [], DEFAULT_FIELD_CALENDAR_GROUPS),
+            speedDialItems: mergeSpeedDialItems(stored.speedDialItems ?? [], DEFAULT_SPEED_DIAL_ITEMS),
           });
         }
       }
@@ -156,6 +177,7 @@ export function useLocalSettings() {
       splitPlotOnboardingCompleted: true,
       mergePlotsOnboardingCompleted: true,
       herdsOnboardingCompleted: true,
+      speedDialOnboardingCompleted: true,
     };
   }, [localSettings]);
 

@@ -85,10 +85,10 @@ export function SelectChildrenModal({
     if (selectedIds.size === 0) return;
     const parentField = sex === "female" ? "motherId" : "fatherId";
     batchUpdateMutation.mutate({
-      animals: Array.from(selectedIds).map((childId) => ({
-        id: childId,
+      animalIds: Array.from(selectedIds),
+      data: {
         [parentField]: animalId,
-      })),
+      },
     });
   }
 

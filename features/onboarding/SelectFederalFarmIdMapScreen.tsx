@@ -36,17 +36,17 @@ export function SelectFederalFarmIdMapScreen({
   const { plots, isFetching: isFetchingPlots } = usePlotsByLocationQuery(
     data.location!,
     1,
-    !!data.location
+    !!data.location,
   );
 
   const [federalFarmId, setFederalFarmId] = useState<string | undefined>();
   const [federalFarmIdSearchText, setFederalFarmIdSearchText] = useState(
-    data.federalFarmId || ""
+    data.federalFarmId || "",
   );
 
   const debouncedFederalFarmIdSearchText = useDebounce(
     federalFarmIdSearchText,
-    800
+    800,
   );
 
   const { federalFarmIds, isFetching } = useFederalFarmIdSearchQuery(
@@ -55,7 +55,7 @@ export function SelectFederalFarmIdMapScreen({
     data.location?.lat!,
     3,
     20,
-    !data.federalFarmId && debouncedFederalFarmIdSearchText !== ""
+    !data.federalFarmId && debouncedFederalFarmIdSearchText !== "",
   );
 
   function onChangeQuery(value: string) {
@@ -93,8 +93,8 @@ export function SelectFederalFarmIdMapScreen({
   const initialRegion: Region = {
     latitude: lat,
     longitude: lng,
-    latitudeDelta: 0.005,
-    longitudeDelta: 0.005,
+    latitudeDelta: 0.0025,
+    longitudeDelta: 0.0025,
   };
 
   useEffect(() => {
@@ -109,7 +109,7 @@ export function SelectFederalFarmIdMapScreen({
       federalFarmId: federalFarmId!,
     });
     handleCloseBottomDrawer();
-    navigation.navigate("FarmSummary");
+    navigation.navigate("OnboardingPreference");
   }
 
   return (
@@ -173,7 +173,7 @@ export function SelectFederalFarmIdMapScreen({
         <MapInfoModal
           title={t("onboarding.federal_farm_number.modal_not_found.heading")}
           text={t("onboarding.federal_farm_number.modal_not_found.body")}
-          onClose={() => navigation.navigate("FarmSummary")}
+          onClose={() => navigation.navigate("OnboardingPreference")}
         />
       ) : null}
 
@@ -207,7 +207,7 @@ export function SelectFederalFarmIdMapScreen({
           <NavigationButton
             title={t("buttons.next")}
             icon="arrow-forward-circle-outline"
-            onPress={() => navigation.navigate("FarmSummary")}
+            onPress={() => navigation.navigate("OnboardingPreference")}
           />
         </View>
       </View>

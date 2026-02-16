@@ -1166,7 +1166,7 @@ export interface paths {
         get: operations["GetV1Animals"];
         put?: never;
         post: operations["PostV1Animals"];
-        delete?: never;
+        delete: operations["DeleteV1Animals"];
         options?: never;
         head: operations["HeadV1Animals"];
         patch?: never;
@@ -5070,6 +5070,10 @@ export interface components {
             deathReason?: "died" | "slaughtered" | null;
             herdId?: string | null;
         };
+        DeleteV1AnimalsParameterAnimalIds: string[];
+        DeleteV1AnimalsPositiveResponse: {
+            data: Record<string, never>;
+        };
         PatchV1AnimalsBatchPositiveResponse: {
             data: {
                 result: {
@@ -5112,35 +5116,25 @@ export interface components {
             };
         };
         PatchV1AnimalsBatchRequestBody: {
-            animals: {
-                name?: string;
+            animalIds: string[];
+            data: {
                 /** @enum {string} */
                 type?: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
                 /** @enum {string} */
-                sex?: "male" | "female";
-                /**
-                 * Format: date-time
-                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                 */
-                dateOfBirth?: string;
-                registered?: boolean;
-                /** @enum {string|null} */
-                categoryOverride?: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
+                categoryOverride?: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2";
                 /** @enum {string} */
                 usage?: "milk" | "other";
-                earTagId?: string | null;
-                motherId?: string | null;
-                fatherId?: string | null;
+                registered?: boolean;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
-                dateOfDeath?: string | null;
-                /** @enum {string|null} */
-                deathReason?: "died" | "slaughtered" | null;
-                herdId?: string | null;
-                id: string;
-            }[];
+                dateOfDeath?: string;
+                /** @enum {string} */
+                deathReason?: "died" | "slaughtered";
+                motherId?: string;
+                fatherId?: string;
+            };
         };
         PostV1AnimalsImportPositiveResponse: {
             data: {
@@ -13324,6 +13318,38 @@ export interface operations {
                 };
             };
             /** @description POST /v1/animals Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1Animals: {
+        parameters: {
+            query: {
+                /** @description DELETE /v1/animals Parameter */
+                animalIds: components["schemas"]["DeleteV1AnimalsParameterAnimalIds"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/animals Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1AnimalsPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/animals Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;

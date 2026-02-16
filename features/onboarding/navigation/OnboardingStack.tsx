@@ -1,4 +1,5 @@
 import { FarmSummaryScreen } from "@/features/onboarding/FarmSummaryScreen";
+import { OnboardingPreferenceScreen } from "@/features/onboarding/OnboardingPreferenceScreen";
 import { SelectFarmLocationScreen } from "@/features/onboarding/SelectFarmLocationScreen";
 import { SelectFarmLocationSearchModal } from "@/features/onboarding/SelectFarmLocationSearchModal";
 import { SelectFarmNameScreen } from "@/features/onboarding/SelectFarmNameScreen";
@@ -34,6 +35,11 @@ export function renderOnboardingStack(theme: DefaultTheme) {
             animation: "fade",
             headerShown: false,
           }}
+        />
+        <Stack.Screen
+          name="OnboardingPreference"
+          component={OnboardingPreferenceScreen}
+          options={{ title: "", headerShown: false }}
         />
         <Stack.Screen
           name="FarmSummary"

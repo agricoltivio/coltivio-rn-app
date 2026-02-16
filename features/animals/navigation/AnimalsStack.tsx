@@ -25,6 +25,8 @@ import { OutdoorJournalScreen } from "../OutdoorJournalScreen";
 import { OutdoorJournalExportScreen } from "../OutdoorJournalExportScreen";
 import { TreatmentsExportScreen } from "../TreatmentsExportScreen";
 import { HerdsOnboardingScreen } from "../HerdsOnboardingScreen";
+import { BatchSelectAnimalsScreen } from "../BatchSelectAnimalsScreen";
+import { BatchEditActionScreen } from "../BatchEditActionScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { DefaultTheme } from "styled-components/native";
 
@@ -215,6 +217,18 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
       name="HerdsOnboarding"
       options={{ headerShown: false }}
       component={HerdsOnboardingScreen}
+    />,
+    <Stack.Screen
+      key="batch-select-animals"
+      name="BatchSelectAnimals"
+      options={{ title: "" }}
+      component={BatchSelectAnimalsScreen}
+    />,
+    <Stack.Screen
+      key="batch-edit-action"
+      name="BatchEditAction"
+      options={{ title: "" }}
+      component={BatchEditActionScreen}
     />,
   ];
 }

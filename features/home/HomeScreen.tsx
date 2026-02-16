@@ -1,24 +1,42 @@
+import { SpeedDial } from "@/components/buttons/SpeedDial";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { MapTile } from "@/features/map/MapTile";
 import { H1, H2 } from "@/theme/Typography";
 import { Image } from "expo-image";
-import React from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../farms/farms.hooks";
+import { useLocalSettings } from "../user/LocalSettingsContext";
 import { useUserQuery } from "../user/users.hooks";
 import { HomeTile } from "./HomeTile";
 import { HomeScreenProps } from "./navigation/home-routes";
+import { SPEED_DIAL_ACTIONS } from "./speed-dial-settings";
 
 export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { t } = useTranslation();
   const { user } = useUserQuery();
   const { farm } = useFarmQuery();
   const theme = useTheme();
+  const { localSettings } = useLocalSettings();
+
+  const speedDialItems = useMemo(() => {
+    return localSettings.speedDialItems
+      .filter((item) => item.active && item.id in SPEED_DIAL_ACTIONS)
+      .map((item) => {
+        const action = SPEED_DIAL_ACTIONS[item.id as keyof typeof SPEED_DIAL_ACTIONS];
+        return {
+          id: item.id,
+          icon: action.icon,
+          onPress: () => navigation.navigate(action.route as never),
+        };
+      });
+  }, [localSettings.speedDialItems, t, navigation]);
 
   return (
+    <>
     <ScrollView showHeaderOnScroll headerTitleOnScroll={farm?.name}>
       <ContentView headerVisible={true}>
         <View>
@@ -176,5 +194,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
         </View> */}
       </ContentView>
     </ScrollView>
+    {localSettings.speedDialEnabled && speedDialItems.length > 0 ? <SpeedDial items={speedDialItems} /> : null}
+    </>
   );
 };

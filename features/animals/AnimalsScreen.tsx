@@ -4,7 +4,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
 import { H2, Subtitle } from "@/theme/Typography";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Fuse from "fuse.js";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -232,8 +232,22 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
         </View>
       )}
 
+      {/* Batch edit button */}
+      {animals && animals.length > 0 && (
+        <TouchableOpacity
+          onPress={() => navigation.navigate("BatchSelectAnimals")}
+          style={{ marginTop: theme.spacing.m }}
+        >
+          <MaterialCommunityIcons
+            name="checkbox-multiple-marked-outline"
+            size={26}
+            color={theme.colors.primary}
+          />
+        </TouchableOpacity>
+      )}
+
       {/* Animal list */}
-      <View style={{ marginTop: theme.spacing.m, flex: 1 }}>
+      <View style={{ marginTop: theme.spacing.s, flex: 1 }}>
         {!isLoading && searchResult.length === 0 && (
           <Subtitle>{t("common.no_entries")}</Subtitle>
         )}

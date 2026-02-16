@@ -13,8 +13,12 @@ export type OnboardingStackParamList = {
   SelectPlots: undefined;
   SelectCrops: undefined;
   SelectFertilizers: undefined;
+  OnboardingPreference: undefined;
   FarmSummary: undefined;
 };
+
+export type OnboardingPreferenceScreenProps =
+  StackScreenProps<"OnboardingPreference">;
 
 export type SelectFarmNameScreenProps = StackScreenProps<"SelectFarmName">;
 

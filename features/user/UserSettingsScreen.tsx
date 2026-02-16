@@ -19,12 +19,15 @@ export function UserSettingsScreen() {
       >
         <H2>{t("settings.settings")}</H2>
         <Switch
-          label={t("settings.disable_onboardings")}
+          label={t("settings.onboardings")}
           value={localSettings.onboardingsDisabled}
           onChange={(e) =>
             updateLocalSettings("onboardingsDisabled", e.nativeEvent.value)
           }
-          style={{ paddingVertical: theme.spacing.s, marginTop: theme.spacing.m }}
+          style={{
+            paddingVertical: theme.spacing.s,
+            marginTop: theme.spacing.m,
+          }}
         />
         <Body style={{ color: theme.colors.gray2 }}>
           {t("settings.disable_onboardings_info")}

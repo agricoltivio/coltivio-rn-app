@@ -40,6 +40,8 @@ export type AnimalsStackParamList = {
   HerdsOnboarding: undefined;
   CreateHerd: { previousScreen?: "CreateAnimal" | "EditAnimal"; animalIds?: string[] };
   HerdEdit: { herdId?: string; animalIds?: string[] };
+  BatchSelectAnimals: undefined;
+  BatchEditAction: { animalIds: string[] };
 };
 
 export type AnimalsHubScreenProps = StackScreenProps<"AnimalsHub">;
@@ -71,3 +73,5 @@ export type HerdsOnboardingScreenProps =
   StackScreenProps<"HerdsOnboarding">;
 export type CreateHerdScreenProps = StackScreenProps<"CreateHerd">;
 export type HerdEditScreenProps = StackScreenProps<"HerdEdit">;
+export type BatchSelectAnimalsScreenProps = StackScreenProps<"BatchSelectAnimals">;
+export type BatchEditActionScreenProps = StackScreenProps<"BatchEditAction">;

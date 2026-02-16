@@ -244,6 +244,14 @@
       "edit_plots_info": "Du kannst deine Flächen jederzeit unter 'Schläge' oder über die Karte bearbeiten.",
       "press_save_to_finish": "Drücke 'Speichern', um ihn zu erstellen.",
       "no_federal_farm_id": "Leider konnten wir deine Flächen nicht automatisch hinzufügen. Du kannst deine Flächen unter 'Schläge' oder unter der Karte manuell hinzufügen. Wir arbeiten daran, sobald wie möglich alle Standorte zu unterstützen."
+    },
+    "preference": {
+      "heading": "Noch eine letzte Frage",
+      "guided": "Mit Anleitungen",
+      "guided_desc": "Zeig mir Tipps und Anleitungen bei neuen Funktionen.",
+      "explore": "Selber entdecken",
+      "explore_desc": "Ich probiere Dinge lieber selbst aus.",
+      "change_hint": "Du kannst das jederzeit in den Einstellungen ändern."
     }
   },
   "users": {
@@ -1037,6 +1045,19 @@
       "step3_heading": "Geschafft!",
       "step3_body": "Du kannst jetzt Herden erstellen und Auslaufpläne definieren."
     },
+    "batch_edit": {
+      "select_animals_title": "Tiere zum Bearbeiten auswählen",
+      "select_action_title": "Bearbeitung auswählen",
+      "action_set_type": "Tierart setzen",
+      "action_set_category": "Kategorie setzen",
+      "action_set_death": "Tod erfassen",
+      "action_set_registered": "Als gemeldet markieren",
+      "action_set_usage": "Nutzung setzen",
+      "action_delete": "Löschen",
+      "update_n_animals": "{{count}} Tiere aktualisieren",
+      "delete_n_animals": "{{count}} Tiere löschen",
+      "select_action": "Aktion auswählen"
+    },
     "tvd_import": {
       "title": "TVD Import",
       "experimental": "Diese Funktion ist experimentell.",
@@ -1118,10 +1139,31 @@
     "drug_not_defined_for_all_types": "Das Medikament ist nicht für alle ausgewählten Tierarten definiert",
     "different_waiting_times_for_types": "Die Wartezeiten unterscheiden sich zwischen den Tierarten"
   },
+  "speed_dial": {
+    "harvest": "Ernte",
+    "tillage": "Bodenbearbeitung",
+    "crop_protection": "Pflanzenschutz",
+    "fertilizer_application": "Düngung",
+    "crop_rotation": "Fruchtfolge",
+    "new_animal": "Neues Tier",
+    "treatment": "Behandlung",
+    "title": "Schnellzugriff",
+    "active_actions": "Aktive Aktionen (max. 4)",
+    "available_actions": "Verfügbare Aktionen",
+    "onboarding": {
+      "welcome_heading": "Schnellzugriff",
+      "welcome_body": "Mit dem Schnellzugriff kannst du bis zu 4 Aktionen direkt von der Startseite aus starten.",
+      "settings_hint": "Du kannst die Aktionen jederzeit in den Einstellungen anpassen.",
+      "configure_heading": "Aktionen konfigurieren"
+    }
+  },
   "settings": {
     "settings": "Einstellungen",
-    "disable_onboardings": "Anleitungen deaktivieren",
-    "disable_onboardings_info": "Deaktiviert alle Anleitungen, die beim erstmaligen Öffnen einer Funktion angezeigt werden."
+    "onboardings": "Anleitungen",
+    "disable_onboardings_info": "Deaktiviert alle Anleitungen, die beim erstmaligen Öffnen einer Funktion angezeigt werden.",
+    "app_settings": "Einstellungen",
+    "speed_dial_enabled": "Schnellzugriff",
+    "speed_dial_settings": "Schnellzugriff konfigurieren"
   },
   "permissions": {
     "location": {

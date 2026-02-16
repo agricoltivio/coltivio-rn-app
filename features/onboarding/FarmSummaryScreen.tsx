@@ -31,12 +31,16 @@ export function FarmSummaryScreen({ navigation }: FarmSummaryScreenProps) {
   const createFarmMutation = useCreateFarmMutation(() => {
     syncMissingLocalIdsMutation.mutate();
 
-    supabase.auth.signInWithOtp({
-      email: authUser!.email!,
-      options: {
-        emailRedirectTo: redirectTo,
-      },
-    });
+    // Defer OTP call so it doesn't trigger an auth state change
+    // that could cause a user query refetch before navigation switches
+    setTimeout(() => {
+      supabase.auth.signInWithOtp({
+        email: authUser!.email!,
+        options: {
+          emailRedirectTo: redirectTo,
+        },
+      });
+    }, 1000);
   });
 
   function onFinish() {
@@ -79,18 +83,10 @@ export function FarmSummaryScreen({ navigation }: FarmSummaryScreenProps) {
               {t("onboarding.summary.no_federal_farm_id")}
             </H3>
           )}
-          <H3
-            style={{
-              color: theme.colors.primary,
-              marginTop: theme.spacing.xl,
-            }}
-          >
-            {t("onboarding.summary.press_save_to_finish")}
-          </H3>
         </View>
       </View>
       <View style={{ padding: theme.spacing.m }}>
-        <Stepper totalSteps={4} currentStep={4} />
+        <Stepper totalSteps={5} currentStep={5} />
         <View
           style={{
             flexDirection: "row",

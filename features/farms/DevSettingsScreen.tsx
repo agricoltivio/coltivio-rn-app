@@ -25,6 +25,8 @@ const RESETTABLE_KEYS = [
   { key: "splitPlotOnboardingCompleted", label: "Split Plot Onboarding" },
   { key: "mergePlotsOnboardingCompleted", label: "Merge Plots Onboarding" },
   { key: "selectPlotsForPlanOnboardingCompleted", label: "Crop Rotation Plot Selection Onboarding" },
+  { key: "speedDialOnboardingCompleted", label: "Speed Dial Onboarding" },
+  { key: "onboardingsDisabled", label: "Onboardings Disabled" },
 ] as const;
 
 type ResettableKey = (typeof RESETTABLE_KEYS)[number]["key"];

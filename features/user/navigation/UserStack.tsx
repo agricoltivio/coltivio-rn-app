@@ -1,7 +1,9 @@
 import { Stack } from "@/navigation/stack";
+import { AppSettingsScreen } from "../AppSettingsScreen";
 import { ChangeEmailScreen } from "../ChangeEmailScreen";
 import { ChangePasswordScren } from "../ChangePasswordScreen";
 import { ChangeUserNameScreen } from "../ChangeUserNameScreen";
+import { SpeedDialSettingsScreen } from "../SpeedDialSettingsScreen";
 import { UserAccountScreen } from "../UserAccountScreen";
 import { UserSettingsScreen } from "../UserSettingsScreen";
 import { EmailVerifiedScreen } from "../EmailVerifiedScreen";
@@ -21,6 +23,22 @@ export function renderUserStack() {
       key="user-settings"
       name="UserSettings"
       component={UserSettingsScreen}
+      options={{
+        title: "",
+      }}
+    />,
+    <Stack.Screen
+      key="app-settings"
+      name="AppSettings"
+      component={AppSettingsScreen}
+      options={{
+        title: "",
+      }}
+    />,
+    <Stack.Screen
+      key="speed-dial-settings"
+      name="SpeedDialSettings"
+      component={SpeedDialSettingsScreen}
       options={{
         title: "",
       }}
