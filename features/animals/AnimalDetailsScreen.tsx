@@ -116,7 +116,11 @@ export function AnimalDetailsScreen({
               gap: theme.spacing.xs,
             }}
           >
-            <Ionicons name="alert-circle" size={20} color={theme.colors.yellow} />
+            <Ionicons
+              name="alert-circle"
+              size={20}
+              color={theme.colors.yellow}
+            />
             <Subtitle style={{ flex: 1 }}>
               {t("animals.category_override_info")}
             </Subtitle>
@@ -407,7 +411,10 @@ export function AnimalDetailsScreen({
                   <ListItem.Content>
                     <ListItem.Title>{treatment.name}</ListItem.Title>
                     <ListItem.Body>
-                      {formatLocalizedDate(new Date(treatment.startDate), locale)}
+                      {formatLocalizedDate(
+                        new Date(treatment.startDate),
+                        locale,
+                      )}
                     </ListItem.Body>
                   </ListItem.Content>
                   <ListItem.Chevron />

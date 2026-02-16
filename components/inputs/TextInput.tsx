@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 import { TextInputProps as RnTextInputProps, View } from "react-native";
-import styled from "styled-components/native";
+import styled, { useTheme } from "styled-components/native";
 
 export type TextInputProps = Omit<RnTextInputProps, "editable"> & {
   label?: ReactNode;
@@ -19,11 +19,13 @@ export function TextInput({
   onChange,
   ...props
 }: TextInputProps) {
+  const theme = useTheme();
   const [focus, setFocus] = useState(false);
   return (
     <View>
       {!hideLabel && <Label>{label}</Label>}
       <Input
+        placeholderTextColor={theme.colors.gray2}
         error={!!error}
         focus={focus}
         onFocus={(event) => {

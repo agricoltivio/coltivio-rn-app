@@ -23,7 +23,7 @@ export function RecurrenceModal({
 
   const [interval, setInterval] = useState(initialRecurrence?.interval || 1);
   const [until, setUntil] = useState<Date>(
-    initialRecurrence?.until || new Date(new Date().getFullYear() + 3, 11, 31)
+    initialRecurrence?.until || new Date(new Date().getFullYear() + 3, 11, 31),
   );
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export function RecurrenceModal({
             width: "100%",
             maxWidth: 320,
           }}
-          onPress={e => e.stopPropagation()}
+          onPress={(e) => e.stopPropagation()}
         >
           <Text
             style={{
@@ -97,11 +97,11 @@ export function RecurrenceModal({
           >
             <TextInput
               value={String(interval)}
-              onChangeText={text => {
+              onChangeText={(text) => {
                 const num = parseInt(text);
                 if (!isNaN(num) && num > 0) setInterval(num);
               }}
-              keyboardType="number-pad"
+              keyboardType="numbers-and-punctuation"
               style={{
                 width: 60,
                 borderWidth: 1,

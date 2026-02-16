@@ -26,6 +26,7 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
   const [showDead, setShowDead] = useState(false);
   const [unregisteredOnly, setUnregisteredOnly] = useState(false);
   const [onlyWithWaitingPeriod, setOnlyWithWaitingPeriod] = useState(false);
+  const [onlyWithoutCategory, setOnlyWithoutCategory] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<Set<string>>(new Set());
 
   // Count unregistered animals (only among living animals by default)
@@ -38,6 +39,13 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
   const waitingPeriodCount = useMemo(() => {
     if (!animals) return 0;
     return animals.filter((a) => !a.milkAndMeatUsable && !a.dateOfDeath).length;
+  }, [animals]);
+
+  // Count animals without category
+  const withoutCategoryCount = useMemo(() => {
+    if (!animals) return 0;
+    return animals.filter((a) => a.requiresCategoryOverride && !a.dateOfDeath)
+      .length;
   }, [animals]);
 
   // Apply filters: dead, unregistered, type
@@ -56,6 +64,9 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
     if (onlyWithWaitingPeriod) {
       result = result.filter((a) => !a.milkAndMeatUsable);
     }
+    if (onlyWithoutCategory) {
+      result = result.filter((a) => a.requiresCategoryOverride);
+    }
 
     if (selectedTypes.size > 0) {
       result = result.filter((a) => selectedTypes.has(a.type));
@@ -67,6 +78,7 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
     showDead,
     unregisteredOnly,
     onlyWithWaitingPeriod,
+    onlyWithoutCategory,
     selectedTypes,
   ]);
 
@@ -124,7 +136,7 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
           {!animal.milkAndMeatUsable && (
             <Ionicons name="time" size={22} color={theme.colors.blue} />
           )}
-          {!animal.registered && (
+          {(!animal.registered || animal.requiresCategoryOverride) && (
             <Ionicons
               name="alert-circle"
               size={22}
@@ -159,24 +171,6 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
         style={{ marginTop: theme.spacing.s, flexGrow: 0 }}
         contentContainerStyle={{ gap: theme.spacing.xs }}
       >
-        <FilterChip
-          label={t("animals.show_dead")}
-          active={showDead}
-          onPress={() => setShowDead(!showDead)}
-          theme={theme}
-        />
-        <FilterChip
-          label={t("animals.only_unregistered")}
-          active={unregisteredOnly}
-          onPress={() => setUnregisteredOnly(!unregisteredOnly)}
-          theme={theme}
-        />
-        <FilterChip
-          label={t("animals.only_with_waiting_period")}
-          active={onlyWithWaitingPeriod}
-          onPress={() => setOnlyWithWaitingPeriod(!onlyWithWaitingPeriod)}
-          theme={theme}
-        />
         {animalTypes?.map((animalType) => (
           <FilterChip
             key={animalType}
@@ -186,10 +180,34 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
             theme={theme}
           />
         ))}
+        <FilterChip
+          label={t("animals.only_with_waiting_period")}
+          active={onlyWithWaitingPeriod}
+          onPress={() => setOnlyWithWaitingPeriod(!onlyWithWaitingPeriod)}
+          theme={theme}
+        />
+        <FilterChip
+          label={t("animals.only_without_cateogry")}
+          active={onlyWithoutCategory}
+          onPress={() => setOnlyWithoutCategory(!onlyWithoutCategory)}
+          theme={theme}
+        />
+        <FilterChip
+          label={t("animals.only_unregistered")}
+          active={unregisteredOnly}
+          onPress={() => setUnregisteredOnly(!unregisteredOnly)}
+          theme={theme}
+        />
+        <FilterChip
+          label={t("animals.show_dead")}
+          active={showDead}
+          onPress={() => setShowDead(!showDead)}
+          theme={theme}
+        />
       </RNScrollView>
 
       {/* Unregistered animals warning card */}
-      {unregisteredCount > 0 && (
+      {unregisteredCount > 0 ? (
         <View
           style={{
             marginTop: theme.spacing.m,
@@ -208,10 +226,10 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
             {t("animals.unregistered_count", { count: unregisteredCount })}
           </Subtitle>
         </View>
-      )}
+      ) : null}
 
       {/* Waiting period (Absetzfrist) warning card */}
-      {waitingPeriodCount > 0 && (
+      {waitingPeriodCount > 0 ? (
         <View
           style={{
             marginTop: theme.spacing.xs,
@@ -230,7 +248,30 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
             {t("animals.waiting_period_count", { count: waitingPeriodCount })}
           </Subtitle>
         </View>
-      )}
+      ) : null}
+
+      {withoutCategoryCount > 0 ? (
+        <View
+          style={{
+            marginTop: theme.spacing.m,
+            backgroundColor: theme.colors.white,
+            borderRadius: 10,
+            padding: theme.spacing.m,
+            borderLeftWidth: 4,
+            borderLeftColor: theme.colors.yellow,
+            flexDirection: "row",
+            alignItems: "center",
+            gap: theme.spacing.xs,
+          }}
+        >
+          <Ionicons name="alert-circle" size={20} color={theme.colors.yellow} />
+          <Subtitle>
+            {t("animals.without_category_count", {
+              count: withoutCategoryCount,
+            })}
+          </Subtitle>
+        </View>
+      ) : null}
 
       {/* Batch edit button */}
       {animals && animals.length > 0 && (

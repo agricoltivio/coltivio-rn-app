@@ -251,6 +251,114 @@ export function PlanCropRotationsScreen({
 
   const hasConflicts = rotationsWithConflicts.size > 0;
 
+  // Detect waiting time violations between rotations of same crop or same family
+  const rotationsWithWarnings = useMemo(() => {
+    const warnings = new Map<string, string>();
+    if (!crops) return warnings;
+
+    const rangeStart = new Date().getFullYear() - 10;
+    const rangeEnd = new Date().getFullYear() + 10;
+
+    // Get all years a rotation occurs in
+    const getYears = (rotation: RotationEntry): number[] => {
+      const startYear = rotation.fromDate.getFullYear();
+      if (!rotation.recurrence) return [startYear];
+      const interval = rotation.recurrence.interval;
+      const untilYear = rotation.recurrence.until?.getFullYear() ?? rangeEnd;
+      const effectiveEnd = Math.min(untilYear, rangeEnd);
+      const years: number[] = [];
+      for (let y = startYear; y <= effectiveEnd; y += interval) {
+        if (y >= rangeStart) years.push(y);
+      }
+      return years;
+    };
+
+    // Determine effective waiting time for a pair of rotations
+    const getEffectiveWaitingTime = (
+      cropA: typeof crops[number],
+      cropB: typeof crops[number],
+      sameCrop: boolean,
+    ): { waitingTime: number; isFamilyLevel: boolean; familyName: string } | null => {
+      if (sameCrop) {
+        // Same crop: use crop's own waiting time, fall back to family
+        if (cropA.waitingTimeInYears) {
+          return { waitingTime: cropA.waitingTimeInYears, isFamilyLevel: false, familyName: "" };
+        }
+        if (cropA.family?.waitingTimeInYears) {
+          return { waitingTime: cropA.family.waitingTimeInYears, isFamilyLevel: true, familyName: cropA.family.name };
+        }
+        return null;
+      }
+      // Different crops, same family
+      if (cropA.familyId && cropA.familyId === cropB.familyId && cropA.family?.waitingTimeInYears) {
+        return { waitingTime: cropA.family.waitingTimeInYears, isFamilyLevel: true, familyName: cropA.family.name };
+      }
+      return null;
+    };
+
+    plotPlans.forEach((plan) => {
+      const rotations = plan.rotations;
+
+      // Self-check: recurring rotation with interval < effective waiting time
+      for (const rotation of rotations) {
+        if (!rotation.cropId || !rotation.recurrence) continue;
+        const crop = crops.find((c) => c.id === rotation.cropId);
+        if (!crop) continue;
+        const info = getEffectiveWaitingTime(crop, crop, true);
+        if (!info) continue;
+        if (rotation.recurrence.interval < info.waitingTime) {
+          const msg = info.isFamilyLevel
+            ? t("crop_rotations.plan.waiting_time_warning_family", { family: info.familyName, waitingTime: info.waitingTime })
+            : t("crop_rotations.plan.waiting_time_warning_crop", { crop: crop.name, waitingTime: info.waitingTime });
+          warnings.set(rotation.entryId, msg);
+        }
+      }
+
+      // Pairwise check
+      for (let i = 0; i < rotations.length; i++) {
+        for (let j = i + 1; j < rotations.length; j++) {
+          const a = rotations[i];
+          const b = rotations[j];
+          if (!a.cropId || !b.cropId) continue;
+
+          const cropA = crops.find((c) => c.id === a.cropId);
+          const cropB = crops.find((c) => c.id === b.cropId);
+          if (!cropA || !cropB) continue;
+
+          const sameCrop = a.cropId === b.cropId;
+          const sameFamily = !sameCrop && !!cropA.familyId && cropA.familyId === cropB.familyId;
+          if (!sameCrop && !sameFamily) continue;
+
+          const info = getEffectiveWaitingTime(cropA, cropB, sameCrop);
+          if (!info) continue;
+
+          // Merge occurrence years and check consecutive gaps
+          const aYears = getYears(a);
+          const bYears = getYears(b);
+          const allYears = [...new Set([...aYears, ...bYears])].sort((x, y) => x - y);
+
+          let violation = false;
+          for (let k = 1; k < allYears.length; k++) {
+            if (allYears[k] - allYears[k - 1] < info.waitingTime) {
+              violation = true;
+              break;
+            }
+          }
+
+          if (violation) {
+            const msg = info.isFamilyLevel
+              ? t("crop_rotations.plan.waiting_time_warning_family", { family: info.familyName, waitingTime: info.waitingTime })
+              : t("crop_rotations.plan.waiting_time_warning_crop", { crop: cropA.name, waitingTime: info.waitingTime });
+            if (!warnings.has(a.entryId)) warnings.set(a.entryId, msg);
+            if (!warnings.has(b.entryId)) warnings.set(b.entryId, msg);
+          }
+        }
+      }
+    });
+
+    return warnings;
+  }, [plotPlans, crops, t]);
+
   // Expand recurrences and build timeline data from store
   const timelineData: TimelineData | null = useMemo(() => {
     if (!plots || !crops || plotPlans.length === 0) return null;
@@ -538,6 +646,7 @@ export function PlanCropRotationsScreen({
           const rotations = (plan?.rotations || []).map((r) => ({
             ...r,
             conflictMessage: rotationsWithConflicts.get(r.entryId),
+            warningMessage: rotationsWithWarnings.get(r.entryId),
           }));
 
           return (

@@ -263,7 +263,7 @@ export function RotationEditModal({
                     const num = parseInt(text);
                     if (!isNaN(num) && num > 0) setInterval(String(num));
                   }}
-                  keyboardType="number-pad"
+                  keyboardType="numbers-and-punctuation"
                   style={{
                     width: 50,
                     borderWidth: 1,

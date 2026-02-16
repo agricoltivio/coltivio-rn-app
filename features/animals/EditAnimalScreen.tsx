@@ -65,7 +65,7 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
     navigation.goBack(),
   );
   const deleteAnimalMutation = useDeleteAnimalMutation(() =>
-    navigation.goBack(),
+    navigation.popTo("Animals"),
   );
 
   // Build ear tag data including the currently assigned ear tag alongside available ones

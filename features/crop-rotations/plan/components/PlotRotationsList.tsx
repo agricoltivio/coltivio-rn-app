@@ -8,6 +8,7 @@ import { Crop } from "@/api/crops.api";
 
 type RotationWithConflict = RotationEntry & {
   conflictMessage?: string;
+  warningMessage?: string;
 };
 
 type PlotRotationsListProps = {
@@ -102,6 +103,8 @@ export function PlotRotationsList({
       ) : (
         rotations.map((rotation, index) => {
           const hasConflict = !!rotation.conflictMessage;
+          const hasWarning = !!rotation.warningMessage;
+          const showWarningStyle = hasWarning && !hasConflict;
           return (
             <Pressable
               key={rotation.entryId}
@@ -110,9 +113,13 @@ export function PlotRotationsList({
                 padding: theme.spacing.m,
                 borderBottomWidth: index < rotations.length - 1 ? 1 : 0,
                 borderBottomColor: theme.colors.gray4,
-                borderLeftWidth: hasConflict ? 3 : 0,
-                borderLeftColor: theme.colors.danger,
-                backgroundColor: hasConflict ? theme.colors.danger + "08" : "transparent",
+                borderLeftWidth: hasConflict || showWarningStyle ? 3 : 0,
+                borderLeftColor: hasConflict ? theme.colors.danger : theme.colors.yellow,
+                backgroundColor: hasConflict
+                  ? theme.colors.danger + "08"
+                  : showWarningStyle
+                    ? theme.colors.yellow + "12"
+                    : "transparent",
               }}
             >
               <Text
@@ -145,6 +152,17 @@ export function PlotRotationsList({
                   }}
                 >
                   {rotation.conflictMessage}
+                </Text>
+              )}
+              {hasWarning && (
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: theme.colors.yellow,
+                    marginTop: 4,
+                  }}
+                >
+                  {rotation.warningMessage}
                 </Text>
               )}
             </Pressable>

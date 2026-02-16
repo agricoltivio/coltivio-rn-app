@@ -63,12 +63,12 @@ export function SpeedDialOnboardingScreen({
         />
       </View>
     </View>,
-    <View>
-      <H1 style={{ color: theme.colors.primary }}>
-        {t("speed_dial.onboarding.configure_heading")}
-      </H1>
-      <SpeedDialSettingsBody />
-    </View>,
+    // <View>
+    //   <H1 style={{ color: theme.colors.primary }}>
+    //     {t("speed_dial.onboarding.configure_heading")}
+    //   </H1>
+    //   <SpeedDialSettingsBody />
+    // </View>,
   ];
 
   return <OnboardingScreen steps={steps} onFinish={handleFinish} />;

@@ -35,7 +35,7 @@ export function CropFamilyForm({ control, errors }: CropFamilyFormProps) {
           name="waitingTimeInYears"
           control={control}
           label={t("crop_families.waiting_time_in_years")}
-          keyboardType="numeric"
+          keyboardType="numbers-and-punctuation"
           rules={{
             required: { value: true, message: t("forms.validation.required") },
             min: { value: 0, message: t("forms.validation.min", { min: 0 }) },

@@ -43,7 +43,8 @@ export function OutdoorScheduleEditModal({
   const { t } = useTranslation();
   const theme = useTheme();
 
-  const [scheduleType, setScheduleType] = useState<OutdoorScheduleType>("pasture");
+  const [scheduleType, setScheduleType] =
+    useState<OutdoorScheduleType>("pasture");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [hasEndDate, setHasEndDate] = useState(false);
@@ -207,8 +208,14 @@ export function OutdoorScheduleEditModal({
                 label={t("animals.outdoor_type")}
                 value={scheduleType}
                 data={[
-                  { label: t("animals.outdoor_types.pasture"), value: "pasture" },
-                  { label: t("animals.outdoor_types.exercise_yard"), value: "exercise_yard" },
+                  {
+                    label: t("animals.outdoor_types.pasture"),
+                    value: "pasture",
+                  },
+                  {
+                    label: t("animals.outdoor_types.exercise_yard"),
+                    value: "exercise_yard",
+                  },
                 ]}
                 onChange={(val) => setScheduleType(val as OutdoorScheduleType)}
               />
@@ -321,7 +328,7 @@ export function OutdoorScheduleEditModal({
                       const num = parseInt(text);
                       if (!isNaN(num) && num > 0) setInterval(String(num));
                     }}
-                    keyboardType="number-pad"
+                    keyboardType="numbers-and-punctuation"
                     style={{
                       width: 50,
                       borderWidth: 1,

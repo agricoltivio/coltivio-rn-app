@@ -868,7 +868,9 @@
       "resolve_conflicts_warning": "Behebe Datumskonflikte vor dem Speichern",
       "repeats_every_year": "Wiederholt sich jährlich",
       "repeats_every_years": "Wiederholt sich alle {{count}} Jahre",
-      "until_date": "bis {{date}}"
+      "until_date": "bis {{date}}",
+      "waiting_time_warning_crop": "Wartezeit nicht eingehalten: {{crop}} ({{waitingTime}} Jahre)",
+      "waiting_time_warning_family": "Wartezeit der Familie {{family}} nicht eingehalten ({{waitingTime}} Jahre)"
     },
     "timeline": {
       "today": "Heute",
@@ -973,9 +975,11 @@
     "animal_husbandry": "Tierhaltung",
     "unregistered_count": "{{count}} nicht gemeldete Tiere",
     "waiting_period_count": "{{count}} Tiere mit Absetzfrist",
+    "without_category_count": "{{count}} Tiere ohne Kategorie",
     "show_dead": "Tote anzeigen",
-    "only_unregistered": "Nur nicht registrierte",
-    "only_with_waiting_period": "Nur mit Absetzfrist",
+    "only_unregistered": "nicht registrierte",
+    "only_with_waiting_period": "Absetzfrist",
+    "only_without_cateogry": "keine Kategorie",
     "select_children": "Nachkommen auswählen",
     "settings": "Tierhaltung Einstellungen",
     "groups": {
@@ -1140,20 +1144,20 @@
     "different_waiting_times_for_types": "Die Wartezeiten unterscheiden sich zwischen den Tierarten"
   },
   "speed_dial": {
-    "harvest": "Ernte",
-    "tillage": "Bodenbearbeitung",
-    "crop_protection": "Pflanzenschutz",
-    "fertilizer_application": "Düngung",
-    "crop_rotation": "Fruchtfolge",
-    "new_animal": "Neues Tier",
-    "treatment": "Behandlung",
+    "harvest": "Ernte hinzufügen",
+    "tillage": "Bodenbearbeitung hinzufügen",
+    "crop_protection": "Pflanzenschutz hinzufügen",
+    "fertilizer_application": "Düngung hinzufügen",
+    "crop_rotation": "Fruchtfolge hinzufügen",
+    "new_animal": "Tier hinzufügen",
+    "treatment": "Behandlung hinzufügen",
     "title": "Schnellzugriff",
     "active_actions": "Aktive Aktionen (max. 4)",
     "available_actions": "Verfügbare Aktionen",
     "onboarding": {
       "welcome_heading": "Schnellzugriff",
       "welcome_body": "Mit dem Schnellzugriff kannst du bis zu 4 Aktionen direkt von der Startseite aus starten.",
-      "settings_hint": "Du kannst die Aktionen jederzeit in den Einstellungen anpassen.",
+      "settings_hint": "Du kannst die Aktionen jederzeit in den Einstellungen anpassen oder ganz deaktivieren.",
       "configure_heading": "Aktionen konfigurieren"
     }
   },
