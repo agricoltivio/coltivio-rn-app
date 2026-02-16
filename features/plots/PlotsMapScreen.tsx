@@ -139,25 +139,28 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
     }
   }, [preselectedPlotId]);
 
-  function onPlotSelect(plot: Plot) {
-    if (selectedPlotId === plot.id) {
-      handleDismissBottomDrawer();
-      setSelectedPlotId(null);
-    } else {
-      const currentRegion = regionRef?.current;
-      const centroid = turf.centroid(plot.geometry);
-      const [longitude, latitude] = centroid.geometry.coordinates;
-      mapRef.current?.animateToRegion({
-        latitude,
-        longitude,
-        latitudeDelta: currentRegion.latitudeDelta,
-        longitudeDelta: currentRegion.longitudeDelta,
-      });
-      setSelectedPlotId(plot.id);
-      handleExpandBottomDrawer();
-      bottomSheetModalRef.current?.snapToIndex(0);
-    }
-  }
+  const onPlotSelect = useCallback(
+    (plot: Plot) => {
+      if (selectedPlotId === plot.id) {
+        handleDismissBottomDrawer();
+        setSelectedPlotId(null);
+      } else {
+        const currentRegion = regionRef?.current;
+        const centroid = turf.centroid(plot.geometry);
+        const [longitude, latitude] = centroid.geometry.coordinates;
+        mapRef.current?.animateToRegion({
+          latitude,
+          longitude,
+          latitudeDelta: currentRegion.latitudeDelta,
+          longitudeDelta: currentRegion.longitudeDelta,
+        });
+        setSelectedPlotId(plot.id);
+        handleExpandBottomDrawer();
+        bottomSheetModalRef.current?.snapToIndex(0);
+      }
+    },
+    [selectedPlotId, handleDismissBottomDrawer, handleExpandBottomDrawer],
+  );
 
   // Delete mutation — clears selection on success
   const deletePlotMutation = useDeletePlotMutation(
@@ -175,22 +178,26 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
 
   const hasSelection = !!selectedPlot;
 
-  const plotPolygons = plots.map((plot) => (
-    <MultiPolygon
-      key={plot.id}
-      polygon={plot.geometry}
-      strokeWidth={theme.map.defaultStrokeWidth}
-      strokeColor={"white"}
-      fillColor={hexToRgba(
-        plot.id === selectedPlot?.id
-          ? theme.colors.success
-          : theme.map.defaultFillColor,
-        theme.map.defaultFillAlpha,
-      )}
-      tappable
-      onPress={(event) => onPlotSelect(plot)}
-    />
-  ));
+  const plotPolygons = useMemo(
+    () =>
+      plots.map((plot) => (
+        <MultiPolygon
+          key={plot.id}
+          polygon={plot.geometry}
+          strokeWidth={theme.map.defaultStrokeWidth}
+          strokeColor={"white"}
+          fillColor={hexToRgba(
+            plot.id === selectedPlotId
+              ? theme.colors.success
+              : theme.map.defaultFillColor,
+            theme.map.defaultFillAlpha,
+          )}
+          tappable
+          onPress={() => onPlotSelect(plot)}
+        />
+      )),
+    [plots, selectedPlotId, theme],
+  );
 
   return (
     <ContentView headerVisible={false}>

@@ -76,7 +76,12 @@ function MonthlyLineChart({ monthlyData, selectedYears, availableYears }: { mont
   const theme = useTheme();
   const lineSets = selectedYears.map((year) => {
     const yearIdx = availableYears.indexOf(year);
-    const data: lineDataItem[] = Array.from({ length: 12 }, (_, month) => ({ value: monthlyData[year]?.[month] ?? 0, label: MONTH_LABELS[month] }));
+    // Build cumulative totals so months without entries carry forward the last value
+    let cumulative = 0;
+    const data: lineDataItem[] = Array.from({ length: 12 }, (_, month) => {
+      cumulative += monthlyData[year]?.[month] ?? 0;
+      return { value: cumulative, label: MONTH_LABELS[month] };
+    });
     return { data, color: getYearColor(yearIdx >= 0 ? yearIdx : 0) };
   });
   if (lineSets.length === 0) return null;

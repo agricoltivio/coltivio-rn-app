@@ -1,4 +1,5 @@
 import { AnimalCreateInput } from "@/api/animals.api";
+import { useEffect, useRef } from "react";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { RHSwitch } from "@/components/inputs/RHSwitch";
 import { Switch } from "@/components/inputs/Switch";
@@ -49,13 +50,30 @@ export function AnimalForm({
 }: AnimalFormProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { animals } = useAnimalsQuery(true);
   const { availableEarTags } = useAvailableEarTagsQuery();
   const { herds } = useHerdsQuery();
 
   // Watch dateOfDeath to conditionally show deathReason
   const dateOfDeath = useWatch({ control, name: "dateOfDeath" });
   const categoryOverride = useWatch({ control, name: "categoryOverride" });
+  const animalType = useWatch({ control, name: "type" });
+
+  // Only show parents of the same animal type
+  const { animals } = useAnimalsQuery(
+    true,
+    animalType ? [animalType] : undefined,
+    !!animalType,
+  );
+
+  // Clear parent selections when animal type changes (parent may not match new type)
+  const prevTypeRef = useRef(animalType);
+  useEffect(() => {
+    if (prevTypeRef.current && prevTypeRef.current !== animalType) {
+      setValue("motherId", undefined);
+      setValue("fatherId", undefined);
+    }
+    prevTypeRef.current = animalType;
+  }, [animalType, setValue]);
 
   const animalTypeData = [
     { label: t("animals.animal_types.goat"), value: "goat" },
