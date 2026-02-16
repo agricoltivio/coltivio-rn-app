@@ -255,12 +255,20 @@ export function splitMultiPolygonByLine(
     }
   }
 
+  // Truncate precision and remove redundant coordinates from split pieces
+  const cleanSplitCoords = (coords: number[][][][]) =>
+    coords.map((c) => {
+      const poly = turf.polygon(c);
+      const truncated = turf.truncate(poly, { precision: 8 });
+      return turf.cleanCoords(truncated).geometry.coordinates;
+    });
+
   const result: GeoJSON.MultiPolygon[] = [];
   if (sideA.length > 0) {
-    result.push({ type: "MultiPolygon", coordinates: sideA });
+    result.push({ type: "MultiPolygon", coordinates: cleanSplitCoords(sideA) });
   }
   if (sideB.length > 0) {
-    result.push({ type: "MultiPolygon", coordinates: sideB });
+    result.push({ type: "MultiPolygon", coordinates: cleanSplitCoords(sideB) });
   }
 
   return result.length >= 2 ? result : null;
@@ -357,8 +365,17 @@ export function cutPolygonFromMultiPolygon(
 
   if (cutPieces.length === 0) return null;
 
+  // Truncate precision so near-duplicate vertices from turf.difference collapse,
+  // then remove redundant (collinear / duplicate) coordinates.
+  const cleanPolygonCoords = (coords: GeoJSON.Position[][][]) =>
+    coords.map((c) => {
+      const poly = turf.polygon(c);
+      const truncated = turf.truncate(poly, { precision: 8 });
+      return turf.cleanCoords(truncated).geometry.coordinates;
+    });
+
   return {
-    remaining: turf.multiPolygon(remainingPolygons).geometry,
-    plots: turf.multiPolygon(cutPieces).geometry,
+    remaining: turf.multiPolygon(cleanPolygonCoords(remainingPolygons)).geometry,
+    plots: turf.multiPolygon(cleanPolygonCoords(cutPieces)).geometry,
   };
 }
