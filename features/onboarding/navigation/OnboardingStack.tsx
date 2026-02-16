@@ -4,7 +4,6 @@ import { SelectFarmLocationScreen } from "@/features/onboarding/SelectFarmLocati
 import { SelectFarmLocationSearchModal } from "@/features/onboarding/SelectFarmLocationSearchModal";
 import { SelectFarmNameScreen } from "@/features/onboarding/SelectFarmNameScreen";
 import { SelectFederalFarmIdMapScreen } from "@/features/onboarding/SelectFederalFarmIdMapScreen";
-import { SelectFederalFarmIdScreen } from "@/features/onboarding/SelectFederalFarmIdScreen";
 import React from "react";
 import { Stack } from "@/navigation/stack";
 import { DefaultTheme } from "styled-components/native";
@@ -21,11 +20,6 @@ export function renderOnboardingStack(theme: DefaultTheme) {
         <Stack.Screen
           name="SelectFarmLocation"
           component={SelectFarmLocationScreen}
-          options={{ title: "", headerShown: false }}
-        />
-        <Stack.Screen
-          name="SelectFederalFarmId"
-          component={SelectFederalFarmIdScreen}
           options={{ title: "", headerShown: false }}
         />
         <Stack.Screen
@@ -63,15 +57,6 @@ export function renderOnboardingStack(theme: DefaultTheme) {
           component={SelectFarmLocationSearchModal}
         />
       </Stack.Group>
-      {/* <Stack.Group screenOptions={{ presentation: "modal" }}>
-            <Stack.Screen
-              name="OnboardingStep4Modal"
-              component={Step4ListModal}
-              options={{
-                headerShown: false,
-              }}
-            />
-          </Stack.Group> */}
     </>
   );
 }

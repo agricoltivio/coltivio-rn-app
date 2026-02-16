@@ -17,12 +17,15 @@ export function CreateCropScreen({ navigation }: CreateCropScreenProps) {
     formState: { errors, isDirty },
   } = useForm<CropFormValues>();
 
+  const previousScreen =
+    navigation.getState().routes[navigation.getState().index - 1];
+
   const createForageMutation = useCreateCropMutation(
     (crop) => {
-      const previousScreen =
-        navigation.getState().routes[navigation.getState().index - 1];
       if (previousScreen.name === "AddPlotSummary") {
         navigation.popTo("AddPlotSummary", { cropId: crop.id });
+      } else if (previousScreen.name === "SelectHarvestCropAndDate") {
+        navigation.popTo("SelectHarvestCropAndDate", { cropId: crop.id });
       } else {
         navigation.goBack();
       }

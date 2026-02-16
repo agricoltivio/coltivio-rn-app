@@ -9,7 +9,7 @@ import BottomSheet, {
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { useDebounce } from "@uidotdev/usehooks";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Geojson, Region } from "react-native-maps";
@@ -59,22 +59,17 @@ export function SelectFederalFarmIdMapScreen({
   );
 
   function onChangeQuery(value: string) {
-    // if (data.federalFarmId) {
-    //   setData((prev) => ({ ...prev, federalFarmId: null }));
-    // }
     setFederalFarmIdSearchText(value);
   }
 
   function onFederalFarmIdSelect(value: string) {
-    // setFederalFarmIdSearchText(value);
     setFederalFarmId(value);
   }
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("transitionEnd", () => {
-      setMapVisible(true); // Render the map only after the transition ends
+      setMapVisible(true);
     });
-
     return unsubscribe;
   }, [navigation]);
 
@@ -201,7 +196,6 @@ export function SelectFederalFarmIdMapScreen({
           <NavigationButton
             title={t("buttons.back")}
             icon="arrow-back-circle-outline"
-            // disabled={setupFarmMutation.isPending}
             onPress={() => navigation.goBack()}
           />
           <NavigationButton
@@ -214,7 +208,6 @@ export function SelectFederalFarmIdMapScreen({
       <BottomSheet
         ref={bottomSheetModalRef}
         enablePanDownToClose
-        // onClose={}
         index={-1}
         onClose={() => setFederalFarmId(undefined)}
         backdropComponent={(props) => {

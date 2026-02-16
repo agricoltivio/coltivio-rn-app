@@ -38,10 +38,6 @@ export const FIELD_CALENDAR_ITEMS = {
     route: "CropProtectionApplications",
   },
   harvests: { translationKey: "field_calendar.harvests", route: "Harvests" },
-  export: {
-    translationKey: "field_calendar.export",
-    route: "FieldCalendarExport",
-  },
 } as const;
 
 // Maps groupId → translation key
@@ -51,7 +47,6 @@ export const FIELD_CALENDAR_GROUPS = {
   fertilization: { translationKey: "field_calendar.groups.fertilization" },
   protection: { translationKey: "field_calendar.groups.protection" },
   harvest: { translationKey: "field_calendar.groups.harvest" },
-  export: { translationKey: "field_calendar.groups.export" },
 } as const;
 
 export const DEFAULT_FIELD_CALENDAR_GROUPS: FieldCalendarGroupConfig[] = [

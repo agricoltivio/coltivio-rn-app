@@ -7,7 +7,7 @@ import {
   SpeedDialActionConfig,
 } from "@/features/home/speed-dial-settings";
 import { H2, H3 } from "@/theme/Typography";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -103,7 +103,7 @@ export function SpeedDialSettingsBody() {
               key={item.id}
               hideBottomDivider={index === activeItems.length - 1}
             >
-              <Ionicons
+              <MaterialCommunityIcons
                 name={meta.icon}
                 size={22}
                 color={theme.colors.primary}
@@ -180,7 +180,7 @@ export function SpeedDialSettingsBody() {
                 hideBottomDivider={index === inactiveItems.length - 1}
                 onPress={() => activate(item.id)}
               >
-                <Ionicons
+                <MaterialCommunityIcons
                   name={meta.icon}
                   size={22}
                   color={theme.colors.primary}

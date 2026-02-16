@@ -6,12 +6,12 @@ export type SpeedDialActionConfig = {
 export const SPEED_DIAL_ACTIONS = {
   harvest: {
     translationKey: "speed_dial.harvest",
-    icon: "leaf",
+    icon: "fruit-cherries",
     route: "SelectHarvestCropAndDate",
   },
   tillage: {
     translationKey: "speed_dial.tillage",
-    icon: "grass",
+    icon: "shovel",
     route: "SelectTillageDate",
   },
   cropProtection: {
@@ -26,7 +26,7 @@ export const SPEED_DIAL_ACTIONS = {
   },
   cropRotation: {
     translationKey: "speed_dial.crop_rotation",
-    icon: "leaf-outline",
+    icon: "grass",
     route: "SelectPlotsForPlan",
   },
   newAnimal: {

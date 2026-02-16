@@ -1,4 +1,5 @@
 import { Button } from "@/components/buttons/Button";
+import { IonIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
@@ -21,12 +22,15 @@ type FormValues = {
 
 export function SelectHarvestCropAndDateScreen({
   navigation,
+  route,
 }: SelectHarvestCropAndDateScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
 
   const { crops, isFetched: cropsLoaded } = useCropsQuery();
   const { setHarvest, setSelectedCrop, harvest, reset } = useCreateHarvestStore();
+
+  const preselectedCropId = route.params?.cropId;
 
   // Reset store on mount
   useEffect(() => {
@@ -36,13 +40,20 @@ export function SelectHarvestCropAndDateScreen({
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
       date: harvest?.date ?? new Date(),
-      cropId: harvest?.cropId,
+      cropId: harvest?.cropId ?? preselectedCropId,
     },
   });
+
+  useEffect(() => {
+    if (preselectedCropId) {
+      setValue("cropId", preselectedCropId);
+    }
+  }, [preselectedCropId, setValue]);
 
   function onSubmit(values: FormValues) {
     setHarvest({
@@ -93,24 +104,41 @@ export function SelectHarvestCropAndDateScreen({
             error={errors.date?.message}
           />
 
-          <RHSelect
-            name="cropId"
-            control={control}
-            label={t("forms.labels.crop")}
-            rules={{
-              required: {
-                value: true,
-                message: t("forms.validation.required"),
-              },
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: theme.spacing.xs,
             }}
-            error={errors.cropId?.message}
-            data={
-              crops?.map((crop) => ({
-                label: crop.name,
-                value: crop.id,
-              })) ?? []
-            }
-          />
+          >
+            <View style={{ flex: 1 }}>
+              <RHSelect
+                name="cropId"
+                control={control}
+                label={t("forms.labels.crop")}
+                rules={{
+                  required: {
+                    value: true,
+                    message: t("forms.validation.required"),
+                  },
+                }}
+                error={errors.cropId?.message}
+                data={
+                  crops?.map((crop) => ({
+                    label: crop.name,
+                    value: crop.id,
+                  })) ?? []
+                }
+              />
+            </View>
+            <IonIconButton
+              icon="add"
+              iconSize={24}
+              color="black"
+              type="accent"
+              onPress={() => navigation.navigate("CreateCrop")}
+            />
+          </View>
         </View>
       </ScrollView>
     </ContentView>
