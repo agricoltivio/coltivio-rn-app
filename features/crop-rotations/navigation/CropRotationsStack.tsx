@@ -35,7 +35,7 @@ export function renderCropsRotationStack() {
       key="plan-crop-rotations"
       name="PlanCropRotations"
       options={{
-        title: "Plan Crop Rotations",
+        title: "",
       }}
       component={PlanCropRotationsScreen}
     />,

@@ -850,6 +850,7 @@
     "add_rotation": "Fruchtfolge hinzufügen",
     "permanent": "unbefristet",
     "plan": {
+      "title": "Fruchtfolgeplanung",
       "save_plan": "Plan speichern",
       "edit_rotation": "Fruchtfolge bearbeiten",
       "add_rotation_title": "Fruchtfolge hinzufügen",

@@ -29,6 +29,7 @@ import { scheduleOnRN } from "react-native-worklets";
 type CropRotationTimelineProps = {
   timelineData: TimelineData;
   onBarPress: (rotationId: string, plotName: string) => void;
+  onPlotPress?: (plotId: string) => void;
   onZoomChange?: (zoomLevel: ZoomLevel) => void;
 };
 
@@ -205,6 +206,7 @@ function CropRotationZoomLevelToggle({
 export function CropRotationTimeline({
   timelineData,
   onBarPress,
+  onPlotPress,
   onZoomChange,
 }: CropRotationTimelineProps) {
   const { t } = useTranslation();
@@ -506,7 +508,7 @@ export function CropRotationTimeline({
 
   const keyExtractor = useCallback((item: TimelinePlotData) => item.plotId, []);
 
-  if (totalDays === 0 || plots.length === 0) {
+  if (totalDays === 0) {
     return null;
   }
 
@@ -578,15 +580,16 @@ export function CropRotationTimeline({
                 {t("crop_rotations.timeline.plot")}
               </Text>
             </View>
-            {/* Plot names - synced with body vertical scroll */}
+            {/* Plot names - synced with body vertical scroll, tappable to navigate */}
             <Animated.ScrollView
               ref={plotNamesScrollRef}
               scrollEnabled={false}
               showsVerticalScrollIndicator={false}
             >
               {plots.map((plot) => (
-                <View
+                <Pressable
                   key={plot.plotId}
+                  onPress={() => onPlotPress?.(plot.plotId)}
                   style={{
                     height: ROW_HEIGHT,
                     justifyContent: "center",
@@ -607,7 +610,7 @@ export function CropRotationTimeline({
                   >
                     {plot.plotName}
                   </Text>
-                </View>
+                </Pressable>
               ))}
             </Animated.ScrollView>
           </View>

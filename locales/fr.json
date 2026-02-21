@@ -840,6 +840,7 @@
     "add_rotation": "Ajouter une rotation",
     "permanent": "Permanent",
     "plan": {
+      "title": "Planification des rotations",
       "save_plan": "Enregistrer le plan",
       "edit_rotation": "Modifier la rotation",
       "add_rotation_title": "Ajouter une rotation",

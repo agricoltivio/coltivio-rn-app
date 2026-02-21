@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Modal, View, Text, Pressable, TextInput } from "react-native";
+import { Modal, View, Text, Pressable, TextInput, ScrollView, Keyboard } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useTranslation } from "react-i18next";
 import { Ionicons } from "@expo/vector-icons";
@@ -126,12 +126,16 @@ export function RotationEditModal({
           style={{
             backgroundColor: theme.colors.white,
             borderRadius: 16,
-            padding: theme.spacing.l,
             width: "100%",
             maxWidth: 360,
           }}
-          onPress={(e) => e.stopPropagation()}
+          onPress={() => Keyboard.dismiss()}
         >
+          <ScrollView
+            keyboardShouldPersistTaps="handled"
+            scrollEnabled={false}
+            contentContainerStyle={{ padding: theme.spacing.l }}
+          >
           <Text
             style={{
               fontSize: 18,
@@ -264,6 +268,8 @@ export function RotationEditModal({
                     if (!isNaN(num) && num > 0) setInterval(String(num));
                   }}
                   keyboardType="numbers-and-punctuation"
+                  returnKeyType="done"
+                  blurOnSubmit
                   style={{
                     width: 50,
                     borderWidth: 1,
@@ -381,6 +387,7 @@ export function RotationEditModal({
               </Text>
             </Pressable>
           </View>
+          </ScrollView>
         </Pressable>
       </Pressable>
     </Modal>

@@ -28,6 +28,7 @@ export function RHTextAreaInput<T extends FieldValues>({
           style={{ textAlignVertical: "top", minHeight: 100 }}
           multiline
           disabled={disabled}
+          returnKeyType="default"
           {...inputProps}
         />
       )}

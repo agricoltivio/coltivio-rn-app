@@ -40,6 +40,11 @@ export function PlanCropRotationsScreen({
   const plotIdsFromParams = route.params.plotIds!;
   const previousScreen = route.params.previousScreen;
 
+  // Set translated header title
+  useEffect(() => {
+    navigation.setOptions({ title: t("crop_rotations.plan.title") });
+  }, [navigation, t]);
+
   const {
     plotPlans,
     setPlotIds,

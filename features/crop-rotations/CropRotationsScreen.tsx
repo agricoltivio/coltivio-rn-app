@@ -3,20 +3,28 @@ import { ContentView } from "@/components/containers/ContentView";
 import { CropRotationsScreenProps } from "./navigation/crop-rotations-routes";
 import { H2 } from "@/theme/Typography";
 import React, { useMemo, useState } from "react";
-import { View } from "react-native";
+import { TextInput, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCropRotationsQuery } from "./crop-rotations.hooks";
+import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
 import { useTranslation } from "react-i18next";
 import { CropRotationTimeline } from "./timeline/CropRotationTimeline";
-import { buildMultiYearTimelineData } from "./timeline/timeline-utils";
+import {
+  buildMultiYearTimelineData,
+  SimplePlot,
+} from "./timeline/timeline-utils";
 import { CropFilterChips } from "./components/CropFilterChips";
+import { Ionicons } from "@expo/vector-icons";
 
 const TIMELINE_RANGE_YEARS = 10;
 
 export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const [selectedCropNames, setSelectedCropNames] = useState<Set<string>>(new Set());
+  const [selectedCropNames, setSelectedCropNames] = useState<Set<string>>(
+    new Set(),
+  );
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Fixed ±10 year range for the timeline (avoids permanent rotations with year 5000 end dates)
   const currentYear = new Date().getFullYear();
@@ -45,6 +53,18 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
     true,
   );
 
+  // Fetch all farm plots so we can show plots without crop rotations too
+  const { plots: allPlots } = useFarmPlotsQuery();
+
+  // Map all plots to SimplePlot, filtered by search query
+  const filteredPlots = useMemo((): SimplePlot[] | undefined => {
+    if (!allPlots) return undefined;
+    const query = searchQuery.trim().toLowerCase();
+    const mapped = allPlots.map((p) => ({ id: p.id, name: p.name }));
+    if (!query) return mapped;
+    return mapped.filter((p) => p.name.toLowerCase().includes(query));
+  }, [allPlots, searchQuery]);
+
   // Unique crop names for filter chips
   const uniqueCropNames = useMemo(() => {
     if (!cropRotations) return [];
@@ -52,17 +72,29 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
     return Array.from(names).sort();
   }, [cropRotations]);
 
-  // Apply crop filter
+  // Apply crop filter + search filter
   const filteredCropRotations = useMemo(() => {
     if (!cropRotations) return null;
-    if (selectedCropNames.size === 0) return cropRotations;
-    return cropRotations.filter((cr) => selectedCropNames.has(cr.crop.name));
-  }, [cropRotations, selectedCropNames]);
+    let result = cropRotations;
+    if (selectedCropNames.size > 0) {
+      result = result.filter((cr) => selectedCropNames.has(cr.crop.name));
+    }
+    // When searching, only keep rotations for matching plots
+    if (filteredPlots) {
+      const plotIds = new Set(filteredPlots.map((p) => p.id));
+      result = result.filter((cr) => plotIds.has(cr.plotId));
+    }
+    return result;
+  }, [cropRotations, selectedCropNames, filteredPlots]);
 
   const timelineData = useMemo(() => {
     if (!filteredCropRotations) return null;
-    return buildMultiYearTimelineData(filteredCropRotations, timelineYears);
-  }, [filteredCropRotations, timelineYears]);
+    return buildMultiYearTimelineData(
+      filteredCropRotations,
+      timelineYears,
+      filteredPlots,
+    );
+  }, [filteredCropRotations, timelineYears, filteredPlots]);
 
   function handleToggleCrop(cropName: string) {
     setSelectedCropNames((prev) => {
@@ -81,9 +113,43 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
     }
   }
 
+  function handlePlotPress(plotId: string) {
+    navigation.navigate("PlanCropRotations", { plotIds: [plotId] });
+  }
+
   return (
     <ContentView headerVisible>
       <H2>{t("crop_rotations.crop_rotation")}</H2>
+
+      {/* Search bar */}
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          backgroundColor: theme.colors.white,
+          borderRadius: theme.radii.m,
+          paddingHorizontal: 10,
+          marginTop: theme.spacing.s,
+          borderWidth: 1,
+          borderColor: theme.colors.gray3,
+        }}
+      >
+        <Ionicons name="search" size={18} color={theme.colors.gray2} />
+        <TextInput
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          placeholder={t("forms.placeholders.search")}
+          returnKeyType="search"
+          placeholderTextColor={theme.colors.gray2}
+          style={{
+            flex: 1,
+            paddingVertical: 10,
+            paddingHorizontal: 8,
+            fontSize: 15,
+            color: theme.colors.gray0,
+          }}
+        />
+      </View>
 
       {/* Crop filter chips */}
       {uniqueCropNames.length > 1 && (
@@ -101,6 +167,7 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
           <CropRotationTimeline
             timelineData={timelineData}
             onBarPress={handleBarPress}
+            onPlotPress={handlePlotPress}
           />
         )}
       </View>

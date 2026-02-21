@@ -57,17 +57,17 @@ const MONTH_SHORT = [
   "Dec",
 ];
 
+export type SimplePlot = { id: string; name: string };
+
 // Groups crop rotations by plot and calculates bar positions as absolute day offsets from epochStart.
 // Open-ended rotations (infinite toDate) extend to epoch end with isOpenEnded flag.
 // Dates are clamped to the epoch boundaries (Jan 1 earliest year .. Dec 31 latest year).
+// When allPlots is provided, plots without any crop rotations are included as empty rows.
 export function buildMultiYearTimelineData(
   cropRotations: CropRotationWithPlot[],
   years: number[],
+  allPlots?: SimplePlot[],
 ): TimelineData {
-  if (cropRotations.length === 0) {
-    return { plots: [], epochStart: new Date(), totalDays: 0, years: [] };
-  }
-
   const sortedYears = [...years].sort((a, b) => a - b);
   const epochStart = new Date(sortedYears[0], 0, 1);
   const epochEnd = new Date(
@@ -82,6 +82,13 @@ export function buildMultiYearTimelineData(
   const totalDays = daysBetween(epochStart, epochEnd) + 1;
 
   const plotMap = new Map<string, { plotName: string; bars: TimelineBar[] }>();
+
+  // Seed with all plots (empty bars) so they always appear
+  if (allPlots) {
+    for (const plot of allPlots) {
+      plotMap.set(plot.id, { plotName: plot.name, bars: [] });
+    }
+  }
 
   for (const rotation of cropRotations) {
     const fromDate = new Date(rotation.fromDate);
@@ -101,7 +108,7 @@ export function buildMultiYearTimelineData(
 
     const bar: TimelineBar = {
       rotationId: rotation.id,
-      entryId: rotation.id, // use rotationId as entryId for existing rotations
+      entryId: rotation.id,
       cropName: rotation.crop.name,
       plotName: rotation.plot.name,
       plotId: rotation.plotId,

@@ -840,6 +840,7 @@
     "add_rotation": "Add rotation",
     "permanent": "Permanent",
     "plan": {
+      "title": "Crop Rotation Planning",
       "save_plan": "Save Plan",
       "edit_rotation": "Edit Crop Rotation",
       "add_rotation_title": "Add Crop Rotation",

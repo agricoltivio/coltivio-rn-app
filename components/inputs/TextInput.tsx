@@ -28,6 +28,7 @@ export function TextInput({
         placeholderTextColor={theme.colors.gray2}
         error={!!error}
         focus={focus}
+        returnKeyType="done"
         onFocus={(event) => {
           setFocus(true);
           onFocus && onFocus(event);
