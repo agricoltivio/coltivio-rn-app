@@ -1,7 +1,5 @@
-import { NativeAppleSignInButton } from "@/auth/NativeAppleSignInButton";
 import { useSession } from "@/auth/SessionProvider";
 import { Button } from "@/components/buttons/Button";
-import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ScrollView } from "@/components/views/ScrollView";
@@ -48,18 +46,7 @@ export function SignInScreen({ navigation }: SignInScreenProps) {
   const theme = useTheme();
   return (
     <ContentView
-      style={{ paddingHorizontal: 0, paddingTop: 0 }}
-      footerComponent={
-        <View
-          style={{
-            padding: theme.spacing.m,
-            paddingBottom: insets.bottom + theme.spacing.m,
-            backgroundColor: "#1f1f21",
-          }}
-        >
-          <NativeAppleSignInButton />
-        </View>
-      }
+      style={{ paddingHorizontal: 0, paddingTop: 0, backgroundColor: "#1f1f21" }}
     >
       <ScrollView
         style={{ flex: 1, backgroundColor: "#1f1f21" }}

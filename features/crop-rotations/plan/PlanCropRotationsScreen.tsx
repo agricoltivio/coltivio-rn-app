@@ -71,7 +71,7 @@ export function PlanCropRotationsScreen({
 
   const selectedPlotIds = plotIdsFromParams;
   const queryFromDate = subYears(new Date(), 10);
-  const queryToDate = addYears(new Date(), 10);
+  const queryToDate = addYears(new Date(), 25);
 
   const { plotCropRotations, isLoading: rotationsLoading } =
     useCropRotationsByPlotIdsQuery(
@@ -177,7 +177,7 @@ export function PlanCropRotationsScreen({
     // Check if two rotations share any common years
     const shareCommonYear = (a: RotationEntry, b: RotationEntry): boolean => {
       const rangeStart = new Date().getFullYear() - 10;
-      const rangeEnd = new Date().getFullYear() + 10;
+      const rangeEnd = new Date().getFullYear() + 25;
 
       const aStartYear = a.fromDate.getFullYear();
       const bStartYear = b.fromDate.getFullYear();
@@ -262,7 +262,7 @@ export function PlanCropRotationsScreen({
     if (!crops) return warnings;
 
     const rangeStart = new Date().getFullYear() - 10;
-    const rangeEnd = new Date().getFullYear() + 10;
+    const rangeEnd = new Date().getFullYear() + 25;
 
     // Get all years a rotation occurs in
     const getYears = (rotation: RotationEntry): number[] => {
@@ -370,7 +370,7 @@ export function PlanCropRotationsScreen({
 
     const currentYear = new Date().getFullYear();
     const startYear = currentYear - 10;
-    const endYear = currentYear + 10;
+    const endYear = currentYear + 25;
     // Generate all years in range for the year context row in months/weeks view
     const years: number[] = [];
     for (let y = startYear; y <= endYear; y++) {

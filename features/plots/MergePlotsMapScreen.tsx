@@ -12,6 +12,7 @@ import { Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../farms/farms.hooks";
 import { MapShowLocationToggle } from "../map/MapShowLocationToggle";
+import { TopLeftBackButton } from "../map/TopLeftBackButton";
 import { MergePlotsMapScreenProps } from "./navigation/plots-routes";
 import { useFarmPlotsQuery } from "./plots.hooks";
 import { PolygonDrawingTool } from "@/components/map/PolygonDrawingTool";
@@ -123,15 +124,9 @@ export function MergePlotsMapScreen({
         {plotsLayer}
         <PolygonDrawingTool showActions={false} />
       </MapView>
+      <TopLeftBackButton />
       <PortalHost name="MergePlotsMap" />
       <MapControls>
-        <MaterialCommunityIconButton
-          type="accent"
-          color="red"
-          iconSize={30}
-          icon="cancel"
-          onPress={() => navigation.goBack()}
-        />
         <MaterialCommunityIconButton
           style={{ backgroundColor: theme.colors.accent }}
           type="accent"

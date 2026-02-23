@@ -37,16 +37,6 @@ export function FarmScreen({ navigation }: FarmScreenProps) {
             hideBottomDivider
           />
         </List>
-
-        {__DEV__ && (
-          <List title="Developer" style={{ marginTop: theme.spacing.l }}>
-            <List.Item
-              title="Developer Settings"
-              onPress={() => navigation.navigate("DevSettings")}
-              hideBottomDivider
-            />
-          </List>
-        )}
       </ScrollView>
     </ContentView>
   );

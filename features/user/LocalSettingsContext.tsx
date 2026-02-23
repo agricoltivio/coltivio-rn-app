@@ -33,6 +33,7 @@ type LocalSettingsData = {
   splitPlotOnboardingCompleted: boolean;
   mergePlotsOnboardingCompleted: boolean;
   herdsOnboardingCompleted: boolean;
+  tvdImportOnboardingCompleted: boolean;
   onboardingsDisabled: boolean;
   speedDialEnabled: boolean;
   speedDialOnboardingCompleted: boolean;
@@ -64,6 +65,7 @@ export const defaultLocalSettings: LocalSettingsData = {
   splitPlotOnboardingCompleted: false,
   mergePlotsOnboardingCompleted: false,
   herdsOnboardingCompleted: false,
+  tvdImportOnboardingCompleted: false,
   onboardingsDisabled: false,
   speedDialEnabled: true,
   speedDialOnboardingCompleted: false,
@@ -177,6 +179,7 @@ export function useLocalSettings() {
       splitPlotOnboardingCompleted: true,
       mergePlotsOnboardingCompleted: true,
       herdsOnboardingCompleted: true,
+      tvdImportOnboardingCompleted: true,
       speedDialOnboardingCompleted: true,
     };
   }, [localSettings]);

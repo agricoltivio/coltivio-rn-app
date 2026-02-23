@@ -147,15 +147,32 @@ function CropFilter({
   );
 }
 
+// Pick the best display unit based on the maximum kg value across all data
+function pickDisplayUnit(maxKg: number): { label: string; divisor: number } {
+  if (maxKg >= 1000) return { label: "t", divisor: 1000 };
+  if (maxKg >= 100) return { label: "dt", divisor: 100 };
+  if (maxKg >= 1) return { label: "kg", divisor: 1 };
+  return { label: "g", divisor: 0.001 };
+}
+
+// Format a Y-axis value: drop decimals when they're not needed, otherwise show up to 1 decimal
+function formatYValue(raw: string, unitLabel: string): string {
+  const n = Number(raw);
+  const formatted = n === Math.floor(n) ? String(Math.round(n)) : (Math.round(n * 10) / 10).toString();
+  return `${formatted} ${unitLabel}`;
+}
+
 /** Line chart showing monthly totals, one line per year */
 function MonthlyLineChart({
   monthlyData,
   selectedYears,
   availableYears,
+  unit,
 }: {
   monthlyData: Record<number, number[]>;
   selectedYears: number[];
   availableYears: number[];
+  unit: { label: string; divisor: number };
 }) {
   const theme = useTheme();
 
@@ -165,7 +182,7 @@ function MonthlyLineChart({
     let cumulative = 0;
     const data: lineDataItem[] = Array.from({ length: 12 }, (_, month) => {
       cumulative += monthlyData[year]?.[month] ?? 0;
-      return { value: cumulative, label: MONTH_LABELS[month] };
+      return { value: cumulative / unit.divisor, label: MONTH_LABELS[month] };
     });
     return { data, color: getYearColor(yearIdx >= 0 ? yearIdx : 0) };
   });
@@ -215,7 +232,7 @@ function MonthlyLineChart({
       rulesType="dashed"
       noOfSections={4}
       yAxisLabelWidth={45}
-      formatYLabel={(v) => `${Math.round(Number(v) * 10) / 10} dt`}
+      formatYLabel={(v) => formatYValue(v, unit.label)}
     />
   );
 }
@@ -225,10 +242,12 @@ function MonthlyGroupedBarChart({
   monthlyData,
   selectedYears,
   availableYears,
+  unit,
 }: {
   monthlyData: Record<number, number[]>;
   selectedYears: number[];
   availableYears: number[];
+  unit: { label: string; divisor: number };
 }) {
   const theme = useTheme();
 
@@ -245,7 +264,7 @@ function MonthlyGroupedBarChart({
     for (let i = 0; i < yearCount; i++) {
       const year = selectedYears[i];
       const yearIdx = availableYears.indexOf(year);
-      const value = monthlyData[year]?.[month] ?? 0;
+      const value = (monthlyData[year]?.[month] ?? 0) / unit.divisor;
       const isFirst = i === 0;
       const isLast = i === yearCount - 1;
 
@@ -288,7 +307,7 @@ function MonthlyGroupedBarChart({
         yAxisTextStyle={{ color: theme.colors.gray2, fontSize: 10 }}
         yAxisLabelWidth={45}
         noOfSections={3}
-        formatYLabel={(v) => `${Math.round(Number(v) * 10) / 10} dt`}
+        formatYLabel={(v) => formatYValue(v, unit.label)}
         disablePress
       />
     </View>
@@ -363,9 +382,8 @@ export function HarvestDashboard({
           entry.monthly[s.year] = new Array(12).fill(0);
           entry.total[s.year] = 0;
         }
-        const valueInDt = pq.totalAmountInKilos / 100;
-        entry.monthly[s.year][s.month] += valueInDt;
-        entry.total[s.year] += valueInDt;
+        entry.monthly[s.year][s.month] += pq.totalAmountInKilos;
+        entry.total[s.year] += pq.totalAmountInKilos;
       }
     }
     return result;
@@ -404,7 +422,10 @@ export function HarvestDashboard({
         const cmKeys = Object.keys(conservationMethods);
 
         return cmKeys.map((cm) => {
-          const { monthly } = conservationMethods[cm];
+          const { monthly, total } = conservationMethods[cm];
+          // Pick unit based on max total kg across selected years
+          const maxKg = Math.max(0, ...Object.values(total));
+          const unit = pickDisplayUnit(maxKg);
           // Card title: "CropName - ConservationMethod" or just "CropName" if none
           const cmLabel =
             cm === "none"
@@ -426,6 +447,7 @@ export function HarvestDashboard({
                     monthlyData={monthly}
                     selectedYears={selectedYears}
                     availableYears={availableYears}
+                    unit={unit}
                   />
                 </View>
                 <View
@@ -442,6 +464,7 @@ export function HarvestDashboard({
                     monthlyData={monthly}
                     selectedYears={selectedYears}
                     availableYears={availableYears}
+                    unit={unit}
                   />
                 </View>
               </Card.Content>

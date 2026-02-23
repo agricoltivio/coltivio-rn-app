@@ -1044,7 +1044,9 @@
       "import_button": "Importer",
       "success_title": "Import termin\u00e9",
       "success_message": "{{imported}} sur {{total}} animaux ont \u00e9t\u00e9 import\u00e9s.",
-      "skipped_message": "{{count}} animaux ont \u00e9t\u00e9 ignor\u00e9s."
+      "skipped_message": "{{count}} animaux ont \u00e9t\u00e9 ignor\u00e9s.",
+      "onboarding_heading": "Importer des animaux depuis la TVD",
+      "onboarding_body": "L'importation n\u00e9cessite un fichier Excel de la section \u00ab Tierbestand \u00bb de la TVD. Exportez-le via le bouton \u00ab Excel generieren \u00bb."
     }
   },
   "drugs": {
@@ -1115,7 +1117,15 @@
     "birthday_from": "De",
     "birthday_to": "Jusqu'au",
     "drug_not_defined_for_all_types": "Le m\u00e9dicament n'est pas d\u00e9fini pour tous les types d'animaux s\u00e9lectionn\u00e9s",
-    "different_waiting_times_for_types": "Les d\u00e9lais d'attente diff\u00e8rent entre les types d'animaux"
+    "different_waiting_times_for_types": "Les délais d'attente diffèrent entre les types d'animaux"
+  },
+  "settings": {
+    "settings": "Paramètres",
+    "onboardings": "Tutoriels",
+    "disable_onboardings_info": "Affiche les tutoriels lors de la première ouverture d'une fonctionnalité.",
+    "app_settings": "Paramètres",
+    "speed_dial_enabled": "Accès rapide",
+    "speed_dial_settings": "Configurer l'accès rapide"
   },
   "permissions": {
     "location": {

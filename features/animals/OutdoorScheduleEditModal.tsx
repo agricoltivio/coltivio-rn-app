@@ -186,6 +186,7 @@ export function OutdoorScheduleEditModal({
               padding: theme.spacing.l,
               width: "100%",
               maxWidth: 360,
+              overflow: "visible",
             }}
             onPress={(e) => e.stopPropagation()}
           >
@@ -329,6 +330,8 @@ export function OutdoorScheduleEditModal({
                       if (!isNaN(num) && num > 0) setInterval(String(num));
                     }}
                     keyboardType="numbers-and-punctuation"
+                    returnKeyType="done"
+                    blurOnSubmit
                     style={{
                       width: 50,
                       borderWidth: 1,

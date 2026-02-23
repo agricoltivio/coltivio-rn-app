@@ -55,7 +55,8 @@ export function ConfigureHarvestScreen({
   const updatePresetMutation = useUpdateHarvestPresetMutation();
   const deletePresetMutation = useDeleteHarvestPresetMutation();
 
-  const { setHarvest, harvest, setTotalProducedUnits } = useCreateHarvestStore();
+  const { setHarvest, harvest, setTotalProducedUnits } =
+    useCreateHarvestStore();
 
   const {
     control,
@@ -208,6 +209,7 @@ export function ConfigureHarvestScreen({
           <RHNumberInput
             name="kilosPerUnit"
             control={control}
+            float
             label={
               unit === "total_amount"
                 ? `${t("common.total_amount")} (${t("units.short.kg")})`

@@ -13,15 +13,15 @@ type FABProps = {
   onPress?: () => void;
 };
 
-export function FAB({ onPress, color: type = "primary", icon }: FABProps) {
+export function FAB({ onPress, color: type = "amethyst", icon }: FABProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   return (
     <View
       style={{
         position: "absolute",
-        bottom: insets.bottom + theme.spacing.s,
-        right: theme.spacing.xl,
+        bottom: theme.spacing.m,
+        right: theme.spacing.m,
       }}
     >
       <TouchableOpacity
@@ -33,8 +33,9 @@ export function FAB({ onPress, color: type = "primary", icon }: FABProps) {
           borderRadius: 40,
           alignItems: "center",
           justifyContent: "center",
-          shadowOffset: { width: 2, height: 5 },
-          shadowOpacity: 0.6,
+          shadowColor: theme.colors[type],
+          shadowOffset: { width: 0, height: 5 },
+          shadowOpacity: 0.7,
           shadowRadius: 5,
           elevation: 10,
         }}

@@ -25,6 +25,7 @@ import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../farms/farms.hooks";
 import { MapControls } from "../map/overlays/MapControls";
 import { MapShowLocationToggle } from "../map/MapShowLocationToggle";
+import { TopLeftBackButton } from "../map/TopLeftBackButton";
 import { useLocalSettings } from "../user/LocalSettingsContext";
 import { useFarmPlotsQuery } from "./plots.hooks";
 import { useTranslation } from "react-i18next";
@@ -305,15 +306,9 @@ export function AddPlotMapScreen({ navigation, route }: AddPlotMapScreenProps) {
           onPress={() => handleLoadPlots()}
         />
       ) : null}
+      <TopLeftBackButton />
       <PortalHost name="PlotsMap" />
       <MapControls>
-        <MaterialCommunityIconButton
-          type="accent"
-          color="red"
-          iconSize={30}
-          icon="cancel"
-          onPress={() => navigation.goBack()}
-        />
         <MaterialCommunityIconButton
           style={{
             backgroundColor: theme.colors.accent,

@@ -7,17 +7,27 @@ import { Select } from "@/components/select/Select";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3 } from "@/theme/Typography";
 import * as DocumentPicker from "expo-document-picker";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, View } from "react-native";
 import { useTheme } from "styled-components/native";
+import { useLocalSettings } from "../user/LocalSettingsContext";
+import { TvdImportScreenProps } from "./navigation/animals-routes";
 
 type SelectedFile = { uri: string; name: string; mimeType?: string };
 
-export function TvdImportScreen() {
+export function TvdImportScreen({ navigation }: TvdImportScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const api = useApi();
+  const { localSettings } = useLocalSettings();
+
+  // Redirect to onboarding if not completed
+  useEffect(() => {
+    if (!localSettings.tvdImportOnboardingCompleted) {
+      navigation.replace("TvdImportOnboarding");
+    }
+  }, []);
   const [selectedFile, setSelectedFile] = useState<SelectedFile | null>(null);
   const [animalType, setAnimalType] = useState<AnimalType | null>(null);
   const [loading, setLoading] = useState(false);

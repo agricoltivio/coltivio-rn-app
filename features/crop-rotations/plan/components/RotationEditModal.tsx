@@ -128,6 +128,7 @@ export function RotationEditModal({
             borderRadius: 16,
             width: "100%",
             maxWidth: 360,
+            overflow: "visible",
           }}
           onPress={() => Keyboard.dismiss()}
         >
@@ -135,6 +136,7 @@ export function RotationEditModal({
             keyboardShouldPersistTaps="handled"
             scrollEnabled={false}
             contentContainerStyle={{ padding: theme.spacing.l }}
+            style={{ overflow: "visible" }}
           >
           <Text
             style={{
@@ -383,7 +385,7 @@ export function RotationEditModal({
                   color: theme.colors.white,
                 }}
               >
-                {t("buttons.save")}
+                {t("buttons.confirm")}
               </Text>
             </Pressable>
           </View>

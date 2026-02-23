@@ -30,13 +30,15 @@ export function CreateCropScreen({ navigation }: CreateCropScreenProps) {
         navigation.goBack();
       }
     },
-    (error) => console.error(error)
+    (error) => console.error(error),
   );
 
   function onCreateCrop({ waitingTimeInYears, ...data }: CropFormValues) {
     createForageMutation.mutate({
       ...data,
-      waitingTimeInYears: waitingTimeInYears ? Number(waitingTimeInYears) : undefined,
+      waitingTimeInYears: waitingTimeInYears
+        ? Number(waitingTimeInYears)
+        : undefined,
     });
   }
 

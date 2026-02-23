@@ -32,7 +32,7 @@ type SpeedDialProps = {
   items: SpeedDialItem[];
 };
 
-const MAIN_SIZE = 72;
+const MAIN_SIZE = 82;
 const SUB_SIZE = 52;
 const RADIUS = 140;
 const TIMING_CONFIG = { duration: 220, easing: Easing.out(Easing.quad) };
@@ -45,7 +45,7 @@ export function SpeedDial({ items }: SpeedDialProps) {
   const isOpen = useSharedValue(0);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const fabBottom = insets.bottom;
+  const fabBottom = theme.spacing.m;
   const fabRight = theme.spacing.m;
 
   const open = useCallback(() => {
@@ -85,17 +85,17 @@ export function SpeedDial({ items }: SpeedDialProps) {
               width: MAIN_SIZE,
               height: MAIN_SIZE,
               borderRadius: MAIN_SIZE / 2,
-              shadowColor: theme.colors.primary,
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.4,
-              shadowRadius: 8,
+              shadowColor: theme.colors.amethyst,
+              shadowOffset: { width: 0, height: 6 },
+              shadowOpacity: 0.7,
+              shadowRadius: 5,
               elevation: 8,
             },
             mainAnimatedStyle,
           ]}
         >
           <LinearGradient
-            colors={[`${theme.colors.primary}dd`, theme.colors.primary]}
+            colors={[`${theme.colors.amethyst}dd`, theme.colors.amethyst]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={{

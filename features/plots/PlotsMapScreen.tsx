@@ -172,15 +172,9 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
     (error) => console.error(error),
   );
 
-  if (!initialRegion || !farm || !plots) {
-    return null;
-  }
-
-  const hasSelection = !!selectedPlot;
-
   const plotPolygons = useMemo(
     () =>
-      plots.map((plot) => (
+      plots?.map((plot) => (
         <MultiPolygon
           key={plot.id}
           polygon={plot.geometry}
@@ -198,6 +192,12 @@ export function PlotsMapScreen({ navigation, route }: PlotsMapScreenProps) {
       )),
     [plots, selectedPlotId, theme],
   );
+
+  if (!initialRegion || !farm || !plots) {
+    return null;
+  }
+
+  const hasSelection = !!selectedPlot;
 
   return (
     <ContentView headerVisible={false}>

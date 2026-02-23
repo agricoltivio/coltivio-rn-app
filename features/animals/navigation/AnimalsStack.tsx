@@ -18,6 +18,7 @@ import { EditTreatmentScreen } from "../EditTreatmentScreen";
 import { AnimalsOnboardingScreen } from "../AnimalsOnboardingScreen";
 import { AnimalsSettingsScreen } from "../AnimalsSettingsScreen";
 import { TvdImportScreen } from "../TvdImportScreen";
+import { TvdImportOnboardingScreen } from "../TvdImportOnboardingScreen";
 import { HerdsScreen } from "../HerdsScreen";
 import { CreateHerdScreen } from "../CreateHerdScreen";
 import { HerdEditScreen } from "../HerdEditScreen";
@@ -163,6 +164,12 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
       name="AnimalsSettings"
       options={{ title: "" }}
       component={AnimalsSettingsScreen}
+    />,
+    <Stack.Screen
+      key="tvd-import-onboarding"
+      name="TvdImportOnboarding"
+      options={{ title: "", headerShown: false }}
+      component={TvdImportOnboardingScreen}
     />,
     <Stack.Screen
       key="tvd-import"

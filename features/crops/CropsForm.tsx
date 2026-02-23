@@ -1,5 +1,6 @@
 import { CropCreateInput } from "@/api/crops.api";
 import { IonIconButton } from "@/components/buttons/IconButton";
+import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
@@ -11,7 +12,9 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 
-export type CropFormValues = CropCreateInput;
+export type CropFormValues = Omit<CropCreateInput, "waitingTimeInYears"> & {
+  waitingTimeInYears?: string;
+};
 
 type CropFormProps = {
   control: Control<CropFormValues>;
@@ -92,11 +95,11 @@ export function CropForm({ control, errors }: CropFormProps) {
             style={{ marginBottom: 1 }}
           />
         </View>
-        <RHTextInput
+        <RHNumberInput
           name="waitingTimeInYears"
           control={control}
           label={t("crops.waiting_time_in_years_optional")}
-          keyboardType="numeric"
+          keyboardType="numbers-and-punctuation"
           error={errors.waitingTimeInYears?.message}
         />
         <RHTextAreaInput

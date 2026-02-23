@@ -11,6 +11,7 @@ import {
   PolylineDrawingToolActions,
 } from "@/components/map/PolylineDrawingTool";
 import { MapControls } from "@/features/map/overlays/MapControls";
+import { TopLeftBackButton } from "@/features/map/TopLeftBackButton";
 import { hexToRgba, indexToDistinctColor } from "@/theme/theme";
 import {
   cutPolygonFromMultiPolygon,
@@ -227,31 +228,22 @@ export function SplitPlotMapScreen({
           />
         )}
       </MapView>
+      <TopLeftBackButton />
       <PortalHost name="SplitPlotMap" />
       {/* Custom toolbar */}
       <Portal hostName="SplitPlotMap">
         {activeToolMode !== "polygon" && (
           <MapControls>
             {activeToolMode === "none" && (
-              <>
-                <MaterialCommunityIconButton
-                  style={{ backgroundColor: theme.colors.accent }}
-                  type="accent"
-                  color="green"
-                  iconSize={30}
-                  icon="check"
-                  disabled={!hasMultiplePolygons}
-                  onPress={handleDone}
-                />
-
-                <MaterialCommunityIconButton
-                  type="accent"
-                  color="red"
-                  iconSize={30}
-                  icon="cancel"
-                  onPress={() => navigation.goBack()}
-                />
-              </>
+              <MaterialCommunityIconButton
+                style={{ backgroundColor: theme.colors.accent }}
+                type="accent"
+                color="green"
+                iconSize={30}
+                icon="check"
+                disabled={!hasMultiplePolygons}
+                onPress={handleDone}
+              />
             )}
             {/* Polyline mode toggle */}
             {activeToolMode === "none" ? (

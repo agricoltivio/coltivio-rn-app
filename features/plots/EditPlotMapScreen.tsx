@@ -8,6 +8,7 @@ import {
   PolygonDrawingToolActions,
 } from "@/components/map/PolygonDrawingTool";
 import { MapControls } from "@/features/map/overlays/MapControls";
+import { TopLeftBackButton } from "@/features/map/TopLeftBackButton";
 import { hexToRgba } from "@/theme/theme";
 import { GeoSpatials } from "@/utils/geo-spatials";
 import { round } from "@/utils/math";
@@ -155,15 +156,9 @@ export function EditPlotMapScreen({
           }
         />
       </MapView>
+      <TopLeftBackButton />
       <PortalHost name="PlotsMap" />
       <MapControls>
-        <MaterialCommunityIconButton
-          type="accent"
-          color="red"
-          iconSize={30}
-          icon="cancel"
-          onPress={() => navigation.goBack()}
-        />
         <MaterialCommunityIconButton
           style={{ backgroundColor: theme.colors.accent }}
           type="accent"

@@ -35,7 +35,7 @@ export function EditCropScreen({ route, navigation }: EditCropScreenProps) {
           variety: crop.variety ?? undefined,
           additionalNotes: crop.additionalNotes ?? undefined,
           familyId: crop.familyId ?? undefined,
-          waitingTimeInYears: crop.waitingTimeInYears ?? undefined,
+          waitingTimeInYears: crop.waitingTimeInYears?.toString() ?? undefined,
         }
       : undefined,
   });
@@ -47,7 +47,9 @@ export function EditCropScreen({ route, navigation }: EditCropScreenProps) {
     updateCropMutation.mutate({
       id: cropId,
       ...data,
-      waitingTimeInYears: waitingTimeInYears ? Number(waitingTimeInYears) : null,
+      waitingTimeInYears: waitingTimeInYears
+        ? Number(waitingTimeInYears)
+        : null,
     });
   }
 

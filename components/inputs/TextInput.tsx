@@ -1,5 +1,5 @@
-import { ReactNode, useState } from "react";
-import { TextInputProps as RnTextInputProps, View } from "react-native";
+import { ReactNode, useEffect, useState } from "react";
+import { Keyboard, TextInputProps as RnTextInputProps, View } from "react-native";
 import styled, { useTheme } from "styled-components/native";
 
 export type TextInputProps = Omit<RnTextInputProps, "editable"> & {
@@ -21,6 +21,18 @@ export function TextInput({
 }: TextInputProps) {
   const theme = useTheme();
   const [focus, setFocus] = useState(false);
+
+  // Blur all inputs when the keyboard hides while this input is focused.
+  // Prevents "ghost focus" where the next tap re-shows the keyboard
+  // instead of triggering the tapped button.
+  useEffect(() => {
+    if (!focus) return;
+    const sub = Keyboard.addListener("keyboardDidHide", () => {
+      Keyboard.dismiss();
+    });
+    return () => sub.remove();
+  }, [focus]);
+
   return (
     <View>
       {!hideLabel && <Label>{label}</Label>}

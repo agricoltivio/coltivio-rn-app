@@ -34,6 +34,7 @@ export type AnimalsStackParamList = {
     drugId?: string;
   };
   TvdImport: undefined;
+  TvdImportOnboarding: undefined;
   Herds: undefined;
   OutdoorJournal: undefined;
   OutdoorJournalExport: undefined;
@@ -65,6 +66,7 @@ export type AnimalsOnboardingScreenProps =
 export type AnimalsSettingsScreenProps =
   StackScreenProps<"AnimalsSettings">;
 export type TvdImportScreenProps = StackScreenProps<"TvdImport">;
+export type TvdImportOnboardingScreenProps = StackScreenProps<"TvdImportOnboarding">;
 export type HerdsScreenProps = StackScreenProps<"Herds">;
 export type OutdoorJournalScreenProps = StackScreenProps<"OutdoorJournal">;
 export type OutdoorJournalExportScreenProps = StackScreenProps<"OutdoorJournalExport">;

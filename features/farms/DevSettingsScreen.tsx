@@ -17,6 +17,7 @@ const RESETTABLE_KEYS = [
   { key: "animalsOnboardingCompleted", label: "Animals Onboarding" },
   { key: "animalsGroups", label: "Animals Groups" },
   { key: "herdsOnboardingCompleted", label: "Herds Onboarding" },
+  { key: "tvdImportOnboardingCompleted", label: "TVD Import Onboarding" },
   { key: "mapDrawOnboardingCompleted", label: "Map Draw Onboarding" },
   { key: "plotsMapOnboardingCompleted", label: "Plots Map Onboarding" },
   { key: "addPlotDrawOnboardingCompleted", label: "Add Plot Draw Onboarding" },

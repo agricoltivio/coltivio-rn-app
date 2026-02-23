@@ -87,14 +87,23 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
     return result;
   }, [cropRotations, selectedCropNames, filteredPlots]);
 
+  // When crop filters are active, only show plots that have matching rotations.
+  // When no crop filter is active, show all plots (including those without rotations).
+  const timelinePlots = useMemo(() => {
+    if (selectedCropNames.size === 0) return filteredPlots;
+    if (!filteredCropRotations || !filteredPlots) return undefined;
+    const plotIdsWithRotations = new Set(filteredCropRotations.map((cr) => cr.plotId));
+    return filteredPlots.filter((p) => plotIdsWithRotations.has(p.id));
+  }, [filteredPlots, filteredCropRotations, selectedCropNames]);
+
   const timelineData = useMemo(() => {
     if (!filteredCropRotations) return null;
     return buildMultiYearTimelineData(
       filteredCropRotations,
       timelineYears,
-      filteredPlots,
+      timelinePlots,
     );
-  }, [filteredCropRotations, timelineYears, filteredPlots]);
+  }, [filteredCropRotations, timelineYears, timelinePlots]);
 
   function handleToggleCrop(cropName: string) {
     setSelectedCropNames((prev) => {

@@ -26,7 +26,8 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
     return localSettings.speedDialItems
       .filter((item) => item.active && item.id in SPEED_DIAL_ACTIONS)
       .map((item) => {
-        const action = SPEED_DIAL_ACTIONS[item.id as keyof typeof SPEED_DIAL_ACTIONS];
+        const action =
+          SPEED_DIAL_ACTIONS[item.id as keyof typeof SPEED_DIAL_ACTIONS];
         return {
           id: item.id,
           icon: action.icon,
@@ -37,109 +38,109 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   return (
     <>
-    <ScrollView showHeaderOnScroll headerTitleOnScroll={farm?.name}>
-      <ContentView headerVisible={true}>
-        <View>
-          {user?.fullName ? (
-            <H1>{t("home.welcome_text", { displayName: user?.fullName })}</H1>
-          ) : null}
-          <H2>{farm?.name}</H2>
+      <ScrollView showHeaderOnScroll headerTitleOnScroll={farm?.name}>
+        <ContentView headerVisible={true}>
+          <View>
+            {user?.fullName ? (
+              <H1>{t("home.welcome_text", { displayName: user?.fullName })}</H1>
+            ) : null}
+            <H2>{farm?.name}</H2>
+            <View
+              style={{
+                flex: 1,
+                marginTop: theme.spacing.l,
+                backgroundColor: theme.colors.white,
+                height: 250,
+                elevation: 8,
+                shadowColor: theme.colors.gray1,
+                shadowOffset: { width: 3, height: 3 },
+                shadowOpacity: 0.8,
+                shadowRadius: 5,
+                borderRadius: 10,
+              }}
+            >
+              <MapTile />
+            </View>
+          </View>
           <View
             style={{
-              flex: 1,
-              marginTop: theme.spacing.l,
-              backgroundColor: theme.colors.white,
-              height: 250,
-              elevation: 8,
-              shadowColor: theme.colors.gray1,
-              shadowOffset: { width: 3, height: 3 },
-              shadowOpacity: 0.8,
-              shadowRadius: 5,
-              borderRadius: 10,
+              flexDirection: "row",
+              marginTop: theme.spacing.m,
+              gap: theme.spacing.m,
             }}
           >
-            <MapTile />
+            <HomeTile
+              title={t("home.tiles.farm")}
+              onPress={() => navigation.navigate("Farm")}
+            >
+              <Image
+                source={require("@/assets/images/farm-icon-6.png")}
+                contentFit="contain"
+                style={{
+                  height: 110,
+                  opacity: 0.9,
+                  marginBottom: theme.spacing.xxs,
+                  borderBottomLeftRadius: 10,
+                  borderBottomRightRadius: 10,
+                }}
+              />
+            </HomeTile>
+            <HomeTile
+              title={t("home.tiles.plots")}
+              onPress={() => navigation.navigate("PlotsMap", {})}
+            >
+              <Image
+                source={require("@/assets/images/field-calendar-icon-4.png")}
+                contentFit="contain"
+                style={{
+                  height: 110,
+                  opacity: 0.9,
+                  borderBottomLeftRadius: 10,
+                  borderBottomRightRadius: 10,
+                }}
+              />
+            </HomeTile>
           </View>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            marginTop: theme.spacing.m,
-            gap: theme.spacing.m,
-          }}
-        >
-          <HomeTile
-            title={t("home.tiles.farm")}
-            onPress={() => navigation.navigate("Farm")}
+          <View
+            style={{
+              flexDirection: "row",
+              marginTop: theme.spacing.m,
+              gap: theme.spacing.m,
+            }}
           >
-            <Image
-              source={require("@/assets/images/farm-icon-6.png")}
-              contentFit="contain"
-              style={{
-                height: 110,
-                opacity: 0.9,
-                marginBottom: theme.spacing.xxs,
-                borderBottomLeftRadius: 10,
-                borderBottomRightRadius: 10,
-              }}
-            />
-          </HomeTile>
-          <HomeTile
-            title={t("home.tiles.plots")}
-            onPress={() => navigation.navigate("PlotsMap", {})}
-          >
-            <Image
-              source={require("@/assets/images/field-calendar-icon-4.png")}
-              contentFit="contain"
-              style={{
-                height: 110,
-                opacity: 0.9,
-                borderBottomLeftRadius: 10,
-                borderBottomRightRadius: 10,
-              }}
-            />
-          </HomeTile>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            marginTop: theme.spacing.m,
-            gap: theme.spacing.m,
-          }}
-        >
-          <HomeTile
-            title={t("home.tiles.animal_husbandry")}
-            onPress={() => navigation.navigate("AnimalsHub")}
-          >
-            <Image
-              source={require("@/assets/images/animals-icon.png")}
-              contentFit="contain"
-              style={{
-                height: 110,
-                opacity: 0.9,
-                borderBottomLeftRadius: 10,
-                borderBottomRightRadius: 10,
-              }}
-            />
-          </HomeTile>
-          <HomeTile
-            title={t("home.tiles.field_calendar")}
-            onPress={() => navigation.navigate("FieldCalendar")}
-          >
-            <Image
-              source={require("@/assets/images/harvest-icon.png")}
-              contentFit="contain"
-              style={{
-                height: 110,
-                opacity: 0.9,
-                marginBottom: theme.spacing.xxs,
-                borderBottomLeftRadius: 10,
-                borderBottomRightRadius: 10,
-              }}
-            />
-          </HomeTile>
-        </View>
-        {/* <View
+            <HomeTile
+              title={t("home.tiles.animal_husbandry")}
+              onPress={() => navigation.navigate("AnimalsHub")}
+            >
+              <Image
+                source={require("@/assets/images/animals-icon.png")}
+                contentFit="contain"
+                style={{
+                  height: 110,
+                  opacity: 0.9,
+                  borderBottomLeftRadius: 10,
+                  borderBottomRightRadius: 10,
+                }}
+              />
+            </HomeTile>
+            <HomeTile
+              title={t("home.tiles.field_calendar")}
+              onPress={() => navigation.navigate("FieldCalendar")}
+            >
+              <Image
+                source={require("@/assets/images/harvest-icon.png")}
+                contentFit="contain"
+                style={{
+                  height: 110,
+                  opacity: 0.9,
+                  marginBottom: theme.spacing.xxs,
+                  borderBottomLeftRadius: 10,
+                  borderBottomRightRadius: 10,
+                }}
+              />
+            </HomeTile>
+          </View>
+          {/* <View
           style={{
             flexDirection: "row",
             marginTop: theme.spacing.m,
@@ -178,7 +179,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
             </View>
           </HomeTile>
         </View> */}
-        {/* <View
+          {/* <View
           style={{
             flexDirection: "row",
             marginTop: theme.spacing.m,
@@ -192,9 +193,11 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
           </HomeTile>
           <Button title="Agri Coltivio" />
         </View> */}
-      </ContentView>
-    </ScrollView>
-    {localSettings.speedDialEnabled && speedDialItems.length > 0 ? <SpeedDial items={speedDialItems} /> : null}
+        </ContentView>
+      </ScrollView>
+      {localSettings.speedDialEnabled && speedDialItems.length > 0 ? (
+        <SpeedDial items={speedDialItems} />
+      ) : null}
     </>
   );
 };

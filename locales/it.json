@@ -1044,7 +1044,9 @@
       "import_button": "Importa",
       "success_title": "Importazione completata",
       "success_message": "{{imported}} di {{total}} animali sono stati importati.",
-      "skipped_message": "{{count}} animali sono stati ignorati."
+      "skipped_message": "{{count}} animali sono stati ignorati.",
+      "onboarding_heading": "Importa animali dalla TVD",
+      "onboarding_body": "Per l'importazione è necessario un file Excel dalla sezione «Tierbestand» della TVD. Esportalo tramite il pulsante «Excel generieren»."
     }
   },
   "drugs": {
@@ -1116,6 +1118,14 @@
     "birthday_to": "A",
     "drug_not_defined_for_all_types": "Il medicinale non è definito per tutti i tipi di animali selezionati",
     "different_waiting_times_for_types": "I tempi di attesa differiscono tra i tipi di animali"
+  },
+  "settings": {
+    "settings": "Impostazioni",
+    "onboardings": "Tutorial",
+    "disable_onboardings_info": "Mostra i tutorial alla prima apertura di una funzionalità.",
+    "app_settings": "Impostazioni",
+    "speed_dial_enabled": "Accesso rapido",
+    "speed_dial_settings": "Configura accesso rapido"
   },
   "permissions": {
     "location": {

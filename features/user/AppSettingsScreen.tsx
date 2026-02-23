@@ -29,7 +29,7 @@ export function AppSettingsScreen({ navigation }: AppSettingsScreenProps) {
         >
           <ListItem
             style={{ backgroundColor: theme.colors.white }}
-            onPress={() => navigation.navigate("UserSettings")}
+            onPress={() => navigation.navigate("OnboardingSettings")}
           >
             <ListItem.Content>
               <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
