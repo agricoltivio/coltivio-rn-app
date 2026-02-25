@@ -62,7 +62,6 @@ export default ({ config }) => {
       "expo-location",
       "expo-apple-authentication",
       "@react-native-community/datetimepicker",
-      "@sentry/react-native",
       "expo-web-browser",
       [
         "@sentry/react-native/expo",
