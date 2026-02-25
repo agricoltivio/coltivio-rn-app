@@ -62,7 +62,7 @@ export const SavePresetModal = forwardRef<SavePresetModalRef, SavePresetModalPro
           }}
           onPress={handleCancel}
         >
-          <KeyboardAvoidingView behavior="padding">
+          <KeyboardAvoidingView behavior="padding" style={{ width: "100%" }}>
           <Pressable
             style={{
               backgroundColor: theme.colors.white,

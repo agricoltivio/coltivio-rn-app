@@ -235,12 +235,15 @@ function MonthlyGroupedBarChart({
   const groupGap = 16;
   const groupWidth = yearCount * barWidth + Math.max(yearCount - 1, 0) * innerGap;
 
+  const noOfSections = 3;
   const barData: barDataItem[] = [];
+  let dataMax = 0;
   for (let month = 0; month < 12; month++) {
     for (let i = 0; i < yearCount; i++) {
       const year = selectedYears[i];
       const yearIdx = availableYears.indexOf(year);
       const value = monthlyData[year]?.[month] ?? 0;
+      if (value > dataMax) dataMax = value;
       const isFirst = i === 0;
       const isLast = i === yearCount - 1;
 
@@ -265,6 +268,8 @@ function MonthlyGroupedBarChart({
     }
   }
 
+  const maxValue = dataMax === 0 ? noOfSections : Math.ceil(dataMax / noOfSections) * noOfSections;
+
   return (
     <View style={{ flex: 1 }}>
       <BarChart
@@ -273,6 +278,7 @@ function MonthlyGroupedBarChart({
         spacing={groupGap}
         roundedTop
         height={120}
+        maxValue={maxValue}
         rulesThickness={1}
         rulesColor={theme.colors.gray4}
         xAxisThickness={1}
@@ -280,7 +286,7 @@ function MonthlyGroupedBarChart({
         yAxisThickness={0}
         yAxisTextStyle={{ color: theme.colors.gray2, fontSize: 10 }}
         yAxisLabelWidth={45}
-        noOfSections={3}
+        noOfSections={noOfSections}
         formatYLabel={(v) => `${Math.round(Number(v) * 10) / 10} ${unit}`}
         disablePress
       />
@@ -290,18 +296,22 @@ function MonthlyGroupedBarChart({
 
 type FertilizerApplicationDashboardProps = {
   summaries: FertilizerApplicationSummary[];
-  availableYears: number[];
 };
 
 export function FertilizerApplicationDashboard({
   summaries,
-  availableYears,
 }: FertilizerApplicationDashboardProps) {
   const { t } = useTranslation();
   const theme = useTheme();
 
-  const defaultYears = availableYears.length > 0 ? [availableYears[0]] : [];
-  const [selectedYears, setSelectedYears] = useState<number[]>(defaultYears);
+  const availableYears = useMemo(
+    () => [...new Set(summaries.map((s) => s.year))].sort((a, b) => b - a),
+    [summaries],
+  );
+
+  const [selectedYears, setSelectedYears] = useState<number[]>(() =>
+    availableYears.length > 0 ? [availableYears[0]] : [],
+  );
   const [selectedFertilizers, setSelectedFertilizers] = useState<string[]>([]);
 
   const toggleYear = useCallback((year: number) => {

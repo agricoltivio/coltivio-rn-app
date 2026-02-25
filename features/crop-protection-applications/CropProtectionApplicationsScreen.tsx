@@ -10,12 +10,16 @@ import { round } from "@/utils/math";
 import Fuse from "fuse.js";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, SectionList, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  SectionList,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useTheme } from "styled-components/native";
 import { CropProtectionApplicationDashboard } from "./components/CropProtectionApplicationDashboard";
 import {
   useCropProtectionApplicationSummariesOfFarmQuery,
-  useCropProtectionApplicationYearsQuery,
   useCropProtectionApplicationsQuery,
 } from "./cropProtectionApplications.hooks";
 import { CropProtectionApplicationsScreenProps } from "./navigation/crop-protection-application-routes";
@@ -38,20 +42,14 @@ export function CropProtectionApplicationsScreen({
     });
   }, [navigation]);
 
-  const { cropProtectionApplicationYears } =
-    useCropProtectionApplicationYearsQuery();
   const { applicationSummaries, isLoading: summariesLoading } =
     useCropProtectionApplicationSummariesOfFarmQuery();
   const { cropProtectionApplications, isLoading: applicationsLoading } =
-    useCropProtectionApplicationsQuery(undefined, undefined, viewMode === "list");
-
-  const availableYears = useMemo(
-    () =>
-      (cropProtectionApplicationYears ?? [])
-        .map(Number)
-        .sort((a, b) => b - a),
-    [cropProtectionApplicationYears],
-  );
+    useCropProtectionApplicationsQuery(
+      undefined,
+      undefined,
+      viewMode === "list",
+    );
 
   const sections = useMemo(() => {
     if (!cropProtectionApplications) return [];
@@ -114,7 +112,6 @@ export function CropProtectionApplicationsScreen({
           ) : (
             <CropProtectionApplicationDashboard
               summaries={applicationSummaries}
-              availableYears={availableYears}
             />
           )}
         </ScrollView>

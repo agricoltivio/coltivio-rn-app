@@ -15,7 +15,6 @@ import { useTheme } from "styled-components/native";
 import { HarvestDashboard } from "./components/HarvestDashboard";
 import {
   useHarvestSummariesOfFarm,
-  useHarvestYearsQuery,
   useHarvestsQuery,
 } from "./harvests.hooks";
 import { HarvestsScreenProps } from "./navigation/harvest-routes";
@@ -36,14 +35,8 @@ export function HarvestsScreen({ navigation }: HarvestsScreenProps) {
     });
   }, [navigation]);
 
-  const { harvestYears } = useHarvestYearsQuery();
   const { harvestSummaries, isLoading: summariesLoading } = useHarvestSummariesOfFarm();
   const { harvests, isLoading: harvestsLoading } = useHarvestsQuery(undefined, undefined, viewMode === "list");
-
-  const availableYears = useMemo(
-    () => (harvestYears ?? []).map(Number).sort((a, b) => b - a),
-    [harvestYears],
-  );
 
   // Group harvests by year for SectionList
   const sections = useMemo(() => {
@@ -111,7 +104,6 @@ export function HarvestsScreen({ navigation }: HarvestsScreenProps) {
           ) : (
             <HarvestDashboard
               harvestSummaries={harvestSummaries}
-              availableYears={availableYears}
             />
           )}
         </ScrollView>

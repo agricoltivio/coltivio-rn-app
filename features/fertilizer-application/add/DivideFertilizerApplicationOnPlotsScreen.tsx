@@ -200,7 +200,7 @@ export function DivideFertilizerApplicationOnPlotsScreen({
                   width: "100%",
                 }}
               >
-                <Subtitle style={{ flexGrow: 1 }}>
+                <Subtitle style={{ flexGrow: 1, flexShrink: 1 }} numberOfLines={1}>
                   {t("forms.labels.plot_w_size", {
                     name: selectedPlot.name,
                     size: (selectedPlot.size / 100).toPrecision(3),

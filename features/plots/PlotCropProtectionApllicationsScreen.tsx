@@ -36,14 +36,6 @@ export function PlotCropProtectionApplicationsScreen({
   const { applicationSummaries, isLoading: summariesLoading } =
     useCropProtectionApplicationSummariesOfPlotQuery(plotId);
 
-  const availableYears = useMemo(() => {
-    if (!cropProtectionApplications) return [];
-    const years = new Set<number>();
-    for (const cpa of cropProtectionApplications)
-      years.add(new Date(cpa.dateTime).getFullYear());
-    return [...years].sort((a, b) => b - a);
-  }, [cropProtectionApplications]);
-
   // Build SectionList sections for the list view
   const sections = useMemo(() => {
     if (!cropProtectionApplications) return [];
@@ -143,7 +135,6 @@ export function PlotCropProtectionApplicationsScreen({
           ) : (
             <CropProtectionApplicationDashboard
               summaries={applicationSummaries}
-              availableYears={availableYears}
             />
           )}
         </ScrollView>

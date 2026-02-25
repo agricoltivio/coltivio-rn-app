@@ -66,7 +66,7 @@ export function AddPlotSummaryScreen({
     createPlotMutation.mutate({
       ...rest,
       geometry,
-      usage: Number(usage),
+      usage: usage ? Number(usage) : undefined,
       size: Number(size),
       cuttingDate: cuttingDate?.toISOString(),
     });

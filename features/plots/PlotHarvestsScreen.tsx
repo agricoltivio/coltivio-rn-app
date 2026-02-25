@@ -34,13 +34,6 @@ export function PlotHarvestsScreen({
   const { harvests, isLoading: harvestsLoading } = useHarvestsOfPlotQuery(plotId);
   const { harvestSummaries, isLoading: summariesLoading } = useHarvestSummariesOfPlotQuery(plotId);
 
-  const availableYears = useMemo(() => {
-    if (!harvests) return [];
-    const years = new Set<number>();
-    for (const h of harvests) years.add(new Date(h.date).getFullYear());
-    return [...years].sort((a, b) => b - a);
-  }, [harvests]);
-
   // Build SectionList sections for the list view
   const sections = useMemo(() => {
     if (!harvests) return [];
@@ -137,7 +130,6 @@ export function PlotHarvestsScreen({
           ) : (
             <HarvestDashboard
               harvestSummaries={harvestSummaries}
-              availableYears={availableYears}
             />
           )}
         </ScrollView>

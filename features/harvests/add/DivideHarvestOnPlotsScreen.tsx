@@ -208,7 +208,7 @@ export function DivideHarvestOnPlotsScreen({
                   width: "100%",
                 }}
               >
-                <Subtitle style={{ flexGrow: 1 }}>
+                <Subtitle style={{ flexGrow: 1, flexShrink: 1 }} numberOfLines={1}>
                   {t("plots.plot_name", { name: harvestArea.name })} (
                   {(harvestArea.harvestSize / 100).toPrecision(3)}a)
                 </Subtitle>

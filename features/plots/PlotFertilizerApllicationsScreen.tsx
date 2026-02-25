@@ -36,14 +36,6 @@ export function PlotFertilizerApplicationsScreen({
   const { applicationSummaries, isLoading: summariesLoading } =
     useFertilizerApplicationSummaryForPlotQuery(plotId);
 
-  const availableYears = useMemo(() => {
-    if (!fertilizerApplications) return [];
-    const years = new Set<number>();
-    for (const fa of fertilizerApplications)
-      years.add(new Date(fa.date).getFullYear());
-    return [...years].sort((a, b) => b - a);
-  }, [fertilizerApplications]);
-
   // Build SectionList sections for the list view
   const sections = useMemo(() => {
     if (!fertilizerApplications) return [];
@@ -143,7 +135,6 @@ export function PlotFertilizerApplicationsScreen({
           ) : (
             <FertilizerApplicationDashboard
               summaries={applicationSummaries}
-              availableYears={availableYears}
             />
           )}
         </ScrollView>

@@ -16,7 +16,6 @@ import { useTheme } from "styled-components/native";
 import { FertilizerApplicationDashboard } from "./components/FertilizerApplicationDashboard";
 import {
   useFertilizerApplicationSummaryOfFarmQuery,
-  useFertilizerApplicationYearsQuery,
   useFertilizerApplicationsQuery,
 } from "./fertilizerApplications.hooks";
 import { FertilizerApplicationsScreenProps } from "./navigation/fertilizer-application-routes";
@@ -39,17 +38,9 @@ export function FertilizerApplicationsScreen({
     });
   }, [navigation]);
 
-  const { fertilizerApplicationYears } =
-    useFertilizerApplicationYearsQuery();
   const { applicationSummaries, isLoading: summariesLoading } =
     useFertilizerApplicationSummaryOfFarmQuery();
   const { fertilizerApplications, isLoading: applicationsLoading } = useFertilizerApplicationsQuery(undefined, undefined, viewMode === "list");
-
-  const availableYears = useMemo(
-    () =>
-      (fertilizerApplicationYears ?? []).map(Number).sort((a, b) => b - a),
-    [fertilizerApplicationYears],
-  );
 
   // Group by year for SectionList
   const sections = useMemo(() => {
@@ -113,7 +104,6 @@ export function FertilizerApplicationsScreen({
           ) : (
             <FertilizerApplicationDashboard
               summaries={applicationSummaries}
-              availableYears={availableYears}
             />
           )}
         </ScrollView>
