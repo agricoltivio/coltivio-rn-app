@@ -12,6 +12,7 @@ import { FarmSummaryPage } from "./pages/FarmSummaryPage";
 import { makeRedirectUri } from "expo-auth-session";
 import { supabase } from "@/supabase/supabase";
 import { useSession } from "@/auth/SessionProvider";
+import { useUserQuery } from "../user/users.hooks";
 
 const redirectTo = makeRedirectUri({
   scheme: "ch.agricoltivio.coltivio",
@@ -22,6 +23,7 @@ export function FarmSummaryScreen({ navigation }: FarmSummaryScreenProps) {
   const { t } = useTranslation();
   const { data } = useOnboarding();
   const { authUser } = useSession();
+  const { user } = useUserQuery();
   const theme = useTheme();
 
   const syncMissingLocalIdsMutation = useSyncMissingLocalIdsMutation(
@@ -30,14 +32,17 @@ export function FarmSummaryScreen({ navigation }: FarmSummaryScreenProps) {
   );
   const createFarmMutation = useCreateFarmMutation(() => {
     syncMissingLocalIdsMutation.mutate();
-    setTimeout(() => {
-      supabase.auth.signInWithOtp({
-        email: authUser!.email!,
-        options: {
-          emailRedirectTo: redirectTo,
-        },
-      });
-    }, 1000);
+    // Only send verification email if user hasn't verified yet
+    if (!user?.emailVerified) {
+      setTimeout(() => {
+        supabase.auth.signInWithOtp({
+          email: authUser!.email!,
+          options: {
+            emailRedirectTo: redirectTo,
+          },
+        });
+      }, 1000);
+    }
   });
 
   function onFinish() {
