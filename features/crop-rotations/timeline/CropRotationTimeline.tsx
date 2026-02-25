@@ -465,7 +465,9 @@ export function CropRotationTimeline({
         end: (x + viewportWidth) / newScale,
       });
       isWeeksMounted.value = level === "weeks";
-      setTimeout(() => scrollAllHorizontalTo(x), 0);
+      // Double-dispatch: setTimeout waits for state commit, requestAnimationFrame
+      // waits for the scroll views to apply the new contentSize before scrolling
+      setTimeout(() => requestAnimationFrame(() => scrollAllHorizontalTo(x)), 0);
     },
     [
       viewportWidth,

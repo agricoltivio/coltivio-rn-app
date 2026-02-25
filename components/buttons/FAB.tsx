@@ -13,7 +13,7 @@ type FABProps = {
   onPress?: () => void;
 };
 
-export function FAB({ onPress, color: type = "amethyst", icon }: FABProps) {
+export function FAB({ onPress, color: type = "mocha", icon }: FABProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   return (

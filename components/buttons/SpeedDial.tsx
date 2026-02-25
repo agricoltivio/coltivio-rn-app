@@ -95,7 +95,7 @@ export function SpeedDial({ items }: SpeedDialProps) {
           ]}
         >
           <LinearGradient
-            colors={[`${theme.colors.amethyst}dd`, theme.colors.amethyst]}
+            colors={[`${theme.colors.mocha}dd`, theme.colors.mocha]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={{

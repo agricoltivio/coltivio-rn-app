@@ -28,6 +28,8 @@ import { TreatmentsExportScreen } from "../TreatmentsExportScreen";
 import { HerdsOnboardingScreen } from "../HerdsOnboardingScreen";
 import { BatchSelectAnimalsScreen } from "../BatchSelectAnimalsScreen";
 import { BatchEditActionScreen } from "../BatchEditActionScreen";
+import { UncategorizedAnimalsScreen } from "../UncategorizedAnimalsScreen";
+import { ManageAnimalCategoriesScreen } from "../ManageAnimalCategoriesScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { DefaultTheme } from "styled-components/native";
 
@@ -236,6 +238,18 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
       name="BatchEditAction"
       options={{ title: "" }}
       component={BatchEditActionScreen}
+    />,
+    <Stack.Screen
+      key="uncategorized-animals"
+      name="UncategorizedAnimals"
+      options={{ title: "" }}
+      component={UncategorizedAnimalsScreen}
+    />,
+    <Stack.Screen
+      key="manage-animal-categories"
+      name="ManageAnimalCategories"
+      options={{ title: "" }}
+      component={ManageAnimalCategoriesScreen}
     />,
   ];
 }

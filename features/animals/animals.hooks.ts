@@ -7,6 +7,7 @@ import {
   AnimalType,
   AnimalUpdateInput,
   AnimalUpdateResponse,
+  CustomOutdoorJournalCategoryInput,
 } from "@/api/animals.api";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -112,6 +113,29 @@ export function useDeleteAnimalsMutation(
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.animals._def });
       queryClient.invalidateQueries({ queryKey: queryKeys.earTags._def });
+      onSuccess?.();
+    },
+    onError,
+  });
+}
+
+export function useSetCustomOutdoorJournalCategoriesMutation(
+  onSuccess?: () => void,
+  onError?: (error: Error) => void,
+) {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      animalId,
+      input,
+    }: {
+      animalId: string;
+      input: CustomOutdoorJournalCategoryInput;
+    }) => api.animals.setCustomOutdoorJournalCategories(animalId, input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.animals._def });
+      queryClient.invalidateQueries({ queryKey: queryKeys.outdoorJournal._def });
       onSuccess?.();
     },
     onError,

@@ -8,6 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, Pressable, Text, TextInput, View } from "react-native";
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useTheme } from "styled-components/native";
 
 export type ScheduleEditData = {
@@ -179,13 +180,13 @@ export function OutdoorScheduleEditModal({
           }}
           onPress={onClose}
         >
+          <KeyboardAvoidingView behavior="padding" style={{ width: "100%", maxWidth: 360 }}>
           <Pressable
             style={{
               backgroundColor: theme.colors.white,
               borderRadius: 16,
               padding: theme.spacing.l,
               width: "100%",
-              maxWidth: 360,
               overflow: "visible",
             }}
             onPress={(e) => e.stopPropagation()}
@@ -433,11 +434,12 @@ export function OutdoorScheduleEditModal({
                     color: theme.colors.white,
                   }}
                 >
-                  {t("buttons.save")}
+                  {t("buttons.confirm")}
                 </Text>
               </Pressable>
             </View>
           </Pressable>
+          </KeyboardAvoidingView>
         </Pressable>
       )}
     </Modal>

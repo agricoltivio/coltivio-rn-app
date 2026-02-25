@@ -1,4 +1,4 @@
-import { OutdoorSchedule } from "@/api/herds.api";
+import { OutdoorScheduleCreateInput } from "@/api/herds.api";
 import { Button } from "@/components/buttons/Button";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -10,20 +10,21 @@ import { H2, H3, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import {
   useDeleteHerdMutation,
   useHerdByIdQuery,
   useUpdateHerdMutation,
-  useCreateOutdoorScheduleMutation,
-  useUpdateOutdoorScheduleMutation,
-  useDeleteOutdoorScheduleMutation,
 } from "./herds.hooks";
 import { HerdEditScreenProps } from "./navigation/animals-routes";
 import { OutdoorScheduleEditModal } from "./OutdoorScheduleEditModal";
 import { OutdoorScheduleTimeline } from "./timeline/OutdoorScheduleTimeline";
-import { buildSingleHerdTimelineData } from "./timeline/outdoor-timeline-utils";
+import { buildOutdoorTimelineData } from "./timeline/outdoor-timeline-utils";
+import { hasScheduleOverlaps } from "./schedule-overlap-utils";
+
+// Local schedule with a temp id for list keys
+type LocalSchedule = OutdoorScheduleCreateInput & { tempId: string };
 
 export function HerdEditScreen({
   route,
@@ -37,9 +38,33 @@ export function HerdEditScreen({
 
   const [name, setName] = useState("");
   const [nameInitialized, setNameInitialized] = useState(false);
+
+  // Local outdoor schedules state, initialized from herd data
+  const [localSchedules, setLocalSchedules] = useState<LocalSchedule[]>([]);
+  const [schedulesInitialized, setSchedulesInitialized] = useState(false);
+
   if (herd && !nameInitialized) {
     setName(herd.name);
     setNameInitialized(true);
+  }
+  if (herd && !schedulesInitialized) {
+    setLocalSchedules(
+      herd.outdoorSchedules.map((s) => ({
+        startDate: s.startDate,
+        endDate: s.endDate ?? null,
+        type: s.type,
+        notes: s.notes ?? null,
+        recurrence: s.recurrence
+          ? {
+              frequency: s.recurrence.frequency,
+              interval: s.recurrence.interval,
+              until: s.recurrence.until ?? null,
+            }
+          : null,
+        tempId: s.id,
+      })),
+    );
+    setSchedulesInitialized(true);
   }
 
   // Animal IDs: use route params (from SelectAnimals) or fall back to herd data
@@ -52,31 +77,48 @@ export function HerdEditScreen({
   const deleteHerdMutation = useDeleteHerdMutation(() => navigation.goBack());
 
   const [scheduleModalVisible, setScheduleModalVisible] = useState(false);
-  const [editingSchedule, setEditingSchedule] = useState<OutdoorSchedule | null>(null);
+  const [editingSchedule, setEditingSchedule] = useState<LocalSchedule | null>(null);
 
-  const createScheduleMutation = useCreateOutdoorScheduleMutation(
-    herdId,
-    () => setScheduleModalVisible(false),
-  );
-  const updateScheduleMutation = useUpdateOutdoorScheduleMutation(() =>
-    setScheduleModalVisible(false),
-  );
-  const deleteScheduleMutation = useDeleteOutdoorScheduleMutation(() =>
-    setScheduleModalVisible(false),
-  );
-
-  // Dirty check: name changed or animals changed from initial
+  // Dirty check: name changed, animals changed, or schedules changed
   const initialAnimalIds = herd?.animals.map((a) => a.id) ?? [];
   const animalsChanged =
     selectedAnimalIds.length !== initialAnimalIds.length ||
     selectedAnimalIds.some((id: string) => !initialAnimalIds.includes(id));
-  const isDirty = (herd != null && name !== herd.name) || animalsChanged;
+
+  const schedulesChanged = useMemo(() => {
+    if (!herd) return false;
+    const initial = herd.outdoorSchedules;
+    if (localSchedules.length !== initial.length) return true;
+    return localSchedules.some((ls, i) => {
+      const orig = initial[i];
+      if (!orig) return true;
+      return (
+        ls.startDate !== orig.startDate ||
+        (ls.endDate ?? null) !== (orig.endDate ?? null) ||
+        ls.type !== orig.type ||
+        JSON.stringify(ls.recurrence) !== JSON.stringify(orig.recurrence)
+      );
+    });
+  }, [localSchedules, herd]);
+
+  const isDirty = (herd != null && name !== herd.name) || animalsChanged || schedulesChanged;
+
+  // Overlap detection
+  const hasOverlaps = useMemo(
+    () => hasScheduleOverlaps(localSchedules),
+    [localSchedules],
+  );
 
   function handleSave() {
+    if (hasOverlaps) return;
+    const outdoorSchedules = localSchedules.map(
+      ({ tempId: _, ...rest }) => rest,
+    );
     updateHerdMutation.mutate({
       id: herdId,
       name,
       animalIds: selectedAnimalIds,
+      outdoorSchedules,
     });
   }
 
@@ -91,12 +133,12 @@ export function HerdEditScreen({
     });
   }
 
-  function openScheduleModal(schedule?: OutdoorSchedule) {
+  function openScheduleModal(schedule?: LocalSchedule) {
     setEditingSchedule(schedule ?? null);
     setScheduleModalVisible(true);
   }
 
-  function formatScheduleSummary(schedule: OutdoorSchedule): string {
+  function formatScheduleSummary(schedule: LocalSchedule): string {
     const typeLabel = t(`animals.outdoor_types.${schedule.type}` as const);
     const start = formatLocalizedDate(new Date(schedule.startDate), locale);
     const end = schedule.endDate
@@ -112,13 +154,30 @@ export function HerdEditScreen({
     return summary;
   }
 
-  const timelineData = useMemo(
-    () =>
-      herd
-        ? buildSingleHerdTimelineData(herd.id, herd.name, herd.outdoorSchedules)
-        : null,
-    [herd],
-  );
+  // Build timeline data from local schedules
+  const timelineData = useMemo(() => {
+    if (!herd) return null;
+    return buildOutdoorTimelineData([
+      {
+        herdId: herd.id,
+        herdName: herd.name,
+        schedules: localSchedules.map((s) => ({
+          id: s.tempId,
+          startDate: s.startDate,
+          endDate: s.endDate ?? null,
+          notes: s.notes ?? null,
+          type: s.type,
+          recurrence: s.recurrence
+            ? {
+                frequency: s.recurrence.frequency,
+                interval: s.recurrence.interval,
+                until: s.recurrence.until ?? null,
+              }
+            : null,
+        })),
+      },
+    ]);
+  }, [localSchedules, herd]);
 
   const animalsText = (() => {
     if (selectedAnimalIds.length === 0) return t("common.no_entries");
@@ -132,6 +191,18 @@ export function HerdEditScreen({
       headerVisible
       footerComponent={
         <BottomActionContainer>
+          {hasOverlaps && (
+            <Text
+              style={{
+                fontSize: 13,
+                color: theme.colors.danger,
+                textAlign: "center",
+                marginBottom: theme.spacing.s,
+              }}
+            >
+              {t("animals.schedule_overlap_warning")}
+            </Text>
+          )}
           <View
             style={{ flexDirection: "row", gap: theme.spacing.s }}
           >
@@ -151,6 +222,7 @@ export function HerdEditScreen({
               onPress={handleSave}
               disabled={
                 !isDirty ||
+                hasOverlaps ||
                 updateHerdMutation.isPending ||
                 deleteHerdMutation.isPending
               }
@@ -239,18 +311,18 @@ export function HerdEditScreen({
               <OutdoorScheduleTimeline
                 timelineData={timelineData}
                 onBarPress={(scheduleId) => {
-                  const schedule = herd!.outdoorSchedules.find(
-                    (s) => s.id === scheduleId,
+                  const schedule = localSchedules.find(
+                    (s) => s.tempId === scheduleId,
                   );
                   if (schedule) openScheduleModal(schedule);
                 }}
               />
             </View>
           )}
-          {herd.outdoorSchedules.length === 0 && (
+          {localSchedules.length === 0 && (
             <Subtitle>{t("common.no_entries")}</Subtitle>
           )}
-          {herd.outdoorSchedules.length > 0 && (
+          {localSchedules.length > 0 && (
             <View
               style={{
                 borderRadius: 10,
@@ -258,9 +330,9 @@ export function HerdEditScreen({
                 backgroundColor: theme.colors.white,
               }}
             >
-              {herd.outdoorSchedules.map((schedule) => (
+              {localSchedules.map((schedule) => (
                 <ListItem
-                  key={schedule.id}
+                  key={schedule.tempId}
                   style={{ paddingVertical: 5 }}
                   onPress={() => openScheduleModal(schedule)}
                 >
@@ -282,16 +354,39 @@ export function HerdEditScreen({
 
       <OutdoorScheduleEditModal
         visible={scheduleModalVisible}
-        schedule={editingSchedule}
+        schedule={
+          editingSchedule
+            ? {
+                id: editingSchedule.tempId,
+                startDate: editingSchedule.startDate,
+                endDate: editingSchedule.endDate ?? null,
+                type: editingSchedule.type,
+                recurrence: editingSchedule.recurrence,
+              }
+            : null
+        }
         onSave={(input) => {
           if (editingSchedule) {
-            updateScheduleMutation.mutate({ id: editingSchedule.id, ...input });
+            setLocalSchedules((prev) =>
+              prev.map((s) =>
+                s.tempId === editingSchedule.tempId
+                  ? { ...input, tempId: s.tempId }
+                  : s,
+              ),
+            );
           } else {
-            createScheduleMutation.mutate(input);
+            setLocalSchedules((prev) => [
+              ...prev,
+              { ...input, tempId: `temp-${Date.now()}` },
+            ]);
           }
+          setScheduleModalVisible(false);
         }}
         onDelete={(scheduleId) => {
-          deleteScheduleMutation.mutate(scheduleId);
+          setLocalSchedules((prev) =>
+            prev.filter((s) => s.tempId !== scheduleId),
+          );
+          setScheduleModalVisible(false);
         }}
         onClose={() => setScheduleModalVisible(false)}
       />

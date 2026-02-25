@@ -11,14 +11,15 @@ import { formatLocalizedDate } from "@/utils/date";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { FlatList, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
-import { useCreateHerdMutation, useCreateOutdoorScheduleMutation } from "./herds.hooks";
+import { useCreateHerdMutation } from "./herds.hooks";
 import { CreateHerdScreenProps } from "./navigation/animals-routes";
 import { OutdoorScheduleEditModal } from "./OutdoorScheduleEditModal";
 import { OutdoorScheduleTimeline } from "./timeline/OutdoorScheduleTimeline";
 import { buildOutdoorTimelineData } from "./timeline/outdoor-timeline-utils";
+import { hasScheduleOverlaps } from "./schedule-overlap-utils";
 
 interface CreateHerdFormValues {
   name: string;
@@ -81,6 +82,7 @@ export function CreateHerdScreen({
           startDate: s.startDate,
           endDate: s.endDate ?? null,
           notes: s.notes ?? null,
+          type: s.type,
           recurrence: s.recurrence
             ? {
                 frequency: s.recurrence.frequency,
@@ -93,68 +95,33 @@ export function CreateHerdScreen({
     ]);
   }, [localSchedules, getValues, t]);
 
-  // After herd creation, batch-create all outdoor schedules
-  const [createdHerdId, setCreatedHerdId] = useState<string | null>(null);
-  const [pendingSchedules, setPendingSchedules] = useState<OutdoorScheduleCreateInput[]>([]);
-
-  const createScheduleMutation = useCreateOutdoorScheduleMutation(
-    createdHerdId ?? "",
-    () => {
-      // Pop the next schedule off the pending queue
-      setPendingSchedules((prev) => {
-        const remaining = prev.slice(1);
-        if (remaining.length > 0) {
-          // Trigger next creation
-          setTimeout(() => createScheduleMutation.mutate(remaining[0]), 0);
-        } else {
-          // All done, navigate away
-          finishNavigation();
-        }
-        return remaining;
-      });
-    },
+  // Overlap detection
+  const hasOverlaps = useMemo(
+    () => hasScheduleOverlaps(localSchedules),
+    [localSchedules],
   );
-
-  function finishNavigation() {
-    if (previousScreen && createdHerdId) {
-      navigation.popTo(
-        previousScreen,
-        { herdId: createdHerdId },
-        { merge: true },
-      );
-    } else {
-      navigation.goBack();
-    }
-  }
 
   const createHerdMutation = useCreateHerdMutation(
     (herd) => {
-      if (localSchedules.length > 0) {
-        // Batch-create schedules sequentially
-        const schedulesToCreate: OutdoorScheduleCreateInput[] = localSchedules.map(
-          ({ tempId: _, ...rest }) => rest,
-        );
-        setCreatedHerdId(herd.id);
-        setPendingSchedules(schedulesToCreate);
-        // Kick off first creation (useCreateOutdoorScheduleMutation needs herdId set first)
-        setTimeout(() => createScheduleMutation.mutate(schedulesToCreate[0]), 0);
+      if (previousScreen) {
+        navigation.popTo(previousScreen, { herdId: herd.id }, { merge: true });
       } else {
-        if (previousScreen) {
-          navigation.popTo(
-            previousScreen,
-            { herdId: herd.id },
-            { merge: true },
-          );
-        } else {
-          navigation.goBack();
-        }
+        navigation.goBack();
       }
     },
     (error) => console.error(error),
   );
 
   function onSubmit(data: CreateHerdFormValues) {
-    createHerdMutation.mutate({ name: data.name, animalIds: selectedAnimalIds });
+    if (hasOverlaps) return;
+    const outdoorSchedules = localSchedules.map(
+      ({ tempId: _, ...rest }) => rest,
+    );
+    createHerdMutation.mutate({
+      name: data.name,
+      animalIds: selectedAnimalIds,
+      outdoorSchedules,
+    });
   }
 
   function formatScheduleSummary(schedule: LocalSchedule): string {
@@ -183,10 +150,22 @@ export function CreateHerdScreen({
       headerVisible
       footerComponent={
         <BottomActionContainer>
+          {hasOverlaps && (
+            <Text
+              style={{
+                fontSize: 13,
+                color: theme.colors.danger,
+                textAlign: "center",
+                marginBottom: theme.spacing.s,
+              }}
+            >
+              {t("animals.schedule_overlap_warning")}
+            </Text>
+          )}
           <Button
             title={t("buttons.save")}
             onPress={handleSubmit(onSubmit)}
-            disabled={!isDirty || createHerdMutation.isPending}
+            disabled={!isDirty || hasOverlaps || createHerdMutation.isPending}
             loading={createHerdMutation.isPending}
           />
         </BottomActionContainer>

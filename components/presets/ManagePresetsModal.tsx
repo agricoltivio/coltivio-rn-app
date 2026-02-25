@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 import { TextInput } from "../inputs/TextInput";
@@ -104,6 +105,7 @@ export const ManagePresetsModal = forwardRef<
         }}
         onPress={handleClose}
       >
+        <KeyboardAvoidingView behavior="padding">
         <Pressable
           style={{
             backgroundColor: theme.colors.white,
@@ -216,6 +218,7 @@ export const ManagePresetsModal = forwardRef<
             onPress={handleClose}
           />
         </Pressable>
+        </KeyboardAvoidingView>
       </Pressable>
     </Modal>
   );

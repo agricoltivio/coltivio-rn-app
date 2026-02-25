@@ -66,6 +66,9 @@ export function buildJournalTimelineData(
         endDay: Math.min(totalDays, endDay),
         isOpenEnded: false,
         notes: String(entry.animalCount),
+        animalCount: entry.animalCount,
+        startDate: entry.startDate,
+        endDate: entry.endDate,
       };
     });
     bars.sort((a, b) => a.startDay - b.startDay);

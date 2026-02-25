@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Modal, View, Text, Pressable, TextInput, ScrollView, Keyboard } from "react-native";
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useTheme } from "styled-components/native";
 import { useTranslation } from "react-i18next";
 import { Ionicons } from "@expo/vector-icons";
@@ -122,12 +123,12 @@ export function RotationEditModal({
         }}
         onPress={onClose}
       >
+        <KeyboardAvoidingView behavior="padding" style={{ width: "100%", maxWidth: 360 }}>
         <Pressable
           style={{
             backgroundColor: theme.colors.white,
             borderRadius: 16,
             width: "100%",
-            maxWidth: 360,
             overflow: "visible",
           }}
           onPress={() => Keyboard.dismiss()}
@@ -391,6 +392,7 @@ export function RotationEditModal({
           </View>
           </ScrollView>
         </Pressable>
+        </KeyboardAvoidingView>
       </Pressable>
     </Modal>
   );

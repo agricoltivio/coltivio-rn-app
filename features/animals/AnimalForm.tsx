@@ -2,11 +2,9 @@ import { AnimalCreateInput } from "@/api/animals.api";
 import { useEffect, useRef } from "react";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { RHSwitch } from "@/components/inputs/RHSwitch";
-import { Switch } from "@/components/inputs/Switch";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { IonIconButton } from "@/components/buttons/IconButton";
-import { Ionicons } from "@expo/vector-icons";
 import {
   Control,
   FieldErrors,
@@ -16,7 +14,6 @@ import {
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { Subtitle } from "@/theme/Typography";
 import { useAnimalsQuery } from "./animals.hooks";
 import { useAvailableEarTagsQuery } from "./earTags.hooks";
 import { useHerdsQuery } from "./herds.hooks";
@@ -35,7 +32,6 @@ type AnimalFormProps = {
   setValue: UseFormSetValue<AnimalFormValues>;
   earTagData?: { label: string; value: string }[];
   showDeathFields?: boolean;
-  requiresCategoryOverride?: boolean | null;
   onNavigateToCreateHerd?: () => void;
 };
 
@@ -45,7 +41,6 @@ export function AnimalForm({
   setValue,
   earTagData,
   showDeathFields,
-  requiresCategoryOverride,
   onNavigateToCreateHerd,
 }: AnimalFormProps) {
   const { t } = useTranslation();
@@ -55,7 +50,6 @@ export function AnimalForm({
 
   // Watch dateOfDeath to conditionally show deathReason
   const dateOfDeath = useWatch({ control, name: "dateOfDeath" });
-  const categoryOverride = useWatch({ control, name: "categoryOverride" });
   const animalType = useWatch({ control, name: "type" });
 
   // Only show parents of the same animal type
@@ -100,41 +94,11 @@ export function AnimalForm({
     { label: t("animals.usage_types.other"), value: "other" },
   ];
 
-  const categoryOverrideData = [
-    "A1",
-    "A2",
-    "A3",
-    "A4",
-    "A5",
-    "A6",
-    "A7",
-    "A8",
-    "A9",
-    "B1",
-    "B2",
-    "B3",
-    "C1",
-    "C2",
-    "D1",
-    "D2",
-    "D3",
-    "E1",
-    "E2",
-    "E3",
-    "E4",
-    "F1",
-    "F2",
-  ].map((val) => ({ label: val, value: val }));
-
   const herdData =
     herds?.map((herd) => ({
       label: herd.name,
       value: herd.id,
     })) ?? [];
-
-  // Show override controls when server says override is required OR when user has already set one
-  const showCategoryOverride =
-    true || requiresCategoryOverride || categoryOverride != null;
 
   // Use provided earTagData (for edit screen with current tag) or available ear tags
   const earTagSelectData =
@@ -225,62 +189,6 @@ export function AnimalForm({
         error={errors.usage?.message}
         data={usageData}
       />
-      {showCategoryOverride && (
-        <>
-          {/* Yellow info box when auto-category failed */}
-          {requiresCategoryOverride && (
-            <View
-              style={{
-                marginTop: theme.spacing.m,
-                backgroundColor: theme.colors.white,
-                borderRadius: 10,
-                padding: theme.spacing.m,
-                borderLeftWidth: 4,
-                borderLeftColor: theme.colors.yellow,
-                flexDirection: "row",
-                alignItems: "center",
-                gap: theme.spacing.xs,
-              }}
-            >
-              <Ionicons
-                name="alert-circle"
-                size={20}
-                color={theme.colors.yellow}
-              />
-              <Subtitle style={{ flex: 1 }}>
-                {t("animals.category_override_info")}
-              </Subtitle>
-            </View>
-          )}
-          {/* Inverted switch: ON = auto category, OFF = manual override */}
-          <Switch
-            style={{
-              marginTop: theme.spacing.m,
-              marginBottom: theme.spacing.xs,
-            }}
-            value={categoryOverride == null}
-            onChange={() => {
-              if (categoryOverride == null) {
-                // Switching to manual
-                setValue("categoryOverride", "A1", { shouldDirty: true });
-              } else {
-                // Switching to auto
-                setValue("categoryOverride", null, { shouldDirty: true });
-              }
-            }}
-            label={t("animals.auto_category")}
-          />
-          {categoryOverride != null && (
-            <RHSelect
-              name="categoryOverride"
-              control={control}
-              label={t("animals.category")}
-              data={categoryOverrideData}
-              error={errors.categoryOverride?.message}
-            />
-          )}
-        </>
-      )}
       {/* Herd select with + button */}
       <View
         style={{

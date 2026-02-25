@@ -19,7 +19,12 @@ export const OutdoorTimelineBar = memo(function OutdoorTimelineBar({
   onPress,
 }: OutdoorTimelineBarProps) {
   const barWidth = Math.max(width, MIN_BAR_WIDTH);
-  const color = stringToColor(bar.herdName);
+  // Use fixed colors for schedule types (herd screens), fall back to herd name hash (journal)
+  const color = bar.scheduleType === "pasture"
+    ? "#4CAF50"
+    : bar.scheduleType === "exercise_yard"
+      ? "#FF9800"
+      : stringToColor(bar.herdName);
   const showLabel = barWidth > 50;
   const bgColor = hexToRgba(color, 0.75);
 

@@ -17,7 +17,7 @@ export type ScrollViewProps = RnScrollViewProps & HeaderProps;
 export function ScrollView({
   showHeaderOnScroll,
   headerTitleOnScroll,
-  keyboardAware,
+  keyboardAware = true,
   keyboardBottomOffset = 40,
   ...props
 }: ScrollViewProps) {

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Modal, View, Text, Pressable, TextInput } from "react-native";
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useTheme } from "styled-components/native";
 import { RecurrenceRule } from "../plan-crop-rotations.store";
 import { CompactDatePicker } from "@/components/datepicker/CompactDatePicker";
@@ -56,6 +57,7 @@ export function RecurrenceModal({
         }}
         onPress={onClose}
       >
+        <KeyboardAvoidingView behavior="padding">
         <Pressable
           style={{
             backgroundColor: theme.colors.white,
@@ -187,6 +189,7 @@ export function RecurrenceModal({
             </Pressable>
           </View>
         </Pressable>
+        </KeyboardAvoidingView>
       </Pressable>
     </Modal>
   );

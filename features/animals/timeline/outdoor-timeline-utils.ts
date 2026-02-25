@@ -9,6 +9,11 @@ export type OutdoorBar = {
   endDay: number; // days since epochStart
   isOpenEnded: boolean;
   notes: string | null;
+  scheduleType?: "pasture" | "exercise_yard";
+  // Journal-specific metadata
+  animalCount?: number;
+  startDate?: string;
+  endDate?: string;
 };
 
 export type OutdoorHerdData = {
@@ -35,6 +40,7 @@ type ScheduleInput = {
   startDate: string;
   endDate: string | null;
   notes: string | null;
+  type?: "pasture" | "exercise_yard";
   recurrence: {
     frequency: "weekly" | "monthly" | "yearly";
     interval: number;
@@ -71,6 +77,7 @@ export function buildOutdoorTimelineData(
           endDay: occ.endDay,
           isOpenEnded: occ.isOpenEnded,
           notes: schedule.notes,
+          scheduleType: schedule.type,
         });
       }
     }
@@ -97,6 +104,7 @@ export function buildSingleHerdTimelineData(
         startDate: s.startDate,
         endDate: s.endDate,
         notes: s.notes,
+        type: s.type,
         recurrence: s.recurrence
           ? {
               frequency: s.recurrence.frequency,

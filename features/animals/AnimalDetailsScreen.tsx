@@ -101,32 +101,6 @@ export function AnimalDetailsScreen({
       <ScrollView showHeaderOnScroll headerTitleOnScroll={animal.name}>
         <H2>{animal.name}</H2>
 
-        {/* Category override warning */}
-        {animal.requiresCategoryOverride && (
-          <View
-            style={{
-              marginTop: theme.spacing.m,
-              backgroundColor: theme.colors.white,
-              borderRadius: 10,
-              padding: theme.spacing.m,
-              borderLeftWidth: 4,
-              borderLeftColor: theme.colors.yellow,
-              flexDirection: "row",
-              alignItems: "center",
-              gap: theme.spacing.xs,
-            }}
-          >
-            <Ionicons
-              name="alert-circle"
-              size={20}
-              color={theme.colors.yellow}
-            />
-            <Subtitle style={{ flex: 1 }}>
-              {t("animals.category_override_info")}
-            </Subtitle>
-          </View>
-        )}
-
         {/* Basic info */}
         <View
           style={{
@@ -186,12 +160,38 @@ export function AnimalDetailsScreen({
               </ListItem.Body>
             </ListItem.Content>
           </ListItem>
-          {animal.categoryOverride && (
-            <ListItem style={{ paddingVertical: 5 }}>
+          {animal.customOutdoorJournalCategories.length > 0 && (
+            <ListItem
+              style={{ paddingVertical: 5 }}
+              onPress={() =>
+                navigation.navigate("ManageAnimalCategories", {
+                  animalId: animal.id,
+                })
+              }
+            >
               <ListItem.Content>
-                <ListItem.Title>{t("animals.category")}</ListItem.Title>
-                <ListItem.Body>{animal.categoryOverride}</ListItem.Body>
+                <ListItem.Title>
+                  {t("animals.custom_animal_category")}
+                </ListItem.Title>
+                <ListItem.Body>
+                  {(() => {
+                    const today = new Date();
+                    const active = animal.customOutdoorJournalCategories.find(
+                      (entry) => {
+                        const start = new Date(entry.startDate);
+                        const end = entry.endDate
+                          ? new Date(entry.endDate)
+                          : null;
+                        return start <= today && (!end || end >= today);
+                      },
+                    );
+                    return active
+                      ? active.category
+                      : t("animals.no_active_category");
+                  })()}
+                </ListItem.Body>
               </ListItem.Content>
+              <ListItem.Chevron />
             </ListItem>
           )}
           {animal.herd && (

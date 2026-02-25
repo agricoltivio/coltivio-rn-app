@@ -18,7 +18,6 @@ import { BatchEditActionScreenProps } from "./navigation/animals-routes";
 
 type ActionType =
   | "type"
-  | "categoryOverride"
   | "death"
   | "registered"
   | "usage"
@@ -27,7 +26,6 @@ type ActionType =
 type FormValues = {
   action: ActionType;
   type: string;
-  categoryOverride: string;
   dateOfDeath: Date;
   deathReason: string;
   registered: boolean;
@@ -77,8 +75,6 @@ export function BatchEditActionScreen({
     // Build the batch update payload based on the selected action
     if (values.action === "type") {
       batchUpdate.mutate({ animalIds, data: { type: values.type as "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer" } });
-    } else if (values.action === "categoryOverride") {
-      batchUpdate.mutate({ animalIds, data: { categoryOverride: values.categoryOverride as "A1" } });
     } else if (values.action === "death") {
       batchUpdate.mutate({
         animalIds,
@@ -96,7 +92,6 @@ export function BatchEditActionScreen({
 
   const actionData = [
     { label: t("animals.batch_edit.action_set_type"), value: "type" },
-    { label: t("animals.batch_edit.action_set_category"), value: "categoryOverride" },
     { label: t("animals.batch_edit.action_set_death"), value: "death" },
     { label: t("animals.batch_edit.action_set_registered"), value: "registered" },
     { label: t("animals.batch_edit.action_set_usage"), value: "usage" },
@@ -112,15 +107,6 @@ export function BatchEditActionScreen({
     { label: t("animals.animal_types.pig"), value: "pig" },
     { label: t("animals.animal_types.deer"), value: "deer" },
   ];
-
-  const categoryOverrideData = [
-    "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9",
-    "B1", "B2", "B3",
-    "C1", "C2",
-    "D1", "D2", "D3",
-    "E1", "E2", "E3", "E4",
-    "F1", "F2",
-  ].map((val) => ({ label: val, value: val }));
 
   const deathReasonData = [
     { label: t("animals.death_reasons.died"), value: "died" },
@@ -189,22 +175,6 @@ export function BatchEditActionScreen({
                 },
               }}
               error={errors.type?.message}
-            />
-          )}
-
-          {selectedAction === "categoryOverride" && (
-            <RHSelect
-              name="categoryOverride"
-              control={control}
-              label={t("animals.batch_edit.action_set_category")}
-              data={categoryOverrideData}
-              rules={{
-                required: {
-                  value: true,
-                  message: t("forms.validation.required"),
-                },
-              }}
-              error={errors.categoryOverride?.message}
             />
           )}
 

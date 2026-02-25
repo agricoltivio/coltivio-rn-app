@@ -35,6 +35,12 @@ export type AnimalImportInput =
 export type AnimalImportResponse =
   components["schemas"]["PostV1AnimalsImportPositiveResponse"]["data"];
 
+export type CustomOutdoorJournalCategoryInput =
+  components["schemas"]["PutV1AnimalsByIdAnimalIdCustomOutdoorJournalCategoriesRequestBody"];
+
+export type CustomOutdoorJournalCategoryResponse =
+  components["schemas"]["PutV1AnimalsByIdAnimalIdCustomOutdoorJournalCategoriesPositiveResponse"]["data"];
+
 export function animalsApi(client: FetchClient) {
   return {
     async getAnimals(
@@ -131,6 +137,20 @@ export function animalsApi(client: FetchClient) {
           return formData;
         },
       });
+      return data!.data;
+    },
+
+    async setCustomOutdoorJournalCategories(
+      animalId: string,
+      input: CustomOutdoorJournalCategoryInput,
+    ): Promise<CustomOutdoorJournalCategoryResponse> {
+      const { data } = await client.PUT(
+        "/v1/animals/byId/{animalId}/customOutdoorJournalCategories",
+        {
+          params: { path: { animalId } },
+          body: input,
+        },
+      );
       return data!.data;
     },
 

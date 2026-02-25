@@ -1,11 +1,14 @@
 import { deviceWidth } from "@/constants/Screen";
-import React, { forwardRef } from "react";
-import { createContext, useContext, useState } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import React, {
+  createContext,
+  forwardRef,
+  useCallback,
+  useContext,
+  useRef,
+} from "react";
+import { ActivityIndicator, Platform, StyleSheet, View } from "react-native";
 import RnMapView, {
-  Details,
   LatLng,
-  MapPressEvent,
   MapViewProps,
   PROVIDER_GOOGLE,
   Region,
@@ -30,7 +33,7 @@ const MapContext = createContext<MapContextProps>({
 });
 
 export type MapProps = MapViewProps & {
-  initialRegion: Region;
+  initialRegion?: Region;
   loading?: boolean;
 };
 
@@ -39,8 +42,18 @@ function calculateZoomLevel(longitudeDelta: number) {
 }
 
 export const MapView = forwardRef<RnMapView, MapProps>(
-  ({ loading, ...props }: MapProps, ref) => {
+  ({ loading, initialRegion, onMapReady, ...props }: MapProps, ref) => {
     const theme = useTheme();
+    const internalRef = useRef<RnMapView>(null);
+    const mapRef = (ref as React.RefObject<RnMapView>) ?? internalRef;
+
+    const handleMapReady = useCallback(() => {
+      // Android sometimes ignores initialRegion zoom level — re-apply it once the map is laid out
+      if (Platform.OS === "android" && initialRegion) {
+        mapRef.current?.animateToRegion(initialRegion, 0);
+      }
+      onMapReady?.();
+    }, [initialRegion, mapRef, onMapReady]);
     // const [region, setRegion] = useState<Region>(initialRegion);
     // const [selectedCoordinate, setSelectedCoordinate] = useState<LatLng | null>(
     //   null
@@ -67,12 +80,11 @@ export const MapView = forwardRef<RnMapView, MapProps>(
       <>
         {!loading && (
           <RnMapView
-            ref={ref}
+            ref={mapRef}
             provider={PROVIDER_GOOGLE}
             style={styles.map}
-            // onPress={handleOnPress}
-            // initialRegion={initialRegion}
-            // onRegionChangeComplete={handleOnRegionChangeComplete}
+            initialRegion={initialRegion}
+            onMapReady={handleMapReady}
             loadingIndicatorColor={theme.colors.secondary}
             toolbarEnabled={false}
             moveOnMarkerPress={false}

@@ -26,7 +26,6 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
   const [showDead, setShowDead] = useState(false);
   const [unregisteredOnly, setUnregisteredOnly] = useState(false);
   const [onlyWithWaitingPeriod, setOnlyWithWaitingPeriod] = useState(false);
-  const [onlyWithoutCategory, setOnlyWithoutCategory] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<Set<string>>(new Set());
 
   // Count unregistered animals (only among living animals by default)
@@ -39,13 +38,6 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
   const waitingPeriodCount = useMemo(() => {
     if (!animals) return 0;
     return animals.filter((a) => !a.milkAndMeatUsable && !a.dateOfDeath).length;
-  }, [animals]);
-
-  // Count animals without category
-  const withoutCategoryCount = useMemo(() => {
-    if (!animals) return 0;
-    return animals.filter((a) => a.requiresCategoryOverride && !a.dateOfDeath)
-      .length;
   }, [animals]);
 
   // Apply filters: dead, unregistered, type
@@ -64,10 +56,6 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
     if (onlyWithWaitingPeriod) {
       result = result.filter((a) => !a.milkAndMeatUsable);
     }
-    if (onlyWithoutCategory) {
-      result = result.filter((a) => a.requiresCategoryOverride);
-    }
-
     if (selectedTypes.size > 0) {
       result = result.filter((a) => selectedTypes.has(a.type));
     }
@@ -78,7 +66,6 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
     showDead,
     unregisteredOnly,
     onlyWithWaitingPeriod,
-    onlyWithoutCategory,
     selectedTypes,
   ]);
 
@@ -136,7 +123,7 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
           {!animal.milkAndMeatUsable && (
             <Ionicons name="time" size={22} color={theme.colors.blue} />
           )}
-          {(!animal.registered || animal.requiresCategoryOverride) && (
+          {!animal.registered && (
             <Ionicons
               name="alert-circle"
               size={22}
@@ -184,12 +171,6 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
           label={t("animals.only_with_waiting_period")}
           active={onlyWithWaitingPeriod}
           onPress={() => setOnlyWithWaitingPeriod(!onlyWithWaitingPeriod)}
-          theme={theme}
-        />
-        <FilterChip
-          label={t("animals.only_without_cateogry")}
-          active={onlyWithoutCategory}
-          onPress={() => setOnlyWithoutCategory(!onlyWithoutCategory)}
           theme={theme}
         />
         <FilterChip
@@ -246,29 +227,6 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
           <Ionicons name="time" size={20} color={theme.colors.blue} />
           <Subtitle>
             {t("animals.waiting_period_count", { count: waitingPeriodCount })}
-          </Subtitle>
-        </View>
-      ) : null}
-
-      {withoutCategoryCount > 0 ? (
-        <View
-          style={{
-            marginTop: theme.spacing.m,
-            backgroundColor: theme.colors.white,
-            borderRadius: 10,
-            padding: theme.spacing.m,
-            borderLeftWidth: 4,
-            borderLeftColor: theme.colors.yellow,
-            flexDirection: "row",
-            alignItems: "center",
-            gap: theme.spacing.xs,
-          }}
-        >
-          <Ionicons name="alert-circle" size={20} color={theme.colors.yellow} />
-          <Subtitle>
-            {t("animals.without_category_count", {
-              count: withoutCategoryCount,
-            })}
           </Subtitle>
         </View>
       ) : null}

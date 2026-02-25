@@ -100,6 +100,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/captcha/verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1CaptchaVerify"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/farm": {
         parameters: {
             query?: never;
@@ -1252,6 +1268,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/animals/byId/{animalId}/customOutdoorJournalCategories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["PutV1AnimalsByIdAnimalIdCustomOutdoorJournalCategories"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/animals/outdoorJournal": {
         parameters: {
             query?: never;
@@ -1906,6 +1938,14 @@ export interface components {
                 result: string[];
                 count: number;
             };
+        };
+        PostV1CaptchaVerifyPositiveResponse: {
+            data: {
+                success: boolean;
+            };
+        };
+        PostV1CaptchaVerifyRequestBody: {
+            token: string;
         };
         PostV1FarmPositiveResponse: {
             data: {
@@ -4961,7 +5001,8 @@ export interface components {
              */
             toDate: string;
         };
-        GetV1AnimalsParameterAnimalTypes: ("goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer")[];
+        /** Format: array (preprocessed) */
+        GetV1AnimalsParameterAnimalTypes: unknown;
         GetV1AnimalsPositiveResponse: {
             data: {
                 result: {
@@ -4978,9 +5019,6 @@ export interface components {
                      */
                     dateOfBirth: string;
                     registered: boolean;
-                    requiresCategoryOverride: boolean | null;
-                    /** @enum {string|null} */
-                    categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
                     /** @enum {string} */
                     usage: "milk" | "other";
                     earTagId: string | null;
@@ -5019,9 +5057,6 @@ export interface components {
                  */
                 dateOfBirth: string;
                 registered: boolean;
-                requiresCategoryOverride: boolean | null;
-                /** @enum {string|null} */
-                categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
                 /** @enum {string} */
                 usage: "milk" | "other";
                 earTagId: string | null;
@@ -5054,8 +5089,6 @@ export interface components {
              */
             dateOfBirth: string;
             registered: boolean;
-            /** @enum {string|null} */
-            categoryOverride?: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
             /** @enum {string} */
             usage: "milk" | "other";
             earTagId?: string | null;
@@ -5090,9 +5123,6 @@ export interface components {
                      */
                     dateOfBirth: string;
                     registered: boolean;
-                    requiresCategoryOverride: boolean | null;
-                    /** @enum {string|null} */
-                    categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
                     /** @enum {string} */
                     usage: "milk" | "other";
                     earTagId: string | null;
@@ -5120,8 +5150,6 @@ export interface components {
             data: {
                 /** @enum {string} */
                 type?: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
-                /** @enum {string} */
-                categoryOverride?: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2";
                 /** @enum {string} */
                 usage?: "milk" | "other";
                 registered?: boolean;
@@ -5173,9 +5201,6 @@ export interface components {
                  */
                 dateOfBirth: string;
                 registered: boolean;
-                requiresCategoryOverride: boolean | null;
-                /** @enum {string|null} */
-                categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
                 /** @enum {string} */
                 usage: "milk" | "other";
                 earTagId: string | null;
@@ -5208,9 +5233,6 @@ export interface components {
                      */
                     dateOfBirth: string;
                     registered: boolean;
-                    requiresCategoryOverride: boolean | null;
-                    /** @enum {string|null} */
-                    categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
                     /** @enum {string} */
                     usage: "milk" | "other";
                     earTagId: string | null;
@@ -5244,9 +5266,6 @@ export interface components {
                      */
                     dateOfBirth: string;
                     registered: boolean;
-                    requiresCategoryOverride: boolean | null;
-                    /** @enum {string|null} */
-                    categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
                     /** @enum {string} */
                     usage: "milk" | "other";
                     earTagId: string | null;
@@ -5280,9 +5299,6 @@ export interface components {
                      */
                     dateOfBirth: string;
                     registered: boolean;
-                    requiresCategoryOverride: boolean | null;
-                    /** @enum {string|null} */
-                    categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
                     /** @enum {string} */
                     usage: "milk" | "other";
                     earTagId: string | null;
@@ -5316,9 +5332,6 @@ export interface components {
                      */
                     dateOfBirth: string;
                     registered: boolean;
-                    requiresCategoryOverride: boolean | null;
-                    /** @enum {string|null} */
-                    categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
                     /** @enum {string} */
                     usage: "milk" | "other";
                     earTagId: string | null;
@@ -5389,6 +5402,23 @@ export interface components {
                     farmId: string;
                     name: string;
                 } | null;
+                customOutdoorJournalCategories: {
+                    id: string;
+                    farmId: string;
+                    animalId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    startDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    endDate: string | null;
+                    /** @enum {string} */
+                    category: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2";
+                }[];
             };
         };
         PatchV1AnimalsByIdAnimalIdPositiveResponse: {
@@ -5406,9 +5436,6 @@ export interface components {
                  */
                 dateOfBirth: string;
                 registered: boolean;
-                requiresCategoryOverride: boolean | null;
-                /** @enum {string|null} */
-                categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
                 /** @enum {string} */
                 usage: "milk" | "other";
                 earTagId: string | null;
@@ -5441,8 +5468,6 @@ export interface components {
              */
             dateOfBirth?: string;
             registered?: boolean;
-            /** @enum {string|null} */
-            categoryOverride?: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
             /** @enum {string} */
             usage?: "milk" | "other";
             earTagId?: string | null;
@@ -5476,9 +5501,6 @@ export interface components {
                      */
                     dateOfBirth: string;
                     registered: boolean;
-                    requiresCategoryOverride: boolean | null;
-                    /** @enum {string|null} */
-                    categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
                     /** @enum {string} */
                     usage: "milk" | "other";
                     earTagId: string | null;
@@ -5566,6 +5588,43 @@ export interface components {
                 count: number;
             };
         };
+        PutV1AnimalsByIdAnimalIdCustomOutdoorJournalCategoriesPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    animalId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    startDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    endDate: string | null;
+                    /** @enum {string} */
+                    category: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2";
+                }[];
+            };
+        };
+        PutV1AnimalsByIdAnimalIdCustomOutdoorJournalCategoriesRequestBody: {
+            entries: {
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate?: string | null;
+                /** @enum {string} */
+                category: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2";
+            }[];
+        };
         GetV1AnimalsOutdoorJournalPositiveResponse: {
             data: {
                 entries: {
@@ -5583,7 +5642,39 @@ export interface components {
                     endDate: string;
                     animalCount: number;
                 }[];
-                uncategorizedAnimalCount: number;
+                uncategorizedAnimals: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    /** @enum {string} */
+                    type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                    /** @enum {string} */
+                    sex: "male" | "female";
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfBirth: string;
+                    registered: boolean;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
+                    earTagId: string | null;
+                    earTag: {
+                        id: string;
+                        farmId: string;
+                        number: string;
+                    } | null;
+                    motherId: string | null;
+                    fatherId: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfDeath: string | null;
+                    /** @enum {string|null} */
+                    deathReason: "died" | "slaughtered" | null;
+                    herdId: string | null;
+                }[];
             };
         };
         GetV1AnimalsHerdsPositiveResponse: {
@@ -5606,9 +5697,6 @@ export interface components {
                          */
                         dateOfBirth: string;
                         registered: boolean;
-                        requiresCategoryOverride: boolean | null;
-                        /** @enum {string|null} */
-                        categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
                         /** @enum {string} */
                         usage: "milk" | "other";
                         earTagId: string | null;
@@ -5670,6 +5758,30 @@ export interface components {
         PostV1AnimalsHerdsRequestBody: {
             name: string;
             animalIds: string[];
+            outdoorSchedules?: {
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate?: string | null;
+                /** @enum {string} */
+                type: "pasture" | "exercise_yard";
+                notes?: string | null;
+                recurrence?: {
+                    /** @enum {string} */
+                    frequency: "weekly" | "monthly" | "yearly";
+                    interval: number;
+                    byWeekday?: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                    byMonthDay?: number | null;
+                    until?: string | null;
+                    count?: number | null;
+                } | null;
+            }[];
         };
         GetV1AnimalsHerdsByIdHerdIdPositiveResponse: {
             data: {
@@ -5690,9 +5802,6 @@ export interface components {
                      */
                     dateOfBirth: string;
                     registered: boolean;
-                    requiresCategoryOverride: boolean | null;
-                    /** @enum {string|null} */
-                    categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
                     /** @enum {string} */
                     usage: "milk" | "other";
                     earTagId: string | null;
@@ -5752,6 +5861,30 @@ export interface components {
         PatchV1AnimalsHerdsByIdHerdIdRequestBody: {
             name?: string;
             animalIds?: string[];
+            outdoorSchedules?: {
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate?: string | null;
+                /** @enum {string} */
+                type: "pasture" | "exercise_yard";
+                notes?: string | null;
+                recurrence?: {
+                    /** @enum {string} */
+                    frequency: "weekly" | "monthly" | "yearly";
+                    interval: number;
+                    byWeekday?: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                    byMonthDay?: number | null;
+                    until?: string | null;
+                    count?: number | null;
+                } | null;
+            }[];
         };
         DeleteV1AnimalsHerdsByIdHerdIdPositiveResponse: {
             data: Record<string, never>;
@@ -5950,9 +6083,6 @@ export interface components {
                          */
                         dateOfBirth: string;
                         registered: boolean;
-                        requiresCategoryOverride: boolean | null;
-                        /** @enum {string|null} */
-                        categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
                         /** @enum {string} */
                         usage: "milk" | "other";
                         earTagId: string | null;
@@ -6209,9 +6339,6 @@ export interface components {
                          */
                         dateOfBirth: string;
                         registered: boolean;
-                        requiresCategoryOverride: boolean | null;
-                        /** @enum {string|null} */
-                        categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
                         /** @enum {string} */
                         usage: "milk" | "other";
                         earTagId: string | null;
@@ -6404,9 +6531,6 @@ export interface components {
                      */
                     dateOfBirth: string;
                     registered: boolean;
-                    requiresCategoryOverride: boolean | null;
-                    /** @enum {string|null} */
-                    categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
                     /** @enum {string} */
                     usage: "milk" | "other";
                     earTagId: string | null;
@@ -6652,9 +6776,6 @@ export interface components {
                          */
                         dateOfBirth: string;
                         registered: boolean;
-                        requiresCategoryOverride: boolean | null;
-                        /** @enum {string|null} */
-                        categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
                         /** @enum {string} */
                         usage: "milk" | "other";
                         earTagId: string | null;
@@ -6824,9 +6945,6 @@ export interface components {
                          */
                         dateOfBirth: string;
                         registered: boolean;
-                        requiresCategoryOverride: boolean | null;
-                        /** @enum {string|null} */
-                        categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
                         /** @enum {string} */
                         usage: "milk" | "other";
                         earTagId: string | null;
@@ -7613,9 +7731,6 @@ export interface components {
                          */
                         dateOfBirth: string;
                         registered: boolean;
-                        requiresCategoryOverride: boolean | null;
-                        /** @enum {string|null} */
-                        categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
                         /** @enum {string} */
                         usage: "milk" | "other";
                         earTagId: string | null;
@@ -7746,9 +7861,6 @@ export interface components {
                      */
                     dateOfBirth: string;
                     registered: boolean;
-                    requiresCategoryOverride: boolean | null;
-                    /** @enum {string|null} */
-                    categoryOverride: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2" | null;
                     /** @enum {string} */
                     usage: "milk" | "other";
                     earTagId: string | null;
@@ -8234,6 +8346,40 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    PostV1CaptchaVerify: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/captcha/verify Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1CaptchaVerifyRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/captcha/verify Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1CaptchaVerifyPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/captcha/verify Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
             };
         };
     };
@@ -13710,6 +13856,43 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    PutV1AnimalsByIdAnimalIdCustomOutdoorJournalCategories: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PUT /v1/animals/byId/:animalId/customOutdoorJournalCategories Parameter */
+                animalId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PUT /v1/animals/byId/:animalId/customOutdoorJournalCategories Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PutV1AnimalsByIdAnimalIdCustomOutdoorJournalCategoriesRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PUT /v1/animals/byId/:animalId/customOutdoorJournalCategories Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PutV1AnimalsByIdAnimalIdCustomOutdoorJournalCategoriesPositiveResponse"];
+                };
+            };
+            /** @description PUT /v1/animals/byId/:animalId/customOutdoorJournalCategories Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
             };
         };
     };

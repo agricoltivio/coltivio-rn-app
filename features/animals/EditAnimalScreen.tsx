@@ -1,16 +1,20 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
-import { H2 } from "@/theme/Typography";
-import { useEffect } from "react";
+import { H2, H3, Subtitle } from "@/theme/Typography";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
+import { Switch } from "@/components/inputs/Switch";
+import { Ionicons } from "@expo/vector-icons";
+import { ListItem } from "@/components/list/ListItem";
 import {
   useAnimalByIdQuery,
   useDeleteAnimalMutation,
+  useSetCustomOutdoorJournalCategoriesMutation,
   useUpdateAnimalMutation,
 } from "./animals.hooks";
 import { useAvailableEarTagsQuery } from "./earTags.hooks";
@@ -41,7 +45,6 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
             : new Date(),
           registered: animal.registered,
           usage: animal.usage,
-          categoryOverride: animal.categoryOverride ?? undefined,
           earTagId: animal.earTagId ?? undefined,
           motherId: animal.motherId ?? undefined,
           fatherId: animal.fatherId ?? undefined,
@@ -61,12 +64,28 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
     }
   }, [herdIdParam, setValue]);
 
+  const [customCategoryEnabled, setCustomCategoryEnabled] = useState(
+    (animal?.customOutdoorJournalCategories.length ?? 0) > 0,
+  );
+
+  // Always sync toggle with actual animal data — covers initial load,
+  // returning from ManageAnimalCategories (with or without saving),
+  // and query refetches after mutations
+  useEffect(() => {
+    if (animal) {
+      setCustomCategoryEnabled(
+        animal.customOutdoorJournalCategories.length > 0,
+      );
+    }
+  }, [animal]);
+
   const updateAnimalMutation = useUpdateAnimalMutation(() =>
     navigation.goBack(),
   );
   const deleteAnimalMutation = useDeleteAnimalMutation(() =>
     navigation.popTo("Animals"),
   );
+  const clearCategoriesMutation = useSetCustomOutdoorJournalCategoriesMutation();
 
   // Build ear tag data including the currently assigned ear tag alongside available ones
   const earTagData = [
@@ -144,13 +163,103 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
           setValue={setValue}
           earTagData={earTagData}
           showDeathFields
-          requiresCategoryOverride={animal.requiresCategoryOverride}
           onNavigateToCreateHerd={() =>
             navigation.navigate("CreateHerd", {
               previousScreen: "EditAnimal",
             })
           }
         />
+
+        {/* Custom animal category section */}
+        <View style={{ marginTop: theme.spacing.l }}>
+          <H3>{t("animals.outdoor_journal_category")}</H3>
+          <Subtitle style={{ marginTop: theme.spacing.xs }}>
+            {t("animals.outdoor_journal_category_info")}
+          </Subtitle>
+          <Switch
+            style={{ marginTop: theme.spacing.s }}
+            value={customCategoryEnabled}
+            onChange={() => {
+              if (customCategoryEnabled) {
+                // Toggling OFF: confirm if entries exist
+                if (
+                  animal &&
+                  animal.customOutdoorJournalCategories.length > 0
+                ) {
+                  Alert.alert(
+                    t("animals.custom_animal_category"),
+                    t("animals.delete_custom_categories_confirm"),
+                    [
+                      { text: t("buttons.cancel"), style: "cancel" },
+                      {
+                        text: t("buttons.confirm"),
+                        style: "destructive",
+                        onPress: () => {
+                          clearCategoriesMutation.mutate({
+                            animalId,
+                            input: { entries: [] },
+                          });
+                          setCustomCategoryEnabled(false);
+                        },
+                      },
+                    ],
+                  );
+                } else {
+                  setCustomCategoryEnabled(false);
+                }
+              } else {
+                // Don't eagerly toggle ON — navigate to manage screen and let
+                // the [animal] effect sync the toggle when entries are saved
+                navigation.navigate("ManageAnimalCategories", { animalId });
+              }
+            }}
+            label={t("animals.custom_category")}
+          />
+          {customCategoryEnabled &&
+            animal &&
+            animal.customOutdoorJournalCategories.length > 0 && (
+              <View
+                style={{
+                  marginTop: theme.spacing.s,
+                  borderRadius: 10,
+                  overflow: "hidden",
+                  backgroundColor: theme.colors.white,
+                }}
+              >
+                <ListItem
+                  style={{ paddingVertical: 5 }}
+                  onPress={() =>
+                    navigation.navigate("ManageAnimalCategories", { animalId })
+                  }
+                >
+                  <ListItem.Content>
+                    <ListItem.Title>
+                      {t("animals.manage_categories")}
+                    </ListItem.Title>
+                    <ListItem.Body>
+                      {(() => {
+                        const today = new Date();
+                        const active =
+                          animal.customOutdoorJournalCategories.find(
+                            (entry) => {
+                              const start = new Date(entry.startDate);
+                              const end = entry.endDate
+                                ? new Date(entry.endDate)
+                                : null;
+                              return start <= today && (!end || end >= today);
+                            },
+                          );
+                        return active
+                          ? active.category
+                          : t("animals.no_active_category");
+                      })()}
+                    </ListItem.Body>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+              </View>
+            )}
+        </View>
       </ScrollView>
     </ContentView>
   );

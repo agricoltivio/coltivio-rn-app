@@ -18,6 +18,8 @@ export interface ColtivioTheme {
     amethyst: string;
     lavender: string;
     purple: string;
+    mauve: string;
+    mocha: string;
     gray0: string;
     gray1: string;
     gray2: string;
@@ -86,6 +88,8 @@ export const coltivioTheme: ColtivioTheme = {
     blue: "#4285F4",
     orchid: "#b284be",
     amethyst: "#7a4f9e",
+    mauve: "#8a6878",
+    mocha: "#8b6b55",
     lavender: "#9b8bb4",
     purple: "#5d3b5c",
     error: "#CD0E61",

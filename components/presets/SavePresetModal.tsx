@@ -4,6 +4,7 @@ import { Body, H3 } from "@/theme/Typography";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, View, Pressable } from "react-native";
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useTheme } from "styled-components/native";
 
 export type SavePresetModalRef = {
@@ -61,6 +62,7 @@ export const SavePresetModal = forwardRef<SavePresetModalRef, SavePresetModalPro
           }}
           onPress={handleCancel}
         >
+          <KeyboardAvoidingView behavior="padding">
           <Pressable
             style={{
               backgroundColor: theme.colors.white,
@@ -105,6 +107,7 @@ export const SavePresetModal = forwardRef<SavePresetModalRef, SavePresetModalPro
               />
             </View>
           </Pressable>
+          </KeyboardAvoidingView>
         </Pressable>
       </Modal>
     );

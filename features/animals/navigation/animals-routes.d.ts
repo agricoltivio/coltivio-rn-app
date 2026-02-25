@@ -1,4 +1,5 @@
 import { StackScreenProps } from "@react-navigation/native-stack";
+import { UncategorizedAnimal } from "@/api/outdoor-journal.api";
 
 export type AnimalsStackParamList = {
   AnimalsHub: undefined;
@@ -43,6 +44,8 @@ export type AnimalsStackParamList = {
   HerdEdit: { herdId?: string; animalIds?: string[] };
   BatchSelectAnimals: undefined;
   BatchEditAction: { animalIds: string[] };
+  UncategorizedAnimals: { animals: UncategorizedAnimal[] };
+  ManageAnimalCategories: { animalId: string };
 };
 
 export type AnimalsHubScreenProps = StackScreenProps<"AnimalsHub">;
@@ -77,3 +80,5 @@ export type CreateHerdScreenProps = StackScreenProps<"CreateHerd">;
 export type HerdEditScreenProps = StackScreenProps<"HerdEdit">;
 export type BatchSelectAnimalsScreenProps = StackScreenProps<"BatchSelectAnimals">;
 export type BatchEditActionScreenProps = StackScreenProps<"BatchEditAction">;
+export type UncategorizedAnimalsScreenProps = StackScreenProps<"UncategorizedAnimals">;
+export type ManageAnimalCategoriesScreenProps = StackScreenProps<"ManageAnimalCategories">;
