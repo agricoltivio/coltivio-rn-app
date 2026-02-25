@@ -18,8 +18,11 @@ export function useAnimalsQuery(
   enabled: boolean = true,
 ) {
   const api = useApi();
+  const hasFilters = onlyLiving || !!animalTypes;
   const { data, ...rest } = useQuery({
-    queryKey: queryKeys.animals.all.queryKey,
+    queryKey: hasFilters
+      ? queryKeys.animals.filtered(onlyLiving, animalTypes).queryKey
+      : queryKeys.animals.all.queryKey,
     queryFn: () => api.animals.getAnimals(onlyLiving, animalTypes),
     enabled,
   });

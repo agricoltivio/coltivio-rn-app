@@ -46,7 +46,11 @@ export function SignInScreen({ navigation }: SignInScreenProps) {
   const theme = useTheme();
   return (
     <ContentView
-      style={{ paddingHorizontal: 0, paddingTop: 0, backgroundColor: "#1f1f21" }}
+      style={{
+        paddingHorizontal: 0,
+        paddingTop: 0,
+        backgroundColor: "#1f1f21",
+      }}
     >
       <ScrollView
         style={{ flex: 1, backgroundColor: "#1f1f21" }}
