@@ -23,7 +23,10 @@
     "eas:build-preview-ios": "eas build --profile preview --platform ios",
     "eas:build-dev-android": "APP_VARIANT=development eas build --profile development --platform android",
     "eas:install": "eas build:run -p ios",
-    "expo:update": "yarn expo install expo@latest && npx expo install --fix"
+    "expo:update": "yarn expo install expo@latest && npx expo install --fix",
+    "eas:build-production": "eas build --profile production --platform all",
+    "eas:submit-ios": "eas submit --platform ios --latest",
+    "eas:submit-android": "eas submit --platform android --latest"
   },
   "jest": {
     "preset": "jest-expo"
