@@ -44,28 +44,28 @@ type FertilizerApplicationSummaryProps = {
     name: string;
     geometry: GeoJSON.MultiPolygon;
     size: number;
-    numberOfApplications: number;
+    numberOfUnits: number;
   }[];
-  totalNumberOfApplications: number;
-  amountPerApplication: number;
-  date: string;
-  spreaderName?: string;
+  totalNumberOfUnits: number;
+  amountPerUnit: number;
+  date: Date;
   fertilizerName: string;
   additionalNotes?: string | null;
   hidePlotList?: boolean;
   unit: FertilizerApplication["unit"];
+  productUnit?: string;
 };
 
 export function FertilizerApplicationSummary({
   date,
   plots,
   fertilizerName,
-  totalNumberOfApplications,
-  amountPerApplication,
-  spreaderName,
+  totalNumberOfUnits,
+  amountPerUnit,
   additionalNotes,
   hidePlotList,
   unit,
+  productUnit = "kg",
 }: FertilizerApplicationSummaryProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -79,7 +79,7 @@ export function FertilizerApplicationSummary({
     latitudeDelta: 0.002,
     longitudeDelta: 0.002,
   };
-  const formattedDate = formatLocalizedDate(new Date(date), locale, "long");
+  const formattedDate = formatLocalizedDate(date, locale, "long");
   return (
     <ScrollView
       showHeaderOnScroll
@@ -87,7 +87,7 @@ export function FertilizerApplicationSummary({
         "fertilizer_application.fertilizer_application_date",
         {
           date: formattedDate,
-        }
+        },
       )}
     >
       <H2>{t("fertilizer_application.fertilizer_application")}</H2>
@@ -110,7 +110,7 @@ export function FertilizerApplicationSummary({
                 strokeColor={"white"}
                 fillColor={hexToRgba(
                   theme.map.defaultFillColor,
-                  theme.map.defaultFillAlpha
+                  theme.map.defaultFillAlpha,
                 )}
               />
             );
@@ -122,21 +122,36 @@ export function FertilizerApplicationSummary({
           <SummaryItem label={t("plots.plot")} value={plots[0]?.name} />
         )}
         <SummaryItem label={t("forms.labels.area")} value={`${size / 100}a`} />
-        {spreaderName && (
-          <SummaryItem label={t("forms.labels.machine")} value={spreaderName} />
+        <SummaryItem
+          label={
+            unit === "total_amount"
+              ? t("common.total_amount")
+              : unit === "amount_per_hectare"
+                ? t("forms.labels.area_hectares")
+                : t("forms.labels.amount_of_loads")
+          }
+          value={
+            unit === "amount_per_hectare"
+              ? `${round(totalNumberOfUnits, 2)} ha`
+              : `${totalNumberOfUnits}`
+          }
+        />
+        <SummaryItem
+          label={
+            unit === "amount_per_hectare"
+              ? t("fertilizer_application.units.amount_per_hectare")
+              : unit === "total_amount"
+                ? t("forms.labels.total")
+                : t("forms.labels.amount_per_load")
+          }
+          value={`${amountPerUnit} ${productUnit}`}
+        />
+        {unit !== "total_amount" && (
+          <SummaryItem
+            label={t("forms.labels.total")}
+            value={`${round(amountPerUnit * totalNumberOfUnits, 2)} ${productUnit}`}
+          />
         )}
-        <SummaryItem
-          label={t("forms.labels.amount_of_loads")}
-          value={`${totalNumberOfApplications}`}
-        />
-        <SummaryItem
-          label={t("forms.labels.amount_per_load")}
-          value={`${amountPerApplication}${unit}`}
-        />
-        <SummaryItem
-          label={t("forms.labels.total")}
-          value={`${round(amountPerApplication * totalNumberOfApplications, 2)}${unit}`}
-        />
         <SummaryItem
           label={t("forms.labels.fertiliser")}
           value={fertilizerName}
@@ -172,8 +187,9 @@ export function FertilizerApplicationSummary({
                     {t("plots.plot_name", { name: plot.name })}
                   </ListItem.Title>
                   <ListItem.Body>
-                    {plot.numberOfApplications * amountPerApplication}
-                    {unit}
+                    {unit === "amount_per_hectare"
+                      ? `${round(plot.numberOfUnits, 2)} ha → ${round(plot.numberOfUnits * amountPerUnit, 2)} ${productUnit}`
+                      : `${round(plot.numberOfUnits * amountPerUnit, 2)} ${productUnit}`}
                   </ListItem.Body>
                 </ListItem.Content>
               </ListItem>

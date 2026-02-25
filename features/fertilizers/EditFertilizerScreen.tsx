@@ -16,7 +16,6 @@ import { useForm } from "react-hook-form";
 import { useTheme } from "styled-components/native";
 import { Card } from "@/components/card/Card";
 import { useTranslation } from "react-i18next";
-import { useFertilizerSpreadersQuery } from "../equipment/fertilizerSpreader.hooks";
 
 export function EditFertilizerScreen({
   route,
@@ -32,18 +31,20 @@ export function EditFertilizerScreen({
     control,
     handleSubmit,
     formState: { errors, isDirty },
-  } = useForm<FertilizerFormValues>({ values: fertilizer });
+  } = useForm<FertilizerFormValues>({
+    values: fertilizer
+      ? {
+          ...fertilizer,
+          description: fertilizer.description ?? undefined,
+        }
+      : undefined,
+  });
 
   const updateFertilizerMutation = useUpdateFertilizerMutation(() =>
-    navigation.goBack()
+    navigation.goBack(),
   );
   const deleteFertilizerMutation = useDeleteFertilizerMutation(() =>
-    navigation.goBack()
-  );
-
-  const { fertilizerSpreaders, isFetched } = useFertilizerSpreadersQuery([]);
-  const availableSpreaders = fertilizerSpreaders!.filter(
-    (spreader) => spreader.unit === fertilizer?.unit
+    navigation.goBack(),
   );
 
   function onSubmit({ defaultSpreaderId, ...data }: FertilizerFormValues) {
@@ -51,7 +52,7 @@ export function EditFertilizerScreen({
       id: fertilizerId,
       ...data,
       defaultSpreaderId:
-        defaultSpreaderId !== "none" ? defaultSpreaderId : null,
+        defaultSpreaderId !== "none" ? defaultSpreaderId : undefined,
     });
   }
 
@@ -110,12 +111,7 @@ export function EditFertilizerScreen({
             </H3>
           </Card>
         ) : null}
-        <FertilizerForm
-          restrictedMode
-          control={control}
-          errors={errors}
-          spreaders={availableSpreaders}
-        />
+        <FertilizerForm restrictedMode control={control} errors={errors} />
       </ScrollView>
     </ContentView>
   );

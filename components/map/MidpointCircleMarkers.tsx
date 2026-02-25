@@ -8,13 +8,13 @@ type MarkerHandlers = {
   onDragStart?: (
     markerIndex: number,
     coordinate: LatLng,
-    position?: Point
+    position?: Point,
   ) => void;
   onDrag?: (markerIndex: number, coordinate: LatLng, position: Point) => void;
   onDragEnd?: (
     markerIndex: number,
     coordinate: LatLng,
-    position?: Point
+    position?: Point,
   ) => void;
   onPress?: (markerIndex: number, coordinate: LatLng) => void;
 };
@@ -31,15 +31,15 @@ const getMiddleCoordinates = (coordinates: LatLng[]): LatLng[] => {
   for (let i = 1; i < coordinates.length; i++) {
     const coordinate = GeoSpatials.getMidpointFromCoordinates(
       coordinates[i - 1],
-      coordinates[i]
+      coordinates[i],
     );
     middleCoordinates.push(coordinate);
   }
   middleCoordinates.push(
     GeoSpatials.getMidpointFromCoordinates(
       coordinates[0],
-      coordinates[coordinates.length - 1]
-    )
+      coordinates[coordinates.length - 1],
+    ),
   );
   return middleCoordinates;
 };
@@ -66,7 +66,7 @@ function MidpointCircleMarker({
         onDragStart(
           markerIndex,
           e.nativeEvent.coordinate,
-          e.nativeEvent.position
+          e.nativeEvent.position,
         )
       }
       onDrag={(e) =>
@@ -78,7 +78,7 @@ function MidpointCircleMarker({
         onDragEnd(markerIndex, e.nativeEvent.coordinate, e.nativeEvent.position)
       }
       onPress={(e) => onPress && onPress(markerIndex, e.nativeEvent.coordinate)}
-      tracksViewChanges={false}
+      tracksViewChanges={true}
     >
       <View
         style={[
@@ -126,6 +126,6 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 2,
     borderStyle: "dotted",
-    padding: 20,
+    padding: 15,
   },
 });

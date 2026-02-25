@@ -1,16 +1,12 @@
 import { Stack } from "@/navigation/stack";
-import { AddFertilizerApplicationSelectQuantityScreen } from "../add/AddFertilizerApplicaationSelectQuantityScreen";
-import { AddFertilizerApplicationDivideOnPlotsScreen } from "../add/AddFertilizerApplicationDivideOnPlotsScreen";
-import { AddFertilizerApplicationSelectDateScreen } from "../add/AddFertilizerApplicationSelectDateScreen";
-import { AddFertilizerApplicationSelectFertilizerScreen } from "../add/AddFertilizerApplicationSelectFertilizerScreen";
-import { AddFertilizerApplicationSelectPlotsScreen } from "../add/AddFertilizerApplicationSelectPlotsScreen";
-import { AddFertilizerApplicationSelectSpreaderScreen } from "../add/AddFertilizerApplicationSelectSpreaderScreen";
-import { AddFertilizerApplicationSummaryScreen } from "../add/AddFertilizerApplicationSummaryScreen";
+import { DivideFertilizerApplicationOnPlotsScreen } from "../add/DivideFertilizerApplicationOnPlotsScreen";
+import { SelectFertilizerApplicationPlotsScreen } from "../add/SelectFertilizerApplicationPlotsScreen";
+import { FertilizerApplicationSummaryScreen } from "../add/FertilizerApplicationSummaryScreen";
+import { ConfigureFertilizerApplicationScreen } from "../add/ConfigureFertilizerApplicationScreen";
+import { SelectFertilizerAndDateScreen } from "../add/SelectFertilizerAndDateScreen";
+import { SetFertilizerApplicationUnitQuantityScreen } from "../add/SetFertilizerApplicationUnitQuantityScreen";
 import { FertilizerApplicationDetailsScreen } from "../FertilizerApplicationDetails";
-import { FertilizerApplicationsOfYearListScreen } from "../FertilizerApplicationsListScreen";
-import { FertilizerApplicationsOfYearScreen } from "../FertilizerApplicationsOfYearScreen";
 import { FertilizerApplicationsScreen } from "../FertilizerApplicationsScreen";
-import { AddFertilizerApplicationAdditionalNotesScreen } from "../add/AddFertilizerApplicationAdditionalNotesScreen";
 
 export function renderFertilizerApplicationStack() {
   return [
@@ -21,72 +17,46 @@ export function renderFertilizerApplicationStack() {
       component={FertilizerApplicationsScreen}
     />,
     <Stack.Screen
-      key="fertilizer-applications-of-year"
-      name="FertilizerApplicationsOfYear"
-      options={{ title: "" }}
-      component={FertilizerApplicationsOfYearScreen}
-    />,
-    <Stack.Screen
-      key="fertilizer-applications-of-year-list"
-      name="FertilizerApplicationsOfYearList"
-      options={{ title: "" }}
-      component={FertilizerApplicationsOfYearListScreen}
-    />,
-    <Stack.Screen
       key="fertilizer-application-details"
       name="FertilizerApplicationDetails"
       options={{ title: "" }}
       component={FertilizerApplicationDetailsScreen}
     />,
     <Stack.Screen
-      key="add-fertilizer-application-select-date"
-      name="AddFertilizerApplicationSelectDate"
+      key="select-fertilizer-and-date"
+      name="SelectFertilizerAndDate"
       options={{ title: "" }}
-      component={AddFertilizerApplicationSelectDateScreen}
+      component={SelectFertilizerAndDateScreen}
     />,
     <Stack.Screen
-      key="add-fertilizer-application-select-fertilizer"
-      name="AddFertilizerApplicationSelectFertilizer"
-      options={{
-        title: "",
-      }}
-      component={AddFertilizerApplicationSelectFertilizerScreen}
-    />,
-    <Stack.Screen
-      key="add-fertilizer-application-select-spreader"
-      name="AddFertilizerApplicationSelectSpreader"
+      key="configure-fertilizer-application"
+      name="ConfigureFertilizerApplication"
       options={{ title: "" }}
-      component={AddFertilizerApplicationSelectSpreaderScreen}
+      component={ConfigureFertilizerApplicationScreen}
     />,
     <Stack.Screen
-      key="add-fertilizer-application-select-quantity"
-      name="AddFertilizerApplicationSelectQuantity"
+      key="set-fertilizer-application-unit-quantity"
+      name="SetFertilizerApplicationUnitQuantity"
       options={{ title: "" }}
-      component={AddFertilizerApplicationSelectQuantityScreen}
+      component={SetFertilizerApplicationUnitQuantityScreen}
     />,
     <Stack.Screen
-      key="add-fertilizer-application-select-plots"
-      name="AddFertilizerApplicationSelectPlots"
+      key="select-fertilizer-application-plots"
+      name="SelectFertilizerApplicationPlots"
       options={{ title: "", headerShown: false }}
-      component={AddFertilizerApplicationSelectPlotsScreen}
+      component={SelectFertilizerApplicationPlotsScreen}
     />,
     <Stack.Screen
-      key="add-fertilizer-application-divide-on-plots"
-      name="AddFertilizerApplicationDivideOnPlots"
+      key="divide-fertilizer-application-on-plots"
+      name="DivideFertilizerApplicationOnPlots"
       options={{ title: "" }}
-      component={AddFertilizerApplicationDivideOnPlotsScreen}
+      component={DivideFertilizerApplicationOnPlotsScreen}
     />,
     <Stack.Screen
-      key="add-fertilizer-application-additional-notes"
-      name="AddFertilizerApplicationAdditionalNotes"
+      key="fertilizer-application-summary"
+      name="FertilizerApplicationSummary"
       options={{ title: "" }}
-      component={AddFertilizerApplicationAdditionalNotesScreen}
-    />,
-    <Stack.Screen
-      key="add-fertilizer-application-summary"
-      name="AddFertilizerApplicationSummary"
-      options={{ title: "" }}
-      component={AddFertilizerApplicationSummaryScreen}
+      component={FertilizerApplicationSummaryScreen}
     />,
   ];
 }

@@ -19,7 +19,6 @@ import {
   useIsCropProtectionProductInUseQuery,
   useUpdateCropProtectionProductMutation,
 } from "./cropProtectionProduct.hooks";
-import { useCropProtectionEquipmentsQuery } from "../equipment/cropProtectionEquipment.hooks";
 
 export function EditCropProtectionProductScreen({
   route,
@@ -29,7 +28,7 @@ export function EditCropProtectionProductScreen({
   const { t } = useTranslation();
   const cropProtectionProductId = route.params.cropProtectionProductId;
   const { cropProtectionProduct } = useCropProtectionProductByIdQuery(
-    cropProtectionProductId
+    cropProtectionProductId,
   );
   const { inUse, isFetching: isFetchingInUse } =
     useIsCropProtectionProductInUseQuery(cropProtectionProductId);
@@ -39,20 +38,18 @@ export function EditCropProtectionProductScreen({
     watch,
     formState: { errors, isDirty },
   } = useForm<CropProtectionProductFormValues>({
-    values: cropProtectionProduct,
+    values: cropProtectionProduct
+      ? {
+          ...cropProtectionProduct,
+          description: cropProtectionProduct?.description ?? undefined,
+        }
+      : undefined,
   });
 
   const updateCropProtectionProductMutation =
     useUpdateCropProtectionProductMutation(() => navigation.goBack());
   const deleteCropProtectionProductMutation =
     useDeleteCropProtectionProductMutation(() => navigation.goBack());
-
-  const productUnit = watch("unit");
-  const { cropProtectionEquipments, isFetched } =
-    useCropProtectionEquipmentsQuery([]);
-  const availableEquipment = cropProtectionEquipments!.filter(
-    (equipment) => equipment.unit === productUnit
-  );
 
   function onSubmit(data: CropProtectionProductFormValues) {
     updateCropProtectionProductMutation.mutate({
@@ -120,7 +117,6 @@ export function EditCropProtectionProductScreen({
           </Card>
         ) : null}
         <CropProtectionProductForm
-          equipments={availableEquipment}
           restrictedMode={inUse}
           control={control}
           errors={errors}

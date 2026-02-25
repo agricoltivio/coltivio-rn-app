@@ -1,11 +1,11 @@
-import { ConservationMethod } from "@/api/harvestingMachinery.api";
-import { ProcessingType } from "@/api/harvests.api";
+import { ConservationMethod, HarvestUnit } from "@/api/harvests.api";
 
-export const processingTypes: ProcessingType[] = [
-  "none",
+export const harvestingUnits: HarvestUnit[] = [
+  "load",
   "square_bale",
   "round_bale",
-  "other",
+  "crate",
+  "total_amount",
 ];
 
 export const conservationsMethods: ConservationMethod[] = [

@@ -11,15 +11,19 @@
     "save": "Speichern",
     "add": "Hinzufügen",
     "ok": "OK",
+    "close": "Schliessen",
     "delete": "Löschen",
+    "details": "Details",
     "parcel_select": "Parzelle auswählen",
-    "draw_area": "Fläche zeichnen",
+    "draw_area": "Neue Fläche",
     "edit_area": "Fläche bearbeiten",
     "show_entries": "Einträge anzeigen",
     "export": "Exportieren",
     "finish": "Fertig",
     "send_email": "E-Mail senden",
-    "forgot_password": "Passwort vergessen"
+    "forgot_password": "Passwort vergessen",
+    "apply": "Anwenden",
+    "clear": "Löschen"
   },
   "forms": {
     "labels": {
@@ -40,6 +44,7 @@
       "crop": "Kultur",
       "size_m2": "Größe (m²)",
       "area": "Fläche",
+      "area_hectares": "Fläche (ha)",
       "divide_by_plot_size": "Aufteilung nach Schlaggröße",
       "plot_w_size": "Schlag {{name}} ({{size}}a)",
       "device": "Gerät",
@@ -50,6 +55,7 @@
       "load": "Fuder",
       "loads": "Fuder",
       "balls": "Ballen",
+      "crate": "Harasse",
       "amount_unit": "Anzahl {{unit}}",
       "amount_of_loads": "Anzahl Fuder",
       "amount_per_load": "Menge pro Fuder",
@@ -70,6 +76,7 @@
       "reason": "Grund",
       "action": "Aktion",
       "conservation": "Konservierungsmethode",
+      "conservation_optional": "Konservierungsmethode (optional)",
       "processing_type": "Verarbeitungsart",
       "weight_kg_per_harvest_unit": "Gewicht pro Ernteeinheit (kg)",
       "machine": "Maschine",
@@ -86,7 +93,11 @@
       "usage_optional": "Nutzung (optional)",
       "usagecode": "Nutzungscode",
       "cutting_date": "Schnittzeit",
-      "cutting_date_optional": "Schnittzeit (optional)"
+      "cutting_date_optional": "Schnittzeit (optional)",
+      "permanent": "Unbefristet",
+      "sex": "Geschlecht",
+      "date_range": "Zeitraum",
+      "duration": "Dauer"
     },
     "placeholders": {
       "location_search": "z.B. Straße, Hausnummer, Ort",
@@ -101,13 +112,19 @@
       "password_repeat_invalid": "Passwörter stimmen nicht überein",
       "divided_amount_too_big": "Die verteilte Menge ist größer als die verfügbare Menge",
       "not_all_divided": "Du hast noch nicht die gesamte Menge verteilt",
-      "required": "Feld darf nicht leer sein"
+      "required": "Feld darf nicht leer sein",
+      "min": "Mindestens {{min}}"
     }
   },
   "common": {
+    "yes": "Ja",
+    "no": "Nein",
     "no_entries": "Noch keine Einträge",
+    "notes": "Notizen",
     "area_acres": "Fläche: {{area}}a",
     "dont_show_again": "Nicht mehr anzeigen",
+    "error": "Fehler",
+    "unknown_error": "Ein unbekannter Fehler ist aufgetreten.",
     "danger_zone": "Vorsicht!",
     "all_entries_will_be_deleted": "Alle Einträge werden unwiderruflich gelöscht.",
     "remaining_quantity": "{{quantity}} {{quantityLabel}} noch verfügbar",
@@ -118,7 +135,29 @@
     "usage": "Nutzung",
     "federal_farm_id": "Betriebsnummer: {{number}}",
     "new_machine": "Neue Maschine",
-    "new_device": "Neues Gerät"
+    "new_device": "Neues Gerät",
+    "crate": "Harasse",
+    "total_amount": "Gesamtmenge",
+    "dashboard": "Dashboard",
+    "list": "Liste"
+  },
+  "presets": {
+    "preset": "Vorlage",
+    "presets": "Vorlagen",
+    "preset_settings": "Vorlagen-Einstellungen",
+    "select_preset": "Vorlage auswählen",
+    "manage_presets": "Vorlagen verwalten",
+    "manage_harvest_presets": "Ernte-Vorlagen verwalten",
+    "manage_tillage_presets": "Bodenbearbeitungs-Vorlagen verwalten",
+    "manage_fertilizer_presets": "Dünger-Vorlagen verwalten",
+    "manage_crop_protection_presets": "Pflanzenschutz-Vorlagen verwalten",
+    "save_as_preset": "Als Vorlage speichern",
+    "preset_name": "Vorlagen-Name",
+    "enter_preset_name": "Gib einen Namen für die Vorlage ein",
+    "delete_confirm_title": "Vorlage löschen",
+    "delete_confirm_message": "Möchtest du \"{{name}}\" wirklich löschen?",
+    "no_presets": "Keine Vorlagen vorhanden",
+    "no_preset": "Keine Vorlage"
   },
   "errors": {
     "unexpected_retry": "Ups, etwas ist schief gelaufen. Bitte versuche es erneut.",
@@ -146,7 +185,8 @@
       "t": "t",
       "l": "l",
       "ml": "ml",
-      "m3": "m³"
+      "m3": "m³",
+      "ha": "ha"
     }
   },
   "tips": {
@@ -198,11 +238,20 @@
     },
     "summary": {
       "heading": "Geschafft!",
+      "subheading": "Dein Hof mit der Betriebsnummer {{federalFarmId}} ist bereit.",
       "plots_info": "Deine Flächen werden basierend auf deiner Betriebsnummer als Schläge hinzugefügt.",
       "crops_info": "Die momentane Kultur wird vom Nutzungscode abgeleitet.",
       "edit_plots_info": "Du kannst deine Flächen jederzeit unter 'Schläge' oder über die Karte bearbeiten.",
-      "press_save_to_finish": "Drücke 'Speichern', um deinen Hof zu erstellen.",
+      "press_save_to_finish": "Drücke 'Speichern', um ihn zu erstellen.",
       "no_federal_farm_id": "Leider konnten wir deine Flächen nicht automatisch hinzufügen. Du kannst deine Flächen unter 'Schläge' oder unter der Karte manuell hinzufügen. Wir arbeiten daran, sobald wie möglich alle Standorte zu unterstützen."
+    },
+    "preference": {
+      "heading": "Noch eine letzte Frage",
+      "guided": "Mit Anleitungen",
+      "guided_desc": "Zeig mir Tipps und Anleitungen bei neuen Funktionen.",
+      "explore": "Selber entdecken",
+      "explore_desc": "Ich probiere Dinge lieber selbst aus.",
+      "change_hint": "Du kannst das jederzeit in den Einstellungen ändern."
     }
   },
   "users": {
@@ -248,7 +297,7 @@
     },
     "map": {
       "selected_plot": {
-        "size": "Fläche: {{size}}a",
+        "size": "{{size}}a",
         "crop": "Kultur: {{crop}}"
       }
     },
@@ -287,6 +336,75 @@
       "heading": "Schlag {{name}} wirklich löschen?",
       "entries_warning": "Alle Einträge für diesen Schlag werden unwiderruflich gelöscht.",
       "confirm_by_typing_name": "Um diesen Schlag zu löschen, gib den Namen ein und bestätige den Vorgang."
+    },
+    "actions": {
+      "adjust": "Anpassen",
+      "adjust_area": "Fläche anpassen",
+      "manage_area": "Fläche verwalten",
+      "split": "Aufteilen",
+      "merge": "Zusammenführen"
+    },
+    "split_onboarding": {
+      "welcome_heading": "Schlag aufteilen",
+      "welcome_body": "Teile einen Schlag in mehrere Teile auf. Du kannst eine Linie zeichnen oder eine Fläche ausschneiden.",
+      "line_heading": "Linie zeichnen",
+      "line_body": "Zeichne eine Linie quer über den Schlag, um ihn in zwei Teile zu teilen. Tippe auf die Karte, um Punkte zu setzen, und bestätige mit dem Schneiden-Symbol.",
+      "area_heading": "Fläche ausschneiden",
+      "area_body": "Zeichne ein Polygon innerhalb des Schlags, um eine neue Fläche auszuschneiden. Dies ist nützlich, wenn du einen bestimmten Bereich abtrennen möchtest.",
+      "extract_heading": "Schlag herauslösen",
+      "extract_body": "Wenn eine Fläche aus mehreren Schlägen besteht, kannst du einen einzelnen Schlag auswählen und herauslösen."
+    },
+    "split": {
+      "heading": "Schlag aufteilen",
+      "mode_line": "Linie",
+      "mode_polygon": "Fläche",
+      "mode_select_message": "Wähle, wie du den Schlag aufteilen möchtest.",
+      "line_tip": "Zeichne eine Linie über den Schlag, um ihn zu teilen.",
+      "polygon_tip": "Zeichne eine Fläche innerhalb des Schlags, um sie auszuschneiden.",
+      "split_failed": "Aufteilung fehlgeschlagen. Stelle sicher, dass die Linie den Schlag vollständig kreuzt.",
+      "summary": {
+        "heading": "Aufteilung bestätigen",
+        "sub_plot_name": "Teilschlag {{letter}}",
+        "strategy_label": "Strategie",
+        "strategy_keep_reference": "Referenz behalten",
+        "strategy_keep_reference_info": "Der ursprüngliche Schlag wird als Referenz behalten. Alle bestehenden Einträge (Fruchtfolgen, Ernten, etc.) bleiben dem Referenzschlag zugeordnet.",
+        "strategy_delete_and_migrate": "Referenz löschen",
+        "strategy_delete_and_migrate_info": "Der ursprüngliche Schlag wird gelöscht. Alle bestehenden Einträge werden auf den gewählten Teilschlag übertragen.",
+        "original_plot_name": "Name des Referenzschlags",
+        "migrate_to_label": "Einträge übertragen auf"
+      }
+    },
+    "merge": {
+      "heading": "Schläge zusammenführen",
+      "select_plots": "Wähle die Schläge aus, die zusammengeführt werden sollen.",
+      "min_two_plots": "Wähle mindestens 2 Schläge aus.",
+      "summary": {
+        "heading": "Zusammenführung bestätigen",
+        "strategy_label": "Strategie",
+        "strategy_keep_reference": "Referenz behalten",
+        "strategy_keep_reference_info": "Die ursprünglichen Schläge werden als Referenz behalten. Alle bestehenden Einträge bleiben den Referenzschlägen zugeordnet.",
+        "strategy_delete_and_migrate": "Referenz löschen",
+        "strategy_delete_and_migrate_info": "Die ursprünglichen Schläge werden gelöscht. Alle bestehenden Einträge werden auf den neuen Schlag übertragen.",
+        "strategy_delete_crop_rotation_warning": "Fruchtfolgen werden nicht übertragen und gehen verloren."
+      }
+    },
+    "merge_onboarding": {
+      "welcome_heading": "Schläge zusammenführen",
+      "welcome_body": "Wähle die Schläge aus, die zusammengeführt werden sollen. Der aktive Schlag ist bereits ausgewählt.",
+      "confirm_heading": "Bestätigen",
+      "confirm_body": "Drücke das Bestätigungs-Symbol, wenn mindestens 2 Schläge ausgewählt sind."
+    },
+    "map_onboarding": {
+      "browse_heading": "Deine Schläge",
+      "browse_body": "Tippe auf einen Schlag auf der Karte oder suche ihn über das Listen-Symbol, um Details anzuzeigen.",
+      "browse_expand_info": "Du kannst die Detailsansicht maximieren in dem du sie nach oben ziehst.",
+      "tools_heading": "Werkzeuge",
+      "tools_body": "Verwende die Werkzeugleiste, um deine Schlagflächen zu verwalten.",
+      "tool_add": "Neuen Schlag hinzufügen",
+      "tool_split": "Bestehenden Schlag aufteilen",
+      "tool_merge": "Schläge zusammenführen",
+      "tool_edit": "Schlagfläche bearbeiten",
+      "tool_delete": "Schlag löschen"
     },
     "usage_codes": {
       "501": "Sommergerste",
@@ -478,6 +596,7 @@
   },
   "field_calendar": {
     "field_calendar": "Feldkalender",
+    "crop_families": "Pflanzenfamilien",
     "crops": "Kulturen",
     "crop_rotations": "Fruchtfolgen",
     "tillages": "Bodenbearbeitungen",
@@ -486,10 +605,28 @@
     "harvests": "Ernte",
     "crop_protection_products": "Pflanzenschutzmittel",
     "crop_protection_applications": "Pflanzenschutz",
-    "export": "Exportieren"
+    "export": "Exportieren",
+    "settings": "Feldkalender Einstellungen",
+    "groups": {
+      "crops": "Kulturen",
+      "soil": "Bodenbearbeitung",
+      "fertilization": "Düngung",
+      "protection": "Pflanzenschutz",
+      "harvest": "Ernte",
+      "export": "Export"
+    },
+    "onboarding": {
+      "welcome_heading": "Willkommen im Feldkalender",
+      "welcome_body": "Hier verwaltest du alle Aktivitäten rund um deine Felder: Kulturen, Bodenbearbeitung, Düngung, Pflanzenschutz und Ernte.",
+      "configure_heading": "Passe deinen Feldkalender an",
+      "done_heading": "Geschafft!",
+      "done_body": "Du kannst die Einstellungen jederzeit über das Zahnrad-Symbol ändern."
+    }
   },
   "harvests": {
     "harvest": "Ernte",
+    "add_harvest": "Neue Ernte",
+    "harvest_configuration": "Ernte Konfiguration",
     "harvest_year": "Ernte {{year}}",
     "harvest_date": "Ernte {{date}}",
     "harvest_plot_name": "Ernte - {{name}}",
@@ -505,10 +642,14 @@
     },
     "labels": {
       "unit": {
-        "none": "Fuder",
+        "load": "Fuder",
         "round_bale": "Rundballen",
         "square_bale": "Quaderballen",
-        "other": "Einheit"
+        "crate": "Harasse",
+        "total_amount": "Gesamtmenge",
+        "total_amount_kg": "Gesamtmenge (kg)",
+        "other": "Andere",
+        "custom": "Benutzerdefinierte Einheit"
       },
       "conservation_method": {
         "dried": "Heu",
@@ -526,11 +667,15 @@
       "select_date": {
         "heading": "Wann wurde geerntet?"
       },
-      "select_machinery": {
-        "heading": "Welche Maschine wurde verwendet?",
+      "select_how": {
+        "heading": "Wie wurde geerntet?",
         "no_machinery": "Du hast noch keine Maschine erfasst. Diese vereinfachen die Erfassung der Ernte, indem du Standardwerte vordefinieren kannst."
       }
-    }
+    },
+    "comparison_year": "Vergleichsjahr",
+    "select_comparison_year": "Vergleichsjahr wählen",
+    "total_amount": "Totale Menge",
+    "amount_per_month": "Menge pro Monat"
   },
   "fertilizers": {
     "fertilizer": "Dünger",
@@ -545,6 +690,13 @@
     "fertilizer_application_date": "Düngeraustrag {{date}}",
     "fertilizer_application_year": "Düngeraustrag {{year}}",
     "fertilizer_application_plot_name": "Düngeraustrag - {{name}}",
+    "add_fertilizer_application": "Neuer Düngeraustrag",
+    "application_configuration": "Austrag Konfiguration",
+    "units": {
+      "bag": "Sack",
+      "load": "Fuder",
+      "amount_per_hectare": "Menge pro Hektare"
+    },
     "select_quantity": {
       "heading": "Wie viel wurde ausgebracht?"
     },
@@ -574,16 +726,12 @@
   "tillages": {
     "tillages": "Bodenbearbeitungen",
     "tillage": "Bodenbearbeitung",
+    "tillage_configuration": "Bodenbearbeitung konfigurieren",
+    "add_tillage": "Neue Bodenbearbeitung",
     "tillage_year": "Bodenbearbeitung {{year}}",
     "tillage_date": "Bodenbearbeitung {{date}}",
     "tillage_plot_name": "Bodenbearbeitung - {{name}}",
-    "select_date": {
-      "heading": "Wann wurde die Arbeit durchgeführt?"
-    },
-    "select_equipment": {
-      "heading": "Welche Maschine wurde verwendet?",
-      "no_machinery": "Du hast noch keine Maschine erfasst. Diese vereinfachen die Erfassung der Ernte, indem du Standardwerte vordefinieren kannst."
-    },
+    "custom_action": "Benutzerdefinierte Aktion",
     "reasons": {
       "soil_loosening": "Bodenlockerung",
       "weed_control": "Unkrautbekämpfung",
@@ -598,6 +746,7 @@
       "hoeing": "Hacken",
       "weed_harrowing": "Striegeln",
       "flame_weeding": "Abflammen",
+      "custom": "Benutzerdefiniert",
       "other": "Andere"
     }
   },
@@ -609,13 +758,28 @@
     "categories": {
       "grass": "Gras",
       "grain": "Getreide",
-      "none": "Keine"
+      "vegetable": "Gemüse",
+      "fruit": "Frucht",
+      "other": "Andere"
     },
     "no_variety": "Keine Sorte",
-    "crop_in_use_warning": "Diese Kultur wird verwendet und kann deshalb nicht gelöscht werden."
+    "crop_in_use_warning": "Diese Kultur wird verwendet und kann deshalb nicht gelöscht werden.",
+    "family_optional": "Familie (optional)",
+    "waiting_time_in_years_optional": "Wartezeit in Jahren (optional)"
+  },
+  "crop_families": {
+    "crop_families": "Pflanzenfamilien",
+    "crop_family": "Pflanzenfamilie",
+    "new_crop_family": "Neue Pflanzenfamilie",
+    "waiting_time_in_years": "Wartezeit in Jahren",
+    "waiting_time_years": "{{count}} Jahr Wartezeit",
+    "waiting_time_years_plural": "{{count}} Jahre Wartezeit",
+    "family_in_use_warning": "Diese Pflanzenfamilie wird verwendet und kann deshalb nicht gelöscht werden."
   },
   "crop_protection_applications": {
     "crop_protection": "Pflanzenschutz",
+    "application_configuration": "Pflanzenschutz konfigurieren",
+    "add_application": "Neue Pflanzenschutzmaßnahme",
     "crop_protection_year": "Pflanzenschutz {{year}}",
     "crop_protection_plot_name": "Pflanzenschutz - {{name}}",
     "crop_protection_date": "Pflanzenschutz - {{date}}",
@@ -659,6 +823,7 @@
   },
   "crop_rotations": {
     "crop_rotation": "Fruchtfolgen",
+    "crop_rotation_crop_name": "Fruchtfolge - {{name}}",
     "crop_rotation_year": "Fruchtfolge {{year}}",
     "crop_rotation_plot_name": "Fruchtfolge - {{name}}",
     "crop_rotation_date": "Fruchtfolge - {{date}}",
@@ -668,12 +833,53 @@
     "sowing_date": "Aussaat {{date}}",
     "new_crop": "Neue Kultur",
     "select_crop": {
-      "heading": "Was wurde gesät"
+      "heading": "Plane die Fruchtfolge für eine Kultur"
     },
     "select_date": {
       "heading": "Wann wurde gesät?"
     },
-    "cannot_delete_warning": "Dies ist die einzige Kultur auf diesem Schlag und kann desshalb nicht gelöscht werden."
+    "cannot_delete_warning": "Dies ist die einzige Kultur auf diesem Schlag und kann desshalb nicht gelöscht werden.",
+    "set_dates_for_all": "Daten für alle setzen",
+    "overlap_warning": "Der Zeitraum überschneidet sich mit einer bestehenden Fruchtfolge.",
+    "view_list": "Liste",
+    "view_timeline": "Zeitstrahl",
+    "view_calendar": "Kalender",
+    "last_rotation": "Letzte: {{crop}} ({{from}} – {{to}})",
+    "last_rotation_permanent": "Aktuelle: {{crop}} ({{from}} – unbefristet)",
+    "permanent_end_date_info": "Das Enddatum der bestehenden Fruchtfolge wird automatisch auf den Tag vor dem neuen Startdatum gesetzt.",
+    "add_rotation": "Fruchtfolge hinzufügen",
+    "permanent": "unbefristet",
+    "plan": {
+      "title": "Fruchtfolgeplanung",
+      "save_plan": "Plan speichern",
+      "edit_rotation": "Fruchtfolge bearbeiten",
+      "add_rotation_title": "Fruchtfolge hinzufügen",
+      "duration": "Dauer",
+      "recurrence_optional": "Wiederholung (optional)",
+      "every": "Alle",
+      "year": "Jahr",
+      "years": "Jahre",
+      "until": "bis",
+      "add_end_date": "+ Enddatum",
+      "add_recurrence": "+ Wiederholung hinzufügen",
+      "no_rotations_yet": "Noch keine Fruchtfolgen",
+      "overlaps_with": "Überschneidet sich mit {{crop}}",
+      "select_crop_for_all": "Bitte wähle für alle Fruchtfolgen eine Kultur aus",
+      "resolve_conflicts_alert": "Bitte behebe alle Datumskonflikte vor dem Speichern",
+      "resolve_conflicts_warning": "Behebe Datumskonflikte vor dem Speichern",
+      "repeats_every_year": "Wiederholt sich jährlich",
+      "repeats_every_years": "Wiederholt sich alle {{count}} Jahre",
+      "until_date": "bis {{date}}",
+      "waiting_time_warning_crop": "Wartezeit nicht eingehalten: {{crop}} ({{waitingTime}} Jahre)",
+      "waiting_time_warning_family": "Wartezeit der Familie {{family}} nicht eingehalten ({{waitingTime}} Jahre)"
+    },
+    "timeline": {
+      "today": "Heute",
+      "plot": "Schlag",
+      "zoom_years": "Jahre",
+      "zoom_months": "Monate",
+      "zoom_weeks": "Wochen"
+    }
   },
   "reports": {
     "field_calendar": {
@@ -684,6 +890,13 @@
       "export_success_heading": "Feldkalender erfolgreich exportiert",
       "export_sent_to": "Das Dokument wurde an {{email}} gesendet.",
       "export_mail_being_deliverd": "Es kann einen Moment dauern, bis das Mail im Postfach ist. Falls das Mail nicht ankommt, schaue bitte in deinen Spam Ordner."
+    },
+    "treatments": {
+      "heading": "Behandlungen Export",
+      "select_animal_types": "Tierarten auswählen"
+    },
+    "outdoor_journal": {
+      "heading": "Auslaufjournal Export"
     }
   },
   "agri_coltivio": {
@@ -696,6 +909,276 @@
     "section_5_title": "Hilf mit damit die App weiterhin frei und unabhängig für alle zur Verfügung steht.",
     "section_5": "Werde Mitglied oder unterstütze uns mit einer Spende. Jeder Beitrag hilft – ob klein oder gross.",
     "section_6": "Danke, dass du Teil davon bist."
+  },
+  "ear_tags": {
+    "ear_tags": "Ohrmarken",
+    "ear_tag": "Ohrmarke",
+    "new_ear_tag_range": "Neue Ohrmarken",
+    "from_number": "Von Nummer",
+    "to_number": "Bis Nummer",
+    "no_ear_tag": "Keine Ohrmarke",
+    "no_animal_assigned": "Kein Tier zugewiesen"
+  },
+  "map_draw_onboarding": {
+    "welcome_heading": "Schläge & Flächen",
+    "welcome_body": "Du wählst gleich deine Schläge aus oder zeichnest eine Fläche auf der Karte. Hier erklären wir dir kurz, wie das funktioniert.",
+    "select_heading": "Schläge auswählen",
+    "select_body": "Tippe auf deine Schläge, um sie auszuwählen oder abzuwählen.",
+    "draw_heading": "Fläche zeichnen",
+    "draw_body": "Tippe auf die Karte, um Eckpunkte zu setzen. Halte einen Eckpunkt gedrückt, um ihn zu verschieben.",
+    "finish_heading": "Zeichnung abschliessen",
+    "finish_body": "Tippe auf dieses Symbol, um die Fläche abzuschliessen.",
+    "welcome_body_draw": "Du zeichnest gleich einen neuen Schlag auf der Karte. Hier erklären wir dir kurz, wie das funktioniert.",
+    "welcome_body_parcel": "Du wählst gleich eine bestehende Parzelle aus. Hier erklären wir dir kurz, wie das funktioniert.",
+    "parcel_heading": "Parzelle auswählen",
+    "parcel_body": "Tippe auf eine Parzelle, um sie auszuwählen. Falls deine Parzelle nicht sichtbar ist, drücke auf «Parzellen laden», um die Parzellen an der aktuellen Kartenposition zu laden.",
+    "welcome_body_edit": "Du bearbeitest gleich die Form eines Schlags. Hier erklären wir dir kurz, wie das funktioniert.",
+    "edit_intro_heading": "Schlag bearbeiten",
+    "edit_intro_body": "Verschiebe die Eckpunkte, um die Form anzupassen. Halte einen Eckpunkt gedrückt und ziehe ihn an die gewünschte Position.",
+    "overlap_heading": "Überlappungen",
+    "overlap_body": "Falls dein neuer Schlag bestehende Schläge überlappt, werden diese automatisch angepasst.",
+    "crop_rotation_welcome_heading": "Plane deine Fruchtfolgen",
+    "crop_rotation_welcome_body": "Wähle die Schläge aus, für die du Fruchtfolgen planen möchtest.",
+    "plots_map_welcome_heading": "Deine Schläge",
+    "plots_map_tap_body": "Tippe auf einen Schlag, um Details zu sehen.",
+    "plots_map_add_body": "Drücke diesen Button, um neue Schläge hinzuzufügen."
+  },
+  "animals": {
+    "animals": "Tiere",
+    "animal": "Tier",
+    "new_animal": "Neues Tier",
+    "animal_types": {
+      "goat": "Ziege",
+      "sheep": "Schaf",
+      "cow": "Kuh",
+      "horse": "Pferd",
+      "donkey": "Esel",
+      "pig": "Schwein",
+      "deer": "Hirsch"
+    },
+    "sex": {
+      "male": "Männlich",
+      "female": "Weiblich"
+    },
+    "registered": "Gemeldet (TVD)",
+    "date_of_birth": "Geburtsdatum",
+    "date_of_death": "Todesdatum",
+    "death_reason": "Todesursache",
+    "death_reasons": {
+      "died": "Gestorben",
+      "slaughtered": "Geschlachtet"
+    },
+    "mother": "Mutter",
+    "father": "Vater",
+    "children": "Nachkommen",
+    "add_child": "Nachkommen hinzufügen",
+    "no_children": "Keine Nachkommen",
+    "animal_husbandry": "Tierhaltung",
+    "unregistered_count": "{{count}} nicht gemeldete Tiere",
+    "waiting_period_count": "{{count}} Tiere mit Absetzfrist",
+    "show_dead": "Tote anzeigen",
+    "only_unregistered": "nicht registrierte",
+    "only_with_waiting_period": "Absetzfrist",
+    "select_children": "Nachkommen auswählen",
+    "settings": "Tierhaltung Einstellungen",
+    "groups": {
+      "animals": "Tiere",
+      "health": "Gesundheit"
+    },
+    "onboarding": {
+      "welcome_heading": "Willkommen in der Tierhaltung",
+      "welcome_body": "Hier verwaltest du deine Tiere, Ohrmarken, Medikamente und Behandlungen.",
+      "configure_heading": "Passe die Tierhaltung an",
+      "done_heading": "Geschafft!",
+      "done_body": "Du kannst die Einstellungen jederzeit über das Zahnrad-Symbol ändern."
+    },
+    "usage": "Nutzung",
+    "usage_types": {
+      "milk": "Milch",
+      "other": "Andere"
+    },
+    "category": "Kategorie",
+    "outdoor_journal_category": "Auslaufjournal Kategorie",
+    "outdoor_journal_category_info": "Die Kategorie wird automatisch bestimmt. Du kannst sie überschreiben, indem du eine benutzerdefinierte Kategorie aktivierst.",
+    "custom_category": "Benutzerdefinierte Kategorie",
+    "custom_animal_category": "Benutzerdefinierte Tierkategorie",
+    "no_active_category": "Automatisch",
+    "manage_categories": "Kategorien verwalten",
+    "add_category_entry": "Kategorieeintrag hinzufügen",
+    "open_ended": "Offen",
+    "category_overlap_warning": "Behebe Datumsüberschneidungen vor dem Speichern",
+    "delete_custom_categories_confirm": "Alle benutzerdefinierten Kategorieeinträge werden gelöscht.",
+    "uncategorized_animals": "Tiere ohne Kategorie",
+    "show_animals": "Anzeigen",
+    "fix": "Beheben",
+    "herd": "Herde",
+    "herds": "Herden",
+    "new_herd": "Neue Herde",
+    "herd_name": "Name der Herde",
+    "no_herds": "Keine Herden",
+    "animals_in_herd": "Tiere in der Herde",
+    "outdoor_schedules": "Auslauf",
+    "schedule_overlap_warning": "Behebe Überschneidungen bei Auslauf-Zeitplänen vor dem Speichern",
+    "outdoor_type": "Typ",
+    "outdoor_types": {
+      "pasture": "Weide",
+      "exercise_yard": "Laufhof"
+    },
+    "new_outdoor_schedule": "Neuer Auslauf",
+    "edit_outdoor_schedule": "Auslauf bearbeiten",
+    "start_date": "Startdatum",
+    "end_date": "Enddatum",
+    "end_date_optional": "Enddatum (optional)",
+    "notes": "Notizen",
+    "recurrence": "Wiederholung",
+    "recurrence_optional": "Wiederholung (optional)",
+    "until": "bis",
+    "frequency": "Häufigkeit",
+    "frequency_types": {
+      "weekly": "Wöchentlich",
+      "monthly": "Monatlich",
+      "yearly": "Jährlich"
+    },
+    "every": "Alle",
+    "week": "Woche",
+    "weeks": "Wochen",
+    "month": "Monat",
+    "months": "Monate",
+    "year": "Jahr",
+    "years": "Jahre",
+    "selected_only": "Nur ausgewählte",
+    "outdoor_journal": "Auslaufjournal",
+    "outdoor_journal_info": "Dieses Journal wird automatisch aus den Auslaufplänen der Herden und den definierten Tierkategorien erstellt.",
+    "uncategorized_animals_warning": "{{count}} Tiere ohne Kategorie",
+    "journal_animal_count": "{{count}} Tiere",
+    "herds_onboarding": {
+      "step1_heading": "Herden & Auslauf",
+      "step1_body": "Gruppiere deine Tiere in Herden und erstelle Auslaufpläne. Diese werden automatisch für das Auslaufjournal verwendet.",
+      "step2_heading": "Auslaufpläne verwalten",
+      "step2_body": "Wenn sich ein Auslaufplan ändert, bearbeite den bestehenden Plan nicht. Setze stattdessen das «Bis»-Datum und erstelle einen neuen Plan. So bleibt die Historie im Auslaufjournal erhalten.",
+      "step3_heading": "Geschafft!",
+      "step3_body": "Du kannst jetzt Herden erstellen und Auslaufpläne definieren."
+    },
+    "batch_edit": {
+      "select_animals_title": "Tiere zum Bearbeiten auswählen",
+      "select_action_title": "Bearbeitung auswählen",
+      "action_set_type": "Tierart setzen",
+      "action_set_death": "Tod erfassen",
+      "action_set_registered": "Als gemeldet markieren",
+      "action_set_usage": "Nutzung setzen",
+      "action_delete": "Löschen",
+      "update_n_animals": "{{count}} Tiere aktualisieren",
+      "delete_n_animals": "{{count}} Tiere löschen",
+      "select_action": "Aktion auswählen"
+    },
+    "tvd_import": {
+      "title": "TVD Import",
+      "experimental": "Diese Funktion ist experimentell.",
+      "instructions": "Lade den «Tierbestand» als Excel-Datei von der TVD herunter und lade sie hier hoch.",
+      "select_file": "Excel-Datei auswählen",
+      "import_button": "Importieren",
+      "success_title": "Import abgeschlossen",
+      "success_message": "{{imported}} von {{total}} Tieren wurden importiert.",
+      "skipped_message": "{{count}} Tiere wurden übersprungen.",
+      "onboarding_heading": "Tiere aus TVD importieren",
+      "onboarding_body": "Für den Import wird eine Excel-Datei aus dem «Tierbestand» der TVD benötigt. Exportiere diese über den Button «Excel generieren»."
+    }
+  },
+  "drugs": {
+    "drugs": "Medikamente",
+    "drug": "Medikament",
+    "new_drug": "Neues Medikament",
+    "edit_drug": "Medikament bearbeiten",
+    "drug_name": "Medikamentenname",
+    "received_from": "Erhalten von",
+    "critical_antibiotic": "Kritisches Antibiotikum",
+    "treatment_definitions": "Behandlungsdefinitionen",
+    "no_treatment_definitions": "Noch keine Behandlungsdefinitionen",
+    "add_animal_type": "Tierart hinzufügen",
+    "dose_value": "Dosis",
+    "dose_unit": "Einheit",
+    "dose_per_unit": "Pro",
+    "dose_units": {
+      "tablet": "Tablette",
+      "capsule": "Kapsel",
+      "patch": "Pflaster",
+      "dose": "Dosis",
+      "mg": "mg",
+      "mcg": "mcg",
+      "g": "g",
+      "ml": "ml",
+      "drop": "Tropfen"
+    },
+    "dose_per_units": {
+      "kg": "kg Körpergewicht",
+      "animal": "Tier",
+      "day": "Tag",
+      "total_amount": "Gesamtmenge"
+    },
+    "milk_waiting_days": "Wartetage Milch",
+    "meat_waiting_days": "Wartetage Fleisch",
+    "organs_waiting_days": "Wartetage Organe",
+    "drug_in_use": "Medikament in Verwendung",
+    "drug_in_use_warning": "Dieses Medikament wird verwendet und kann nicht gelöscht werden.",
+    "no_drugs": "Noch keine Medikamente erfasst"
+  },
+  "treatments": {
+    "treatments": "Behandlungen",
+    "treatment": "Behandlung",
+    "new_treatment": "Neue Behandlung",
+    "edit_treatment": "Behandlung bearbeiten",
+    "treatment_name": "Behandlungsgrund",
+    "select_animal": "Tier auswählen",
+    "select_drug": "Medikament auswählen (optional)",
+    "treatment_date": "Behandlungsdatum",
+    "treatment_end_date": "Enddatum",
+    "reason": "Grund",
+    "milk_usable_date": "Milch verwendbar ab",
+    "meat_usable_date": "Fleisch verwendbar ab",
+    "organs_usable_date": "Organe verwendbar ab",
+    "drug_configuration": "Medikament konfigurieren",
+    "dose_label": "{{unit}} / {{perUnit}}",
+    "no_treatments": "Noch keine Behandlungen",
+    "antibiogram_available": "Antibiogramm vorhanden",
+    "auto_calculated": "Automatisch berechnet basierend auf Medikament",
+    "select_animals": "Tiere auswählen",
+    "no_animals_selected": "Keine Tiere ausgewählt",
+    "n_animals_selected": "{{count}} Tiere ausgewählt",
+    "confirm_selection": "Bestätigen ({{count}} ausgewählt)",
+    "select_all": "Alle auswählen ({{count}})",
+    "clear_selection": "Auswahl löschen",
+    "birthday_filter": "Geburtstag",
+    "filter_by_birthday": "Nach Geburtstag filtern",
+    "birthday_from": "Von",
+    "birthday_to": "Bis",
+    "drug_not_defined_for_all_types": "Das Medikament ist nicht für alle ausgewählten Tierarten definiert",
+    "different_waiting_times_for_types": "Die Wartezeiten unterscheiden sich zwischen den Tierarten"
+  },
+  "speed_dial": {
+    "harvest": "Ernte hinzufügen",
+    "tillage": "Bodenbearbeitung hinzufügen",
+    "crop_protection": "Pflanzenschutz hinzufügen",
+    "fertilizer_application": "Düngung hinzufügen",
+    "crop_rotation": "Fruchtfolge hinzufügen",
+    "new_animal": "Tier hinzufügen",
+    "treatment": "Behandlung hinzufügen",
+    "title": "Schnellzugriff",
+    "active_actions": "Aktive Aktionen (max. 4)",
+    "available_actions": "Verfügbare Aktionen",
+    "onboarding": {
+      "welcome_heading": "Schnellzugriff",
+      "welcome_body": "Mit dem Schnellzugriff kannst du bis zu 4 Aktionen direkt von der Startseite aus starten.",
+      "settings_hint": "Du kannst die Aktionen jederzeit in den Einstellungen anpassen oder ganz deaktivieren.",
+      "configure_heading": "Aktionen konfigurieren"
+    }
+  },
+  "settings": {
+    "settings": "Einstellungen",
+    "onboardings": "Anleitungen",
+    "disable_onboardings_info": "Zeigt Anleitungen beim erstmaligen Öffnen einer Funktion an.",
+    "app_settings": "Einstellungen",
+    "speed_dial_enabled": "Schnellzugriff",
+    "speed_dial_settings": "Schnellzugriff konfigurieren"
   },
   "permissions": {
     "location": {

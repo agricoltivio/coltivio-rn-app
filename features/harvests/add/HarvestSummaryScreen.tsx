@@ -12,8 +12,7 @@ export function HarvestSummaryScreen({
 }: HarvestSummaryScreenProps) {
   const { t } = useTranslation();
   const {
-    selectedHarvestPlotsById,
-    selectedHarvestingMachinery,
+    selectedPlotsById,
     selectedCrop,
     totalProducedUnits = 0,
     harvest,
@@ -22,14 +21,14 @@ export function HarvestSummaryScreen({
   const {
     date,
     kilosPerUnit,
-    processingType,
+    unit,
     additionalNotes,
     cropId,
     conservationMethod,
   } = harvest as Harvest;
 
   const totalProducedKilos = totalProducedUnits * kilosPerUnit;
-  const plotHarvests = Object.values(selectedHarvestPlotsById);
+  const plotHarvests = Object.values(selectedPlotsById);
 
   const createHarvestMutation = useCreateHarvestMutation(() =>
     navigation.reset({
@@ -39,24 +38,23 @@ export function HarvestSummaryScreen({
         { name: "FieldCalendar" },
         { name: "Harvests" },
       ],
-    })
+    }),
   );
 
   function onSave() {
     createHarvestMutation.mutate({
-      processingType,
+      unit,
       additionalNotes,
       cropId,
-      date,
-      machineryId: harvest?.machineryId,
+      date: date.toISOString(),
       harvestCount: harvest?.harvestCount,
       kilosPerUnit,
       conservationMethod,
       plots: plotHarvests.map((plot) => ({
-        geometry: plot.harvestArea,
+        geometry: plot.geometry,
         plotId: plot.plotId,
         size: plot.harvestSize,
-        producedUnits: plot.producedUnits!,
+        numberOfUnits: plot.numberOfUnits!,
       })),
     });
   }
@@ -78,11 +76,10 @@ export function HarvestSummaryScreen({
         date={date}
         cropName={selectedCrop!.name}
         kilosPerUnit={kilosPerUnit}
-        processingType={processingType}
+        unit={unit}
         conservationMethod={conservationMethod}
-        machineryName={selectedHarvestingMachinery?.name}
         producedKilos={totalProducedKilos}
-        producedUnits={totalProducedUnits}
+        numberOfUnits={totalProducedUnits}
         additionalNotes={additionalNotes}
         harvestAreas={plotHarvests}
       />

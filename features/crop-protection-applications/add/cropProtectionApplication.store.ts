@@ -1,5 +1,4 @@
 import { CropProtectionApplicationsBatchCreateInput } from "@/api/cropProtectionApplications.api";
-import { CropProtectionEquipment } from "@/api/cropProtectionEquipments.api";
 import { CropProtectionProduct } from "@/api/cropProtectionProducts.api";
 import { create } from "zustand";
 
@@ -8,23 +7,25 @@ export type SelectedCropProtectionApplicationPlot = {
   name: string;
   size: number;
   geometry: GeoJSON.MultiPolygon;
-  numberOfApplications: number;
+  numberOfUnits: number;
 };
 
-export type AddCropProtectionApplicationBase = Omit<
+// Store uses Date objects for date/time, merged to dateTime string on save
+export type AddCropProtectionApplicationData = Omit<
   CropProtectionApplicationsBatchCreateInput,
-  "plots"
->;
+  "plots" | "dateTime"
+> & {
+  date: Date;
+  time: Date;
+};
 
 type AddCropProtectionApplication = {
-  totalNumberOfApplications?: number;
-  setTotalNumberOfApplications: (amount: number) => void;
-  data?: Partial<AddCropProtectionApplicationBase>;
-  setData: (data: Partial<AddCropProtectionApplicationBase>) => void;
+  totalNumberOfUnits?: number;
+  setTotalNumberOfUnits: (amount: number) => void;
+  data?: Partial<AddCropProtectionApplicationData>;
+  setData: (data: Partial<AddCropProtectionApplicationData>) => void;
   selectedProduct?: CropProtectionProduct;
   setSelectedProduct: (product: CropProtectionProduct) => void;
-  selectedEquipment?: CropProtectionEquipment;
-  setSelectedEquipment: (equipment: CropProtectionEquipment) => void;
   selectedPlotsById: Record<string, SelectedCropProtectionApplicationPlot>;
   putPlot: (plot: SelectedCropProtectionApplicationPlot) => void;
   removePlot: (plotId: string) => void;
@@ -35,8 +36,8 @@ type AddCropProtectionApplication = {
 
 export const useAddCropProtectionApplicationStore =
   create<AddCropProtectionApplication>((set) => ({
-    setTotalNumberOfApplications: (amount: number) =>
-      set({ totalNumberOfApplications: amount }),
+    setTotalNumberOfUnits: (amount: number) =>
+      set({ totalNumberOfUnits: amount }),
     setData: (rotation) =>
       set((state) => ({
         data: {
@@ -44,7 +45,6 @@ export const useAddCropProtectionApplicationStore =
           ...rotation,
         },
       })),
-    setSelectedEquipment: (equipment) => set({ selectedEquipment: equipment }),
     setSelectedProduct: (product) => set({ selectedProduct: product }),
     selectedPlotsById: {},
     putPlot: (plot: SelectedCropProtectionApplicationPlot) =>
@@ -78,10 +78,9 @@ export const useAddCropProtectionApplicationStore =
       }),
     reset: () =>
       set(() => ({
-        totalNumberOfApplications: undefined,
+        totalNumberOfUnits: undefined,
         selectedProduct: undefined,
         selectedPlotsById: {},
-        selectedEquipment: undefined,
         data: undefined,
       })),
     resetSelectedPlots: () =>

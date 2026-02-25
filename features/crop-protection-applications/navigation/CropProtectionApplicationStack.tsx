@@ -1,16 +1,12 @@
 import { Stack } from "@/navigation/stack";
-import { AddCropProtectionApplicationDivideOnPlotsScreen } from "../add/AddCropProtectionApplicationDivideOnPlotsScreen";
-import { AddCropProtectionApplicationSelectDateScreen } from "../add/AddCropProtectionApplicationSelectDateScreen";
-import { AddCropProtectionApplicationSelectMachineConfigScreen } from "../add/AddCropProtectionApplicationSelectEquipmentScreen";
-import { AddCropProtectionApplicationSelectPlotsScreen } from "../add/AddCropProtectionApplicationSelectPlotsScreen";
-import { AddCropProtectionApplicationSelectProductScreen } from "../add/AddCropProtectionApplicationSelectProductScreen";
-import { AddCropProtectionApplicationSelectQuantityScreen } from "../add/AddCropProtectionApplicationSelectQuantityScreen";
-import { AddCropProtectionApplicationSummaryScreen } from "../add/AddCropProtectionApplicationSummaryScreen";
+import { ConfigureCropProtectionApplicationScreen } from "../add/ConfigureCropProtectionApplicationScreen";
+import { DivideCropProtectionApplicationOnPlotsScreen } from "../add/DivideCropProtectionApplicationOnPlotsScreen";
+import { SelectCropProtectionApplicationPlotsScreen } from "../add/SelectCropProtectionApplicationPlotsScreen";
+import { CropProtectionApplicationSummaryScreen } from "../add/CropProtectionApplicationSummaryScreen";
+import { SelectCropProtectionApplicationProductAndDateScreen } from "../add/SelectCropProtectionApplicationProductAndDateScreen";
+import { SetCropProtectionApplicationUnitQuantityScreen } from "../add/SetCropProtectionApplicationUnitQuantityScreen";
 import { CropProtectionApplicationDetailsScreen } from "../CropProtectionApplicationDetails";
-import { CropProtectionApplicationsOfYearListScreen } from "../CropProtectionApplicationsListScreen";
-import { CropProtectionApplicationsOfYearScreen } from "../CropProtectionApplicationsOfYearScreen";
 import { CropProtectionApplicationsScreen } from "../CropProtectionApplicationsScreen";
-import { AddCropProtectionApplicationAdditionalNotesScreen } from "../add/AddCropProtectionApplicationAdditionalNotesScreen";
 
 export function renderCropProtectionApplicationStack() {
   return [
@@ -21,72 +17,46 @@ export function renderCropProtectionApplicationStack() {
       component={CropProtectionApplicationsScreen}
     />,
     <Stack.Screen
-      key="crop-protection-applications-of-year"
-      name="CropProtectionApplicationsOfYear"
-      options={{ title: "" }}
-      component={CropProtectionApplicationsOfYearScreen}
-    />,
-    <Stack.Screen
-      key="crop-protection-applications-of-year-list"
-      name="CropProtectionApplicationsOfYearList"
-      options={{ title: "" }}
-      component={CropProtectionApplicationsOfYearListScreen}
-    />,
-    <Stack.Screen
       key="crop-protection-application-details"
       name="CropProtectionApplicationDetails"
       options={{ title: "" }}
       component={CropProtectionApplicationDetailsScreen}
     />,
     <Stack.Screen
-      key="add-crop-protection-application-select-date"
-      name="AddCropProtectionApplicationSelectDate"
+      key="select-crop-protection-application-product-and-date"
+      name="SelectCropProtectionApplicationProductAndDate"
       options={{ title: "" }}
-      component={AddCropProtectionApplicationSelectDateScreen}
+      component={SelectCropProtectionApplicationProductAndDateScreen}
     />,
     <Stack.Screen
-      key="add-crop-protection-application-select-product"
-      name="AddCropProtectionApplicationSelectProduct"
-      options={{
-        title: "",
-      }}
-      component={AddCropProtectionApplicationSelectProductScreen}
-    />,
-    <Stack.Screen
-      key="add-crop-protection-application-select-machine-config"
-      name="AddCropProtectionApplicationSelectMachineConfig"
+      key="configure-crop-protection-application"
+      name="ConfigureCropProtectionApplication"
       options={{ title: "" }}
-      component={AddCropProtectionApplicationSelectMachineConfigScreen}
+      component={ConfigureCropProtectionApplicationScreen}
     />,
     <Stack.Screen
-      key="add-crop-protection-application-select-quantity"
-      name="AddCropProtectionApplicationSelectQuantity"
+      key="set-crop-protection-application-unit-quantity"
+      name="SetCropProtectionApplicationUnitQuantity"
       options={{ title: "" }}
-      component={AddCropProtectionApplicationSelectQuantityScreen}
+      component={SetCropProtectionApplicationUnitQuantityScreen}
     />,
     <Stack.Screen
-      key="add-crop-protection-application-select-plots"
-      name="AddCropProtectionApplicationSelectPlots"
+      key="select-crop-protection-application-plots"
+      name="SelectCropProtectionApplicationPlots"
       options={{ title: "", headerShown: false }}
-      component={AddCropProtectionApplicationSelectPlotsScreen}
+      component={SelectCropProtectionApplicationPlotsScreen}
     />,
     <Stack.Screen
-      key="add-crop-protection-application-divide-on-plots"
-      name="AddCropProtectionApplicationDivideOnPlots"
+      key="divide-crop-protection-application-on-plots"
+      name="DivideCropProtectionApplicationOnPlots"
       options={{ title: "" }}
-      component={AddCropProtectionApplicationDivideOnPlotsScreen}
+      component={DivideCropProtectionApplicationOnPlotsScreen}
     />,
     <Stack.Screen
-      key="add-crop-protection-application-additional-notes"
-      name="AddCropProtectionApplicationAdditionalNotes"
+      key="crop-protection-application-summary"
+      name="CropProtectionApplicationSummary"
       options={{ title: "" }}
-      component={AddCropProtectionApplicationAdditionalNotesScreen}
-    />,
-    <Stack.Screen
-      key="add-crop-protection-application-summary"
-      name="AddCropProtectionApplicationSummary"
-      options={{ title: "" }}
-      component={AddCropProtectionApplicationSummaryScreen}
+      component={CropProtectionApplicationSummaryScreen}
     />,
   ];
 }

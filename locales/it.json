@@ -11,7 +11,9 @@
     "save": "Salva",
     "add": "Aggiungi",
     "ok": "OK",
+    "close": "Chiudi",
     "delete": "Elimina",
+    "details": "Dettagli",
     "parcel_select": "Seleziona la Parcella",
     "draw_area": "Disegna Area",
     "edit_area": "Modifica Area",
@@ -19,7 +21,9 @@
     "export": "Esporta",
     "finish": "Finisci",
     "send_email": "Invia e-mail",
-    "forgot_password": "Password dimenticato"
+    "forgot_password": "Password dimenticata",
+    "apply": "Applica",
+    "clear": "Cancella"
   },
   "forms": {
     "labels": {
@@ -40,6 +44,7 @@
       "crop": "Coltura",
       "size_m2": "Dimensione (m²)",
       "area": "Superficie",
+      "area_hectares": "Superficie (ha)",
       "divide_by_plot_size": "Dividi in base alle dimensioni della parcella",
       "plot_w_size": "Campo {{name}} ({{size}}a)",
       "device": "Dispositivo",
@@ -50,6 +55,7 @@
       "load": "Carico",
       "loads": "Carichi",
       "balls": "Rotoballe/Ballette",
+      "crate": "Cassetta",
       "amount_unit": "Quantità {{unit}}",
       "amount_of_loads": "Numero di Carichi",
       "amount_per_load": "Quantità per Carico",
@@ -70,6 +76,7 @@
       "reason": "Motivo",
       "action": "Azione",
       "conservation": "Conservazione",
+      "conservation_optional": "Conservazione (facoltativa)",
       "processing_type": "Trasformazione",
       "weight_kg_per_harvest_unit": "Peso per unità di raccolto (kg)",
       "machine": "Macchina Agricola",
@@ -86,7 +93,11 @@
       "usage_optional": "Utilizzo (opzionale)",
       "usagecode": "Codice utilizzo",
       "cutting_date": "Data di taglio",
-      "cutting_date_optional": "Data di taglio (opzionale)"
+      "cutting_date_optional": "Data di taglio (opzionale)",
+      "permanent": "A tempo indeterminato",
+      "sex": "Sesso",
+      "date_range": "Periodo",
+      "duration": "Durata"
     },
     "placeholders": {
       "location_search": "es. Via, Numero Civico, Città",
@@ -101,28 +112,56 @@
       "password_repeat_invalid": "Le password non corrispondono",
       "divided_amount_too_big": "La quantità distribuita è maggiore di quella disponibile",
       "not_all_divided": "Non hai ancora distribuito l'intera quantità",
-      "required": "Campo obbligatorio"
+      "required": "Campo obbligatorio",
+      "min": "Minimo {{min}}"
     }
   },
   "common": {
+    "yes": "Sì",
+    "no": "No",
     "no_entries": "Ancora nessun elemento",
+    "notes": "Note",
     "area_acres": "Superficie: {{area}}a",
     "dont_show_again": "Non mostrare più",
+    "error": "Errore",
+    "unknown_error": "Si è verificato un errore sconosciuto.",
     "danger_zone": "Attenzione!",
     "all_entries_will_be_deleted": "Tutti gli elementi verranno eliminati definitivamente.",
     "remaining_quantity": "{{quantity}} {{quantityLabel}} ancora disponibile",
     "total_amount_w_unit": "Totale {{amount}}{{unit}}",
     "if_problem_contact_support": "In caso di problemi, si prega di contattare il nostro supporto.",
-    "unknown": "unknown",
-    "parcel_number": "Parcel Number",
+    "unknown": "Sconosciuto",
+    "parcel_number": "Particella: {{number}}",
     "usage": "Utilizzo",
     "federal_farm_id": "Numero azienda: {{number}}",
     "new_machine": "Nuova macchina",
-    "new_device": "Nuovo dispositivo"
+    "new_device": "Nuovo dispositivo",
+    "crate": "Cassetta",
+    "total_amount": "Quantità totale",
+    "dashboard": "Dashboard",
+    "list": "Lista"
+  },
+  "presets": {
+    "preset": "Modello",
+    "presets": "Modelli",
+    "preset_settings": "Impostazioni modelli",
+    "select_preset": "Seleziona modello",
+    "manage_presets": "Gestisci modelli",
+    "manage_harvest_presets": "Gestisci modelli di raccolta",
+    "manage_tillage_presets": "Gestisci modelli di lavorazione del terreno",
+    "manage_fertilizer_presets": "Gestisci modelli di fertilizzazione",
+    "manage_crop_protection_presets": "Gestisci modelli di trattamento fitosanitario",
+    "save_as_preset": "Salva come modello",
+    "preset_name": "Nome del modello",
+    "enter_preset_name": "Inserisci un nome per il modello",
+    "delete_confirm_title": "Elimina modello",
+    "delete_confirm_message": "Vuoi davvero eliminare \"{{name}}\"?",
+    "no_presets": "Nessun modello disponibile",
+    "no_preset": "Nessun modello"
   },
   "errors": {
     "unexpected_retry": "Oops, qualcosa è andato storto. Riprova.",
-    "unexpected_retry_later": "Oops, qualcosaè andato storto. Riprova più tardi.",
+    "unexpected_retry_later": "Oops, qualcosa è andato storto. Riprova più tardi.",
     "unexpected": "Oops, qualcosa è andato storto.",
     "try_again_later": "Riprova più tardi...",
     "link_expired": "Il link è scaduto. Per favore riprova."
@@ -146,7 +185,8 @@
       "t": "t",
       "l": "l",
       "ml": "ml",
-      "m3": "m³"
+      "m3": "m³",
+      "ha": "ha"
     }
   },
   "tips": {
@@ -156,7 +196,7 @@
       "draw_tip": "Utilizzare questi simboli per iniziare e terminare il disegno. Toccare la mappa per impostare i punti d'angolo. Tenere premuti i punti d'angolo per spostarli."
     },
     "select_plots": {
-      "heading": "Seleziona gli campi utilizzati",
+      "heading": "Seleziona i campi utilizzati",
       "content": "Seleziona uno o più campi"
     }
   },
@@ -198,6 +238,7 @@
     },
     "summary": {
       "heading": "Tutto pronto!",
+      "subheading": "La tua azienda con il numero {{federalFarmId}} è pronta.",
       "plots_info": "Le tue superfici verranno aggiunte come appezzamenti in base al tuo numero azienda.",
       "crops_info": "La coltura attuale viene derivata dal codice utilizzo.",
       "edit_plots_info": "Puoi modificare le tue superfici in qualsiasi momento sotto 'Appezzamenti' o tramite la mappa.",
@@ -248,7 +289,7 @@
     },
     "map": {
       "selected_plot": {
-        "size": "Superficie: {{size}}a",
+        "size": "{{size}}a",
         "crop": "Coltura: {{crop}}"
       }
     },
@@ -287,6 +328,73 @@
       "heading": "Eliminare davvero il campo {{name}}?",
       "entries_warning": "Tutte le registrazioni per questo campo saranno eliminate in modo irreversibile.",
       "confirm_by_typing_name": "Per eliminare questo campo, inserisci il nome e conferma l'operazione."
+    },
+    "actions": {
+      "adjust": "Adatta",
+      "adjust_area": "Adatta superficie",
+      "manage_area": "Gestisci superficie",
+      "split": "Dividi",
+      "merge": "Unisci"
+    },
+    "split_onboarding": {
+      "welcome_heading": "Dividi il campo",
+      "welcome_body": "Dividi un campo in più parti. Puoi disegnare una linea o ritagliare un'area.",
+      "line_heading": "Disegna una linea",
+      "line_body": "Disegna una linea attraverso il campo per dividerlo in due parti. Tocca la mappa per impostare i punti e conferma con il simbolo di taglio.",
+      "area_heading": "Ritaglia un'area",
+      "area_body": "Disegna un poligono all'interno del campo per ritagliare una nuova area. Questo è utile se vuoi separare una zona specifica."
+    },
+    "split": {
+      "heading": "Dividi il campo",
+      "mode_line": "Linea",
+      "mode_polygon": "Area",
+      "mode_select_message": "Scegli come vuoi dividere il campo.",
+      "line_tip": "Disegna una linea attraverso il campo per dividerlo.",
+      "polygon_tip": "Disegna un'area all'interno del campo per ritagliarla.",
+      "split_failed": "Divisione fallita. Assicurati che la linea attraversi completamente il campo.",
+      "summary": {
+        "heading": "Conferma divisione",
+        "sub_plot_name": "Sottocampo {{letter}}",
+        "strategy_label": "Strategia",
+        "strategy_keep_reference": "Mantieni riferimento",
+        "strategy_keep_reference_info": "Il campo originale viene mantenuto come riferimento. Tutte le registrazioni esistenti (rotazioni colturali, raccolti, ecc.) restano associate al campo di riferimento.",
+        "strategy_delete_and_migrate": "Elimina riferimento",
+        "strategy_delete_and_migrate_info": "Il campo originale viene eliminato. Tutte le registrazioni esistenti vengono trasferite al sottocampo selezionato.",
+        "original_plot_name": "Nome del campo di riferimento",
+        "migrate_to_label": "Trasferisci registrazioni a"
+      }
+    },
+    "merge": {
+      "heading": "Unisci campi",
+      "select_plots": "Seleziona i campi da unire.",
+      "min_two_plots": "Seleziona almeno 2 campi.",
+      "summary": {
+        "heading": "Conferma unione",
+        "strategy_label": "Strategia",
+        "strategy_keep_reference": "Mantieni riferimento",
+        "strategy_keep_reference_info": "I campi originali vengono mantenuti come riferimento. Tutte le registrazioni esistenti restano associate ai campi di riferimento.",
+        "strategy_delete_and_migrate": "Elimina riferimento",
+        "strategy_delete_and_migrate_info": "I campi originali vengono eliminati. Tutte le registrazioni esistenti vengono trasferite al nuovo campo.",
+        "strategy_delete_crop_rotation_warning": "Le rotazioni colturali non vengono trasferite e andranno perse."
+      }
+    },
+    "merge_onboarding": {
+      "welcome_heading": "Unisci appezzamenti",
+      "welcome_body": "Seleziona gli appezzamenti che vuoi unire. L'appezzamento attivo è già selezionato.",
+      "confirm_heading": "Conferma",
+      "confirm_body": "Premi l'icona di conferma quando sono selezionati almeno 2 appezzamenti."
+    },
+    "map_onboarding": {
+      "browse_heading": "I tuoi appezzamenti",
+      "browse_body": "Tocca un appezzamento sulla mappa o cercalo tramite l'icona lista per vederne i dettagli.",
+      "browse_expand_info": "Espandi il cassetto per vedere ulteriori informazioni.",
+      "tools_heading": "Strumenti",
+      "tools_body": "Usa la barra degli strumenti per gestire le tue superfici.",
+      "tool_add": "Aggiungi un nuovo appezzamento",
+      "tool_split": "Dividi un appezzamento esistente",
+      "tool_merge": "Unisci appezzamenti",
+      "tool_edit": "Modifica la superficie",
+      "tool_delete": "Elimina appezzamento"
     },
     "usage_codes": {
       "501": "Orzo primaverile",
@@ -356,11 +464,11 @@
       "595": "Altri seminativi aperti, non ammissibili a contributo (area di promozione della biodiversità specifica regionale)",
       "597": "Altri seminativi aperti, ammissibili a contributo",
       "598": "Altri seminativi aperti, non ammissibili a contributo",
-      "601": "Prati artificiali (escluse le pascoli)",
+      "601": "Prati artificiali (esclusi i pascoli)",
       "602": "Altri prati artificiali, ammissibili a contributo (es. pascolo suino, pascolo avicolo)",
-      "611": "Prati estensivi (escluse le pascoli)",
-      "612": "Prati poco intensivi (escluse le pascoli)",
-      "613": "Altri prati permanenti (escluse le pascoli)",
+      "611": "Prati estensivi (esclusi i pascoli)",
+      "612": "Prati poco intensivi (esclusi i pascoli)",
+      "613": "Altri prati permanenti (esclusi i pascoli)",
       "616": "Pascoli (pascoli aziendali, altri pascoli esclusi quelli di alpeggio)",
       "617": "Pascoli estensivi",
       "618": "Pascoli forestali (esclusa area boscata)",
@@ -370,10 +478,10 @@
       "625": "Pascoli forestali (esclusa area boscata)",
       "631": "Leguminose foraggere per produzione di seme (coltivazione contrattuale)",
       "632": "Graminacee foraggere per produzione di seme (coltivazione contrattuale)",
-      "635": "Prati ripariali (escluse le pascoli)",
+      "635": "Prati ripariali (esclusi i pascoli)",
       "660": "Altri pascoli permanenti, ammissibili a contributo aggregato",
       "693": "Aree di promozione della biodiversità specifica regionale (pascoli)",
-      "694": "Aree di promozione della biodiversità specifica regionale (aree verdi escluse le pascoli)",
+      "694": "Aree di promozione della biodiversità specifica regionale (aree verdi esclusi i pascoli)",
       "697": "Altre aree verdi (aree verdi permanenti), ammissibili a contributo",
       "698": "Altre aree verdi (aree verdi permanenti), non ammissibili a contributo",
       "701": "Vigneti",
@@ -429,7 +537,7 @@
       "902": "Altre superfici improduttive (es. superfici trinciate, fortemente infestate, siepi senza fascia tampone)",
       "903": "Superfici senza finalità agricola principale (terreno edificabile, aree gioco, equitazione, campeggio, golf, aeroporti o aree delimitate di ferrovie, strade pubbliche e corsi d'acqua)",
       "904": "Fossi, stagni, laghetti",
-      "905": "Aree ruderal, mucchi di pietre e muretti",
+      "905": "Aree ruderali, mucchi di pietre e muretti",
       "906": "Muri a secco",
       "907": "Sentieri naturali non pavimentati",
       "908": "Aree di promozione della biodiversità specifica regionale",
@@ -463,7 +571,7 @@
   },
   "crop_protection_equipments": {
     "new_equipment": "Nuovo Dispositivo per la Difesa delle Colture",
-    "only_same_unit_warning": "Attention : Pour utiliser une machine pour un produit phytosanitaire, deve avere la stessa unità di misura."
+    "only_same_unit_warning": "Per utilizzare una macchina per un prodotto fitosanitario, deve avere la stessa unità di misura."
   },
   "harvest_equipments": {
     "new_harvester": "Nuova Macchina da Raccolta",
@@ -478,6 +586,7 @@
   },
   "field_calendar": {
     "field_calendar": "Calendario dei campi",
+    "crop_families": "Famiglie di colture",
     "crops": "Colture",
     "crop_rotations": "Rotazioni colturali",
     "tillages": "Lavorazioni del terreno",
@@ -486,10 +595,28 @@
     "harvests": "Raccolti",
     "crop_protection_products": "Prodotti fitosanitari",
     "crop_protection_applications": "Trattamenti fitosanitari",
-    "export": "Genera report"
+    "export": "Genera report",
+    "settings": "Impostazioni calendario dei campi",
+    "groups": {
+      "crops": "Colture",
+      "soil": "Lavorazione del terreno",
+      "fertilization": "Fertilizzazione",
+      "protection": "Trattamento fitosanitario",
+      "harvest": "Raccolta",
+      "export": "Esportazione"
+    },
+    "onboarding": {
+      "welcome_heading": "Benvenuto nel calendario dei campi",
+      "welcome_body": "Qui gestisci tutte le attività relative ai tuoi campi: colture, lavorazione del terreno, fertilizzazione, trattamento fitosanitario e raccolta.",
+      "configure_heading": "Personalizza il tuo calendario dei campi",
+      "done_heading": "Tutto pronto!",
+      "done_body": "Puoi modificare le impostazioni in qualsiasi momento tramite il simbolo dell'ingranaggio."
+    }
   },
   "harvests": {
     "harvest": "Raccolto",
+    "add_harvest": "Nuovo raccolto",
+    "harvest_configuration": "Configurazione raccolto",
     "harvest_year": "Raccolto {{year}}",
     "harvest_date": "Raccolto del {{date}}",
     "harvest_plot_name": "Raccolto - {{name}}",
@@ -505,17 +632,21 @@
     },
     "labels": {
       "unit": {
-        "none": "Carico",
+        "load": "Carico",
         "round_bale": "Rotoballa",
         "square_bale": "Ballone",
-        "other": "Unità"
+        "crate": "Cassetta",
+        "total_amount": "Quantità totale",
+        "total_amount_kg": "Quantità totale (kg)",
+        "other": "Unità",
+        "custom": "Unità personalizzata"
       },
       "conservation_method": {
         "dried": "Fieno",
         "silage": "Insilato",
         "haylage": "Fieno-silo",
         "other": "Altro",
-        "none": ""
+        "none": "Nessuno"
       },
       "processing_type": {
         "none": "Sfuso",
@@ -526,11 +657,15 @@
       "select_date": {
         "heading": "Quando è stato raccolto?"
       },
-      "select_machinery": {
-        "heading": "Quale macchina è stata utilizzata?",
-        "no_machinery": "Non hai ancora aggiunto macchine. Questo semplifica il tracciamento del raccolto definendo valori standard."
+      "select_how": {
+        "heading": "Come è stato raccolto?",
+        "no_machinery": "Non hai ancora registrato una macchina. Le macchine semplificano la registrazione del raccolto permettendo di predefinire valori standard."
       }
-    }
+    },
+    "comparison_year": "Anno di confronto",
+    "select_comparison_year": "Seleziona anno di confronto",
+    "total_amount": "Quantità totale",
+    "amount_per_month": "Quantità per mese"
   },
   "fertilizers": {
     "fertilizer": "Fertilizzante",
@@ -538,13 +673,20 @@
     "product_in_use_warning": "Attenzione, questo fertilizzante è in uso e pertanto può essere modificato solo in misura limitata e non può essere eliminato.",
     "warning_unit_not_editable": "Attenzione, l'unità non può essere modificata! Dovrebbe corrispondere all'unità in cui viene applicato il fertilizzante.",
     "unit_info": "Seleziona in quale unità (ad es. litri) viene applicato il fertilizzante.",
-    "default_machine_info": "Per semplificare la registrazione può essere definita una macchina con cui viene applicato questo fertilizzante. La capacità della macchina deve corrispondere all'unità del fertilizzante."
+    "default_machine_info": "Per semplificare la registrazione può essere definita una macchina con cui viene applicato questo fertilizzante."
   },
   "fertilizer_application": {
     "fertilizer_application": "Distribuzione del fertilizzante",
     "fertilizer_application_date": "Distribuzione del fertilizzante del {{date}}",
     "fertilizer_application_year": "Distribuzione del fertilizzante {{year}}",
     "fertilizer_application_plot_name": "Distribuzione del fertilizzante - {{name}}",
+    "add_fertilizer_application": "Nuova distribuzione del fertilizzante",
+    "application_configuration": "Configurazione distribuzione",
+    "units": {
+      "bag": "Sacco",
+      "load": "Carico",
+      "amount_per_hectare": "Quantità per ettaro"
+    },
     "select_quantity": {
       "heading": "Quanto è stato distribuito?"
     },
@@ -574,16 +716,12 @@
   "tillages": {
     "tillages": "Lavorazioni del terreno",
     "tillage": "Lavorazione del terreno",
+    "tillage_configuration": "Configurazione lavorazione del terreno",
+    "add_tillage": "Nuova lavorazione del terreno",
     "tillage_year": "Lavorazione del terreno {{year}}",
     "tillage_date": "Lavorazione del terreno del {{date}}",
     "tillage_plot_name": "Lavorazione del terreno - {{name}}",
-    "select_date": {
-      "heading": "Quando è stata eseguita la lavorazione?"
-    },
-    "select_equipment": {
-      "heading": "Quale macchina è stata utilizzata?",
-      "no_machinery": "Non hai ancora registrato macchine. Questo può semplificare l'immissione dei dati predefinendo i valori standard."
-    },
+    "custom_action": "Azione personalizzata",
     "reasons": {
       "soil_loosening": "Decompattazione del terreno",
       "weed_control": "Controllo delle infestanti",
@@ -598,6 +736,7 @@
       "hoeing": "Sarchiatura",
       "weed_harrowing": "Erpicatura per controllo infestanti",
       "flame_weeding": "Diserbo termico",
+      "custom": "Personalizzato",
       "other": "Altro"
     }
   },
@@ -609,13 +748,28 @@
     "categories": {
       "grass": "Erba",
       "grain": "Cereale",
-      "none": "Nessuno"
+      "vegetable": "Verdura",
+      "fruit": "Frutta",
+      "other": "Altro"
     },
     "no_variety": "Nessuna Varietà",
-    "crop_in_use_warning": "Questa coltura è in uso e quindi non può essere eliminata."
+    "crop_in_use_warning": "Questa coltura è in uso e quindi non può essere eliminata.",
+    "family_optional": "Famiglia (facoltativa)",
+    "waiting_time_in_years_optional": "Tempo di attesa in anni (facoltativo)"
+  },
+  "crop_families": {
+    "crop_families": "Famiglie di colture",
+    "crop_family": "Famiglia di colture",
+    "new_crop_family": "Nuova famiglia di colture",
+    "waiting_time_in_years": "Tempo di attesa in anni",
+    "waiting_time_years": "{{count}} anno di attesa",
+    "waiting_time_years_plural": "{{count}} anni di attesa",
+    "family_in_use_warning": "Questa famiglia di colture è in uso e quindi non può essere eliminata."
   },
   "crop_protection_applications": {
     "crop_protection": "Trattamento fitosanitario",
+    "application_configuration": "Configurazione trattamento fitosanitario",
+    "add_application": "Nuovo trattamento fitosanitario",
     "crop_protection_year": "Trattamento fitosanitario {{year}}",
     "crop_protection_plot_name": "Trattamento fitosanitario - {{name}}",
     "crop_protection_date": "Trattamento fitosanitario del {{date}}",
@@ -655,10 +809,11 @@
     "product_in_use_warning": "Attenzione, questo prodotto fitosanitario è in uso e non può essere eliminato.",
     "warning_unit_not_editable": "Attenzione, l'unità non può essere modificata! Dovrebbe corrispondere all'unità in cui viene applicato il prodotto fitosanitario.",
     "unit_info": "Seleziona in quale unità (ad es. litri) viene applicato il prodotto.",
-    "default_machine_info": "Per semplificare la registrazione può essere definita una macchina con cui viene applicato questo prodotto. La capacità della macchina deve corrispondere all'unità del prodotto."
+    "default_machine_info": "Per semplificare la registrazione può essere definita una macchina con cui viene applicato questo prodotto."
   },
   "crop_rotations": {
     "crop_rotation": "Rotazione colturale",
+    "crop_rotation_crop_name": "Rotazione colturale - {{name}}",
     "crop_rotation_year": "Rotazione colturale {{year}}",
     "crop_rotation_plot_name": "Rotazione colturale - {{name}}",
     "crop_rotation_date": "Rotazione colturale del {{date}}",
@@ -668,12 +823,51 @@
     "sowing_date": "Semina del {{date}}",
     "new_crop": "Nuova Coltura",
     "select_crop": {
-      "heading": "Cos'è stato seminato?"
+      "heading": "Pianifica la rotazione colturale per una coltura"
     },
     "select_date": {
       "heading": "Quando è stato seminato?"
     },
-    "cannot_delete_warning": "Questa è l'unica coltura su questo campo e pertanto non può essere eliminata."
+    "cannot_delete_warning": "Questa è l'unica coltura su questo campo e pertanto non può essere eliminata.",
+    "set_dates_for_all": "Imposta le date per tutti",
+    "overlap_warning": "Il periodo si sovrappone a una rotazione colturale esistente.",
+    "view_list": "Lista",
+    "view_timeline": "Cronologia",
+    "view_calendar": "Calendario",
+    "last_rotation": "Ultima: {{crop}} ({{from}} – {{to}})",
+    "last_rotation_permanent": "Attuale: {{crop}} ({{from}} – permanente)",
+    "permanent_end_date_info": "La data di fine della rotazione attuale verrà impostata automaticamente al giorno prima della nuova data di inizio.",
+    "add_rotation": "Aggiungi rotazione",
+    "permanent": "Permanente",
+    "plan": {
+      "title": "Pianificazione rotazioni",
+      "save_plan": "Salva piano",
+      "edit_rotation": "Modifica rotazione",
+      "add_rotation_title": "Aggiungi rotazione",
+      "duration": "Durata",
+      "recurrence_optional": "Ripetizione (facoltativa)",
+      "every": "Ogni",
+      "year": "anno",
+      "years": "anni",
+      "until": "fino a",
+      "add_end_date": "+ Data di fine",
+      "add_recurrence": "+ Aggiungi ripetizione",
+      "no_rotations_yet": "Ancora nessuna rotazione",
+      "overlaps_with": "Si sovrappone con {{crop}}",
+      "select_crop_for_all": "Seleziona una coltura per tutte le rotazioni",
+      "resolve_conflicts_alert": "Risolvi tutti i conflitti di date prima di salvare",
+      "resolve_conflicts_warning": "Risolvi i conflitti di date prima di salvare",
+      "repeats_every_year": "Si ripete ogni anno",
+      "repeats_every_years": "Si ripete ogni {{count}} anni",
+      "until_date": "fino al {{date}}"
+    },
+    "timeline": {
+      "today": "Oggi",
+      "plot": "Campo",
+      "zoom_years": "Anni",
+      "zoom_months": "Mesi",
+      "zoom_weeks": "Settimane"
+    }
   },
   "reports": {
     "field_calendar": {
@@ -684,6 +878,13 @@
       "export_success_heading": "Calendario campi esportato con successo",
       "export_sent_to": "Il documento è stato inviato a {{email}}.",
       "export_mail_being_deliverd": "Potrebbe volerci un momento prima che l'email arrivi. Se non la trovi, controlla la cartella spam."
+    },
+    "treatments": {
+      "heading": "Esportazione trattamenti",
+      "select_animal_types": "Seleziona tipi di animali"
+    },
+    "outdoor_journal": {
+      "heading": "Esportazione diario all'aperto"
     }
   },
   "agri_coltivio": {
@@ -696,6 +897,246 @@
     "section_5_title": "Aiuta a mantenere l'app gratuita e indipendente per tutti.",
     "section_5": "Diventa membro o supportaci con una donazione. Ogni contributo è utile, grande o piccolo.",
     "section_6": "Grazie per farne parte."
+  },
+  "ear_tags": {
+    "ear_tags": "Marche auricolari",
+    "ear_tag": "Marca auricolare",
+    "new_ear_tag_range": "Nuove marche auricolari",
+    "from_number": "Dal numero",
+    "to_number": "Al numero",
+    "no_ear_tag": "Nessuna marca auricolare",
+    "no_animal_assigned": "Nessun animale assegnato"
+  },
+  "map_draw_onboarding": {
+    "welcome_heading": "Campi e superfici",
+    "welcome_body": "Stai per selezionare i tuoi campi o disegnare una superficie sulla mappa. Ecco una breve spiegazione di come funziona.",
+    "select_heading": "Seleziona i campi",
+    "select_body": "Tocca i tuoi campi per selezionarli o deselezionarli.",
+    "draw_heading": "Disegna una superficie",
+    "draw_body": "Tocca questo simbolo per avviare la modalità di disegno. Poi tocca la mappa per impostare i punti d'angolo. Tieni premuto un punto d'angolo per spostarlo.",
+    "finish_heading": "Completa il disegno",
+    "finish_body": "Tocca questo simbolo per completare la superficie.",
+    "welcome_body_draw": "Stai per disegnare un nuovo campo sulla mappa. Ecco una breve spiegazione di come funziona.",
+    "welcome_body_parcel": "Stai per selezionare una particella esistente. Ecco una breve spiegazione di come funziona.",
+    "parcel_heading": "Seleziona una particella",
+    "parcel_body": "Tocca una particella per selezionarla. Se la tua particella non è visibile, premi su «Carica particelle» per caricare le particelle nella posizione attuale della mappa.",
+    "welcome_body_edit": "Stai per modificare la forma di un campo. Ecco una breve spiegazione di come funziona.",
+    "edit_intro_heading": "Modifica il campo",
+    "edit_intro_body": "Sposta i punti d'angolo per adattare la forma. Tieni premuto un punto d'angolo e trascinalo nella posizione desiderata.",
+    "overlap_heading": "Sovrapposizioni",
+    "overlap_body": "Se il tuo nuovo campo si sovrappone a campi esistenti, questi verranno adattati automaticamente.",
+    "crop_rotation_welcome_heading": "Pianifica le tue rotazioni colturali",
+    "crop_rotation_welcome_body": "Seleziona i campi per i quali vuoi pianificare le rotazioni colturali.",
+    "plots_map_welcome_heading": "I tuoi campi",
+    "plots_map_tap_body": "Tocca un campo per vedere i dettagli.",
+    "plots_map_add_body": "Premi questo pulsante per aggiungere nuovi campi."
+  },
+  "animals": {
+    "animals": "Animali",
+    "animal": "Animale",
+    "new_animal": "Nuovo animale",
+    "animal_types": {
+      "goat": "Capra",
+      "sheep": "Pecora",
+      "cow": "Mucca",
+      "horse": "Cavallo",
+      "donkey": "Asino",
+      "pig": "Maiale",
+      "deer": "Cervo"
+    },
+    "sex": {
+      "male": "Maschio",
+      "female": "Femmina"
+    },
+    "registered": "Registrato (TVD)",
+    "date_of_birth": "Data di nascita",
+    "date_of_death": "Data di morte",
+    "death_reason": "Causa di morte",
+    "death_reasons": {
+      "died": "Deceduto",
+      "slaughtered": "Macellato"
+    },
+    "mother": "Madre",
+    "father": "Padre",
+    "children": "Discendenti",
+    "add_child": "Aggiungi discendente",
+    "no_children": "Nessun discendente",
+    "animal_husbandry": "Allevamento",
+    "unregistered_count": "{{count}} animali non registrati",
+    "waiting_period_count": "{{count}} animali con periodo di attesa",
+    "show_dead": "Mostra deceduti",
+    "only_unregistered": "Solo non registrati",
+    "only_with_waiting_period": "Solo con periodo di attesa",
+    "select_children": "Seleziona discendenti",
+    "settings": "Impostazioni allevamento",
+    "groups": {
+      "animals": "Animali",
+      "health": "Salute"
+    },
+    "onboarding": {
+      "welcome_heading": "Benvenuto nell'allevamento",
+      "welcome_body": "Qui gestisci i tuoi animali, le marche auricolari, i medicinali e i trattamenti.",
+      "configure_heading": "Personalizza l'allevamento",
+      "done_heading": "Tutto pronto!",
+      "done_body": "Puoi modificare le impostazioni in qualsiasi momento tramite il simbolo dell'ingranaggio."
+    },
+    "usage": "Utilizzo",
+    "usage_types": {
+      "milk": "Latte",
+      "other": "Altro"
+    },
+    "category": "Categoria",
+    "outdoor_journal_category": "Categoria diario all'aperto",
+    "outdoor_journal_category_info": "La categoria viene determinata automaticamente. Puoi sovrascriverla attivando una categoria personalizzata.",
+    "custom_category": "Categoria personalizzata",
+    "custom_animal_category": "Categoria animale personalizzata",
+    "no_active_category": "Automatica",
+    "manage_categories": "Gestisci categorie",
+    "add_category_entry": "Aggiungi voce categoria",
+    "open_ended": "Aperto",
+    "category_overlap_warning": "Risolvi le sovrapposizioni di date prima di salvare",
+    "delete_custom_categories_confirm": "Tutte le voci di categoria personalizzate verranno eliminate.",
+    "uncategorized_animals": "Animali senza categoria",
+    "show_animals": "Mostra",
+    "fix": "Correggi",
+    "herd": "Mandria",
+    "herds": "Mandrie",
+    "new_herd": "Nuova mandria",
+    "herd_name": "Nome della mandria",
+    "no_herds": "Nessuna mandria",
+    "animals_in_herd": "Animali nella mandria",
+    "outdoor_schedules": "Uscite",
+    "schedule_overlap_warning": "Risolvi le sovrapposizioni di programmi prima di salvare",
+    "outdoor_type": "Tipo",
+    "outdoor_types": {
+      "pasture": "Pascolo",
+      "exercise_yard": "Paddock"
+    },
+    "new_outdoor_schedule": "Nuovo programma di uscita",
+    "edit_outdoor_schedule": "Modifica programma di uscita",
+    "start_date": "Data di inizio",
+    "end_date": "Data di fine",
+    "end_date_optional": "Data di fine (facoltativa)",
+    "notes": "Note",
+    "recurrence": "Ripetizione",
+    "recurrence_optional": "Ripetizione (facoltativa)",
+    "until": "fino a",
+    "frequency": "Frequenza",
+    "frequency_types": {
+      "weekly": "Settimanale",
+      "monthly": "Mensile",
+      "yearly": "Annuale"
+    },
+    "every": "Ogni",
+    "week": "settimana",
+    "weeks": "settimane",
+    "month": "mese",
+    "months": "mesi",
+    "year": "anno",
+    "years": "anni",
+    "selected_only": "Solo selezionati",
+    "outdoor_journal": "Diario all'aperto",
+    "outdoor_journal_info": "Questo diario viene generato automaticamente dai programmi di uscita delle mandrie e dalle categorie animali definite.",
+    "uncategorized_animals_warning": "{{count}} animali senza categoria",
+    "journal_animal_count": "{{count}} animali",
+    "herds_onboarding": {
+      "step1_heading": "Mandrie e uscite",
+      "step1_body": "Raggruppa i tuoi animali in mandrie e crea programmi di uscita. Questi vengono utilizzati automaticamente per il diario all'aperto.",
+      "step2_heading": "Gestisci i programmi di uscita",
+      "step2_body": "Quando un programma di uscita cambia, non modificare quello esistente. Imposta invece la data «Fino a» e crea un nuovo programma. In questo modo la cronologia nel diario all'aperto viene mantenuta.",
+      "step3_heading": "Tutto pronto!",
+      "step3_body": "Ora puoi creare mandrie e definire programmi di uscita."
+    },
+    "tvd_import": {
+      "title": "Importazione TVD",
+      "experimental": "Questa funzione è sperimentale.",
+      "instructions": "Scarica l'elenco degli animali come file Excel dalla TVD e caricalo qui.",
+      "select_file": "Seleziona file Excel",
+      "import_button": "Importa",
+      "success_title": "Importazione completata",
+      "success_message": "{{imported}} di {{total}} animali sono stati importati.",
+      "skipped_message": "{{count}} animali sono stati ignorati.",
+      "onboarding_heading": "Importa animali dalla TVD",
+      "onboarding_body": "Per l'importazione è necessario un file Excel dalla sezione «Tierbestand» della TVD. Esportalo tramite il pulsante «Excel generieren»."
+    }
+  },
+  "drugs": {
+    "drugs": "Medicinali",
+    "drug": "Medicinale",
+    "new_drug": "Nuovo medicinale",
+    "edit_drug": "Modifica medicinale",
+    "drug_name": "Nome del medicinale",
+    "received_from": "Ricevuto da",
+    "critical_antibiotic": "Antibiotico critico",
+    "treatment_definitions": "Definizioni di trattamento",
+    "no_treatment_definitions": "Ancora nessuna definizione di trattamento",
+    "add_animal_type": "Aggiungi tipo di animale",
+    "dose_value": "Dose",
+    "dose_unit": "Unità",
+    "dose_per_unit": "Per",
+    "dose_units": {
+      "tablet": "Compressa",
+      "capsule": "Capsula",
+      "patch": "Cerotto",
+      "dose": "Dose",
+      "mg": "mg",
+      "mcg": "mcg",
+      "g": "g",
+      "ml": "ml",
+      "drop": "Goccia"
+    },
+    "dose_per_units": {
+      "kg": "kg di peso corporeo",
+      "animal": "Animale",
+      "day": "Giorno",
+      "total_amount": "Quantità totale"
+    },
+    "milk_waiting_days": "Giorni di attesa latte",
+    "meat_waiting_days": "Giorni di attesa carne",
+    "organs_waiting_days": "Giorni di attesa organi",
+    "drug_in_use": "Medicinale in uso",
+    "drug_in_use_warning": "Questo medicinale è in uso e non può essere eliminato.",
+    "no_drugs": "Nessun medicinale registrato"
+  },
+  "treatments": {
+    "treatments": "Trattamenti",
+    "treatment": "Trattamento",
+    "new_treatment": "Nuovo trattamento",
+    "edit_treatment": "Modifica trattamento",
+    "treatment_name": "Motivo del trattamento",
+    "select_animal": "Seleziona animale",
+    "select_drug": "Seleziona medicinale (facoltativo)",
+    "treatment_date": "Data del trattamento",
+    "treatment_end_date": "Data di fine",
+    "reason": "Motivo",
+    "milk_usable_date": "Latte utilizzabile dal",
+    "meat_usable_date": "Carne utilizzabile dal",
+    "organs_usable_date": "Organi utilizzabili dal",
+    "drug_configuration": "Configurazione medicinale",
+    "dose_label": "{{unit}} / {{perUnit}}",
+    "no_treatments": "Ancora nessun trattamento",
+    "antibiogram_available": "Antibiogramma disponibile",
+    "auto_calculated": "Calcolato automaticamente in base al medicinale",
+    "select_animals": "Seleziona animali",
+    "no_animals_selected": "Nessun animale selezionato",
+    "n_animals_selected": "{{count}} animali selezionati",
+    "confirm_selection": "Conferma ({{count}} selezionati)",
+    "select_all": "Seleziona tutti ({{count}})",
+    "clear_selection": "Cancella selezione",
+    "birthday_filter": "Data di nascita",
+    "filter_by_birthday": "Filtra per data di nascita",
+    "birthday_from": "Da",
+    "birthday_to": "A",
+    "drug_not_defined_for_all_types": "Il medicinale non è definito per tutti i tipi di animali selezionati",
+    "different_waiting_times_for_types": "I tempi di attesa differiscono tra i tipi di animali"
+  },
+  "settings": {
+    "settings": "Impostazioni",
+    "onboardings": "Tutorial",
+    "disable_onboardings_info": "Mostra i tutorial alla prima apertura di una funzionalità.",
+    "app_settings": "Impostazioni",
+    "speed_dial_enabled": "Accesso rapido",
+    "speed_dial_settings": "Configura accesso rapido"
   },
   "permissions": {
     "location": {

@@ -28,15 +28,28 @@ export function EditCropScreen({ route, navigation }: EditCropScreenProps) {
     control,
     handleSubmit,
     formState: { errors, isDirty },
-  } = useForm<CropFormValues>({ values: crop });
+  } = useForm<CropFormValues>({
+    values: crop
+      ? {
+          ...crop,
+          variety: crop.variety ?? undefined,
+          additionalNotes: crop.additionalNotes ?? undefined,
+          familyId: crop.familyId ?? undefined,
+          waitingTimeInYears: crop.waitingTimeInYears?.toString() ?? undefined,
+        }
+      : undefined,
+  });
 
   const updateCropMutation = useUpdateCropMutation(() => navigation.goBack());
   const deleteCropMutation = useDeleteCropMutation(() => navigation.goBack());
 
-  function onSubmit({ ...data }: CropFormValues) {
+  function onSubmit({ waitingTimeInYears, ...data }: CropFormValues) {
     updateCropMutation.mutate({
       id: cropId,
       ...data,
+      waitingTimeInYears: waitingTimeInYears
+        ? Number(waitingTimeInYears)
+        : null,
     });
   }
 

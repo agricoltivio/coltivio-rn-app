@@ -1,16 +1,12 @@
 import { Stack } from "@/navigation/stack";
 import { DivideHarvestOnPlotsScreen } from "../add/DivideHarvestOnPlotsScreen";
+import { ConfigureHarvestScreen } from "../add/ConfigureHarvestScreen";
 import { HarvestSummaryScreen } from "../add/HarvestSummaryScreen";
-import { SelectHarvestCropScreen } from "../add/SelectHarvestCropScreen";
-import { SelectHarvestDateScreen } from "../add/SelectHarvestDateScreen";
-import { SelectHarvestingMachineryScreen } from "../add/SelectHarvestingMachineryScreen";
+import { SelectHarvestCropAndDateScreen } from "../add/SelectHarvestCropAndDateScreen";
 import { SelectHarvestPlotsScreen } from "../add/SelectHarvestPlotsScreen";
-import { SelectHarvestQuantityScreen } from "../add/SelectHarvestQuantityScreen";
+import { SetHarvestQuantityScreen } from "../add/SetHarvestQuantityScreen";
 import { HarvestDetailsScreen } from "../HarvestDetailsScreen";
-import { HarvestListScreen } from "../HarvestListScreen";
-import { HarvestsOfYearScreen } from "../HarvestOfYearScreen";
 import { HarvestsScreen } from "../HarvestsScreen";
-import { AddHarvestAdditionalNotesScreen } from "../add/AddHarvestAdditionalNotesScreen";
 
 export function renderHarvestStack() {
   return [
@@ -23,56 +19,40 @@ export function renderHarvestStack() {
       component={HarvestsScreen}
     />,
     <Stack.Screen
-      key="harvests-of-year"
-      name="HarvestsOfYear"
-      options={{
-        title: "",
-      }}
-      component={HarvestsOfYearScreen}
-    />,
-    <Stack.Screen
       key="harvest-details"
       name="HarvestDetails"
       component={HarvestDetailsScreen}
       options={{ title: "" }}
     />,
     <Stack.Screen
-      key="select-harvest-date"
-      name="SelectHarvestDate"
+      key="select-harvest-crop-and-date"
+      name="SelectHarvestCropAndDate"
       options={{
         title: "",
       }}
-      component={SelectHarvestDateScreen}
+      component={SelectHarvestCropAndDateScreen}
     />,
     <Stack.Screen
-      key="select-harvest-crop"
-      name="SelectHarvestCrop"
+      key="configure-harvest"
+      name="ConfigureHarvest"
       options={{
         title: "",
       }}
-      component={SelectHarvestCropScreen}
+      component={ConfigureHarvestScreen}
     />,
     <Stack.Screen
-      key="select-harvesting-machinery"
-      name="SelectHarvestingMachinery"
+      key="set-harvest-quantity"
+      name="SetHarvestQuantity"
       options={{
         title: "",
       }}
-      component={SelectHarvestingMachineryScreen}
-    />,
-    <Stack.Screen
-      key="select-harvest-quantity"
-      name="SelectHarvestQuantity"
-      options={{
-        title: "",
-      }}
-      component={SelectHarvestQuantityScreen}
+      component={SetHarvestQuantityScreen}
     />,
     <Stack.Screen
       key="select-harvest-plots"
-      name="SelectHarvstPlots"
+      name="SelectHarvestPlots"
       options={{
-        title: "Ernte Fläche",
+        title: "",
         headerShown: false,
       }}
       component={SelectHarvestPlotsScreen}
@@ -86,28 +66,12 @@ export function renderHarvestStack() {
       component={DivideHarvestOnPlotsScreen}
     />,
     <Stack.Screen
-      key="add-harvest-additional-notes"
-      name="AddHarvestAdditionalNotes"
-      options={{
-        title: "",
-      }}
-      component={AddHarvestAdditionalNotesScreen}
-    />,
-    <Stack.Screen
       key="harvest-summary"
       name="HarvestSummary"
       options={{
         title: "",
       }}
       component={HarvestSummaryScreen}
-    />,
-    <Stack.Screen
-      key="harvests-of-year-list"
-      name="HarvestsOfYearList"
-      component={HarvestListScreen}
-      options={{
-        title: "",
-      }}
     />,
   ];
 }

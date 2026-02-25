@@ -18,11 +18,15 @@ import { useTheme } from "styled-components/native";
 import { CircleMarkers } from "./CircleMarkers";
 import { CommandPalette } from "./CommandPalette";
 import { MidpointCircleMarkers } from "./MidpointCircleMarkers";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { View } from "react-native";
 
 export type PolygonDrawingToolActions = {
   createPolygon: () => void;
   editPolygon: (coordinates: LatLng[]) => void;
   drawToPoint: (coordinate: LatLng) => void;
+  coordinates: LatLng[];
+  canFinish: boolean;
 };
 
 export type DrawAction = "select" | "edit" | "draw";
@@ -36,7 +40,10 @@ export type PolygonDrawingToolProps = {
   onDrawActionChange?: (action: DrawAction) => void;
   magnifierMapContent?: React.ReactNode[];
   portalName?: string;
+  finishIcon?: keyof typeof MaterialCommunityIcons.glyphMap;
+  onCanFinishChange?: (canFinish: boolean) => void;
   onFinish?: (coordinates: LatLng[]) => void;
+  onInfo?: () => void;
   showActions?: boolean;
 };
 
@@ -59,9 +66,12 @@ export const PolygonDrawingTool = forwardRef<
       fillColor,
       strokeWidth,
       magnifierMapContent,
+      finishIcon,
       onFinish,
+      onCanFinishChange,
+      onInfo,
     }: PolygonDrawingToolProps,
-    ref
+    ref,
   ) => {
     const theme = useTheme();
     const [polygon, setPolygon] = useState<MapPolygonProps>({
@@ -77,7 +87,7 @@ export const PolygonDrawingTool = forwardRef<
         coordinates: [],
         fillColor: hexToRgba(
           theme.colors.secondary,
-          theme.map.defaultFillAlpha
+          theme.map.defaultFillAlpha,
         ),
         strokeColor: theme.colors.yellow,
         strokeWidth: 2,
@@ -96,6 +106,8 @@ export const PolygonDrawingTool = forwardRef<
       createPolygon: onDraw,
       editPolygon,
       drawToPoint,
+      coordinates: polygon.coordinates,
+      canFinish: polygon.coordinates.length > 2,
     }));
 
     // const mapContentWithPolygon = useMemo(
@@ -119,7 +131,7 @@ export const PolygonDrawingTool = forwardRef<
           coordinates: initialPolygonCoordinates,
           fillColor: hexToRgba(
             theme.colors.success,
-            theme.map.defaultFillAlpha
+            theme.map.defaultFillAlpha,
           ),
           strokeColor: theme.colors.yellow,
           strokeWidth: 2,
@@ -177,6 +189,7 @@ export const PolygonDrawingTool = forwardRef<
       if (action !== "draw") {
         setAction("draw");
         onDrawActionChange && onDrawActionChange("draw");
+        onCanFinishChange && onCanFinishChange(false);
       }
       setCoordinatesStack([[]]);
     }
@@ -237,9 +250,9 @@ export const PolygonDrawingTool = forwardRef<
             });
           },
           50,
-          { leading: true, trailing: false }
+          { leading: true, trailing: false },
         ),
-      []
+      [],
     );
 
     function onDrag(coordinate: LatLng, position: Point) {
@@ -262,13 +275,13 @@ export const PolygonDrawingTool = forwardRef<
     function onCircleDragStart(
       index: number,
       coordinate: LatLng,
-      position?: Point
+      position?: Point,
     ) {
       setEditOverlayPolygon((prev) => ({
         ...prev,
         coordinates: polygon.coordinates.slice(
           0,
-          polygon.coordinates.length - 1
+          polygon.coordinates.length - 1,
         ),
       }));
     }
@@ -276,7 +289,7 @@ export const PolygonDrawingTool = forwardRef<
     function onCircleDragEnd(
       index: number,
       coordinate: LatLng,
-      position?: Point
+      position?: Point,
     ) {
       setEditOverlayPolygon((prev) => ({
         ...prev,
@@ -321,13 +334,14 @@ export const PolygonDrawingTool = forwardRef<
           [...prev[prev.length - 1], prev[prev.length - 1][0]],
         ]);
         setAction("edit");
+        onCanFinishChange && onCanFinishChange(true);
       }
     }
 
     function onMidcircleDrag(
       index: number,
       coordinate: LatLng,
-      position: Point
+      position: Point,
     ) {
       onDrag(coordinate, position);
       drawModifiedPolygon(index, coordinate);
@@ -336,12 +350,12 @@ export const PolygonDrawingTool = forwardRef<
     function onMidpointCircleDragStart(
       index: number,
       coordinate: LatLng,
-      position?: Point
+      position?: Point,
     ) {
       setEditOverlayPolygon((prev) => {
         const coordinates = polygon.coordinates.slice(
           0,
-          polygon.coordinates.length - 1
+          polygon.coordinates.length - 1,
         );
 
         coordinates.splice(index, 0, coordinate);
@@ -355,7 +369,7 @@ export const PolygonDrawingTool = forwardRef<
     function onMidpointCircleDragEnd(
       index: number,
       coordinate: LatLng,
-      position?: Point
+      position?: Point,
     ) {
       setEditOverlayPolygon((prev) => ({
         ...prev,
@@ -378,15 +392,14 @@ export const PolygonDrawingTool = forwardRef<
       });
       // setDragging(false);
     }
-    let markerCoordinates = [...polygon.coordinates];
-    if (action === "edit") {
-      // first and last are the same so we have to remove one of them
-      markerCoordinates = markerCoordinates.slice(
-        0,
-        markerCoordinates.length - 1
-      );
-    }
-
+    let markerCoordinates = useMemo(() => {
+      if (action === "edit") {
+        const coordinates = [...polygon.coordinates];
+        // first and last are the same so we have to remove one of them
+        return coordinates.slice(0, coordinates.length - 1);
+      }
+      return polygon.coordinates;
+    }, [polygon, action]);
     return (
       <>
         <Portal hostName={portalName}>
@@ -397,9 +410,25 @@ export const PolygonDrawingTool = forwardRef<
               onUndo={onUndo}
               onDelete={onDelete}
               onFinish={finish}
+              onInfo={onInfo}
               canFinish={polygon.coordinates.length > 2}
+              finishIcon={finishIcon}
             />
-          ) : null}
+          ) : (
+            // currently the polygon does not render properly without the command palette, dont ask me why
+            <View style={{ opacity: 0 }}>
+              <CommandPalette
+                action={action}
+                onDraw={onDraw}
+                onUndo={onUndo}
+                onDelete={onDelete}
+                onFinish={finish}
+                onInfo={onInfo}
+                canFinish={polygon.coordinates.length > 2}
+                finishIcon={finishIcon}
+              />
+            </View>
+          )}
           {/* {action === "edit" && Platform.OS === "ios" ? (
             <MagnifierGlass
               ref={magnifierMapRef}
@@ -416,7 +445,7 @@ export const PolygonDrawingTool = forwardRef<
             {action === "draw" ? (
               <Polyline
                 coordinates={polygon.coordinates}
-                strokeColor={polygon.strokeColor}
+                fillColor={polygon.strokeColor}
                 strokeWidth={2}
               />
             ) : (
@@ -437,16 +466,18 @@ export const PolygonDrawingTool = forwardRef<
                 ) : null}
               </>
             )}
-            <CircleMarkers
-              coordinates={markerCoordinates}
-              onDrag={onCircleDrag}
-              onDragStart={onCircleDragStart}
-              onDragEnd={onCircleDragEnd}
-              onPress={onCirclePress}
-            />
+            {markerCoordinates.length > 0 ? (
+              <CircleMarkers
+                coordinates={markerCoordinates}
+                onDrag={onCircleDrag}
+                onDragStart={onCircleDragStart}
+                onDragEnd={onCircleDragEnd}
+                onPress={onCirclePress}
+              />
+            ) : null}
           </>
         ) : null}
       </>
     );
-  }
+  },
 );

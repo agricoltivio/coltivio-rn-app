@@ -6,10 +6,15 @@ import { useNavigation } from "@react-navigation/core";
 import { InsetsProps } from "@/constants/Screen";
 import { IonIconButton } from "@/components/buttons/IconButton";
 
-export const TopLeftBackButton = () => {
+export type TopLeftBackButtonProps = {
+  onPress?: () => void;
+};
+export const TopLeftBackButton = ({ onPress }: TopLeftBackButtonProps) => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
+
+  const handleOnPress = onPress ?? (() => navigation.goBack());
 
   return (
     <AbsoluteView insets={insets}>
@@ -17,7 +22,7 @@ export const TopLeftBackButton = () => {
         type="accent"
         color={theme.colors.black}
         iconSize={30}
-        onPress={() => navigation.goBack()}
+        onPress={handleOnPress}
         icon={"arrow-back"}
       />
     </AbsoluteView>

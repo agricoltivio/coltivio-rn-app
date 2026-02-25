@@ -1,17 +1,12 @@
 import { FarmSummaryScreen } from "@/features/onboarding/FarmSummaryScreen";
-import { SelectCropsScreen } from "@/features/onboarding/SelectCropsScreen";
+import { OnboardingPreferenceScreen } from "@/features/onboarding/OnboardingPreferenceScreen";
 import { SelectFarmLocationScreen } from "@/features/onboarding/SelectFarmLocationScreen";
 import { SelectFarmLocationSearchModal } from "@/features/onboarding/SelectFarmLocationSearchModal";
 import { SelectFarmNameScreen } from "@/features/onboarding/SelectFarmNameScreen";
 import { SelectFederalFarmIdMapScreen } from "@/features/onboarding/SelectFederalFarmIdMapScreen";
-import { SelectFederalFarmIdScreen } from "@/features/onboarding/SelectFederalFarmIdScreen";
-import { SelectFertilizersScreen } from "@/features/onboarding/SelectFertilizersScreen";
-import { SelectParcelsMapScreen } from "@/features/onboarding/SelectParcelsMapScreen";
-import { SelectParcelsScreen } from "@/features/onboarding/SelectParcelsScreen";
-import { SelectPlotsScreens } from "@/features/onboarding/SelectPlotsScreen";
 import React from "react";
 import { Stack } from "@/navigation/stack";
-import { DefaultTheme } from "styled-components";
+import { DefaultTheme } from "styled-components/native";
 
 export function renderOnboardingStack(theme: DefaultTheme) {
   return (
@@ -28,11 +23,6 @@ export function renderOnboardingStack(theme: DefaultTheme) {
           options={{ title: "", headerShown: false }}
         />
         <Stack.Screen
-          name="SelectFederalFarmId"
-          component={SelectFederalFarmIdScreen}
-          options={{ title: "", headerShown: false }}
-        />
-        <Stack.Screen
           name="SelectFederalFarmIdMap"
           component={SelectFederalFarmIdMapScreen}
           options={{
@@ -41,34 +31,8 @@ export function renderOnboardingStack(theme: DefaultTheme) {
           }}
         />
         <Stack.Screen
-          name="SelectParcels"
-          component={SelectParcelsScreen}
-          options={{ title: "", headerShown: false }}
-        />
-        <Stack.Screen
-          name="SelectParcelsMap"
-          component={SelectParcelsMapScreen}
-          options={{
-            // animation: "fade",
-            headerShown: false,
-            // title: "Parzellen",
-          }}
-        />
-        <Stack.Screen
-          name="SelectPlots"
-          component={SelectPlotsScreens}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="SelectCrops"
-          component={SelectCropsScreen}
-          options={{ title: "", headerShown: false }}
-        />
-        <Stack.Screen
-          name="SelectFertilizers"
-          component={SelectFertilizersScreen}
+          name="OnboardingPreference"
+          component={OnboardingPreferenceScreen}
           options={{ title: "", headerShown: false }}
         />
         <Stack.Screen
@@ -93,15 +57,6 @@ export function renderOnboardingStack(theme: DefaultTheme) {
           component={SelectFarmLocationSearchModal}
         />
       </Stack.Group>
-      {/* <Stack.Group screenOptions={{ presentation: "modal" }}>
-            <Stack.Screen
-              name="OnboardingStep4Modal"
-              component={Step4ListModal}
-              options={{
-                headerShown: false,
-              }}
-            />
-          </Stack.Group> */}
     </>
   );
 }

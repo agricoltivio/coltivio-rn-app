@@ -17,7 +17,7 @@ export function CropProtectionApplicationDetailsScreen({
   const theme = useTheme();
   const cropProtectionApplicationId = route.params.cropProtectionApplicationId;
   const { cropProtectionApplication } = useCropProtectionApplicationQuery(
-    cropProtectionApplicationId
+    cropProtectionApplicationId,
   );
 
   const deleteMutation = useDeleteCropProtectionApplicationMutation(() => {
@@ -36,26 +36,23 @@ export function CropProtectionApplicationDetailsScreen({
     <ContentView>
       <CropProtectionApplicationSummary
         date={dateTime}
-        equipmentName={cropProtectionApplication.equipment?.name}
         productName={cropProtectionApplication.product.name!}
-        amountPerApplication={cropProtectionApplication.amountPerApplication}
-        totalNumberOfApplications={
-          cropProtectionApplication.numberOfApplications
-        }
+        amountPerUnit={cropProtectionApplication.amountPerUnit}
+        totalNumberOfUnits={cropProtectionApplication.numberOfUnits}
         unit={cropProtectionApplication.unit}
         method={cropProtectionApplication.method}
         plots={[
           {
             plotId: cropProtectionApplication.plotId,
             name: cropProtectionApplication.plot.name,
-            numberOfApplications:
-              cropProtectionApplication.numberOfApplications,
+            numberOfUnits: cropProtectionApplication.numberOfUnits,
             geometry: cropProtectionApplication.geometry,
             size: cropProtectionApplication.size,
           },
         ]}
         hidePlotList
         additionalNotes={additionalNotes}
+        productUnit={cropProtectionApplication.product.unit ?? "kg"}
       />
       <Button
         style={{ marginBottom: theme.spacing.m }}

@@ -5,7 +5,6 @@ import { Button } from "./buttons/Button";
 import { ListItem } from "./list/ListItem";
 import { TextInput } from "./inputs/TextInput";
 import { Select } from "./select/Select";
-import { DatePicker } from "./datepicker/DatePicker";
 
 export function ComponentsShowcase() {
   return (
@@ -77,7 +76,6 @@ export function ComponentsShowcase() {
           />
           <TextInput label="Heumenge" error="blablabla" />
           <TextInput hideLabel placeholder="Heumenge" />
-          <DatePicker label="Datum" date={new Date()} />
         </View>
       </View>
     </ScrollView>

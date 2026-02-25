@@ -1,4 +1,3 @@
-import * as turf from "@turf/turf";
 import { Plot } from "@/api/plots.api";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -10,24 +9,25 @@ import {
   PolygonDrawingTool,
   PolygonDrawingToolActions,
 } from "@/components/map/PolygonDrawingTool";
-import { SelectHarvestPlotsScreenProps } from "../navigation/harvest-routes";
+import { LabelMarker } from "@/features/map/LabelMarker";
 import { hexToRgba } from "@/theme/theme";
 import { GeoSpatials } from "@/utils/geo-spatials";
 import { round } from "@/utils/math";
 import { PortalHost } from "@gorhom/portal";
+import * as turf from "@turf/turf";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet } from "react-native";
 import { LatLng, MapPressEvent, Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../../farms/farms.hooks";
 import { HomeMarker } from "../../map/layers/HomeMarker";
 import { MapShowLocationToggle } from "../../map/MapShowLocationToggle";
-import { PlotSelectionOrDrawTip } from "../../map/tips/PlotSelectionOrDrawTip";
+import { useLocalSettings } from "../../user/LocalSettingsContext";
 import { TopLeftBackButton } from "../../map/TopLeftBackButton";
 import { useFarmPlotsQuery } from "../../plots/plots.hooks";
+import { SelectHarvestPlotsScreenProps } from "../navigation/harvest-routes";
 import { useCreateHarvestStore } from "./harvest.store";
-import { useTranslation } from "react-i18next";
-import { LabelMarker } from "@/features/map/LabelMarker";
 
 export type SelectedHarvestArea = {
   plotId: string;
@@ -51,15 +51,24 @@ export function SelectHarvestPlotsScreen({
     harvest,
     putHarvestPlot,
     removeHarvestPlot,
-    selectedHarvestPlotsById,
-    resetSelectedHarvestPlots,
+    selectedPlotsById,
+    resetSelectedPlots,
+    totalProducedUnits,
   } = useCreateHarvestStore();
 
+  const { localSettings } = useLocalSettings();
   const polygonDrawingToolRef = useRef<PolygonDrawingToolActions>(null);
+
+  // show map draw onboarding on first visit
+  useEffect(() => {
+    if (!localSettings.mapDrawOnboardingCompleted) {
+      navigation.navigate("MapDrawOnboarding");
+    }
+  }, []);
 
   // in case the total quantity is changed we reset the selected areas when navigating back
   useEffect(() => {
-    return resetSelectedHarvestPlots;
+    return resetSelectedPlots;
   }, []);
 
   useEffect(() => {
@@ -70,50 +79,53 @@ export function SelectHarvestPlotsScreen({
     return unsubscribe;
   }, [navigation]);
 
-  const availablePlots = plots?.filter(
-    (plot) => plot.cropRotations[0]?.cropId === harvest?.cropId
-  );
-
-  const plotPolygons = availablePlots?.map((plot) => (
-    <MultiPolygon
-      key={plot.id}
-      polygon={plot.geometry}
-      strokeWidth={theme.map.defaultStrokeWidth}
-      strokeColor={theme.colors.white}
-      fillColor={hexToRgba(
-        theme.map.defaultFillColor,
-        theme.map.defaultFillAlpha
-      )}
-      tappable={drawingAction === "select"}
-      onPress={(e) => {
-        handleSelectPlot(plot);
-      }}
-    />
-  ));
-
-  const harvestPolygons = Object.values(selectedHarvestPlotsById).flatMap(
-    (harvestPlot) => {
-      const centroid = turf.centroid(harvestPlot.harvestArea);
-      return [
+  const mapLayer = plots?.flatMap((plot) => {
+    const isSelected = plot.id in selectedPlotsById;
+    const polygons = [
+      <MultiPolygon
+        key={plot.id}
+        polygon={plot.geometry}
+        strokeWidth={theme.map.defaultStrokeWidth}
+        strokeColor={theme.colors.white}
+        fillColor={hexToRgba(
+          theme.map.defaultFillColor,
+          theme.map.defaultFillAlpha,
+        )}
+        tappable={!isSelected && drawingAction === "select"}
+        onPress={(e) => {
+          if (!isSelected) {
+            handleSelectPlot(plot);
+          }
+        }}
+      />,
+    ];
+    if (isSelected) {
+      const centroid = turf.centroid(plot.geometry);
+      polygons.push(
         <MultiPolygon
-          key={`harvest-${harvestPlot.plotId}`}
-          polygon={harvestPlot.harvestArea}
+          key={`selected-area-${plot.id}`}
+          polygon={selectedPlotsById[plot.id].geometry}
           strokeWidth={theme.map.defaultStrokeWidth}
           strokeColor={"white"}
           fillColor={hexToRgba(
             theme.colors.secondary,
-            theme.map.defaultFillAlpha
+            theme.map.defaultFillAlpha,
           )}
+          tappable={drawingAction === "select"}
+          onPress={(e) => {
+            handleSelectPlot(plot);
+          }}
         />,
         <LabelMarker
-          key={`harvest-${harvestPlot.plotId}-marker`}
+          key={`selected-area-${plot.id}-marker`}
           latitude={centroid.geometry.coordinates[1]}
           longitude={centroid.geometry.coordinates[0]}
-          text={harvestPlot.name}
+          text={plot.name}
         />,
-      ];
+      );
     }
-  );
+    return polygons;
+  });
 
   const handleMapPress = (event: MapPressEvent) => {
     if (drawingAction === "draw") {
@@ -139,36 +151,36 @@ export function SelectHarvestPlotsScreen({
     if (drawingAction === "draw") {
       return;
     }
-    if (plot.id in selectedHarvestPlotsById) {
+    if (plot.id in selectedPlotsById) {
       removeHarvestPlot(plot.id);
     } else {
       putHarvestPlot({
         plotId: plot.id,
         name: plot.name,
-        harvestArea: plot.geometry,
+        geometry: plot.geometry,
         harvestSize: round(plot.size, 0),
         amountInKilos: 0,
-        producedUnits: 0,
+        numberOfUnits: 0,
       });
     }
   }
 
   function onHarvestAreaDrawComplete(coordinates: LatLng[]) {
-    if (!availablePlots) {
+    if (!plots) {
       return;
     }
     const plotIntersections = GeoSpatials.plotIntersections(
-      availablePlots,
-      GeoSpatials.latLngToMultiPolygon([coordinates])
+      plots,
+      GeoSpatials.latLngToMultiPolygon([coordinates]),
     );
     for (const plotIntersection of plotIntersections) {
       putHarvestPlot({
         name: plotIntersection.plot.name,
         plotId: plotIntersection.plot.id,
-        harvestArea: plotIntersection.intersection.geometry,
+        geometry: plotIntersection.intersection.geometry,
         harvestSize: round(plotIntersection.intersection.size, 0),
         amountInKilos: 0,
-        producedUnits: 0,
+        numberOfUnits: 0,
       });
     }
   }
@@ -179,8 +191,21 @@ export function SelectHarvestPlotsScreen({
         <BottomActionContainer>
           <Button
             title={t("buttons.next")}
-            onPress={() => navigation.navigate("DivideHarvestOnPlots")}
-            disabled={!Object.values(selectedHarvestPlotsById).length}
+            onPress={() => {
+              const selectedPlots = Object.values(selectedPlotsById);
+              // Skip divide screen if only 1 plot is selected - assign all to that plot
+              if (selectedPlots.length === 1) {
+                const plot = selectedPlots[0];
+                putHarvestPlot({
+                  ...plot,
+                  numberOfUnits: totalProducedUnits ?? 0,
+                });
+                navigation.navigate("HarvestSummary");
+              } else {
+                navigation.navigate("DivideHarvestOnPlots");
+              }
+            }}
+            disabled={!Object.values(selectedPlotsById).length}
           />
         </BottomActionContainer>
       }
@@ -194,22 +219,21 @@ export function SelectHarvestPlotsScreen({
         initialRegion={initialRegion}
         showsUserLocation={showUserLocation}
       >
-        {plotPolygons}
-        {harvestPolygons}
+        {mapLayer}
         <PolygonDrawingTool
           portalName="HarvestMap"
           ref={polygonDrawingToolRef}
           onDrawActionChange={(action) => {
             setDrawingAction(action);
           }}
-          magnifierMapContent={plotPolygons}
+          magnifierMapContent={mapLayer}
           onFinish={onHarvestAreaDrawComplete}
+          onInfo={() => navigation.navigate("MapDrawOnboarding")}
         />
         <HomeMarker latitude={latitude} longitude={longitude} />
       </MapView>
       <TopLeftBackButton />
       <MapShowLocationToggle onShowLocationChange={setShowUserLocation} />
-      <PlotSelectionOrDrawTip />
       <PortalHost name="HarvestMap" />
     </ContentView>
   );

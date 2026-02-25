@@ -3,42 +3,31 @@ import { StackScreenProps } from "@/navigation/rootStackTypes";
 export type HarvestStackParamList = {
   Harvests: undefined;
   HarvestDetails: { harvestId: string };
-  HarvestsOfYear: { year: number };
-  HarvestsOfYearList: { year: number };
-  SelectHarvestDate: undefined;
-  SelectHarvestCrop: undefined;
-  SelectHarvestingMachinery: { machineId?: string };
-  SelectHarvestQuantity: undefined;
-  SelectHarvstPlots: undefined;
+  SelectHarvestCropAndDate: { cropId?: string } | undefined;
+  ConfigureHarvest: undefined;
+  SetHarvestQuantity: undefined;
+  SelectHarvestPlots: undefined;
   DivideHarvestOnPlots: undefined;
-  AddHarvestAdditionalNotes: undefined;
   HarvestSummary: undefined;
 };
+
 export type HarvestsScreenProps = StackScreenProps<"Harvests">;
 
-export type HarvestsOfYearScreenProps = StackScreenProps<"HarvestsOfYear">;
-
-export type HarvestOfYearListScreenProps =
-  StackScreenProps<"HarvestsOfYearList">;
 export type HarvestDetailsScreenProps = StackScreenProps<"HarvestDetails">;
 
-export type SelectHarvestDateScreenProps =
-  StackScreenProps<"SelectHarvestDate">;
+export type SelectHarvestCropAndDateScreenProps =
+  StackScreenProps<"SelectHarvestCropAndDate">;
 
-export type SelectHarvestPlantScreenProps =
-  StackScreenProps<"SelectHarvestCrop">;
-export type SelectHarvestingMachineryScreenProps =
-  StackScreenProps<"SelectHarvestingMachinery">;
+export type ConfigureHarvestScreenProps =
+  StackScreenProps<"ConfigureHarvest">;
 
-export type SelectHarvestQuantityScreenprops =
-  StackScreenProps<"SelectHarvestQuantity">;
+export type SetHarvestQuantityScreenProps =
+  StackScreenProps<"SetHarvestQuantity">;
 
 export type SelectHarvestPlotsScreenProps =
-  StackScreenProps<"SelectHarvstPlots">;
+  StackScreenProps<"SelectHarvestPlots">;
+
 export type DivideHarvestOnPlotsScreenProps =
   StackScreenProps<"DivideHarvestOnPlots">;
-
-export type AddHarvestAdditionalNotesScreenProps =
-  StackScreenProps<"AddHarvestAdditionalNotes">;
 
 export type HarvestSummaryScreenProps = StackScreenProps<"HarvestSummary">;

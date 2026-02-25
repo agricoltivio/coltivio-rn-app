@@ -3,10 +3,7 @@ import { IonIconButton } from "@/components/buttons/IconButton";
 import { ContentView } from "@/components/containers/ContentView";
 import { NumberInput } from "@/components/inputs/NumberInput";
 import { ScrollView } from "@/components/views/ScrollView";
-import {
-  SelectHarvestQuantityScreenprops,
-  DivideHarvestOnPlotsScreenProps,
-} from "../navigation/harvest-routes";
+import { DivideHarvestOnPlotsScreenProps } from "../navigation/harvest-routes";
 import { Body, H2, Subtitle, Title } from "@/theme/Typography";
 import { round } from "@/utils/math";
 import React, { useEffect, useState } from "react";
@@ -26,31 +23,35 @@ export function DivideHarvestOnPlotsScreen({
     putHarvestPlot,
     removeHarvestPlot,
     totalProducedUnits = 0,
-    selectedHarvestPlotsById,
+    selectedPlotsById: selectedHarvestPlotsById,
   } = useCreateHarvestStore();
 
   const [quantityByPlotId, setQuantityByPlotId] = useState<
     Record<string, string>
   >({});
-  const [divideByArea, setDivideByArea] = useState(false);
+  const [divideByArea, setDivideByArea] = useState(true);
   const [divisionPrecision, setDivisionPrecision] = useState(
-    harvest?.processingType === "round_bale" ||
-      harvest?.processingType === "square_bale"
+    harvest?.unit === "round_bale" ||
+      harvest?.unit === "square_bale" ||
+      harvest?.unit === "crate"
       ? 0
-      : 1
+      : 1,
   );
   const [error, setError] = useState<string | null>(null);
 
   const harvestAreas = Object.values(selectedHarvestPlotsById);
 
   let quantityLabel: string = "";
-  switch (harvest!.processingType) {
-    case "none":
+  switch (harvest!.unit) {
+    case "load":
       quantityLabel = t("forms.labels.loads");
       break;
     case "round_bale":
     case "square_bale":
       quantityLabel = t("forms.labels.balls");
+      break;
+    case "crate":
+      quantityLabel = t("forms.labels.crate");
       break;
   }
 
@@ -73,21 +74,21 @@ export function DivideHarvestOnPlotsScreen({
           if (index === harvestAreas.length - 1) {
             quantity = round(
               totalProducedUnits - totalDivided,
-              divisionPrecision
+              divisionPrecision,
             );
-          } else if (harvest?.processingType === "none") {
+          } else if (harvest?.unit === "load") {
             quantity = round(
               (totalProducedUnits - totalDivided) * fraction,
-              divisionPrecision
+              divisionPrecision,
             );
           } else {
             quantity = round(
               (totalProducedUnits - totalDivided) * fraction,
-              divisionPrecision
+              divisionPrecision,
             );
           }
-          if (quantity === 0) {
-            setDivisionPrecision((prev) => prev + 1);
+          if (quantity === 0 && divisionPrecision < 2) {
+            setDivisionPrecision((prev) => Math.min(prev + 1, 2));
           }
           totalDivided += quantity;
           setQuantityByPlotId((prev) => ({
@@ -106,7 +107,7 @@ export function DivideHarvestOnPlotsScreen({
 
   const totalDivided = +Object.values(quantityByPlotId)
     .reduce((total, val) => total + Number(val), 0)
-    .toFixed(1);
+    .toFixed(2);
 
   useEffect(() => {
     if (error && totalDivided >= 0 && totalDivided <= totalProducedUnits) {
@@ -124,7 +125,7 @@ export function DivideHarvestOnPlotsScreen({
   }
 
   function handleOnConfirm() {
-    const remaining = totalProducedUnits - totalDivided;
+    const remaining = round(totalProducedUnits - totalDivided, 2);
     if (remaining < 0) {
       setError(t("forms.validation.divided_amount_too_big"));
       return;
@@ -137,13 +138,13 @@ export function DivideHarvestOnPlotsScreen({
       if (quantity > 0) {
         putHarvestPlot({
           ...harvestArea,
-          producedUnits: quantity,
+          numberOfUnits: quantity,
         });
       } else {
         removeHarvestPlot(harvestArea.plotId);
       }
     }
-    navigation.navigate("AddHarvestAdditionalNotes");
+    navigation.navigate("HarvestSummary");
   }
 
   return (
@@ -170,7 +171,7 @@ export function DivideHarvestOnPlotsScreen({
             }}
           >
             {t("common.remaining_quantity", {
-              quantity: totalProducedUnits - totalDivided,
+              quantity: round(totalProducedUnits - totalDivided, 2),
               quantityLabel,
             })}
           </Title>
@@ -207,7 +208,7 @@ export function DivideHarvestOnPlotsScreen({
                   width: "100%",
                 }}
               >
-                <Subtitle style={{ flexGrow: 1 }}>
+                <Subtitle style={{ flexGrow: 1, flexShrink: 1 }} numberOfLines={1}>
                   {t("plots.plot_name", { name: harvestArea.name })} (
                   {(harvestArea.harvestSize / 100).toPrecision(3)}a)
                 </Subtitle>

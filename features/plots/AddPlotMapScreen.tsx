@@ -1,10 +1,7 @@
-import { Parcel } from "@/api/parcels.api";
 import { Button } from "@/components/buttons/Button";
 import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import { Card } from "@/components/card/Card";
-import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
-import { Checkbox } from "@/components/inputs/Checkbox";
 import { MapView } from "@/components/map/Map";
 import { MultiPolygon } from "@/components/map/MultiPolygon";
 import {
@@ -25,8 +22,8 @@ import { StyleSheet, View } from "react-native";
 import { LatLng, MapPressEvent, Marker, Region } from "react-native-maps";
 import { useSafeAreaFrame } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
-import { useFarmParcels } from "../farm-parcels/farmParcels.hooks";
 import { useFarmQuery } from "../farms/farms.hooks";
+import { MapControls } from "../map/overlays/MapControls";
 import { MapShowLocationToggle } from "../map/MapShowLocationToggle";
 import { TopLeftBackButton } from "../map/TopLeftBackButton";
 import { useLocalSettings } from "../user/LocalSettingsContext";
@@ -36,7 +33,7 @@ import { usePlotsByLocationQuery } from "../federal-plots/federalPlots.hooks";
 import { FederalFarmPlot } from "@/api/layers.api";
 import { useAddPlotStore } from "./add-plots.store";
 
-export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
+export function AddPlotMapScreen({ navigation, route }: AddPlotMapScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const frame = useSafeAreaFrame();
@@ -44,8 +41,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
   const { plots } = useFarmPlotsQuery();
   const [mapVisible, setMapVisible] = useState(false);
   const [showModeSelect, setShowModeSelect] = useState(true);
-  const [showModeInfo, setShowModeInfo] = useState(false);
-  const [showsUserLocation, setShowsUserLocation] = useState<boolean>(false);
+  const [canFinish, setCanFinish] = useState(false);
 
   const [mode, setMode] = useState<"parcel" | "custom" | "none">("none");
   const [drawingAction, setDrawingAction] = useState<DrawAction>("select");
@@ -69,7 +65,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
   const { plots: federalPlots } = usePlotsByLocationQuery(
     { lat: currentViewPoint.latitude, lng: currentViewPoint.longitude },
     1,
-    mode === "parcel" && currentViewPoint.latitude !== 0
+    mode === "parcel" && currentViewPoint.latitude !== 0,
   );
 
   const addPlotStore = useAddPlotStore();
@@ -91,8 +87,19 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
   const handleOnComplete = () => {
     if (newPolygon) {
       addPlotStore.setData(newPolygon);
-      navigation.navigate("AddPlotSummary", {});
+    } else {
+      const newPolygonCoordinates = polygonDrawingToolRef.current?.coordinates;
+      if (!newPolygonCoordinates) return;
+      const polygon = GeoSpatials.latLngToMultiPolygon([newPolygonCoordinates]);
+      const centroid = turf.centroid(polygon);
+      const area = turf.area(polygon);
+      addPlotStore.setData({
+        geometry: polygon,
+        centroid: centroid.geometry,
+        size: round(area, 0),
+      });
     }
+    navigation.navigate("AddPlotSummary", {});
   };
 
   const handleRegionChangeComplete = (region: Region) => {
@@ -112,28 +119,38 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
     }
   };
 
+  const { localSettings } = useLocalSettings();
+
   function handleModeSelect(mode: "parcel" | "custom") {
     setShowModeSelect(false);
-    setShowModeInfo(true);
     setMode(mode);
     if (mode === "custom") {
       setDrawingAction("draw");
+      // Show the draw onboarding modal on first use
+      if (!localSettings.addPlotDrawOnboardingCompleted) {
+        navigation.navigate("AddPlotOnboarding", { variant: "draw" });
+      }
     }
-    if (mode === "parcel" && currentRegion) {
-      setCurrentViewPoint(GeoSpatials.getRegionCenter(currentRegion));
+    if (mode === "parcel") {
+      if (!localSettings.addPlotParcelOnboardingCompleted) {
+        navigation.navigate("AddPlotOnboarding", { variant: "parcel" });
+      }
+      if (currentRegion) {
+        setCurrentViewPoint(GeoSpatials.getRegionCenter(currentRegion));
+      }
     }
   }
 
-  function onFinishDrawing(coordinates: LatLng[]) {
-    const polygon = GeoSpatials.latLngToMultiPolygon([coordinates]);
-    const centroid = turf.centroid(polygon);
-    const area = turf.area(polygon);
-    setNewPolygon({
-      geometry: polygon,
-      centroid: centroid.geometry,
-      size: round(area, 0),
-    });
-  }
+  // function onFinishDrawing(coordinates: LatLng[]) {
+  //   const polygon = GeoSpatials.latLngToMultiPolygon([coordinates]);
+  //   const centroid = turf.centroid(polygon);
+  //   const area = turf.area(polygon);
+  //   setNewPolygon({
+  //     geometry: polygon,
+  //     centroid: centroid.geometry,
+  //     size: round(area, 0),
+  //   });
+  // }
 
   function onParcelSelect(parcel: FederalFarmPlot) {
     if (mode !== "parcel") {
@@ -150,6 +167,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
       localId: parcel.localId ?? undefined,
       cuttingDate: parcel.cuttingDate ?? undefined,
     });
+    setCanFinish(true);
   }
 
   function onSelectPolygon() {
@@ -160,7 +178,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
         newPolygon!.geometry.coordinates[0][0].map(([longitude, latitude]) => ({
           longitude,
           latitude,
-        }))
+        })),
       );
     }
   }
@@ -190,7 +208,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
   }
   const [longitude, latitude] = farm.location.coordinates;
 
-  const initialRegion = {
+  const initialRegion = route.params?.initialRegion ?? {
     latitude,
     longitude,
     latitudeDelta: 0.0015,
@@ -205,7 +223,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
       strokeColor={"white"}
       fillColor={hexToRgba(
         theme.map.defaultFillColor,
-        theme.map.defaultFillAlpha
+        theme.map.defaultFillAlpha,
       )}
     />
   ));
@@ -219,7 +237,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
         }}
         onPress={handleMapPress}
         initialRegion={initialRegion}
-        showsUserLocation={showsUserLocation}
+        showsUserLocation={false}
         onRegionChangeComplete={handleRegionChangeComplete}
       >
         {!showModeSelect && mode === "parcel" ? parcelPolygons : null}
@@ -239,7 +257,7 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
               strokeColor={"white"}
               fillColor={hexToRgba(
                 theme.colors.success,
-                theme.map.defaultFillAlpha
+                theme.map.defaultFillAlpha,
               )}
               tappable
               onPress={onSelectPolygon}
@@ -272,8 +290,11 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
             onDrawActionChange={(action) => {
               setDrawingAction(action);
             }}
-            magnifierMapContent={plotPolygons}
-            onFinish={onFinishDrawing}
+            showActions={false}
+            onCanFinishChange={setCanFinish}
+            onInfo={() =>
+              navigation.navigate("AddPlotOnboarding", { variant: "draw" })
+            }
           />
         ) : null}
       </MapView>
@@ -285,11 +306,34 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
           onPress={() => handleLoadPlots()}
         />
       ) : null}
-      <PortalHost name="PlotsMap" />
-      {mapVisible ? (
-        <MapShowLocationToggle onShowLocationChange={setShowsUserLocation} />
-      ) : null}
       <TopLeftBackButton />
+      <PortalHost name="PlotsMap" />
+      <MapControls>
+        <MaterialCommunityIconButton
+          style={{
+            backgroundColor: theme.colors.accent,
+            opacity: canFinish ? 1 : 0.4,
+          }}
+          type="accent"
+          color="green"
+          iconSize={30}
+          icon="check"
+          disabled={!canFinish}
+          onPress={handleOnComplete}
+        />
+        <MaterialCommunityIconButton
+          style={{ backgroundColor: theme.colors.accent }}
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="information-outline"
+          onPress={() =>
+            navigation.navigate("AddPlotOnboarding", {
+              variant: mode === "parcel" ? "parcel" : "draw",
+            })
+          }
+        />
+      </MapControls>
       {showModeSelect ? (
         <Card
           style={{
@@ -323,160 +367,6 @@ export function AddPlotMapScreen({ navigation }: AddPlotMapScreenProps) {
           </View>
         </Card>
       ) : null}
-      {showModeInfo && mode === "parcel" ? <ParcelSelectTipp /> : null}
-
-      {showModeInfo && mode === "custom" ? <DrawingTipp /> : null}
-
-      <BottomActionContainer floating>
-        <Button
-          disabled={!newPolygon}
-          title={t("buttons.next")}
-          onPress={handleOnComplete}
-        />
-      </BottomActionContainer>
     </ContentView>
-  );
-}
-function ParcelSelectTipp() {
-  const { t } = useTranslation();
-  const { localSettings, updateLocalSettings } = useLocalSettings();
-  const theme = useTheme();
-  const frame = useSafeAreaFrame();
-  const [showTip, setShowTip] = useState(
-    localSettings.addPlotMapShowParcelSelectTip
-  );
-
-  const [visible, setVisible] = useState(
-    localSettings.addPlotMapShowParcelSelectTip
-  );
-
-  if (!visible) {
-    return null;
-  }
-
-  function onDone() {
-    if (!showTip) {
-      updateLocalSettings("addPlotMapShowParcelSelectTip", false);
-    }
-    setVisible(false);
-  }
-  return (
-    <Card
-      style={{
-        position: "absolute",
-        top: frame.height / 2 - 100,
-        left: theme.spacing.m,
-        right: theme.spacing.m,
-      }}
-    >
-      <Title>{t("plots.add.map.tips.parcel_select.heading")}</Title>
-      <View style={{ marginTop: theme.spacing.m }}>
-        <Subtitle>
-          {t("plots.add.map.tips.parcel_select.overlap_info")}
-        </Subtitle>
-      </View>
-      <View style={{ marginTop: theme.spacing.l }}>
-        <View
-          style={{
-            flexDirection: "row",
-            gap: theme.spacing.m,
-            justifyContent: "center",
-            marginBottom: theme.spacing.m,
-          }}
-        >
-          <Subtitle>{t("common.dont_show_again")}</Subtitle>
-          <Checkbox
-            checked={!showTip}
-            onPress={() => {
-              setShowTip((prev) => !prev);
-            }}
-          />
-        </View>
-
-        <Button fontSize={16} title={t("buttons.ok")} onPress={onDone} />
-      </View>
-    </Card>
-  );
-}
-
-function DrawingTipp() {
-  const { t } = useTranslation();
-  const { localSettings, updateLocalSettings } = useLocalSettings();
-  const theme = useTheme();
-  const frame = useSafeAreaFrame();
-  const [showTip, setShowTip] = useState(
-    localSettings.addPlotMapShowDrawingTip
-  );
-
-  const [visible, setVisible] = useState(
-    localSettings.addPlotMapShowDrawingTip
-  );
-
-  if (!visible) {
-    return null;
-  }
-
-  function onDone() {
-    if (!showTip) {
-      updateLocalSettings("addPlotMapShowDrawingTip", false);
-    }
-    setVisible(false);
-  }
-  return (
-    <Card
-      style={{
-        position: "absolute",
-        top: frame.height / 2 - 200,
-        left: theme.spacing.m,
-        right: theme.spacing.m,
-      }}
-    >
-      <Title>{t("plots.add.map.tips.draw_area.heading")}</Title>
-      <View style={{ marginTop: theme.spacing.m }}>
-        <Subtitle style={{ marginBottom: theme.spacing.s }}>
-          {t("plots.add.map.tips.draw_area.drawing_info")}
-        </Subtitle>
-        <View
-          style={{
-            // flexDirection: "row",
-            gap: theme.spacing.m,
-            justifyContent: "center",
-          }}
-        >
-          <Subtitle>{t("plots.add.map.tips.draw_area.finish")}</Subtitle>
-          <MaterialCommunityIconButton
-            style={{
-              width: 45,
-              backgroundColor: "white",
-              alignSelf: "center",
-            }}
-            type="accent"
-            color="black"
-            iconSize={30}
-            icon="check"
-          />
-        </View>
-      </View>
-      <View style={{ marginTop: theme.spacing.m }}>
-        <View
-          style={{
-            flexDirection: "row",
-            gap: theme.spacing.m,
-            justifyContent: "center",
-            marginBottom: theme.spacing.m,
-          }}
-        >
-          <Subtitle>{t("common.dont_show_again")}</Subtitle>
-          <Checkbox
-            checked={!showTip}
-            onPress={() => {
-              setShowTip((prev) => !prev);
-            }}
-          />
-        </View>
-
-        <Button fontSize={16} title={t("buttons.ok")} onPress={onDone} />
-      </View>
-    </Card>
   );
 }

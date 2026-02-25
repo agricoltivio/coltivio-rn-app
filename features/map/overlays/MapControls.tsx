@@ -1,34 +1,48 @@
-import React from "react";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import React, { useEffect } from "react";
 import { Text } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import {
-  EdgeInsets,
-  Rect,
-  useSafeAreaFrame,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
-import { inlineStyles } from "react-native-svg";
+import { EdgeInsets, useSafeAreaInsets } from "react-native-safe-area-context";
 import styled, { useTheme } from "styled-components/native";
-
-interface FrameProps {
-  frame: Rect;
-}
 
 type MapControlsProps = {
   children?: React.ReactNode;
+  initiallyExpanded?: boolean;
+  // Controlled mode: if provided, expand/collapse is driven from parent
+  expanded?: boolean;
+  onToggle?: (expanded: boolean) => void;
 };
 
-export const MapControls = ({ children }: MapControlsProps) => {
+export const MapControls = ({
+  children,
+  initiallyExpanded = true,
+  expanded,
+  onToggle,
+}: MapControlsProps) => {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
-  const isExpanded = useSharedValue(true);
+  const isControlled = expanded !== undefined;
+  const isExpanded = useSharedValue(
+    isControlled ? expanded : initiallyExpanded,
+  );
+
+  // Sync shared value with controlled prop
+  useEffect(() => {
+    if (isControlled) {
+      isExpanded.value = expanded;
+    }
+  }, [expanded, isControlled]);
 
   const toggleOverlay = () => {
-    isExpanded.value = !isExpanded.value;
+    const next = !isExpanded.value;
+    isExpanded.value = next;
+    if (onToggle) {
+      onToggle(next);
+    }
   };
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -39,14 +53,6 @@ export const MapControls = ({ children }: MapControlsProps) => {
             ? withTiming(0, { duration: 300 })
             : withTiming(200, { duration: 700 }),
         },
-        // {
-        //   translateY: isExpanded.value
-        //     ? withTiming(120 * 1, {
-        //         duration: 700,
-        //       })
-        //     : withTiming(0, { duration: 400 }),
-        // },
-        // { scale: withTiming(isExpanded.value ? 1 : 0.5, { duration: 500 }) },
       ],
       opacity: isExpanded.value
         ? withTiming(1, { duration: 500 })
@@ -72,9 +78,14 @@ export const MapControls = ({ children }: MapControlsProps) => {
     <>
       <MapControlsContainer insets={insets} style={[animatedStyle]}>
         <ExpandedToggleButton onPress={toggleOverlay}>
-          <Text style={{ color: "#ddd", fontWeight: "bold", fontSize: 25 }}>
+          {/* <Text style={{ color: "#ddd", fontWeight: "bold", fontSize: 25 }}>
             →
-          </Text>
+          </Text> */}
+          <MaterialCommunityIcons
+            name="window-minimize"
+            size={30}
+            color="#ddd"
+          />
         </ExpandedToggleButton>
         <MapControlsContent>{children}</MapControlsContent>
       </MapControlsContainer>
@@ -83,9 +94,10 @@ export const MapControls = ({ children }: MapControlsProps) => {
         style={[expanButtonStyle]}
       >
         <CollapsedToggleButton onPress={toggleOverlay}>
-          <Text style={{ color: "#ddd", fontWeight: "bold", fontSize: 25 }}>
-            ←
-          </Text>
+          <MaterialCommunityIcons name="tools" size={30} color="#ddd" />
+          {/* <Text style={{ color: "#ddd", fontWeight: "bold", fontSize: 25 }}> */}
+          {/* ← */}
+          {/* </Text> */}
         </CollapsedToggleButton>
       </CollapsedToggleButtonContainer>
     </>
@@ -96,13 +108,11 @@ const MapControlsContainer = styled(Animated.View)<{ insets: EdgeInsets }>`
   position: absolute;
   right: 0px;
   top: ${({ insets, theme }) => insets.top + theme.spacing.s}px;
-  /* height: 80px; */
   border-color: #ddd;
   border-width: 2px;
   border-radius: 20px;
   overflow: hidden;
   background-color: rgba(52, 52, 52, 0.4);
-  /* flex-direction: row; */
 `;
 
 const ExpandedToggleButton = styled.TouchableOpacity`
@@ -111,7 +121,6 @@ const ExpandedToggleButton = styled.TouchableOpacity`
   height: 60px;
   justify-content: center;
   align-items: center;
-  /* width: 50px; */
   border-bottom-color: #ddd;
   border-bottom-width: 2px;
 `;
@@ -122,7 +131,7 @@ const CollapsedToggleButtonContainer = styled(Animated.View)<{
   position: absolute;
   right: 0px;
   top: ${({ insets, theme }) => insets.top + theme.spacing.s}px;
-  background-color: rgba(52, 52, 52, 0.4);
+  background-color: rgba(52, 52, 52, 0.8);
   border-color: #ddd;
   border-width: 2px;
   border-radius: 20px;
@@ -140,7 +149,6 @@ const MapControlsContent = styled.View`
   padding: 10px;
   align-items: center;
   justify-content: center;
-  /* flex-direction: row; */
   gap: 10px;
   overflow: hidden;
 `;

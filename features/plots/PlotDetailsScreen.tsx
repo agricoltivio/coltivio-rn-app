@@ -1,4 +1,3 @@
-import { FAB } from "@/components/buttons/FAB";
 import { Card } from "@/components/card/Card";
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
@@ -158,9 +157,9 @@ export function PlotDetailsScreen({
           <ListItem
             style={{ backgroundColor: theme.colors.white }}
             onPress={() =>
-              navigation.navigate("PlotCropRotations", {
-                plotId: plotId,
-                name: plot!.name,
+              navigation.navigate("PlanCropRotations", {
+                plotIds: [plotId],
+                previousScreen: "PlotDetails",
               })
             }
           >
@@ -238,10 +237,6 @@ export function PlotDetailsScreen({
           </ListItem>
         </View>
       </ScrollView>
-      {/* <FAB
-        icon={{ name: "pencil", color: theme.colors.white }}
-        onPress={() => navigation.navigate("EditPlot", { plotId })}
-      /> */}
     </ContentView>
   );
 }

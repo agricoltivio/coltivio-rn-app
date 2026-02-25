@@ -1,5 +1,3 @@
-import { useTheme } from "styled-components/native";
-
 export interface ColtivioTheme {
   colors: {
     background: string;
@@ -16,6 +14,12 @@ export interface ColtivioTheme {
     black: string;
     darkBlue: string;
     blue: string;
+    orchid: string;
+    amethyst: string;
+    lavender: string;
+    purple: string;
+    mauve: string;
+    mocha: string;
     gray0: string;
     gray1: string;
     gray2: string;
@@ -46,9 +50,6 @@ export interface ColtivioTheme {
     xl: number;
     xxl: number;
   };
-}
-declare module "styled-components/native" {
-  export interface DefaultTheme extends ColtivioTheme {}
 }
 
 const colorPalette = {
@@ -85,7 +86,13 @@ export const coltivioTheme: ColtivioTheme = {
     yellow: "#FFC745",
     darkBlue: "1E3A8A",
     blue: "#4285F4",
-    error: "#FEE8C7",
+    orchid: "#b284be",
+    amethyst: "#7a4f9e",
+    mauve: "#8a6878",
+    mocha: "#8b6b55",
+    lavender: "#9b8bb4",
+    purple: "#5d3b5c",
+    error: "#CD0E61",
     black: "#212123",
     gray0: "#111111",
     gray1: "#555555",
@@ -136,6 +143,66 @@ export function hexToRgba(hex: string, alpha = 1) {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
+export function numberToColor(num: number) {
+  return stringToColor(seededRandomString(num));
+}
+
+// Golden-ratio hue walk: maximally distinct colors for consecutive indices.
+// Saturation 65%, Lightness 55% keeps colors vivid and readable on satellite maps.
+export function indexToDistinctColor(index: number): string {
+  const goldenAngle = 137.508;
+  const h = (index * goldenAngle) % 360;
+  const s = 0.65;
+  const l = 0.55;
+  // HSL to RGB conversion
+  const c = (1 - Math.abs(2 * l - 1)) * s;
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+  const m = l - c / 2;
+  let r = 0,
+    g = 0,
+    b = 0;
+  if (h < 60) {
+    r = c;
+    g = x;
+  } else if (h < 120) {
+    r = x;
+    g = c;
+  } else if (h < 180) {
+    g = c;
+    b = x;
+  } else if (h < 240) {
+    g = x;
+    b = c;
+  } else if (h < 300) {
+    r = x;
+    b = c;
+  } else {
+    r = c;
+    b = x;
+  }
+  const toHex = (v: number) =>
+    Math.round((v + m) * 255)
+      .toString(16)
+      .padStart(2, "0");
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+function seededRandomString(seed: number, length = 10) {
+  // Linear Congruential Generator (LCG) for deterministic pseudo-random numbers
+  let state = seed;
+  const rand = () => {
+    state = (state * 1664525 + 1013904223) % 0x100000000;
+    return state / 0x100000000;
+  };
+
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += chars[Math.floor(rand() * chars.length)];
+  }
+  return result;
+}
+
 export function stringToDynamicColor(value: string) {
   // let hash = 0;
   // for (let i = 0; i < value.length; i++) {
@@ -176,24 +243,10 @@ const palette = [
   "#3498DB", // Blue
 ];
 
-const colorMap = new Map();
-
 export function stringToColor(str: string) {
-  if (colorMap.has(str)) return colorMap.get(str);
-
-  // Generate hash and map to the palette
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
-  let index = Math.abs(hash) % palette.length;
-
-  // Collision resolution: find the next available color
-  while ([...colorMap.values()].includes(palette[index])) {
-    index = (index + 1) % palette.length;
-  }
-
-  const color = palette[index];
-  colorMap.set(str, color);
-  return color;
+  return palette[Math.abs(hash) % palette.length];
 }

@@ -29,11 +29,10 @@ export function HarvestDetailsScreen({
     date,
     crop,
     conservationMethod,
-    processingType,
-    producedUnits,
+    unit,
+    numberOfUnits,
     kilosPerUnit,
     additionalNotes,
-    machinery,
   } = harvest;
 
   function onDelete() {
@@ -54,22 +53,21 @@ export function HarvestDetailsScreen({
       <HarvestSummary
         harvestAreas={[
           {
-            amountInKilos: producedUnits * kilosPerUnit,
-            harvestArea: geometry,
+            amountInKilos: numberOfUnits * kilosPerUnit,
+            geometry: geometry,
             harvestSize: size,
             name: plot.name,
             plotId: plot.id,
-            producedUnits,
+            numberOfUnits,
           },
         ]}
-        date={date}
+        date={new Date(date)}
         cropName={crop.name}
         kilosPerUnit={kilosPerUnit}
         conservationMethod={conservationMethod}
-        processingType={processingType}
-        machineryName={machinery?.name}
-        producedKilos={round(producedUnits * kilosPerUnit, 2)}
-        producedUnits={producedUnits}
+        unit={unit}
+        producedKilos={round(numberOfUnits * kilosPerUnit, 2)}
+        numberOfUnits={numberOfUnits}
         hidePlotList
         additionalNotes={additionalNotes}
       />

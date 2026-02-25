@@ -1,11 +1,14 @@
 import { deviceWidth } from "@/constants/Screen";
-import React from "react";
-import { createContext, useContext, useState } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import React, {
+  createContext,
+  forwardRef,
+  useCallback,
+  useContext,
+  useRef,
+} from "react";
+import { ActivityIndicator, Platform, StyleSheet, View } from "react-native";
 import RnMapView, {
-  Details,
   LatLng,
-  MapPressEvent,
   MapViewProps,
   PROVIDER_GOOGLE,
   Region,
@@ -30,7 +33,7 @@ const MapContext = createContext<MapContextProps>({
 });
 
 export type MapProps = MapViewProps & {
-  initialRegion: Region;
+  initialRegion?: Region;
   loading?: boolean;
 };
 
@@ -38,64 +41,76 @@ function calculateZoomLevel(longitudeDelta: number) {
   return Math.log2(360 * (deviceWidth / 256 / longitudeDelta)) + 1;
 }
 
-export const MapView = ({ loading, ...props }: MapProps) => {
-  const theme = useTheme();
-  // const [region, setRegion] = useState<Region>(initialRegion);
-  // const [selectedCoordinate, setSelectedCoordinate] = useState<LatLng | null>(
-  //   null
-  // );
-  // const [zoom, setZoom] = useState<number>(
-  //   calculateZoomLevel(initialRegion.longitudeDelta)
-  // );
+export const MapView = forwardRef<RnMapView, MapProps>(
+  ({ loading, initialRegion, onMapReady, ...props }: MapProps, ref) => {
+    const theme = useTheme();
+    const internalRef = useRef<RnMapView>(null);
+    const mapRef = (ref as React.RefObject<RnMapView>) ?? internalRef;
 
-  // function handleOnRegionChangeComplete(region: Region, details: Details) {
-  //   setRegion(region);
-  //   if (onRegionChangeComplete) {
-  //     onRegionChangeComplete(region, details);
-  //     setZoom(calculateZoomLevel(region.longitudeDelta));
-  //   }
-  // }
+    const handleMapReady = useCallback(() => {
+      // Android sometimes ignores initialRegion zoom level — re-apply it once the map is laid out
+      if (Platform.OS === "android" && initialRegion) {
+        mapRef.current?.animateToRegion(initialRegion, 0);
+      }
+      onMapReady?.();
+    }, [initialRegion, mapRef, onMapReady]);
+    // const [region, setRegion] = useState<Region>(initialRegion);
+    // const [selectedCoordinate, setSelectedCoordinate] = useState<LatLng | null>(
+    //   null
+    // );
+    // const [zoom, setZoom] = useState<number>(
+    //   calculateZoomLevel(initialRegion.longitudeDelta)
+    // );
 
-  // function handleOnPress(event: MapPressEvent) {
-  //   setSelectedCoordinate(event.nativeEvent.coordinate);
-  //   onPress && onPress(event);
-  // }
+    // function handleOnRegionChangeComplete(region: Region, details: Details) {
+    //   setRegion(region);
+    //   if (onRegionChangeComplete) {
+    //     onRegionChangeComplete(region, details);
+    //     setZoom(calculateZoomLevel(region.longitudeDelta));
+    //   }
+    // }
 
-  return (
-    // <MapContext.Provider value={{ region, zoom, selectedCoordinate }}>
-    <>
-      {!loading && (
-        <RnMapView
-          provider={PROVIDER_GOOGLE}
-          style={styles.map}
-          // onPress={handleOnPress}
-          // initialRegion={initialRegion}
-          // onRegionChangeComplete={handleOnRegionChangeComplete}
-          loadingIndicatorColor={theme.colors.secondary}
-          toolbarEnabled={false}
-          moveOnMarkerPress={false}
-          mapType="satellite"
-          showsCompass={false}
-          rotateEnabled={false}
-          {...props}
-        />
-      )}
-      {loading && (
-        <View
-          style={{
-            ...StyleSheet.absoluteFillObject, // Covers the entire screen
-            backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <ActivityIndicator size="large" color={theme.colors.secondary} />
-        </View>
-      )}
-      {/* </MapContext.Provider> */}
-    </>
-  );
-};
+    // function handleOnPress(event: MapPressEvent) {
+    //   setSelectedCoordinate(event.nativeEvent.coordinate);
+    //   onPress && onPress(event);
+    // }
+
+    return (
+      // <MapContext.Provider value={{ region, zoom, selectedCoordinate }}>
+      <>
+        {!loading && (
+          <RnMapView
+            ref={mapRef}
+            provider={PROVIDER_GOOGLE}
+            style={styles.map}
+            initialRegion={initialRegion}
+            onMapReady={handleMapReady}
+            loadingIndicatorColor={theme.colors.secondary}
+            toolbarEnabled={false}
+            moveOnMarkerPress={false}
+            mapType="satellite"
+            showsCompass={false}
+            rotateEnabled={false}
+            {...props}
+          />
+        )}
+        {loading && (
+          <View
+            style={{
+              ...StyleSheet.absoluteFillObject, // Covers the entire screen
+              backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <ActivityIndicator size="large" color={theme.colors.secondary} />
+          </View>
+        )}
+        {/* </MapContext.Provider> */}
+      </>
+    );
+  },
+);
 
 export function useMap() {
   return useContext(MapContext);

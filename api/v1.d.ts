@@ -16,7 +16,7 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadHealthz"];
         patch?: never;
         trace?: never;
     };
@@ -32,7 +32,7 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1LayersPlotsBbox"];
         patch?: never;
         trace?: never;
     };
@@ -48,7 +48,7 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1LayersPlotsFarmsFederalFarmIdOnly"];
         patch?: never;
         trace?: never;
     };
@@ -64,7 +64,7 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1LayersPlotsFarmsFederalFarmIdBbox"];
         patch?: never;
         trace?: never;
     };
@@ -80,7 +80,7 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1LayersPlotsRadius"];
         patch?: never;
         trace?: never;
     };
@@ -94,6 +94,22 @@ export interface paths {
         get: operations["GetV1LayersFederalFarmIds"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1LayersFederalFarmIds"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/captcha/verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1CaptchaVerify"];
         delete?: never;
         options?: never;
         head?: never;
@@ -112,7 +128,7 @@ export interface paths {
         post: operations["PostV1Farm"];
         delete: operations["DeleteV1Farm"];
         options?: never;
-        head?: never;
+        head: operations["HeadV1Farm"];
         patch: operations["PatchV1Farm"];
         trace?: never;
     };
@@ -128,7 +144,7 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1Users"];
         patch?: never;
         trace?: never;
     };
@@ -144,7 +160,7 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1UsersByIdUserId"];
         patch?: never;
         trace?: never;
     };
@@ -160,40 +176,8 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1Me"];
         patch: operations["PatchV1Me"];
-        trace?: never;
-    };
-    "/v1/harvestingMachinery": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["GetV1HarvestingMachinery"];
-        put?: never;
-        post: operations["PostV1HarvestingMachinery"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/harvestingMachinery/byId/{harvestingMachineryId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["GetV1HarvestingMachineryByIdHarvestingMachineryId"];
-        put?: never;
-        post?: never;
-        delete: operations["DeleteV1HarvestingMachineryByIdHarvestingMachineryId"];
-        options?: never;
-        head?: never;
-        patch: operations["PatchV1HarvestingMachineryByIdHarvestingMachineryId"];
         trace?: never;
     };
     "/v1/plots": {
@@ -208,7 +192,7 @@ export interface paths {
         post: operations["PostV1Plots"];
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1Plots"];
         patch?: never;
         trace?: never;
     };
@@ -224,7 +208,7 @@ export interface paths {
         post?: never;
         delete: operations["DeleteV1PlotsByIdPlotId"];
         options?: never;
-        head?: never;
+        head: operations["HeadV1PlotsByIdPlotId"];
         patch: operations["PatchV1PlotsByIdPlotId"];
         trace?: never;
     };
@@ -240,7 +224,7 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1PlotsByIdPlotIdCropRotations"];
         patch?: never;
         trace?: never;
     };
@@ -256,7 +240,7 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1PlotsByIdPlotIdTillages"];
         patch?: never;
         trace?: never;
     };
@@ -272,7 +256,7 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1PlotsByIdPlotIdCropProtectionApplications"];
         patch?: never;
         trace?: never;
     };
@@ -288,7 +272,7 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1PlotsByIdPlotIdCropProtectionApplicationSummary"];
         patch?: never;
         trace?: never;
     };
@@ -304,7 +288,7 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1PlotsByIdPlotIdFertilizerApplications"];
         patch?: never;
         trace?: never;
     };
@@ -320,7 +304,7 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1PlotsByIdPlotIdFertilizerApplicationSummary"];
         patch?: never;
         trace?: never;
     };
@@ -336,7 +320,7 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1PlotsByIdPlotIdHarvests"];
         patch?: never;
         trace?: never;
     };
@@ -350,6 +334,38 @@ export interface paths {
         get: operations["GetV1PlotsByIdPlotIdHarvestSummary"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1PlotsByIdPlotIdHarvestSummary"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/plots/byId/{plotId}/split": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1PlotsByIdPlotIdSplit"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/plots/merge": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1PlotsMerge"];
         delete?: never;
         options?: never;
         head?: never;
@@ -384,7 +400,7 @@ export interface paths {
         post: operations["PostV1Crops"];
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1Crops"];
         patch?: never;
         trace?: never;
     };
@@ -400,7 +416,7 @@ export interface paths {
         post?: never;
         delete: operations["DeleteV1CropsByIdCropId"];
         options?: never;
-        head?: never;
+        head: operations["HeadV1CropsByIdCropId"];
         patch: operations["PatchV1CropsByIdCropId"];
         trace?: never;
     };
@@ -416,7 +432,55 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1CropsByIdCropIdInUse"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/crops/families": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1CropsFamilies"];
+        put?: never;
+        post: operations["PostV1CropsFamilies"];
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1CropsFamilies"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/crops/families/byId/{familyId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1CropsFamiliesByIdFamilyId"];
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1CropsFamiliesByIdFamilyId"];
+        options?: never;
+        head: operations["HeadV1CropsFamiliesByIdFamilyId"];
+        patch: operations["PatchV1CropsFamiliesByIdFamilyId"];
+        trace?: never;
+    };
+    "/v1/crops/families/byId/{familyId}/inUse": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1CropsFamiliesByIdFamilyIdInUse"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1CropsFamiliesByIdFamilyIdInUse"];
         patch?: never;
         trace?: never;
     };
@@ -432,7 +496,7 @@ export interface paths {
         post: operations["PostV1CropProtectionProducts"];
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1CropProtectionProducts"];
         patch?: never;
         trace?: never;
     };
@@ -448,7 +512,7 @@ export interface paths {
         post?: never;
         delete: operations["DeleteV1CropProtectionProductsByIdCropProtectionProductId"];
         options?: never;
-        head?: never;
+        head: operations["HeadV1CropProtectionProductsByIdCropProtectionProductId"];
         patch: operations["PatchV1CropProtectionProductsByIdCropProtectionProductId"];
         trace?: never;
     };
@@ -464,40 +528,8 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1CropProtectionProductsByIdCropProtectionProductIdInUse"];
         patch?: never;
-        trace?: never;
-    };
-    "/v1/cropProtectionEquipments": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["GetV1CropProtectionEquipments"];
-        put?: never;
-        post: operations["PostV1CropProtectionEquipments"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/cropProtectionEquipments/byId/{cropProtectionEquipmentId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["GetV1CropProtectionEquipmentsByIdCropProtectionEquipmentId"];
-        put?: never;
-        post?: never;
-        delete: operations["DeleteV1CropProtectionEquipmentsByIdCropProtectionEquipmentId"];
-        options?: never;
-        head?: never;
-        patch: operations["PatchV1CropProtectionEquipmentsByIdCropProtectionEquipmentId"];
         trace?: never;
     };
     "/v1/cropProtectionApplications": {
@@ -512,7 +544,7 @@ export interface paths {
         post: operations["PostV1CropProtectionApplications"];
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1CropProtectionApplications"];
         patch?: never;
         trace?: never;
     };
@@ -544,7 +576,7 @@ export interface paths {
         post?: never;
         delete: operations["DeleteV1CropProtectionApplicationsByIdCropProtectionApplicationId"];
         options?: never;
-        head?: never;
+        head: operations["HeadV1CropProtectionApplicationsByIdCropProtectionApplicationId"];
         patch: operations["PatchV1CropProtectionApplicationsByIdCropProtectionApplicationId"];
         trace?: never;
     };
@@ -560,7 +592,7 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1CropProtectionApplicationsSummaries"];
         patch?: never;
         trace?: never;
     };
@@ -576,40 +608,40 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1CropProtectionApplicationsYears"];
         patch?: never;
         trace?: never;
     };
-    "/v1/tillageEquipments": {
+    "/v1/cropProtectionApplications/presets": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["GetV1TillageEquipments"];
+        get: operations["GetV1CropProtectionApplicationsPresets"];
         put?: never;
-        post: operations["PostV1TillageEquipments"];
+        post: operations["PostV1CropProtectionApplicationsPresets"];
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1CropProtectionApplicationsPresets"];
         patch?: never;
         trace?: never;
     };
-    "/v1/tillageEquipments/byId/{tillageEquipmentId}": {
+    "/v1/cropProtectionApplications/presets/byId/{presetId}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["GetV1TillageEquipmentsByIdTillageEquipmentId"];
+        get: operations["GetV1CropProtectionApplicationsPresetsByIdPresetId"];
         put?: never;
         post?: never;
-        delete: operations["DeleteV1TillageEquipmentsByIdTillageEquipmentId"];
+        delete: operations["DeleteV1CropProtectionApplicationsPresetsByIdPresetId"];
         options?: never;
-        head?: never;
-        patch: operations["PatchV1TillageEquipmentsByIdTillageEquipmentId"];
+        head: operations["HeadV1CropProtectionApplicationsPresetsByIdPresetId"];
+        patch: operations["PatchV1CropProtectionApplicationsPresetsByIdPresetId"];
         trace?: never;
     };
     "/v1/tillages": {
@@ -624,7 +656,7 @@ export interface paths {
         post: operations["PostV1Tillages"];
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1Tillages"];
         patch?: never;
         trace?: never;
     };
@@ -656,7 +688,7 @@ export interface paths {
         post?: never;
         delete: operations["DeleteV1TillagesByIdTillageId"];
         options?: never;
-        head?: never;
+        head: operations["HeadV1TillagesByIdTillageId"];
         patch: operations["PatchV1TillagesByIdTillageId"];
         trace?: never;
     };
@@ -672,8 +704,40 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1TillagesYears"];
         patch?: never;
+        trace?: never;
+    };
+    "/v1/tillages/presets": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1TillagesPresets"];
+        put?: never;
+        post: operations["PostV1TillagesPresets"];
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1TillagesPresets"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/tillages/presets/byId/{presetId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1TillagesPresetsByIdPresetId"];
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1TillagesPresetsByIdPresetId"];
+        options?: never;
+        head: operations["HeadV1TillagesPresetsByIdPresetId"];
+        patch: operations["PatchV1TillagesPresetsByIdPresetId"];
         trace?: never;
     };
     "/v1/cropRotations": {
@@ -688,11 +752,11 @@ export interface paths {
         post: operations["PostV1CropRotations"];
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1CropRotations"];
         patch?: never;
         trace?: never;
     };
-    "/v1/cropRotations/batch": {
+    "/v1/cropRotations/plan": {
         parameters: {
             query?: never;
             header?: never;
@@ -701,26 +765,58 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["PostV1CropRotationsBatch"];
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
-        patch?: never;
+        patch: operations["PatchV1CropRotationsPlan"];
         trace?: never;
     };
-    "/v1/cropRotations/current": {
+    "/v1/cropRotations/batch/byCrop": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["GetV1CropRotationsCurrent"];
+        get?: never;
+        put?: never;
+        post: operations["PostV1CropRotationsBatchByCrop"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/cropRotations/batch/byPlot": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1CropRotationsBatchByPlot"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/cropRotations/plots": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1CropRotationsPlots"];
         put?: never;
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1CropRotationsPlots"];
         patch?: never;
         trace?: never;
     };
@@ -736,7 +832,7 @@ export interface paths {
         post?: never;
         delete: operations["DeleteV1CropRotationsByIdRotationId"];
         options?: never;
-        head?: never;
+        head: operations["HeadV1CropRotationsByIdRotationId"];
         patch: operations["PatchV1CropRotationsByIdRotationId"];
         trace?: never;
     };
@@ -752,7 +848,7 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1CropRotationsYears"];
         patch?: never;
         trace?: never;
     };
@@ -768,7 +864,7 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1Harvests"];
         patch?: never;
         trace?: never;
     };
@@ -800,7 +896,7 @@ export interface paths {
         post?: never;
         delete: operations["DeleteV1HarvestsByIdHarvestId"];
         options?: never;
-        head?: never;
+        head: operations["HeadV1HarvestsByIdHarvestId"];
         patch?: never;
         trace?: never;
     };
@@ -816,7 +912,7 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1HarvestsSummaries"];
         patch?: never;
         trace?: never;
     };
@@ -832,8 +928,40 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1HarvestsYears"];
         patch?: never;
+        trace?: never;
+    };
+    "/v1/harvests/presets": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1HarvestsPresets"];
+        put?: never;
+        post: operations["PostV1HarvestsPresets"];
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1HarvestsPresets"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/harvests/presets/byId/{presetId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1HarvestsPresetsByIdPresetId"];
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1HarvestsPresetsByIdPresetId"];
+        options?: never;
+        head: operations["HeadV1HarvestsPresetsByIdPresetId"];
+        patch: operations["PatchV1HarvestsPresetsByIdPresetId"];
         trace?: never;
     };
     "/v1/fertilizerApplications": {
@@ -848,7 +976,7 @@ export interface paths {
         post: operations["PostV1FertilizerApplications"];
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1FertilizerApplications"];
         patch?: never;
         trace?: never;
     };
@@ -864,7 +992,7 @@ export interface paths {
         post?: never;
         delete: operations["DeleteV1FertilizerApplicationsByIdFertilizerApplicationId"];
         options?: never;
-        head?: never;
+        head: operations["HeadV1FertilizerApplicationsByIdFertilizerApplicationId"];
         patch?: never;
         trace?: never;
     };
@@ -880,7 +1008,7 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1FertilizerApplicationsSummaries"];
         patch?: never;
         trace?: never;
     };
@@ -896,8 +1024,40 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1FertilizerApplicationsYears"];
         patch?: never;
+        trace?: never;
+    };
+    "/v1/fertilizerApplications/presets": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1FertilizerApplicationsPresets"];
+        put?: never;
+        post: operations["PostV1FertilizerApplicationsPresets"];
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1FertilizerApplicationsPresets"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/fertilizerApplications/presets/byId/{presetId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1FertilizerApplicationsPresetsByIdPresetId"];
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1FertilizerApplicationsPresetsByIdPresetId"];
+        options?: never;
+        head: operations["HeadV1FertilizerApplicationsPresetsByIdPresetId"];
+        patch: operations["PatchV1FertilizerApplicationsPresetsByIdPresetId"];
         trace?: never;
     };
     "/v1/fertilizers": {
@@ -912,7 +1072,7 @@ export interface paths {
         post: operations["PostV1Fertilizers"];
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1Fertilizers"];
         patch?: never;
         trace?: never;
     };
@@ -928,7 +1088,7 @@ export interface paths {
         post?: never;
         delete: operations["DeleteV1FertilizersByIdFertilizerId"];
         options?: never;
-        head?: never;
+        head: operations["HeadV1FertilizersByIdFertilizerId"];
         patch: operations["PatchV1FertilizersByIdFertilizerId"];
         trace?: never;
     };
@@ -944,43 +1104,11 @@ export interface paths {
         post?: never;
         delete?: never;
         options?: never;
-        head?: never;
+        head: operations["HeadV1FertilizersByIdFertilizerIdInUse"];
         patch?: never;
         trace?: never;
     };
-    "/v1/fertilizerSpreaders": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["GetV1FertilizerSpreaders"];
-        put?: never;
-        post: operations["PostV1FertilizerSpreaders"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/fertilizerSpreaders/byId/{fertilizerSpreaderId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["GetV1FertilizerSpreadersByIdFertilizerSpreaderId"];
-        put?: never;
-        post?: never;
-        delete: operations["DeleteV1FertilizerSpreadersByIdFertilizerSpreaderId"];
-        options?: never;
-        head?: never;
-        patch: operations["PatchV1FertilizerSpreadersByIdFertilizerSpreaderId"];
-        trace?: never;
-    };
-    "/v1/reports/fieldcalendar": {
+    "/v1/reports/fieldcalendar/email": {
         parameters: {
             query?: never;
             header?: never;
@@ -989,11 +1117,699 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["PostV1ReportsFieldcalendar"];
+        post: operations["PostV1ReportsFieldcalendarEmail"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/v1/reports/fieldcalendar/download": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1ReportsFieldcalendarDownload"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/reports/treatments/download": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1ReportsTreatmentsDownload"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/reports/outdoorjournal/download": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1ReportsOutdoorjournalDownload"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/animals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1Animals"];
+        put?: never;
+        post: operations["PostV1Animals"];
+        delete: operations["DeleteV1Animals"];
+        options?: never;
+        head: operations["HeadV1Animals"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/animals/batch": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["PatchV1AnimalsBatch"];
+        trace?: never;
+    };
+    "/v1/animals/import": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1AnimalsImport"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/animals/byId/{animalId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1AnimalsByIdAnimalId"];
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1AnimalsByIdAnimalId"];
+        options?: never;
+        head: operations["HeadV1AnimalsByIdAnimalId"];
+        patch: operations["PatchV1AnimalsByIdAnimalId"];
+        trace?: never;
+    };
+    "/v1/animals/byId/{animalId}/children": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1AnimalsByIdAnimalIdChildren"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1AnimalsByIdAnimalIdChildren"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/animals/byId/{animalId}/sponsorships": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1AnimalsByIdAnimalIdSponsorships"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1AnimalsByIdAnimalIdSponsorships"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/animals/byId/{animalId}/customOutdoorJournalCategories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["PutV1AnimalsByIdAnimalIdCustomOutdoorJournalCategories"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/animals/outdoorJournal": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1AnimalsOutdoorJournal"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1AnimalsOutdoorJournal"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/animals/herds": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1AnimalsHerds"];
+        put?: never;
+        post: operations["PostV1AnimalsHerds"];
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1AnimalsHerds"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/animals/herds/byId/{herdId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1AnimalsHerdsByIdHerdId"];
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1AnimalsHerdsByIdHerdId"];
+        options?: never;
+        head: operations["HeadV1AnimalsHerdsByIdHerdId"];
+        patch: operations["PatchV1AnimalsHerdsByIdHerdId"];
+        trace?: never;
+    };
+    "/v1/animals/herds/byId/{herdId}/outdoorSchedules": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1AnimalsHerdsByIdHerdIdOutdoorSchedules"];
+        put?: never;
+        post: operations["PostV1AnimalsHerdsByIdHerdIdOutdoorSchedules"];
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1AnimalsHerdsByIdHerdIdOutdoorSchedules"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/animals/herds/outdoorSchedules/byId/{outdoorScheduleId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleId"];
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleId"];
+        options?: never;
+        head: operations["HeadV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleId"];
+        patch: operations["PatchV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleId"];
+        trace?: never;
+    };
+    "/v1/earTags": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1EarTags"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1EarTags"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/earTags/available": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1EarTagsAvailable"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1EarTagsAvailable"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/earTags/range": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1EarTagsRange"];
+        delete: operations["DeleteV1EarTagsRange"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/drugs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1Drugs"];
+        put?: never;
+        post: operations["PostV1Drugs"];
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1Drugs"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/drugs/byId/{drugId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1DrugsByIdDrugId"];
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1DrugsByIdDrugId"];
+        options?: never;
+        head: operations["HeadV1DrugsByIdDrugId"];
+        patch: operations["PatchV1DrugsByIdDrugId"];
+        trace?: never;
+    };
+    "/v1/drugs/byId/{drugId}/inUse": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1DrugsByIdDrugIdInUse"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1DrugsByIdDrugIdInUse"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/treatments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1Treatments"];
+        put?: never;
+        post: operations["PostV1Treatments"];
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1Treatments"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/treatments/byId/{treatmentId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1TreatmentsByIdTreatmentId"];
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1TreatmentsByIdTreatmentId"];
+        options?: never;
+        head: operations["HeadV1TreatmentsByIdTreatmentId"];
+        patch: operations["PatchV1TreatmentsByIdTreatmentId"];
+        trace?: never;
+    };
+    "/v1/contacts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1Contacts"];
+        put?: never;
+        post: operations["PostV1Contacts"];
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1Contacts"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/contacts/byId/{contactId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1ContactsByIdContactId"];
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1ContactsByIdContactId"];
+        options?: never;
+        head: operations["HeadV1ContactsByIdContactId"];
+        patch: operations["PatchV1ContactsByIdContactId"];
+        trace?: never;
+    };
+    "/v1/contacts/byId/{contactId}/payments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1ContactsByIdContactIdPayments"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1ContactsByIdContactIdPayments"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/contacts/byId/{contactId}/sponsorships": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1ContactsByIdContactIdSponsorships"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1ContactsByIdContactIdSponsorships"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/contacts/byId/{contactId}/orders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1ContactsByIdContactIdOrders"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1ContactsByIdContactIdOrders"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/products": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1Products"];
+        put?: never;
+        post: operations["PostV1Products"];
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1Products"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/products/active": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1ProductsActive"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1ProductsActive"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/products/byId/{productId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1ProductsByIdProductId"];
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1ProductsByIdProductId"];
+        options?: never;
+        head: operations["HeadV1ProductsByIdProductId"];
+        patch: operations["PatchV1ProductsByIdProductId"];
+        trace?: never;
+    };
+    "/v1/orders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1Orders"];
+        put?: never;
+        post: operations["PostV1Orders"];
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1Orders"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/orders/byId/{orderId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1OrdersByIdOrderId"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1OrdersByIdOrderId"];
+        patch: operations["PatchV1OrdersByIdOrderId"];
+        trace?: never;
+    };
+    "/v1/orders/byId/{orderId}/items": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1OrdersByIdOrderIdItems"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1OrdersByIdOrderIdItems"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/orders/byId/{orderId}/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1OrdersByIdOrderIdConfirm"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/orders/byId/{orderId}/fulfill": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1OrdersByIdOrderIdFulfill"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/orders/byId/{orderId}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1OrdersByIdOrderIdCancel"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/payments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1Payments"];
+        put?: never;
+        post: operations["PostV1Payments"];
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1Payments"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/payments/byId/{paymentId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1PaymentsByIdPaymentId"];
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1PaymentsByIdPaymentId"];
+        options?: never;
+        head: operations["HeadV1PaymentsByIdPaymentId"];
+        patch: operations["PatchV1PaymentsByIdPaymentId"];
+        trace?: never;
+    };
+    "/v1/sponsorshipPrograms": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1SponsorshipPrograms"];
+        put?: never;
+        post: operations["PostV1SponsorshipPrograms"];
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1SponsorshipPrograms"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/sponsorshipPrograms/byId/{sponsorshipProgramId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1SponsorshipProgramsByIdSponsorshipProgramId"];
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1SponsorshipProgramsByIdSponsorshipProgramId"];
+        options?: never;
+        head: operations["HeadV1SponsorshipProgramsByIdSponsorshipProgramId"];
+        patch: operations["PatchV1SponsorshipProgramsByIdSponsorshipProgramId"];
+        trace?: never;
+    };
+    "/v1/sponsorships": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1Sponsorships"];
+        put?: never;
+        post: operations["PostV1Sponsorships"];
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1Sponsorships"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/sponsorships/byId/{sponsorshipId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1SponsorshipsByIdSponsorshipId"];
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1SponsorshipsByIdSponsorshipId"];
+        options?: never;
+        head: operations["HeadV1SponsorshipsByIdSponsorshipId"];
+        patch: operations["PatchV1SponsorshipsByIdSponsorshipId"];
         trace?: never;
     };
 }
@@ -1015,34 +1831,26 @@ export interface components {
             };
         };
         GetV1LayersPlotsBboxParameterXmin: string;
-        GetV1LayersPlotsBboxParameterYmin: string;
-        GetV1LayersPlotsBboxParameterXmax: string;
-        GetV1LayersPlotsBboxParameterYmax: string;
         GetV1LayersPlotsBboxPositiveResponse: {
             data: {
                 result: {
-                    /** Format: int64 */
                     id: number;
                     federalFarmId: string;
                     localId: string | null;
-                    /** Format: int64 */
                     usage: number;
-                    additionalUsages: string | null;
-                    /** Format: int64 */
-                    area: number;
+                    size: number;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    cuttingDate: string | null;
                     canton: string;
                     geometry: {
                         /** @constant */
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    cuttingDate: string | null;
                 }[];
-                /** Format: double */
                 count: number;
                 bbox: [
                     number,
@@ -1055,124 +1863,92 @@ export interface components {
         GetV1LayersPlotsBboxNegativeResponse: {
             error: string;
         };
-        GetV1LayersPlotsFarmsFederalFarmIdOnlyParameterFederalFarmId: string;
         GetV1LayersPlotsFarmsFederalFarmIdOnlyPositiveResponse: {
             data: {
                 result: {
-                    /** Format: int64 */
                     id: number;
                     federalFarmId: string;
                     localId: string | null;
-                    /** Format: int64 */
                     usage: number;
-                    additionalUsages: string | null;
-                    /** Format: int64 */
-                    area: number;
+                    size: number;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    cuttingDate: string | null;
                     canton: string;
                     geometry: {
                         /** @constant */
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    cuttingDate: string | null;
                 }[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1LayersPlotsFarmsFederalFarmIdOnlyNegativeResponse: {
-            error: string;
-        };
-        GetV1LayersPlotsFarmsFederalFarmIdBboxParameterFederalFarmId: string;
-        /** Format: double */
         GetV1LayersPlotsFarmsFederalFarmIdBboxParameterBuffer: number;
         GetV1LayersPlotsFarmsFederalFarmIdBboxPositiveResponse: {
             data: {
                 result: {
-                    /** Format: int64 */
                     id: number;
                     federalFarmId: string;
                     localId: string | null;
-                    /** Format: int64 */
                     usage: number;
-                    additionalUsages: string | null;
-                    /** Format: int64 */
-                    area: number;
+                    size: number;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    cuttingDate: string | null;
                     canton: string;
                     geometry: {
                         /** @constant */
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    cuttingDate: string | null;
                 }[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1LayersPlotsFarmsFederalFarmIdBboxNegativeResponse: {
-            error: string;
-        };
-        GetV1LayersPlotsRadiusParameterLongitude: string;
-        GetV1LayersPlotsRadiusParameterLatitude: string;
-        GetV1LayersPlotsRadiusParameterRadiusInKm: string;
         GetV1LayersPlotsRadiusPositiveResponse: {
             data: {
                 result: {
-                    /** Format: int64 */
                     id: number;
                     federalFarmId: string;
                     localId: string | null;
-                    /** Format: int64 */
                     usage: number;
-                    additionalUsages: string | null;
-                    /** Format: int64 */
-                    area: number;
+                    size: number;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    cuttingDate: string | null;
                     canton: string;
                     geometry: {
                         /** @constant */
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    cuttingDate: string | null;
                 }[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1LayersPlotsRadiusNegativeResponse: {
-            error: string;
-        };
-        GetV1LayersFederalFarmIdsParameterQuery: string;
-        GetV1LayersFederalFarmIdsParameterLongitude: string;
-        GetV1LayersFederalFarmIdsParameterLatitude: string;
-        GetV1LayersFederalFarmIdsParameterRadiusInKm: string;
-        GetV1LayersFederalFarmIdsParameterLimit: string;
         GetV1LayersFederalFarmIdsPositiveResponse: {
             data: {
                 result: string[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1LayersFederalFarmIdsNegativeResponse: {
-            error: string;
+        PostV1CaptchaVerifyPositiveResponse: {
+            data: {
+                success: boolean;
+            };
+        };
+        PostV1CaptchaVerifyRequestBody: {
+            token: string;
         };
         PostV1FarmPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
                 federalId: string | null;
                 tvdId: string | null;
@@ -1187,9 +1963,6 @@ export interface components {
                     ];
                 };
             };
-        };
-        PostV1FarmNegativeResponse: {
-            error: string;
         };
         PostV1FarmRequestBody: {
             name: string;
@@ -1206,7 +1979,6 @@ export interface components {
         };
         GetV1FarmPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
                 federalId: string | null;
                 tvdId: string | null;
@@ -1222,19 +1994,11 @@ export interface components {
                 };
             };
         };
-        GetV1FarmNegativeResponse: {
-            error: string;
-        };
-        DeleteV1FarmParameterDeleteAccount: string;
         DeleteV1FarmPositiveResponse: {
             data: Record<string, never>;
         };
-        DeleteV1FarmNegativeResponse: {
-            error: string;
-        };
         PatchV1FarmPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
                 federalId: string | null;
                 tvdId: string | null;
@@ -1249,9 +2013,6 @@ export interface components {
                     ];
                 };
             };
-        };
-        PatchV1FarmNegativeResponse: {
-            error: string;
         };
         PatchV1FarmRequestBody: {
             name?: string;
@@ -1270,213 +2031,71 @@ export interface components {
         GetV1UsersPositiveResponse: {
             data: {
                 result: {
-                    /** Format: uuid */
                     id: string;
                     email: string;
                     fullName: string | null;
                     emailVerified: boolean;
-                    /** Format: uuid */
                     farmId: string | null;
                 }[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1UsersNegativeResponse: {
-            error: string;
-        };
-        GetV1UsersByIdUserIdParameterUserId: string;
         GetV1UsersByIdUserIdPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
                 email: string;
                 fullName: string | null;
                 emailVerified: boolean;
-                /** Format: uuid */
                 farmId: string | null;
             };
-        };
-        GetV1UsersByIdUserIdNegativeResponse: {
-            error: string;
         };
         PatchV1MePositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
                 email: string;
                 fullName: string | null;
                 emailVerified: boolean;
-                /** Format: uuid */
                 farmId: string | null;
             };
         };
-        PatchV1MeNegativeResponse: {
-            error: string;
-        };
         PatchV1MeRequestBody: {
-            email?: string;
-            fullName?: string | null;
+            fullName?: string;
             emailVerified?: boolean;
-            /** Format: uuid */
-            farmId?: string | null;
+            farmId?: string;
         };
         GetV1MePositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
                 email: string;
                 fullName: string | null;
                 emailVerified: boolean;
-                /** Format: uuid */
                 farmId: string | null;
             };
-        };
-        GetV1MeNegativeResponse: {
-            error: string;
-        };
-        GetV1HarvestingMachineryPositiveResponse: {
-            data: {
-                result: {
-                    /** Format: uuid */
-                    id: string;
-                    /** Format: uuid */
-                    farmId: string;
-                    name: string;
-                    default: boolean;
-                    /** @enum {string} */
-                    defaultConservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
-                    /** @enum {string} */
-                    defaultProcessingType: "none" | "square_bale" | "round_bale" | "other";
-                    /** Format: int64 */
-                    defaultKilosPerUnit: number;
-                }[];
-                /** Format: double */
-                count: number;
-            };
-        };
-        GetV1HarvestingMachineryNegativeResponse: {
-            error: string;
-        };
-        PostV1HarvestingMachineryPositiveResponse: {
-            data: {
-                /** Format: uuid */
-                id: string;
-                /** Format: uuid */
-                farmId: string;
-                name: string;
-                default: boolean;
-                /** @enum {string} */
-                defaultConservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
-                /** @enum {string} */
-                defaultProcessingType: "none" | "square_bale" | "round_bale" | "other";
-                /** Format: int64 */
-                defaultKilosPerUnit: number;
-            };
-        };
-        PostV1HarvestingMachineryNegativeResponse: {
-            error: string;
-        };
-        PostV1HarvestingMachineryRequestBody: {
-            name: string;
-            default?: boolean;
-            /** @enum {string} */
-            defaultConservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
-            /** @enum {string} */
-            defaultProcessingType: "none" | "square_bale" | "round_bale" | "other";
-            /** Format: int64 */
-            defaultKilosPerUnit: number;
-        };
-        GetV1HarvestingMachineryByIdHarvestingMachineryIdParameterHarvestingMachineryId: string;
-        GetV1HarvestingMachineryByIdHarvestingMachineryIdPositiveResponse: {
-            data: {
-                /** Format: uuid */
-                id: string;
-                /** Format: uuid */
-                farmId: string;
-                name: string;
-                default: boolean;
-                /** @enum {string} */
-                defaultConservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
-                /** @enum {string} */
-                defaultProcessingType: "none" | "square_bale" | "round_bale" | "other";
-                /** Format: int64 */
-                defaultKilosPerUnit: number;
-            };
-        };
-        GetV1HarvestingMachineryByIdHarvestingMachineryIdNegativeResponse: {
-            error: string;
-        };
-        DeleteV1HarvestingMachineryByIdHarvestingMachineryIdParameterHarvestingMachineryId: string;
-        DeleteV1HarvestingMachineryByIdHarvestingMachineryIdPositiveResponse: {
-            data: Record<string, never>;
-        };
-        DeleteV1HarvestingMachineryByIdHarvestingMachineryIdNegativeResponse: {
-            error: string;
-        };
-        PatchV1HarvestingMachineryByIdHarvestingMachineryIdParameterHarvestingMachineryId: string;
-        PatchV1HarvestingMachineryByIdHarvestingMachineryIdPositiveResponse: {
-            data: {
-                /** Format: uuid */
-                id: string;
-                /** Format: uuid */
-                farmId: string;
-                name: string;
-                default: boolean;
-                /** @enum {string} */
-                defaultConservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
-                /** @enum {string} */
-                defaultProcessingType: "none" | "square_bale" | "round_bale" | "other";
-                /** Format: int64 */
-                defaultKilosPerUnit: number;
-            };
-        };
-        PatchV1HarvestingMachineryByIdHarvestingMachineryIdNegativeResponse: {
-            error: string;
-        };
-        PatchV1HarvestingMachineryByIdHarvestingMachineryIdRequestBody: {
-            name?: string;
-            default?: boolean;
-            /** @enum {string} */
-            defaultConservationMethod?: "dried" | "silage" | "haylage" | "other" | "none";
-            /** @enum {string} */
-            defaultProcessingType?: "none" | "square_bale" | "round_bale" | "other";
-            /** Format: int64 */
-            defaultKilosPerUnit?: number;
         };
         GetV1PlotsPositiveResponse: {
             data: {
                 result: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
                     name: string;
                     localId: string | null;
-                    /** Format: int64 */
                     usage: number | null;
-                    additionalUsages: string | null;
-                    /** Format: int64 */
-                    size: number;
-                    additionalNotes: string | null;
-                    geometry: {
-                        /** @constant */
-                        type: "MultiPolygon";
-                        coordinates: number[][][][];
-                    };
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     cuttingDate: string | null;
-                    cropRotations: {
-                        /** Format: uuid */
+                    geometry: {
+                        /** @constant */
+                        type: "MultiPolygon";
+                        coordinates: number[][][][];
+                    };
+                    size: number;
+                    additionalNotes: string | null;
+                    currentCropRotation: {
                         id: string;
-                        /** Format: uuid */
                         farmId: string;
-                        /** Format: uuid */
                         plotId: string;
-                        /** Format: uuid */
                         cropId: string;
                         /**
                          * Format: date-time
@@ -1492,60 +2111,54 @@ export interface components {
                          * Format: date-time
                          * @description YYYY-MM-DDTHH:mm:ss.sssZ
                          */
-                        toDate: string | null;
+                        toDate: string;
                         crop: {
-                            /** Format: uuid */
                             id: string;
-                            /** Format: uuid */
                             farmId: string;
                             name: string;
                             /** @enum {string} */
                             category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                            familyId: string | null;
                             variety: string | null;
                             usageCodes: number[];
+                            waitingTimeInYears: number | null;
                             additionalNotes: string | null;
+                            family: {
+                                id: string;
+                                farmId: string;
+                                name: string;
+                                waitingTimeInYears: number;
+                                additionalNotes: string | null;
+                            } | null;
                         };
-                    }[];
+                    } | null;
                 }[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1PlotsNegativeResponse: {
-            error: string;
-        };
         PostV1PlotsPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
                 name: string;
                 localId: string | null;
-                /** Format: int64 */
                 usage: number | null;
-                additionalUsages: string | null;
-                /** Format: int64 */
-                size: number;
-                additionalNotes: string | null;
-                geometry: {
-                    /** @constant */
-                    type: "MultiPolygon";
-                    coordinates: number[][][][];
-                };
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 cuttingDate: string | null;
-                cropRotations: {
-                    /** Format: uuid */
+                geometry: {
+                    /** @constant */
+                    type: "MultiPolygon";
+                    coordinates: number[][][][];
+                };
+                size: number;
+                additionalNotes: string | null;
+                currentCropRotation: {
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
-                    /** Format: uuid */
                     plotId: string;
-                    /** Format: uuid */
                     cropId: string;
                     /**
                      * Format: date-time
@@ -1561,219 +2174,201 @@ export interface components {
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
-                    toDate: string | null;
+                    toDate: string;
                     crop: {
-                        /** Format: uuid */
                         id: string;
-                        /** Format: uuid */
                         farmId: string;
                         name: string;
                         /** @enum {string} */
                         category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                        familyId: string | null;
                         variety: string | null;
                         usageCodes: number[];
+                        waitingTimeInYears: number | null;
                         additionalNotes: string | null;
+                        family: {
+                            id: string;
+                            farmId: string;
+                            name: string;
+                            waitingTimeInYears: number;
+                            additionalNotes: string | null;
+                        } | null;
                     };
-                }[];
+                } | null;
             };
-        };
-        PostV1PlotsNegativeResponse: {
-            error: string;
         };
         PostV1PlotsRequestBody: {
             name: string;
-            localId?: string | null;
-            /** Format: int64 */
-            usage?: number | null;
-            additionalUsages?: string | null;
-            /** Format: int64 */
-            size: number;
-            additionalNotes?: string | null;
+            localId?: string;
+            usage?: number;
+            additionalUsages?: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            cuttingDate?: string | null;
             geometry: {
                 /** @constant */
                 type: "MultiPolygon";
                 coordinates: number[][][][];
             };
+            size: number;
+            additionalNotes?: string;
+        };
+        GetV1PlotsByIdPlotIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                localId: string | null;
+                usage: number | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                cuttingDate: string | null;
+                geometry: {
+                    /** @constant */
+                    type: "MultiPolygon";
+                    coordinates: number[][][][];
+                };
+                size: number;
+                additionalNotes: string | null;
+                currentCropRotation: {
+                    id: string;
+                    farmId: string;
+                    plotId: string;
+                    cropId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    sowingDate: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    fromDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    toDate: string;
+                    crop: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        /** @enum {string} */
+                        category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                        familyId: string | null;
+                        variety: string | null;
+                        usageCodes: number[];
+                        waitingTimeInYears: number | null;
+                        additionalNotes: string | null;
+                        family: {
+                            id: string;
+                            farmId: string;
+                            name: string;
+                            waitingTimeInYears: number;
+                            additionalNotes: string | null;
+                        } | null;
+                    };
+                } | null;
+            };
+        };
+        DeleteV1PlotsByIdPlotIdPositiveResponse: {
+            data: Record<string, never>;
+        };
+        PatchV1PlotsByIdPlotIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                localId: string | null;
+                usage: number | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                cuttingDate: string | null;
+                geometry: {
+                    /** @constant */
+                    type: "MultiPolygon";
+                    coordinates: number[][][][];
+                };
+                size: number;
+                additionalNotes: string | null;
+                currentCropRotation: {
+                    id: string;
+                    farmId: string;
+                    plotId: string;
+                    cropId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    sowingDate: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    fromDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    toDate: string;
+                    crop: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        /** @enum {string} */
+                        category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                        familyId: string | null;
+                        variety: string | null;
+                        usageCodes: number[];
+                        waitingTimeInYears: number | null;
+                        additionalNotes: string | null;
+                        family: {
+                            id: string;
+                            farmId: string;
+                            name: string;
+                            waitingTimeInYears: number;
+                            additionalNotes: string | null;
+                        } | null;
+                    };
+                } | null;
+            };
+        };
+        PatchV1PlotsByIdPlotIdRequestBody: {
+            name?: string;
+            localId?: string;
+            usage?: number;
+            additionalUsages?: string;
             /**
              * Format: date-time
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
             cuttingDate?: string | null;
-            cropId: string;
-        };
-        GetV1PlotsByIdPlotIdParameterPlotId: string;
-        GetV1PlotsByIdPlotIdPositiveResponse: {
-            data: {
-                /** Format: uuid */
-                id: string;
-                /** Format: uuid */
-                farmId: string;
-                name: string;
-                localId: string | null;
-                /** Format: int64 */
-                usage: number | null;
-                additionalUsages: string | null;
-                /** Format: int64 */
-                size: number;
-                additionalNotes: string | null;
-                geometry: {
-                    /** @constant */
-                    type: "MultiPolygon";
-                    coordinates: number[][][][];
-                };
-                /**
-                 * Format: date-time
-                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                 */
-                cuttingDate: string | null;
-                cropRotations: {
-                    /** Format: uuid */
-                    id: string;
-                    /** Format: uuid */
-                    farmId: string;
-                    /** Format: uuid */
-                    plotId: string;
-                    /** Format: uuid */
-                    cropId: string;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    sowingDate: string | null;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    fromDate: string;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    toDate: string | null;
-                    crop: {
-                        /** Format: uuid */
-                        id: string;
-                        /** Format: uuid */
-                        farmId: string;
-                        name: string;
-                        /** @enum {string} */
-                        category: "grass" | "grain" | "vegetable" | "fruit" | "other";
-                        variety: string | null;
-                        usageCodes: number[];
-                        additionalNotes: string | null;
-                    };
-                }[];
-            };
-        };
-        GetV1PlotsByIdPlotIdNegativeResponse: {
-            error: string;
-        };
-        DeleteV1PlotsByIdPlotIdParameterPlotId: string;
-        DeleteV1PlotsByIdPlotIdPositiveResponse: {
-            data: Record<string, never>;
-        };
-        DeleteV1PlotsByIdPlotIdNegativeResponse: {
-            error: string;
-        };
-        PatchV1PlotsByIdPlotIdParameterPlotId: string;
-        PatchV1PlotsByIdPlotIdPositiveResponse: {
-            data: {
-                /** Format: uuid */
-                id: string;
-                /** Format: uuid */
-                farmId: string;
-                name: string;
-                localId: string | null;
-                /** Format: int64 */
-                usage: number | null;
-                additionalUsages: string | null;
-                /** Format: int64 */
-                size: number;
-                additionalNotes: string | null;
-                geometry: {
-                    /** @constant */
-                    type: "MultiPolygon";
-                    coordinates: number[][][][];
-                };
-                /**
-                 * Format: date-time
-                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                 */
-                cuttingDate: string | null;
-                cropRotations: {
-                    /** Format: uuid */
-                    id: string;
-                    /** Format: uuid */
-                    farmId: string;
-                    /** Format: uuid */
-                    plotId: string;
-                    /** Format: uuid */
-                    cropId: string;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    sowingDate: string | null;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    fromDate: string;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    toDate: string | null;
-                    crop: {
-                        /** Format: uuid */
-                        id: string;
-                        /** Format: uuid */
-                        farmId: string;
-                        name: string;
-                        /** @enum {string} */
-                        category: "grass" | "grain" | "vegetable" | "fruit" | "other";
-                        variety: string | null;
-                        usageCodes: number[];
-                        additionalNotes: string | null;
-                    };
-                }[];
-            };
-        };
-        PatchV1PlotsByIdPlotIdNegativeResponse: {
-            error: string;
-        };
-        PatchV1PlotsByIdPlotIdRequestBody: {
-            name?: string;
-            localId?: string | null;
-            /** Format: int64 */
-            usage?: number | null;
-            additionalUsages?: string | null;
-            /** Format: int64 */
-            size?: number;
-            additionalNotes?: string | null;
             geometry?: {
                 /** @constant */
                 type: "MultiPolygon";
                 coordinates: number[][][][];
             };
-            /**
-             * Format: date-time
-             * @description YYYY-MM-DDTHH:mm:ss.sssZ
-             */
-            cuttingDate?: string | null;
-            cropId?: string;
+            size?: number;
+            additionalNotes?: string;
         };
-        GetV1PlotsByIdPlotIdCropRotationsParameterPlotId: string;
+        /**
+         * Format: date-time
+         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+         */
+        GetV1PlotsByIdPlotIdCropRotationsParameterFromDate: string;
         GetV1PlotsByIdPlotIdCropRotationsPositiveResponse: {
             data: {
                 result: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
-                    /** Format: uuid */
                     plotId: string;
-                    /** Format: uuid */
                     cropId: string;
                     /**
                      * Format: date-time
@@ -1789,206 +2384,118 @@ export interface components {
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
-                    toDate: string | null;
+                    toDate: string;
                     crop: {
-                        /** Format: uuid */
                         id: string;
-                        /** Format: uuid */
                         farmId: string;
                         name: string;
                         /** @enum {string} */
                         category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                        familyId: string | null;
                         variety: string | null;
                         usageCodes: number[];
+                        waitingTimeInYears: number | null;
                         additionalNotes: string | null;
+                        family: {
+                            id: string;
+                            farmId: string;
+                            name: string;
+                            waitingTimeInYears: number;
+                            additionalNotes: string | null;
+                        } | null;
                     };
                 }[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1PlotsByIdPlotIdCropRotationsNegativeResponse: {
-            error: string;
-        };
-        GetV1PlotsByIdPlotIdTillagesParameterPlotId: string;
         GetV1PlotsByIdPlotIdTillagesPositiveResponse: {
             data: {
                 result: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     createdAt: string;
-                    /** Format: uuid */
                     createdBy: string | null;
-                    /** Format: uuid */
                     plotId: string;
                     geometry: {
                         /** @constant */
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    /** Format: int64 */
                     size: number;
                     /** @enum {string} */
-                    reason: "weed_control" | "soil_loosening" | "other";
-                    /** @enum {string} */
-                    action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
-                    /** Format: uuid */
-                    equipmentId: string | null;
+                    action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
+                    customAction: string | null;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     date: string;
                     additionalNotes: string | null;
-                    equipment: {
-                        /** Format: uuid */
-                        id: string;
-                        /** Format: uuid */
-                        farmId: string;
-                        name: string;
-                        /** @enum {string} */
-                        action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
-                        /** @enum {string} */
-                        reason: "weed_control" | "soil_loosening" | "other";
-                    } | null;
                     plot: {
-                        /** Format: uuid */
                         id: string;
-                        /** Format: uuid */
-                        farmId: string;
                         name: string;
-                        localId: string | null;
-                        /** Format: int64 */
-                        usage: number | null;
-                        additionalUsages: string | null;
-                        /** Format: int64 */
-                        size: number;
-                        additionalNotes: string | null;
-                        /**
-                         * Format: date-time
-                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                         */
-                        cuttingDate: string | null;
                     };
                 }[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1PlotsByIdPlotIdTillagesNegativeResponse: {
-            error: string;
-        };
-        GetV1PlotsByIdPlotIdCropProtectionApplicationsParameterPlotId: string;
         GetV1PlotsByIdPlotIdCropProtectionApplicationsPositiveResponse: {
             data: {
                 result: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     createdAt: string;
-                    /** Format: uuid */
                     createdBy: string | null;
-                    /** Format: uuid */
                     plotId: string;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     dateTime: string;
-                    /** Format: uuid */
-                    equipmentId: string | null;
-                    /** Format: uuid */
                     productId: string;
                     geometry: {
                         /** @constant */
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    /** Format: int64 */
                     size: number;
+                    /** @enum {string|null} */
+                    method: "spraying" | "misting" | "broadcasting" | "injecting" | "other" | null;
                     /** @enum {string} */
-                    method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
-                    /** Format: double */
-                    amountPerApplication: number;
-                    /** Format: double */
-                    numberOfApplications: number;
-                    /** @enum {string} */
-                    unit: "ml" | "l" | "g" | "kg";
+                    unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+                    amountPerUnit: number;
+                    numberOfUnits: number;
                     additionalNotes: string | null;
-                    equipment: {
-                        /** Format: uuid */
-                        id: string;
-                        /** Format: uuid */
-                        farmId: string;
-                        name: string;
-                        description: string | null;
-                        /** @enum {string} */
-                        method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
-                        /** @enum {string} */
-                        unit: "ml" | "l" | "g" | "kg";
-                        /** Format: double */
-                        capacity: number;
-                    } | null;
                     product: {
-                        /** Format: uuid */
                         id: string;
-                        /** Format: uuid */
                         farmId: string;
                         name: string;
                         /** @enum {string} */
                         unit: "ml" | "l" | "g" | "kg";
                         description: string | null;
-                        /** Format: uuid */
-                        defaultEquipmentId: string | null;
                     };
                     plot: {
-                        /** Format: uuid */
                         id: string;
-                        /** Format: uuid */
-                        farmId: string;
                         name: string;
-                        localId: string | null;
-                        /** Format: int64 */
-                        usage: number | null;
-                        additionalUsages: string | null;
-                        /** Format: int64 */
-                        size: number;
-                        additionalNotes: string | null;
-                        /**
-                         * Format: date-time
-                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                         */
-                        cuttingDate: string | null;
                     };
                 }[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1PlotsByIdPlotIdCropProtectionApplicationsNegativeResponse: {
-            error: string;
-        };
-        GetV1PlotsByIdPlotIdCropProtectionApplicationSummaryParameterPlotId: string;
         GetV1PlotsByIdPlotIdCropProtectionApplicationSummaryPositiveResponse: {
             data: {
                 monthlyApplications: {
-                    /** Format: double */
                     year: number;
-                    /** Format: double */
                     month: number;
                     appliedCropProtections: {
-                        /** Format: double */
                         totalAmount: number;
                         productName: string;
                         /** @enum {string} */
@@ -1997,25 +2504,17 @@ export interface components {
                 }[];
             };
         };
-        GetV1PlotsByIdPlotIdCropProtectionApplicationSummaryNegativeResponse: {
-            error: string;
-        };
-        GetV1PlotsByIdPlotIdFertilizerApplicationsParameterPlotId: string;
         GetV1PlotsByIdPlotIdFertilizerApplicationsPositiveResponse: {
             data: {
                 result: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     createdAt: string;
-                    /** Format: uuid */
                     createdBy: string;
-                    /** Format: uuid */
                     plotId: string;
                     /**
                      * Format: date-time
@@ -2023,42 +2522,21 @@ export interface components {
                      */
                     date: string;
                     /** @enum {string} */
-                    unit: "l" | "kg" | "dt" | "t";
-                    /** @enum {string} */
-                    method: "spray" | "spread" | "other";
-                    /** Format: double */
-                    amountPerApplication: number;
-                    /** Format: double */
-                    numberOfApplications: number;
-                    /** Format: uuid */
+                    unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+                    /** @enum {string|null} */
+                    method: "spray" | "spread" | "other" | null;
+                    amountPerUnit: number;
+                    numberOfUnits: number;
                     fertilizerId: string;
-                    /** Format: uuid */
-                    spreaderId: string | null;
                     geometry: {
                         /** @constant */
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    /** Format: int64 */
                     size: number;
                     additionalNotes: string | null;
-                    spreader: {
-                        /** Format: uuid */
-                        id: string;
-                        /** Format: uuid */
-                        farmId: string;
-                        name: string;
-                        /** @enum {string} */
-                        unit: "l" | "kg" | "dt" | "t";
-                        /** @enum {string} */
-                        defaultMethod: "spray" | "spread" | "other";
-                        /** Format: double */
-                        capacity: number;
-                    } | null;
                     fertilizer: {
-                        /** Format: uuid */
                         id: string;
-                        /** Format: uuid */
                         farmId: string;
                         name: string;
                         description: string | null;
@@ -2066,27 +2544,17 @@ export interface components {
                         type: "mineral" | "organic";
                         /** @enum {string} */
                         unit: "l" | "kg" | "dt" | "t";
-                        /** Format: uuid */
-                        defaultSpreaderId: string | null;
                     };
                 }[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1PlotsByIdPlotIdFertilizerApplicationsNegativeResponse: {
-            error: string;
-        };
-        GetV1PlotsByIdPlotIdFertilizerApplicationSummaryParameterPlotId: string;
         GetV1PlotsByIdPlotIdFertilizerApplicationSummaryPositiveResponse: {
             data: {
                 monthlyApplications: {
-                    /** Format: double */
                     year: number;
-                    /** Format: double */
                     month: number;
                     appliedFertilizers: {
-                        /** Format: double */
                         totalAmount: number;
                         fertilizerName: string;
                         /** @enum {string} */
@@ -2095,760 +2563,660 @@ export interface components {
                 }[];
             };
         };
-        GetV1PlotsByIdPlotIdFertilizerApplicationSummaryNegativeResponse: {
-            error: string;
-        };
-        GetV1PlotsByIdPlotIdHarvestsParameterPlotId: string;
         GetV1PlotsByIdPlotIdHarvestsPositiveResponse: {
             data: {
                 result: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
-                    farmId: string;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    createdAt: string;
-                    /** Format: uuid */
-                    createdBy: string | null;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     date: string;
-                    /** Format: uuid */
-                    plotId: string;
-                    /** Format: uuid */
-                    cropId: string;
-                    /** @enum {string} */
-                    conservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
-                    /** @enum {string} */
-                    processingType: "none" | "square_bale" | "round_bale" | "other";
-                    /** Format: double */
-                    kilosPerUnit: number;
-                    /** Format: double */
-                    producedUnits: number;
-                    /** Format: int64 */
-                    harvestCount: number | null;
-                    /** Format: uuid */
-                    machineryId: string | null;
-                    /** Format: int64 */
-                    size: number;
+                    farmId: string;
                     additionalNotes: string | null;
+                    /** @enum {string|null} */
+                    conservationMethod: "dried" | "silage" | "haylage" | "other" | "none" | null;
+                    /** @enum {string} */
+                    unit: "load" | "square_bale" | "round_bale" | "crate" | "total_amount" | "other";
+                    kilosPerUnit: number;
+                    numberOfUnits: number;
+                    harvestCount: number | null;
                     geometry: {
                         /** @constant */
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    machinery: {
-                        /** Format: uuid */
-                        id: string;
-                        /** Format: uuid */
-                        farmId: string;
-                        name: string;
-                        default: boolean;
-                        /** @enum {string} */
-                        defaultConservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
-                        /** @enum {string} */
-                        defaultProcessingType: "none" | "square_bale" | "round_bale" | "other";
-                        /** Format: int64 */
-                        defaultKilosPerUnit: number;
-                    } | null;
+                    cropId: string;
                     crop: {
-                        /** Format: uuid */
                         id: string;
-                        /** Format: uuid */
                         farmId: string;
                         name: string;
                         /** @enum {string} */
                         category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                        familyId: string | null;
                         variety: string | null;
                         usageCodes: number[];
+                        waitingTimeInYears: number | null;
                         additionalNotes: string | null;
                     };
+                    plotId: string;
+                    size: number;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    createdAt: string;
+                    createdBy: string | null;
                 }[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1PlotsByIdPlotIdHarvestsNegativeResponse: {
-            error: string;
-        };
-        GetV1PlotsByIdPlotIdHarvestSummaryParameterPlotId: string;
         GetV1PlotsByIdPlotIdHarvestSummaryPositiveResponse: {
             data: {
                 monthlyHarvests: {
-                    /** Format: double */
                     year: number;
-                    /** Format: double */
                     month: number;
                     producedQuantities: {
-                        /** Format: double */
                         totalAmountInKilos: number;
                         forageName: string;
-                        conservationMethod: string;
+                        conservationMethod?: string | null;
                         producedUnits: {
-                            processingMethod: string;
-                            /** Format: double */
+                            unit: string;
                             totalAmountInKilos: number;
-                            /** Format: double */
                             totalProducedUnits: number;
                         }[];
                     }[];
                 }[];
             };
         };
-        GetV1PlotsByIdPlotIdHarvestSummaryNegativeResponse: {
-            error: string;
+        PostV1PlotsByIdPlotIdSplitPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    localId: string | null;
+                    usage: number | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    cuttingDate: string | null;
+                    geometry: {
+                        /** @constant */
+                        type: "MultiPolygon";
+                        coordinates: number[][][][];
+                    };
+                    size: number;
+                    additionalNotes: string | null;
+                    currentCropRotation: {
+                        id: string;
+                        farmId: string;
+                        plotId: string;
+                        cropId: string;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        sowingDate: string | null;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        fromDate: string;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        toDate: string;
+                        crop: {
+                            id: string;
+                            farmId: string;
+                            name: string;
+                            /** @enum {string} */
+                            category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                            familyId: string | null;
+                            variety: string | null;
+                            usageCodes: number[];
+                            waitingTimeInYears: number | null;
+                            additionalNotes: string | null;
+                            family: {
+                                id: string;
+                                farmId: string;
+                                name: string;
+                                waitingTimeInYears: number;
+                                additionalNotes: string | null;
+                            } | null;
+                        };
+                    } | null;
+                }[];
+            };
         };
+        PostV1PlotsByIdPlotIdSplitRequestBody: {
+            strategy: "PostV1PlotsByIdPlotIdSplitRequestBody";
+        } & (Record<string, never> & Record<string, never> & Record<string, never> & Omit<{
+            /** @constant */
+            strategy: "keep_reference";
+            originalPlotName?: string;
+            subPlots: {
+                geometry: {
+                    /** @constant */
+                    type: "MultiPolygon";
+                    coordinates: number[][][][];
+                };
+                name: string;
+                size: number;
+            }[];
+        } | {
+            /** @constant */
+            strategy: "delete_and_migrate";
+            migrateToIndex: number;
+            subPlots: {
+                geometry: {
+                    /** @constant */
+                    type: "MultiPolygon";
+                    coordinates: number[][][][];
+                };
+                name: string;
+                size: number;
+            }[];
+        }, "strategy">);
+        PostV1PlotsMergePositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                localId: string | null;
+                usage: number | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                cuttingDate: string | null;
+                geometry: {
+                    /** @constant */
+                    type: "MultiPolygon";
+                    coordinates: number[][][][];
+                };
+                size: number;
+                additionalNotes: string | null;
+                currentCropRotation: {
+                    id: string;
+                    farmId: string;
+                    plotId: string;
+                    cropId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    sowingDate: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    fromDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    toDate: string;
+                    crop: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        /** @enum {string} */
+                        category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                        familyId: string | null;
+                        variety: string | null;
+                        usageCodes: number[];
+                        waitingTimeInYears: number | null;
+                        additionalNotes: string | null;
+                        family: {
+                            id: string;
+                            farmId: string;
+                            name: string;
+                            waitingTimeInYears: number;
+                            additionalNotes: string | null;
+                        } | null;
+                    };
+                } | null;
+            };
+        };
+        PostV1PlotsMergeRequestBody: {
+            strategy: "PostV1PlotsMergeRequestBody";
+        } & (Record<string, never> & Record<string, never> & Record<string, never> & Omit<{
+            /** @constant */
+            strategy: "keep_reference";
+            plotIds: string[];
+            name: string;
+            localId?: string;
+            usage?: number;
+            additionalUsages?: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            cuttingDate?: string | null;
+            additionalNotes?: string;
+        } | {
+            /** @constant */
+            strategy: "delete_and_migrate";
+            plotIds: string[];
+            name: string;
+            localId?: string;
+            usage?: number;
+            additionalUsages?: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            cuttingDate?: string | null;
+            additionalNotes?: string;
+        }, "strategy">);
         PostV1PlotsSyncMissingLocalIdsPositiveResponse: {
             data: Record<string, never>;
-        };
-        PostV1PlotsSyncMissingLocalIdsNegativeResponse: {
-            error: string;
         };
         PostV1PlotsSyncMissingLocalIdsRequestBody: Record<string, never>;
         GetV1CropsPositiveResponse: {
             data: {
                 result: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
                     name: string;
                     /** @enum {string} */
                     category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                    familyId: string | null;
                     variety: string | null;
                     usageCodes: number[];
+                    waitingTimeInYears: number | null;
                     additionalNotes: string | null;
+                    family: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        waitingTimeInYears: number;
+                        additionalNotes: string | null;
+                    } | null;
                 }[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1CropsNegativeResponse: {
-            error: string;
-        };
         PostV1CropsPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
                 name: string;
                 /** @enum {string} */
                 category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                familyId: string | null;
                 variety: string | null;
                 usageCodes: number[];
+                waitingTimeInYears: number | null;
                 additionalNotes: string | null;
+                family: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    waitingTimeInYears: number;
+                    additionalNotes: string | null;
+                } | null;
             };
-        };
-        PostV1CropsNegativeResponse: {
-            error: string;
         };
         PostV1CropsRequestBody: {
             name: string;
             /** @enum {string} */
             category: "grass" | "grain" | "vegetable" | "fruit" | "other";
-            variety?: string | null;
-            usageCodes?: (number | null)[];
-            additionalNotes?: string | null;
+            variety?: string;
+            /** @default [] */
+            usageCodes: number[];
+            waitingTimeInYears?: number;
+            familyId?: string;
+            additionalNotes?: string;
         };
-        GetV1CropsByIdCropIdParameterCropId: string;
         GetV1CropsByIdCropIdPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
                 name: string;
                 /** @enum {string} */
                 category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                familyId: string | null;
                 variety: string | null;
                 usageCodes: number[];
+                waitingTimeInYears: number | null;
                 additionalNotes: string | null;
+                family: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    waitingTimeInYears: number;
+                    additionalNotes: string | null;
+                } | null;
             };
         };
-        GetV1CropsByIdCropIdNegativeResponse: {
-            error: string;
-        };
-        DeleteV1CropsByIdCropIdParameterCropId: string;
         DeleteV1CropsByIdCropIdPositiveResponse: {
             data: Record<string, never>;
         };
-        DeleteV1CropsByIdCropIdNegativeResponse: {
-            error: string;
-        };
-        PatchV1CropsByIdCropIdParameterCropId: string;
         PatchV1CropsByIdCropIdPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
                 name: string;
                 /** @enum {string} */
                 category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                familyId: string | null;
                 variety: string | null;
                 usageCodes: number[];
+                waitingTimeInYears: number | null;
                 additionalNotes: string | null;
+                family: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    waitingTimeInYears: number;
+                    additionalNotes: string | null;
+                } | null;
             };
-        };
-        PatchV1CropsByIdCropIdNegativeResponse: {
-            error: string;
         };
         PatchV1CropsByIdCropIdRequestBody: {
             name?: string;
             /** @enum {string} */
             category?: "grass" | "grain" | "vegetable" | "fruit" | "other";
-            variety?: string | null;
-            usageCodes?: (number | null)[];
-            additionalNotes?: string | null;
+            variety?: string;
+            /** @default [] */
+            usageCodes: number[];
+            waitingTimeInYears?: number | null;
+            familyId?: string | null;
+            additionalNotes?: string;
         };
-        GetV1CropsByIdCropIdInUseParameterCropId: string;
         GetV1CropsByIdCropIdInUsePositiveResponse: {
             data: {
                 inUse: boolean;
             };
         };
-        GetV1CropsByIdCropIdInUseNegativeResponse: {
-            error: string;
+        GetV1CropsFamiliesPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    waitingTimeInYears: number;
+                    additionalNotes: string | null;
+                }[];
+                count: number;
+            };
+        };
+        PostV1CropsFamiliesPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                waitingTimeInYears: number;
+                additionalNotes: string | null;
+            };
+        };
+        PostV1CropsFamiliesRequestBody: {
+            name: string;
+            /** @default 0 */
+            waitingTimeInYears: number;
+            additionalNotes?: string;
+        };
+        GetV1CropsFamiliesByIdFamilyIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                waitingTimeInYears: number;
+                additionalNotes: string | null;
+            };
+        };
+        DeleteV1CropsFamiliesByIdFamilyIdPositiveResponse: {
+            data: Record<string, never>;
+        };
+        PatchV1CropsFamiliesByIdFamilyIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                waitingTimeInYears: number;
+                additionalNotes: string | null;
+            };
+        };
+        PatchV1CropsFamiliesByIdFamilyIdRequestBody: {
+            name?: string;
+            /** @default 0 */
+            waitingTimeInYears: number;
+            additionalNotes?: string;
+        };
+        GetV1CropsFamiliesByIdFamilyIdInUsePositiveResponse: {
+            data: {
+                inUse: boolean;
+            };
         };
         GetV1CropProtectionProductsPositiveResponse: {
             data: {
                 result: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
                     name: string;
                     /** @enum {string} */
                     unit: "ml" | "l" | "g" | "kg";
                     description: string | null;
-                    /** Format: uuid */
-                    defaultEquipmentId: string | null;
                 }[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1CropProtectionProductsNegativeResponse: {
-            error: string;
-        };
         PostV1CropProtectionProductsPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
                 name: string;
                 /** @enum {string} */
                 unit: "ml" | "l" | "g" | "kg";
                 description: string | null;
-                /** Format: uuid */
-                defaultEquipmentId: string | null;
             };
-        };
-        PostV1CropProtectionProductsNegativeResponse: {
-            error: string;
         };
         PostV1CropProtectionProductsRequestBody: {
             name: string;
             /** @enum {string} */
             unit: "ml" | "l" | "g" | "kg";
-            description?: string | null;
-            /** Format: uuid */
-            defaultEquipmentId?: string | null;
+            description?: string;
+            defaultEquipmentId?: string;
         };
-        GetV1CropProtectionProductsByIdCropProtectionProductIdParameterCropProtectionProductId: string;
         GetV1CropProtectionProductsByIdCropProtectionProductIdPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
                 name: string;
                 /** @enum {string} */
                 unit: "ml" | "l" | "g" | "kg";
                 description: string | null;
-                /** Format: uuid */
-                defaultEquipmentId: string | null;
             };
         };
-        GetV1CropProtectionProductsByIdCropProtectionProductIdNegativeResponse: {
-            error: string;
-        };
-        PatchV1CropProtectionProductsByIdCropProtectionProductIdParameterCropProtectionProductId: string;
         PatchV1CropProtectionProductsByIdCropProtectionProductIdPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
                 name: string;
                 /** @enum {string} */
                 unit: "ml" | "l" | "g" | "kg";
                 description: string | null;
-                /** Format: uuid */
-                defaultEquipmentId: string | null;
             };
-        };
-        PatchV1CropProtectionProductsByIdCropProtectionProductIdNegativeResponse: {
-            error: string;
         };
         PatchV1CropProtectionProductsByIdCropProtectionProductIdRequestBody: {
             name?: string;
             /** @enum {string} */
             unit?: "ml" | "l" | "g" | "kg";
-            description?: string | null;
-            /** Format: uuid */
-            defaultEquipmentId?: string | null;
+            description?: string;
+            defaultEquipmentId?: string;
         };
-        DeleteV1CropProtectionProductsByIdCropProtectionProductIdParameterCropProtectionProductId: string;
         DeleteV1CropProtectionProductsByIdCropProtectionProductIdPositiveResponse: {
             data: Record<string, never>;
         };
-        DeleteV1CropProtectionProductsByIdCropProtectionProductIdNegativeResponse: {
-            error: string;
-        };
-        GetV1CropProtectionProductsByIdCropProtectionProductIdInUseParameterCropProtectionProductId: string;
         GetV1CropProtectionProductsByIdCropProtectionProductIdInUsePositiveResponse: {
             data: {
                 inUse: boolean;
             };
         };
-        GetV1CropProtectionProductsByIdCropProtectionProductIdInUseNegativeResponse: {
-            error: string;
-        };
-        PostV1CropProtectionEquipmentsPositiveResponse: {
-            data: {
-                /** Format: uuid */
-                id: string;
-                /** Format: uuid */
-                farmId: string;
-                name: string;
-                description: string | null;
-                /** @enum {string} */
-                method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
-                /** @enum {string} */
-                unit: "ml" | "l" | "g" | "kg";
-                /** Format: double */
-                capacity: number;
-            };
-        };
-        PostV1CropProtectionEquipmentsNegativeResponse: {
-            error: string;
-        };
-        PostV1CropProtectionEquipmentsRequestBody: {
-            name: string;
-            description?: string | null;
-            /** @enum {string} */
-            method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
-            /** @enum {string} */
-            unit: "ml" | "l" | "g" | "kg";
-            /** Format: double */
-            capacity: number;
-        };
-        GetV1CropProtectionEquipmentsPositiveResponse: {
-            data: {
-                result: {
-                    /** Format: uuid */
-                    id: string;
-                    /** Format: uuid */
-                    farmId: string;
-                    name: string;
-                    description: string | null;
-                    /** @enum {string} */
-                    method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
-                    /** @enum {string} */
-                    unit: "ml" | "l" | "g" | "kg";
-                    /** Format: double */
-                    capacity: number;
-                }[];
-                /** Format: double */
-                count: number;
-            };
-        };
-        GetV1CropProtectionEquipmentsNegativeResponse: {
-            error: string;
-        };
-        GetV1CropProtectionEquipmentsByIdCropProtectionEquipmentIdParameterCropProtectionEquipmentId: string;
-        GetV1CropProtectionEquipmentsByIdCropProtectionEquipmentIdPositiveResponse: {
-            data: {
-                /** Format: uuid */
-                id: string;
-                /** Format: uuid */
-                farmId: string;
-                name: string;
-                description: string | null;
-                /** @enum {string} */
-                method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
-                /** @enum {string} */
-                unit: "ml" | "l" | "g" | "kg";
-                /** Format: double */
-                capacity: number;
-            };
-        };
-        GetV1CropProtectionEquipmentsByIdCropProtectionEquipmentIdNegativeResponse: {
-            error: string;
-        };
-        DeleteV1CropProtectionEquipmentsByIdCropProtectionEquipmentIdParameterCropProtectionEquipmentId: string;
-        DeleteV1CropProtectionEquipmentsByIdCropProtectionEquipmentIdPositiveResponse: {
-            data: Record<string, never>;
-        };
-        DeleteV1CropProtectionEquipmentsByIdCropProtectionEquipmentIdNegativeResponse: {
-            error: string;
-        };
-        PatchV1CropProtectionEquipmentsByIdCropProtectionEquipmentIdParameterCropProtectionEquipmentId: string;
-        PatchV1CropProtectionEquipmentsByIdCropProtectionEquipmentIdPositiveResponse: {
-            data: {
-                /** Format: uuid */
-                id: string;
-                /** Format: uuid */
-                farmId: string;
-                name: string;
-                description: string | null;
-                /** @enum {string} */
-                method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
-                /** @enum {string} */
-                unit: "ml" | "l" | "g" | "kg";
-                /** Format: double */
-                capacity: number;
-            };
-        };
-        PatchV1CropProtectionEquipmentsByIdCropProtectionEquipmentIdNegativeResponse: {
-            error: string;
-        };
-        PatchV1CropProtectionEquipmentsByIdCropProtectionEquipmentIdRequestBody: {
-            name?: string;
-            description?: string | null;
-            /** @enum {string} */
-            method?: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
-            /** @enum {string} */
-            unit?: "ml" | "l" | "g" | "kg";
-            /** Format: double */
-            capacity?: number;
-        };
         PostV1CropProtectionApplicationsPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 createdAt: string;
-                /** Format: uuid */
                 createdBy: string | null;
-                /** Format: uuid */
                 plotId: string;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 dateTime: string;
-                /** Format: uuid */
-                equipmentId: string | null;
-                /** Format: uuid */
                 productId: string;
                 geometry: {
                     /** @constant */
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
-                /** Format: int64 */
                 size: number;
+                /** @enum {string|null} */
+                method: "spraying" | "misting" | "broadcasting" | "injecting" | "other" | null;
                 /** @enum {string} */
-                method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
-                /** Format: double */
-                amountPerApplication: number;
-                /** Format: double */
-                numberOfApplications: number;
-                /** @enum {string} */
-                unit: "ml" | "l" | "g" | "kg";
+                unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+                amountPerUnit: number;
+                numberOfUnits: number;
                 additionalNotes: string | null;
-                equipment: {
-                    /** Format: uuid */
-                    id: string;
-                    /** Format: uuid */
-                    farmId: string;
-                    name: string;
-                    description: string | null;
-                    /** @enum {string} */
-                    method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
-                    /** @enum {string} */
-                    unit: "ml" | "l" | "g" | "kg";
-                    /** Format: double */
-                    capacity: number;
-                } | null;
                 product: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
                     name: string;
                     /** @enum {string} */
                     unit: "ml" | "l" | "g" | "kg";
                     description: string | null;
-                    /** Format: uuid */
-                    defaultEquipmentId: string | null;
                 };
                 plot: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
-                    farmId: string;
                     name: string;
-                    localId: string | null;
-                    /** Format: int64 */
-                    usage: number | null;
-                    additionalUsages: string | null;
-                    /** Format: int64 */
-                    size: number;
-                    additionalNotes: string | null;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    cuttingDate: string | null;
                 };
             };
         };
-        PostV1CropProtectionApplicationsNegativeResponse: {
-            error: string;
-        };
         PostV1CropProtectionApplicationsRequestBody: {
-            /** Format: uuid */
             plotId: string;
             /**
              * Format: date-time
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
             dateTime: string;
-            /** Format: uuid */
-            equipmentId?: string | null;
-            /** Format: uuid */
             productId: string;
             geometry: {
                 /** @constant */
                 type: "MultiPolygon";
                 coordinates: number[][][][];
             };
-            /** Format: int64 */
             size: number;
+            /** @enum {string|null} */
+            method?: "spraying" | "misting" | "broadcasting" | "injecting" | "other" | null;
+            amountPerUnit: number;
+            numberOfUnits: number;
             /** @enum {string} */
-            method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
-            /** Format: double */
-            amountPerApplication: number;
-            /** Format: double */
-            numberOfApplications: number;
-            /** @enum {string} */
-            unit: "ml" | "l" | "g" | "kg";
-            additionalNotes?: string | null;
+            unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+            additionalNotes?: string;
         };
-        /**
-         * Format: date-time
-         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-         * @default 2019-12-31T23:00:00.000Z
-         */
-        GetV1CropProtectionApplicationsParameterFromDate: string;
-        /**
-         * Format: date-time
-         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-         * @default 4999-12-31T23:00:00.000Z
-         */
-        GetV1CropProtectionApplicationsParameterToDate: string;
         GetV1CropProtectionApplicationsPositiveResponse: {
             data: {
                 result: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     createdAt: string;
-                    /** Format: uuid */
                     createdBy: string | null;
-                    /** Format: uuid */
                     plotId: string;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     dateTime: string;
-                    /** Format: uuid */
-                    equipmentId: string | null;
-                    /** Format: uuid */
                     productId: string;
                     geometry: {
                         /** @constant */
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    /** Format: int64 */
                     size: number;
+                    /** @enum {string|null} */
+                    method: "spraying" | "misting" | "broadcasting" | "injecting" | "other" | null;
                     /** @enum {string} */
-                    method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
-                    /** Format: double */
-                    amountPerApplication: number;
-                    /** Format: double */
-                    numberOfApplications: number;
-                    /** @enum {string} */
-                    unit: "ml" | "l" | "g" | "kg";
+                    unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+                    amountPerUnit: number;
+                    numberOfUnits: number;
                     additionalNotes: string | null;
-                    equipment: {
-                        /** Format: uuid */
-                        id: string;
-                        /** Format: uuid */
-                        farmId: string;
-                        name: string;
-                        description: string | null;
-                        /** @enum {string} */
-                        method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
-                        /** @enum {string} */
-                        unit: "ml" | "l" | "g" | "kg";
-                        /** Format: double */
-                        capacity: number;
-                    } | null;
                     product: {
-                        /** Format: uuid */
                         id: string;
-                        /** Format: uuid */
                         farmId: string;
                         name: string;
                         /** @enum {string} */
                         unit: "ml" | "l" | "g" | "kg";
                         description: string | null;
-                        /** Format: uuid */
-                        defaultEquipmentId: string | null;
                     };
                     plot: {
-                        /** Format: uuid */
                         id: string;
-                        /** Format: uuid */
-                        farmId: string;
                         name: string;
-                        localId: string | null;
-                        /** Format: int64 */
-                        usage: number | null;
-                        additionalUsages: string | null;
-                        /** Format: int64 */
-                        size: number;
-                        additionalNotes: string | null;
-                        /**
-                         * Format: date-time
-                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                         */
-                        cuttingDate: string | null;
                     };
                 }[];
-                /** Format: double */
                 count: number;
             };
-        };
-        GetV1CropProtectionApplicationsNegativeResponse: {
-            error: string;
         };
         PostV1CropProtectionApplicationsBatchPositiveResponse: {
             data: {
                 result: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     createdAt: string;
-                    /** Format: uuid */
                     createdBy: string | null;
-                    /** Format: uuid */
                     plotId: string;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     dateTime: string;
-                    /** Format: uuid */
-                    equipmentId: string | null;
-                    /** Format: uuid */
                     productId: string;
                     geometry: {
                         /** @constant */
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    /** Format: int64 */
                     size: number;
+                    /** @enum {string|null} */
+                    method: "spraying" | "misting" | "broadcasting" | "injecting" | "other" | null;
                     /** @enum {string} */
-                    method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
-                    /** Format: double */
-                    amountPerApplication: number;
-                    /** Format: double */
-                    numberOfApplications: number;
-                    /** @enum {string} */
-                    unit: "ml" | "l" | "g" | "kg";
+                    unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+                    amountPerUnit: number;
+                    numberOfUnits: number;
                     additionalNotes: string | null;
-                    equipment: {
-                        /** Format: uuid */
-                        id: string;
-                        /** Format: uuid */
-                        farmId: string;
-                        name: string;
-                        description: string | null;
-                        /** @enum {string} */
-                        method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
-                        /** @enum {string} */
-                        unit: "ml" | "l" | "g" | "kg";
-                        /** Format: double */
-                        capacity: number;
-                    } | null;
                     product: {
-                        /** Format: uuid */
                         id: string;
-                        /** Format: uuid */
                         farmId: string;
                         name: string;
                         /** @enum {string} */
                         unit: "ml" | "l" | "g" | "kg";
                         description: string | null;
-                        /** Format: uuid */
-                        defaultEquipmentId: string | null;
                     };
                     plot: {
-                        /** Format: uuid */
                         id: string;
-                        /** Format: uuid */
-                        farmId: string;
                         name: string;
-                        localId: string | null;
-                        /** Format: int64 */
-                        usage: number | null;
-                        additionalUsages: string | null;
-                        /** Format: int64 */
-                        size: number;
-                        additionalNotes: string | null;
-                        /**
-                         * Format: date-time
-                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                         */
-                        cuttingDate: string | null;
                     };
                 }[];
-                /** Format: double */
                 count: number;
             };
-        };
-        PostV1CropProtectionApplicationsBatchNegativeResponse: {
-            error: string;
         };
         PostV1CropProtectionApplicationsBatchRequestBody: {
             /** @enum {string} */
@@ -2861,10 +3229,9 @@ export interface components {
             equipmentId?: string;
             productId: string;
             /** @enum {string} */
-            unit: "ml" | "l" | "g" | "kg";
+            unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
             additionalNotes?: string;
-            /** Format: double */
-            amountPerApplication: number;
+            amountPerUnit: number;
             plots: {
                 plotId: string;
                 geometry: {
@@ -2872,200 +3239,100 @@ export interface components {
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
-                /** Format: double */
                 size: number;
-                /** Format: double */
-                numberOfApplications: number;
+                numberOfUnits: number;
             }[];
         };
-        GetV1CropProtectionApplicationsByIdCropProtectionApplicationIdParameterCropProtectionApplicationId: string;
         GetV1CropProtectionApplicationsByIdCropProtectionApplicationIdPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 createdAt: string;
-                /** Format: uuid */
                 createdBy: string | null;
-                /** Format: uuid */
                 plotId: string;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 dateTime: string;
-                /** Format: uuid */
-                equipmentId: string | null;
-                /** Format: uuid */
                 productId: string;
                 geometry: {
                     /** @constant */
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
-                /** Format: int64 */
                 size: number;
+                /** @enum {string|null} */
+                method: "spraying" | "misting" | "broadcasting" | "injecting" | "other" | null;
                 /** @enum {string} */
-                method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
-                /** Format: double */
-                amountPerApplication: number;
-                /** Format: double */
-                numberOfApplications: number;
-                /** @enum {string} */
-                unit: "ml" | "l" | "g" | "kg";
+                unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+                amountPerUnit: number;
+                numberOfUnits: number;
                 additionalNotes: string | null;
-                equipment: {
-                    /** Format: uuid */
-                    id: string;
-                    /** Format: uuid */
-                    farmId: string;
-                    name: string;
-                    description: string | null;
-                    /** @enum {string} */
-                    method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
-                    /** @enum {string} */
-                    unit: "ml" | "l" | "g" | "kg";
-                    /** Format: double */
-                    capacity: number;
-                } | null;
                 product: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
                     name: string;
                     /** @enum {string} */
                     unit: "ml" | "l" | "g" | "kg";
                     description: string | null;
-                    /** Format: uuid */
-                    defaultEquipmentId: string | null;
                 };
                 plot: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
-                    farmId: string;
                     name: string;
-                    localId: string | null;
-                    /** Format: int64 */
-                    usage: number | null;
-                    additionalUsages: string | null;
-                    /** Format: int64 */
-                    size: number;
-                    additionalNotes: string | null;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    cuttingDate: string | null;
                 };
             };
         };
-        GetV1CropProtectionApplicationsByIdCropProtectionApplicationIdNegativeResponse: {
-            error: string;
-        };
-        DeleteV1CropProtectionApplicationsByIdCropProtectionApplicationIdParameterCropProtectionApplicationId: string;
         DeleteV1CropProtectionApplicationsByIdCropProtectionApplicationIdPositiveResponse: {
             data: Record<string, never>;
         };
-        DeleteV1CropProtectionApplicationsByIdCropProtectionApplicationIdNegativeResponse: {
-            error: string;
-        };
-        PatchV1CropProtectionApplicationsByIdCropProtectionApplicationIdParameterCropProtectionApplicationId: string;
         PatchV1CropProtectionApplicationsByIdCropProtectionApplicationIdPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 createdAt: string;
-                /** Format: uuid */
                 createdBy: string | null;
-                /** Format: uuid */
                 plotId: string;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 dateTime: string;
-                /** Format: uuid */
-                equipmentId: string | null;
-                /** Format: uuid */
                 productId: string;
                 geometry: {
                     /** @constant */
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
-                /** Format: int64 */
                 size: number;
+                /** @enum {string|null} */
+                method: "spraying" | "misting" | "broadcasting" | "injecting" | "other" | null;
                 /** @enum {string} */
-                method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
-                /** Format: double */
-                amountPerApplication: number;
-                /** Format: double */
-                numberOfApplications: number;
-                /** @enum {string} */
-                unit: "ml" | "l" | "g" | "kg";
+                unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+                amountPerUnit: number;
+                numberOfUnits: number;
                 additionalNotes: string | null;
-                equipment: {
-                    /** Format: uuid */
-                    id: string;
-                    /** Format: uuid */
-                    farmId: string;
-                    name: string;
-                    description: string | null;
-                    /** @enum {string} */
-                    method: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
-                    /** @enum {string} */
-                    unit: "ml" | "l" | "g" | "kg";
-                    /** Format: double */
-                    capacity: number;
-                } | null;
                 product: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
                     name: string;
                     /** @enum {string} */
                     unit: "ml" | "l" | "g" | "kg";
                     description: string | null;
-                    /** Format: uuid */
-                    defaultEquipmentId: string | null;
                 };
                 plot: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
-                    farmId: string;
                     name: string;
-                    localId: string | null;
-                    /** Format: int64 */
-                    usage: number | null;
-                    additionalUsages: string | null;
-                    /** Format: int64 */
-                    size: number;
-                    additionalNotes: string | null;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    cuttingDate: string | null;
                 };
             };
-        };
-        PatchV1CropProtectionApplicationsByIdCropProtectionApplicationIdNegativeResponse: {
-            error: string;
         };
         PatchV1CropProtectionApplicationsByIdCropProtectionApplicationIdRequestBody: {
             /**
@@ -3073,36 +3340,27 @@ export interface components {
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
             dateTime?: string;
-            /** Format: uuid */
-            equipmentId?: string | null;
-            /** Format: uuid */
             productId?: string;
             geometry?: {
                 /** @constant */
                 type: "MultiPolygon";
                 coordinates: number[][][][];
             };
-            /** Format: int64 */
             size?: number;
+            /** @enum {string|null} */
+            method?: "spraying" | "misting" | "broadcasting" | "injecting" | "other" | null;
+            amountPerUnit?: number;
+            numberOfUnits?: number;
             /** @enum {string} */
-            method?: "spraying" | "misting" | "broadcasting" | "injecting" | "other";
-            /** Format: double */
-            amountPerApplication?: number;
-            /** Format: double */
-            numberOfApplications?: number;
-            /** @enum {string} */
-            unit?: "ml" | "l" | "g" | "kg";
-            additionalNotes?: string | null;
+            unit?: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+            additionalNotes?: string;
         };
         GetV1CropProtectionApplicationsSummariesPositiveResponse: {
             data: {
                 monthlyApplications: {
-                    /** Format: double */
                     year: number;
-                    /** Format: double */
                     month: number;
                     appliedCropProtections: {
-                        /** Format: double */
                         totalAmount: number;
                         productName: string;
                         /** @enum {string} */
@@ -3111,372 +3369,218 @@ export interface components {
                 }[];
             };
         };
-        GetV1CropProtectionApplicationsSummariesNegativeResponse: {
-            error: string;
-        };
         GetV1CropProtectionApplicationsYearsPositiveResponse: {
             data: {
                 result: string[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1CropProtectionApplicationsYearsNegativeResponse: {
-            error: string;
-        };
-        PostV1TillageEquipmentsPositiveResponse: {
-            data: {
-                /** Format: uuid */
-                id: string;
-                /** Format: uuid */
-                farmId: string;
-                name: string;
-                /** @enum {string} */
-                action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
-                /** @enum {string} */
-                reason: "weed_control" | "soil_loosening" | "other";
-            };
-        };
-        PostV1TillageEquipmentsNegativeResponse: {
-            error: string;
-        };
-        PostV1TillageEquipmentsRequestBody: {
-            name: string;
-            /** @enum {string} */
-            action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
-            /** @enum {string} */
-            reason: "weed_control" | "soil_loosening" | "other";
-        };
-        GetV1TillageEquipmentsPositiveResponse: {
+        GetV1CropProtectionApplicationsPresetsPositiveResponse: {
             data: {
                 result: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
                     name: string;
+                    /** @enum {string|null} */
+                    method: "spraying" | "misting" | "broadcasting" | "injecting" | "other" | null;
                     /** @enum {string} */
-                    action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
-                    /** @enum {string} */
-                    reason: "weed_control" | "soil_loosening" | "other";
+                    unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+                    customUnit: string | null;
+                    amountPerUnit: number;
                 }[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1TillageEquipmentsNegativeResponse: {
-            error: string;
-        };
-        GetV1TillageEquipmentsByIdTillageEquipmentIdParameterTillageEquipmentId: string;
-        GetV1TillageEquipmentsByIdTillageEquipmentIdPositiveResponse: {
+        PostV1CropProtectionApplicationsPresetsPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
                 name: string;
+                /** @enum {string|null} */
+                method: "spraying" | "misting" | "broadcasting" | "injecting" | "other" | null;
                 /** @enum {string} */
-                action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
-                /** @enum {string} */
-                reason: "weed_control" | "soil_loosening" | "other";
+                unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+                customUnit: string | null;
+                amountPerUnit: number;
             };
         };
-        GetV1TillageEquipmentsByIdTillageEquipmentIdNegativeResponse: {
-            error: string;
+        PostV1CropProtectionApplicationsPresetsRequestBody: {
+            name: string;
+            /** @enum {string|null} */
+            method?: "spraying" | "misting" | "broadcasting" | "injecting" | "other" | null;
+            /** @enum {string} */
+            unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+            customUnit?: string;
+            amountPerUnit: number;
         };
-        DeleteV1TillageEquipmentsByIdTillageEquipmentIdParameterTillageEquipmentId: string;
-        DeleteV1TillageEquipmentsByIdTillageEquipmentIdPositiveResponse: {
-            data: Record<string, never>;
-        };
-        DeleteV1TillageEquipmentsByIdTillageEquipmentIdNegativeResponse: {
-            error: string;
-        };
-        PatchV1TillageEquipmentsByIdTillageEquipmentIdParameterTillageEquipmentId: string;
-        PatchV1TillageEquipmentsByIdTillageEquipmentIdPositiveResponse: {
+        GetV1CropProtectionApplicationsPresetsByIdPresetIdPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
                 name: string;
+                /** @enum {string|null} */
+                method: "spraying" | "misting" | "broadcasting" | "injecting" | "other" | null;
                 /** @enum {string} */
-                action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
-                /** @enum {string} */
-                reason: "weed_control" | "soil_loosening" | "other";
+                unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+                customUnit: string | null;
+                amountPerUnit: number;
             };
         };
-        PatchV1TillageEquipmentsByIdTillageEquipmentIdNegativeResponse: {
-            error: string;
+        PatchV1CropProtectionApplicationsPresetsByIdPresetIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                /** @enum {string|null} */
+                method: "spraying" | "misting" | "broadcasting" | "injecting" | "other" | null;
+                /** @enum {string} */
+                unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+                customUnit: string | null;
+                amountPerUnit: number;
+            };
         };
-        PatchV1TillageEquipmentsByIdTillageEquipmentIdRequestBody: {
+        PatchV1CropProtectionApplicationsPresetsByIdPresetIdRequestBody: {
             name?: string;
+            /** @enum {string|null} */
+            method?: "spraying" | "misting" | "broadcasting" | "injecting" | "other" | null;
             /** @enum {string} */
-            action?: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
-            /** @enum {string} */
-            reason?: "weed_control" | "soil_loosening" | "other";
+            unit?: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+            customUnit?: string | null;
+            amountPerUnit?: number;
+        };
+        DeleteV1CropProtectionApplicationsPresetsByIdPresetIdPositiveResponse: {
+            data: Record<string, never>;
         };
         PostV1TillagesPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 createdAt: string;
-                /** Format: uuid */
                 createdBy: string | null;
-                /** Format: uuid */
                 plotId: string;
                 geometry: {
                     /** @constant */
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
-                /** Format: int64 */
                 size: number;
                 /** @enum {string} */
-                reason: "weed_control" | "soil_loosening" | "other";
-                /** @enum {string} */
-                action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
-                /** Format: uuid */
-                equipmentId: string | null;
+                action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
+                customAction: string | null;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 date: string;
                 additionalNotes: string | null;
-                equipment: {
-                    /** Format: uuid */
-                    id: string;
-                    /** Format: uuid */
-                    farmId: string;
-                    name: string;
-                    /** @enum {string} */
-                    action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
-                    /** @enum {string} */
-                    reason: "weed_control" | "soil_loosening" | "other";
-                } | null;
                 plot: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
-                    farmId: string;
                     name: string;
-                    localId: string | null;
-                    /** Format: int64 */
-                    usage: number | null;
-                    additionalUsages: string | null;
-                    /** Format: int64 */
-                    size: number;
-                    additionalNotes: string | null;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    cuttingDate: string | null;
                 };
             };
         };
-        PostV1TillagesNegativeResponse: {
-            error: string;
-        };
         PostV1TillagesRequestBody: {
-            /** Format: uuid */
             plotId: string;
             geometry: {
                 /** @constant */
                 type: "MultiPolygon";
                 coordinates: number[][][][];
             };
-            /** Format: int64 */
             size: number;
             /** @enum {string} */
-            reason: "weed_control" | "soil_loosening" | "other";
-            /** @enum {string} */
-            action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
-            /** Format: uuid */
-            equipmentId?: string | null;
-            /**
-             * Format: date-time
-             * @description YYYY-MM-DDTHH:mm:ss.sssZ
-             */
-            date: string;
-            additionalNotes?: string | null;
-        };
-        /**
-         * Format: date-time
-         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-         * @default 2019-12-31T23:00:00.000Z
-         */
-        GetV1TillagesParameterFromDate: string;
-        /**
-         * Format: date-time
-         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-         * @default 4999-12-31T23:00:00.000Z
-         */
-        GetV1TillagesParameterToDate: string;
-        GetV1TillagesPositiveResponse: {
-            data: {
-                result: {
-                    /** Format: uuid */
-                    id: string;
-                    /** Format: uuid */
-                    farmId: string;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    createdAt: string;
-                    /** Format: uuid */
-                    createdBy: string | null;
-                    /** Format: uuid */
-                    plotId: string;
-                    geometry: {
-                        /** @constant */
-                        type: "MultiPolygon";
-                        coordinates: number[][][][];
-                    };
-                    /** Format: int64 */
-                    size: number;
-                    /** @enum {string} */
-                    reason: "weed_control" | "soil_loosening" | "other";
-                    /** @enum {string} */
-                    action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
-                    /** Format: uuid */
-                    equipmentId: string | null;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    date: string;
-                    additionalNotes: string | null;
-                    equipment: {
-                        /** Format: uuid */
-                        id: string;
-                        /** Format: uuid */
-                        farmId: string;
-                        name: string;
-                        /** @enum {string} */
-                        action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
-                        /** @enum {string} */
-                        reason: "weed_control" | "soil_loosening" | "other";
-                    } | null;
-                    plot: {
-                        /** Format: uuid */
-                        id: string;
-                        /** Format: uuid */
-                        farmId: string;
-                        name: string;
-                        localId: string | null;
-                        /** Format: int64 */
-                        usage: number | null;
-                        additionalUsages: string | null;
-                        /** Format: int64 */
-                        size: number;
-                        additionalNotes: string | null;
-                        /**
-                         * Format: date-time
-                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                         */
-                        cuttingDate: string | null;
-                    };
-                }[];
-                /** Format: double */
-                count: number;
-            };
-        };
-        GetV1TillagesNegativeResponse: {
-            error: string;
-        };
-        PostV1TillagesBatchPositiveResponse: {
-            data: {
-                result: {
-                    /** Format: uuid */
-                    id: string;
-                    /** Format: uuid */
-                    farmId: string;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    createdAt: string;
-                    /** Format: uuid */
-                    createdBy: string | null;
-                    /** Format: uuid */
-                    plotId: string;
-                    geometry: {
-                        /** @constant */
-                        type: "MultiPolygon";
-                        coordinates: number[][][][];
-                    };
-                    /** Format: int64 */
-                    size: number;
-                    /** @enum {string} */
-                    reason: "weed_control" | "soil_loosening" | "other";
-                    /** @enum {string} */
-                    action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
-                    /** Format: uuid */
-                    equipmentId: string | null;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    date: string;
-                    additionalNotes: string | null;
-                    equipment: {
-                        /** Format: uuid */
-                        id: string;
-                        /** Format: uuid */
-                        farmId: string;
-                        name: string;
-                        /** @enum {string} */
-                        action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
-                        /** @enum {string} */
-                        reason: "weed_control" | "soil_loosening" | "other";
-                    } | null;
-                    plot: {
-                        /** Format: uuid */
-                        id: string;
-                        /** Format: uuid */
-                        farmId: string;
-                        name: string;
-                        localId: string | null;
-                        /** Format: int64 */
-                        usage: number | null;
-                        additionalUsages: string | null;
-                        /** Format: int64 */
-                        size: number;
-                        additionalNotes: string | null;
-                        /**
-                         * Format: date-time
-                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                         */
-                        cuttingDate: string | null;
-                    };
-                }[];
-                /** Format: double */
-                count: number;
-            };
-        };
-        PostV1TillagesBatchNegativeResponse: {
-            error: string;
-        };
-        PostV1TillagesBatchRequestBody: {
-            /** @enum {string} */
-            reason: "weed_control" | "soil_loosening" | "other";
-            /** @enum {string} */
-            action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
+            action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
+            customAction?: string;
             /**
              * Format: date-time
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
             date: string;
             additionalNotes?: string;
-            equipmentId?: string;
+        };
+        GetV1TillagesPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    createdAt: string;
+                    createdBy: string | null;
+                    plotId: string;
+                    geometry: {
+                        /** @constant */
+                        type: "MultiPolygon";
+                        coordinates: number[][][][];
+                    };
+                    size: number;
+                    /** @enum {string} */
+                    action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
+                    customAction: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    date: string;
+                    additionalNotes: string | null;
+                    plot: {
+                        id: string;
+                        name: string;
+                    };
+                }[];
+                count: number;
+            };
+        };
+        PostV1TillagesBatchPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    createdAt: string;
+                    createdBy: string | null;
+                    plotId: string;
+                    geometry: {
+                        /** @constant */
+                        type: "MultiPolygon";
+                        coordinates: number[][][][];
+                    };
+                    size: number;
+                    /** @enum {string} */
+                    action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
+                    customAction: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    date: string;
+                    additionalNotes: string | null;
+                    plot: {
+                        id: string;
+                        name: string;
+                    };
+                }[];
+                count: number;
+            };
+        };
+        PostV1TillagesBatchRequestBody: {
+            /** @enum {string} */
+            action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
+            customAction?: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            date: string;
+            additionalNotes?: string;
             plots: {
                 plotId: string;
                 geometry: {
@@ -3484,156 +3588,75 @@ export interface components {
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
-                /** Format: double */
                 size: number;
             }[];
         };
-        GetV1TillagesByIdTillageIdParameterTillageId: string;
         GetV1TillagesByIdTillageIdPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 createdAt: string;
-                /** Format: uuid */
                 createdBy: string | null;
-                /** Format: uuid */
                 plotId: string;
                 geometry: {
                     /** @constant */
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
-                /** Format: int64 */
                 size: number;
                 /** @enum {string} */
-                reason: "weed_control" | "soil_loosening" | "other";
-                /** @enum {string} */
-                action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
-                /** Format: uuid */
-                equipmentId: string | null;
+                action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
+                customAction: string | null;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 date: string;
                 additionalNotes: string | null;
-                equipment: {
-                    /** Format: uuid */
-                    id: string;
-                    /** Format: uuid */
-                    farmId: string;
-                    name: string;
-                    /** @enum {string} */
-                    action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
-                    /** @enum {string} */
-                    reason: "weed_control" | "soil_loosening" | "other";
-                } | null;
                 plot: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
-                    farmId: string;
                     name: string;
-                    localId: string | null;
-                    /** Format: int64 */
-                    usage: number | null;
-                    additionalUsages: string | null;
-                    /** Format: int64 */
-                    size: number;
-                    additionalNotes: string | null;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    cuttingDate: string | null;
                 };
             };
         };
-        GetV1TillagesByIdTillageIdNegativeResponse: {
-            error: string;
-        };
-        DeleteV1TillagesByIdTillageIdParameterTillageId: string;
         DeleteV1TillagesByIdTillageIdPositiveResponse: {
             data: Record<string, never>;
         };
-        DeleteV1TillagesByIdTillageIdNegativeResponse: {
-            error: string;
-        };
-        PatchV1TillagesByIdTillageIdParameterTillageId: string;
         PatchV1TillagesByIdTillageIdPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 createdAt: string;
-                /** Format: uuid */
                 createdBy: string | null;
-                /** Format: uuid */
                 plotId: string;
                 geometry: {
                     /** @constant */
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
-                /** Format: int64 */
                 size: number;
                 /** @enum {string} */
-                reason: "weed_control" | "soil_loosening" | "other";
-                /** @enum {string} */
-                action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
-                /** Format: uuid */
-                equipmentId: string | null;
+                action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
+                customAction: string | null;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 date: string;
                 additionalNotes: string | null;
-                equipment: {
-                    /** Format: uuid */
-                    id: string;
-                    /** Format: uuid */
-                    farmId: string;
-                    name: string;
-                    /** @enum {string} */
-                    action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
-                    /** @enum {string} */
-                    reason: "weed_control" | "soil_loosening" | "other";
-                } | null;
                 plot: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
-                    farmId: string;
                     name: string;
-                    localId: string | null;
-                    /** Format: int64 */
-                    usage: number | null;
-                    additionalUsages: string | null;
-                    /** Format: int64 */
-                    size: number;
-                    additionalNotes: string | null;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    cuttingDate: string | null;
                 };
             };
-        };
-        PatchV1TillagesByIdTillageIdNegativeResponse: {
-            error: string;
         };
         PatchV1TillagesByIdTillageIdRequestBody: {
             geometry?: {
@@ -3641,53 +3664,87 @@ export interface components {
                 type: "MultiPolygon";
                 coordinates: number[][][][];
             };
-            /** Format: int64 */
             size?: number;
             /** @enum {string} */
-            reason?: "weed_control" | "soil_loosening" | "other";
-            /** @enum {string} */
-            action?: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "other";
-            /** Format: uuid */
-            equipmentId?: string | null;
+            action?: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
+            customAction?: string | null;
             /**
              * Format: date-time
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
             date?: string;
-            additionalNotes?: string | null;
+            additionalNotes?: string;
         };
         GetV1TillagesYearsPositiveResponse: {
             data: {
                 result: string[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1TillagesYearsNegativeResponse: {
-            error: string;
+        GetV1TillagesPresetsPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    /** @enum {string} */
+                    action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
+                    customAction: string | null;
+                }[];
+                count: number;
+            };
         };
-        /**
-         * Format: date-time
-         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-         * @default 2019-12-31T23:00:00.000Z
-         */
-        GetV1CropRotationsParameterFromDate: string;
-        /**
-         * Format: date-time
-         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-         * @default 4999-12-31T23:00:00.000Z
-         */
-        GetV1CropRotationsParameterToDate: string;
+        PostV1TillagesPresetsPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                /** @enum {string} */
+                action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
+                customAction: string | null;
+            };
+        };
+        PostV1TillagesPresetsRequestBody: {
+            name: string;
+            /** @enum {string} */
+            action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
+            customAction?: string;
+        };
+        GetV1TillagesPresetsByIdPresetIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                /** @enum {string} */
+                action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
+                customAction: string | null;
+            };
+        };
+        PatchV1TillagesPresetsByIdPresetIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                /** @enum {string} */
+                action: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
+                customAction: string | null;
+            };
+        };
+        PatchV1TillagesPresetsByIdPresetIdRequestBody: {
+            name?: string;
+            /** @enum {string} */
+            action?: "plowing" | "tilling" | "harrowing" | "rolling" | "rotavating" | "weed_harrowing" | "hoeing" | "flame_weeding" | "custom";
+            customAction?: string | null;
+        };
+        DeleteV1TillagesPresetsByIdPresetIdPositiveResponse: {
+            data: Record<string, never>;
+        };
         GetV1CropRotationsPositiveResponse: {
             data: {
                 result: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
-                    /** Format: uuid */
                     plotId: string;
-                    /** Format: uuid */
                     cropId: string;
                     /**
                      * Format: date-time
@@ -3703,39 +3760,38 @@ export interface components {
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
-                    toDate: string | null;
+                    toDate: string;
                     crop: {
-                        /** Format: uuid */
                         id: string;
-                        /** Format: uuid */
                         farmId: string;
                         name: string;
                         /** @enum {string} */
                         category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                        familyId: string | null;
                         variety: string | null;
                         usageCodes: number[];
+                        waitingTimeInYears: number | null;
                         additionalNotes: string | null;
+                        family: {
+                            id: string;
+                            farmId: string;
+                            name: string;
+                            waitingTimeInYears: number;
+                            additionalNotes: string | null;
+                        } | null;
                     };
                     plot: {
                         name: string;
                     };
                 }[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1CropRotationsNegativeResponse: {
-            error: string;
-        };
         PostV1CropRotationsPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
-                /** Format: uuid */
                 plotId: string;
-                /** Format: uuid */
                 cropId: string;
                 /**
                  * Format: date-time
@@ -3751,30 +3807,30 @@ export interface components {
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
-                toDate: string | null;
+                toDate: string;
                 crop: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
                     name: string;
                     /** @enum {string} */
                     category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                    familyId: string | null;
                     variety: string | null;
                     usageCodes: number[];
+                    waitingTimeInYears: number | null;
                     additionalNotes: string | null;
+                    family: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        waitingTimeInYears: number;
+                        additionalNotes: string | null;
+                    } | null;
                 };
             };
         };
-        PostV1CropRotationsNegativeResponse: {
-            error: string;
-        };
         PostV1CropRotationsRequestBody: {
-            /** Format: uuid */
-            id?: string;
-            /** Format: uuid */
             plotId: string;
-            /** Format: uuid */
             cropId: string;
             /**
              * Format: date-time
@@ -3790,18 +3846,23 @@ export interface components {
              * Format: date-time
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
-            toDate?: string;
+            toDate: string;
+            recurrence?: {
+                /** @default 1 */
+                interval: number;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                until?: string;
+            };
         };
-        PostV1CropRotationsBatchPositiveResponse: {
+        PatchV1CropRotationsPlanPositiveResponse: {
             data: {
                 result: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
-                    /** Format: uuid */
                     plotId: string;
-                    /** Format: uuid */
                     cropId: string;
                     /**
                      * Format: date-time
@@ -3817,52 +3878,145 @@ export interface components {
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
-                    toDate: string | null;
+                    toDate: string;
                     crop: {
-                        /** Format: uuid */
                         id: string;
-                        /** Format: uuid */
                         farmId: string;
                         name: string;
                         /** @enum {string} */
                         category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                        familyId: string | null;
                         variety: string | null;
                         usageCodes: number[];
+                        waitingTimeInYears: number | null;
                         additionalNotes: string | null;
+                        family: {
+                            id: string;
+                            farmId: string;
+                            name: string;
+                            waitingTimeInYears: number;
+                            additionalNotes: string | null;
+                        } | null;
                     };
                 }[];
-                /** Format: double */
                 count: number;
             };
         };
-        PostV1CropRotationsBatchNegativeResponse: {
-            error: string;
+        PatchV1CropRotationsPlanRequestBody: {
+            plots: {
+                plotId: string;
+                rotations: {
+                    id?: string;
+                    cropId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    sowingDate?: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    fromDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    toDate: string;
+                    recurrence?: {
+                        /** @default 1 */
+                        interval: number;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        until?: string;
+                    };
+                }[];
+            }[];
         };
-        PostV1CropRotationsBatchRequestBody: {
+        PostV1CropRotationsBatchByCropPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    plotId: string;
+                    cropId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    sowingDate: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    fromDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    toDate: string;
+                    crop: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        /** @enum {string} */
+                        category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                        familyId: string | null;
+                        variety: string | null;
+                        usageCodes: number[];
+                        waitingTimeInYears: number | null;
+                        additionalNotes: string | null;
+                        family: {
+                            id: string;
+                            farmId: string;
+                            name: string;
+                            waitingTimeInYears: number;
+                            additionalNotes: string | null;
+                        } | null;
+                    };
+                }[];
+                count: number;
+            };
+        };
+        PostV1CropRotationsBatchByCropRequestBody: {
             cropId: string;
-            /**
-             * Format: date-time
-             * @description YYYY-MM-DDTHH:mm:ss.sssZ
-             */
-            fromDate: string;
-            /**
-             * Format: date-time
-             * @description YYYY-MM-DDTHH:mm:ss.sssZ
-             */
-            toDate?: string;
-            plotIds: string[];
+            plots: {
+                plotId: string;
+                cropId: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                sowingDate?: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                fromDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                toDate: string;
+                recurrence?: {
+                    /** @default 1 */
+                    interval: number;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    until?: string;
+                };
+            }[];
         };
-        GetV1CropRotationsCurrentParameterPlotIds: string[];
-        GetV1CropRotationsCurrentPositiveResponse: {
+        PostV1CropRotationsBatchByPlotPositiveResponse: {
             data: {
                 result: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
-                    /** Format: uuid */
                     plotId: string;
-                    /** Format: uuid */
                     cropId: string;
                     /**
                      * Format: date-time
@@ -3878,37 +4032,121 @@ export interface components {
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
-                    toDate: string | null;
+                    toDate: string;
                     crop: {
-                        /** Format: uuid */
                         id: string;
-                        /** Format: uuid */
                         farmId: string;
                         name: string;
                         /** @enum {string} */
                         category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                        familyId: string | null;
                         variety: string | null;
                         usageCodes: number[];
+                        waitingTimeInYears: number | null;
                         additionalNotes: string | null;
+                        family: {
+                            id: string;
+                            farmId: string;
+                            name: string;
+                            waitingTimeInYears: number;
+                            additionalNotes: string | null;
+                        } | null;
                     };
                 }[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1CropRotationsCurrentNegativeResponse: {
-            error: string;
+        PostV1CropRotationsBatchByPlotRequestBody: {
+            plotId: string;
+            crops: {
+                cropId: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                sowingDate?: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                fromDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                toDate: string;
+                recurrence?: {
+                    /** @default 1 */
+                    interval: number;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    until?: string;
+                };
+            }[];
         };
-        GetV1CropRotationsByIdRotationIdParameterRotationId: string;
+        /** Format: array (preprocessed) */
+        GetV1CropRotationsPlotsParameterPlotIds: unknown;
+        GetV1CropRotationsPlotsPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    plotId: string;
+                    cropId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    sowingDate: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    fromDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    toDate: string;
+                    crop: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        /** @enum {string} */
+                        category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                        familyId: string | null;
+                        variety: string | null;
+                        usageCodes: number[];
+                        waitingTimeInYears: number | null;
+                        additionalNotes: string | null;
+                        family: {
+                            id: string;
+                            farmId: string;
+                            name: string;
+                            waitingTimeInYears: number;
+                            additionalNotes: string | null;
+                        } | null;
+                    };
+                    recurrence: {
+                        id: string;
+                        interval: number;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        until: string | null;
+                    } | null;
+                }[];
+                count: number;
+            };
+        };
         GetV1CropRotationsByIdRotationIdPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
-                /** Format: uuid */
                 plotId: string;
-                /** Format: uuid */
                 cropId: string;
                 /**
                  * Format: date-time
@@ -3924,41 +4162,36 @@ export interface components {
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
-                toDate: string | null;
+                toDate: string;
                 crop: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
                     name: string;
                     /** @enum {string} */
                     category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                    familyId: string | null;
                     variety: string | null;
                     usageCodes: number[];
+                    waitingTimeInYears: number | null;
                     additionalNotes: string | null;
+                    family: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        waitingTimeInYears: number;
+                        additionalNotes: string | null;
+                    } | null;
                 };
             };
         };
-        GetV1CropRotationsByIdRotationIdNegativeResponse: {
-            error: string;
-        };
-        DeleteV1CropRotationsByIdRotationIdParameterRotationId: string;
         DeleteV1CropRotationsByIdRotationIdPositiveResponse: {
             data: Record<string, never>;
         };
-        DeleteV1CropRotationsByIdRotationIdNegativeResponse: {
-            error: string;
-        };
-        PatchV1CropRotationsByIdRotationIdParameterRotationId: string;
         PatchV1CropRotationsByIdRotationIdPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
-                /** Format: uuid */
                 plotId: string;
-                /** Format: uuid */
                 cropId: string;
                 /**
                  * Format: date-time
@@ -3974,26 +4207,29 @@ export interface components {
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
-                toDate: string | null;
+                toDate: string;
                 crop: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
                     name: string;
                     /** @enum {string} */
                     category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                    familyId: string | null;
                     variety: string | null;
                     usageCodes: number[];
+                    waitingTimeInYears: number | null;
                     additionalNotes: string | null;
+                    family: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        waitingTimeInYears: number;
+                        additionalNotes: string | null;
+                    } | null;
                 };
             };
         };
-        PatchV1CropRotationsByIdRotationIdNegativeResponse: {
-            error: string;
-        };
         PatchV1CropRotationsByIdRotationIdRequestBody: {
-            /** Format: uuid */
             cropId?: string;
             /**
              * Format: date-time
@@ -4010,230 +4246,125 @@ export interface components {
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
             toDate?: string;
+            recurrence?: {
+                /** @default 1 */
+                interval: number;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                until?: string;
+            } | null;
         };
         GetV1CropRotationsYearsPositiveResponse: {
             data: {
                 result: string[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1CropRotationsYearsNegativeResponse: {
-            error: string;
-        };
-        /**
-         * Format: date-time
-         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-         * @default 2019-12-31T23:00:00.000Z
-         */
-        GetV1HarvestsParameterFromDate: string;
-        /**
-         * Format: date-time
-         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-         * @default 4999-12-31T23:00:00.000Z
-         */
-        GetV1HarvestsParameterToDate: string;
         GetV1HarvestsPositiveResponse: {
             data: {
                 result: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
-                    farmId: string;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    createdAt: string;
-                    /** Format: uuid */
-                    createdBy: string | null;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     date: string;
-                    /** Format: uuid */
-                    plotId: string;
-                    /** Format: uuid */
-                    cropId: string;
-                    /** @enum {string} */
-                    conservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
-                    /** @enum {string} */
-                    processingType: "none" | "square_bale" | "round_bale" | "other";
-                    /** Format: double */
-                    kilosPerUnit: number;
-                    /** Format: double */
-                    producedUnits: number;
-                    /** Format: int64 */
-                    harvestCount: number | null;
-                    /** Format: uuid */
-                    machineryId: string | null;
-                    /** Format: int64 */
-                    size: number;
+                    farmId: string;
                     additionalNotes: string | null;
+                    /** @enum {string|null} */
+                    conservationMethod: "dried" | "silage" | "haylage" | "other" | "none" | null;
+                    /** @enum {string} */
+                    unit: "load" | "square_bale" | "round_bale" | "crate" | "total_amount" | "other";
+                    kilosPerUnit: number;
+                    numberOfUnits: number;
+                    harvestCount: number | null;
                     geometry: {
                         /** @constant */
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    machinery: {
-                        /** Format: uuid */
-                        id: string;
-                        /** Format: uuid */
-                        farmId: string;
-                        name: string;
-                        default: boolean;
-                        /** @enum {string} */
-                        defaultConservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
-                        /** @enum {string} */
-                        defaultProcessingType: "none" | "square_bale" | "round_bale" | "other";
-                        /** Format: int64 */
-                        defaultKilosPerUnit: number;
-                    } | null;
+                    cropId: string;
                     crop: {
-                        /** Format: uuid */
                         id: string;
-                        /** Format: uuid */
                         farmId: string;
                         name: string;
                         /** @enum {string} */
                         category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                        familyId: string | null;
                         variety: string | null;
                         usageCodes: number[];
+                        waitingTimeInYears: number | null;
                         additionalNotes: string | null;
                     };
+                    plotId: string;
                     plot: {
-                        /** Format: uuid */
                         id: string;
-                        /** Format: uuid */
-                        farmId: string;
                         name: string;
-                        localId: string | null;
-                        /** Format: int64 */
-                        usage: number | null;
-                        additionalUsages: string | null;
-                        /** Format: int64 */
-                        size: number;
-                        additionalNotes: string | null;
-                        geometry: {
-                            /** @constant */
-                            type: "MultiPolygon";
-                            coordinates: number[][][][];
-                        };
-                        /**
-                         * Format: date-time
-                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                         */
-                        cuttingDate: string | null;
                     };
+                    size: number;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    createdAt: string;
+                    createdBy: string | null;
                 }[];
-                /** Format: double */
                 count: number;
             };
-        };
-        GetV1HarvestsNegativeResponse: {
-            error: string;
         };
         PostV1HarvestsBatchPositiveResponse: {
             data: {
                 result: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
-                    farmId: string;
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    createdAt: string;
-                    /** Format: uuid */
-                    createdBy: string | null;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     date: string;
-                    /** Format: uuid */
-                    plotId: string;
-                    /** Format: uuid */
-                    cropId: string;
-                    /** @enum {string} */
-                    conservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
-                    /** @enum {string} */
-                    processingType: "none" | "square_bale" | "round_bale" | "other";
-                    /** Format: double */
-                    kilosPerUnit: number;
-                    /** Format: double */
-                    producedUnits: number;
-                    /** Format: int64 */
-                    harvestCount: number | null;
-                    /** Format: uuid */
-                    machineryId: string | null;
-                    /** Format: int64 */
-                    size: number;
+                    farmId: string;
                     additionalNotes: string | null;
+                    /** @enum {string|null} */
+                    conservationMethod: "dried" | "silage" | "haylage" | "other" | "none" | null;
+                    /** @enum {string} */
+                    unit: "load" | "square_bale" | "round_bale" | "crate" | "total_amount" | "other";
+                    kilosPerUnit: number;
+                    numberOfUnits: number;
+                    harvestCount: number | null;
                     geometry: {
                         /** @constant */
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    machinery: {
-                        /** Format: uuid */
-                        id: string;
-                        /** Format: uuid */
-                        farmId: string;
-                        name: string;
-                        default: boolean;
-                        /** @enum {string} */
-                        defaultConservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
-                        /** @enum {string} */
-                        defaultProcessingType: "none" | "square_bale" | "round_bale" | "other";
-                        /** Format: int64 */
-                        defaultKilosPerUnit: number;
-                    } | null;
+                    cropId: string;
                     crop: {
-                        /** Format: uuid */
                         id: string;
-                        /** Format: uuid */
                         farmId: string;
                         name: string;
                         /** @enum {string} */
                         category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                        familyId: string | null;
                         variety: string | null;
                         usageCodes: number[];
+                        waitingTimeInYears: number | null;
                         additionalNotes: string | null;
                     };
+                    plotId: string;
                     plot: {
-                        /** Format: uuid */
                         id: string;
-                        /** Format: uuid */
-                        farmId: string;
                         name: string;
-                        localId: string | null;
-                        /** Format: int64 */
-                        usage: number | null;
-                        additionalUsages: string | null;
-                        /** Format: int64 */
-                        size: number;
-                        additionalNotes: string | null;
-                        geometry: {
-                            /** @constant */
-                            type: "MultiPolygon";
-                            coordinates: number[][][][];
-                        };
-                        /**
-                         * Format: date-time
-                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                         */
-                        cuttingDate: string | null;
                     };
+                    size: number;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    createdAt: string;
+                    createdBy: string | null;
                 }[];
-                /** Format: double */
                 count: number;
             };
-        };
-        PostV1HarvestsBatchNegativeResponse: {
-            error: string;
         };
         PostV1HarvestsBatchRequestBody: {
             /**
@@ -4242,16 +4373,13 @@ export interface components {
              */
             date: string;
             cropId: string;
-            /** @enum {string} */
-            processingType: "none" | "square_bale" | "round_bale" | "other";
-            /** @enum {string} */
-            conservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
-            /** Format: double */
+            /** @enum {string|null} */
+            conservationMethod?: "dried" | "silage" | "haylage" | "other" | "none" | null;
             kilosPerUnit: number;
-            /** Format: double */
             harvestCount?: number;
             additionalNotes?: string;
-            machineryId?: string;
+            /** @enum {string} */
+            unit: "load" | "square_bale" | "round_bale" | "crate" | "total_amount" | "other";
             plots: {
                 plotId: string;
                 geometry: {
@@ -4259,180 +4387,167 @@ export interface components {
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
-                /** Format: double */
                 size: number;
-                /** Format: double */
-                producedUnits: number;
+                numberOfUnits: number;
             }[];
         };
-        GetV1HarvestsByIdHarvestIdParameterHarvestId: string;
         GetV1HarvestsByIdHarvestIdPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
-                farmId: string;
-                /**
-                 * Format: date-time
-                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                 */
-                createdAt: string;
-                /** Format: uuid */
-                createdBy: string | null;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 date: string;
-                /** Format: uuid */
-                plotId: string;
-                /** Format: uuid */
-                cropId: string;
-                /** @enum {string} */
-                conservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
-                /** @enum {string} */
-                processingType: "none" | "square_bale" | "round_bale" | "other";
-                /** Format: double */
-                kilosPerUnit: number;
-                /** Format: double */
-                producedUnits: number;
-                /** Format: int64 */
-                harvestCount: number | null;
-                /** Format: uuid */
-                machineryId: string | null;
-                /** Format: int64 */
-                size: number;
+                farmId: string;
                 additionalNotes: string | null;
+                /** @enum {string|null} */
+                conservationMethod: "dried" | "silage" | "haylage" | "other" | "none" | null;
+                /** @enum {string} */
+                unit: "load" | "square_bale" | "round_bale" | "crate" | "total_amount" | "other";
+                kilosPerUnit: number;
+                numberOfUnits: number;
+                harvestCount: number | null;
                 geometry: {
                     /** @constant */
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
-                machinery: {
-                    /** Format: uuid */
-                    id: string;
-                    /** Format: uuid */
-                    farmId: string;
-                    name: string;
-                    default: boolean;
-                    /** @enum {string} */
-                    defaultConservationMethod: "dried" | "silage" | "haylage" | "other" | "none";
-                    /** @enum {string} */
-                    defaultProcessingType: "none" | "square_bale" | "round_bale" | "other";
-                    /** Format: int64 */
-                    defaultKilosPerUnit: number;
-                } | null;
+                cropId: string;
                 crop: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
                     name: string;
                     /** @enum {string} */
                     category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+                    familyId: string | null;
                     variety: string | null;
                     usageCodes: number[];
+                    waitingTimeInYears: number | null;
                     additionalNotes: string | null;
                 };
+                plotId: string;
                 plot: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
-                    farmId: string;
                     name: string;
-                    localId: string | null;
-                    /** Format: int64 */
-                    usage: number | null;
-                    additionalUsages: string | null;
-                    /** Format: int64 */
-                    size: number;
-                    additionalNotes: string | null;
-                    geometry: {
-                        /** @constant */
-                        type: "MultiPolygon";
-                        coordinates: number[][][][];
-                    };
-                    /**
-                     * Format: date-time
-                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
-                     */
-                    cuttingDate: string | null;
                 };
+                size: number;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                createdAt: string;
+                createdBy: string | null;
             };
         };
-        GetV1HarvestsByIdHarvestIdNegativeResponse: {
-            error: string;
-        };
-        DeleteV1HarvestsByIdHarvestIdParameterHarvestId: string;
         DeleteV1HarvestsByIdHarvestIdPositiveResponse: {
             data: Record<string, never>;
-        };
-        DeleteV1HarvestsByIdHarvestIdNegativeResponse: {
-            error: string;
         };
         GetV1HarvestsSummariesPositiveResponse: {
             data: {
                 monthlyHarvests: {
-                    /** Format: double */
                     year: number;
-                    /** Format: double */
                     month: number;
                     producedQuantities: {
-                        /** Format: double */
                         totalAmountInKilos: number;
                         forageName: string;
-                        conservationMethod: string;
+                        conservationMethod?: string | null;
                         producedUnits: {
-                            processingMethod: string;
-                            /** Format: double */
+                            unit: string;
                             totalAmountInKilos: number;
-                            /** Format: double */
                             totalProducedUnits: number;
                         }[];
                     }[];
                 }[];
             };
         };
-        GetV1HarvestsSummariesNegativeResponse: {
-            error: string;
-        };
         GetV1HarvestsYearsPositiveResponse: {
             data: {
                 result: string[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1HarvestsYearsNegativeResponse: {
-            error: string;
+        GetV1HarvestsPresetsPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    /** @enum {string} */
+                    unit: "load" | "square_bale" | "round_bale" | "crate" | "total_amount" | "other";
+                    kilosPerUnit: number;
+                    /** @enum {string|null} */
+                    conservationMethod: "dried" | "silage" | "haylage" | "other" | "none" | null;
+                }[];
+                count: number;
+            };
         };
-        /**
-         * Format: date-time
-         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-         * @default 2019-12-31T23:00:00.000Z
-         */
-        GetV1FertilizerApplicationsParameterFromDate: string;
-        /**
-         * Format: date-time
-         * @description YYYY-MM-DDTHH:mm:ss.sssZ
-         * @default 4999-12-31T23:00:00.000Z
-         */
-        GetV1FertilizerApplicationsParameterToDate: string;
+        PostV1HarvestsPresetsPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                /** @enum {string} */
+                unit: "load" | "square_bale" | "round_bale" | "crate" | "total_amount" | "other";
+                kilosPerUnit: number;
+                /** @enum {string|null} */
+                conservationMethod: "dried" | "silage" | "haylage" | "other" | "none" | null;
+            };
+        };
+        PostV1HarvestsPresetsRequestBody: {
+            name: string;
+            /** @enum {string} */
+            unit: "load" | "square_bale" | "round_bale" | "crate" | "total_amount" | "other";
+            kilosPerUnit: number;
+            /** @enum {string|null} */
+            conservationMethod?: "dried" | "silage" | "haylage" | "other" | "none" | null;
+        };
+        GetV1HarvestsPresetsByIdPresetIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                /** @enum {string} */
+                unit: "load" | "square_bale" | "round_bale" | "crate" | "total_amount" | "other";
+                kilosPerUnit: number;
+                /** @enum {string|null} */
+                conservationMethod: "dried" | "silage" | "haylage" | "other" | "none" | null;
+            };
+        };
+        PatchV1HarvestsPresetsByIdPresetIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                /** @enum {string} */
+                unit: "load" | "square_bale" | "round_bale" | "crate" | "total_amount" | "other";
+                kilosPerUnit: number;
+                /** @enum {string|null} */
+                conservationMethod: "dried" | "silage" | "haylage" | "other" | "none" | null;
+            };
+        };
+        PatchV1HarvestsPresetsByIdPresetIdRequestBody: {
+            name?: string;
+            /** @enum {string} */
+            unit?: "load" | "square_bale" | "round_bale" | "crate" | "total_amount" | "other";
+            kilosPerUnit?: number;
+            /** @enum {string|null} */
+            conservationMethod?: "dried" | "silage" | "haylage" | "other" | "none" | null;
+        };
+        DeleteV1HarvestsPresetsByIdPresetIdPositiveResponse: {
+            data: Record<string, never>;
+        };
         GetV1FertilizerApplicationsPositiveResponse: {
             data: {
                 result: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     createdAt: string;
-                    /** Format: uuid */
                     createdBy: string;
-                    /** Format: uuid */
                     plotId: string;
                     /**
                      * Format: date-time
@@ -4440,46 +4555,25 @@ export interface components {
                      */
                     date: string;
                     /** @enum {string} */
-                    unit: "l" | "kg" | "dt" | "t";
-                    /** @enum {string} */
-                    method: "spray" | "spread" | "other";
-                    /** Format: double */
-                    amountPerApplication: number;
-                    /** Format: double */
-                    numberOfApplications: number;
-                    /** Format: uuid */
+                    unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+                    /** @enum {string|null} */
+                    method: "spray" | "spread" | "other" | null;
+                    amountPerUnit: number;
+                    numberOfUnits: number;
                     fertilizerId: string;
-                    /** Format: uuid */
-                    spreaderId: string | null;
                     geometry: {
                         /** @constant */
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    /** Format: int64 */
                     size: number;
                     additionalNotes: string | null;
                     plot: {
                         id: string;
                         name: string;
                     };
-                    spreader: {
-                        /** Format: uuid */
-                        id: string;
-                        /** Format: uuid */
-                        farmId: string;
-                        name: string;
-                        /** @enum {string} */
-                        unit: "l" | "kg" | "dt" | "t";
-                        /** @enum {string} */
-                        defaultMethod: "spray" | "spread" | "other";
-                        /** Format: double */
-                        capacity: number;
-                    } | null;
                     fertilizer: {
-                        /** Format: uuid */
                         id: string;
-                        /** Format: uuid */
                         farmId: string;
                         name: string;
                         description: string | null;
@@ -4487,32 +4581,22 @@ export interface components {
                         type: "mineral" | "organic";
                         /** @enum {string} */
                         unit: "l" | "kg" | "dt" | "t";
-                        /** Format: uuid */
-                        defaultSpreaderId: string | null;
                     };
                 }[];
-                /** Format: double */
                 count: number;
             };
-        };
-        GetV1FertilizerApplicationsNegativeResponse: {
-            error: string;
         };
         PostV1FertilizerApplicationsPositiveResponse: {
             data: {
                 result: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
                     /**
                      * Format: date-time
                      * @description YYYY-MM-DDTHH:mm:ss.sssZ
                      */
                     createdAt: string;
-                    /** Format: uuid */
                     createdBy: string;
-                    /** Format: uuid */
                     plotId: string;
                     /**
                      * Format: date-time
@@ -4520,46 +4604,25 @@ export interface components {
                      */
                     date: string;
                     /** @enum {string} */
-                    unit: "l" | "kg" | "dt" | "t";
-                    /** @enum {string} */
-                    method: "spray" | "spread" | "other";
-                    /** Format: double */
-                    amountPerApplication: number;
-                    /** Format: double */
-                    numberOfApplications: number;
-                    /** Format: uuid */
+                    unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+                    /** @enum {string|null} */
+                    method: "spray" | "spread" | "other" | null;
+                    amountPerUnit: number;
+                    numberOfUnits: number;
                     fertilizerId: string;
-                    /** Format: uuid */
-                    spreaderId: string | null;
                     geometry: {
                         /** @constant */
                         type: "MultiPolygon";
                         coordinates: number[][][][];
                     };
-                    /** Format: int64 */
                     size: number;
                     additionalNotes: string | null;
                     plot: {
                         id: string;
                         name: string;
                     };
-                    spreader: {
-                        /** Format: uuid */
-                        id: string;
-                        /** Format: uuid */
-                        farmId: string;
-                        name: string;
-                        /** @enum {string} */
-                        unit: "l" | "kg" | "dt" | "t";
-                        /** @enum {string} */
-                        defaultMethod: "spray" | "spread" | "other";
-                        /** Format: double */
-                        capacity: number;
-                    } | null;
                     fertilizer: {
-                        /** Format: uuid */
                         id: string;
-                        /** Format: uuid */
                         farmId: string;
                         name: string;
                         description: string | null;
@@ -4567,16 +4630,10 @@ export interface components {
                         type: "mineral" | "organic";
                         /** @enum {string} */
                         unit: "l" | "kg" | "dt" | "t";
-                        /** Format: uuid */
-                        defaultSpreaderId: string | null;
                     };
                 }[];
-                /** Format: double */
                 count: number;
             };
-        };
-        PostV1FertilizerApplicationsNegativeResponse: {
-            error: string;
         };
         PostV1FertilizerApplicationsRequestBody: {
             /**
@@ -4585,42 +4642,33 @@ export interface components {
              */
             date: string;
             /** @enum {string} */
-            unit: "l" | "kg" | "dt" | "t";
+            unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
             /** @enum {string} */
-            method: "spray" | "spread" | "other";
-            /** Format: double */
-            amountPerApplication: number;
+            method?: "spray" | "spread" | "other";
+            amountPerUnit: number;
             fertilizerId: string;
-            spreaderId?: string;
             additionalNotes?: string;
             plots: {
                 plotId: string;
-                /** Format: double */
-                numberOfApplications: number;
+                numberOfUnits: number;
                 geometry: {
                     /** @constant */
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
-                /** Format: double */
                 size: number;
             }[];
         };
-        GetV1FertilizerApplicationsByIdFertilizerApplicationIdParameterFertilizerApplicationId: string;
         GetV1FertilizerApplicationsByIdFertilizerApplicationIdPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
                 /**
                  * Format: date-time
                  * @description YYYY-MM-DDTHH:mm:ss.sssZ
                  */
                 createdAt: string;
-                /** Format: uuid */
                 createdBy: string;
-                /** Format: uuid */
                 plotId: string;
                 /**
                  * Format: date-time
@@ -4628,46 +4676,25 @@ export interface components {
                  */
                 date: string;
                 /** @enum {string} */
-                unit: "l" | "kg" | "dt" | "t";
-                /** @enum {string} */
-                method: "spray" | "spread" | "other";
-                /** Format: double */
-                amountPerApplication: number;
-                /** Format: double */
-                numberOfApplications: number;
-                /** Format: uuid */
+                unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+                /** @enum {string|null} */
+                method: "spray" | "spread" | "other" | null;
+                amountPerUnit: number;
+                numberOfUnits: number;
                 fertilizerId: string;
-                /** Format: uuid */
-                spreaderId: string | null;
                 geometry: {
                     /** @constant */
                     type: "MultiPolygon";
                     coordinates: number[][][][];
                 };
-                /** Format: int64 */
                 size: number;
                 additionalNotes: string | null;
                 plot: {
                     id: string;
                     name: string;
                 };
-                spreader: {
-                    /** Format: uuid */
-                    id: string;
-                    /** Format: uuid */
-                    farmId: string;
-                    name: string;
-                    /** @enum {string} */
-                    unit: "l" | "kg" | "dt" | "t";
-                    /** @enum {string} */
-                    defaultMethod: "spray" | "spread" | "other";
-                    /** Format: double */
-                    capacity: number;
-                } | null;
                 fertilizer: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
                     farmId: string;
                     name: string;
                     description: string | null;
@@ -4675,30 +4702,18 @@ export interface components {
                     type: "mineral" | "organic";
                     /** @enum {string} */
                     unit: "l" | "kg" | "dt" | "t";
-                    /** Format: uuid */
-                    defaultSpreaderId: string | null;
                 };
             };
         };
-        GetV1FertilizerApplicationsByIdFertilizerApplicationIdNegativeResponse: {
-            error: string;
-        };
-        DeleteV1FertilizerApplicationsByIdFertilizerApplicationIdParameterFertilizerApplicationId: string;
         DeleteV1FertilizerApplicationsByIdFertilizerApplicationIdPositiveResponse: {
             data: Record<string, never>;
-        };
-        DeleteV1FertilizerApplicationsByIdFertilizerApplicationIdNegativeResponse: {
-            error: string;
         };
         GetV1FertilizerApplicationsSummariesPositiveResponse: {
             data: {
                 monthlyApplications: {
-                    /** Format: double */
                     year: number;
-                    /** Format: double */
                     month: number;
                     appliedFertilizers: {
-                        /** Format: double */
                         totalAmount: number;
                         fertilizerName: string;
                         /** @enum {string} */
@@ -4707,25 +4722,51 @@ export interface components {
                 }[];
             };
         };
-        GetV1FertilizerApplicationsSummariesNegativeResponse: {
-            error: string;
-        };
         GetV1FertilizerApplicationsYearsPositiveResponse: {
             data: {
                 result: string[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1FertilizerApplicationsYearsNegativeResponse: {
-            error: string;
-        };
-        GetV1FertilizersPositiveResponse: {
+        GetV1FertilizerApplicationsPresetsPositiveResponse: {
             data: {
                 result: {
-                    /** Format: uuid */
                     id: string;
-                    /** Format: uuid */
+                    farmId: string;
+                    name: string;
+                    fertilizerId: string;
+                    /** @enum {string} */
+                    unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+                    /** @enum {string|null} */
+                    method: "spray" | "spread" | "other" | null;
+                    amountPerUnit: number;
+                    fertilizer: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        description: string | null;
+                        /** @enum {string} */
+                        type: "mineral" | "organic";
+                        /** @enum {string} */
+                        unit: "l" | "kg" | "dt" | "t";
+                    };
+                }[];
+                count: number;
+            };
+        };
+        PostV1FertilizerApplicationsPresetsPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                fertilizerId: string;
+                /** @enum {string} */
+                unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+                /** @enum {string|null} */
+                method: "spray" | "spread" | "other" | null;
+                amountPerUnit: number;
+                fertilizer: {
+                    id: string;
                     farmId: string;
                     name: string;
                     description: string | null;
@@ -4733,21 +4774,94 @@ export interface components {
                     type: "mineral" | "organic";
                     /** @enum {string} */
                     unit: "l" | "kg" | "dt" | "t";
-                    /** Format: uuid */
-                    defaultSpreaderId: string | null;
+                };
+            };
+        };
+        PostV1FertilizerApplicationsPresetsRequestBody: {
+            name: string;
+            fertilizerId: string;
+            /** @enum {string} */
+            unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+            /** @enum {string} */
+            method?: "spray" | "spread" | "other";
+            amountPerUnit: number;
+        };
+        GetV1FertilizerApplicationsPresetsByIdPresetIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                fertilizerId: string;
+                /** @enum {string} */
+                unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+                /** @enum {string|null} */
+                method: "spray" | "spread" | "other" | null;
+                amountPerUnit: number;
+                fertilizer: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    description: string | null;
+                    /** @enum {string} */
+                    type: "mineral" | "organic";
+                    /** @enum {string} */
+                    unit: "l" | "kg" | "dt" | "t";
+                };
+            };
+        };
+        PatchV1FertilizerApplicationsPresetsByIdPresetIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                fertilizerId: string;
+                /** @enum {string} */
+                unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+                /** @enum {string|null} */
+                method: "spray" | "spread" | "other" | null;
+                amountPerUnit: number;
+                fertilizer: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    description: string | null;
+                    /** @enum {string} */
+                    type: "mineral" | "organic";
+                    /** @enum {string} */
+                    unit: "l" | "kg" | "dt" | "t";
+                };
+            };
+        };
+        PatchV1FertilizerApplicationsPresetsByIdPresetIdRequestBody: {
+            name?: string;
+            fertilizerId?: string;
+            /** @enum {string} */
+            unit?: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+            /** @enum {string|null} */
+            method?: "spray" | "spread" | "other" | null;
+            amountPerUnit?: number;
+        };
+        DeleteV1FertilizerApplicationsPresetsByIdPresetIdPositiveResponse: {
+            data: Record<string, never>;
+        };
+        GetV1FertilizersPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    description: string | null;
+                    /** @enum {string} */
+                    type: "mineral" | "organic";
+                    /** @enum {string} */
+                    unit: "l" | "kg" | "dt" | "t";
                 }[];
-                /** Format: double */
                 count: number;
             };
         };
-        GetV1FertilizersNegativeResponse: {
-            error: string;
-        };
         PostV1FertilizersPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
                 name: string;
                 description: string | null;
@@ -4755,29 +4869,20 @@ export interface components {
                 type: "mineral" | "organic";
                 /** @enum {string} */
                 unit: "l" | "kg" | "dt" | "t";
-                /** Format: uuid */
-                defaultSpreaderId: string | null;
             };
-        };
-        PostV1FertilizersNegativeResponse: {
-            error: string;
         };
         PostV1FertilizersRequestBody: {
             name: string;
-            description?: string | null;
+            description?: string;
             /** @enum {string} */
             type: "mineral" | "organic";
             /** @enum {string} */
             unit: "l" | "kg" | "dt" | "t";
-            /** Format: uuid */
-            defaultSpreaderId?: string | null;
+            defaultSpreaderId?: string;
         };
-        GetV1FertilizersByIdFertilizerIdParameterFertilizerId: string;
         GetV1FertilizersByIdFertilizerIdPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
                 name: string;
                 description: string | null;
@@ -4785,19 +4890,11 @@ export interface components {
                 type: "mineral" | "organic";
                 /** @enum {string} */
                 unit: "l" | "kg" | "dt" | "t";
-                /** Format: uuid */
-                defaultSpreaderId: string | null;
             };
         };
-        GetV1FertilizersByIdFertilizerIdNegativeResponse: {
-            error: string;
-        };
-        PatchV1FertilizersByIdFertilizerIdParameterFertilizerId: string;
         PatchV1FertilizersByIdFertilizerIdPositiveResponse: {
             data: {
-                /** Format: uuid */
                 id: string;
-                /** Format: uuid */
                 farmId: string;
                 name: string;
                 description: string | null;
@@ -4805,149 +4902,29 @@ export interface components {
                 type: "mineral" | "organic";
                 /** @enum {string} */
                 unit: "l" | "kg" | "dt" | "t";
-                /** Format: uuid */
-                defaultSpreaderId: string | null;
             };
-        };
-        PatchV1FertilizersByIdFertilizerIdNegativeResponse: {
-            error: string;
         };
         PatchV1FertilizersByIdFertilizerIdRequestBody: {
             name?: string;
-            description?: string | null;
+            description?: string;
             /** @enum {string} */
             type?: "mineral" | "organic";
             /** @enum {string} */
             unit?: "l" | "kg" | "dt" | "t";
-            /** Format: uuid */
-            defaultSpreaderId?: string | null;
+            defaultSpreaderId?: string;
         };
-        DeleteV1FertilizersByIdFertilizerIdParameterFertilizerId: string;
         DeleteV1FertilizersByIdFertilizerIdPositiveResponse: {
             data: Record<string, never>;
         };
-        DeleteV1FertilizersByIdFertilizerIdNegativeResponse: {
-            error: string;
-        };
-        GetV1FertilizersByIdFertilizerIdInUseParameterFertilizerId: string;
         GetV1FertilizersByIdFertilizerIdInUsePositiveResponse: {
             data: {
                 inUse: boolean;
             };
         };
-        GetV1FertilizersByIdFertilizerIdInUseNegativeResponse: {
-            error: string;
-        };
-        GetV1FertilizerSpreadersPositiveResponse: {
-            data: {
-                result: {
-                    /** Format: uuid */
-                    id: string;
-                    /** Format: uuid */
-                    farmId: string;
-                    name: string;
-                    /** @enum {string} */
-                    unit: "l" | "kg" | "dt" | "t";
-                    /** @enum {string} */
-                    defaultMethod: "spray" | "spread" | "other";
-                    /** Format: double */
-                    capacity: number;
-                }[];
-                /** Format: double */
-                count: number;
-            };
-        };
-        GetV1FertilizerSpreadersNegativeResponse: {
-            error: string;
-        };
-        PostV1FertilizerSpreadersPositiveResponse: {
-            data: {
-                /** Format: uuid */
-                id: string;
-                /** Format: uuid */
-                farmId: string;
-                name: string;
-                /** @enum {string} */
-                unit: "l" | "kg" | "dt" | "t";
-                /** @enum {string} */
-                defaultMethod: "spray" | "spread" | "other";
-                /** Format: double */
-                capacity: number;
-            };
-        };
-        PostV1FertilizerSpreadersNegativeResponse: {
-            error: string;
-        };
-        PostV1FertilizerSpreadersRequestBody: {
-            name: string;
-            /** @enum {string} */
-            unit: "l" | "kg" | "dt" | "t";
-            /** @enum {string} */
-            defaultMethod: "spray" | "spread" | "other";
-            /** Format: double */
-            capacity: number;
-        };
-        GetV1FertilizerSpreadersByIdFertilizerSpreaderIdParameterFertilizerSpreaderId: string;
-        GetV1FertilizerSpreadersByIdFertilizerSpreaderIdPositiveResponse: {
-            data: {
-                /** Format: uuid */
-                id: string;
-                /** Format: uuid */
-                farmId: string;
-                name: string;
-                /** @enum {string} */
-                unit: "l" | "kg" | "dt" | "t";
-                /** @enum {string} */
-                defaultMethod: "spray" | "spread" | "other";
-                /** Format: double */
-                capacity: number;
-            };
-        };
-        GetV1FertilizerSpreadersByIdFertilizerSpreaderIdNegativeResponse: {
-            error: string;
-        };
-        PatchV1FertilizerSpreadersByIdFertilizerSpreaderIdParameterFertilizerSpreaderId: string;
-        PatchV1FertilizerSpreadersByIdFertilizerSpreaderIdPositiveResponse: {
-            data: {
-                /** Format: uuid */
-                id: string;
-                /** Format: uuid */
-                farmId: string;
-                name: string;
-                /** @enum {string} */
-                unit: "l" | "kg" | "dt" | "t";
-                /** @enum {string} */
-                defaultMethod: "spray" | "spread" | "other";
-                /** Format: double */
-                capacity: number;
-            };
-        };
-        PatchV1FertilizerSpreadersByIdFertilizerSpreaderIdNegativeResponse: {
-            error: string;
-        };
-        PatchV1FertilizerSpreadersByIdFertilizerSpreaderIdRequestBody: {
-            name?: string;
-            /** @enum {string} */
-            unit?: "l" | "kg" | "dt" | "t";
-            /** @enum {string} */
-            defaultMethod?: "spray" | "spread" | "other";
-            /** Format: double */
-            capacity?: number;
-        };
-        DeleteV1FertilizerSpreadersByIdFertilizerSpreaderIdParameterFertilizerSpreaderId: string;
-        DeleteV1FertilizerSpreadersByIdFertilizerSpreaderIdPositiveResponse: {
+        PostV1ReportsFieldcalendarEmailPositiveResponse: {
             data: Record<string, never>;
         };
-        DeleteV1FertilizerSpreadersByIdFertilizerSpreaderIdNegativeResponse: {
-            error: string;
-        };
-        PostV1ReportsFieldcalendarPositiveResponse: {
-            data: Record<string, never>;
-        };
-        PostV1ReportsFieldcalendarNegativeResponse: {
-            error: string;
-        };
-        PostV1ReportsFieldcalendarRequestBody: {
+        PostV1ReportsFieldcalendarEmailRequestBody: {
             /**
              * Format: date-time
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -4963,6 +4940,3009 @@ export interface components {
             generateFertilizerApplications: boolean;
             generateCropProtectionApplications: boolean;
             generateHarvests: boolean;
+        };
+        PostV1ReportsFieldcalendarDownloadPositiveResponse: {
+            data: {
+                base64: string;
+                fileName: string;
+            };
+        };
+        PostV1ReportsFieldcalendarDownloadRequestBody: {
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            fromDate: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            toDate: string;
+            generateCropRotations: boolean;
+            generateTillages: boolean;
+            generateFertilizerApplications: boolean;
+            generateCropProtectionApplications: boolean;
+            generateHarvests: boolean;
+        };
+        PostV1ReportsTreatmentsDownloadPositiveResponse: {
+            data: {
+                base64: string;
+                fileName: string;
+            };
+        };
+        PostV1ReportsTreatmentsDownloadRequestBody: {
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            fromDate: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            toDate: string;
+            animalTypes?: ("goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer")[];
+        };
+        PostV1ReportsOutdoorjournalDownloadPositiveResponse: {
+            data: {
+                base64: string;
+                fileName: string;
+            };
+        };
+        PostV1ReportsOutdoorjournalDownloadRequestBody: {
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            fromDate: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            toDate: string;
+        };
+        /** Format: array (preprocessed) */
+        GetV1AnimalsParameterAnimalTypes: unknown;
+        GetV1AnimalsPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    /** @enum {string} */
+                    type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                    /** @enum {string} */
+                    sex: "male" | "female";
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfBirth: string;
+                    registered: boolean;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
+                    earTagId: string | null;
+                    earTag: {
+                        id: string;
+                        farmId: string;
+                        number: string;
+                    } | null;
+                    motherId: string | null;
+                    fatherId: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfDeath: string | null;
+                    /** @enum {string|null} */
+                    deathReason: "died" | "slaughtered" | null;
+                    herdId: string | null;
+                    milkAndMeatUsable: boolean;
+                }[];
+                count: number;
+            };
+        };
+        PostV1AnimalsPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                /** @enum {string} */
+                type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                /** @enum {string} */
+                sex: "male" | "female";
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                dateOfBirth: string;
+                registered: boolean;
+                /** @enum {string} */
+                usage: "milk" | "other";
+                earTagId: string | null;
+                earTag: {
+                    id: string;
+                    farmId: string;
+                    number: string;
+                } | null;
+                motherId: string | null;
+                fatherId: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                dateOfDeath: string | null;
+                /** @enum {string|null} */
+                deathReason: "died" | "slaughtered" | null;
+                herdId: string | null;
+            };
+        };
+        PostV1AnimalsRequestBody: {
+            name: string;
+            /** @enum {string} */
+            type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+            /** @enum {string} */
+            sex: "male" | "female";
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            dateOfBirth: string;
+            registered: boolean;
+            /** @enum {string} */
+            usage: "milk" | "other";
+            earTagId?: string | null;
+            motherId?: string | null;
+            fatherId?: string | null;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            dateOfDeath?: string | null;
+            /** @enum {string|null} */
+            deathReason?: "died" | "slaughtered" | null;
+            herdId?: string | null;
+        };
+        DeleteV1AnimalsParameterAnimalIds: string[];
+        DeleteV1AnimalsPositiveResponse: {
+            data: Record<string, never>;
+        };
+        PatchV1AnimalsBatchPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    /** @enum {string} */
+                    type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                    /** @enum {string} */
+                    sex: "male" | "female";
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfBirth: string;
+                    registered: boolean;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
+                    earTagId: string | null;
+                    earTag: {
+                        id: string;
+                        farmId: string;
+                        number: string;
+                    } | null;
+                    motherId: string | null;
+                    fatherId: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfDeath: string | null;
+                    /** @enum {string|null} */
+                    deathReason: "died" | "slaughtered" | null;
+                    herdId: string | null;
+                }[];
+                count: number;
+            };
+        };
+        PatchV1AnimalsBatchRequestBody: {
+            animalIds: string[];
+            data: {
+                /** @enum {string} */
+                type?: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                /** @enum {string} */
+                usage?: "milk" | "other";
+                registered?: boolean;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                dateOfDeath?: string;
+                /** @enum {string} */
+                deathReason?: "died" | "slaughtered";
+                motherId?: string;
+                fatherId?: string;
+            };
+        };
+        PostV1AnimalsImportPositiveResponse: {
+            data: {
+                skipped: {
+                    row: number;
+                    earTagNumber: string | null;
+                    name: string | null;
+                    reason: string;
+                }[];
+                summary: {
+                    totalRows: number;
+                    imported: number;
+                    skipped: number;
+                };
+            };
+        };
+        PostV1AnimalsImportRequestBody: {
+            /** Format: binary */
+            file: string;
+            /** @enum {string} */
+            type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+            skipHeaderRow?: string;
+        };
+        GetV1AnimalsByIdAnimalIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                /** @enum {string} */
+                type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                /** @enum {string} */
+                sex: "male" | "female";
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                dateOfBirth: string;
+                registered: boolean;
+                /** @enum {string} */
+                usage: "milk" | "other";
+                earTagId: string | null;
+                earTag: {
+                    id: string;
+                    farmId: string;
+                    number: string;
+                } | null;
+                motherId: string | null;
+                fatherId: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                dateOfDeath: string | null;
+                /** @enum {string|null} */
+                deathReason: "died" | "slaughtered" | null;
+                herdId: string | null;
+                mother: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    /** @enum {string} */
+                    type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                    /** @enum {string} */
+                    sex: "male" | "female";
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfBirth: string;
+                    registered: boolean;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
+                    earTagId: string | null;
+                    earTag: {
+                        id: string;
+                        farmId: string;
+                        number: string;
+                    } | null;
+                    motherId: string | null;
+                    fatherId: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfDeath: string | null;
+                    /** @enum {string|null} */
+                    deathReason: "died" | "slaughtered" | null;
+                    herdId: string | null;
+                } | null;
+                father: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    /** @enum {string} */
+                    type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                    /** @enum {string} */
+                    sex: "male" | "female";
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfBirth: string;
+                    registered: boolean;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
+                    earTagId: string | null;
+                    earTag: {
+                        id: string;
+                        farmId: string;
+                        number: string;
+                    } | null;
+                    motherId: string | null;
+                    fatherId: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfDeath: string | null;
+                    /** @enum {string|null} */
+                    deathReason: "died" | "slaughtered" | null;
+                    herdId: string | null;
+                } | null;
+                childrenAsMother: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    /** @enum {string} */
+                    type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                    /** @enum {string} */
+                    sex: "male" | "female";
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfBirth: string;
+                    registered: boolean;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
+                    earTagId: string | null;
+                    earTag: {
+                        id: string;
+                        farmId: string;
+                        number: string;
+                    } | null;
+                    motherId: string | null;
+                    fatherId: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfDeath: string | null;
+                    /** @enum {string|null} */
+                    deathReason: "died" | "slaughtered" | null;
+                    herdId: string | null;
+                }[];
+                childrenAsFather: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    /** @enum {string} */
+                    type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                    /** @enum {string} */
+                    sex: "male" | "female";
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfBirth: string;
+                    registered: boolean;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
+                    earTagId: string | null;
+                    earTag: {
+                        id: string;
+                        farmId: string;
+                        number: string;
+                    } | null;
+                    motherId: string | null;
+                    fatherId: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfDeath: string | null;
+                    /** @enum {string|null} */
+                    deathReason: "died" | "slaughtered" | null;
+                    herdId: string | null;
+                }[];
+                treatments: {
+                    id: string;
+                    farmId: string;
+                    drugId: string | null;
+                    /** @enum {string|null} */
+                    drugDoseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop" | null;
+                    /** @enum {string|null} */
+                    drugDosePerUnit: "kg" | "animal" | "day" | "total_amount" | null;
+                    drugDoseValue: number | null;
+                    drugReceivedFrom: string | null;
+                    criticalAntibiotic: boolean;
+                    antibiogramAvailable: boolean;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    startDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    endDate: string;
+                    name: string;
+                    notes: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    milkUsableDate: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    meatUsableDate: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    organsUsableDate: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    createdAt: string;
+                    createdBy: string | null;
+                }[];
+                herd?: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                } | null;
+                customOutdoorJournalCategories: {
+                    id: string;
+                    farmId: string;
+                    animalId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    startDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    endDate: string | null;
+                    /** @enum {string} */
+                    category: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2";
+                }[];
+            };
+        };
+        PatchV1AnimalsByIdAnimalIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                /** @enum {string} */
+                type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                /** @enum {string} */
+                sex: "male" | "female";
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                dateOfBirth: string;
+                registered: boolean;
+                /** @enum {string} */
+                usage: "milk" | "other";
+                earTagId: string | null;
+                earTag: {
+                    id: string;
+                    farmId: string;
+                    number: string;
+                } | null;
+                motherId: string | null;
+                fatherId: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                dateOfDeath: string | null;
+                /** @enum {string|null} */
+                deathReason: "died" | "slaughtered" | null;
+                herdId: string | null;
+            };
+        };
+        PatchV1AnimalsByIdAnimalIdRequestBody: {
+            name?: string;
+            /** @enum {string} */
+            type?: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+            /** @enum {string} */
+            sex?: "male" | "female";
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            dateOfBirth?: string;
+            registered?: boolean;
+            /** @enum {string} */
+            usage?: "milk" | "other";
+            earTagId?: string | null;
+            motherId?: string | null;
+            fatherId?: string | null;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            dateOfDeath?: string | null;
+            /** @enum {string|null} */
+            deathReason?: "died" | "slaughtered" | null;
+            herdId?: string | null;
+        };
+        DeleteV1AnimalsByIdAnimalIdPositiveResponse: {
+            data: Record<string, never>;
+        };
+        GetV1AnimalsByIdAnimalIdChildrenPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    /** @enum {string} */
+                    type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                    /** @enum {string} */
+                    sex: "male" | "female";
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfBirth: string;
+                    registered: boolean;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
+                    earTagId: string | null;
+                    earTag: {
+                        id: string;
+                        farmId: string;
+                        number: string;
+                    } | null;
+                    motherId: string | null;
+                    fatherId: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfDeath: string | null;
+                    /** @enum {string|null} */
+                    deathReason: "died" | "slaughtered" | null;
+                    herdId: string | null;
+                }[];
+                count: number;
+            };
+        };
+        /** @default true */
+        GetV1AnimalsByIdAnimalIdSponsorshipsParameterOnlyActive: boolean;
+        GetV1AnimalsByIdAnimalIdSponsorshipsPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    contactId: string;
+                    animalId: string;
+                    sponsorshipProgramId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    startDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    endDate: string | null;
+                    notes: string | null;
+                    /** @enum {string|null} */
+                    preferredCommunication: "email" | "phone" | "whatsapp" | null;
+                    contact: {
+                        id: string;
+                        farmId: string;
+                        firstName: string;
+                        lastName: string;
+                        street: string | null;
+                        city: string | null;
+                        zip: string | null;
+                        phone: string | null;
+                        email: string | null;
+                        /** @enum {string|null} */
+                        preferredCommunication: "email" | "phone" | "whatsapp" | null;
+                        labels: string[];
+                    };
+                    payments: {
+                        id: string;
+                        farmId: string;
+                        contactId: string;
+                        sponsorshipId: string | null;
+                        orderId: string | null;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        date: string;
+                        amount: number;
+                        currency: string;
+                        /** @enum {string} */
+                        method: "cash" | "bank_transfer" | "twint" | "card" | "other";
+                        notes: string | null;
+                    }[];
+                    sponsorshipProgram: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        description: string | null;
+                        yearlyCost: number;
+                    };
+                }[];
+                count: number;
+            };
+        };
+        PutV1AnimalsByIdAnimalIdCustomOutdoorJournalCategoriesPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    animalId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    startDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    endDate: string | null;
+                    /** @enum {string} */
+                    category: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2";
+                }[];
+            };
+        };
+        PutV1AnimalsByIdAnimalIdCustomOutdoorJournalCategoriesRequestBody: {
+            entries: {
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate?: string | null;
+                /** @enum {string} */
+                category: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2";
+            }[];
+        };
+        GetV1AnimalsOutdoorJournalPositiveResponse: {
+            data: {
+                entries: {
+                    /** @enum {string} */
+                    category: "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "A7" | "A8" | "A9" | "B1" | "B2" | "B3" | "C1" | "C2" | "D1" | "D2" | "D3" | "E1" | "E2" | "E3" | "E4" | "F1" | "F2";
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    startDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    endDate: string;
+                    animalCount: number;
+                }[];
+                uncategorizedAnimals: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    /** @enum {string} */
+                    type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                    /** @enum {string} */
+                    sex: "male" | "female";
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfBirth: string;
+                    registered: boolean;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
+                    earTagId: string | null;
+                    earTag: {
+                        id: string;
+                        farmId: string;
+                        number: string;
+                    } | null;
+                    motherId: string | null;
+                    fatherId: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfDeath: string | null;
+                    /** @enum {string|null} */
+                    deathReason: "died" | "slaughtered" | null;
+                    herdId: string | null;
+                }[];
+            };
+        };
+        GetV1AnimalsHerdsPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    animals: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        /** @enum {string} */
+                        type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                        /** @enum {string} */
+                        sex: "male" | "female";
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        dateOfBirth: string;
+                        registered: boolean;
+                        /** @enum {string} */
+                        usage: "milk" | "other";
+                        earTagId: string | null;
+                        earTag: {
+                            id: string;
+                            farmId: string;
+                            number: string;
+                        } | null;
+                        motherId: string | null;
+                        fatherId: string | null;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        dateOfDeath: string | null;
+                        /** @enum {string|null} */
+                        deathReason: "died" | "slaughtered" | null;
+                        herdId: string | null;
+                    }[];
+                    outdoorSchedules: {
+                        id: string;
+                        farmId: string;
+                        herdId: string;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        startDate: string;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        endDate: string | null;
+                        /** @enum {string} */
+                        type: "pasture" | "exercise_yard";
+                        notes: string | null;
+                        recurrence: {
+                            id: string;
+                            /** @enum {string} */
+                            frequency: "weekly" | "monthly" | "yearly";
+                            interval: number;
+                            byWeekday: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                            byMonthDay: number | null;
+                            until: string | null;
+                            count: number | null;
+                        } | null;
+                    }[];
+                }[];
+                count: number;
+            };
+        };
+        PostV1AnimalsHerdsPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+            };
+        };
+        PostV1AnimalsHerdsRequestBody: {
+            name: string;
+            animalIds: string[];
+            outdoorSchedules?: {
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate?: string | null;
+                /** @enum {string} */
+                type: "pasture" | "exercise_yard";
+                notes?: string | null;
+                recurrence?: {
+                    /** @enum {string} */
+                    frequency: "weekly" | "monthly" | "yearly";
+                    interval: number;
+                    byWeekday?: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                    byMonthDay?: number | null;
+                    until?: string | null;
+                    count?: number | null;
+                } | null;
+            }[];
+        };
+        GetV1AnimalsHerdsByIdHerdIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                animals: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    /** @enum {string} */
+                    type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                    /** @enum {string} */
+                    sex: "male" | "female";
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfBirth: string;
+                    registered: boolean;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
+                    earTagId: string | null;
+                    earTag: {
+                        id: string;
+                        farmId: string;
+                        number: string;
+                    } | null;
+                    motherId: string | null;
+                    fatherId: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfDeath: string | null;
+                    /** @enum {string|null} */
+                    deathReason: "died" | "slaughtered" | null;
+                    herdId: string | null;
+                }[];
+                outdoorSchedules: {
+                    id: string;
+                    farmId: string;
+                    herdId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    startDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    endDate: string | null;
+                    /** @enum {string} */
+                    type: "pasture" | "exercise_yard";
+                    notes: string | null;
+                    recurrence: {
+                        id: string;
+                        /** @enum {string} */
+                        frequency: "weekly" | "monthly" | "yearly";
+                        interval: number;
+                        byWeekday: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                        byMonthDay: number | null;
+                        until: string | null;
+                        count: number | null;
+                    } | null;
+                }[];
+            };
+        };
+        PatchV1AnimalsHerdsByIdHerdIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+            };
+        };
+        PatchV1AnimalsHerdsByIdHerdIdRequestBody: {
+            name?: string;
+            animalIds?: string[];
+            outdoorSchedules?: {
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate?: string | null;
+                /** @enum {string} */
+                type: "pasture" | "exercise_yard";
+                notes?: string | null;
+                recurrence?: {
+                    /** @enum {string} */
+                    frequency: "weekly" | "monthly" | "yearly";
+                    interval: number;
+                    byWeekday?: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                    byMonthDay?: number | null;
+                    until?: string | null;
+                    count?: number | null;
+                } | null;
+            }[];
+        };
+        DeleteV1AnimalsHerdsByIdHerdIdPositiveResponse: {
+            data: Record<string, never>;
+        };
+        GetV1AnimalsHerdsByIdHerdIdOutdoorSchedulesPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    herdId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    startDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    endDate: string | null;
+                    /** @enum {string} */
+                    type: "pasture" | "exercise_yard";
+                    notes: string | null;
+                    recurrence: {
+                        id: string;
+                        /** @enum {string} */
+                        frequency: "weekly" | "monthly" | "yearly";
+                        interval: number;
+                        byWeekday: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                        byMonthDay: number | null;
+                        until: string | null;
+                        count: number | null;
+                    } | null;
+                }[];
+                count: number;
+            };
+        };
+        PostV1AnimalsHerdsByIdHerdIdOutdoorSchedulesPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                herdId: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate: string | null;
+                /** @enum {string} */
+                type: "pasture" | "exercise_yard";
+                notes: string | null;
+                recurrence: {
+                    id: string;
+                    /** @enum {string} */
+                    frequency: "weekly" | "monthly" | "yearly";
+                    interval: number;
+                    byWeekday: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                    byMonthDay: number | null;
+                    until: string | null;
+                    count: number | null;
+                } | null;
+            };
+        };
+        PostV1AnimalsHerdsByIdHerdIdOutdoorSchedulesRequestBody: {
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            startDate: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            endDate?: string | null;
+            /** @enum {string} */
+            type: "pasture" | "exercise_yard";
+            notes?: string | null;
+            recurrence?: {
+                /** @enum {string} */
+                frequency: "weekly" | "monthly" | "yearly";
+                interval: number;
+                byWeekday?: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                byMonthDay?: number | null;
+                until?: string | null;
+                count?: number | null;
+            } | null;
+        };
+        GetV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                herdId: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate: string | null;
+                /** @enum {string} */
+                type: "pasture" | "exercise_yard";
+                notes: string | null;
+                recurrence: {
+                    id: string;
+                    /** @enum {string} */
+                    frequency: "weekly" | "monthly" | "yearly";
+                    interval: number;
+                    byWeekday: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                    byMonthDay: number | null;
+                    until: string | null;
+                    count: number | null;
+                } | null;
+            };
+        };
+        PatchV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                herdId: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate: string | null;
+                /** @enum {string} */
+                type: "pasture" | "exercise_yard";
+                notes: string | null;
+                recurrence: {
+                    id: string;
+                    /** @enum {string} */
+                    frequency: "weekly" | "monthly" | "yearly";
+                    interval: number;
+                    byWeekday: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                    byMonthDay: number | null;
+                    until: string | null;
+                    count: number | null;
+                } | null;
+            };
+        };
+        PatchV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleIdRequestBody: {
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            startDate?: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            endDate?: string | null;
+            /** @enum {string} */
+            type?: "pasture" | "exercise_yard";
+            notes?: string | null;
+            recurrence?: {
+                /** @enum {string} */
+                frequency: "weekly" | "monthly" | "yearly";
+                interval: number;
+                byWeekday?: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                byMonthDay?: number | null;
+                until?: string | null;
+                count?: number | null;
+            } | null;
+        };
+        DeleteV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleIdPositiveResponse: {
+            data: Record<string, never>;
+        };
+        GetV1EarTagsPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    number: string;
+                    animal: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        /** @enum {string} */
+                        type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                        /** @enum {string} */
+                        sex: "male" | "female";
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        dateOfBirth: string;
+                        registered: boolean;
+                        /** @enum {string} */
+                        usage: "milk" | "other";
+                        earTagId: string | null;
+                        earTag: {
+                            id: string;
+                            farmId: string;
+                            number: string;
+                        } | null;
+                        motherId: string | null;
+                        fatherId: string | null;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        dateOfDeath: string | null;
+                        /** @enum {string|null} */
+                        deathReason: "died" | "slaughtered" | null;
+                        herdId: string | null;
+                    } | null;
+                }[];
+                count: number;
+            };
+        };
+        GetV1EarTagsAvailablePositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    number: string;
+                }[];
+                count: number;
+            };
+        };
+        PostV1EarTagsRangePositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    number: string;
+                }[];
+                count: number;
+            };
+        };
+        PostV1EarTagsRangeRequestBody: {
+            fromNumber: string;
+            toNumber: string;
+        };
+        DeleteV1EarTagsRangeParameterFromNumber: string;
+        DeleteV1EarTagsRangePositiveResponse: {
+            data: {
+                deletedCount: number;
+                skippedAssigned: string[];
+            };
+        };
+        GetV1DrugsPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    notes: string | null;
+                    criticalAntibiotic: boolean;
+                    receivedFrom: string;
+                    drugTreatment: {
+                        id: string;
+                        drugId: string;
+                        /** @enum {string} */
+                        animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                        /** @enum {string} */
+                        doseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop";
+                        /** @enum {string} */
+                        dosePerUnit: "kg" | "animal" | "day" | "total_amount";
+                        doseValue: number;
+                        milkWaitingDays: number;
+                        meatWaitingDays: number;
+                        organsWaitingDays: number;
+                    }[];
+                }[];
+                count: number;
+            };
+        };
+        PostV1DrugsPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                notes: string | null;
+                criticalAntibiotic: boolean;
+                receivedFrom: string;
+                drugTreatment: {
+                    id: string;
+                    drugId: string;
+                    /** @enum {string} */
+                    animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                    /** @enum {string} */
+                    doseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop";
+                    /** @enum {string} */
+                    dosePerUnit: "kg" | "animal" | "day" | "total_amount";
+                    doseValue: number;
+                    milkWaitingDays: number;
+                    meatWaitingDays: number;
+                    organsWaitingDays: number;
+                }[];
+            };
+        };
+        PostV1DrugsRequestBody: {
+            name: string;
+            criticalAntibiotic: boolean;
+            receivedFrom: string;
+            notes?: string;
+            drugTreatment: {
+                /** @enum {string} */
+                animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                doseValue: number;
+                /** @enum {string} */
+                doseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop";
+                /** @enum {string} */
+                dosePerUnit: "kg" | "animal" | "day" | "total_amount";
+                milkWaitingDays: number;
+                meatWaitingDays: number;
+                organsWaitingDays: number;
+            }[];
+        };
+        GetV1DrugsByIdDrugIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                notes: string | null;
+                criticalAntibiotic: boolean;
+                receivedFrom: string;
+                drugTreatment: {
+                    id: string;
+                    drugId: string;
+                    /** @enum {string} */
+                    animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                    /** @enum {string} */
+                    doseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop";
+                    /** @enum {string} */
+                    dosePerUnit: "kg" | "animal" | "day" | "total_amount";
+                    doseValue: number;
+                    milkWaitingDays: number;
+                    meatWaitingDays: number;
+                    organsWaitingDays: number;
+                }[];
+            };
+        };
+        PatchV1DrugsByIdDrugIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                notes: string | null;
+                criticalAntibiotic: boolean;
+                receivedFrom: string;
+                drugTreatment: {
+                    id: string;
+                    drugId: string;
+                    /** @enum {string} */
+                    animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                    /** @enum {string} */
+                    doseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop";
+                    /** @enum {string} */
+                    dosePerUnit: "kg" | "animal" | "day" | "total_amount";
+                    doseValue: number;
+                    milkWaitingDays: number;
+                    meatWaitingDays: number;
+                    organsWaitingDays: number;
+                }[];
+            };
+        };
+        PatchV1DrugsByIdDrugIdRequestBody: {
+            name?: string;
+            notes?: string;
+            drugTreatment?: {
+                /** @enum {string} */
+                animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                doseValue: number;
+                /** @enum {string} */
+                doseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop";
+                /** @enum {string} */
+                dosePerUnit: "kg" | "animal" | "day" | "total_amount";
+                milkWaitingDays: number;
+                meatWaitingDays: number;
+                organsWaitingDays: number;
+            }[];
+        };
+        DeleteV1DrugsByIdDrugIdPositiveResponse: {
+            data: Record<string, never>;
+        };
+        GetV1DrugsByIdDrugIdInUsePositiveResponse: {
+            data: {
+                inUse: boolean;
+            };
+        };
+        GetV1TreatmentsPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    drugId: string | null;
+                    /** @enum {string|null} */
+                    drugDoseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop" | null;
+                    /** @enum {string|null} */
+                    drugDosePerUnit: "kg" | "animal" | "day" | "total_amount" | null;
+                    drugDoseValue: number | null;
+                    drugReceivedFrom: string | null;
+                    criticalAntibiotic: boolean;
+                    antibiogramAvailable: boolean;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    startDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    endDate: string;
+                    name: string;
+                    notes: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    milkUsableDate: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    meatUsableDate: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    organsUsableDate: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    createdAt: string;
+                    createdBy: string | null;
+                    animals: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        /** @enum {string} */
+                        type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                        /** @enum {string} */
+                        sex: "male" | "female";
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        dateOfBirth: string;
+                        registered: boolean;
+                        /** @enum {string} */
+                        usage: "milk" | "other";
+                        earTagId: string | null;
+                        earTag: {
+                            id: string;
+                            farmId: string;
+                            number: string;
+                        } | null;
+                        motherId: string | null;
+                        fatherId: string | null;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        dateOfDeath: string | null;
+                        /** @enum {string|null} */
+                        deathReason: "died" | "slaughtered" | null;
+                        herdId: string | null;
+                    }[];
+                    drug: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        notes: string | null;
+                        criticalAntibiotic: boolean;
+                        receivedFrom: string;
+                        drugTreatment: {
+                            id: string;
+                            drugId: string;
+                            /** @enum {string} */
+                            animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                            /** @enum {string|null} */
+                            doseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop" | null;
+                            /** @enum {string|null} */
+                            dosePerUnit: "kg" | "animal" | "day" | "total_amount" | null;
+                            doseValue: number;
+                            milkWaitingDays: number;
+                            meatWaitingDays: number;
+                            organsWaitingDays: number;
+                        }[];
+                    } | null;
+                }[];
+                count: number;
+            };
+        };
+        PostV1TreatmentsPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                drugId: string | null;
+                /** @enum {string|null} */
+                drugDoseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop" | null;
+                /** @enum {string|null} */
+                drugDosePerUnit: "kg" | "animal" | "day" | "total_amount" | null;
+                drugDoseValue: number | null;
+                drugReceivedFrom: string | null;
+                criticalAntibiotic: boolean;
+                antibiogramAvailable: boolean;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate: string;
+                name: string;
+                notes: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                milkUsableDate: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                meatUsableDate: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                organsUsableDate: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                createdAt: string;
+                createdBy: string | null;
+            };
+        };
+        PostV1TreatmentsRequestBody: {
+            animalIds: string[];
+            drugId?: string | null;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            startDate: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            endDate: string;
+            name: string;
+            notes?: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            milkUsableDate?: string | null;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            meatUsableDate?: string | null;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            organsUsableDate?: string | null;
+            /** @enum {string|null} */
+            drugDoseUnit?: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop" | null;
+            /** @enum {string|null} */
+            drugDosePerUnit?: "kg" | "animal" | "day" | "total_amount" | null;
+            drugDoseValue?: number | null;
+            drugReceivedFrom?: string | null;
+            criticalAntibiotic: boolean;
+            antibiogramAvailable: boolean;
+        };
+        GetV1TreatmentsByIdTreatmentIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                drugId: string | null;
+                /** @enum {string|null} */
+                drugDoseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop" | null;
+                /** @enum {string|null} */
+                drugDosePerUnit: "kg" | "animal" | "day" | "total_amount" | null;
+                drugDoseValue: number | null;
+                drugReceivedFrom: string | null;
+                criticalAntibiotic: boolean;
+                antibiogramAvailable: boolean;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate: string;
+                name: string;
+                notes: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                milkUsableDate: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                meatUsableDate: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                organsUsableDate: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                createdAt: string;
+                createdBy: string | null;
+                animals: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    /** @enum {string} */
+                    type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                    /** @enum {string} */
+                    sex: "male" | "female";
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfBirth: string;
+                    registered: boolean;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
+                    earTagId: string | null;
+                    earTag: {
+                        id: string;
+                        farmId: string;
+                        number: string;
+                    } | null;
+                    motherId: string | null;
+                    fatherId: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfDeath: string | null;
+                    /** @enum {string|null} */
+                    deathReason: "died" | "slaughtered" | null;
+                    herdId: string | null;
+                }[];
+                drug: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    notes: string | null;
+                    criticalAntibiotic: boolean;
+                    receivedFrom: string;
+                    drugTreatment: {
+                        id: string;
+                        drugId: string;
+                        /** @enum {string} */
+                        animalType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                        /** @enum {string|null} */
+                        doseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop" | null;
+                        /** @enum {string|null} */
+                        dosePerUnit: "kg" | "animal" | "day" | "total_amount" | null;
+                        doseValue: number;
+                        milkWaitingDays: number;
+                        meatWaitingDays: number;
+                        organsWaitingDays: number;
+                    }[];
+                } | null;
+            };
+        };
+        PatchV1TreatmentsByIdTreatmentIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                drugId: string | null;
+                /** @enum {string|null} */
+                drugDoseUnit: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop" | null;
+                /** @enum {string|null} */
+                drugDosePerUnit: "kg" | "animal" | "day" | "total_amount" | null;
+                drugDoseValue: number | null;
+                drugReceivedFrom: string | null;
+                criticalAntibiotic: boolean;
+                antibiogramAvailable: boolean;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate: string;
+                name: string;
+                notes: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                milkUsableDate: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                meatUsableDate: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                organsUsableDate: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                createdAt: string;
+                createdBy: string | null;
+            };
+        };
+        PatchV1TreatmentsByIdTreatmentIdRequestBody: {
+            animalIds?: string[];
+            drugId?: string | null;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            startDate?: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            endDate?: string;
+            name?: string;
+            notes?: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            milkUsableDate?: string | null;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            meatUsableDate?: string | null;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            organsUsableDate?: string | null;
+            /** @enum {string|null} */
+            drugDoseUnit?: "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop" | null;
+            /** @enum {string|null} */
+            drugDosePerUnit?: "kg" | "animal" | "day" | "total_amount" | null;
+            drugDoseValue?: number | null;
+            drugReceivedFrom?: string | null;
+            criticalAntibiotic?: boolean;
+            antibiogramAvailable?: boolean;
+        };
+        DeleteV1TreatmentsByIdTreatmentIdPositiveResponse: {
+            data: Record<string, never>;
+        };
+        GetV1ContactsPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    firstName: string;
+                    lastName: string;
+                    street: string | null;
+                    city: string | null;
+                    zip: string | null;
+                    phone: string | null;
+                    email: string | null;
+                    /** @enum {string|null} */
+                    preferredCommunication: "email" | "phone" | "whatsapp" | null;
+                    labels: string[];
+                }[];
+                count: number;
+            };
+        };
+        PostV1ContactsPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                firstName: string;
+                lastName: string;
+                street: string | null;
+                city: string | null;
+                zip: string | null;
+                phone: string | null;
+                email: string | null;
+                /** @enum {string|null} */
+                preferredCommunication: "email" | "phone" | "whatsapp" | null;
+                labels: string[];
+            };
+        };
+        PostV1ContactsRequestBody: {
+            firstName: string;
+            lastName: string;
+            street?: string;
+            city?: string;
+            zip?: string;
+            phone?: string;
+            email?: string;
+            /** @enum {string} */
+            preferredCommunication?: "email" | "phone" | "whatsapp";
+            /** @default [] */
+            labels: string[];
+        };
+        GetV1ContactsByIdContactIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                firstName: string;
+                lastName: string;
+                street: string | null;
+                city: string | null;
+                zip: string | null;
+                phone: string | null;
+                email: string | null;
+                /** @enum {string|null} */
+                preferredCommunication: "email" | "phone" | "whatsapp" | null;
+                labels: string[];
+                payments: {
+                    id: string;
+                    farmId: string;
+                    contactId: string;
+                    sponsorshipId: string | null;
+                    orderId: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    date: string;
+                    amount: number;
+                    currency: string;
+                    /** @enum {string} */
+                    method: "cash" | "bank_transfer" | "twint" | "card" | "other";
+                    notes: string | null;
+                }[];
+                sponsorships: {
+                    id: string;
+                    farmId: string;
+                    contactId: string;
+                    animalId: string;
+                    sponsorshipProgramId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    startDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    endDate: string | null;
+                    notes: string | null;
+                    /** @enum {string|null} */
+                    preferredCommunication: "email" | "phone" | "whatsapp" | null;
+                    animal: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        /** @enum {string} */
+                        type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                        /** @enum {string} */
+                        sex: "male" | "female";
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        dateOfBirth: string;
+                        registered: boolean;
+                        /** @enum {string} */
+                        usage: "milk" | "other";
+                        earTagId: string | null;
+                        motherId: string | null;
+                        fatherId: string | null;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        dateOfDeath: string | null;
+                        /** @enum {string|null} */
+                        deathReason: "died" | "slaughtered" | null;
+                        herdId: string | null;
+                    };
+                    sponsorshipProgram: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        description: string | null;
+                        yearlyCost: number;
+                    };
+                }[];
+                orders: {
+                    id: string;
+                    farmId: string;
+                    contactId: string;
+                    /** @enum {string} */
+                    status: "pending" | "confirmed" | "fulfilled" | "cancelled";
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    orderDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    shippingDate: string | null;
+                    notes: string | null;
+                }[];
+            };
+        };
+        PatchV1ContactsByIdContactIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                firstName: string;
+                lastName: string;
+                street: string | null;
+                city: string | null;
+                zip: string | null;
+                phone: string | null;
+                email: string | null;
+                /** @enum {string|null} */
+                preferredCommunication: "email" | "phone" | "whatsapp" | null;
+                labels: string[];
+            };
+        };
+        PatchV1ContactsByIdContactIdRequestBody: {
+            firstName?: string;
+            lastName?: string;
+            street?: string;
+            city?: string;
+            zip?: string;
+            phone?: string;
+            email?: string;
+            /** @enum {string} */
+            preferredCommunication?: "email" | "phone" | "whatsapp";
+            /** @default [] */
+            labels: string[];
+        };
+        DeleteV1ContactsByIdContactIdPositiveResponse: {
+            data: Record<string, never>;
+        };
+        GetV1ContactsByIdContactIdPaymentsPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    contactId: string;
+                    sponsorshipId: string | null;
+                    orderId: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    date: string;
+                    amount: number;
+                    currency: string;
+                    /** @enum {string} */
+                    method: "cash" | "bank_transfer" | "twint" | "card" | "other";
+                    notes: string | null;
+                    sponsorship: {
+                        id: string;
+                        farmId: string;
+                        contactId: string;
+                        animalId: string;
+                        sponsorshipProgramId: string;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        startDate: string;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        endDate: string | null;
+                        notes: string | null;
+                        /** @enum {string|null} */
+                        preferredCommunication: "email" | "phone" | "whatsapp" | null;
+                    } | null;
+                    order: {
+                        id: string;
+                        farmId: string;
+                        contactId: string;
+                        /** @enum {string} */
+                        status: "pending" | "confirmed" | "fulfilled" | "cancelled";
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        orderDate: string;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        shippingDate: string | null;
+                        notes: string | null;
+                    } | null;
+                }[];
+                count: number;
+            };
+        };
+        GetV1ContactsByIdContactIdSponsorshipsPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    contactId: string;
+                    animalId: string;
+                    sponsorshipProgramId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    startDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    endDate: string | null;
+                    notes: string | null;
+                    /** @enum {string|null} */
+                    preferredCommunication: "email" | "phone" | "whatsapp" | null;
+                    animal: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        /** @enum {string} */
+                        type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                        /** @enum {string} */
+                        sex: "male" | "female";
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        dateOfBirth: string;
+                        registered: boolean;
+                        /** @enum {string} */
+                        usage: "milk" | "other";
+                        earTagId: string | null;
+                        motherId: string | null;
+                        fatherId: string | null;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        dateOfDeath: string | null;
+                        /** @enum {string|null} */
+                        deathReason: "died" | "slaughtered" | null;
+                        herdId: string | null;
+                    };
+                    payments: {
+                        id: string;
+                        farmId: string;
+                        contactId: string;
+                        sponsorshipId: string | null;
+                        orderId: string | null;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        date: string;
+                        amount: number;
+                        currency: string;
+                        /** @enum {string} */
+                        method: "cash" | "bank_transfer" | "twint" | "card" | "other";
+                        notes: string | null;
+                    }[];
+                    sponsorshipProgram: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        description: string | null;
+                        yearlyCost: number;
+                    };
+                }[];
+                count: number;
+            };
+        };
+        GetV1ContactsByIdContactIdOrdersPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    contactId: string;
+                    /** @enum {string} */
+                    status: "pending" | "confirmed" | "fulfilled" | "cancelled";
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    orderDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    shippingDate: string | null;
+                    notes: string | null;
+                }[];
+                count: number;
+            };
+        };
+        GetV1ProductsPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    /** @enum {string} */
+                    category: "meat" | "vegetables" | "dairy" | "eggs" | "other";
+                    /** @enum {string} */
+                    unit: "kg" | "g" | "piece" | "bunch" | "liter";
+                    pricePerUnit: number;
+                    description: string | null;
+                    active: boolean;
+                }[];
+                count: number;
+            };
+        };
+        PostV1ProductsPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                /** @enum {string} */
+                category: "meat" | "vegetables" | "dairy" | "eggs" | "other";
+                /** @enum {string} */
+                unit: "kg" | "g" | "piece" | "bunch" | "liter";
+                pricePerUnit: number;
+                description: string | null;
+                active: boolean;
+            };
+        };
+        PostV1ProductsRequestBody: {
+            name: string;
+            /** @enum {string} */
+            category: "meat" | "vegetables" | "dairy" | "eggs" | "other";
+            /** @enum {string} */
+            unit: "kg" | "g" | "piece" | "bunch" | "liter";
+            pricePerUnit: number;
+            description?: string;
+            /** @default true */
+            active: boolean;
+        };
+        GetV1ProductsActivePositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    /** @enum {string} */
+                    category: "meat" | "vegetables" | "dairy" | "eggs" | "other";
+                    /** @enum {string} */
+                    unit: "kg" | "g" | "piece" | "bunch" | "liter";
+                    pricePerUnit: number;
+                    description: string | null;
+                    active: boolean;
+                }[];
+                count: number;
+            };
+        };
+        GetV1ProductsByIdProductIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                /** @enum {string} */
+                category: "meat" | "vegetables" | "dairy" | "eggs" | "other";
+                /** @enum {string} */
+                unit: "kg" | "g" | "piece" | "bunch" | "liter";
+                pricePerUnit: number;
+                description: string | null;
+                active: boolean;
+            };
+        };
+        PatchV1ProductsByIdProductIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                /** @enum {string} */
+                category: "meat" | "vegetables" | "dairy" | "eggs" | "other";
+                /** @enum {string} */
+                unit: "kg" | "g" | "piece" | "bunch" | "liter";
+                pricePerUnit: number;
+                description: string | null;
+                active: boolean;
+            };
+        };
+        PatchV1ProductsByIdProductIdRequestBody: {
+            name?: string;
+            /** @enum {string} */
+            category?: "meat" | "vegetables" | "dairy" | "eggs" | "other";
+            /** @enum {string} */
+            unit?: "kg" | "g" | "piece" | "bunch" | "liter";
+            pricePerUnit?: number;
+            description?: string;
+            /** @default true */
+            active: boolean;
+        };
+        DeleteV1ProductsByIdProductIdPositiveResponse: {
+            data: Record<string, never>;
+        };
+        GetV1OrdersPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    contactId: string;
+                    /** @enum {string} */
+                    status: "pending" | "confirmed" | "fulfilled" | "cancelled";
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    orderDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    shippingDate: string | null;
+                    notes: string | null;
+                    contact: {
+                        id: string;
+                        farmId: string;
+                        firstName: string;
+                        lastName: string;
+                        street: string | null;
+                        city: string | null;
+                        zip: string | null;
+                        phone: string | null;
+                        email: string | null;
+                        /** @enum {string|null} */
+                        preferredCommunication: "email" | "phone" | "whatsapp" | null;
+                        labels: string[];
+                    };
+                }[];
+                count: number;
+            };
+        };
+        PostV1OrdersPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                contactId: string;
+                /** @enum {string} */
+                status: "pending" | "confirmed" | "fulfilled" | "cancelled";
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                orderDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                shippingDate: string | null;
+                notes: string | null;
+                contact: {
+                    id: string;
+                    farmId: string;
+                    firstName: string;
+                    lastName: string;
+                    street: string | null;
+                    city: string | null;
+                    zip: string | null;
+                    phone: string | null;
+                    email: string | null;
+                    /** @enum {string|null} */
+                    preferredCommunication: "email" | "phone" | "whatsapp" | null;
+                    labels: string[];
+                };
+                items: {
+                    id: string;
+                    farmId: string;
+                    orderId: string;
+                    productId: string;
+                    quantity: number;
+                    unitPrice: number;
+                    product: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        /** @enum {string} */
+                        category: "meat" | "vegetables" | "dairy" | "eggs" | "other";
+                        /** @enum {string} */
+                        unit: "kg" | "g" | "piece" | "bunch" | "liter";
+                        pricePerUnit: number;
+                        description: string | null;
+                        active: boolean;
+                    };
+                }[];
+                payments: {
+                    id: string;
+                    farmId: string;
+                    contactId: string;
+                    sponsorshipId: string | null;
+                    orderId: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    date: string;
+                    amount: number;
+                    currency: string;
+                    /** @enum {string} */
+                    method: "cash" | "bank_transfer" | "twint" | "card" | "other";
+                    notes: string | null;
+                }[];
+            };
+        };
+        PostV1OrdersRequestBody: {
+            contactId: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            orderDate: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            shippingDate?: string;
+            notes?: string;
+            items: {
+                productId: string;
+                quantity: number;
+            }[];
+        };
+        GetV1OrdersByIdOrderIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                contactId: string;
+                /** @enum {string} */
+                status: "pending" | "confirmed" | "fulfilled" | "cancelled";
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                orderDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                shippingDate: string | null;
+                notes: string | null;
+                contact: {
+                    id: string;
+                    farmId: string;
+                    firstName: string;
+                    lastName: string;
+                    street: string | null;
+                    city: string | null;
+                    zip: string | null;
+                    phone: string | null;
+                    email: string | null;
+                    /** @enum {string|null} */
+                    preferredCommunication: "email" | "phone" | "whatsapp" | null;
+                    labels: string[];
+                };
+                items: {
+                    id: string;
+                    farmId: string;
+                    orderId: string;
+                    productId: string;
+                    quantity: number;
+                    unitPrice: number;
+                    product: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        /** @enum {string} */
+                        category: "meat" | "vegetables" | "dairy" | "eggs" | "other";
+                        /** @enum {string} */
+                        unit: "kg" | "g" | "piece" | "bunch" | "liter";
+                        pricePerUnit: number;
+                        description: string | null;
+                        active: boolean;
+                    };
+                }[];
+                payments: {
+                    id: string;
+                    farmId: string;
+                    contactId: string;
+                    sponsorshipId: string | null;
+                    orderId: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    date: string;
+                    amount: number;
+                    currency: string;
+                    /** @enum {string} */
+                    method: "cash" | "bank_transfer" | "twint" | "card" | "other";
+                    notes: string | null;
+                }[];
+            };
+        };
+        PatchV1OrdersByIdOrderIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                contactId: string;
+                /** @enum {string} */
+                status: "pending" | "confirmed" | "fulfilled" | "cancelled";
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                orderDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                shippingDate: string | null;
+                notes: string | null;
+            };
+        };
+        PatchV1OrdersByIdOrderIdRequestBody: {
+            notes?: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            shippingDate?: string;
+        };
+        GetV1OrdersByIdOrderIdItemsPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    orderId: string;
+                    productId: string;
+                    quantity: number;
+                    unitPrice: number;
+                }[];
+                count: number;
+            };
+        };
+        PostV1OrdersByIdOrderIdConfirmPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                contactId: string;
+                /** @enum {string} */
+                status: "pending" | "confirmed" | "fulfilled" | "cancelled";
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                orderDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                shippingDate: string | null;
+                notes: string | null;
+            };
+        };
+        PostV1OrdersByIdOrderIdConfirmRequestBody: Record<string, never>;
+        PostV1OrdersByIdOrderIdFulfillPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                contactId: string;
+                /** @enum {string} */
+                status: "pending" | "confirmed" | "fulfilled" | "cancelled";
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                orderDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                shippingDate: string | null;
+                notes: string | null;
+            };
+        };
+        PostV1OrdersByIdOrderIdFulfillRequestBody: Record<string, never>;
+        PostV1OrdersByIdOrderIdCancelPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                contactId: string;
+                /** @enum {string} */
+                status: "pending" | "confirmed" | "fulfilled" | "cancelled";
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                orderDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                shippingDate: string | null;
+                notes: string | null;
+            };
+        };
+        PostV1OrdersByIdOrderIdCancelRequestBody: Record<string, never>;
+        GetV1PaymentsPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    contactId: string;
+                    sponsorshipId: string | null;
+                    orderId: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    date: string;
+                    amount: number;
+                    currency: string;
+                    /** @enum {string} */
+                    method: "cash" | "bank_transfer" | "twint" | "card" | "other";
+                    notes: string | null;
+                    sponsorship: {
+                        id: string;
+                        farmId: string;
+                        contactId: string;
+                        animalId: string;
+                        sponsorshipProgramId: string;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        startDate: string;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        endDate: string | null;
+                        notes: string | null;
+                        /** @enum {string|null} */
+                        preferredCommunication: "email" | "phone" | "whatsapp" | null;
+                    } | null;
+                    contact: {
+                        id: string;
+                        farmId: string;
+                        firstName: string;
+                        lastName: string;
+                        street: string | null;
+                        city: string | null;
+                        zip: string | null;
+                        phone: string | null;
+                        email: string | null;
+                        /** @enum {string|null} */
+                        preferredCommunication: "email" | "phone" | "whatsapp" | null;
+                        labels: string[];
+                    };
+                    order: {
+                        id: string;
+                        farmId: string;
+                        contactId: string;
+                        /** @enum {string} */
+                        status: "pending" | "confirmed" | "fulfilled" | "cancelled";
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        orderDate: string;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        shippingDate: string | null;
+                        notes: string | null;
+                    } | null;
+                }[];
+                count: number;
+            };
+        };
+        PostV1PaymentsPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                contactId: string;
+                sponsorshipId: string | null;
+                orderId: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                date: string;
+                amount: number;
+                currency: string;
+                /** @enum {string} */
+                method: "cash" | "bank_transfer" | "twint" | "card" | "other";
+                notes: string | null;
+            };
+        };
+        PostV1PaymentsRequestBody: {
+            contactId: string;
+            sponsorshipId?: string;
+            orderId?: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            date: string;
+            amount: number;
+            /** @default CHF */
+            currency: string;
+            /** @enum {string} */
+            method: "cash" | "bank_transfer" | "twint" | "card" | "other";
+            notes?: string;
+        };
+        GetV1PaymentsByIdPaymentIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                contactId: string;
+                sponsorshipId: string | null;
+                orderId: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                date: string;
+                amount: number;
+                currency: string;
+                /** @enum {string} */
+                method: "cash" | "bank_transfer" | "twint" | "card" | "other";
+                notes: string | null;
+                sponsorship: {
+                    id: string;
+                    farmId: string;
+                    contactId: string;
+                    animalId: string;
+                    sponsorshipProgramId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    startDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    endDate: string | null;
+                    notes: string | null;
+                    /** @enum {string|null} */
+                    preferredCommunication: "email" | "phone" | "whatsapp" | null;
+                } | null;
+                contact: {
+                    id: string;
+                    farmId: string;
+                    firstName: string;
+                    lastName: string;
+                    street: string | null;
+                    city: string | null;
+                    zip: string | null;
+                    phone: string | null;
+                    email: string | null;
+                    /** @enum {string|null} */
+                    preferredCommunication: "email" | "phone" | "whatsapp" | null;
+                    labels: string[];
+                };
+                order: {
+                    id: string;
+                    farmId: string;
+                    contactId: string;
+                    /** @enum {string} */
+                    status: "pending" | "confirmed" | "fulfilled" | "cancelled";
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    orderDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    shippingDate: string | null;
+                    notes: string | null;
+                } | null;
+            };
+        };
+        PatchV1PaymentsByIdPaymentIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                contactId: string;
+                sponsorshipId: string | null;
+                orderId: string | null;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                date: string;
+                amount: number;
+                currency: string;
+                /** @enum {string} */
+                method: "cash" | "bank_transfer" | "twint" | "card" | "other";
+                notes: string | null;
+            };
+        };
+        PatchV1PaymentsByIdPaymentIdRequestBody: {
+            contactId?: string;
+            sponsorshipId?: string;
+            orderId?: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            date?: string;
+            amount?: number;
+            /** @default CHF */
+            currency: string;
+            /** @enum {string} */
+            method?: "cash" | "bank_transfer" | "twint" | "card" | "other";
+            notes?: string;
+        };
+        DeleteV1PaymentsByIdPaymentIdPositiveResponse: {
+            data: Record<string, never>;
+        };
+        GetV1SponsorshipProgramsPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    description: string | null;
+                    yearlyCost: number;
+                }[];
+                count: number;
+            };
+        };
+        PostV1SponsorshipProgramsPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                description: string | null;
+                yearlyCost: number;
+            };
+        };
+        PostV1SponsorshipProgramsRequestBody: {
+            name: string;
+            description?: string;
+            yearlyCost: number;
+        };
+        GetV1SponsorshipProgramsByIdSponsorshipProgramIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                description: string | null;
+                yearlyCost: number;
+            };
+        };
+        PatchV1SponsorshipProgramsByIdSponsorshipProgramIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                name: string;
+                description: string | null;
+                yearlyCost: number;
+            };
+        };
+        PatchV1SponsorshipProgramsByIdSponsorshipProgramIdRequestBody: {
+            name?: string;
+            description?: string;
+            yearlyCost?: number;
+        };
+        DeleteV1SponsorshipProgramsByIdSponsorshipProgramIdPositiveResponse: {
+            data: Record<string, never>;
+        };
+        GetV1SponsorshipsPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    contactId: string;
+                    animalId: string;
+                    sponsorshipProgramId: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    startDate: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    endDate: string | null;
+                    notes: string | null;
+                    /** @enum {string|null} */
+                    preferredCommunication: "email" | "phone" | "whatsapp" | null;
+                    contact: {
+                        id: string;
+                        farmId: string;
+                        firstName: string;
+                        lastName: string;
+                        street: string | null;
+                        city: string | null;
+                        zip: string | null;
+                        phone: string | null;
+                        email: string | null;
+                        /** @enum {string|null} */
+                        preferredCommunication: "email" | "phone" | "whatsapp" | null;
+                        labels: string[];
+                    };
+                    animal: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        /** @enum {string} */
+                        type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                        /** @enum {string} */
+                        sex: "male" | "female";
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        dateOfBirth: string;
+                        registered: boolean;
+                        /** @enum {string} */
+                        usage: "milk" | "other";
+                        earTagId: string | null;
+                        motherId: string | null;
+                        fatherId: string | null;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        dateOfDeath: string | null;
+                        /** @enum {string|null} */
+                        deathReason: "died" | "slaughtered" | null;
+                        herdId: string | null;
+                    };
+                    payments: {
+                        id: string;
+                        farmId: string;
+                        contactId: string;
+                        sponsorshipId: string | null;
+                        orderId: string | null;
+                        /**
+                         * Format: date-time
+                         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                         */
+                        date: string;
+                        amount: number;
+                        currency: string;
+                        /** @enum {string} */
+                        method: "cash" | "bank_transfer" | "twint" | "card" | "other";
+                        notes: string | null;
+                    }[];
+                    sponsorshipProgram: {
+                        id: string;
+                        farmId: string;
+                        name: string;
+                        description: string | null;
+                        yearlyCost: number;
+                    };
+                }[];
+                count: number;
+            };
+        };
+        PostV1SponsorshipsPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                contactId: string;
+                animalId: string;
+                sponsorshipProgramId: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate: string | null;
+                notes: string | null;
+                /** @enum {string|null} */
+                preferredCommunication: "email" | "phone" | "whatsapp" | null;
+            };
+        };
+        PostV1SponsorshipsRequestBody: {
+            contactId: string;
+            animalId: string;
+            sponsorshipProgramId: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            startDate: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            endDate?: string;
+            notes?: string;
+            /** @enum {string} */
+            preferredCommunication?: "email" | "phone" | "whatsapp";
+        };
+        GetV1SponsorshipsByIdSponsorshipIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                contactId: string;
+                animalId: string;
+                sponsorshipProgramId: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate: string | null;
+                notes: string | null;
+                /** @enum {string|null} */
+                preferredCommunication: "email" | "phone" | "whatsapp" | null;
+                contact: {
+                    id: string;
+                    farmId: string;
+                    firstName: string;
+                    lastName: string;
+                    street: string | null;
+                    city: string | null;
+                    zip: string | null;
+                    phone: string | null;
+                    email: string | null;
+                    /** @enum {string|null} */
+                    preferredCommunication: "email" | "phone" | "whatsapp" | null;
+                    labels: string[];
+                };
+                animal: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    /** @enum {string} */
+                    type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                    /** @enum {string} */
+                    sex: "male" | "female";
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfBirth: string;
+                    registered: boolean;
+                    /** @enum {string} */
+                    usage: "milk" | "other";
+                    earTagId: string | null;
+                    motherId: string | null;
+                    fatherId: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfDeath: string | null;
+                    /** @enum {string|null} */
+                    deathReason: "died" | "slaughtered" | null;
+                    herdId: string | null;
+                };
+                payments: {
+                    id: string;
+                    farmId: string;
+                    contactId: string;
+                    sponsorshipId: string | null;
+                    orderId: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    date: string;
+                    amount: number;
+                    currency: string;
+                    /** @enum {string} */
+                    method: "cash" | "bank_transfer" | "twint" | "card" | "other";
+                    notes: string | null;
+                }[];
+                sponsorshipProgram: {
+                    id: string;
+                    farmId: string;
+                    name: string;
+                    description: string | null;
+                    yearlyCost: number;
+                };
+            };
+        };
+        PatchV1SponsorshipsByIdSponsorshipIdPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                contactId: string;
+                animalId: string;
+                sponsorshipProgramId: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                startDate: string;
+                /**
+                 * Format: date-time
+                 * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                 */
+                endDate: string | null;
+                notes: string | null;
+                /** @enum {string|null} */
+                preferredCommunication: "email" | "phone" | "whatsapp" | null;
+            };
+        };
+        PatchV1SponsorshipsByIdSponsorshipIdRequestBody: {
+            contactId?: string;
+            animalId?: string;
+            sponsorshipProgramId?: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            startDate?: string;
+            /**
+             * Format: date-time
+             * @description YYYY-MM-DDTHH:mm:ss.sssZ
+             */
+            endDate?: string;
+            notes?: string;
+            /** @enum {string} */
+            preferredCommunication?: "email" | "phone" | "whatsapp";
+        };
+        DeleteV1SponsorshipsByIdSponsorshipIdPositiveResponse: {
+            data: Record<string, never>;
         };
     };
     responses: never;
@@ -5002,17 +7982,42 @@ export interface operations {
             };
         };
     };
+    HeadHealthz: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /healthz Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /healthz Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     GetV1LayersPlotsBbox: {
         parameters: {
             query: {
                 /** @description GET /v1/layers/plots/bbox Parameter */
                 xmin: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
                 /** @description GET /v1/layers/plots/bbox Parameter */
-                ymin: components["schemas"]["GetV1LayersPlotsBboxParameterYmin"];
+                ymin: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
                 /** @description GET /v1/layers/plots/bbox Parameter */
-                xmax: components["schemas"]["GetV1LayersPlotsBboxParameterXmax"];
+                xmax: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
                 /** @description GET /v1/layers/plots/bbox Parameter */
-                ymax: components["schemas"]["GetV1LayersPlotsBboxParameterYmax"];
+                ymax: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             header?: never;
             path?: never;
@@ -5040,13 +8045,47 @@ export interface operations {
             };
         };
     };
+    HeadV1LayersPlotsBbox: {
+        parameters: {
+            query: {
+                /** @description HEAD /v1/layers/plots/bbox Parameter */
+                xmin: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description HEAD /v1/layers/plots/bbox Parameter */
+                ymin: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description HEAD /v1/layers/plots/bbox Parameter */
+                xmax: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description HEAD /v1/layers/plots/bbox Parameter */
+                ymax: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/layers/plots/bbox Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/layers/plots/bbox Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     GetV1LayersPlotsFarmsFederalFarmIdOnly: {
         parameters: {
             query?: never;
             header?: never;
             path: {
                 /** @description GET /v1/layers/plots/farms/:federalFarmId/only Parameter */
-                federalFarmId: components["schemas"]["GetV1LayersPlotsFarmsFederalFarmIdOnlyParameterFederalFarmId"];
+                federalFarmId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -5067,8 +8106,36 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1LayersPlotsFarmsFederalFarmIdOnlyNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1LayersPlotsFarmsFederalFarmIdOnly: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/layers/plots/farms/:federalFarmId/only Parameter */
+                federalFarmId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/layers/plots/farms/:federalFarmId/only Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/layers/plots/farms/:federalFarmId/only Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -5081,7 +8148,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/layers/plots/farms/:federalFarmId/bbox Parameter */
-                federalFarmId: components["schemas"]["GetV1LayersPlotsFarmsFederalFarmIdBboxParameterFederalFarmId"];
+                federalFarmId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -5102,8 +8169,39 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1LayersPlotsFarmsFederalFarmIdBboxNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1LayersPlotsFarmsFederalFarmIdBbox: {
+        parameters: {
+            query?: {
+                /** @description HEAD /v1/layers/plots/farms/:federalFarmId/bbox Parameter */
+                buffer?: components["schemas"]["GetV1LayersPlotsFarmsFederalFarmIdBboxParameterBuffer"];
+            };
+            header?: never;
+            path: {
+                /** @description HEAD /v1/layers/plots/farms/:federalFarmId/bbox Parameter */
+                federalFarmId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/layers/plots/farms/:federalFarmId/bbox Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/layers/plots/farms/:federalFarmId/bbox Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -5111,11 +8209,11 @@ export interface operations {
         parameters: {
             query: {
                 /** @description GET /v1/layers/plots/radius Parameter */
-                longitude: components["schemas"]["GetV1LayersPlotsRadiusParameterLongitude"];
+                longitude: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
                 /** @description GET /v1/layers/plots/radius Parameter */
-                latitude: components["schemas"]["GetV1LayersPlotsRadiusParameterLatitude"];
+                latitude: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
                 /** @description GET /v1/layers/plots/radius Parameter */
-                radiusInKm: components["schemas"]["GetV1LayersPlotsRadiusParameterRadiusInKm"];
+                radiusInKm: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             header?: never;
             path?: never;
@@ -5138,8 +8236,40 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1LayersPlotsRadiusNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1LayersPlotsRadius: {
+        parameters: {
+            query: {
+                /** @description HEAD /v1/layers/plots/radius Parameter */
+                longitude: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description HEAD /v1/layers/plots/radius Parameter */
+                latitude: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description HEAD /v1/layers/plots/radius Parameter */
+                radiusInKm: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/layers/plots/radius Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/layers/plots/radius Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -5147,15 +8277,15 @@ export interface operations {
         parameters: {
             query: {
                 /** @description GET /v1/layers/federalFarmIds Parameter */
-                query: components["schemas"]["GetV1LayersFederalFarmIdsParameterQuery"];
+                query: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
                 /** @description GET /v1/layers/federalFarmIds Parameter */
-                longitude: components["schemas"]["GetV1LayersFederalFarmIdsParameterLongitude"];
+                longitude: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
                 /** @description GET /v1/layers/federalFarmIds Parameter */
-                latitude: components["schemas"]["GetV1LayersFederalFarmIdsParameterLatitude"];
+                latitude: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
                 /** @description GET /v1/layers/federalFarmIds Parameter */
-                radiusInKm: components["schemas"]["GetV1LayersFederalFarmIdsParameterRadiusInKm"];
+                radiusInKm: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
                 /** @description GET /v1/layers/federalFarmIds Parameter */
-                limit: components["schemas"]["GetV1LayersFederalFarmIdsParameterLimit"];
+                limit: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             header?: never;
             path?: never;
@@ -5178,7 +8308,77 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1LayersFederalFarmIdsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1LayersFederalFarmIds: {
+        parameters: {
+            query: {
+                /** @description HEAD /v1/layers/federalFarmIds Parameter */
+                query: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description HEAD /v1/layers/federalFarmIds Parameter */
+                longitude: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description HEAD /v1/layers/federalFarmIds Parameter */
+                latitude: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description HEAD /v1/layers/federalFarmIds Parameter */
+                radiusInKm: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description HEAD /v1/layers/federalFarmIds Parameter */
+                limit: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/layers/federalFarmIds Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/layers/federalFarmIds Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PostV1CaptchaVerify: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/captcha/verify Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1CaptchaVerifyRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/captcha/verify Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1CaptchaVerifyPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/captcha/verify Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -5207,7 +8407,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1FarmNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -5241,7 +8441,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1FarmNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -5250,7 +8450,7 @@ export interface operations {
         parameters: {
             query: {
                 /** @description DELETE /v1/farm Parameter */
-                deleteAccount: components["schemas"]["DeleteV1FarmParameterDeleteAccount"];
+                deleteAccount: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             header?: never;
             path?: never;
@@ -5273,8 +8473,33 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["DeleteV1FarmNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1Farm: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/farm Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/farm Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -5307,7 +8532,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PatchV1FarmNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -5336,8 +8561,33 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1UsersNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1Users: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/users Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/users Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -5347,7 +8597,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/users/byId/:userId Parameter */
-                userId: components["schemas"]["GetV1UsersByIdUserIdParameterUserId"];
+                userId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -5368,8 +8618,36 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1UsersByIdUserIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1UsersByIdUserId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/users/byId/:userId Parameter */
+                userId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/users/byId/:userId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/users/byId/:userId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -5397,8 +8675,33 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1MeNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1Me: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/me Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/me Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -5431,171 +8734,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PatchV1MeNegativeResponse"];
-                };
-            };
-        };
-    };
-    GetV1HarvestingMachinery: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description GET /v1/harvestingMachinery Positive response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GetV1HarvestingMachineryPositiveResponse"];
-                };
-            };
-            /** @description GET /v1/harvestingMachinery Negative response */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GetV1HarvestingMachineryNegativeResponse"];
-                };
-            };
-        };
-    };
-    PostV1HarvestingMachinery: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description POST /v1/harvestingMachinery Request body */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["PostV1HarvestingMachineryRequestBody"];
-            };
-        };
-        responses: {
-            /** @description POST /v1/harvestingMachinery Positive response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PostV1HarvestingMachineryPositiveResponse"];
-                };
-            };
-            /** @description POST /v1/harvestingMachinery Negative response */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PostV1HarvestingMachineryNegativeResponse"];
-                };
-            };
-        };
-    };
-    GetV1HarvestingMachineryByIdHarvestingMachineryId: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description GET /v1/harvestingMachinery/byId/:harvestingMachineryId Parameter */
-                harvestingMachineryId: components["schemas"]["GetV1HarvestingMachineryByIdHarvestingMachineryIdParameterHarvestingMachineryId"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description GET /v1/harvestingMachinery/byId/:harvestingMachineryId Positive response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GetV1HarvestingMachineryByIdHarvestingMachineryIdPositiveResponse"];
-                };
-            };
-            /** @description GET /v1/harvestingMachinery/byId/:harvestingMachineryId Negative response */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GetV1HarvestingMachineryByIdHarvestingMachineryIdNegativeResponse"];
-                };
-            };
-        };
-    };
-    DeleteV1HarvestingMachineryByIdHarvestingMachineryId: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description DELETE /v1/harvestingMachinery/byId/:harvestingMachineryId Parameter */
-                harvestingMachineryId: components["schemas"]["DeleteV1HarvestingMachineryByIdHarvestingMachineryIdParameterHarvestingMachineryId"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description DELETE /v1/harvestingMachinery/byId/:harvestingMachineryId Positive response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["DeleteV1HarvestingMachineryByIdHarvestingMachineryIdPositiveResponse"];
-                };
-            };
-            /** @description DELETE /v1/harvestingMachinery/byId/:harvestingMachineryId Negative response */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["DeleteV1HarvestingMachineryByIdHarvestingMachineryIdNegativeResponse"];
-                };
-            };
-        };
-    };
-    PatchV1HarvestingMachineryByIdHarvestingMachineryId: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description PATCH /v1/harvestingMachinery/byId/:harvestingMachineryId Parameter */
-                harvestingMachineryId: components["schemas"]["PatchV1HarvestingMachineryByIdHarvestingMachineryIdParameterHarvestingMachineryId"];
-            };
-            cookie?: never;
-        };
-        /** @description PATCH /v1/harvestingMachinery/byId/:harvestingMachineryId Request body */
-        requestBody?: {
-            content: {
-                "application/json": components["schemas"]["PatchV1HarvestingMachineryByIdHarvestingMachineryIdRequestBody"];
-            };
-        };
-        responses: {
-            /** @description PATCH /v1/harvestingMachinery/byId/:harvestingMachineryId Positive response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PatchV1HarvestingMachineryByIdHarvestingMachineryIdPositiveResponse"];
-                };
-            };
-            /** @description PATCH /v1/harvestingMachinery/byId/:harvestingMachineryId Negative response */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PatchV1HarvestingMachineryByIdHarvestingMachineryIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -5624,7 +8763,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1PlotsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -5658,8 +8797,33 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1PlotsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1Plots: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/plots Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/plots Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -5669,7 +8833,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/plots/byId/:plotId Parameter */
-                plotId: components["schemas"]["GetV1PlotsByIdPlotIdParameterPlotId"];
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -5690,7 +8854,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1PlotsByIdPlotIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -5701,7 +8865,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description DELETE /v1/plots/byId/:plotId Parameter */
-                plotId: components["schemas"]["DeleteV1PlotsByIdPlotIdParameterPlotId"];
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -5722,8 +8886,36 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["DeleteV1PlotsByIdPlotIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1PlotsByIdPlotId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/plots/byId/:plotId Parameter */
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/plots/byId/:plotId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/plots/byId/:plotId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -5733,7 +8925,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description PATCH /v1/plots/byId/:plotId Parameter */
-                plotId: components["schemas"]["PatchV1PlotsByIdPlotIdParameterPlotId"];
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -5759,18 +8951,23 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PatchV1PlotsByIdPlotIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
     };
     GetV1PlotsByIdPlotIdCropRotations: {
         parameters: {
-            query?: never;
+            query: {
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                fromDate: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                toDate: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+            };
             header?: never;
             path: {
                 /** @description GET /v1/plots/byId/:plotId/cropRotations Parameter */
-                plotId: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterPlotId"];
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -5791,8 +8988,41 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1PlotsByIdPlotIdCropRotations: {
+        parameters: {
+            query: {
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                fromDate: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                toDate: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+            };
+            header?: never;
+            path: {
+                /** @description HEAD /v1/plots/byId/:plotId/cropRotations Parameter */
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/plots/byId/:plotId/cropRotations Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/plots/byId/:plotId/cropRotations Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -5802,7 +9032,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/plots/byId/:plotId/tillages Parameter */
-                plotId: components["schemas"]["GetV1PlotsByIdPlotIdTillagesParameterPlotId"];
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -5823,8 +9053,36 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1PlotsByIdPlotIdTillagesNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1PlotsByIdPlotIdTillages: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/plots/byId/:plotId/tillages Parameter */
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/plots/byId/:plotId/tillages Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/plots/byId/:plotId/tillages Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -5834,7 +9092,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/plots/byId/:plotId/cropProtectionApplications Parameter */
-                plotId: components["schemas"]["GetV1PlotsByIdPlotIdCropProtectionApplicationsParameterPlotId"];
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -5855,8 +9113,36 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1PlotsByIdPlotIdCropProtectionApplicationsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1PlotsByIdPlotIdCropProtectionApplications: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/plots/byId/:plotId/cropProtectionApplications Parameter */
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/plots/byId/:plotId/cropProtectionApplications Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/plots/byId/:plotId/cropProtectionApplications Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -5866,7 +9152,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/plots/byId/:plotId/cropProtectionApplicationSummary Parameter */
-                plotId: components["schemas"]["GetV1PlotsByIdPlotIdCropProtectionApplicationSummaryParameterPlotId"];
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -5887,8 +9173,36 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1PlotsByIdPlotIdCropProtectionApplicationSummaryNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1PlotsByIdPlotIdCropProtectionApplicationSummary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/plots/byId/:plotId/cropProtectionApplicationSummary Parameter */
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/plots/byId/:plotId/cropProtectionApplicationSummary Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/plots/byId/:plotId/cropProtectionApplicationSummary Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -5898,7 +9212,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/plots/byId/:plotId/fertilizerApplications Parameter */
-                plotId: components["schemas"]["GetV1PlotsByIdPlotIdFertilizerApplicationsParameterPlotId"];
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -5919,8 +9233,36 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1PlotsByIdPlotIdFertilizerApplicationsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1PlotsByIdPlotIdFertilizerApplications: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/plots/byId/:plotId/fertilizerApplications Parameter */
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/plots/byId/:plotId/fertilizerApplications Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/plots/byId/:plotId/fertilizerApplications Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -5930,7 +9272,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/plots/byId/:plotId/fertilizerApplicationSummary Parameter */
-                plotId: components["schemas"]["GetV1PlotsByIdPlotIdFertilizerApplicationSummaryParameterPlotId"];
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -5951,8 +9293,36 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1PlotsByIdPlotIdFertilizerApplicationSummaryNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1PlotsByIdPlotIdFertilizerApplicationSummary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/plots/byId/:plotId/fertilizerApplicationSummary Parameter */
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/plots/byId/:plotId/fertilizerApplicationSummary Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/plots/byId/:plotId/fertilizerApplicationSummary Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -5962,7 +9332,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/plots/byId/:plotId/harvests Parameter */
-                plotId: components["schemas"]["GetV1PlotsByIdPlotIdHarvestsParameterPlotId"];
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -5983,8 +9353,36 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1PlotsByIdPlotIdHarvestsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1PlotsByIdPlotIdHarvests: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/plots/byId/:plotId/harvests Parameter */
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/plots/byId/:plotId/harvests Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/plots/byId/:plotId/harvests Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -5994,7 +9392,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/plots/byId/:plotId/harvestSummary Parameter */
-                plotId: components["schemas"]["GetV1PlotsByIdPlotIdHarvestSummaryParameterPlotId"];
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -6015,7 +9413,106 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1PlotsByIdPlotIdHarvestSummaryNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1PlotsByIdPlotIdHarvestSummary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/plots/byId/:plotId/harvestSummary Parameter */
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/plots/byId/:plotId/harvestSummary Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/plots/byId/:plotId/harvestSummary Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PostV1PlotsByIdPlotIdSplit: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description POST /v1/plots/byId/:plotId/split Parameter */
+                plotId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description POST /v1/plots/byId/:plotId/split Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1PlotsByIdPlotIdSplitRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/plots/byId/:plotId/split Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1PlotsByIdPlotIdSplitPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/plots/byId/:plotId/split Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1PlotsMerge: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/plots/merge Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1PlotsMergeRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/plots/merge Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1PlotsMergePositiveResponse"];
+                };
+            };
+            /** @description POST /v1/plots/merge Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -6049,7 +9546,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1PlotsSyncMissingLocalIdsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -6078,7 +9575,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1CropsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -6112,8 +9609,33 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1CropsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1Crops: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/crops Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/crops Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -6123,7 +9645,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/crops/byId/:cropId Parameter */
-                cropId: components["schemas"]["GetV1CropsByIdCropIdParameterCropId"];
+                cropId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -6144,7 +9666,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1CropsByIdCropIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -6155,7 +9677,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description DELETE /v1/crops/byId/:cropId Parameter */
-                cropId: components["schemas"]["DeleteV1CropsByIdCropIdParameterCropId"];
+                cropId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -6176,8 +9698,36 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["DeleteV1CropsByIdCropIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1CropsByIdCropId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/crops/byId/:cropId Parameter */
+                cropId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/crops/byId/:cropId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/crops/byId/:cropId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -6187,7 +9737,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description PATCH /v1/crops/byId/:cropId Parameter */
-                cropId: components["schemas"]["PatchV1CropsByIdCropIdParameterCropId"];
+                cropId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -6213,7 +9763,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PatchV1CropsByIdCropIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -6224,7 +9774,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/crops/byId/:cropId/inUse Parameter */
-                cropId: components["schemas"]["GetV1CropsByIdCropIdInUseParameterCropId"];
+                cropId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -6245,8 +9795,313 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1CropsByIdCropIdInUseNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1CropsByIdCropIdInUse: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/crops/byId/:cropId/inUse Parameter */
+                cropId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/crops/byId/:cropId/inUse Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/crops/byId/:cropId/inUse Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1CropsFamilies: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/crops/families Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1CropsFamiliesPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/crops/families Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1CropsFamilies: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/crops/families Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1CropsFamiliesRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/crops/families Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1CropsFamiliesPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/crops/families Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1CropsFamilies: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/crops/families Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/crops/families Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1CropsFamiliesByIdFamilyId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/crops/families/byId/:familyId Parameter */
+                familyId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/crops/families/byId/:familyId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1CropsFamiliesByIdFamilyIdPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/crops/families/byId/:familyId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1CropsFamiliesByIdFamilyId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description DELETE /v1/crops/families/byId/:familyId Parameter */
+                familyId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/crops/families/byId/:familyId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1CropsFamiliesByIdFamilyIdPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/crops/families/byId/:familyId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1CropsFamiliesByIdFamilyId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/crops/families/byId/:familyId Parameter */
+                familyId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/crops/families/byId/:familyId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/crops/families/byId/:familyId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1CropsFamiliesByIdFamilyId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/crops/families/byId/:familyId Parameter */
+                familyId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/crops/families/byId/:familyId Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchV1CropsFamiliesByIdFamilyIdRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/crops/families/byId/:familyId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1CropsFamiliesByIdFamilyIdPositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/crops/families/byId/:familyId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    GetV1CropsFamiliesByIdFamilyIdInUse: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/crops/families/byId/:familyId/inUse Parameter */
+                familyId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/crops/families/byId/:familyId/inUse Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1CropsFamiliesByIdFamilyIdInUsePositiveResponse"];
+                };
+            };
+            /** @description GET /v1/crops/families/byId/:familyId/inUse Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1CropsFamiliesByIdFamilyIdInUse: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/crops/families/byId/:familyId/inUse Parameter */
+                familyId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/crops/families/byId/:familyId/inUse Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/crops/families/byId/:familyId/inUse Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -6274,7 +10129,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1CropProtectionProductsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -6308,8 +10163,33 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1CropProtectionProductsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1CropProtectionProducts: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/cropProtectionProducts Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/cropProtectionProducts Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -6319,7 +10199,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/cropProtectionProducts/byId/:cropProtectionProductId Parameter */
-                cropProtectionProductId: components["schemas"]["GetV1CropProtectionProductsByIdCropProtectionProductIdParameterCropProtectionProductId"];
+                cropProtectionProductId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -6340,7 +10220,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1CropProtectionProductsByIdCropProtectionProductIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -6351,7 +10231,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description DELETE /v1/cropProtectionProducts/byId/:cropProtectionProductId Parameter */
-                cropProtectionProductId: components["schemas"]["DeleteV1CropProtectionProductsByIdCropProtectionProductIdParameterCropProtectionProductId"];
+                cropProtectionProductId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -6372,8 +10252,36 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["DeleteV1CropProtectionProductsByIdCropProtectionProductIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1CropProtectionProductsByIdCropProtectionProductId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/cropProtectionProducts/byId/:cropProtectionProductId Parameter */
+                cropProtectionProductId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/cropProtectionProducts/byId/:cropProtectionProductId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/cropProtectionProducts/byId/:cropProtectionProductId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -6383,7 +10291,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description PATCH /v1/cropProtectionProducts/byId/:cropProtectionProductId Parameter */
-                cropProtectionProductId: components["schemas"]["PatchV1CropProtectionProductsByIdCropProtectionProductIdParameterCropProtectionProductId"];
+                cropProtectionProductId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -6409,7 +10317,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PatchV1CropProtectionProductsByIdCropProtectionProductIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -6420,7 +10328,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/cropProtectionProducts/byId/:cropProtectionProductId/inUse Parameter */
-                cropProtectionProductId: components["schemas"]["GetV1CropProtectionProductsByIdCropProtectionProductIdInUseParameterCropProtectionProductId"];
+                cropProtectionProductId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -6441,172 +10349,36 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1CropProtectionProductsByIdCropProtectionProductIdInUseNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
     };
-    GetV1CropProtectionEquipments: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description GET /v1/cropProtectionEquipments Positive response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GetV1CropProtectionEquipmentsPositiveResponse"];
-                };
-            };
-            /** @description GET /v1/cropProtectionEquipments Negative response */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GetV1CropProtectionEquipmentsNegativeResponse"];
-                };
-            };
-        };
-    };
-    PostV1CropProtectionEquipments: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description POST /v1/cropProtectionEquipments Request body */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["PostV1CropProtectionEquipmentsRequestBody"];
-            };
-        };
-        responses: {
-            /** @description POST /v1/cropProtectionEquipments Positive response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PostV1CropProtectionEquipmentsPositiveResponse"];
-                };
-            };
-            /** @description POST /v1/cropProtectionEquipments Negative response */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PostV1CropProtectionEquipmentsNegativeResponse"];
-                };
-            };
-        };
-    };
-    GetV1CropProtectionEquipmentsByIdCropProtectionEquipmentId: {
+    HeadV1CropProtectionProductsByIdCropProtectionProductIdInUse: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                /** @description GET /v1/cropProtectionEquipments/byId/:cropProtectionEquipmentId Parameter */
-                cropProtectionEquipmentId: components["schemas"]["GetV1CropProtectionEquipmentsByIdCropProtectionEquipmentIdParameterCropProtectionEquipmentId"];
+                /** @description HEAD /v1/cropProtectionProducts/byId/:cropProtectionProductId/inUse Parameter */
+                cropProtectionProductId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description GET /v1/cropProtectionEquipments/byId/:cropProtectionEquipmentId Positive response */
+            /** @description HEAD /v1/cropProtectionProducts/byId/:cropProtectionProductId/inUse Positive response */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": components["schemas"]["GetV1CropProtectionEquipmentsByIdCropProtectionEquipmentIdPositiveResponse"];
-                };
+                content?: never;
             };
-            /** @description GET /v1/cropProtectionEquipments/byId/:cropProtectionEquipmentId Negative response */
+            /** @description HEAD /v1/cropProtectionProducts/byId/:cropProtectionProductId/inUse Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": components["schemas"]["GetV1CropProtectionEquipmentsByIdCropProtectionEquipmentIdNegativeResponse"];
-                };
-            };
-        };
-    };
-    DeleteV1CropProtectionEquipmentsByIdCropProtectionEquipmentId: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description DELETE /v1/cropProtectionEquipments/byId/:cropProtectionEquipmentId Parameter */
-                cropProtectionEquipmentId: components["schemas"]["DeleteV1CropProtectionEquipmentsByIdCropProtectionEquipmentIdParameterCropProtectionEquipmentId"];
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description DELETE /v1/cropProtectionEquipments/byId/:cropProtectionEquipmentId Positive response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["DeleteV1CropProtectionEquipmentsByIdCropProtectionEquipmentIdPositiveResponse"];
-                };
-            };
-            /** @description DELETE /v1/cropProtectionEquipments/byId/:cropProtectionEquipmentId Negative response */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["DeleteV1CropProtectionEquipmentsByIdCropProtectionEquipmentIdNegativeResponse"];
-                };
-            };
-        };
-    };
-    PatchV1CropProtectionEquipmentsByIdCropProtectionEquipmentId: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description PATCH /v1/cropProtectionEquipments/byId/:cropProtectionEquipmentId Parameter */
-                cropProtectionEquipmentId: components["schemas"]["PatchV1CropProtectionEquipmentsByIdCropProtectionEquipmentIdParameterCropProtectionEquipmentId"];
-            };
-            cookie?: never;
-        };
-        /** @description PATCH /v1/cropProtectionEquipments/byId/:cropProtectionEquipmentId Request body */
-        requestBody?: {
-            content: {
-                "application/json": components["schemas"]["PatchV1CropProtectionEquipmentsByIdCropProtectionEquipmentIdRequestBody"];
-            };
-        };
-        responses: {
-            /** @description PATCH /v1/cropProtectionEquipments/byId/:cropProtectionEquipmentId Positive response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PatchV1CropProtectionEquipmentsByIdCropProtectionEquipmentIdPositiveResponse"];
-                };
-            };
-            /** @description PATCH /v1/cropProtectionEquipments/byId/:cropProtectionEquipmentId Negative response */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PatchV1CropProtectionEquipmentsByIdCropProtectionEquipmentIdNegativeResponse"];
-                };
+                content?: never;
             };
         };
     };
@@ -6614,9 +10386,9 @@ export interface operations {
         parameters: {
             query?: {
                 /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
-                fromDate?: components["schemas"]["GetV1CropProtectionApplicationsParameterFromDate"];
+                fromDate?: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
                 /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
-                toDate?: components["schemas"]["GetV1CropProtectionApplicationsParameterToDate"];
+                toDate?: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
             };
             header?: never;
             path?: never;
@@ -6639,7 +10411,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1CropProtectionApplicationsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -6673,8 +10445,38 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1CropProtectionApplicationsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1CropProtectionApplications: {
+        parameters: {
+            query?: {
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                fromDate?: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                toDate?: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/cropProtectionApplications Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/cropProtectionApplications Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -6707,7 +10509,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1CropProtectionApplicationsBatchNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -6718,7 +10520,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/cropProtectionApplications/byId/:cropProtectionApplicationId Parameter */
-                cropProtectionApplicationId: components["schemas"]["GetV1CropProtectionApplicationsByIdCropProtectionApplicationIdParameterCropProtectionApplicationId"];
+                cropProtectionApplicationId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -6739,7 +10541,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1CropProtectionApplicationsByIdCropProtectionApplicationIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -6750,7 +10552,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description DELETE /v1/cropProtectionApplications/byId/:cropProtectionApplicationId Parameter */
-                cropProtectionApplicationId: components["schemas"]["DeleteV1CropProtectionApplicationsByIdCropProtectionApplicationIdParameterCropProtectionApplicationId"];
+                cropProtectionApplicationId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -6771,8 +10573,36 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["DeleteV1CropProtectionApplicationsByIdCropProtectionApplicationIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1CropProtectionApplicationsByIdCropProtectionApplicationId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/cropProtectionApplications/byId/:cropProtectionApplicationId Parameter */
+                cropProtectionApplicationId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/cropProtectionApplications/byId/:cropProtectionApplicationId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/cropProtectionApplications/byId/:cropProtectionApplicationId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -6782,7 +10612,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description PATCH /v1/cropProtectionApplications/byId/:cropProtectionApplicationId Parameter */
-                cropProtectionApplicationId: components["schemas"]["PatchV1CropProtectionApplicationsByIdCropProtectionApplicationIdParameterCropProtectionApplicationId"];
+                cropProtectionApplicationId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -6808,7 +10638,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PatchV1CropProtectionApplicationsByIdCropProtectionApplicationIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -6837,8 +10667,33 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1CropProtectionApplicationsSummariesNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1CropProtectionApplicationsSummaries: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/cropProtectionApplications/summaries Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/cropProtectionApplications/summaries Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -6866,12 +10721,12 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1CropProtectionApplicationsYearsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
     };
-    GetV1TillageEquipments: {
+    HeadV1CropProtectionApplicationsYears: {
         parameters: {
             query?: never;
             header?: never;
@@ -6880,157 +10735,235 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description GET /v1/tillageEquipments Positive response */
+            /** @description HEAD /v1/cropProtectionApplications/years Positive response */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": components["schemas"]["GetV1TillageEquipmentsPositiveResponse"];
-                };
+                content?: never;
             };
-            /** @description GET /v1/tillageEquipments Negative response */
+            /** @description HEAD /v1/cropProtectionApplications/years Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": components["schemas"]["GetV1TillageEquipmentsNegativeResponse"];
-                };
+                content?: never;
             };
         };
     };
-    PostV1TillageEquipments: {
+    GetV1CropProtectionApplicationsPresets: {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** @description POST /v1/tillageEquipments Request body */
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/cropProtectionApplications/presets Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1CropProtectionApplicationsPresetsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/cropProtectionApplications/presets Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1CropProtectionApplicationsPresets: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/cropProtectionApplications/presets Request body */
         requestBody: {
             content: {
-                "application/json": components["schemas"]["PostV1TillageEquipmentsRequestBody"];
+                "application/json": components["schemas"]["PostV1CropProtectionApplicationsPresetsRequestBody"];
             };
         };
         responses: {
-            /** @description POST /v1/tillageEquipments Positive response */
+            /** @description POST /v1/cropProtectionApplications/presets Positive response */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1TillageEquipmentsPositiveResponse"];
+                    "application/json": components["schemas"]["PostV1CropProtectionApplicationsPresetsPositiveResponse"];
                 };
             };
-            /** @description POST /v1/tillageEquipments Negative response */
+            /** @description POST /v1/cropProtectionApplications/presets Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1TillageEquipmentsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
     };
-    GetV1TillageEquipmentsByIdTillageEquipmentId: {
+    HeadV1CropProtectionApplicationsPresets: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/cropProtectionApplications/presets Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/cropProtectionApplications/presets Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1CropProtectionApplicationsPresetsByIdPresetId: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                /** @description GET /v1/tillageEquipments/byId/:tillageEquipmentId Parameter */
-                tillageEquipmentId: components["schemas"]["GetV1TillageEquipmentsByIdTillageEquipmentIdParameterTillageEquipmentId"];
+                /** @description GET /v1/cropProtectionApplications/presets/byId/:presetId Parameter */
+                presetId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description GET /v1/tillageEquipments/byId/:tillageEquipmentId Positive response */
+            /** @description GET /v1/cropProtectionApplications/presets/byId/:presetId Positive response */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1TillageEquipmentsByIdTillageEquipmentIdPositiveResponse"];
+                    "application/json": components["schemas"]["GetV1CropProtectionApplicationsPresetsByIdPresetIdPositiveResponse"];
                 };
             };
-            /** @description GET /v1/tillageEquipments/byId/:tillageEquipmentId Negative response */
+            /** @description GET /v1/cropProtectionApplications/presets/byId/:presetId Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1TillageEquipmentsByIdTillageEquipmentIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
     };
-    DeleteV1TillageEquipmentsByIdTillageEquipmentId: {
+    DeleteV1CropProtectionApplicationsPresetsByIdPresetId: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                /** @description DELETE /v1/tillageEquipments/byId/:tillageEquipmentId Parameter */
-                tillageEquipmentId: components["schemas"]["DeleteV1TillageEquipmentsByIdTillageEquipmentIdParameterTillageEquipmentId"];
+                /** @description DELETE /v1/cropProtectionApplications/presets/byId/:presetId Parameter */
+                presetId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description DELETE /v1/tillageEquipments/byId/:tillageEquipmentId Positive response */
+            /** @description DELETE /v1/cropProtectionApplications/presets/byId/:presetId Positive response */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["DeleteV1TillageEquipmentsByIdTillageEquipmentIdPositiveResponse"];
+                    "application/json": components["schemas"]["DeleteV1CropProtectionApplicationsPresetsByIdPresetIdPositiveResponse"];
                 };
             };
-            /** @description DELETE /v1/tillageEquipments/byId/:tillageEquipmentId Negative response */
+            /** @description DELETE /v1/cropProtectionApplications/presets/byId/:presetId Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["DeleteV1TillageEquipmentsByIdTillageEquipmentIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
     };
-    PatchV1TillageEquipmentsByIdTillageEquipmentId: {
+    HeadV1CropProtectionApplicationsPresetsByIdPresetId: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                /** @description PATCH /v1/tillageEquipments/byId/:tillageEquipmentId Parameter */
-                tillageEquipmentId: components["schemas"]["PatchV1TillageEquipmentsByIdTillageEquipmentIdParameterTillageEquipmentId"];
+                /** @description HEAD /v1/cropProtectionApplications/presets/byId/:presetId Parameter */
+                presetId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
-        /** @description PATCH /v1/tillageEquipments/byId/:tillageEquipmentId Request body */
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/cropProtectionApplications/presets/byId/:presetId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/cropProtectionApplications/presets/byId/:presetId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1CropProtectionApplicationsPresetsByIdPresetId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/cropProtectionApplications/presets/byId/:presetId Parameter */
+                presetId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/cropProtectionApplications/presets/byId/:presetId Request body */
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["PatchV1TillageEquipmentsByIdTillageEquipmentIdRequestBody"];
+                "application/json": components["schemas"]["PatchV1CropProtectionApplicationsPresetsByIdPresetIdRequestBody"];
             };
         };
         responses: {
-            /** @description PATCH /v1/tillageEquipments/byId/:tillageEquipmentId Positive response */
+            /** @description PATCH /v1/cropProtectionApplications/presets/byId/:presetId Positive response */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PatchV1TillageEquipmentsByIdTillageEquipmentIdPositiveResponse"];
+                    "application/json": components["schemas"]["PatchV1CropProtectionApplicationsPresetsByIdPresetIdPositiveResponse"];
                 };
             };
-            /** @description PATCH /v1/tillageEquipments/byId/:tillageEquipmentId Negative response */
+            /** @description PATCH /v1/cropProtectionApplications/presets/byId/:presetId Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PatchV1TillageEquipmentsByIdTillageEquipmentIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -7039,9 +10972,9 @@ export interface operations {
         parameters: {
             query?: {
                 /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
-                fromDate?: components["schemas"]["GetV1TillagesParameterFromDate"];
+                fromDate?: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
                 /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
-                toDate?: components["schemas"]["GetV1TillagesParameterToDate"];
+                toDate?: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
             };
             header?: never;
             path?: never;
@@ -7064,7 +10997,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1TillagesNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -7098,8 +11031,38 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1TillagesNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1Tillages: {
+        parameters: {
+            query?: {
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                fromDate?: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                toDate?: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/tillages Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/tillages Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -7132,7 +11095,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1TillagesBatchNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -7143,7 +11106,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/tillages/byId/:tillageId Parameter */
-                tillageId: components["schemas"]["GetV1TillagesByIdTillageIdParameterTillageId"];
+                tillageId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -7164,7 +11127,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1TillagesByIdTillageIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -7175,7 +11138,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description DELETE /v1/tillages/byId/:tillageId Parameter */
-                tillageId: components["schemas"]["DeleteV1TillagesByIdTillageIdParameterTillageId"];
+                tillageId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -7196,8 +11159,36 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["DeleteV1TillagesByIdTillageIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1TillagesByIdTillageId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/tillages/byId/:tillageId Parameter */
+                tillageId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/tillages/byId/:tillageId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/tillages/byId/:tillageId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -7207,7 +11198,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description PATCH /v1/tillages/byId/:tillageId Parameter */
-                tillageId: components["schemas"]["PatchV1TillagesByIdTillageIdParameterTillageId"];
+                tillageId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -7233,7 +11224,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PatchV1TillagesByIdTillageIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -7262,7 +11253,249 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1TillagesYearsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1TillagesYears: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/tillages/years Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/tillages/years Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1TillagesPresets: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/tillages/presets Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1TillagesPresetsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/tillages/presets Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1TillagesPresets: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/tillages/presets Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1TillagesPresetsRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/tillages/presets Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1TillagesPresetsPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/tillages/presets Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1TillagesPresets: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/tillages/presets Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/tillages/presets Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1TillagesPresetsByIdPresetId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/tillages/presets/byId/:presetId Parameter */
+                presetId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/tillages/presets/byId/:presetId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1TillagesPresetsByIdPresetIdPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/tillages/presets/byId/:presetId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1TillagesPresetsByIdPresetId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description DELETE /v1/tillages/presets/byId/:presetId Parameter */
+                presetId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/tillages/presets/byId/:presetId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1TillagesPresetsByIdPresetIdPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/tillages/presets/byId/:presetId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1TillagesPresetsByIdPresetId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/tillages/presets/byId/:presetId Parameter */
+                presetId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/tillages/presets/byId/:presetId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/tillages/presets/byId/:presetId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1TillagesPresetsByIdPresetId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/tillages/presets/byId/:presetId Parameter */
+                presetId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/tillages/presets/byId/:presetId Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchV1TillagesPresetsByIdPresetIdRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/tillages/presets/byId/:presetId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1TillagesPresetsByIdPresetIdPositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/tillages/presets/byId/:presetId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -7271,9 +11504,9 @@ export interface operations {
         parameters: {
             query?: {
                 /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
-                fromDate?: components["schemas"]["GetV1CropRotationsParameterFromDate"];
+                fromDate?: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
                 /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
-                toDate?: components["schemas"]["GetV1CropRotationsParameterToDate"];
+                toDate?: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
             };
             header?: never;
             path?: never;
@@ -7296,7 +11529,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1CropRotationsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -7330,50 +11563,18 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1CropRotationsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
     };
-    PostV1CropRotationsBatch: {
+    HeadV1CropRotations: {
         parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** @description POST /v1/cropRotations/batch Request body */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["PostV1CropRotationsBatchRequestBody"];
-            };
-        };
-        responses: {
-            /** @description POST /v1/cropRotations/batch Positive response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PostV1CropRotationsBatchPositiveResponse"];
-                };
-            };
-            /** @description POST /v1/cropRotations/batch Negative response */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PostV1CropRotationsBatchNegativeResponse"];
-                };
-            };
-        };
-    };
-    GetV1CropRotationsCurrent: {
-        parameters: {
-            query: {
-                /** @description GET /v1/cropRotations/current Parameter */
-                plotIds: components["schemas"]["GetV1CropRotationsCurrentParameterPlotIds"];
+            query?: {
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                fromDate?: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                toDate?: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
             };
             header?: never;
             path?: never;
@@ -7381,23 +11582,201 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description GET /v1/cropRotations/current Positive response */
+            /** @description HEAD /v1/cropRotations Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/cropRotations Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1CropRotationsPlan: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description PATCH /v1/cropRotations/plan Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PatchV1CropRotationsPlanRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/cropRotations/plan Positive response */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1CropRotationsCurrentPositiveResponse"];
+                    "application/json": components["schemas"]["PatchV1CropRotationsPlanPositiveResponse"];
                 };
             };
-            /** @description GET /v1/cropRotations/current Negative response */
+            /** @description PATCH /v1/cropRotations/plan Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1CropRotationsCurrentNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    PostV1CropRotationsBatchByCrop: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/cropRotations/batch/byCrop Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1CropRotationsBatchByCropRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/cropRotations/batch/byCrop Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1CropRotationsBatchByCropPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/cropRotations/batch/byCrop Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1CropRotationsBatchByPlot: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/cropRotations/batch/byPlot Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1CropRotationsBatchByPlotRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/cropRotations/batch/byPlot Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1CropRotationsBatchByPlotPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/cropRotations/batch/byPlot Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    GetV1CropRotationsPlots: {
+        parameters: {
+            query: {
+                /** @description GET /v1/cropRotations/plots Parameter */
+                plotIds: components["schemas"]["GetV1CropRotationsPlotsParameterPlotIds"];
+                /** @description GET /v1/cropRotations/plots Parameter */
+                onlyCurrent?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description GET /v1/cropRotations/plots Parameter */
+                expand?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description GET /v1/cropRotations/plots Parameter */
+                withRecurrences?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                fromDate: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                toDate: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/cropRotations/plots Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1CropRotationsPlotsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/cropRotations/plots Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1CropRotationsPlots: {
+        parameters: {
+            query: {
+                /** @description HEAD /v1/cropRotations/plots Parameter */
+                plotIds: components["schemas"]["GetV1CropRotationsPlotsParameterPlotIds"];
+                /** @description HEAD /v1/cropRotations/plots Parameter */
+                onlyCurrent?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description HEAD /v1/cropRotations/plots Parameter */
+                expand?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description HEAD /v1/cropRotations/plots Parameter */
+                withRecurrences?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                fromDate: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                toDate: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/cropRotations/plots Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/cropRotations/plots Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -7407,7 +11786,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/cropRotations/byId/:rotationId Parameter */
-                rotationId: components["schemas"]["GetV1CropRotationsByIdRotationIdParameterRotationId"];
+                rotationId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -7428,7 +11807,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1CropRotationsByIdRotationIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -7439,7 +11818,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description DELETE /v1/cropRotations/byId/:rotationId Parameter */
-                rotationId: components["schemas"]["DeleteV1CropRotationsByIdRotationIdParameterRotationId"];
+                rotationId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -7460,8 +11839,36 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["DeleteV1CropRotationsByIdRotationIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1CropRotationsByIdRotationId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/cropRotations/byId/:rotationId Parameter */
+                rotationId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/cropRotations/byId/:rotationId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/cropRotations/byId/:rotationId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -7471,7 +11878,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description PATCH /v1/cropRotations/byId/:rotationId Parameter */
-                rotationId: components["schemas"]["PatchV1CropRotationsByIdRotationIdParameterRotationId"];
+                rotationId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -7497,7 +11904,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PatchV1CropRotationsByIdRotationIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -7526,8 +11933,33 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1CropRotationsYearsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1CropRotationsYears: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/cropRotations/years Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/cropRotations/years Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -7535,9 +11967,9 @@ export interface operations {
         parameters: {
             query?: {
                 /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
-                fromDate?: components["schemas"]["GetV1HarvestsParameterFromDate"];
+                fromDate?: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
                 /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
-                toDate?: components["schemas"]["GetV1HarvestsParameterToDate"];
+                toDate?: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
             };
             header?: never;
             path?: never;
@@ -7560,8 +11992,38 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1HarvestsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1Harvests: {
+        parameters: {
+            query?: {
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                fromDate?: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                toDate?: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/harvests Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/harvests Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -7594,7 +12056,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1HarvestsBatchNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -7605,7 +12067,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/harvests/byId/:harvestId Parameter */
-                harvestId: components["schemas"]["GetV1HarvestsByIdHarvestIdParameterHarvestId"];
+                harvestId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -7626,7 +12088,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1HarvestsByIdHarvestIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -7637,7 +12099,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description DELETE /v1/harvests/byId/:harvestId Parameter */
-                harvestId: components["schemas"]["DeleteV1HarvestsByIdHarvestIdParameterHarvestId"];
+                harvestId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -7658,8 +12120,36 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["DeleteV1HarvestsByIdHarvestIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1HarvestsByIdHarvestId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/harvests/byId/:harvestId Parameter */
+                harvestId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/harvests/byId/:harvestId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/harvests/byId/:harvestId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -7687,8 +12177,33 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1HarvestsSummariesNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1HarvestsSummaries: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/harvests/summaries Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/harvests/summaries Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -7716,7 +12231,249 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1HarvestsYearsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1HarvestsYears: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/harvests/years Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/harvests/years Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1HarvestsPresets: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/harvests/presets Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1HarvestsPresetsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/harvests/presets Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1HarvestsPresets: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/harvests/presets Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1HarvestsPresetsRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/harvests/presets Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1HarvestsPresetsPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/harvests/presets Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1HarvestsPresets: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/harvests/presets Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/harvests/presets Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1HarvestsPresetsByIdPresetId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/harvests/presets/byId/:presetId Parameter */
+                presetId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/harvests/presets/byId/:presetId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1HarvestsPresetsByIdPresetIdPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/harvests/presets/byId/:presetId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1HarvestsPresetsByIdPresetId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description DELETE /v1/harvests/presets/byId/:presetId Parameter */
+                presetId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/harvests/presets/byId/:presetId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1HarvestsPresetsByIdPresetIdPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/harvests/presets/byId/:presetId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1HarvestsPresetsByIdPresetId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/harvests/presets/byId/:presetId Parameter */
+                presetId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/harvests/presets/byId/:presetId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/harvests/presets/byId/:presetId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1HarvestsPresetsByIdPresetId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/harvests/presets/byId/:presetId Parameter */
+                presetId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/harvests/presets/byId/:presetId Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchV1HarvestsPresetsByIdPresetIdRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/harvests/presets/byId/:presetId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1HarvestsPresetsByIdPresetIdPositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/harvests/presets/byId/:presetId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -7725,9 +12482,9 @@ export interface operations {
         parameters: {
             query?: {
                 /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
-                fromDate?: components["schemas"]["GetV1FertilizerApplicationsParameterFromDate"];
+                fromDate?: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
                 /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
-                toDate?: components["schemas"]["GetV1FertilizerApplicationsParameterToDate"];
+                toDate?: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
             };
             header?: never;
             path?: never;
@@ -7750,7 +12507,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1FertilizerApplicationsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -7784,8 +12541,38 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1FertilizerApplicationsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1FertilizerApplications: {
+        parameters: {
+            query?: {
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                fromDate?: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                toDate?: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/fertilizerApplications Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/fertilizerApplications Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -7795,7 +12582,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/fertilizerApplications/byId/:fertilizerApplicationId Parameter */
-                fertilizerApplicationId: components["schemas"]["GetV1FertilizerApplicationsByIdFertilizerApplicationIdParameterFertilizerApplicationId"];
+                fertilizerApplicationId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -7816,7 +12603,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1FertilizerApplicationsByIdFertilizerApplicationIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -7827,7 +12614,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description DELETE /v1/fertilizerApplications/byId/:fertilizerApplicationId Parameter */
-                fertilizerApplicationId: components["schemas"]["DeleteV1FertilizerApplicationsByIdFertilizerApplicationIdParameterFertilizerApplicationId"];
+                fertilizerApplicationId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -7848,8 +12635,36 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["DeleteV1FertilizerApplicationsByIdFertilizerApplicationIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1FertilizerApplicationsByIdFertilizerApplicationId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/fertilizerApplications/byId/:fertilizerApplicationId Parameter */
+                fertilizerApplicationId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/fertilizerApplications/byId/:fertilizerApplicationId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/fertilizerApplications/byId/:fertilizerApplicationId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -7877,8 +12692,33 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1FertilizerApplicationsSummariesNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1FertilizerApplicationsSummaries: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/fertilizerApplications/summaries Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/fertilizerApplications/summaries Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -7906,7 +12746,249 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1FertilizerApplicationsYearsNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1FertilizerApplicationsYears: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/fertilizerApplications/years Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/fertilizerApplications/years Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1FertilizerApplicationsPresets: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/fertilizerApplications/presets Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1FertilizerApplicationsPresetsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/fertilizerApplications/presets Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1FertilizerApplicationsPresets: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/fertilizerApplications/presets Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1FertilizerApplicationsPresetsRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/fertilizerApplications/presets Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1FertilizerApplicationsPresetsPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/fertilizerApplications/presets Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1FertilizerApplicationsPresets: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/fertilizerApplications/presets Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/fertilizerApplications/presets Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1FertilizerApplicationsPresetsByIdPresetId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/fertilizerApplications/presets/byId/:presetId Parameter */
+                presetId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/fertilizerApplications/presets/byId/:presetId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1FertilizerApplicationsPresetsByIdPresetIdPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/fertilizerApplications/presets/byId/:presetId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1FertilizerApplicationsPresetsByIdPresetId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description DELETE /v1/fertilizerApplications/presets/byId/:presetId Parameter */
+                presetId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/fertilizerApplications/presets/byId/:presetId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1FertilizerApplicationsPresetsByIdPresetIdPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/fertilizerApplications/presets/byId/:presetId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1FertilizerApplicationsPresetsByIdPresetId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/fertilizerApplications/presets/byId/:presetId Parameter */
+                presetId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/fertilizerApplications/presets/byId/:presetId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/fertilizerApplications/presets/byId/:presetId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1FertilizerApplicationsPresetsByIdPresetId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/fertilizerApplications/presets/byId/:presetId Parameter */
+                presetId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/fertilizerApplications/presets/byId/:presetId Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchV1FertilizerApplicationsPresetsByIdPresetIdRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/fertilizerApplications/presets/byId/:presetId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1FertilizerApplicationsPresetsByIdPresetIdPositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/fertilizerApplications/presets/byId/:presetId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -7935,7 +13017,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1FertilizersNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -7969,8 +13051,33 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1FertilizersNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1Fertilizers: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/fertilizers Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/fertilizers Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -7980,7 +13087,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/fertilizers/byId/:fertilizerId Parameter */
-                fertilizerId: components["schemas"]["GetV1FertilizersByIdFertilizerIdParameterFertilizerId"];
+                fertilizerId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -8001,7 +13108,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1FertilizersByIdFertilizerIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -8012,7 +13119,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description DELETE /v1/fertilizers/byId/:fertilizerId Parameter */
-                fertilizerId: components["schemas"]["DeleteV1FertilizersByIdFertilizerIdParameterFertilizerId"];
+                fertilizerId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -8033,8 +13140,36 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["DeleteV1FertilizersByIdFertilizerIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    HeadV1FertilizersByIdFertilizerId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/fertilizers/byId/:fertilizerId Parameter */
+                fertilizerId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/fertilizers/byId/:fertilizerId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/fertilizers/byId/:fertilizerId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -8044,7 +13179,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description PATCH /v1/fertilizers/byId/:fertilizerId Parameter */
-                fertilizerId: components["schemas"]["PatchV1FertilizersByIdFertilizerIdParameterFertilizerId"];
+                fertilizerId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -8070,7 +13205,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PatchV1FertilizersByIdFertilizerIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
@@ -8081,7 +13216,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description GET /v1/fertilizers/byId/:fertilizerId/inUse Parameter */
-                fertilizerId: components["schemas"]["GetV1FertilizersByIdFertilizerIdInUseParameterFertilizerId"];
+                fertilizerId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
@@ -8102,205 +13237,3525 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1FertilizersByIdFertilizerIdInUseNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
     };
-    GetV1FertilizerSpreaders: {
+    HeadV1FertilizersByIdFertilizerIdInUse: {
         parameters: {
             query?: never;
             header?: never;
-            path?: never;
+            path: {
+                /** @description HEAD /v1/fertilizers/byId/:fertilizerId/inUse Parameter */
+                fertilizerId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description GET /v1/fertilizerSpreaders Positive response */
+            /** @description HEAD /v1/fertilizers/byId/:fertilizerId/inUse Positive response */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": components["schemas"]["GetV1FertilizerSpreadersPositiveResponse"];
-                };
+                content?: never;
             };
-            /** @description GET /v1/fertilizerSpreaders Negative response */
+            /** @description HEAD /v1/fertilizers/byId/:fertilizerId/inUse Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": components["schemas"]["GetV1FertilizerSpreadersNegativeResponse"];
-                };
+                content?: never;
             };
         };
     };
-    PostV1FertilizerSpreaders: {
+    PostV1ReportsFieldcalendarEmail: {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** @description POST /v1/fertilizerSpreaders Request body */
+        /** @description POST /v1/reports/fieldcalendar/email Request body */
         requestBody: {
             content: {
-                "application/json": components["schemas"]["PostV1FertilizerSpreadersRequestBody"];
+                "application/json": components["schemas"]["PostV1ReportsFieldcalendarEmailRequestBody"];
             };
         };
         responses: {
-            /** @description POST /v1/fertilizerSpreaders Positive response */
+            /** @description POST /v1/reports/fieldcalendar/email Positive response */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1FertilizerSpreadersPositiveResponse"];
+                    "application/json": components["schemas"]["PostV1ReportsFieldcalendarEmailPositiveResponse"];
                 };
             };
-            /** @description POST /v1/fertilizerSpreaders Negative response */
+            /** @description POST /v1/reports/fieldcalendar/email Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1FertilizerSpreadersNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
     };
-    GetV1FertilizerSpreadersByIdFertilizerSpreaderId: {
+    PostV1ReportsFieldcalendarDownload: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/reports/fieldcalendar/download Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1ReportsFieldcalendarDownloadRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/reports/fieldcalendar/download Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1ReportsFieldcalendarDownloadPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/reports/fieldcalendar/download Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1ReportsTreatmentsDownload: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/reports/treatments/download Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1ReportsTreatmentsDownloadRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/reports/treatments/download Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1ReportsTreatmentsDownloadPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/reports/treatments/download Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1ReportsOutdoorjournalDownload: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/reports/outdoorjournal/download Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1ReportsOutdoorjournalDownloadRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/reports/outdoorjournal/download Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1ReportsOutdoorjournalDownloadPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/reports/outdoorjournal/download Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    GetV1Animals: {
+        parameters: {
+            query?: {
+                /** @description GET /v1/animals Parameter */
+                animalTypes?: components["schemas"]["GetV1AnimalsParameterAnimalTypes"];
+                /** @description GET /v1/animals Parameter */
+                onlyLiving?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/animals Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1AnimalsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/animals Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1Animals: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/animals Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1AnimalsRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/animals Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1AnimalsPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/animals Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1Animals: {
+        parameters: {
+            query: {
+                /** @description DELETE /v1/animals Parameter */
+                animalIds: components["schemas"]["DeleteV1AnimalsParameterAnimalIds"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/animals Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1AnimalsPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/animals Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1Animals: {
+        parameters: {
+            query?: {
+                /** @description HEAD /v1/animals Parameter */
+                animalTypes?: components["schemas"]["GetV1AnimalsParameterAnimalTypes"];
+                /** @description HEAD /v1/animals Parameter */
+                onlyLiving?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/animals Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/animals Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1AnimalsBatch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description PATCH /v1/animals/batch Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PatchV1AnimalsBatchRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/animals/batch Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1AnimalsBatchPositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/animals/batch Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1AnimalsImport: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/animals/import Request body */
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["PostV1AnimalsImportRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/animals/import Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1AnimalsImportPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/animals/import Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    GetV1AnimalsByIdAnimalId: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                /** @description GET /v1/fertilizerSpreaders/byId/:fertilizerSpreaderId Parameter */
-                fertilizerSpreaderId: components["schemas"]["GetV1FertilizerSpreadersByIdFertilizerSpreaderIdParameterFertilizerSpreaderId"];
+                /** @description GET /v1/animals/byId/:animalId Parameter */
+                animalId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description GET /v1/fertilizerSpreaders/byId/:fertilizerSpreaderId Positive response */
+            /** @description GET /v1/animals/byId/:animalId Positive response */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1FertilizerSpreadersByIdFertilizerSpreaderIdPositiveResponse"];
+                    "application/json": components["schemas"]["GetV1AnimalsByIdAnimalIdPositiveResponse"];
                 };
             };
-            /** @description GET /v1/fertilizerSpreaders/byId/:fertilizerSpreaderId Negative response */
+            /** @description GET /v1/animals/byId/:animalId Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GetV1FertilizerSpreadersByIdFertilizerSpreaderIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
     };
-    DeleteV1FertilizerSpreadersByIdFertilizerSpreaderId: {
+    DeleteV1AnimalsByIdAnimalId: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                /** @description DELETE /v1/fertilizerSpreaders/byId/:fertilizerSpreaderId Parameter */
-                fertilizerSpreaderId: components["schemas"]["DeleteV1FertilizerSpreadersByIdFertilizerSpreaderIdParameterFertilizerSpreaderId"];
+                /** @description DELETE /v1/animals/byId/:animalId Parameter */
+                animalId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description DELETE /v1/fertilizerSpreaders/byId/:fertilizerSpreaderId Positive response */
+            /** @description DELETE /v1/animals/byId/:animalId Positive response */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["DeleteV1FertilizerSpreadersByIdFertilizerSpreaderIdPositiveResponse"];
+                    "application/json": components["schemas"]["DeleteV1AnimalsByIdAnimalIdPositiveResponse"];
                 };
             };
-            /** @description DELETE /v1/fertilizerSpreaders/byId/:fertilizerSpreaderId Negative response */
+            /** @description DELETE /v1/animals/byId/:animalId Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["DeleteV1FertilizerSpreadersByIdFertilizerSpreaderIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
     };
-    PatchV1FertilizerSpreadersByIdFertilizerSpreaderId: {
+    HeadV1AnimalsByIdAnimalId: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                /** @description PATCH /v1/fertilizerSpreaders/byId/:fertilizerSpreaderId Parameter */
-                fertilizerSpreaderId: components["schemas"]["PatchV1FertilizerSpreadersByIdFertilizerSpreaderIdParameterFertilizerSpreaderId"];
+                /** @description HEAD /v1/animals/byId/:animalId Parameter */
+                animalId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
             };
             cookie?: never;
         };
-        /** @description PATCH /v1/fertilizerSpreaders/byId/:fertilizerSpreaderId Request body */
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/animals/byId/:animalId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/animals/byId/:animalId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1AnimalsByIdAnimalId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/animals/byId/:animalId Parameter */
+                animalId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/animals/byId/:animalId Request body */
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["PatchV1FertilizerSpreadersByIdFertilizerSpreaderIdRequestBody"];
+                "application/json": components["schemas"]["PatchV1AnimalsByIdAnimalIdRequestBody"];
             };
         };
         responses: {
-            /** @description PATCH /v1/fertilizerSpreaders/byId/:fertilizerSpreaderId Positive response */
+            /** @description PATCH /v1/animals/byId/:animalId Positive response */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PatchV1FertilizerSpreadersByIdFertilizerSpreaderIdPositiveResponse"];
+                    "application/json": components["schemas"]["PatchV1AnimalsByIdAnimalIdPositiveResponse"];
                 };
             };
-            /** @description PATCH /v1/fertilizerSpreaders/byId/:fertilizerSpreaderId Negative response */
+            /** @description PATCH /v1/animals/byId/:animalId Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PatchV1FertilizerSpreadersByIdFertilizerSpreaderIdNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };
     };
-    PostV1ReportsFieldcalendar: {
+    GetV1AnimalsByIdAnimalIdChildren: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/animals/byId/:animalId/children Parameter */
+                animalId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/animals/byId/:animalId/children Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1AnimalsByIdAnimalIdChildrenPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/animals/byId/:animalId/children Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1AnimalsByIdAnimalIdChildren: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/animals/byId/:animalId/children Parameter */
+                animalId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/animals/byId/:animalId/children Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/animals/byId/:animalId/children Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1AnimalsByIdAnimalIdSponsorships: {
+        parameters: {
+            query?: {
+                /** @description GET /v1/animals/byId/:animalId/sponsorships Parameter */
+                onlyActive?: components["schemas"]["GetV1AnimalsByIdAnimalIdSponsorshipsParameterOnlyActive"];
+            };
+            header?: never;
+            path: {
+                /** @description GET /v1/animals/byId/:animalId/sponsorships Parameter */
+                animalId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/animals/byId/:animalId/sponsorships Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1AnimalsByIdAnimalIdSponsorshipsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/animals/byId/:animalId/sponsorships Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1AnimalsByIdAnimalIdSponsorships: {
+        parameters: {
+            query?: {
+                /** @description HEAD /v1/animals/byId/:animalId/sponsorships Parameter */
+                onlyActive?: components["schemas"]["GetV1AnimalsByIdAnimalIdSponsorshipsParameterOnlyActive"];
+            };
+            header?: never;
+            path: {
+                /** @description HEAD /v1/animals/byId/:animalId/sponsorships Parameter */
+                animalId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/animals/byId/:animalId/sponsorships Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/animals/byId/:animalId/sponsorships Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PutV1AnimalsByIdAnimalIdCustomOutdoorJournalCategories: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PUT /v1/animals/byId/:animalId/customOutdoorJournalCategories Parameter */
+                animalId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PUT /v1/animals/byId/:animalId/customOutdoorJournalCategories Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PutV1AnimalsByIdAnimalIdCustomOutdoorJournalCategoriesRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PUT /v1/animals/byId/:animalId/customOutdoorJournalCategories Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PutV1AnimalsByIdAnimalIdCustomOutdoorJournalCategoriesPositiveResponse"];
+                };
+            };
+            /** @description PUT /v1/animals/byId/:animalId/customOutdoorJournalCategories Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    GetV1AnimalsOutdoorJournal: {
+        parameters: {
+            query: {
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                fromDate: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                toDate: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/animals/outdoorJournal Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1AnimalsOutdoorJournalPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/animals/outdoorJournal Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1AnimalsOutdoorJournal: {
+        parameters: {
+            query: {
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                fromDate: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+                /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+                toDate: components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/animals/outdoorJournal Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/animals/outdoorJournal Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1AnimalsHerds: {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** @description POST /v1/reports/fieldcalendar Request body */
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["PostV1ReportsFieldcalendarRequestBody"];
-            };
-        };
+        requestBody?: never;
         responses: {
-            /** @description POST /v1/reports/fieldcalendar Positive response */
+            /** @description GET /v1/animals/herds Positive response */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1ReportsFieldcalendarPositiveResponse"];
+                    "application/json": components["schemas"]["GetV1AnimalsHerdsPositiveResponse"];
                 };
             };
-            /** @description POST /v1/reports/fieldcalendar Negative response */
+            /** @description GET /v1/animals/herds Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PostV1ReportsFieldcalendarNegativeResponse"];
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1AnimalsHerds: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/animals/herds Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1AnimalsHerdsRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/animals/herds Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1AnimalsHerdsPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/animals/herds Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1AnimalsHerds: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/animals/herds Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/animals/herds Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1AnimalsHerdsByIdHerdId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/animals/herds/byId/:herdId Parameter */
+                herdId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/animals/herds/byId/:herdId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1AnimalsHerdsByIdHerdIdPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/animals/herds/byId/:herdId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1AnimalsHerdsByIdHerdId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description DELETE /v1/animals/herds/byId/:herdId Parameter */
+                herdId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/animals/herds/byId/:herdId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1AnimalsHerdsByIdHerdIdPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/animals/herds/byId/:herdId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1AnimalsHerdsByIdHerdId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/animals/herds/byId/:herdId Parameter */
+                herdId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/animals/herds/byId/:herdId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/animals/herds/byId/:herdId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1AnimalsHerdsByIdHerdId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/animals/herds/byId/:herdId Parameter */
+                herdId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/animals/herds/byId/:herdId Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchV1AnimalsHerdsByIdHerdIdRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/animals/herds/byId/:herdId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1AnimalsHerdsByIdHerdIdPositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/animals/herds/byId/:herdId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    GetV1AnimalsHerdsByIdHerdIdOutdoorSchedules: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/animals/herds/byId/:herdId/outdoorSchedules Parameter */
+                herdId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/animals/herds/byId/:herdId/outdoorSchedules Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1AnimalsHerdsByIdHerdIdOutdoorSchedulesPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/animals/herds/byId/:herdId/outdoorSchedules Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1AnimalsHerdsByIdHerdIdOutdoorSchedules: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description POST /v1/animals/herds/byId/:herdId/outdoorSchedules Parameter */
+                herdId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description POST /v1/animals/herds/byId/:herdId/outdoorSchedules Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1AnimalsHerdsByIdHerdIdOutdoorSchedulesRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/animals/herds/byId/:herdId/outdoorSchedules Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1AnimalsHerdsByIdHerdIdOutdoorSchedulesPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/animals/herds/byId/:herdId/outdoorSchedules Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1AnimalsHerdsByIdHerdIdOutdoorSchedules: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/animals/herds/byId/:herdId/outdoorSchedules Parameter */
+                herdId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/animals/herds/byId/:herdId/outdoorSchedules Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/animals/herds/byId/:herdId/outdoorSchedules Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Parameter */
+                outdoorScheduleId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleIdPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description DELETE /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Parameter */
+                outdoorScheduleId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleIdPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Parameter */
+                outdoorScheduleId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Parameter */
+                outdoorScheduleId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleIdRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleIdPositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    GetV1EarTags: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/earTags Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1EarTagsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/earTags Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1EarTags: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/earTags Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/earTags Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1EarTagsAvailable: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/earTags/available Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1EarTagsAvailablePositiveResponse"];
+                };
+            };
+            /** @description GET /v1/earTags/available Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1EarTagsAvailable: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/earTags/available Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/earTags/available Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PostV1EarTagsRange: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/earTags/range Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1EarTagsRangeRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/earTags/range Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1EarTagsRangePositiveResponse"];
+                };
+            };
+            /** @description POST /v1/earTags/range Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1EarTagsRange: {
+        parameters: {
+            query: {
+                /** @description DELETE /v1/earTags/range Parameter */
+                fromNumber: components["schemas"]["DeleteV1EarTagsRangeParameterFromNumber"];
+                /** @description DELETE /v1/earTags/range Parameter */
+                toNumber: components["schemas"]["DeleteV1EarTagsRangeParameterFromNumber"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/earTags/range Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1EarTagsRangePositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/earTags/range Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    GetV1Drugs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/drugs Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1DrugsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/drugs Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1Drugs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/drugs Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1DrugsRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/drugs Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1DrugsPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/drugs Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1Drugs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/drugs Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/drugs Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1DrugsByIdDrugId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/drugs/byId/:drugId Parameter */
+                drugId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/drugs/byId/:drugId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1DrugsByIdDrugIdPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/drugs/byId/:drugId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1DrugsByIdDrugId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description DELETE /v1/drugs/byId/:drugId Parameter */
+                drugId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/drugs/byId/:drugId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1DrugsByIdDrugIdPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/drugs/byId/:drugId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1DrugsByIdDrugId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/drugs/byId/:drugId Parameter */
+                drugId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/drugs/byId/:drugId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/drugs/byId/:drugId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1DrugsByIdDrugId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/drugs/byId/:drugId Parameter */
+                drugId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/drugs/byId/:drugId Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchV1DrugsByIdDrugIdRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/drugs/byId/:drugId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1DrugsByIdDrugIdPositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/drugs/byId/:drugId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    GetV1DrugsByIdDrugIdInUse: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/drugs/byId/:drugId/inUse Parameter */
+                drugId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/drugs/byId/:drugId/inUse Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1DrugsByIdDrugIdInUsePositiveResponse"];
+                };
+            };
+            /** @description GET /v1/drugs/byId/:drugId/inUse Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1DrugsByIdDrugIdInUse: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/drugs/byId/:drugId/inUse Parameter */
+                drugId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/drugs/byId/:drugId/inUse Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/drugs/byId/:drugId/inUse Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1Treatments: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/treatments Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1TreatmentsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/treatments Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1Treatments: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/treatments Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1TreatmentsRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/treatments Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1TreatmentsPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/treatments Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1Treatments: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/treatments Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/treatments Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1TreatmentsByIdTreatmentId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/treatments/byId/:treatmentId Parameter */
+                treatmentId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/treatments/byId/:treatmentId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1TreatmentsByIdTreatmentIdPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/treatments/byId/:treatmentId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1TreatmentsByIdTreatmentId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description DELETE /v1/treatments/byId/:treatmentId Parameter */
+                treatmentId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/treatments/byId/:treatmentId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1TreatmentsByIdTreatmentIdPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/treatments/byId/:treatmentId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1TreatmentsByIdTreatmentId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/treatments/byId/:treatmentId Parameter */
+                treatmentId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/treatments/byId/:treatmentId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/treatments/byId/:treatmentId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1TreatmentsByIdTreatmentId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/treatments/byId/:treatmentId Parameter */
+                treatmentId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/treatments/byId/:treatmentId Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchV1TreatmentsByIdTreatmentIdRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/treatments/byId/:treatmentId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1TreatmentsByIdTreatmentIdPositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/treatments/byId/:treatmentId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    GetV1Contacts: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/contacts Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1ContactsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/contacts Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1Contacts: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/contacts Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1ContactsRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/contacts Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1ContactsPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/contacts Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1Contacts: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/contacts Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/contacts Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1ContactsByIdContactId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/contacts/byId/:contactId Parameter */
+                contactId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/contacts/byId/:contactId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1ContactsByIdContactIdPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/contacts/byId/:contactId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1ContactsByIdContactId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description DELETE /v1/contacts/byId/:contactId Parameter */
+                contactId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/contacts/byId/:contactId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1ContactsByIdContactIdPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/contacts/byId/:contactId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1ContactsByIdContactId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/contacts/byId/:contactId Parameter */
+                contactId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/contacts/byId/:contactId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/contacts/byId/:contactId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1ContactsByIdContactId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/contacts/byId/:contactId Parameter */
+                contactId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/contacts/byId/:contactId Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchV1ContactsByIdContactIdRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/contacts/byId/:contactId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1ContactsByIdContactIdPositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/contacts/byId/:contactId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    GetV1ContactsByIdContactIdPayments: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/contacts/byId/:contactId/payments Parameter */
+                contactId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/contacts/byId/:contactId/payments Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1ContactsByIdContactIdPaymentsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/contacts/byId/:contactId/payments Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1ContactsByIdContactIdPayments: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/contacts/byId/:contactId/payments Parameter */
+                contactId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/contacts/byId/:contactId/payments Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/contacts/byId/:contactId/payments Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1ContactsByIdContactIdSponsorships: {
+        parameters: {
+            query?: {
+                /** @description GET /v1/contacts/byId/:contactId/sponsorships Parameter */
+                onlyActive?: components["schemas"]["GetV1AnimalsByIdAnimalIdSponsorshipsParameterOnlyActive"];
+            };
+            header?: never;
+            path: {
+                /** @description GET /v1/contacts/byId/:contactId/sponsorships Parameter */
+                contactId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/contacts/byId/:contactId/sponsorships Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1ContactsByIdContactIdSponsorshipsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/contacts/byId/:contactId/sponsorships Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1ContactsByIdContactIdSponsorships: {
+        parameters: {
+            query?: {
+                /** @description HEAD /v1/contacts/byId/:contactId/sponsorships Parameter */
+                onlyActive?: components["schemas"]["GetV1AnimalsByIdAnimalIdSponsorshipsParameterOnlyActive"];
+            };
+            header?: never;
+            path: {
+                /** @description HEAD /v1/contacts/byId/:contactId/sponsorships Parameter */
+                contactId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/contacts/byId/:contactId/sponsorships Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/contacts/byId/:contactId/sponsorships Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1ContactsByIdContactIdOrders: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/contacts/byId/:contactId/orders Parameter */
+                contactId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/contacts/byId/:contactId/orders Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1ContactsByIdContactIdOrdersPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/contacts/byId/:contactId/orders Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1ContactsByIdContactIdOrders: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/contacts/byId/:contactId/orders Parameter */
+                contactId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/contacts/byId/:contactId/orders Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/contacts/byId/:contactId/orders Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1Products: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/products Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1ProductsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/products Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1Products: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/products Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1ProductsRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/products Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1ProductsPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/products Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1Products: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/products Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/products Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1ProductsActive: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/products/active Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1ProductsActivePositiveResponse"];
+                };
+            };
+            /** @description GET /v1/products/active Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1ProductsActive: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/products/active Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/products/active Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1ProductsByIdProductId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/products/byId/:productId Parameter */
+                productId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/products/byId/:productId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1ProductsByIdProductIdPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/products/byId/:productId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1ProductsByIdProductId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description DELETE /v1/products/byId/:productId Parameter */
+                productId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/products/byId/:productId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1ProductsByIdProductIdPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/products/byId/:productId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1ProductsByIdProductId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/products/byId/:productId Parameter */
+                productId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/products/byId/:productId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/products/byId/:productId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1ProductsByIdProductId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/products/byId/:productId Parameter */
+                productId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/products/byId/:productId Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchV1ProductsByIdProductIdRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/products/byId/:productId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1ProductsByIdProductIdPositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/products/byId/:productId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    GetV1Orders: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/orders Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1OrdersPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/orders Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1Orders: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/orders Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1OrdersRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/orders Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1OrdersPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/orders Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1Orders: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/orders Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/orders Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1OrdersByIdOrderId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/orders/byId/:orderId Parameter */
+                orderId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/orders/byId/:orderId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1OrdersByIdOrderIdPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/orders/byId/:orderId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1OrdersByIdOrderId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/orders/byId/:orderId Parameter */
+                orderId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/orders/byId/:orderId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/orders/byId/:orderId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1OrdersByIdOrderId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/orders/byId/:orderId Parameter */
+                orderId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/orders/byId/:orderId Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchV1OrdersByIdOrderIdRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/orders/byId/:orderId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1OrdersByIdOrderIdPositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/orders/byId/:orderId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    GetV1OrdersByIdOrderIdItems: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/orders/byId/:orderId/items Parameter */
+                orderId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/orders/byId/:orderId/items Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1OrdersByIdOrderIdItemsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/orders/byId/:orderId/items Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1OrdersByIdOrderIdItems: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/orders/byId/:orderId/items Parameter */
+                orderId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/orders/byId/:orderId/items Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/orders/byId/:orderId/items Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PostV1OrdersByIdOrderIdConfirm: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description POST /v1/orders/byId/:orderId/confirm Parameter */
+                orderId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description POST /v1/orders/byId/:orderId/confirm Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PostV1OrdersByIdOrderIdConfirmRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/orders/byId/:orderId/confirm Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1OrdersByIdOrderIdConfirmPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/orders/byId/:orderId/confirm Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1OrdersByIdOrderIdFulfill: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description POST /v1/orders/byId/:orderId/fulfill Parameter */
+                orderId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description POST /v1/orders/byId/:orderId/fulfill Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PostV1OrdersByIdOrderIdFulfillRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/orders/byId/:orderId/fulfill Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1OrdersByIdOrderIdFulfillPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/orders/byId/:orderId/fulfill Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1OrdersByIdOrderIdCancel: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description POST /v1/orders/byId/:orderId/cancel Parameter */
+                orderId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description POST /v1/orders/byId/:orderId/cancel Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PostV1OrdersByIdOrderIdCancelRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/orders/byId/:orderId/cancel Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1OrdersByIdOrderIdCancelPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/orders/byId/:orderId/cancel Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    GetV1Payments: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/payments Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1PaymentsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/payments Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1Payments: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/payments Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1PaymentsRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/payments Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1PaymentsPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/payments Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1Payments: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/payments Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/payments Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1PaymentsByIdPaymentId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/payments/byId/:paymentId Parameter */
+                paymentId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/payments/byId/:paymentId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1PaymentsByIdPaymentIdPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/payments/byId/:paymentId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1PaymentsByIdPaymentId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description DELETE /v1/payments/byId/:paymentId Parameter */
+                paymentId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/payments/byId/:paymentId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1PaymentsByIdPaymentIdPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/payments/byId/:paymentId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1PaymentsByIdPaymentId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/payments/byId/:paymentId Parameter */
+                paymentId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/payments/byId/:paymentId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/payments/byId/:paymentId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1PaymentsByIdPaymentId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/payments/byId/:paymentId Parameter */
+                paymentId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/payments/byId/:paymentId Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchV1PaymentsByIdPaymentIdRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/payments/byId/:paymentId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1PaymentsByIdPaymentIdPositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/payments/byId/:paymentId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    GetV1SponsorshipPrograms: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/sponsorshipPrograms Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1SponsorshipProgramsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/sponsorshipPrograms Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1SponsorshipPrograms: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/sponsorshipPrograms Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1SponsorshipProgramsRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/sponsorshipPrograms Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1SponsorshipProgramsPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/sponsorshipPrograms Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1SponsorshipPrograms: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/sponsorshipPrograms Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/sponsorshipPrograms Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1SponsorshipProgramsByIdSponsorshipProgramId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/sponsorshipPrograms/byId/:sponsorshipProgramId Parameter */
+                sponsorshipProgramId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/sponsorshipPrograms/byId/:sponsorshipProgramId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1SponsorshipProgramsByIdSponsorshipProgramIdPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/sponsorshipPrograms/byId/:sponsorshipProgramId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1SponsorshipProgramsByIdSponsorshipProgramId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description DELETE /v1/sponsorshipPrograms/byId/:sponsorshipProgramId Parameter */
+                sponsorshipProgramId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/sponsorshipPrograms/byId/:sponsorshipProgramId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1SponsorshipProgramsByIdSponsorshipProgramIdPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/sponsorshipPrograms/byId/:sponsorshipProgramId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1SponsorshipProgramsByIdSponsorshipProgramId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/sponsorshipPrograms/byId/:sponsorshipProgramId Parameter */
+                sponsorshipProgramId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/sponsorshipPrograms/byId/:sponsorshipProgramId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/sponsorshipPrograms/byId/:sponsorshipProgramId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1SponsorshipProgramsByIdSponsorshipProgramId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/sponsorshipPrograms/byId/:sponsorshipProgramId Parameter */
+                sponsorshipProgramId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/sponsorshipPrograms/byId/:sponsorshipProgramId Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchV1SponsorshipProgramsByIdSponsorshipProgramIdRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/sponsorshipPrograms/byId/:sponsorshipProgramId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1SponsorshipProgramsByIdSponsorshipProgramIdPositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/sponsorshipPrograms/byId/:sponsorshipProgramId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    GetV1Sponsorships: {
+        parameters: {
+            query?: {
+                /** @description GET /v1/sponsorships Parameter */
+                onlyActive?: components["schemas"]["GetV1AnimalsByIdAnimalIdSponsorshipsParameterOnlyActive"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/sponsorships Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1SponsorshipsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/sponsorships Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1Sponsorships: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/sponsorships Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1SponsorshipsRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/sponsorships Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1SponsorshipsPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/sponsorships Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1Sponsorships: {
+        parameters: {
+            query?: {
+                /** @description HEAD /v1/sponsorships Parameter */
+                onlyActive?: components["schemas"]["GetV1AnimalsByIdAnimalIdSponsorshipsParameterOnlyActive"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/sponsorships Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/sponsorships Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1SponsorshipsByIdSponsorshipId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/sponsorships/byId/:sponsorshipId Parameter */
+                sponsorshipId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/sponsorships/byId/:sponsorshipId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1SponsorshipsByIdSponsorshipIdPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/sponsorships/byId/:sponsorshipId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1SponsorshipsByIdSponsorshipId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description DELETE /v1/sponsorships/byId/:sponsorshipId Parameter */
+                sponsorshipId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/sponsorships/byId/:sponsorshipId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1SponsorshipsByIdSponsorshipIdPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/sponsorships/byId/:sponsorshipId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1SponsorshipsByIdSponsorshipId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/sponsorships/byId/:sponsorshipId Parameter */
+                sponsorshipId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/sponsorships/byId/:sponsorshipId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/sponsorships/byId/:sponsorshipId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1SponsorshipsByIdSponsorshipId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/sponsorships/byId/:sponsorshipId Parameter */
+                sponsorshipId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/sponsorships/byId/:sponsorshipId Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchV1SponsorshipsByIdSponsorshipIdRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/sponsorships/byId/:sponsorshipId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1SponsorshipsByIdSponsorshipIdPositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/sponsorships/byId/:sponsorshipId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
             };
         };

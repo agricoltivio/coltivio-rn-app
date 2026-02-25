@@ -1,11 +1,12 @@
 import { useSession } from "@/auth/SessionProvider";
 import { renderAgriColtivioStack } from "@/features/agri-coltivio/navigation/AgriColtivioStack";
+import { renderAnimalsStack } from "@/features/animals/navigation/AnimalsStack";
 import { renderAuthStack } from "@/features/auth/navigation/AuthStack";
 import { renderCropProtectionApplicationStack } from "@/features/crop-protection-applications/navigation/CropProtectionApplicationStack";
 import { renderCropProtectionProductStack } from "@/features/crop-protection-products/navigation/CropProtectionProductStack";
 import { renderCropsRotationStack } from "@/features/crop-rotations/navigation/CropRotationsStack";
+import { renderCropFamiliesStack } from "@/features/crop-families/navigation/CropFamiliesStack";
 import { renderCropsStack } from "@/features/crops/navigation/CropsStack";
-import { renderEquipmentStack } from "@/features/equipment/navigation/EquipmentStack";
 import { renderErrorStack } from "@/features/errors/navigation/ErrorStack";
 import {
   renderFarmModalStack,
@@ -24,6 +25,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect, useState } from "react";
 import { useTheme } from "styled-components/native";
+import { MapDrawOnboardingScreen } from "../features/map/MapDrawOnboardingScreen";
 import { renderOnboardingStack } from "../features/onboarding/navigation/OnboardingStack";
 import { Stack } from "./stack";
 
@@ -85,17 +87,18 @@ export function RootStack() {
           {renderHomeStack(theme, navigation)}
           {renderUserStack()}
           {renderFarmStack()}
-          {renderPlotsStack()}
+          {renderPlotsStack(theme, navigation)}
           {renderCropsRotationStack()}
           {renderTillagesStack()}
-          {renderEquipmentStack()}
           {renderFieldCalendarStack(theme, navigation)}
           {renderCropsStack()}
+          {renderCropFamiliesStack()}
           {renderHarvestStack()}
           {renderFertilizerStack()}
           {renderFertilizerApplicationStack()}
           {renderCropProtectionApplicationStack()}
           {renderCropProtectionProductStack()}
+          {renderAnimalsStack(theme, navigation)}
           {renderAgriColtivioStack()}
         </Stack.Group>
 
@@ -109,6 +112,11 @@ export function RootStack() {
           }}
         >
           {renderFarmModalStack()}
+          <Stack.Screen
+            name="MapDrawOnboarding"
+            component={MapDrawOnboardingScreen}
+            options={{ headerShown: false }}
+          />
         </Stack.Group>
       </>
     );

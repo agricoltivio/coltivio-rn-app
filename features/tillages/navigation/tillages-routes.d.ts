@@ -2,33 +2,25 @@ import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type TillagesStackParamList = {
   Tillages: undefined;
-  TillagesOfYearList: { year: number };
   TillageDetails: { tillageId: string };
-  AddTillageSelectDate: undefined;
-  AddTillageSelectEquipment: { equipmentId?: string };
-  AddTillageSelectPlots: undefined;
-  AddTillageAdditionalNotes: undefined;
-  AddTillageSummary: undefined;
+  SelectTillageDate: undefined;
+  ConfigureTillage: undefined;
+  SelectTillagePlots: undefined;
+  TillageSummary: undefined;
 };
 
 export type TillagesScreenProps = StackScreenProps<"Tillages">;
 
-export type TillagesOfYearListScreenProps =
-  StackScreenProps<"TillagesOfYearList">;
-
 export type TillageDetailsScreenProps = StackScreenProps<"TillageDetails">;
 
-export type AddTillageSelectDateScreenProps =
-  StackScreenProps<"AddTillageSelectDate">;
+export type SelectTillageDateScreenProps =
+  StackScreenProps<"SelectTillageDate">;
 
-export type AddTillageSelectEquipmentScreenProps =
-  StackScreenProps<"AddTillageSelectEquipment">;
+export type ConfigureTillageScreenProps =
+  StackScreenProps<"ConfigureTillage">;
 
-export type AddTillageSelectPlotsScreenProps =
-  StackScreenProps<"AddTillageSelectPlots">;
+export type SelectTillagePlotsScreenProps =
+  StackScreenProps<"SelectTillagePlots">;
 
-export type AddTillageAdditionalNotesScreenProps =
-  StackScreenProps<"AddTillageAdditionalNotes">;
-
-export type AddTillageSummaryScreenProps =
-  StackScreenProps<"AddTillageSummary">;
+export type TillageSummaryScreenProps =
+  StackScreenProps<"TillageSummary">;

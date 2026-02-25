@@ -1,8 +1,12 @@
 import { Stack } from "@/navigation/stack";
+import { AppSettingsScreen } from "../AppSettingsScreen";
 import { ChangeEmailScreen } from "../ChangeEmailScreen";
 import { ChangePasswordScren } from "../ChangePasswordScreen";
 import { ChangeUserNameScreen } from "../ChangeUserNameScreen";
+import { SpeedDialSettingsScreen } from "../SpeedDialSettingsScreen";
 import { UserAccountScreen } from "../UserAccountScreen";
+import { OnboardingSettingsScreen } from "../UserSettingsScreen";
+import { DevSettingsScreen } from "../../farms/DevSettingsScreen";
 import { EmailVerifiedScreen } from "../EmailVerifiedScreen";
 import { ChangeEmailPendingScreen } from "../ChangeEmailPendingScreen";
 
@@ -12,6 +16,30 @@ export function renderUserStack() {
       key="user-account"
       name="UserAccount"
       component={UserAccountScreen}
+      options={{
+        title: "",
+      }}
+    />,
+    <Stack.Screen
+      key="onboarding-settings"
+      name="OnboardingSettings"
+      component={OnboardingSettingsScreen}
+      options={{
+        title: "",
+      }}
+    />,
+    <Stack.Screen
+      key="app-settings"
+      name="AppSettings"
+      component={AppSettingsScreen}
+      options={{
+        title: "",
+      }}
+    />,
+    <Stack.Screen
+      key="speed-dial-settings"
+      name="SpeedDialSettings"
+      component={SpeedDialSettingsScreen}
       options={{
         title: "",
       }}
@@ -50,6 +78,14 @@ export function renderUserStack() {
       key="change-password"
       name="ChangePassword"
       component={ChangePasswordScren}
+      options={{
+        title: "",
+      }}
+    />,
+    <Stack.Screen
+      key="dev-settings"
+      name="DevSettings"
+      component={DevSettingsScreen}
       options={{
         title: "",
       }}

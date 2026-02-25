@@ -30,8 +30,7 @@ export function TillageDetailsScreen({
   return (
     <ContentView>
       <TillageSummary
-        date={date}
-        equipmentName={tillage.equipment?.name}
+        date={new Date(date)}
         plots={[
           {
             plotId: tillage.plotId,
@@ -41,7 +40,7 @@ export function TillageDetailsScreen({
           },
         ]}
         action={tillage.action}
-        reason={tillage.reason}
+        customAction={tillage.customAction}
         hidePlotList
         additionalNotes={additionalNotes}
       />

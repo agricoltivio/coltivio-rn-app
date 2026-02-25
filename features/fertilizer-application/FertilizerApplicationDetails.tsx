@@ -17,7 +17,7 @@ export function FertilizerApplicationDetailsScreen({
   const { t } = useTranslation();
   const fertilizerApplicationId = route.params.fertilizerApplicationId;
   const { fertilizerApplication } = useFertilizerApplicationQuery(
-    fertilizerApplicationId
+    fertilizerApplicationId,
   );
 
   const deleteMutation = useDeleteFertilizerApplicationMutation(() => {
@@ -35,23 +35,23 @@ export function FertilizerApplicationDetailsScreen({
   return (
     <ContentView>
       <FertilizerApplicationSummary
-        date={date}
-        spreaderName={fertilizerApplication.spreader?.name}
+        date={new Date(date)}
         fertilizerName={fertilizerApplication.fertilizer.name!}
-        amountPerApplication={fertilizerApplication.amountPerApplication}
-        totalNumberOfApplications={fertilizerApplication.numberOfApplications}
+        amountPerUnit={fertilizerApplication.amountPerUnit}
+        totalNumberOfUnits={fertilizerApplication.numberOfUnits}
         unit={fertilizerApplication.unit}
         plots={[
           {
             plotId: fertilizerApplication.plotId,
             name: fertilizerApplication.plot.name,
-            numberOfApplications: fertilizerApplication.numberOfApplications,
+            numberOfUnits: fertilizerApplication.numberOfUnits,
             geometry: fertilizerApplication.geometry,
             size: fertilizerApplication.size,
           },
         ]}
         hidePlotList
         additionalNotes={additionalNotes}
+        productUnit={fertilizerApplication.fertilizer.unit ?? "kg"}
       />
       <Button
         style={{ marginBottom: theme.spacing.m }}

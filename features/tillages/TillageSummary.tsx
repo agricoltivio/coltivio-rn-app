@@ -1,4 +1,4 @@
-import { TillageAction, TillageReason } from "@/api/tillages.api";
+import { TillageAction } from "@/api/tillages.api";
 import { Card } from "@/components/card/Card";
 import { ListItem } from "@/components/list/ListItem";
 import { MapView } from "@/components/map/Map";
@@ -44,10 +44,9 @@ type SummaryProps = {
     geometry: GeoJSON.MultiPolygon;
     size: number;
   }[];
-  date: string;
-  reason: TillageReason;
+  date: Date;
   action: TillageAction;
-  equipmentName?: string;
+  customAction?: string | null;
   additionalNotes?: string | null;
   hidePlotList?: boolean;
 };
@@ -55,9 +54,8 @@ type SummaryProps = {
 export function TillageSummary({
   date,
   plots,
-  equipmentName,
-  reason,
   action,
+  customAction,
   additionalNotes,
   hidePlotList,
 }: SummaryProps) {
@@ -73,7 +71,7 @@ export function TillageSummary({
     latitudeDelta: 0.002,
     longitudeDelta: 0.002,
   };
-  const formattedDate = formatLocalizedDate(new Date(date), locale, "long");
+  const formattedDate = formatLocalizedDate(date, locale, "long");
   return (
     <ScrollView
       showHeaderOnScroll
@@ -101,7 +99,7 @@ export function TillageSummary({
                 strokeColor={"white"}
                 fillColor={hexToRgba(
                   theme.map.defaultFillColor,
-                  theme.map.defaultFillAlpha
+                  theme.map.defaultFillAlpha,
                 )}
               />
             );
@@ -110,20 +108,17 @@ export function TillageSummary({
       </View>
       <Card style={{ marginTop: theme.spacing.m }}>
         <SummaryItem label={t("forms.labels.area")} value={`${size / 100}a`} />
-        {equipmentName && (
+        {action === "custom" ? (
           <SummaryItem
-            label={t("forms.labels.machine")}
-            value={equipmentName}
+            label={t("forms.labels.action")}
+            value={customAction || ""}
+          />
+        ) : (
+          <SummaryItem
+            label={t("forms.labels.action")}
+            value={t(`tillages.actions.${action}`)}
           />
         )}
-        <SummaryItem
-          label={t("forms.labels.reason")}
-          value={t(`tillages.reasons.${reason}`)}
-        />
-        <SummaryItem
-          label={t("forms.labels.action")}
-          value={t(`tillages.actions.${action}`)}
-        />
       </Card>
       {additionalNotes && (
         <>

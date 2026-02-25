@@ -3,10 +3,12 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { RHSelect } from "@/components/select/RHSelect";
+import { Switch } from "@/components/inputs/Switch";
 import { ScrollView } from "@/components/views/ScrollView";
 import { EditCropRotationScreenProps } from "./navigation/crop-rotations-routes";
 import { H2, H3 } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCropsQuery } from "../crops/crops.hooks";
@@ -16,7 +18,7 @@ import {
   useUpdateCropRotationMutation,
 } from "./crop-rotations.hooks";
 import { useTranslation } from "react-i18next";
-import { Card } from "@/components/card/Card";
+import { INFINITE_DATE, isInfiniteDate } from "@/utils/date";
 
 type FormValues = {
   cropId: string;
@@ -31,26 +33,30 @@ export function EditCropRotationScreen({
 }: EditCropRotationScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { plotName, rotationId, canDelete } = route.params;
+  const { plotName, rotationId } = route.params;
   const { crops } = useCropsQuery();
   const { cropRotation } = useCropRotationQuery(rotationId);
 
   const updatePlotCropRotationMutation = useUpdateCropRotationMutation(() =>
-    navigation.goBack()
+    navigation.goBack(),
   );
   const deletePlotCropRotationMutation = useDeleteCropRotationMutation(() =>
-    navigation.goBack()
+    navigation.goBack(),
   );
 
   const {
     handleSubmit,
     control,
+    setValue,
+    getValues,
+    watch,
     formState: { isDirty, errors },
   } = useForm<FormValues>({
     values: cropRotation
       ? {
           cropId: cropRotation.cropId,
           fromDate: new Date(cropRotation.fromDate),
+          // If permanent, don't put the infinite date into the form — use null
           toDate: cropRotation.toDate ? new Date(cropRotation.toDate) : null,
           sowingDate: cropRotation.sowingDate
             ? new Date(cropRotation.sowingDate)
@@ -58,6 +64,8 @@ export function EditCropRotationScreen({
         }
       : undefined,
   });
+  const toDate = watch("toDate");
+  const isPermanent = isInfiniteDate(toDate || new Date());
 
   function onSubmit({ cropId, fromDate, toDate, sowingDate }: FormValues) {
     updatePlotCropRotationMutation.mutate({
@@ -72,6 +80,7 @@ export function EditCropRotationScreen({
   function onDelete() {
     deletePlotCropRotationMutation.mutate({ rotationId });
   }
+
   if (!cropRotation) {
     return null;
   }
@@ -89,8 +98,7 @@ export function EditCropRotationScreen({
             style={{ flexGrow: 1 }}
             disabled={
               updatePlotCropRotationMutation.isPending ||
-              deletePlotCropRotationMutation.isPending ||
-              !canDelete
+              deletePlotCropRotationMutation.isPending
             }
           />
           <Button
@@ -98,8 +106,7 @@ export function EditCropRotationScreen({
             title={t("buttons.save")}
             style={{ flexGrow: 1 }}
             disabled={
-              !isDirty ||
-              updatePlotCropRotationMutation.isPending ||
+              (!isDirty && updatePlotCropRotationMutation.isPending) ||
               deletePlotCropRotationMutation.isPending
             }
             loading={
@@ -120,18 +127,6 @@ export function EditCropRotationScreen({
           {`${plotName ? `${t("plots.plot_name", { name: plotName })} - ` : ""}`}
           {cropRotation?.crop.name}
         </H3>
-        {!canDelete ? (
-          <Card
-            style={{
-              backgroundColor: theme.colors.danger,
-              marginTop: theme.spacing.m,
-            }}
-          >
-            <H3 style={{ color: theme.colors.white }}>
-              {t("crop_rotations.cannot_delete_warning")}
-            </H3>
-          </Card>
-        ) : null}
         <View style={{ marginTop: theme.spacing.m, gap: theme.spacing.s }}>
           <RHSelect
             name="cropId"
@@ -161,14 +156,32 @@ export function EditCropRotationScreen({
               },
             }}
             error={errors.fromDate?.message}
-            label={t("forms.labels.sowing")}
+            label={t("forms.labels.from")}
             mode="date"
           />
-          <RHDatePicker
-            name="toDate"
-            control={control}
-            label={t("forms.labels.end_optional")}
-            mode="date"
+          {!isPermanent && (
+            <RHDatePicker
+              name="toDate"
+              control={control}
+              label={t("forms.labels.to")}
+              mode="date"
+            />
+          )}
+          <Switch
+            style={{ marginTop: theme.spacing.m }}
+            label={t("forms.labels.permanent")}
+            value={isPermanent}
+            onChange={(event) => {
+              const newPermanent = event.nativeEvent.value;
+              if (!newPermanent) {
+                // When toggling off permanent, set toDate to fromDate
+                setValue("toDate", getValues("fromDate"), {
+                  shouldDirty: true,
+                });
+              } else {
+                setValue("toDate", INFINITE_DATE, { shouldDirty: true });
+              }
+            }}
           />
         </View>
       </ScrollView>

@@ -1,4 +1,3 @@
-import { TillageEquipment } from "@/api/tillageEquipment.api";
 import { TillagesBatchCreateInput } from "@/api/tillages.api";
 import { create } from "zustand";
 
@@ -9,13 +8,13 @@ export type SelectedTillagePlot = {
   geometry: GeoJSON.MultiPolygon;
 };
 
-export type TillageBase = Omit<TillagesBatchCreateInput, "plots">;
+export type TillageBase = Omit<TillagesBatchCreateInput, "plots" | "date"> & {
+  date: Date;
+};
 
 type AddTillage = {
   data?: Partial<TillageBase>;
   setData: (data: Partial<TillageBase>) => void;
-  selectedEquipment?: TillageEquipment;
-  setSelectedEquipment: (equipment: TillageEquipment) => void;
   selectedPlotsById: Record<string, SelectedTillagePlot>;
   putPlot: (plot: SelectedTillagePlot) => void;
   removePlot: (plotId: string) => void;
@@ -32,7 +31,6 @@ export const useAddTillageStore = create<AddTillage>((set) => ({
         ...rotation,
       },
     })),
-  setSelectedEquipment: (equipment) => set({ selectedEquipment: equipment }),
   selectedPlotsById: {},
   putPlot: (plot: SelectedTillagePlot) =>
     set((state) => ({
@@ -66,8 +64,6 @@ export const useAddTillageStore = create<AddTillage>((set) => ({
   reset: () =>
     set(() => ({
       selectedPlotsById: {},
-      selectedEquipment: undefined,
-      totalNumberOfApplications: undefined,
       data: undefined,
     })),
   resetSelectedPlots: () =>

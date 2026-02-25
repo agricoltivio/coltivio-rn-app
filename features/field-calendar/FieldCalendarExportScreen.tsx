@@ -1,7 +1,7 @@
 import { Button } from "@/components/buttons/Button";
 import { ContentView } from "@/components/containers/ContentView";
 import { getYearRange } from "@/utils/date";
-import { useGeneratePlotsReportMutation } from "./field-calendar.hooks";
+import { useDownloadFieldCalendarReportMutation } from "./field-calendar.hooks";
 import { FieldCalendarExportScreenProps } from "./navigation/field-calendar.routes";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -49,18 +49,18 @@ export function FieldCalendarExportScreen({
   });
   const [error, setError] = useState<string | null>(null);
 
-  const generateReportMutation = useGeneratePlotsReportMutation(
+  const downloadReportMutation = useDownloadFieldCalendarReportMutation(
     () => {
-      navigation.navigate("FieldCalendarExportSuccess");
+      navigation.goBack();
     },
     (error) => {
       console.error(error);
       setError(t("errors.unexpected_retry_later"));
-    }
+    },
   );
 
   function onSubmit(data: FormValues) {
-    generateReportMutation.mutate({
+    downloadReportMutation.mutate({
       ...data,
       fromDate: data.fromDate.toISOString(),
       toDate: data.toDate.toISOString(),
@@ -73,8 +73,8 @@ export function FieldCalendarExportScreen({
           <Button
             title={t("buttons.export")}
             onPress={handleSubmit(onSubmit)}
-            disabled={!isDirty || generateReportMutation.isPending}
-            loading={generateReportMutation.isPending}
+            disabled={!isDirty || downloadReportMutation.isPending}
+            loading={downloadReportMutation.isPending}
           />
         </BottomActionContainer>
       }

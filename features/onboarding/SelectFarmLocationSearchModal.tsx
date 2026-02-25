@@ -19,12 +19,12 @@ export function SelectFarmLocationSearchModal({
   const { data, setData } = useOnboarding();
 
   const [locationSerachText, setLocationSearchText] = useState(
-    data.location?.label || ""
+    data.location?.label || "",
   );
   const debouncedLocationSearchText = useDebounce(locationSerachText, 800);
 
   const { addresses, isFetching } = useGeoAdminAddressQuery(
-    debouncedLocationSearchText
+    debouncedLocationSearchText,
   );
   function handleLocationSearchTextChange(value: string) {
     setLocationSearchText(value);

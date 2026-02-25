@@ -7,7 +7,9 @@ export type FertilizerApplicationBatchCreateInput =
 export type FertilizerApplication =
   components["schemas"]["GetV1FertilizerApplicationsByIdFertilizerApplicationIdPositiveResponse"]["data"];
 
-export type FertilizerApplicationMethod = FertilizerApplication["method"];
+export type FertilizerApplicationMethod = NonNullable<
+  FertilizerApplication["method"]
+>;
 
 export type PlotFertilizerApplication =
   components["schemas"]["GetV1PlotsByIdPlotIdFertilizerApplicationsPositiveResponse"]["data"]["result"][number];
@@ -18,7 +20,7 @@ export type FertilizerApplicationSummary =
 export function fertilizerApplicationsApi(client: FetchClient) {
   return {
     async createFertilizerApplications(
-      input: FertilizerApplicationBatchCreateInput
+      input: FertilizerApplicationBatchCreateInput,
     ): Promise<FertilizerApplication[]> {
       const { data } = await client.POST("/v1/fertilizerApplications", {
         body: input,
@@ -28,7 +30,7 @@ export function fertilizerApplicationsApi(client: FetchClient) {
 
     async getFertilizerApplications(
       fromDate?: Date,
-      toDate?: Date
+      toDate?: Date,
     ): Promise<FertilizerApplication[]> {
       const { data } = await client.GET("/v1/fertilizerApplications", {
         params: {
@@ -42,7 +44,7 @@ export function fertilizerApplicationsApi(client: FetchClient) {
     },
 
     async getFertilizerApplicationById(
-      fertilizerApplicationId: string
+      fertilizerApplicationId: string,
     ): Promise<FertilizerApplication> {
       const { data } = await client.GET(
         "/v1/fertilizerApplications/byId/{fertilizerApplicationId}",
@@ -52,12 +54,12 @@ export function fertilizerApplicationsApi(client: FetchClient) {
               fertilizerApplicationId,
             },
           },
-        }
+        },
       );
       return data!.data;
     },
     async getFertilizerApplicationsForPlot(
-      plotId: string
+      plotId: string,
     ): Promise<PlotFertilizerApplication[]> {
       const { data } = await client.GET(
         "/v1/plots/byId/{plotId}/fertilizerApplications",
@@ -67,7 +69,7 @@ export function fertilizerApplicationsApi(client: FetchClient) {
               plotId,
             },
           },
-        }
+        },
       );
       return data!.data.result;
     },
@@ -80,7 +82,7 @@ export function fertilizerApplicationsApi(client: FetchClient) {
               fertilizerApplicationId,
             },
           },
-        }
+        },
       );
     },
     async getFertilizerApplicationYears(): Promise<string[]> {
@@ -88,7 +90,7 @@ export function fertilizerApplicationsApi(client: FetchClient) {
       return data!.data.result;
     },
     async getFertilizerApplicationSummariesForPlot(
-      plotId: string
+      plotId: string,
     ): Promise<FertilizerApplicationSummary[]> {
       const { data } = await client.GET(
         "/v1/plots/byId/{plotId}/fertilizerApplicationSummary",
@@ -98,7 +100,7 @@ export function fertilizerApplicationsApi(client: FetchClient) {
               plotId,
             },
           },
-        }
+        },
       );
       return data!.data.monthlyApplications ?? [];
     },

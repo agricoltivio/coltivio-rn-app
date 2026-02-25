@@ -17,22 +17,28 @@ export function CreateCropScreen({ navigation }: CreateCropScreenProps) {
     formState: { errors, isDirty },
   } = useForm<CropFormValues>();
 
+  const previousScreen =
+    navigation.getState().routes[navigation.getState().index - 1];
+
   const createForageMutation = useCreateCropMutation(
     (crop) => {
-      const previousScreen =
-        navigation.getState().routes[navigation.getState().index - 1];
       if (previousScreen.name === "AddPlotSummary") {
         navigation.popTo("AddPlotSummary", { cropId: crop.id });
+      } else if (previousScreen.name === "SelectHarvestCropAndDate") {
+        navigation.popTo("SelectHarvestCropAndDate", { cropId: crop.id });
       } else {
         navigation.goBack();
       }
     },
-    (error) => console.error(error)
+    (error) => console.error(error),
   );
 
-  function onCreateCrop(data: CropFormValues) {
+  function onCreateCrop({ waitingTimeInYears, ...data }: CropFormValues) {
     createForageMutation.mutate({
       ...data,
+      waitingTimeInYears: waitingTimeInYears
+        ? Number(waitingTimeInYears)
+        : undefined,
     });
   }
 
