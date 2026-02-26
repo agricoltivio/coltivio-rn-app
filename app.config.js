@@ -84,6 +84,7 @@ export default ({ config }) => {
           // },
         },
       ],
+      "@maplibre/maplibre-react-native",
       // [
       //   "react-native-maps",
       //   {
