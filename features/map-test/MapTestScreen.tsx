@@ -81,6 +81,7 @@ export function MapTestScreen() {
     [plots, selectedPlotId],
   );
 
+  const [baseLayer, setBaseLayer] = useState<"satellite" | "map">("satellite");
   const [splitResult, setSplitResult] = useState<GeoJSON.FeatureCollection | null>(null);
 
   // Label point at centroid of selected plot
@@ -313,7 +314,7 @@ export function MapTestScreen() {
             }}
           />
 
-          <RasterTileSource />
+          <RasterTileSource activeLayer={baseLayer} />
 
           <GeoJSONSource
             id="plots"
@@ -415,6 +416,11 @@ export function MapTestScreen() {
               setSplitResult(null);
             }}
           />
+          <ToolbarButton
+            label={baseLayer === "satellite" ? "Map" : "Satellite"}
+            active={false}
+            onPress={() => setBaseLayer((prev) => (prev === "satellite" ? "map" : "satellite"))}
+          />
         </View>
       </View>
     </GestureDetector>
@@ -430,18 +436,41 @@ const EMPTY_STYLE: StyleSpecification = {
   layers: [],
 };
 
-function RasterTileSource() {
+const TILE_URLS = {
+  satellite:
+    "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/3857/{z}/{x}/{y}.jpeg",
+  map:
+    "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg",
+} as const;
+
+function RasterTileSource({ activeLayer }: { activeLayer: "satellite" | "map" }) {
   return (
-    <RasterSource
-      id="swisstopo-satellite"
-      tiles={[
-        "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/3857/{z}/{x}/{y}.jpeg",
-      ]}
-      tileSize={256}
-      maxzoom={20}
-    >
-      <Layer type="raster" id="satellite-layer" />
-    </RasterSource>
+    <>
+      <RasterSource
+        id="swisstopo-satellite"
+        tiles={[TILE_URLS.satellite]}
+        tileSize={256}
+        maxzoom={20}
+      >
+        <Layer
+          type="raster"
+          id="satellite-layer"
+          layout={{ visibility: activeLayer === "satellite" ? "visible" : "none" }}
+        />
+      </RasterSource>
+      <RasterSource
+        id="swisstopo-map"
+        tiles={[TILE_URLS.map]}
+        tileSize={256}
+        maxzoom={20}
+      >
+        <Layer
+          type="raster"
+          id="map-layer"
+          layout={{ visibility: activeLayer === "map" ? "visible" : "none" }}
+        />
+      </RasterSource>
+    </>
   );
 }
 
