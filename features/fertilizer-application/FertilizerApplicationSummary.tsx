@@ -1,19 +1,17 @@
 import { FertilizerApplication } from "@/api/fertilizerApplications.api";
 import { Card } from "@/components/card/Card";
 import { ListItem } from "@/components/list/ListItem";
-import { MapView } from "@/components/map/Map";
-import { MultiPolygon } from "@/components/map/MultiPolygon";
+import { StaticMapPreview } from "@/components/map/StaticMapPreview";
 import { ScrollView } from "@/components/views/ScrollView";
 import { locale } from "@/locales/i18n";
-import { hexToRgba } from "@/theme/theme";
 import { Body, H2, H3 } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
 import { round } from "@/utils/math";
+import { type LngLat } from "@maplibre/maplibre-react-native";
 import * as turf from "@turf/turf";
-import React from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
-import { PROVIDER_GOOGLE, Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
 
 function SummaryItem({
@@ -71,14 +69,17 @@ export function FertilizerApplicationSummary({
   const theme = useTheme();
   const size = plots.reduce((acc, plot) => acc + plot.size, 0);
 
-  const harvestCentroid = turf.centroid(plots[0].geometry);
-  const [longitude, latitude] = harvestCentroid.geometry.coordinates;
-  const initialRegion: Region = {
-    latitude,
-    longitude,
-    latitudeDelta: 0.002,
-    longitudeDelta: 0.002,
-  };
+  const centroid = turf.centroid(plots[0].geometry);
+  const center = centroid.geometry.coordinates as LngLat;
+
+  const features = useMemo((): GeoJSON.FeatureCollection => ({
+    type: "FeatureCollection",
+    features: plots.map((p) => ({
+      type: "Feature",
+      properties: {},
+      geometry: p.geometry,
+    })),
+  }), [plots]);
   const formattedDate = formatLocalizedDate(date, locale, "long");
   return (
     <ScrollView
@@ -92,30 +93,8 @@ export function FertilizerApplicationSummary({
     >
       <H2>{t("fertilizer_application.fertilizer_application")}</H2>
       <H3>{formattedDate}</H3>
-      <View
-        style={{
-          height: 250,
-          borderRadius: 10,
-          overflow: "hidden",
-          marginTop: theme.spacing.m,
-        }}
-      >
-        <MapView provider={PROVIDER_GOOGLE} initialRegion={initialRegion}>
-          {plots.map((plot) => {
-            return (
-              <MultiPolygon
-                key={plot.plotId}
-                polygon={plot.geometry}
-                strokeWidth={theme.map.defaultStrokeWidth}
-                strokeColor={"white"}
-                fillColor={hexToRgba(
-                  theme.map.defaultFillColor,
-                  theme.map.defaultFillAlpha,
-                )}
-              />
-            );
-          })}
-        </MapView>
+      <View style={{ marginTop: theme.spacing.m }}>
+        <StaticMapPreview center={center} zoom={17} features={features} height={250} />
       </View>
       <Card style={{ marginTop: theme.spacing.m }}>
         {hidePlotList && (

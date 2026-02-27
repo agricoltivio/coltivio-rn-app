@@ -21,8 +21,8 @@ type MapLayersProps = {
 };
 
 // Each mode is wrapped in a React.Fragment with a unique key based on mode type.
-// This forces react-native-maps to fully unmount/remount children when the mode
-// changes, which prevents stale polygon artifacts from lingering on the map.
+// This forces a full unmount/remount of children when the mode changes,
+// which prevents stale layer artifacts from lingering on the map.
 export function MapLayers({
   splitLayersRef,
   adjustLayersRef,

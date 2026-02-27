@@ -1,6 +1,16 @@
 import { Plot } from "@/api/plots.api";
 import * as turf from "@turf/turf";
-import { LatLng, Region } from "react-native-maps";
+
+// Local type aliases so we don't depend on react-native-maps
+export type LatLng = { latitude: number; longitude: number };
+export type Region = {
+  latitude: number;
+  longitude: number;
+  latitudeDelta: number;
+  longitudeDelta: number;
+};
+// LngLat as [longitude, latitude] — the GeoJSON / MapLibre convention
+export type LngLat = [number, number];
 
 export interface BoundingBox {
   xmin: number;
@@ -180,6 +190,35 @@ export class GeoSpatials {
 
     return result;
   };
+
+  // --- LngLat-based helpers (MapLibre convention: [lng, lat]) ---
+
+  static lngLatToMultiPolygon(rings: LngLat[][]): GeoJSON.MultiPolygon {
+    return {
+      type: "MultiPolygon",
+      coordinates: rings.map((ring) => {
+        const coords = ring.map((c) => [c[0], c[1]]);
+        // Close ring per GeoJSON spec (first coord === last coord)
+        if (coords.length > 0) {
+          const first = coords[0];
+          const last = coords[coords.length - 1];
+          if (first[0] !== last[0] || first[1] !== last[1]) {
+            coords.push([first[0], first[1]]);
+          }
+        }
+        return [coords];
+      }),
+    };
+  }
+
+  static plotIntersectionsFromLngLat(
+    plots: Plot[],
+    polygon: GeoJSON.MultiPolygon,
+  ): PlotIntersetion[] {
+    // Delegates to the existing LatLng version — same logic, no conversion needed
+    // since the polygon is already in GeoJSON format
+    return GeoSpatials.plotIntersections(plots, polygon);
+  }
 }
 
 export function splitMultiPolygonByLine(
@@ -302,6 +341,30 @@ export function extractSubPolygonByPoint(
     };
   }
   return null;
+}
+
+/** LngLat version — accepts [lng, lat][] ring (must be closed) */
+export function cutPolygonFromMultiPolygonLngLat(
+  multiPolygon: GeoJSON.MultiPolygon,
+  drawnRing: LngLat[],
+): {
+  remaining: GeoJSON.MultiPolygon;
+  plots: GeoJSON.MultiPolygon;
+} | null {
+  // Convert to the LatLng format expected by the original function
+  const latLngRing = drawnRing.map(([lng, lat]) => ({
+    latitude: lat,
+    longitude: lng,
+  }));
+  // Close the ring if not already closed
+  if (
+    latLngRing.length > 0 &&
+    (latLngRing[0].latitude !== latLngRing[latLngRing.length - 1].latitude ||
+      latLngRing[0].longitude !== latLngRing[latLngRing.length - 1].longitude)
+  ) {
+    latLngRing.push(latLngRing[0]);
+  }
+  return cutPolygonFromMultiPolygon(multiPolygon, latLngRing);
 }
 
 export function cutPolygonFromMultiPolygon(

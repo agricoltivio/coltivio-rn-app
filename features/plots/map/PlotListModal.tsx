@@ -2,12 +2,12 @@ import { Plot } from "@/api/plots.api";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
 import { H2 } from "@/theme/Typography";
+import { type CameraRef } from "@maplibre/maplibre-react-native";
 import * as turf from "@turf/turf";
 import Fuse from "fuse.js";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList, Modal, View } from "react-native";
-import RnMapView from "react-native-maps";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 
@@ -16,7 +16,7 @@ type PlotListModalProps = {
   onClose: () => void;
   plots: Plot[];
   onSelectPlot: (plot: Plot) => void;
-  mapRef: React.RefObject<RnMapView | null>;
+  cameraRef: React.RefObject<CameraRef | null>;
 };
 
 export function PlotListModal({
@@ -24,7 +24,7 @@ export function PlotListModal({
   onClose,
   plots,
   onSelectPlot,
-  mapRef,
+  cameraRef,
 }: PlotListModalProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -55,17 +55,12 @@ export function PlotListModal({
       onClose();
       setSearchText("");
       onSelectPlot(plot);
-      // Animate map to plot centroid
+      // Fly to plot centroid
       const centroid = turf.centroid(plot.geometry);
       const [longitude, latitude] = centroid.geometry.coordinates;
-      mapRef.current?.animateToRegion({
-        latitude,
-        longitude,
-        latitudeDelta: 0.0025,
-        longitudeDelta: 0.0025,
-      });
+      cameraRef.current?.flyTo({ center: [longitude, latitude], duration: 500 });
     },
-    [onSelectPlot, mapRef, onClose],
+    [onSelectPlot, cameraRef, onClose],
   );
 
   const renderItem = useCallback(

@@ -4,24 +4,16 @@ import { NavigationProp } from "@react-navigation/native";
 import { Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { DefaultTheme } from "styled-components/native";
-import { AddPlotMapScreen } from "../AddPlotMapScreen";
 import { AddPlotSummaryScreen } from "../AddPlotSummaryScreen";
 import { DeletePlotScreen } from "../DeletePlotScreen";
-import { EditPlotMapScreen } from "../EditPlotMapScreen";
 import { EditPlotScreen } from "../EditPlotScreen";
-import { MergePlotsMapScreen } from "../MergePlotsMapScreen";
 import { MergePlotSummaryScreen } from "../MergePlotSummaryScreen";
 import { PlotCropProtectionApplicationsScreen } from "../PlotCropProtectionApllicationsScreen";
 import { PlotDetailsScreen } from "../PlotDetailsScreen";
 import { PlotFertilizerApplicationsScreen } from "../PlotFertilizerApllicationsScreen";
 import { PlotHarvestsScreen } from "../PlotHarvestsScreen";
-import { PlotsMapScreen } from "../PlotsMapScreen";
+import { PlotsMapScreen } from "../map/PlotsMapScreen";
 import { PlotTillagesScreen } from "../PlotTillagesScreen";
-import { SplitPlotMapScreen } from "../SplitPlotMapScreen";
-import { AddPlotOnboardingScreen } from "../AddPlotOnboardingScreen";
-import { EditPlotOnboardingScreen } from "../EditPlotOnboardingScreen";
-import { MergePlotsOnboardingScreen } from "../MergePlotsOnboardingScreen";
-import { PlotsMapOnboardingScreen } from "../PlotsMapOnboardingScreen";
 import { SplitPlotOnboardingScreen } from "../SplitPlotOnboardingScreen";
 import { SplitPlotSummaryScreen } from "../SplitPlotSummaryScreen";
 import { PlotListScreen } from "../map/PlotListScreen";
@@ -50,30 +42,6 @@ export function renderPlotsStack(
       name="PlotsMap"
       component={PlotsMapScreen}
       options={{ headerShown: false }}
-    />,
-    <Stack.Screen
-      key="add-plot-map"
-      name="AddPlotMap"
-      component={AddPlotMapScreen}
-      options={{ headerShown: false, animation: "fade" }}
-    />,
-    <Stack.Screen
-      key="edit-plot-map"
-      name="EditPlotMap"
-      component={EditPlotMapScreen}
-      options={{ headerShown: false, animation: "fade" }}
-    />,
-    <Stack.Screen
-      key="split-plot-map"
-      name="SplitPlotMap"
-      component={SplitPlotMapScreen}
-      options={{ headerShown: false, animation: "fade" }}
-    />,
-    <Stack.Screen
-      key="merge-plots-map"
-      name="MergePlotsMap"
-      component={MergePlotsMapScreen}
-      options={{ headerShown: false, animation: "fade" }}
     />,
     <Stack.Screen
       key="add-plot-summary"
@@ -145,36 +113,6 @@ export function renderPlotsStack(
       component={PlotTillagesScreen}
     />,
     <Stack.Screen
-      key="plots-map-onboarding"
-      name="PlotsMapOnboarding"
-      component={PlotsMapOnboardingScreen}
-      options={{ headerShown: false }}
-    />,
-    <Stack.Screen
-      key="add-plot-onboarding"
-      name="AddPlotOnboarding"
-      component={AddPlotOnboardingScreen}
-      options={{ headerShown: false }}
-    />,
-    <Stack.Screen
-      key="edit-plot-onboarding"
-      name="EditPlotOnboarding"
-      component={EditPlotOnboardingScreen}
-      options={{ headerShown: false }}
-    />,
-    <Stack.Screen
-      key="split-plot-onboarding"
-      name="SplitPlotOnboarding"
-      component={SplitPlotOnboardingScreen}
-      options={{ headerShown: false }}
-    />,
-    <Stack.Screen
-      key="merge-plots-onboarding"
-      name="MergePlotsOnboarding"
-      component={MergePlotsOnboardingScreen}
-      options={{ headerShown: false }}
-    />,
-    <Stack.Screen
       key="split-plot-summary"
       name="SplitPlotSummary"
       component={SplitPlotSummaryScreen}
@@ -205,6 +143,16 @@ export function renderPlotsStack(
         presentation: "modal",
         headerShown: true,
         headerRight,
+      }}
+    />,
+    <Stack.Screen
+      key="split-plot-onboarding"
+      name="SplitPlotOnboarding"
+      component={SplitPlotOnboardingScreen}
+      options={{
+        title: "",
+        presentation: "modal",
+        headerShown: false,
       }}
     />,
   ];

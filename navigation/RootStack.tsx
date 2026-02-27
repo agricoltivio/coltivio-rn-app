@@ -17,7 +17,6 @@ import { renderFertilizerStack } from "@/features/fertilizers/navigation/Fertili
 import { renderFieldCalendarStack } from "@/features/field-calendar/navigation/FieldCalendarStack";
 import { renderHarvestStack } from "@/features/harvests/navigation/HarvestStack";
 import { renderHomeStack } from "@/features/home/navigation/HomeStack";
-import { renderMapTestStack } from "@/features/map-test/MapTestStack";
 import { renderPlotsStack } from "@/features/plots/navigation/PlotsStack";
 import { renderTillagesStack } from "@/features/tillages/navigation/TillagesStack";
 import { renderUserStack } from "@/features/user/navigation/UserStack";
@@ -101,7 +100,6 @@ export function RootStack() {
           {renderCropProtectionProductStack()}
           {renderAnimalsStack(theme, navigation)}
           {renderAgriColtivioStack()}
-          {renderMapTestStack()}
         </Stack.Group>
 
         <Stack.Group

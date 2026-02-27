@@ -14,7 +14,7 @@ type SplitModeControlsProps = {
 
 export function SplitModeControls({ splitLayersRef }: SplitModeControlsProps) {
   const theme = useTheme();
-  const { mode, dispatch, plots, navigation } = usePlotsMapContext();
+  const { mode, dispatch, plots, drawingRef, navigation } = usePlotsMapContext();
   const splitPlotStore = useSplitPlotStore();
 
   if (mode.type !== "split") return null;
@@ -33,9 +33,59 @@ export function SplitModeControls({ splitLayersRef }: SplitModeControlsProps) {
     navigation.navigate("SplitPlotSummary", { plotId });
   }
 
-  // When polygon drawing tool is active, it renders its own CommandPalette
-  if (activeToolMode === "polygon") return null;
+  // When a drawing tool is active, show drawing-specific controls
+  if (activeToolMode === "polyline" || activeToolMode === "polygon") {
+    return (
+      <MapControls>
+        {/* Cancel — exit tool back to tool selection */}
+        <MaterialCommunityIconButton
+          type="accent"
+          color="red"
+          iconSize={30}
+          icon="close-circle-outline"
+          onPress={() => {
+            drawingRef.current?.reset();
+            dispatch({ type: "SET_SPLIT_TOOL", tool: "none" });
+          }}
+        />
+        {/* Undo */}
+        <MaterialCommunityIconButton
+          type="accent"
+          color="white"
+          iconSize={30}
+          icon="undo"
+          onPress={() => drawingRef.current?.undo()}
+        />
+        {/* Cut (polyline mode) */}
+        {activeToolMode === "polyline" && (
+          <MaterialCommunityIconButton
+            type="accent"
+            color="green"
+            iconSize={30}
+            icon="content-cut"
+            onPress={() => splitLayersRef.current?.handlePolylineCut()}
+          />
+        )}
+      </MapControls>
+    );
+  }
 
+  // Extract mode controls
+  if (activeToolMode === "extract") {
+    return (
+      <MapControls>
+        <MaterialCommunityIconButton
+          type="accent"
+          color="red"
+          iconSize={30}
+          icon="close-circle-outline"
+          onPress={() => dispatch({ type: "SET_SPLIT_TOOL", tool: "none" })}
+        />
+      </MapControls>
+    );
+  }
+
+  // Tool selection mode (no active tool)
   return (
     <MapControls>
       {/* Cancel */}
@@ -49,40 +99,37 @@ export function SplitModeControls({ splitLayersRef }: SplitModeControlsProps) {
           dispatch({ type: "EXIT_MODE" });
         }}
       />
-      {/* Polyline toggle */}
-      {activeToolMode === "none" ? (
+      {/* Polyline tool */}
+      <MaterialCommunityIconButton
+        style={{ backgroundColor: theme.colors.accent }}
+        type="accent"
+        color="black"
+        iconSize={30}
+        icon="vector-polyline-plus"
+        onPress={() => dispatch({ type: "SET_SPLIT_TOOL", tool: "polyline" })}
+      />
+      {/* Polygon tool */}
+      <MaterialCommunityIconButton
+        style={{ backgroundColor: theme.colors.accent }}
+        type="accent"
+        color="black"
+        iconSize={30}
+        icon="vector-polygon"
+        onPress={() => dispatch({ type: "SET_SPLIT_TOOL", tool: "polygon" })}
+      />
+      {/* Extract tool — only for MultiPolygons with >1 sub-polygon */}
+      {currentPolygons.length === 1 && currentPolygons[0].coordinates.length > 1 && (
         <MaterialCommunityIconButton
           style={{ backgroundColor: theme.colors.accent }}
           type="accent"
           color="black"
           iconSize={30}
-          icon="vector-polyline-plus"
-          onPress={() => dispatch({ type: "SET_SPLIT_TOOL", tool: "polyline" })}
+          icon="vector-difference-ba"
+          onPress={() => dispatch({ type: "SET_SPLIT_TOOL", tool: "extract" })}
         />
-      ) : null}
-      {/* Polygon toggle */}
-      {activeToolMode === "none" ? (
-        <MaterialCommunityIconButton
-          style={{ backgroundColor: theme.colors.accent }}
-          type="accent"
-          color="black"
-          iconSize={30}
-          icon="vector-polygon"
-          onPress={() => dispatch({ type: "SET_SPLIT_TOOL", tool: "polygon" })}
-        />
-      ) : null}
-      {/* Cut (polyline mode) */}
-      {activeToolMode === "polyline" ? (
-        <MaterialCommunityIconButton
-          type="accent"
-          color="green"
-          iconSize={30}
-          icon="content-cut"
-          onPress={() => splitLayersRef.current?.handlePolylineCut()}
-        />
-      ) : null}
+      )}
       {/* Confirm (green checkmark) */}
-      {hasMultiplePolygons && activeToolMode === "none" ? (
+      {hasMultiplePolygons && (
         <MaterialCommunityIconButton
           type="accent"
           color="green"
@@ -90,7 +137,7 @@ export function SplitModeControls({ splitLayersRef }: SplitModeControlsProps) {
           icon="check-circle-outline"
           onPress={handleDone}
         />
-      ) : null}
+      )}
     </MapControls>
   );
 }

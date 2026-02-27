@@ -1,8 +1,11 @@
 import { Plot } from "@/api/plots.api";
-import { DrawAction } from "@/components/map/PolygonDrawingTool";
+import { type DrawingOverlayRef } from "@/components/map/DrawingOverlay";
+import { type BaseLayer } from "@/components/map/MapLibreMap";
+import { type MapRef, type CameraRef } from "@maplibre/maplibre-react-native";
 import { NavigationProp } from "@react-navigation/native";
 import { createContext, useContext, Dispatch } from "react";
-import RnMapView from "react-native-maps";
+
+export type DrawAction = "select" | "edit" | "draw";
 
 // --- Mode types ---
 
@@ -10,7 +13,7 @@ type ViewMode = { type: "view"; selectedPlotId: string | null };
 type SplitMode = {
   type: "split";
   plotId: string;
-  activeToolMode: "polyline" | "polygon" | "none";
+  activeToolMode: "polyline" | "polygon" | "extract" | "none";
   currentPolygons: GeoJSON.MultiPolygon[];
 };
 type MergeMode = {
@@ -44,7 +47,7 @@ export type PlotsMapMode =
 export type PlotsMapAction =
   | { type: "SELECT_PLOT"; plotId: string | null }
   | { type: "ENTER_SPLIT"; plotId: string; initialGeometry: GeoJSON.MultiPolygon }
-  | { type: "SET_SPLIT_TOOL"; tool: "polyline" | "polygon" | "none" }
+  | { type: "SET_SPLIT_TOOL"; tool: "polyline" | "polygon" | "extract" | "none" }
   | { type: "SET_SPLIT_POLYGONS"; polygons: GeoJSON.MultiPolygon[] }
   | { type: "ENTER_MERGE"; primaryPlotId: string }
   | { type: "TOGGLE_MERGE_PLOT"; plotId: string }
@@ -153,10 +156,14 @@ type PlotsMapContextValue = {
   mode: PlotsMapMode;
   dispatch: Dispatch<PlotsMapAction>;
   plots: Plot[];
-  mapRef: React.RefObject<RnMapView | null>;
+  mapRef: React.RefObject<MapRef | null>;
+  cameraRef: React.RefObject<CameraRef | null>;
+  drawingRef: React.RefObject<DrawingOverlayRef | null>;
   navigation: NavigationProp<ReactNavigation.RootParamList>;
   controlsExpanded: boolean;
   setControlsExpanded: (expanded: boolean) => void;
+  baseLayer: BaseLayer;
+  setBaseLayer: (layer: BaseLayer) => void;
 };
 
 export const PlotsMapContext = createContext<PlotsMapContextValue | null>(null);

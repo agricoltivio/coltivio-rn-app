@@ -140,18 +140,6 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
               />
             </HomeTile>
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-              marginTop: theme.spacing.m,
-              gap: theme.spacing.m,
-            }}
-          >
-            <HomeTile
-              title="Test Map"
-              onPress={() => navigation.navigate("MapTest")}
-            />
-          </View>
           {/* <View
           style={{
             flexDirection: "row",

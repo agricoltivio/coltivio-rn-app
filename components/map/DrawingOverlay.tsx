@@ -21,6 +21,7 @@ export type DrawingOverlayRef = {
   getCoordinates(): LngLat[];
   isClosed(): boolean;
   reset(): void;
+  undo(): void;
   handleMapTap(lngLat: LngLat): void;
   updateVertex(index: number, lngLat: LngLat): void;
   insertVertex(afterIndex: number, lngLat: LngLat): void;
@@ -31,6 +32,7 @@ export type DrawingOverlayRef = {
 type DrawingOverlayProps = {
   mode: DrawMode;
   mapRef: React.RefObject<MapRef | null>;
+  onCoordinatesChange?: (coordinates: LngLat[], closed: boolean) => void;
 };
 
 // --- Helpers ---
@@ -134,9 +136,12 @@ export const LAYER_IDS = {
 // --- Component ---
 
 export const DrawingOverlay = forwardRef<DrawingOverlayRef, DrawingOverlayProps>(
-  function DrawingOverlay({ mode }, ref) {
+  function DrawingOverlay({ mode, onCoordinatesChange }, ref) {
     const [coordinates, setCoordinates] = useState<LngLat[]>([]);
     const [closed, setClosed] = useState(false);
+
+    // Undo stack: each entry is a snapshot of { coordinates, closed }
+    const undoStackRef = useRef<Array<{ coords: LngLat[]; closed: boolean }>>([]);
 
     // Refs so imperative methods always read latest state without stale closures
     const coordsRef = useRef(coordinates);
@@ -161,6 +166,18 @@ export const DrawingOverlay = forwardRef<DrawingOverlayRef, DrawingOverlayProps>
       [coordinates, closed],
     );
 
+    // Push current state to undo stack before any mutation
+    function pushUndo() {
+      undoStackRef.current.push({
+        coords: [...coordsRef.current],
+        closed: closedRef.current,
+      });
+    }
+
+    function notifyChange(newCoords: LngLat[], newClosed: boolean) {
+      onCoordinatesChange?.(newCoords, newClosed);
+    }
+
     // Stable ref — no dependencies on coordinates/closed, reads from refs instead
     useImperativeHandle(
       ref,
@@ -172,8 +189,17 @@ export const DrawingOverlay = forwardRef<DrawingOverlayRef, DrawingOverlayProps>
           return closedRef.current;
         },
         reset() {
+          undoStackRef.current = [];
           setCoordinates([]);
           setClosed(false);
+          notifyChange([], false);
+        },
+        undo() {
+          const prev = undoStackRef.current.pop();
+          if (!prev) return;
+          setCoordinates(prev.coords);
+          setClosed(prev.closed);
+          notifyChange(prev.coords, prev.closed);
         },
         handleMapTap(lngLat: LngLat) {
           if (closedRef.current) return;
@@ -185,12 +211,17 @@ export const DrawingOverlay = forwardRef<DrawingOverlayRef, DrawingOverlayProps>
               units: "meters",
             });
             if (dist < CLOSE_THRESHOLD_METERS) {
+              pushUndo();
               setClosed(true);
+              notifyChange(coordsRef.current, true);
               return;
             }
           }
 
-          setCoordinates((prev) => [...prev, lngLat]);
+          pushUndo();
+          const newCoords = [...coordsRef.current, lngLat];
+          setCoordinates(newCoords);
+          notifyChange(newCoords, closedRef.current);
         },
         updateVertex(index: number, lngLat: LngLat) {
           setCoordinates((prev) => {
@@ -207,11 +238,13 @@ export const DrawingOverlay = forwardRef<DrawingOverlayRef, DrawingOverlayProps>
           });
         },
         loadCoordinates(coords: LngLat[]) {
+          undoStackRef.current = [];
           setCoordinates(coords);
           setClosed(true);
+          notifyChange(coords, true);
         },
       }),
-      [mode],
+      [mode, onCoordinatesChange],
     );
 
     if (!isActive || coordinates.length === 0) return null;

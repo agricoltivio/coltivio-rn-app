@@ -1,25 +1,29 @@
 import { Button } from "@/components/buttons/Button";
 import { AutocompleteInput } from "@/components/inputs/AutocompleteInput";
-import { MapView } from "@/components/map/Map";
+import { MapLibreMap } from "@/components/map/MapLibreMap";
+import { HomeMarkerLayer } from "@/components/map/HomeMarkerLayer";
 import { SelectFederalFarmIdMapScreenProps } from "@/features/onboarding/navigation/onboarding-routes";
 import { hexToRgba } from "@/theme/theme";
 import { H3 } from "@/theme/Typography";
+import {
+  GeoJSONSource,
+  Layer,
+  type LngLat,
+} from "@maplibre/maplibre-react-native";
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { useDebounce } from "@uidotdev/usehooks";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { Geojson, Region } from "react-native-maps";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 import {
   useFederalFarmIdSearchQuery,
   usePlotsByLocationQuery,
 } from "../federal-plots/federalPlots.hooks";
-import { HomeMarker } from "../map/layers/HomeMarker";
 import { MapInfoModal } from "../map/overlays/MapInfoModal";
 import { NavigationButton } from "./NavigationButton";
 import { useOnboarding } from "./OnboardingContext";
@@ -84,13 +88,7 @@ export function SelectFederalFarmIdMapScreen({
   }, []);
 
   const { lng, lat } = data.location!;
-
-  const initialRegion: Region = {
-    latitude: lat,
-    longitude: lng,
-    latitudeDelta: 0.0025,
-    longitudeDelta: 0.0025,
-  };
+  const initialCenter: LngLat = [lng, lat];
 
   useEffect(() => {
     if (federalFarmId) {
@@ -107,35 +105,61 @@ export function SelectFederalFarmIdMapScreen({
     navigation.navigate("OnboardingPreference");
   }
 
+  // Build feature collection for federal parcels
+  const parcelsFeatureCollection = useMemo((): GeoJSON.FeatureCollection => ({
+    type: "FeatureCollection",
+    features: plots.map((parcel) => ({
+      type: "Feature",
+      properties: { federalFarmId: parcel.federalFarmId },
+      geometry: parcel.geometry,
+    })),
+  }), [plots]);
+
+  const handleParcelPress = useCallback(
+    (event: { stopPropagation(): void; nativeEvent: { features: GeoJSON.Feature[] } }) => {
+      event.stopPropagation();
+      const feature = event.nativeEvent.features[0];
+      const fid = feature?.properties?.federalFarmId;
+      if (typeof fid === "string") {
+        onFederalFarmIdSelect(fid);
+      }
+    },
+    [],
+  );
+
+  const fillColor = hexToRgba(theme.colors.accent, 0.3);
+
   return (
     <View style={{ flex: 1, paddingBottom: insets.bottom }}>
-      <MapView
+      <MapLibreMap
         loading={!mapVisible || isFetchingPlots}
-        mapType="satellite"
-        initialRegion={initialRegion}
+        initialCenter={initialCenter}
+        initialZoom={17}
       >
-        {plots.map((parcel) => (
-          <Geojson
-            key={parcel.id}
-            geojson={{
-              type: "FeatureCollection",
-              features: [
-                {
-                  type: "Feature",
-                  geometry: parcel.geometry,
-                  properties: {},
-                },
-              ],
+        <GeoJSONSource
+          id="federal-parcels"
+          data={parcelsFeatureCollection}
+          onPress={handleParcelPress}
+        >
+          <Layer
+            type="fill"
+            id="federal-parcels-fill"
+            paint={{
+              "fill-color": fillColor,
+              "fill-opacity": 1,
             }}
-            strokeWidth={theme.map.defaultStrokeWidth}
-            strokeColor={"white"}
-            tappable
-            fillColor={hexToRgba(theme.colors.accent, 0.3)}
-            onPress={() => onFederalFarmIdSelect(parcel.federalFarmId)}
           />
-        ))}
-        <HomeMarker latitude={lat} longitude={lng} />
-      </MapView>
+          <Layer
+            type="line"
+            id="federal-parcels-stroke"
+            paint={{
+              "line-color": "white",
+              "line-width": theme.map.defaultStrokeWidth,
+            }}
+          />
+        </GeoJSONSource>
+        <HomeMarkerLayer center={initialCenter} />
+      </MapLibreMap>
       <View
         style={{
           position: "absolute",

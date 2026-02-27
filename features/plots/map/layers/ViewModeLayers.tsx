@@ -1,41 +1,35 @@
-import { Plot } from "@/api/plots.api";
-import { MultiPolygon } from "@/components/map/MultiPolygon";
-import { hexToRgba } from "@/theme/theme";
-import { useTheme } from "styled-components/native";
+import { PlotsLayer } from "@/components/map/PlotsLayer";
+import { useCallback } from "react";
 import { usePlotsMapContext } from "../plots-map-mode";
 
 export function ViewModeLayers() {
-  const theme = useTheme();
   const { mode, dispatch, plots } = usePlotsMapContext();
+
+  const selectedPlotId = mode.type === "view" ? mode.selectedPlotId : null;
+  const selectedPlotIds = selectedPlotId ? [selectedPlotId] : [];
+
+  const handlePlotPress = useCallback(
+    (event: { stopPropagation(): void; nativeEvent: { features: GeoJSON.Feature[] } }) => {
+      event.stopPropagation();
+      const feature = event.nativeEvent.features[0];
+      const plotId = feature?.properties?.id;
+      if (typeof plotId === "string") {
+        dispatch({
+          type: "SELECT_PLOT",
+          plotId: selectedPlotId === plotId ? null : plotId,
+        });
+      }
+    },
+    [selectedPlotId, dispatch],
+  );
+
   if (mode.type !== "view") return null;
 
-  const selectedPlotId = mode.selectedPlotId;
-
-  function onPlotPress(plot: Plot) {
-    dispatch({
-      type: "SELECT_PLOT",
-      plotId: selectedPlotId === plot.id ? null : plot.id,
-    });
-  }
-
   return (
-    <>
-      {plots.map((plot) => (
-        <MultiPolygon
-          key={plot.id}
-          polygon={plot.geometry}
-          strokeWidth={theme.map.defaultStrokeWidth}
-          strokeColor="white"
-          fillColor={hexToRgba(
-            plot.id === selectedPlotId
-              ? theme.colors.success
-              : theme.map.defaultFillColor,
-            theme.map.defaultFillAlpha,
-          )}
-          tappable
-          onPress={() => onPlotPress(plot)}
-        />
-      ))}
-    </>
+    <PlotsLayer
+      plots={plots}
+      selectedPlotIds={selectedPlotIds}
+      onPlotPress={handlePlotPress}
+    />
   );
 }

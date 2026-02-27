@@ -1,11 +1,14 @@
 import { ContentView } from "@/components/containers/ContentView";
-import { MapView } from "@/components/map/Map";
+import { MapLibreMap, BaseLayer } from "@/components/map/MapLibreMap";
+import { HomeMarkerLayer } from "@/components/map/HomeMarkerLayer";
+import { DrawingOverlayRef, LAYER_IDS } from "@/components/map/DrawingOverlay";
 import { IonIconButton } from "@/components/buttons/IconButton";
-import { HomeMarker } from "@/features/map/layers/HomeMarker";
+import { MapLayerToggle } from "@/features/map/MapLayerToggle";
 import { MapShowLocationToggle } from "@/features/map/MapShowLocationToggle";
 import { TopLeftBackButton } from "@/features/map/TopLeftBackButton";
 import { InsetsProps } from "@/constants/Screen";
 import { PortalHost } from "@gorhom/portal";
+import { type MapRef, type CameraRef, type LngLat } from "@maplibre/maplibre-react-native";
 import * as turf from "@turf/turf";
 import React, {
   useCallback,
@@ -15,8 +18,8 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { StyleSheet } from "react-native";
-import RnMapView, { MapPressEvent, Region } from "react-native-maps";
+import { StyleSheet, View } from "react-native";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import styled, { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../../farms/farms.hooks";
@@ -36,6 +39,9 @@ import { DeletePlotDialog } from "./DeletePlotDialog";
 import { SplitModeLayersHandle } from "./layers/SplitModeLayers";
 import { AdjustModeLayersHandle } from "./layers/AdjustModeLayers";
 import { CreateModeLayersHandle } from "./layers/CreateModeLayers";
+
+const DRAG_Y_OFFSET = 40;
+
 export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
   const theme = useTheme();
   const { farm } = useFarmQuery();
@@ -48,15 +54,18 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
   const [plotListVisible, setPlotListVisible] = useState(false);
   const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
   const [controlsExpanded, setControlsExpanded] = useState(false);
+  const [baseLayer, setBaseLayer] = useState<BaseLayer>("satellite");
+  const [dragPanEnabled, setDragPanEnabled] = useState(true);
 
-  const mapRef = useRef<RnMapView>(null);
+  const mapRef = useRef<MapRef>(null);
+  const cameraRef = useRef<CameraRef>(null);
   const splitLayersRef = useRef<SplitModeLayersHandle>(null);
   const adjustLayersRef = useRef<AdjustModeLayersHandle>(null);
   const createLayersRef = useRef<CreateModeLayersHandle>(null);
-  const regionRef = useRef({
-    latitudeDelta: 0.0025,
-    longitudeDelta: 0.0025,
-  });
+
+  // Drawing overlay ref — used by split/adjust/create mode layers
+  const drawingRef = useRef<DrawingOverlayRef>(null);
+  const dragState = useRef<{ index: number } | null>(null);
 
   const [mode, dispatch] = useReducer(
     plotsMapReducer,
@@ -80,47 +89,95 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
     if (!selectedPlot || selectedPlot.geometry.coordinates.length === 0) return;
     const centroid = turf.centroid(selectedPlot.geometry);
     const [longitude, latitude] = centroid.geometry.coordinates;
-    mapRef.current?.animateToRegion({
-      latitude,
-      longitude,
-      latitudeDelta: regionRef.current.latitudeDelta,
-      longitudeDelta: regionRef.current.longitudeDelta,
-    });
+    cameraRef.current?.flyTo({ center: [longitude, latitude], duration: 500 });
   }, [mode.type === "view" ? mode.selectedPlotId : null]);
 
   const handleMapPress = useCallback(
-    (event: MapPressEvent) => {
+    (event: { nativeEvent: { lngLat: LngLat } }) => {
       if (mode.type === "split") {
-        splitLayersRef.current?.handleMapPress(event);
+        splitLayersRef.current?.handleMapPress(event.nativeEvent.lngLat);
       } else if (mode.type === "adjust") {
-        adjustLayersRef.current?.handleMapPress(event);
+        adjustLayersRef.current?.handleMapPress(event.nativeEvent.lngLat);
       } else if (mode.type === "create") {
-        createLayersRef.current?.handleMapPress(event);
+        createLayersRef.current?.handleMapPress(event.nativeEvent.lngLat);
       }
     },
     [mode.type],
   );
 
+  // Vertex drag gesture — hold 150ms on a vertex to start dragging
+  const isDrawingMode = mode.type === "split" || mode.type === "adjust" || mode.type === "create";
+  const panGesture = Gesture.Pan()
+    .runOnJS(true)
+    .enabled(isDrawingMode)
+    .activateAfterLongPress(150)
+    .onStart(async (event) => {
+      const map = mapRef.current;
+      if (!map) return;
+
+      const isClosed = drawingRef.current?.isClosed() ?? false;
+      if (!isClosed && mode.type !== "split") return;
+
+      const features = await map.queryRenderedFeatures(
+        [event.x, event.y],
+        { layers: [LAYER_IDS.VERTICES, LAYER_IDS.MIDPOINTS] },
+      );
+
+      if (features.length === 0) return;
+      const feature = features[0];
+      const props = feature.properties;
+      if (!props) return;
+
+      const offsetLngLat = await map.unproject([event.absoluteX, event.absoluteY - DRAG_Y_OFFSET]);
+
+      if (props.type === "vertex" && typeof props.index === "number") {
+        dragState.current = { index: props.index };
+        drawingRef.current?.updateVertex(props.index, offsetLngLat);
+        setDragPanEnabled(false);
+      } else if (props.type === "midpoint" && typeof props.afterIndex === "number") {
+        const geometry = feature.geometry;
+        if (geometry.type === "Point") {
+          const lngLat: LngLat = [geometry.coordinates[0], geometry.coordinates[1]];
+          drawingRef.current?.insertVertex(props.afterIndex, lngLat);
+          const newIndex = props.afterIndex + 1;
+          dragState.current = { index: newIndex };
+          drawingRef.current?.updateVertex(newIndex, offsetLngLat);
+          setDragPanEnabled(false);
+        }
+      }
+    })
+    .onUpdate(async (event) => {
+      if (!dragState.current) return;
+      const map = mapRef.current;
+      if (!map) return;
+      const lngLat = await map.unproject([event.absoluteX, event.absoluteY - DRAG_Y_OFFSET]);
+      drawingRef.current?.updateVertex(dragState.current.index, lngLat);
+    })
+    .onEnd(async (event) => {
+      if (!dragState.current) {
+        const map = mapRef.current;
+        if (map) {
+          const lngLat = await map.unproject([event.absoluteX, event.absoluteY]);
+          drawingRef.current?.handleMapTap(lngLat);
+        }
+      }
+      dragState.current = null;
+      setDragPanEnabled(true);
+    })
+    .onFinalize(() => {
+      dragState.current = null;
+      setDragPanEnabled(true);
+    });
+
   if (!farm || !plots) return null;
 
-  const initialRegion: Region = (() => {
+  const initialCenter: LngLat = (() => {
     const preselectedPlot = plots.find((p) => p.id === preselectedPlotId);
     if (preselectedPlot && preselectedPlot.geometry.coordinates.length > 0) {
       const centroid = turf.centroid(preselectedPlot.geometry);
-      const [longitude, latitude] = centroid.geometry.coordinates;
-      return {
-        latitude,
-        longitude,
-        latitudeDelta: 0.0025,
-        longitudeDelta: 0.0025,
-      };
+      return centroid.geometry.coordinates as LngLat;
     }
-    return {
-      latitude: farm.location.coordinates[1],
-      longitude: farm.location.coordinates[0],
-      latitudeDelta: 0.0025,
-      longitudeDelta: 0.0025,
-    };
+    return farm.location.coordinates as LngLat;
   })();
 
   const selectedPlot =
@@ -134,43 +191,69 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       dispatch,
       plots,
       mapRef,
+      cameraRef,
       navigation,
       controlsExpanded,
       setControlsExpanded,
+      drawingRef,
+      baseLayer,
+      setBaseLayer,
     }),
-    [mode, dispatch, plots, navigation, controlsExpanded],
+    [mode, dispatch, plots, navigation, controlsExpanded, baseLayer],
   );
 
   return (
     <PlotsMapContext.Provider value={contextValue}>
       <ContentView headerVisible={false}>
-        <MapView
-          key={`map-${mode.type}`}
-          ref={mapRef}
-          loading={!mapVisible || plotsLoading}
-          style={StyleSheet.absoluteFillObject}
-          onRegionChangeComplete={(region) => {
-            regionRef.current = region;
-          }}
-          onPress={handleMapPress}
-          initialRegion={initialRegion}
-          showsUserLocation={showsUserLocation}
-        >
-          <MapLayers
-            splitLayersRef={splitLayersRef}
-            adjustLayersRef={adjustLayersRef}
-            createLayersRef={createLayersRef}
-          />
-          <HomeMarker
-            latitude={farm.location.coordinates[1]}
-            longitude={farm.location.coordinates[0]}
-          />
-        </MapView>
+        <GestureDetector gesture={panGesture}>
+          <View collapsable={false} style={StyleSheet.absoluteFill}>
+            <MapLibreMap
+              ref={mapRef}
+              cameraRef={cameraRef}
+              loading={!mapVisible || plotsLoading}
+              initialCenter={initialCenter}
+              initialZoom={17}
+              baseLayer={baseLayer}
+              dragPan={dragPanEnabled}
+              showUserLocation={showsUserLocation}
+              onPress={handleMapPress}
+            >
+              <MapLayers
+                splitLayersRef={splitLayersRef}
+                adjustLayersRef={adjustLayersRef}
+                createLayersRef={createLayersRef}
+              />
+              <HomeMarkerLayer
+                center={farm.location.coordinates as LngLat}
+              />
+            </MapLibreMap>
+          </View>
+        </GestureDetector>
 
+        <MapLayerToggle baseLayer={baseLayer} onToggle={setBaseLayer} />
         <MapShowLocationToggle onShowLocationChange={setShowsUserLocation} />
+        <InfoButton insets={useSafeAreaInsets()}>
+          <IonIconButton
+            type="accent"
+            color={theme.colors.black}
+            iconSize={26}
+            icon="information-circle-outline"
+            onPress={() => {
+              if (mode.type === "split") {
+                navigation.navigate("SplitPlotOnboarding");
+              } else if (mode.type === "create") {
+                navigation.navigate("MapDrawOnboarding", { variant: "draw" });
+              } else if (mode.type === "adjust") {
+                navigation.navigate("MapDrawOnboarding", { variant: "edit" });
+              } else {
+                navigation.navigate("MapDrawOnboarding", { variant: "plotsMap" });
+              }
+            }}
+          />
+        </InfoButton>
         <TopLeftBackButton />
 
-        {/* Plot list button - positioned below the location toggle */}
+        {/* Plot list button */}
         {mode.type === "view" && (
           <PlotListButton insets={useSafeAreaInsets()}>
             <IonIconButton
@@ -203,7 +286,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
           onSelectPlot={(plot) =>
             dispatch({ type: "SELECT_PLOT", plotId: plot.id })
           }
-          mapRef={mapRef}
+          cameraRef={cameraRef}
         />
 
         {/* Delete confirmation dialog */}
@@ -224,5 +307,12 @@ const PlotListButton = styled.View<InsetsProps>`
   position: absolute;
   left: ${({ theme }) => theme.spacing.m}px;
   top: ${({ insets, theme }) => insets.top + theme.spacing.s + 100}px;
+  align-items: center;
+`;
+
+const InfoButton = styled.View<InsetsProps>`
+  position: absolute;
+  left: ${({ theme }) => theme.spacing.m}px;
+  top: ${({ insets, theme }) => insets.top + theme.spacing.s + 150}px;
   align-items: center;
 `;

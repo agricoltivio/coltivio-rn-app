@@ -1,12 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
-import { MapView } from "@/components/map/Map";
-import { MultiPolygon } from "@/components/map/MultiPolygon";
-import { HomeMarker } from "@/features/map/layers/HomeMarker";
-import { hexToRgba } from "@/theme/theme";
+import { StaticMapPreview } from "@/components/map/StaticMapPreview";
+import { type LngLat } from "@maplibre/maplibre-react-native";
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { Region } from "react-native-maps";
+import React, { useMemo } from "react";
+import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../farms/farms.hooks";
 import { useFarmPlotsQuery } from "../plots/plots.hooks";
@@ -17,18 +14,20 @@ export const MapTile = ({ showMap = true }: { showMap?: boolean }) => {
   const { farm } = useFarmQuery();
   const { plots } = useFarmPlotsQuery();
 
+  const features = useMemo((): GeoJSON.FeatureCollection => ({
+    type: "FeatureCollection",
+    features: (plots ?? []).map((plot) => ({
+      type: "Feature",
+      properties: {},
+      geometry: plot.geometry,
+    })),
+  }), [plots]);
+
   if (!farm || !plots) {
     return null;
   }
 
-  const [longitude, latitude] = farm.location.coordinates;
-
-  const initialRegion: Region = {
-    latitude,
-    longitude,
-    latitudeDelta: 0.004,
-    longitudeDelta: 0.004,
-  };
+  const center = farm.location.coordinates as LngLat;
 
   return (
     <View
@@ -46,30 +45,14 @@ export const MapTile = ({ showMap = true }: { showMap?: boolean }) => {
           borderRadius: 10,
         }}
       >
-        <View pointerEvents="none" style={StyleSheet.absoluteFillObject}>
-          <MapView
-            style={StyleSheet.absoluteFillObject}
-            loading={!showMap}
-            mapType="satellite"
-            region={initialRegion}
-            scrollEnabled={false}
-          >
-            {plots.map((plot) => (
-              <MultiPolygon
-                key={plot.id}
-                polygon={plot.geometry}
-                strokeWidth={theme.map.defaultStrokeWidth}
-                strokeColor={"white"}
-                fillColor={hexToRgba(
-                  theme.map.defaultFillColor,
-                  theme.map.defaultFillAlpha,
-                )}
-                tappable
-              />
-            ))}
-            <HomeMarker latitude={latitude} longitude={longitude} />
-          </MapView>
-        </View>
+        {showMap && (
+          <StaticMapPreview
+            center={center}
+            zoom={15}
+            features={features}
+            height={250}
+          />
+        )}
         {/* Expand button */}
         <TouchableOpacity
           onPress={() => navigation.navigate("PlotsMap", {})}
