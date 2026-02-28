@@ -1,7 +1,6 @@
 import { Plot } from "@/api/plots.api";
 import * as turf from "@turf/turf";
 
-// Local type aliases so we don't depend on react-native-maps
 export type LatLng = { latitude: number; longitude: number };
 export type Region = {
   latitude: number;
@@ -438,7 +437,8 @@ export function cutPolygonFromMultiPolygon(
     });
 
   return {
-    remaining: turf.multiPolygon(cleanPolygonCoords(remainingPolygons)).geometry,
+    remaining: turf.multiPolygon(cleanPolygonCoords(remainingPolygons))
+      .geometry,
     plots: turf.multiPolygon(cleanPolygonCoords(cutPieces)).geometry,
   };
 }

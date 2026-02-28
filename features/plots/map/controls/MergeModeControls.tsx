@@ -1,9 +1,11 @@
 import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import { MapControls } from "@/features/map/overlays/MapControls";
 import React from "react";
+import { useTheme } from "styled-components/native";
 import { usePlotsMapContext } from "../plots-map-mode";
 
 export function MergeModeControls() {
+  const theme = useTheme();
   const { mode, dispatch, navigation } = usePlotsMapContext();
 
   if (mode.type !== "merge") return null;
@@ -16,7 +18,7 @@ export function MergeModeControls() {
       {/* Cancel */}
       <MaterialCommunityIconButton
         type="accent"
-        color="red"
+        color="black"
         iconSize={30}
         icon="close-circle-outline"
         onPress={() => dispatch({ type: "EXIT_MODE" })}
@@ -34,6 +36,15 @@ export function MergeModeControls() {
             primaryPlotId,
           });
         }}
+      />
+      {/* Info */}
+      <MaterialCommunityIconButton
+        style={{ backgroundColor: theme.colors.accent }}
+        type="accent"
+        color="black"
+        iconSize={30}
+        icon="information-outline"
+        onPress={() => navigation.navigate("PlotsMapOnboarding")}
       />
     </MapControls>
   );

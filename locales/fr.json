@@ -394,7 +394,8 @@
       "tool_split": "Diviser un champ existant",
       "tool_merge": "Fusionner des champs",
       "tool_edit": "Modifier la surface du champ",
-      "tool_delete": "Supprimer un champ"
+      "tool_delete": "Supprimer un champ",
+      "tool_cancel": "Annuler l'action en cours"
     },
     "usage_codes": {
       "501": "Orge de printemps",
@@ -923,6 +924,8 @@
     "welcome_body_edit": "Vous allez modifier la forme d'un champ. Voici comment cela fonctionne.",
     "edit_intro_heading": "Modifier le champ",
     "edit_intro_body": "D\u00e9placez les points d'angle pour ajuster la forme. Maintenez un point d'angle enfonc\u00e9 et faites-le glisser \u00e0 la position souhait\u00e9e.",
+    "cancel_heading": "Annuler",
+    "cancel_body": "Appuyez sur ce symbole pour annuler et revenir en arrière.",
     "overlap_heading": "Chevauchements",
     "overlap_body": "Si votre nouveau champ chevauche des champs existants, ceux-ci seront automatiquement ajust\u00e9s.",
     "crop_rotation_welcome_heading": "Planifiez vos rotations de cultures",

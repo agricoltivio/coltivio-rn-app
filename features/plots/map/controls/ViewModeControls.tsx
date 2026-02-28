@@ -10,7 +10,7 @@ type ViewModeControlsProps = {
 
 export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
   const theme = useTheme();
-  const { mode, dispatch, plots, controlsExpanded, setControlsExpanded } =
+  const { mode, dispatch, plots, controlsExpanded, setControlsExpanded, navigation } =
     usePlotsMapContext();
 
   if (mode.type !== "view") return null;
@@ -109,6 +109,15 @@ export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
         icon="delete-outline"
         disabled={!hasSelection}
         onPress={onDelete}
+      />
+      {/* Info */}
+      <MaterialCommunityIconButton
+        style={{ backgroundColor: theme.colors.accent }}
+        type="accent"
+        color="black"
+        iconSize={30}
+        icon="information-outline"
+        onPress={() => navigation.navigate("PlotsMapOnboarding")}
       />
     </MapControls>
   );

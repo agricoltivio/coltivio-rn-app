@@ -19,7 +19,7 @@ export function MapLayerToggle({ baseLayer, onToggle }: MapLayerToggleProps) {
       <MaterialCommunityIconButton
         type="accent"
         color={theme.colors.black}
-        iconSize={26}
+        iconSize={30}
         icon={baseLayer === "satellite" ? "map-outline" : "satellite-variant"}
         onPress={() => onToggle(baseLayer === "satellite" ? "map" : "satellite")}
       />
@@ -29,7 +29,7 @@ export function MapLayerToggle({ baseLayer, onToggle }: MapLayerToggleProps) {
 
 const AbsoluteView = styled.View<InsetsProps>`
   position: absolute;
-  left: ${({ theme }) => theme.spacing.m}px;
-  top: ${({ insets, theme }) => insets.top + theme.spacing.s}px;
+  right: ${({ theme }) => theme.spacing.m}px;
+  bottom: ${({ insets, theme }) => insets.bottom + theme.spacing.s}px;
   align-items: center;
 `;

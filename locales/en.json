@@ -394,7 +394,8 @@
       "tool_split": "Split an existing plot",
       "tool_merge": "Merge plots",
       "tool_edit": "Edit plot area",
-      "tool_delete": "Delete plot"
+      "tool_delete": "Delete plot",
+      "tool_cancel": "Cancel current action"
     },
     "usage_codes": {
       "501": "Spring barley",
@@ -923,6 +924,8 @@
     "welcome_body_edit": "You are about to edit the shape of a plot. Here is a quick explanation of how it works.",
     "edit_intro_heading": "Edit Plot",
     "edit_intro_body": "Move the corner points to adjust the shape. Press and hold a corner point and drag it to the desired position.",
+    "cancel_heading": "Cancel",
+    "cancel_body": "Tap this symbol to cancel and go back.",
     "overlap_heading": "Overlaps",
     "overlap_body": "If your new plot overlaps existing plots, they will be automatically adjusted.",
     "crop_rotation_welcome_heading": "Plan Your Crop Rotations",

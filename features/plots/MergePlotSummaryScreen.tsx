@@ -100,14 +100,9 @@ export function MergePlotSummaryScreen({
   const strategy = watch("strategy");
 
   const mergeMutation = useMergePlotsMutation(
-    (plot) =>
-      navigation.reset({
-        index: 1,
-        routes: [
-          { name: "Home" },
-          { name: "PlotsMap", params: { selectedPlotId: plot.id } },
-        ],
-      }),
+    (plot) => {
+      navigation.popTo("PlotsMap", { selectedPlotId: plot.id });
+    },
     (error) => console.error(error),
   );
 

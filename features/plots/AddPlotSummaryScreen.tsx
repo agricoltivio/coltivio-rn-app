@@ -19,6 +19,7 @@ import { useAddPlotStore } from "./add-plots.store";
 import { AddPlotSummaryScreenProps } from "./navigation/plots-routes";
 import { useCreatePlotMutation } from "./plots.hooks";
 import { getUsageCodeSelectData } from "./usage-codes";
+import type { Plot } from "@/api/plots.api";
 
 type AddPlotFormValues = {
   name: string;
@@ -37,8 +38,8 @@ export function AddPlotSummaryScreen({
   const theme = useTheme();
   const insets = useSafeAreaInsets();
 
-  const { data } = useAddPlotStore();
-  const { geometry, size, localId, cuttingDate, usage } = data!;
+  const addPlotStore = useAddPlotStore();
+  const { geometry, size, localId, cuttingDate, usage } = addPlotStore.data!;
 
   const {
     control,
@@ -54,11 +55,10 @@ export function AddPlotSummaryScreen({
   });
 
   const createPlotMutation = useCreatePlotMutation(
-    () =>
-      navigation.reset({
-        index: 1,
-        routes: [{ name: "Home" }, { name: "PlotsMap" }],
-      }),
+    (plot: Plot) => {
+      addPlotStore.reset();
+      navigation.popTo("PlotsMap", { selectedPlotId: plot.id });
+    },
     (error) => console.log(error),
   );
 

@@ -404,7 +404,8 @@
       "tool_split": "Bestehenden Schlag aufteilen",
       "tool_merge": "Schläge zusammenführen",
       "tool_edit": "Schlagfläche bearbeiten",
-      "tool_delete": "Schlag löschen"
+      "tool_delete": "Schlag löschen",
+      "tool_cancel": "Aktuelle Aktion abbrechen"
     },
     "usage_codes": {
       "501": "Sommergerste",
@@ -935,6 +936,8 @@
     "welcome_body_edit": "Du bearbeitest gleich die Form eines Schlags. Hier erklären wir dir kurz, wie das funktioniert.",
     "edit_intro_heading": "Schlag bearbeiten",
     "edit_intro_body": "Verschiebe die Eckpunkte, um die Form anzupassen. Halte einen Eckpunkt gedrückt und ziehe ihn an die gewünschte Position.",
+    "cancel_heading": "Abbrechen",
+    "cancel_body": "Tippe auf dieses Symbol, um abzubrechen und zurückzugehen.",
     "overlap_heading": "Überlappungen",
     "overlap_body": "Falls dein neuer Schlag bestehende Schläge überlappt, werden diese automatisch angepasst.",
     "crop_rotation_welcome_heading": "Plane deine Fruchtfolgen",

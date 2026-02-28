@@ -82,7 +82,7 @@ export function StaticMapPreview({
           id="swisstopo-map-preview"
           tiles={[TILE_URLS.map]}
           tileSize={256}
-          maxzoom={20}
+          maxzoom={18}
         >
           <Layer
             type="raster"

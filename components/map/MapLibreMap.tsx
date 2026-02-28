@@ -98,7 +98,7 @@ export const MapLibreMap = forwardRef<MapRef, MapLibreMapProps>(
               id="swisstopo-map"
               tiles={[TILE_URLS.map]}
               tileSize={256}
-              maxzoom={20}
+              maxzoom={18}
             >
               <Layer
                 type="raster"

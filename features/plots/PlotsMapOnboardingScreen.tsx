@@ -146,6 +146,10 @@ export function PlotsMapOnboardingScreen() {
           label={t("plots.map_onboarding.tool_delete")}
           color="red"
         />
+        <ToolRow
+          icon="close-circle-outline"
+          label={t("plots.map_onboarding.tool_cancel")}
+        />
       </View>
     </View>,
   ];

@@ -3,12 +3,17 @@ import { MapLibreMap, BaseLayer } from "@/components/map/MapLibreMap";
 import { HomeMarkerLayer } from "@/components/map/HomeMarkerLayer";
 import { DrawingOverlayRef, LAYER_IDS } from "@/components/map/DrawingOverlay";
 import { IonIconButton } from "@/components/buttons/IconButton";
+import { InsetsProps } from "@/constants/Screen";
 import { MapLayerToggle } from "@/features/map/MapLayerToggle";
 import { MapShowLocationToggle } from "@/features/map/MapShowLocationToggle";
 import { TopLeftBackButton } from "@/features/map/TopLeftBackButton";
-import { InsetsProps } from "@/constants/Screen";
+
 import { PortalHost } from "@gorhom/portal";
-import { type MapRef, type CameraRef, type LngLat } from "@maplibre/maplibre-react-native";
+import {
+  type MapRef,
+  type CameraRef,
+  type LngLat,
+} from "@maplibre/maplibre-react-native";
 import * as turf from "@turf/turf";
 import React, {
   useCallback,
@@ -45,7 +50,9 @@ const DRAG_Y_OFFSET = 40;
 export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
   const theme = useTheme();
   const { farm } = useFarmQuery();
-  const { plots, isFetching: plotsLoading } = useFarmPlotsQuery();
+  // isLoading = first-load only; isFetching would include background refetches which
+  // temporarily unmount <Map> via the loading prop and reset the camera to initialViewState.
+  const { plots, isLoading: plotsLoading } = useFarmPlotsQuery();
   const { localSettings } = useLocalSettings();
   const preselectedPlotId = route.params?.selectedPlotId;
 
@@ -71,6 +78,9 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
     plotsMapReducer,
     createInitialMode(preselectedPlotId),
   );
+  // Set when entering any non-view mode so flyTo is suppressed when returning to view.
+  // Using an "entry" flag (set on mode enter, not exit) avoids any effect ordering dependency.
+  const suppressFlyToRef = useRef(false);
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => {
@@ -82,9 +92,21 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
     return () => cancelAnimationFrame(raf);
   }, [navigation, localSettings.plotsMapOnboardingCompleted]);
 
-  // Animate to selected plot when selection changes in view mode
+  // Mark that we've entered a non-view mode so the camera doesn't animate on exit
+  useEffect(() => {
+    if (mode.type !== "view") {
+      suppressFlyToRef.current = true;
+    }
+  }, [mode.type]);
+
+  // Animate to selected plot when selection changes in view mode.
+  // Skipped when returning from a non-view mode — camera is already positioned there.
   useEffect(() => {
     if (mode.type !== "view" || !mode.selectedPlotId || !plots) return;
+    if (suppressFlyToRef.current) {
+      suppressFlyToRef.current = false;
+      return;
+    }
     const selectedPlot = plots.find((p) => p.id === mode.selectedPlotId);
     if (!selectedPlot || selectedPlot.geometry.coordinates.length === 0) return;
     const centroid = turf.centroid(selectedPlot.geometry);
@@ -94,7 +116,9 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
 
   const handleMapPress = useCallback(
     (event: { nativeEvent: { lngLat: LngLat } }) => {
-      if (mode.type === "split") {
+      if (mode.type === "view" && mode.selectedPlotId) {
+        dispatch({ type: "SELECT_PLOT", plotId: null });
+      } else if (mode.type === "split") {
         splitLayersRef.current?.handleMapPress(event.nativeEvent.lngLat);
       } else if (mode.type === "adjust") {
         adjustLayersRef.current?.handleMapPress(event.nativeEvent.lngLat);
@@ -102,11 +126,23 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
         createLayersRef.current?.handleMapPress(event.nativeEvent.lngLat);
       }
     },
-    [mode.type],
+    [mode.type, mode.type === "view" ? mode.selectedPlotId : null],
   );
 
+  // React to selectedPlotId route param changes (e.g. after saving a new plot)
+  useEffect(() => {
+    const paramPlotId = route.params?.selectedPlotId;
+    if (paramPlotId && mode.type !== "view") {
+      dispatch({ type: "EXIT_MODE" });
+    }
+    if (paramPlotId) {
+      dispatch({ type: "SELECT_PLOT", plotId: paramPlotId });
+    }
+  }, [route.params?.selectedPlotId]);
+
   // Vertex drag gesture — hold 150ms on a vertex to start dragging
-  const isDrawingMode = mode.type === "split" || mode.type === "adjust" || mode.type === "create";
+  const isDrawingMode =
+    mode.type === "split" || mode.type === "adjust" || mode.type === "create";
   const panGesture = Gesture.Pan()
     .runOnJS(true)
     .enabled(isDrawingMode)
@@ -116,28 +152,36 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       if (!map) return;
 
       const isClosed = drawingRef.current?.isClosed() ?? false;
-      if (!isClosed && mode.type !== "split") return;
+      if (!isClosed) return;
 
-      const features = await map.queryRenderedFeatures(
-        [event.x, event.y],
-        { layers: [LAYER_IDS.VERTICES, LAYER_IDS.MIDPOINTS] },
-      );
+      const features = await map.queryRenderedFeatures([event.x, event.y], {
+        layers: [LAYER_IDS.VERTICES, LAYER_IDS.MIDPOINTS],
+      });
 
       if (features.length === 0) return;
       const feature = features[0];
       const props = feature.properties;
       if (!props) return;
 
-      const offsetLngLat = await map.unproject([event.absoluteX, event.absoluteY - DRAG_Y_OFFSET]);
+      const offsetLngLat = await map.unproject([
+        event.absoluteX,
+        event.absoluteY - DRAG_Y_OFFSET,
+      ]);
 
       if (props.type === "vertex" && typeof props.index === "number") {
         dragState.current = { index: props.index };
         drawingRef.current?.updateVertex(props.index, offsetLngLat);
         setDragPanEnabled(false);
-      } else if (props.type === "midpoint" && typeof props.afterIndex === "number") {
+      } else if (
+        props.type === "midpoint" &&
+        typeof props.afterIndex === "number"
+      ) {
         const geometry = feature.geometry;
         if (geometry.type === "Point") {
-          const lngLat: LngLat = [geometry.coordinates[0], geometry.coordinates[1]];
+          const lngLat: LngLat = [
+            geometry.coordinates[0],
+            geometry.coordinates[1],
+          ];
           drawingRef.current?.insertVertex(props.afterIndex, lngLat);
           const newIndex = props.afterIndex + 1;
           dragState.current = { index: newIndex };
@@ -150,14 +194,20 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       if (!dragState.current) return;
       const map = mapRef.current;
       if (!map) return;
-      const lngLat = await map.unproject([event.absoluteX, event.absoluteY - DRAG_Y_OFFSET]);
+      const lngLat = await map.unproject([
+        event.absoluteX,
+        event.absoluteY - DRAG_Y_OFFSET,
+      ]);
       drawingRef.current?.updateVertex(dragState.current.index, lngLat);
     })
     .onEnd(async (event) => {
       if (!dragState.current) {
         const map = mapRef.current;
         if (map) {
-          const lngLat = await map.unproject([event.absoluteX, event.absoluteY]);
+          const lngLat = await map.unproject([
+            event.absoluteX,
+            event.absoluteY,
+          ]);
           drawingRef.current?.handleMapTap(lngLat);
         }
       }
@@ -223,34 +273,13 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
                 adjustLayersRef={adjustLayersRef}
                 createLayersRef={createLayersRef}
               />
-              <HomeMarkerLayer
-                center={farm.location.coordinates as LngLat}
-              />
+              <HomeMarkerLayer center={farm.location.coordinates as LngLat} />
             </MapLibreMap>
           </View>
         </GestureDetector>
 
         <MapLayerToggle baseLayer={baseLayer} onToggle={setBaseLayer} />
         <MapShowLocationToggle onShowLocationChange={setShowsUserLocation} />
-        <InfoButton insets={useSafeAreaInsets()}>
-          <IonIconButton
-            type="accent"
-            color={theme.colors.black}
-            iconSize={26}
-            icon="information-circle-outline"
-            onPress={() => {
-              if (mode.type === "split") {
-                navigation.navigate("SplitPlotOnboarding");
-              } else if (mode.type === "create") {
-                navigation.navigate("MapDrawOnboarding", { variant: "draw" });
-              } else if (mode.type === "adjust") {
-                navigation.navigate("MapDrawOnboarding", { variant: "edit" });
-              } else {
-                navigation.navigate("MapDrawOnboarding", { variant: "plotsMap" });
-              }
-            }}
-          />
-        </InfoButton>
         <TopLeftBackButton />
 
         {/* Plot list button */}
@@ -307,12 +336,5 @@ const PlotListButton = styled.View<InsetsProps>`
   position: absolute;
   left: ${({ theme }) => theme.spacing.m}px;
   top: ${({ insets, theme }) => insets.top + theme.spacing.s + 100}px;
-  align-items: center;
-`;
-
-const InfoButton = styled.View<InsetsProps>`
-  position: absolute;
-  left: ${({ theme }) => theme.spacing.m}px;
-  top: ${({ insets, theme }) => insets.top + theme.spacing.s + 150}px;
   align-items: center;
 `;

@@ -213,6 +213,7 @@ export const DrawingOverlay = forwardRef<DrawingOverlayRef, DrawingOverlayProps>
             if (dist < CLOSE_THRESHOLD_METERS) {
               pushUndo();
               setClosed(true);
+              closedRef.current = true;
               notifyChange(coordsRef.current, true);
               return;
             }
@@ -224,23 +225,25 @@ export const DrawingOverlay = forwardRef<DrawingOverlayRef, DrawingOverlayProps>
           notifyChange(newCoords, closedRef.current);
         },
         updateVertex(index: number, lngLat: LngLat) {
-          setCoordinates((prev) => {
-            const next = [...prev];
-            next[index] = lngLat;
-            return next;
-          });
+          const next = [...coordsRef.current];
+          next[index] = lngLat;
+          coordsRef.current = next;
+          setCoordinates(next);
+          notifyChange(next, closedRef.current);
         },
         insertVertex(afterIndex: number, lngLat: LngLat) {
-          setCoordinates((prev) => {
-            const next = [...prev];
-            next.splice(afterIndex + 1, 0, lngLat);
-            return next;
-          });
+          const next = [...coordsRef.current];
+          next.splice(afterIndex + 1, 0, lngLat);
+          coordsRef.current = next;
+          setCoordinates(next);
+          notifyChange(next, closedRef.current);
         },
         loadCoordinates(coords: LngLat[]) {
           undoStackRef.current = [];
           setCoordinates(coords);
           setClosed(true);
+          coordsRef.current = coords;
+          closedRef.current = true;
           notifyChange(coords, true);
         },
       }),

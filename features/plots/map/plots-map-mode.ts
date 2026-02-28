@@ -13,7 +13,7 @@ type ViewMode = { type: "view"; selectedPlotId: string | null };
 type SplitMode = {
   type: "split";
   plotId: string;
-  activeToolMode: "polyline" | "polygon" | "extract" | "none";
+  activeToolMode: "polyline" | "polygon" | "polygon-edit" | "extract" | "none";
   currentPolygons: GeoJSON.MultiPolygon[];
 };
 type MergeMode = {
@@ -47,7 +47,7 @@ export type PlotsMapMode =
 export type PlotsMapAction =
   | { type: "SELECT_PLOT"; plotId: string | null }
   | { type: "ENTER_SPLIT"; plotId: string; initialGeometry: GeoJSON.MultiPolygon }
-  | { type: "SET_SPLIT_TOOL"; tool: "polyline" | "polygon" | "extract" | "none" }
+  | { type: "SET_SPLIT_TOOL"; tool: "polyline" | "polygon" | "polygon-edit" | "extract" | "none" }
   | { type: "SET_SPLIT_POLYGONS"; polygons: GeoJSON.MultiPolygon[] }
   | { type: "ENTER_MERGE"; primaryPlotId: string }
   | { type: "TOGGLE_MERGE_PLOT"; plotId: string }

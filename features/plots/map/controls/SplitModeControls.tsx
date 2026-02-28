@@ -14,7 +14,8 @@ type SplitModeControlsProps = {
 
 export function SplitModeControls({ splitLayersRef }: SplitModeControlsProps) {
   const theme = useTheme();
-  const { mode, dispatch, plots, drawingRef, navigation } = usePlotsMapContext();
+  const { mode, dispatch, plots, drawingRef, navigation } =
+    usePlotsMapContext();
   const splitPlotStore = useSplitPlotStore();
 
   if (mode.type !== "split") return null;
@@ -33,50 +34,105 @@ export function SplitModeControls({ splitLayersRef }: SplitModeControlsProps) {
     navigation.navigate("SplitPlotSummary", { plotId });
   }
 
-  // When a drawing tool is active, show drawing-specific controls
-  if (activeToolMode === "polyline" || activeToolMode === "polygon") {
+  function cancelDrawing() {
+    drawingRef.current?.reset();
+    dispatch({ type: "SET_SPLIT_TOOL", tool: "none" });
+  }
+
+  // Polygon draw phase — show cancel, undo, disabled cut, disabled checkmark
+  if (activeToolMode === "polygon") {
     return (
       <MapControls>
-        {/* Cancel — exit tool back to tool selection */}
         <MaterialCommunityIconButton
           type="accent"
-          color="red"
+          color="black"
           iconSize={30}
           icon="close-circle-outline"
-          onPress={() => {
-            drawingRef.current?.reset();
-            dispatch({ type: "SET_SPLIT_TOOL", tool: "none" });
-          }}
+          onPress={cancelDrawing}
         />
-        {/* Undo */}
         <MaterialCommunityIconButton
           type="accent"
-          color="white"
+          color="black"
           iconSize={30}
           icon="undo"
           onPress={() => drawingRef.current?.undo()}
         />
-        {/* Cut (polyline mode) */}
-        {activeToolMode === "polyline" && (
-          <MaterialCommunityIconButton
-            type="accent"
-            color="green"
-            iconSize={30}
-            icon="content-cut"
-            onPress={() => splitLayersRef.current?.handlePolylineCut()}
-          />
-        )}
+        <MaterialCommunityIconButton
+          type="accent"
+          color="gray"
+          iconSize={30}
+          icon="content-cut"
+          disabled
+        />
       </MapControls>
     );
   }
 
-  // Extract mode controls
+  // Polygon edit phase — polygon closed, user can adjust vertices then cut
+  if (activeToolMode === "polygon-edit") {
+    return (
+      <MapControls>
+        <MaterialCommunityIconButton
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="close-circle-outline"
+          onPress={cancelDrawing}
+        />
+        <MaterialCommunityIconButton
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="undo"
+          onPress={() => drawingRef.current?.undo()}
+        />
+        <MaterialCommunityIconButton
+          type="accent"
+          color="green"
+          iconSize={30}
+          icon="content-cut"
+          onPress={() => splitLayersRef.current?.handlePolygonCut()}
+        />
+      </MapControls>
+    );
+  }
+
+  // Polyline tool — show cancel, undo, cut, disabled checkmark
+  if (activeToolMode === "polyline") {
+    return (
+      <MapControls>
+        <MaterialCommunityIconButton
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="close-circle-outline"
+          onPress={cancelDrawing}
+        />
+        <MaterialCommunityIconButton
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="undo"
+          onPress={() => drawingRef.current?.undo()}
+        />
+        <MaterialCommunityIconButton
+          type="accent"
+          color="green"
+          iconSize={30}
+          icon="content-cut"
+          onPress={() => splitLayersRef.current?.handlePolylineCut()}
+        />
+      </MapControls>
+    );
+  }
+
+  // Extract mode — just cancel
   if (activeToolMode === "extract") {
     return (
       <MapControls>
         <MaterialCommunityIconButton
           type="accent"
-          color="red"
+          color="black"
           iconSize={30}
           icon="close-circle-outline"
           onPress={() => dispatch({ type: "SET_SPLIT_TOOL", tool: "none" })}
@@ -88,10 +144,10 @@ export function SplitModeControls({ splitLayersRef }: SplitModeControlsProps) {
   // Tool selection mode (no active tool)
   return (
     <MapControls>
-      {/* Cancel */}
+      {/* Cancel — exit split mode */}
       <MaterialCommunityIconButton
         type="accent"
-        color="red"
+        color="black"
         iconSize={30}
         icon="close-circle-outline"
         onPress={() => {
@@ -99,7 +155,7 @@ export function SplitModeControls({ splitLayersRef }: SplitModeControlsProps) {
           dispatch({ type: "EXIT_MODE" });
         }}
       />
-      {/* Polyline tool */}
+      {/* Polyline split tool */}
       <MaterialCommunityIconButton
         style={{ backgroundColor: theme.colors.accent }}
         type="accent"
@@ -108,7 +164,7 @@ export function SplitModeControls({ splitLayersRef }: SplitModeControlsProps) {
         icon="vector-polyline-plus"
         onPress={() => dispatch({ type: "SET_SPLIT_TOOL", tool: "polyline" })}
       />
-      {/* Polygon tool */}
+      {/* Polygon cut tool */}
       <MaterialCommunityIconButton
         style={{ backgroundColor: theme.colors.accent }}
         type="accent"
@@ -117,27 +173,38 @@ export function SplitModeControls({ splitLayersRef }: SplitModeControlsProps) {
         icon="vector-polygon"
         onPress={() => dispatch({ type: "SET_SPLIT_TOOL", tool: "polygon" })}
       />
-      {/* Extract tool — only for MultiPolygons with >1 sub-polygon */}
-      {currentPolygons.length === 1 && currentPolygons[0].coordinates.length > 1 && (
-        <MaterialCommunityIconButton
-          style={{ backgroundColor: theme.colors.accent }}
-          type="accent"
-          color="black"
-          iconSize={30}
-          icon="vector-difference-ba"
-          onPress={() => dispatch({ type: "SET_SPLIT_TOOL", tool: "extract" })}
-        />
-      )}
-      {/* Confirm (green checkmark) */}
-      {hasMultiplePolygons && (
-        <MaterialCommunityIconButton
-          type="accent"
-          color="green"
-          iconSize={30}
-          icon="check-circle-outline"
-          onPress={handleDone}
-        />
-      )}
+      {/* Extract sub-polygon — only for MultiPolygons with >1 ring */}
+      {currentPolygons.length === 1 &&
+        currentPolygons[0].coordinates.length > 1 && (
+          <MaterialCommunityIconButton
+            style={{ backgroundColor: theme.colors.accent }}
+            type="accent"
+            color="black"
+            iconSize={30}
+            icon="vector-difference-ba"
+            onPress={() =>
+              dispatch({ type: "SET_SPLIT_TOOL", tool: "extract" })
+            }
+          />
+        )}
+      {/* Confirm — navigate to summary when there are multiple polygons */}
+      <MaterialCommunityIconButton
+        type="accent"
+        color={hasMultiplePolygons ? "green" : "gray"}
+        iconSize={30}
+        icon="check-circle-outline"
+        disabled={!hasMultiplePolygons}
+        onPress={handleDone}
+      />
+      {/* Info */}
+      <MaterialCommunityIconButton
+        style={{ backgroundColor: theme.colors.accent }}
+        type="accent"
+        color="black"
+        iconSize={30}
+        icon="information-outline"
+        onPress={() => navigation.navigate("SplitPlotOnboarding")}
+      />
     </MapControls>
   );
 }

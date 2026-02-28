@@ -394,7 +394,8 @@
       "tool_split": "Dividi un appezzamento esistente",
       "tool_merge": "Unisci appezzamenti",
       "tool_edit": "Modifica la superficie",
-      "tool_delete": "Elimina appezzamento"
+      "tool_delete": "Elimina appezzamento",
+      "tool_cancel": "Annulla l'azione corrente"
     },
     "usage_codes": {
       "501": "Orzo primaverile",
@@ -923,6 +924,8 @@
     "welcome_body_edit": "Stai per modificare la forma di un campo. Ecco una breve spiegazione di come funziona.",
     "edit_intro_heading": "Modifica il campo",
     "edit_intro_body": "Sposta i punti d'angolo per adattare la forma. Tieni premuto un punto d'angolo e trascinalo nella posizione desiderata.",
+    "cancel_heading": "Annulla",
+    "cancel_body": "Tocca questo simbolo per annullare e tornare indietro.",
     "overlap_heading": "Sovrapposizioni",
     "overlap_body": "Se il tuo nuovo campo si sovrappone a campi esistenti, questi verranno adattati automaticamente.",
     "crop_rotation_welcome_heading": "Pianifica le tue rotazioni colturali",

@@ -42,6 +42,7 @@ type Step =
   | "select"
   | "draw"
   | "finish"
+  | "cancel"
   | "overlap"
   | "parcel"
   | "editIntro"
@@ -53,17 +54,17 @@ function getSteps(
 ): Step[] {
   switch (variant) {
     case "draw":
-      return ["welcome", "draw", "finish", "overlap"];
+      return ["welcome", "draw", "finish", "cancel", "overlap"];
     case "parcel":
       return ["welcome", "parcel", "overlap"];
     case "edit":
-      return ["welcome", "editIntro", "finish", "overlap"];
+      return ["welcome", "editIntro", "finish", "cancel", "overlap"];
     case "cropRotation":
       return ["cropRotationWelcome"];
     case "plotsMap":
       return ["plotsMapWelcome"];
     default:
-      return ["welcome", "select", "draw", "finish"];
+      return ["welcome", "select", "draw", "finish", "cancel"];
   }
 }
 
@@ -265,6 +266,23 @@ export function MapDrawOnboardingScreen() {
               }}
             >
               {t("map_draw_onboarding.finish_body")}
+            </H3>
+          </View>
+        )}
+
+        {currentStep === "cancel" && (
+          <View style={{ alignItems: "center" }}>
+            <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
+              {t("map_draw_onboarding.cancel_heading")}
+            </H1>
+            <IconBadge name="close-circle-outline" />
+            <H3
+              style={{
+                color: theme.colors.primary,
+                textAlign: "center",
+              }}
+            >
+              {t("map_draw_onboarding.cancel_body")}
             </H3>
           </View>
         )}

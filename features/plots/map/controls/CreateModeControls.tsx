@@ -23,39 +23,53 @@ export function CreateModeControls() {
   if (drawingAction === "draw" || drawingAction === "edit") {
     return (
       <MapControls>
-        {/* Cancel — reset drawing and go back to draw mode */}
+        {/* Cancel */}
         <MaterialCommunityIconButton
           type="accent"
-          color="red"
+          color="black"
           iconSize={30}
           icon="close-circle-outline"
           onPress={() => {
             drawingRef.current?.reset();
-            dispatch({ type: "SET_CREATE_POLYGON", polygon: null });
-            dispatch({ type: "SET_CREATE_ACTION", action: "draw" });
+            if (drawingAction === "draw") {
+              // No polygon yet — exit create mode entirely
+              addPlotStore.reset();
+              dispatch({ type: "EXIT_MODE" });
+            } else {
+              // Editing existing polygon — reset drawing and go back to draw mode
+              dispatch({ type: "SET_CREATE_POLYGON", polygon: null });
+              dispatch({ type: "SET_CREATE_ACTION", action: "draw" });
+            }
           }}
         />
         {/* Undo */}
         <MaterialCommunityIconButton
           type="accent"
-          color="white"
+          color="black"
           iconSize={30}
           icon="undo"
           onPress={() => drawingRef.current?.undo()}
         />
-        {/* Confirm — only in edit mode when polygon exists */}
-        {drawingAction === "edit" && newPolygon && (
-          <MaterialCommunityIconButton
-            type="accent"
-            color="green"
-            iconSize={30}
-            icon="check-circle-outline"
-            onPress={() => {
-              // Re-compute polygon from current drawing coordinates
-              dispatch({ type: "SET_CREATE_ACTION", action: "select" });
-            }}
-          />
-        )}
+        {/* Confirm — disabled until polygon is closed and editable */}
+        <MaterialCommunityIconButton
+          type="accent"
+          color={drawingAction === "edit" && newPolygon ? "green" : "gray"}
+          iconSize={30}
+          icon="check-circle-outline"
+          disabled={!(drawingAction === "edit" && newPolygon)}
+          onPress={() => {
+            dispatch({ type: "SET_CREATE_ACTION", action: "select" });
+          }}
+        />
+        {/* Info */}
+        <MaterialCommunityIconButton
+          style={{ backgroundColor: theme.colors.accent }}
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="information-outline"
+          onPress={() => navigation.navigate("MapDrawOnboarding", { variant: "draw" })}
+        />
       </MapControls>
     );
   }

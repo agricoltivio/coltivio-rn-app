@@ -14,6 +14,7 @@ import { PlotFertilizerApplicationsScreen } from "../PlotFertilizerApllicationsS
 import { PlotHarvestsScreen } from "../PlotHarvestsScreen";
 import { PlotsMapScreen } from "../map/PlotsMapScreen";
 import { PlotTillagesScreen } from "../PlotTillagesScreen";
+import { PlotsMapOnboardingScreen } from "../PlotsMapOnboardingScreen";
 import { SplitPlotOnboardingScreen } from "../SplitPlotOnboardingScreen";
 import { SplitPlotSummaryScreen } from "../SplitPlotSummaryScreen";
 import { PlotListScreen } from "../map/PlotListScreen";
@@ -143,6 +144,16 @@ export function renderPlotsStack(
         presentation: "modal",
         headerShown: true,
         headerRight,
+      }}
+    />,
+    <Stack.Screen
+      key="plots-map-onboarding"
+      name="PlotsMapOnboarding"
+      component={PlotsMapOnboardingScreen}
+      options={{
+        title: "",
+        presentation: "modal",
+        headerShown: false,
       }}
     />,
     <Stack.Screen
