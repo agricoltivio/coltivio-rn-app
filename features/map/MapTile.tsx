@@ -14,14 +14,17 @@ export const MapTile = ({ showMap = true }: { showMap?: boolean }) => {
   const { farm } = useFarmQuery();
   const { plots } = useFarmPlotsQuery();
 
-  const features = useMemo((): GeoJSON.FeatureCollection => ({
-    type: "FeatureCollection",
-    features: (plots ?? []).map((plot) => ({
-      type: "Feature",
-      properties: {},
-      geometry: plot.geometry,
-    })),
-  }), [plots]);
+  const features = useMemo(
+    (): GeoJSON.FeatureCollection => ({
+      type: "FeatureCollection",
+      features: (plots ?? []).map((plot) => ({
+        type: "Feature",
+        properties: {},
+        geometry: plot.geometry,
+      })),
+    }),
+    [plots],
+  );
 
   if (!farm || !plots) {
     return null;
@@ -66,7 +69,11 @@ export const MapTile = ({ showMap = true }: { showMap?: boolean }) => {
             padding: theme.spacing.xxs,
           }}
         >
-          <Ionicons name="expand-outline" size={22} color={theme.colors.primary} />
+          <Ionicons
+            name="expand-outline"
+            size={28}
+            color={theme.colors.primary}
+          />
         </TouchableOpacity>
       </View>
     </View>

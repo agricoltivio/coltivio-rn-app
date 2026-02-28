@@ -21,7 +21,9 @@ export function MapLayerToggle({ baseLayer, onToggle }: MapLayerToggleProps) {
         color={theme.colors.black}
         iconSize={30}
         icon={baseLayer === "satellite" ? "map-outline" : "satellite-variant"}
-        onPress={() => onToggle(baseLayer === "satellite" ? "map" : "satellite")}
+        onPress={() =>
+          onToggle(baseLayer === "satellite" ? "map" : "satellite")
+        }
       />
     </AbsoluteView>
   );
@@ -29,7 +31,7 @@ export function MapLayerToggle({ baseLayer, onToggle }: MapLayerToggleProps) {
 
 const AbsoluteView = styled.View<InsetsProps>`
   position: absolute;
-  right: ${({ theme }) => theme.spacing.m}px;
-  bottom: ${({ insets, theme }) => insets.bottom + theme.spacing.s}px;
+  right: ${({ theme }) => theme.spacing.xxl}px;
+  bottom: ${({ insets, theme }) => insets.bottom}px;
   align-items: center;
 `;

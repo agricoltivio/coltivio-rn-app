@@ -32,8 +32,7 @@ const EMPTY_STYLE: StyleSpecification = {
 const TILE_URLS = {
   satellite:
     "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/3857/{z}/{x}/{y}.jpeg",
-  map:
-    "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg",
+  map: "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg",
 } as const;
 
 export function StaticMapPreview({
@@ -45,18 +44,14 @@ export function StaticMapPreview({
   const theme = useTheme();
   const [baseLayer, setBaseLayer] = useState<BaseLayer>("satellite");
 
-  const fillColor = hexToRgba(theme.map.defaultFillColor, theme.map.defaultFillAlpha);
+  const fillColor = hexToRgba(
+    theme.map.defaultFillColor,
+    theme.map.defaultFillAlpha,
+  );
 
   return (
-    <View
-      pointerEvents="box-none"
-      style={[styles.container, { height }]}
-    >
-      <Map
-        style={styles.map}
-        mapStyle={EMPTY_STYLE}
-        dragPan={false}
-      >
+    <View pointerEvents="box-none" style={[styles.container, { height }]}>
+      <Map style={styles.map} mapStyle={EMPTY_STYLE} dragPan={false}>
         <Camera
           initialViewState={{
             center,
@@ -114,7 +109,7 @@ export function StaticMapPreview({
       </Map>
 
       {/* Layer toggle button */}
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.layerToggle}
         onPress={() => setBaseLayer(baseLayer === "satellite" ? "map" : "satellite")}
       >
@@ -123,7 +118,7 @@ export function StaticMapPreview({
           size={18}
           color="#333"
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 }

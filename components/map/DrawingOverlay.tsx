@@ -52,7 +52,10 @@ function buildVerticesCollection(
       properties: {
         index,
         type: "vertex",
-        isFirst: index === 0 && !closed && coordinates.length >= 3 && isPolygon ? 1 : 0,
+        isFirst:
+          index === 0 && !closed && coordinates.length >= 3 && isPolygon
+            ? 1
+            : 0,
       },
       geometry: { type: "Point", coordinates: coord },
     })),
@@ -135,181 +138,178 @@ export const LAYER_IDS = {
 
 // --- Component ---
 
-export const DrawingOverlay = forwardRef<DrawingOverlayRef, DrawingOverlayProps>(
-  function DrawingOverlay({ mode, onCoordinatesChange }, ref) {
-    const [coordinates, setCoordinates] = useState<LngLat[]>([]);
-    const [closed, setClosed] = useState(false);
+export const DrawingOverlay = forwardRef<
+  DrawingOverlayRef,
+  DrawingOverlayProps
+>(function DrawingOverlay({ mode, onCoordinatesChange }, ref) {
+  const [coordinates, setCoordinates] = useState<LngLat[]>([]);
+  const [closed, setClosed] = useState(false);
 
-    // Undo stack: each entry is a snapshot of { coordinates, closed }
-    const undoStackRef = useRef<Array<{ coords: LngLat[]; closed: boolean }>>([]);
+  // Undo stack: each entry is a snapshot of { coordinates, closed }
+  const undoStackRef = useRef<Array<{ coords: LngLat[]; closed: boolean }>>([]);
 
-    // Refs so imperative methods always read latest state without stale closures
-    const coordsRef = useRef(coordinates);
-    coordsRef.current = coordinates;
-    const closedRef = useRef(closed);
-    closedRef.current = closed;
+  // Refs so imperative methods always read latest state without stale closures
+  const coordsRef = useRef(coordinates);
+  coordsRef.current = coordinates;
+  const closedRef = useRef(closed);
+  closedRef.current = closed;
 
-    const isDrawing = mode === "draw-polygon" || mode === "draw-polyline";
-    const isActive = isDrawing || mode === "edit";
+  const isDrawing = mode === "draw-polygon" || mode === "draw-polyline";
+  const isActive = isDrawing || mode === "edit";
 
-    const shapeData = useMemo(
-      () => buildShapeCollection(coordinates, closed),
-      [coordinates, closed],
-    );
-    const isPolygon = mode === "draw-polygon";
-    const verticesData = useMemo(
-      () => buildVerticesCollection(coordinates, closed, isPolygon),
-      [coordinates, closed, isPolygon],
-    );
-    const midpointsData = useMemo(
-      () => buildMidpointsCollection(coordinates, closed),
-      [coordinates, closed],
-    );
+  const shapeData = useMemo(
+    () => buildShapeCollection(coordinates, closed),
+    [coordinates, closed],
+  );
+  const isPolygon = mode === "draw-polygon";
+  const verticesData = useMemo(
+    () => buildVerticesCollection(coordinates, closed, isPolygon),
+    [coordinates, closed, isPolygon],
+  );
+  const midpointsData = useMemo(
+    () => buildMidpointsCollection(coordinates, closed),
+    [coordinates, closed],
+  );
 
-    // Push current state to undo stack before any mutation
-    function pushUndo() {
-      undoStackRef.current.push({
-        coords: [...coordsRef.current],
-        closed: closedRef.current,
-      });
-    }
+  // Push current state to undo stack before any mutation
+  function pushUndo() {
+    undoStackRef.current.push({
+      coords: [...coordsRef.current],
+      closed: closedRef.current,
+    });
+  }
 
-    function notifyChange(newCoords: LngLat[], newClosed: boolean) {
-      onCoordinatesChange?.(newCoords, newClosed);
-    }
+  function notifyChange(newCoords: LngLat[], newClosed: boolean) {
+    onCoordinatesChange?.(newCoords, newClosed);
+  }
 
-    // Stable ref — no dependencies on coordinates/closed, reads from refs instead
-    useImperativeHandle(
-      ref,
-      () => ({
-        getCoordinates() {
-          return [...coordsRef.current];
-        },
-        isClosed() {
-          return closedRef.current;
-        },
-        reset() {
-          undoStackRef.current = [];
-          setCoordinates([]);
-          setClosed(false);
-          notifyChange([], false);
-        },
-        undo() {
-          const prev = undoStackRef.current.pop();
-          if (!prev) return;
-          setCoordinates(prev.coords);
-          setClosed(prev.closed);
-          notifyChange(prev.coords, prev.closed);
-        },
-        handleMapTap(lngLat: LngLat) {
-          if (closedRef.current) return;
+  // Stable ref — no dependencies on coordinates/closed, reads from refs instead
+  useImperativeHandle(
+    ref,
+    () => ({
+      getCoordinates() {
+        return [...coordsRef.current];
+      },
+      isClosed() {
+        return closedRef.current;
+      },
+      reset() {
+        undoStackRef.current = [];
+        setCoordinates([]);
+        setClosed(false);
+        notifyChange([], false);
+      },
+      undo() {
+        const prev = undoStackRef.current.pop();
+        if (!prev) return;
+        setCoordinates(prev.coords);
+        setClosed(prev.closed);
+        notifyChange(prev.coords, prev.closed);
+      },
+      handleMapTap(lngLat: LngLat) {
+        if (closedRef.current) return;
 
-          // Check if tap is near first vertex to close the polygon
-          if (mode === "draw-polygon" && coordsRef.current.length >= 3) {
-            const first = coordsRef.current[0];
-            const dist = turf.distance(turf.point(first), turf.point(lngLat), {
-              units: "meters",
-            });
-            if (dist < CLOSE_THRESHOLD_METERS) {
-              pushUndo();
-              setClosed(true);
-              closedRef.current = true;
-              notifyChange(coordsRef.current, true);
-              return;
-            }
+        // Check if tap is near first vertex to close the polygon
+        if (mode === "draw-polygon" && coordsRef.current.length >= 3) {
+          const first = coordsRef.current[0];
+          const dist = turf.distance(turf.point(first), turf.point(lngLat), {
+            units: "meters",
+          });
+          if (dist < CLOSE_THRESHOLD_METERS) {
+            pushUndo();
+            setClosed(true);
+            closedRef.current = true;
+            notifyChange(coordsRef.current, true);
+            return;
           }
+        }
 
-          pushUndo();
-          const newCoords = [...coordsRef.current, lngLat];
-          setCoordinates(newCoords);
-          notifyChange(newCoords, closedRef.current);
-        },
-        updateVertex(index: number, lngLat: LngLat) {
-          const next = [...coordsRef.current];
-          next[index] = lngLat;
-          coordsRef.current = next;
-          setCoordinates(next);
-          notifyChange(next, closedRef.current);
-        },
-        insertVertex(afterIndex: number, lngLat: LngLat) {
-          const next = [...coordsRef.current];
-          next.splice(afterIndex + 1, 0, lngLat);
-          coordsRef.current = next;
-          setCoordinates(next);
-          notifyChange(next, closedRef.current);
-        },
-        loadCoordinates(coords: LngLat[]) {
-          undoStackRef.current = [];
-          setCoordinates(coords);
-          setClosed(true);
-          coordsRef.current = coords;
-          closedRef.current = true;
-          notifyChange(coords, true);
-        },
-      }),
-      [mode, onCoordinatesChange],
-    );
+        pushUndo();
+        const newCoords = [...coordsRef.current, lngLat];
+        setCoordinates(newCoords);
+        notifyChange(newCoords, closedRef.current);
+      },
+      updateVertex(index: number, lngLat: LngLat) {
+        const next = [...coordsRef.current];
+        next[index] = lngLat;
+        coordsRef.current = next;
+        setCoordinates(next);
+        notifyChange(next, closedRef.current);
+      },
+      insertVertex(afterIndex: number, lngLat: LngLat) {
+        const next = [...coordsRef.current];
+        next.splice(afterIndex + 1, 0, lngLat);
+        coordsRef.current = next;
+        setCoordinates(next);
+        notifyChange(next, closedRef.current);
+      },
+      loadCoordinates(coords: LngLat[]) {
+        undoStackRef.current = [];
+        setCoordinates(coords);
+        setClosed(true);
+        coordsRef.current = coords;
+        closedRef.current = true;
+        notifyChange(coords, true);
+      },
+    }),
+    [mode, onCoordinatesChange],
+  );
 
-    if (!isActive || coordinates.length === 0) return null;
+  if (!isActive || coordinates.length === 0) return null;
 
-    return (
-      <>
-        {/* Shape fill + stroke */}
-        <GeoJSONSource id="drawing-shape" data={shapeData}>
-          <Layer
-            type="fill"
-            id={LAYER_IDS.FILL}
-            filter={["==", ["geometry-type"], "Polygon"]}
-            paint={{ "fill-color": "#4CAF50", "fill-opacity": 0.25 }}
-          />
-          <Layer
-            type="line"
-            id={LAYER_IDS.STROKE}
-            paint={{ "line-color": "#4CAF50", "line-width": 3 }}
-          />
-        </GeoJSONSource>
+  return (
+    <>
+      {/* Shape fill + stroke */}
+      <GeoJSONSource id="drawing-shape" data={shapeData}>
+        <Layer
+          type="fill"
+          id={LAYER_IDS.FILL}
+          filter={["==", ["geometry-type"], "Polygon"]}
+          paint={{ "fill-color": "#4CAF50", "fill-opacity": 0.25 }}
+        />
+        <Layer
+          type="line"
+          id={LAYER_IDS.STROKE}
+          paint={{ "line-color": "#4CAF50", "line-width": 3 }}
+        />
+      </GeoJSONSource>
 
-        {/* Vertices */}
-        <GeoJSONSource id="drawing-vertices" data={verticesData}>
+      {/* Vertices */}
+      <GeoJSONSource id="drawing-vertices" data={verticesData}>
+        <Layer
+          type="circle"
+          id={LAYER_IDS.VERTICES}
+          paint={{
+            "circle-radius": ["case", ["==", ["get", "isFirst"], 1], 14, 14],
+            "circle-color": [
+              "case",
+              ["==", ["get", "isFirst"], 1],
+              "#4CAF50",
+              "#FFFFFF",
+            ],
+            "circle-opacity": 0.6,
+            "circle-stroke-color": "#4CAF50",
+            "circle-stroke-width": 3,
+          }}
+        />
+      </GeoJSONSource>
+
+      {/* Midpoints — shown once the polygon is closed */}
+      {closed && coordinates.length >= 2 ? (
+        <GeoJSONSource id="drawing-midpoints" data={midpointsData}>
           <Layer
             type="circle"
-            id={LAYER_IDS.VERTICES}
+            id={LAYER_IDS.MIDPOINTS}
             paint={{
-              "circle-radius": [
-                "case",
-                ["==", ["get", "isFirst"], 1],
-                12,
-                8,
-              ],
-              "circle-color": [
-                "case",
-                ["==", ["get", "isFirst"], 1],
-                "#4CAF50",
-                "#FFFFFF",
-              ],
-              "circle-stroke-color": "#4CAF50",
-              "circle-stroke-width": 3,
+              "circle-radius": 14,
+              "circle-color": "#4CAF50",
+              "circle-opacity": 0.6,
+              "circle-stroke-color": "#FFFFFF",
+              "circle-stroke-width": 1.5,
             }}
           />
         </GeoJSONSource>
-
-        {/* Midpoints — shown once the polygon is closed */}
-        {closed && coordinates.length >= 2 ? (
-          <GeoJSONSource id="drawing-midpoints" data={midpointsData}>
-            <Layer
-              type="circle"
-              id={LAYER_IDS.MIDPOINTS}
-              paint={{
-                "circle-radius": 5,
-                "circle-color": "#4CAF50",
-                "circle-opacity": 0.6,
-                "circle-stroke-color": "#FFFFFF",
-                "circle-stroke-width": 1.5,
-              }}
-            />
-          </GeoJSONSource>
-        ) : null}
-      </>
-    );
-  },
-);
+      ) : null}
+    </>
+  );
+});
