@@ -62,8 +62,5 @@ yarn-error.log*
 .env.local
 coltivio-797c630e24ef.json
 
-# Claude Capsule Kit (generated at runtime)
-.claude/**
-CLAUDE.md
 
 *.tar.gz

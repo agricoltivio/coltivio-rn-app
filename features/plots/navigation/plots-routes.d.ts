@@ -1,12 +1,7 @@
 import { StackScreenProps } from "@/navigation/rootStackTypes";
-import { Region } from "react-native-maps";
 
 export type PlotsStackParamList = {
   PlotsMap: { selectedPlotId?: string };
-  AddPlotMap: { initialRegion?: Region };
-  EditPlotMap: { plotId: string; initialRegion?: Region };
-  SplitPlotMap: { plotId: string; initialRegion?: Region };
-  MergePlotsMap: { plotId: string; initialRegion?: Region };
   AddPlotSummary: {
     cropId?: string;
   };
@@ -26,20 +21,15 @@ export type PlotsStackParamList = {
   PlotTillages: { plotId: string; name: string };
   PlotsMapOnboarding: undefined;
   AddPlotOnboarding: { variant: "draw" | "parcel" };
-  EditPlotOnboarding: undefined;
   SplitPlotOnboarding: undefined;
   MergePlotsOnboarding: undefined;
+  AdjustPlotOnboarding: undefined;
   SplitPlotSummary: { plotId: string };
   MergePlotSummary: { plotIds: string[]; primaryPlotId: string };
   PlotList: undefined;
 };
 
 export type PlotsMapScreenProps = StackScreenProps<"PlotsMap">;
-
-export type AddPlotMapScreenProps = StackScreenProps<"AddPlotMap">;
-export type EditPlotMapScreenProps = StackScreenProps<"EditPlotMap">;
-export type SplitPlotMapScreenProps = StackScreenProps<"SplitPlotMap">;
-export type MergePlotsMapScreenProps = StackScreenProps<"MergePlotsMap">;
 
 export type AddPlotSummaryScreenProps = StackScreenProps<"AddPlotSummary">;
 

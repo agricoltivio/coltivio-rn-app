@@ -2,7 +2,7 @@
   "buttons": {
     "signup": "S'inscrire",
     "login": "Se connecter",
-    "signout": "Se d\u00e9connecter",
+    "signout": "Se déconnecter",
     "next": "Suivant",
     "back": "Retour",
     "cancel": "Annuler",
@@ -13,15 +13,15 @@
     "ok": "OK",
     "close": "Fermer",
     "delete": "Supprimer",
-    "details": "D\u00e9tails",
-    "parcel_select": "S\u00e9lectionner la parcelle",
+    "details": "Détails",
+    "parcel_select": "Sélectionner la parcelle",
     "draw_area": "Dessiner une zone",
     "edit_area": "Modifier la zone",
-    "show_entries": "Afficher les entr\u00e9es",
+    "show_entries": "Afficher les entrées",
     "export": "Exporter",
     "finish": "Terminer",
     "send_email": "Envoyer e-mail",
-    "forgot_password": "Mot de passe oubli\u00e9",
+    "forgot_password": "Mot de passe oublié",
     "apply": "Appliquer",
     "clear": "Effacer"
   },
@@ -31,62 +31,62 @@
       "description": "Description",
       "description_optional": "Description (facultative)",
       "display_name": "Nom d'affichage",
-      "select_date": "S\u00e9lectionner une date",
+      "select_date": "Sélectionner une date",
       "email": "Email",
       "password": "Mot de passe",
-      "password_repeat": "R\u00e9p\u00e9ter le mot de passe",
+      "password_repeat": "Répéter le mot de passe",
       "date": "Date",
       "time": "Heure",
       "farm_name": "Nom de la ferme",
       "location": "Localisation",
       "location_search": "Rechercher une localisation",
-      "federal_farm_number": "Num\u00e9ro d'enregistrement de l'exploitation agricole",
+      "federal_farm_number": "Numéro d'enregistrement de l'exploitation agricole",
       "crop": "Culture",
-      "size_m2": "Taille (m\u00b2)",
+      "size_m2": "Taille (m²)",
       "area": "Surface",
       "area_hectares": "Surface (ha)",
       "divide_by_plot_size": "Diviser en fonction de la taille du champ",
       "plot_w_size": "Parcelle {{name}} ({{size}}a)",
       "device": "Appareil",
       "none": "Aucun",
-      "method": "M\u00e9thode",
+      "method": "Méthode",
       "capacity_per_unit": "{{unit}} par {{loadUnit}}",
       "crop_protection_product": "Produit de protection des cultures",
       "load": "Charge",
       "loads": "Charges",
       "balls": "Ballots",
       "crate": "Caisse",
-      "amount_unit": "Quantit\u00e9 {{unit}}",
+      "amount_unit": "Quantité {{unit}}",
       "amount_of_loads": "Nombre de charges",
-      "amount_per_load": "Quantit\u00e9 par charge",
+      "amount_per_load": "Quantité par charge",
       "unit_per_load": "{{unit}} par charge",
       "total": "Total",
       "total_unit": "Total {{unit}}",
       "total_w_amount_unit": "Total {{amount}}{{unit}}",
-      "additional_notes": "Notes suppl\u00e9mentaires",
-      "additional_notes_optional": "Notes suppl\u00e9mentaires (facultatives)",
-      "unit": "Unit\u00e9",
-      "kind": "Vari\u00e9t\u00e9",
-      "kind_optional": "Vari\u00e9t\u00e9 (facultative)",
+      "additional_notes": "Notes supplémentaires",
+      "additional_notes_optional": "Notes supplémentaires (facultatives)",
+      "unit": "Unité",
+      "kind": "Variété",
+      "kind_optional": "Variété (facultative)",
       "sowing": "Semis",
       "end_optional": "Fin (facultative)",
-      "category": "Cat\u00e9gorie",
+      "category": "Catégorie",
       "type": "Type",
       "fertiliser": "Engrais",
       "reason": "Raison",
       "action": "Action",
-      "conservation": "M\u00e9thode de conservation",
-      "conservation_optional": "M\u00e9thode de conservation (facultative)",
+      "conservation": "Méthode de conservation",
+      "conservation_optional": "Méthode de conservation (facultative)",
       "processing_type": "Transformation",
-      "weight_kg_per_harvest_unit": "Poids par unit\u00e9 de r\u00e9colte (kg)",
+      "weight_kg_per_harvest_unit": "Poids par unité de récolte (kg)",
       "machine": "Machine",
-      "default_machine": "Machine par d\u00e9faut",
+      "default_machine": "Machine par défaut",
       "organic": "Biologique",
-      "mineralic": "Min\u00e9ral",
-      "produced_units": "Unit\u00e9s produites",
-      "please_select": "Veuillez s\u00e9lectionner",
+      "mineralic": "Minéral",
+      "produced_units": "Unités produites",
+      "please_select": "Veuillez sélectionner",
       "from": "De",
-      "to": "\u00c0",
+      "to": "À",
       "local_id": "Parcelle",
       "local_id_optional": "Parcelle (optionnel)",
       "usage": "Utilisation",
@@ -96,86 +96,86 @@
       "cutting_date_optional": "Date de coupe (optionnel)",
       "permanent": "Permanent",
       "sex": "Sexe",
-      "date_range": "P\u00e9riode",
-      "duration": "Dur\u00e9e"
+      "date_range": "Période",
+      "duration": "Durée"
     },
     "placeholders": {
-      "location_search": "ex. Rue, Num\u00e9ro, Ville",
+      "location_search": "ex. Rue, Numéro, Ville",
       "federal_farm_number": "ex. 123/555/4/1",
       "search": "Rechercher...",
-      "weight_kg_per_harvest_unit": "ex. 20kg par balle carr\u00e9e",
-      "password_requirements": "Au moins 6 caract\u00e8res"
+      "weight_kg_per_harvest_unit": "ex. 20kg par balle carrée",
+      "password_requirements": "Au moins 6 caractères"
     },
     "validation": {
       "name_mismatch": "Le nom ne correspond pas",
-      "password_min_length": "Le mot de passe doit contenir au moins 6 caract\u00e8res",
+      "password_min_length": "Le mot de passe doit contenir au moins 6 caractères",
       "password_repeat_invalid": "Les mots de passe ne correspondent pas",
-      "divided_amount_too_big": "La quantit\u00e9 distribu\u00e9e est sup\u00e9rieure \u00e0 la quantit\u00e9 disponible",
-      "not_all_divided": "Vous n'avez pas encore distribu\u00e9 la totalit\u00e9 de la quantit\u00e9",
-      "required": "Ce champ ne peut pas \u00eatre vide",
+      "divided_amount_too_big": "La quantité distribuée est supérieure à la quantité disponible",
+      "not_all_divided": "Vous n'avez pas encore distribué la totalité de la quantité",
+      "required": "Ce champ ne peut pas être vide",
       "min": "Minimum {{min}}"
     }
   },
   "common": {
     "yes": "Oui",
     "no": "Non",
-    "no_entries": "Aucune entr\u00e9e pour le moment",
+    "no_entries": "Aucune entrée pour le moment",
     "notes": "Notes",
     "area_acres": "Surface: {{area}}a",
     "dont_show_again": "Ne plus afficher",
     "error": "Erreur",
     "unknown_error": "Une erreur inconnue s'est produite.",
     "danger_zone": "Attention !",
-    "all_entries_will_be_deleted": "Toutes les entr\u00e9es seront d\u00e9finitivement supprim\u00e9es.",
+    "all_entries_will_be_deleted": "Toutes les entrées seront définitivement supprimées.",
     "remaining_quantity": "{{quantity}} {{quantityLabel}} encore disponible",
     "total_amount_w_unit": "Total {{amount}}{{unit}}",
-    "if_problem_contact_support": "En cas de probl\u00e8me, veuillez contacter notre support.",
+    "if_problem_contact_support": "En cas de problème, veuillez contacter notre support.",
     "unknown": "Inconnu",
     "parcel_number": "Parcelle : {{number}}",
     "usage": "Utilisation",
-    "federal_farm_id": "Num\u00e9ro d'exploitation : {{number}}",
+    "federal_farm_id": "Numéro d'exploitation : {{number}}",
     "new_machine": "Nouvelle machine",
     "new_device": "Nouveau dispositif",
     "crate": "Caisse",
-    "total_amount": "Quantit\u00e9 totale",
+    "total_amount": "Quantité totale",
     "dashboard": "Tableau de bord",
     "list": "Liste"
   },
   "presets": {
-    "preset": "Mod\u00e8le",
-    "presets": "Mod\u00e8les",
-    "preset_settings": "Param\u00e8tres des mod\u00e8les",
-    "select_preset": "S\u00e9lectionner un mod\u00e8le",
-    "manage_presets": "G\u00e9rer les mod\u00e8les",
-    "manage_harvest_presets": "G\u00e9rer les mod\u00e8les de r\u00e9colte",
-    "manage_tillage_presets": "G\u00e9rer les mod\u00e8les de travail du sol",
-    "manage_fertilizer_presets": "G\u00e9rer les mod\u00e8les d'engrais",
-    "manage_crop_protection_presets": "G\u00e9rer les mod\u00e8les de protection des cultures",
-    "save_as_preset": "Enregistrer comme mod\u00e8le",
-    "preset_name": "Nom du mod\u00e8le",
-    "enter_preset_name": "Saisissez un nom pour le mod\u00e8le",
-    "delete_confirm_title": "Supprimer le mod\u00e8le",
-    "delete_confirm_message": "Voulez-vous vraiment supprimer \u00ab {{name}} \u00bb ?",
-    "no_presets": "Aucun mod\u00e8le disponible",
-    "no_preset": "Aucun mod\u00e8le"
+    "preset": "Modèle",
+    "presets": "Modèles",
+    "preset_settings": "Paramètres des modèles",
+    "select_preset": "Sélectionner un modèle",
+    "manage_presets": "Gérer les modèles",
+    "manage_harvest_presets": "Gérer les modèles de récolte",
+    "manage_tillage_presets": "Gérer les modèles de travail du sol",
+    "manage_fertilizer_presets": "Gérer les modèles d'engrais",
+    "manage_crop_protection_presets": "Gérer les modèles de protection des cultures",
+    "save_as_preset": "Enregistrer comme modèle",
+    "preset_name": "Nom du modèle",
+    "enter_preset_name": "Saisissez un nom pour le modèle",
+    "delete_confirm_title": "Supprimer le modèle",
+    "delete_confirm_message": "Voulez-vous vraiment supprimer « {{name}} » ?",
+    "no_presets": "Aucun modèle disponible",
+    "no_preset": "Aucun modèle"
   },
   "errors": {
-    "unexpected_retry": "Oups, une erreur s'est produite. Veuillez r\u00e9essayer.",
-    "unexpected_retry_later": "Oups, une erreur s'est produite. Veuillez r\u00e9essayer plus tard.",
+    "unexpected_retry": "Oups, une erreur s'est produite. Veuillez réessayer.",
+    "unexpected_retry_later": "Oups, une erreur s'est produite. Veuillez réessayer plus tard.",
     "unexpected": "Oups, une erreur s'est produite.",
-    "try_again_later": "Veuillez r\u00e9essayer plus tard...",
-    "link_expired": "Le lien a expir\u00e9. Veuillez r\u00e9essayer."
+    "try_again_later": "Veuillez réessayer plus tard...",
+    "link_expired": "Le lien a expiré. Veuillez réessayer."
   },
   "units": {
     "long": {
       "load": "Charge",
       "g": "Gramme",
       "kg": "Kilogramme",
-      "dt": "D\u00e9citonne",
+      "dt": "Décitonne",
       "t": "Tonne",
       "l": "Litre",
       "ml": "Millilitre",
-      "m3": "M\u00e8tre cube"
+      "m3": "Mètre cube"
     },
     "short": {
       "load": "Charge",
@@ -185,25 +185,25 @@
       "t": "t",
       "l": "l",
       "ml": "ml",
-      "m3": "m\u00b3",
+      "m3": "m³",
       "ha": "ha"
     }
   },
   "tips": {
     "select_or_draw_area": {
-      "select_area": "S\u00e9lectionnez votre zone",
-      "chose_select_or_draw": "Choisissez des champs entiers ou dessinez une zone personnalis\u00e9e.",
-      "draw_tip": "Utilisez ces ic\u00f4nes pour commencer et terminer le dessin. Appuyez sur la carte pour placer les points d'angle. Maintenez les points d'angle enfonc\u00e9s pour les d\u00e9placer."
+      "select_area": "Sélectionnez votre zone",
+      "chose_select_or_draw": "Choisissez des champs entiers ou dessinez une zone personnalisée.",
+      "draw_tip": "Utilisez ces icônes pour commencer et terminer le dessin. Appuyez sur la carte pour placer les points d'angle. Maintenez les points d'angle enfoncés pour les déplacer."
     },
     "select_plots": {
-      "heading": "S\u00e9lectionner les champs utilis\u00e9s",
-      "content": "S\u00e9lectionnez un ou plusieurs champs"
+      "heading": "Sélectionner les champs utilisés",
+      "content": "Sélectionnez un ou plusieurs champs"
     }
   },
   "signup": {
-    "create_account": "Cr\u00e9er votre compte",
+    "create_account": "Créer votre compte",
     "errors": {
-      "email_taken": "Cet email est d\u00e9j\u00e0 utilis\u00e9",
+      "email_taken": "Cet email est déjà utilisé",
       "unexpected": "Une erreur inattendue s'est produite"
     }
   },
@@ -211,10 +211,10 @@
     "signup_text": "Vous n'avez pas encore de compte ?"
   },
   "forgot_password": {
-    "reset_password": "R\u00e9initialiser le mot de passe",
-    "enter_email": "Veuillez entrer votre email pour r\u00e9initialiser votre mot de passe.",
-    "reset_link_sent": "Un email a \u00e9t\u00e9 envoy\u00e9 \u00e0 {{email}} pour r\u00e9initialiser votre mot de passe.",
-    "mail_being_deliverd": "Cela peut prendre un moment avant que l'email arrive. S'il ne s'affiche pas, v\u00e9rifiez votre dossier spam."
+    "reset_password": "Réinitialiser le mot de passe",
+    "enter_email": "Veuillez entrer votre email pour réinitialiser votre mot de passe.",
+    "reset_link_sent": "Un email a été envoyé à {{email}} pour réinitialiser votre mot de passe.",
+    "mail_being_deliverd": "Cela peut prendre un moment avant que l'email arrive. S'il ne s'affiche pas, vérifiez votre dossier spam."
   },
   "onboarding": {
     "farm_name": {
@@ -222,41 +222,49 @@
       "subheading": "Entrez un nom pour votre ferme"
     },
     "location": {
-      "heading": "O\u00f9 se trouve {{farmName}} ?",
+      "heading": "Où se trouve {{farmName}} ?",
       "subheading": "Recherchez votre adresse pour trouver l'emplacement."
     },
     "federal_farm_number": {
       "modal": {
-        "heading": "Votre num\u00e9ro d'enregistrement de l'exploitation agricole",
-        "body": "Appuyez sur l'une de vos parcelles ou recherchez manuellement votre num\u00e9ro d'enregistrement."
+        "heading": "Votre numéro d'enregistrement de l'exploitation agricole",
+        "body": "Appuyez sur l'une de vos parcelles ou recherchez manuellement votre numéro d'enregistrement."
       },
       "modal_not_found": {
-        "heading": "Votre num\u00e9ro d'exploitation",
-        "body": "Malheureusement, nous n'avons trouv\u00e9 aucun champ \u00e0 votre emplacement. Les cantons Obwald, Nidwald et Vaud ne sont pas encore pris en charge. Vous pouvez passer cette \u00e9tape et dessiner les champs manuellement."
+        "heading": "Votre numéro d'exploitation",
+        "body": "Malheureusement, nous n'avons trouvé aucun champ à votre emplacement. Les cantons Obwald, Nidwald et Vaud ne sont pas encore pris en charge. Vous pouvez passer cette étape et dessiner les champs manuellement."
       },
-      "confirmation": "Est-ce que {{federalFarmId}} est votre num\u00e9ro d'enregistrement de l'exploitation agricole ?"
+      "confirmation": "Est-ce que {{federalFarmId}} est votre numéro d'enregistrement de l'exploitation agricole ?"
     },
     "summary": {
       "heading": "Tout est prêt !",
       "subheading": "Votre ferme avec le numéro d'exploitation {{federalFarmId}} est prête.",
-      "plots_info": "Vos surfaces seront ajout\u00e9es en tant que champs sur la base de votre num\u00e9ro d'exploitation.",
-      "crops_info": "La culture actuelle est d\u00e9riv\u00e9e du code d'utilisation.",
-      "edit_plots_info": "Vous pouvez modifier vos surfaces \u00e0 tout moment sous 'Champs' ou via la carte.",
-      "press_save_to_finish": "Appuyez sur Enregistrer pour cr\u00e9er votre ferme.",
-      "no_federal_farm_id": "Malheureusement, nous n'avons pas pu ajouter automatiquement vos surfaces. Vous pouvez les ajouter manuellement sous 'Champs' ou via la carte. Nous travaillons \u00e0 supporter tous les emplacements d\u00e8s que possible."
+      "plots_info": "Vos surfaces seront ajoutées en tant que champs sur la base de votre numéro d'exploitation.",
+      "crops_info": "La culture actuelle est dérivée du code d'utilisation.",
+      "edit_plots_info": "Vous pouvez modifier vos surfaces à tout moment sous 'Champs' ou via la carte.",
+      "press_save_to_finish": "Appuyez sur Enregistrer pour créer votre ferme.",
+      "no_federal_farm_id": "Malheureusement, nous n'avons pas pu ajouter automatiquement vos surfaces. Vous pouvez les ajouter manuellement sous 'Champs' ou via la carte. Nous travaillons à supporter tous les emplacements dès que possible."
+    },
+    "preference": {
+      "heading": "Une dernière question",
+      "guided": "Avec des guides",
+      "guided_desc": "Montrez-moi des conseils et des guides pour les nouvelles fonctionnalités.",
+      "explore": "Explorer moi-même",
+      "explore_desc": "Je préfère essayer les choses par moi-même.",
+      "change_hint": "Vous pouvez modifier cela à tout moment dans les paramètres."
     }
   },
   "users": {
     "email": "Adresse e-mail",
-    "verify_new_email_before_in_effect": "Votre nouvelle adresse e-mail doit \u00eatre v\u00e9rifi\u00e9e avant que la modification ne prenne effet.",
-    "email_verified": "Votre adresse e-mail a \u00e9t\u00e9 v\u00e9rifi\u00e9e avec succ\u00e8s",
-    "email_not_verified": "Adresse e-mail non v\u00e9rifi\u00e9e !",
-    "email_change_pending": "Veuillez v\u00e9rifier votre nouvelle adresse e-mail",
-    "email_change_verification_sent": "Un e-mail a \u00e9t\u00e9 envoy\u00e9 pour v\u00e9rifier votre nouvelle adresse. Une fois confirm\u00e9e, la nouvelle adresse sera activ\u00e9e.",
+    "verify_new_email_before_in_effect": "Votre nouvelle adresse e-mail doit être vérifiée avant que la modification ne prenne effet.",
+    "email_verified": "Votre adresse e-mail a été vérifiée avec succès",
+    "email_not_verified": "Adresse e-mail non vérifiée !",
+    "email_change_pending": "Veuillez vérifier votre nouvelle adresse e-mail",
+    "email_change_verification_sent": "Un e-mail a été envoyé pour vérifier votre nouvelle adresse. Une fois confirmée, la nouvelle adresse sera activée.",
     "resend_verification_email": "Renvoyer l'e-mail",
     "new_password": "Nouveau mot de passe",
     "change_display_name": "Modifier le nom d'affichage",
-    "verification_mail_sent": "Un e-mail a \u00e9t\u00e9 envoy\u00e9 \u00e0 {{email}} pour v\u00e9rifier votre adresse e-mail."
+    "verification_mail_sent": "Un e-mail a été envoyé à {{email}} pour vérifier votre adresse e-mail."
   },
   "home": {
     "welcome_text": "Salut {{displayName}},",
@@ -265,8 +273,8 @@
       "plots": "Champs",
       "machines": "Machines",
       "field_calendar": "Calendrier des champs",
-      "animal_husbandry": "\u00c9levage",
-      "community": "Communaut\u00e9"
+      "animal_husbandry": "Élevage",
+      "community": "Communauté"
     }
   },
   "farm": {
@@ -275,7 +283,7 @@
     "location": "Localisation",
     "delete_farm": "Supprimer la ferme",
     "enter_farm_name_to_delete": "Pour supprimer votre ferme, entrez le nom de la ferme et confirmez l'action.",
-    "chose_option_to_delete_account": "Si vous souhaitez \u00e9galement supprimer votre compte, activez l'option 'Supprimer le compte'.",
+    "chose_option_to_delete_account": "Si vous souhaitez également supprimer votre compte, activez l'option 'Supprimer le compte'.",
     "delete_account": "Supprimer le compte"
   },
   "plots": {
@@ -284,8 +292,8 @@
     "plot_name": "Champ {{name}}",
     "plot_name_date": "{{date}} - Champ {{name}}",
     "common": {
-      "draw_area_overlap_info": "Si la zone chevauche un champ existant, celui-ci sera automatiquement r\u00e9duit.",
-      "affected_plots_warning": "Les champs suivants seront r\u00e9duits par ce champ."
+      "draw_area_overlap_info": "Si la zone chevauche un champ existant, celui-ci sera automatiquement réduit.",
+      "affected_plots_warning": "Les champs suivants seront réduits par ce champ."
     },
     "map": {
       "selected_plot": {
@@ -296,17 +304,17 @@
     "add": {
       "map": {
         "mode_select": {
-          "message": "Pour cr\u00e9er un nouveau champ, vous pouvez s\u00e9lectionner une parcelle ou dessiner une nouvelle zone."
+          "message": "Pour créer un nouveau champ, vous pouvez sélectionner une parcelle ou dessiner une nouvelle zone."
         },
         "tips": {
           "parcel_select": {
-            "heading": "S\u00e9lectionner une parcelle",
-            "overlap_info": "Si la parcelle s\u00e9lectionn\u00e9e chevauche un champ existant, celui-ci sera automatiquement r\u00e9duit."
+            "heading": "Sélectionner une parcelle",
+            "overlap_info": "Si la parcelle sélectionnée chevauche un champ existant, celui-ci sera automatiquement réduit."
           },
           "draw_area": {
             "heading": "Dessiner un nouveau champ",
-            "drawing_info": "Appuyez sur la carte pour placer les coins de votre surface. Maintenez les points d'angle enfonc\u00e9s pour les d\u00e9placer.",
-            "finish": "Appuyez sur l'ic\u00f4ne suivante pour confirmer la surface."
+            "drawing_info": "Appuyez sur la carte pour placer les coins de votre surface. Maintenez les points d'angle enfoncés pour les déplacer.",
+            "finish": "Appuyez sur l'icône suivante pour confirmer la surface."
           }
         }
       },
@@ -319,30 +327,35 @@
         "tips": {
           "edit_area": {
             "heading": "Modifier le champ",
-            "move_markers": "Maintenez les points d'angle enfonc\u00e9s jusqu'\u00e0 ce qu'ils apparaissent devant votre doigt et d\u00e9placez-les vers l'emplacement souhait\u00e9."
+            "move_markers": "Maintenez les points d'angle enfoncés jusqu'à ce qu'ils apparaissent devant votre doigt et déplacez-les vers l'emplacement souhaité."
           }
         }
       }
     },
     "delete": {
       "heading": "Voulez-vous vraiment supprimer le champ {{name}} ?",
-      "entries_warning": "Toutes les entr\u00e9es pour ce champ seront supprim\u00e9es de fa\u00e7on irr\u00e9versible.",
-      "confirm_by_typing_name": "Pour supprimer ce champ, saisissez le nom et confirmez l'op\u00e9ration."
+      "entries_warning": "Toutes les entrées pour ce champ seront supprimées de façon irréversible.",
+      "confirm_by_typing_name": "Pour supprimer ce champ, saisissez le nom et confirmez l'opération."
     },
     "actions": {
       "adjust": "Ajuster",
       "adjust_area": "Ajuster la surface",
-      "manage_area": "G\u00e9rer la surface",
+      "manage_area": "Gérer la surface",
       "split": "Diviser",
       "merge": "Fusionner"
     },
     "split_onboarding": {
       "welcome_heading": "Diviser un champ",
-      "welcome_body": "Divisez un champ en plusieurs parties. Vous pouvez dessiner une ligne ou d\u00e9couper une surface.",
+      "welcome_body": "Divisez un champ en plusieurs parties. Vous pouvez dessiner une ligne ou découper une surface.",
       "line_heading": "Dessiner une ligne",
-      "line_body": "Dessinez une ligne en travers du champ pour le diviser en deux parties. Appuyez sur la carte pour placer des points et confirmez avec l'ic\u00f4ne de d\u00e9coupe.",
-      "area_heading": "D\u00e9couper une surface",
-      "area_body": "Dessinez un polygone \u00e0 l'int\u00e9rieur du champ pour d\u00e9couper une nouvelle surface. Cela est utile lorsque vous souhaitez s\u00e9parer une zone sp\u00e9cifique."
+      "line_body": "Dessinez une ligne en travers du champ pour le diviser en deux parties. Appuyez sur la carte pour placer des points et confirmez avec l'icône de découpe.",
+      "area_heading": "Découper une surface",
+      "area_body": "Dessinez un polygone à l'intérieur du champ pour découper une nouvelle surface. Cela est utile lorsque vous souhaitez séparer une zone spécifique.",
+      "actions_heading": "Terminer & Annuler",
+      "confirm_body": "Appuyez sur la coche lorsque vous êtes satisfait de la division pour continuer.",
+      "abort_body": "Appuyez sur le X pour annuler et ignorer la division.",
+      "extract_heading": "Extraire un champ",
+      "extract_body": "Si une surface est composée de plusieurs polygones, vous pouvez en sélectionner un et l'extraire."
     },
     "split": {
       "heading": "Diviser le champ",
@@ -350,31 +363,31 @@
       "mode_polygon": "Surface",
       "mode_select_message": "Choisissez comment vous souhaitez diviser le champ.",
       "line_tip": "Dessinez une ligne en travers du champ pour le diviser.",
-      "polygon_tip": "Dessinez une surface \u00e0 l'int\u00e9rieur du champ pour la d\u00e9couper.",
-      "split_failed": "\u00c9chec de la division. Assurez-vous que la ligne traverse enti\u00e8rement le champ.",
+      "polygon_tip": "Dessinez une surface à l'intérieur du champ pour la découper.",
+      "split_failed": "Échec de la division. Assurez-vous que la ligne traverse entièrement le champ.",
       "summary": {
         "heading": "Confirmer la division",
         "sub_plot_name": "Sous-champ {{letter}}",
-        "strategy_label": "Strat\u00e9gie",
-        "strategy_keep_reference": "Conserver la r\u00e9f\u00e9rence",
-        "strategy_keep_reference_info": "Le champ d'origine sera conserv\u00e9 comme r\u00e9f\u00e9rence. Toutes les entr\u00e9es existantes (rotations, r\u00e9coltes, etc.) resteront associ\u00e9es au champ de r\u00e9f\u00e9rence.",
-        "strategy_delete_and_migrate": "Supprimer la r\u00e9f\u00e9rence",
-        "strategy_delete_and_migrate_info": "Le champ d'origine sera supprim\u00e9. Toutes les entr\u00e9es existantes seront transf\u00e9r\u00e9es au sous-champ choisi.",
-        "original_plot_name": "Nom du champ de r\u00e9f\u00e9rence",
-        "migrate_to_label": "Transf\u00e9rer les entr\u00e9es vers"
+        "strategy_label": "Stratégie",
+        "strategy_keep_reference": "Conserver la référence",
+        "strategy_keep_reference_info": "Le champ d'origine sera conservé comme référence. Toutes les entrées existantes (rotations, récoltes, etc.) resteront associées au champ de référence.",
+        "strategy_delete_and_migrate": "Supprimer la référence",
+        "strategy_delete_and_migrate_info": "Le champ d'origine sera supprimé. Toutes les entrées existantes seront transférées au sous-champ choisi.",
+        "original_plot_name": "Nom du champ de référence",
+        "migrate_to_label": "Transférer les entrées vers"
       }
     },
     "merge": {
       "heading": "Fusionner les champs",
-      "select_plots": "S\u00e9lectionnez les champs \u00e0 fusionner.",
-      "min_two_plots": "S\u00e9lectionnez au moins 2 champs.",
+      "select_plots": "Sélectionnez les champs à fusionner.",
+      "min_two_plots": "Sélectionnez au moins 2 champs.",
       "summary": {
         "heading": "Confirmer la fusion",
-        "strategy_label": "Strat\u00e9gie",
-        "strategy_keep_reference": "Conserver la r\u00e9f\u00e9rence",
-        "strategy_keep_reference_info": "Les champs d'origine seront conserv\u00e9s comme r\u00e9f\u00e9rence. Toutes les entr\u00e9es existantes resteront associ\u00e9es aux champs de r\u00e9f\u00e9rence.",
-        "strategy_delete_and_migrate": "Supprimer la r\u00e9f\u00e9rence",
-        "strategy_delete_and_migrate_info": "Les champs d'origine seront supprim\u00e9s. Toutes les entr\u00e9es existantes seront transf\u00e9r\u00e9es au nouveau champ.",
+        "strategy_label": "Stratégie",
+        "strategy_keep_reference": "Conserver la référence",
+        "strategy_keep_reference_info": "Les champs d'origine seront conservés comme référence. Toutes les entrées existantes resteront associées aux champs de référence.",
+        "strategy_delete_and_migrate": "Supprimer la référence",
+        "strategy_delete_and_migrate_info": "Les champs d'origine seront supprimés. Toutes les entrées existantes seront transférées au nouveau champ.",
         "strategy_delete_crop_rotation_warning": "Les rotations de cultures ne seront pas transférées et seront perdues."
       }
     },
@@ -382,7 +395,10 @@
       "welcome_heading": "Fusionner des champs",
       "welcome_body": "Sélectionnez les champs que vous souhaitez fusionner. Le champ actif est déjà sélectionné.",
       "confirm_heading": "Confirmer",
-      "confirm_body": "Appuyez sur l'icône de confirmation lorsque au moins 2 champs sont sélectionnés."
+      "confirm_body": "Appuyez sur l'icône de confirmation lorsque au moins 2 champs sont sélectionnés.",
+      "actions_heading": "Terminer & Annuler",
+      "confirm_action_body": "Appuyez sur l'icône de confirmation lorsqu'au moins 2 champs sont sélectionnés.",
+      "abort_body": "Appuyez sur le X pour annuler et revenir sans fusionner."
     },
     "map_onboarding": {
       "browse_heading": "Vos champs",
@@ -394,28 +410,29 @@
       "tool_split": "Diviser un champ existant",
       "tool_merge": "Fusionner des champs",
       "tool_edit": "Modifier la surface du champ",
-      "tool_delete": "Supprimer un champ"
+      "tool_delete": "Supprimer un champ",
+      "tool_cancel": "Annuler l'action en cours"
     },
     "usage_codes": {
       "501": "Orge de printemps",
       "502": "Orge d'hiver",
       "504": "Avoine",
       "505": "Triticale",
-      "506": "M\u00e9lange de c\u00e9r\u00e9ales fourrag\u00e8res",
-      "507": "Bl\u00e9 fourrager selon la liste vari\u00e9tale Swiss granum",
-      "508": "Ma\u00efs grain",
-      "510": "Bl\u00e9 dur",
-      "511": "\u00c9peautre, engrain",
-      "512": "Bl\u00e9 de printemps (hors bl\u00e9 fourrager de la liste vari\u00e9tale Swiss granum)",
-      "513": "Bl\u00e9 d'hiver (hors bl\u00e9 fourrager de la liste vari\u00e9tale Swiss granum)",
+      "506": "Mélange de céréales fourragères",
+      "507": "Blé fourrager selon la liste variétale Swiss granum",
+      "508": "Maïs grain",
+      "510": "Blé dur",
+      "511": "Épeautre, engrain",
+      "512": "Blé de printemps (hors blé fourrager de la liste variétale Swiss granum)",
+      "513": "Blé d'hiver (hors blé fourrager de la liste variétale Swiss granum)",
       "514": "Seigle",
-      "515": "M\u00e9lange de c\u00e9r\u00e9ales panifiables",
-      "516": "\u00c9peautre",
-      "519": "Ma\u00efs semence (culture contractuelle)",
+      "515": "Mélange de céréales panifiables",
+      "516": "Épeautre",
+      "519": "Maïs semence (culture contractuelle)",
       "520": "Riz sec",
-      "521": "Ma\u00efs ensilage et vert",
-      "522": "Betterave sucri\u00e8re",
-      "523": "Betterave fourrag\u00e8re",
+      "521": "Maïs ensilage et vert",
+      "522": "Betterave sucrière",
+      "523": "Betterave fourragère",
       "524": "Pommes de terre",
       "525": "Pommes de terre de semence (culture contractuelle)",
       "526": "Colza de printemps pour huile alimentaire",
@@ -424,30 +441,30 @@
       "529": "Riz humide",
       "531": "Tournesol pour huile alimentaire",
       "534": "Lin",
-      "536": "Haricots et vesces pour grain (ex. f\u00e9veroles)",
-      "537": "Pois pour grain (ex. pois prot\u00e9agineux)",
+      "536": "Haricots et vesces pour grain (ex. féveroles)",
+      "537": "Pois pour grain (ex. pois protéagineux)",
       "538": "Lupins",
-      "539": "Courges ol\u00e9agineuses",
+      "539": "Courges oléagineuses",
       "540": "Pois chiches",
       "541": "Tabac",
-      "543": "C\u00e9r\u00e9ales ensil\u00e9es",
+      "543": "Céréales ensilées",
       "544": "Cameline",
-      "545": "L\u00e9gumes annuels en plein champ, hors l\u00e9gumes pour conserve",
-      "546": "L\u00e9gumes pour conserve en plein champ",
-      "547": "Racines de chicor\u00e9e forc\u00e9e",
+      "545": "Légumes annuels en plein champ, hors légumes pour conserve",
+      "546": "Légumes pour conserve en plein champ",
+      "547": "Racines de chicorée forcée",
       "548": "Sarrasin",
       "551": "Baies annuelles (ex. fraises)",
-      "552": "Mati\u00e8res premi\u00e8res renouvelables annuelles (kenaf, etc.)",
-      "553": "Plantes aromatiques et m\u00e9dicinales annuelles",
+      "552": "Matières premières renouvelables annuelles (kenaf, etc.)",
+      "553": "Plantes aromatiques et médicinales annuelles",
       "554": "Cultures horticoles annuelles en plein champ (fleurs, gazon en rouleaux, etc.)",
-      "556": "Jach\u00e8re fleurie",
-      "557": "Jach\u00e8re en rotation",
+      "556": "Jachère fleurie",
+      "557": "Jachère en rotation",
       "559": "Bande tampon sur terres arables",
       "566": "Pavot",
       "567": "Carthame",
       "568": "Lentilles",
-      "569": "M\u00e9langes de haricots, vesces, pois, pois chiches et lupins avec c\u00e9r\u00e9ales ou cameline, au moins 30 % de l\u00e9gumineuses \u00e0 la r\u00e9colte (pour grain)",
-      "570": "M\u00e9langes de lentilles avec c\u00e9r\u00e9ales ou cameline, au moins 30 % de lentilles \u00e0 la r\u00e9colte (pour grain)",
+      "569": "Mélanges de haricots, vesces, pois, pois chiches et lupins avec céréales ou cameline, au moins 30 % de légumineuses à la récolte (pour grain)",
+      "570": "Mélanges de lentilles avec céréales ou cameline, au moins 30 % de lentilles à la récolte (pour grain)",
       "572": "Bandes favorables aux auxiliaires sur terres arables ouvertes",
       "573": "Moutarde",
       "574": "Quinoa",
@@ -455,115 +472,124 @@
       "576": "Chanvre pour usage fibre",
       "577": "Autre chanvre",
       "578": "Millet pour grain",
-      "579": "Millet pour usage plante enti\u00e8re",
+      "579": "Millet pour usage plante entière",
       "580": "Sorgho pour grain",
-      "581": "Sorgho pour usage plante enti\u00e8re",
-      "591": "Colza d'hiver comme mati\u00e8re premi\u00e8re renouvelable",
-      "592": "Tournesol comme mati\u00e8re premi\u00e8re renouvelable",
-      "594": "Terres arables ouvertes, \u00e9ligibles au paiement (zone de promotion de la biodiversit\u00e9 sp\u00e9cifique \u00e0 la r\u00e9gion)",
-      "595": "Autres terres arables ouvertes, non \u00e9ligibles au paiement (zone de promotion de la biodiversit\u00e9 sp\u00e9cifique \u00e0 la r\u00e9gion)",
-      "597": "Autres terres arables ouvertes, \u00e9ligibles au paiement",
-      "598": "Autres terres arables ouvertes, non \u00e9ligibles au paiement",
-      "601": "Prairies artificielles (hors p\u00e2turages)",
-      "602": "Autres prairies artificielles, \u00e9ligibles au paiement (ex. p\u00e2turage porcin, p\u00e2turage avicole)",
-      "611": "Prairies extensivement exploit\u00e9es (hors p\u00e2turages)",
-      "612": "Prairies peu intensivement exploit\u00e9es (hors p\u00e2turages)",
-      "613": "Autres prairies permanentes (hors p\u00e2turages)",
-      "616": "P\u00e2turages (p\u00e2turages d'exploitation, autres p\u00e2turages hors p\u00e2turages d'alpage)",
-      "617": "P\u00e2turages extensivement exploit\u00e9s",
-      "618": "P\u00e2turages forestiers (hors surface bois\u00e9e)",
-      "621": "Prairies \u00e0 foin en zone d'alpage, autres prairies",
-      "622": "Prairies \u00e0 foin en zone d'alpage, type prairie extensivement exploit\u00e9e",
-      "623": "Prairies \u00e0 foin en zone d'alpage, type prairie peu intensivement exploit\u00e9e",
-      "625": "P\u00e2turages forestiers (hors surface bois\u00e9e)",
-      "631": "L\u00e9gumineuses fourrag\u00e8res pour production de semences (culture contractuelle)",
-      "632": "Gramin\u00e9es fourrag\u00e8res pour production de semences (culture contractuelle)",
-      "635": "Prairies riveraines (hors p\u00e2turages)",
-      "660": "Autres p\u00e2turages permanents, \u00e9ligibles au paiement agr\u00e9g\u00e9s",
-      "693": "Zones de promotion de la biodiversit\u00e9 sp\u00e9cifiques \u00e0 la r\u00e9gion (p\u00e2turages)",
-      "694": "Zone de promotion de la biodiversit\u00e9 sp\u00e9cifique \u00e0 la r\u00e9gion (espaces verts hors p\u00e2turages)",
-      "697": "Autres espaces verts (espaces verts permanents), \u00e9ligibles au paiement",
-      "698": "Autres espaces verts (espaces verts permanents), non \u00e9ligibles au paiement",
+      "581": "Sorgho pour usage plante entière",
+      "591": "Colza d'hiver comme matière première renouvelable",
+      "592": "Tournesol comme matière première renouvelable",
+      "594": "Terres arables ouvertes, éligibles au paiement (zone de promotion de la biodiversité spécifique à la région)",
+      "595": "Autres terres arables ouvertes, non éligibles au paiement (zone de promotion de la biodiversité spécifique à la région)",
+      "597": "Autres terres arables ouvertes, éligibles au paiement",
+      "598": "Autres terres arables ouvertes, non éligibles au paiement",
+      "601": "Prairies artificielles (hors pâturages)",
+      "602": "Autres prairies artificielles, éligibles au paiement (ex. pâturage porcin, pâturage avicole)",
+      "611": "Prairies extensivement exploitées (hors pâturages)",
+      "612": "Prairies peu intensivement exploitées (hors pâturages)",
+      "613": "Autres prairies permanentes (hors pâturages)",
+      "616": "Pâturages (pâturages d'exploitation, autres pâturages hors pâturages d'alpage)",
+      "617": "Pâturages extensivement exploités",
+      "618": "Pâturages forestiers (hors surface boisée)",
+      "621": "Prairies à foin en zone d'alpage, autres prairies",
+      "622": "Prairies à foin en zone d'alpage, type prairie extensivement exploitée",
+      "623": "Prairies à foin en zone d'alpage, type prairie peu intensivement exploitée",
+      "625": "Pâturages forestiers (hors surface boisée)",
+      "631": "Légumineuses fourragères pour production de semences (culture contractuelle)",
+      "632": "Graminées fourragères pour production de semences (culture contractuelle)",
+      "635": "Prairies riveraines (hors pâturages)",
+      "660": "Autres pâturages permanents, éligibles au paiement agrégés",
+      "693": "Zones de promotion de la biodiversité spécifiques à la région (pâturages)",
+      "694": "Zone de promotion de la biodiversité spécifique à la région (espaces verts hors pâturages)",
+      "697": "Autres espaces verts (espaces verts permanents), éligibles au paiement",
+      "698": "Autres espaces verts (espaces verts permanents), non éligibles au paiement",
       "701": "Vignobles",
       "702": "Vergers (pommiers)",
       "703": "Vergers (poirier)",
-      "704": "Vergers (arbres \u00e0 noyaux)",
-      "705": "Baies p\u00e9rennes",
-      "706": "Plantes aromatiques et m\u00e9dicinales p\u00e9rennes",
-      "707": "Mati\u00e8res premi\u00e8res renouvelables p\u00e9rennes (miscanthus, etc.)",
+      "704": "Vergers (arbres à noyaux)",
+      "705": "Baies pérennes",
+      "706": "Plantes aromatiques et médicinales pérennes",
+      "707": "Matières premières renouvelables pérennes (miscanthus, etc.)",
       "708": "Houblon",
       "709": "Rhubarbe",
       "710": "Asperges",
       "711": "Champignons (plein champ)",
-      "712": "Sapin de No\u00ebl",
-      "713": "P\u00e9pini\u00e8res foresti\u00e8res hors zone foresti\u00e8re",
+      "712": "Sapin de Noël",
+      "713": "Pépinières forestières hors zone forestière",
       "714": "Arbustes ornementaux, arbres ornementaux et plantes vivaces ornementales",
-      "717": "Vignobles avec biodiversit\u00e9 naturelle",
+      "717": "Vignobles avec biodiversité naturelle",
       "718": "Plantations de truffes",
-      "719": "Plantations de m\u00fbriers (\u00e9levage de vers \u00e0 soie)",
-      "720": "Bois g\u00e9r\u00e9s (ch\u00e2taigniers)",
-      "721": "Cultures horticoles p\u00e9rennes en plein champ (hors serre)",
-      "722": "P\u00e9pini\u00e8res de vignes",
-      "723": "P\u00e9pini\u00e8res de fruits et baies",
-      "724": "Autres p\u00e9pini\u00e8res (roses, plantes vivaces ornementales, etc.)",
+      "719": "Plantations de mûriers (élevage de vers à soie)",
+      "720": "Bois gérés (châtaigniers)",
+      "721": "Cultures horticoles pérennes en plein champ (hors serre)",
+      "722": "Pépinières de vignes",
+      "723": "Pépinières de fruits et baies",
+      "724": "Autres pépinières (roses, plantes vivaces ornementales, etc.)",
       "725": "Permaculture",
-      "730": "Vergers agr\u00e9g\u00e9s",
+      "730": "Vergers agrégés",
       "731": "Autres vergers (kiwis, sureaux, etc.)",
-      "735": "Vignobles (zones de promotion de la biodiversit\u00e9 sp\u00e9cifiques \u00e0 la r\u00e9gion)",
-      "797": "Autres surfaces avec cultures p\u00e9rennes, \u00e9ligibles au paiement",
-      "798": "Autres surfaces avec cultures p\u00e9rennes, non \u00e9ligibles au paiement",
-      "801": "Cultures mara\u00eech\u00e8res en serres avec fondation solide",
-      "802": "Autres cultures sp\u00e9ciales en serres avec fondation solide",
+      "735": "Vignobles (zones de promotion de la biodiversité spécifiques à la région)",
+      "797": "Autres surfaces avec cultures pérennes, éligibles au paiement",
+      "798": "Autres surfaces avec cultures pérennes, non éligibles au paiement",
+      "801": "Cultures maraîchères en serres avec fondation solide",
+      "802": "Autres cultures spéciales en serres avec fondation solide",
       "803": "Cultures horticoles en serres avec fondation solide",
       "804": "Cultures de baies en serres avec fondation solide",
-      "807": "Autres cultures sp\u00e9ciales en cultures prot\u00e9g\u00e9es sans fondation solide",
-      "808": "Cultures horticoles en cultures prot\u00e9g\u00e9es sans fondation solide",
-      "810": "Champignons en cultures prot\u00e9g\u00e9es avec fondation solide",
-      "811": "Cultures mara\u00eech\u00e8res en cultures prot\u00e9g\u00e9es sans fondation solide ; en sol naturel",
-      "812": "Cultures mara\u00eech\u00e8res en cultures prot\u00e9g\u00e9es sans fondation solide ; sur tables ou \u00e9tag\u00e8res",
-      "813": "Cultures de baies en cultures prot\u00e9g\u00e9es sans fondation solide ; en sol naturel",
-      "814": "Cultures de baies en cultures prot\u00e9g\u00e9es sans fondation solide ; sur tables ou \u00e9tag\u00e8res",
-      "830": "Cultures en cultures prot\u00e9g\u00e9es toute l'ann\u00e9e, \u00e9ligibles au paiement agr\u00e9g\u00e9s",
-      "847": "Autres cultures en cultures prot\u00e9g\u00e9es sans fondation solide, \u00e9ligibles au paiement",
-      "848": "Autres cultures en cultures prot\u00e9g\u00e9es avec fondation solide",
-      "849": "Autres cultures en cultures prot\u00e9g\u00e9es sans fondation solide, non \u00e9ligibles au paiement",
-      "851": "Zones de liti\u00e8re en zone agricole",
-      "852": "Haies, bosquets de champs et ripisylves (avec bande herbac\u00e9e)",
+      "807": "Autres cultures spéciales en cultures protégées sans fondation solide",
+      "808": "Cultures horticoles en cultures protégées sans fondation solide",
+      "810": "Champignons en cultures protégées avec fondation solide",
+      "811": "Cultures maraîchères en cultures protégées sans fondation solide ; en sol naturel",
+      "812": "Cultures maraîchères en cultures protégées sans fondation solide ; sur tables ou étagères",
+      "813": "Cultures de baies en cultures protégées sans fondation solide ; en sol naturel",
+      "814": "Cultures de baies en cultures protégées sans fondation solide ; sur tables ou étagères",
+      "830": "Cultures en cultures protégées toute l'année, éligibles au paiement agrégés",
+      "847": "Autres cultures en cultures protégées sans fondation solide, éligibles au paiement",
+      "848": "Autres cultures en cultures protégées avec fondation solide",
+      "849": "Autres cultures en cultures protégées sans fondation solide, non éligibles au paiement",
+      "851": "Zones de litière en zone agricole",
+      "852": "Haies, bosquets de champs et ripisylves (avec bande herbacée)",
       "857": "Haies, bosquets de champs et ripisylves (avec bande tampon)",
-      "858": "Haies, bosquets de champs et ripisylves (avec bande tampon) (zone de promotion de la biodiversit\u00e9 sp\u00e9cifique \u00e0 la r\u00e9gion)",
-      "897": "Autres surfaces \u00e0 l'int\u00e9rieur de la zone agricole, \u00e9ligibles au paiement",
-      "898": "Autres surfaces \u00e0 l'int\u00e9rieur de la zone agricole, non \u00e9ligibles au paiement",
-      "901": "For\u00eat",
-      "902": "Autres surfaces improductives (ex. surfaces paill\u00e9es, surfaces fortement envahies, haies sans bande tampon)",
-      "903": "Surfaces sans destination agricole principale (zones constructibles am\u00e9nag\u00e9es, aires de jeux, \u00e9quitation, camping, golf, a\u00e9rodromes ou zones d\u00e9limit\u00e9es de chemins de fer, routes publiques et eaux)",
-      "904": "Foss\u00e9s, mares, \u00e9tangs",
-      "905": "Zones rud\u00e9rales, tas et murets de pierres",
-      "906": "Murs en pierres s\u00e8ches",
-      "907": "Sentiers naturels non rev\u00eatus",
-      "908": "Zones de promotion de la biodiversit\u00e9 sp\u00e9cifiques \u00e0 la r\u00e9gion",
+      "858": "Haies, bosquets de champs et ripisylves (avec bande tampon) (zone de promotion de la biodiversité spécifique à la région)",
+      "897": "Autres surfaces à l'intérieur de la zone agricole, éligibles au paiement",
+      "898": "Autres surfaces à l'intérieur de la zone agricole, non éligibles au paiement",
+      "901": "Forêt",
+      "902": "Autres surfaces improductives (ex. surfaces paillées, surfaces fortement envahies, haies sans bande tampon)",
+      "903": "Surfaces sans destination agricole principale (zones constructibles aménagées, aires de jeux, équitation, camping, golf, aérodromes ou zones délimitées de chemins de fer, routes publiques et eaux)",
+      "904": "Fossés, mares, étangs",
+      "905": "Zones rudérales, tas et murets de pierres",
+      "906": "Murs en pierres sèches",
+      "907": "Sentiers naturels non revêtus",
+      "908": "Zones de promotion de la biodiversité spécifiques à la région",
       "909": "Jardins familiaux",
-      "911": "Production agricole en b\u00e2timents (ex. champignons, choux de Bruxelles)",
+      "911": "Production agricole en bâtiments (ex. champignons, choux de Bruxelles)",
       "921": "Arbres fruitiers haute tige (points ou surfaces)",
       "922": "Noyers (points ou surfaces)",
-      "923": "Ch\u00e2taigniers",
-      "924": "Arbres isol\u00e9s indig\u00e8nes adapt\u00e9s au site et all\u00e9es (points ou surfaces)",
+      "923": "Châtaigniers",
+      "924": "Arbres isolés indigènes adaptés au site et allées (points ou surfaces)",
       "926": "Autres arbres",
-      "927": "Autres arbres (zone de promotion de la biodiversit\u00e9 sp\u00e9cifique \u00e0 la r\u00e9gion)",
-      "928": "Autres \u00e9l\u00e9ments (zone de promotion de la biodiversit\u00e9 sp\u00e9cifique \u00e0 la r\u00e9gion)",
-      "930": "P\u00e2turages d'alpage",
-      "933": "P\u00e2turages communautaires",
-      "935": "Prairies \u00e0 foin avec alimentation compl\u00e9mentaire durant l'alpage",
-      "936": "Zones de liti\u00e8re en zone d'alpage",
+      "927": "Autres arbres (zone de promotion de la biodiversité spécifique à la région)",
+      "928": "Autres éléments (zone de promotion de la biodiversité spécifique à la région)",
+      "930": "Pâturages d'alpage",
+      "933": "Pâturages communautaires",
+      "935": "Prairies à foin avec alimentation complémentaire durant l'alpage",
+      "936": "Zones de litière en zone d'alpage",
       "950": "Bandes de protection sur terres arables",
-      "951": "C\u00e9r\u00e9ales en rangs larges",
-      "998": "Autres surfaces hors zone agricole et p\u00e2turages d'alpage"
+      "951": "Céréales en rangs larges",
+      "998": "Autres surfaces hors zone agricole et pâturages d'alpage"
+    },
+    "adjust_onboarding": {
+      "welcome_heading": "Modifier le champ",
+      "welcome_body": "Faites glisser les coins pour remodeler le champ. Ajoutez de nouveaux points en faisant glisser un point médian entre deux coins.",
+      "actions_heading": "Terminer & Annuler",
+      "confirm_body": "Appuyez sur la coche pour enregistrer la nouvelle forme.",
+      "next_ring_body": "Pour les champs avec plusieurs parties, appuyez sur la flèche pour confirmer la partie actuelle et passer à la suivante.",
+      "abort_body": "Appuyez sur le X pour annuler et ignorer toutes les modifications.",
+      "overlap_body": "Si le champ modifié chevauche des champs existants, ils seront automatiquement ajustés."
     }
   },
   "farm_equipment": {
-    "farm_equipment": "Machines et \u00e9quipements",
-    "new_equipment": "Nouvel \u00e9quipement",
+    "farm_equipment": "Machines et équipements",
+    "new_equipment": "Nouvel équipement",
     "device_types": {
-      "harvest": "R\u00e9colte",
+      "harvest": "Récolte",
       "tillage": "Travail du sol",
       "crop_protection": "Protection des cultures",
       "fertilization": "Fertilisation"
@@ -571,18 +597,18 @@
   },
   "crop_protection_equipments": {
     "new_equipment": "Nouveau dispositif de protection des cultures",
-    "only_same_unit_warning": "Pour utiliser une machine pour un produit phytosanitaire, elle doit avoir la m\u00eame unit\u00e9."
+    "only_same_unit_warning": "Pour utiliser une machine pour un produit phytosanitaire, elle doit avoir la même unité."
   },
   "harvest_equipments": {
     "new_harvester": "Nouvelle moissonneuse-batteuse",
-    "info_default_values": "Ces configurations sont des valeurs par d\u00e9faut et peuvent \u00eatre ajust\u00e9es si n\u00e9cessaire."
+    "info_default_values": "Ces configurations sont des valeurs par défaut et peuvent être ajustées si nécessaire."
   },
   "tillage_equipment": {
-    "new_equipment": "Nouvel \u00e9quipement de travail du sol"
+    "new_equipment": "Nouvel équipement de travail du sol"
   },
   "fertilizer_spreaders": {
-    "new_spreader": "Nouvel \u00e9pandeur d'engrais",
-    "only_same_unit_warning": "Pour utiliser une machine pour un engrais, elle doit avoir la m\u00eame unit\u00e9."
+    "new_spreader": "Nouvel épandeur d'engrais",
+    "only_same_unit_warning": "Pour utiliser une machine pour un engrais, elle doit avoir la même unité."
   },
   "field_calendar": {
     "field_calendar": "Calendrier cultural",
@@ -592,54 +618,54 @@
     "tillages": "Travaux du sol",
     "fertilizers": "Engrais",
     "fertilizer_applications": "Applications d'engrais",
-    "harvests": "R\u00e9coltes",
+    "harvests": "Récoltes",
     "crop_protection_products": "Produits phytosanitaires",
     "crop_protection_applications": "Protection des cultures",
-    "export": "G\u00e9n\u00e9rer des rapports",
-    "settings": "Param\u00e8tres du calendrier cultural",
+    "export": "Générer des rapports",
+    "settings": "Paramètres du calendrier cultural",
     "groups": {
       "crops": "Cultures",
       "soil": "Travail du sol",
       "fertilization": "Fertilisation",
       "protection": "Protection des cultures",
-      "harvest": "R\u00e9colte",
+      "harvest": "Récolte",
       "export": "Export"
     },
     "onboarding": {
       "welcome_heading": "Bienvenue dans le calendrier cultural",
-      "welcome_body": "Ici, vous g\u00e9rez toutes les activit\u00e9s li\u00e9es \u00e0 vos champs : cultures, travail du sol, fertilisation, protection des cultures et r\u00e9colte.",
+      "welcome_body": "Ici, vous gérez toutes les activités liées à vos champs : cultures, travail du sol, fertilisation, protection des cultures et récolte.",
       "configure_heading": "Personnalisez votre calendrier cultural",
-      "done_heading": "Termin\u00e9 !",
-      "done_body": "Vous pouvez modifier les param\u00e8tres \u00e0 tout moment via l'ic\u00f4ne en forme de roue dent\u00e9e."
+      "done_heading": "Terminé !",
+      "done_body": "Vous pouvez modifier les paramètres à tout moment via l'icône en forme de roue dentée."
     }
   },
   "harvests": {
-    "harvest": "R\u00e9colte",
-    "add_harvest": "Nouvelle r\u00e9colte",
-    "harvest_configuration": "Configuration de la r\u00e9colte",
-    "harvest_year": "R\u00e9colte {{year}}",
-    "harvest_date": "R\u00e9colte {{date}}",
-    "harvest_plot_name": "R\u00e9colte - {{name}}",
+    "harvest": "Récolte",
+    "add_harvest": "Nouvelle récolte",
+    "harvest_configuration": "Configuration de la récolte",
+    "harvest_year": "Récolte {{year}}",
+    "harvest_date": "Récolte {{date}}",
+    "harvest_plot_name": "Récolte - {{name}}",
     "divide_on_plots": {
       "header_title": "Distribution",
-      "heading": "Comment la r\u00e9colte doit-elle \u00eatre distribu\u00e9e ?"
+      "heading": "Comment la récolte doit-elle être distribuée ?"
     },
     "select_crop": {
-      "heading": "Qu'est-ce qui a \u00e9t\u00e9 r\u00e9colt\u00e9 ?"
+      "heading": "Qu'est-ce qui a été récolté ?"
     },
     "select_quantity": {
-      "heading": "Quelle est la quantit\u00e9 r\u00e9colt\u00e9e ?"
+      "heading": "Quelle est la quantité récoltée ?"
     },
     "labels": {
       "unit": {
         "load": "Charge",
         "round_bale": "Balle ronde",
-        "square_bale": "Balle carr\u00e9e",
+        "square_bale": "Balle carrée",
         "crate": "Caisse",
-        "total_amount": "Quantit\u00e9 totale",
-        "total_amount_kg": "Quantit\u00e9 totale (kg)",
+        "total_amount": "Quantité totale",
+        "total_amount_kg": "Quantité totale (kg)",
         "other": "Autre",
-        "custom": "Unit\u00e9 personnalis\u00e9e"
+        "custom": "Unité personnalisée"
       },
       "conservation_method": {
         "dried": "Foin",
@@ -651,29 +677,29 @@
       "processing_type": {
         "none": "En vrac",
         "round_bale": "Balle ronde",
-        "square_bale": "Balle carr\u00e9e",
+        "square_bale": "Balle carrée",
         "other": "Autre"
       },
       "select_date": {
-        "heading": "Quand a-t-elle \u00e9t\u00e9 r\u00e9colt\u00e9e ?"
+        "heading": "Quand a-t-elle été récoltée ?"
       },
       "select_how": {
-        "heading": "Comment a-t-elle \u00e9t\u00e9 r\u00e9colt\u00e9e ?",
-        "no_machinery": "Vous n'avez pas encore ajout\u00e9 de machine. Celles-ci simplifient le suivi des r\u00e9coltes en d\u00e9finissant des valeurs par d\u00e9faut."
+        "heading": "Comment a-t-elle été récoltée ?",
+        "no_machinery": "Vous n'avez pas encore ajouté de machine. Celles-ci simplifient le suivi des récoltes en définissant des valeurs par défaut."
       }
     },
-    "comparison_year": "Ann\u00e9e de comparaison",
-    "select_comparison_year": "S\u00e9lectionner l'ann\u00e9e de comparaison",
-    "total_amount": "Quantit\u00e9 totale",
-    "amount_per_month": "Quantit\u00e9 par mois"
+    "comparison_year": "Année de comparaison",
+    "select_comparison_year": "Sélectionner l'année de comparaison",
+    "total_amount": "Quantité totale",
+    "amount_per_month": "Quantité par mois"
   },
   "fertilizers": {
     "fertilizer": "Engrais",
     "new_fertilizer": "Nouvel engrais",
-    "product_in_use_warning": "Cet engrais est en cours d'utilisation et ne peut donc \u00eatre modifi\u00e9 que dans une mesure limit\u00e9e et ne peut pas \u00eatre supprim\u00e9.",
-    "warning_unit_not_editable": "L'unit\u00e9 d\u00e9finit dans quelle unit\u00e9 l'engrais est appliqu\u00e9.",
-    "unit_info": "S\u00e9lectionnez l'unit\u00e9 dans laquelle l'engrais est appliqu\u00e9 (ex. litres).",
-    "default_machine_info": "Pour faciliter l'enregistrement, une machine peut \u00eatre d\u00e9finie pour appliquer cet engrais."
+    "product_in_use_warning": "Cet engrais est en cours d'utilisation et ne peut donc être modifié que dans une mesure limitée et ne peut pas être supprimé.",
+    "warning_unit_not_editable": "L'unité définit dans quelle unité l'engrais est appliqué.",
+    "unit_info": "Sélectionnez l'unité dans laquelle l'engrais est appliqué (ex. litres).",
+    "default_machine_info": "Pour faciliter l'enregistrement, une machine peut être définie pour appliquer cet engrais."
   },
   "fertilizer_application": {
     "fertilizer_application": "Application d'engrais",
@@ -685,31 +711,31 @@
     "units": {
       "bag": "Sac",
       "load": "Charge",
-      "amount_per_hectare": "Quantit\u00e9 par hectare"
+      "amount_per_hectare": "Quantité par hectare"
     },
     "select_quantity": {
-      "heading": "Quelle quantit\u00e9 a \u00e9t\u00e9 appliqu\u00e9e ?"
+      "heading": "Quelle quantité a été appliquée ?"
     },
     "divide_on_plots": {
       "header_title": "Distribution",
-      "heading": "Comment la quantit\u00e9 appliqu\u00e9e doit-elle \u00eatre distribu\u00e9e ?"
+      "heading": "Comment la quantité appliquée doit-elle être distribuée ?"
     },
     "select_date": {
-      "heading": "Quand a-t-il \u00e9t\u00e9 appliqu\u00e9 ?"
+      "heading": "Quand a-t-il été appliqué ?"
     },
     "select_fertilizer": {
       "header_title": "Engrais",
-      "heading": "Quel engrais a \u00e9t\u00e9 utilis\u00e9 ?",
-      "no_fertilizers": "Aucun engrais enregistr\u00e9 pour le moment"
+      "heading": "Quel engrais a été utilisé ?",
+      "no_fertilizers": "Aucun engrais enregistré pour le moment"
     },
     "select_machine": {
-      "heading": "Quelle machine a \u00e9t\u00e9 utilis\u00e9e ?",
-      "no_machines": "Vous n'avez pas encore enregistr\u00e9 de machine. Celles-ci simplifient la saisie des donn\u00e9es en pr\u00e9d\u00e9finissant des valeurs par d\u00e9faut.",
-      "only_same_unit_warning": "Vous ne pouvez utiliser que des machines qui utilisent la m\u00eame unit\u00e9 que l'engrais s\u00e9lectionn\u00e9."
+      "heading": "Quelle machine a été utilisée ?",
+      "no_machines": "Vous n'avez pas encore enregistré de machine. Celles-ci simplifient la saisie des données en prédéfinissant des valeurs par défaut.",
+      "only_same_unit_warning": "Vous ne pouvez utiliser que des machines qui utilisent la même unité que l'engrais sélectionné."
     },
     "methods": {
-      "spread": "\u00c9pandage",
-      "spray": "Pulv\u00e9risation",
+      "spread": "Épandage",
+      "spray": "Pulvérisation",
       "other": "Autre"
     }
   },
@@ -721,22 +747,22 @@
     "tillage_year": "Travail du sol {{year}}",
     "tillage_date": "Travail du sol {{date}}",
     "tillage_plot_name": "Travail du sol - {{name}}",
-    "custom_action": "Action personnalis\u00e9e",
+    "custom_action": "Action personnalisée",
     "reasons": {
-      "soil_loosening": "D\u00e9compactage du sol",
-      "weed_control": "D\u00e9sherbage",
+      "soil_loosening": "Décompactage du sol",
+      "weed_control": "Désherbage",
       "other": "Autre"
     },
     "actions": {
       "plowing": "Labour",
-      "tilling": "B\u00eachage",
+      "tilling": "Bêchage",
       "harrowing": "Hersage",
       "rolling": "Rouleau",
       "rotavating": "Rotavator",
       "hoeing": "Binage",
-      "weed_harrowing": "Hersage de d\u00e9sherbage",
-      "flame_weeding": "D\u00e9sherbage thermique",
-      "custom": "Personnalis\u00e9",
+      "weed_harrowing": "Hersage de désherbage",
+      "flame_weeding": "Désherbage thermique",
+      "custom": "Personnalisé",
       "other": "Autre"
     }
   },
@@ -747,24 +773,24 @@
     "new_crop": "Nouvelle culture",
     "categories": {
       "grass": "Herbe",
-      "grain": "C\u00e9r\u00e9ale",
-      "vegetable": "L\u00e9gume",
+      "grain": "Céréale",
+      "vegetable": "Légume",
       "fruit": "Fruit",
       "other": "Autre"
     },
-    "no_variety": "Aucune vari\u00e9t\u00e9",
-    "crop_in_use_warning": "Cette culture est utilis\u00e9e et ne peut donc pas \u00eatre supprim\u00e9e.",
+    "no_variety": "Aucune variété",
+    "crop_in_use_warning": "Cette culture est utilisée et ne peut donc pas être supprimée.",
     "family_optional": "Famille (facultative)",
-    "waiting_time_in_years_optional": "Temps d'attente en ann\u00e9es (facultatif)"
+    "waiting_time_in_years_optional": "Temps d'attente en années (facultatif)"
   },
   "crop_families": {
     "crop_families": "Familles de cultures",
     "crop_family": "Famille de cultures",
     "new_crop_family": "Nouvelle famille de cultures",
-    "waiting_time_in_years": "Temps d'attente en ann\u00e9es",
-    "waiting_time_years": "{{count}} ann\u00e9e d'attente",
-    "waiting_time_years_plural": "{{count}} ann\u00e9es d'attente",
-    "family_in_use_warning": "Cette famille de cultures est utilis\u00e9e et ne peut donc pas \u00eatre supprim\u00e9e."
+    "waiting_time_in_years": "Temps d'attente en années",
+    "waiting_time_years": "{{count}} année d'attente",
+    "waiting_time_years_plural": "{{count}} années d'attente",
+    "family_in_use_warning": "Cette famille de cultures est utilisée et ne peut donc pas être supprimée."
   },
   "crop_protection_applications": {
     "crop_protection": "Protection des cultures",
@@ -774,42 +800,42 @@
     "crop_protection_plot_name": "Protection des cultures - {{name}}",
     "crop_protection_date": "Protection des cultures - {{date}}",
     "select_date": {
-      "heading": "Quand la mesure a-t-elle \u00e9t\u00e9 appliqu\u00e9e ?"
+      "heading": "Quand la mesure a-t-elle été appliquée ?"
     },
     "select_product": {
-      "heading": "Quel produit de protection des cultures a \u00e9t\u00e9 utilis\u00e9 ?",
-      "no_products_message": "Aucun produit de protection des cultures enregistr\u00e9 pour le moment"
+      "heading": "Quel produit de protection des cultures a été utilisé ?",
+      "no_products_message": "Aucun produit de protection des cultures enregistré pour le moment"
     },
     "select_equipment": {
-      "heading": "Quel \u00e9quipement a \u00e9t\u00e9 utilis\u00e9 ?",
-      "only_same_unit_warning": "Vous ne pouvez utiliser que les \u00e9quipements qui correspondent \u00e0 l'unit\u00e9 du produit de protection des cultures.",
-      "no_matching_equipment_message": "Aucun \u00e9quipement correspondant enregistr\u00e9 pour le moment. Ceux-ci simplifient la saisie des donn\u00e9es en pr\u00e9d\u00e9finissant des valeurs par d\u00e9faut."
+      "heading": "Quel équipement a été utilisé ?",
+      "only_same_unit_warning": "Vous ne pouvez utiliser que les équipements qui correspondent à l'unité du produit de protection des cultures.",
+      "no_matching_equipment_message": "Aucun équipement correspondant enregistré pour le moment. Ceux-ci simplifient la saisie des données en prédéfinissant des valeurs par défaut."
     },
     "select_quantity": {
-      "heading": "Quelle quantit\u00e9 a \u00e9t\u00e9 utilis\u00e9e ?"
+      "heading": "Quelle quantité a été utilisée ?"
     },
     "divide_on_plots": {
       "header_title": "Distribution",
-      "heading": "Comment la quantit\u00e9 appliqu\u00e9e doit-elle \u00eatre distribu\u00e9e ?"
+      "heading": "Comment la quantité appliquée doit-elle être distribuée ?"
     },
     "list": {
       "title": "Champ {{plotName}} - {{date}}",
       "body": "{{totalAmount}}{{unit}} {{product}} ({{method}})"
     },
     "methods": {
-      "broadcasting": "\u00c9pandage",
+      "broadcasting": "Épandage",
       "injecting": "Injection",
-      "misting": "N\u00e9bulisation",
-      "spraying": "Pulv\u00e9risation",
+      "misting": "Nébulisation",
+      "spraying": "Pulvérisation",
       "other": "Autre"
     }
   },
   "crop_protection_product": {
     "add_product": "Nouveau produit de protection des cultures",
-    "product_in_use_warning": "Ce produit de protection des cultures est en cours d'utilisation et ne peut donc pas \u00eatre supprim\u00e9.",
-    "warning_unit_not_editable": "L'unit\u00e9 ne peut pas \u00eatre modifi\u00e9e ! Elle doit correspondre \u00e0 l'unit\u00e9 dans laquelle le produit phytosanitaire est appliqu\u00e9.",
-    "unit_info": "S\u00e9lectionnez l'unit\u00e9 dans laquelle le produit est appliqu\u00e9 (ex. litres).",
-    "default_machine_info": "Pour faciliter l'enregistrement, une machine peut \u00eatre d\u00e9finie pour appliquer ce produit."
+    "product_in_use_warning": "Ce produit de protection des cultures est en cours d'utilisation et ne peut donc pas être supprimé.",
+    "warning_unit_not_editable": "L'unité ne peut pas être modifiée ! Elle doit correspondre à l'unité dans laquelle le produit phytosanitaire est appliqué.",
+    "unit_info": "Sélectionnez l'unité dans laquelle le produit est appliqué (ex. litres).",
+    "default_machine_info": "Pour faciliter l'enregistrement, une machine peut être définie pour appliquer ce produit."
   },
   "crop_rotations": {
     "crop_rotation": "Rotation des cultures",
@@ -826,17 +852,17 @@
       "heading": "Planifiez la rotation pour une culture"
     },
     "select_date": {
-      "heading": "Quand a-t-il \u00e9t\u00e9 sem\u00e9 ?"
+      "heading": "Quand a-t-il été semé ?"
     },
-    "cannot_delete_warning": "C'est la seule culture sur ce champ et ne peut donc pas \u00eatre supprim\u00e9e.",
-    "set_dates_for_all": "D\u00e9finir les dates pour tous",
-    "overlap_warning": "La p\u00e9riode chevauche une rotation de culture existante.",
+    "cannot_delete_warning": "C'est la seule culture sur ce champ et ne peut donc pas être supprimée.",
+    "set_dates_for_all": "Définir les dates pour tous",
+    "overlap_warning": "La période chevauche une rotation de culture existante.",
     "view_list": "Liste",
     "view_timeline": "Chronologie",
     "view_calendar": "Calendrier",
-    "last_rotation": "Derni\u00e8re : {{crop}} ({{from}} \u2013 {{to}})",
-    "last_rotation_permanent": "Actuelle : {{crop}} ({{from}} \u2013 permanente)",
-    "permanent_end_date_info": "La date de fin de la rotation actuelle sera automatiquement fix\u00e9e au jour pr\u00e9c\u00e9dant la nouvelle date de d\u00e9but.",
+    "last_rotation": "Dernière : {{crop}} ({{from}} – {{to}})",
+    "last_rotation_permanent": "Actuelle : {{crop}} ({{from}} – permanente)",
+    "permanent_end_date_info": "La date de fin de la rotation actuelle sera automatiquement fixée au jour précédant la nouvelle date de début.",
     "add_rotation": "Ajouter une rotation",
     "permanent": "Permanent",
     "plan": {
@@ -844,27 +870,29 @@
       "save_plan": "Enregistrer le plan",
       "edit_rotation": "Modifier la rotation",
       "add_rotation_title": "Ajouter une rotation",
-      "duration": "Dur\u00e9e",
-      "recurrence_optional": "R\u00e9currence (facultative)",
+      "duration": "Durée",
+      "recurrence_optional": "Récurrence (facultative)",
       "every": "Tous les",
       "year": "an",
       "years": "ans",
       "until": "jusqu'au",
       "add_end_date": "+ Date de fin",
-      "add_recurrence": "+ Ajouter une r\u00e9currence",
+      "add_recurrence": "+ Ajouter une récurrence",
       "no_rotations_yet": "Aucune rotation pour le moment",
       "overlaps_with": "Chevauche {{crop}}",
-      "select_crop_for_all": "Veuillez s\u00e9lectionner une culture pour toutes les rotations",
-      "resolve_conflicts_alert": "Veuillez r\u00e9soudre tous les conflits de dates avant d'enregistrer",
-      "resolve_conflicts_warning": "R\u00e9solvez les conflits de dates avant d'enregistrer",
-      "repeats_every_year": "Se r\u00e9p\u00e8te chaque ann\u00e9e",
-      "repeats_every_years": "Se r\u00e9p\u00e8te tous les {{count}} ans",
-      "until_date": "jusqu'au {{date}}"
+      "select_crop_for_all": "Veuillez sélectionner une culture pour toutes les rotations",
+      "resolve_conflicts_alert": "Veuillez résoudre tous les conflits de dates avant d'enregistrer",
+      "resolve_conflicts_warning": "Résolvez les conflits de dates avant d'enregistrer",
+      "repeats_every_year": "Se répète chaque année",
+      "repeats_every_years": "Se répète tous les {{count}} ans",
+      "until_date": "jusqu'au {{date}}",
+      "waiting_time_warning_crop": "Délai d'attente non respecté : {{crop}} ({{waitingTime}} ans)",
+      "waiting_time_warning_family": "Délai d'attente de la famille {{family}} non respecté ({{waitingTime}} ans)"
     },
     "timeline": {
       "today": "Aujourd'hui",
       "plot": "Champ",
-      "zoom_years": "Ann\u00e9es",
+      "zoom_years": "Années",
       "zoom_months": "Mois",
       "zoom_weeks": "Semaines"
     }
@@ -873,130 +901,134 @@
     "field_calendar": {
       "heading": "Exportation du calendrier cultural",
       "subheading": "Exportez le calendrier cultural sous forme de document Excel.",
-      "select_sections": "S\u00e9lectionnez ce qui doit \u00eatre export\u00e9",
-      "confirmation": "Le document Excel g\u00e9n\u00e9r\u00e9 vous sera envoy\u00e9 par email \u00e0 {{email}}.",
-      "export_success_heading": "Calendrier cultural export\u00e9 avec succ\u00e8s",
-      "export_sent_to": "Le document a \u00e9t\u00e9 envoy\u00e9 \u00e0 {{email}}.",
-      "export_mail_being_deliverd": "Cela peut prendre un moment avant que l'email arrive. S'il ne s'affiche pas, v\u00e9rifiez votre dossier spam."
+      "select_sections": "Sélectionnez ce qui doit être exporté",
+      "confirmation": "Le document Excel généré vous sera envoyé par email à {{email}}.",
+      "export_success_heading": "Calendrier cultural exporté avec succès",
+      "export_sent_to": "Le document a été envoyé à {{email}}.",
+      "export_mail_being_deliverd": "Cela peut prendre un moment avant que l'email arrive. S'il ne s'affiche pas, vérifiez votre dossier spam."
     },
     "treatments": {
       "heading": "Exportation des traitements",
-      "select_animal_types": "S\u00e9lectionner les types d'animaux"
+      "select_animal_types": "Sélectionner les types d'animaux"
     },
     "outdoor_journal": {
       "heading": "Exportation du journal de sorties"
     }
   },
   "agri_coltivio": {
-    "subheading": "Ensemble pour une agriculture libre et ind\u00e9pendante",
-    "section_1": "AgriColtivio, qui a d\u00e9velopp\u00e9 cette application, est une association \u00e0 but non lucratif visant \u00e0 renforcer les petites et moyennes exploitations agricoles.",
-    "section_2": "Cette application est open source, ce qui signifie que le code source est accessible publiquement - transparent et v\u00e9rifiable.",
-    "section_3_bold": "La s\u00e9curit\u00e9 des donn\u00e9es est une priorit\u00e9 absolue.",
-    "section_3": "Toutes les donn\u00e9es sont stock\u00e9es exclusivement sur des serveurs situ\u00e9s dans l'UE et sont soumises aux strictes r\u00e9glementations RGPD en mati\u00e8re de protection des donn\u00e9es.",
-    "section_4": "Le fonctionnement et le d\u00e9veloppement de cette application sont financ\u00e9s uniquement par des dons volontaires.",
-    "section_5_title": "Aidez \u00e0 maintenir l'application gratuite et ind\u00e9pendante pour tous.",
-    "section_5": "Devenez membre ou soutenez-nous par un don. Chaque contribution compte \u2013 grande ou petite.",
+    "subheading": "Ensemble pour une agriculture libre et indépendante",
+    "section_1": "AgriColtivio, qui a développé cette application, est une association à but non lucratif visant à renforcer les petites et moyennes exploitations agricoles.",
+    "section_2": "Cette application est open source, ce qui signifie que le code source est accessible publiquement - transparent et vérifiable.",
+    "section_3_bold": "La sécurité des données est une priorité absolue.",
+    "section_3": "Toutes les données sont stockées exclusivement sur des serveurs situés dans l'UE et sont soumises aux strictes réglementations RGPD en matière de protection des données.",
+    "section_4": "Le fonctionnement et le développement de cette application sont financés uniquement par des dons volontaires.",
+    "section_5_title": "Aidez à maintenir l'application gratuite et indépendante pour tous.",
+    "section_5": "Devenez membre ou soutenez-nous par un don. Chaque contribution compte – grande ou petite.",
     "section_6": "Merci de faire partie de l'aventure."
   },
   "ear_tags": {
     "ear_tags": "Marques auriculaires",
     "ear_tag": "Marque auriculaire",
     "new_ear_tag_range": "Nouvelles marques auriculaires",
-    "from_number": "Du num\u00e9ro",
-    "to_number": "Au num\u00e9ro",
+    "from_number": "Du numéro",
+    "to_number": "Au numéro",
     "no_ear_tag": "Pas de marque auriculaire",
-    "no_animal_assigned": "Aucun animal attribu\u00e9"
+    "no_animal_assigned": "Aucun animal attribué"
   },
   "map_draw_onboarding": {
     "welcome_heading": "Champs & Surfaces",
-    "welcome_body": "Vous allez s\u00e9lectionner vos champs ou dessiner une surface sur la carte. Voici comment cela fonctionne.",
-    "select_heading": "S\u00e9lectionner des champs",
-    "select_body": "Appuyez sur vos champs pour les s\u00e9lectionner ou les d\u00e9s\u00e9lectionner.",
+    "welcome_body": "Vous allez sélectionner vos champs ou dessiner une surface sur la carte. Voici comment cela fonctionne.",
+    "select_heading": "Sélectionner des champs",
+    "select_body": "Appuyez sur vos champs pour les sélectionner ou les désélectionner.",
     "draw_heading": "Dessiner une surface",
-    "draw_body": "Appuyez sur cette ic\u00f4ne pour activer le mode dessin. Appuyez ensuite sur la carte pour placer des points d'angle. Maintenez un point d'angle enfonc\u00e9 pour le d\u00e9placer.",
+    "draw_body": "Appuyez sur cette icône pour activer le mode dessin. Appuyez ensuite sur la carte pour placer des points d'angle. Maintenez un point d'angle enfoncé pour le déplacer.",
     "finish_heading": "Terminer le dessin",
-    "finish_body": "Appuyez sur cette ic\u00f4ne pour terminer la surface.",
+    "finish_body": "Appuyez sur cette icône pour terminer la surface.",
     "welcome_body_draw": "Vous allez dessiner un nouveau champ sur la carte. Voici comment cela fonctionne.",
-    "welcome_body_parcel": "Vous allez s\u00e9lectionner une parcelle existante. Voici comment cela fonctionne.",
-    "parcel_heading": "S\u00e9lectionner une parcelle",
-    "parcel_body": "Appuyez sur une parcelle pour la s\u00e9lectionner. Si votre parcelle n'est pas visible, appuyez sur \u00ab Charger les parcelles \u00bb pour charger les parcelles \u00e0 la position actuelle de la carte.",
+    "welcome_body_parcel": "Vous allez sélectionner une parcelle existante. Voici comment cela fonctionne.",
+    "parcel_heading": "Sélectionner une parcelle",
+    "parcel_body": "Appuyez sur une parcelle pour la sélectionner. Si votre parcelle n'est pas visible, appuyez sur « Charger les parcelles » pour charger les parcelles à la position actuelle de la carte.",
     "welcome_body_edit": "Vous allez modifier la forme d'un champ. Voici comment cela fonctionne.",
     "edit_intro_heading": "Modifier le champ",
-    "edit_intro_body": "D\u00e9placez les points d'angle pour ajuster la forme. Maintenez un point d'angle enfonc\u00e9 et faites-le glisser \u00e0 la position souhait\u00e9e.",
+    "edit_intro_body": "Déplacez les points d'angle pour ajuster la forme. Maintenez un point d'angle enfoncé et faites-le glisser à la position souhaitée.",
+    "cancel_heading": "Annuler",
+    "cancel_body": "Appuyez sur ce symbole pour annuler et revenir en arrière.",
     "overlap_heading": "Chevauchements",
-    "overlap_body": "Si votre nouveau champ chevauche des champs existants, ceux-ci seront automatiquement ajust\u00e9s.",
+    "overlap_body": "Si votre nouveau champ chevauche des champs existants, ceux-ci seront automatiquement ajustés.",
     "crop_rotation_welcome_heading": "Planifiez vos rotations de cultures",
-    "crop_rotation_welcome_body": "S\u00e9lectionnez les champs pour lesquels vous souhaitez planifier des rotations de cultures.",
+    "crop_rotation_welcome_body": "Sélectionnez les champs pour lesquels vous souhaitez planifier des rotations de cultures.",
     "plots_map_welcome_heading": "Vos champs",
-    "plots_map_tap_body": "Appuyez sur un champ pour voir les d\u00e9tails.",
-    "plots_map_add_body": "Appuyez sur ce bouton pour ajouter de nouveaux champs."
+    "plots_map_tap_body": "Appuyez sur un champ pour voir les détails.",
+    "plots_map_add_body": "Appuyez sur ce bouton pour ajouter de nouveaux champs.",
+    "welcome_body_create": "Vous êtes maintenant en mode dessin. Appuyez sur la carte pour définir les coins de votre nouveau champ.",
+    "actions_heading": "Terminer & Annuler"
   },
   "animals": {
     "animals": "Animaux",
     "animal": "Animal",
     "new_animal": "Nouvel animal",
     "animal_types": {
-      "goat": "Ch\u00e8vre",
+      "goat": "Chèvre",
       "sheep": "Mouton",
       "cow": "Vache",
       "horse": "Cheval",
-      "donkey": "\u00c2ne",
+      "donkey": "Âne",
       "pig": "Cochon",
       "deer": "Cerf"
     },
     "sex": {
-      "male": "M\u00e2le",
+      "male": "Mâle",
       "female": "Femelle"
     },
-    "registered": "Enregistr\u00e9 (TVD)",
+    "registered": "Enregistré (TVD)",
     "date_of_birth": "Date de naissance",
-    "date_of_death": "Date de d\u00e9c\u00e8s",
-    "death_reason": "Cause du d\u00e9c\u00e8s",
+    "date_of_death": "Date de décès",
+    "death_reason": "Cause du décès",
     "death_reasons": {
-      "died": "D\u00e9c\u00e9d\u00e9",
+      "died": "Décédé",
       "slaughtered": "Abattu"
     },
-    "mother": "M\u00e8re",
-    "father": "P\u00e8re",
+    "mother": "Mère",
+    "father": "Père",
     "children": "Descendants",
     "add_child": "Ajouter un descendant",
     "no_children": "Aucun descendant",
-    "animal_husbandry": "\u00c9levage",
-    "unregistered_count": "{{count}} animaux non enregistr\u00e9s",
-    "waiting_period_count": "{{count}} animaux avec d\u00e9lai d'attente",
+    "animal_husbandry": "Élevage",
+    "unregistered_count": "{{count}} animaux non enregistrés",
+    "waiting_period_count": "{{count}} animaux avec délai d'attente",
     "show_dead": "Afficher les morts",
-    "only_unregistered": "Non enregistr\u00e9s uniquement",
-    "only_with_waiting_period": "Avec d\u00e9lai d'attente uniquement",
-    "select_children": "S\u00e9lectionner les descendants",
-    "settings": "Param\u00e8tres de l'\u00e9levage",
+    "only_unregistered": "Non enregistrés uniquement",
+    "only_with_waiting_period": "Avec délai d'attente uniquement",
+    "select_children": "Sélectionner les descendants",
+    "settings": "Paramètres de l'élevage",
     "groups": {
       "animals": "Animaux",
-      "health": "Sant\u00e9"
+      "health": "Santé"
     },
     "onboarding": {
-      "welcome_heading": "Bienvenue dans l'\u00e9levage",
-      "welcome_body": "Ici, vous g\u00e9rez vos animaux, marques auriculaires, m\u00e9dicaments et traitements.",
-      "configure_heading": "Personnalisez l'\u00e9levage",
-      "done_heading": "Termin\u00e9 !",
-      "done_body": "Vous pouvez modifier les param\u00e8tres \u00e0 tout moment via l'ic\u00f4ne en forme de roue dent\u00e9e."
+      "welcome_heading": "Bienvenue dans l'élevage",
+      "welcome_body": "Ici, vous gérez vos animaux, marques auriculaires, médicaments et traitements.",
+      "configure_heading": "Personnalisez l'élevage",
+      "done_heading": "Terminé !",
+      "done_body": "Vous pouvez modifier les paramètres à tout moment via l'icône en forme de roue dentée."
     },
     "usage": "Utilisation",
     "usage_types": {
       "milk": "Lait",
       "other": "Autre"
     },
-    "category": "Cat\u00e9gorie",
-    "outdoor_journal_category": "Cat\u00e9gorie du journal de sorties",
-    "outdoor_journal_category_info": "La cat\u00e9gorie est d\u00e9termin\u00e9e automatiquement. Vous pouvez la remplacer en activant une cat\u00e9gorie personnalis\u00e9e.",
-    "custom_category": "Cat\u00e9gorie personnalis\u00e9e",
-    "custom_animal_category": "Cat\u00e9gorie personnalis\u00e9e",
+    "category": "Catégorie",
+    "outdoor_journal_category": "Catégorie du journal de sorties",
+    "outdoor_journal_category_info": "La catégorie est déterminée automatiquement. Vous pouvez la remplacer en activant une catégorie personnalisée.",
+    "custom_category": "Catégorie personnalisée",
+    "custom_animal_category": "Catégorie personnalisée",
     "no_active_category": "Automatique",
-    "manage_categories": "G\u00e9rer les cat\u00e9gories",
-    "add_category_entry": "Ajouter une entr\u00e9e de cat\u00e9gorie",
+    "manage_categories": "Gérer les catégories",
+    "add_category_entry": "Ajouter une entrée de catégorie",
     "open_ended": "Ouvert",
-    "category_overlap_warning": "R\u00e9solvez les chevauchements de dates avant d'enregistrer",
-    "delete_custom_categories_confirm": "Toutes les entr\u00e9es de cat\u00e9gorie personnalis\u00e9es seront supprim\u00e9es.",
-    "uncategorized_animals": "Animaux sans cat\u00e9gorie",
+    "category_overlap_warning": "Résolvez les chevauchements de dates avant d'enregistrer",
+    "delete_custom_categories_confirm": "Toutes les entrées de catégorie personnalisées seront supprimées.",
+    "uncategorized_animals": "Animaux sans catégorie",
     "show_animals": "Afficher",
     "fix": "Corriger",
     "herd": "Troupeau",
@@ -1009,19 +1041,19 @@
     "schedule_overlap_warning": "Résolvez les chevauchements d'horaires avant d'enregistrer",
     "outdoor_type": "Type",
     "outdoor_types": {
-      "pasture": "P\u00e2turage",
+      "pasture": "Pâturage",
       "exercise_yard": "Cour d'exercice"
     },
     "new_outdoor_schedule": "Nouvelle sortie",
     "edit_outdoor_schedule": "Modifier la sortie",
-    "start_date": "Date de d\u00e9but",
+    "start_date": "Date de début",
     "end_date": "Date de fin",
     "end_date_optional": "Date de fin (facultative)",
     "notes": "Notes",
-    "recurrence": "R\u00e9currence",
-    "recurrence_optional": "R\u00e9currence (facultative)",
+    "recurrence": "Récurrence",
+    "recurrence_optional": "Récurrence (facultative)",
     "until": "jusqu'au",
-    "frequency": "Fr\u00e9quence",
+    "frequency": "Fréquence",
     "frequency_types": {
       "weekly": "Hebdomadaire",
       "monthly": "Mensuel",
@@ -1034,48 +1066,60 @@
     "months": "mois",
     "year": "an",
     "years": "ans",
-    "selected_only": "S\u00e9lectionn\u00e9s uniquement",
+    "selected_only": "Sélectionnés uniquement",
     "outdoor_journal": "Journal de sorties",
-    "outdoor_journal_info": "Ce journal est g\u00e9n\u00e9r\u00e9 automatiquement \u00e0 partir des plannings de sorties des troupeaux et des cat\u00e9gories d'animaux d\u00e9finies.",
-    "uncategorized_animals_warning": "{{count}} animaux sans cat\u00e9gorie",
+    "outdoor_journal_info": "Ce journal est généré automatiquement à partir des plannings de sorties des troupeaux et des catégories d'animaux définies.",
+    "uncategorized_animals_warning": "{{count}} animaux sans catégorie",
     "journal_animal_count": "{{count}} animaux",
     "herds_onboarding": {
       "step1_heading": "Troupeaux & Sorties",
-      "step1_body": "Regroupez vos animaux en troupeaux et cr\u00e9ez des plannings de sorties. Ceux-ci seront utilis\u00e9s automatiquement pour le journal de sorties.",
-      "step2_heading": "G\u00e9rer les plannings de sorties",
-      "step2_body": "Si un planning de sorties change, ne modifiez pas le planning existant. D\u00e9finissez plut\u00f4t la date \u00ab Jusqu'au \u00bb et cr\u00e9ez un nouveau planning. Ainsi, l'historique du journal de sorties sera conserv\u00e9.",
-      "step3_heading": "Termin\u00e9 !",
-      "step3_body": "Vous pouvez maintenant cr\u00e9er des troupeaux et d\u00e9finir des plannings de sorties."
+      "step1_body": "Regroupez vos animaux en troupeaux et créez des plannings de sorties. Ceux-ci seront utilisés automatiquement pour le journal de sorties.",
+      "step2_heading": "Gérer les plannings de sorties",
+      "step2_body": "Si un planning de sorties change, ne modifiez pas le planning existant. Définissez plutôt la date « Jusqu'au » et créez un nouveau planning. Ainsi, l'historique du journal de sorties sera conservé.",
+      "step3_heading": "Terminé !",
+      "step3_body": "Vous pouvez maintenant créer des troupeaux et définir des plannings de sorties."
     },
     "tvd_import": {
       "title": "Import TVD",
-      "experimental": "Cette fonctionnalit\u00e9 est exp\u00e9rimentale.",
-      "instructions": "T\u00e9l\u00e9chargez le \u00ab Cheptel \u00bb sous forme de fichier Excel depuis la TVD et importez-le ici.",
-      "select_file": "S\u00e9lectionner un fichier Excel",
+      "experimental": "Cette fonctionnalité est expérimentale.",
+      "instructions": "Téléchargez le « Cheptel » sous forme de fichier Excel depuis la TVD et importez-le ici.",
+      "select_file": "Sélectionner un fichier Excel",
       "import_button": "Importer",
-      "success_title": "Import termin\u00e9",
-      "success_message": "{{imported}} sur {{total}} animaux ont \u00e9t\u00e9 import\u00e9s.",
-      "skipped_message": "{{count}} animaux ont \u00e9t\u00e9 ignor\u00e9s.",
+      "success_title": "Import terminé",
+      "success_message": "{{imported}} sur {{total}} animaux ont été importés.",
+      "skipped_message": "{{count}} animaux ont été ignorés.",
       "onboarding_heading": "Importer des animaux depuis la TVD",
-      "onboarding_body": "L'importation n\u00e9cessite un fichier Excel de la section \u00ab Tierbestand \u00bb de la TVD. Exportez-le via le bouton \u00ab Excel generieren \u00bb."
+      "onboarding_body": "L'importation nécessite un fichier Excel de la section « Tierbestand » de la TVD. Exportez-le via le bouton « Excel generieren »."
+    },
+    "batch_edit": {
+      "select_animals_title": "Sélectionner les animaux à modifier",
+      "select_action_title": "Sélectionner l'action",
+      "action_set_type": "Définir le type d'animal",
+      "action_set_death": "Enregistrer le décès",
+      "action_set_registered": "Marquer comme déclaré",
+      "action_set_usage": "Définir l'utilisation",
+      "action_delete": "Supprimer",
+      "update_n_animals": "{{count}} animaux mis à jour",
+      "delete_n_animals": "{{count}} animaux supprimés",
+      "select_action": "Sélectionner l'action"
     }
   },
   "drugs": {
-    "drugs": "M\u00e9dicaments",
-    "drug": "M\u00e9dicament",
-    "new_drug": "Nouveau m\u00e9dicament",
-    "edit_drug": "Modifier le m\u00e9dicament",
-    "drug_name": "Nom du m\u00e9dicament",
-    "received_from": "Re\u00e7u de",
+    "drugs": "Médicaments",
+    "drug": "Médicament",
+    "new_drug": "Nouveau médicament",
+    "edit_drug": "Modifier le médicament",
+    "drug_name": "Nom du médicament",
+    "received_from": "Reçu de",
     "critical_antibiotic": "Antibiotique critique",
-    "treatment_definitions": "D\u00e9finitions de traitement",
-    "no_treatment_definitions": "Aucune d\u00e9finition de traitement",
+    "treatment_definitions": "Définitions de traitement",
+    "no_treatment_definitions": "Aucune définition de traitement",
     "add_animal_type": "Ajouter un type d'animal",
     "dose_value": "Dose",
-    "dose_unit": "Unit\u00e9",
+    "dose_unit": "Unité",
     "dose_per_unit": "Par",
     "dose_units": {
-      "tablet": "Comprim\u00e9",
+      "tablet": "Comprimé",
       "capsule": "Capsule",
       "patch": "Patch",
       "dose": "Dose",
@@ -1089,14 +1133,14 @@
       "kg": "kg de poids corporel",
       "animal": "Animal",
       "day": "Jour",
-      "total_amount": "Quantit\u00e9 totale"
+      "total_amount": "Quantité totale"
     },
     "milk_waiting_days": "Jours d'attente lait",
     "meat_waiting_days": "Jours d'attente viande",
     "organs_waiting_days": "Jours d'attente organes",
-    "drug_in_use": "M\u00e9dicament en cours d'utilisation",
-    "drug_in_use_warning": "Ce m\u00e9dicament est utilis\u00e9 et ne peut pas \u00eatre supprim\u00e9.",
-    "no_drugs": "Aucun m\u00e9dicament enregistr\u00e9"
+    "drug_in_use": "Médicament en cours d'utilisation",
+    "drug_in_use_warning": "Ce médicament est utilisé et ne peut pas être supprimé.",
+    "no_drugs": "Aucun médicament enregistré"
   },
   "treatments": {
     "treatments": "Traitements",
@@ -1104,30 +1148,30 @@
     "new_treatment": "Nouveau traitement",
     "edit_treatment": "Modifier le traitement",
     "treatment_name": "Motif du traitement",
-    "select_animal": "S\u00e9lectionner un animal",
-    "select_drug": "S\u00e9lectionner un m\u00e9dicament (facultatif)",
+    "select_animal": "Sélectionner un animal",
+    "select_drug": "Sélectionner un médicament (facultatif)",
     "treatment_date": "Date du traitement",
     "treatment_end_date": "Date de fin",
     "reason": "Motif",
-    "milk_usable_date": "Lait utilisable \u00e0 partir du",
-    "meat_usable_date": "Viande utilisable \u00e0 partir du",
-    "organs_usable_date": "Organes utilisables \u00e0 partir du",
-    "drug_configuration": "Configuration du m\u00e9dicament",
+    "milk_usable_date": "Lait utilisable à partir du",
+    "meat_usable_date": "Viande utilisable à partir du",
+    "organs_usable_date": "Organes utilisables à partir du",
+    "drug_configuration": "Configuration du médicament",
     "dose_label": "{{unit}} / {{perUnit}}",
     "no_treatments": "Aucun traitement pour le moment",
     "antibiogram_available": "Antibiogramme disponible",
-    "auto_calculated": "Calcul\u00e9 automatiquement selon le m\u00e9dicament",
-    "select_animals": "S\u00e9lectionner les animaux",
-    "no_animals_selected": "Aucun animal s\u00e9lectionn\u00e9",
-    "n_animals_selected": "{{count}} animaux s\u00e9lectionn\u00e9s",
-    "confirm_selection": "Confirmer ({{count}} s\u00e9lectionn\u00e9s)",
-    "select_all": "Tout s\u00e9lectionner ({{count}})",
-    "clear_selection": "Effacer la s\u00e9lection",
+    "auto_calculated": "Calculé automatiquement selon le médicament",
+    "select_animals": "Sélectionner les animaux",
+    "no_animals_selected": "Aucun animal sélectionné",
+    "n_animals_selected": "{{count}} animaux sélectionnés",
+    "confirm_selection": "Confirmer ({{count}} sélectionnés)",
+    "select_all": "Tout sélectionner ({{count}})",
+    "clear_selection": "Effacer la sélection",
     "birthday_filter": "Anniversaire",
     "filter_by_birthday": "Filtrer par date de naissance",
     "birthday_from": "De",
     "birthday_to": "Jusqu'au",
-    "drug_not_defined_for_all_types": "Le m\u00e9dicament n'est pas d\u00e9fini pour tous les types d'animaux s\u00e9lectionn\u00e9s",
+    "drug_not_defined_for_all_types": "Le médicament n'est pas défini pour tous les types d'animaux sélectionnés",
     "different_waiting_times_for_types": "Les délais d'attente diffèrent entre les types d'animaux"
   },
   "settings": {
@@ -1141,9 +1185,27 @@
   "permissions": {
     "location": {
       "error": {
-        "title": "Localisation d\u00e9sactiv\u00e9e !",
+        "title": "Localisation désactivée !",
         "message": "Nous avons besoin de votre position pour l'afficher sur la carte."
       }
+    }
+  },
+  "speed_dial": {
+    "harvest": "Ajouter une récolte",
+    "tillage": "Ajouter un travail du sol",
+    "crop_protection": "Ajouter une protection phytosanitaire",
+    "fertilizer_application": "Ajouter une fertilisation",
+    "crop_rotation": "Ajouter une rotation",
+    "new_animal": "Ajouter un animal",
+    "treatment": "Ajouter un traitement",
+    "title": "Accès rapide",
+    "active_actions": "Actions actives (max. 4)",
+    "available_actions": "Actions disponibles",
+    "onboarding": {
+      "welcome_heading": "Accès rapide",
+      "welcome_body": "Avec l'accès rapide, vous pouvez lancer jusqu'à 4 actions directement depuis l'écran d'accueil.",
+      "settings_hint": "Vous pouvez ajuster les actions ou désactiver l'accès rapide à tout moment dans les paramètres.",
+      "configure_heading": "Configurer les actions"
     }
   }
 }

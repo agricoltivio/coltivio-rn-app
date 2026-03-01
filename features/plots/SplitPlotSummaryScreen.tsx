@@ -38,7 +38,7 @@ export function SplitPlotSummaryScreen({
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const { plotId } = route.params;
-  const { subPlots, originalPlotName } = useSplitPlotStore();
+  const { subPlots, originalPlotName, reset: resetSplitStore } = useSplitPlotStore();
 
   const [migrateToIndex, setMigrateToIndex] = useState(0);
 
@@ -62,14 +62,10 @@ export function SplitPlotSummaryScreen({
   const { fields } = useFieldArray({ control, name: "subPlots" });
 
   const splitMutation = useSplitPlotMutation(
-    (plots) =>
-      navigation.reset({
-        index: 1,
-        routes: [
-          { name: "Home" },
-          { name: "PlotsMap", params: { selectedPlotId: plots[0]?.id } },
-        ],
-      }),
+    (plots) => {
+      resetSplitStore();
+      navigation.popTo("PlotsMap", { selectedPlotId: plots[0]?.id });
+    },
     (error) => console.error(error),
   );
 

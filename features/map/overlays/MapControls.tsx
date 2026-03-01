@@ -57,7 +57,7 @@ export const MapControls = ({
       opacity: isExpanded.value
         ? withTiming(1, { duration: 500 })
         : withTiming(0, { duration: 800 }),
-      marginRight: withTiming(isExpanded.value ? theme.spacing.m : 0, {
+      marginRight: withTiming(isExpanded.value ? theme.spacing.xxs : 0, {
         duration: 500,
       }),
     };
@@ -107,7 +107,7 @@ export const MapControls = ({
 const MapControlsContainer = styled(Animated.View)<{ insets: EdgeInsets }>`
   position: absolute;
   right: 0px;
-  top: ${({ insets, theme }) => insets.top + theme.spacing.s}px;
+  top: ${({ insets, theme }) => insets.top + 80}px;
   border-color: #ddd;
   border-width: 2px;
   border-radius: 20px;
@@ -130,7 +130,7 @@ const CollapsedToggleButtonContainer = styled(Animated.View)<{
 }>`
   position: absolute;
   right: 0px;
-  top: ${({ insets, theme }) => insets.top + theme.spacing.s}px;
+  top: ${({ insets, theme }) => insets.top + 80}px;
   background-color: rgba(52, 52, 52, 0.8);
   border-color: #ddd;
   border-width: 2px;

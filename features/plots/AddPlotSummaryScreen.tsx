@@ -1,5 +1,4 @@
 import { Button } from "@/components/buttons/Button";
-import { IonIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
@@ -8,7 +7,6 @@ import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
-import { InsetsProps } from "@/constants/Screen";
 import { H2 } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -19,6 +17,7 @@ import { useAddPlotStore } from "./add-plots.store";
 import { AddPlotSummaryScreenProps } from "./navigation/plots-routes";
 import { useCreatePlotMutation } from "./plots.hooks";
 import { getUsageCodeSelectData } from "./usage-codes";
+import type { Plot } from "@/api/plots.api";
 
 type AddPlotFormValues = {
   name: string;
@@ -37,8 +36,8 @@ export function AddPlotSummaryScreen({
   const theme = useTheme();
   const insets = useSafeAreaInsets();
 
-  const { data } = useAddPlotStore();
-  const { geometry, size, localId, cuttingDate, usage } = data!;
+  const addPlotStore = useAddPlotStore();
+  const { geometry, size, localId, cuttingDate, usage } = addPlotStore.data!;
 
   const {
     control,
@@ -54,11 +53,10 @@ export function AddPlotSummaryScreen({
   });
 
   const createPlotMutation = useCreatePlotMutation(
-    () =>
-      navigation.reset({
-        index: 1,
-        routes: [{ name: "Home" }, { name: "PlotsMap" }],
-      }),
+    (plot: Plot) => {
+      addPlotStore.reset();
+      navigation.popTo("PlotsMap", { selectedPlotId: plot.id });
+    },
     (error) => console.log(error),
   );
 

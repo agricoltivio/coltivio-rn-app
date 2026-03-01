@@ -42,7 +42,7 @@
       "location_search": "Search Location",
       "federal_farm_number": "Farm Registration Number",
       "crop": "Crop",
-      "size_m2": "Size (m\u00b2)",
+      "size_m2": "Size (m²)",
       "area": "Area",
       "area_hectares": "Area (ha)",
       "divide_by_plot_size": "Divide by Plot Size",
@@ -185,7 +185,7 @@
       "t": "t",
       "l": "l",
       "ml": "ml",
-      "m3": "m\u00b3",
+      "m3": "m³",
       "ha": "ha"
     }
   },
@@ -244,6 +244,14 @@
       "edit_plots_info": "You can edit your plots at any time under 'Plots' or via the map.",
       "press_save_to_finish": "Tap Save to create your farm.",
       "no_federal_farm_id": "Unfortunately, we could not add your plots automatically. You can add your plots manually under 'Plots' or via the map. We are working to support all locations as soon as possible."
+    },
+    "preference": {
+      "heading": "One last question",
+      "guided": "With guidance",
+      "guided_desc": "Show me tips and guidance for new features.",
+      "explore": "Explore myself",
+      "explore_desc": "I prefer to try things out on my own.",
+      "change_hint": "You can change this at any time in the settings."
     }
   },
   "users": {
@@ -342,7 +350,12 @@
       "line_heading": "Draw Line",
       "line_body": "Draw a line across the plot to split it in two. Tap on the map to set points, and confirm with the cut symbol.",
       "area_heading": "Cut Out Area",
-      "area_body": "Draw a polygon within the plot to cut out a new area. This is useful when you want to separate a specific section."
+      "area_body": "Draw a polygon within the plot to cut out a new area. This is useful when you want to separate a specific section.",
+      "actions_heading": "Done & Cancel",
+      "confirm_body": "Press the checkmark once you're happy with the split to continue.",
+      "abort_body": "Press the X to cancel and discard the split.",
+      "extract_heading": "Extract Plot",
+      "extract_body": "If an area consists of multiple polygons, you can select and extract a single one."
     },
     "split": {
       "heading": "Split Plot",
@@ -382,7 +395,10 @@
       "welcome_heading": "Merge Plots",
       "welcome_body": "Select the plots you want to merge. The current plot is already selected.",
       "confirm_heading": "Confirm",
-      "confirm_body": "Press the confirm icon once at least 2 plots are selected."
+      "confirm_body": "Press the confirm icon once at least 2 plots are selected.",
+      "actions_heading": "Done & Cancel",
+      "confirm_action_body": "Press the checkmark once at least 2 plots are selected.",
+      "abort_body": "Press the X to cancel and go back without merging."
     },
     "map_onboarding": {
       "browse_heading": "Your Plots",
@@ -394,7 +410,8 @@
       "tool_split": "Split an existing plot",
       "tool_merge": "Merge plots",
       "tool_edit": "Edit plot area",
-      "tool_delete": "Delete plot"
+      "tool_delete": "Delete plot",
+      "tool_cancel": "Cancel current action"
     },
     "usage_codes": {
       "501": "Spring barley",
@@ -557,6 +574,15 @@
       "950": "Arable conservation strips",
       "951": "Cereals in wide rows",
       "998": "Other areas outside the agricultural and summer pasture area"
+    },
+    "adjust_onboarding": {
+      "welcome_heading": "Edit Plot",
+      "welcome_body": "Drag the corner points to reshape the plot. Add new points by dragging a midpoint between two corners.",
+      "actions_heading": "Done & Cancel",
+      "confirm_body": "Press the checkmark to save the new shape.",
+      "next_ring_body": "For plots with multiple parts, press the arrow to confirm the current part and move to the next.",
+      "abort_body": "Press the X to cancel and discard all changes.",
+      "overlap_body": "If the adjusted plot overlaps existing plots, they will be automatically clipped."
     }
   },
   "farm_equipment": {
@@ -834,8 +860,8 @@
     "view_list": "List",
     "view_timeline": "Timeline",
     "view_calendar": "Calendar",
-    "last_rotation": "Last: {{crop}} ({{from}} \u2013 {{to}})",
-    "last_rotation_permanent": "Current: {{crop}} ({{from}} \u2013 permanent)",
+    "last_rotation": "Last: {{crop}} ({{from}} – {{to}})",
+    "last_rotation_permanent": "Current: {{crop}} ({{from}} – permanent)",
     "permanent_end_date_info": "The end date of the existing crop rotation will be automatically set to the day before the new start date.",
     "add_rotation": "Add rotation",
     "permanent": "Permanent",
@@ -859,7 +885,9 @@
       "resolve_conflicts_warning": "Resolve date conflicts before saving",
       "repeats_every_year": "Repeats yearly",
       "repeats_every_years": "Repeats every {{count}} years",
-      "until_date": "until {{date}}"
+      "until_date": "until {{date}}",
+      "waiting_time_warning_crop": "Waiting time not met: {{crop}} ({{waitingTime}} years)",
+      "waiting_time_warning_family": "Waiting time of family {{family}} not met ({{waitingTime}} years)"
     },
     "timeline": {
       "today": "Today",
@@ -895,7 +923,7 @@
     "section_3": "All data is stored exclusively on servers within the EU and is subject to strict GDPR data protection regulations.",
     "section_4": "The operation and further development of this app are funded solely through voluntary donations.",
     "section_5_title": "Help ensure the app remains free and independent for everyone.",
-    "section_5": "Become a member or support us with a donation. Every contribution helps \u2013 big or small.",
+    "section_5": "Become a member or support us with a donation. Every contribution helps – big or small.",
     "section_6": "Thank you for being part of it."
   },
   "ear_tags": {
@@ -923,13 +951,17 @@
     "welcome_body_edit": "You are about to edit the shape of a plot. Here is a quick explanation of how it works.",
     "edit_intro_heading": "Edit Plot",
     "edit_intro_body": "Move the corner points to adjust the shape. Press and hold a corner point and drag it to the desired position.",
+    "cancel_heading": "Cancel",
+    "cancel_body": "Tap this symbol to cancel and go back.",
     "overlap_heading": "Overlaps",
     "overlap_body": "If your new plot overlaps existing plots, they will be automatically adjusted.",
     "crop_rotation_welcome_heading": "Plan Your Crop Rotations",
     "crop_rotation_welcome_body": "Select the plots for which you want to plan crop rotations.",
     "plots_map_welcome_heading": "Your Plots",
     "plots_map_tap_body": "Tap on a plot to see details.",
-    "plots_map_add_body": "Press this button to add new plots."
+    "plots_map_add_body": "Press this button to add new plots.",
+    "welcome_body_create": "You are now in drawing mode. Tap on the map to set the corner points of your new plot.",
+    "actions_heading": "Done & Cancel"
   },
   "animals": {
     "animals": "Animals",
@@ -1058,6 +1090,18 @@
       "skipped_message": "{{count}} animals were skipped.",
       "onboarding_heading": "Import animals from TVD",
       "onboarding_body": "This import requires an Excel file from the \"Tierbestand\" (livestock) section of TVD. Export it using the \"Excel generieren\" button."
+    },
+    "batch_edit": {
+      "select_animals_title": "Select animals to edit",
+      "select_action_title": "Select action",
+      "action_set_type": "Set animal type",
+      "action_set_death": "Record death",
+      "action_set_registered": "Mark as registered",
+      "action_set_usage": "Set usage",
+      "action_delete": "Delete",
+      "update_n_animals": "Update {{count}} animals",
+      "delete_n_animals": "Delete {{count}} animals",
+      "select_action": "Select action"
     }
   },
   "drugs": {
@@ -1144,6 +1188,24 @@
         "title": "Location Disabled!",
         "message": "We need your location to display it on the map."
       }
+    }
+  },
+  "speed_dial": {
+    "harvest": "Add harvest",
+    "tillage": "Add tillage",
+    "crop_protection": "Add crop protection",
+    "fertilizer_application": "Add fertilization",
+    "crop_rotation": "Add crop rotation",
+    "new_animal": "Add animal",
+    "treatment": "Add treatment",
+    "title": "Quick access",
+    "active_actions": "Active actions (max. 4)",
+    "available_actions": "Available actions",
+    "onboarding": {
+      "welcome_heading": "Quick access",
+      "welcome_body": "With quick access you can launch up to 4 actions directly from the home screen.",
+      "settings_hint": "You can adjust the actions or disable quick access at any time in settings.",
+      "configure_heading": "Configure actions"
     }
   }
 }

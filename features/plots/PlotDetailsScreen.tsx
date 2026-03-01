@@ -1,15 +1,15 @@
 import { Card } from "@/components/card/Card";
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
-import { MultiPolygon } from "@/components/map/MultiPolygon";
+import { StaticMapPreview } from "@/components/map/StaticMapPreview";
 import { ScrollView } from "@/components/views/ScrollView";
 import { PlotDetailsScreenProps } from "./navigation/plots-routes";
-import { hexToRgba } from "@/theme/theme";
 import { Body, H2, H3, Label } from "@/theme/Typography";
+import { type LngLat } from "@maplibre/maplibre-react-native";
 import * as turf from "@turf/turf";
 import { useTranslation } from "react-i18next";
+import { useMemo } from "react";
 import { View } from "react-native";
-import MapView, { PROVIDER_GOOGLE, Region } from "react-native-maps";
 import { useTheme } from "styled-components/native";
 import { usePlotByIdQuery } from "./plots.hooks";
 import { UsageCode } from "./usage-codes";
@@ -32,18 +32,17 @@ export function PlotDetailsScreen({
     return null;
   }
 
-  let initialRegion: Region | undefined;
+  const hasGeometry = plot.geometry.coordinates.length > 0;
+  const center = hasGeometry
+    ? (turf.centroid(plot.geometry).geometry.coordinates as LngLat)
+    : undefined;
 
-  if (plot.geometry.coordinates.length > 0) {
-    const centroid = turf.centroid(plot.geometry);
-    const [longitude, latitude] = centroid.geometry.coordinates;
-    initialRegion = {
-      latitude,
-      longitude,
-      latitudeDelta: 0.0045,
-      longitudeDelta: 0.0045,
-    };
-  }
+  const features = useMemo((): GeoJSON.FeatureCollection => ({
+    type: "FeatureCollection",
+    features: hasGeometry
+      ? [{ type: "Feature", properties: {}, geometry: plot.geometry }]
+      : [],
+  }), [plot.geometry, hasGeometry]);
 
   return (
     <ContentView
@@ -78,34 +77,9 @@ export function PlotDetailsScreen({
             ? `${t(`plots.usage_codes.${plot.usage as UsageCode}`)}`
             : ""}
         </H3>
-        {initialRegion && (
-          <View
-            style={{
-              height: 250,
-              borderRadius: 10,
-              overflow: "hidden",
-              marginTop: theme.spacing.m,
-            }}
-          >
-            <MapView
-              provider={PROVIDER_GOOGLE}
-              style={{
-                flex: 1,
-              }}
-              initialRegion={initialRegion}
-              mapType="satellite"
-            >
-              <MultiPolygon
-                polygon={plot.geometry}
-                strokeWidth={theme.map.defaultStrokeWidth}
-                strokeColor={"white"}
-                fillColor={hexToRgba(
-                  theme.map.defaultFillColor,
-                  theme.map.defaultFillAlpha
-                )}
-                tappable
-              />
-            </MapView>
+        {center && (
+          <View style={{ marginTop: theme.spacing.m }}>
+            <StaticMapPreview center={center} zoom={16} features={features} height={250} />
           </View>
         )}
         <Card style={{ marginTop: theme.spacing.m }}>

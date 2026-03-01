@@ -23,9 +23,6 @@ export default ({ config }) => {
         variant === "development"
           ? "ch.agricoltivio.coltiviotest"
           : "ch.agricoltivio.coltivio",
-      config: {
-        googleMapsApiKey: process.env.IOS_GOOGLE_MAPS_API_KEY,
-      },
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false,
       },
@@ -46,11 +43,6 @@ export default ({ config }) => {
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
       ],
-      config: {
-        googleMaps: {
-          apiKey: process.env.ANDROID_GOOGLE_MAPS_API_KEY,
-        },
-      },
     },
     experiments: {
       typedRoutes: true,
@@ -84,14 +76,7 @@ export default ({ config }) => {
           // },
         },
       ],
-      // [
-      //   "react-native-maps",
-      //   {
-      //     iosGoogleMapsApiKey: process.env.IOS_GOOGLE_MAPS_API_KEY,
-      //     androidGoogleMapsApiKey: process.env.ANDROID_GOOGLE_MAPS_API_KEY,
-      //   },
-      // ],
-      // "./react-native-maps-fix-plugin",
+      "@maplibre/maplibre-react-native",
     ],
     extra: {
       eas: {

@@ -1,6 +1,6 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
-import { H1, H3 } from "@/theme/Typography";
+import { H1, H3, Body } from "@/theme/Typography";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -11,6 +11,44 @@ import { Stepper } from "../onboarding/Stepper";
 import { useLocalSettings } from "../user/LocalSettingsContext";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "@/navigation/rootStackTypes";
+
+function ActionRow({
+  icon,
+  label,
+  color,
+}: {
+  icon: keyof typeof MaterialCommunityIcons.glyphMap;
+  label: string;
+  color?: string;
+}) {
+  const theme = useTheme();
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        gap: theme.spacing.m,
+        paddingVertical: theme.spacing.xs,
+      }}
+    >
+      <View
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: 10,
+          borderWidth: 1.5,
+          borderColor: "#ddd",
+          backgroundColor: "rgba(52, 52, 52, 0.08)",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <MaterialCommunityIcons name={icon} size={22} color={color ?? "black"} />
+      </View>
+      <Body style={{ flex: 1 }}>{label}</Body>
+    </View>
+  );
+}
 
 function IconBadge({
   name,
@@ -42,6 +80,8 @@ type Step =
   | "select"
   | "draw"
   | "finish"
+  | "cancel"
+  | "finishCancel"
   | "overlap"
   | "parcel"
   | "editIntro"
@@ -49,21 +89,24 @@ type Step =
   | "plotsMapWelcome";
 
 function getSteps(
-  variant?: "draw" | "parcel" | "edit" | "cropRotation" | "plotsMap",
+  variant?: "draw" | "create" | "parcel" | "edit" | "cropRotation" | "plotsMap",
 ): Step[] {
   switch (variant) {
     case "draw":
-      return ["welcome", "draw", "finish", "overlap"];
+      return ["welcome", "draw", "finish", "cancel", "overlap"];
+    // "create" skips the "draw" step (already in drawing mode) and combines finish+cancel
+    case "create":
+      return ["welcome", "finishCancel", "overlap"];
     case "parcel":
       return ["welcome", "parcel", "overlap"];
     case "edit":
-      return ["welcome", "editIntro", "finish", "overlap"];
+      return ["welcome", "editIntro", "finish", "cancel", "overlap"];
     case "cropRotation":
       return ["cropRotationWelcome"];
     case "plotsMap":
       return ["plotsMapWelcome"];
     default:
-      return ["welcome", "select", "draw", "finish"];
+      return ["welcome", "select", "draw", "finish", "cancel"];
   }
 }
 
@@ -73,7 +116,7 @@ export function MapDrawOnboardingScreen() {
   const { updateLocalSettings } = useLocalSettings();
   const navigation = useNavigation();
   const route = useRoute<RouteProp<RootStackParamList, "MapDrawOnboarding">>();
-  const variant = route.params?.variant;
+  const variant = route.params?.variant as "draw" | "create" | "parcel" | "edit" | "cropRotation" | "plotsMap" | undefined;
 
   const steps = getSteps(variant);
 
@@ -83,7 +126,7 @@ export function MapDrawOnboardingScreen() {
 
   // Each variant has its own onboarding key
   const onboardingKey =
-    variant === "draw"
+    variant === "draw" || variant === "create"
       ? "addPlotDrawOnboardingCompleted"
       : variant === "parcel"
         ? "addPlotParcelOnboardingCompleted"
@@ -174,11 +217,13 @@ export function MapDrawOnboardingScreen() {
               {t(
                 variant === "draw"
                   ? "map_draw_onboarding.welcome_body_draw"
-                  : variant === "parcel"
-                    ? "map_draw_onboarding.welcome_body_parcel"
-                    : variant === "edit"
-                      ? "map_draw_onboarding.welcome_body_edit"
-                      : "map_draw_onboarding.welcome_body",
+                  : variant === "create"
+                    ? "map_draw_onboarding.welcome_body_create"
+                    : variant === "parcel"
+                      ? "map_draw_onboarding.welcome_body_parcel"
+                      : variant === "edit"
+                        ? "map_draw_onboarding.welcome_body_edit"
+                        : "map_draw_onboarding.welcome_body",
               )}
             </H3>
           </View>
@@ -266,6 +311,42 @@ export function MapDrawOnboardingScreen() {
             >
               {t("map_draw_onboarding.finish_body")}
             </H3>
+          </View>
+        )}
+
+        {currentStep === "cancel" && (
+          <View style={{ alignItems: "center" }}>
+            <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
+              {t("map_draw_onboarding.cancel_heading")}
+            </H1>
+            <IconBadge name="close-circle-outline" />
+            <H3
+              style={{
+                color: theme.colors.primary,
+                textAlign: "center",
+              }}
+            >
+              {t("map_draw_onboarding.cancel_body")}
+            </H3>
+          </View>
+        )}
+
+        {currentStep === "finishCancel" && (
+          <View style={{ alignItems: "center", width: "100%" }}>
+            <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
+              {t("map_draw_onboarding.actions_heading")}
+            </H1>
+            <View style={{ width: "100%", marginTop: theme.spacing.m, gap: theme.spacing.xs }}>
+              <ActionRow
+                icon="check-circle-outline"
+                color="green"
+                label={t("map_draw_onboarding.finish_body")}
+              />
+              <ActionRow
+                icon="close-circle-outline"
+                label={t("map_draw_onboarding.cancel_body")}
+              />
+            </View>
           </View>
         )}
 

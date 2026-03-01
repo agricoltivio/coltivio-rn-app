@@ -40,7 +40,8 @@ export type RootStackParamList = AuthStackParamList &
   FieldCalendarStackParamList &
   AgriColtivioStackParamList &
   AnimalsStackParamList & {
-    MapDrawOnboarding: { variant?: "draw" | "parcel" | "edit" | "cropRotation" | "plotsMap" } | undefined;
+    MapDrawOnboarding: { variant?: "draw" | "create" | "parcel" | "edit" | "cropRotation" | "plotsMap" } | undefined;
+    SelectPlotsOnboarding: undefined;
   };
 
 declare global {

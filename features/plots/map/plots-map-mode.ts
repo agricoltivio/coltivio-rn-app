@@ -1,8 +1,11 @@
 import { Plot } from "@/api/plots.api";
-import { DrawAction } from "@/components/map/PolygonDrawingTool";
+import { type DrawingOverlayRef } from "@/components/map/DrawingOverlay";
+import { type BaseLayer } from "@/components/map/MapLibreMap";
+import { type MapRef, type CameraRef } from "@maplibre/maplibre-react-native";
 import { NavigationProp } from "@react-navigation/native";
 import { createContext, useContext, Dispatch } from "react";
-import RnMapView from "react-native-maps";
+
+export type DrawAction = "select" | "edit" | "draw";
 
 // --- Mode types ---
 
@@ -10,7 +13,7 @@ type ViewMode = { type: "view"; selectedPlotId: string | null };
 type SplitMode = {
   type: "split";
   plotId: string;
-  activeToolMode: "polyline" | "polygon" | "none";
+  activeToolMode: "polyline" | "polygon" | "polygon-edit" | "extract" | "none";
   currentPolygons: GeoJSON.MultiPolygon[];
 };
 type MergeMode = {
@@ -18,7 +21,7 @@ type MergeMode = {
   primaryPlotId: string;
   selectedPlotIds: string[];
 };
-type AdjustMode = { type: "adjust"; plotId: string };
+type AdjustMode = { type: "adjust"; plotId: string; activeRingIndex: number };
 type CreateMode = {
   type: "create";
   drawingAction: DrawAction;
@@ -44,11 +47,12 @@ export type PlotsMapMode =
 export type PlotsMapAction =
   | { type: "SELECT_PLOT"; plotId: string | null }
   | { type: "ENTER_SPLIT"; plotId: string; initialGeometry: GeoJSON.MultiPolygon }
-  | { type: "SET_SPLIT_TOOL"; tool: "polyline" | "polygon" | "none" }
+  | { type: "SET_SPLIT_TOOL"; tool: "polyline" | "polygon" | "polygon-edit" | "extract" | "none" }
   | { type: "SET_SPLIT_POLYGONS"; polygons: GeoJSON.MultiPolygon[] }
   | { type: "ENTER_MERGE"; primaryPlotId: string }
   | { type: "TOGGLE_MERGE_PLOT"; plotId: string }
   | { type: "ENTER_ADJUST"; plotId: string }
+  | { type: "ADVANCE_ADJUST_RING" }
   | { type: "ENTER_CREATE" }
   | { type: "SET_CREATE_ACTION"; action: DrawAction }
   | {
@@ -112,7 +116,13 @@ export function plotsMapReducer(
       return state;
 
     case "ENTER_ADJUST":
-      return { type: "adjust", plotId: action.plotId };
+      return { type: "adjust", plotId: action.plotId, activeRingIndex: 0 };
+
+    case "ADVANCE_ADJUST_RING":
+      if (state.type === "adjust") {
+        return { ...state, activeRingIndex: state.activeRingIndex + 1 };
+      }
+      return state;
 
     case "ENTER_CREATE":
       return { type: "create", drawingAction: "draw", newPolygon: null };
@@ -153,10 +163,14 @@ type PlotsMapContextValue = {
   mode: PlotsMapMode;
   dispatch: Dispatch<PlotsMapAction>;
   plots: Plot[];
-  mapRef: React.RefObject<RnMapView | null>;
+  mapRef: React.RefObject<MapRef | null>;
+  cameraRef: React.RefObject<CameraRef | null>;
+  drawingRef: React.RefObject<DrawingOverlayRef | null>;
   navigation: NavigationProp<ReactNavigation.RootParamList>;
   controlsExpanded: boolean;
   setControlsExpanded: (expanded: boolean) => void;
+  baseLayer: BaseLayer;
+  setBaseLayer: (layer: BaseLayer) => void;
 };
 
 export const PlotsMapContext = createContext<PlotsMapContextValue | null>(null);

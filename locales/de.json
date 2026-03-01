@@ -352,7 +352,10 @@
       "area_heading": "Fläche ausschneiden",
       "area_body": "Zeichne ein Polygon innerhalb des Schlags, um eine neue Fläche auszuschneiden. Dies ist nützlich, wenn du einen bestimmten Bereich abtrennen möchtest.",
       "extract_heading": "Schlag herauslösen",
-      "extract_body": "Wenn eine Fläche aus mehreren Schlägen besteht, kannst du einen einzelnen Schlag auswählen und herauslösen."
+      "extract_body": "Wenn eine Fläche aus mehreren Schlägen besteht, kannst du einen einzelnen Schlag auswählen und herauslösen.",
+      "actions_heading": "Fertig & Abbrechen",
+      "confirm_body": "Drücke das Häkchen, wenn du mit der Aufteilung zufrieden bist, um fortzufahren.",
+      "abort_body": "Drücke das X, um abzubrechen und die Aufteilung zu verwerfen."
     },
     "split": {
       "heading": "Schlag aufteilen",
@@ -392,7 +395,10 @@
       "welcome_heading": "Schläge zusammenführen",
       "welcome_body": "Wähle die Schläge aus, die zusammengeführt werden sollen. Der aktive Schlag ist bereits ausgewählt.",
       "confirm_heading": "Bestätigen",
-      "confirm_body": "Drücke das Bestätigungs-Symbol, wenn mindestens 2 Schläge ausgewählt sind."
+      "confirm_body": "Drücke das Bestätigungs-Symbol, wenn mindestens 2 Schläge ausgewählt sind.",
+      "actions_heading": "Fertig & Abbrechen",
+      "confirm_action_body": "Drücke das Bestätigungs-Symbol, wenn mindestens 2 Schläge ausgewählt sind.",
+      "abort_body": "Drücke das X, um abzubrechen und ohne Zusammenführen zurückzukehren."
     },
     "map_onboarding": {
       "browse_heading": "Deine Schläge",
@@ -404,7 +410,8 @@
       "tool_split": "Bestehenden Schlag aufteilen",
       "tool_merge": "Schläge zusammenführen",
       "tool_edit": "Schlagfläche bearbeiten",
-      "tool_delete": "Schlag löschen"
+      "tool_delete": "Schlag löschen",
+      "tool_cancel": "Aktuelle Aktion abbrechen"
     },
     "usage_codes": {
       "501": "Sommergerste",
@@ -567,6 +574,15 @@
       "950": "Ackerschonstreifen",
       "951": "Getreide in weiter Reihen",
       "998": "Übrige Flächen ausserhalb der LN und SF"
+    },
+    "adjust_onboarding": {
+      "welcome_heading": "Schlag bearbeiten",
+      "welcome_body": "Ziehe die Eckpunkte, um die Form des Schlags anzupassen. Füge neue Punkte hinzu, indem du einen Mittelpunkt zwischen zwei Ecken ziehst.",
+      "actions_heading": "Fertig & Abbrechen",
+      "confirm_body": "Drücke das Häkchen, um die neue Form zu speichern.",
+      "next_ring_body": "Bei Schlägen mit mehreren Teilflächen: Drücke den Pfeil, um die aktuelle Teilfläche zu bestätigen und zur nächsten zu wechseln.",
+      "abort_body": "Drücke das X, um abzubrechen und alle Änderungen zu verwerfen.",
+      "overlap_body": "Wenn der angepasste Schlag bestehende Schläge überschneidet, werden diese automatisch angepasst."
     }
   },
   "farm_equipment": {
@@ -935,13 +951,17 @@
     "welcome_body_edit": "Du bearbeitest gleich die Form eines Schlags. Hier erklären wir dir kurz, wie das funktioniert.",
     "edit_intro_heading": "Schlag bearbeiten",
     "edit_intro_body": "Verschiebe die Eckpunkte, um die Form anzupassen. Halte einen Eckpunkt gedrückt und ziehe ihn an die gewünschte Position.",
+    "cancel_heading": "Abbrechen",
+    "cancel_body": "Tippe auf dieses Symbol, um abzubrechen und zurückzugehen.",
     "overlap_heading": "Überlappungen",
     "overlap_body": "Falls dein neuer Schlag bestehende Schläge überlappt, werden diese automatisch angepasst.",
     "crop_rotation_welcome_heading": "Plane deine Fruchtfolgen",
     "crop_rotation_welcome_body": "Wähle die Schläge aus, für die du Fruchtfolgen planen möchtest.",
     "plots_map_welcome_heading": "Deine Schläge",
     "plots_map_tap_body": "Tippe auf einen Schlag, um Details zu sehen.",
-    "plots_map_add_body": "Drücke diesen Button, um neue Schläge hinzuzufügen."
+    "plots_map_add_body": "Drücke diesen Button, um neue Schläge hinzuzufügen.",
+    "welcome_body_create": "Du befindest dich jetzt im Zeichenmodus. Tippe auf die Karte, um die Eckpunkte deines neuen Schlags zu setzen.",
+    "actions_heading": "Fertig & Abbrechen"
   },
   "animals": {
     "animals": "Tiere",
