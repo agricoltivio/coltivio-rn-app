@@ -580,6 +580,7 @@
       "welcome_body": "Trascina i punti angolari per ridisegnare l'appezzamento. Aggiungi nuovi punti trascinando un punto medio tra due angoli.",
       "actions_heading": "Fine & Annulla",
       "confirm_body": "Premi il segno di spunta per salvare la nuova forma.",
+      "next_ring_body": "Per appezzamenti con più parti, premi la freccia per confermare la parte corrente e passare alla successiva.",
       "abort_body": "Premi la X per annullare e scartare tutte le modifiche.",
       "overlap_body": "Se l'appezzamento modificato si sovrappone ad altri, verranno automaticamente ridimensionati."
     }

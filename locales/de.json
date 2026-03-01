@@ -580,6 +580,7 @@
       "welcome_body": "Ziehe die Eckpunkte, um die Form des Schlags anzupassen. Füge neue Punkte hinzu, indem du einen Mittelpunkt zwischen zwei Ecken ziehst.",
       "actions_heading": "Fertig & Abbrechen",
       "confirm_body": "Drücke das Häkchen, um die neue Form zu speichern.",
+      "next_ring_body": "Bei Schlägen mit mehreren Teilflächen: Drücke den Pfeil, um die aktuelle Teilfläche zu bestätigen und zur nächsten zu wechseln.",
       "abort_body": "Drücke das X, um abzubrechen und alle Änderungen zu verwerfen.",
       "overlap_body": "Wenn der angepasste Schlag bestehende Schläge überschneidet, werden diese automatisch angepasst."
     }

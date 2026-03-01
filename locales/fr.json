@@ -580,6 +580,7 @@
       "welcome_body": "Faites glisser les coins pour remodeler le champ. Ajoutez de nouveaux points en faisant glisser un point médian entre deux coins.",
       "actions_heading": "Terminer & Annuler",
       "confirm_body": "Appuyez sur la coche pour enregistrer la nouvelle forme.",
+      "next_ring_body": "Pour les champs avec plusieurs parties, appuyez sur la flèche pour confirmer la partie actuelle et passer à la suivante.",
       "abort_body": "Appuyez sur le X pour annuler et ignorer toutes les modifications.",
       "overlap_body": "Si le champ modifié chevauche des champs existants, ils seront automatiquement ajustés."
     }

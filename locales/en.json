@@ -580,6 +580,7 @@
       "welcome_body": "Drag the corner points to reshape the plot. Add new points by dragging a midpoint between two corners.",
       "actions_heading": "Done & Cancel",
       "confirm_body": "Press the checkmark to save the new shape.",
+      "next_ring_body": "For plots with multiple parts, press the arrow to confirm the current part and move to the next.",
       "abort_body": "Press the X to cancel and discard all changes.",
       "overlap_body": "If the adjusted plot overlaps existing plots, they will be automatically clipped."
     }

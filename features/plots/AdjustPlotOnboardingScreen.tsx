@@ -78,6 +78,11 @@ export function AdjustPlotOnboardingScreen() {
           label={t("plots.adjust_onboarding.confirm_body")}
         />
         <ActionRow
+          icon="arrow-right-circle-outline"
+          color="green"
+          label={t("plots.adjust_onboarding.next_ring_body")}
+        />
+        <ActionRow
           icon="close-circle-outline"
           label={t("plots.adjust_onboarding.abort_body")}
         />

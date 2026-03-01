@@ -25,10 +25,13 @@ export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
   function AdjustModeLayers(_props, ref) {
     const { mode, dispatch, plots, mapRef, drawingRef } = usePlotsMapContext();
     const [rings, setRings] = useState<RingData[]>([]);
-    const [activeRingIndex, setActiveRingIndex] = useState(0);
 
     const ringsRef = useRef(rings);
     ringsRef.current = rings;
+
+    // Keep a ref to the current active ring index sourced from mode state,
+    // so imperative callbacks don't have stale closures.
+    const activeRingIndex = mode.type === "adjust" ? mode.activeRingIndex : 0;
     const activeRingRef = useRef(activeRingIndex);
     activeRingRef.current = activeRingIndex;
 
@@ -42,7 +45,7 @@ export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
         ? plots.find((p) => p.id === mode.plotId)
         : undefined;
 
-    // Load all polygon rings when entering adjust mode
+    // Load all polygon rings when entering adjust mode (plot changes)
     useEffect(() => {
       if (!plot) return;
       const loadedRings: RingData[] = plot.geometry.coordinates.map((polyCoords) => {
@@ -53,82 +56,65 @@ export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
         return { coordinates: coords };
       });
       setRings(loadedRings);
-      setActiveRingIndex(0);
+      ringsRef.current = loadedRings;
       // Load first ring into DrawingOverlay
       if (loadedRings.length > 0 && loadedRings[0].coordinates.length > 0) {
-        // Defer to next frame so DrawingOverlay is mounted
         requestAnimationFrame(() => {
           drawingRef.current?.loadCoordinates(loadedRings[0].coordinates);
         });
       }
     }, [plot?.id]);
 
-    // Save current DrawingOverlay coords back to rings state, then load new ring
-    function switchToRing(newIndex: number) {
-      const currentRings = [...ringsRef.current];
-      const currentActive = activeRingRef.current;
-      if (newIndex === currentActive || newIndex < 0 || newIndex >= currentRings.length) return;
-
-      // Save current drawing coordinates
-      const currentCoords = drawingRef.current?.getCoordinates();
-      if (currentCoords) {
-        currentRings[currentActive] = { coordinates: currentCoords };
+    // When mode.activeRingIndex advances (via ADVANCE_ADJUST_RING dispatch),
+    // load the new ring's coordinates into the DrawingOverlay.
+    useEffect(() => {
+      if (mode.type !== "adjust") return;
+      const ring = ringsRef.current[mode.activeRingIndex];
+      if (ring && ring.coordinates.length > 0) {
+        drawingRef.current?.loadCoordinates(ring.coordinates);
       }
-
-      setRings(currentRings);
-      ringsRef.current = currentRings;
-      setActiveRingIndex(newIndex);
-      activeRingRef.current = newIndex;
-
-      // Load new ring into DrawingOverlay
-      const newRing = currentRings[newIndex];
-      if (newRing && newRing.coordinates.length > 0) {
-        drawingRef.current?.loadCoordinates(newRing.coordinates);
-      }
-    }
+    }, [mode.type === "adjust" ? mode.activeRingIndex : -1]);
 
     useImperativeHandle(ref, () => ({
-      handleMapPress(lngLat: LngLat) {
-        // Check if tap is on an inactive ring to switch to it
-        const currentRings = ringsRef.current;
-        const currentActive = activeRingRef.current;
-        for (let i = 0; i < currentRings.length; i++) {
-          if (i === currentActive) continue;
-          const ring = currentRings[i];
-          if (ring.coordinates.length < 3) continue;
-          const closed = [...ring.coordinates.map((c) => [c[0], c[1]]), [ring.coordinates[0][0], ring.coordinates[0][1]]];
-          const poly = turf.polygon([closed]);
-          if (turf.booleanPointInPolygon(turf.point(lngLat), poly)) {
-            switchToRing(i);
-            return;
-          }
-        }
-        // Default: pass tap to DrawingOverlay
-        drawingRef.current?.handleMapTap(lngLat);
+      handleMapPress(_lngLat: LngLat) {
+        // In adjust mode the drawing is always closed, so handleMapTap is a no-op.
+        // Tap-to-switch-ring is intentionally removed — rings cycle sequentially via confirm.
       },
       handleConfirm() {
         if (!plot) return;
-        // Save current active ring coordinates
+
+        // Save the current ring's edited coordinates into the rings array
         const currentCoords = drawingRef.current?.getCoordinates();
-        const finalRings = ringsRef.current.map((r, i) => {
-          if (i === activeRingRef.current && currentCoords) {
-            return currentCoords;
+        const currentRings = ringsRef.current.map((r, i) =>
+          i === activeRingRef.current && currentCoords ? { coordinates: currentCoords } : r,
+        );
+        setRings(currentRings);
+        ringsRef.current = currentRings;
+
+        const nextIndex = activeRingRef.current + 1;
+        if (nextIndex < currentRings.length) {
+          // More rings remain — advance to the next one
+          dispatch({ type: "ADVANCE_ADJUST_RING" });
+          // Load next ring into DrawingOverlay (useEffect above also handles this,
+          // but dispatching is async so we load immediately for responsiveness)
+          const nextRing = currentRings[nextIndex];
+          if (nextRing && nextRing.coordinates.length > 0) {
+            drawingRef.current?.loadCoordinates(nextRing.coordinates);
           }
-          return r.coordinates;
-        });
-        const polygon = GeoSpatials.lngLatToMultiPolygon(finalRings);
-        const area = turf.area(polygon);
-        updatePlotMutation.mutate({
-          plotId: plot.id,
-          data: {
-            size: round(area, 0),
-            geometry: polygon,
-          },
-        });
+        } else {
+          // Last ring confirmed — build the full multipolygon and save
+          const finalRings = currentRings.map((r) => r.coordinates);
+          const polygon = GeoSpatials.lngLatToMultiPolygon(finalRings);
+          const area = turf.area(polygon);
+          updatePlotMutation.mutate({
+            plotId: plot.id,
+            data: { size: round(area, 0), geometry: polygon },
+          });
+        }
       },
     }));
 
-    // Build GeoJSON for inactive rings — fill + stroke
+    // GeoJSON for inactive rings — shown as dimmed outlines while user edits another ring
     const inactiveRingsData = useMemo((): GeoJSON.FeatureCollection => {
       const features: GeoJSON.Feature[] = [];
       for (let i = 0; i < rings.length; i++) {
@@ -145,29 +131,13 @@ export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
       return { type: "FeatureCollection", features };
     }, [rings, activeRingIndex]);
 
-    // Vertices for inactive rings — small dots to show they're tappable
-    const inactiveVerticesData = useMemo((): GeoJSON.FeatureCollection => {
-      const features: GeoJSON.Feature[] = [];
-      for (let i = 0; i < rings.length; i++) {
-        if (i === activeRingIndex) continue;
-        for (const coord of rings[i].coordinates) {
-          features.push({
-            type: "Feature",
-            properties: { ringIndex: i },
-            geometry: { type: "Point", coordinates: coord },
-          });
-        }
-      }
-      return { type: "FeatureCollection", features };
-    }, [rings, activeRingIndex]);
-
     if (mode.type !== "adjust" || !plot) return null;
 
     return (
       <>
         <PlotsLayer plots={plots} />
 
-        {/* Inactive rings — dimmed with dashed outline */}
+        {/* Inactive rings — dimmed dashed outline so the user can see the full shape */}
         <GeoJSONSource id="adjust-inactive-rings" data={inactiveRingsData}>
           <Layer
             type="fill"
@@ -180,20 +150,8 @@ export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
             paint={{ "line-color": "#4CAF50", "line-width": 2, "line-dasharray": [2, 2] }}
           />
         </GeoJSONSource>
-        <GeoJSONSource id="adjust-inactive-vertices" data={inactiveVerticesData}>
-          <Layer
-            type="circle"
-            id="adjust-inactive-vertices-circle"
-            paint={{
-              "circle-radius": 5,
-              "circle-color": "#888888",
-              "circle-stroke-color": "#4CAF50",
-              "circle-stroke-width": 1.5,
-            }}
-          />
-        </GeoJSONSource>
 
-        {/* Active ring — full DrawingOverlay with vertex editing */}
+        {/* Active ring — full DrawingOverlay with draggable vertex editing */}
         <DrawingOverlay
           ref={drawingRef}
           mode="edit"

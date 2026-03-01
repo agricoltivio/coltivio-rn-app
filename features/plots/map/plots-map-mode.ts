@@ -21,7 +21,7 @@ type MergeMode = {
   primaryPlotId: string;
   selectedPlotIds: string[];
 };
-type AdjustMode = { type: "adjust"; plotId: string };
+type AdjustMode = { type: "adjust"; plotId: string; activeRingIndex: number };
 type CreateMode = {
   type: "create";
   drawingAction: DrawAction;
@@ -52,6 +52,7 @@ export type PlotsMapAction =
   | { type: "ENTER_MERGE"; primaryPlotId: string }
   | { type: "TOGGLE_MERGE_PLOT"; plotId: string }
   | { type: "ENTER_ADJUST"; plotId: string }
+  | { type: "ADVANCE_ADJUST_RING" }
   | { type: "ENTER_CREATE" }
   | { type: "SET_CREATE_ACTION"; action: DrawAction }
   | {
@@ -115,7 +116,13 @@ export function plotsMapReducer(
       return state;
 
     case "ENTER_ADJUST":
-      return { type: "adjust", plotId: action.plotId };
+      return { type: "adjust", plotId: action.plotId, activeRingIndex: 0 };
+
+    case "ADVANCE_ADJUST_RING":
+      if (state.type === "adjust") {
+        return { ...state, activeRingIndex: state.activeRingIndex + 1 };
+      }
+      return state;
 
     case "ENTER_CREATE":
       return { type: "create", drawingAction: "draw", newPolygon: null };
