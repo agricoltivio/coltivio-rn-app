@@ -1,0 +1,56 @@
+{
+  "onboarding": {
+    "preference": {
+      "heading": "Noch eine letzte Frage",
+      "guided": "Mit Anleitungen",
+      "guided_desc": "Zeig mir Tipps und Anleitungen bei neuen Funktionen.",
+      "explore": "Selber entdecken",
+      "explore_desc": "Ich probiere Dinge lieber selbst aus.",
+      "change_hint": "Du kannst das jederzeit in den Einstellungen ändern."
+    }
+  },
+  "plots": {
+    "split_onboarding": {
+      "extract_heading": "Schlag herauslösen",
+      "extract_body": "Wenn eine Fläche aus mehreren Schlägen besteht, kannst du einen einzelnen Schlag auswählen und herauslösen."
+    }
+  },
+  "crop_rotations": {
+    "plan": {
+      "waiting_time_warning_crop": "Wartezeit nicht eingehalten: {{crop}} ({{waitingTime}} Jahre)",
+      "waiting_time_warning_family": "Wartezeit der Familie {{family}} nicht eingehalten ({{waitingTime}} Jahre)"
+    }
+  },
+  "animals": {
+    "batch_edit": {
+      "select_animals_title": "Tiere zum Bearbeiten auswählen",
+      "select_action_title": "Bearbeitung auswählen",
+      "action_set_type": "Tierart setzen",
+      "action_set_death": "Tod erfassen",
+      "action_set_registered": "Als gemeldet markieren",
+      "action_set_usage": "Nutzung setzen",
+      "action_delete": "Löschen",
+      "update_n_animals": "{{count}} Tiere aktualisieren",
+      "delete_n_animals": "{{count}} Tiere löschen",
+      "select_action": "Aktion auswählen"
+    }
+  },
+  "speed_dial": {
+    "harvest": "Ernte hinzufügen",
+    "tillage": "Bodenbearbeitung hinzufügen",
+    "crop_protection": "Pflanzenschutz hinzufügen",
+    "fertilizer_application": "Düngung hinzufügen",
+    "crop_rotation": "Fruchtfolge hinzufügen",
+    "new_animal": "Tier hinzufügen",
+    "treatment": "Behandlung hinzufügen",
+    "title": "Schnellzugriff",
+    "active_actions": "Aktive Aktionen (max. 4)",
+    "available_actions": "Verfügbare Aktionen",
+    "onboarding": {
+      "welcome_heading": "Schnellzugriff",
+      "welcome_body": "Mit dem Schnellzugriff kannst du bis zu 4 Aktionen direkt von der Startseite aus starten.",
+      "settings_hint": "Du kannst die Aktionen jederzeit in den Einstellungen anpassen oder ganz deaktivieren.",
+      "configure_heading": "Aktionen konfigurieren"
+    }
+  }
+}

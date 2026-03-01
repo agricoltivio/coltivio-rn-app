@@ -16,6 +16,8 @@ import { PlotsMapScreen } from "../map/PlotsMapScreen";
 import { PlotTillagesScreen } from "../PlotTillagesScreen";
 import { PlotsMapOnboardingScreen } from "../PlotsMapOnboardingScreen";
 import { SplitPlotOnboardingScreen } from "../SplitPlotOnboardingScreen";
+import { MergePlotsOnboardingScreen } from "../MergePlotsOnboardingScreen";
+import { AdjustPlotOnboardingScreen } from "../AdjustPlotOnboardingScreen";
 import { SplitPlotSummaryScreen } from "../SplitPlotSummaryScreen";
 import { PlotListScreen } from "../map/PlotListScreen";
 
@@ -24,10 +26,10 @@ const closeHeaderRight = (
   navigation: Omit<NavigationProp<RootStackParamList>, "getState">,
 ) => () => (
   <Pressable
-    style={{ justifyContent: "center", alignItems: "center", bottom: 2 }}
+    style={{ paddingHorizontal: 8, paddingVertical: 4 }}
     onPress={() => navigation.goBack()}
   >
-    <Ionicons name="close" size={40} color={theme.colors.primary} />
+    <Ionicons name="close" size={28} color={theme.colors.primary} />
   </Pressable>
 );
 
@@ -160,6 +162,26 @@ export function renderPlotsStack(
       key="split-plot-onboarding"
       name="SplitPlotOnboarding"
       component={SplitPlotOnboardingScreen}
+      options={{
+        title: "",
+        presentation: "modal",
+        headerShown: false,
+      }}
+    />,
+    <Stack.Screen
+      key="merge-plots-onboarding"
+      name="MergePlotsOnboarding"
+      component={MergePlotsOnboardingScreen}
+      options={{
+        title: "",
+        presentation: "modal",
+        headerShown: false,
+      }}
+    />,
+    <Stack.Screen
+      key="adjust-plot-onboarding"
+      name="AdjustPlotOnboarding"
+      component={AdjustPlotOnboardingScreen}
       options={{
         title: "",
         presentation: "modal",

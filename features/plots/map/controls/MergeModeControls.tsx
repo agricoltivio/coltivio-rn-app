@@ -44,7 +44,7 @@ export function MergeModeControls() {
         color="black"
         iconSize={30}
         icon="information-outline"
-        onPress={() => navigation.navigate("PlotsMapOnboarding")}
+        onPress={() => navigation.navigate("MergePlotsOnboarding")}
       />
     </MapControls>
   );

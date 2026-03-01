@@ -6,7 +6,7 @@ import { useTheme } from "styled-components/native";
 import { IconBadge } from "../onboarding/IconBadge";
 import { OnboardingScreen } from "../onboarding/OnboardingScreen";
 import { useLocalSettings } from "../user/LocalSettingsContext";
-import { SplitPlotOnboardingScreenProps } from "./navigation/plots-routes";
+import { useNavigation } from "@react-navigation/native";
 
 function ActionRow({
   icon,
@@ -46,90 +46,51 @@ function ActionRow({
   );
 }
 
-export function SplitPlotOnboardingScreen({
-  navigation,
-}: SplitPlotOnboardingScreenProps) {
+export function AdjustPlotOnboardingScreen() {
   const theme = useTheme();
   const { t } = useTranslation();
   const { updateLocalSettings } = useLocalSettings();
+  const navigation = useNavigation();
 
   function handleFinish() {
-    updateLocalSettings("splitPlotOnboardingCompleted", true);
+    updateLocalSettings("editPlotOnboardingCompleted", true);
     navigation.goBack();
   }
 
   const steps = [
     <View key="welcome" style={{ alignItems: "center" }}>
       <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
-        {t("plots.split_onboarding.welcome_heading")}
+        {t("plots.adjust_onboarding.welcome_heading")}
       </H1>
-      <H3
-        style={{
-          color: theme.colors.primary,
-          marginTop: theme.spacing.s,
-          textAlign: "center",
-        }}
-      >
-        {t("plots.split_onboarding.welcome_body")}
-      </H3>
-    </View>,
-    <View key="line" style={{ alignItems: "center" }}>
-      <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
-        {t("plots.split_onboarding.line_heading")}
-      </H1>
-      <IconBadge name="vector-polyline-plus" />
-      <H3
-        style={{
-          color: theme.colors.primary,
-          textAlign: "center",
-        }}
-      >
-        {t("plots.split_onboarding.line_body")}
-      </H3>
-    </View>,
-    <View key="area" style={{ alignItems: "center" }}>
-      <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
-        {t("plots.split_onboarding.area_heading")}
-      </H1>
-      <IconBadge name="vector-polygon" />
-      <H3
-        style={{
-          color: theme.colors.primary,
-          textAlign: "center",
-        }}
-      >
-        {t("plots.split_onboarding.area_body")}
-      </H3>
-    </View>,
-    <View key="extract" style={{ alignItems: "center" }}>
-      <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
-        {t("plots.split_onboarding.extract_heading")}
-      </H1>
-      <IconBadge name="vector-difference-ba" />
-      <H3
-        style={{
-          color: theme.colors.primary,
-          textAlign: "center",
-        }}
-      >
-        {t("plots.split_onboarding.extract_body")}
+      <IconBadge name="square-edit-outline" />
+      <H3 style={{ color: theme.colors.primary, textAlign: "center" }}>
+        {t("plots.adjust_onboarding.welcome_body")}
       </H3>
     </View>,
     <View key="actions" style={{ alignItems: "center", width: "100%" }}>
       <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
-        {t("plots.split_onboarding.actions_heading")}
+        {t("plots.adjust_onboarding.actions_heading")}
       </H1>
       <View style={{ width: "100%", marginTop: theme.spacing.m, gap: theme.spacing.xs }}>
         <ActionRow
           icon="check-circle-outline"
           color="green"
-          label={t("plots.split_onboarding.confirm_body")}
+          label={t("plots.adjust_onboarding.confirm_body")}
         />
         <ActionRow
           icon="close-circle-outline"
-          label={t("plots.split_onboarding.abort_body")}
+          label={t("plots.adjust_onboarding.abort_body")}
         />
       </View>
+      <H3
+        style={{
+          color: theme.colors.primary,
+          marginTop: theme.spacing.m,
+          textAlign: "center",
+        }}
+      >
+        {t("plots.adjust_onboarding.overlap_body")}
+      </H3>
     </View>,
   ];
 

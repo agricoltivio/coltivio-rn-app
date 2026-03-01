@@ -22,6 +22,8 @@ export type PlotsStackParamList = {
   PlotsMapOnboarding: undefined;
   AddPlotOnboarding: { variant: "draw" | "parcel" };
   SplitPlotOnboarding: undefined;
+  MergePlotsOnboarding: undefined;
+  AdjustPlotOnboarding: undefined;
   SplitPlotSummary: { plotId: string };
   MergePlotSummary: { plotIds: string[]; primaryPlotId: string };
   PlotList: undefined;

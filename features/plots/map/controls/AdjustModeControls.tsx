@@ -42,7 +42,7 @@ export function AdjustModeControls({
         color="black"
         iconSize={30}
         icon="information-outline"
-        onPress={() => navigation.navigate("MapDrawOnboarding", { variant: "edit" })}
+        onPress={() => navigation.navigate("AdjustPlotOnboarding")}
       />
     </MapControls>
   );

@@ -352,7 +352,10 @@
       "area_heading": "Fläche ausschneiden",
       "area_body": "Zeichne ein Polygon innerhalb des Schlags, um eine neue Fläche auszuschneiden. Dies ist nützlich, wenn du einen bestimmten Bereich abtrennen möchtest.",
       "extract_heading": "Schlag herauslösen",
-      "extract_body": "Wenn eine Fläche aus mehreren Schlägen besteht, kannst du einen einzelnen Schlag auswählen und herauslösen."
+      "extract_body": "Wenn eine Fläche aus mehreren Schlägen besteht, kannst du einen einzelnen Schlag auswählen und herauslösen.",
+      "actions_heading": "Fertig & Abbrechen",
+      "confirm_body": "Drücke das Häkchen, wenn du mit der Aufteilung zufrieden bist, um fortzufahren.",
+      "abort_body": "Drücke das X, um abzubrechen und die Aufteilung zu verwerfen."
     },
     "split": {
       "heading": "Schlag aufteilen",
@@ -392,7 +395,10 @@
       "welcome_heading": "Schläge zusammenführen",
       "welcome_body": "Wähle die Schläge aus, die zusammengeführt werden sollen. Der aktive Schlag ist bereits ausgewählt.",
       "confirm_heading": "Bestätigen",
-      "confirm_body": "Drücke das Bestätigungs-Symbol, wenn mindestens 2 Schläge ausgewählt sind."
+      "confirm_body": "Drücke das Bestätigungs-Symbol, wenn mindestens 2 Schläge ausgewählt sind.",
+      "actions_heading": "Fertig & Abbrechen",
+      "confirm_action_body": "Drücke das Bestätigungs-Symbol, wenn mindestens 2 Schläge ausgewählt sind.",
+      "abort_body": "Drücke das X, um abzubrechen und ohne Zusammenführen zurückzukehren."
     },
     "map_onboarding": {
       "browse_heading": "Deine Schläge",
@@ -568,6 +574,14 @@
       "950": "Ackerschonstreifen",
       "951": "Getreide in weiter Reihen",
       "998": "Übrige Flächen ausserhalb der LN und SF"
+    },
+    "adjust_onboarding": {
+      "welcome_heading": "Schlag bearbeiten",
+      "welcome_body": "Ziehe die Eckpunkte, um die Form des Schlags anzupassen. Füge neue Punkte hinzu, indem du einen Mittelpunkt zwischen zwei Ecken ziehst.",
+      "actions_heading": "Fertig & Abbrechen",
+      "confirm_body": "Drücke das Häkchen, um die neue Form zu speichern.",
+      "abort_body": "Drücke das X, um abzubrechen und alle Änderungen zu verwerfen.",
+      "overlap_body": "Wenn der angepasste Schlag bestehende Schläge überschneidet, werden diese automatisch angepasst."
     }
   },
   "farm_equipment": {
@@ -944,7 +958,9 @@
     "crop_rotation_welcome_body": "Wähle die Schläge aus, für die du Fruchtfolgen planen möchtest.",
     "plots_map_welcome_heading": "Deine Schläge",
     "plots_map_tap_body": "Tippe auf einen Schlag, um Details zu sehen.",
-    "plots_map_add_body": "Drücke diesen Button, um neue Schläge hinzuzufügen."
+    "plots_map_add_body": "Drücke diesen Button, um neue Schläge hinzuzufügen.",
+    "welcome_body_create": "Du befindest dich jetzt im Zeichenmodus. Tippe auf die Karte, um die Eckpunkte deines neuen Schlags zu setzen.",
+    "actions_heading": "Fertig & Abbrechen"
   },
   "animals": {
     "animals": "Tiere",

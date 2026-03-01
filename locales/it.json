@@ -244,6 +244,14 @@
       "edit_plots_info": "Puoi modificare le tue superfici in qualsiasi momento sotto 'Appezzamenti' o tramite la mappa.",
       "press_save_to_finish": "Premi Salva per creare la tua azienda agricola.",
       "no_federal_farm_id": "Purtroppo non siamo riusciti ad aggiungere automaticamente le tue superfici. Puoi aggiungerle manualmente sotto 'Appezzamenti' o tramite la mappa. Stiamo lavorando per supportare tutte le località il prima possibile."
+    },
+    "preference": {
+      "heading": "Un'ultima domanda",
+      "guided": "Con guide",
+      "guided_desc": "Mostrami suggerimenti e guide per le nuove funzionalità.",
+      "explore": "Esploro da solo",
+      "explore_desc": "Preferisco provare le cose da solo.",
+      "change_hint": "Puoi modificarlo in qualsiasi momento nelle impostazioni."
     }
   },
   "users": {
@@ -342,7 +350,12 @@
       "line_heading": "Disegna una linea",
       "line_body": "Disegna una linea attraverso il campo per dividerlo in due parti. Tocca la mappa per impostare i punti e conferma con il simbolo di taglio.",
       "area_heading": "Ritaglia un'area",
-      "area_body": "Disegna un poligono all'interno del campo per ritagliare una nuova area. Questo è utile se vuoi separare una zona specifica."
+      "area_body": "Disegna un poligono all'interno del campo per ritagliare una nuova area. Questo è utile se vuoi separare una zona specifica.",
+      "actions_heading": "Fine & Annulla",
+      "confirm_body": "Premi il segno di spunta quando sei soddisfatto della divisione per continuare.",
+      "abort_body": "Premi la X per annullare e scartare la divisione.",
+      "extract_heading": "Estrai appezzamento",
+      "extract_body": "Se un'area è composta da più poligoni, puoi selezionarne uno ed estrarlo."
     },
     "split": {
       "heading": "Dividi il campo",
@@ -382,7 +395,10 @@
       "welcome_heading": "Unisci appezzamenti",
       "welcome_body": "Seleziona gli appezzamenti che vuoi unire. L'appezzamento attivo è già selezionato.",
       "confirm_heading": "Conferma",
-      "confirm_body": "Premi l'icona di conferma quando sono selezionati almeno 2 appezzamenti."
+      "confirm_body": "Premi l'icona di conferma quando sono selezionati almeno 2 appezzamenti.",
+      "actions_heading": "Fine & Annulla",
+      "confirm_action_body": "Premi l'icona di conferma quando sono selezionati almeno 2 appezzamenti.",
+      "abort_body": "Premi la X per annullare e tornare senza unire."
     },
     "map_onboarding": {
       "browse_heading": "I tuoi appezzamenti",
@@ -558,6 +574,14 @@
       "950": "Fasce di rispetto sui seminativi",
       "951": "Cereali a file larghe",
       "998": "Altre superfici fuori dall'azienda agricola e dai pascoli d'alpeggio"
+    },
+    "adjust_onboarding": {
+      "welcome_heading": "Modifica appezzamento",
+      "welcome_body": "Trascina i punti angolari per ridisegnare l'appezzamento. Aggiungi nuovi punti trascinando un punto medio tra due angoli.",
+      "actions_heading": "Fine & Annulla",
+      "confirm_body": "Premi il segno di spunta per salvare la nuova forma.",
+      "abort_body": "Premi la X per annullare e scartare tutte le modifiche.",
+      "overlap_body": "Se l'appezzamento modificato si sovrappone ad altri, verranno automaticamente ridimensionati."
     }
   },
   "farm_equipment": {
@@ -860,7 +884,9 @@
       "resolve_conflicts_warning": "Risolvi i conflitti di date prima di salvare",
       "repeats_every_year": "Si ripete ogni anno",
       "repeats_every_years": "Si ripete ogni {{count}} anni",
-      "until_date": "fino al {{date}}"
+      "until_date": "fino al {{date}}",
+      "waiting_time_warning_crop": "Tempo di attesa non rispettato: {{crop}} ({{waitingTime}} anni)",
+      "waiting_time_warning_family": "Tempo di attesa della famiglia {{family}} non rispettato ({{waitingTime}} anni)"
     },
     "timeline": {
       "today": "Oggi",
@@ -932,7 +958,9 @@
     "crop_rotation_welcome_body": "Seleziona i campi per i quali vuoi pianificare le rotazioni colturali.",
     "plots_map_welcome_heading": "I tuoi campi",
     "plots_map_tap_body": "Tocca un campo per vedere i dettagli.",
-    "plots_map_add_body": "Premi questo pulsante per aggiungere nuovi campi."
+    "plots_map_add_body": "Premi questo pulsante per aggiungere nuovi campi.",
+    "welcome_body_create": "Sei ora in modalità disegno. Tocca la mappa per impostare i punti angolari del tuo nuovo appezzamento.",
+    "actions_heading": "Fine & Annulla"
   },
   "animals": {
     "animals": "Animali",
@@ -1061,6 +1089,18 @@
       "skipped_message": "{{count}} animali sono stati ignorati.",
       "onboarding_heading": "Importa animali dalla TVD",
       "onboarding_body": "Per l'importazione è necessario un file Excel dalla sezione «Tierbestand» della TVD. Esportalo tramite il pulsante «Excel generieren»."
+    },
+    "batch_edit": {
+      "select_animals_title": "Seleziona animali da modificare",
+      "select_action_title": "Seleziona l'azione",
+      "action_set_type": "Imposta tipo di animale",
+      "action_set_death": "Registra decesso",
+      "action_set_registered": "Segna come registrato",
+      "action_set_usage": "Imposta l'utilizzo",
+      "action_delete": "Elimina",
+      "update_n_animals": "Aggiorna {{count}} animali",
+      "delete_n_animals": "Elimina {{count}} animali",
+      "select_action": "Seleziona l'azione"
     }
   },
   "drugs": {
@@ -1147,6 +1187,24 @@
         "title": "Localizzazione disattivata!",
         "message": "Abbiamo bisogno della tua posizione per visualizzarla sulla mappa."
       }
+    }
+  },
+  "speed_dial": {
+    "harvest": "Aggiungi raccolto",
+    "tillage": "Aggiungi lavorazione del suolo",
+    "crop_protection": "Aggiungi protezione fitosanitaria",
+    "fertilizer_application": "Aggiungi fertilizzazione",
+    "crop_rotation": "Aggiungi rotazione",
+    "new_animal": "Aggiungi animale",
+    "treatment": "Aggiungi trattamento",
+    "title": "Accesso rapido",
+    "active_actions": "Azioni attive (max. 4)",
+    "available_actions": "Azioni disponibili",
+    "onboarding": {
+      "welcome_heading": "Accesso rapido",
+      "welcome_body": "Con l'accesso rapido puoi avviare fino a 4 azioni direttamente dalla schermata principale.",
+      "settings_hint": "Puoi regolare le azioni o disattivare l'accesso rapido in qualsiasi momento nelle impostazioni.",
+      "configure_heading": "Configura le azioni"
     }
   }
 }

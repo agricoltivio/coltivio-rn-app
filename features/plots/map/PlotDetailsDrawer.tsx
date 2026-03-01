@@ -44,15 +44,24 @@ export function PlotDetailsDrawer() {
     if (index >= 0) setSheetIndex(index);
   }, []);
 
-  // Show/hide drawer based on selection
+  // Show/hide drawer based on selection.
+  // selectedPlot?.id is included as a dependency because after split/merge/create the new
+  // plotId is selected before the query has refetched — selectedPlot is briefly undefined,
+  // which would dismiss the drawer. Re-running when the plot data arrives ensures present()
+  // is called once the plot is actually in the cache.
+  // RAF defers present() by one frame so a freshly-remounted BottomSheetModal (was null
+  // while in split/merge/adjust/create mode) has time to initialize.
   useEffect(() => {
     if (selectedPlot) {
-      handleExpandBottomDrawer();
-      bottomSheetModalRef.current?.snapToIndex(0);
+      const raf = requestAnimationFrame(() => {
+        bottomSheetModalRef.current?.present();
+        bottomSheetModalRef.current?.snapToIndex(0);
+      });
+      return () => cancelAnimationFrame(raf);
     } else {
       bottomSheetModalRef.current?.dismiss();
     }
-  }, [selectedPlotId]);
+  }, [selectedPlot?.id]);
 
   // Don't render in non-view modes
   if (mode.type !== "view") return null;

@@ -86,7 +86,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
     const raf = requestAnimationFrame(() => {
       setMapVisible(true);
       if (!localSettings.plotsMapOnboardingCompleted) {
-        navigation.navigate("MapDrawOnboarding", { variant: "plotsMap" });
+        navigation.navigate("PlotsMapOnboarding");
       }
     });
     return () => cancelAnimationFrame(raf);
@@ -96,6 +96,32 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
   useEffect(() => {
     if (mode.type !== "view") {
       suppressFlyToRef.current = true;
+    }
+  }, [mode.type]);
+
+  // Auto-show the relevant onboarding the first time each tool is used
+  useEffect(() => {
+    switch (mode.type) {
+      case "split":
+        if (!localSettings.splitPlotOnboardingCompleted) {
+          navigation.navigate("SplitPlotOnboarding");
+        }
+        break;
+      case "merge":
+        if (!localSettings.mergePlotsOnboardingCompleted) {
+          navigation.navigate("MergePlotsOnboarding");
+        }
+        break;
+      case "adjust":
+        if (!localSettings.editPlotOnboardingCompleted) {
+          navigation.navigate("AdjustPlotOnboarding");
+        }
+        break;
+      case "create":
+        if (!localSettings.addPlotDrawOnboardingCompleted) {
+          navigation.navigate("MapDrawOnboarding", { variant: "create" });
+        }
+        break;
     }
   }, [mode.type]);
 

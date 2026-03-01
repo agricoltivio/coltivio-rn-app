@@ -1,16 +1,11 @@
-import { Button } from "@/components/buttons/Button";
 import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
-import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { MapControls } from "@/features/map/overlays/MapControls";
 import React from "react";
-import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { usePlotsMapContext } from "../plots-map-mode";
 import { useAddPlotStore } from "../../add-plots.store";
 
 export function CreateModeControls() {
-  const { t } = useTranslation();
   const theme = useTheme();
   const { mode, dispatch, drawingRef, navigation } = usePlotsMapContext();
   const addPlotStore = useAddPlotStore();
@@ -50,7 +45,7 @@ export function CreateModeControls() {
           icon="undo"
           onPress={() => drawingRef.current?.undo()}
         />
-        {/* Confirm — disabled until polygon is closed and editable */}
+        {/* Confirm — disabled until polygon is closed and editable; skips select mode */}
         <MaterialCommunityIconButton
           type="accent"
           color={drawingAction === "edit" && newPolygon ? "green" : "gray"}
@@ -58,7 +53,10 @@ export function CreateModeControls() {
           icon="check-circle-outline"
           disabled={!(drawingAction === "edit" && newPolygon)}
           onPress={() => {
-            dispatch({ type: "SET_CREATE_ACTION", action: "select" });
+            if (newPolygon) {
+              addPlotStore.setData(newPolygon);
+              navigation.navigate("AddPlotSummary", {});
+            }
           }}
         />
         {/* Info */}
@@ -68,39 +66,11 @@ export function CreateModeControls() {
           color="black"
           iconSize={30}
           icon="information-outline"
-          onPress={() => navigation.navigate("MapDrawOnboarding", { variant: "draw" })}
+          onPress={() => navigation.navigate("MapDrawOnboarding", { variant: "create" })}
         />
       </MapControls>
     );
   }
 
-  // Select mode — bottom action buttons
-  return (
-    <BottomActionContainer floating>
-      <View style={{ flexDirection: "row", gap: theme.spacing.s }}>
-        <Button
-          style={{ flex: 1 }}
-          type="danger"
-          title={t("buttons.cancel")}
-          fontSize={16}
-          onPress={() => {
-            addPlotStore.reset();
-            dispatch({ type: "EXIT_MODE" });
-          }}
-        />
-        <Button
-          style={{ flex: 1 }}
-          disabled={!newPolygon}
-          title={t("buttons.next")}
-          fontSize={16}
-          onPress={() => {
-            if (newPolygon) {
-              addPlotStore.setData(newPolygon);
-              navigation.navigate("AddPlotSummary", {});
-            }
-          }}
-        />
-      </View>
-    </BottomActionContainer>
-  );
+  return null;
 }
