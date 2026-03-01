@@ -10,7 +10,6 @@ export default ({ config }) => {
     icon: "./assets/images/icon.png",
     scheme: process.env.SCHEME,
     userInterfaceStyle: "automatic",
-    newArchEnabled: true,
     splash: {
       image: "./assets/images/splash-icon.png",
       resizeMode: "contain",
@@ -44,14 +43,13 @@ export default ({ config }) => {
         "android.permission.ACCESS_FINE_LOCATION",
       ],
     },
-    experiments: {
-      typedRoutes: true,
-    },
     plugins: [
       "expo-localization",
       "expo-secure-store",
       "expo-font",
+      "expo-image",
       "expo-location",
+      "expo-sharing",
       "expo-apple-authentication",
       "@react-native-community/datetimepicker",
       "expo-web-browser",
@@ -63,19 +61,19 @@ export default ({ config }) => {
           organization: "agricoltivio",
         },
       ],
-      [
-        "expo-build-properties",
-        {
-          android: {
-            compileSdkVersion: 35,
-            targetSdkVersion: 35,
-            buildToolsVersion: "35.0.0",
-          },
-          // ios: {
-          //   deploymentTarget: "15.1",
-          // },
-        },
-      ],
+      // [
+      //   "expo-build-properties",
+      //   {
+      //     android: {
+      //       compileSdkVersion: 35,
+      //       targetSdkVersion: 35,
+      //       buildToolsVersion: "35.0.0",
+      //     },
+      //     // ios: {
+      //     //   deploymentTarget: "15.1",
+      //     // },
+      //   },
+      // ],
       "@maplibre/maplibre-react-native",
     ],
     extra: {

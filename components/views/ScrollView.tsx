@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import { useRef } from "react";
 import {
   ScrollViewProps as RnScrollViewProps,
   ScrollView as RnScrollView,
@@ -23,19 +23,21 @@ export function ScrollView({
 }: ScrollViewProps) {
   const theme = useTheme();
   const navigation = useNavigation();
-  const [scrolled, setScrolled] = useState(false);
+  // Use a ref to avoid re-rendering this component when scroll threshold changes —
+  // a re-render during keyboard-induced auto-scroll can steal input focus on the simulator.
+  const scrolledRef = useRef(false);
 
-  const handleScroll = (event: any) => {
+  const handleScroll = (event: { nativeEvent: { contentOffset: { y: number } } }) => {
     const offsetY = event.nativeEvent.contentOffset.y;
-    if (offsetY > 50 && !scrolled) {
-      setScrolled(true);
+    if (offsetY > 50 && !scrolledRef.current) {
+      scrolledRef.current = true;
       navigation.setOptions({
         headerStyle: { backgroundColor: "white" },
         headerShadowVisible: true,
         title: headerTitleOnScroll,
       });
-    } else if (offsetY <= 50 && scrolled) {
-      setScrolled(false);
+    } else if (offsetY <= 50 && scrolledRef.current) {
+      scrolledRef.current = false;
       navigation.setOptions({
         headerStyle: { backgroundColor: theme.colors.gray5 },
         headerShadowVisible: false,

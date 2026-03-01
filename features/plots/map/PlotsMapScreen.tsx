@@ -263,11 +263,15 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       ? plots.find((p) => p.id === mode.selectedPlotId)
       : undefined;
 
+  // Plots with size 0 have no geometry and can't be rendered on the map;
+  // they are excluded from the context (map layers) but still shown in the list modal.
+  const mapPlots = useMemo(() => plots.filter((p) => p.size > 0), [plots]);
+
   const contextValue = useMemo(
     () => ({
       mode,
       dispatch,
-      plots,
+      plots: mapPlots,
       mapRef,
       cameraRef,
       navigation,
@@ -277,7 +281,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       baseLayer,
       setBaseLayer,
     }),
-    [mode, dispatch, plots, navigation, controlsExpanded, baseLayer],
+    [mode, dispatch, mapPlots, navigation, controlsExpanded, baseLayer],
   );
 
   return (

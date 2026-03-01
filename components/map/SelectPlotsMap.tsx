@@ -65,7 +65,9 @@ export function SelectPlotsMap({
 }: SelectPlotsMapProps) {
   const theme = useTheme();
   const { farm } = useFarmQuery();
-  const { plots } = useFarmPlotsQuery();
+  const { plots: allPlots } = useFarmPlotsQuery();
+  // Exclude plots with no geometry (size 0) — they can't be rendered or meaningfully selected.
+  const plots = useMemo(() => allPlots?.filter((p) => p.size > 0) ?? null, [allPlots]);
   const [mapVisible, setMapVisible] = useState(false);
   const [showUserLocation, setShowUserLocation] = useState(false);
   const [drawPhase, setDrawPhase] = useState<DrawPhase>("idle");
