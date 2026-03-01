@@ -37,7 +37,7 @@ export function SelectHarvestPlotsScreen({
 
   useEffect(() => {
     if (!localSettings.mapDrawOnboardingCompleted) {
-      navigation.navigate("MapDrawOnboarding");
+      navigation.navigate("SelectPlotsOnboarding");
     }
   }, []);
 
@@ -109,7 +109,7 @@ export function SelectHarvestPlotsScreen({
         onDrawComplete={handleDrawComplete}
         enableDrawing
         portalName="HarvestMap"
-        onNavigateToOnboarding={() => navigation.navigate("MapDrawOnboarding")}
+        onNavigateToOnboarding={() => navigation.navigate("SelectPlotsOnboarding")}
       />
     </ContentView>
   );

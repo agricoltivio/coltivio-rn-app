@@ -35,7 +35,7 @@ export function SelectCropProtectionApplicationPlotsScreen({
 
   useEffect(() => {
     if (!localSettings.mapDrawOnboardingCompleted) {
-      navigation.navigate("MapDrawOnboarding");
+      navigation.navigate("SelectPlotsOnboarding");
     }
   }, []);
 
@@ -117,7 +117,7 @@ export function SelectCropProtectionApplicationPlotsScreen({
         onDrawComplete={handleDrawComplete}
         enableDrawing
         portalName="CropProtectionApplicationMap"
-        onNavigateToOnboarding={() => navigation.navigate("MapDrawOnboarding")}
+        onNavigateToOnboarding={() => navigation.navigate("SelectPlotsOnboarding")}
       />
     </ContentView>
   );

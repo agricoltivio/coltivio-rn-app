@@ -35,7 +35,7 @@ export function SelectFertilizerApplicationPlotsScreen({
 
   useEffect(() => {
     if (!localSettings.mapDrawOnboardingCompleted) {
-      navigation.navigate("MapDrawOnboarding");
+      navigation.navigate("SelectPlotsOnboarding");
     }
   }, []);
 
@@ -118,7 +118,7 @@ export function SelectFertilizerApplicationPlotsScreen({
         onDrawComplete={handleDrawComplete}
         enableDrawing
         portalName="FertilizerApplicationMap"
-        onNavigateToOnboarding={() => navigation.navigate("MapDrawOnboarding")}
+        onNavigateToOnboarding={() => navigation.navigate("SelectPlotsOnboarding")}
       />
     </ContentView>
   );

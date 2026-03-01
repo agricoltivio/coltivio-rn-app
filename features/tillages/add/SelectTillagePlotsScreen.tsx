@@ -21,7 +21,7 @@ export function SelectTillagePlotsScreen({
 
   useEffect(() => {
     if (!localSettings.mapDrawOnboardingCompleted) {
-      navigation.navigate("MapDrawOnboarding");
+      navigation.navigate("SelectPlotsOnboarding");
     }
   }, []);
 
@@ -77,7 +77,7 @@ export function SelectTillagePlotsScreen({
         onDrawComplete={handleDrawComplete}
         enableDrawing
         portalName="AddTillageMap"
-        onNavigateToOnboarding={() => navigation.navigate("MapDrawOnboarding")}
+        onNavigateToOnboarding={() => navigation.navigate("SelectPlotsOnboarding")}
       />
     </ContentView>
   );

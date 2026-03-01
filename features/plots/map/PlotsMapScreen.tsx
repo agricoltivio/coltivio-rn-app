@@ -178,7 +178,9 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       if (!map) return;
 
       const isClosed = drawingRef.current?.isClosed() ?? false;
-      if (!isClosed) return;
+      // Polylines in split mode are never closed but should still allow dragging existing vertices
+      const isSplitPolylineMode = mode.type === "split" && mode.activeToolMode === "polyline";
+      if (!isClosed && !isSplitPolylineMode) return;
 
       const features = await map.queryRenderedFeatures([event.x, event.y], {
         layers: [LAYER_IDS.VERTICES, LAYER_IDS.MIDPOINTS],

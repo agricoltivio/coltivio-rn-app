@@ -26,6 +26,7 @@ import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect, useState } from "react";
 import { useTheme } from "styled-components/native";
 import { MapDrawOnboardingScreen } from "../features/map/MapDrawOnboardingScreen";
+import { SelectPlotsOnboardingScreen } from "../features/map/SelectPlotsOnboardingScreen";
 import { renderOnboardingStack } from "../features/onboarding/navigation/OnboardingStack";
 import { Stack } from "./stack";
 
@@ -115,6 +116,11 @@ export function RootStack() {
           <Stack.Screen
             name="MapDrawOnboarding"
             component={MapDrawOnboardingScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SelectPlotsOnboarding"
+            component={SelectPlotsOnboardingScreen}
             options={{ headerShown: false }}
           />
         </Stack.Group>
