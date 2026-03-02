@@ -1111,6 +1111,7 @@
     "edit_drug": "Edit Drug",
     "drug_name": "Drug Name",
     "received_from": "Received from",
+    "is_antibiotic": "Antibiotic",
     "critical_antibiotic": "Critical Antibiotic",
     "treatment_definitions": "Treatment Definitions",
     "no_treatment_definitions": "No treatment definitions yet",

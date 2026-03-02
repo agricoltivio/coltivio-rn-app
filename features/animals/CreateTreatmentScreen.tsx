@@ -61,6 +61,7 @@ interface TreatmentFormValues {
   drugDoseUnit?: DoseUnit;
   drugDosePerUnit?: DosePerUnit;
   drugReceivedFrom?: string;
+  isAntibiotic: boolean;
   criticalAntibiotic: boolean;
   antibiogramAvailable: boolean;
 }
@@ -86,6 +87,7 @@ export function CreateTreatmentScreen({
     defaultValues: {
       startDate: new Date(),
       endDate: new Date(),
+      isAntibiotic: false,
       criticalAntibiotic: false,
       antibiogramAvailable: false,
     },
@@ -94,9 +96,10 @@ export function CreateTreatmentScreen({
   const selectedDrugId = watch("drugId");
   const treatmentDate = watch("startDate");
 
+  // shouldDirty: true ensures drug-sync effect fires when returning from CreateDrug.
   useEffect(() => {
     if (preselectedDrugId) {
-      setValue("drugId", preselectedDrugId);
+      setValue("drugId", preselectedDrugId, { shouldDirty: true });
     }
   }, [preselectedDrugId, setValue]);
 
@@ -174,34 +177,44 @@ export function CreateTreatmentScreen({
     };
   }, [selectedDrug, selectedAnimals, t]);
 
-  // Auto-calculate usable dates and set dose defaults when drug or date changes
+  // Sync drug-derived fields only when user explicitly changed the drug.
+  // dirtyFields.drugId becomes true only when user interacts with the drug select.
   useEffect(() => {
-    if (
-      drugValidation.valid &&
-      drugValidation.milkDays !== undefined &&
-      treatmentDate
-    ) {
-      setValue(
-        "milkUsableDate",
-        addDays(treatmentDate, drugValidation.milkDays),
-      );
-      setValue(
-        "meatUsableDate",
-        addDays(treatmentDate, drugValidation.meatDays!),
-      );
-      setValue(
-        "organsUsableDate",
-        addDays(treatmentDate, drugValidation.organsDays!),
-      );
-      // Set defaults from drug
-      setValue("drugDoseValue", String(drugValidation.doseValue));
-      setValue("drugDoseUnit", drugValidation.doseUnit);
-      setValue("drugDosePerUnit", drugValidation.dosePerUnit);
-      if (selectedDrug) {
-        setValue("drugReceivedFrom", selectedDrug.receivedFrom);
+    if (!dirtyFields.drugId) return;
+    if (selectedDrug) {
+      setValue("isAntibiotic", selectedDrug.isAntibiotic);
+      setValue("criticalAntibiotic", selectedDrug.criticalAntibiotic);
+      setValue("drugReceivedFrom", selectedDrug.receivedFrom);
+      if (drugValidation.valid && drugValidation.milkDays !== undefined && treatmentDate) {
+        setValue("milkUsableDate", addDays(treatmentDate, drugValidation.milkDays));
+        setValue("meatUsableDate", addDays(treatmentDate, drugValidation.meatDays!));
+        setValue("organsUsableDate", addDays(treatmentDate, drugValidation.organsDays!));
+        setValue("drugDoseValue", String(drugValidation.doseValue));
+        setValue("drugDoseUnit", drugValidation.doseUnit);
+        setValue("drugDosePerUnit", drugValidation.dosePerUnit);
       }
+    } else {
+      setValue("isAntibiotic", false);
+      setValue("criticalAntibiotic", false);
+      setValue("drugReceivedFrom", undefined);
+      setValue("milkUsableDate", undefined);
+      setValue("meatUsableDate", undefined);
+      setValue("organsUsableDate", undefined);
+      setValue("drugDoseValue", undefined);
+      setValue("drugDoseUnit", undefined);
+      setValue("drugDosePerUnit", undefined);
     }
-  }, [drugValidation, treatmentDate, setValue]);
+  }, [selectedDrugId, selectedDrug, dirtyFields.drugId, drugValidation, treatmentDate, setValue]);
+
+  // Recalculate waiting dates when start date changes.
+  // Dose fields intentionally excluded so user overrides survive date changes.
+  useEffect(() => {
+    if (drugValidation.valid && drugValidation.milkDays !== undefined && treatmentDate) {
+      setValue("milkUsableDate", addDays(treatmentDate, drugValidation.milkDays));
+      setValue("meatUsableDate", addDays(treatmentDate, drugValidation.meatDays!));
+      setValue("organsUsableDate", addDays(treatmentDate, drugValidation.organsDays!));
+    }
+  }, [treatmentDate, drugValidation, setValue]);
 
   const createTreatmentMutation = useCreateTreatmentMutation(
     () => navigation.goBack(),
@@ -223,6 +236,7 @@ export function CreateTreatmentScreen({
       drugDoseUnit: data.drugDoseUnit ?? null,
       drugDosePerUnit: data.drugDosePerUnit ?? null,
       drugReceivedFrom: data.drugReceivedFrom || null,
+      isAntibiotic: data.isAntibiotic,
       criticalAntibiotic: data.criticalAntibiotic,
       antibiogramAvailable: data.antibiogramAvailable,
     });
@@ -489,6 +503,13 @@ export function CreateTreatmentScreen({
             label={t("treatments.organs_usable_date")}
             mode="date"
             error={errors.organsUsableDate?.message}
+          />
+
+          <RHSwitch
+            style={{ marginVertical: theme.spacing.m }}
+            label={t("drugs.is_antibiotic")}
+            control={control}
+            name="isAntibiotic"
           />
 
           <RHSwitch

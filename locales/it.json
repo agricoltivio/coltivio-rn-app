@@ -1111,6 +1111,7 @@
     "edit_drug": "Modifica medicinale",
     "drug_name": "Nome del medicinale",
     "received_from": "Ricevuto da",
+    "is_antibiotic": "Antibiotico",
     "critical_antibiotic": "Antibiotico critico",
     "treatment_definitions": "Definizioni di trattamento",
     "no_treatment_definitions": "Ancora nessuna definizione di trattamento",

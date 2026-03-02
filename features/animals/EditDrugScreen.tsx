@@ -55,6 +55,7 @@ interface TreatmentDefFormValues {
 interface DrugFormValues {
   name: string;
   notes?: string;
+  isAntibiotic: boolean;
   criticalAntibiotic: boolean;
   receivedFrom: string;
   drugTreatment: TreatmentDefFormValues[];
@@ -100,6 +101,7 @@ export function EditDrugScreen({ route, navigation }: EditDrugScreenProps) {
       ? {
           name: drug.name,
           notes: drug.notes || undefined,
+          isAntibiotic: drug.isAntibiotic,
           criticalAntibiotic: drug.criticalAntibiotic,
           receivedFrom: drug.receivedFrom,
           drugTreatment: drug.drugTreatment.map((def) => ({
@@ -158,6 +160,8 @@ export function EditDrugScreen({ route, navigation }: EditDrugScreenProps) {
       id: drugId!,
       name: data.name,
       notes: data.notes,
+      isAntibiotic: data.isAntibiotic,
+      criticalAntibiotic: data.criticalAntibiotic,
       drugTreatment,
     });
   }
@@ -182,6 +186,7 @@ export function EditDrugScreen({ route, navigation }: EditDrugScreenProps) {
   }
 
   const nameValue = watch("name");
+  const treatmentsChanged = fields.length !== drug.drugTreatment.length;
   const isValid =
     nameValue?.length > 0 &&
     (watchedTreatments ?? []).every(
@@ -233,7 +238,7 @@ export function EditDrugScreen({ route, navigation }: EditDrugScreenProps) {
               title={t("buttons.save")}
               onPress={handleSubmit(onSubmit)}
               disabled={
-                !isDirty ||
+                (!isDirty && !treatmentsChanged) ||
                 !isValid ||
                 updateDrugMutation.isPending ||
                 deleteDrugMutation.isPending
@@ -276,6 +281,12 @@ export function EditDrugScreen({ route, navigation }: EditDrugScreenProps) {
               },
             }}
             error={errors.receivedFrom?.message}
+          />
+
+          <RHSwitch
+            label={t("drugs.is_antibiotic")}
+            control={control}
+            name="isAntibiotic"
           />
 
           <RHSwitch

@@ -141,7 +141,7 @@ export function Select({
                 alignItems: "center",
               }}
             >
-              <H2>{label || t("forms.labels.please_select")}</H2>
+              <H2 style={{ flex: 1, marginRight: theme.spacing.s }} numberOfLines={1} adjustsFontSizeToFit>{label || t("forms.labels.please_select")}</H2>
               <IonIconButton
                 icon="close"
                 color="black"

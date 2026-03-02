@@ -41,6 +41,7 @@ interface TreatmentDefFormValues {
 interface DrugFormValues {
   name: string;
   notes?: string;
+  isAntibiotic: boolean;
   criticalAntibiotic: boolean;
   receivedFrom: string;
   drugTreatment: TreatmentDefFormValues[];
@@ -85,6 +86,7 @@ export function CreateDrugScreen({ route, navigation }: CreateDrugScreenProps) {
     defaultValues: {
       name: "",
       notes: "",
+      isAntibiotic: false,
       criticalAntibiotic: false,
       receivedFrom: "",
       drugTreatment: [],
@@ -146,6 +148,7 @@ export function CreateDrugScreen({ route, navigation }: CreateDrugScreenProps) {
     createDrugMutation.mutate({
       name: data.name,
       notes: data.notes,
+      isAntibiotic: data.isAntibiotic,
       criticalAntibiotic: data.criticalAntibiotic,
       receivedFrom: data.receivedFrom,
       drugTreatment,
@@ -222,6 +225,12 @@ export function CreateDrugScreen({ route, navigation }: CreateDrugScreenProps) {
               },
             }}
             error={errors.receivedFrom?.message}
+          />
+
+          <RHSwitch
+            label={t("drugs.is_antibiotic")}
+            control={control}
+            name="isAntibiotic"
           />
 
           <RHSwitch
