@@ -19,10 +19,10 @@ import i18n from "./locales/i18n";
 import { RootStack } from "./navigation/RootStack";
 import "./theme/theme";
 
+import { StatusBar } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { LocalSettingsProvider } from "./features/user/LocalSettingsContext";
 import { KeyboardProvider } from "react-native-keyboard-controller";
-import { StatusBar } from "react-native";
 import * as Sentry from "@sentry/react-native";
 import { UrlProvider } from "./utils/url-context";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
