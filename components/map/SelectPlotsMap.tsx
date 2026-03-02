@@ -4,6 +4,7 @@ import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
 import { HomeMarkerLayer } from "@/components/map/HomeMarkerLayer";
 import { MapLibreMap, type BaseLayer } from "@/components/map/MapLibreMap";
 import { PlotsLayer } from "@/components/map/PlotsLayer";
+import { PlotListModal } from "@/features/plots/map/PlotListModal";
 import {
   DrawingOverlay,
   DrawingOverlayRef,
@@ -13,11 +14,12 @@ import { LabelLayer } from "@/components/map/LabelLayer";
 import { MapLayerToggle } from "@/features/map/MapLayerToggle";
 import { MapShowLocationToggle } from "@/features/map/MapShowLocationToggle";
 import { TopLeftBackButton } from "@/features/map/TopLeftBackButton";
+import { IonIconButton } from "@/components/buttons/IconButton";
 import { GeoSpatials, type LngLat } from "@/utils/geo-spatials";
 import { hexToRgba } from "@/theme/theme";
 import { round } from "@/utils/math";
 import { PortalHost } from "@gorhom/portal";
-import { type MapRef } from "@maplibre/maplibre-react-native";
+import { type CameraRef, type MapRef } from "@maplibre/maplibre-react-native";
 import {
   GeoJSONSource,
   Layer,
@@ -29,6 +31,7 @@ import { Portal } from "@gorhom/portal";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 
 type SelectedPlotArea = {
@@ -64,6 +67,7 @@ export function SelectPlotsMap({
   children,
 }: SelectPlotsMapProps) {
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
   const { farm } = useFarmQuery();
   const { plots: allPlots } = useFarmPlotsQuery();
   // Exclude plots with no geometry (size 0) — they can't be rendered or meaningfully selected.
@@ -73,8 +77,10 @@ export function SelectPlotsMap({
   const [drawPhase, setDrawPhase] = useState<DrawPhase>("idle");
   const [dragPanEnabled, setDragPanEnabled] = useState(true);
   const [baseLayer, setBaseLayer] = useState<BaseLayer>("satellite");
+  const [plotListVisible, setPlotListVisible] = useState(false);
 
   const mapRef = useRef<MapRef>(null);
+  const cameraRef = useRef<CameraRef>(null);
   const drawingRef = useRef<DrawingOverlayRef>(null);
   const dragState = useRef<{ index: number } | null>(null);
 
@@ -232,6 +238,7 @@ export function SelectPlotsMap({
         <View collapsable={false} style={{ flex: 1 }}>
         <MapLibreMap
           ref={mapRef}
+          cameraRef={cameraRef}
           loading={!mapVisible}
           initialCenter={farmCenter}
           initialZoom={16}
@@ -284,6 +291,24 @@ export function SelectPlotsMap({
       <MapLayerToggle baseLayer={baseLayer} onToggle={setBaseLayer} />
       <MapShowLocationToggle onShowLocationChange={setShowUserLocation} />
       <TopLeftBackButton />
+
+      {/* Plot list button */}
+      <View
+        style={{
+          position: "absolute",
+          left: theme.spacing.m,
+          top: insets.top + theme.spacing.s + 100,
+        }}
+      >
+        <IonIconButton
+          type="accent"
+          color={theme.colors.black}
+          iconSize={30}
+          onPress={() => setPlotListVisible(true)}
+          icon="list"
+        />
+      </View>
+
       <PortalHost name={portalName} />
 
       {/* Drawing controls via Portal */}
@@ -344,6 +369,14 @@ export function SelectPlotsMap({
           </MapControls>
         </Portal>
       )}
+
+      <PlotListModal
+        visible={plotListVisible}
+        onClose={() => setPlotListVisible(false)}
+        plots={plots ?? []}
+        onSelectPlot={onTogglePlot}
+        cameraRef={cameraRef}
+      />
 
       {children}
     </View>
