@@ -1,7 +1,7 @@
 import { RootStackParamList } from "@/navigation/rootStackTypes";
 import { Stack } from "@/navigation/stack";
 import { NavigationProp } from "@react-navigation/native";
-import { Pressable } from "react-native";
+import { Platform, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { DefaultTheme } from "styled-components/native";
 import { AddPlotSummaryScreen } from "../AddPlotSummaryScreen";
@@ -26,7 +26,11 @@ const closeHeaderRight = (
   navigation: Omit<NavigationProp<RootStackParamList>, "getState">,
 ) => () => (
   <Pressable
-    style={{ paddingHorizontal: 8, paddingVertical: 4 }}
+    style={{
+      paddingHorizontal: 8,
+      paddingTop: Platform.OS === "android" ? theme.spacing.m : 4,
+      paddingBottom: 4,
+    }}
     onPress={() => navigation.goBack()}
   >
     <Ionicons name="close" size={28} color={theme.colors.primary} />

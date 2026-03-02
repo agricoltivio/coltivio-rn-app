@@ -6,7 +6,6 @@ import { SelectPlotsMap } from "@/components/map/SelectPlotsMap";
 import { round } from "@/utils/math";
 import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useTheme } from "styled-components/native";
 import { useFarmPlotsQuery } from "../../plots/plots.hooks";
 import { useLocalSettings } from "../../user/LocalSettingsContext";
 import { SelectHarvestPlotsScreenProps } from "../navigation/harvest-routes";
@@ -64,7 +63,13 @@ export function SelectHarvestPlotsScreen({
   );
 
   const handleDrawComplete = useCallback(
-    (intersections: Array<{ plot: Plot; geometry: GeoJSON.MultiPolygon; size: number }>) => {
+    (
+      intersections: Array<{
+        plot: Plot;
+        geometry: GeoJSON.MultiPolygon;
+        size: number;
+      }>,
+    ) => {
       for (const { plot, geometry, size } of intersections) {
         putHarvestPlot({
           name: plot.name,
@@ -109,7 +114,9 @@ export function SelectHarvestPlotsScreen({
         onDrawComplete={handleDrawComplete}
         enableDrawing
         portalName="HarvestMap"
-        onNavigateToOnboarding={() => navigation.navigate("SelectPlotsOnboarding")}
+        onNavigateToOnboarding={() =>
+          navigation.navigate("SelectPlotsOnboarding")
+        }
       />
     </ContentView>
   );
