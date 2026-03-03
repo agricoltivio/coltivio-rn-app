@@ -768,6 +768,7 @@
   },
   "crops": {
     "crop": "Culture",
+    "no_crop": "Aucune",
     "crops": "Cultures",
     "crop_name": "Culture {{name}}",
     "new_crop": "Nouvelle culture",

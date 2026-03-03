@@ -56,6 +56,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
   const { localSettings } = useLocalSettings();
   const preselectedPlotId = route.params?.selectedPlotId;
 
+  const insets = useSafeAreaInsets();
   const [mapVisible, setMapVisible] = useState(false);
   const [showsUserLocation, setShowsUserLocation] = useState(false);
   const [plotListVisible, setPlotListVisible] = useState(false);
@@ -316,7 +317,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
 
         {/* Plot list button */}
         {mode.type === "view" && (
-          <PlotListButton insets={useSafeAreaInsets()}>
+          <PlotListButton insets={insets}>
             <IonIconButton
               type="accent"
               color={theme.colors.black}

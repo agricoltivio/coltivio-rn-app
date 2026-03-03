@@ -20,12 +20,15 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import { useTheme } from "styled-components/native";
+import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
 import { usePlotsMapContext } from "./plots-map-mode";
 
 export function PlotDetailsDrawer() {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { mode, dispatch, plots, navigation } = usePlotsMapContext();
+  const { mode, dispatch, navigation } = usePlotsMapContext();
+  // Use all plots (including size-0) so selecting a plot with no geometry still opens the drawer
+  const { plots: allPlots } = useFarmPlotsQuery();
 
   const [sheetIndex, setSheetIndex] = useState(0);
   const snapPoints = useMemo(() => [200, "85%"], []);
@@ -33,7 +36,7 @@ export function PlotDetailsDrawer() {
 
   const selectedPlotId = mode.type === "view" ? mode.selectedPlotId : null;
   const selectedPlot = selectedPlotId
-    ? plots.find((p) => p.id === selectedPlotId)
+    ? allPlots?.find((p) => p.id === selectedPlotId)
     : undefined;
 
   const handleExpandBottomDrawer = useCallback(() => {
@@ -262,10 +265,11 @@ function SummaryItem({
         flexDirection: "row",
         marginBottom: theme.spacing.s,
         gap: theme.spacing.m,
+        alignItems: "flex-start",
       }}
     >
-      <Label style={{ flex: 1 }}>{label}</Label>
-      <Label style={{ fontSize: 18 }}>{value}</Label>
+      <Label numberOfLines={1} style={{ flexShrink: 0 }}>{label}</Label>
+      <Label style={{ flex: 1, fontSize: 18, textAlign: "right" }}>{value}</Label>
     </View>
   );
 }

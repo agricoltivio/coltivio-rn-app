@@ -768,6 +768,7 @@
   },
   "crops": {
     "crop": "Coltura",
+    "no_crop": "Nessuna",
     "crops": "Colture",
     "crop_name": "Coltura {{name}}",
     "new_crop": "Nuova Coltura",

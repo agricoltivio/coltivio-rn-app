@@ -46,10 +46,18 @@ export function PlotListScreen({ navigation }: PlotListScreenProps) {
     ({ item: plot }: { item: Plot & { usageName: string } }) => (
       <ListItem key={plot.id} onPress={() => handlePlotSelect(plot)}>
         <ListItem.Content>
-          <ListItem.Title style={{ flex: 1 }}>{plot.name}</ListItem.Title>
+          <View style={{ flexDirection: "row" }}>
+            <ListItem.Title numberOfLines={1} style={{ flex: 1 }}>{plot.name}</ListItem.Title>
+            <ListItem.Body> ({plot.size / 100}a)</ListItem.Body>
+          </View>
           <ListItem.Body>
-            {plot.currentCropRotation?.crop.name} ({plot.size / 100}a)
+            {t("crops.crop")}: {plot.currentCropRotation?.crop.name ?? t("crops.no_crop")}
           </ListItem.Body>
+          {plot.localId ? (
+            <ListItem.Body>
+              {t("forms.labels.local_id")}: {plot.localId}
+            </ListItem.Body>
+          ) : null}
         </ListItem.Content>
         <ListItem.Chevron />
       </ListItem>

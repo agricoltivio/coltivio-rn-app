@@ -42,7 +42,7 @@ export function PlotListModal({
 
   const fuse = new Fuse(sanitizedPlots, {
     minMatchCharLength: 1,
-    keys: ["name", "usage", "usageName", "cropRotations[0].crop.name"],
+    keys: ["name", "localId", "usage", "usageName", "currentCropRotation.crop.name"],
   });
 
   let searchResult = sanitizedPlots;
@@ -55,10 +55,12 @@ export function PlotListModal({
       onClose();
       setSearchText("");
       onSelectPlot(plot);
-      // Fly to plot centroid
-      const centroid = turf.centroid(plot.geometry);
-      const [longitude, latitude] = centroid.geometry.coordinates;
-      cameraRef.current?.flyTo({ center: [longitude, latitude], duration: 500 });
+      // Only fly to centroid if the plot has geometry (size-0 plots have empty coordinates)
+      if (plot.size > 0 && plot.geometry.coordinates.length > 0) {
+        const centroid = turf.centroid(plot.geometry);
+        const [longitude, latitude] = centroid.geometry.coordinates;
+        cameraRef.current?.flyTo({ center: [longitude, latitude], duration: 500 });
+      }
     },
     [onSelectPlot, cameraRef, onClose],
   );
@@ -67,10 +69,18 @@ export function PlotListModal({
     ({ item: plot }: { item: Plot & { usageName: string } }) => (
       <ListItem key={plot.id} onPress={() => handlePlotSelect(plot)}>
         <ListItem.Content>
-          <ListItem.Title style={{ flex: 1 }}>{plot.name}</ListItem.Title>
+          <View style={{ flexDirection: "row" }}>
+            <ListItem.Title numberOfLines={1} style={{ flex: 1 }}>{plot.name}</ListItem.Title>
+            <ListItem.Body> ({plot.size / 100}a)</ListItem.Body>
+          </View>
           <ListItem.Body>
-            {plot.currentCropRotation?.crop.name} ({plot.size / 100}a)
+            {t("crops.crop")}: {plot.currentCropRotation?.crop.name ?? t("crops.no_crop")}
           </ListItem.Body>
+          {plot.localId ? (
+            <ListItem.Body>
+              {t("forms.labels.local_id")}: {plot.localId}
+            </ListItem.Body>
+          ) : null}
         </ListItem.Content>
         <ListItem.Chevron />
       </ListItem>
