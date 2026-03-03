@@ -231,11 +231,12 @@ export function splitMultiPolygonByLine(
 
   const flattened = turf.flatten(cleanMulti);
 
-  // Collect all resulting polygon coordinate arrays (split pieces + untouched ones)
+  // Buffer the line by a tiny amount to use as a cutter, then classify resulting
+  // pieces by which side of the line's half-plane their centroid falls on.
+  const cutter = turf.buffer(cleanLine, 1e-9, { units: "meters" })!;
+
   const allPieces: number[][][][] = [];
   let anySplit = false;
-
-  const cutter = turf.buffer(cleanLine, 1e-9, { units: "meters" })!;
 
   for (const feature of flattened.features) {
     const intersections = turf.lineIntersect(cleanLine, feature);
@@ -252,9 +253,7 @@ export function splitMultiPolygonByLine(
 
     if (diff.geometry.type === "MultiPolygon") {
       anySplit = true;
-      for (const coords of diff.geometry.coordinates) {
-        allPieces.push(coords);
-      }
+      for (const coords of diff.geometry.coordinates) allPieces.push(coords);
     } else if (diff.geometry.type === "Polygon") {
       anySplit = true;
       allPieces.push(diff.geometry.coordinates);
@@ -265,12 +264,9 @@ export function splitMultiPolygonByLine(
 
   if (!anySplit) return null;
 
-  // Build a half-plane polygon from the line to classify each piece by side.
-  // Offset the line far to one side, form a closed polygon from both lines.
+  // Build half-plane to classify each piece by side of the cut line
   const lineFeature = turf.lineString(cleanLine.coordinates);
-  const offsetLine = turf.lineOffset(lineFeature, 50, {
-    units: "kilometers",
-  });
+  const offsetLine = turf.lineOffset(lineFeature, 50, { units: "kilometers" });
   const offsetCoords = (turf.getCoords(offsetLine) as number[][]).reverse();
   const halfPlaneRing = [
     ...cleanLine.coordinates,
@@ -279,13 +275,11 @@ export function splitMultiPolygonByLine(
   ];
   const halfPlane = turf.polygon([halfPlaneRing]);
 
-  // Classify each piece by which side of the line its centroid falls on
   const sideA: number[][][][] = [];
   const sideB: number[][][][] = [];
 
   for (const coords of allPieces) {
-    const poly = turf.polygon(coords);
-    const centroid = turf.centroid(poly);
+    const centroid = turf.centroid(turf.polygon(coords));
     if (turf.booleanPointInPolygon(centroid, halfPlane)) {
       sideA.push(coords);
     } else {
@@ -293,13 +287,24 @@ export function splitMultiPolygonByLine(
     }
   }
 
-  // Truncate precision and remove redundant coordinates from split pieces
   const cleanSplitCoords = (coords: number[][][][]) =>
-    coords.map((c) => {
-      const poly = turf.polygon(c);
-      const truncated = turf.truncate(poly, { precision: 8 });
-      return turf.cleanCoords(truncated).geometry.coordinates;
-    });
+    coords
+      .map((c) => {
+        const poly = turf.polygon(c);
+        const truncated = turf.truncate(poly, { precision: 8 });
+        try {
+          return turf.cleanCoords(truncated).geometry.coordinates;
+        } catch {
+          return truncated.geometry.coordinates;
+        }
+      })
+      .filter((c) => {
+        try {
+          return turf.area(turf.polygon(c)) > 0.1;
+        } catch {
+          return false;
+        }
+      });
 
   const result: GeoJSON.MultiPolygon[] = [];
   if (sideA.length > 0) {
@@ -391,19 +396,21 @@ export function cutPolygonFromMultiPolygon(
       continue;
     }
 
-    // Tiny buffer workaround for Turf version limitations
-    const cutter = turf.buffer(cutPolygon, 1e-9, { units: "meters" })!;
+    // Use intersection for the cut piece — more stable than double-difference
+    // at shared edges between adjacent sub-polygons.
+    const cutIntersection = turf.intersect(
+      turf.featureCollection([polygon, cutPolygon]),
+    );
     const remainingGeometry = turf.difference(
-      turf.featureCollection([polygon, cutter]),
+      turf.featureCollection([polygon, cutPolygon]),
     );
 
     if (!remainingGeometry) {
-      // Fully covered
+      // Fully covered by cut polygon
       cutPieces.push(polygon.geometry.coordinates);
       continue;
     }
 
-    // Push remaining geometry
     if (remainingGeometry.geometry.type === "Polygon") {
       remainingPolygons.push(remainingGeometry.geometry.coordinates);
     } else if (remainingGeometry.geometry.type === "MultiPolygon") {
@@ -412,15 +419,13 @@ export function cutPolygonFromMultiPolygon(
       }
     }
 
-    // Compute cut piece = original polygon minus remaining
-    const cutDiff = turf.difference(
-      turf.featureCollection([polygon, remainingGeometry]),
-    );
-    if (cutDiff) {
-      if (cutDiff.geometry.type === "Polygon") {
-        cutPieces.push(cutDiff.geometry.coordinates);
-      } else if (cutDiff.geometry.type === "MultiPolygon") {
-        console.error("MultiPolygon not supported as cut piece");
+    if (cutIntersection) {
+      if (cutIntersection.geometry.type === "Polygon") {
+        cutPieces.push(cutIntersection.geometry.coordinates);
+      } else if (cutIntersection.geometry.type === "MultiPolygon") {
+        for (const coordinate of cutIntersection.geometry.coordinates) {
+          cutPieces.push(coordinate);
+        }
       }
     }
   }
@@ -428,17 +433,41 @@ export function cutPolygonFromMultiPolygon(
   if (cutPieces.length === 0) return null;
 
   // Truncate precision so near-duplicate vertices from turf.difference collapse,
-  // then remove redundant (collinear / duplicate) coordinates.
+  // remove redundant coordinates, and discard degenerate slivers (area < 0.1 m²).
   const cleanPolygonCoords = (coords: GeoJSON.Position[][][]) =>
-    coords.map((c) => {
-      const poly = turf.polygon(c);
-      const truncated = turf.truncate(poly, { precision: 8 });
-      return turf.cleanCoords(truncated).geometry.coordinates;
-    });
+    coords
+      .map((c) => {
+        const poly = turf.polygon(c);
+        const truncated = turf.truncate(poly, { precision: 6 });
+        try {
+          return turf.cleanCoords(truncated).geometry.coordinates;
+        } catch {
+          return truncated.geometry.coordinates;
+        }
+      })
+      .filter((c) => {
+        try {
+          return turf.area(turf.polygon(c)) > 0.1;
+        } catch {
+          return false;
+        }
+      });
+
+  const cleanedCut = cleanPolygonCoords(cutPieces);
+  if (cleanedCut.length === 0) return null;
+
+  const cleanedRemaining = cleanPolygonCoords(remainingPolygons);
+  // If the entire remaining geometry was filtered out (all slivers), treat the
+  // original polygon as fully covered by the cut.
+  if (cleanedRemaining.length === 0) {
+    return {
+      remaining: { type: "MultiPolygon", coordinates: [] },
+      plots: turf.multiPolygon(cleanedCut).geometry,
+    };
+  }
 
   return {
-    remaining: turf.multiPolygon(cleanPolygonCoords(remainingPolygons))
-      .geometry,
-    plots: turf.multiPolygon(cleanPolygonCoords(cutPieces)).geometry,
+    remaining: turf.multiPolygon(cleanedRemaining).geometry,
+    plots: turf.multiPolygon(cleanedCut).geometry,
   };
 }

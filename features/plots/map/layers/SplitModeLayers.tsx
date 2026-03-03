@@ -79,16 +79,18 @@ export const SplitModeLayers = forwardRef<SplitModeLayersHandle>(
     // GeoJSON for the split polygon fills
     const splitFeatureCollection = useMemo((): GeoJSON.FeatureCollection => ({
       type: "FeatureCollection",
-      features: currentPolygons.map((geom, i) => ({
-        type: "Feature",
-        properties: {
-          color: hasMultiplePolygons
-            ? indexToDistinctColor(i)
-            : hexToRgba(theme.map.defaultFillColor, theme.map.defaultFillAlpha),
-          opacity: hasMultiplePolygons ? 0.6 : theme.map.defaultFillAlpha,
-        },
-        geometry: geom,
-      })),
+      features: currentPolygons.flatMap((geom, i) =>
+        geom.coordinates.map((polygonCoords) => ({
+          type: "Feature" as const,
+          properties: {
+            color: hasMultiplePolygons
+              ? indexToDistinctColor(i)
+              : hexToRgba(theme.map.defaultFillColor, theme.map.defaultFillAlpha),
+            opacity: hasMultiplePolygons ? 0.6 : theme.map.defaultFillAlpha,
+          },
+          geometry: { type: "Polygon" as const, coordinates: polygonCoords },
+        }))
+      ),
     }), [currentPolygons, hasMultiplePolygons, theme]);
 
     useImperativeHandle(ref, () => ({
@@ -140,7 +142,10 @@ export const SplitModeLayers = forwardRef<SplitModeLayersHandle>(
             newPolygons.push(polygon);
           }
         }
-        dispatch({ type: "SET_SPLIT_POLYGONS", polygons: newPolygons });
+        const validPolylines = newPolygons.filter(
+          (p) => p.coordinates.length > 0 && turf.area(p) > 0.1
+        );
+        dispatch({ type: "SET_SPLIT_POLYGONS", polygons: validPolylines });
         drawingRef.current?.reset();
         dispatch({ type: "SET_SPLIT_TOOL", tool: "none" });
       },
@@ -161,8 +166,12 @@ export const SplitModeLayers = forwardRef<SplitModeLayersHandle>(
             newPolygons.push(currentPolygon);
           }
         }
+        // Filter out zero-area degenerate polygons (floating-point artifacts from cuts)
+        const validPolygons = newPolygons.filter(
+          (p) => p.coordinates.length > 0 && turf.area(p) > 0.1
+        );
         setDrawnPolygonCoords(null);
-        dispatch({ type: "SET_SPLIT_POLYGONS", polygons: newPolygons });
+        dispatch({ type: "SET_SPLIT_POLYGONS", polygons: validPolygons });
         dispatch({ type: "SET_SPLIT_TOOL", tool: "none" });
       },
     }));

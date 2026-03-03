@@ -174,8 +174,7 @@ export function SplitModeControls({ splitLayersRef }: SplitModeControlsProps) {
         onPress={() => dispatch({ type: "SET_SPLIT_TOOL", tool: "polygon" })}
       />
       {/* Extract sub-polygon — only for MultiPolygons with >1 ring */}
-      {currentPolygons.length === 1 &&
-        currentPolygons[0].coordinates.length > 1 && (
+      {currentPolygons.some((p) => p.coordinates.length > 1) && (
           <MaterialCommunityIconButton
             style={{ backgroundColor: theme.colors.accent }}
             type="accent"

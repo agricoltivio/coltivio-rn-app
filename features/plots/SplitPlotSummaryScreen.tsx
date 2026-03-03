@@ -1,4 +1,5 @@
 import { SplitPlotInput } from "@/api/plots.api";
+import * as turf from "@turf/turf";
 import { Button } from "@/components/buttons/Button";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { Card } from "@/components/card/Card";
@@ -71,7 +72,9 @@ export function SplitPlotSummaryScreen({
 
   function onSubmit(values: SplitFormValues) {
     const subPlotsPayload = subPlots.map((sp, i) => ({
-      geometry: sp.geometry,
+      // Truncate to 7 decimal places (~1cm precision) to avoid floating-point
+      // differences on shared edges causing PostGIS topology exceptions.
+      geometry: turf.truncate(sp.geometry, { precision: 6, coordinates: 2 }) as GeoJSON.MultiPolygon,
       name: values.subPlots[i].name,
       size: sp.size,
     }));
