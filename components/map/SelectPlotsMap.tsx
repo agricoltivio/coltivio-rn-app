@@ -251,6 +251,7 @@ export function SelectPlotsMap({
           <PlotsLayer
             plots={plots}
             onPlotPress={handlePlotPress}
+            showZoomLabels
           />
 
           {/* Selected area overlays — full plot geometry for tapped, intersection for drawn */}

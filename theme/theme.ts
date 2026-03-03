@@ -147,44 +147,36 @@ export function numberToColor(num: number) {
   return stringToColor(seededRandomString(num));
 }
 
-// Golden-ratio hue walk: maximally distinct colors for consecutive indices.
-// Saturation 65%, Lightness 55% keeps colors vivid and readable on satellite maps.
-export function indexToDistinctColor(index: number): string {
-  const goldenAngle = 137.508;
-  const h = (index * goldenAngle) % 360;
+// Stable color derived from a plot's ID. djb2 hash → hue on golden-angle walk.
+// Same plot always gets the same color regardless of list order.
+export function plotIdToColor(id: string): string {
+  let hash = 5381;
+  for (let i = 0; i < id.length; i++) {
+    hash = ((hash << 5) + hash + id.charCodeAt(i)) & 0x7fffffff;
+  }
+  return hueToHex((hash * 137.508) % 360);
+}
+
+// Golden-ratio hue walk for sequential indices (used for split-mode pieces).
+function hueToHex(h: number): string {
   const s = 0.65;
   const l = 0.55;
-  // HSL to RGB conversion
   const c = (1 - Math.abs(2 * l - 1)) * s;
   const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
   const m = l - c / 2;
-  let r = 0,
-    g = 0,
-    b = 0;
-  if (h < 60) {
-    r = c;
-    g = x;
-  } else if (h < 120) {
-    r = x;
-    g = c;
-  } else if (h < 180) {
-    g = c;
-    b = x;
-  } else if (h < 240) {
-    g = x;
-    b = c;
-  } else if (h < 300) {
-    r = x;
-    b = c;
-  } else {
-    r = c;
-    b = x;
-  }
-  const toHex = (v: number) =>
-    Math.round((v + m) * 255)
-      .toString(16)
-      .padStart(2, "0");
+  let r = 0, g = 0, b = 0;
+  if (h < 60)       { r = c; g = x; }
+  else if (h < 120) { r = x; g = c; }
+  else if (h < 180) { g = c; b = x; }
+  else if (h < 240) { g = x; b = c; }
+  else if (h < 300) { r = x; b = c; }
+  else              { r = c; b = x; }
+  const toHex = (v: number) => Math.round((v + m) * 255).toString(16).padStart(2, "0");
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+
+export function indexToDistinctColor(index: number): string {
+  return hueToHex((index * 137.508) % 360);
 }
 function seededRandomString(seed: number, length = 10) {
   // Linear Congruential Generator (LCG) for deterministic pseudo-random numbers

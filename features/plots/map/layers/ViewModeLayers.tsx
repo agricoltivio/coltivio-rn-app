@@ -30,6 +30,7 @@ export function ViewModeLayers() {
       plots={plots}
       selectedPlotIds={selectedPlotIds}
       onPlotPress={handlePlotPress}
+      showZoomLabels
     />
   );
 }

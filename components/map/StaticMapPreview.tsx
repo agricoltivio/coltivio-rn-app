@@ -93,7 +93,7 @@ export function StaticMapPreview({
             type="fill"
             id="preview-fill"
             paint={{
-              "fill-color": fillColor,
+              "fill-color": ["coalesce", ["get", "color"], fillColor],
               "fill-opacity": 1,
             }}
           />

@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { StaticMapPreview } from "@/components/map/StaticMapPreview";
+import { hexToRgba, plotIdToColor } from "@/theme/theme";
 import { type LngLat } from "@maplibre/maplibre-react-native";
 import { useNavigation } from "@react-navigation/native";
 import React, { useMemo } from "react";
@@ -17,13 +18,17 @@ export const MapTile = ({ showMap = true }: { showMap?: boolean }) => {
   const features = useMemo(
     (): GeoJSON.FeatureCollection => ({
       type: "FeatureCollection",
-      features: (plots ?? []).map((plot) => ({
-        type: "Feature",
-        properties: {},
-        geometry: plot.geometry,
-      })),
+      features: (plots ?? []).flatMap((plot) =>
+        plot.geometry.coordinates.map((polygonCoords) => ({
+          type: "Feature" as const,
+          properties: {
+            color: hexToRgba(plotIdToColor(plot.id), theme.map.defaultFillAlpha),
+          },
+          geometry: { type: "Polygon" as const, coordinates: polygonCoords },
+        }))
+      ),
     }),
-    [plots],
+    [plots, theme],
   );
 
   if (!farm || !plots) {

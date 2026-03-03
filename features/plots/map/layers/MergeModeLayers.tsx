@@ -32,7 +32,7 @@ export function MergeModeLayers() {
       selectedPlotIds={selectedPlotIds}
       selectedColor={theme.colors.secondary}
       onPlotPress={handlePlotPress}
-      showLabels
+      showZoomLabels
     />
   );
 }

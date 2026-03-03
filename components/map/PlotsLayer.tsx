@@ -1,5 +1,5 @@
 import { Plot } from "@/api/plots.api";
-import { hexToRgba, indexToDistinctColor } from "@/theme/theme";
+import { hexToRgba, plotIdToColor } from "@/theme/theme";
 import {
   GeoJSONSource,
   Layer,
@@ -17,7 +17,8 @@ type PlotsLayerProps = {
     stopPropagation(): void;
     nativeEvent: { features: GeoJSON.Feature[] };
   }) => void;
-  showLabels?: boolean;
+  /** Show name labels for all plots when zoomed in (minZoom 14). One label per plot. */
+  showZoomLabels?: boolean;
   /** Unique suffix for source/layer IDs to avoid conflicts when multiple PlotsLayers are mounted */
   idSuffix?: string;
 };
@@ -27,7 +28,7 @@ export function PlotsLayer({
   selectedPlotIds = [],
   selectedColor,
   onPlotPress,
-  showLabels = false,
+  showZoomLabels = false,
   idSuffix = "",
 }: PlotsLayerProps) {
   const theme = useTheme();
@@ -36,37 +37,41 @@ export function PlotsLayer({
   const featureCollection = useMemo((): GeoJSON.FeatureCollection => {
     return {
       type: "FeatureCollection",
-      features: plots.map((plot, index) => ({
-        type: "Feature",
-        properties: {
-          id: plot.id,
-          name: plot.name,
-          selected: selectedPlotIds.includes(plot.id) ? 1 : 0,
-          color: indexToDistinctColor(index),
-        },
-        geometry: plot.geometry,
-      })),
+      // Flatten MultiPolygons into individual Polygon features so each sub-polygon
+      // gets its own line layer outline — making internal shared-edge borders always visible.
+      // All sub-polygons of the same plot share plotIndex → same color.
+      features: plots.flatMap((plot) =>
+        plot.geometry.coordinates.map((polygonCoords) => ({
+          type: "Feature" as const,
+          properties: {
+            id: plot.id,
+            name: plot.name,
+            selected: selectedPlotIds.includes(plot.id) ? 1 : 0,
+            color: hexToRgba(plotIdToColor(plot.id), theme.map.defaultFillAlpha),
+          },
+          geometry: { type: "Polygon" as const, coordinates: polygonCoords },
+        }))
+      ),
     };
-  }, [plots, selectedPlotIds]);
+  }, [plots, selectedPlotIds, theme]);
 
+  // One label per plot at the centroid of the full MultiPolygon geometry.
+  // Built from the original plots array (not the flattened sub-polygons).
   const labelCollection = useMemo((): GeoJSON.FeatureCollection => {
-    if (!showLabels) return { type: "FeatureCollection", features: [] };
+    if (!showZoomLabels) return { type: "FeatureCollection", features: [] };
     return {
       type: "FeatureCollection",
-      features: plots
-        .filter((plot) => selectedPlotIds.includes(plot.id))
-        .map((plot) => {
-          const centroid = turf.centroid(turf.multiPolygon(plot.geometry.coordinates));
-          return {
-            type: "Feature",
-            properties: { name: plot.name },
-            geometry: centroid.geometry,
-          };
-        }),
+      features: plots.map((plot) => {
+        const centroid = turf.centroid(turf.multiPolygon(plot.geometry.coordinates));
+        return {
+          type: "Feature" as const,
+          properties: { name: plot.name },
+          geometry: centroid.geometry,
+        };
+      }),
     };
-  }, [plots, selectedPlotIds, showLabels]);
+  }, [plots, showZoomLabels]);
 
-  const fillColor = hexToRgba(theme.map.defaultFillColor, theme.map.defaultFillAlpha);
   const selectedFillColor = hexToRgba(resolvedSelectedColor, theme.map.defaultFillAlpha);
 
   const sid = idSuffix ? `-${idSuffix}` : "";
@@ -86,7 +91,7 @@ export function PlotsLayer({
               "case",
               ["==", ["get", "selected"], 1],
               selectedFillColor,
-              fillColor,
+              ["get", "color"],
             ],
             "fill-opacity": 1,
           }}
@@ -95,28 +100,40 @@ export function PlotsLayer({
           type="line"
           id={`plots-stroke${sid}`}
           paint={{
-            "line-color": "white",
-            "line-width": theme.map.defaultStrokeWidth,
+            "line-color": [
+              "case",
+              ["==", ["get", "selected"], 1],
+              theme.colors.yellow,
+              "white",
+            ],
+            "line-width": [
+              "case",
+              ["==", ["get", "selected"], 1],
+              3,
+              theme.map.defaultStrokeWidth,
+            ],
           }}
         />
       </GeoJSONSource>
 
-      {showLabels ? (
+      {showZoomLabels ? (
         <GeoJSONSource id={`plots-labels${sid}`} data={labelCollection}>
           <Layer
             type="symbol"
             id={`plots-label-text${sid}`}
             layout={{
               "text-field": ["get", "name"],
-              "text-size": 14,
+              "text-size": 13,
               "text-anchor": "center",
-              "text-allow-overlap": true,
-              "text-ignore-placement": true,
+              "text-allow-overlap": false,
+              "text-ignore-placement": false,
             }}
             paint={{
               "text-color": "#FFFFFF",
               "text-halo-color": "#000000",
               "text-halo-width": 2,
+              // fade in at zoom 14, invisible below
+              "text-opacity": ["step", ["zoom"], 0, 14, 1],
             }}
           />
         </GeoJSONSource>

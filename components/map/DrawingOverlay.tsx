@@ -12,6 +12,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { useTheme } from "styled-components/native";
 
 // --- Types ---
 
@@ -142,6 +143,8 @@ export const DrawingOverlay = forwardRef<
   DrawingOverlayRef,
   DrawingOverlayProps
 >(function DrawingOverlay({ mode, onCoordinatesChange }, ref) {
+  const theme = useTheme();
+  const drawColor = theme.colors.yellow;
   const [coordinates, setCoordinates] = useState<LngLat[]>([]);
   const [closed, setClosed] = useState(false);
 
@@ -265,12 +268,12 @@ export const DrawingOverlay = forwardRef<
           type="fill"
           id={LAYER_IDS.FILL}
           filter={["==", ["geometry-type"], "Polygon"]}
-          paint={{ "fill-color": "#4CAF50", "fill-opacity": 0.25 }}
+          paint={{ "fill-color": drawColor, "fill-opacity": 0.25 }}
         />
         <Layer
           type="line"
           id={LAYER_IDS.STROKE}
-          paint={{ "line-color": "#4CAF50", "line-width": 3 }}
+          paint={{ "line-color": drawColor, "line-width": 3 }}
         />
       </GeoJSONSource>
 
@@ -284,11 +287,11 @@ export const DrawingOverlay = forwardRef<
             "circle-color": [
               "case",
               ["==", ["get", "isFirst"], 1],
-              "#4CAF50",
+              drawColor,
               "#FFFFFF",
             ],
             "circle-opacity": 0.6,
-            "circle-stroke-color": "#4CAF50",
+            "circle-stroke-color": drawColor,
             "circle-stroke-width": 3,
           }}
         />
@@ -302,7 +305,7 @@ export const DrawingOverlay = forwardRef<
             id={LAYER_IDS.MIDPOINTS}
             paint={{
               "circle-radius": 14,
-              "circle-color": "#4CAF50",
+              "circle-color": drawColor,
               "circle-opacity": 0.6,
               "circle-stroke-color": "#FFFFFF",
               "circle-stroke-width": 1.5,
