@@ -8,11 +8,23 @@ export type CropRotationCreateInput =
 export type CropRotationUpdateInput =
   components["schemas"]["PatchV1CropRotationsByIdRotationIdRequestBody"];
 
+export type CropRotationCreateResult =
+  components["schemas"]["PostV1CropRotationsPositiveResponse"]["data"];
+
+export type CropRotationUpdateResult =
+  components["schemas"]["PatchV1CropRotationsByIdRotationIdPositiveResponse"]["data"];
+
 export type CropRotationCreateManyByCropInput =
   components["schemas"]["PostV1CropRotationsBatchByCropRequestBody"];
 
+export type CropRotationBatchByCropResult =
+  components["schemas"]["PostV1CropRotationsBatchByCropPositiveResponse"]["data"]["result"][number];
+
 export type CropRotationCreateManyByPlotInput =
   components["schemas"]["PostV1CropRotationsBatchByPlotRequestBody"];
+
+export type CropRotationBatchByPlotResult =
+  components["schemas"]["PostV1CropRotationsBatchByPlotPositiveResponse"]["data"]["result"][number];
 
 export type PlotCropRotation =
   components["schemas"]["GetV1CropRotationsPlotsPositiveResponse"]["data"]["result"][number];
@@ -50,7 +62,7 @@ export function cropRotationsApi(client: FetchClient) {
 
     async createCropRotation(
       cropRotation: CropRotationCreateInput,
-    ): Promise<CropRotation> {
+    ): Promise<CropRotationCreateResult> {
       const { data } = await client.POST("/v1/cropRotations", {
         body: cropRotation,
       });
@@ -59,7 +71,7 @@ export function cropRotationsApi(client: FetchClient) {
 
     async createCropRotationsByCrop(
       input: CropRotationCreateManyByCropInput,
-    ): Promise<CropRotation[]> {
+    ): Promise<CropRotationBatchByCropResult[]> {
       const { data } = await client.POST("/v1/cropRotations/batch/byCrop", {
         body: input,
       });
@@ -68,7 +80,7 @@ export function cropRotationsApi(client: FetchClient) {
 
     async createCropRotationsByPlot(
       input: CropRotationCreateManyByPlotInput,
-    ): Promise<CropRotation[]> {
+    ): Promise<CropRotationBatchByPlotResult[]> {
       const { data } = await client.POST("/v1/cropRotations/batch/byPlot", {
         body: input,
       });
@@ -108,7 +120,7 @@ export function cropRotationsApi(client: FetchClient) {
     async updateCropRotation(
       rotationId: string,
       cropRotation: CropRotationUpdateInput,
-    ) {
+    ): Promise<CropRotationUpdateResult> {
       const { data } = await client.PATCH(
         "/v1/cropRotations/byId/{rotationId}",
         {

@@ -2,9 +2,13 @@ import { useApi } from "@/api/api";
 import {
   CropRotation,
   CropRotationCreateInput,
+  CropRotationCreateResult,
   CropRotationCreateManyByCropInput,
+  CropRotationBatchByCropResult,
   CropRotationCreateManyByPlotInput,
+  CropRotationBatchByPlotResult,
   CropRotationUpdateInput,
+  CropRotationUpdateResult,
   CropRotationPlanInput,
   CropRotationPlanResult,
 } from "@/api/crop-rotations.api";
@@ -35,7 +39,7 @@ export function useCropRotationsQuery(
 }
 
 export function useCreateCropRotationMutation(
-  onSuccess?: (cropRotation: CropRotation) => void,
+  onSuccess?: (cropRotation: CropRotationCreateResult) => void,
   onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
@@ -60,7 +64,7 @@ export function useCreateCropRotationMutation(
 }
 
 export function useCreateCropRotationsByCropMutation(
-  onSuccess?: (cropRotations: CropRotation[]) => void,
+  onSuccess?: (cropRotations: CropRotationBatchByCropResult[]) => void,
   onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
@@ -85,7 +89,7 @@ export function useCreateCropRotationsByCropMutation(
 }
 
 export function useCreateCropRotationsByPlotMutation(
-  onSuccess?: (cropRotations: CropRotation[]) => void,
+  onSuccess?: (cropRotations: CropRotationBatchByPlotResult[]) => void,
   onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
@@ -137,7 +141,7 @@ export function useCropRotationsByPlotIdsQuery(
 }
 
 export function useUpdateCropRotationMutation(
-  onSuccess?: (cropRotation: CropRotation) => void,
+  onSuccess?: (cropRotation: CropRotationUpdateResult) => void,
   onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
