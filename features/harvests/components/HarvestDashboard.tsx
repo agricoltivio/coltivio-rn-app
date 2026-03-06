@@ -175,6 +175,7 @@ function MonthlyLineChart({
   unit: { label: string; divisor: number };
 }) {
   const theme = useTheme();
+  const [selectedPoint, setSelectedPoint] = useState<{ month: number; year: number; value: number } | null>(null);
 
   // Build cumulative totals so months without entries carry forward the last value
   const lineSets = selectedYears.map((year) => {
@@ -182,7 +183,12 @@ function MonthlyLineChart({
     let cumulative = 0;
     const data: lineDataItem[] = Array.from({ length: 12 }, (_, month) => {
       cumulative += monthlyData[year]?.[month] ?? 0;
-      return { value: cumulative / unit.divisor, label: MONTH_LABELS[month] };
+      const value = cumulative / unit.divisor;
+      return {
+        value,
+        label: MONTH_LABELS[month],
+        onPress: () => setSelectedPoint({ month, year, value: Math.round(value * 100) / 100 }),
+      };
     });
     return { data, color: getYearColor(yearIdx >= 0 ? yearIdx : 0) };
   });
@@ -200,40 +206,47 @@ function MonthlyLineChart({
   const maxValue = dataMax === 0 ? 10 : Math.ceil(dataMax * 1.15);
 
   return (
-    <LineChart
-      data={lineSets[0].data}
-      {...(lineSets[1] ? { data2: lineSets[1].data } : {})}
-      {...(lineSets[2] ? { data3: lineSets[2].data } : {})}
-      {...(lineSets[3] ? { data4: lineSets[3].data } : {})}
-      {...(lineSets[4] ? { data5: lineSets[4].data } : {})}
-      color1={lineSets[0]?.color}
-      color2={lineSets[1]?.color}
-      color3={lineSets[2]?.color}
-      color4={lineSets[3]?.color}
-      color5={lineSets[4]?.color}
-      dataPointsColor1={lineSets[0]?.color}
-      dataPointsColor2={lineSets[1]?.color}
-      dataPointsColor3={lineSets[2]?.color}
-      dataPointsColor4={lineSets[3]?.color}
-      dataPointsColor5={lineSets[4]?.color}
-      maxValue={maxValue}
-      mostNegativeValue={0}
-      height={140}
-      spacing={44}
-      initialSpacing={15}
-      endSpacing={10}
-      dataPointsHeight={5}
-      dataPointsWidth={5}
-      xAxisColor={theme.colors.gray4}
-      yAxisColor={theme.colors.gray4}
-      yAxisTextStyle={{ color: theme.colors.gray2, fontSize: 10 }}
-      xAxisLabelTextStyle={{ color: theme.colors.gray2, fontSize: 9 }}
-      rulesColor={theme.colors.gray4}
-      rulesType="dashed"
-      noOfSections={4}
-      yAxisLabelWidth={45}
-      formatYLabel={(v) => formatYValue(v, unit.label)}
-    />
+    <View style={{ gap: 4 }}>
+      {selectedPoint && (
+        <Text style={{ fontSize: 12, color: theme.colors.gray1, textAlign: "center" }}>
+          {MONTH_LABELS[selectedPoint.month]} {selectedPoint.year} · {formatYValue(String(selectedPoint.value), unit.label)}
+        </Text>
+      )}
+      <LineChart
+        data={lineSets[0].data}
+        {...(lineSets[1] ? { data2: lineSets[1].data } : {})}
+        {...(lineSets[2] ? { data3: lineSets[2].data } : {})}
+        {...(lineSets[3] ? { data4: lineSets[3].data } : {})}
+        {...(lineSets[4] ? { data5: lineSets[4].data } : {})}
+        color1={lineSets[0]?.color}
+        color2={lineSets[1]?.color}
+        color3={lineSets[2]?.color}
+        color4={lineSets[3]?.color}
+        color5={lineSets[4]?.color}
+        dataPointsColor1={lineSets[0]?.color}
+        dataPointsColor2={lineSets[1]?.color}
+        dataPointsColor3={lineSets[2]?.color}
+        dataPointsColor4={lineSets[3]?.color}
+        dataPointsColor5={lineSets[4]?.color}
+        maxValue={maxValue}
+        mostNegativeValue={0}
+        height={140}
+        spacing={44}
+        initialSpacing={15}
+        endSpacing={10}
+        dataPointsHeight={5}
+        dataPointsWidth={5}
+        xAxisColor={theme.colors.gray4}
+        yAxisColor={theme.colors.gray4}
+        yAxisTextStyle={{ color: theme.colors.gray2, fontSize: 10 }}
+        xAxisLabelTextStyle={{ color: theme.colors.gray2, fontSize: 9 }}
+        rulesColor={theme.colors.gray4}
+        rulesType="dashed"
+        noOfSections={4}
+        yAxisLabelWidth={45}
+        formatYLabel={(v) => formatYValue(v, unit.label)}
+      />
+    </View>
   );
 }
 
@@ -250,6 +263,7 @@ function MonthlyGroupedBarChart({
   unit: { label: string; divisor: number };
 }) {
   const theme = useTheme();
+  const [selectedBar, setSelectedBar] = useState<{ month: number; year: number; value: number } | null>(null);
 
   const yearCount = selectedYears.length;
 
@@ -297,7 +311,12 @@ function MonthlyGroupedBarChart({
   const maxValue = dataMax === 0 ? noOfSections : Math.ceil(dataMax / noOfSections) * noOfSections;
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, gap: 4 }}>
+      {selectedBar && (
+        <Text style={{ fontSize: 12, color: theme.colors.gray1, textAlign: "center" }}>
+          {MONTH_LABELS[selectedBar.month]} {selectedBar.year} · {formatYValue(String(selectedBar.value), unit.label)}
+        </Text>
+      )}
       <BarChart
         data={barData}
         barWidth={barWidth}
@@ -314,7 +333,15 @@ function MonthlyGroupedBarChart({
         yAxisLabelWidth={45}
         noOfSections={noOfSections}
         formatYLabel={(v) => formatYValue(v, unit.label)}
-        disablePress
+        onPress={(item: barDataItem, index: number) => {
+          const barMonth = Math.floor(index / yearCount);
+          const yearIdx = index % yearCount;
+          setSelectedBar({
+            month: barMonth,
+            year: selectedYears[yearIdx],
+            value: Math.round((item.value ?? 0) * 100) / 100,
+          });
+        }}
       />
     </View>
   );
