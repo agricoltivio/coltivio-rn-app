@@ -62,7 +62,7 @@ export function PlotsLayer({
     return {
       type: "FeatureCollection",
       features: plots.map((plot) => {
-        const centroid = turf.centroid(turf.multiPolygon(plot.geometry.coordinates));
+        const centroid = turf.centerOfMass(turf.multiPolygon(plot.geometry.coordinates));
         return {
           type: "Feature" as const,
           properties: { name: plot.name },
