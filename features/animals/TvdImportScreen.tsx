@@ -7,6 +7,7 @@ import { Select } from "@/components/select/Select";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3 } from "@/theme/Typography";
 import * as DocumentPicker from "expo-document-picker";
+import * as Sharing from "expo-sharing";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, View } from "react-native";
@@ -89,10 +90,31 @@ export function TvdImportScreen({ navigation }: TvdImportScreenProps) {
 
       Alert.alert(t("animals.tvd_import.success_title"), message);
       setSelectedFile(null);
-    } catch (error) {
+    } catch {
+      const fileForSharing = selectedFile;
+      const sharingAvailable =
+        fileForSharing !== null && (await Sharing.isAvailableAsync());
+
       Alert.alert(
         t("common.error"),
-        error instanceof Error ? error.message : t("common.unknown_error"),
+        sharingAvailable
+          ? `${t("common.unknown_error")}\n\n${t("animals.tvd_import.error_report_prompt")}`
+          : t("common.unknown_error"),
+        sharingAvailable
+          ? [
+              {
+                text: t("animals.tvd_import.send_file"),
+                onPress: () =>
+                  Sharing.shareAsync(fileForSharing.uri, {
+                    mimeType:
+                      fileForSharing.mimeType ??
+                      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    dialogTitle: fileForSharing.name,
+                  }),
+              },
+              { text: t("buttons.ok"), style: "cancel" },
+            ]
+          : undefined,
       );
     } finally {
       setLoading(false);
