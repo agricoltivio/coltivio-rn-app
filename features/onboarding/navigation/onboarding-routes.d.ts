@@ -5,6 +5,7 @@ export type OnboardingStackParamList = {
   SelectFarmLocation: undefined;
   SelectFarmLocationSearch: undefined;
   SelectFederalFarmIdMap: undefined;
+  SelectFederalFarmIdParcelMap: undefined;
   OnboardingPreference: undefined;
   FarmSummary: undefined;
 };
@@ -19,6 +20,9 @@ export type SelectFarmLocationSearchModalProps =
 
 export type SelectFederalFarmIdMapScreenProps =
   StackScreenProps<"SelectFederalFarmIdMap">;
+
+export type SelectFederalFarmIdParcelMapScreenProps =
+  StackScreenProps<"SelectFederalFarmIdParcelMap">;
 
 export type OnboardingPreferenceScreenProps =
   StackScreenProps<"OnboardingPreference">;

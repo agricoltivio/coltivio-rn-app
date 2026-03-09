@@ -55,7 +55,7 @@ export function FarmSummaryScreen({ navigation }: FarmSummaryScreenProps) {
         <FarmSummaryPage federalFarmId={data.federalFarmId} />
       </View>
       <View style={{ padding: theme.spacing.m }}>
-        <Stepper totalSteps={4} currentStep={4} />
+        <Stepper totalSteps={5} currentStep={5} />
         <View
           style={{
             flexDirection: "row",

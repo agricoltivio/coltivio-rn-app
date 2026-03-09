@@ -32,7 +32,7 @@ export function SelectFarmNameScreen({
         />
       </ScrollView>
       <View style={{ padding: theme.spacing.m }}>
-        <Stepper totalSteps={4} currentStep={1} />
+        <Stepper totalSteps={5} currentStep={1} />
         <View
           style={{
             flexDirection: "row",

@@ -228,13 +228,14 @@
     "federal_farm_number": {
       "modal": {
         "heading": "Your Farm Registration Number",
-        "body": "Tap a parcel or manually enter your registration number."
+        "body": "Tap one of your parcels to select your farm registration number."
       },
       "modal_not_found": {
         "heading": "Your Farm Registration Number",
         "body": "Unfortunately, we could not find any parcels at your location. The Cantons of Obwalden, Nidwalden and Waadt are unfortunately not yet supported. You can skip this step and manually draw your plots."
       },
-      "confirmation": "Is {{federalFarmId}} your farm registration number?"
+      "confirmation": "Is {{federalFarmId}} your farm registration number?",
+      "select_on_map_hint": "Don't know your farm number? Tap here to select a parcel on the map."
     },
     "summary": {
       "heading": "All set!",
@@ -1082,13 +1083,16 @@
     },
     "tvd_import": {
       "title": "TVD Import",
-      "experimental": "This feature is experimental.",
+      "experimental": "This feature is in development.",
       "instructions": "Download the livestock as an Excel file from the TVD and upload it here.",
       "select_file": "Select Excel file",
       "import_button": "Import",
       "success_title": "Import completed",
       "success_message": "{{imported}} of {{total}} animals were imported.",
       "skipped_message": "{{count}} animals were skipped.",
+      "import_error": "The import failed. Please try again.",
+      "error_report_prompt": "It would help us if you sent the file so we can fix the issue.",
+      "send_file": "Send file",
       "onboarding_heading": "Import animals from TVD",
       "onboarding_body": "This import requires an Excel file from the \"Tierbestand\" (livestock) section of TVD. Export it using the \"Excel generieren\" button."
     },

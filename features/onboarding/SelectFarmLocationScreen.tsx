@@ -30,7 +30,7 @@ export function SelectFarmLocationScreen({
         />
       </ScrollView>
       <View style={{ padding: theme.spacing.m }}>
-        <Stepper totalSteps={4} currentStep={2} />
+        <Stepper totalSteps={5} currentStep={2} />
         <View
           style={{
             flexDirection: "row",

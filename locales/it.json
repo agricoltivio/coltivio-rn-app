@@ -228,13 +228,14 @@
     "federal_farm_number": {
       "modal": {
         "heading": "Il tuo Codice Azienda Agricola",
-        "body": "Tocca uno dei tuoi campi o cerca manualmente il tuo codice di registrazione."
+        "body": "Tocca una delle tue particelle per selezionare il tuo codice azienda agricola."
       },
       "modal_not_found": {
         "heading": "Il tuo numero azienda",
         "body": "Purtroppo non abbiamo trovato particelle nella tua posizione. I cantoni Obvaldo, Nidvaldo e Vaud non sono ancora supportati. Puoi saltare questo passaggio e disegnare manualmente le superfici."
       },
-      "confirmation": "{{federalFarmId}} è il tuo codice azienda agricola?"
+      "confirmation": "{{federalFarmId}} è il tuo codice azienda agricola?",
+      "select_on_map_hint": "Non conosci il tuo numero aziendale? Tocca qui per selezionare una parcella sulla mappa."
     },
     "summary": {
       "heading": "Tutto pronto!",
@@ -1082,13 +1083,16 @@
     },
     "tvd_import": {
       "title": "Importazione TVD",
-      "experimental": "Questa funzione è sperimentale.",
+      "experimental": "Questa funzione è in sviluppo.",
       "instructions": "Scarica l'elenco degli animali come file Excel dalla TVD e caricalo qui.",
       "select_file": "Seleziona file Excel",
       "import_button": "Importa",
       "success_title": "Importazione completata",
       "success_message": "{{imported}} di {{total}} animali sono stati importati.",
       "skipped_message": "{{count}} animali sono stati ignorati.",
+      "import_error": "L'importazione è fallita. Riprova.",
+      "error_report_prompt": "Ci aiuterebbe se inviassi il file in modo da poter risolvere il problema.",
+      "send_file": "Invia file",
       "onboarding_heading": "Importa animali dalla TVD",
       "onboarding_body": "Per l'importazione è necessario un file Excel dalla sezione «Tierbestand» della TVD. Esportalo tramite il pulsante «Excel generieren»."
     },

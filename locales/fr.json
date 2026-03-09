@@ -228,13 +228,14 @@
     "federal_farm_number": {
       "modal": {
         "heading": "Votre numéro d'enregistrement de l'exploitation agricole",
-        "body": "Appuyez sur l'une de vos parcelles ou recherchez manuellement votre numéro d'enregistrement."
+        "body": "Appuyez sur l'une de vos parcelles pour sélectionner votre numéro d'exploitation."
       },
       "modal_not_found": {
         "heading": "Votre numéro d'exploitation",
         "body": "Malheureusement, nous n'avons trouvé aucun champ à votre emplacement. Les cantons Obwald, Nidwald et Vaud ne sont pas encore pris en charge. Vous pouvez passer cette étape et dessiner les champs manuellement."
       },
-      "confirmation": "Est-ce que {{federalFarmId}} est votre numéro d'enregistrement de l'exploitation agricole ?"
+      "confirmation": "Est-ce que {{federalFarmId}} est votre numéro d'enregistrement de l'exploitation agricole ?",
+      "select_on_map_hint": "Numéro d'exploitation inconnu ? Appuyez ici pour sélectionner une parcelle sur la carte."
     },
     "summary": {
       "heading": "Tout est prêt !",
@@ -1082,13 +1083,16 @@
     },
     "tvd_import": {
       "title": "Import TVD",
-      "experimental": "Cette fonctionnalité est expérimentale.",
+      "experimental": "Cette fonctionnalité est en développement.",
       "instructions": "Téléchargez le « Cheptel » sous forme de fichier Excel depuis la TVD et importez-le ici.",
       "select_file": "Sélectionner un fichier Excel",
       "import_button": "Importer",
       "success_title": "Import terminé",
       "success_message": "{{imported}} sur {{total}} animaux ont été importés.",
       "skipped_message": "{{count}} animaux ont été ignorés.",
+      "import_error": "L'importation a échoué. Veuillez réessayer.",
+      "error_report_prompt": "Il nous serait utile que vous envoyiez le fichier afin que nous puissions résoudre le problème.",
+      "send_file": "Envoyer le fichier",
       "onboarding_heading": "Importer des animaux depuis la TVD",
       "onboarding_body": "L'importation nécessite un fichier Excel de la section « Tierbestand » de la TVD. Exportez-le via le bouton « Excel generieren »."
     },

@@ -228,13 +228,14 @@
     "federal_farm_number": {
       "modal": {
         "heading": "Deine Betriebsnummer",
-        "body": "Tippe entweder auf eine deiner Parzellen oder suche manuell nach deiner Betriebsnummer."
+        "body": "Tippe auf eine deiner Parzellen, um deine Betriebsnummer auszuwählen."
       },
       "modal_not_found": {
         "heading": "Deine Betriebsnummer",
         "body": "Leider haben wir keine Parzellen an deinem Standort gefunden. Die Kantone Obwalden, Nidwalden und Waadt sind leider noch nicht unterstützt. Du kannst diesen Schritt überspringen und die Flächen manuell einzeichnen."
       },
-      "confirmation": "Ist {{federalFarmId}} deine Betriebsnummer?"
+      "confirmation": "Ist {{federalFarmId}} deine Betriebsnummer?",
+      "select_on_map_hint": "Betriebsnummer unbekannt? Hier tippen, um eine Parzelle auf der Karte auszuwählen."
     },
     "summary": {
       "heading": "Geschafft!",
@@ -1094,13 +1095,16 @@
     },
     "tvd_import": {
       "title": "TVD Import",
-      "experimental": "Diese Funktion ist experimentell.",
+      "experimental": "Diese Funktion ist in Entwicklung.",
       "instructions": "Lade den «Tierbestand» als Excel-Datei von der TVD herunter und lade sie hier hoch.",
       "select_file": "Excel-Datei auswählen",
       "import_button": "Importieren",
       "success_title": "Import abgeschlossen",
       "success_message": "{{imported}} von {{total}} Tieren wurden importiert.",
       "skipped_message": "{{count}} Tiere wurden übersprungen.",
+      "import_error": "Der Import ist fehlgeschlagen. Bitte versuche es erneut.",
+      "error_report_prompt": "Es würde uns helfen, wenn du die Datei einsendest, damit wir das Problem beheben können.",
+      "send_file": "Datei senden",
       "onboarding_heading": "Tiere aus TVD importieren",
       "onboarding_body": "Für den Import wird eine Excel-Datei aus dem «Tierbestand» der TVD benötigt. Exportiere diese über den Button «Excel generieren»."
     }

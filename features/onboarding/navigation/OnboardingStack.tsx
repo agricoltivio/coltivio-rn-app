@@ -3,6 +3,7 @@ import { OnboardingPreferenceScreen } from "@/features/onboarding/OnboardingPref
 import { SelectFarmLocationScreen } from "@/features/onboarding/SelectFarmLocationScreen";
 import { SelectFarmLocationSearchModal } from "@/features/onboarding/SelectFarmLocationSearchModal";
 import { SelectFarmNameScreen } from "@/features/onboarding/SelectFarmNameScreen";
+import { SelectFederalFarmIdScreen } from "@/features/onboarding/SelectFederalFarmIdScreen";
 import { SelectFederalFarmIdMapScreen } from "@/features/onboarding/SelectFederalFarmIdMapScreen";
 import React from "react";
 import { Stack } from "@/navigation/stack";
@@ -24,6 +25,13 @@ export function renderOnboardingStack(theme: DefaultTheme) {
         />
         <Stack.Screen
           name="SelectFederalFarmIdMap"
+          component={SelectFederalFarmIdScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="SelectFederalFarmIdParcelMap"
           component={SelectFederalFarmIdMapScreen}
           options={{
             animation: "fade",

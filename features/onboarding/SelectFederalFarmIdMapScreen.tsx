@@ -1,8 +1,7 @@
 import { Button } from "@/components/buttons/Button";
-import { AutocompleteInput } from "@/components/inputs/AutocompleteInput";
 import { MapLibreMap } from "@/components/map/MapLibreMap";
 import { HomeMarkerLayer } from "@/components/map/HomeMarkerLayer";
-import { SelectFederalFarmIdMapScreenProps } from "@/features/onboarding/navigation/onboarding-routes";
+import { SelectFederalFarmIdParcelMapScreenProps } from "@/features/onboarding/navigation/onboarding-routes";
 import { hexToRgba } from "@/theme/theme";
 import { H3 } from "@/theme/Typography";
 import {
@@ -14,16 +13,12 @@ import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import { useDebounce } from "@uidotdev/usehooks";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
-import {
-  useFederalFarmIdSearchQuery,
-  usePlotsByLocationQuery,
-} from "../federal-plots/federalPlots.hooks";
+import { usePlotsByLocationQuery } from "../federal-plots/federalPlots.hooks";
 import { MapInfoModal } from "../map/overlays/MapInfoModal";
 import { NavigationButton } from "./NavigationButton";
 import { useOnboarding } from "./OnboardingContext";
@@ -31,7 +26,7 @@ import { Stepper } from "./Stepper";
 
 export function SelectFederalFarmIdMapScreen({
   navigation,
-}: SelectFederalFarmIdMapScreenProps) {
+}: SelectFederalFarmIdParcelMapScreenProps) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
@@ -44,31 +39,6 @@ export function SelectFederalFarmIdMapScreen({
   );
 
   const [federalFarmId, setFederalFarmId] = useState<string | undefined>();
-  const [federalFarmIdSearchText, setFederalFarmIdSearchText] = useState(
-    data.federalFarmId || "",
-  );
-
-  const debouncedFederalFarmIdSearchText = useDebounce(
-    federalFarmIdSearchText,
-    800,
-  );
-
-  const { federalFarmIds, isFetching } = useFederalFarmIdSearchQuery(
-    debouncedFederalFarmIdSearchText,
-    data.location?.lng!,
-    data.location?.lat!,
-    3,
-    20,
-    !data.federalFarmId && debouncedFederalFarmIdSearchText !== "",
-  );
-
-  function onChangeQuery(value: string) {
-    setFederalFarmIdSearchText(value);
-  }
-
-  function onFederalFarmIdSelect(value: string) {
-    setFederalFarmId(value);
-  }
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("transitionEnd", () => {
@@ -97,31 +67,33 @@ export function SelectFederalFarmIdMapScreen({
   }, [federalFarmId]);
 
   function handleOnConfirm() {
-    setData({
-      ...data,
-      federalFarmId: federalFarmId!,
-    });
+    setData({ ...data, federalFarmId: federalFarmId! });
     handleCloseBottomDrawer();
     navigation.navigate("OnboardingPreference");
   }
 
-  // Build feature collection for federal parcels
-  const parcelsFeatureCollection = useMemo((): GeoJSON.FeatureCollection => ({
-    type: "FeatureCollection",
-    features: plots.map((parcel) => ({
-      type: "Feature",
-      properties: { federalFarmId: parcel.federalFarmId },
-      geometry: parcel.geometry,
-    })),
-  }), [plots]);
+  const parcelsFeatureCollection = useMemo(
+    (): GeoJSON.FeatureCollection => ({
+      type: "FeatureCollection",
+      features: plots.map((parcel) => ({
+        type: "Feature",
+        properties: { federalFarmId: parcel.federalFarmId },
+        geometry: parcel.geometry,
+      })),
+    }),
+    [plots],
+  );
 
   const handleParcelPress = useCallback(
-    (event: { stopPropagation(): void; nativeEvent: { features: GeoJSON.Feature[] } }) => {
+    (event: {
+      stopPropagation(): void;
+      nativeEvent: { features: GeoJSON.Feature[] };
+    }) => {
       event.stopPropagation();
       const feature = event.nativeEvent.features[0];
       const fid = feature?.properties?.federalFarmId;
       if (typeof fid === "string") {
-        onFederalFarmIdSelect(fid);
+        setFederalFarmId(fid);
       }
     },
     [],
@@ -160,26 +132,6 @@ export function SelectFederalFarmIdMapScreen({
         </GeoJSONSource>
         <HomeMarkerLayer center={initialCenter} />
       </MapLibreMap>
-      <View
-        style={{
-          position: "absolute",
-          top: insets.top + 50,
-          left: theme.spacing.m,
-          right: theme.spacing.m,
-        }}
-      >
-        <AutocompleteInput
-          label={t("forms.labels.federal_farm_number")}
-          placeholder={t("forms.placeholders.federal_farm_number")}
-          setQuery={onChangeQuery}
-          results={federalFarmIds ?? []}
-          query={federalFarmIdSearchText}
-          onResultSelect={onFederalFarmIdSelect}
-          getListItemTitel={(item) => item}
-          isLoading={isFetching}
-          moveTopOnFocus={false}
-        />
-      </View>
 
       {mapVisible && plots?.length > 0 ? (
         <MapInfoModal
@@ -207,7 +159,7 @@ export function SelectFederalFarmIdMapScreen({
           paddingHorizontal: theme.spacing.m,
         }}
       >
-        <Stepper totalSteps={4} currentStep={3} />
+        <Stepper totalSteps={5} currentStep={3} />
         <View
           style={{
             flexDirection: "row",
