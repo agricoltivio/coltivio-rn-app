@@ -6,6 +6,7 @@ export type FieldCalendarStackParamList = {
   FieldCalendarExport: undefined;
   FieldCalendarExportSuccess: undefined;
   FieldCalendarOnboarding: undefined;
+  FieldEventsMap: undefined;
 };
 
 export type FieldCalendarScreenProps = StackScreenProps<"FieldCalendar">;
@@ -21,3 +22,5 @@ export type FieldCalendarExportSuccessScreenProps =
 
 export type FieldCalendarOnboardingScreenProps =
   StackScreenProps<"FieldCalendarOnboarding">;
+
+export type FieldEventsMapScreenProps = StackScreenProps<"FieldEventsMap">;

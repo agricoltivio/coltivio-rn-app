@@ -5,6 +5,7 @@ import { FieldCalendarExportSuccessScreen } from "../FieldCalendarExportSuccessS
 import { FieldCalendarScreen } from "../FieldCalendarScreen";
 import { FieldCalendarSettingsScreen } from "../FieldCalendarSettingsScreen";
 import { FieldCalendarOnboardingScreen } from "../FieldCalendarOnboardingScreen";
+import { FieldEventsMapScreen } from "../FieldEventsMapScreen";
 import { DefaultTheme } from "styled-components/native";
 import { View } from "react-native";
 
@@ -67,6 +68,14 @@ export function renderFieldCalendarStack(theme: DefaultTheme, navigation: any) {
         headerShown: false,
       }}
       component={FieldCalendarOnboardingScreen}
+    />,
+    <Stack.Screen
+      key="field-events-map"
+      name="FieldEventsMap"
+      options={{
+        headerShown: false,
+      }}
+      component={FieldEventsMapScreen}
     />,
   ];
 }

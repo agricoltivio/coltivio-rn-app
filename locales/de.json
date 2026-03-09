@@ -613,6 +613,14 @@
   },
   "field_calendar": {
     "field_calendar": "Feldkalender",
+    "field_events_map": "Jahresrückblick",
+    "no_events_for_year": "Keine Feldarbeiten für dieses Jahr",
+    "event_type": {
+      "harvest": "Ernte",
+      "fertilizerApplication": "Düngung",
+      "cropProtectionApplication": "Pflanzenschutz",
+      "tillage": "Bodenbearbeitung"
+    },
     "crop_families": "Pflanzenfamilien",
     "crops": "Kulturen",
     "crop_rotations": "Fruchtfolgen",
@@ -630,7 +638,8 @@
       "fertilization": "Düngung",
       "protection": "Pflanzenschutz",
       "harvest": "Ernte",
-      "export": "Export"
+      "export": "Export",
+      "tools": "Tools"
     },
     "onboarding": {
       "welcome_heading": "Willkommen im Feldkalender",

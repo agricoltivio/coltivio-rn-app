@@ -613,6 +613,14 @@
   },
   "field_calendar": {
     "field_calendar": "Field Calendar",
+    "field_events_map": "Year in Review",
+    "no_events_for_year": "No field events for this year",
+    "event_type": {
+      "harvest": "Harvest",
+      "fertilizerApplication": "Fertilization",
+      "cropProtectionApplication": "Crop Protection",
+      "tillage": "Tillage"
+    },
     "crop_families": "Crop Families",
     "crops": "Crops",
     "crop_rotations": "Crop Rotations",
@@ -630,7 +638,8 @@
       "fertilization": "Fertilization",
       "protection": "Crop Protection",
       "harvest": "Harvest",
-      "export": "Export"
+      "export": "Export",
+      "tools": "Tools"
     },
     "onboarding": {
       "welcome_heading": "Welcome to the Field Calendar",

@@ -69,6 +69,8 @@ export const MapLibreMap = forwardRef<MapRef, MapLibreMapProps>(
             dragPan={dragPan}
             onPress={onPress}
             onDidFinishLoadingMap={() => setMapReady(true)}
+            attribution={false}
+            logo={false}
           >
             <Camera
               ref={cameraRef}

@@ -613,6 +613,14 @@
   },
   "field_calendar": {
     "field_calendar": "Calendario dei campi",
+    "field_events_map": "Anno in Retrospettiva",
+    "no_events_for_year": "Nessuna attività per questo anno",
+    "event_type": {
+      "harvest": "Raccolta",
+      "fertilizerApplication": "Fertilizzazione",
+      "cropProtectionApplication": "Protezione colture",
+      "tillage": "Lavorazione del terreno"
+    },
     "crop_families": "Famiglie di colture",
     "crops": "Colture",
     "crop_rotations": "Rotazioni colturali",
@@ -630,7 +638,8 @@
       "fertilization": "Fertilizzazione",
       "protection": "Trattamento fitosanitario",
       "harvest": "Raccolta",
-      "export": "Esportazione"
+      "export": "Esportazione",
+      "tools": "Strumenti"
     },
     "onboarding": {
       "welcome_heading": "Benvenuto nel calendario dei campi",

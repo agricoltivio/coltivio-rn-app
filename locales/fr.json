@@ -613,6 +613,14 @@
   },
   "field_calendar": {
     "field_calendar": "Calendrier cultural",
+    "field_events_map": "Rétrospective annuelle",
+    "no_events_for_year": "Aucune activité pour cette année",
+    "event_type": {
+      "harvest": "Récolte",
+      "fertilizerApplication": "Fertilisation",
+      "cropProtectionApplication": "Protection des cultures",
+      "tillage": "Travail du sol"
+    },
     "crop_families": "Familles de cultures",
     "crops": "Cultures",
     "crop_rotations": "Rotations culturales",
@@ -630,7 +638,8 @@
       "fertilization": "Fertilisation",
       "protection": "Protection des cultures",
       "harvest": "Récolte",
-      "export": "Export"
+      "export": "Export",
+      "tools": "Outils"
     },
     "onboarding": {
       "welcome_heading": "Bienvenue dans le calendrier cultural",
