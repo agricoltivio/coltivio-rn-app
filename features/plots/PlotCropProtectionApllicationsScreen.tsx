@@ -154,6 +154,7 @@ export function PlotCropProtectionApplicationsScreen({
             <Headline>{t("common.no_entries")}</Headline>
           ) : (
             <SectionList
+              stickySectionHeadersEnabled={false}
               sections={sections}
               keyExtractor={(item) => item.id}
               renderSectionHeader={({ section: { title } }) => (
