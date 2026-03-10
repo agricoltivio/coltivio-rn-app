@@ -65,6 +65,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
           <View
             style={{
               flexDirection: "row",
+              flexWrap: "wrap",
               marginTop: theme.spacing.m,
               gap: theme.spacing.m,
             }}
@@ -72,6 +73,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
             <HomeTile
               title={t("home.tiles.farm")}
               onPress={() => navigation.navigate("Farm")}
+              style={{ width: "47%" }}
             >
               <Image
                 source={require("@/assets/images/farm-icon-6.png")}
@@ -88,6 +90,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
             <HomeTile
               title={t("home.tiles.plots")}
               onPress={() => navigation.navigate("PlotsMap", {})}
+              style={{ width: "47%" }}
             >
               <Image
                 source={require("@/assets/images/field-calendar-icon-4.png")}
@@ -100,17 +103,10 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                 }}
               />
             </HomeTile>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              marginTop: theme.spacing.m,
-              gap: theme.spacing.m,
-            }}
-          >
             <HomeTile
               title={t("home.tiles.animal_husbandry")}
               onPress={() => navigation.navigate("AnimalsHub")}
+              style={{ width: "47%" }}
             >
               <Image
                 source={require("@/assets/images/animals-icon.png")}
@@ -126,6 +122,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
             <HomeTile
               title={t("home.tiles.field_calendar")}
               onPress={() => navigation.navigate("FieldCalendar")}
+              style={{ width: "47%" }}
             >
               <Image
                 source={require("@/assets/images/harvest-icon.png")}
@@ -134,6 +131,22 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                   height: 110,
                   opacity: 0.9,
                   marginBottom: theme.spacing.xxs,
+                  borderBottomLeftRadius: 10,
+                  borderBottomRightRadius: 10,
+                }}
+              />
+            </HomeTile>
+            <HomeTile
+              title={t("home.tiles.wiki")}
+              onPress={() => navigation.navigate("WikiList")}
+              style={{ width: "47%" }}
+            >
+              <Image
+                source={require("@/assets/images/community-icon-3.png")}
+                contentFit="contain"
+                style={{
+                  height: 110,
+                  opacity: 0.9,
                   borderBottomLeftRadius: 10,
                   borderBottomRightRadius: 10,
                 }}

@@ -19,7 +19,7 @@ export function HomeTile({
   const theme = useTheme();
   return (
     <TouchableOpacity
-      style={[{ flex: 1 }]}
+      style={[style]}
       onPress={onPress}
       disabled={disabled}
     >
@@ -32,7 +32,6 @@ export function HomeTile({
             backgroundColor: theme.colors.accent,
             opacity: disabled ? 0.5 : 1,
           },
-          style,
         ]}
       >
         {title ? (

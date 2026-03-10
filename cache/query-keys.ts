@@ -26,6 +26,7 @@ import { cropProtectionApplicationPresetsQueryKeys } from "@/features/crop-prote
 import { herdsQueryKeys } from "@/features/animals/herds.querykeys";
 import { outdoorJournalQueryKeys } from "@/features/animals/outdoor-journal.querykeys";
 import { fieldEventsQueryKeys } from "@/features/field-calendar/fieldEvents.querykeys";
+import { wikiQueryKeys } from "@/features/wiki/wiki.querykeys";
 
 export const queryKeys = mergeQueryKeys(
   animalsQueryKeys,
@@ -55,4 +56,5 @@ export const queryKeys = mergeQueryKeys(
   herdsQueryKeys,
   outdoorJournalQueryKeys,
   fieldEventsQueryKeys,
+  wikiQueryKeys,
 );
