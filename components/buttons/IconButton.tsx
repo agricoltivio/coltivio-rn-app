@@ -63,7 +63,7 @@ export function IonIconButton({
 }: IonIconButtonProps) {
   return (
     <ButtonBase {...rest}>
-      <Ionicons name={icon} size={iconSize} color={color} />
+      <Ionicons name={icon} size={iconSize ?? 24} color={color} />
     </ButtonBase>
   );
 }
@@ -80,7 +80,7 @@ export function MaterialCommunityIconButton({
 }: MaterialCommunityIconButtonProps) {
   return (
     <ButtonBase {...rest}>
-      <MaterialCommunityIcons name={icon} size={iconSize} color={color} />
+      <MaterialCommunityIcons name={icon} size={iconSize ?? 24} color={color} />
     </ButtonBase>
   );
 }
@@ -97,7 +97,7 @@ export function MaterialIconButton({
 }: MaterialIconButtonProps) {
   return (
     <ButtonBase {...rest}>
-      <MaterialIcons name={icon} size={iconSize} color={color} />
+      <MaterialIcons name={icon} size={iconSize ?? 24} color={color} />
     </ButtonBase>
   );
 }
@@ -110,7 +110,7 @@ const ButtonContainer = styled.TouchableOpacity<{
   background-color: ${({ theme, type, disabled }) =>
     disabled ? theme.colors.gray3 : theme.colors[type]};
   padding: 5px;
-  border-radius: ${({ theme }) => theme.radii.l}px;
+  border-radius: ${({ theme }) => theme.radii.m}px;
   border: ${({ theme, type }) =>
     type === "accent" ? `1px solid ${theme.colors.gray3}` : "none"};
   justify-content: center;

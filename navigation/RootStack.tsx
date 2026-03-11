@@ -141,7 +141,7 @@ export function RootStack() {
         headerStyle: {
           backgroundColor: theme.colors.background,
         },
-        headerShadowVisible: false,
+        headerShadowVisible: true,
       }}
     >
       {renderStacks()}

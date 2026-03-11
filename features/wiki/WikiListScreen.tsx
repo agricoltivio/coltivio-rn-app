@@ -42,7 +42,7 @@ export function WikiListScreen({ navigation }: WikiListScreenProps) {
 
   useEffect(() => {
     if (!localSettings.wikiOnboardingCompleted) {
-      navigation.replace("WikiOnboarding" as never);
+      navigation.navigate("WikiOnboarding");
     }
   }, []);
 

@@ -16,6 +16,10 @@ import {
   FieldCalendarGroupConfig,
 } from "../field-calendar/field-calendar-settings";
 import {
+  DEFAULT_HOME_TILES,
+  HomeTileConfig,
+} from "../home/home-tiles-settings";
+import {
   DEFAULT_SPEED_DIAL_ITEMS,
   SpeedDialActionConfig,
 } from "../home/speed-dial-settings";
@@ -38,6 +42,8 @@ type LocalSettingsData = {
   speedDialEnabled: boolean;
   speedDialOnboardingCompleted: boolean;
   speedDialItems: SpeedDialActionConfig[];
+  homeTiles: HomeTileConfig[];
+  homeTilesLayout: "grid" | "list";
   wikiOnlyPrivate: boolean;
   wikiOnboardingCompleted: boolean;
 };
@@ -72,6 +78,8 @@ export const defaultLocalSettings: LocalSettingsData = {
   speedDialEnabled: true,
   speedDialOnboardingCompleted: false,
   speedDialItems: DEFAULT_SPEED_DIAL_ITEMS,
+  homeTiles: DEFAULT_HOME_TILES,
+  homeTilesLayout: "list",
   wikiOnlyPrivate: false,
   wikiOnboardingCompleted: false,
 };
@@ -82,6 +90,16 @@ export const LocalSettingsContext = createContext<LocalSettings>({
 });
 
 const localSettingsStorageKey = "localSettings";
+
+// Preserves stored order, appends new tile configs not yet in storage
+function mergeHomeTiles(
+  stored: HomeTileConfig[],
+  defaults: HomeTileConfig[],
+): HomeTileConfig[] {
+  const storedIds = new Set(stored.map((i) => i.id));
+  const newItems = defaults.filter((i) => !storedIds.has(i.id));
+  return [...stored, ...newItems];
+}
 
 // Preserves stored order, appends new items not yet in storage
 function mergeSpeedDialItems(
@@ -132,6 +150,7 @@ export function LocalSettingsProvider({ children }: PropsWithChildren) {
             animalsGroups: mergeGroups(stored.animalsGroups ?? [], DEFAULT_ANIMALS_GROUPS),
             fieldCalendarGroups: mergeGroups(stored.fieldCalendarGroups ?? [], DEFAULT_FIELD_CALENDAR_GROUPS),
             speedDialItems: mergeSpeedDialItems(stored.speedDialItems ?? [], DEFAULT_SPEED_DIAL_ITEMS),
+            homeTiles: mergeHomeTiles(stored.homeTiles ?? [], DEFAULT_HOME_TILES),
           });
         }
       }

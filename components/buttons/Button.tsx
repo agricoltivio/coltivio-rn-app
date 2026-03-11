@@ -45,11 +45,17 @@ const ButtonContainer = styled.TouchableOpacity<{
 }>`
   flex-direction: row;
   background-color: ${({ theme, type, disabled }) =>
-    disabled ? theme.colors.gray3 : theme.colors[type]};
+    disabled
+      ? theme.colors.gray3
+      : type === "primary"
+      ? theme.colors.mocha
+      : type === "accent"
+      ? theme.colors.white
+      : theme.colors[type]};
   padding: 12px;
-  border-radius: ${({ theme }) => theme.radii.l}px;
+  border-radius: ${({ theme }) => theme.radii.m}px;
   border: ${({ theme, type }) =>
-    type === "accent" ? `1px solid ${theme.colors.gray3}` : "none"};
+    type === "accent" ? `1.5px solid ${theme.colors.primary}` : "none"};
   justify-content: center;
   align-items: center;
 `;
@@ -59,7 +65,7 @@ const ButtonText = styled.Text<{
   fontSize?: number;
 }>`
   color: ${({ theme, type }) =>
-    type === "accent" ? theme.colors.gray1 : theme.colors.white};
-  font-size: ${({ fontSize }) => fontSize ?? 20}px;
-  font-weight: bold;
+    type === "accent" ? theme.colors.primary : theme.colors.white};
+  font-size: ${({ fontSize }) => fontSize ?? 16}px;
+  font-weight: 600;
 `;
