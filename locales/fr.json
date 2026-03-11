@@ -120,7 +120,6 @@
     "yes": "Oui",
     "no": "Non",
     "no_entries": "Aucune entrée pour le moment",
-    "notes": "Notes",
     "area_acres": "Surface: {{area}}a",
     "dont_show_again": "Ne plus afficher",
     "error": "Erreur",
@@ -139,7 +138,8 @@
     "crate": "Caisse",
     "total_amount": "Quantité totale",
     "dashboard": "Tableau de bord",
-    "list": "Liste"
+    "list": "Liste",
+    "notes": "Notes"
   },
   "presets": {
     "preset": "Modèle",
@@ -275,7 +275,8 @@
       "machines": "Machines",
       "field_calendar": "Calendrier des champs",
       "animal_husbandry": "Élevage",
-      "community": "Communauté"
+      "community": "Communauté",
+      "wiki": "Wiki"
     }
   },
   "farm": {
@@ -1060,7 +1061,6 @@
     "start_date": "Date de début",
     "end_date": "Date de fin",
     "end_date_optional": "Date de fin (facultative)",
-    "notes": "Notes",
     "recurrence": "Récurrence",
     "recurrence_optional": "Récurrence (facultative)",
     "until": "jusqu'au",
@@ -1116,7 +1116,8 @@
       "update_n_animals": "{{count}} animaux mis à jour",
       "delete_n_animals": "{{count}} animaux supprimés",
       "select_action": "Sélectionner l'action"
-    }
+    },
+    "notes": "Notes"
   },
   "drugs": {
     "drugs": "Médicaments",
@@ -1221,6 +1222,47 @@
       "welcome_body": "Avec l'accès rapide, vous pouvez lancer jusqu'à 4 actions directement depuis l'écran d'accueil.",
       "settings_hint": "Vous pouvez ajuster les actions ou désactiver l'accès rapide à tout moment dans les paramètres.",
       "configure_heading": "Configurer les actions"
+    }
+  },
+  "wiki": {
+    "wiki": "Wiki",
+    "private": "Privé",
+    "pending_section": "Mes Soumissions",
+    "status": {
+      "draft": "Brouillon",
+      "submitted": "Soumis",
+      "under_review": "En Révision",
+      "published": "Publié",
+      "rejected": "Rejeté"
+    },
+    "create_entry": "Nouvelle Entrée",
+    "edit_entry": "Modifier",
+    "submit": "Soumettre",
+    "submit_confirm": "Voulez-vous soumettre cette entrée pour révision?",
+    "share": "Partager",
+    "share_confirm": "Cette entrée sera soumise pour révision et publiée après approbation.",
+    "delete_confirm": "Voulez-vous supprimer cette entrée?",
+    "propose_changes": "Proposer des Modifications",
+    "category": "Catégorie",
+    "title": "Titre",
+    "body": "Contenu",
+    "comments": "Commentaires",
+    "add_comment": "Écrire un commentaire...",
+    "send": "Envoyer",
+    "in_review": "En Révision",
+    "required_locale_hint": "L'allemand est requis",
+    "changes_requested": "Modifications demandées",
+    "only_private": "Afficher uniquement les entrées privées",
+    "settings": "Paramètres",
+    "onboarding": {
+      "step1_heading": "Bienvenue dans le Wiki",
+      "step1_body": "L'endroit pour conserver et partager vos connaissances.",
+      "step2_heading": "Entrées privées",
+      "step2_body": "Créez des entrées personnelles que vous seul pouvez voir.",
+      "step3_heading": "Partager avec la communauté",
+      "step3_body": "Partagez vos entrées avec la communauté. Elles passent par un processus de révision avant d'être publiées.",
+      "step4_heading": "Masquer les entrées publiques",
+      "step4_body": "Appuyez sur l'icône des paramètres pour afficher uniquement vos entrées privées."
     }
   }
 }

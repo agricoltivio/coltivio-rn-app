@@ -120,7 +120,6 @@
     "yes": "Sì",
     "no": "No",
     "no_entries": "Ancora nessun elemento",
-    "notes": "Note",
     "area_acres": "Superficie: {{area}}a",
     "dont_show_again": "Non mostrare più",
     "error": "Errore",
@@ -139,7 +138,8 @@
     "crate": "Cassetta",
     "total_amount": "Quantità totale",
     "dashboard": "Dashboard",
-    "list": "Lista"
+    "list": "Lista",
+    "notes": "Note"
   },
   "presets": {
     "preset": "Modello",
@@ -275,7 +275,8 @@
       "machines": "Macchine",
       "field_calendar": "Calendario dei Campi",
       "animal_husbandry": "Animali",
-      "community": "Pastorino"
+      "community": "Pastorino",
+      "wiki": "Wiki"
     }
   },
   "farm": {
@@ -1060,7 +1061,6 @@
     "start_date": "Data di inizio",
     "end_date": "Data di fine",
     "end_date_optional": "Data di fine (facoltativa)",
-    "notes": "Note",
     "recurrence": "Ripetizione",
     "recurrence_optional": "Ripetizione (facoltativa)",
     "until": "fino a",
@@ -1116,7 +1116,8 @@
       "update_n_animals": "Aggiorna {{count}} animali",
       "delete_n_animals": "Elimina {{count}} animali",
       "select_action": "Seleziona l'azione"
-    }
+    },
+    "notes": "Note"
   },
   "drugs": {
     "drugs": "Medicinali",
@@ -1221,6 +1222,47 @@
       "welcome_body": "Con l'accesso rapido puoi avviare fino a 4 azioni direttamente dalla schermata principale.",
       "settings_hint": "Puoi regolare le azioni o disattivare l'accesso rapido in qualsiasi momento nelle impostazioni.",
       "configure_heading": "Configura le azioni"
+    }
+  },
+  "wiki": {
+    "wiki": "Wiki",
+    "private": "Privato",
+    "pending_section": "Le Mie Proposte",
+    "status": {
+      "draft": "Bozza",
+      "submitted": "Inviato",
+      "under_review": "In Revisione",
+      "published": "Pubblicato",
+      "rejected": "Rifiutato"
+    },
+    "create_entry": "Nuova Voce",
+    "edit_entry": "Modifica",
+    "submit": "Invia",
+    "submit_confirm": "Vuoi inviare questa voce per la revisione?",
+    "share": "Condividi",
+    "share_confirm": "Questa voce verrà inviata per la revisione e pubblicata dopo l'approvazione.",
+    "delete_confirm": "Vuoi eliminare questa voce?",
+    "propose_changes": "Proponi Modifiche",
+    "category": "Categoria",
+    "title": "Titolo",
+    "body": "Contenuto",
+    "comments": "Commenti",
+    "add_note": "Aggiungi una nota...",
+    "send": "Invia",
+    "in_review": "In Revisione",
+    "required_locale_hint": "Il tedesco è obbligatorio",
+    "changes_requested": "Modifiche richieste",
+    "only_private": "Mostra solo voci private",
+    "settings": "Impostazioni",
+    "onboarding": {
+      "step1_heading": "Benvenuto nel Wiki",
+      "step1_body": "Il posto per conservare e condividere le tue conoscenze.",
+      "step2_heading": "Voci private",
+      "step2_body": "Crea voci personali che solo tu puoi vedere.",
+      "step3_heading": "Condividi con la community",
+      "step3_body": "Condividi le tue voci con la community. Passano attraverso un processo di revisione prima di essere pubblicate.",
+      "step4_heading": "Nascondi le voci pubbliche",
+      "step4_body": "Tocca l'icona delle impostazioni per mostrare solo le tue voci private."
     }
   }
 }

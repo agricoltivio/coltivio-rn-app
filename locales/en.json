@@ -120,7 +120,6 @@
     "yes": "Yes",
     "no": "No",
     "no_entries": "No entries yet",
-    "notes": "Notes",
     "area_acres": "Area: {{area}}a",
     "dont_show_again": "Don't show this again",
     "error": "Error",
@@ -139,7 +138,8 @@
     "crate": "Crate",
     "total_amount": "Total Amount",
     "dashboard": "Dashboard",
-    "list": "List"
+    "list": "List",
+    "notes": "Notes"
   },
   "presets": {
     "preset": "Preset",
@@ -275,7 +275,8 @@
       "machines": "Equipment",
       "field_calendar": "Field Calendar",
       "animal_husbandry": "Animal Husbandry",
-      "community": "Community"
+      "community": "Community",
+      "wiki": "Wiki"
     }
   },
   "farm": {
@@ -1060,7 +1061,6 @@
     "start_date": "Start Date",
     "end_date": "End Date",
     "end_date_optional": "End Date (optional)",
-    "notes": "Notes",
     "recurrence": "Recurrence",
     "recurrence_optional": "Recurrence (optional)",
     "until": "until",
@@ -1116,7 +1116,8 @@
       "update_n_animals": "Update {{count}} animals",
       "delete_n_animals": "Delete {{count}} animals",
       "select_action": "Select action"
-    }
+    },
+    "notes": "Notes"
   },
   "drugs": {
     "drugs": "Drugs",
@@ -1221,6 +1222,47 @@
       "welcome_body": "With quick access you can launch up to 4 actions directly from the home screen.",
       "settings_hint": "You can adjust the actions or disable quick access at any time in settings.",
       "configure_heading": "Configure actions"
+    }
+  },
+  "wiki": {
+    "wiki": "Wiki",
+    "private": "Private",
+    "pending_section": "My Submissions",
+    "status": {
+      "draft": "Draft",
+      "submitted": "Submitted",
+      "under_review": "Under Review",
+      "published": "Published",
+      "rejected": "Rejected"
+    },
+    "create_entry": "New Entry",
+    "edit_entry": "Edit",
+    "submit": "Submit",
+    "submit_confirm": "Do you want to submit this entry for review?",
+    "share": "Share",
+    "share_confirm": "This entry will be submitted for review and published after approval.",
+    "delete_confirm": "Do you want to delete this entry?",
+    "propose_changes": "Propose Changes",
+    "category": "Category",
+    "title": "Title",
+    "body": "Content",
+    "comments": "Comments",
+    "add_note": "Add a note...",
+    "send": "Send",
+    "in_review": "Under Review",
+    "required_locale_hint": "German is required",
+    "changes_requested": "Changes requested",
+    "only_private": "Only show private entries",
+    "settings": "Settings",
+    "onboarding": {
+      "step1_heading": "Welcome to the Wiki",
+      "step1_body": "The place to keep and share your knowledge.",
+      "step2_heading": "Private Entries",
+      "step2_body": "Create personal entries that only you can see.",
+      "step3_heading": "Share with the Community",
+      "step3_body": "Share your entries with the community. They go through a review process before being published.",
+      "step4_heading": "Hide Public Entries",
+      "step4_body": "Tap the settings icon to show only your private entries."
     }
   }
 }

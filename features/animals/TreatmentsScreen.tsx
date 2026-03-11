@@ -147,6 +147,7 @@ export function TreatmentsScreen({ navigation }: TreatmentsScreenProps) {
         <Headline>{t("treatments.no_treatments")}</Headline>
       ) : (
         <SectionList
+          stickySectionHeadersEnabled={false}
           sections={sections}
           keyExtractor={(item) => item.id}
           renderSectionHeader={({ section: { title } }) => (

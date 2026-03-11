@@ -29,6 +29,7 @@ import { cropFamiliesApi } from "./crop-families.api";
 import { herdsApi } from "./herds.api";
 import { outdoorJournalApi } from "./outdoor-journal.api";
 import { fieldEventsApi } from "./field-events.api";
+import { wikiApi } from "./wiki.api";
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 // const baseUrl = "http://localhost:8000/";
@@ -108,5 +109,6 @@ export function api(client: FetchClient) {
     herds: herdsApi(client),
     outdoorJournal: outdoorJournalApi(client),
     fieldEvents: fieldEventsApi(client),
+    wiki: wikiApi(client),
   };
 }

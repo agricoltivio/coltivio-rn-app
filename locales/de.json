@@ -120,7 +120,6 @@
     "yes": "Ja",
     "no": "Nein",
     "no_entries": "Noch keine Einträge",
-    "notes": "Notizen",
     "area_acres": "Fläche: {{area}}a",
     "dont_show_again": "Nicht mehr anzeigen",
     "error": "Fehler",
@@ -139,7 +138,8 @@
     "crate": "Harasse",
     "total_amount": "Gesamtmenge",
     "dashboard": "Dashboard",
-    "list": "Liste"
+    "list": "Liste",
+    "notes": "Notizen"
   },
   "presets": {
     "preset": "Vorlage",
@@ -275,7 +275,8 @@
       "machines": "Maschinen",
       "field_calendar": "Feldkalender",
       "animal_husbandry": "Tierhaltung",
-      "community": "Vernetzen"
+      "community": "Vernetzen",
+      "wiki": "Wiki"
     }
   },
   "farm": {
@@ -1060,7 +1061,6 @@
     "start_date": "Startdatum",
     "end_date": "Enddatum",
     "end_date_optional": "Enddatum (optional)",
-    "notes": "Notizen",
     "recurrence": "Wiederholung",
     "recurrence_optional": "Wiederholung (optional)",
     "until": "bis",
@@ -1116,7 +1116,8 @@
       "send_file": "Datei senden",
       "onboarding_heading": "Tiere aus TVD importieren",
       "onboarding_body": "Für den Import wird eine Excel-Datei aus dem «Tierbestand» der TVD benötigt. Exportiere diese über den Button «Excel generieren»."
-    }
+    },
+    "notes": "Notizen"
   },
   "drugs": {
     "drugs": "Medikamente",
@@ -1221,6 +1222,47 @@
         "title": "Standort deaktiviert!",
         "message": "Wir brauchen deinen Standort, um ihn auf der Karte anzuzeigen."
       }
+    }
+  },
+  "wiki": {
+    "wiki": "Wiki",
+    "private": "Privat",
+    "pending_section": "Meine Einreichungen",
+    "status": {
+      "draft": "Entwurf",
+      "submitted": "Eingereicht",
+      "under_review": "In Prüfung",
+      "published": "Veröffentlicht",
+      "rejected": "Abgelehnt"
+    },
+    "create_entry": "Neuer Eintrag",
+    "edit_entry": "Bearbeiten",
+    "submit": "Einreichen",
+    "submit_confirm": "Möchtest du diesen Eintrag zur Überprüfung einreichen?",
+    "share": "Teilen",
+    "share_confirm": "Dieser Eintrag wird zur Überprüfung eingereicht und nach Freigabe veröffentlicht.",
+    "delete_confirm": "Möchtest du diesen Eintrag löschen?",
+    "propose_changes": "Änderung vorschlagen",
+    "category": "Kategorie",
+    "title": "Titel",
+    "body": "Inhalt",
+    "comments": "Kommentare",
+    "add_comment": "Kommentar schreiben...",
+    "send": "Senden",
+    "in_review": "In Prüfung",
+    "required_locale_hint": "Deutsch ist erforderlich",
+    "changes_requested": "Änderungen angefordert",
+    "only_private": "Nur private Einträge anzeigen",
+    "settings": "Einstellungen",
+    "onboarding": {
+      "step1_heading": "Willkommen im Wiki",
+      "step1_body": "Der Ort, um dein Wissen festzuhalten und zu teilen.",
+      "step2_heading": "Private Einträge",
+      "step2_body": "Erstelle ganz persönliche Einträge, die nur du sehen kannst.",
+      "step3_heading": "Mit der Community teilen",
+      "step3_body": "Teile deine Einträge mit der Community. Sie durchlaufen einen Prüfprozess, bevor sie veröffentlicht werden.",
+      "step4_heading": "Öffentliche Einträge ausblenden",
+      "step4_body": "Tippe auf das Einstellungen-Symbol, um nur deine privaten Einträge anzuzeigen."
     }
   }
 }
