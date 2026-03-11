@@ -1,6 +1,7 @@
 import { useSession } from "@/auth/SessionProvider";
 import { renderAgriColtivioStack } from "@/features/agri-coltivio/navigation/AgriColtivioStack";
 import { renderWikiStack } from "@/features/wiki/navigation/WikiStack";
+import { renderTasksStack } from "@/features/tasks/navigation/TasksStack";
 import { renderAnimalsStack } from "@/features/animals/navigation/AnimalsStack";
 import { renderAuthStack } from "@/features/auth/navigation/AuthStack";
 import { renderCropProtectionApplicationStack } from "@/features/crop-protection-applications/navigation/CropProtectionApplicationStack";
@@ -103,6 +104,7 @@ export function RootStack() {
           {renderAnimalsStack(theme, navigation)}
           {renderAgriColtivioStack()}
           {renderWikiStack(theme, navigation)}
+          {renderTasksStack(theme, navigation)}
         </Stack.Group>
 
         <Stack.Group
@@ -141,7 +143,7 @@ export function RootStack() {
         headerStyle: {
           backgroundColor: theme.colors.background,
         },
-        headerShadowVisible: true,
+        headerShadowVisible: false,
       }}
     >
       {renderStacks()}

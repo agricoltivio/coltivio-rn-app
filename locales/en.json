@@ -276,7 +276,8 @@
       "field_calendar": "Field Calendar",
       "animal_husbandry": "Animal Husbandry",
       "community": "Community",
-      "wiki": "Wiki"
+      "wiki": "Wiki",
+      "tasks": "Tasks"
     }
   },
   "farm": {
@@ -1230,6 +1231,43 @@
       "settings_hint": "You can adjust the actions or disable quick access at any time in settings.",
       "configure_heading": "Configure actions"
     }
+  },
+  "tasks": {
+    "tasks": "Tasks",
+    "new_task": "New Task",
+    "edit_task": "Edit Task",
+    "status_todo": "Open",
+    "status_done": "Done",
+    "mark_done": "Mark as done",
+    "reopen": "Reopen",
+    "due_date": "Due date",
+    "assignee": "Collaborator",
+    "labels": "Labels",
+    "add_label": "Add label",
+    "recurrence": "Recurrence",
+    "checklist": "Checklist",
+    "add_checklist_item": "Add item",
+    "links": "Links",
+    "add_link": "Add link",
+    "link_types": {
+      "animal": "Animal",
+      "animal_plural": "Animals",
+      "plot": "Field",
+      "plot_plural": "Fields",
+      "wiki_entry": "Wiki entry",
+      "wiki_entry_plural": "Wiki entries",
+      "herd": "Herd",
+      "herd_plural": "Herds",
+      "contact": "Contact",
+      "contact_plural": "Contacts",
+      "order": "Order",
+      "order_plural": "Orders",
+      "treatment": "Treatment",
+      "treatment_plural": "Treatments"
+    },
+    "no_tasks": "No tasks found",
+    "delete_confirm": "Delete task?",
+    "delete_confirm_message": "This action cannot be undone."
   },
   "wiki": {
     "wiki": "Wiki",

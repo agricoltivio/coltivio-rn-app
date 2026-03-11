@@ -192,7 +192,7 @@ export function SelectAnimalsModal({
         horizontal
         showsHorizontalScrollIndicator={false}
         style={{ marginTop: theme.spacing.s, flexGrow: 0 }}
-        contentContainerStyle={{ gap: theme.spacing.xs }}
+        contentContainerStyle={{ gap: theme.spacing.xs, paddingVertical: theme.spacing.xs }}
       >
         <FilterChip
           label={t("animals.selected_only")}

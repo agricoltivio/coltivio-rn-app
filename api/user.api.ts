@@ -3,6 +3,8 @@ import { components } from "./v1";
 
 export type User = components["schemas"]["GetV1MePositiveResponse"]["data"];
 export type UpdateUserInput = components["schemas"]["PatchV1MeRequestBody"];
+export type FarmUser =
+  components["schemas"]["GetV1UsersPositiveResponse"]["data"]["result"][number];
 
 export function userApi(client: FetchClient) {
   return {
@@ -15,6 +17,11 @@ export function userApi(client: FetchClient) {
         body: user,
       });
       return data!.data;
+    },
+
+    async getFarmUsers(): Promise<FarmUser[]> {
+      const { data } = await client.GET("/v1/users");
+      return data!.data.result;
     },
   };
 }

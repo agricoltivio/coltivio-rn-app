@@ -276,7 +276,8 @@
       "field_calendar": "Feldkalender",
       "animal_husbandry": "Tierhaltung",
       "community": "Vernetzen",
-      "wiki": "Wiki"
+      "wiki": "Wiki",
+      "tasks": "Aufgaben"
     }
   },
   "farm": {
@@ -1230,6 +1231,43 @@
         "message": "Wir brauchen deinen Standort, um ihn auf der Karte anzuzeigen."
       }
     }
+  },
+  "tasks": {
+    "tasks": "Aufgaben",
+    "new_task": "Neue Aufgabe",
+    "edit_task": "Aufgabe bearbeiten",
+    "status_todo": "Offen",
+    "status_done": "Erledigt",
+    "mark_done": "Als erledigt markieren",
+    "reopen": "Wieder öffnen",
+    "due_date": "Fälligkeitsdatum",
+    "assignee": "Mitarbeiter",
+    "labels": "Labels",
+    "add_label": "Label hinzufügen",
+    "recurrence": "Wiederholung",
+    "checklist": "Checkliste",
+    "add_checklist_item": "Punkt hinzufügen",
+    "links": "Verknüpfungen",
+    "add_link": "Verknüpfung hinzufügen",
+    "link_types": {
+      "animal": "Tier",
+      "animal_plural": "Tiere",
+      "plot": "Feld",
+      "plot_plural": "Felder",
+      "wiki_entry": "Wiki-Eintrag",
+      "wiki_entry_plural": "Wiki-Einträge",
+      "herd": "Herde",
+      "herd_plural": "Herden",
+      "contact": "Kontakt",
+      "contact_plural": "Kontakte",
+      "order": "Bestellung",
+      "order_plural": "Bestellungen",
+      "treatment": "Behandlung",
+      "treatment_plural": "Behandlungen"
+    },
+    "no_tasks": "Keine Aufgaben vorhanden",
+    "delete_confirm": "Aufgabe löschen?",
+    "delete_confirm_message": "Diese Aktion kann nicht rückgängig gemacht werden."
   },
   "wiki": {
     "wiki": "Wiki",
