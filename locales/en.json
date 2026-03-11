@@ -1239,8 +1239,8 @@
     "edit_entry": "Edit",
     "submit": "Submit",
     "submit_confirm": "Do you want to submit this entry for review?",
-    "publish": "Publish",
-    "publish_confirm": "This entry will be submitted for review and published after approval.",
+    "share": "Share",
+    "share_confirm": "This entry will be submitted for review and published after approval.",
     "delete_confirm": "Do you want to delete this entry?",
     "propose_changes": "Propose Changes",
     "category": "Category",
@@ -1251,6 +1251,18 @@
     "send": "Send",
     "in_review": "Under Review",
     "required_locale_hint": "German is required",
-    "changes_requested": "Changes requested"
+    "changes_requested": "Changes requested",
+    "only_private": "Only show private entries",
+    "settings": "Settings",
+    "onboarding": {
+      "step1_heading": "Welcome to the Wiki",
+      "step1_body": "The place to keep and share your knowledge.",
+      "step2_heading": "Private Entries",
+      "step2_body": "Create personal entries that only you can see.",
+      "step3_heading": "Share with the Community",
+      "step3_body": "Share your entries with the community. They go through a review process before being published.",
+      "step4_heading": "Hide Public Entries",
+      "step4_body": "Tap the settings icon to show only your private entries."
+    }
   }
 }

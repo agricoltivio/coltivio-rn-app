@@ -63,9 +63,9 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
     entry.status === "submitted" || entry.status === "under_review";
 
   function onPublishPress() {
-    Alert.alert(t("wiki.publish"), t("wiki.publish_confirm"), [
+    Alert.alert(t("wiki.share"), t("wiki.share_confirm"), [
       { text: t("buttons.cancel"), style: "cancel" },
-      { text: t("wiki.publish"), onPress: () => submitMutation.mutate(entryId) },
+      { text: t("wiki.share"), onPress: () => submitMutation.mutate(entryId) },
     ]);
   }
 
@@ -87,7 +87,7 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
               disabled={submitMutation.isPending}
               style={{ opacity: submitMutation.isPending ? 0.6 : 1 }}
             >
-              <ActionLabel>{t("wiki.publish")}</ActionLabel>
+              <ActionLabel>{t("wiki.share")}</ActionLabel>
             </FooterButton>
           </BottomActionContainer>
         ) : undefined

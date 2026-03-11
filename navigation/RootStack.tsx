@@ -102,7 +102,7 @@ export function RootStack() {
           {renderCropProtectionProductStack()}
           {renderAnimalsStack(theme, navigation)}
           {renderAgriColtivioStack()}
-          {renderWikiStack()}
+          {renderWikiStack(theme, navigation)}
         </Stack.Group>
 
         <Stack.Group

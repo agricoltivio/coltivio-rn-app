@@ -1,16 +1,32 @@
 import { Stack } from "@/navigation/stack";
+import { Ionicons } from "@expo/vector-icons";
+import { DefaultTheme } from "styled-components/native";
 import { WikiListScreen } from "../WikiListScreen";
 import { WikiDetailScreen } from "../WikiDetailScreen";
 import { WikiEntryFormScreen } from "../WikiEntryFormScreen";
 import { WikiChangeRequestScreen } from "../WikiChangeRequestScreen";
 import { WikiChangeRequestDraftScreen } from "../WikiChangeRequestDraftScreen";
+import { WikiSettingsScreen } from "../WikiSettingsScreen";
+import { WikiOnboardingScreen } from "../WikiOnboardingScreen";
 
-export function renderWikiStack() {
+export function renderWikiStack(theme: DefaultTheme, navigation: any) {
   return [
     <Stack.Screen
       key="wiki-list"
       name="WikiList"
-      options={{ title: "" }}
+      options={{
+        title: "",
+        headerRight() {
+          return (
+            <Ionicons
+              size={35}
+              name="settings-outline"
+              color={theme.colors.primary}
+              onPress={() => navigation.navigate("WikiSettings")}
+            />
+          );
+        },
+      }}
       component={WikiListScreen}
     />,
     <Stack.Screen
@@ -36,6 +52,18 @@ export function renderWikiStack() {
       name="WikiChangeRequestDraft"
       options={{ title: "" }}
       component={WikiChangeRequestDraftScreen}
+    />,
+    <Stack.Screen
+      key="wiki-settings"
+      name="WikiSettings"
+      options={{ title: "" }}
+      component={WikiSettingsScreen}
+    />,
+    <Stack.Screen
+      key="wiki-onboarding"
+      name="WikiOnboarding"
+      options={{ headerShown: false }}
+      component={WikiOnboardingScreen}
     />,
   ];
 }

@@ -1,11 +1,13 @@
 import { WikiEntry, WikiMyEntry } from "@/api/wiki.api";
 import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
+import { FilterChips } from "@/components/filters/FilterChips";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
 import { locale } from "@/locales/i18n";
 import { H2, H3, Subtitle } from "@/theme/Typography";
-import React, { useMemo, useState } from "react";
+import { useLocalSettings } from "@/features/user/LocalSettingsContext";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, SectionList, View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -34,6 +36,15 @@ export function WikiListScreen({ navigation }: WikiListScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const [searchText, setSearchText] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set());
+  const { localSettings } = useLocalSettings();
+  const onlyPrivate = localSettings.wikiOnlyPrivate;
+
+  useEffect(() => {
+    if (!localSettings.wikiOnboardingCompleted) {
+      navigation.replace("WikiOnboarding" as never);
+    }
+  }, []);
 
   const { entries: publicEntries, isLoading: publicLoading } = usePublicWikiQuery();
   const { myEntries, isLoading: myLoading } = useMyWikiEntriesQuery();
@@ -70,13 +81,25 @@ export function WikiListScreen({ navigation }: WikiListScreenProps) {
       }
     }
 
+    // When toggle is on, show only private entries
+    const visibilityFiltered = onlyPrivate ? merged.filter((e) => e.isPrivate) : merged;
+
     // Client-side search filter by title
-    const filtered = searchText
-      ? merged.filter((entry) => {
+    const searchFiltered = searchText
+      ? visibilityFiltered.filter((entry) => {
           const translation = findTranslation(entry.translations, locale);
           return translation?.title.toLowerCase().includes(searchText.toLowerCase());
         })
-      : merged;
+      : visibilityFiltered;
+
+    // Category chip filter
+    const filtered = selectedCategories.size > 0
+      ? searchFiltered.filter((entry) => {
+          const categoryTranslation = findTranslation(entry.category.translations, locale);
+          const categoryName = categoryTranslation?.name ?? entry.category.slug;
+          return selectedCategories.has(categoryName);
+        })
+      : searchFiltered;
 
     // Group by category name in current locale
     const grouped: Record<string, MergedEntry[]> = {};
@@ -90,9 +113,24 @@ export function WikiListScreen({ navigation }: WikiListScreenProps) {
     return Object.keys(grouped)
       .sort((a, b) => a.localeCompare(b))
       .map((title) => ({ title, data: grouped[title] }));
-  }, [publicEntries, myEntries, searchText]);
+  }, [publicEntries, myEntries, searchText, onlyPrivate, selectedCategories]);
 
   const isLoading = publicLoading || myLoading;
+
+  // Collect all unique category names from the merged entry set for the chips
+  const allCategories = useMemo(() => {
+    const allEntries = [...(publicEntries ?? []), ...(myEntries ?? [])];
+    const seen = new Set<string>();
+    const names: string[] = [];
+    for (const entry of allEntries) {
+      const name = findTranslation(entry.category.translations, locale)?.name ?? entry.category.slug;
+      if (!seen.has(name)) {
+        seen.add(name);
+        names.push(name);
+      }
+    }
+    return names.sort((a, b) => a.localeCompare(b));
+  }, [publicEntries, myEntries]);
 
   return (
     <ContentView headerVisible>
@@ -104,6 +142,19 @@ export function WikiListScreen({ navigation }: WikiListScreenProps) {
           onChangeText={setSearchText}
           value={searchText}
         />
+        <View style={{ marginTop: theme.spacing.s }}>
+          <FilterChips
+            items={allCategories}
+            selectedItems={selectedCategories}
+            onToggle={(name) =>
+              setSelectedCategories((prev) => {
+                const next = new Set(prev);
+                next.has(name) ? next.delete(name) : next.add(name);
+                return next;
+              })
+            }
+          />
+        </View>
       </View>
 
       {isLoading ? (
@@ -178,7 +229,7 @@ export function WikiListScreen({ navigation }: WikiListScreenProps) {
             renderItem={({ item }) => {
               const translation = findTranslation(item.translations, locale);
               const entryTitle = translation?.title ?? "";
-              const displayTitle = item.isPrivate ? `${entryTitle} (Privat)` : entryTitle;
+              const displayTitle = item.isPrivate && !onlyPrivate ? `${entryTitle} (Privat)` : entryTitle;
               return (
                 <ListItem
                   onPress={() => navigation.navigate("WikiDetail", { entryId: item.id })}

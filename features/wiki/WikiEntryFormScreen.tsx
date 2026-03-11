@@ -1,4 +1,5 @@
 import { WikiTranslationInput } from "@/api/wiki.api";
+import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
@@ -128,7 +129,26 @@ export function WikiEntryFormScreen({ route, navigation }: WikiEntryFormScreenPr
   const isPending = createMutation.isPending || updateMutation.isPending;
 
   return (
-    <ContentView headerVisible>
+    <ContentView
+      headerVisible
+      footerComponent={
+        <BottomActionContainer>
+          <TouchableOpacity
+            onPress={handleSubmit(onSubmit)}
+            disabled={isPending}
+            style={{
+              backgroundColor: theme.colors.mocha,
+              borderRadius: theme.radii.m,
+              paddingVertical: theme.spacing.m,
+              alignItems: "center",
+              opacity: isPending ? 0.6 : 1,
+            }}
+          >
+            <SaveLabel>{t("buttons.save")}</SaveLabel>
+          </TouchableOpacity>
+        </BottomActionContainer>
+      }
+    >
       <ScrollView>
         <View style={{ gap: theme.spacing.m, paddingBottom: theme.spacing.xxl }}>
           <RHSelect
@@ -193,19 +213,6 @@ export function WikiEntryFormScreen({ route, navigation }: WikiEntryFormScreenPr
             </View>
           ))}
 
-          <TouchableOpacity
-            onPress={handleSubmit(onSubmit)}
-            disabled={isPending}
-            style={{
-              backgroundColor: theme.colors.mocha,
-              borderRadius: theme.radii.m,
-              paddingVertical: theme.spacing.m,
-              alignItems: "center",
-              opacity: isPending ? 0.6 : 1,
-            }}
-          >
-            <SaveLabel>{t("buttons.save")}</SaveLabel>
-          </TouchableOpacity>
         </View>
       </ScrollView>
     </ContentView>

@@ -38,6 +38,8 @@ type LocalSettingsData = {
   speedDialEnabled: boolean;
   speedDialOnboardingCompleted: boolean;
   speedDialItems: SpeedDialActionConfig[];
+  wikiOnlyPrivate: boolean;
+  wikiOnboardingCompleted: boolean;
 };
 
 type LocalSettingActions = {
@@ -70,6 +72,8 @@ export const defaultLocalSettings: LocalSettingsData = {
   speedDialEnabled: true,
   speedDialOnboardingCompleted: false,
   speedDialItems: DEFAULT_SPEED_DIAL_ITEMS,
+  wikiOnlyPrivate: false,
+  wikiOnboardingCompleted: false,
 };
 
 export const LocalSettingsContext = createContext<LocalSettings>({

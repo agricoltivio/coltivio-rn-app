@@ -1239,8 +1239,8 @@
     "edit_entry": "Modifica",
     "submit": "Invia",
     "submit_confirm": "Vuoi inviare questa voce per la revisione?",
-    "publish": "Pubblica",
-    "publish_confirm": "Questa voce verrà inviata per la revisione e pubblicata dopo l'approvazione.",
+    "share": "Condividi",
+    "share_confirm": "Questa voce verrà inviata per la revisione e pubblicata dopo l'approvazione.",
     "delete_confirm": "Vuoi eliminare questa voce?",
     "propose_changes": "Proponi Modifiche",
     "category": "Categoria",
@@ -1251,6 +1251,18 @@
     "send": "Invia",
     "in_review": "In Revisione",
     "required_locale_hint": "Il tedesco è obbligatorio",
-    "changes_requested": "Modifiche richieste"
+    "changes_requested": "Modifiche richieste",
+    "only_private": "Mostra solo voci private",
+    "settings": "Impostazioni",
+    "onboarding": {
+      "step1_heading": "Benvenuto nel Wiki",
+      "step1_body": "Il posto per conservare e condividere le tue conoscenze.",
+      "step2_heading": "Voci private",
+      "step2_body": "Crea voci personali che solo tu puoi vedere.",
+      "step3_heading": "Condividi con la community",
+      "step3_body": "Condividi le tue voci con la community. Passano attraverso un processo di revisione prima di essere pubblicate.",
+      "step4_heading": "Nascondi le voci pubbliche",
+      "step4_body": "Tocca l'icona delle impostazioni per mostrare solo le tue voci private."
+    }
   }
 }

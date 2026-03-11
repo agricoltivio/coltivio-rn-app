@@ -1239,8 +1239,8 @@
     "edit_entry": "Modifier",
     "submit": "Soumettre",
     "submit_confirm": "Voulez-vous soumettre cette entrée pour révision?",
-    "publish": "Publier",
-    "publish_confirm": "Cette entrée sera soumise pour révision et publiée après approbation.",
+    "share": "Partager",
+    "share_confirm": "Cette entrée sera soumise pour révision et publiée après approbation.",
     "delete_confirm": "Voulez-vous supprimer cette entrée?",
     "propose_changes": "Proposer des Modifications",
     "category": "Catégorie",
@@ -1251,6 +1251,18 @@
     "send": "Envoyer",
     "in_review": "En Révision",
     "required_locale_hint": "L'allemand est requis",
-    "changes_requested": "Modifications demandées"
+    "changes_requested": "Modifications demandées",
+    "only_private": "Afficher uniquement les entrées privées",
+    "settings": "Paramètres",
+    "onboarding": {
+      "step1_heading": "Bienvenue dans le Wiki",
+      "step1_body": "L'endroit pour conserver et partager vos connaissances.",
+      "step2_heading": "Entrées privées",
+      "step2_body": "Créez des entrées personnelles que vous seul pouvez voir.",
+      "step3_heading": "Partager avec la communauté",
+      "step3_body": "Partagez vos entrées avec la communauté. Elles passent par un processus de révision avant d'être publiées.",
+      "step4_heading": "Masquer les entrées publiques",
+      "step4_body": "Appuyez sur l'icône des paramètres pour afficher uniquement vos entrées privées."
+    }
   }
 }

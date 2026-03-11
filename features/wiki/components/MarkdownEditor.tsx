@@ -8,6 +8,7 @@ import {
 } from "@10play/tentap-editor";
 import { useApi } from "@/api/api";
 import { Ionicons } from "@expo/vector-icons";
+import Constants from "expo-constants";
 import * as ImagePicker from "expo-image-picker";
 import { marked } from "marked";
 import { NodeHtmlMarkdown } from "node-html-markdown";
@@ -27,6 +28,14 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import styled from "styled-components/native";
 
 const nhm = new NodeHtmlMarkdown();
+
+// When running against a local Supabase, the backend returns URLs with localhost/127.0.0.1
+// which the phone can't reach. Replace with the LAN IP from the Expo Metro bundler host.
+function resolveLocalUrl(url: string): string {
+  const lanIp = Constants.expoConfig?.hostUri?.split(":").shift();
+  if (!lanIp) return url;
+  return url.replace(/localhost|127\.0\.0\.1/g, lanIp);
+}
 
 function markdownToHtml(markdown: string): string {
   const result = marked(markdown || " ");
@@ -139,11 +148,11 @@ function EditorContent({ value, onChange, entryId, onClose, closeLabel }: Editor
 
           const fileResponse = await fetch(asset.uri);
           const blob = await fileResponse.blob();
-          await fetch(signedUrl, { method: "PUT", body: blob });
+          await fetch(resolveLocalUrl(signedUrl), { method: "PUT", body: blob });
 
           const { publicUrl } = await api.wiki.registerImage(entryId, path);
 
-          e.setImage(publicUrl);
+          e.setImage(resolveLocalUrl(publicUrl));
           // Insert a paragraph after the image so the cursor has somewhere to go
           setTimeout(() => {
             editor.webviewRef.current?.injectJavaScript(
