@@ -5,6 +5,7 @@ export type UserStackParamList = {
   OnboardingSettings: undefined;
   AppSettings: undefined;
   SpeedDialSettings: undefined;
+  HomeTilesSettings: undefined;
   ChangeUserName: undefined;
   ChangeEmail: undefined;
   ChangeEmailPending: { newEmail: string };
@@ -17,6 +18,7 @@ export type UserAccountScreenProps = StackScreenProps<"UserAccount">;
 export type OnboardingSettingsScreenProps = StackScreenProps<"OnboardingSettings">;
 export type AppSettingsScreenProps = StackScreenProps<"AppSettings">;
 export type SpeedDialSettingsScreenProps = StackScreenProps<"SpeedDialSettings">;
+export type HomeTilesSettingsScreenProps = StackScreenProps<"HomeTilesSettings">;
 export type ChangeUserNameScreenProps = StackScreenProps<"ChangeUserName">;
 
 export type ChangeEmailScreenProps = StackScreenProps<"ChangeEmail">;

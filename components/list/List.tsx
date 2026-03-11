@@ -22,7 +22,7 @@ export function List({
           // shadowOffset: { width: 0, height: 5 },
           // shadowOpacity: 0.2,
           // shadowRadius: 5,
-          marginHorizontal: 5,
+          marginHorizontal: theme.spacing.xs,
         },
         style,
       ]}
@@ -30,7 +30,7 @@ export function List({
       {title ? <H3>{title}</H3> : null}
       <View
         style={{
-          borderRadius: 10,
+          borderRadius: theme.radii.l,
           overflow: "hidden",
           backgroundColor: theme.colors.white,
           marginTop: title ? theme.spacing.m : 0,

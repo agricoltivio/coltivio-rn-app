@@ -1,5 +1,6 @@
 import { SpeedDial } from "@/components/buttons/SpeedDial";
 import { ContentView } from "@/components/containers/ContentView";
+import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { MapTile } from "@/features/map/MapTile";
 import { H1, H2 } from "@/theme/Typography";
@@ -12,6 +13,7 @@ import { useFarmQuery } from "../farms/farms.hooks";
 import { useLocalSettings } from "../user/LocalSettingsContext";
 import { useUserQuery } from "../user/users.hooks";
 import { HomeTile } from "./HomeTile";
+import { HOME_TILES } from "./home-tiles-settings";
 import { HomeScreenProps } from "./navigation/home-routes";
 import { SPEED_DIAL_ACTIONS } from "./speed-dial-settings";
 
@@ -35,6 +37,22 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
         };
       });
   }, [localSettings.speedDialItems, t, navigation]);
+
+  const visibleTiles = useMemo(() => {
+    return localSettings.homeTiles
+      .filter((tile) => tile.visible && tile.id in HOME_TILES)
+      .map((tile) => ({ id: tile.id, ...HOME_TILES[tile.id as keyof typeof HOME_TILES] }));
+  }, [localSettings.homeTiles]);
+
+  function navigateToTile(tileId: string) {
+    if (tileId === "plots") {
+      navigation.navigate("PlotsMap", {});
+    } else {
+      navigation.navigate(HOME_TILES[tileId as keyof typeof HOME_TILES].route as never);
+    }
+  }
+
+  const isList = localSettings.homeTilesLayout === "list";
 
   return (
     <>
@@ -62,150 +80,70 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
               <MapTile />
             </View>
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-              flexWrap: "wrap",
-              marginTop: theme.spacing.m,
-              gap: theme.spacing.m,
-            }}
-          >
-            <HomeTile
-              title={t("home.tiles.farm")}
-              onPress={() => navigation.navigate("Farm")}
-              style={{ width: "47%" }}
-            >
-              <Image
-                source={require("@/assets/images/farm-icon-6.png")}
-                contentFit="contain"
-                style={{
-                  height: 110,
-                  opacity: 0.9,
-                  marginBottom: theme.spacing.xxs,
-                  borderBottomLeftRadius: 10,
-                  borderBottomRightRadius: 10,
-                }}
-              />
-            </HomeTile>
-            <HomeTile
-              title={t("home.tiles.plots")}
-              onPress={() => navigation.navigate("PlotsMap", {})}
-              style={{ width: "47%" }}
-            >
-              <Image
-                source={require("@/assets/images/field-calendar-icon-4.png")}
-                contentFit="contain"
-                style={{
-                  height: 110,
-                  opacity: 0.9,
-                  borderBottomLeftRadius: 10,
-                  borderBottomRightRadius: 10,
-                }}
-              />
-            </HomeTile>
-            <HomeTile
-              title={t("home.tiles.animal_husbandry")}
-              onPress={() => navigation.navigate("AnimalsHub")}
-              style={{ width: "47%" }}
-            >
-              <Image
-                source={require("@/assets/images/animals-icon.png")}
-                contentFit="contain"
-                style={{
-                  height: 110,
-                  opacity: 0.9,
-                  borderBottomLeftRadius: 10,
-                  borderBottomRightRadius: 10,
-                }}
-              />
-            </HomeTile>
-            <HomeTile
-              title={t("home.tiles.field_calendar")}
-              onPress={() => navigation.navigate("FieldCalendar")}
-              style={{ width: "47%" }}
-            >
-              <Image
-                source={require("@/assets/images/harvest-icon.png")}
-                contentFit="contain"
-                style={{
-                  height: 110,
-                  opacity: 0.9,
-                  marginBottom: theme.spacing.xxs,
-                  borderBottomLeftRadius: 10,
-                  borderBottomRightRadius: 10,
-                }}
-              />
-            </HomeTile>
-            <HomeTile
-              title={t("home.tiles.wiki")}
-              onPress={() => navigation.navigate("WikiList")}
-              style={{ width: "47%" }}
-            >
-              <Image
-                source={require("@/assets/images/wiki.png")}
-                contentFit="contain"
-                style={{
-                  height: 110,
-                  opacity: 0.9,
-                  borderBottomLeftRadius: 10,
-                  borderBottomRightRadius: 10,
-                }}
-              />
-            </HomeTile>
-          </View>
-          {/* <View
-          style={{
-            flexDirection: "row",
-            marginTop: theme.spacing.m,
-            gap: theme.spacing.m,
-          }}
-        >
-          <HomeTile
-            title={t("home.tiles.animal_husbandry")}
-            onPress={() => navigation.navigate("AnimalsHub")}
-          >
-            <Image
-              source={require("@/assets/images/animals-icon.png")}
-              contentFit="contain"
-              style={{
-                height: 110,
-                opacity: 0.9,
-                borderBottomLeftRadius: 10,
-                borderBottomRightRadius: 10,
-              }}
-            />
-          </HomeTile>
-          <HomeTile title={t("home.tiles.community")} disabled>
-            <View style={{ overflow: "hidden" }}>
-              <Image
-                source={require("@/assets/images/community-icon-3.png")}
-                contentFit="contain"
-                style={{
-                  height: 110,
-                  opacity: 0.9,
-                  borderBottomLeftRadius: 10,
-                  borderBottomRightRadius: 10,
 
-                  marginBottom: theme.spacing.xs,
-                }}
-              />
+          {isList ? (
+            // List layout: full-width rows with small image icon and chevron
+            <View
+              style={{
+                marginTop: theme.spacing.m,
+                backgroundColor: theme.colors.white,
+                borderRadius: 10,
+                overflow: "hidden",
+              }}
+            >
+              {visibleTiles.map((tile, index) => (
+                <ListItem
+                  key={tile.id}
+                  onPress={() => navigateToTile(tile.id)}
+                  hideBottomDivider={index === visibleTiles.length - 1}
+                  style={{ alignItems: "center" }}
+                >
+                  <Image
+                    source={tile.image}
+                    contentFit="contain"
+                    style={{ width: 36, height: 36, opacity: 0.85, marginLeft: theme.spacing.m }}
+                  />
+                  <ListItem.Content>
+                    <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
+                      {t(tile.translationKey)}
+                    </ListItem.Title>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+              ))}
             </View>
-          </HomeTile>
-        </View> */}
-          {/* <View
-          style={{
-            flexDirection: "row",
-            marginTop: theme.spacing.m,
-            gap: theme.spacing.m,
-          }}
-        >
-          <HomeTile onPress={() => navigation.navigate("AgriColtivioInfo")}>
-            <View style={{ padding: theme.spacing.m }}>
-              <H1 style={{ textAlign: "center" }}>AgriColtivio</H1>
+          ) : (
+            // Grid layout: natural flexWrap with fixed-size square tiles
+            <View
+              style={{
+                flexDirection: "row",
+                flexWrap: "wrap",
+                justifyContent: "space-around",
+                marginTop: theme.spacing.m,
+                gap: theme.spacing.m,
+              }}
+            >
+              {visibleTiles.map((tile) => (
+                <HomeTile
+                  key={tile.id}
+                  title={t(tile.translationKey)}
+                  onPress={() => navigateToTile(tile.id)}
+                  style={{ width: "47%" }}
+                >
+                  <Image
+                    source={tile.image}
+                    contentFit="contain"
+                    style={{
+                      height: 110,
+                      opacity: 0.9,
+                      borderBottomLeftRadius: 10,
+                      borderBottomRightRadius: 10,
+                    }}
+                  />
+                </HomeTile>
+              ))}
             </View>
-          </HomeTile>
-          <Button title="Agri Coltivio" />
-        </View> */}
+          )}
         </ContentView>
       </ScrollView>
       {localSettings.speedDialEnabled && speedDialItems.length > 0 ? (

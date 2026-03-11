@@ -14,7 +14,7 @@ export function Card({ style, elevated, ...props }: CardProps) {
         {
           backgroundColor: theme.colors.white,
           // backgroundColor: "#91866b",
-          borderRadius: 10,
+          borderRadius: theme.radii.l,
 
           ...(elevated && {
             elevation: 8,

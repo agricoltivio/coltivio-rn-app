@@ -41,11 +41,22 @@ export function AppSettingsScreen({ navigation }: AppSettingsScreenProps) {
           <ListItem
             style={{ backgroundColor: theme.colors.white }}
             onPress={() => navigation.navigate("SpeedDialSettings")}
-            hideBottomDivider
           >
             <ListItem.Content>
               <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
                 {t("settings.speed_dial_settings")}
+              </ListItem.Title>
+            </ListItem.Content>
+            <ListItem.Chevron />
+          </ListItem>
+          <ListItem
+            style={{ backgroundColor: theme.colors.white }}
+            onPress={() => navigation.navigate("HomeTilesSettings")}
+            hideBottomDivider
+          >
+            <ListItem.Content>
+              <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
+                {t("settings.home_tiles_settings")}
               </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron />

@@ -68,7 +68,7 @@ const Input = styled.TextInput<InputProps>`
   font-size: 17px;
   font-weight: 400;
   color: ${({ theme }) => theme.colors.gray0};
-  border-radius: 10px;
+  border-radius: ${({ theme }) => theme.radii.l}px;
   background-color: ${({ theme }) => theme.colors.white};
   border-width: 1px;
   border-color: ${({ theme, focus, error }) =>

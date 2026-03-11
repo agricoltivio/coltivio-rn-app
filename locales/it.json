@@ -1196,7 +1196,14 @@
     "disable_onboardings_info": "Mostra i tutorial alla prima apertura di una funzionalità.",
     "app_settings": "Impostazioni",
     "speed_dial_enabled": "Accesso rapido",
-    "speed_dial_settings": "Configura accesso rapido"
+    "speed_dial_settings": "Configura accesso rapido",
+    "home_tiles_settings": "Configura schermata principale"
+  },
+  "home_tiles": {
+    "title": "Configura schermata principale",
+    "active_tiles": "Elementi attivi",
+    "hidden_tiles": "Riquadri nascosti",
+    "show_tiles": "Mostra riquadri"
   },
   "permissions": {
     "location": {

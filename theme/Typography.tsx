@@ -53,7 +53,7 @@ export const Label = styled.Text`
 export const Body = styled.Text`
   font-size: 17px;
   font-weight: 400;
-  color: ${(props) => props.theme.colors.text};
+  color: ${(props) => props.theme.colors.primary};
 `;
 
 // Headline
