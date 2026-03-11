@@ -142,7 +142,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
               style={{ width: "47%" }}
             >
               <Image
-                source={require("@/assets/images/community-icon-3.png")}
+                source={require("@/assets/images/wiki.png")}
                 contentFit="contain"
                 style={{
                   height: 110,
