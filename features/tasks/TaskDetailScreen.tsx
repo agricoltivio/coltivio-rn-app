@@ -280,7 +280,7 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
         {/* Recurrence */}
         {task.recurrence != null && (
           <Row label={t("tasks.recurrence")}>
-            <Subtitle>{recurrenceSummary(task.recurrence, t)}</Subtitle>
+            <Subtitle>{recurrenceSummary(task.recurrence, (k) => t(k))}</Subtitle>
           </Row>
         )}
 
@@ -322,27 +322,33 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
         {groupedLinks.length > 0 && (
           <View style={{ gap: theme.spacing.s, marginTop: theme.spacing.m }}>
             <Subtitle style={{ color: theme.colors.gray2 }}>{t("tasks.links")}</Subtitle>
-            {groupedLinks.map(({ linkType, items }) => (
-              <View key={linkType} style={{ gap: theme.spacing.xs }}>
-                <Subtitle style={{ color: theme.colors.gray2 }}>{linkTypeLabels[linkType]}</Subtitle>
-                <ListItem
-                  style={{
-                    backgroundColor: theme.colors.white,
-                    borderRadius: 8,
-                    borderWidth: 1,
-                    borderColor: theme.colors.primary,
-                  }}
-                  onPress={() => openLinkGroup(linkType, items)}
-                >
-                  <ListItem.Content>
-                    <ListItem.Title style={{ color: theme.colors.primary }}>
-                      {items.length === 1 ? items[0].displayName ?? items[0].linkedId : `${items.length} ${linkTypePluralLabels[linkType]}`}
-                    </ListItem.Title>
-                  </ListItem.Content>
-                  <ListItem.Chevron />
-                </ListItem>
-              </View>
-            ))}
+            {groupedLinks.map(({ linkType, items }) => {
+              const title: string =
+                items.length === 1
+                  ? (items[0].displayName ?? items[0].linkedId)
+                  : `${items.length} ${linkTypePluralLabels[linkType]}`;
+              return (
+                <View key={linkType} style={{ gap: theme.spacing.xs }}>
+                  <Subtitle style={{ color: theme.colors.gray2 }}>{linkTypeLabels[linkType]}</Subtitle>
+                  <ListItem
+                    style={{
+                      backgroundColor: theme.colors.white,
+                      borderRadius: 8,
+                      borderWidth: 1,
+                      borderColor: theme.colors.primary,
+                    }}
+                    onPress={() => openLinkGroup(linkType, items)}
+                  >
+                    <ListItem.Content>
+                      <ListItem.Title style={{ color: theme.colors.primary }}>
+                        {title}
+                      </ListItem.Title>
+                    </ListItem.Content>
+                    <ListItem.Chevron />
+                  </ListItem>
+                </View>
+              );
+            })}
           </View>
         )}
       </ScrollView>

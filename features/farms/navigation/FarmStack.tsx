@@ -3,6 +3,7 @@ import { DeleteFarmScreen } from "../DeleteFarmScreen";
 import { EditFarmLocationScreen } from "../EditFarmLocationScreen";
 import { EditFarmNameScreen } from "../EditFarmNameScreen";
 import { FarmScreen } from "../FarmScreen";
+import { FarmUsersScreen } from "../FarmUsersScreen";
 import { SearchFarmLocationModal } from "../SearchFarmLocationModal";
 
 export function renderFarmStack() {
@@ -35,6 +36,14 @@ export function renderFarmStack() {
       key="delete-farm"
       name="DeleteFarm"
       component={DeleteFarmScreen}
+      options={{
+        title: "",
+      }}
+    />,
+    <Stack.Screen
+      key="farm-users"
+      name="FarmUsers"
+      component={FarmUsersScreen}
       options={{
         title: "",
       }}

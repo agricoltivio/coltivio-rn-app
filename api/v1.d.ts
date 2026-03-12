@@ -164,6 +164,86 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/farm/invites": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1FarmInvites"];
+        put?: never;
+        post: operations["PostV1FarmInvites"];
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1FarmInvites"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/farm/invites/accept": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1FarmInvitesAccept"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/farm/invites/byId/{inviteId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1FarmInvitesByIdInviteId"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/farm/members/byId/{userId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1FarmMembersByIdUserId"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/farm/members/byId/{userId}/role": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["PatchV1FarmMembersByIdUserIdRole"];
+        trace?: never;
+    };
     "/v1/users": {
         parameters: {
             query?: never;
@@ -2574,6 +2654,70 @@ export interface components {
                 }[];
             };
         };
+        GetV1FarmInvitesPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    farmId: string;
+                    email: string;
+                    createdBy: string | null;
+                    expiresAt: string | unknown;
+                    usedAt: string | unknown;
+                }[];
+                count: number;
+            };
+        };
+        PostV1FarmInvitesPositiveResponse: {
+            data: {
+                id: string;
+                farmId: string;
+                email: string;
+                createdBy: string | null;
+                expiresAt: string | unknown;
+                usedAt: string | unknown;
+            };
+        };
+        PostV1FarmInvitesRequestBody: {
+            /** Format: email */
+            email: string;
+        };
+        PostV1FarmInvitesAcceptPositiveResponse: {
+            data: {
+                id: string;
+                email: string;
+                fullName: string | null;
+                emailVerified: boolean;
+                farmId: string | null;
+                /** @enum {string|null} */
+                farmRole: "owner" | "member" | null;
+                isWikiModerator: boolean;
+            };
+        };
+        PostV1FarmInvitesAcceptRequestBody: {
+            code: string;
+        };
+        DeleteV1FarmInvitesByIdInviteIdPositiveResponse: {
+            data: Record<string, never>;
+        };
+        DeleteV1FarmMembersByIdUserIdPositiveResponse: {
+            data: Record<string, never>;
+        };
+        PatchV1FarmMembersByIdUserIdRolePositiveResponse: {
+            data: {
+                id: string;
+                email: string;
+                fullName: string | null;
+                emailVerified: boolean;
+                farmId: string | null;
+                /** @enum {string|null} */
+                farmRole: "owner" | "member" | null;
+                isWikiModerator: boolean;
+            };
+        };
+        PatchV1FarmMembersByIdUserIdRoleRequestBody: {
+            /** @enum {string} */
+            role: "owner" | "member";
+        };
         GetV1UsersPositiveResponse: {
             data: {
                 result: {
@@ -2582,6 +2726,8 @@ export interface components {
                     fullName: string | null;
                     emailVerified: boolean;
                     farmId: string | null;
+                    /** @enum {string|null} */
+                    farmRole: "owner" | "member" | null;
                     isWikiModerator: boolean;
                 }[];
                 count: number;
@@ -2594,6 +2740,8 @@ export interface components {
                 fullName: string | null;
                 emailVerified: boolean;
                 farmId: string | null;
+                /** @enum {string|null} */
+                farmRole: "owner" | "member" | null;
                 isWikiModerator: boolean;
             };
         };
@@ -2604,6 +2752,8 @@ export interface components {
                 fullName: string | null;
                 emailVerified: boolean;
                 farmId: string | null;
+                /** @enum {string|null} */
+                farmRole: "owner" | "member" | null;
                 isWikiModerator: boolean;
             };
         };
@@ -2619,6 +2769,8 @@ export interface components {
                 fullName: string | null;
                 emailVerified: boolean;
                 farmId: string | null;
+                /** @enum {string|null} */
+                farmRole: "owner" | "member" | null;
                 isWikiModerator: boolean;
             };
         };
@@ -10374,6 +10526,229 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    GetV1FarmInvites: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/farm/invites Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1FarmInvitesPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/farm/invites Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1FarmInvites: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/farm/invites Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1FarmInvitesRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/farm/invites Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1FarmInvitesPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/farm/invites Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1FarmInvites: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/farm/invites Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/farm/invites Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PostV1FarmInvitesAccept: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/farm/invites/accept Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1FarmInvitesAcceptRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/farm/invites/accept Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1FarmInvitesAcceptPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/farm/invites/accept Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1FarmInvitesByIdInviteId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description DELETE /v1/farm/invites/byId/:inviteId Parameter */
+                inviteId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/farm/invites/byId/:inviteId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1FarmInvitesByIdInviteIdPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/farm/invites/byId/:inviteId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1FarmMembersByIdUserId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description DELETE /v1/farm/members/byId/:userId Parameter */
+                userId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/farm/members/byId/:userId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1FarmMembersByIdUserIdPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/farm/members/byId/:userId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PatchV1FarmMembersByIdUserIdRole: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/farm/members/byId/:userId/role Parameter */
+                userId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/farm/members/byId/:userId/role Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PatchV1FarmMembersByIdUserIdRoleRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/farm/members/byId/:userId/role Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1FarmMembersByIdUserIdRolePositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/farm/members/byId/:userId/role Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
             };
         };
     };
