@@ -1,6 +1,8 @@
 import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type OnboardingStackParamList = {
+  OnboardingWelcome: undefined;
+  JoinFarm: undefined;
   SelectFarmName: undefined;
   SelectFarmLocation: undefined;
   SelectFarmLocationSearch: undefined;
@@ -10,6 +12,8 @@ export type OnboardingStackParamList = {
   FarmSummary: undefined;
 };
 
+export type OnboardingWelcomeScreenProps = StackScreenProps<"OnboardingWelcome">;
+export type JoinFarmScreenProps = StackScreenProps<"JoinFarm">;
 export type SelectFarmNameScreenProps = StackScreenProps<"SelectFarmName">;
 
 export type SelectFarmLocationScreenProps =

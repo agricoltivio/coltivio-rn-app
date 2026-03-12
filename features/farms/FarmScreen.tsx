@@ -34,6 +34,10 @@ export function FarmScreen({ navigation }: FarmScreenProps) {
           <List.Item
             title={t("farm.location")}
             onPress={() => navigation.navigate("EditFarmLocation")}
+          />
+          <List.Item
+            title={t("farm.users")}
+            onPress={() => navigation.navigate("FarmUsers")}
             hideBottomDivider
           />
         </List>

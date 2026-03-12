@@ -1,5 +1,5 @@
 import { useApi } from "@/api/api";
-import { Farm, FarmUpdateInput } from "@/api/farms.api";
+import { AcceptInviteResult, Farm, FarmInvite, FarmUpdateInput } from "@/api/farms.api";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { OnboardingData } from "../onboarding/OnboardingContext";
@@ -74,6 +74,87 @@ export function useCreateFarmMutation(
     },
   });
   return createFarmMutation;
+}
+
+export function useAcceptInviteMutation(
+  onSuccess?: (user: AcceptInviteResult) => void,
+  onError?: (error: Error) => void
+) {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (code: string) => api.farms.acceptInvite(code),
+    onSuccess: (user) => {
+      // Setting farmId on the user cache makes hasFarm true → RootStack auto-transitions to app
+      queryClient.setQueryData(queryKeys.users.me.queryKey, () => user);
+      onSuccess && onSuccess(user);
+    },
+    onError: (error) => {
+      console.error(error);
+      onError && onError(error);
+    },
+  });
+}
+
+export function useFarmInvitesQuery() {
+  const api = useApi();
+  return useQuery({
+    queryKey: queryKeys.farms.invites.queryKey,
+    queryFn: () => api.farms.getInvites(),
+  });
+}
+
+export function useCreateInviteMutation(onSuccess?: (invite: FarmInvite) => void) {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (email: string) => api.farms.createInvite(email),
+    onSuccess: (invite) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.farms.invites.queryKey });
+      onSuccess && onSuccess(invite);
+    },
+    onError: (error) => console.error(error),
+  });
+}
+
+export function useRevokeInviteMutation(onSuccess?: () => void) {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (inviteId: string) => api.farms.revokeInvite(inviteId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.farms.invites.queryKey });
+      onSuccess && onSuccess();
+    },
+    onError: (error) => console.error(error),
+  });
+}
+
+export function useRemoveMemberMutation(onSuccess?: () => void) {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (userId: string) => api.farms.removeMember(userId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.users._def });
+      onSuccess && onSuccess();
+    },
+    onError: (error) => console.error(error),
+  });
+}
+
+export function useUpdateMemberRoleMutation(onSuccess?: () => void) {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ userId, role }: { userId: string; role: "owner" | "member" }) =>
+      api.farms.updateMemberRole(userId, role),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.users._def });
+      onSuccess && onSuccess();
+    },
+    onError: (error) => console.error(error),
+  });
 }
 
 export function useDeleteFarmMutation(

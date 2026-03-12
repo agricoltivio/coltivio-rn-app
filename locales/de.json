@@ -217,8 +217,22 @@
     "mail_being_deliverd": "Es kann einen Moment dauern, bis das Mail im Postfach ist. Falls das Mail nicht ankommt, schaue bitte in deinen Spam Ordner."
   },
   "onboarding": {
-    "farm_name": {
+    "welcome": {
       "heading": "Willkommen bei Coltivio!",
+      "subheading": "Wie möchtest du starten?",
+      "create_farm": "Neuen Hof erstellen",
+      "join_farm": "Hof beitreten"
+    },
+    "join_farm": {
+      "heading": "Hof beitreten",
+      "subheading": "Gib den Einladungscode ein, den du per E-Mail erhalten hast.",
+      "code_label": "Einladungscode",
+      "email_info": "Der Code wurde an eine bestimmte E-Mail-Adresse gesendet. Diese muss mit der E-Mail-Adresse deines Kontos übereinstimmen, sonst funktioniert der Code nicht.",
+      "submit": "Beitreten",
+      "invalid_code": "Ungültiger oder abgelaufener Code."
+    },
+    "farm_name": {
+      "heading": "Wie heißt dein Hof?",
       "subheading": "Gib einen Namen für deinen Hof an"
     },
     "location": {
@@ -284,6 +298,20 @@
     "farm": "Mein Hof",
     "farm_name": "Hofname",
     "location": "Standort",
+    "users": "Nutzer",
+    "invite_user": "Benutzer einladen",
+    "invite_email_label": "E-Mail-Adresse",
+    "invite_sent": "Einladung gesendet",
+    "invite_pending": "Ausstehend",
+    "invite_used": "Angenommen",
+    "invite_expired": "Abgelaufen",
+    "revoke_invite": "Einladung widerrufen",
+    "members": "Mitglieder",
+    "remove_member": "Mitglied entfernen",
+    "promote_to_owner": "Zum Eigentümer ernennen",
+    "demote_to_member": "Zum Mitglied degradieren",
+    "role_owner": "Eigentümer",
+    "role_member": "Mitglied",
     "delete_farm": "Hof löschen",
     "enter_farm_name_to_delete": "Um deinen Hof zu löschen, gib den Hofnamen ein und bestätige den Vorgang.",
     "chose_option_to_delete_account": "Wenn du auch dein Konto löschen möchtest, aktiviere die Option 'Konto löschen'.",
