@@ -217,8 +217,22 @@
     "mail_being_deliverd": "Cela peut prendre un moment avant que l'email arrive. S'il ne s'affiche pas, vérifiez votre dossier spam."
   },
   "onboarding": {
-    "farm_name": {
+    "welcome": {
       "heading": "Bienvenue chez Coltivio!",
+      "subheading": "Comment souhaitez-vous commencer?",
+      "create_farm": "Créer une nouvelle ferme",
+      "join_farm": "Rejoindre une ferme"
+    },
+    "join_farm": {
+      "heading": "Rejoindre une ferme",
+      "subheading": "Entrez le code d'invitation reçu par e-mail.",
+      "code_label": "Code d'invitation",
+      "email_info": "Le code a été envoyé à une adresse e-mail spécifique. Elle doit correspondre à l'adresse e-mail de votre compte, sinon le code ne fonctionnera pas.",
+      "submit": "Rejoindre",
+      "invalid_code": "Code invalide ou expiré."
+    },
+    "farm_name": {
+      "heading": "Comment s'appelle votre ferme?",
       "subheading": "Entrez un nom pour votre ferme"
     },
     "location": {
@@ -284,6 +298,20 @@
     "farm": "Ma ferme",
     "farm_name": "Nom de la ferme",
     "location": "Localisation",
+    "users": "Utilisateurs",
+    "invite_user": "Inviter un utilisateur",
+    "invite_email_label": "Adresse e-mail",
+    "invite_sent": "Invitation envoyée",
+    "invite_pending": "En attente",
+    "invite_used": "Acceptée",
+    "invite_expired": "Expirée",
+    "revoke_invite": "Révoquer l'invitation",
+    "members": "Membres",
+    "remove_member": "Supprimer le membre",
+    "promote_to_owner": "Promouvoir propriétaire",
+    "demote_to_member": "Rétrograder en membre",
+    "role_owner": "Propriétaire",
+    "role_member": "Membre",
     "delete_farm": "Supprimer la ferme",
     "enter_farm_name_to_delete": "Pour supprimer votre ferme, entrez le nom de la ferme et confirmez l'action.",
     "chose_option_to_delete_account": "Si vous souhaitez également supprimer votre compte, activez l'option 'Supprimer le compte'.",
@@ -1234,6 +1262,13 @@
   },
   "tasks": {
     "tasks": "Tâches",
+    "onboarding": {
+      "step1_heading": "Gérer les tâches",
+      "step1_body": "Créez des tâches, définissez des dates d'échéance et assignez-les à des collaborateurs.",
+      "step2_heading": "Liens & listes de contrôle",
+      "step2_body": "Liez des tâches à des parcelles, des animaux et plus encore.",
+      "step2_icon_hint": "Appuyez sur cette icône à côté d'un lien pour générer automatiquement des éléments de liste de contrôle."
+    },
     "new_task": "Nouvelle tâche",
     "edit_task": "Modifier la tâche",
     "status_todo": "Ouvert",

@@ -217,8 +217,22 @@
     "mail_being_deliverd": "Potrebbe volerci un momento perché l'email arrivi. Se non compare, controlla la cartella spam."
   },
   "onboarding": {
-    "farm_name": {
+    "welcome": {
       "heading": "Benvenuto in Coltivio!",
+      "subheading": "Come vuoi iniziare?",
+      "create_farm": "Crea una nuova azienda",
+      "join_farm": "Unisciti a un'azienda"
+    },
+    "join_farm": {
+      "heading": "Unisciti a un'azienda",
+      "subheading": "Inserisci il codice d'invito ricevuto via e-mail.",
+      "code_label": "Codice d'invito",
+      "email_info": "Il codice è stato inviato a un indirizzo e-mail specifico. Deve corrispondere all'indirizzo e-mail del tuo account, altrimenti il codice non funzionerà.",
+      "submit": "Unisciti",
+      "invalid_code": "Codice non valido o scaduto."
+    },
+    "farm_name": {
+      "heading": "Come si chiama la tua azienda?",
       "subheading": "Inserisci un nome per la tua azienda agricola"
     },
     "location": {
@@ -284,6 +298,20 @@
     "farm": "Azienda Agricola",
     "farm_name": "Nome Azienda Agricola",
     "location": "Posizione",
+    "users": "Utenti",
+    "invite_user": "Invita utente",
+    "invite_email_label": "Indirizzo e-mail",
+    "invite_sent": "Invito inviato",
+    "invite_pending": "In attesa",
+    "invite_used": "Accettato",
+    "invite_expired": "Scaduto",
+    "revoke_invite": "Revoca invito",
+    "members": "Membri",
+    "remove_member": "Rimuovi membro",
+    "promote_to_owner": "Promuovi a proprietario",
+    "demote_to_member": "Retrocedi a membro",
+    "role_owner": "Proprietario",
+    "role_member": "Membro",
     "delete_farm": "Elimina Azienda Agricola",
     "enter_farm_name_to_delete": "Per eliminare la tua azienda agricola, inserisci il nome dell'azienda e conferma l'azione.",
     "chose_option_to_delete_account": "Se vuoi anche eliminare il tuo account, abilita l'opzione 'Elimina Account'.",
@@ -1234,6 +1262,13 @@
   },
   "tasks": {
     "tasks": "Attività",
+    "onboarding": {
+      "step1_heading": "Gestisci le attività",
+      "step1_body": "Crea attività, imposta scadenze e assegnale ai collaboratori.",
+      "step2_heading": "Collegamenti & liste di controllo",
+      "step2_body": "Collega attività a appezzamenti, animali e altro ancora.",
+      "step2_icon_hint": "Tocca questa icona accanto a un collegamento per generare automaticamente elementi della lista di controllo."
+    },
     "new_task": "Nuova attività",
     "edit_task": "Modifica attività",
     "status_todo": "Aperta",

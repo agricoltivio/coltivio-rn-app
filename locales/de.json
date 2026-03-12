@@ -1263,6 +1263,13 @@
   },
   "tasks": {
     "tasks": "Aufgaben",
+    "onboarding": {
+      "step1_heading": "Aufgaben verwalten",
+      "step1_body": "Erstelle Aufgaben, setze Fälligkeitsdaten und weise sie Mitarbeitern zu.",
+      "step2_heading": "Verknüpfungen & Checklisten",
+      "step2_body": "Verknüpfe Aufgaben mit Schlägen, Tieren und mehr.",
+      "step2_icon_hint": "Tippe dieses Symbol neben einer Verknüpfung, um daraus automatisch Checklistenpunkte zu generieren."
+    },
     "new_task": "Neue Aufgabe",
     "edit_task": "Aufgabe bearbeiten",
     "status_todo": "Offen",

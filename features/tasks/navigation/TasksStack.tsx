@@ -3,6 +3,7 @@ import { DefaultTheme } from "styled-components/native";
 import { TaskListScreen } from "../TaskListScreen";
 import { TaskDetailScreen } from "../TaskDetailScreen";
 import { TaskFormScreen } from "../TaskFormScreen";
+import { TasksOnboardingScreen } from "../TasksOnboardingScreen";
 
 export function renderTasksStack(_theme: DefaultTheme, _navigation: unknown) {
   return [
@@ -23,6 +24,12 @@ export function renderTasksStack(_theme: DefaultTheme, _navigation: unknown) {
       name="TaskForm"
       options={{ title: "" }}
       component={TaskFormScreen}
+    />,
+    <Stack.Screen
+      key="tasks-onboarding"
+      name="TasksOnboarding"
+      options={{ title: "", headerShown: false }}
+      component={TasksOnboardingScreen}
     />,
   ];
 }

@@ -28,6 +28,7 @@ const RESETTABLE_KEYS = [
   { key: "selectPlotsForPlanOnboardingCompleted", label: "Crop Rotation Plot Selection Onboarding" },
   { key: "speedDialOnboardingCompleted", label: "Speed Dial Onboarding" },
   { key: "wikiOnboardingCompleted", label: "Wiki Onboarding" },
+  { key: "tasksOnboardingCompleted", label: "Tasks Onboarding" },
   { key: "onboardingsDisabled", label: "Onboardings Disabled" },
 ] as const;
 

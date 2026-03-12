@@ -46,6 +46,7 @@ type LocalSettingsData = {
   homeTilesLayout: "grid" | "list";
   wikiOnlyPrivate: boolean;
   wikiOnboardingCompleted: boolean;
+  tasksOnboardingCompleted: boolean;
 };
 
 type LocalSettingActions = {
@@ -82,6 +83,7 @@ export const defaultLocalSettings: LocalSettingsData = {
   homeTilesLayout: "list",
   wikiOnlyPrivate: false,
   wikiOnboardingCompleted: false,
+  tasksOnboardingCompleted: false,
 };
 
 export const LocalSettingsContext = createContext<LocalSettings>({

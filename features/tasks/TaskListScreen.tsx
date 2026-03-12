@@ -12,6 +12,8 @@ import { ActivityIndicator, FlatList, ScrollView as RNScrollView, View } from "r
 import { useTheme } from "styled-components/native";
 import { useTasksQuery } from "./tasks.hooks";
 import { TaskListScreenProps } from "./navigation/tasks-routes";
+import { useLocalSettings } from "@/features/user/LocalSettingsContext";
+import { useEffect } from "react";
 import { TaskStatus } from "@/api/tasks.api";
 
 export function TaskListScreen({ navigation }: TaskListScreenProps) {
@@ -23,7 +25,14 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
   const [overdueOnly, setOverdueOnly] = useState(false);
   const [activeAssignees, setActiveAssignees] = useState<Set<string>>(new Set());
 
+  const { localSettings } = useLocalSettings();
   const { tasks, isLoading } = useTasksQuery(status);
+
+  useEffect(() => {
+    if (!localSettings.tasksOnboardingCompleted) {
+      navigation.navigate("TasksOnboarding");
+    }
+  }, []);
 
   const now = new Date();
 

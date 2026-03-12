@@ -217,8 +217,22 @@
     "mail_being_deliverd": "It may take a moment for the email to arrive. If it doesn't appear, please check your spam folder."
   },
   "onboarding": {
-    "farm_name": {
+    "welcome": {
       "heading": "Welcome to Coltivio!",
+      "subheading": "How would you like to get started?",
+      "create_farm": "Create a new farm",
+      "join_farm": "Join a farm"
+    },
+    "join_farm": {
+      "heading": "Join a farm",
+      "subheading": "Enter the invitation code you received by email.",
+      "code_label": "Invitation code",
+      "email_info": "The code was sent to a specific email address. It must match the email address of your account, otherwise the code won't work.",
+      "submit": "Join",
+      "invalid_code": "Invalid or expired code."
+    },
+    "farm_name": {
+      "heading": "What is your farm called?",
       "subheading": "Enter a name for your farm"
     },
     "location": {
@@ -284,6 +298,20 @@
     "farm": "Farm",
     "farm_name": "Farm Name",
     "location": "Location",
+    "users": "Users",
+    "invite_user": "Invite user",
+    "invite_email_label": "Email address",
+    "invite_sent": "Invitation sent",
+    "invite_pending": "Pending",
+    "invite_used": "Accepted",
+    "invite_expired": "Expired",
+    "revoke_invite": "Revoke invitation",
+    "members": "Members",
+    "remove_member": "Remove member",
+    "promote_to_owner": "Promote to owner",
+    "demote_to_member": "Demote to member",
+    "role_owner": "Owner",
+    "role_member": "Member",
     "delete_farm": "Delete Farm",
     "enter_farm_name_to_delete": "To delete your farm, enter the farm name.",
     "chose_option_to_delete_account": "To also delete your account, enable 'Delete Account'.",
@@ -1234,6 +1262,13 @@
   },
   "tasks": {
     "tasks": "Tasks",
+    "onboarding": {
+      "step1_heading": "Manage tasks",
+      "step1_body": "Create tasks, set due dates and assign them to collaborators.",
+      "step2_heading": "Links & checklists",
+      "step2_body": "Link tasks to plots, animals and more.",
+      "step2_icon_hint": "Tap this icon next to a link to automatically generate checklist items from it."
+    },
     "new_task": "New Task",
     "edit_task": "Edit Task",
     "status_todo": "Open",
