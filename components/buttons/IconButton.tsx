@@ -108,11 +108,11 @@ const ButtonContainer = styled.TouchableOpacity<{
 }>`
   flex-direction: row;
   background-color: ${({ theme, type, disabled }) =>
-    disabled ? theme.colors.gray3 : theme.colors[type]};
+    disabled ? theme.colors.gray3 : type === "accent" ? theme.colors.white : theme.colors[type]};
   padding: 5px;
   border-radius: ${({ theme }) => theme.radii.m}px;
   border: ${({ theme, type }) =>
-    type === "accent" ? `1px solid ${theme.colors.gray3}` : "none"};
+    type === "accent" ? `1px solid ${theme.colors.primary}` : "none"};
   justify-content: center;
   align-items: center;
 `;

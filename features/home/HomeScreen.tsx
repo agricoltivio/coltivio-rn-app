@@ -41,14 +41,19 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const visibleTiles = useMemo(() => {
     return localSettings.homeTiles
       .filter((tile) => tile.visible && tile.id in HOME_TILES)
-      .map((tile) => ({ id: tile.id, ...HOME_TILES[tile.id as keyof typeof HOME_TILES] }));
+      .map((tile) => ({
+        id: tile.id,
+        ...HOME_TILES[tile.id as keyof typeof HOME_TILES],
+      }));
   }, [localSettings.homeTiles]);
 
   function navigateToTile(tileId: string) {
     if (tileId === "plots") {
       navigation.navigate("PlotsMap", {});
     } else {
-      navigation.navigate(HOME_TILES[tileId as keyof typeof HOME_TILES].route as never);
+      navigation.navigate(
+        HOME_TILES[tileId as keyof typeof HOME_TILES].route as never,
+      );
     }
   }
 
@@ -101,7 +106,12 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                   <Image
                     source={tile.image}
                     contentFit="contain"
-                    style={{ width: 36, height: 36, opacity: 0.85, marginLeft: theme.spacing.m }}
+                    style={{
+                      width: 36,
+                      height: 36,
+                      opacity: 0.85,
+                      marginLeft: theme.spacing.m,
+                    }}
                   />
                   <ListItem.Content>
                     <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>

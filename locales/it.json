@@ -276,7 +276,8 @@
       "field_calendar": "Calendario dei Campi",
       "animal_husbandry": "Animali",
       "community": "Pastorino",
-      "wiki": "Wiki"
+      "wiki": "Wiki",
+      "tasks": "Attività"
     }
   },
   "farm": {
@@ -1230,6 +1231,43 @@
       "settings_hint": "Puoi regolare le azioni o disattivare l'accesso rapido in qualsiasi momento nelle impostazioni.",
       "configure_heading": "Configura le azioni"
     }
+  },
+  "tasks": {
+    "tasks": "Attività",
+    "new_task": "Nuova attività",
+    "edit_task": "Modifica attività",
+    "status_todo": "Aperta",
+    "status_done": "Completata",
+    "mark_done": "Segna come completata",
+    "reopen": "Riapri",
+    "due_date": "Scadenza",
+    "assignee": "Collaboratore",
+    "labels": "Etichette",
+    "add_label": "Aggiungi etichetta",
+    "recurrence": "Ricorrenza",
+    "checklist": "Lista di controllo",
+    "add_checklist_item": "Aggiungi elemento",
+    "links": "Collegamento",
+    "add_link": "Aggiungi collegamento",
+    "link_types": {
+      "animal": "Animale",
+      "animal_plural": "Animali",
+      "plot": "Campo",
+      "plot_plural": "Campi",
+      "wiki_entry": "Voce wiki",
+      "wiki_entry_plural": "Voci wiki",
+      "herd": "Mandria",
+      "herd_plural": "Mandrie",
+      "contact": "Contatto",
+      "contact_plural": "Contatti",
+      "order": "Ordine",
+      "order_plural": "Ordini",
+      "treatment": "Trattamento",
+      "treatment_plural": "Trattamenti"
+    },
+    "no_tasks": "Nessuna attività trovata",
+    "delete_confirm": "Eliminare l'attività?",
+    "delete_confirm_message": "Questa azione non può essere annullata."
   },
   "wiki": {
     "wiki": "Wiki",

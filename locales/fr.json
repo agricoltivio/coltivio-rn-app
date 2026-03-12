@@ -276,7 +276,8 @@
       "field_calendar": "Calendrier des champs",
       "animal_husbandry": "Élevage",
       "community": "Communauté",
-      "wiki": "Wiki"
+      "wiki": "Wiki",
+      "tasks": "Tâches"
     }
   },
   "farm": {
@@ -1230,6 +1231,43 @@
       "settings_hint": "Vous pouvez ajuster les actions ou désactiver l'accès rapide à tout moment dans les paramètres.",
       "configure_heading": "Configurer les actions"
     }
+  },
+  "tasks": {
+    "tasks": "Tâches",
+    "new_task": "Nouvelle tâche",
+    "edit_task": "Modifier la tâche",
+    "status_todo": "Ouvert",
+    "status_done": "Terminé",
+    "mark_done": "Marquer comme terminé",
+    "reopen": "Rouvrir",
+    "due_date": "Date d'échéance",
+    "assignee": "Collaborateur",
+    "labels": "Étiquettes",
+    "add_label": "Ajouter une étiquette",
+    "recurrence": "Récurrence",
+    "checklist": "Liste de contrôle",
+    "add_checklist_item": "Ajouter un élément",
+    "links": "Liens",
+    "add_link": "Ajouter un lien",
+    "link_types": {
+      "animal": "Animal",
+      "animal_plural": "Animaux",
+      "plot": "Champ",
+      "plot_plural": "Champs",
+      "wiki_entry": "Entrée wiki",
+      "wiki_entry_plural": "Entrées wiki",
+      "herd": "Troupeau",
+      "herd_plural": "Troupeaux",
+      "contact": "Contact",
+      "contact_plural": "Contacts",
+      "order": "Commande",
+      "order_plural": "Commandes",
+      "treatment": "Traitement",
+      "treatment_plural": "Traitements"
+    },
+    "no_tasks": "Aucune tâche trouvée",
+    "delete_confirm": "Supprimer la tâche ?",
+    "delete_confirm_message": "Cette action ne peut pas être annulée."
   },
   "wiki": {
     "wiki": "Wiki",

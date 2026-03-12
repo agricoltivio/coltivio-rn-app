@@ -3,6 +3,7 @@ import { FertilizerUnit } from "@/api/fertilizers.api";
 import { AgriColtivioStackParamList } from "@/features/agri-coltivio/navigation/agri-coltivio-routes";
 import { AnimalsStackParamList } from "@/features/animals/navigation/animals-routes";
 import { WikiStackParamList } from "@/features/wiki/navigation/wiki-routes";
+import { TasksStackParamList } from "@/features/tasks/navigation/tasks-routes";
 import { AuthStackParamList } from "@/features/auth/navigation/auth-routes";
 import { CropProtectionApplicationStackParamList } from "@/features/crop-protection-applications/navigation/crop-protection-application-routes";
 import { CropProtectionProductsStackParamList } from "@/features/crop-protection-products/navigation/crop-protection-product-routes";
@@ -41,7 +42,8 @@ export type RootStackParamList = AuthStackParamList &
   FieldCalendarStackParamList &
   AgriColtivioStackParamList &
   AnimalsStackParamList &
-  WikiStackParamList & {
+  WikiStackParamList &
+  TasksStackParamList & {
     MapDrawOnboarding: { variant?: "draw" | "create" | "parcel" | "edit" | "cropRotation" | "plotsMap" } | undefined;
     SelectPlotsOnboarding: undefined;
   };

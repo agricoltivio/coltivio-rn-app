@@ -3,11 +3,11 @@ import {
   OutdoorScheduleType,
 } from "@/api/herds.api";
 import { CompactDatePicker } from "@/components/datepicker/CompactDatePicker";
+import { RecurrencePicker, RecurrenceValue } from "@/components/recurrence/RecurrencePicker";
 import { Select } from "@/components/select/Select";
-import { Ionicons } from "@expo/vector-icons";
 import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Modal, Pressable, Text, TextInput, View } from "react-native";
+import { Modal, Pressable, Text, View } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useTheme } from "styled-components/native";
 
@@ -49,15 +49,7 @@ export function OutdoorScheduleEditModal({
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [hasEndDate, setHasEndDate] = useState(false);
-  const [hasRecurrence, setHasRecurrence] = useState(false);
-  const [frequency, setFrequency] = useState<"weekly" | "monthly" | "yearly">(
-    "weekly",
-  );
-  const [interval, setInterval] = useState("1");
-  const [hasUntil, setHasUntil] = useState(false);
-  const [until, setUntil] = useState<Date>(
-    new Date(new Date().getFullYear() + 3, 11, 31),
-  );
+  const [recurrence, setRecurrence] = useState<RecurrenceValue | null>(null);
 
   // Reset form when modal opens
   useEffect(() => {
@@ -67,73 +59,41 @@ export function OutdoorScheduleEditModal({
       setStartDate(new Date(schedule.startDate));
       setEndDate(schedule.endDate ? new Date(schedule.endDate) : null);
       setHasEndDate(!!schedule.endDate);
-      setHasRecurrence(!!schedule.recurrence);
-      if (schedule.recurrence) {
-        setFrequency(schedule.recurrence.frequency);
-        setInterval(String(schedule.recurrence.interval));
-        setHasUntil(!!schedule.recurrence.until);
-        if (schedule.recurrence.until) {
-          setUntil(new Date(schedule.recurrence.until));
-        }
-      }
+      setRecurrence(
+        schedule.recurrence
+          ? {
+              frequency: schedule.recurrence.frequency,
+              interval: schedule.recurrence.interval,
+              until: schedule.recurrence.until ?? null,
+            }
+          : null,
+      );
     } else {
       setScheduleType("pasture");
       setStartDate(new Date());
       setEndDate(null);
       setHasEndDate(false);
-      setHasRecurrence(false);
-      setFrequency("weekly");
-      setInterval("1");
-      setHasUntil(false);
-      setUntil(new Date(new Date().getFullYear() + 3, 11, 31));
+      setRecurrence(null);
     }
   }, [visible, schedule]);
 
-  // Compute duration in days and filter frequency options accordingly
-  const durationDays = useMemo(() => {
-    if (!hasEndDate || !endDate) return null;
-    return Math.round(
-      (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
-    );
-  }, [hasEndDate, endDate, startDate]);
-
-  const frequencyData = useMemo(() => {
-    const allFrequencies: Array<{
-      label: string;
-      value: "weekly" | "monthly" | "yearly";
-    }> = [
+  // Compute duration in days to filter out frequencies shorter than the event span
+  const frequencyOptions = useMemo(() => {
+    const all: Array<{ label: string; value: "weekly" | "monthly" | "yearly" }> = [
       { label: t("animals.frequency_types.weekly"), value: "weekly" },
       { label: t("animals.frequency_types.monthly"), value: "monthly" },
       { label: t("animals.frequency_types.yearly"), value: "yearly" },
     ];
-    if (durationDays === null) return allFrequencies;
-    return allFrequencies.filter((f) => {
-      if (f.value === "weekly" && durationDays > 7) return false;
-      if (f.value === "monthly" && durationDays > 31) return false;
+    if (!hasEndDate || !endDate) return all;
+    const days = Math.round(
+      (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
+    );
+    return all.filter((f) => {
+      if (f.value === "weekly" && days > 7) return false;
+      if (f.value === "monthly" && days > 31) return false;
       return true;
     });
-  }, [durationDays, t]);
-
-  // Auto-switch frequency if current selection becomes invalid
-  useEffect(() => {
-    const validValues = frequencyData.map((f) => f.value);
-    if (!validValues.includes(frequency)) {
-      setFrequency(validValues[validValues.length - 1]);
-    }
-  }, [frequencyData, frequency]);
-
-  // Get the interval label based on frequency and count
-  function getIntervalLabel(): string {
-    const num = parseInt(interval) || 1;
-    switch (frequency) {
-      case "weekly":
-        return num === 1 ? t("animals.week") : t("animals.weeks");
-      case "monthly":
-        return num === 1 ? t("animals.month") : t("animals.months");
-      case "yearly":
-        return num === 1 ? t("animals.year") : t("animals.years");
-    }
-  }
+  }, [hasEndDate, endDate, startDate, t]);
 
   function handleSave() {
     const input: OutdoorScheduleCreateInput = {
@@ -141,11 +101,11 @@ export function OutdoorScheduleEditModal({
       endDate: hasEndDate && endDate ? endDate.toISOString() : null,
       type: scheduleType,
       notes: null,
-      recurrence: hasRecurrence
+      recurrence: recurrence
         ? {
-            frequency,
-            interval: parseInt(interval) || 1,
-            until: hasUntil ? until.toISOString() : null,
+            frequency: recurrence.frequency,
+            interval: recurrence.interval,
+            until: recurrence.until ?? null,
           }
         : null,
     };
@@ -157,13 +117,6 @@ export function OutdoorScheduleEditModal({
       onDelete(schedule.id);
     }
   }
-
-  const chipStyle = {
-    backgroundColor: theme.colors.gray5,
-    paddingHorizontal: theme.spacing.s,
-    paddingVertical: theme.spacing.xs,
-    borderRadius: 8,
-  } as const;
 
   return (
     <Modal visible={visible} transparent animationType="fade">
@@ -277,106 +230,13 @@ export function OutdoorScheduleEditModal({
             >
               {t("animals.recurrence_optional")}
             </Text>
-
-            {hasRecurrence ? (
-              <View
-                style={{
-                  gap: theme.spacing.s,
-                  marginBottom: theme.spacing.l,
-                }}
-              >
-                {/* Frequency + clear button row */}
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: theme.spacing.xs,
-                  }}
-                >
-                  <View style={{ flex: 1 }}>
-                    <Select
-                      label={t("animals.frequency")}
-                      value={frequency}
-                      data={frequencyData}
-                      onChange={(val) =>
-                        setFrequency(val as "weekly" | "monthly" | "yearly")
-                      }
-                    />
-                  </View>
-                  <Pressable onPress={() => setHasRecurrence(false)}>
-                    <Ionicons
-                      name="close-circle"
-                      size={24}
-                      color={theme.colors.gray2}
-                    />
-                  </Pressable>
-                </View>
-
-                {/* Interval row: "Every N weeks/months/years" */}
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: theme.spacing.s,
-                  }}
-                >
-                  <Text style={{ fontSize: 14, color: theme.colors.text }}>
-                    {t("animals.every")}
-                  </Text>
-                  <TextInput
-                    value={interval}
-                    onChangeText={(text) => {
-                      if (!text) setInterval("");
-                      const num = parseInt(text);
-                      if (!isNaN(num) && num > 0) setInterval(String(num));
-                    }}
-                    keyboardType="numbers-and-punctuation"
-                    returnKeyType="done"
-                    blurOnSubmit
-                    style={{
-                      width: 50,
-                      borderWidth: 1,
-                      borderColor: theme.colors.gray3,
-                      borderRadius: 8,
-                      paddingHorizontal: 8,
-                      paddingVertical: 6,
-                      fontSize: 14,
-                      textAlign: "center",
-                    }}
-                  />
-                  <Text style={{ fontSize: 14, color: theme.colors.text }}>
-                    {getIntervalLabel()}
-                  </Text>
-                </View>
-
-                {/* Until date */}
-                <CompactDatePicker
-                  date={until}
-                  onDateChange={(d) => {
-                    setUntil(d);
-                    setHasUntil(true);
-                  }}
-                  minimumDate={startDate}
-                  label={hasUntil ? t("animals.until") : undefined}
-                  placeholder={t("animals.until")}
-                  hasValue={hasUntil}
-                  onClear={() => setHasUntil(false)}
-                />
-              </View>
-            ) : (
-              <Pressable
-                onPress={() => setHasRecurrence(true)}
-                style={{
-                  ...chipStyle,
-                  alignSelf: "flex-start",
-                  marginBottom: theme.spacing.l,
-                }}
-              >
-                <Text style={{ fontSize: 15, color: theme.colors.text }}>
-                  {t("animals.recurrence")}
-                </Text>
-              </Pressable>
-            )}
+            <View style={{ marginBottom: theme.spacing.l }}>
+              <RecurrencePicker
+                value={recurrence}
+                onChange={setRecurrence}
+                frequencyOptions={frequencyOptions}
+              />
+            </View>
 
             {/* Actions */}
             <View style={{ flexDirection: "row", gap: theme.spacing.s }}>

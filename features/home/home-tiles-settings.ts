@@ -30,6 +30,11 @@ export const HOME_TILES = {
     route: "WikiList",
     image: require("@/assets/images/wiki.png"),
   },
+  tasks: {
+    translationKey: "home.tiles.tasks",
+    route: "TaskList",
+    image: require("@/assets/images/tasks.png"),
+  },
 } as const;
 
 export const DEFAULT_HOME_TILES: HomeTileConfig[] = [
@@ -38,4 +43,5 @@ export const DEFAULT_HOME_TILES: HomeTileConfig[] = [
   { id: "animalHusbandry", visible: true },
   { id: "fieldCalendar", visible: true },
   { id: "wiki", visible: true },
+  { id: "tasks", visible: true },
 ];
