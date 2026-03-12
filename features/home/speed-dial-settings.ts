@@ -39,6 +39,11 @@ export const SPEED_DIAL_ACTIONS = {
     icon: "needle",
     route: "CreateTreatment",
   },
+  newTask: {
+    translationKey: "speed_dial.new_task",
+    icon: "clipboard-check-outline",
+    route: "TaskForm",
+  },
 } as const;
 
 export const DEFAULT_SPEED_DIAL_ITEMS: SpeedDialActionConfig[] = [
@@ -49,4 +54,5 @@ export const DEFAULT_SPEED_DIAL_ITEMS: SpeedDialActionConfig[] = [
   { id: "tillage", active: false },
   { id: "cropProtection", active: false },
   { id: "cropRotation", active: false },
+  { id: "newTask", active: false },
 ];

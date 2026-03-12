@@ -408,7 +408,7 @@ function LinkPickerModal({
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={{ borderTopRightRadius: 10, borderTopLeftRadius: 10, overflow: "hidden", backgroundColor: filteredAnimals.length > 0 ? theme.colors.white : undefined }}
                 renderItem={({ item }) => (
-                  <ListItem style={{ paddingVertical: 5 }} onPress={() => toggleItem("animal", item.id, item.name)}>
+                  <ListItem style={{ paddingVertical: 5 }} onPress={() => toggleItem("animal", item.id, item.earTag?.number ? `${item.earTag.number} — ${item.name}` : item.name)}>
                     <ListItem.Checkbox checked={pendingLinks.has(item.id)} />
                     <ListItem.Content>
                       <ListItem.Title>
@@ -483,6 +483,100 @@ function LinkPickerModal({
   );
 }
 
+type GenerateChecklistModalProps = {
+  visible: boolean;
+  items: LinkInput[];
+  onClose: () => void;
+  onConfirm: (selected: LinkInput[]) => void;
+};
+
+function GenerateChecklistModal({ visible, items, onClose, onConfirm }: GenerateChecklistModalProps) {
+  const theme = useTheme();
+  const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
+  const [search, setSearch] = useState("");
+  // All pre-selected by default, keyed by linkedId
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    if (!visible) return;
+    setSearch("");
+    setSelected(new Set(items.map((i) => i.linkedId)));
+  }, [visible]); // intentionally only on visibility change
+
+  const filtered = useMemo(() => {
+    if (!search) return items;
+    const q = search.toLowerCase();
+    return items.filter((i) => i.displayName.toLowerCase().includes(q));
+  }, [items, search]);
+
+  function toggleItem(linkedId: string) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      next.has(linkedId) ? next.delete(linkedId) : next.add(linkedId);
+      return next;
+    });
+  }
+
+  return (
+    <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
+      <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+        <View style={{ paddingTop: insets.top, backgroundColor: theme.colors.background }}>
+          <View style={{ height: 44, flexDirection: "row", alignItems: "center", paddingHorizontal: 8, justifyContent: "flex-end" }}>
+            <Pressable onPress={onClose} style={{ paddingHorizontal: 8, paddingVertical: 4 }}>
+              <Ionicons name="close" size={28} color={theme.colors.primary} />
+            </Pressable>
+          </View>
+        </View>
+        <View style={{ flex: 1, paddingHorizontal: theme.spacing.m, paddingTop: theme.spacing.s }}>
+          <H2>{t("tasks.checklist")}</H2>
+          <View style={{ marginTop: theme.spacing.m }}>
+            <TextInput
+              hideLabel
+              placeholder={t("forms.placeholders.search")}
+              onChangeText={setSearch}
+              value={search}
+            />
+          </View>
+          <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: theme.spacing.m }}>
+            <TouchableOpacity onPress={() => setSelected(new Set(filtered.map((i) => i.linkedId)))}>
+              <Subtitle style={{ color: theme.colors.primary }}>
+                {t("treatments.select_all", { count: filtered.length })}
+              </Subtitle>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setSelected((prev) => { const next = new Set(prev); filtered.forEach((i) => next.delete(i.linkedId)); return next; })}>
+              <Subtitle style={{ color: theme.colors.gray1 }}>
+                {t("treatments.clear_selection")}
+              </Subtitle>
+            </TouchableOpacity>
+          </View>
+          <View style={{ marginTop: theme.spacing.s, flex: 1 }}>
+            <FlatList
+              data={filtered}
+              keyExtractor={(item) => item.linkedId}
+              contentContainerStyle={{ borderTopRightRadius: 10, borderTopLeftRadius: 10, overflow: "hidden", backgroundColor: filtered.length > 0 ? theme.colors.white : undefined }}
+              renderItem={({ item }) => (
+                <ListItem style={{ paddingVertical: 5 }} onPress={() => toggleItem(item.linkedId)}>
+                  <ListItem.Checkbox checked={selected.has(item.linkedId)} />
+                  <ListItem.Content>
+                    <ListItem.Title>{item.displayName}</ListItem.Title>
+                  </ListItem.Content>
+                </ListItem>
+              )}
+            />
+          </View>
+        </View>
+        <BottomActionContainer>
+          <Button
+            title={t("treatments.confirm_selection", { count: selected.size })}
+            onPress={() => onConfirm(items.filter((i) => selected.has(i.linkedId)))}
+          />
+        </BottomActionContainer>
+      </View>
+    </Modal>
+  );
+}
+
 export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -506,6 +600,8 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
   const [linkPickerInitialEntityType, setLinkPickerInitialEntityType] = useState<EntityType | null>(null);
   const [linkPickerInitialAnimalSubView, setLinkPickerInitialAnimalSubView] = useState<AnimalSubView>("animals");
   const [linkPickerInitialLinks, setLinkPickerInitialLinks] = useState<LinkInput[]>([]);
+  const [generateModalVisible, setGenerateModalVisible] = useState(false);
+  const [generateModalItems, setGenerateModalItems] = useState<LinkInput[]>([]);
 
   // Track whether we've initialized form from existing task
   const [initialized, setInitialized] = useState(false);
@@ -557,6 +653,9 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
       .map((item) => ({ name: item.name, dueDate: item.dueDate }));
 
     const linksPayload = links.map((l) => ({ linkType: l.linkType, linkedId: l.linkedId }));
+    const recurrencePayload = recurrence
+      ? { frequency: recurrence.frequency, interval: recurrence.interval, until: recurrence.until ?? undefined }
+      : null;
 
     if (isEditing) {
       const body: TaskUpdateInput = {
@@ -565,7 +664,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
         labels,
         assigneeId: values.assigneeId || undefined,
         dueDate: values.dueDate ? values.dueDate.toISOString() : undefined,
-        recurrence: recurrence ?? null,
+        recurrence: recurrencePayload,
         links: linksPayload,
         checklistItems,
       };
@@ -577,7 +676,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
         labels,
         assigneeId: values.assigneeId || undefined,
         dueDate: values.dueDate ? values.dueDate.toISOString() : undefined,
-        recurrence: recurrence ?? undefined,
+        recurrence: recurrencePayload ?? undefined,
         links: linksPayload,
         checklistItems,
       };
@@ -636,6 +735,16 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
     setLinkPickerInitialAnimalSubView(subView);
     setLinkPickerInitialLinks(links.filter((l) => l.linkType === linkType));
     setLinkPickerVisible(true);
+  }
+
+  function openGenerateChecklist(items: LinkInput[]) {
+    setGenerateModalItems(items);
+    setGenerateModalVisible(true);
+  }
+
+  function handleGenerateConfirm(selected: LinkInput[]) {
+    appendChecklist(selected.map((l) => ({ name: l.displayName })));
+    setGenerateModalVisible(false);
   }
 
   function handleLinksConfirm(confirmedLinks: LinkInput[]) {
@@ -798,23 +907,34 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
                 />
               </View>
               {groupedLinks.map(({ linkType, items }) => (
-                <ListItem
-                  key={linkType}
-                  style={{
-                    backgroundColor: theme.colors.white,
-                    borderRadius: 8,
-                    borderWidth: 1,
-                    borderColor: theme.colors.primary,
-                  }}
-                  onPress={() => openEditLinkGroup(linkType)}
-                >
-                  <ListItem.Content>
-                    <ListItem.Title style={{ color: theme.colors.primary }}>
-                      {items.length === 1 ? items[0].displayName : `${items.length} ${linkTypePluralLabels[linkType]}`}
-                    </ListItem.Title>
-                  </ListItem.Content>
-                  <ListItem.Chevron />
-                </ListItem>
+                <View key={linkType} style={{ gap: theme.spacing.xs }}>
+                  <Subtitle style={{ color: theme.colors.gray2 }}>{linkTypeLabels[linkType]}</Subtitle>
+                  <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}>
+                    <ListItem
+                      style={{
+                        flex: 1,
+                        backgroundColor: theme.colors.white,
+                        borderRadius: 8,
+                        borderWidth: 1,
+                        borderColor: theme.colors.primary,
+                      }}
+                      onPress={() => openEditLinkGroup(linkType)}
+                    >
+                      <ListItem.Content>
+                        <ListItem.Title style={{ color: theme.colors.primary }}>
+                          {items.length === 1 ? items[0].displayName : `${items.length} ${linkTypePluralLabels[linkType]}`}
+                        </ListItem.Title>
+                      </ListItem.Content>
+                      <ListItem.Chevron />
+                    </ListItem>
+                    <IonIconButton
+                      type="accent"
+                      icon="checkbox-outline"
+                      color={theme.colors.primary}
+                      onPress={() => openGenerateChecklist(items)}
+                    />
+                  </View>
+                </View>
               ))}
             </View>
 
@@ -884,6 +1004,13 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
           </Pressable>
         </Pressable>
       </Modal>
+
+      <GenerateChecklistModal
+        visible={generateModalVisible}
+        items={generateModalItems}
+        onClose={() => setGenerateModalVisible(false)}
+        onConfirm={handleGenerateConfirm}
+      />
 
       <LinkPickerModal
         visible={linkPickerVisible}

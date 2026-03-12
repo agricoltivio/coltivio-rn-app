@@ -33,7 +33,7 @@ export const HOME_TILES = {
   tasks: {
     translationKey: "home.tiles.tasks",
     route: "TaskList",
-    image: require("@/assets/images/community-icon-2.png"),
+    image: require("@/assets/images/tasks.png"),
   },
 } as const;
 

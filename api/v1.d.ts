@@ -9603,41 +9603,44 @@ export interface components {
         };
         PatchV1TasksByIdTaskIdStatusPositiveResponse: {
             data: {
-                id: string;
-                farmId: string;
-                name: string;
-                description: string | null;
-                labels: string[];
-                /** @enum {string} */
-                status: "todo" | "done";
-                assigneeId: string | null;
-                dueDate: string | unknown;
-                createdAt: string | unknown;
-                createdBy: string | null;
-                recurrence: {
+                task: {
                     id: string;
-                    taskId: string;
-                    /** @enum {string} */
-                    frequency: "weekly" | "monthly" | "yearly";
-                    interval: number;
-                    byWeekday: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
-                    byMonthDay: number | null;
-                    until: string | unknown;
-                    count: number | null;
-                } | null;
-                checklistItems: {
-                    id: string;
-                    taskId: string;
+                    farmId: string;
                     name: string;
+                    description: string | null;
+                    labels: string[];
+                    /** @enum {string} */
+                    status: "todo" | "done";
+                    assigneeId: string | null;
                     dueDate: string | unknown;
-                    done: boolean;
                     createdAt: string | unknown;
-                }[];
-                assignee: {
-                    id: string;
-                    email: string;
-                    fullName: string | null;
-                } | null;
+                    createdBy: string | null;
+                    recurrence: {
+                        id: string;
+                        taskId: string;
+                        /** @enum {string} */
+                        frequency: "weekly" | "monthly" | "yearly";
+                        interval: number;
+                        byWeekday: ("MO" | "TU" | "WE" | "TH" | "FR" | "SA" | "SU")[] | null;
+                        byMonthDay: number | null;
+                        until: string | unknown;
+                        count: number | null;
+                    } | null;
+                    checklistItems: {
+                        id: string;
+                        taskId: string;
+                        name: string;
+                        dueDate: string | unknown;
+                        done: boolean;
+                        createdAt: string | unknown;
+                    }[];
+                    assignee: {
+                        id: string;
+                        email: string;
+                        fullName: string | null;
+                    } | null;
+                };
+                nextTaskId: string | null;
             };
         };
         PatchV1TasksByIdTaskIdStatusRequestBody: {

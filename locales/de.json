@@ -1199,6 +1199,7 @@
     "crop_rotation": "Fruchtfolge hinzufügen",
     "new_animal": "Tier hinzufügen",
     "treatment": "Behandlung hinzufügen",
+    "new_task": "Aufgabe hinzufügen",
     "title": "Schnellzugriff",
     "active_actions": "Aktive Aktionen (max. 4)",
     "available_actions": "Verfügbare Aktionen",
@@ -1252,8 +1253,8 @@
     "link_types": {
       "animal": "Tier",
       "animal_plural": "Tiere",
-      "plot": "Feld",
-      "plot_plural": "Felder",
+      "plot": "Schlag",
+      "plot_plural": "Schläge",
       "wiki_entry": "Wiki-Eintrag",
       "wiki_entry_plural": "Wiki-Einträge",
       "herd": "Herde",
@@ -1265,6 +1266,7 @@
       "treatment": "Behandlung",
       "treatment_plural": "Behandlungen"
     },
+    "overdue": "Überfällig",
     "no_tasks": "Keine Aufgaben vorhanden",
     "delete_confirm": "Aufgabe löschen?",
     "delete_confirm_message": "Diese Aktion kann nicht rückgängig gemacht werden."

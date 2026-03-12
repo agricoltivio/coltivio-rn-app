@@ -11,15 +11,19 @@ type ChipProps = {
   onPress?: () => void;
   /** Renders a × icon and calls this when tapped */
   onRemove?: () => void;
+  /** Override background color */
+  bgColor?: string;
+  /** Override text color */
+  textColor?: string;
 };
 
-export function Chip({ label, active = false, accent = false, onPress, onRemove }: ChipProps) {
+export function Chip({ label, active = false, accent = false, onPress, onRemove, bgColor: bgColorProp, textColor: textColorProp }: ChipProps) {
   const theme = useTheme();
 
-  const bgColor = active ? theme.colors.primary : theme.colors.white;
-  const borderColor = active || accent ? theme.colors.primary : theme.colors.gray3;
-  const textColor = active ? theme.colors.white : accent ? theme.colors.primary : theme.colors.gray1;
-  const iconColor = active ? theme.colors.white : accent ? theme.colors.primary : theme.colors.gray2;
+  const bgColor = bgColorProp ?? (active ? theme.colors.primary : theme.colors.white);
+  const borderColor = bgColorProp ? bgColorProp : (active || accent ? theme.colors.primary : theme.colors.gray3);
+  const textColor = textColorProp ?? (active ? theme.colors.white : accent ? theme.colors.primary : theme.colors.gray1);
+  const iconColor = textColorProp ?? (active ? theme.colors.white : accent ? theme.colors.primary : theme.colors.gray2);
 
   return (
     <Pressable

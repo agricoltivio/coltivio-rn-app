@@ -248,25 +248,9 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       setDragPanEnabled(true);
     });
 
-  if (!farm || !plots) return null;
-
-  const initialCenter: LngLat = (() => {
-    const preselectedPlot = plots.find((p) => p.id === preselectedPlotId);
-    if (preselectedPlot && preselectedPlot.geometry.coordinates.length > 0) {
-      const centroid = turf.centroid(preselectedPlot.geometry);
-      return centroid.geometry.coordinates as LngLat;
-    }
-    return farm.location.coordinates as LngLat;
-  })();
-
-  const selectedPlot =
-    mode.type === "view" && mode.selectedPlotId
-      ? plots.find((p) => p.id === mode.selectedPlotId)
-      : undefined;
-
   // Plots with size 0 have no geometry and can't be rendered on the map;
   // they are excluded from the context (map layers) but still shown in the list modal.
-  const mapPlots = useMemo(() => plots.filter((p) => p.size > 0), [plots]);
+  const mapPlots = useMemo(() => (plots ?? []).filter((p) => p.size > 0), [plots]);
 
   const contextValue = useMemo(
     () => ({
@@ -284,6 +268,22 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
     }),
     [mode, dispatch, mapPlots, navigation, controlsExpanded, baseLayer],
   );
+
+  if (!farm || !plots) return null;
+
+  const initialCenter: LngLat = (() => {
+    const preselectedPlot = plots.find((p) => p.id === preselectedPlotId);
+    if (preselectedPlot && preselectedPlot.geometry.coordinates.length > 0) {
+      const centroid = turf.centroid(preselectedPlot.geometry);
+      return centroid.geometry.coordinates as LngLat;
+    }
+    return farm.location.coordinates as LngLat;
+  })();
+
+  const selectedPlot =
+    mode.type === "view" && mode.selectedPlotId
+      ? plots.find((p) => p.id === mode.selectedPlotId)
+      : undefined;
 
   return (
     <PlotsMapContext.Provider value={contextValue}>
