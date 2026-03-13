@@ -639,8 +639,8 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
     setInitialized(true);
   }, [task, isEditing, initialized]);
 
-  const createMutation = useCreateTaskMutation((id) => {
-    navigation.replace("TaskDetail", { taskId: id });
+  const createMutation = useCreateTaskMutation(() => {
+    navigation.navigate("TaskList");
   });
 
   const updateMutation = useUpdateTaskMutation(taskId ?? "", () => {

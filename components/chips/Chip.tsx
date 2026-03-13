@@ -15,9 +15,11 @@ type ChipProps = {
   bgColor?: string;
   /** Override text color */
   textColor?: string;
+  /** Reduced padding and font size */
+  small?: boolean;
 };
 
-export function Chip({ label, active = false, accent = false, onPress, onRemove, bgColor: bgColorProp, textColor: textColorProp }: ChipProps) {
+export function Chip({ label, active = false, accent = false, onPress, onRemove, bgColor: bgColorProp, textColor: textColorProp, small = false }: ChipProps) {
   const theme = useTheme();
 
   const bgColor = bgColorProp ?? (active ? theme.colors.primary : theme.colors.white);
@@ -34,8 +36,8 @@ export function Chip({ label, active = false, accent = false, onPress, onRemove,
         alignItems: "center",
         alignSelf: "flex-start",
         gap: 6,
-        paddingVertical: 8,
-        paddingHorizontal: 14,
+        paddingVertical: small ? 3 : 8,
+        paddingHorizontal: small ? 8 : 14,
         borderRadius: theme.radii.xxl,
         backgroundColor: bgColor,
         borderWidth: 1,
@@ -44,7 +46,7 @@ export function Chip({ label, active = false, accent = false, onPress, onRemove,
     >
       <Text
         style={{
-          fontSize: 13,
+          fontSize: small ? 11 : 13,
           fontWeight: "500",
           color: textColor,
         }}

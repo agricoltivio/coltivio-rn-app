@@ -101,16 +101,16 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
           {hasChips && (
             <View style={{ flexDirection: "row", gap: theme.spacing.xs, marginTop: theme.spacing.xs, overflow: "hidden" }}>
               {item.dueDate != null && (
-                <Chip label={new Date(item.dueDate as string).toLocaleDateString()} bgColor={theme.colors.danger} textColor={theme.colors.white} />
+                <Chip small label={new Date(item.dueDate as string).toLocaleDateString()} bgColor={theme.colors.danger} textColor={theme.colors.white} />
               )}
               {assigneeName != null && (
-                <Chip label={assigneeName} bgColor={theme.colors.blue} textColor={theme.colors.white} />
+                <Chip small label={assigneeName} bgColor={theme.colors.blue} textColor={theme.colors.white} />
               )}
               {item.labels.slice(0, 2).map((label) => (
-                <Chip key={label} label={label} />
+                <Chip small key={label} label={label} />
               ))}
               {item.labels.length > 2 && (
-                <Chip label={`+${item.labels.length - 2}`} />
+                <Chip small label={`+${item.labels.length - 2}`} />
               )}
             </View>
           )}
