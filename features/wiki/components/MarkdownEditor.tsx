@@ -12,6 +12,7 @@ import Constants from "expo-constants";
 import * as ImagePicker from "expo-image-picker";
 import { marked } from "marked";
 import { NodeHtmlMarkdown } from "node-html-markdown";
+import { useMembership } from "@/features/farms/farms.hooks";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -54,6 +55,7 @@ export function MarkdownEditor({ value, onChange, label, entryId, readOnly }: Pr
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
+  const { isActive } = useMembership();
 
   if (readOnly) {
     return (
@@ -89,6 +91,7 @@ export function MarkdownEditor({ value, onChange, label, entryId, readOnly }: Pr
               entryId={entryId}
               onClose={() => setIsOpen(false)}
               closeLabel={t("buttons.close")}
+              showImageUpload={isActive}
             />
           )}
         </View>
@@ -103,9 +106,10 @@ type EditorContentProps = {
   entryId: string;
   onClose: () => void;
   closeLabel: string;
+  showImageUpload: boolean;
 };
 
-function EditorContent({ value, onChange, entryId, onClose, closeLabel }: EditorContentProps) {
+function EditorContent({ value, onChange, entryId, onClose, closeLabel, showImageUpload }: EditorContentProps) {
   const api = useApi();
   const isFirstRender = useRef(true);
 
@@ -180,12 +184,19 @@ function EditorContent({ value, onChange, entryId, onClose, closeLabel }: Editor
         behavior={Platform.OS === "ios" ? "padding" : undefined}
         style={styles.keyboardAvoidingView}
       >
-        <Toolbar editor={editor} items={[
-          // Remove code (5) and strikethrough (7), insert image at position 5
-          ...DEFAULT_TOOLBAR_ITEMS.slice(0, 5),
-          imageToolbarItem,
-          ...DEFAULT_TOOLBAR_ITEMS.slice(6).filter((_, i) => i !== 1), // skip strikethrough (was index 7)
-        ]} />
+        <Toolbar editor={editor} items={
+          showImageUpload
+            ? [
+                // Remove code (5) and strikethrough (7), insert image at position 5
+                ...DEFAULT_TOOLBAR_ITEMS.slice(0, 5),
+                imageToolbarItem,
+                ...DEFAULT_TOOLBAR_ITEMS.slice(6).filter((_, i) => i !== 1),
+              ]
+            : [
+                ...DEFAULT_TOOLBAR_ITEMS.slice(0, 5),
+                ...DEFAULT_TOOLBAR_ITEMS.slice(6).filter((_, i) => i !== 1),
+              ]
+        } />
       </KeyboardAvoidingView>
     </>
   );

@@ -7,6 +7,7 @@ export type FarmStackParamList = {
   SearchFarmLocation: undefined;
   DeleteFarm: undefined;
   FarmUsers: undefined;
+  FarmMembership: undefined;
 };
 
 export type FarmScreenProps = StackScreenProps<"Farm">;
@@ -19,3 +20,4 @@ export type SearchFarmLocationModalProps =
 
 export type DeleteFarmScreenProps = StackScreenProps<"DeleteFarm">;
 export type FarmUsersScreenProps = StackScreenProps<"FarmUsers">;
+export type FarmMembershipScreenProps = StackScreenProps<"FarmMembership">;

@@ -7,9 +7,9 @@ import { H1, H2 } from "@/theme/Typography";
 import { Image } from "expo-image";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { useFarmQuery } from "../farms/farms.hooks";
+import { useFarmQuery, useMembership } from "../farms/farms.hooks";
 import { useLocalSettings } from "../user/LocalSettingsContext";
 import { useUserQuery } from "../user/users.hooks";
 import { HomeTile } from "./HomeTile";
@@ -21,6 +21,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { t } = useTranslation();
   const { user } = useUserQuery();
   const { farm } = useFarmQuery();
+  const { isActive } = useMembership();
   const theme = useTheme();
   const { localSettings } = useLocalSettings();
 
@@ -41,11 +42,16 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const visibleTiles = useMemo(() => {
     return localSettings.homeTiles
       .filter((tile) => tile.visible && tile.id in HOME_TILES)
+      .filter((tile) => {
+        const meta = HOME_TILES[tile.id as keyof typeof HOME_TILES];
+        const membershipRequired = "membershipRequired" in meta && meta.membershipRequired;
+        return !membershipRequired || isActive;
+      })
       .map((tile) => ({
         id: tile.id,
         ...HOME_TILES[tile.id as keyof typeof HOME_TILES],
       }));
-  }, [localSettings.homeTiles]);
+  }, [localSettings.homeTiles, isActive]);
 
   function navigateToTile(tileId: string) {
     if (tileId === "plots") {
@@ -59,6 +65,25 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   const isList = localSettings.homeTilesLayout === "list";
 
+  // Compute days until membership/trial expiry for the banner
+  const membership = farm?.membership;
+  const expiryDate =
+    membership?.trialEnd && typeof membership.trialEnd === "string"
+      ? new Date(membership.trialEnd)
+      : membership?.lastPeriodEnd && typeof membership.lastPeriodEnd === "string"
+        ? new Date(membership.lastPeriodEnd)
+        : null;
+  const daysUntilExpiry = expiryDate
+    ? Math.ceil((expiryDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+    : null;
+  const showExpiryBanner =
+    user?.farmRole === "owner" &&
+    daysUntilExpiry !== null &&
+    daysUntilExpiry >= 0 &&
+    daysUntilExpiry <= 10;
+  const isTrial =
+    !!membership?.trialEnd && !membership?.lastPeriodEnd;
+
   return (
     <>
       <ScrollView showHeaderOnScroll headerTitleOnScroll={farm?.name}>
@@ -68,6 +93,23 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
               <H1>{t("home.welcome_text", { displayName: user?.fullName })}</H1>
             ) : null}
             <H2>{farm?.name}</H2>
+            {showExpiryBanner && daysUntilExpiry !== null ? (
+              <TouchableOpacity
+                style={{
+                  backgroundColor: theme.colors.yellow,
+                  borderRadius: theme.radii.m,
+                  padding: theme.spacing.m,
+                  marginTop: theme.spacing.m,
+                }}
+                activeOpacity={0.8}
+              >
+                <H2 style={{ color: theme.colors.black, fontSize: 15 }}>
+                  {isTrial
+                    ? t("membership.trial_expiry_banner", { days: daysUntilExpiry })
+                    : t("membership.expiry_banner", { days: daysUntilExpiry })}
+                </H2>
+              </TouchableOpacity>
+            ) : null}
             <View
               style={{
                 flex: 1,

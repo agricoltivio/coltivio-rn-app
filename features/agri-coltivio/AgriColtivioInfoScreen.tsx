@@ -7,18 +7,31 @@ import { Body, H2, H3 } from "@/theme/Typography";
 import { useTranslation } from "react-i18next";
 import { Linking } from "react-native";
 import { useTheme } from "styled-components/native";
+import { supabase } from "@/supabase/supabase";
 
 export function AgriColtivioInfoScreen({}: AgriColtivioInfoScreenProps) {
   const theme = useTheme();
   const { t } = useTranslation();
+
+  async function openMembershipUrl() {
+    const baseUrl = __DEV__ ? "http://localhost:4000" : "https://app.coltivio.ch";
+    const { data } = await supabase.auth.getSession();
+    const session = data.session;
+    if (session) {
+      const url = `${baseUrl}/auth/token?access_token=${session.access_token}&refresh_token=${session.refresh_token}&redirect=/membership`;
+      Linking.openURL(url);
+    } else {
+      Linking.openURL(`${baseUrl}/membership`);
+    }
+  }
   return (
     <ContentView
       footerComponent={
         <BottomActionContainer>
           <Button
-            title="www.coltivio.ch"
+            title={t("agri_coltivio.become_member")}
             style={{ marginTop: theme.spacing.m }}
-            onPress={() => Linking.openURL("https://coltivio.ch")}
+            onPress={openMembershipUrl}
           />
         </BottomActionContainer>
       }
@@ -33,22 +46,7 @@ export function AgriColtivioInfoScreen({}: AgriColtivioInfoScreenProps) {
           {t("agri_coltivio.section_2")}
         </Body>
         <Body style={{ marginTop: theme.spacing.m }}>
-          <Body style={{ fontWeight: "bold" }}>
-            {t("agri_coltivio.section_3_bold")}
-          </Body>
-          {t("agri_coltivio.section_3")}
-        </Body>
-        <Body style={{ marginTop: theme.spacing.m, fontWeight: "bold" }}>
-          {t("agri_coltivio.section_4")}
-        </Body>
-        <H3 style={{ marginTop: theme.spacing.l }}>
-          {t("agri_coltivio.section_5_title")}
-        </H3>
-        <Body style={{ marginTop: theme.spacing.m }}>
-          {t("agri_coltivio.section_5")}
-        </Body>
-        <Body style={{ marginTop: theme.spacing.m }}>
-          {t("agri_coltivio.section_6")}
+          {t("membership.community_text")}
         </Body>
       </ScrollView>
     </ContentView>

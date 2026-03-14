@@ -157,6 +157,22 @@ export function useUpdateMemberRoleMutation(onSuccess?: () => void) {
   });
 }
 
+export function useMembership() {
+  const { farm } = useFarmQuery();
+  const membership = farm?.membership;
+  const trialEnd =
+    typeof membership?.trialEnd === "string" && membership.trialEnd.length > 0
+      ? new Date(membership.trialEnd)
+      : null;
+  const periodEnd =
+    typeof membership?.lastPeriodEnd === "string" && membership.lastPeriodEnd.length > 0
+      ? new Date(membership.lastPeriodEnd)
+      : null;
+  const isActive = !!periodEnd || !!trialEnd;
+  const isTrial = !!trialEnd && !periodEnd;
+  return { isActive, isTrial };
+}
+
 export function useDeleteFarmMutation(
   onSuccess?: () => void,
   onError?: (error: Error) => void

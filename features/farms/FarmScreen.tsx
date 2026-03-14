@@ -7,10 +7,12 @@ import { H2 } from "@/theme/Typography";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { Button } from "@/components/buttons/Button";
 import { useTranslation } from "react-i18next";
+import { useUserQuery } from "@/features/user/users.hooks";
 
 export function FarmScreen({ navigation }: FarmScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { user } = useUserQuery();
 
   return (
     <ContentView
@@ -38,8 +40,15 @@ export function FarmScreen({ navigation }: FarmScreenProps) {
           <List.Item
             title={t("farm.users")}
             onPress={() => navigation.navigate("FarmUsers")}
-            hideBottomDivider
+            hideBottomDivider={user?.farmRole !== "owner"}
           />
+          {user?.farmRole === "owner" ? (
+            <List.Item
+              title={t("farm.membership")}
+              onPress={() => navigation.navigate("FarmMembership")}
+              hideBottomDivider
+            />
+          ) : null}
         </List>
       </ScrollView>
     </ContentView>

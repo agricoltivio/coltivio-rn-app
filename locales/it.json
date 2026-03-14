@@ -315,7 +315,8 @@
     "delete_farm": "Elimina Azienda Agricola",
     "enter_farm_name_to_delete": "Per eliminare la tua azienda agricola, inserisci il nome dell'azienda e conferma l'azione.",
     "chose_option_to_delete_account": "Se vuoi anche eliminare il tuo account, abilita l'opzione 'Elimina Account'.",
-    "delete_account": "Elimina Account"
+    "delete_account": "Elimina Account",
+    "membership": "Abbonamento"
   },
   "plots": {
     "plots": "Campi",
@@ -962,10 +963,13 @@
     "section_2": "Questa app è open source, il che significa che il codice sorgente è accessibile pubblicamente - trasparente e verificabile.",
     "section_3_bold": "La sicurezza dei dati è una priorità assoluta.",
     "section_3": "Tutti i dati sono conservati esclusivamente su server all'interno dell'UE e sono soggetti alle rigorose normative GDPR sulla protezione dei dati.",
-    "section_4": "Il funzionamento e lo sviluppo di questa app sono finanziati esclusivamente tramite donazioni volontarie.",
-    "section_5_title": "Aiuta a mantenere l'app gratuita e indipendente per tutti.",
-    "section_5": "Diventa membro o supportaci con una donazione. Ogni contributo è utile, grande o piccolo.",
-    "section_6": "Grazie per farne parte."
+    "section_4": "Il funzionamento e lo sviluppo di questa app sono finanziati esclusivamente tramite donazioni e quote associative.",
+    "support_prefix": "Supportaci con una ",
+    "support_donation": "donazione",
+    "support_middle": " o diventa ",
+    "support_member": "membro",
+    "become_member": "Diventa membro",
+    "support_suffix": "."
   },
   "ear_tags": {
     "ear_tags": "Marche auricolari",
@@ -1344,5 +1348,22 @@
       "step4_heading": "Nascondi le voci pubbliche",
       "step4_body": "Tocca l'icona delle impostazioni per mostrare solo le tue voci private."
     }
+  },
+  "membership": {
+    "title": "Abbonamento",
+    "status_label": "Stato",
+    "status_trial": "Periodo di prova",
+    "status_active": "Attivo",
+    "status_inactive": "Inattivo",
+    "auto_renewing": "Si rinnova automaticamente",
+    "cancels_at_period_end": "Disdetta alla fine del periodo",
+    "trial_ends": "Il periodo di prova termina il",
+    "valid_until": "Valido fino al",
+    "manage": "Gestisci abbonamento",
+    "become_member": "Diventa membro",
+    "community_heading": "Unisciti alla community",
+    "community_text": "Unisciti alla community e aiuta a sviluppare ulteriormente il progetto. Approfitta di vantaggi aggiuntivi come l'applicazione web e altro ancora.",
+    "expiry_banner": "Il tuo abbonamento scade in {{days}} giorni.",
+    "trial_expiry_banner": "Il tuo periodo di prova scade in {{days}} giorni."
   }
 }
