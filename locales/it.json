@@ -960,6 +960,11 @@
   "agri_coltivio": {
     "subheading": "Insieme per un'agricoltura libera e indipendente",
     "section_1": "AgriColtivio, che ha sviluppato questa app, è un'associazione non profit volta a rafforzare le piccole e medie aziende agricole.",
+    "section_1_pre": "AgriColtivio, che ha sviluppato questa app, è un'",
+    "section_1_bold": "associazione non profit",
+    "section_1_post": " volta a rafforzare le piccole e medie aziende agricole.",
+    "community_text": "Diventa parte di una comunità che sostiene un'agricoltura aperta e giusta.",
+    "community_text_2": "Aiuta a sviluppare ulteriormente il progetto e approfitta di vantaggi come l'applicazione web e altro ancora.",
     "section_2": "Questa app è open source, il che significa che il codice sorgente è accessibile pubblicamente - trasparente e verificabile.",
     "section_3_bold": "La sicurezza dei dati è una priorità assoluta.",
     "section_3": "Tutti i dati sono conservati esclusivamente su server all'interno dell'UE e sono soggetti alle rigorose normative GDPR sulla protezione dei dati.",
@@ -1358,12 +1363,14 @@
     "auto_renewing": "Si rinnova automaticamente",
     "cancels_at_period_end": "Disdetta alla fine del periodo",
     "trial_ends": "Il periodo di prova termina il",
+    "starts_after_trial": "Il tuo abbonamento inizierà automaticamente dopo il periodo di prova.",
     "valid_until": "Valido fino al",
     "manage": "Gestisci abbonamento",
     "become_member": "Diventa membro",
     "community_heading": "Unisciti alla community",
-    "community_text": "Unisciti alla community e aiuta a sviluppare ulteriormente il progetto. Approfitta di vantaggi aggiuntivi come l'applicazione web e altro ancora.",
+    "community_text": "Diventa parte di una comunità che sostiene un'agricoltura aperta e giusta. Aiuta a sviluppare ulteriormente il progetto e approfitta di vantaggi come l'applicazione web e altro ancora.",
     "expiry_banner": "Il tuo abbonamento scade in {{days}} giorni.",
-    "trial_expiry_banner": "Il tuo periodo di prova scade in {{days}} giorni."
+    "trial_expiry_banner": "Il tuo periodo di prova scade in {{days}} giorni.",
+    "expired_banner": "Il tuo abbonamento è scaduto."
   }
 }

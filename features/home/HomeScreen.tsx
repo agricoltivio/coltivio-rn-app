@@ -4,6 +4,7 @@ import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { MapTile } from "@/features/map/MapTile";
 import { H1, H2 } from "@/theme/Typography";
+import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -21,9 +22,9 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { t } = useTranslation();
   const { user } = useUserQuery();
   const { farm } = useFarmQuery();
-  const { isActive } = useMembership();
+  const { isActive, isTrial } = useMembership();
   const theme = useTheme();
-  const { localSettings } = useLocalSettings();
+  const { localSettings, updateLocalSettings } = useLocalSettings();
 
   const speedDialItems = useMemo(() => {
     return localSettings.speedDialItems
@@ -65,24 +66,35 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   const isList = localSettings.homeTilesLayout === "list";
 
-  // Compute days until membership/trial expiry for the banner
   const membership = farm?.membership;
-  const expiryDate =
-    membership?.trialEnd && typeof membership.trialEnd === "string"
-      ? new Date(membership.trialEnd)
-      : membership?.lastPeriodEnd && typeof membership.lastPeriodEnd === "string"
-        ? new Date(membership.lastPeriodEnd)
+  // Prefer lastPeriodEnd (paid) over trialEnd as the dismissal key — changes when subscription renews
+  const relevantExpiryIso =
+    typeof membership?.lastPeriodEnd === "string" && membership.lastPeriodEnd.length > 0
+      ? membership.lastPeriodEnd
+      : typeof membership?.trialEnd === "string" && membership.trialEnd.length > 0
+        ? membership.trialEnd
         : null;
+  const expiryDate = relevantExpiryIso ? new Date(relevantExpiryIso) : null;
   const daysUntilExpiry = expiryDate
     ? Math.ceil((expiryDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
     : null;
-  const showExpiryBanner =
-    user?.farmRole === "owner" &&
-    daysUntilExpiry !== null &&
-    daysUntilExpiry >= 0 &&
-    daysUntilExpiry <= 10;
-  const isTrial =
-    !!membership?.trialEnd && !membership?.lastPeriodEnd;
+  const isBannerDismissed =
+    localSettings.dismissedMembershipBannerForDate === relevantExpiryIso;
+  const isOwner = user?.farmRole === "owner";
+  const isCancelled = !membership?.autoRenewing || !!membership?.cancelAtPeriodEnd;
+  // Show expiry-soon warning when active membership expires within 10 days and won't auto-renew
+  const showExpirySoonBanner =
+    isOwner && isCancelled && !isBannerDismissed && isActive &&
+    daysUntilExpiry !== null && daysUntilExpiry >= 0 && daysUntilExpiry <= 10;
+  // Show expired notice when there was a membership but it's now past and won't auto-renew
+  const showExpiredBanner =
+    isOwner && isCancelled && !isBannerDismissed && !isActive && relevantExpiryIso !== null;
+
+  function dismissMembershipBanner() {
+    if (relevantExpiryIso) {
+      updateLocalSettings("dismissedMembershipBannerForDate", relevantExpiryIso);
+    }
+  }
 
   return (
     <>
@@ -93,21 +105,50 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
               <H1>{t("home.welcome_text", { displayName: user?.fullName })}</H1>
             ) : null}
             <H2>{farm?.name}</H2>
-            {showExpiryBanner && daysUntilExpiry !== null ? (
+            {showExpirySoonBanner && daysUntilExpiry !== null ? (
               <TouchableOpacity
                 style={{
                   backgroundColor: theme.colors.yellow,
                   borderRadius: theme.radii.m,
                   padding: theme.spacing.m,
                   marginTop: theme.spacing.m,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
                 }}
                 activeOpacity={0.8}
+                onPress={() => navigation.navigate("FarmMembership")}
               >
-                <H2 style={{ color: theme.colors.black, fontSize: 15 }}>
+                <H2 style={{ color: theme.colors.black, fontSize: 15, flex: 1 }}>
                   {isTrial
                     ? t("membership.trial_expiry_banner", { days: daysUntilExpiry })
                     : t("membership.expiry_banner", { days: daysUntilExpiry })}
                 </H2>
+                <TouchableOpacity onPress={dismissMembershipBanner} hitSlop={8}>
+                  <Ionicons name="close" size={20} color={theme.colors.black} />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            ) : null}
+            {showExpiredBanner ? (
+              <TouchableOpacity
+                style={{
+                  backgroundColor: theme.colors.danger,
+                  borderRadius: theme.radii.m,
+                  padding: theme.spacing.m,
+                  marginTop: theme.spacing.m,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("FarmMembership")}
+              >
+                <H2 style={{ color: theme.colors.white, fontSize: 15, flex: 1 }}>
+                  {t("membership.expired_banner")}
+                </H2>
+                <TouchableOpacity onPress={dismissMembershipBanner} hitSlop={8}>
+                  <Ionicons name="close" size={20} color={theme.colors.white} />
+                </TouchableOpacity>
               </TouchableOpacity>
             ) : null}
             <View

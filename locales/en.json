@@ -960,6 +960,11 @@
   "agri_coltivio": {
     "subheading": "Together for free and independent agriculture",
     "section_1": "AgriColtivio, which developed this app, is a non-profit association aimed at strengthening small and medium-sized farms.",
+    "section_1_pre": "AgriColtivio, which developed this app, is a ",
+    "section_1_bold": "non-profit association",
+    "section_1_post": " aimed at strengthening small and medium-sized farms.",
+    "community_text": "Become part of a community that stands for open and fair agriculture.",
+    "community_text_2": "Help develop the project further and benefit from features such as the web application and more.",
     "section_2": "This app is open source, meaning that the source code is publicly accessible - transparent and verifiable.",
     "section_3_bold": "Data security is a top priority.",
     "section_3": "All data is stored exclusively on servers within the EU and is subject to strict GDPR data protection regulations.",
@@ -1358,12 +1363,14 @@
     "auto_renewing": "Renews automatically",
     "cancels_at_period_end": "Cancels at end of period",
     "trial_ends": "Trial ends on",
+    "starts_after_trial": "Your membership will start automatically after the trial.",
     "valid_until": "Valid until",
     "manage": "Manage membership",
     "become_member": "Become a member",
     "community_heading": "Join the Community",
-    "community_text": "Join the community and help further develop the project. Benefit from additional features such as the web application and more.",
+    "community_text": "Become part of a community that stands for open and fair agriculture. Help develop the project further and benefit from features such as the web application and more.",
     "expiry_banner": "Your membership expires in {{days}} days.",
-    "trial_expiry_banner": "Your trial expires in {{days}} days."
+    "trial_expiry_banner": "Your trial expires in {{days}} days.",
+    "expired_banner": "Your membership has expired."
   }
 }

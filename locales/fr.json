@@ -960,6 +960,11 @@
   "agri_coltivio": {
     "subheading": "Ensemble pour une agriculture libre et indépendante",
     "section_1": "AgriColtivio, qui a développé cette application, est une association à but non lucratif visant à renforcer les petites et moyennes exploitations agricoles.",
+    "section_1_pre": "AgriColtivio, qui a développé cette application, est une ",
+    "section_1_bold": "association à but non lucratif",
+    "section_1_post": " visant à renforcer les petites et moyennes exploitations agricoles.",
+    "community_text": "Rejoignez une communauté qui défend une agriculture ouverte et équitable.",
+    "community_text_2": "Aidez à développer le projet et profitez d'avantages tels que l'application web et bien plus encore.",
     "section_2": "Cette application est open source, ce qui signifie que le code source est accessible publiquement - transparent et vérifiable.",
     "section_3_bold": "La sécurité des données est une priorité absolue.",
     "section_3": "Toutes les données sont stockées exclusivement sur des serveurs situés dans l'UE et sont soumises aux strictes réglementations RGPD en matière de protection des données.",
@@ -1358,12 +1363,14 @@
     "auto_renewing": "Renouvellement automatique",
     "cancels_at_period_end": "Résiliation en fin de période",
     "trial_ends": "La période d'essai se termine le",
+    "starts_after_trial": "Votre abonnement démarrera automatiquement après la période d'essai.",
     "valid_until": "Valable jusqu'au",
     "manage": "Gérer l'adhésion",
     "become_member": "Devenir membre",
     "community_heading": "Rejoignez la communauté",
-    "community_text": "Rejoignez la communauté et contribuez au développement du projet. Profitez d'avantages supplémentaires tels que l'application web et bien plus encore.",
+    "community_text": "Rejoignez une communauté qui défend une agriculture ouverte et équitable. Aidez à développer le projet et profitez d'avantages tels que l'application web et bien plus encore.",
     "expiry_banner": "Votre adhésion expire dans {{days}} jours.",
-    "trial_expiry_banner": "Votre période d'essai expire dans {{days}} jours."
+    "trial_expiry_banner": "Votre période d'essai expire dans {{days}} jours.",
+    "expired_banner": "Votre adhésion a expiré."
   }
 }

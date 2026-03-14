@@ -10,7 +10,6 @@ export function useFarmQuery(enabled: boolean = true) {
   const { data, ...rest } = useQuery({
     queryKey: queryKeys.farms.farm.queryKey,
     queryFn: () => api.farms.getFarm(),
-    staleTime: Infinity,
     enabled,
   });
 
@@ -168,8 +167,9 @@ export function useMembership() {
     typeof membership?.lastPeriodEnd === "string" && membership.lastPeriodEnd.length > 0
       ? new Date(membership.lastPeriodEnd)
       : null;
-  const isActive = !!periodEnd || !!trialEnd;
-  const isTrial = !!trialEnd && !periodEnd;
+  const now = new Date();
+  const isActive = (periodEnd !== null && periodEnd > now) || (trialEnd !== null && trialEnd > now);
+  const isTrial = trialEnd !== null && trialEnd > now && periodEnd === null;
   return { isActive, isTrial };
 }
 

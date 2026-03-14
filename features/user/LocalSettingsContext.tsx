@@ -47,6 +47,9 @@ type LocalSettingsData = {
   wikiOnlyPrivate: boolean;
   wikiOnboardingCompleted: boolean;
   tasksOnboardingCompleted: boolean;
+  // Stores the ISO date string of the expiry date the membership banner was dismissed for.
+  // When a new subscription period starts (new date), the banner reappears automatically.
+  dismissedMembershipBannerForDate: string | null;
 };
 
 type LocalSettingActions = {
@@ -84,6 +87,7 @@ export const defaultLocalSettings: LocalSettingsData = {
   wikiOnlyPrivate: false,
   wikiOnboardingCompleted: false,
   tasksOnboardingCompleted: false,
+  dismissedMembershipBannerForDate: null,
 };
 
 export const LocalSettingsContext = createContext<LocalSettings>({

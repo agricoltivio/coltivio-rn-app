@@ -134,6 +134,7 @@ export function SelectFederalFarmIdScreen({
             title={t("buttons.next")}
             icon="arrow-forward-circle-outline"
             onPress={() => navigation.navigate("OnboardingPreference")}
+            disabled={!data.federalFarmId}
           />
         </View>
       </View>

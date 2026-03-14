@@ -62,8 +62,14 @@ export function FarmMembershipScreen({}: FarmMembershipScreenProps) {
   const membership = farm?.membership;
   const trialEndStr = toDateString(membership?.trialEnd);
   const periodEndStr = toDateString(membership?.lastPeriodEnd);
-  const isTrial = !!trialEndStr && !periodEndStr;
-  const isActive = !!periodEndStr || !!trialEndStr;
+  const now = new Date();
+  const trialEndDate = membership?.trialEnd ? new Date(membership.trialEnd as string) : null;
+  const periodEndDate = membership?.lastPeriodEnd ? new Date(membership.lastPeriodEnd as string) : null;
+  const isActive = (periodEndDate !== null && periodEndDate > now) || (trialEndDate !== null && trialEndDate > now);
+  // Trial is active whenever trialEnd is in the future, regardless of whether a paid period also exists
+  const isTrial = trialEndDate !== null && trialEndDate > now;
+  // Both trial is active and a paid membership period starts after the trial
+  const hasPendingMembership = isTrial && periodEndDate !== null && periodEndDate > now;
 
   const statusLabel = isTrial
     ? t("membership.status_trial")
@@ -71,10 +77,14 @@ export function FarmMembershipScreen({}: FarmMembershipScreenProps) {
       ? t("membership.status_active")
       : t("membership.status_inactive");
 
+  // When on trial, show trial end date; otherwise show paid period end date
   const endDateLabel = isTrial ? t("membership.trial_ends") : t("membership.valid_until");
   const endDateValue = isTrial ? trialEndStr : periodEndStr;
+  // Show details view when there is or ever was a membership; community view only for brand new accounts
+  const hasHadMembership = !!(trialEndDate || periodEndDate);
 
-  const renewalLabel = membership?.autoRenewing
+  const willRenew = !!membership?.autoRenewing && !membership?.cancelAtPeriodEnd;
+  const renewalLabel = willRenew
     ? t("membership.auto_renewing")
     : t("membership.cancels_at_period_end");
 
@@ -83,7 +93,7 @@ export function FarmMembershipScreen({}: FarmMembershipScreenProps) {
       footerComponent={
         <BottomActionContainer>
           <Button
-            title={isActive ? t("membership.manage") : t("membership.become_member")}
+            title={hasHadMembership ? t("membership.manage") : t("membership.become_member")}
             onPress={openMembershipUrl}
           />
         </BottomActionContainer>
@@ -92,7 +102,21 @@ export function FarmMembershipScreen({}: FarmMembershipScreenProps) {
       <ScrollView showHeaderOnScroll headerTitleOnScroll={t("membership.title")}>
         <H2>{t("membership.title")}</H2>
 
-        {isActive ? (
+        {hasHadMembership ? (
+          <>
+            {hasPendingMembership ? (
+              <View style={{
+                marginTop: theme.spacing.l,
+                marginHorizontal: theme.spacing.xs,
+                padding: theme.spacing.m,
+                backgroundColor: theme.colors.primary + "18",
+                borderRadius: theme.radii.m,
+              }}>
+                <Body style={{ color: theme.colors.primary }}>
+                  {t("membership.starts_after_trial")}
+                </Body>
+              </View>
+            ) : null}
           <View
             style={{
               marginTop: theme.spacing.l,
@@ -106,21 +130,27 @@ export function FarmMembershipScreen({}: FarmMembershipScreenProps) {
             {endDateValue ? (
               <InfoRow label={endDateLabel} value={endDateValue} />
             ) : null}
-            <ListItem hideBottomDivider>
-              <ListItemContent>
-                <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
-                  {renewalLabel}
-                </ListItem.Title>
-              </ListItemContent>
-            </ListItem>
+            {isActive && (
+              <ListItem hideBottomDivider>
+                <ListItemContent>
+                  <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
+                    {renewalLabel}
+                  </ListItem.Title>
+                </ListItemContent>
+              </ListItem>
+            )}
           </View>
+          </>
         ) : (
           <>
             <H3 style={{ marginTop: theme.spacing.l }}>
               {t("membership.community_heading")}
             </H3>
             <Body style={{ marginTop: theme.spacing.m }}>
-              {t("membership.community_text")}
+              {t("agri_coltivio.community_text")}
+            </Body>
+            <Body style={{ marginTop: theme.spacing.s }}>
+              {t("agri_coltivio.community_text_2")}
             </Body>
           </>
         )}
