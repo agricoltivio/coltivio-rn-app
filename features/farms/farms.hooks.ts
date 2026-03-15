@@ -63,12 +63,12 @@ export function useCreateFarmMutation(
       console.error(error);
       onError && onError(error);
     },
-    onSuccess: ({ farm }) => {
-      // set cache
-      queryClient.setQueryData(queryKeys.users.me.queryKey, (user: User) => ({
-        ...user,
-        farmId: farm.id,
-      }));
+    onSuccess: async ({ farm }) => {
+      // Fetch fresh user data after farm creation so farmId is guaranteed to be set
+      // by the server. Using setQueryData with a partial update risks being overwritten
+      // by an in-flight useUserQuery fetch that started before the farm existed.
+      const freshUser = await api.users.getLoggedInUser();
+      queryClient.setQueryData(queryKeys.users.me.queryKey, freshUser);
       onSuccess && onSuccess(farm);
     },
   });

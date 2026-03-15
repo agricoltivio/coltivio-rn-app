@@ -964,7 +964,7 @@
     "section_1_bold": "associazione non profit",
     "section_1_post": " volta a rafforzare le piccole e medie aziende agricole.",
     "community_text": "Diventa parte di una comunità che sostiene un'agricoltura aperta e giusta.",
-    "community_text_2": "Aiuta a sviluppare ulteriormente il progetto e approfitta di vantaggi come l'applicazione web e altro ancora.",
+    "community_text_2": "Partecipa alle decisioni su come si evolve il progetto e approfitta dello scambio con altri membri e di ulteriori vantaggi.",
     "section_2": "Questa app è open source, il che significa che il codice sorgente è accessibile pubblicamente - trasparente e verificabile.",
     "section_3_bold": "La sicurezza dei dati è una priorità assoluta.",
     "section_3": "Tutti i dati sono conservati esclusivamente su server all'interno dell'UE e sono soggetti alle rigorose normative GDPR sulla protezione dei dati.",
@@ -973,7 +973,7 @@
     "support_donation": "donazione",
     "support_middle": " o diventa ",
     "support_member": "membro",
-    "become_member": "Diventa membro",
+    "become_member": "Scopri di più",
     "support_suffix": "."
   },
   "ear_tags": {
@@ -1366,9 +1366,9 @@
     "starts_after_trial": "Il tuo abbonamento inizierà automaticamente dopo il periodo di prova.",
     "valid_until": "Valido fino al",
     "manage": "Gestisci abbonamento",
-    "become_member": "Diventa membro",
+    "become_member": "Scopri di più",
     "community_heading": "Unisciti alla community",
-    "community_text": "Diventa parte di una comunità che sostiene un'agricoltura aperta e giusta. Aiuta a sviluppare ulteriormente il progetto e approfitta di vantaggi come l'applicazione web e altro ancora.",
+    "community_text": "Diventa parte di una comunità che sostiene un'agricoltura aperta e giusta. Aiuta a sviluppare ulteriormente il progetto e approfitta di vantaggi disponibili esclusivamente per i membri.",
     "expiry_banner": "Il tuo abbonamento scade in {{days}} giorni.",
     "trial_expiry_banner": "Il tuo periodo di prova scade in {{days}} giorni.",
     "expired_banner": "Il tuo abbonamento è scaduto."

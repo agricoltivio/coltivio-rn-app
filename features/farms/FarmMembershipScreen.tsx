@@ -5,23 +5,11 @@ import { ListItem, ListItemContent } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { Body, H2, H3 } from "@/theme/Typography";
 import { useTranslation } from "react-i18next";
-import { Linking, View } from "react-native";
+import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { supabase } from "@/supabase/supabase";
+import { openManageMembershipUrl, openMembershipUrl } from "@/utils/membership";
 import { useFarmQuery } from "./farms.hooks";
 import { FarmMembershipScreenProps } from "./navigation/farm-routes";
-
-async function openMembershipUrl() {
-  const baseUrl = __DEV__ ? "http://localhost:4000" : "https://app.coltivio.ch";
-  const { data } = await supabase.auth.getSession();
-  const session = data.session;
-  if (session) {
-    const url = `${baseUrl}/auth/token?access_token=${session.access_token}&refresh_token=${session.refresh_token}&redirect=/membership`;
-    Linking.openURL(url);
-  } else {
-    Linking.openURL(`${baseUrl}/membership`);
-  }
-}
 
 function toDateString(value: unknown): string | null {
   if (typeof value === "string" && value.length > 0) {
@@ -94,7 +82,7 @@ export function FarmMembershipScreen({}: FarmMembershipScreenProps) {
         <BottomActionContainer>
           <Button
             title={hasHadMembership ? t("membership.manage") : t("membership.become_member")}
-            onPress={openMembershipUrl}
+            onPress={hasHadMembership ? openManageMembershipUrl : openMembershipUrl}
           />
         </BottomActionContainer>
       }
@@ -143,6 +131,9 @@ export function FarmMembershipScreen({}: FarmMembershipScreenProps) {
           </>
         ) : (
           <>
+            <Body style={{ marginTop: theme.spacing.l, fontWeight: "bold" }}>
+              {t("agri_coltivio.section_4")}
+            </Body>
             <H3 style={{ marginTop: theme.spacing.l }}>
               {t("membership.community_heading")}
             </H3>

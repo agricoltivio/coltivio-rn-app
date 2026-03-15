@@ -964,7 +964,7 @@
     "section_1_bold": "gemeinnütziger Verein",
     "section_1_post": ", der zum Ziel hat, kleine und mittelgrosse landwirtschaftliche Betriebe zu stärken.",
     "community_text": "Werde Teil einer Gemeinschaft welche für eine offene und faire Landwirtschaft steht.",
-    "community_text_2": "Hilf mit das Projekt weiterzuentwickeln und profitiere von Vorteilen wie der Webapplikation und mehr.",
+    "community_text_2": "Entscheide mit, wie sich das Projekt weiterentwickelt und profitiere vom Austausch mit anderen Mitgliedern sowie weiteren Vorteilen.",
     "section_2": "Diese App ist Open Source. Das bedeutet, dass der Quellcode offen einsehbar ist - transparent und überprüfbar.",
     "section_3_bold": "Datensicherheit hat höchste Priorität. ",
     "section_3": "Alle Daten werden ausschliesslich auf Servern innerhalb der EU gespeichert und unterliegen den strengen Datenschutzrichtlinien der DSGVO.",
@@ -973,7 +973,7 @@
     "support_donation": "Spende",
     "support_middle": " oder werde ",
     "support_member": "Mitglied",
-    "become_member": "Mitglied werden",
+    "become_member": "Mehr erfahren",
     "support_suffix": "."
   },
   "ear_tags": {
@@ -1368,9 +1368,9 @@
     "starts_after_trial": "Deine Mitgliedschaft startet automatisch nach der Testphase.",
     "valid_until": "Gültig bis",
     "manage": "Mitgliedschaft verwalten",
-    "become_member": "Mitglied werden",
+    "become_member": "Mehr erfahren",
     "community_heading": "Werde Teil der Community",
-    "community_text": "Werde Teil einer Gemeinschaft welche für eine offene und faire Landwirtschaft steht. Hilf mit das Projekt weiterzuentwickeln und profitiere von Vorteilen wie der Webapplikation und mehr.",
+    "community_text": "Werde Teil einer Gemeinschaft welche für eine offene und faire Landwirtschaft steht. Hilf mit das Projekt weiterzuentwickeln und profitiere von Vorteilen welche nur Mitgliedern zur Verfügung stehen.",
     "expiry_banner": "Deine Mitgliedschaft endet in {{days}} Tagen.",
     "trial_expiry_banner": "Deine Testphase endet in {{days}} Tagen.",
     "expired_banner": "Deine Mitgliedschaft ist abgelaufen."

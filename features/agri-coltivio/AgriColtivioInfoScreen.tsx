@@ -5,25 +5,13 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { AgriColtivioInfoScreenProps } from "./navigation/agri-coltivio-routes";
 import { Body, H2, H3 } from "@/theme/Typography";
 import { useTranslation } from "react-i18next";
-import { Linking, Text } from "react-native";
+import { Text } from "react-native";
 import { useTheme } from "styled-components/native";
-import { supabase } from "@/supabase/supabase";
+import { openMembershipUrl } from "@/utils/membership";
 
 export function AgriColtivioInfoScreen({}: AgriColtivioInfoScreenProps) {
   const theme = useTheme();
   const { t } = useTranslation();
-
-  async function openMembershipUrl() {
-    const baseUrl = __DEV__ ? "http://localhost:4000" : "https://app.coltivio.ch";
-    const { data } = await supabase.auth.getSession();
-    const session = data.session;
-    if (session) {
-      const url = `${baseUrl}/auth/token?access_token=${session.access_token}&refresh_token=${session.refresh_token}&redirect=/membership`;
-      Linking.openURL(url);
-    } else {
-      Linking.openURL(`${baseUrl}/membership`);
-    }
-  }
   return (
     <ContentView
       footerComponent={
@@ -46,6 +34,9 @@ export function AgriColtivioInfoScreen({}: AgriColtivioInfoScreenProps) {
         </Body>
         <Body style={{ marginTop: theme.spacing.m }}>
           {t("agri_coltivio.section_2")}
+        </Body>
+        <Body style={{ marginTop: theme.spacing.l, fontWeight: "bold" }}>
+          {t("agri_coltivio.section_4")}
         </Body>
         <H3 style={{ marginTop: theme.spacing.l }}>
           {t("membership.community_heading")}

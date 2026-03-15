@@ -964,7 +964,7 @@
     "section_1_bold": "association à but non lucratif",
     "section_1_post": " visant à renforcer les petites et moyennes exploitations agricoles.",
     "community_text": "Rejoignez une communauté qui défend une agriculture ouverte et équitable.",
-    "community_text_2": "Aidez à développer le projet et profitez d'avantages tels que l'application web et bien plus encore.",
+    "community_text_2": "Participez aux décisions sur l'évolution du projet et profitez des échanges avec d'autres membres ainsi que d'autres avantages.",
     "section_2": "Cette application est open source, ce qui signifie que le code source est accessible publiquement - transparent et vérifiable.",
     "section_3_bold": "La sécurité des données est une priorité absolue.",
     "section_3": "Toutes les données sont stockées exclusivement sur des serveurs situés dans l'UE et sont soumises aux strictes réglementations RGPD en matière de protection des données.",
@@ -973,7 +973,7 @@
     "support_donation": "don",
     "support_middle": " ou devenez ",
     "support_member": "membre",
-    "become_member": "Devenir membre",
+    "become_member": "En savoir plus",
     "support_suffix": "."
   },
   "ear_tags": {
@@ -1366,9 +1366,9 @@
     "starts_after_trial": "Votre abonnement démarrera automatiquement après la période d'essai.",
     "valid_until": "Valable jusqu'au",
     "manage": "Gérer l'adhésion",
-    "become_member": "Devenir membre",
+    "become_member": "En savoir plus",
     "community_heading": "Rejoignez la communauté",
-    "community_text": "Rejoignez une communauté qui défend une agriculture ouverte et équitable. Aidez à développer le projet et profitez d'avantages tels que l'application web et bien plus encore.",
+    "community_text": "Rejoignez une communauté qui défend une agriculture ouverte et équitable. Aidez à développer le projet et profitez d'avantages réservés exclusivement aux membres.",
     "expiry_banner": "Votre adhésion expire dans {{days}} jours.",
     "trial_expiry_banner": "Votre période d'essai expire dans {{days}} jours.",
     "expired_banner": "Votre adhésion a expiré."
