@@ -50,6 +50,10 @@ type LocalSettingsData = {
   // Stores the ISO date string of the expiry date the membership banner was dismissed for.
   // When a new subscription period starts (new date), the banner reappears automatically.
   dismissedMembershipBannerForDate: string | null;
+  // ISO date string of the very first time the app was opened (set once, never updated).
+  firstLaunchDate: string | null;
+  // Whether the AgriColtivio membership promo modal has been shown and dismissed.
+  agriColtivioPromoShown: boolean;
 };
 
 type LocalSettingActions = {
@@ -88,6 +92,8 @@ export const defaultLocalSettings: LocalSettingsData = {
   wikiOnboardingCompleted: false,
   tasksOnboardingCompleted: false,
   dismissedMembershipBannerForDate: null,
+  firstLaunchDate: null,
+  agriColtivioPromoShown: false,
 };
 
 export const LocalSettingsContext = createContext<LocalSettings>({

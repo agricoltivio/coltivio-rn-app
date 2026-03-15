@@ -1,14 +1,17 @@
+import { Button } from "@/components/buttons/Button";
 import { SpeedDial } from "@/components/buttons/SpeedDial";
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { MapTile } from "@/features/map/MapTile";
-import { H1, H2 } from "@/theme/Typography";
+import { Body, H2, H3 } from "@/theme/Typography";
+import { H1 } from "@/theme/Typography";
+import { openMembershipUrl } from "@/utils/membership";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { TouchableOpacity, View } from "react-native";
+import { Modal, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useFarmQuery, useMembership } from "../farms/farms.hooks";
 import { useLocalSettings } from "../user/LocalSettingsContext";
@@ -78,6 +81,35 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const daysUntilExpiry = expiryDate
     ? Math.ceil((expiryDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
     : null;
+  // Set firstLaunchDate once on the very first render after the app is installed
+  const didInitLaunchDate = useRef(false);
+  useEffect(() => {
+    if (!didInitLaunchDate.current && localSettings.firstLaunchDate === null) {
+      didInitLaunchDate.current = true;
+      updateLocalSettings("firstLaunchDate", new Date().toISOString());
+    }
+  }, [localSettings.firstLaunchDate]);
+
+  const daysSinceLaunch = localSettings.firstLaunchDate
+    ? (Date.now() - new Date(localSettings.firstLaunchDate).getTime()) / (1000 * 60 * 60 * 24)
+    : 0;
+  // Show the promo modal once after 30 days, only to non-members
+  const shouldShowPromo =
+    !isActive &&
+    !localSettings.agriColtivioPromoShown &&
+    daysSinceLaunch >= 0;
+  const [promoVisible, setPromoVisible] = useState(shouldShowPromo);
+
+  function dismissPromo() {
+    updateLocalSettings("agriColtivioPromoShown", true);
+    setPromoVisible(false);
+  }
+
+  async function openMembershipAndDismiss() {
+    await openMembershipUrl();
+    dismissPromo();
+  }
+
   const isBannerDismissed =
     localSettings.dismissedMembershipBannerForDate === relevantExpiryIso;
   const isOwner = user?.farmRole === "owner";
@@ -242,6 +274,61 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
       {localSettings.speedDialEnabled && speedDialItems.length > 0 ? (
         <SpeedDial items={speedDialItems} />
       ) : null}
+
+      <Modal
+        visible={promoVisible}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={dismissPromo}
+      >
+        <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
+          {/* Header row with close button */}
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              paddingHorizontal: theme.spacing.m,
+              paddingTop: theme.spacing.s,
+            }}
+          >
+            <TouchableOpacity onPress={dismissPromo} hitSlop={12}>
+              <Ionicons name="close" size={26} color={theme.colors.gray1} />
+            </TouchableOpacity>
+          </View>
+
+          {/* Scrollable content mirrors AgriColtivioInfoScreen */}
+          <ScrollView
+            contentContainerStyle={{ padding: theme.spacing.m, paddingBottom: theme.spacing.xxl }}
+          >
+            <H2>{t("agri_coltivio.promo_intro")}</H2>
+            <Body style={{ marginTop: theme.spacing.m }}>
+              {t("agri_coltivio.section_1_pre")}
+              <Text style={{ fontWeight: "bold" }}>{t("agri_coltivio.section_1_bold")}</Text>
+              {t("agri_coltivio.section_1_post")}
+            </Body>
+            <Body style={{ marginTop: theme.spacing.l, fontWeight: "bold" }}>
+              {t("agri_coltivio.section_4")}
+            </Body>
+            <H3 style={{ marginTop: theme.spacing.l }}>
+              {t("membership.community_heading")}
+            </H3>
+            <Body style={{ marginTop: theme.spacing.m }}>
+              {t("agri_coltivio.community_text")}
+            </Body>
+            <Body style={{ marginTop: theme.spacing.s }}>
+              {t("agri_coltivio.community_text_2")}
+            </Body>
+          </ScrollView>
+
+          {/* CTA pinned to bottom */}
+          <View style={{ padding: theme.spacing.m }}>
+            <Button
+              title={t("agri_coltivio.become_member")}
+              onPress={openMembershipAndDismiss}
+            />
+          </View>
+        </SafeAreaView>
+      </Modal>
     </>
   );
 };
