@@ -13,7 +13,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { useFarmQuery, useMembership } from "../farms/farms.hooks";
+import { useFarmQuery, useMembership, useMembershipStatusQuery } from "../farms/farms.hooks";
 import { useLocalSettings } from "../user/LocalSettingsContext";
 import { useUserQuery } from "../user/users.hooks";
 import { HomeTile } from "./HomeTile";
@@ -25,7 +25,8 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { t } = useTranslation();
   const { user } = useUserQuery();
   const { farm } = useFarmQuery();
-  const { isActive, isTrial } = useMembership();
+  const { isActive } = useMembership();
+  const { membershipStatus } = useMembershipStatusQuery();
   const theme = useTheme();
   const { localSettings, updateLocalSettings } = useLocalSettings();
 
@@ -69,13 +70,12 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   const isList = localSettings.homeTilesLayout === "list";
 
-  const membership = farm?.membership;
   // Prefer lastPeriodEnd (paid) over trialEnd as the dismissal key — changes when subscription renews
   const relevantExpiryIso =
-    typeof membership?.lastPeriodEnd === "string" && membership.lastPeriodEnd.length > 0
-      ? membership.lastPeriodEnd
-      : typeof membership?.trialEnd === "string" && membership.trialEnd.length > 0
-        ? membership.trialEnd
+    typeof membershipStatus?.lastPeriodEnd === "string" && membershipStatus.lastPeriodEnd.length > 0
+      ? membershipStatus.lastPeriodEnd
+      : typeof membershipStatus?.trialEnd === "string" && membershipStatus.trialEnd.length > 0
+        ? membershipStatus.trialEnd
         : null;
   const expiryDate = relevantExpiryIso ? new Date(relevantExpiryIso) : null;
   const daysUntilExpiry = expiryDate
@@ -112,15 +112,17 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   const isBannerDismissed =
     localSettings.dismissedMembershipBannerForDate === relevantExpiryIso;
-  const isOwner = user?.farmRole === "owner";
-  const isCancelled = !membership?.autoRenewing || !!membership?.cancelAtPeriodEnd;
-  // Show expiry-soon warning when active membership expires within 10 days and won't auto-renew
+  const isTrial = typeof membershipStatus?.trialEnd === "string" && membershipStatus.trialEnd.length > 0
+    && new Date(membershipStatus.trialEnd) > new Date()
+    && !(typeof membershipStatus?.lastPeriodEnd === "string" && membershipStatus.lastPeriodEnd.length > 0);
+  const isCancelled = !membershipStatus?.autoRenewing || !!membershipStatus?.cancelAtPeriodEnd;
+  // Show expiry-soon banner only to the user who owns the membership
   const showExpirySoonBanner =
-    isOwner && isCancelled && !isBannerDismissed && isActive &&
+    !!membershipStatus && isCancelled && !isBannerDismissed && isActive &&
     daysUntilExpiry !== null && daysUntilExpiry >= 0 && daysUntilExpiry <= 10;
-  // Show expired notice when there was a membership but it's now past and won't auto-renew
+  // Show expired notice only to the user who had the membership
   const showExpiredBanner =
-    isOwner && isCancelled && !isBannerDismissed && !isActive && relevantExpiryIso !== null;
+    !!membershipStatus && isCancelled && !isBannerDismissed && !isActive && relevantExpiryIso !== null;
 
   function dismissMembershipBanner() {
     if (relevantExpiryIso) {
@@ -149,7 +151,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                   justifyContent: "space-between",
                 }}
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate("FarmMembership")}
+                onPress={() => navigation.navigate("UserMembership")}
               >
                 <H2 style={{ color: theme.colors.black, fontSize: 15, flex: 1 }}>
                   {isTrial
@@ -173,7 +175,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                   justifyContent: "space-between",
                 }}
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate("FarmMembership")}
+                onPress={() => navigation.navigate("UserMembership")}
               >
                 <H2 style={{ color: theme.colors.white, fontSize: 15, flex: 1 }}>
                   {t("membership.expired_banner")}

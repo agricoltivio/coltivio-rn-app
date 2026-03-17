@@ -2468,6 +2468,134 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/auth/handoff": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1AuthHandoff"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/auth/exchange": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1AuthExchange"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/forum/threads": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1ForumThreads"];
+        put?: never;
+        post: operations["PostV1ForumThreads"];
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1ForumThreads"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/forum/threads/byId/{threadId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1ForumThreadsByIdThreadId"];
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1ForumThreadsByIdThreadId"];
+        options?: never;
+        head: operations["HeadV1ForumThreadsByIdThreadId"];
+        patch: operations["PatchV1ForumThreadsByIdThreadId"];
+        trace?: never;
+    };
+    "/v1/forum/threads/byId/{threadId}/replies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1ForumThreadsByIdThreadIdReplies"];
+        put?: never;
+        post: operations["PostV1ForumThreadsByIdThreadIdReplies"];
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1ForumThreadsByIdThreadIdReplies"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/forum/threads/byId/{threadId}/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1ForumThreadsByIdThreadIdStatus"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/forum/threads/byId/{threadId}/pin": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["PostV1ForumThreadsByIdThreadIdPin"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/forum/replies/byId/{replyId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1ForumRepliesByIdReplyId"];
+        options?: never;
+        head?: never;
+        patch: operations["PatchV1ForumRepliesByIdReplyId"];
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -2618,12 +2746,6 @@ export interface components {
                         number
                     ];
                 };
-                membership: {
-                    lastPeriodEnd: unknown;
-                    cancelAtPeriodEnd: boolean;
-                    autoRenewing: boolean;
-                    trialEnd: unknown;
-                };
             };
         };
         PostV1FarmRequestBody: {
@@ -2655,10 +2777,8 @@ export interface components {
                     ];
                 };
                 membership: {
-                    lastPeriodEnd: unknown;
-                    cancelAtPeriodEnd: boolean;
-                    autoRenewing: boolean;
-                    trialEnd: unknown;
+                    /** @enum {string} */
+                    status: "none" | "trial" | "active";
                 };
             };
         };
@@ -2681,10 +2801,8 @@ export interface components {
                     ];
                 };
                 membership: {
-                    lastPeriodEnd: unknown;
-                    cancelAtPeriodEnd: boolean;
-                    autoRenewing: boolean;
-                    trialEnd: unknown;
+                    /** @enum {string} */
+                    status: "none" | "trial" | "active";
                 };
             };
         };
@@ -10014,8 +10132,7 @@ export interface components {
             data: {
                 result: {
                     id: string;
-                    farmId: string;
-                    userId: string | null;
+                    userId: string;
                     stripePaymentId: string;
                     stripeSubscriptionId: string | null;
                     amount: number;
@@ -10051,6 +10168,198 @@ export interface components {
             successUrl: string;
             /** Format: uri */
             cancelUrl: string;
+        };
+        PostV1AuthHandoffPositiveResponse: {
+            data: {
+                token: string;
+                expiresAt: unknown;
+            };
+        };
+        PostV1AuthHandoffRequestBody: Record<string, never>;
+        PostV1AuthExchangePositiveResponse: {
+            data: {
+                url: string;
+            };
+        };
+        PostV1AuthExchangeRequestBody: {
+            token: string;
+            /** Format: uri */
+            redirectTo: string;
+        };
+        /** @enum {string} */
+        GetV1ForumThreadsParameterType: "question" | "feature_request" | "bug_report" | "general";
+        /** @enum {string} */
+        GetV1ForumThreadsParameterStatus: "open" | "closed";
+        /** @default 20 */
+        GetV1ForumThreadsParameterLimit: number;
+        /** @default 0 */
+        GetV1ForumThreadsParameterOffset: number;
+        GetV1ForumThreadsPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    title: string;
+                    body: string;
+                    /** @enum {string} */
+                    type: "question" | "feature_request" | "bug_report" | "general";
+                    /** @enum {string} */
+                    status: "open" | "closed";
+                    isPinned: boolean;
+                    createdBy: string;
+                    createdAt: string | unknown;
+                    updatedAt: string | unknown;
+                    creator: {
+                        id: string;
+                        fullName: string | null;
+                    };
+                    replyCount?: number;
+                }[];
+                total: number;
+            };
+        };
+        PostV1ForumThreadsPositiveResponse: {
+            data: {
+                id: string;
+                title: string;
+                body: string;
+                /** @enum {string} */
+                type: "question" | "feature_request" | "bug_report" | "general";
+                /** @enum {string} */
+                status: "open" | "closed";
+                isPinned: boolean;
+                createdBy: string;
+                createdAt: string | unknown;
+                updatedAt: string | unknown;
+                creator: {
+                    id: string;
+                    fullName: string | null;
+                };
+                replyCount?: number;
+            };
+        };
+        PostV1ForumThreadsRequestBody: {
+            title: string;
+            /** @default  */
+            body: string;
+            /**
+             * @default general
+             * @enum {string}
+             */
+            type: "question" | "feature_request" | "bug_report" | "general";
+        };
+        GetV1ForumThreadsByIdThreadIdPositiveResponse: {
+            data: {
+                id: string;
+                title: string;
+                body: string;
+                /** @enum {string} */
+                type: "question" | "feature_request" | "bug_report" | "general";
+                /** @enum {string} */
+                status: "open" | "closed";
+                isPinned: boolean;
+                createdBy: string;
+                createdAt: string | unknown;
+                updatedAt: string | unknown;
+                creator: {
+                    id: string;
+                    fullName: string | null;
+                };
+                replyCount?: number;
+            };
+        };
+        PatchV1ForumThreadsByIdThreadIdPositiveResponse: {
+            data: {
+                id: string;
+                title: string;
+                body: string;
+                /** @enum {string} */
+                type: "question" | "feature_request" | "bug_report" | "general";
+                /** @enum {string} */
+                status: "open" | "closed";
+                isPinned: boolean;
+                createdBy: string;
+                createdAt: string | unknown;
+                updatedAt: string | unknown;
+                creator: {
+                    id: string;
+                    fullName: string | null;
+                };
+                replyCount?: number;
+            };
+        };
+        PatchV1ForumThreadsByIdThreadIdRequestBody: {
+            title?: string;
+            body?: string;
+        };
+        DeleteV1ForumThreadsByIdThreadIdPositiveResponse: {
+            data: Record<string, never>;
+        };
+        GetV1ForumThreadsByIdThreadIdRepliesPositiveResponse: {
+            data: {
+                result: {
+                    id: string;
+                    threadId: string;
+                    body: string;
+                    createdBy: string;
+                    createdAt: string | unknown;
+                    updatedAt: string | unknown;
+                    creator: {
+                        id: string;
+                        fullName: string | null;
+                    };
+                }[];
+                count: number;
+            };
+        };
+        PostV1ForumThreadsByIdThreadIdRepliesPositiveResponse: {
+            data: {
+                id: string;
+                threadId: string;
+                body: string;
+                createdBy: string;
+                createdAt: string | unknown;
+                updatedAt: string | unknown;
+                creator: {
+                    id: string;
+                    fullName: string | null;
+                };
+            };
+        };
+        PostV1ForumThreadsByIdThreadIdRepliesRequestBody: {
+            body: string;
+        };
+        PostV1ForumThreadsByIdThreadIdStatusPositiveResponse: {
+            data: Record<string, never>;
+        };
+        PostV1ForumThreadsByIdThreadIdStatusRequestBody: {
+            /** @enum {string} */
+            status: "open" | "closed";
+        };
+        PostV1ForumThreadsByIdThreadIdPinPositiveResponse: {
+            data: Record<string, never>;
+        };
+        PostV1ForumThreadsByIdThreadIdPinRequestBody: {
+            pinned: boolean;
+        };
+        PatchV1ForumRepliesByIdReplyIdPositiveResponse: {
+            data: {
+                id: string;
+                threadId: string;
+                body: string;
+                createdBy: string;
+                createdAt: string | unknown;
+                updatedAt: string | unknown;
+                creator: {
+                    id: string;
+                    fullName: string | null;
+                };
+            };
+        };
+        PatchV1ForumRepliesByIdReplyIdRequestBody: {
+            body: string;
+        };
+        DeleteV1ForumRepliesByIdReplyIdPositiveResponse: {
+            data: Record<string, never>;
         };
     };
     responses: never;
@@ -21071,6 +21380,553 @@ export interface operations {
                 };
             };
             /** @description POST /v1/donations/checkout Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1AuthHandoff: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/auth/handoff Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PostV1AuthHandoffRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/auth/handoff Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1AuthHandoffPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/auth/handoff Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1AuthExchange: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/auth/exchange Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1AuthExchangeRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/auth/exchange Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1AuthExchangePositiveResponse"];
+                };
+            };
+            /** @description POST /v1/auth/exchange Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    GetV1ForumThreads: {
+        parameters: {
+            query?: {
+                /** @description GET /v1/forum/threads Parameter */
+                type?: components["schemas"]["GetV1ForumThreadsParameterType"];
+                /** @description GET /v1/forum/threads Parameter */
+                status?: components["schemas"]["GetV1ForumThreadsParameterStatus"];
+                /** @description GET /v1/forum/threads Parameter */
+                search?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description GET /v1/forum/threads Parameter */
+                limit?: components["schemas"]["GetV1ForumThreadsParameterLimit"];
+                /** @description GET /v1/forum/threads Parameter */
+                offset?: components["schemas"]["GetV1ForumThreadsParameterOffset"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/forum/threads Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1ForumThreadsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/forum/threads Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1ForumThreads: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description POST /v1/forum/threads Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1ForumThreadsRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/forum/threads Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1ForumThreadsPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/forum/threads Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1ForumThreads: {
+        parameters: {
+            query?: {
+                /** @description HEAD /v1/forum/threads Parameter */
+                type?: components["schemas"]["GetV1ForumThreadsParameterType"];
+                /** @description HEAD /v1/forum/threads Parameter */
+                status?: components["schemas"]["GetV1ForumThreadsParameterStatus"];
+                /** @description HEAD /v1/forum/threads Parameter */
+                search?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+                /** @description HEAD /v1/forum/threads Parameter */
+                limit?: components["schemas"]["GetV1ForumThreadsParameterLimit"];
+                /** @description HEAD /v1/forum/threads Parameter */
+                offset?: components["schemas"]["GetV1ForumThreadsParameterOffset"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/forum/threads Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/forum/threads Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1ForumThreadsByIdThreadId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/forum/threads/byId/:threadId Parameter */
+                threadId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/forum/threads/byId/:threadId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1ForumThreadsByIdThreadIdPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/forum/threads/byId/:threadId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1ForumThreadsByIdThreadId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description DELETE /v1/forum/threads/byId/:threadId Parameter */
+                threadId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/forum/threads/byId/:threadId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1ForumThreadsByIdThreadIdPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/forum/threads/byId/:threadId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1ForumThreadsByIdThreadId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/forum/threads/byId/:threadId Parameter */
+                threadId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/forum/threads/byId/:threadId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/forum/threads/byId/:threadId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PatchV1ForumThreadsByIdThreadId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/forum/threads/byId/:threadId Parameter */
+                threadId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/forum/threads/byId/:threadId Request body */
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchV1ForumThreadsByIdThreadIdRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/forum/threads/byId/:threadId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1ForumThreadsByIdThreadIdPositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/forum/threads/byId/:threadId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    GetV1ForumThreadsByIdThreadIdReplies: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description GET /v1/forum/threads/byId/:threadId/replies Parameter */
+                threadId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/forum/threads/byId/:threadId/replies Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1ForumThreadsByIdThreadIdRepliesPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/forum/threads/byId/:threadId/replies Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1ForumThreadsByIdThreadIdReplies: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description POST /v1/forum/threads/byId/:threadId/replies Parameter */
+                threadId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description POST /v1/forum/threads/byId/:threadId/replies Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1ForumThreadsByIdThreadIdRepliesRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/forum/threads/byId/:threadId/replies Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1ForumThreadsByIdThreadIdRepliesPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/forum/threads/byId/:threadId/replies Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1ForumThreadsByIdThreadIdReplies: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description HEAD /v1/forum/threads/byId/:threadId/replies Parameter */
+                threadId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/forum/threads/byId/:threadId/replies Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/forum/threads/byId/:threadId/replies Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    PostV1ForumThreadsByIdThreadIdStatus: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description POST /v1/forum/threads/byId/:threadId/status Parameter */
+                threadId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description POST /v1/forum/threads/byId/:threadId/status Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1ForumThreadsByIdThreadIdStatusRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/forum/threads/byId/:threadId/status Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1ForumThreadsByIdThreadIdStatusPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/forum/threads/byId/:threadId/status Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PostV1ForumThreadsByIdThreadIdPin: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description POST /v1/forum/threads/byId/:threadId/pin Parameter */
+                threadId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description POST /v1/forum/threads/byId/:threadId/pin Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PostV1ForumThreadsByIdThreadIdPinRequestBody"];
+            };
+        };
+        responses: {
+            /** @description POST /v1/forum/threads/byId/:threadId/pin Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PostV1ForumThreadsByIdThreadIdPinPositiveResponse"];
+                };
+            };
+            /** @description POST /v1/forum/threads/byId/:threadId/pin Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1ForumRepliesByIdReplyId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description DELETE /v1/forum/replies/byId/:replyId Parameter */
+                replyId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/forum/replies/byId/:replyId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1ForumRepliesByIdReplyIdPositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/forum/replies/byId/:replyId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    PatchV1ForumRepliesByIdReplyId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description PATCH /v1/forum/replies/byId/:replyId Parameter */
+                replyId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+            };
+            cookie?: never;
+        };
+        /** @description PATCH /v1/forum/replies/byId/:replyId Request body */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PatchV1ForumRepliesByIdReplyIdRequestBody"];
+            };
+        };
+        responses: {
+            /** @description PATCH /v1/forum/replies/byId/:replyId Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PatchV1ForumRepliesByIdReplyIdPositiveResponse"];
+                };
+            };
+            /** @description PATCH /v1/forum/replies/byId/:replyId Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;

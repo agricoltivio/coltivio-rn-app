@@ -1372,6 +1372,8 @@
     "community_text": "Become part of a community that stands for open and fair agriculture. Help develop the project further and benefit from perks available exclusively to members.",
     "expiry_banner": "Your membership expires in {{days}} days.",
     "trial_expiry_banner": "Your trial expires in {{days}} days.",
-    "expired_banner": "Your membership has expired."
+    "expired_banner": "Your membership has expired.",
+    "farmAlreadyHasMembership": "One of your farm members is already an association member — your farm already has full access. You can still get your own membership and support the association.",
+    "delete_account_warning": "You have an active membership. If you delete your account, you will lose access to membership management. Keep your account to manage the membership at app.coltivio.ch."
   }
 }

@@ -1,5 +1,5 @@
 import { useApi } from "@/api/api";
-import { AcceptInviteResult, Farm, FarmInvite, FarmUpdateInput } from "@/api/farms.api";
+import { AcceptInviteResult, Farm, FarmCreated, FarmInvite, FarmUpdateInput } from "@/api/farms.api";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { OnboardingData } from "../onboarding/OnboardingContext";
@@ -41,7 +41,7 @@ export function useUpdateFarmMutation(
 }
 
 export function useCreateFarmMutation(
-  onSuccess?: (farm: Farm) => void,
+  onSuccess?: (farm: FarmCreated) => void,
   onError?: (error: Error) => void
 ) {
   const api = useApi();
@@ -158,19 +158,18 @@ export function useUpdateMemberRoleMutation(onSuccess?: () => void) {
 
 export function useMembership() {
   const { farm } = useFarmQuery();
-  const membership = farm?.membership;
-  const trialEnd =
-    typeof membership?.trialEnd === "string" && membership.trialEnd.length > 0
-      ? new Date(membership.trialEnd)
-      : null;
-  const periodEnd =
-    typeof membership?.lastPeriodEnd === "string" && membership.lastPeriodEnd.length > 0
-      ? new Date(membership.lastPeriodEnd)
-      : null;
-  const now = new Date();
-  const isActive = (periodEnd !== null && periodEnd > now) || (trialEnd !== null && trialEnd > now);
-  const isTrial = trialEnd !== null && trialEnd > now && periodEnd === null;
-  return { isActive, isTrial };
+  const status = farm?.membership.status;
+  const isActive = status === "active" || status === "trial";
+  return { isActive };
+}
+
+export function useMembershipStatusQuery() {
+  const api = useApi();
+  const { data, ...rest } = useQuery({
+    queryKey: queryKeys.farms.membershipStatus.queryKey,
+    queryFn: () => api.membership.getMembershipStatus(),
+  });
+  return { membershipStatus: data, ...rest };
 }
 
 export function useDeleteFarmMutation(

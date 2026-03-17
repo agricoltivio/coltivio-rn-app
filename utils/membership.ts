@@ -1,35 +1,29 @@
 import { supabase } from "@/supabase/supabase";
 import { Linking } from "react-native";
+import { createAuthClient } from "@/api/api";
+import { membershipApi } from "@/api/membership.api";
+
+const appUrl = __DEV__ ? "http://localhost:4000" : "https://app.coltivio.ch";
+const marketingUrl = __DEV__ ? "http://localhost:4321" : "https://coltivio.ch";
+
+async function getHandoffToken(): Promise<string | null> {
+  const { data: sessionData } = await supabase.auth.getSession();
+  const accessToken = sessionData.session?.access_token;
+  if (!accessToken) return null;
+  const api = membershipApi(createAuthClient(accessToken));
+  return api.createHandoffToken();
+}
 
 export async function openManageMembershipUrl() {
-  const baseUrl = __DEV__ ? "http://localhost:4000" : "https://app.coltivio.ch";
-  const { data } = await supabase.auth.getSession();
-  const session = data.session;
-  if (session) {
-    const url = `${baseUrl}/auth/token?access_token=${session.access_token}&refresh_token=${session.refresh_token}&redirect=/membership`;
-    Linking.openURL(url);
-  } else {
-    Linking.openURL(`${baseUrl}/membership`);
-  }
+  const token = await getHandoffToken();
+  const url = token
+    ? `${appUrl}/auth/token#token=${token}&redirect=/membership`
+    : `${appUrl}/membership`;
+  Linking.openURL(url);
 }
 
 export async function openMembershipUrl() {
-  const baseUrl = __DEV__ ? "http://localhost:4321" : "https://coltivio.ch";
-  const { data } = await supabase.auth.getSession();
-  const session = data.session;
-  if (session) {
-    const url = `${baseUrl}#access_token=${session.access_token}&refresh_token=${session.refresh_token}`;
-    Linking.openURL(url);
-  } else {
-    Linking.openURL(baseUrl);
-  }
-
-  // Direct link to the webapp membership page — re-enable if app store allows:
-  // const appBaseUrl = __DEV__ ? "http://localhost:4000" : "https://app.coltivio.ch";
-  // if (session) {
-  //   const url = `${appBaseUrl}/auth/token?access_token=${session.access_token}&refresh_token=${session.refresh_token}&redirect=/membership`;
-  //   Linking.openURL(url);
-  // } else {
-  //   Linking.openURL(`${appBaseUrl}/membership`);
-  // }
+  const token = await getHandoffToken();
+  const url = token ? `${marketingUrl}#token=${token}` : marketingUrl;
+  Linking.openURL(url);
 }

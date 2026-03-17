@@ -1374,6 +1374,8 @@
     "community_text": "Werde Teil einer Gemeinschaft welche für eine offene und faire Landwirtschaft steht. Hilf mit das Projekt weiterzuentwickeln und profitiere von Vorteilen welche nur Mitgliedern zur Verfügung stehen.",
     "expiry_banner": "Deine Mitgliedschaft endet in {{days}} Tagen.",
     "trial_expiry_banner": "Deine Testphase endet in {{days}} Tagen.",
-    "expired_banner": "Deine Mitgliedschaft ist abgelaufen."
+    "expired_banner": "Deine Mitgliedschaft ist abgelaufen.",
+    "farmAlreadyHasMembership": "Einer deiner Hofmitglieder ist bereits Vereinsmitglied — dein Hof hat bereits vollen Zugang. Du kannst trotzdem eine eigene Mitgliedschaft abschliessen und den Verein unterstützen.",
+    "delete_account_warning": "Du hast eine aktive Mitgliedschaft. Wenn du dein Konto löschst, verlierst du den Zugang zur Mitgliedschaftsverwaltung. Behalte dein Konto um die Mitgliedschaft auf app.coltivio.ch zu verwalten."
   }
 }

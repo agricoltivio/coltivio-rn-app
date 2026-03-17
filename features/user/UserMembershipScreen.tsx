@@ -8,8 +8,8 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { openManageMembershipUrl, openMembershipUrl } from "@/utils/membership";
-import { useFarmQuery } from "./farms.hooks";
-import { FarmMembershipScreenProps } from "./navigation/farm-routes";
+import { useMembership, useMembershipStatusQuery } from "@/features/farms/farms.hooks";
+import { UserMembershipScreenProps } from "./navigation/user-routes";
 
 function toDateString(value: unknown): string | null {
   if (typeof value === "string" && value.length > 0) {
@@ -42,12 +42,13 @@ function InfoRow({
   );
 }
 
-export function FarmMembershipScreen({}: FarmMembershipScreenProps) {
+export function UserMembershipScreen({}: UserMembershipScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { farm } = useFarmQuery();
+  const { membershipStatus } = useMembershipStatusQuery();
+  const { isActive: farmIsActive } = useMembership();
 
-  const membership = farm?.membership;
+  const membership = membershipStatus;
   const trialEndStr = toDateString(membership?.trialEnd);
   const periodEndStr = toDateString(membership?.lastPeriodEnd);
   const now = new Date();
@@ -145,6 +146,19 @@ export function FarmMembershipScreen({}: FarmMembershipScreenProps) {
             </Body>
           </>
         )}
+        {farmIsActive && !isActive ? (
+          <View style={{
+            marginTop: theme.spacing.l,
+            marginHorizontal: theme.spacing.xs,
+            padding: theme.spacing.m,
+            backgroundColor: theme.colors.primary + "18",
+            borderRadius: theme.radii.m,
+          }}>
+            <Body style={{ color: theme.colors.primary }}>
+              {t("membership.farmAlreadyHasMembership")}
+            </Body>
+          </View>
+        ) : null}
       </ScrollView>
     </ContentView>
   );

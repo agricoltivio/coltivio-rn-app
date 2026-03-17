@@ -12,6 +12,7 @@ export type UserStackParamList = {
   EmailVerified: undefined;
   ChangePassword: undefined;
   DevSettings: undefined;
+  UserMembership: undefined;
 };
 
 export type UserAccountScreenProps = StackScreenProps<"UserAccount">;
@@ -27,3 +28,4 @@ export type ChangeEmailPendingScreenProps =
 export type EmailVerifiedScreenProps = StackScreenProps<"EmailVerified">;
 export type ChangePasswordScreenProps = StackScreenProps<"ChangePassword">;
 export type DevSettingsScreenProps = StackScreenProps<"DevSettings">;
+export type UserMembershipScreenProps = StackScreenProps<"UserMembership">;

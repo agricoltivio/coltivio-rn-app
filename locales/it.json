@@ -1372,6 +1372,8 @@
     "community_text": "Diventa parte di una comunità che sostiene un'agricoltura aperta e giusta. Aiuta a sviluppare ulteriormente il progetto e approfitta di vantaggi disponibili esclusivamente per i membri.",
     "expiry_banner": "Il tuo abbonamento scade in {{days}} giorni.",
     "trial_expiry_banner": "Il tuo periodo di prova scade in {{days}} giorni.",
-    "expired_banner": "Il tuo abbonamento è scaduto."
+    "expired_banner": "Il tuo abbonamento è scaduto.",
+    "farmAlreadyHasMembership": "Uno dei tuoi colleghi ha già un'iscrizione all'associazione — il tuo hof ha già accesso completo. Puoi comunque sottoscrivere una tua iscrizione e supportare l'associazione.",
+    "delete_account_warning": "Hai un abbonamento attivo. Se elimini il tuo account, perderai l'accesso alla gestione dell'abbonamento. Mantieni il tuo account per gestire l'abbonamento su app.coltivio.ch."
   }
 }

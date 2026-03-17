@@ -10,6 +10,7 @@ import { OnboardingSettingsScreen } from "../UserSettingsScreen";
 import { DevSettingsScreen } from "../../farms/DevSettingsScreen";
 import { EmailVerifiedScreen } from "../EmailVerifiedScreen";
 import { ChangeEmailPendingScreen } from "../ChangeEmailPendingScreen";
+import { UserMembershipScreen } from "../UserMembershipScreen";
 
 export function renderUserStack() {
   return [
@@ -95,6 +96,14 @@ export function renderUserStack() {
       key="dev-settings"
       name="DevSettings"
       component={DevSettingsScreen}
+      options={{
+        title: "",
+      }}
+    />,
+    <Stack.Screen
+      key="user-membership"
+      name="UserMembership"
+      component={UserMembershipScreen}
       options={{
         title: "",
       }}
