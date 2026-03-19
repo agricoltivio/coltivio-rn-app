@@ -16,18 +16,20 @@ export function hasScheduleOverlaps(
     return Math.floor((date.getTime() - start.getTime()) / MS_PER_DAY);
   };
 
-  // Check if two day-of-year ranges overlap (for recurring schedules)
+  // Check if two day-of-year ranges overlap (for recurring schedules).
+  // A range that spans a year boundary (e.g. Nov–Mar) is split into two
+  // sub-ranges so we don't false-positive against non-overlapping ranges.
   const dayRangesOverlap = (
     aFromDay: number,
     aToDay: number,
     bFromDay: number,
     bToDay: number,
   ) => {
-    if (aFromDay <= aToDay && bFromDay <= bToDay) {
-      return aFromDay <= bToDay && aToDay >= bFromDay;
-    }
-    // If either range wraps around year boundary, treat as overlapping
-    return true;
+    const aRanges: Array<[number, number]> =
+      aFromDay <= aToDay ? [[aFromDay, aToDay]] : [[aFromDay, 366], [1, aToDay]];
+    const bRanges: Array<[number, number]> =
+      bFromDay <= bToDay ? [[bFromDay, bToDay]] : [[bFromDay, 366], [1, bToDay]];
+    return aRanges.some(([aF, aT]) => bRanges.some(([bF, bT]) => aF <= bT && aT >= bF));
   };
 
   // Get all years a schedule occurs in

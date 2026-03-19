@@ -247,29 +247,32 @@ export function SelectPlotsMap({
           showUserLocation={showUserLocation}
           onPress={handleMapPress}
         >
-          {/* All plots — no selectedPlotIds passed; selectedAreasData handles highlighting */}
+          {/* All plots — selectedPlotIds drives selection coloring (success fill + yellow stroke) */}
           <PlotsLayer
             plots={plots}
+            selectedPlotIds={Object.keys(selectedPlotsById)}
             onPlotPress={handlePlotPress}
             showZoomLabels
           />
 
-          {/* Selected area overlays — full plot geometry for tapped, intersection for drawn */}
-          <GeoJSONSource id="selected-areas" data={selectedAreasData}>
-            <Layer
-              type="fill"
-              id="selected-areas-fill"
-              paint={{
-                "fill-color": hexToRgba(theme.colors.secondary, theme.map.defaultFillAlpha),
-                "fill-opacity": 1,
-              }}
-            />
-            <Layer
-              type="line"
-              id="selected-areas-stroke"
-              paint={{ "line-color": "white", "line-width": theme.map.defaultStrokeWidth }}
-            />
-          </GeoJSONSource>
+          {/* Selected area overlays — only needed when drawing, to show partial intersection geometry */}
+          {enableDrawing && (
+            <GeoJSONSource id="selected-areas" data={selectedAreasData}>
+              <Layer
+                type="fill"
+                id="selected-areas-fill"
+                paint={{
+                  "fill-color": hexToRgba(theme.colors.secondary, theme.map.defaultFillAlpha),
+                  "fill-opacity": 1,
+                }}
+              />
+              <Layer
+                type="line"
+                id="selected-areas-stroke"
+                paint={{ "line-color": "white", "line-width": theme.map.defaultStrokeWidth }}
+              />
+            </GeoJSONSource>
+          )}
 
           {/* Labels */}
           <LabelLayer labels={selectedLabels} />

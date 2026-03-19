@@ -28,6 +28,8 @@ import { ZoomLevel } from "../timeline/ZoomLevelToggle";
 import { TIMELINE_HEADER_HEIGHT } from "../timeline/TimelineHeader";
 import { ROW_HEIGHT } from "../timeline/TimelinePlotRow";
 import { addYears, subYears } from "date-fns";
+import { Button } from "@/components/buttons/Button";
+import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 
 const MS_PER_DAY = 86_400_000;
 
@@ -672,14 +674,7 @@ export function PlanCropRotationsScreen({
       </ScrollView>
 
       {/* Save Button */}
-      <View
-        style={{
-          padding: theme.spacing.m,
-          backgroundColor: theme.colors.white,
-          borderTopWidth: 1,
-          borderTopColor: theme.colors.gray4,
-        }}
-      >
+      <BottomActionContainer>
         {hasConflicts && (
           <Text
             style={{
@@ -692,34 +687,13 @@ export function PlanCropRotationsScreen({
             {t("crop_rotations.plan.resolve_conflicts_warning")}
           </Text>
         )}
-        <Pressable
+        <Button
           onPress={handleSave}
           disabled={saving || hasConflicts}
-          style={{
-            backgroundColor:
-              saving || hasConflicts
-                ? theme.colors.gray3
-                : theme.colors.primary,
-            paddingVertical: 14,
-            borderRadius: 10,
-            alignItems: "center",
-          }}
-        >
-          {saving ? (
-            <ActivityIndicator color={theme.colors.white} />
-          ) : (
-            <Text
-              style={{
-                fontSize: 16,
-                fontWeight: "600",
-                color: theme.colors.white,
-              }}
-            >
-              {t("crop_rotations.plan.save_plan")}
-            </Text>
-          )}
-        </Pressable>
-      </View>
+          loading={saving}
+          title={t("crop_rotations.plan.save_plan")}
+        />
+      </BottomActionContainer>
 
       {/* Edit Modal */}
       <RotationEditModal
