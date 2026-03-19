@@ -97,7 +97,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const shouldShowPromo =
     !isActive &&
     !localSettings.agriColtivioPromoShown &&
-    daysSinceLaunch >= 0;
+    daysSinceLaunch >= 30;
   const [promoVisible, setPromoVisible] = useState(shouldShowPromo);
 
   function dismissPromo() {
