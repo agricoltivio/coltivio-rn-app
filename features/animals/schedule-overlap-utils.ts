@@ -32,18 +32,22 @@ export function hasScheduleOverlaps(
     return aRanges.some(([aF, aT]) => bRanges.some(([bF, bT]) => aF <= bT && aT >= bF));
   };
 
-  // Get all years a schedule occurs in
+  // Get all years a schedule occupies. yearSpan = endYear - startYear of one occurrence
+  // (usually 0, but 1 for a Nov–Mar span). Each occurrence at year N covers N..N+yearSpan.
   const getOccurrenceYears = (
     startYear: number,
     interval: number,
     untilYear: number | null,
     rangeStart: number,
     rangeEnd: number,
+    yearSpan: number,
   ): Set<number> => {
     const years = new Set<number>();
     const effectiveEnd = untilYear ? Math.min(untilYear, rangeEnd) : rangeEnd;
     for (let year = startYear; year <= effectiveEnd; year += interval) {
-      if (year >= rangeStart) years.add(year);
+      for (let span = 0; span <= yearSpan; span++) {
+        if (year + span >= rangeStart) years.add(year + span);
+      }
     }
     return years;
   };
@@ -56,7 +60,15 @@ export function hasScheduleOverlaps(
     const rangeEnd = new Date().getFullYear() + 25;
 
     const aStart = new Date(a.startDate);
+    const aEnd = a.endDate ? new Date(a.endDate) : aStart;
     const bStart = new Date(b.startDate);
+    const bEnd = b.endDate ? new Date(b.endDate) : bStart;
+    const aStartYear = aStart.getFullYear();
+    const aEndYear = aEnd.getFullYear();
+    const bStartYear = bStart.getFullYear();
+    const bEndYear = bEnd.getFullYear();
+    const aYearSpan = aEndYear - aStartYear;
+    const bYearSpan = bEndYear - bStartYear;
     const aInterval = a.recurrence?.interval ?? 1;
     const bInterval = b.recurrence?.interval ?? 1;
     const aUntilYear = a.recurrence?.until
@@ -67,15 +79,16 @@ export function hasScheduleOverlaps(
       : null;
 
     if (!a.recurrence && !b.recurrence) {
-      return aStart.getFullYear() === bStart.getFullYear();
+      // Neither recurs: check if their year ranges overlap
+      return aStartYear <= bEndYear && aEndYear >= bStartYear;
     }
 
     const aYears = a.recurrence
-      ? getOccurrenceYears(aStart.getFullYear(), aInterval, aUntilYear, rangeStart, rangeEnd)
-      : new Set([aStart.getFullYear()]);
+      ? getOccurrenceYears(aStartYear, aInterval, aUntilYear, rangeStart, rangeEnd, aYearSpan)
+      : new Set(Array.from({ length: aYearSpan + 1 }, (_, i) => aStartYear + i));
     const bYears = b.recurrence
-      ? getOccurrenceYears(bStart.getFullYear(), bInterval, bUntilYear, rangeStart, rangeEnd)
-      : new Set([bStart.getFullYear()]);
+      ? getOccurrenceYears(bStartYear, bInterval, bUntilYear, rangeStart, rangeEnd, bYearSpan)
+      : new Set(Array.from({ length: bYearSpan + 1 }, (_, i) => bStartYear + i));
 
     for (const year of aYears) {
       if (bYears.has(year)) return true;

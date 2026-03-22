@@ -144,33 +144,35 @@ export function PlanCropRotationsScreen({
       return Math.floor(diff / MS_PER_DAY);
     };
 
-    // Check if two day-of-year ranges overlap
+    // Check if two day-of-year ranges overlap.
+    // A range that spans a year boundary (e.g. Nov–Mar) is split into two
+    // sub-ranges so we don't false-positive against non-overlapping ranges.
     const dayRangesOverlap = (
       aFromDay: number,
       aToDay: number,
       bFromDay: number,
       bToDay: number,
     ) => {
-      if (aFromDay <= aToDay && bFromDay <= bToDay) {
-        return aFromDay <= bToDay && aToDay >= bFromDay;
-      }
-      // If either range wraps (e.g., Nov-Feb), treat as overlapping
-      return true;
+      const aRanges: [number, number][] = aFromDay <= aToDay ? [[aFromDay, aToDay]] : [[aFromDay, 366], [1, aToDay]];
+      const bRanges: [number, number][] = bFromDay <= bToDay ? [[bFromDay, bToDay]] : [[bFromDay, 366], [1, bToDay]];
+      return aRanges.some(([af, at]) => bRanges.some(([bf, bt]) => af <= bt && at >= bf));
     };
 
-    // Get all years a rotation occurs in (within a range)
+    // Get all years a rotation occupies. yearSpan = endYear - startYear of one occurrence
+    // (usually 0, but 1 for a Nov–Mar span). Each occurrence at year N covers N..N+yearSpan.
     const getOccurrenceYears = (
       startYear: number,
       interval: number,
       untilYear: number | null,
       rangeStart: number,
       rangeEnd: number,
+      yearSpan: number,
     ): Set<number> => {
       const years = new Set<number>();
       const effectiveEnd = untilYear ? Math.min(untilYear, rangeEnd) : rangeEnd;
       for (let year = startYear; year <= effectiveEnd; year += interval) {
-        if (year >= rangeStart) {
-          years.add(year);
+        for (let span = 0; span <= yearSpan; span++) {
+          if (year + span >= rangeStart) years.add(year + span);
         }
       }
       return years;
@@ -182,26 +184,28 @@ export function PlanCropRotationsScreen({
       const rangeEnd = new Date().getFullYear() + 25;
 
       const aStartYear = a.fromDate.getFullYear();
+      const aEndYear = a.toDate.getFullYear();
       const bStartYear = b.fromDate.getFullYear();
+      const bEndYear = b.toDate.getFullYear();
+      const aYearSpan = aEndYear - aStartYear;
+      const bYearSpan = bEndYear - bStartYear;
       const aInterval = a.recurrence?.interval || 1;
       const bInterval = b.recurrence?.interval || 1;
       const aUntilYear = a.recurrence?.until?.getFullYear() || null;
       const bUntilYear = b.recurrence?.until?.getFullYear() || null;
 
-      // If neither has recurrence, they only occur in their start years
       if (!a.recurrence && !b.recurrence) {
-        return aStartYear === bStartYear;
+        // Neither recurs: check if their year ranges overlap
+        return aStartYear <= bEndYear && aEndYear >= bStartYear;
       }
 
-      // Get all years each rotation occurs (non-recurring = single year only)
       const aYears = a.recurrence
-        ? getOccurrenceYears(aStartYear, aInterval, aUntilYear, rangeStart, rangeEnd)
-        : new Set([aStartYear]);
+        ? getOccurrenceYears(aStartYear, aInterval, aUntilYear, rangeStart, rangeEnd, aYearSpan)
+        : new Set(Array.from({ length: aYearSpan + 1 }, (_, i) => aStartYear + i));
       const bYears = b.recurrence
-        ? getOccurrenceYears(bStartYear, bInterval, bUntilYear, rangeStart, rangeEnd)
-        : new Set([bStartYear]);
+        ? getOccurrenceYears(bStartYear, bInterval, bUntilYear, rangeStart, rangeEnd, bYearSpan)
+        : new Set(Array.from({ length: bYearSpan + 1 }, (_, i) => bStartYear + i));
 
-      // Check for any common year
       for (const year of aYears) {
         if (bYears.has(year)) return true;
       }
