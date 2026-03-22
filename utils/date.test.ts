@@ -42,15 +42,17 @@ describe("getMinMaxIso", () => {
   });
 
   test("sorted ascending array returns correct min/max", () => {
-    expect(
-      getMinMaxIso(["2024-01-01", "2024-06-15", "2025-12-31"]),
-    ).toEqual({ min: "2024-01-01", max: "2025-12-31" });
+    expect(getMinMaxIso(["2024-01-01", "2024-06-15", "2025-12-31"])).toEqual({
+      min: "2024-01-01",
+      max: "2025-12-31",
+    });
   });
 
   test("unsorted array returns correct min/max", () => {
-    expect(
-      getMinMaxIso(["2025-03-01", "2023-07-15", "2024-11-30"]),
-    ).toEqual({ min: "2023-07-15", max: "2025-03-01" });
+    expect(getMinMaxIso(["2025-03-01", "2023-07-15", "2024-11-30"])).toEqual({
+      min: "2023-07-15",
+      max: "2025-03-01",
+    });
   });
 
   test("two-element array", () => {

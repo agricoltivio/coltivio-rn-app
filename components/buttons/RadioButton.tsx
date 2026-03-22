@@ -28,7 +28,7 @@ const OuterCircle = styled.View<{ borderRadius: number }>(
     borderColor: "black",
     alignItems: "center",
     justifyContent: "center",
-  })
+  }),
 );
 
 const InnerCircle = styled.View<{ borderRadius: number }>(
@@ -37,5 +37,5 @@ const InnerCircle = styled.View<{ borderRadius: number }>(
     width: INNER_BUTTON_SIZE,
     borderRadius: borderRadius,
     backgroundColor: "black",
-  })
+  }),
 );

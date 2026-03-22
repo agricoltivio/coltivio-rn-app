@@ -159,10 +159,22 @@ export function LocalSettingsProvider({ children }: PropsWithChildren) {
           setLocalSettings({
             ...defaultLocalSettings,
             ...stored,
-            animalsGroups: mergeGroups(stored.animalsGroups ?? [], DEFAULT_ANIMALS_GROUPS),
-            fieldCalendarGroups: mergeGroups(stored.fieldCalendarGroups ?? [], DEFAULT_FIELD_CALENDAR_GROUPS),
-            speedDialItems: mergeSpeedDialItems(stored.speedDialItems ?? [], DEFAULT_SPEED_DIAL_ITEMS),
-            homeTiles: mergeHomeTiles(stored.homeTiles ?? [], DEFAULT_HOME_TILES),
+            animalsGroups: mergeGroups(
+              stored.animalsGroups ?? [],
+              DEFAULT_ANIMALS_GROUPS,
+            ),
+            fieldCalendarGroups: mergeGroups(
+              stored.fieldCalendarGroups ?? [],
+              DEFAULT_FIELD_CALENDAR_GROUPS,
+            ),
+            speedDialItems: mergeSpeedDialItems(
+              stored.speedDialItems ?? [],
+              DEFAULT_SPEED_DIAL_ITEMS,
+            ),
+            homeTiles: mergeHomeTiles(
+              stored.homeTiles ?? [],
+              DEFAULT_HOME_TILES,
+            ),
           });
         }
       }

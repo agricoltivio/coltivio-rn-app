@@ -1,7 +1,8 @@
 import { FetchClient } from "./api";
 import { components } from "./v1";
 
-export type MembershipStatus = components["schemas"]["GetV1MembershipStatusPositiveResponse"]["data"];
+export type MembershipStatus =
+  components["schemas"]["GetV1MembershipStatusPositiveResponse"]["data"];
 
 export function membershipApi(client: FetchClient) {
   return {

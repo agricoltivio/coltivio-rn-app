@@ -9,7 +9,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 export function useFertilizerApplicationsQuery(
   fromDate?: Date,
   toDate?: Date,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
@@ -23,7 +23,7 @@ export function useFertilizerApplicationsQuery(
 
 export function useFertilizerApplicationsForPlotQuery(
   plotId: string,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
@@ -37,7 +37,7 @@ export function useFertilizerApplicationsForPlotQuery(
 
 export function useFertilizerApplicationQuery(
   fertilizerApplicationId: string,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
@@ -45,7 +45,7 @@ export function useFertilizerApplicationQuery(
       .queryKey,
     queryFn: () =>
       api.fertilizerApplications.getFertilizerApplicationById(
-        fertilizerApplicationId
+        fertilizerApplicationId,
       ),
     enabled,
   });
@@ -63,7 +63,7 @@ export function useFertilizerApplicationYearsQuery(enabled: boolean = true) {
 }
 
 export function useFertilizerApplicationSummaryOfFarmQuery(
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
@@ -77,7 +77,7 @@ export function useFertilizerApplicationSummaryOfFarmQuery(
 
 export function useFertilizerApplicationSummaryForPlotQuery(
   plotId: string,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
@@ -85,7 +85,7 @@ export function useFertilizerApplicationSummaryForPlotQuery(
       queryKeys.fertilizerApplications.summariesByPlotId(plotId).queryKey,
     queryFn: () =>
       api.fertilizerApplications.getFertilizerApplicationSummariesForPlot(
-        plotId
+        plotId,
       ),
     enabled,
   });
@@ -94,16 +94,16 @@ export function useFertilizerApplicationSummaryForPlotQuery(
 
 export function useCreateFertilizerApplicationsMutation(
   onSuccess?: (fertilizerApplications: FertilizerApplication[]) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
   const createFertilizerApplicationMutation = useMutation({
     mutationFn: (
-      fertilizerApplications: FertilizerApplicationBatchCreateInput
+      fertilizerApplications: FertilizerApplicationBatchCreateInput,
     ) => {
       return api.fertilizerApplications.createFertilizerApplications(
-        fertilizerApplications
+        fertilizerApplications,
       );
     },
     onError: (error) => {
@@ -122,14 +122,14 @@ export function useCreateFertilizerApplicationsMutation(
 
 export function useDeleteFertilizerApplicationMutation(
   onSuccess?: () => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const api = useApi();
   const queryClient = useQueryClient();
   const deleteFertilizerApplicationMutation = useMutation({
     mutationFn: async (fertilizerApplicationId: string) => {
       await api.fertilizerApplications.deleteFertilizerApplication(
-        fertilizerApplicationId
+        fertilizerApplicationId,
       );
       return fertilizerApplicationId;
     },

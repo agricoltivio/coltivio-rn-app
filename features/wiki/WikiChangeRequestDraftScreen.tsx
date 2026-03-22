@@ -8,7 +8,14 @@ import * as Crypto from "expo-crypto";
 import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Alert, KeyboardAvoidingView, Platform, TouchableOpacity, View, Text } from "react-native";
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableOpacity,
+  View,
+  Text,
+} from "react-native";
 import styled from "styled-components/native";
 import { useTheme } from "styled-components/native";
 import { TextInput } from "@/components/inputs/TextInput";
@@ -79,7 +86,9 @@ export function WikiChangeRequestDraftScreen({
   useEffect(() => {
     if (!changeRequest) return;
     for (const loc of LOCALES) {
-      const translation = changeRequest.translations.find((tr) => tr.locale === loc);
+      const translation = changeRequest.translations.find(
+        (tr) => tr.locale === loc,
+      );
       if (translation) {
         setValue(`${loc}_title`, translation.title);
         setValue(`${loc}_body`, translation.body);
@@ -87,9 +96,12 @@ export function WikiChangeRequestDraftScreen({
     }
   }, [changeRequest, setValue]);
 
-  const updateMutation = useUpdateChangeRequestDraftMutation(changeRequestId, () => {
-    navigation.goBack();
-  });
+  const updateMutation = useUpdateChangeRequestDraftMutation(
+    changeRequestId,
+    () => {
+      navigation.goBack();
+    },
+  );
 
   const submitMutation = useSubmitChangeRequestDraftMutation(() => {
     navigation.goBack();
@@ -99,7 +111,11 @@ export function WikiChangeRequestDraftScreen({
 
   function buildTranslations(values: FormValues): WikiTranslationInput[] {
     const translations: WikiTranslationInput[] = [];
-    translations.push({ locale: "de", title: values.de_title, body: values.de_body });
+    translations.push({
+      locale: "de",
+      title: values.de_title,
+      body: values.de_body,
+    });
     for (const loc of ["en", "it", "fr"] as const) {
       const title = values[`${loc}_title`];
       const body = values[`${loc}_body`];
@@ -157,7 +173,9 @@ export function WikiChangeRequestDraftScreen({
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
         <ScrollView>
-          <View style={{ gap: theme.spacing.m, paddingBottom: theme.spacing.xxl }}>
+          <View
+            style={{ gap: theme.spacing.m, paddingBottom: theme.spacing.xxl }}
+          >
             {/* "Changes requested" notice — shown when reviewer sent the CR back as draft */}
             {isEditable && (
               <View
@@ -167,7 +185,9 @@ export function WikiChangeRequestDraftScreen({
                   padding: theme.spacing.s,
                 }}
               >
-                <H3 style={{ color: "#92400E" }}>{t("wiki.changes_requested")}</H3>
+                <H3 style={{ color: "#92400E" }}>
+                  {t("wiki.changes_requested")}
+                </H3>
               </View>
             )}
 
@@ -187,7 +207,13 @@ export function WikiChangeRequestDraftScreen({
             </View>
 
             {LOCALES.map((loc) => (
-              <View key={loc} style={{ display: activeLocale === loc ? "flex" : "none", gap: theme.spacing.s }}>
+              <View
+                key={loc}
+                style={{
+                  display: activeLocale === loc ? "flex" : "none",
+                  gap: theme.spacing.s,
+                }}
+              >
                 {loc === "de" && (
                   <H3 style={{ color: theme.colors.gray2, fontSize: 12 }}>
                     {t("wiki.required_locale_hint")}
@@ -196,15 +222,24 @@ export function WikiChangeRequestDraftScreen({
                 <Controller
                   control={control}
                   name={`${loc}_title`}
-                  rules={loc === "de" && isEditable ? { required: true } : undefined}
-                  render={({ field: { onChange, onBlur, value }, fieldState }) => (
+                  rules={
+                    loc === "de" && isEditable ? { required: true } : undefined
+                  }
+                  render={({
+                    field: { onChange, onBlur, value },
+                    fieldState,
+                  }) => (
                     <TextInput
                       label={t("wiki.title")}
                       value={value}
                       onChangeText={onChange}
                       onBlur={onBlur}
                       disabled={!isEditable}
-                      error={fieldState.error ? t("forms.validation.required") : undefined}
+                      error={
+                        fieldState.error
+                          ? t("forms.validation.required")
+                          : undefined
+                      }
                     />
                   )}
                 />
@@ -245,13 +280,25 @@ export function WikiChangeRequestDraftScreen({
             )}
 
             {/* Comments thread */}
-            <View style={{ borderTopWidth: 1, borderTopColor: theme.colors.gray4, paddingTop: theme.spacing.m }}>
-              <H3 style={{ marginBottom: theme.spacing.s }}>{t("wiki.comments")}</H3>
+            <View
+              style={{
+                borderTopWidth: 1,
+                borderTopColor: theme.colors.gray4,
+                paddingTop: theme.spacing.m,
+              }}
+            >
+              <H3 style={{ marginBottom: theme.spacing.s }}>
+                {t("wiki.comments")}
+              </H3>
               {notes.map((note) => {
                 const isOwn = note.authorId === authUser?.id;
-                const time = typeof note.createdAt === "string"
-                  ? new Date(note.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-                  : "";
+                const time =
+                  typeof note.createdAt === "string"
+                    ? new Date(note.createdAt).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })
+                    : "";
                 return (
                   <View
                     key={note.id}
@@ -261,17 +308,28 @@ export function WikiChangeRequestDraftScreen({
                       marginBottom: theme.spacing.xs,
                     }}
                   >
-                    <View style={{
-                      backgroundColor: isOwn ? theme.colors.primary : theme.colors.gray5,
-                      borderRadius: theme.radii.m,
-                      borderBottomRightRadius: isOwn ? 4 : theme.radii.m,
-                      borderBottomLeftRadius: isOwn ? theme.radii.m : 4,
-                      padding: theme.spacing.s,
-                    }}>
+                    <View
+                      style={{
+                        backgroundColor: isOwn
+                          ? theme.colors.primary
+                          : theme.colors.gray5,
+                        borderRadius: theme.radii.m,
+                        borderBottomRightRadius: isOwn ? 4 : theme.radii.m,
+                        borderBottomLeftRadius: isOwn ? theme.radii.m : 4,
+                        padding: theme.spacing.s,
+                      }}
+                    >
                       <NoteText isOwn={isOwn}>{note.body}</NoteText>
                     </View>
                     {time ? (
-                      <Text style={{ fontSize: 11, color: theme.colors.gray2, marginTop: 2, alignSelf: isOwn ? "flex-end" : "flex-start" }}>
+                      <Text
+                        style={{
+                          fontSize: 11,
+                          color: theme.colors.gray2,
+                          marginTop: 2,
+                          alignSelf: isOwn ? "flex-end" : "flex-start",
+                        }}
+                      >
                         {time}
                       </Text>
                     ) : null}
@@ -281,7 +339,13 @@ export function WikiChangeRequestDraftScreen({
             </View>
 
             {/* Comment input */}
-            <View style={{ flexDirection: "row", gap: theme.spacing.s, alignItems: "flex-end" }}>
+            <View
+              style={{
+                flexDirection: "row",
+                gap: theme.spacing.s,
+                alignItems: "flex-end",
+              }}
+            >
               <View style={{ flex: 1 }}>
                 <TextInput
                   hideLabel
@@ -299,7 +363,8 @@ export function WikiChangeRequestDraftScreen({
                   backgroundColor: theme.colors.primary,
                   borderRadius: theme.radii.xxl,
                   padding: theme.spacing.s,
-                  opacity: addNoteMutation.isPending || !noteText.trim() ? 0.4 : 1,
+                  opacity:
+                    addNoteMutation.isPending || !noteText.trim() ? 0.4 : 1,
                 }}
               >
                 <Ionicons name="send" size={20} color="white" />
@@ -324,7 +389,8 @@ const LocaleTab = styled(TouchableOpacity)<{ active: boolean }>`
 const LocaleTabLabel = styled.Text<{ active: boolean }>`
   font-size: 13px;
   font-weight: 600;
-  color: ${({ theme, active }) => (active ? theme.colors.white : theme.colors.gray1)};
+  color: ${({ theme, active }) =>
+    active ? theme.colors.white : theme.colors.gray1};
 `;
 
 const FooterButton = styled.TouchableOpacity`
@@ -341,5 +407,6 @@ const ButtonLabel = styled.Text`
 
 const NoteText = styled.Text<{ isOwn: boolean }>`
   font-size: 14px;
-  color: ${({ theme, isOwn }) => (isOwn ? theme.colors.white : theme.colors.primary)};
+  color: ${({ theme, isOwn }) =>
+    isOwn ? theme.colors.white : theme.colors.primary};
 `;

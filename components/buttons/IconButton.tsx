@@ -1,4 +1,4 @@
-import Icon, {
+import {
   Ionicons,
   MaterialCommunityIcons,
   MaterialIcons,
@@ -108,7 +108,11 @@ const ButtonContainer = styled.TouchableOpacity<{
 }>`
   flex-direction: row;
   background-color: ${({ theme, type, disabled }) =>
-    disabled ? theme.colors.gray3 : type === "accent" ? theme.colors.white : theme.colors[type]};
+    disabled
+      ? theme.colors.gray3
+      : type === "accent"
+        ? theme.colors.white
+        : theme.colors[type]};
   padding: 5px;
   border-radius: ${({ theme }) => theme.radii.m}px;
   border: ${({ theme, type }) =>

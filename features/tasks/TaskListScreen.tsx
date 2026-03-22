@@ -8,7 +8,12 @@ import { H2 } from "@/theme/Typography";
 import Fuse from "fuse.js";
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, FlatList, ScrollView as RNScrollView, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  ScrollView as RNScrollView,
+  View,
+} from "react-native";
 import { useTheme } from "styled-components/native";
 import { useTasksQuery } from "./tasks.hooks";
 import { TaskListScreenProps } from "./navigation/tasks-routes";
@@ -23,7 +28,9 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
   const [search, setSearch] = useState("");
   const [activeLabels, setActiveLabels] = useState<Set<string>>(new Set());
   const [overdueOnly, setOverdueOnly] = useState(false);
-  const [activeAssignees, setActiveAssignees] = useState<Set<string>>(new Set());
+  const [activeAssignees, setActiveAssignees] = useState<Set<string>>(
+    new Set(),
+  );
 
   const { localSettings } = useLocalSettings();
   const { tasks, isLoading } = useTasksQuery(status);
@@ -50,24 +57,39 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
     const seen = new Map<string, string>();
     for (const task of tasks ?? []) {
       if (task.assignee) {
-        seen.set(task.assignee.id, task.assignee.fullName ?? task.assignee.email);
+        seen.set(
+          task.assignee.id,
+          task.assignee.fullName ?? task.assignee.email,
+        );
       }
     }
-    return Array.from(seen.entries()).map(([id, name]) => ({ id, name })).sort((a, b) => a.name.localeCompare(b.name));
+    return Array.from(seen.entries())
+      .map(([id, name]) => ({ id, name }))
+      .sort((a, b) => a.name.localeCompare(b.name));
   }, [tasks]);
 
   const fuse = useMemo(
-    () => new Fuse(tasks ?? [], { keys: ["name", "description", "labels"], threshold: 0.35 }),
+    () =>
+      new Fuse(tasks ?? [], {
+        keys: ["name", "description", "labels"],
+        threshold: 0.35,
+      }),
     [tasks],
   );
 
   const filteredTasks = useMemo(() => {
-    let result = search ? fuse.search(search).map((r) => r.item) : (tasks ?? []);
+    let result = search
+      ? fuse.search(search).map((r) => r.item)
+      : (tasks ?? []);
     if (overdueOnly) {
-      result = result.filter((t) => t.dueDate != null && new Date(t.dueDate as string) < now);
+      result = result.filter(
+        (t) => t.dueDate != null && new Date(t.dueDate as string) < now,
+      );
     }
     if (activeAssignees.size > 0) {
-      result = result.filter((t) => t.assignee != null && activeAssignees.has(t.assignee.id));
+      result = result.filter(
+        (t) => t.assignee != null && activeAssignees.has(t.assignee.id),
+      );
     }
     if (activeLabels.size > 0) {
       result = result.filter((t) => t.labels.some((l) => activeLabels.has(l)));
@@ -75,7 +97,10 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
     // Sort by due date ascending (no due date goes last), then alphabetically
     return [...result].sort((a, b) => {
       if (a.dueDate != null && b.dueDate != null) {
-        return new Date(a.dueDate as string).getTime() - new Date(b.dueDate as string).getTime();
+        return (
+          new Date(a.dueDate as string).getTime() -
+          new Date(b.dueDate as string).getTime()
+        );
       }
       if (a.dueDate != null) return -1;
       if (b.dueDate != null) return 1;
@@ -93,18 +118,38 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
 
   function renderTask({ item }: { item: Task }) {
     const assigneeName = item.assignee?.fullName ?? item.assignee?.email;
-    const hasChips = item.dueDate != null || assigneeName != null || item.labels.length > 0;
+    const hasChips =
+      item.dueDate != null || assigneeName != null || item.labels.length > 0;
     return (
-      <ListItem onPress={() => navigation.navigate("TaskDetail", { taskId: item.id })}>
+      <ListItem
+        onPress={() => navigation.navigate("TaskDetail", { taskId: item.id })}
+      >
         <ListItem.Content>
           <ListItem.Title>{item.name}</ListItem.Title>
           {hasChips && (
-            <View style={{ flexDirection: "row", gap: theme.spacing.xs, marginTop: theme.spacing.xs, overflow: "hidden" }}>
+            <View
+              style={{
+                flexDirection: "row",
+                gap: theme.spacing.xs,
+                marginTop: theme.spacing.xs,
+                overflow: "hidden",
+              }}
+            >
               {item.dueDate != null && (
-                <Chip small label={new Date(item.dueDate as string).toLocaleDateString()} bgColor={theme.colors.danger} textColor={theme.colors.white} />
+                <Chip
+                  small
+                  label={new Date(item.dueDate as string).toLocaleDateString()}
+                  bgColor={theme.colors.danger}
+                  textColor={theme.colors.white}
+                />
               )}
               {assigneeName != null && (
-                <Chip small label={assigneeName} bgColor={theme.colors.blue} textColor={theme.colors.white} />
+                <Chip
+                  small
+                  label={assigneeName}
+                  bgColor={theme.colors.blue}
+                  textColor={theme.colors.white}
+                />
               )}
               {item.labels.slice(0, 2).map((label) => (
                 <Chip small key={label} label={label} />
@@ -138,12 +183,17 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
         horizontal
         showsHorizontalScrollIndicator={false}
         style={{ marginTop: theme.spacing.s, flexGrow: 0 }}
-        contentContainerStyle={{ gap: theme.spacing.xs, paddingVertical: theme.spacing.xs }}
+        contentContainerStyle={{
+          gap: theme.spacing.xs,
+          paddingVertical: theme.spacing.xs,
+        }}
       >
         {(["todo", "done"] as TaskStatus[]).map((s) => (
           <Chip
             key={s}
-            label={s === "todo" ? t("tasks.status_todo") : t("tasks.status_done")}
+            label={
+              s === "todo" ? t("tasks.status_todo") : t("tasks.status_done")
+            }
             active={status === s}
             onPress={() => setStatus(s)}
           />
@@ -160,11 +210,13 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
             active={activeAssignees.has(id)}
             bgColor={activeAssignees.has(id) ? theme.colors.blue : undefined}
             textColor={activeAssignees.has(id) ? theme.colors.white : undefined}
-            onPress={() => setActiveAssignees((prev) => {
-              const next = new Set(prev);
-              next.has(id) ? next.delete(id) : next.add(id);
-              return next;
-            })}
+            onPress={() =>
+              setActiveAssignees((prev) => {
+                const next = new Set(prev);
+                next.has(id) ? next.delete(id) : next.add(id);
+                return next;
+              })
+            }
           />
         ))}
         {availableLabels.map((label) => (
@@ -185,7 +237,11 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
             data={filteredTasks}
             keyExtractor={(item) => item.id}
             renderItem={renderTask}
-            contentContainerStyle={{ borderTopRightRadius: 10, borderTopLeftRadius: 10, overflow: "hidden" }}
+            contentContainerStyle={{
+              borderTopRightRadius: 10,
+              borderTopLeftRadius: 10,
+              overflow: "hidden",
+            }}
             ListEmptyComponent={
               <ListItem.Body style={{ marginTop: theme.spacing.l }}>
                 {t("tasks.no_tasks")}

@@ -37,7 +37,10 @@ type FormValues = {
   fr_body: string;
 };
 
-export function WikiEntryFormScreen({ route, navigation }: WikiEntryFormScreenProps) {
+export function WikiEntryFormScreen({
+  route,
+  navigation,
+}: WikiEntryFormScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { entryId } = route.params ?? {};
@@ -104,7 +107,11 @@ export function WikiEntryFormScreen({ route, navigation }: WikiEntryFormScreenPr
   function buildTranslations(values: FormValues): WikiTranslationInput[] {
     const translations: WikiTranslationInput[] = [];
     // DE is always required
-    translations.push({ locale: "de", title: values.de_title, body: values.de_body });
+    translations.push({
+      locale: "de",
+      title: values.de_title,
+      body: values.de_body,
+    });
     // EN/IT/FR only if both title and body are non-empty
     for (const loc of ["en", "it", "fr"] as const) {
       const title = values[`${loc}_title`];
@@ -122,7 +129,11 @@ export function WikiEntryFormScreen({ route, navigation }: WikiEntryFormScreenPr
       updateMutation.mutate({ categoryId: values.categoryId, translations });
     } else {
       // Pass the pre-generated UUID so any uploaded images are already linked
-      createMutation.mutate({ id: imageEntryId, categoryId: values.categoryId, translations });
+      createMutation.mutate({
+        id: imageEntryId,
+        categoryId: values.categoryId,
+        translations,
+      });
     }
   }
 
@@ -150,7 +161,9 @@ export function WikiEntryFormScreen({ route, navigation }: WikiEntryFormScreenPr
       }
     >
       <ScrollView>
-        <View style={{ gap: theme.spacing.m, paddingBottom: theme.spacing.xxl }}>
+        <View
+          style={{ gap: theme.spacing.m, paddingBottom: theme.spacing.xxl }}
+        >
           <RHSelect
             control={control}
             name="categoryId"
@@ -177,7 +190,13 @@ export function WikiEntryFormScreen({ route, navigation }: WikiEntryFormScreenPr
 
           {/* Per-locale title and body fields */}
           {LOCALES.map((loc) => (
-            <View key={loc} style={{ display: activeLocale === loc ? "flex" : "none", gap: theme.spacing.s }}>
+            <View
+              key={loc}
+              style={{
+                display: activeLocale === loc ? "flex" : "none",
+                gap: theme.spacing.s,
+              }}
+            >
               {loc === "de" && (
                 <H3 style={{ color: theme.colors.gray2, fontSize: 12 }}>
                   {t("wiki.required_locale_hint")}
@@ -187,13 +206,20 @@ export function WikiEntryFormScreen({ route, navigation }: WikiEntryFormScreenPr
                 control={control}
                 name={`${loc}_title`}
                 rules={loc === "de" ? { required: true } : undefined}
-                render={({ field: { onChange, onBlur, value }, fieldState }) => (
+                render={({
+                  field: { onChange, onBlur, value },
+                  fieldState,
+                }) => (
                   <TextInput
                     label={t("wiki.title")}
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
-                    error={fieldState.error ? t("forms.validation.required") : undefined}
+                    error={
+                      fieldState.error
+                        ? t("forms.validation.required")
+                        : undefined
+                    }
                   />
                 )}
               />
@@ -212,7 +238,6 @@ export function WikiEntryFormScreen({ route, navigation }: WikiEntryFormScreenPr
               />
             </View>
           ))}
-
         </View>
       </ScrollView>
     </ContentView>
@@ -231,7 +256,8 @@ const LocaleTab = styled(TouchableOpacity)<{ active: boolean }>`
 const LocaleTabLabel = styled.Text<{ active: boolean }>`
   font-size: 13px;
   font-weight: 600;
-  color: ${({ theme, active }) => (active ? theme.colors.white : theme.colors.gray1)};
+  color: ${({ theme, active }) =>
+    active ? theme.colors.white : theme.colors.gray1};
 `;
 
 const SaveLabel = styled.Text`

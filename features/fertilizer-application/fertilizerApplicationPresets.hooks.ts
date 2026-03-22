@@ -11,7 +11,8 @@ export function useFertilizerApplicationPresetsQuery(enabled = true) {
   const api = useApi();
   const { data, ...rest } = useQuery({
     queryKey: queryKeys.fertilizerApplicationPresets.all.queryKey,
-    queryFn: () => api.fertilizerApplicationPresets.getFertilizerApplicationPresets(),
+    queryFn: () =>
+      api.fertilizerApplicationPresets.getFertilizerApplicationPresets(),
     enabled,
   });
   return { fertilizerApplicationPresets: data, ...rest };
@@ -24,7 +25,9 @@ export function useCreateFertilizerApplicationPresetMutation(
   const api = useApi();
   return useMutation({
     mutationFn: (preset: FertilizerApplicationPresetCreateInput) =>
-      api.fertilizerApplicationPresets.createFertilizerApplicationPreset(preset),
+      api.fertilizerApplicationPresets.createFertilizerApplicationPreset(
+        preset,
+      ),
     onSuccess: (preset) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.fertilizerApplicationPresets.all.queryKey,
@@ -40,8 +43,14 @@ export function useUpdateFertilizerApplicationPresetMutation(
   const api = useApi();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, ...preset }: FertilizerApplicationPresetUpdateInput & { id: string }) =>
-      api.fertilizerApplicationPresets.updateFertilizerApplicationPreset(id, preset),
+    mutationFn: ({
+      id,
+      ...preset
+    }: FertilizerApplicationPresetUpdateInput & { id: string }) =>
+      api.fertilizerApplicationPresets.updateFertilizerApplicationPreset(
+        id,
+        preset,
+      ),
     onSuccess: (preset) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.fertilizerApplicationPresets.all.queryKey,
@@ -51,12 +60,16 @@ export function useUpdateFertilizerApplicationPresetMutation(
   });
 }
 
-export function useDeleteFertilizerApplicationPresetMutation(onSuccess?: () => void) {
+export function useDeleteFertilizerApplicationPresetMutation(
+  onSuccess?: () => void,
+) {
   const api = useApi();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (presetId: string) => {
-      await api.fertilizerApplicationPresets.deleteFertilizerApplicationPreset(presetId);
+      await api.fertilizerApplicationPresets.deleteFertilizerApplicationPreset(
+        presetId,
+      );
       return presetId;
     },
     onSuccess: () => {

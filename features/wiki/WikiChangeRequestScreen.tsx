@@ -31,7 +31,10 @@ type FormValues = {
   fr_body: string;
 };
 
-export function WikiChangeRequestScreen({ route, navigation }: WikiChangeRequestScreenProps) {
+export function WikiChangeRequestScreen({
+  route,
+  navigation,
+}: WikiChangeRequestScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { entryId } = route.params;
@@ -75,7 +78,11 @@ export function WikiChangeRequestScreen({ route, navigation }: WikiChangeRequest
 
   function buildTranslations(values: FormValues): WikiTranslationInput[] {
     const translations: WikiTranslationInput[] = [];
-    translations.push({ locale: "de", title: values.de_title, body: values.de_body });
+    translations.push({
+      locale: "de",
+      title: values.de_title,
+      body: values.de_body,
+    });
     for (const loc of ["en", "it", "fr"] as const) {
       const title = values[`${loc}_title`];
       const body = values[`${loc}_body`];
@@ -96,7 +103,9 @@ export function WikiChangeRequestScreen({ route, navigation }: WikiChangeRequest
   return (
     <ContentView headerVisible>
       <ScrollView>
-        <View style={{ gap: theme.spacing.m, paddingBottom: theme.spacing.xxl }}>
+        <View
+          style={{ gap: theme.spacing.m, paddingBottom: theme.spacing.xxl }}
+        >
           {/* Locale tab switcher */}
           <View style={{ flexDirection: "row", gap: theme.spacing.xs }}>
             {LOCALES.map((loc) => (
@@ -113,7 +122,13 @@ export function WikiChangeRequestScreen({ route, navigation }: WikiChangeRequest
           </View>
 
           {LOCALES.map((loc) => (
-            <View key={loc} style={{ display: activeLocale === loc ? "flex" : "none", gap: theme.spacing.s }}>
+            <View
+              key={loc}
+              style={{
+                display: activeLocale === loc ? "flex" : "none",
+                gap: theme.spacing.s,
+              }}
+            >
               {loc === "de" && (
                 <H3 style={{ color: theme.colors.gray2, fontSize: 12 }}>
                   {t("wiki.required_locale_hint")}
@@ -123,13 +138,20 @@ export function WikiChangeRequestScreen({ route, navigation }: WikiChangeRequest
                 control={control}
                 name={`${loc}_title`}
                 rules={loc === "de" ? { required: true } : undefined}
-                render={({ field: { onChange, onBlur, value }, fieldState }) => (
+                render={({
+                  field: { onChange, onBlur, value },
+                  fieldState,
+                }) => (
                   <TextInput
                     label={t("wiki.title")}
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
-                    error={fieldState.error ? t("forms.validation.required") : undefined}
+                    error={
+                      fieldState.error
+                        ? t("forms.validation.required")
+                        : undefined
+                    }
                   />
                 )}
               />
@@ -180,7 +202,8 @@ const LocaleTab = styled(TouchableOpacity)<{ active: boolean }>`
 const LocaleTabLabel = styled.Text<{ active: boolean }>`
   font-size: 13px;
   font-weight: 600;
-  color: ${({ theme, active }) => (active ? theme.colors.white : theme.colors.gray1)};
+  color: ${({ theme, active }) =>
+    active ? theme.colors.white : theme.colors.gray1};
 `;
 
 const SubmitLabel = styled.Text`

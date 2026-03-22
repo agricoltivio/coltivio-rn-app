@@ -175,17 +175,15 @@ export function SplitModeControls({ splitLayersRef }: SplitModeControlsProps) {
       />
       {/* Extract sub-polygon — only for MultiPolygons with >1 ring */}
       {currentPolygons.some((p) => p.coordinates.length > 1) && (
-          <MaterialCommunityIconButton
-            style={{ backgroundColor: theme.colors.accent }}
-            type="accent"
-            color="black"
-            iconSize={30}
-            icon="vector-difference-ba"
-            onPress={() =>
-              dispatch({ type: "SET_SPLIT_TOOL", tool: "extract" })
-            }
-          />
-        )}
+        <MaterialCommunityIconButton
+          style={{ backgroundColor: theme.colors.accent }}
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="vector-difference-ba"
+          onPress={() => dispatch({ type: "SET_SPLIT_TOOL", tool: "extract" })}
+        />
+      )}
       {/* Confirm — navigate to summary when there are multiple polygons */}
       <MaterialCommunityIconButton
         type="accent"

@@ -20,7 +20,7 @@ export function ConflictResolutionModal({
 
   if (!conflict) return null;
 
-  const formatDate = (date?: Date) => date ? format(date, "MMM d, yyyy") : "";
+  const formatDate = (date?: Date) => (date ? format(date, "MMM d, yyyy") : "");
 
   return (
     <Modal visible={visible} transparent animationType="fade">
@@ -69,7 +69,8 @@ export function ConflictResolutionModal({
             </Text>
             {conflict.conflictingFromDate && conflict.conflictingToDate && (
               <>
-                {"\n"}({formatDate(conflict.conflictingFromDate)} - {formatDate(conflict.conflictingToDate)})
+                {"\n"}({formatDate(conflict.conflictingFromDate)} -{" "}
+                {formatDate(conflict.conflictingToDate)})
               </>
             )}
           </Text>

@@ -8,7 +8,11 @@ type FilterChipsProps = {
   onToggle: (item: string) => void;
 };
 
-export function FilterChips({ items, selectedItems, onToggle }: FilterChipsProps) {
+export function FilterChips({
+  items,
+  selectedItems,
+  onToggle,
+}: FilterChipsProps) {
   const theme = useTheme();
 
   if (items.length === 0) return null;

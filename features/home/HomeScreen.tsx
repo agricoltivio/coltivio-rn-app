@@ -11,9 +11,19 @@ import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Modal, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
+import {
+  Modal,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useTheme } from "styled-components/native";
-import { useFarmQuery, useMembership, useMembershipStatusQuery } from "../farms/farms.hooks";
+import {
+  useFarmQuery,
+  useMembership,
+  useMembershipStatusQuery,
+} from "../farms/farms.hooks";
 import { useLocalSettings } from "../user/LocalSettingsContext";
 import { useUserQuery } from "../user/users.hooks";
 import { HomeTile } from "./HomeTile";
@@ -49,7 +59,8 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
       .filter((tile) => tile.visible && tile.id in HOME_TILES)
       .filter((tile) => {
         const meta = HOME_TILES[tile.id as keyof typeof HOME_TILES];
-        const membershipRequired = "membershipRequired" in meta && meta.membershipRequired;
+        const membershipRequired =
+          "membershipRequired" in meta && meta.membershipRequired;
         return !membershipRequired || isActive;
       })
       .map((tile) => ({
@@ -72,9 +83,11 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   // Prefer lastPeriodEnd (paid) over trialEnd as the dismissal key — changes when subscription renews
   const relevantExpiryIso =
-    typeof membershipStatus?.lastPeriodEnd === "string" && membershipStatus.lastPeriodEnd.length > 0
+    typeof membershipStatus?.lastPeriodEnd === "string" &&
+    membershipStatus.lastPeriodEnd.length > 0
       ? membershipStatus.lastPeriodEnd
-      : typeof membershipStatus?.trialEnd === "string" && membershipStatus.trialEnd.length > 0
+      : typeof membershipStatus?.trialEnd === "string" &&
+          membershipStatus.trialEnd.length > 0
         ? membershipStatus.trialEnd
         : null;
   const expiryDate = relevantExpiryIso ? new Date(relevantExpiryIso) : null;
@@ -91,13 +104,12 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   }, [localSettings.firstLaunchDate]);
 
   const daysSinceLaunch = localSettings.firstLaunchDate
-    ? (Date.now() - new Date(localSettings.firstLaunchDate).getTime()) / (1000 * 60 * 60 * 24)
+    ? (Date.now() - new Date(localSettings.firstLaunchDate).getTime()) /
+      (1000 * 60 * 60 * 24)
     : 0;
   // Show the promo modal once after 30 days, only to non-members
   const shouldShowPromo =
-    !isActive &&
-    !localSettings.agriColtivioPromoShown &&
-    daysSinceLaunch >= 30;
+    !isActive && !localSettings.agriColtivioPromoShown && daysSinceLaunch >= 30;
   const [promoVisible, setPromoVisible] = useState(shouldShowPromo);
 
   function dismissPromo() {
@@ -112,23 +124,39 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   const isBannerDismissed =
     localSettings.dismissedMembershipBannerForDate === relevantExpiryIso;
-  const isTrial = typeof membershipStatus?.trialEnd === "string" && membershipStatus.trialEnd.length > 0
-    && new Date(membershipStatus.trialEnd) > new Date()
-    && !(typeof membershipStatus?.lastPeriodEnd === "string" && membershipStatus.lastPeriodEnd.length > 0);
-  const isCancelled = !membershipStatus?.autoRenewing || !!membershipStatus?.cancelAtPeriodEnd;
+  const isTrial =
+    typeof membershipStatus?.trialEnd === "string" &&
+    membershipStatus.trialEnd.length > 0 &&
+    new Date(membershipStatus.trialEnd) > new Date() &&
+    !(
+      typeof membershipStatus?.lastPeriodEnd === "string" &&
+      membershipStatus.lastPeriodEnd.length > 0
+    );
+  const isCancelled =
+    !membershipStatus?.autoRenewing || !!membershipStatus?.cancelAtPeriodEnd;
   // Show expiry-soon banner only to the user who owns the membership
   const showExpirySoonBanner =
-    !!membershipStatus && isCancelled && !isBannerDismissed && isActive &&
-    daysUntilExpiry !== null && daysUntilExpiry >= 0 && daysUntilExpiry <= 10;
+    !!membershipStatus &&
+    isCancelled &&
+    !isBannerDismissed &&
+    isActive &&
+    daysUntilExpiry !== null &&
+    daysUntilExpiry >= 0 &&
+    daysUntilExpiry <= 10;
   // Show expired/grace notice to the user who had the membership.
   // isInGracePeriod means isActive=true, so we check it separately.
   const showExpiredBanner =
-    !!membershipStatus && isCancelled && !isBannerDismissed &&
+    !!membershipStatus &&
+    isCancelled &&
+    !isBannerDismissed &&
     (isInGracePeriod || (!isActive && relevantExpiryIso !== null));
 
   function dismissMembershipBanner() {
     if (relevantExpiryIso) {
-      updateLocalSettings("dismissedMembershipBannerForDate", relevantExpiryIso);
+      updateLocalSettings(
+        "dismissedMembershipBannerForDate",
+        relevantExpiryIso,
+      );
     }
   }
 
@@ -155,9 +183,13 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                 activeOpacity={0.8}
                 onPress={() => navigation.navigate("UserMembership")}
               >
-                <H2 style={{ color: theme.colors.black, fontSize: 15, flex: 1 }}>
+                <H2
+                  style={{ color: theme.colors.black, fontSize: 15, flex: 1 }}
+                >
                   {isTrial
-                    ? t("membership.trial_expiry_banner", { days: daysUntilExpiry })
+                    ? t("membership.trial_expiry_banner", {
+                        days: daysUntilExpiry,
+                      })
                     : t("membership.expiry_banner", { days: daysUntilExpiry })}
                 </H2>
                 <TouchableOpacity onPress={dismissMembershipBanner} hitSlop={8}>
@@ -168,7 +200,9 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
             {showExpiredBanner ? (
               <TouchableOpacity
                 style={{
-                  backgroundColor: isInGracePeriod ? theme.colors.yellow : theme.colors.danger,
+                  backgroundColor: isInGracePeriod
+                    ? theme.colors.yellow
+                    : theme.colors.danger,
                   borderRadius: theme.radii.m,
                   padding: theme.spacing.m,
                   marginTop: theme.spacing.m,
@@ -181,20 +215,26 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
               >
                 <H2
                   style={{
-                    color: isInGracePeriod ? theme.colors.black : theme.colors.white,
+                    color: isInGracePeriod
+                      ? theme.colors.black
+                      : theme.colors.white,
                     fontSize: 15,
                     flex: 1,
                   }}
                 >
                   {isInGracePeriod
-                    ? t("membership.expired_grace_banner", { days: graceDaysRemaining })
+                    ? t("membership.expired_grace_banner", {
+                        days: graceDaysRemaining,
+                      })
                     : t("membership.expired_banner")}
                 </H2>
                 <TouchableOpacity onPress={dismissMembershipBanner} hitSlop={8}>
                   <Ionicons
                     name="close"
                     size={20}
-                    color={isInGracePeriod ? theme.colors.black : theme.colors.white}
+                    color={
+                      isInGracePeriod ? theme.colors.black : theme.colors.white
+                    }
                   />
                 </TouchableOpacity>
               </TouchableOpacity>
@@ -297,7 +337,9 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
         presentationStyle="pageSheet"
         onRequestClose={dismissPromo}
       >
-        <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
+        <SafeAreaView
+          style={{ flex: 1, backgroundColor: theme.colors.background }}
+        >
           {/* Header row with close button */}
           <View
             style={{
@@ -314,12 +356,17 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
           {/* Scrollable content mirrors AgriColtivioInfoScreen */}
           <ScrollView
-            contentContainerStyle={{ padding: theme.spacing.m, paddingBottom: theme.spacing.xxl }}
+            contentContainerStyle={{
+              padding: theme.spacing.m,
+              paddingBottom: theme.spacing.xxl,
+            }}
           >
             <H2>{t("agri_coltivio.promo_intro")}</H2>
             <Body style={{ marginTop: theme.spacing.m }}>
               {t("agri_coltivio.section_1_pre")}
-              <Text style={{ fontWeight: "bold" }}>{t("agri_coltivio.section_1_bold")}</Text>
+              <Text style={{ fontWeight: "bold" }}>
+                {t("agri_coltivio.section_1_bold")}
+              </Text>
               {t("agri_coltivio.section_1_post")}
             </Body>
             <Body style={{ marginTop: theme.spacing.l, fontWeight: "bold" }}>

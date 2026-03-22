@@ -32,7 +32,13 @@ export type OutdoorTimelineData = {
 const MS_PER_DAY = 86_400_000;
 
 const WEEKDAY_INDEX: Record<string, number> = {
-  SU: 0, MO: 1, TU: 2, WE: 3, TH: 4, FR: 5, SA: 6,
+  SU: 0,
+  MO: 1,
+  TU: 2,
+  WE: 3,
+  TH: 4,
+  FR: 5,
+  SA: 6,
 };
 
 function daysBetween(a: Date, b: Date): number {
@@ -64,34 +70,39 @@ export function buildOutdoorTimelineData(
   const currentYear = new Date().getFullYear();
   const startYear = currentYear - 3;
   const endYear = currentYear + 3;
-  const years = Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i);
+  const years = Array.from(
+    { length: endYear - startYear + 1 },
+    (_, i) => startYear + i,
+  );
 
   const epochStart = new Date(startYear, 0, 1);
   const epochEnd = new Date(endYear, 11, 31, 23, 59, 59, 999);
   const totalDays = daysBetween(epochStart, epochEnd) + 1;
 
-  const herdRows: OutdoorHerdData[] = herds.map(({ herdId, herdName, schedules }) => {
-    const bars: OutdoorBar[] = [];
+  const herdRows: OutdoorHerdData[] = herds.map(
+    ({ herdId, herdName, schedules }) => {
+      const bars: OutdoorBar[] = [];
 
-    for (const schedule of schedules) {
-      const occurrences = expandSchedule(schedule, epochStart, epochEnd);
-      for (const occ of occurrences) {
-        bars.push({
-          scheduleId: schedule.id,
-          herdName,
-          herdId,
-          startDay: occ.startDay,
-          endDay: occ.endDay,
-          isOpenEnded: occ.isOpenEnded,
-          notes: schedule.notes,
-          scheduleType: schedule.type,
-        });
+      for (const schedule of schedules) {
+        const occurrences = expandSchedule(schedule, epochStart, epochEnd);
+        for (const occ of occurrences) {
+          bars.push({
+            scheduleId: schedule.id,
+            herdName,
+            herdId,
+            startDay: occ.startDay,
+            endDay: occ.endDay,
+            isOpenEnded: occ.isOpenEnded,
+            notes: schedule.notes,
+            scheduleType: schedule.type,
+          });
+        }
       }
-    }
 
-    bars.sort((a, b) => a.startDay - b.startDay);
-    return { herdId, herdName, bars };
-  });
+      bars.sort((a, b) => a.startDay - b.startDay);
+      return { herdId, herdName, bars };
+    },
+  );
 
   return { herds: herdRows, epochStart, totalDays, years };
 }
@@ -163,7 +174,8 @@ function expandSchedule(
   }
 
   // Recurring: expand using interval and frequency
-  const { frequency, interval, until, count, byWeekday, byMonthDay } = schedule.recurrence;
+  const { frequency, interval, until, count, byWeekday, byMonthDay } =
+    schedule.recurrence;
   const untilDate = until ? new Date(until) : epochEnd;
   const limit = Math.min(untilDate.getTime(), epochEnd.getTime());
   const results: OccurrenceResult[] = [];
@@ -185,7 +197,11 @@ function expandSchedule(
         const clampedStart = occStart < epochStart ? epochStart : occStart;
         const clampedEnd = occEnd > epochEnd ? epochEnd : occEnd;
         if (clampedEnd >= epochStart && clampedStart <= epochEnd) {
-          results.push({ startDay: daysBetween(epochStart, clampedStart), endDay: daysBetween(epochStart, clampedEnd), isOpenEnded: false });
+          results.push({
+            startDay: daysBetween(epochStart, clampedStart),
+            endDay: daysBetween(epochStart, clampedEnd),
+            isOpenEnded: false,
+          });
         }
         occurrenceCount++;
       }
@@ -199,7 +215,11 @@ function expandSchedule(
       const clampedStart = occStart < epochStart ? epochStart : occStart;
       const clampedEnd = occEnd > epochEnd ? epochEnd : occEnd;
       if (clampedEnd >= epochStart && clampedStart <= epochEnd) {
-        results.push({ startDay: daysBetween(epochStart, clampedStart), endDay: daysBetween(epochStart, clampedEnd), isOpenEnded: false });
+        results.push({
+          startDay: daysBetween(epochStart, clampedStart),
+          endDay: daysBetween(epochStart, clampedEnd),
+          isOpenEnded: false,
+        });
       }
       occurrenceCount++;
     }
@@ -207,7 +227,10 @@ function expandSchedule(
     // Advance to the next week/month/year iteration
     switch (frequency) {
       case "weekly":
-        current = addWeeks(baseStart, Math.floor(occurrenceCount / (byWeekday?.length ?? 1)) * interval);
+        current = addWeeks(
+          baseStart,
+          Math.floor(occurrenceCount / (byWeekday?.length ?? 1)) * interval,
+        );
         break;
       case "monthly":
         current = addMonths(baseStart, occurrenceCount * interval);

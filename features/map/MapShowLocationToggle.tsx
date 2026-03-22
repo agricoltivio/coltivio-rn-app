@@ -50,7 +50,7 @@ export const MapShowLocationToggle = ({
         if (!granted) {
           Alert.alert(
             t("permissions.location.error.title"),
-            t("permissions.location.error.message")
+            t("permissions.location.error.message"),
           );
         }
       } else {

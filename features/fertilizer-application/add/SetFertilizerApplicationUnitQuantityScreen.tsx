@@ -24,8 +24,11 @@ export function SetFertilizerApplicationUnitQuantityScreen({
   const { t } = useTranslation();
   const theme = useTheme();
 
-  const { setTotalNumberOfApplications, fertilizerApplication, totalNumberOfApplications } =
-    useCreateFertilizerApplicationStore();
+  const {
+    setTotalNumberOfApplications,
+    fertilizerApplication,
+    totalNumberOfApplications,
+  } = useCreateFertilizerApplicationStore();
 
   const {
     control,
@@ -68,7 +71,9 @@ export function SetFertilizerApplicationUnitQuantityScreen({
     >
       <ScrollView
         showHeaderOnScroll
-        headerTitleOnScroll={t("fertilizer_application.select_quantity.heading")}
+        headerTitleOnScroll={t(
+          "fertilizer_application.select_quantity.heading",
+        )}
         keyboardAware
       >
         <H2>{t("fertilizer_application.select_quantity.heading")}</H2>

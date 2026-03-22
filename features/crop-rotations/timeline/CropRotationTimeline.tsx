@@ -20,10 +20,7 @@ import {
 } from "./timeline-utils";
 import { TimelinePlotRow, ROW_HEIGHT } from "./TimelinePlotRow";
 import { TimelineHeader, TIMELINE_HEADER_HEIGHT } from "./TimelineHeader";
-import {
-  ZoomLevel,
-  getScaleForZoomLevel,
-} from "./ZoomLevelToggle";
+import { ZoomLevel, getScaleForZoomLevel } from "./ZoomLevelToggle";
 import { scheduleOnRN } from "react-native-worklets";
 
 type CropRotationTimelineProps = {
@@ -467,7 +464,10 @@ export function CropRotationTimeline({
       isWeeksMounted.value = level === "weeks";
       // Double-dispatch: setTimeout waits for state commit, requestAnimationFrame
       // waits for the scroll views to apply the new contentSize before scrolling
-      setTimeout(() => requestAnimationFrame(() => scrollAllHorizontalTo(x)), 0);
+      setTimeout(
+        () => requestAnimationFrame(() => scrollAllHorizontalTo(x)),
+        0,
+      );
     },
     [
       viewportWidth,

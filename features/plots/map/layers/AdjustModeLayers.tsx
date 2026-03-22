@@ -8,7 +8,14 @@ import {
   type LngLat,
 } from "@maplibre/maplibre-react-native";
 import * as turf from "@turf/turf";
-import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { usePlotsMapContext } from "../plots-map-mode";
 import { useUpdatePlotMutation } from "../../plots.hooks";
 
@@ -48,13 +55,17 @@ export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
     // Load all polygon rings when entering adjust mode (plot changes)
     useEffect(() => {
       if (!plot) return;
-      const loadedRings: RingData[] = plot.geometry.coordinates.map((polyCoords) => {
-        const outerRing = polyCoords[0];
-        if (!outerRing || outerRing.length < 4) return { coordinates: [] };
-        // Drop closing coordinate
-        const coords: LngLat[] = outerRing.slice(0, -1).map((c) => [c[0], c[1]] as LngLat);
-        return { coordinates: coords };
-      });
+      const loadedRings: RingData[] = plot.geometry.coordinates.map(
+        (polyCoords) => {
+          const outerRing = polyCoords[0];
+          if (!outerRing || outerRing.length < 4) return { coordinates: [] };
+          // Drop closing coordinate
+          const coords: LngLat[] = outerRing
+            .slice(0, -1)
+            .map((c) => [c[0], c[1]] as LngLat);
+          return { coordinates: coords };
+        },
+      );
       setRings(loadedRings);
       ringsRef.current = loadedRings;
       // Load first ring into DrawingOverlay
@@ -86,7 +97,9 @@ export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
         // Save the current ring's edited coordinates into the rings array
         const currentCoords = drawingRef.current?.getCoordinates();
         const currentRings = ringsRef.current.map((r, i) =>
-          i === activeRingRef.current && currentCoords ? { coordinates: currentCoords } : r,
+          i === activeRingRef.current && currentCoords
+            ? { coordinates: currentCoords }
+            : r,
         );
         setRings(currentRings);
         ringsRef.current = currentRings;
@@ -121,7 +134,10 @@ export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
         if (i === activeRingIndex) continue;
         const ring = rings[i];
         if (ring.coordinates.length < 3) continue;
-        const closed = [...ring.coordinates.map((c) => [c[0], c[1]]), [ring.coordinates[0][0], ring.coordinates[0][1]]];
+        const closed = [
+          ...ring.coordinates.map((c) => [c[0], c[1]]),
+          [ring.coordinates[0][0], ring.coordinates[0][1]],
+        ];
         features.push({
           type: "Feature",
           properties: { ringIndex: i },
@@ -147,16 +163,16 @@ export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
           <Layer
             type="line"
             id="adjust-inactive-stroke"
-            paint={{ "line-color": "#4CAF50", "line-width": 2, "line-dasharray": [2, 2] }}
+            paint={{
+              "line-color": "#4CAF50",
+              "line-width": 2,
+              "line-dasharray": [2, 2],
+            }}
           />
         </GeoJSONSource>
 
         {/* Active ring — full DrawingOverlay with draggable vertex editing */}
-        <DrawingOverlay
-          ref={drawingRef}
-          mode="edit"
-          mapRef={mapRef}
-        />
+        <DrawingOverlay ref={drawingRef} mode="edit" mapRef={mapRef} />
       </>
     );
   },

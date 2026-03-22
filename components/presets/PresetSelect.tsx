@@ -45,13 +45,21 @@ export function PresetSelect({
   ];
 
   return (
-    <View style={{ flexDirection: "row", alignItems: "flex-start", gap: theme.spacing.s }}>
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "flex-start",
+        gap: theme.spacing.s,
+      }}
+    >
       <View style={{ flex: 1 }}>
         <Select
           label={label}
           value={value}
           data={selectData}
-          onChange={(val) => onChange(val === "" || val === NONE_VALUE ? undefined : val)}
+          onChange={(val) =>
+            onChange(val === "" || val === NONE_VALUE ? undefined : val)
+          }
           placeholder={placeholder}
           error={error}
           disabled={disabled}

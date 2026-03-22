@@ -6,5 +6,5 @@ export const cropProtectionProductsQueryKeys = createQueryKeys(
     all: null,
     byId: (cropProtectionProductId: string) => [cropProtectionProductId],
     inUse: (cropProtectionProductId: string) => [cropProtectionProductId],
-  }
+  },
 );

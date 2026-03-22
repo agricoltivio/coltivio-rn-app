@@ -186,10 +186,17 @@ export function CreateTreatmentScreen({
       setValue("isAntibiotic", selectedDrug.isAntibiotic);
       setValue("criticalAntibiotic", selectedDrug.criticalAntibiotic);
       setValue("drugReceivedFrom", selectedDrug.receivedFrom);
-      if (drugValidation.valid && drugValidation.milkDays !== undefined && endDate) {
+      if (
+        drugValidation.valid &&
+        drugValidation.milkDays !== undefined &&
+        endDate
+      ) {
         setValue("milkUsableDate", addDays(endDate, drugValidation.milkDays));
         setValue("meatUsableDate", addDays(endDate, drugValidation.meatDays!));
-        setValue("organsUsableDate", addDays(endDate, drugValidation.organsDays!));
+        setValue(
+          "organsUsableDate",
+          addDays(endDate, drugValidation.organsDays!),
+        );
         setValue("drugDoseValue", String(drugValidation.doseValue));
         setValue("drugDoseUnit", drugValidation.doseUnit);
         setValue("drugDosePerUnit", drugValidation.dosePerUnit);
@@ -205,15 +212,29 @@ export function CreateTreatmentScreen({
       setValue("drugDoseUnit", undefined);
       setValue("drugDosePerUnit", undefined);
     }
-  }, [selectedDrugId, selectedDrug, dirtyFields.drugId, drugValidation, endDate, setValue]);
+  }, [
+    selectedDrugId,
+    selectedDrug,
+    dirtyFields.drugId,
+    drugValidation,
+    endDate,
+    setValue,
+  ]);
 
   // Recalculate waiting dates when end date changes.
   // Dose fields intentionally excluded so user overrides survive date changes.
   useEffect(() => {
-    if (drugValidation.valid && drugValidation.milkDays !== undefined && endDate) {
+    if (
+      drugValidation.valid &&
+      drugValidation.milkDays !== undefined &&
+      endDate
+    ) {
       setValue("milkUsableDate", addDays(endDate, drugValidation.milkDays));
       setValue("meatUsableDate", addDays(endDate, drugValidation.meatDays!));
-      setValue("organsUsableDate", addDays(endDate, drugValidation.organsDays!));
+      setValue(
+        "organsUsableDate",
+        addDays(endDate, drugValidation.organsDays!),
+      );
     }
   }, [endDate, drugValidation, setValue]);
 
@@ -244,10 +265,11 @@ export function CreateTreatmentScreen({
   }
 
   const drugSelectData = useMemo(() => {
-    const options = drugs?.map((drug) => ({
-      label: drug.name,
-      value: drug.id,
-    })) ?? [];
+    const options =
+      drugs?.map((drug) => ({
+        label: drug.name,
+        value: drug.id,
+      })) ?? [];
     return [{ label: t("forms.labels.none"), value: "" }, ...options];
   }, [drugs, t]);
 

@@ -31,7 +31,7 @@ export const BottomDrawerModal = forwardRef<
       onChange,
       children,
     },
-    ref
+    ref,
   ) => {
     const theme = useTheme();
     const insets = useSafeAreaInsets();
@@ -48,9 +48,7 @@ export const BottomDrawerModal = forwardRef<
         enablePanDownToClose
         onDismiss={onClose}
         onChange={onChange}
-        {...(snapPoints
-          ? { snapPoints, enableDynamicSizing: false }
-          : {})}
+        {...(snapPoints ? { snapPoints, enableDynamicSizing: false } : {})}
         backdropComponent={(props) => (
           <BottomSheetBackdrop
             disappearsOnIndex={backdropDisappearsOnIndex}
@@ -63,11 +61,10 @@ export const BottomDrawerModal = forwardRef<
             {children}
           </BottomSheetScrollView>
         ) : (
-          <BottomSheetView style={contentStyle}>
-            {children}
-          </BottomSheetView>
+          <BottomSheetView style={contentStyle}>{children}</BottomSheetView>
         )}
       </BottomSheetModal>
     );
-  }
+  },
 );
+BottomDrawerModal.displayName = "BottomDrawerModal";

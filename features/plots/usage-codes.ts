@@ -17,7 +17,7 @@ export const usageCodes = [
 export type UsageCode = (typeof usageCodes)[number];
 
 export function getUsageCodeSelectData(
-  t: TFunction
+  t: TFunction,
 ): { value: string; label: string }[] {
   return usageCodes.map((code) => ({
     value: code.toString(),

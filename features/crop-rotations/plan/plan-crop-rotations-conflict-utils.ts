@@ -18,10 +18,22 @@ export function dayRangesOverlap(
   bToDay: number,
 ): boolean {
   const aRanges: [number, number][] =
-    aFromDay <= aToDay ? [[aFromDay, aToDay]] : [[aFromDay, 366], [1, aToDay]];
+    aFromDay <= aToDay
+      ? [[aFromDay, aToDay]]
+      : [
+          [aFromDay, 366],
+          [1, aToDay],
+        ];
   const bRanges: [number, number][] =
-    bFromDay <= bToDay ? [[bFromDay, bToDay]] : [[bFromDay, 366], [1, bToDay]];
-  return aRanges.some(([af, at]) => bRanges.some(([bf, bt]) => af <= bt && at >= bf));
+    bFromDay <= bToDay
+      ? [[bFromDay, bToDay]]
+      : [
+          [bFromDay, 366],
+          [1, bToDay],
+        ];
+  return aRanges.some(([af, at]) =>
+    bRanges.some(([bf, bt]) => af <= bt && at >= bf),
+  );
 }
 
 // Returns all years (within rangeStart..rangeEnd) that a recurring rotation occupies.
@@ -59,10 +71,15 @@ export function hasRotationOverlap(
   }
 
   // At least one is recurring: check day-of-year overlap first (cheap)
-  if (!dayRangesOverlap(
-    getDayOfYear(a.fromDate), getDayOfYear(a.toDate),
-    getDayOfYear(b.fromDate), getDayOfYear(b.toDate),
-  )) return false;
+  if (
+    !dayRangesOverlap(
+      getDayOfYear(a.fromDate),
+      getDayOfYear(a.toDate),
+      getDayOfYear(b.fromDate),
+      getDayOfYear(b.toDate),
+    )
+  )
+    return false;
 
   // Then check that the two entries share at least one common year
   const aStartYear = a.fromDate.getFullYear();
@@ -72,19 +89,35 @@ export function hasRotationOverlap(
 
   const aYears = a.recurrence
     ? getOccurrenceYears(
-        aStartYear, a.recurrence.interval,
+        aStartYear,
+        a.recurrence.interval,
         a.recurrence.until?.getFullYear() ?? null,
-        rangeStart, rangeEnd, aEndYear - aStartYear,
+        rangeStart,
+        rangeEnd,
+        aEndYear - aStartYear,
       )
-    : new Set(Array.from({ length: aEndYear - aStartYear + 1 }, (_, i) => aStartYear + i));
+    : new Set(
+        Array.from(
+          { length: aEndYear - aStartYear + 1 },
+          (_, i) => aStartYear + i,
+        ),
+      );
 
   const bYears = b.recurrence
     ? getOccurrenceYears(
-        bStartYear, b.recurrence.interval,
+        bStartYear,
+        b.recurrence.interval,
         b.recurrence.until?.getFullYear() ?? null,
-        rangeStart, rangeEnd, bEndYear - bStartYear,
+        rangeStart,
+        rangeEnd,
+        bEndYear - bStartYear,
       )
-    : new Set(Array.from({ length: bEndYear - bStartYear + 1 }, (_, i) => bStartYear + i));
+    : new Set(
+        Array.from(
+          { length: bEndYear - bStartYear + 1 },
+          (_, i) => bStartYear + i,
+        ),
+      );
 
   for (const year of aYears) {
     if (bYears.has(year)) return true;

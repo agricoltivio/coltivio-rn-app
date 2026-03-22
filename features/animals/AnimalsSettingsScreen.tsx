@@ -85,9 +85,7 @@ export function AnimalsSettingsBody() {
                 marginBottom: theme.spacing.s,
               }}
             >
-              <H3 style={{ flex: 1 }}>
-                {t(groupMeta.translationKey)}
-              </H3>
+              <H3 style={{ flex: 1 }}>{t(groupMeta.translationKey)}</H3>
               <TouchableOpacity
                 onPress={() => moveGroupUp(groupIndex)}
                 disabled={groupIndex === 0}
@@ -145,10 +143,7 @@ export function AnimalsSettingsScreen() {
   const { t } = useTranslation();
 
   return (
-    <ScrollView
-      headerTitleOnScroll={t("animals.settings")}
-      showHeaderOnScroll
-    >
+    <ScrollView headerTitleOnScroll={t("animals.settings")} showHeaderOnScroll>
       <ContentView>
         <H2>{t("animals.settings")}</H2>
         <AnimalsSettingsBody />

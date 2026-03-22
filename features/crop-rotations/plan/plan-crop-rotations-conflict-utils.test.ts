@@ -149,59 +149,80 @@ describe("hasRotationOverlap", () => {
   // ---------------------------------------------------------------------------
 
   test("non-recurring: clear overlap (May–Aug vs Jul–Sep same year)", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2025-05-01"), d("2025-08-31")),
-      makeRotation(d("2025-07-01"), d("2025-09-30")),
-      RANGE_START, RANGE_END,
-    )).toBe(true);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2025-05-01"), d("2025-08-31")),
+        makeRotation(d("2025-07-01"), d("2025-09-30")),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(true);
   });
 
   test("non-recurring: adjacent months do not overlap", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2025-05-01"), d("2025-06-30")),
-      makeRotation(d("2025-07-01"), d("2025-09-30")),
-      RANGE_START, RANGE_END,
-    )).toBe(false);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2025-05-01"), d("2025-06-30")),
+        makeRotation(d("2025-07-01"), d("2025-09-30")),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(false);
   });
 
   test("non-recurring: year-crossing range overlaps a range in the second year", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2025-11-01"), d("2026-03-31")),
-      makeRotation(d("2026-02-01"), d("2026-04-30")),
-      RANGE_START, RANGE_END,
-    )).toBe(true);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2025-11-01"), d("2026-03-31")),
+        makeRotation(d("2026-02-01"), d("2026-04-30")),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(true);
   });
 
   test("non-recurring: adjacent year-crossing ranges do not overlap", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2025-11-01"), d("2025-12-31")),
-      makeRotation(d("2026-01-01"), d("2026-03-31")),
-      RANGE_START, RANGE_END,
-    )).toBe(false);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2025-11-01"), d("2025-12-31")),
+        makeRotation(d("2026-01-01"), d("2026-03-31")),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(false);
   });
 
   test("non-recurring: same single day overlaps itself", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2025-06-15"), d("2025-06-15")),
-      makeRotation(d("2025-06-15"), d("2025-06-15")),
-      RANGE_START, RANGE_END,
-    )).toBe(true);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2025-06-15"), d("2025-06-15")),
+        makeRotation(d("2025-06-15"), d("2025-06-15")),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(true);
   });
 
   test("non-recurring: multi-year ranges overlap when years intersect", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2024-01-01"), d("2025-12-31")),
-      makeRotation(d("2025-06-01"), d("2027-05-31")),
-      RANGE_START, RANGE_END,
-    )).toBe(true);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2024-01-01"), d("2025-12-31")),
+        makeRotation(d("2025-06-01"), d("2027-05-31")),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(true);
   });
 
   test("non-recurring: multi-year ranges in separate years do not overlap", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2022-01-01"), d("2023-12-31")),
-      makeRotation(d("2025-01-01"), d("2026-12-31")),
-      RANGE_START, RANGE_END,
-    )).toBe(false);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2022-01-01"), d("2023-12-31")),
+        makeRotation(d("2025-01-01"), d("2026-12-31")),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(false);
   });
 
   // ---------------------------------------------------------------------------
@@ -209,75 +230,111 @@ describe("hasRotationOverlap", () => {
   // ---------------------------------------------------------------------------
 
   test("recurring: both annual, overlapping day windows → overlap", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2025-05-01"), d("2025-08-31"), { interval: 1 }),
-      makeRotation(d("2025-07-01"), d("2025-09-30"), { interval: 1 }),
-      RANGE_START, RANGE_END,
-    )).toBe(true);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2025-05-01"), d("2025-08-31"), { interval: 1 }),
+        makeRotation(d("2025-07-01"), d("2025-09-30"), { interval: 1 }),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(true);
   });
 
   test("recurring: both annual, non-overlapping day windows → no overlap", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2025-05-01"), d("2025-08-31"), { interval: 1 }),
-      makeRotation(d("2025-09-01"), d("2025-11-30"), { interval: 1 }),
-      RANGE_START, RANGE_END,
-    )).toBe(false);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2025-05-01"), d("2025-08-31"), { interval: 1 }),
+        makeRotation(d("2025-09-01"), d("2025-11-30"), { interval: 1 }),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(false);
   });
 
   test("recurring: year-crossing annual (Nov–Mar) overlaps annual Jan–Feb", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2025-11-01"), d("2026-03-31"), { interval: 1 }),
-      makeRotation(d("2026-01-01"), d("2026-02-28"), { interval: 1 }),
-      RANGE_START, RANGE_END,
-    )).toBe(true);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2025-11-01"), d("2026-03-31"), { interval: 1 }),
+        makeRotation(d("2026-01-01"), d("2026-02-28"), { interval: 1 }),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(true);
   });
 
   test("recurring: year-crossing annual (Nov–Mar) does NOT overlap annual Apr–Oct", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2025-11-01"), d("2026-03-31"), { interval: 1 }),
-      makeRotation(d("2025-04-01"), d("2025-10-31"), { interval: 1 }),
-      RANGE_START, RANGE_END,
-    )).toBe(false);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2025-11-01"), d("2026-03-31"), { interval: 1 }),
+        makeRotation(d("2025-04-01"), d("2025-10-31"), { interval: 1 }),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(false);
   });
 
   test("recurring: annual Nov–Dec does NOT overlap annual Jan–Feb", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2025-11-01"), d("2025-12-31"), { interval: 1 }),
-      makeRotation(d("2026-01-01"), d("2026-02-28"), { interval: 1 }),
-      RANGE_START, RANGE_END,
-    )).toBe(false);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2025-11-01"), d("2025-12-31"), { interval: 1 }),
+        makeRotation(d("2026-01-01"), d("2026-02-28"), { interval: 1 }),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(false);
   });
 
   test("recurring: biennial alternating years → no overlap", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2025-06-01"), d("2025-08-31"), { interval: 2 }),
-      makeRotation(d("2026-06-01"), d("2026-08-31"), { interval: 2 }),
-      RANGE_START, RANGE_END,
-    )).toBe(false);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2025-06-01"), d("2025-08-31"), { interval: 2 }),
+        makeRotation(d("2026-06-01"), d("2026-08-31"), { interval: 2 }),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(false);
   });
 
   test("recurring: biennial same start year, overlapping day windows → overlap", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2025-06-01"), d("2025-07-31"), { interval: 2 }),
-      makeRotation(d("2025-07-01"), d("2025-08-31"), { interval: 2 }),
-      RANGE_START, RANGE_END,
-    )).toBe(true);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2025-06-01"), d("2025-07-31"), { interval: 2 }),
+        makeRotation(d("2025-07-01"), d("2025-08-31"), { interval: 2 }),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(true);
   });
 
   test("recurring: annual with until before second rotation's start year → no overlap", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2020-06-01"), d("2020-08-31"), { interval: 1, until: d("2022-12-31") }),
-      makeRotation(d("2025-06-01"), d("2025-08-31"), { interval: 1 }),
-      RANGE_START, RANGE_END,
-    )).toBe(false);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2020-06-01"), d("2020-08-31"), {
+          interval: 1,
+          until: d("2022-12-31"),
+        }),
+        makeRotation(d("2025-06-01"), d("2025-08-31"), { interval: 1 }),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(false);
   });
 
   test("recurring: both with until, overlapping years → overlap", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2023-05-01"), d("2023-07-31"), { interval: 1, until: d("2026-12-31") }),
-      makeRotation(d("2025-06-01"), d("2025-08-31"), { interval: 1, until: d("2027-12-31") }),
-      RANGE_START, RANGE_END,
-    )).toBe(true);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2023-05-01"), d("2023-07-31"), {
+          interval: 1,
+          until: d("2026-12-31"),
+        }),
+        makeRotation(d("2025-06-01"), d("2025-08-31"), {
+          interval: 1,
+          until: d("2027-12-31"),
+        }),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(true);
   });
 
   // ---------------------------------------------------------------------------
@@ -285,58 +342,85 @@ describe("hasRotationOverlap", () => {
   // ---------------------------------------------------------------------------
 
   test("mixed: annual May–Aug vs one-time May 2025 → overlap", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2024-05-01"), d("2024-08-31"), { interval: 1 }),
-      makeRotation(d("2025-05-15"), d("2025-07-15")),
-      RANGE_START, RANGE_END,
-    )).toBe(true);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2024-05-01"), d("2024-08-31"), { interval: 1 }),
+        makeRotation(d("2025-05-15"), d("2025-07-15")),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(true);
   });
 
   test("mixed: annual May–Aug starting 2027 vs one-time May 2025 → no overlap", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2027-05-01"), d("2027-08-31"), { interval: 1 }),
-      makeRotation(d("2025-05-15"), d("2025-07-15")),
-      RANGE_START, RANGE_END,
-    )).toBe(false);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2027-05-01"), d("2027-08-31"), { interval: 1 }),
+        makeRotation(d("2025-05-15"), d("2025-07-15")),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(false);
   });
 
   test("mixed: year-crossing annual (Nov–Mar) vs one-time Feb in shared year → overlap", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2025-11-01"), d("2026-03-31"), { interval: 1 }),
-      makeRotation(d("2026-02-01"), d("2026-02-28")),
-      RANGE_START, RANGE_END,
-    )).toBe(true);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2025-11-01"), d("2026-03-31"), { interval: 1 }),
+        makeRotation(d("2026-02-01"), d("2026-02-28")),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(true);
   });
 
   test("mixed: year-crossing biennial (Nov–Mar) vs one-time Jan in spanned year → overlap", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2022-11-15"), d("2023-03-15"), { interval: 2 }),
-      makeRotation(d("2023-01-10"), d("2023-02-28")),
-      RANGE_START, RANGE_END,
-    )).toBe(true);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2022-11-15"), d("2023-03-15"), { interval: 2 }),
+        makeRotation(d("2023-01-10"), d("2023-02-28")),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(true);
   });
 
   test("mixed: year-crossing biennial vs one-time before first occurrence → no overlap", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2022-11-15"), d("2023-03-15"), { interval: 2 }),
-      makeRotation(d("2021-01-10"), d("2021-02-28")),
-      RANGE_START, RANGE_END,
-    )).toBe(false);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2022-11-15"), d("2023-03-15"), { interval: 2 }),
+        makeRotation(d("2021-01-10"), d("2021-02-28")),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(false);
   });
 
   test("mixed: annual expired by until vs one-time after until year → no overlap", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2020-06-01"), d("2020-08-31"), { interval: 1, until: d("2022-12-31") }),
-      makeRotation(d("2025-07-01"), d("2025-07-31")),
-      RANGE_START, RANGE_END,
-    )).toBe(false);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2020-06-01"), d("2020-08-31"), {
+          interval: 1,
+          until: d("2022-12-31"),
+        }),
+        makeRotation(d("2025-07-01"), d("2025-07-31")),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(false);
   });
 
   test("mixed: annual expired by until vs one-time within active years → overlap", () => {
-    expect(hasRotationOverlap(
-      makeRotation(d("2020-06-01"), d("2020-08-31"), { interval: 1, until: d("2025-12-31") }),
-      makeRotation(d("2025-07-01"), d("2025-07-31")),
-      RANGE_START, RANGE_END,
-    )).toBe(true);
+    expect(
+      hasRotationOverlap(
+        makeRotation(d("2020-06-01"), d("2020-08-31"), {
+          interval: 1,
+          until: d("2025-12-31"),
+        }),
+        makeRotation(d("2025-07-01"), d("2025-07-31")),
+        RANGE_START,
+        RANGE_END,
+      ),
+    ).toBe(true);
   });
 });

@@ -13,7 +13,10 @@ export function MergeModeLayers() {
   const visiblePlots = plots.filter((plot) => plot.size > 0);
 
   const handlePlotPress = useCallback(
-    (event: { stopPropagation(): void; nativeEvent: { features: GeoJSON.Feature[] } }) => {
+    (event: {
+      stopPropagation(): void;
+      nativeEvent: { features: GeoJSON.Feature[] };
+    }) => {
       event.stopPropagation();
       const feature = event.nativeEvent.features[0];
       const plotId = feature?.properties?.id;

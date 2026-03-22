@@ -125,16 +125,24 @@ export function useCropRotationsByPlotIdsQuery(
   enabled: boolean = true,
 ) {
   const api = useApi();
-  const { onlyCurrent = false, expand = true, includeRecurrence = false } = options;
+  const {
+    onlyCurrent = false,
+    expand = true,
+    includeRecurrence = false,
+  } = options;
   const { data, ...rest } = useQuery({
-    queryKey: queryKeys.cropRotations.byPlotIds(plotIds, onlyCurrent, expand, includeRecurrence).queryKey,
+    queryKey: queryKeys.cropRotations.byPlotIds(
+      plotIds,
+      onlyCurrent,
+      expand,
+      includeRecurrence,
+    ).queryKey,
     queryFn: () =>
-      api.cropRotations.getCropRotationsByPlotIds(
-        plotIds,
-        fromDate,
-        toDate,
-        { onlyCurrent, expand, includeRecurrence },
-      ),
+      api.cropRotations.getCropRotationsByPlotIds(plotIds, fromDate, toDate, {
+        onlyCurrent,
+        expand,
+        includeRecurrence,
+      }),
     enabled: enabled && plotIds.length > 0,
   });
   return { plotCropRotations: data, ...rest };

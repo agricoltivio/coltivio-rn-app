@@ -1,7 +1,4 @@
-import {
-  GeoJSONSource,
-  Layer,
-} from "@maplibre/maplibre-react-native";
+import { GeoJSONSource, Layer } from "@maplibre/maplibre-react-native";
 import React, { useMemo } from "react";
 
 type LabelEntry = {

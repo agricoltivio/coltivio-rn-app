@@ -35,11 +35,7 @@ export function OnboardingPreferencePage() {
         }}
         onPress={() => updateLocalSettings("onboardingsDisabled", false)}
       >
-        <Ionicons
-          name="bulb-outline"
-          size={24}
-          color={theme.colors.primary}
-        />
+        <Ionicons name="bulb-outline" size={24} color={theme.colors.primary} />
         <View style={{ marginLeft: theme.spacing.m, flex: 1 }}>
           <H4>{t("onboarding.preference.guided")}</H4>
           <Body style={{ fontSize: 14, color: theme.colors.gray1 }}>

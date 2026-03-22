@@ -66,7 +66,9 @@ export function CreateModeControls() {
           color="black"
           iconSize={30}
           icon="information-outline"
-          onPress={() => navigation.navigate("MapDrawOnboarding", { variant: "create" })}
+          onPress={() =>
+            navigation.navigate("MapDrawOnboarding", { variant: "create" })
+          }
         />
       </MapControls>
     );

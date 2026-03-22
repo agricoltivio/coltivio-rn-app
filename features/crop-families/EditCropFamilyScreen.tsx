@@ -41,10 +41,10 @@ export function EditCropFamilyScreen({
   });
 
   const updateCropFamilyMutation = useUpdateCropFamilyMutation(() =>
-    navigation.goBack()
+    navigation.goBack(),
   );
   const deleteCropFamilyMutation = useDeleteCropFamilyMutation(() =>
-    navigation.goBack()
+    navigation.goBack(),
   );
 
   function onSubmit({ ...data }: CropFamilyFormValues) {

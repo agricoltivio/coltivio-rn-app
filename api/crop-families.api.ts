@@ -29,7 +29,7 @@ export function cropFamiliesApi(client: FetchClient) {
     },
 
     async createCropFamily(
-      cropFamily: CropFamilyCreateInput
+      cropFamily: CropFamilyCreateInput,
     ): Promise<CropFamily> {
       const { data } = await client.POST("/v1/crops/families", {
         body: cropFamily,
@@ -37,15 +37,21 @@ export function cropFamiliesApi(client: FetchClient) {
       return data!.data;
     },
 
-    async updateCropFamily(familyId: string, cropFamily: CropFamilyUpdateInput) {
-      const { data } = await client.PATCH("/v1/crops/families/byId/{familyId}", {
-        params: {
-          path: {
-            familyId,
+    async updateCropFamily(
+      familyId: string,
+      cropFamily: CropFamilyUpdateInput,
+    ) {
+      const { data } = await client.PATCH(
+        "/v1/crops/families/byId/{familyId}",
+        {
+          params: {
+            path: {
+              familyId,
+            },
           },
+          body: cropFamily,
         },
-        body: cropFamily,
-      });
+      );
       return data!.data;
     },
 
@@ -68,7 +74,7 @@ export function cropFamiliesApi(client: FetchClient) {
               familyId,
             },
           },
-        }
+        },
       );
       return data!.data.inUse;
     },

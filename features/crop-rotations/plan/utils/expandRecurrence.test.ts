@@ -30,7 +30,11 @@ function makeRotation(
     toDate,
     crop: DEFAULT_CROP,
     recurrence: recurrence
-      ? { id: "rec-1", interval: recurrence.interval, until: recurrence.until ?? null }
+      ? {
+          id: "rec-1",
+          interval: recurrence.interval,
+          until: recurrence.until ?? null,
+        }
       : null,
   };
 }
@@ -42,7 +46,10 @@ describe("expandRecurrence", () => {
   // --- No recurrence ---
 
   test("no recurrence, rotation within range → returns [rotation]", () => {
-    const rotation = makeRotation("2025-03-01T00:00:00Z", "2025-05-31T00:00:00Z");
+    const rotation = makeRotation(
+      "2025-03-01T00:00:00Z",
+      "2025-05-31T00:00:00Z",
+    );
     const result = expandRecurrence(rotation, queryFrom, queryTo);
     expect(result).toHaveLength(1);
     expect(result[0].fromDate).toBe("2025-03-01T00:00:00Z");
@@ -50,19 +57,28 @@ describe("expandRecurrence", () => {
   });
 
   test("no recurrence, entirely outside range → returns []", () => {
-    const rotation = makeRotation("2020-01-01T00:00:00Z", "2020-12-31T00:00:00Z");
+    const rotation = makeRotation(
+      "2020-01-01T00:00:00Z",
+      "2020-12-31T00:00:00Z",
+    );
     const result = expandRecurrence(rotation, queryFrom, queryTo);
     expect(result).toHaveLength(0);
   });
 
   test("no recurrence, rotation spans entire query range → returns [rotation]", () => {
-    const rotation = makeRotation("2023-01-01T00:00:00Z", "2027-12-31T00:00:00Z");
+    const rotation = makeRotation(
+      "2023-01-01T00:00:00Z",
+      "2027-12-31T00:00:00Z",
+    );
     const result = expandRecurrence(rotation, queryFrom, queryTo);
     expect(result).toHaveLength(1);
   });
 
   test("no recurrence, rotation end inside range → included", () => {
-    const rotation = makeRotation("2023-06-01T00:00:00Z", "2024-06-01T00:00:00Z");
+    const rotation = makeRotation(
+      "2023-06-01T00:00:00Z",
+      "2024-06-01T00:00:00Z",
+    );
     const result = expandRecurrence(rotation, queryFrom, queryTo);
     expect(result).toHaveLength(1);
   });
@@ -168,7 +184,11 @@ describe("expandAllRecurrences", () => {
     );
     recurring.id = "rot-r";
 
-    const result = expandAllRecurrences([nonRecurring, recurring], queryFrom, queryTo);
+    const result = expandAllRecurrences(
+      [nonRecurring, recurring],
+      queryFrom,
+      queryTo,
+    );
     // nonRecurring: 1 occurrence; recurring: 1 occurrence in 2025
     expect(result.length).toBeGreaterThanOrEqual(2);
     expect(result.some((r) => r.id === "rot-nr")).toBe(true);
@@ -180,7 +200,10 @@ describe("expandAllRecurrences", () => {
   });
 
   test("rotation entirely outside range → excluded from result", () => {
-    const outside = makeRotation("2020-01-01T00:00:00Z", "2020-12-31T00:00:00Z");
+    const outside = makeRotation(
+      "2020-01-01T00:00:00Z",
+      "2020-12-31T00:00:00Z",
+    );
     expect(expandAllRecurrences([outside], queryFrom, queryTo)).toHaveLength(0);
   });
 });

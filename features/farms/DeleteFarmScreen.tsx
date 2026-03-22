@@ -11,7 +11,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Switch, View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { useDeleteFarmMutation, useFarmQuery, useMembershipStatusQuery } from "./farms.hooks";
+import {
+  useDeleteFarmMutation,
+  useFarmQuery,
+  useMembershipStatusQuery,
+} from "./farms.hooks";
 import { useTranslation } from "react-i18next";
 
 export function DeleteFarmScreen({}: DeleteFarmScreenProps) {
@@ -23,9 +27,15 @@ export function DeleteFarmScreen({}: DeleteFarmScreenProps) {
   const { clearSession } = useSession();
 
   const now = new Date();
-  const membershipPeriodEnd = membershipStatus?.lastPeriodEnd ? new Date(membershipStatus.lastPeriodEnd as string) : null;
-  const membershipTrialEnd = membershipStatus?.trialEnd ? new Date(membershipStatus.trialEnd as string) : null;
-  const hasMembershipActive = (membershipPeriodEnd !== null && membershipPeriodEnd > now) || (membershipTrialEnd !== null && membershipTrialEnd > now);
+  const membershipPeriodEnd = membershipStatus?.lastPeriodEnd
+    ? new Date(membershipStatus.lastPeriodEnd as string)
+    : null;
+  const membershipTrialEnd = membershipStatus?.trialEnd
+    ? new Date(membershipStatus.trialEnd as string)
+    : null;
+  const hasMembershipActive =
+    (membershipPeriodEnd !== null && membershipPeriodEnd > now) ||
+    (membershipTrialEnd !== null && membershipTrialEnd > now);
 
   const {
     handleSubmit,

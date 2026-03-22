@@ -12,23 +12,25 @@ export function useWaitingTimeValidation(
   plotId: string,
   plannedRotations: RotationEntry[],
   existingRotations: PlotCropRotation[],
-  crops: Crop[]
+  crops: Crop[],
 ): Map<string, WaitingTimeWarning> {
   return useMemo(() => {
     const warnings = new Map<string, WaitingTimeWarning>();
 
-    plannedRotations.forEach(rotation => {
+    plannedRotations.forEach((rotation) => {
       if (!rotation.cropId) return;
 
-      const crop = crops.find(c => c.id === rotation.cropId);
+      const crop = crops.find((c) => c.id === rotation.cropId);
       if (!crop) return;
 
-      const existingPlotRotations = existingRotations.filter(r => r.plotId === plotId);
+      const existingPlotRotations = existingRotations.filter(
+        (r) => r.plotId === plotId,
+      );
 
       const cropWaitingYears = crop.waitingTimeInYears;
       if (cropWaitingYears) {
         const lastCropRotation = existingPlotRotations
-          .filter(r => r.cropId === crop.id)
+          .filter((r) => r.cropId === crop.id)
           .sort((a, b) => {
             const aDate = new Date(a.toDate);
             const bDate = new Date(b.toDate);
@@ -37,7 +39,9 @@ export function useWaitingTimeValidation(
 
         if (lastCropRotation) {
           const lastEndDate = new Date(lastCropRotation.toDate);
-          const yearsSince = (rotation.fromDate.getTime() - lastEndDate.getTime()) / (365.25 * 24 * 60 * 60 * 1000);
+          const yearsSince =
+            (rotation.fromDate.getTime() - lastEndDate.getTime()) /
+            (365.25 * 24 * 60 * 60 * 1000);
 
           if (yearsSince < cropWaitingYears) {
             warnings.set(rotation.entryId, {
@@ -52,8 +56,8 @@ export function useWaitingTimeValidation(
       const familyWaitingYears = crop.family?.waitingTimeInYears;
       if (familyWaitingYears && crop.familyId) {
         const lastFamilyRotation = existingPlotRotations
-          .filter(r => {
-            const rCrop = crops.find(c => c.id === r.cropId);
+          .filter((r) => {
+            const rCrop = crops.find((c) => c.id === r.cropId);
             return rCrop?.familyId === crop.familyId;
           })
           .sort((a, b) => {
@@ -64,7 +68,9 @@ export function useWaitingTimeValidation(
 
         if (lastFamilyRotation) {
           const lastEndDate = new Date(lastFamilyRotation.toDate);
-          const yearsSince = (rotation.fromDate.getTime() - lastEndDate.getTime()) / (365.25 * 24 * 60 * 60 * 1000);
+          const yearsSince =
+            (rotation.fromDate.getTime() - lastEndDate.getTime()) /
+            (365.25 * 24 * 60 * 60 * 1000);
 
           if (yearsSince < familyWaitingYears) {
             warnings.set(rotation.entryId, {

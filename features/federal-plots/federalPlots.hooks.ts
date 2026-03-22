@@ -9,7 +9,7 @@ export function usePlotsByLocationQuery(
     lng: number;
   },
   radius: number,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
 
@@ -17,14 +17,14 @@ export function usePlotsByLocationQuery(
     initialData: [],
     queryKey: federalParcelsQueryKeys.point(
       { lat: location.lat, lng: location.lng },
-      radius
+      radius,
     ).queryKey,
     enabled,
     queryFn: () =>
       api.layers.getPlotsWithinRadiusOfPoint(
         location.lat,
         location.lng,
-        radius
+        radius,
       ),
   });
 
@@ -33,7 +33,7 @@ export function usePlotsByLocationQuery(
 
 export function useFarmAndNearbyPlotsQuery(
   federalFarmId: string,
-  radius: number
+  radius: number,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
@@ -52,7 +52,7 @@ export function useFederalFarmIdSearchQuery(
   latitude: number,
   radiusInKm: number,
   limit: number,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
@@ -63,7 +63,7 @@ export function useFederalFarmIdSearchQuery(
         longitude,
         latitude,
         radiusInKm,
-        limit
+        limit,
       );
     },
 

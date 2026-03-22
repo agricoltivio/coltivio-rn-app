@@ -32,7 +32,7 @@ export function useHarvestPresetByIdQuery(presetId: string, enabled = true) {
 }
 
 export function useCreateHarvestPresetMutation(
-  onSuccess?: (preset: HarvestPreset) => void
+  onSuccess?: (preset: HarvestPreset) => void,
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
@@ -52,7 +52,7 @@ export function useCreateHarvestPresetMutation(
       });
       queryClient.setQueryData(
         queryKeys.harvestPresets.byId(preset.id).queryKey,
-        () => preset
+        () => preset,
       );
       onSuccess?.(preset);
     },
@@ -60,7 +60,7 @@ export function useCreateHarvestPresetMutation(
 }
 
 export function useUpdateHarvestPresetMutation(
-  onSuccess?: (preset: HarvestPreset) => void
+  onSuccess?: (preset: HarvestPreset) => void,
 ) {
   const api = useApi();
   const queryClient = useQueryClient();
@@ -78,7 +78,7 @@ export function useUpdateHarvestPresetMutation(
       });
       queryClient.setQueryData(
         queryKeys.harvestPresets.byId(preset.id).queryKey,
-        () => preset
+        () => preset,
       );
       onSuccess?.(preset);
     },

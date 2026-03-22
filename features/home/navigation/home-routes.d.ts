@@ -6,4 +6,5 @@ export type HomeStackParamList = {
 };
 
 export type HomeScreenProps = StackScreenProps<"Home">;
-export type SpeedDialOnboardingScreenProps = StackScreenProps<"SpeedDialOnboarding">;
+export type SpeedDialOnboardingScreenProps =
+  StackScreenProps<"SpeedDialOnboarding">;

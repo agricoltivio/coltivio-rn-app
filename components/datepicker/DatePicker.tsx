@@ -1,7 +1,6 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { TextInput } from "../inputs/TextInput";
-import { useCallback, useRef, useState } from "react";
-import React from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { Platform, Pressable, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "styled-components/native";

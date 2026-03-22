@@ -15,7 +15,7 @@ export function useUserQuery(enabled: boolean = true) {
 
 export function useUpdateUserMutation(
   onSuccess?: (user: User) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const api = useApi();
   const queryClient = useQueryClient();

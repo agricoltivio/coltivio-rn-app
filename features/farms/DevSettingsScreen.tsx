@@ -8,11 +8,17 @@ import { useState } from "react";
 import { Alert } from "react-native";
 import { useTheme } from "styled-components/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { defaultLocalSettings, useLocalSettings } from "../user/LocalSettingsContext";
+import {
+  defaultLocalSettings,
+  useLocalSettings,
+} from "../user/LocalSettingsContext";
 
 // All resettable local settings keys with human-readable labels
 const RESETTABLE_KEYS = [
-  { key: "fieldCalendarOnboardingCompleted", label: "Field Calendar Onboarding" },
+  {
+    key: "fieldCalendarOnboardingCompleted",
+    label: "Field Calendar Onboarding",
+  },
   { key: "fieldCalendarGroups", label: "Field Calendar Groups" },
   { key: "animalsOnboardingCompleted", label: "Animals Onboarding" },
   { key: "animalsGroups", label: "Animals Groups" },
@@ -21,11 +27,17 @@ const RESETTABLE_KEYS = [
   { key: "mapDrawOnboardingCompleted", label: "Map Draw Onboarding" },
   { key: "plotsMapOnboardingCompleted", label: "Plots Map Onboarding" },
   { key: "addPlotDrawOnboardingCompleted", label: "Add Plot Draw Onboarding" },
-  { key: "addPlotParcelOnboardingCompleted", label: "Add Plot Parcel Onboarding" },
+  {
+    key: "addPlotParcelOnboardingCompleted",
+    label: "Add Plot Parcel Onboarding",
+  },
   { key: "editPlotOnboardingCompleted", label: "Edit Plot Onboarding" },
   { key: "splitPlotOnboardingCompleted", label: "Split Plot Onboarding" },
   { key: "mergePlotsOnboardingCompleted", label: "Merge Plots Onboarding" },
-  { key: "selectPlotsForPlanOnboardingCompleted", label: "Crop Rotation Plot Selection Onboarding" },
+  {
+    key: "selectPlotsForPlanOnboardingCompleted",
+    label: "Crop Rotation Plot Selection Onboarding",
+  },
   { key: "speedDialOnboardingCompleted", label: "Speed Dial Onboarding" },
   { key: "wikiOnboardingCompleted", label: "Wiki Onboarding" },
   { key: "tasksOnboardingCompleted", label: "Tasks Onboarding" },

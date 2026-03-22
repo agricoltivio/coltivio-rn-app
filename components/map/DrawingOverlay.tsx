@@ -7,6 +7,7 @@ import {
 import * as turf from "@turf/turf";
 import React, {
   forwardRef,
+  useCallback,
   useImperativeHandle,
   useMemo,
   useRef,
@@ -149,7 +150,7 @@ export const DrawingOverlay = forwardRef<
   const [closed, setClosed] = useState(false);
 
   // Undo stack: each entry is a snapshot of { coordinates, closed }
-  const undoStackRef = useRef<Array<{ coords: LngLat[]; closed: boolean }>>([]);
+  const undoStackRef = useRef<{ coords: LngLat[]; closed: boolean }[]>([]);
 
   // Refs so imperative methods always read latest state without stale closures
   const coordsRef = useRef(coordinates);
@@ -182,9 +183,12 @@ export const DrawingOverlay = forwardRef<
     });
   }
 
-  function notifyChange(newCoords: LngLat[], newClosed: boolean) {
-    onCoordinatesChange?.(newCoords, newClosed);
-  }
+  const notifyChange = useCallback(
+    (newCoords: LngLat[], newClosed: boolean) => {
+      onCoordinatesChange?.(newCoords, newClosed);
+    },
+    [onCoordinatesChange],
+  );
 
   // Stable ref — no dependencies on coordinates/closed, reads from refs instead
   useImperativeHandle(
@@ -255,7 +259,7 @@ export const DrawingOverlay = forwardRef<
         notifyChange(coords, true);
       },
     }),
-    [mode, onCoordinatesChange],
+    [mode, notifyChange],
   );
 
   if (!isActive || coordinates.length === 0) return null;

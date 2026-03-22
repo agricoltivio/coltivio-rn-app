@@ -42,7 +42,13 @@ export function PlotListModal({
 
   const fuse = new Fuse(sanitizedPlots, {
     minMatchCharLength: 1,
-    keys: ["name", "localId", "usage", "usageName", "currentCropRotation.crop.name"],
+    keys: [
+      "name",
+      "localId",
+      "usage",
+      "usageName",
+      "currentCropRotation.crop.name",
+    ],
   });
 
   let searchResult = sanitizedPlots;
@@ -59,7 +65,10 @@ export function PlotListModal({
       if (plot.size > 0 && plot.geometry.coordinates.length > 0) {
         const centroid = turf.centroid(plot.geometry);
         const [longitude, latitude] = centroid.geometry.coordinates;
-        cameraRef.current?.flyTo({ center: [longitude, latitude], duration: 500 });
+        cameraRef.current?.flyTo({
+          center: [longitude, latitude],
+          duration: 500,
+        });
       }
     },
     [onSelectPlot, cameraRef, onClose],
@@ -70,11 +79,14 @@ export function PlotListModal({
       <ListItem key={plot.id} onPress={() => handlePlotSelect(plot)}>
         <ListItem.Content>
           <View style={{ flexDirection: "row" }}>
-            <ListItem.Title numberOfLines={1} style={{ flex: 1 }}>{plot.name}</ListItem.Title>
+            <ListItem.Title numberOfLines={1} style={{ flex: 1 }}>
+              {plot.name}
+            </ListItem.Title>
             <ListItem.Body> ({plot.size / 100}a)</ListItem.Body>
           </View>
           <ListItem.Body>
-            {t("crops.crop")}: {plot.currentCropRotation?.crop.name ?? t("crops.no_crop")}
+            {t("crops.crop")}:{" "}
+            {plot.currentCropRotation?.crop.name ?? t("crops.no_crop")}
           </ListItem.Body>
           {plot.localId ? (
             <ListItem.Body>

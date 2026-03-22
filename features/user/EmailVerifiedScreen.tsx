@@ -46,7 +46,7 @@ export function EmailVerifiedScreen({ navigation }: EmailVerifiedScreenProps) {
         console.error(
           "Missing access_token or refresh_token",
           access_token != null,
-          refresh_token != null
+          refresh_token != null,
         );
         setError(t("errors.unexpected"));
         return;

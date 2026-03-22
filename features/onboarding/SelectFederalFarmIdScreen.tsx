@@ -54,7 +54,8 @@ export function SelectFederalFarmIdScreen({
   );
 
   // When search text is non-empty, show search results; otherwise show unique farm IDs from nearby parcels
-  const displayedIds = searchText !== "" ? (federalFarmIds ?? []) : uniqueFarmIds;
+  const displayedIds =
+    searchText !== "" ? (federalFarmIds ?? []) : uniqueFarmIds;
 
   const [selectedFarmId, setSelectedFarmId] = useState<string | undefined>();
 

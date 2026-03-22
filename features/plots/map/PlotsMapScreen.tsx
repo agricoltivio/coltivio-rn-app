@@ -124,26 +124,41 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
         }
         break;
     }
-  }, [mode.type]);
+  }, [
+    mode.type,
+    navigation,
+    localSettings.splitPlotOnboardingCompleted,
+    localSettings.mergePlotsOnboardingCompleted,
+    localSettings.editPlotOnboardingCompleted,
+    localSettings.addPlotDrawOnboardingCompleted,
+  ]);
+
+  // Extracted to avoid complex expression in the dependency array.
+  // Encodes both mode type and selected plot: non-null only when in view mode with a selection.
+  const flyToPlotId = mode.type === "view" ? mode.selectedPlotId : null;
 
   // Animate to selected plot when selection changes in view mode.
   // Skipped when returning from a non-view mode — camera is already positioned there.
   useEffect(() => {
-    if (mode.type !== "view" || !mode.selectedPlotId || !plots) return;
+    if (!flyToPlotId || !plots) return;
     if (suppressFlyToRef.current) {
       suppressFlyToRef.current = false;
       return;
     }
-    const selectedPlot = plots.find((p) => p.id === mode.selectedPlotId);
+    const selectedPlot = plots.find((p) => p.id === flyToPlotId);
     if (!selectedPlot || selectedPlot.geometry.coordinates.length === 0) return;
     const centroid = turf.centroid(selectedPlot.geometry);
     const [longitude, latitude] = centroid.geometry.coordinates;
     cameraRef.current?.flyTo({ center: [longitude, latitude], duration: 500 });
-  }, [mode.type === "view" ? mode.selectedPlotId : null]);
+  }, [flyToPlotId, plots]);
+
+  // Extracted to avoid complex expression in the dependency array.
+  // Non-null only when in view mode with a plot selected.
+  const viewSelectedPlotId = mode.type === "view" ? mode.selectedPlotId : null;
 
   const handleMapPress = useCallback(
     (event: { nativeEvent: { lngLat: LngLat } }) => {
-      if (mode.type === "view" && mode.selectedPlotId) {
+      if (mode.type === "view" && viewSelectedPlotId) {
         dispatch({ type: "SELECT_PLOT", plotId: null });
       } else if (mode.type === "split") {
         splitLayersRef.current?.handleMapPress(event.nativeEvent.lngLat);
@@ -153,10 +168,12 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
         createLayersRef.current?.handleMapPress(event.nativeEvent.lngLat);
       }
     },
-    [mode.type, mode.type === "view" ? mode.selectedPlotId : null],
+    [mode.type, viewSelectedPlotId],
   );
 
-  // React to selectedPlotId route param changes (e.g. after saving a new plot)
+  // React to selectedPlotId route param changes (e.g. after saving a new plot).
+  // mode.type is intentionally excluded: adding it would cause re-dispatch on every mode change
+  // while the param is still set in the route, which is not desired.
   useEffect(() => {
     const paramPlotId = route.params?.selectedPlotId;
     if (paramPlotId && mode.type !== "view") {
@@ -165,7 +182,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
     if (paramPlotId) {
       dispatch({ type: "SELECT_PLOT", plotId: paramPlotId });
     }
-  }, [route.params?.selectedPlotId]);
+  }, [route.params?.selectedPlotId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Vertex drag gesture — hold 150ms on a vertex to start dragging
   const isDrawingMode =
@@ -180,7 +197,8 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
 
       const isClosed = drawingRef.current?.isClosed() ?? false;
       // Polylines in split mode are never closed but should still allow dragging existing vertices
-      const isSplitPolylineMode = mode.type === "split" && mode.activeToolMode === "polyline";
+      const isSplitPolylineMode =
+        mode.type === "split" && mode.activeToolMode === "polyline";
       if (!isClosed && !isSplitPolylineMode) return;
 
       const features = await map.queryRenderedFeatures([event.x, event.y], {
@@ -250,7 +268,10 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
 
   // Plots with size 0 have no geometry and can't be rendered on the map;
   // they are excluded from the context (map layers) but still shown in the list modal.
-  const mapPlots = useMemo(() => (plots ?? []).filter((p) => p.size > 0), [plots]);
+  const mapPlots = useMemo(
+    () => (plots ?? []).filter((p) => p.size > 0),
+    [plots],
+  );
 
   const contextValue = useMemo(
     () => ({

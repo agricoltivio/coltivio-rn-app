@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 export function useHarvestsQuery(
   fromDate?: Date,
   toDate?: Date,
-  enabled = true
+  enabled = true,
 ) {
   const api = useApi();
 
@@ -64,7 +64,7 @@ export function useHarvestSummariesOfPlotQuery(plotId: string, enabled = true) {
 }
 
 export function useCreateHarvestMutation(
-  onSuccess?: (harvest: Harvest[]) => void
+  onSuccess?: (harvest: Harvest[]) => void,
 ) {
   const queryClient = useQueryClient();
   const api = useApi();

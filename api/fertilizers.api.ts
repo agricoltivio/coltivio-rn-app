@@ -32,7 +32,7 @@ export function fertilizersApi(client: FetchClient) {
     },
 
     async createFertilizer(
-      fertilizer: FertilizerCreateInput
+      fertilizer: FertilizerCreateInput,
     ): Promise<Fertilizer> {
       const { data } = await client.POST("/v1/fertilizers", {
         body: fertilizer,
@@ -42,7 +42,7 @@ export function fertilizersApi(client: FetchClient) {
 
     async updateFertilizer(
       fertilizerId: string,
-      fertilizer: FertilizerUpdateInput
+      fertilizer: FertilizerUpdateInput,
     ): Promise<Fertilizer> {
       const { data: newData } = await client.PATCH(
         "/v1/fertilizers/byId/{fertilizerId}",
@@ -53,7 +53,7 @@ export function fertilizersApi(client: FetchClient) {
             },
           },
           body: fertilizer,
-        }
+        },
       );
       return newData!.data;
     },
@@ -76,7 +76,7 @@ export function fertilizersApi(client: FetchClient) {
               fertilizerId,
             },
           },
-        }
+        },
       );
       return data!.data.inUse;
     },

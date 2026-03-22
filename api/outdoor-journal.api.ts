@@ -7,7 +7,8 @@ export type OutdoorJournalEntry =
 export type OutdoorJournalData =
   components["schemas"]["GetV1AnimalsOutdoorJournalPositiveResponse"]["data"];
 
-export type UncategorizedAnimal = OutdoorJournalData["uncategorizedAnimals"][number];
+export type UncategorizedAnimal =
+  OutdoorJournalData["uncategorizedAnimals"][number];
 
 export function outdoorJournalApi(client: FetchClient) {
   return {

@@ -209,23 +209,43 @@ export function PlanCropRotationsScreen({
 
     // Determine effective waiting time for a pair of rotations
     const getEffectiveWaitingTime = (
-      cropA: typeof crops[number],
-      cropB: typeof crops[number],
+      cropA: (typeof crops)[number],
+      cropB: (typeof crops)[number],
       sameCrop: boolean,
-    ): { waitingTime: number; isFamilyLevel: boolean; familyName: string } | null => {
+    ): {
+      waitingTime: number;
+      isFamilyLevel: boolean;
+      familyName: string;
+    } | null => {
       if (sameCrop) {
         // Same crop: use crop's own waiting time, fall back to family
         if (cropA.waitingTimeInYears) {
-          return { waitingTime: cropA.waitingTimeInYears, isFamilyLevel: false, familyName: "" };
+          return {
+            waitingTime: cropA.waitingTimeInYears,
+            isFamilyLevel: false,
+            familyName: "",
+          };
         }
         if (cropA.family?.waitingTimeInYears) {
-          return { waitingTime: cropA.family.waitingTimeInYears, isFamilyLevel: true, familyName: cropA.family.name };
+          return {
+            waitingTime: cropA.family.waitingTimeInYears,
+            isFamilyLevel: true,
+            familyName: cropA.family.name,
+          };
         }
         return null;
       }
       // Different crops, same family
-      if (cropA.familyId && cropA.familyId === cropB.familyId && cropA.family?.waitingTimeInYears) {
-        return { waitingTime: cropA.family.waitingTimeInYears, isFamilyLevel: true, familyName: cropA.family.name };
+      if (
+        cropA.familyId &&
+        cropA.familyId === cropB.familyId &&
+        cropA.family?.waitingTimeInYears
+      ) {
+        return {
+          waitingTime: cropA.family.waitingTimeInYears,
+          isFamilyLevel: true,
+          familyName: cropA.family.name,
+        };
       }
       return null;
     };
@@ -242,8 +262,14 @@ export function PlanCropRotationsScreen({
         if (!info) continue;
         if (rotation.recurrence.interval < info.waitingTime) {
           const msg = info.isFamilyLevel
-            ? t("crop_rotations.plan.waiting_time_warning_family", { family: info.familyName, waitingTime: info.waitingTime })
-            : t("crop_rotations.plan.waiting_time_warning_crop", { crop: crop.name, waitingTime: info.waitingTime });
+            ? t("crop_rotations.plan.waiting_time_warning_family", {
+                family: info.familyName,
+                waitingTime: info.waitingTime,
+              })
+            : t("crop_rotations.plan.waiting_time_warning_crop", {
+                crop: crop.name,
+                waitingTime: info.waitingTime,
+              });
           warnings.set(rotation.entryId, msg);
         }
       }
@@ -260,7 +286,8 @@ export function PlanCropRotationsScreen({
           if (!cropA || !cropB) continue;
 
           const sameCrop = a.cropId === b.cropId;
-          const sameFamily = !sameCrop && !!cropA.familyId && cropA.familyId === cropB.familyId;
+          const sameFamily =
+            !sameCrop && !!cropA.familyId && cropA.familyId === cropB.familyId;
           if (!sameCrop && !sameFamily) continue;
 
           const info = getEffectiveWaitingTime(cropA, cropB, sameCrop);
@@ -269,7 +296,9 @@ export function PlanCropRotationsScreen({
           // Merge occurrence years and check consecutive gaps
           const aYears = getYears(a);
           const bYears = getYears(b);
-          const allYears = [...new Set([...aYears, ...bYears])].sort((x, y) => x - y);
+          const allYears = [...new Set([...aYears, ...bYears])].sort(
+            (x, y) => x - y,
+          );
 
           let violation = false;
           for (let k = 1; k < allYears.length; k++) {
@@ -281,8 +310,14 @@ export function PlanCropRotationsScreen({
 
           if (violation) {
             const msg = info.isFamilyLevel
-              ? t("crop_rotations.plan.waiting_time_warning_family", { family: info.familyName, waitingTime: info.waitingTime })
-              : t("crop_rotations.plan.waiting_time_warning_crop", { crop: cropA.name, waitingTime: info.waitingTime });
+              ? t("crop_rotations.plan.waiting_time_warning_family", {
+                  family: info.familyName,
+                  waitingTime: info.waitingTime,
+                })
+              : t("crop_rotations.plan.waiting_time_warning_crop", {
+                  crop: cropA.name,
+                  waitingTime: info.waitingTime,
+                });
             if (!warnings.has(a.entryId)) warnings.set(a.entryId, msg);
             if (!warnings.has(b.entryId)) warnings.set(b.entryId, msg);
           }
@@ -597,7 +632,6 @@ export function PlanCropRotationsScreen({
             />
           );
         })}
-
       </ScrollView>
 
       {/* Save Button */}

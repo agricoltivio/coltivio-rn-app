@@ -16,10 +16,13 @@ export type UserStackParamList = {
 };
 
 export type UserAccountScreenProps = StackScreenProps<"UserAccount">;
-export type OnboardingSettingsScreenProps = StackScreenProps<"OnboardingSettings">;
+export type OnboardingSettingsScreenProps =
+  StackScreenProps<"OnboardingSettings">;
 export type AppSettingsScreenProps = StackScreenProps<"AppSettings">;
-export type SpeedDialSettingsScreenProps = StackScreenProps<"SpeedDialSettings">;
-export type HomeTilesSettingsScreenProps = StackScreenProps<"HomeTilesSettings">;
+export type SpeedDialSettingsScreenProps =
+  StackScreenProps<"SpeedDialSettings">;
+export type HomeTilesSettingsScreenProps =
+  StackScreenProps<"HomeTilesSettings">;
 export type ChangeUserNameScreenProps = StackScreenProps<"ChangeUserName">;
 
 export type ChangeEmailScreenProps = StackScreenProps<"ChangeEmail">;

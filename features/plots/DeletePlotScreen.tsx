@@ -20,7 +20,7 @@ export function DeletePlotScreen({ navigation, route }: DeletePlotScreenProps) {
   navigation.getState().routes;
   const deletePlotMutation = useDeletePlotMutation(
     () => navigation.pop(3),
-    (error) => console.error(error)
+    (error) => console.error(error),
   );
 
   const {

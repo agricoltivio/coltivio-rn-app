@@ -18,7 +18,7 @@ type RecurrencePickerProps = {
   value: RecurrenceValue | null;
   onChange: (value: RecurrenceValue | null) => void;
   /** Subset of frequencies to offer — defaults to all three */
-  frequencyOptions?: Array<{ label: string; value: RecurrenceFrequency }>;
+  frequencyOptions?: { label: string; value: RecurrenceFrequency }[];
 };
 
 const DEFAULT_UNTIL = new Date(new Date().getFullYear() + 3, 11, 31);
@@ -32,7 +32,9 @@ export function RecurrencePicker({
   const theme = useTheme();
 
   // Keep interval as a string so the TextInput can be partially edited
-  const [intervalText, setIntervalText] = useState(String(value?.interval ?? 1));
+  const [intervalText, setIntervalText] = useState(
+    String(value?.interval ?? 1),
+  );
   const [untilDate, setUntilDate] = useState<Date>(
     value?.until ? new Date(value.until) : DEFAULT_UNTIL,
   );
@@ -43,9 +45,9 @@ export function RecurrencePicker({
       setIntervalText(String(value.interval));
       if (value.until) setUntilDate(new Date(value.until));
     }
-  }, [value?.interval, value?.until]);
+  }, [value]);
 
-  const allFrequencies: Array<{ label: string; value: RecurrenceFrequency }> = [
+  const allFrequencies: { label: string; value: RecurrenceFrequency }[] = [
     { label: t("animals.frequency_types.weekly"), value: "weekly" },
     { label: t("animals.frequency_types.monthly"), value: "monthly" },
     { label: t("animals.frequency_types.yearly"), value: "yearly" },
@@ -53,7 +55,10 @@ export function RecurrencePicker({
 
   const resolvedFrequencyOptions = frequencyOptions ?? allFrequencies;
 
-  function getIntervalLabel(frequency: RecurrenceFrequency, interval: number): string {
+  function getIntervalLabel(
+    frequency: RecurrenceFrequency,
+    interval: number,
+  ): string {
     switch (frequency) {
       case "weekly":
         return interval === 1 ? t("animals.week") : t("animals.weeks");
@@ -118,7 +123,13 @@ export function RecurrencePicker({
   return (
     <View style={{ gap: theme.spacing.s }}>
       {/* Frequency select + clear */}
-      <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: theme.spacing.xs,
+        }}
+      >
         <View style={{ flex: 1 }}>
           <Select
             label={t("animals.frequency")}
@@ -137,7 +148,13 @@ export function RecurrencePicker({
       </View>
 
       {/* Interval row: "Every N weeks/months/years" */}
-      <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.s }}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: theme.spacing.s,
+        }}
+      >
         <Text style={{ fontSize: 14, color: theme.colors.text }}>
           {t("animals.every")}
         </Text>

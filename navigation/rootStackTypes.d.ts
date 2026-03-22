@@ -44,7 +44,17 @@ export type RootStackParamList = AuthStackParamList &
   AnimalsStackParamList &
   WikiStackParamList &
   TasksStackParamList & {
-    MapDrawOnboarding: { variant?: "draw" | "create" | "parcel" | "edit" | "cropRotation" | "plotsMap" } | undefined;
+    MapDrawOnboarding:
+      | {
+          variant?:
+            | "draw"
+            | "create"
+            | "parcel"
+            | "edit"
+            | "cropRotation"
+            | "plotsMap";
+        }
+      | undefined;
     SelectPlotsOnboarding: undefined;
   };
 

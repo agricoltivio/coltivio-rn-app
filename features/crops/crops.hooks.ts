@@ -25,7 +25,7 @@ export function useCropByIdQuery(cropId: string, enabled: boolean = true) {
 
 export function useCreateCropMutation(
   onSuccess?: (crop: Crop) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
@@ -45,7 +45,7 @@ export function useCreateCropMutation(
 
 export function useUpdateCropMutation(
   onSuccess?: (crop: Crop) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const api = useApi();
   const queryClient = useQueryClient();
@@ -65,7 +65,7 @@ export function useUpdateCropMutation(
 
 export function useDeleteCropMutation(
   onSuccess?: () => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const api = useApi();
   const queryClient = useQueryClient();

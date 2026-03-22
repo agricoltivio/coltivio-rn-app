@@ -106,7 +106,8 @@ export function api(client: FetchClient) {
     tillagePresets: tillagePresetsApi(client),
     cropProtectionProducts: cropProtectionProductsApi(client),
     cropProtectionApplications: cropProtectionApplicationsApi(client),
-    cropProtectionApplicationPresets: cropProtectionApplicationPresetsApi(client),
+    cropProtectionApplicationPresets:
+      cropProtectionApplicationPresetsApi(client),
     reports: reportsApi(client),
     herds: herdsApi(client),
     outdoorJournal: outdoorJournalApi(client),

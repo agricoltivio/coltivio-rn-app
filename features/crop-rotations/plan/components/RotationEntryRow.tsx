@@ -36,24 +36,36 @@ export function RotationEntryRow({
   const [showRecurrenceModal, setShowRecurrenceModal] = useState(false);
 
   // Filter out the current rotation from existingRotations for calendar highlighting
-  const otherRotations = existingRotations.filter(r => r.id !== rotation.rotationId);
+  const otherRotations = existingRotations.filter(
+    (r) => r.id !== rotation.rotationId,
+  );
 
   return (
     <View
       style={{
         paddingVertical: theme.spacing.s,
         borderLeftWidth: error ? 3 : warning ? 3 : 0,
-        borderLeftColor: error ? theme.colors.danger : warning ? "#FFA500" : undefined,
+        borderLeftColor: error
+          ? theme.colors.danger
+          : warning
+            ? "#FFA500"
+            : undefined,
         paddingLeft: error || warning ? theme.spacing.s : 0,
       }}
     >
-      <View style={{ flexDirection: "row", alignItems: "flex-start", gap: theme.spacing.s }}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "flex-start",
+          gap: theme.spacing.s,
+        }}
+      >
         <View style={{ flex: 1 }}>
           <Select
             label="Crop"
             value={rotation.cropId}
             data={crops}
-            onChange={cropId => onUpdate({ cropId })}
+            onChange={(cropId) => onUpdate({ cropId })}
             enableSearch
             error={error && !rotation.cropId ? "Crop is required" : undefined}
           />
@@ -67,7 +79,11 @@ export function RotationEntryRow({
               marginTop: 32,
             }}
           >
-            <Ionicons name="trash-outline" size={20} color={theme.colors.danger} />
+            <Ionicons
+              name="trash-outline"
+              size={20}
+              color={theme.colors.danger}
+            />
           </Pressable>
         )}
       </View>
@@ -87,7 +103,7 @@ export function RotationEntryRow({
           mode="from"
           plotId={plotId}
           existingRotations={otherRotations}
-          onDateChange={fromDate => onUpdate({ fromDate })}
+          onDateChange={(fromDate) => onUpdate({ fromDate })}
         />
 
         <CropRotationDatePicker
@@ -97,7 +113,7 @@ export function RotationEntryRow({
           plotId={plotId}
           existingRotations={otherRotations}
           minimumDate={rotation.fromDate}
-          onDateChange={toDate => onUpdate({ toDate })}
+          onDateChange={(toDate) => onUpdate({ toDate })}
         />
 
         <RecurrenceChip
@@ -111,9 +127,7 @@ export function RotationEntryRow({
           style={{
             marginTop: theme.spacing.s,
             padding: theme.spacing.s,
-            backgroundColor: error
-              ? theme.colors.danger + "20"
-              : "#FFA50020",
+            backgroundColor: error ? theme.colors.danger + "20" : "#FFA50020",
             borderRadius: 6,
           }}
         >
@@ -131,7 +145,7 @@ export function RotationEntryRow({
       <RecurrenceModal
         visible={showRecurrenceModal}
         initialRecurrence={rotation.recurrence}
-        onSave={recurrence => onUpdate({ recurrence })}
+        onSave={(recurrence) => onUpdate({ recurrence })}
         onClear={() => onUpdate({ recurrence: undefined })}
         onClose={() => setShowRecurrenceModal(false)}
       />

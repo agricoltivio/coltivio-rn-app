@@ -31,7 +31,7 @@ export function PlotRotationsList({
   const theme = useTheme();
 
   const getCropName = (cropId: string) => {
-    return crops.find(c => c.id === cropId)?.name || t("common.unknown");
+    return crops.find((c) => c.id === cropId)?.name || t("common.unknown");
   };
 
   const formatDateRange = (from: Date, to: Date) => {
@@ -40,11 +40,16 @@ export function PlotRotationsList({
 
   const formatRecurrence = (recurrence: RotationEntry["recurrence"]) => {
     if (!recurrence) return null;
-    const repeatText = recurrence.interval === 1
-      ? t("crop_rotations.plan.repeats_every_year")
-      : t("crop_rotations.plan.repeats_every_years", { count: recurrence.interval });
+    const repeatText =
+      recurrence.interval === 1
+        ? t("crop_rotations.plan.repeats_every_year")
+        : t("crop_rotations.plan.repeats_every_years", {
+            count: recurrence.interval,
+          });
     const untilText = recurrence.until
-      ? t("crop_rotations.plan.until_date", { date: format(recurrence.until, "MM.yyyy") })
+      ? t("crop_rotations.plan.until_date", {
+          date: format(recurrence.until, "MM.yyyy"),
+        })
       : "";
     return `${repeatText}${untilText ? ` ${untilText}` : ""}`;
   };
@@ -86,8 +91,18 @@ export function PlotRotationsList({
             gap: 4,
           }}
         >
-          <Ionicons name="add-circle-outline" size={18} color={theme.colors.primary} />
-          <Text style={{ fontSize: 14, fontWeight: "600", color: theme.colors.primary }}>
+          <Ionicons
+            name="add-circle-outline"
+            size={18}
+            color={theme.colors.primary}
+          />
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: "600",
+              color: theme.colors.primary,
+            }}
+          >
             {t("buttons.add")}
           </Text>
         </Pressable>
@@ -96,7 +111,13 @@ export function PlotRotationsList({
       {/* Rotations list */}
       {rotations.length === 0 ? (
         <View style={{ padding: theme.spacing.m }}>
-          <Text style={{ fontSize: 14, color: theme.colors.gray2, textAlign: "center" }}>
+          <Text
+            style={{
+              fontSize: 14,
+              color: theme.colors.gray2,
+              textAlign: "center",
+            }}
+          >
             {t("crop_rotations.plan.no_rotations_yet")}
           </Text>
         </View>
@@ -114,7 +135,9 @@ export function PlotRotationsList({
                 borderBottomWidth: index < rotations.length - 1 ? 1 : 0,
                 borderBottomColor: theme.colors.gray4,
                 borderLeftWidth: hasConflict || showWarningStyle ? 3 : 0,
-                borderLeftColor: hasConflict ? theme.colors.danger : theme.colors.yellow,
+                borderLeftColor: hasConflict
+                  ? theme.colors.danger
+                  : theme.colors.yellow,
                 backgroundColor: hasConflict
                   ? theme.colors.danger + "08"
                   : showWarningStyle

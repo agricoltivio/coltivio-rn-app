@@ -5,7 +5,11 @@ import {
   getStateFromPath,
   NavigationContainer,
 } from "@react-navigation/native";
-import { QueryClient, QueryClientProvider, focusManager } from "@tanstack/react-query";
+import {
+  QueryClient,
+  QueryClientProvider,
+  focusManager,
+} from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { AppState, type AppStateStatus } from "react-native";
 import { I18nextProvider } from "react-i18next";
@@ -54,9 +58,12 @@ const queryClient = new QueryClient();
 // Wire TanStack Query's focusManager to React Native's AppState so that
 // queries refetch when the app returns to the foreground (e.g. after browser redirect).
 focusManager.setEventListener((handleFocus) => {
-  const subscription = AppState.addEventListener("change", (state: AppStateStatus) => {
-    handleFocus(state === "active");
-  });
+  const subscription = AppState.addEventListener(
+    "change",
+    (state: AppStateStatus) => {
+      handleFocus(state === "active");
+    },
+  );
   return () => subscription.remove();
 });
 

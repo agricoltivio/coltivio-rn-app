@@ -35,7 +35,13 @@ export function AdjustModeControls({
       />
       {/* Ring counter — only shown for multipolygons */}
       {hasMultipleRings && (
-        <Text style={{ color: theme.colors.primary, fontWeight: "600", fontSize: 14 }}>
+        <Text
+          style={{
+            color: theme.colors.primary,
+            fontWeight: "600",
+            fontSize: 14,
+          }}
+        >
           {mode.activeRingIndex + 1}/{totalRings}
         </Text>
       )}
@@ -44,7 +50,9 @@ export function AdjustModeControls({
         type="accent"
         color="green"
         iconSize={30}
-        icon={isLastRing ? "check-circle-outline" : "arrow-right-circle-outline"}
+        icon={
+          isLastRing ? "check-circle-outline" : "arrow-right-circle-outline"
+        }
         onPress={() => adjustLayersRef.current?.handleConfirm()}
       />
       {/* Info */}

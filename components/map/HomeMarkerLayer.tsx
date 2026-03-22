@@ -1,8 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import {
-  Marker,
-  type LngLat,
-} from "@maplibre/maplibre-react-native";
+import { Marker, type LngLat } from "@maplibre/maplibre-react-native";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 

@@ -28,10 +28,7 @@ interface CreateHerdFormValues {
 // Local schedule with a temp id for list keys
 type LocalSchedule = OutdoorScheduleCreateInput & { tempId: string };
 
-export function CreateHerdScreen({
-  route,
-  navigation,
-}: CreateHerdScreenProps) {
+export function CreateHerdScreen({ route, navigation }: CreateHerdScreenProps) {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
   const locale = i18n.language;
@@ -42,24 +39,31 @@ export function CreateHerdScreen({
 
   // Handle returning from SelectAnimals
   const returnedAnimalIds = route.params?.animalIds;
-  const [lastProcessedIds, setLastProcessedIds] = useState<string[] | null>(null);
+  const [lastProcessedIds, setLastProcessedIds] = useState<string[] | null>(
+    null,
+  );
   if (returnedAnimalIds && returnedAnimalIds !== lastProcessedIds) {
     setLastProcessedIds(returnedAnimalIds);
     setSelectedAnimalIds(returnedAnimalIds);
   }
 
-  const selectedAnimals = animals?.filter((a) => selectedAnimalIds.includes(a.id)) ?? [];
+  const selectedAnimals =
+    animals?.filter((a) => selectedAnimalIds.includes(a.id)) ?? [];
 
   const animalsText = (() => {
     if (selectedAnimals.length === 0) return t("common.no_entries");
     if (selectedAnimals.length === 1) return selectedAnimals[0].name;
-    return t("treatments.n_animals_selected", { count: selectedAnimals.length });
+    return t("treatments.n_animals_selected", {
+      count: selectedAnimals.length,
+    });
   })();
 
   // Local outdoor schedules state
   const [localSchedules, setLocalSchedules] = useState<LocalSchedule[]>([]);
   const [scheduleModalVisible, setScheduleModalVisible] = useState(false);
-  const [editingSchedule, setEditingSchedule] = useState<LocalSchedule | null>(null);
+  const [editingSchedule, setEditingSchedule] = useState<LocalSchedule | null>(
+    null,
+  );
 
   const {
     control,
@@ -295,9 +299,7 @@ export function CreateHerdScreen({
                     <ListItem.Title>
                       {formatScheduleSummary(item)}
                     </ListItem.Title>
-                    {item.notes && (
-                      <ListItem.Body>{item.notes}</ListItem.Body>
-                    )}
+                    {item.notes && <ListItem.Body>{item.notes}</ListItem.Body>}
                   </ListItem.Content>
                   <ListItem.Chevron />
                 </ListItem>

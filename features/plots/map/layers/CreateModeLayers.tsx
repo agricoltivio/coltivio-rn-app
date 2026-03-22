@@ -19,7 +19,8 @@ export type CreateModeLayersHandle = {
 export const CreateModeLayers = forwardRef<CreateModeLayersHandle>(
   function CreateModeLayers(_props, ref) {
     const theme = useTheme();
-    const { mode, dispatch, plots, mapRef, drawingRef, navigation } = usePlotsMapContext();
+    const { mode, dispatch, plots, mapRef, drawingRef, navigation } =
+      usePlotsMapContext();
 
     useImperativeHandle(ref, () => ({
       handleMapPress(lngLat: LngLat) {
@@ -43,11 +44,13 @@ export const CreateModeLayers = forwardRef<CreateModeLayersHandle>(
         : `${newPolygon.size / 100}a`;
       return {
         type: "FeatureCollection",
-        features: [{
-          type: "Feature",
-          properties: { label },
-          geometry: newPolygon.centroid,
-        }],
+        features: [
+          {
+            type: "Feature",
+            properties: { label },
+            geometry: newPolygon.centroid,
+          },
+        ],
       };
     }, [newPolygon, drawingAction]);
 
@@ -58,11 +61,13 @@ export const CreateModeLayers = forwardRef<CreateModeLayersHandle>(
       }
       return {
         type: "FeatureCollection",
-        features: [{
-          type: "Feature",
-          properties: {},
-          geometry: newPolygon.geometry,
-        }],
+        features: [
+          {
+            type: "Feature",
+            properties: {},
+            geometry: newPolygon.geometry,
+          },
+        ],
       };
     }, [newPolygon, drawingAction]);
 
@@ -90,7 +95,9 @@ export const CreateModeLayers = forwardRef<CreateModeLayersHandle>(
         // Load the polygon back for editing
         const outerRing = newPolygon.geometry.coordinates[0]?.[0];
         if (!outerRing || outerRing.length < 4) return;
-        const coords: LngLat[] = outerRing.slice(0, -1).map((c) => [c[0], c[1]] as LngLat);
+        const coords: LngLat[] = outerRing
+          .slice(0, -1)
+          .map((c) => [c[0], c[1]] as LngLat);
         drawingRef.current?.loadCoordinates(coords);
         dispatch({ type: "SET_CREATE_ACTION", action: "edit" });
       }
@@ -104,7 +111,11 @@ export const CreateModeLayers = forwardRef<CreateModeLayersHandle>(
         {/* New polygon preview in select mode */}
         {newPolygon && drawingAction === "select" ? (
           <>
-            <GeoJSONSource id="create-preview" data={newPolygonData} onPress={onSelectPolygon}>
+            <GeoJSONSource
+              id="create-preview"
+              data={newPolygonData}
+              onPress={onSelectPolygon}
+            >
               <Layer
                 type="fill"
                 id="create-preview-fill"
@@ -116,7 +127,10 @@ export const CreateModeLayers = forwardRef<CreateModeLayersHandle>(
               <Layer
                 type="line"
                 id="create-preview-stroke"
-                paint={{ "line-color": "white", "line-width": theme.map.defaultStrokeWidth }}
+                paint={{
+                  "line-color": "white",
+                  "line-width": theme.map.defaultStrokeWidth,
+                }}
               />
             </GeoJSONSource>
             <GeoJSONSource id="create-info-label" data={infoLabelData}>

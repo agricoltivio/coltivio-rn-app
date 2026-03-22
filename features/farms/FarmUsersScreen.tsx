@@ -26,7 +26,11 @@ import { Ionicons } from "@expo/vector-icons";
 
 function getInviteStatus(invite: FarmInvite): "pending" | "used" | "expired" {
   if (invite.usedAt != null) return "used";
-  if (invite.expiresAt != null && new Date(invite.expiresAt as string) < new Date()) return "expired";
+  if (
+    invite.expiresAt != null &&
+    new Date(invite.expiresAt as string) < new Date()
+  )
+    return "expired";
   return "pending";
 }
 
@@ -65,12 +69,16 @@ export function FarmUsersScreen({ navigation }: FarmUsersScreenProps) {
 
   function onToggleRole(member: FarmUser) {
     const newRole = member.farmRole === "owner" ? "member" : "owner";
-    const label = newRole === "owner" ? t("farm.promote_to_owner") : t("farm.demote_to_member");
+    const label =
+      newRole === "owner"
+        ? t("farm.promote_to_owner")
+        : t("farm.demote_to_member");
     Alert.alert(label, member.fullName ?? member.email, [
       { text: t("buttons.cancel"), style: "cancel" },
       {
         text: t("buttons.confirm"),
-        onPress: () => updateRoleMutation.mutate({ userId: member.id, role: newRole }),
+        onPress: () =>
+          updateRoleMutation.mutate({ userId: member.id, role: newRole }),
       },
     ]);
   }
@@ -85,7 +93,10 @@ export function FarmUsersScreen({ navigation }: FarmUsersScreenProps) {
     member: t("farm.role_member"),
   };
 
-  const statusColors: Record<"pending" | "used" | "expired", { bg: string; text: string }> = {
+  const statusColors: Record<
+    "pending" | "used" | "expired",
+    { bg: string; text: string }
+  > = {
     pending: { bg: theme.colors.success + "22", text: theme.colors.success },
     used: { bg: theme.colors.primary + "22", text: theme.colors.primary },
     expired: { bg: theme.colors.gray3, text: theme.colors.gray1 },
@@ -105,10 +116,13 @@ export function FarmUsersScreen({ navigation }: FarmUsersScreenProps) {
         {/* Current members */}
         {members.length > 0 && (
           <View style={{ marginTop: theme.spacing.l }}>
-            <H3 style={{ marginBottom: theme.spacing.m }}>{t("farm.members")}</H3>
+            <H3 style={{ marginBottom: theme.spacing.m }}>
+              {t("farm.members")}
+            </H3>
             {members.map((member) => {
               const role = member.farmRole ?? "member";
-              const roleColor = roleColors[role === "owner" ? "owner" : "member"];
+              const roleColor =
+                roleColors[role === "owner" ? "owner" : "member"];
               const isSelf = member.id === currentUser?.id;
               return (
                 <MemberRow key={member.id}>
@@ -121,14 +135,20 @@ export function FarmUsersScreen({ navigation }: FarmUsersScreenProps) {
                     />
                   </View>
                   {isOwner && !isSelf && (
-                    <View style={{ flexDirection: "row", gap: theme.spacing.s }}>
+                    <View
+                      style={{ flexDirection: "row", gap: theme.spacing.s }}
+                    >
                       <TouchableOpacity
                         onPress={() => onToggleRole(member)}
                         disabled={updateRoleMutation.isPending}
                         hitSlop={8}
                       >
                         <Ionicons
-                          name={role === "owner" ? "arrow-down-circle-outline" : "arrow-up-circle-outline"}
+                          name={
+                            role === "owner"
+                              ? "arrow-down-circle-outline"
+                              : "arrow-up-circle-outline"
+                          }
                           size={22}
                           color={theme.colors.primary}
                         />
@@ -155,7 +175,9 @@ export function FarmUsersScreen({ navigation }: FarmUsersScreenProps) {
         {/* Pending / past invites — only visible to owners with active membership */}
         {isOwner && isActive && invites.length > 0 && (
           <View style={{ marginTop: theme.spacing.l }}>
-            <H3 style={{ marginBottom: theme.spacing.m }}>{t("farm.invite_user")}</H3>
+            <H3 style={{ marginBottom: theme.spacing.m }}>
+              {t("farm.invite_user")}
+            </H3>
             {invites.map((invite) => {
               const status = getInviteStatus(invite);
               const colors = statusColors[status];
@@ -175,7 +197,11 @@ export function FarmUsersScreen({ navigation }: FarmUsersScreenProps) {
                       disabled={revokeInviteMutation.isPending}
                       hitSlop={8}
                     >
-                      <Ionicons name="trash-outline" size={22} color={theme.colors.danger} />
+                      <Ionicons
+                        name="trash-outline"
+                        size={22}
+                        color={theme.colors.danger}
+                      />
                     </TouchableOpacity>
                   )}
                 </MemberRow>
@@ -187,7 +213,9 @@ export function FarmUsersScreen({ navigation }: FarmUsersScreenProps) {
         {/* Invite new user — only for owners with active membership */}
         {isOwner && isActive && (
           <View style={{ marginTop: theme.spacing.xl }}>
-            <H3 style={{ marginBottom: theme.spacing.m }}>{t("farm.invite_user")}</H3>
+            <H3 style={{ marginBottom: theme.spacing.m }}>
+              {t("farm.invite_user")}
+            </H3>
             <TextInput
               label={t("farm.invite_email_label")}
               value={email}

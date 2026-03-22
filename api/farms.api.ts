@@ -2,7 +2,8 @@ import { FetchClient } from "./api";
 import { components } from "./v1";
 
 export type Farm = components["schemas"]["GetV1FarmPositiveResponse"]["data"];
-export type FarmCreated = components["schemas"]["PostV1FarmPositiveResponse"]["data"];
+export type FarmCreated =
+  components["schemas"]["PostV1FarmPositiveResponse"]["data"];
 export type FarmCreateInput = components["schemas"]["PostV1FarmRequestBody"];
 export type FarmUpdateInput = components["schemas"]["PatchV1FarmRequestBody"];
 export type AcceptInviteResult =
@@ -70,7 +71,10 @@ export function farmApi(client: FetchClient) {
       });
     },
 
-    async updateMemberRole(userId: string, role: "owner" | "member"): Promise<void> {
+    async updateMemberRole(
+      userId: string,
+      role: "owner" | "member",
+    ): Promise<void> {
       await client.PATCH("/v1/farm/members/byId/{userId}/role", {
         params: { path: { userId } },
         body: { role },

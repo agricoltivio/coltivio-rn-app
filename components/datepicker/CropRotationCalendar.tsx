@@ -1,5 +1,4 @@
 import { PlotCropRotation } from "@/api/crop-rotations.api";
-import { INFINITE_DATE } from "@/utils/date";
 import { useState, useMemo } from "react";
 import { Pressable, Text, View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -138,7 +137,7 @@ export function CropRotationCalendar({
       }
     });
     return Array.from(crops.values());
-  }, [viewYear, viewMonth, rotations]);
+  }, [viewYear, viewMonth, rotations, theme.colors.primary]);
 
   return (
     <View>

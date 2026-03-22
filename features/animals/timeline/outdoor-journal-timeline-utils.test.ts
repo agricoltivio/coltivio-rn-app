@@ -52,7 +52,12 @@ describe("buildJournalTimelineData", () => {
   // --- Single entry ---
 
   test("single entry: correct startDay, endDay, metadata", () => {
-    const entry = makeEntry("A1", "2025-05-01T00:00:00.000Z", "2025-05-31T00:00:00.000Z", 42);
+    const entry = makeEntry(
+      "A1",
+      "2025-05-01T00:00:00.000Z",
+      "2025-05-31T00:00:00.000Z",
+      42,
+    );
     const result = buildJournalTimelineData([entry]);
     expect(result.herds).toHaveLength(1);
     const bar = result.herds[0].bars[0];
@@ -99,7 +104,11 @@ describe("buildJournalTimelineData", () => {
   // --- Clamping ---
 
   test("entry before epoch: startDay clamped to 0", () => {
-    const entry = makeEntry("A1", "2019-01-01T00:00:00.000Z", "2022-03-01T00:00:00.000Z");
+    const entry = makeEntry(
+      "A1",
+      "2019-01-01T00:00:00.000Z",
+      "2022-03-01T00:00:00.000Z",
+    );
     const result = buildJournalTimelineData([entry]);
     expect(result.herds[0].bars[0].startDay).toBe(0);
   });

@@ -9,5 +9,5 @@ export const cropProtectionApplicationsQueryKeys = createQueryKeys(
     years: null,
     summaries: null,
     summariesByPlotId: (plotId: string) => ["summaries", plotId],
-  }
+  },
 );

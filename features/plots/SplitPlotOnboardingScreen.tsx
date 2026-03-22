@@ -39,7 +39,11 @@ function ActionRow({
           justifyContent: "center",
         }}
       >
-        <MaterialCommunityIcons name={icon} size={22} color={color ?? "black"} />
+        <MaterialCommunityIcons
+          name={icon}
+          size={22}
+          color={color ?? "black"}
+        />
       </View>
       <Body style={{ flex: 1 }}>{label}</Body>
     </View>
@@ -119,7 +123,13 @@ export function SplitPlotOnboardingScreen({
       <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
         {t("plots.split_onboarding.actions_heading")}
       </H1>
-      <View style={{ width: "100%", marginTop: theme.spacing.m, gap: theme.spacing.xs }}>
+      <View
+        style={{
+          width: "100%",
+          marginTop: theme.spacing.m,
+          gap: theme.spacing.xs,
+        }}
+      >
         <ActionRow
           icon="check-circle-outline"
           color="green"

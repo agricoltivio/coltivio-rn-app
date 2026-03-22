@@ -11,7 +11,15 @@ function resolveLocalUrl(url: string): string {
   return url.replace(/localhost|127\.0\.0\.1/g, lanIp);
 }
 
-function MarkdownImage({ nodeKey, src, alt }: { nodeKey: string; src: string; alt?: string }) {
+function MarkdownImage({
+  nodeKey,
+  src,
+  alt,
+}: {
+  nodeKey: string;
+  src: string;
+  alt?: string;
+}) {
   const resolvedSrc = resolveLocalUrl(src);
   const [aspectRatio, setAspectRatio] = useState<number>(16 / 9);
 
@@ -40,10 +48,15 @@ const imageRule: MarkdownProps["rules"] = {
     const src = node.attributes?.src as string | undefined;
     const alt = node.attributes?.alt as string | undefined;
     if (!src) return null;
-    return <MarkdownImage key={node.key} nodeKey={node.key} src={src} alt={alt} />;
+    return (
+      <MarkdownImage key={node.key} nodeKey={node.key} src={src} alt={alt} />
+    );
   },
 };
 
-export function WikiMarkdown({ rules, ...props }: PropsWithChildren<MarkdownProps>) {
+export function WikiMarkdown({
+  rules,
+  ...props
+}: PropsWithChildren<MarkdownProps>) {
   return <Markdown rules={{ ...imageRule, ...rules }} {...props} />;
 }

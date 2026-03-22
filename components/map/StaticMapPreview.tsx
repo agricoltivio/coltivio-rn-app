@@ -7,10 +7,9 @@ import {
   type LngLat,
   type StyleSpecification,
 } from "@maplibre/maplibre-react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { hexToRgba } from "@/theme/theme";
 import React, { useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useTheme } from "styled-components/native";
 
 type BaseLayer = "satellite" | "map";
@@ -42,7 +41,7 @@ export function StaticMapPreview({
   height = 250,
 }: StaticMapPreviewProps) {
   const theme = useTheme();
-  const [baseLayer, setBaseLayer] = useState<BaseLayer>("satellite");
+  const [baseLayer] = useState<BaseLayer>("satellite");
 
   const fillColor = hexToRgba(
     theme.map.defaultFillColor,

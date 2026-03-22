@@ -22,7 +22,10 @@ function expandOccurrences(
   let current = new Date(from);
 
   while (current <= effectiveUntil) {
-    ranges.push({ from: new Date(current), to: new Date(current.getTime() + durationMs) });
+    ranges.push({
+      from: new Date(current),
+      to: new Date(current.getTime() + durationMs),
+    });
     if (frequency === "weekly") current = addWeeks(current, interval);
     else if (frequency === "monthly") current = addMonths(current, interval);
     else current = addYears(current, interval);

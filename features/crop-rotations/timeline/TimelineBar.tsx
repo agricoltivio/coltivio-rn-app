@@ -39,7 +39,11 @@ export const TimelineBar = memo(function TimelineBar({
         backgroundColor: bgColor,
         borderRadius: 4,
         borderWidth: bar.hasConflict ? 2 : bar.isPlanned ? 2 : 0,
-        borderColor: bar.hasConflict ? "#DC2626" : bar.isPlanned ? color : undefined,
+        borderColor: bar.hasConflict
+          ? "#DC2626"
+          : bar.isPlanned
+            ? color
+            : undefined,
         borderStyle: bar.isPlanned ? "dashed" : "solid",
         justifyContent: "center",
         paddingHorizontal: 4,

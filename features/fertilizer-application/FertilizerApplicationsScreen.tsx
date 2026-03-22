@@ -11,7 +11,12 @@ import { round } from "@/utils/math";
 import Fuse from "fuse.js";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, SectionList, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  SectionList,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useTheme } from "styled-components/native";
 import { FertilizerApplicationDashboard } from "./components/FertilizerApplicationDashboard";
 import {
@@ -40,7 +45,8 @@ export function FertilizerApplicationsScreen({
 
   const { applicationSummaries, isLoading: summariesLoading } =
     useFertilizerApplicationSummaryOfFarmQuery();
-  const { fertilizerApplications, isLoading: applicationsLoading } = useFertilizerApplicationsQuery(undefined, undefined, viewMode === "list");
+  const { fertilizerApplications, isLoading: applicationsLoading } =
+    useFertilizerApplicationsQuery(undefined, undefined, viewMode === "list");
 
   // Group by year for SectionList
   const sections = useMemo(() => {
@@ -102,9 +108,7 @@ export function FertilizerApplicationsScreen({
           ) : !applicationSummaries || applicationSummaries.length === 0 ? (
             <Headline>{t("common.no_entries")}</Headline>
           ) : (
-            <FertilizerApplicationDashboard
-              summaries={applicationSummaries}
-            />
+            <FertilizerApplicationDashboard summaries={applicationSummaries} />
           )}
         </ScrollView>
       )}

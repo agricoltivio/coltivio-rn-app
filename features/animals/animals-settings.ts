@@ -20,7 +20,10 @@ export const ANIMALS_ITEMS = {
   },
   tvdImport: { translationKey: "animals.tvd_import.title", route: "TvdImport" },
   herds: { translationKey: "animals.herds", route: "Herds" },
-  outdoorJournal: { translationKey: "animals.outdoor_journal", route: "OutdoorJournal" },
+  outdoorJournal: {
+    translationKey: "animals.outdoor_journal",
+    route: "OutdoorJournal",
+  },
 } as const;
 
 // Maps groupId → translation key

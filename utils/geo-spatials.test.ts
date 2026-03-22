@@ -9,7 +9,13 @@ import * as turf from "@turf/turf";
 
 // Unit square [0,0]→[1,0]→[1,1]→[0,1]→[0,0]
 const UNIT_SQUARE_COORDS: number[][][] = [
-  [[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]],
+  [
+    [0, 0],
+    [1, 0],
+    [1, 1],
+    [0, 1],
+    [0, 0],
+  ],
 ];
 
 const UNIT_SQUARE: GeoJSON.MultiPolygon = {
@@ -19,7 +25,13 @@ const UNIT_SQUARE: GeoJSON.MultiPolygon = {
 
 // Second square offset to [2,0]→[3,0]→[3,1]→[2,1]→[2,0]
 const SECOND_SQUARE_COORDS: number[][][] = [
-  [[2, 0], [3, 0], [3, 1], [2, 1], [2, 0]],
+  [
+    [2, 0],
+    [3, 0],
+    [3, 1],
+    [2, 1],
+    [2, 0],
+  ],
 ];
 
 const TWO_SQUARE_MULTI: GeoJSON.MultiPolygon = {
@@ -60,7 +72,10 @@ describe("GeoSpatials.coordinatesToLatLng", () => {
 describe("GeoSpatials.lngLatToMultiPolygon", () => {
   test("closes open ring (first !== last)", () => {
     const ring: [number, number][] = [
-      [0, 0], [1, 0], [1, 1], [0, 1],
+      [0, 0],
+      [1, 0],
+      [1, 1],
+      [0, 1],
     ];
     const result = GeoSpatials.lngLatToMultiPolygon([ring]);
     const coords = result.coordinates[0][0];
@@ -71,7 +86,11 @@ describe("GeoSpatials.lngLatToMultiPolygon", () => {
 
   test("leaves already-closed ring unchanged (no duplicate added)", () => {
     const ring: [number, number][] = [
-      [0, 0], [1, 0], [1, 1], [0, 1], [0, 0],
+      [0, 0],
+      [1, 0],
+      [1, 1],
+      [0, 1],
+      [0, 0],
     ];
     const result = GeoSpatials.lngLatToMultiPolygon([ring]);
     const coords = result.coordinates[0][0];
@@ -111,7 +130,10 @@ describe("GeoSpatials.thinOutCoordinates", () => {
     ];
     const result = GeoSpatials.thinOutCoordinates(close, 100_000); // 100km threshold
     expect(result[0]).toEqual({ latitude: 0, longitude: 0 });
-    expect(result[result.length - 1]).toEqual({ latitude: 0.00002, longitude: 0 });
+    expect(result[result.length - 1]).toEqual({
+      latitude: 0.00002,
+      longitude: 0,
+    });
   });
 
   test("last point always included even if close to previous kept point", () => {
@@ -121,7 +143,10 @@ describe("GeoSpatials.thinOutCoordinates", () => {
       { latitude: 10.00001, longitude: 0 }, // close to previous kept
     ];
     const result = GeoSpatials.thinOutCoordinates(points, 1); // 1 meter
-    expect(result[result.length - 1]).toEqual({ latitude: 10.00001, longitude: 0 });
+    expect(result[result.length - 1]).toEqual({
+      latitude: 10.00001,
+      longitude: 0,
+    });
   });
 });
 
@@ -131,7 +156,9 @@ describe("GeoSpatials.thinOutCoordinates", () => {
 
 describe("extractSubPolygonByPoint", () => {
   test("single ring MultiPolygon → null (length <= 1)", () => {
-    expect(extractSubPolygonByPoint(UNIT_SQUARE, { latitude: 0.5, longitude: 0.5 })).toBeNull();
+    expect(
+      extractSubPolygonByPoint(UNIT_SQUARE, { latitude: 0.5, longitude: 0.5 }),
+    ).toBeNull();
   });
 
   test("two-ring MultiPolygon, point inside ring 0 → extracted=ring0, remaining=ring1", () => {
@@ -167,7 +194,10 @@ describe("splitMultiPolygonByLine", () => {
   test("line doesn't cross polygon → null", () => {
     const line: GeoJSON.LineString = {
       type: "LineString",
-      coordinates: [[5, 0], [5, 1]], // entirely outside unit square
+      coordinates: [
+        [5, 0],
+        [5, 1],
+      ], // entirely outside unit square
     };
     expect(splitMultiPolygonByLine(UNIT_SQUARE, line)).toBeNull();
   });
@@ -176,7 +206,10 @@ describe("splitMultiPolygonByLine", () => {
     // Line x=0.5, from y=-1 to y=2, fully cuts through the unit square
     const line: GeoJSON.LineString = {
       type: "LineString",
-      coordinates: [[0.5, -1], [0.5, 2]],
+      coordinates: [
+        [0.5, -1],
+        [0.5, 2],
+      ],
     };
     const result = splitMultiPolygonByLine(UNIT_SQUARE, line);
     expect(result).not.toBeNull();

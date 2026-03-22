@@ -58,12 +58,17 @@ export function useChangeRequestNotesQuery(changeRequestId: string) {
   return { notes: data ?? [], ...rest };
 }
 
-export function useCreateWikiEntryMutation(onSuccess?: (entryId: string) => void) {
+export function useCreateWikiEntryMutation(
+  onSuccess?: (entryId: string) => void,
+) {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
-    mutationFn: (body: { id?: string; categoryId: string; translations: WikiTranslationInput[] }) =>
-      api.wiki.createEntry(body),
+    mutationFn: (body: {
+      id?: string;
+      categoryId: string;
+      translations: WikiTranslationInput[];
+    }) => api.wiki.createEntry(body),
     onSuccess: (entry) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.wiki._def });
       onSuccess?.(entry.id);
@@ -71,12 +76,17 @@ export function useCreateWikiEntryMutation(onSuccess?: (entryId: string) => void
   });
 }
 
-export function useUpdateWikiEntryMutation(entryId: string, onSuccess?: () => void) {
+export function useUpdateWikiEntryMutation(
+  entryId: string,
+  onSuccess?: () => void,
+) {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
-    mutationFn: (body: { categoryId?: string; translations?: WikiTranslationInput[] }) =>
-      api.wiki.updateEntry(entryId, body),
+    mutationFn: (body: {
+      categoryId?: string;
+      translations?: WikiTranslationInput[];
+    }) => api.wiki.updateEntry(entryId, body),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.wiki._def });
       onSuccess?.();
@@ -102,7 +112,9 @@ export function useDeleteWikiEntryMutation(onSuccess?: () => void) {
   return useMutation({
     mutationFn: (entryId: string) => api.wiki.deleteEntry(entryId),
     onSuccess: (_, entryId) => {
-      queryClient.removeQueries({ queryKey: queryKeys.wiki.byId(entryId).queryKey });
+      queryClient.removeQueries({
+        queryKey: queryKeys.wiki.byId(entryId).queryKey,
+      });
       queryClient.invalidateQueries({ queryKey: queryKeys.wiki._def });
       onSuccess?.();
     },
@@ -121,7 +133,9 @@ export function useCreateChangeRequestMutation(onSuccess?: () => void) {
       translations: WikiTranslationInput[];
     }) => api.wiki.createChangeRequest(entryId, translations),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.wiki.myChangeRequests.queryKey });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.wiki.myChangeRequests.queryKey,
+      });
       onSuccess?.();
     },
   });
@@ -139,7 +153,9 @@ export function useUpdateChangeRequestDraftMutation(
       proposedCategoryId?: string;
     }) => api.wiki.updateChangeRequestDraft(changeRequestId, body),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.wiki.myChangeRequests.queryKey });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.wiki.myChangeRequests.queryKey,
+      });
       onSuccess?.();
     },
   });
@@ -152,7 +168,9 @@ export function useSubmitChangeRequestDraftMutation(onSuccess?: () => void) {
     mutationFn: (changeRequestId: string) =>
       api.wiki.submitChangeRequestDraft(changeRequestId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.wiki.myChangeRequests.queryKey });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.wiki.myChangeRequests.queryKey,
+      });
       onSuccess?.();
     },
   });
@@ -162,7 +180,8 @@ export function useAddChangeRequestNoteMutation(changeRequestId: string) {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
-    mutationFn: (content: string) => api.wiki.addChangeRequestNote(changeRequestId, content),
+    mutationFn: (content: string) =>
+      api.wiki.addChangeRequestNote(changeRequestId, content),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.wiki.changeRequestNotes(changeRequestId).queryKey,

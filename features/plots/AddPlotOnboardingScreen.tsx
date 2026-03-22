@@ -14,8 +14,7 @@ export function AddPlotOnboardingScreen() {
   const { t } = useTranslation();
   const { updateLocalSettings } = useLocalSettings();
   const navigation = useNavigation();
-  const route =
-    useRoute<RouteProp<PlotsStackParamList, "AddPlotOnboarding">>();
+  const route = useRoute<RouteProp<PlotsStackParamList, "AddPlotOnboarding">>();
   const variant = route.params.variant;
 
   function handleFinish() {
@@ -75,9 +74,7 @@ export function AddPlotOnboardingScreen() {
           {t("map_draw_onboarding.draw_heading")}
         </H1>
         <IconBadge name="vector-polygon" />
-        <H3
-          style={{ color: theme.colors.primary, textAlign: "center" }}
-        >
+        <H3 style={{ color: theme.colors.primary, textAlign: "center" }}>
           {t("map_draw_onboarding.draw_body")}
         </H3>
       </View>,
@@ -86,9 +83,7 @@ export function AddPlotOnboardingScreen() {
           {t("map_draw_onboarding.finish_heading")}
         </H1>
         <IconBadge name="check" />
-        <H3
-          style={{ color: theme.colors.primary, textAlign: "center" }}
-        >
+        <H3 style={{ color: theme.colors.primary, textAlign: "center" }}>
           {t("map_draw_onboarding.finish_body")}
         </H3>
       </View>,

@@ -39,7 +39,11 @@ export function SplitPlotSummaryScreen({
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const { plotId } = route.params;
-  const { subPlots, originalPlotName, reset: resetSplitStore } = useSplitPlotStore();
+  const {
+    subPlots,
+    originalPlotName,
+    reset: resetSplitStore,
+  } = useSplitPlotStore();
 
   const [migrateToIndex, setMigrateToIndex] = useState(0);
 
@@ -74,7 +78,10 @@ export function SplitPlotSummaryScreen({
     const subPlotsPayload = subPlots.map((sp, i) => ({
       // Truncate to 7 decimal places (~1cm precision) to avoid floating-point
       // differences on shared edges causing PostGIS topology exceptions.
-      geometry: turf.truncate(sp.geometry, { precision: 6, coordinates: 2 }) as GeoJSON.MultiPolygon,
+      geometry: turf.truncate(sp.geometry, {
+        precision: 6,
+        coordinates: 2,
+      }) as GeoJSON.MultiPolygon,
       name: values.subPlots[i].name,
       size: sp.size,
     }));

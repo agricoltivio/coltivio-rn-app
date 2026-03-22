@@ -26,10 +26,14 @@ export function AgriColtivioInfoScreen({}: AgriColtivioInfoScreenProps) {
     >
       <ScrollView showHeaderOnScroll headerTitleOnScroll="AgriColtivio">
         <H2>AgriColtivio</H2>
-        <H3 style={{ marginTop: theme.spacing.s }}>{t("agri_coltivio.subheading")}</H3>
+        <H3 style={{ marginTop: theme.spacing.s }}>
+          {t("agri_coltivio.subheading")}
+        </H3>
         <Body style={{ marginTop: theme.spacing.m }}>
           {t("agri_coltivio.section_1_pre")}
-          <Text style={{ fontWeight: "bold" }}>{t("agri_coltivio.section_1_bold")}</Text>
+          <Text style={{ fontWeight: "bold" }}>
+            {t("agri_coltivio.section_1_bold")}
+          </Text>
           {t("agri_coltivio.section_1_post")}
         </Body>
         <Body style={{ marginTop: theme.spacing.m }}>

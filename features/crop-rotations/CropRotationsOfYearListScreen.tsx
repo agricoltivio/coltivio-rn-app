@@ -81,7 +81,9 @@ export function CropRotationsOfYearListScreen({
   }
 
   // Build timeline data from filtered rotations
-  const timelineData = buildMultiYearTimelineData(filteredCropRotations, [year]);
+  const timelineData = buildMultiYearTimelineData(filteredCropRotations, [
+    year,
+  ]);
 
   function handleBarPress(rotationId: string, _plotName: string) {
     const plotId = cropRotations?.find((cr) => cr.id === rotationId)?.plotId;

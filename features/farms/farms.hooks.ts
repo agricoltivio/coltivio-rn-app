@@ -1,5 +1,11 @@
 import { useApi } from "@/api/api";
-import { AcceptInviteResult, Farm, FarmCreated, FarmInvite, FarmUpdateInput } from "@/api/farms.api";
+import {
+  AcceptInviteResult,
+  Farm,
+  FarmCreated,
+  FarmInvite,
+  FarmUpdateInput,
+} from "@/api/farms.api";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { OnboardingData } from "../onboarding/OnboardingContext";
@@ -18,7 +24,7 @@ export function useFarmQuery(enabled: boolean = true) {
 
 export function useUpdateFarmMutation(
   onSuccess?: (farm: Farm) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const api = useApi();
   const queryClient = useQueryClient();
@@ -42,7 +48,7 @@ export function useUpdateFarmMutation(
 
 export function useCreateFarmMutation(
   onSuccess?: (farm: FarmCreated) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const api = useApi();
   const queryClient = useQueryClient();
@@ -77,7 +83,7 @@ export function useCreateFarmMutation(
 
 export function useAcceptInviteMutation(
   onSuccess?: (user: AcceptInviteResult) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const api = useApi();
   const queryClient = useQueryClient();
@@ -103,13 +109,17 @@ export function useFarmInvitesQuery() {
   });
 }
 
-export function useCreateInviteMutation(onSuccess?: (invite: FarmInvite) => void) {
+export function useCreateInviteMutation(
+  onSuccess?: (invite: FarmInvite) => void,
+) {
   const api = useApi();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (email: string) => api.farms.createInvite(email),
     onSuccess: (invite) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.farms.invites.queryKey });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.farms.invites.queryKey,
+      });
       onSuccess && onSuccess(invite);
     },
     onError: (error) => console.error(error),
@@ -122,7 +132,9 @@ export function useRevokeInviteMutation(onSuccess?: () => void) {
   return useMutation({
     mutationFn: (inviteId: string) => api.farms.revokeInvite(inviteId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.farms.invites.queryKey });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.farms.invites.queryKey,
+      });
       onSuccess && onSuccess();
     },
     onError: (error) => console.error(error),
@@ -146,8 +158,13 @@ export function useUpdateMemberRoleMutation(onSuccess?: () => void) {
   const api = useApi();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ userId, role }: { userId: string; role: "owner" | "member" }) =>
-      api.farms.updateMemberRole(userId, role),
+    mutationFn: ({
+      userId,
+      role,
+    }: {
+      userId: string;
+      role: "owner" | "member";
+    }) => api.farms.updateMemberRole(userId, role),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.users._def });
       onSuccess && onSuccess();
@@ -166,11 +183,13 @@ export function useMembership() {
   // Determine the most recent expiry date from paid period or trial
   const relevantEndDate = (() => {
     const lastPeriodEnd =
-      typeof membershipStatus?.lastPeriodEnd === "string" && membershipStatus.lastPeriodEnd.length > 0
+      typeof membershipStatus?.lastPeriodEnd === "string" &&
+      membershipStatus.lastPeriodEnd.length > 0
         ? new Date(membershipStatus.lastPeriodEnd)
         : null;
     const trialEnd =
-      typeof membershipStatus?.trialEnd === "string" && membershipStatus.trialEnd.length > 0
+      typeof membershipStatus?.trialEnd === "string" &&
+      membershipStatus.trialEnd.length > 0
         ? new Date(membershipStatus.trialEnd)
         : null;
     return lastPeriodEnd ?? trialEnd;
@@ -178,7 +197,9 @@ export function useMembership() {
 
   const daysSinceExpiry =
     relevantEndDate !== null
-      ? Math.floor((Date.now() - relevantEndDate.getTime()) / (1000 * 60 * 60 * 24))
+      ? Math.floor(
+          (Date.now() - relevantEndDate.getTime()) / (1000 * 60 * 60 * 24),
+        )
       : null;
 
   // Grace period: farm status is "none" but membership expired less than GRACE days ago
@@ -188,9 +209,10 @@ export function useMembership() {
     daysSinceExpiry >= 0 &&
     daysSinceExpiry < MEMBERSHIP_GRACE_PERIOD_DAYS;
 
-  const graceDaysRemaining = isInGracePeriod && daysSinceExpiry !== null
-    ? MEMBERSHIP_GRACE_PERIOD_DAYS - daysSinceExpiry
-    : 0;
+  const graceDaysRemaining =
+    isInGracePeriod && daysSinceExpiry !== null
+      ? MEMBERSHIP_GRACE_PERIOD_DAYS - daysSinceExpiry
+      : 0;
 
   const isActive = status === "active" || status === "trial" || isInGracePeriod;
   return { isActive, isInGracePeriod, graceDaysRemaining };
@@ -207,7 +229,7 @@ export function useMembershipStatusQuery() {
 
 export function useDeleteFarmMutation(
   onSuccess?: () => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const api = useApi();
   const queryClient = useQueryClient();

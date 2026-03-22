@@ -58,137 +58,137 @@ export function RecurrenceModal({
         onPress={onClose}
       >
         <KeyboardAvoidingView behavior="padding">
-        <Pressable
-          style={{
-            backgroundColor: theme.colors.white,
-            borderRadius: 16,
-            padding: theme.spacing.l,
-            width: "100%",
-            maxWidth: 320,
-          }}
-          onPress={(e) => e.stopPropagation()}
-        >
-          <Text
+          <Pressable
             style={{
-              fontSize: 18,
-              fontWeight: "700",
-              color: theme.colors.text,
-              marginBottom: theme.spacing.m,
-              textAlign: "center",
+              backgroundColor: theme.colors.white,
+              borderRadius: 16,
+              padding: theme.spacing.l,
+              width: "100%",
+              maxWidth: 320,
             }}
+            onPress={(e) => e.stopPropagation()}
           >
-            Yearly Recurrence
-          </Text>
-
-          <Text
-            style={{
-              fontSize: 14,
-              color: theme.colors.gray1,
-              marginBottom: theme.spacing.xs,
-            }}
-          >
-            Repeat every
-          </Text>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              gap: theme.spacing.s,
-              marginBottom: theme.spacing.m,
-            }}
-          >
-            <TextInput
-              value={String(interval)}
-              onChangeText={(text) => {
-                const num = parseInt(text);
-                if (!isNaN(num) && num > 0) setInterval(num);
-              }}
-              keyboardType="numbers-and-punctuation"
+            <Text
               style={{
-                width: 60,
-                borderWidth: 1,
-                borderColor: theme.colors.gray3,
-                borderRadius: 8,
-                paddingHorizontal: theme.spacing.s,
-                paddingVertical: 8,
-                fontSize: 16,
+                fontSize: 18,
+                fontWeight: "700",
+                color: theme.colors.text,
+                marginBottom: theme.spacing.m,
                 textAlign: "center",
               }}
-            />
-            <Text style={{ fontSize: 15, color: theme.colors.text }}>
-              {interval === 1 ? "year" : "years"}
+            >
+              Yearly Recurrence
             </Text>
-          </View>
 
-          <Text
-            style={{
-              fontSize: 14,
-              color: theme.colors.gray1,
-              marginBottom: theme.spacing.xs,
-            }}
-          >
-            Until
-          </Text>
-          <View style={{ marginBottom: theme.spacing.l }}>
-            <CompactDatePicker
-              date={until}
-              onDateChange={setUntil}
-              minimumDate={new Date()}
-            />
-          </View>
-
-          <View
-            style={{
-              flexDirection: "row",
-              gap: theme.spacing.s,
-            }}
-          >
-            <Pressable
-              onPress={() => {
-                onClear();
-                onClose();
-              }}
+            <Text
               style={{
-                flex: 1,
-                paddingVertical: 12,
-                backgroundColor: theme.colors.gray5,
-                borderRadius: 10,
-                alignItems: "center",
+                fontSize: 14,
+                color: theme.colors.gray1,
+                marginBottom: theme.spacing.xs,
               }}
             >
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontWeight: "600",
-                  color: theme.colors.gray1,
-                }}
-              >
-                Clear
-              </Text>
-            </Pressable>
-
-            <Pressable
-              onPress={handleSave}
+              Repeat every
+            </Text>
+            <View
               style={{
-                flex: 1,
-                paddingVertical: 12,
-                backgroundColor: theme.colors.primary,
-                borderRadius: 10,
+                flexDirection: "row",
                 alignItems: "center",
+                gap: theme.spacing.s,
+                marginBottom: theme.spacing.m,
               }}
             >
-              <Text
+              <TextInput
+                value={String(interval)}
+                onChangeText={(text) => {
+                  const num = parseInt(text);
+                  if (!isNaN(num) && num > 0) setInterval(num);
+                }}
+                keyboardType="numbers-and-punctuation"
                 style={{
-                  fontSize: 15,
-                  fontWeight: "600",
-                  color: theme.colors.white,
+                  width: 60,
+                  borderWidth: 1,
+                  borderColor: theme.colors.gray3,
+                  borderRadius: 8,
+                  paddingHorizontal: theme.spacing.s,
+                  paddingVertical: 8,
+                  fontSize: 16,
+                  textAlign: "center",
+                }}
+              />
+              <Text style={{ fontSize: 15, color: theme.colors.text }}>
+                {interval === 1 ? "year" : "years"}
+              </Text>
+            </View>
+
+            <Text
+              style={{
+                fontSize: 14,
+                color: theme.colors.gray1,
+                marginBottom: theme.spacing.xs,
+              }}
+            >
+              Until
+            </Text>
+            <View style={{ marginBottom: theme.spacing.l }}>
+              <CompactDatePicker
+                date={until}
+                onDateChange={setUntil}
+                minimumDate={new Date()}
+              />
+            </View>
+
+            <View
+              style={{
+                flexDirection: "row",
+                gap: theme.spacing.s,
+              }}
+            >
+              <Pressable
+                onPress={() => {
+                  onClear();
+                  onClose();
+                }}
+                style={{
+                  flex: 1,
+                  paddingVertical: 12,
+                  backgroundColor: theme.colors.gray5,
+                  borderRadius: 10,
+                  alignItems: "center",
                 }}
               >
-                Save
-              </Text>
-            </Pressable>
-          </View>
-        </Pressable>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: "600",
+                    color: theme.colors.gray1,
+                  }}
+                >
+                  Clear
+                </Text>
+              </Pressable>
+
+              <Pressable
+                onPress={handleSave}
+                style={{
+                  flex: 1,
+                  paddingVertical: 12,
+                  backgroundColor: theme.colors.primary,
+                  borderRadius: 10,
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontWeight: "600",
+                    color: theme.colors.white,
+                  }}
+                >
+                  Save
+                </Text>
+              </Pressable>
+            </View>
+          </Pressable>
         </KeyboardAvoidingView>
       </Pressable>
     </Modal>

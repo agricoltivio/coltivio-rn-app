@@ -103,7 +103,8 @@ describe("buildMultiYearTimelineData", () => {
     expect(bar.plotName).toBe("Field A");
     expect(bar.plotId).toBe("plot-1");
     const expectedStart = Math.floor(
-      (new Date("2024-03-01T00:00:00.000Z").getTime() - epochStart.getTime()) / MS_PER_DAY,
+      (new Date("2024-03-01T00:00:00.000Z").getTime() - epochStart.getTime()) /
+        MS_PER_DAY,
     );
     expect(bar.startDay).toBe(expectedStart);
   });
@@ -161,15 +162,33 @@ describe("buildMultiYearTimelineData", () => {
   });
 
   test("multiple plots: sorted alphabetically by plotName", () => {
-    const rotA = makeRotation("2024-01-01T00:00:00.000Z", "2024-06-30T00:00:00.000Z", "Crop", "p-z", "Zeta Field");
-    const rotB = makeRotation("2024-01-01T00:00:00.000Z", "2024-06-30T00:00:00.000Z", "Crop", "p-a", "Alpha Field");
+    const rotA = makeRotation(
+      "2024-01-01T00:00:00.000Z",
+      "2024-06-30T00:00:00.000Z",
+      "Crop",
+      "p-z",
+      "Zeta Field",
+    );
+    const rotB = makeRotation(
+      "2024-01-01T00:00:00.000Z",
+      "2024-06-30T00:00:00.000Z",
+      "Crop",
+      "p-a",
+      "Alpha Field",
+    );
     const result = buildMultiYearTimelineData([rotA, rotB], [2024]);
     expect(result.plots[0].plotName).toBe("Alpha Field");
     expect(result.plots[1].plotName).toBe("Zeta Field");
   });
 
   test("allPlots: plots with no rotations appear with empty bars", () => {
-    const rotation = makeRotation("2024-03-01T00:00:00.000Z", "2024-05-31T00:00:00.000Z", "Corn", "p-1", "Field 1");
+    const rotation = makeRotation(
+      "2024-03-01T00:00:00.000Z",
+      "2024-05-31T00:00:00.000Z",
+      "Corn",
+      "p-1",
+      "Field 1",
+    );
     const allPlots = [
       { id: "p-1", name: "Field 1" },
       { id: "p-2", name: "Field 2" },
@@ -181,8 +200,20 @@ describe("buildMultiYearTimelineData", () => {
   });
 
   test("multiple bars per plot: sorted by startDay", () => {
-    const rot1 = makeRotation("2024-07-01T00:00:00.000Z", "2024-09-30T00:00:00.000Z", "Sunflower", "p-1", "Field 1");
-    const rot2 = makeRotation("2024-01-01T00:00:00.000Z", "2024-03-31T00:00:00.000Z", "Wheat", "p-1", "Field 1");
+    const rot1 = makeRotation(
+      "2024-07-01T00:00:00.000Z",
+      "2024-09-30T00:00:00.000Z",
+      "Sunflower",
+      "p-1",
+      "Field 1",
+    );
+    const rot2 = makeRotation(
+      "2024-01-01T00:00:00.000Z",
+      "2024-03-31T00:00:00.000Z",
+      "Wheat",
+      "p-1",
+      "Field 1",
+    );
     const result = buildMultiYearTimelineData([rot1, rot2], [2024]);
     const bars = result.plots[0].bars;
     expect(bars[0].startDay).toBeLessThan(bars[1].startDay);

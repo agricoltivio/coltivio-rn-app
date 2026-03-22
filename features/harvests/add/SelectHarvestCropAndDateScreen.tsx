@@ -28,7 +28,8 @@ export function SelectHarvestCropAndDateScreen({
   const theme = useTheme();
 
   const { crops, isFetched: cropsLoaded } = useCropsQuery();
-  const { setHarvest, setSelectedCrop, harvest, reset } = useCreateHarvestStore();
+  const { setHarvest, setSelectedCrop, harvest, reset } =
+    useCreateHarvestStore();
 
   const preselectedCropId = route.params?.cropId;
 

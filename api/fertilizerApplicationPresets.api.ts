@@ -12,8 +12,13 @@ export type FertilizerApplicationPresetUpdateInput =
 
 export function fertilizerApplicationPresetsApi(client: FetchClient) {
   return {
-    async getFertilizerApplicationPresets(): Promise<FertilizerApplicationPreset[]> {
-      const { data } = await client.GET("/v1/fertilizerApplications/presets", {});
+    async getFertilizerApplicationPresets(): Promise<
+      FertilizerApplicationPreset[]
+    > {
+      const { data } = await client.GET(
+        "/v1/fertilizerApplications/presets",
+        {},
+      );
       return data!.data.result;
     },
 
@@ -48,9 +53,12 @@ export function fertilizerApplicationPresetsApi(client: FetchClient) {
     },
 
     async deleteFertilizerApplicationPreset(presetId: string): Promise<void> {
-      await client.DELETE("/v1/fertilizerApplications/presets/byId/{presetId}", {
-        params: { path: { presetId } },
-      });
+      await client.DELETE(
+        "/v1/fertilizerApplications/presets/byId/{presetId}",
+        {
+          params: { path: { presetId } },
+        },
+      );
     },
   };
 }

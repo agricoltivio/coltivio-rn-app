@@ -22,7 +22,7 @@ export function SearchFarmLocationModal({
   const updateFarmMutation = useUpdateFarmMutation(() => navigation.goBack());
 
   const { addresses, isFetching } = useGeoAdminAddressQuery(
-    debouncedLocationSearchText
+    debouncedLocationSearchText,
   );
   function handleLocationSearchTextChange(value: string) {
     setLocationSearchText(value);

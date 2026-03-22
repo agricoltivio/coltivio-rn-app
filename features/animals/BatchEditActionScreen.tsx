@@ -16,12 +16,7 @@ import {
 } from "./animals.hooks";
 import { BatchEditActionScreenProps } from "./navigation/animals-routes";
 
-type ActionType =
-  | "type"
-  | "death"
-  | "registered"
-  | "usage"
-  | "delete";
+type ActionType = "type" | "death" | "registered" | "usage" | "delete";
 
 type FormValues = {
   action: ActionType;
@@ -74,7 +69,19 @@ export function BatchEditActionScreen({
 
     // Build the batch update payload based on the selected action
     if (values.action === "type") {
-      batchUpdate.mutate({ animalIds, data: { type: values.type as "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer" } });
+      batchUpdate.mutate({
+        animalIds,
+        data: {
+          type: values.type as
+            | "goat"
+            | "sheep"
+            | "cow"
+            | "horse"
+            | "donkey"
+            | "pig"
+            | "deer",
+        },
+      });
     } else if (values.action === "death") {
       batchUpdate.mutate({
         animalIds,
@@ -84,16 +91,25 @@ export function BatchEditActionScreen({
         },
       });
     } else if (values.action === "registered") {
-      batchUpdate.mutate({ animalIds, data: { registered: values.registered } });
+      batchUpdate.mutate({
+        animalIds,
+        data: { registered: values.registered },
+      });
     } else if (values.action === "usage") {
-      batchUpdate.mutate({ animalIds, data: { usage: values.usage as "milk" | "other" } });
+      batchUpdate.mutate({
+        animalIds,
+        data: { usage: values.usage as "milk" | "other" },
+      });
     }
   }
 
   const actionData = [
     { label: t("animals.batch_edit.action_set_type"), value: "type" },
     { label: t("animals.batch_edit.action_set_death"), value: "death" },
-    { label: t("animals.batch_edit.action_set_registered"), value: "registered" },
+    {
+      label: t("animals.batch_edit.action_set_registered"),
+      value: "registered",
+    },
     { label: t("animals.batch_edit.action_set_usage"), value: "usage" },
     { label: t("animals.batch_edit.action_delete"), value: "delete" },
   ];

@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity, View } from "react-native";
-import styled, { useTheme } from "styled-components/native";
+import { TouchableOpacity } from "react-native";
+import { useTheme } from "styled-components/native";
 
 export type CheckboxProps = {
   checked?: boolean;

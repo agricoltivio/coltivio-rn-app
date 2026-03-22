@@ -9,7 +9,12 @@ import { round } from "@/utils/math";
 import Fuse from "fuse.js";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, SectionList, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  SectionList,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useTheme } from "styled-components/native";
 import { PlotHarvestsScreenProps } from "./navigation/plots-routes";
 import {
@@ -31,8 +36,10 @@ export function PlotHarvestsScreen({
   const [viewMode, setViewMode] = useState<ViewMode>("dashboard");
   const [searchText, setSearchText] = useState("");
 
-  const { harvests, isLoading: harvestsLoading } = useHarvestsOfPlotQuery(plotId);
-  const { harvestSummaries, isLoading: summariesLoading } = useHarvestSummariesOfPlotQuery(plotId);
+  const { harvests, isLoading: harvestsLoading } =
+    useHarvestsOfPlotQuery(plotId);
+  const { harvestSummaries, isLoading: summariesLoading } =
+    useHarvestSummariesOfPlotQuery(plotId);
 
   // Build SectionList sections for the list view
   const sections = useMemo(() => {
@@ -72,7 +79,11 @@ export function PlotHarvestsScreen({
   }, [harvests, searchText, t]);
 
   const renderItem = useCallback(
-    ({ item: harvest }: { item: (typeof sections)[number]["data"][number] }) => (
+    ({
+      item: harvest,
+    }: {
+      item: (typeof sections)[number]["data"][number];
+    }) => (
       <ListItem
         key={harvest.id}
         onPress={() =>
@@ -128,9 +139,7 @@ export function PlotHarvestsScreen({
           ) : !harvestSummaries || harvestSummaries.length === 0 ? (
             <Headline>{t("common.no_entries")}</Headline>
           ) : (
-            <HarvestDashboard
-              harvestSummaries={harvestSummaries}
-            />
+            <HarvestDashboard harvestSummaries={harvestSummaries} />
           )}
         </ScrollView>
       )}

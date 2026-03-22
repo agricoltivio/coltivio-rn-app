@@ -59,7 +59,12 @@ export function FieldCalendarScreen({ navigation }: FieldCalendarScreenProps) {
                   const itemId = item.itemId as ItemId;
                   const itemMeta = FIELD_CALENDAR_ITEMS[itemId];
                   if (!itemMeta) return null;
-                  if ("membershipRequired" in itemMeta && itemMeta.membershipRequired && !isActive) return null;
+                  if (
+                    "membershipRequired" in itemMeta &&
+                    itemMeta.membershipRequired &&
+                    !isActive
+                  )
+                    return null;
 
                   return (
                     <List.Item

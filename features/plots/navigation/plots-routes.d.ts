@@ -33,7 +33,9 @@ export type PlotsMapScreenProps = StackScreenProps<"PlotsMap">;
 
 export type AddPlotSummaryScreenProps = StackScreenProps<"AddPlotSummary">;
 
-export type EditPlotScreenProps = StackScreenProps<"EditPlot"> | StackScreenProps<"EditPlotModal">;
+export type EditPlotScreenProps =
+  | StackScreenProps<"EditPlot">
+  | StackScreenProps<"EditPlotModal">;
 
 export type DeletePlotScreenProps = StackScreenProps<"DeletePlot">;
 
@@ -48,7 +50,8 @@ export type PlotHarvestsScreenProps = StackScreenProps<"PlotHarvests">;
 
 export type PlotTillagesScreenProps = StackScreenProps<"PlotTillages">;
 
-export type SplitPlotOnboardingScreenProps = StackScreenProps<"SplitPlotOnboarding">;
+export type SplitPlotOnboardingScreenProps =
+  StackScreenProps<"SplitPlotOnboarding">;
 export type SplitPlotSummaryScreenProps = StackScreenProps<"SplitPlotSummary">;
 export type MergePlotSummaryScreenProps = StackScreenProps<"MergePlotSummary">;
 export type PlotListScreenProps = StackScreenProps<"PlotList">;

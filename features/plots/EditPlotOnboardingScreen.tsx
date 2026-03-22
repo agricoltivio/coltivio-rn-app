@@ -38,9 +38,7 @@ export function EditPlotOnboardingScreen() {
         {t("map_draw_onboarding.edit_intro_heading")}
       </H1>
       <IconBadge name="vector-square-edit" />
-      <H3
-        style={{ color: theme.colors.primary, textAlign: "center" }}
-      >
+      <H3 style={{ color: theme.colors.primary, textAlign: "center" }}>
         {t("map_draw_onboarding.edit_intro_body")}
       </H3>
     </View>,
@@ -49,9 +47,7 @@ export function EditPlotOnboardingScreen() {
         {t("map_draw_onboarding.finish_heading")}
       </H1>
       <IconBadge name="check" />
-      <H3
-        style={{ color: theme.colors.primary, textAlign: "center" }}
-      >
+      <H3 style={{ color: theme.colors.primary, textAlign: "center" }}>
         {t("map_draw_onboarding.finish_body")}
       </H3>
     </View>,

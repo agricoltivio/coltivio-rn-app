@@ -268,8 +268,12 @@ function SummaryItem({
         alignItems: "flex-start",
       }}
     >
-      <Label numberOfLines={1} style={{ flexShrink: 0 }}>{label}</Label>
-      <Label style={{ flex: 1, fontSize: 18, textAlign: "right" }}>{value}</Label>
+      <Label numberOfLines={1} style={{ flexShrink: 0 }}>
+        {label}
+      </Label>
+      <Label style={{ flex: 1, fontSize: 18, textAlign: "right" }}>
+        {value}
+      </Label>
     </View>
   );
 }
