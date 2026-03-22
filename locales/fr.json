@@ -1373,6 +1373,7 @@
     "expiry_banner": "Votre adhésion expire dans {{days}} jours.",
     "trial_expiry_banner": "Votre période d'essai expire dans {{days}} jours.",
     "expired_banner": "Votre adhésion a expiré.",
+    "expired_grace_banner": "Votre adhésion a expiré. Accès maintenu encore {{days}} jours.",
     "farmAlreadyHasMembership": "L'un de vos collègues est déjà membre de l'association — votre exploitation a déjà un accès complet. Vous pouvez quand même souscrire votre propre adhésion et soutenir l'association.",
     "delete_account_warning": "Vous avez une adhésion active. Si vous supprimez votre compte, vous perdrez l'accès à la gestion de l'adhésion. Conservez votre compte pour gérer l'adhésion sur app.coltivio.ch."
   }

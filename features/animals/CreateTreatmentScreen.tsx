@@ -95,6 +95,7 @@ export function CreateTreatmentScreen({
 
   const selectedDrugId = watch("drugId");
   const treatmentDate = watch("startDate");
+  const endDate = watch("endDate");
 
   // shouldDirty: true ensures drug-sync effect fires when returning from CreateDrug.
   useEffect(() => {
@@ -185,10 +186,10 @@ export function CreateTreatmentScreen({
       setValue("isAntibiotic", selectedDrug.isAntibiotic);
       setValue("criticalAntibiotic", selectedDrug.criticalAntibiotic);
       setValue("drugReceivedFrom", selectedDrug.receivedFrom);
-      if (drugValidation.valid && drugValidation.milkDays !== undefined && treatmentDate) {
-        setValue("milkUsableDate", addDays(treatmentDate, drugValidation.milkDays));
-        setValue("meatUsableDate", addDays(treatmentDate, drugValidation.meatDays!));
-        setValue("organsUsableDate", addDays(treatmentDate, drugValidation.organsDays!));
+      if (drugValidation.valid && drugValidation.milkDays !== undefined && endDate) {
+        setValue("milkUsableDate", addDays(endDate, drugValidation.milkDays));
+        setValue("meatUsableDate", addDays(endDate, drugValidation.meatDays!));
+        setValue("organsUsableDate", addDays(endDate, drugValidation.organsDays!));
         setValue("drugDoseValue", String(drugValidation.doseValue));
         setValue("drugDoseUnit", drugValidation.doseUnit);
         setValue("drugDosePerUnit", drugValidation.dosePerUnit);
@@ -204,17 +205,17 @@ export function CreateTreatmentScreen({
       setValue("drugDoseUnit", undefined);
       setValue("drugDosePerUnit", undefined);
     }
-  }, [selectedDrugId, selectedDrug, dirtyFields.drugId, drugValidation, treatmentDate, setValue]);
+  }, [selectedDrugId, selectedDrug, dirtyFields.drugId, drugValidation, endDate, setValue]);
 
-  // Recalculate waiting dates when start date changes.
+  // Recalculate waiting dates when end date changes.
   // Dose fields intentionally excluded so user overrides survive date changes.
   useEffect(() => {
-    if (drugValidation.valid && drugValidation.milkDays !== undefined && treatmentDate) {
-      setValue("milkUsableDate", addDays(treatmentDate, drugValidation.milkDays));
-      setValue("meatUsableDate", addDays(treatmentDate, drugValidation.meatDays!));
-      setValue("organsUsableDate", addDays(treatmentDate, drugValidation.organsDays!));
+    if (drugValidation.valid && drugValidation.milkDays !== undefined && endDate) {
+      setValue("milkUsableDate", addDays(endDate, drugValidation.milkDays));
+      setValue("meatUsableDate", addDays(endDate, drugValidation.meatDays!));
+      setValue("organsUsableDate", addDays(endDate, drugValidation.organsDays!));
     }
-  }, [treatmentDate, drugValidation, setValue]);
+  }, [endDate, drugValidation, setValue]);
 
   const createTreatmentMutation = useCreateTreatmentMutation(
     () => navigation.goBack(),

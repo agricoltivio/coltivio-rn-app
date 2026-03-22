@@ -25,7 +25,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { t } = useTranslation();
   const { user } = useUserQuery();
   const { farm } = useFarmQuery();
-  const { isActive } = useMembership();
+  const { isActive, isInGracePeriod, graceDaysRemaining } = useMembership();
   const { membershipStatus } = useMembershipStatusQuery();
   const theme = useTheme();
   const { localSettings, updateLocalSettings } = useLocalSettings();
@@ -120,9 +120,11 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const showExpirySoonBanner =
     !!membershipStatus && isCancelled && !isBannerDismissed && isActive &&
     daysUntilExpiry !== null && daysUntilExpiry >= 0 && daysUntilExpiry <= 10;
-  // Show expired notice only to the user who had the membership
+  // Show expired/grace notice to the user who had the membership.
+  // isInGracePeriod means isActive=true, so we check it separately.
   const showExpiredBanner =
-    !!membershipStatus && isCancelled && !isBannerDismissed && !isActive && relevantExpiryIso !== null;
+    !!membershipStatus && isCancelled && !isBannerDismissed &&
+    (isInGracePeriod || (!isActive && relevantExpiryIso !== null));
 
   function dismissMembershipBanner() {
     if (relevantExpiryIso) {
@@ -166,7 +168,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
             {showExpiredBanner ? (
               <TouchableOpacity
                 style={{
-                  backgroundColor: theme.colors.danger,
+                  backgroundColor: isInGracePeriod ? theme.colors.yellow : theme.colors.danger,
                   borderRadius: theme.radii.m,
                   padding: theme.spacing.m,
                   marginTop: theme.spacing.m,
@@ -177,11 +179,23 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                 activeOpacity={0.8}
                 onPress={() => navigation.navigate("UserMembership")}
               >
-                <H2 style={{ color: theme.colors.white, fontSize: 15, flex: 1 }}>
-                  {t("membership.expired_banner")}
+                <H2
+                  style={{
+                    color: isInGracePeriod ? theme.colors.black : theme.colors.white,
+                    fontSize: 15,
+                    flex: 1,
+                  }}
+                >
+                  {isInGracePeriod
+                    ? t("membership.expired_grace_banner", { days: graceDaysRemaining })
+                    : t("membership.expired_banner")}
                 </H2>
                 <TouchableOpacity onPress={dismissMembershipBanner} hitSlop={8}>
-                  <Ionicons name="close" size={20} color={theme.colors.white} />
+                  <Ionicons
+                    name="close"
+                    size={20}
+                    color={isInGracePeriod ? theme.colors.black : theme.colors.white}
+                  />
                 </TouchableOpacity>
               </TouchableOpacity>
             ) : null}

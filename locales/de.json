@@ -1375,6 +1375,7 @@
     "expiry_banner": "Deine Mitgliedschaft endet in {{days}} Tagen.",
     "trial_expiry_banner": "Deine Testphase endet in {{days}} Tagen.",
     "expired_banner": "Deine Mitgliedschaft ist abgelaufen.",
+    "expired_grace_banner": "Deine Mitgliedschaft ist abgelaufen. Du hast noch {{days}} Tage Zugang.",
     "farmAlreadyHasMembership": "Einer deiner Hofmitglieder ist bereits Vereinsmitglied — dein Hof hat bereits vollen Zugang. Du kannst trotzdem eine eigene Mitgliedschaft abschliessen und den Verein unterstützen.",
     "delete_account_warning": "Du hast eine aktive Mitgliedschaft. Wenn du dein Konto löschst, verlierst du den Zugang zur Mitgliedschaftsverwaltung. Behalte dein Konto um die Mitgliedschaft auf app.coltivio.ch zu verwalten."
   }

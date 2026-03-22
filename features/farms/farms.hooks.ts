@@ -156,11 +156,44 @@ export function useUpdateMemberRoleMutation(onSuccess?: () => void) {
   });
 }
 
+const MEMBERSHIP_GRACE_PERIOD_DAYS = 10;
+
 export function useMembership() {
   const { farm } = useFarmQuery();
+  const { membershipStatus } = useMembershipStatusQuery();
   const status = farm?.membership.status;
-  const isActive = status === "active" || status === "trial";
-  return { isActive };
+
+  // Determine the most recent expiry date from paid period or trial
+  const relevantEndDate = (() => {
+    const lastPeriodEnd =
+      typeof membershipStatus?.lastPeriodEnd === "string" && membershipStatus.lastPeriodEnd.length > 0
+        ? new Date(membershipStatus.lastPeriodEnd)
+        : null;
+    const trialEnd =
+      typeof membershipStatus?.trialEnd === "string" && membershipStatus.trialEnd.length > 0
+        ? new Date(membershipStatus.trialEnd)
+        : null;
+    return lastPeriodEnd ?? trialEnd;
+  })();
+
+  const daysSinceExpiry =
+    relevantEndDate !== null
+      ? Math.floor((Date.now() - relevantEndDate.getTime()) / (1000 * 60 * 60 * 24))
+      : null;
+
+  // Grace period: farm status is "none" but membership expired less than GRACE days ago
+  const isInGracePeriod =
+    status === "none" &&
+    daysSinceExpiry !== null &&
+    daysSinceExpiry >= 0 &&
+    daysSinceExpiry < MEMBERSHIP_GRACE_PERIOD_DAYS;
+
+  const graceDaysRemaining = isInGracePeriod && daysSinceExpiry !== null
+    ? MEMBERSHIP_GRACE_PERIOD_DAYS - daysSinceExpiry
+    : 0;
+
+  const isActive = status === "active" || status === "trial" || isInGracePeriod;
+  return { isActive, isInGracePeriod, graceDaysRemaining };
 }
 
 export function useMembershipStatusQuery() {

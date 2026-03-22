@@ -1373,6 +1373,7 @@
     "expiry_banner": "Il tuo abbonamento scade in {{days}} giorni.",
     "trial_expiry_banner": "Il tuo periodo di prova scade in {{days}} giorni.",
     "expired_banner": "Il tuo abbonamento è scaduto.",
+    "expired_grace_banner": "Il tuo abbonamento è scaduto. Accesso ancora disponibile per {{days}} giorni.",
     "farmAlreadyHasMembership": "Uno dei tuoi colleghi ha già un'iscrizione all'associazione — il tuo hof ha già accesso completo. Puoi comunque sottoscrivere una tua iscrizione e supportare l'associazione.",
     "delete_account_warning": "Hai un abbonamento attivo. Se elimini il tuo account, perderai l'accesso alla gestione dell'abbonamento. Mantieni il tuo account per gestire l'abbonamento su app.coltivio.ch."
   }
