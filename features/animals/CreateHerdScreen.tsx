@@ -87,7 +87,10 @@ export function CreateHerdScreen({
             ? {
                 frequency: s.recurrence.frequency,
                 interval: s.recurrence.interval,
+                byWeekday: s.recurrence.byWeekday ?? null,
+                byMonthDay: s.recurrence.byMonthDay ?? null,
                 until: s.recurrence.until ?? null,
+                count: s.recurrence.count ?? null,
               }
             : null,
         })),
