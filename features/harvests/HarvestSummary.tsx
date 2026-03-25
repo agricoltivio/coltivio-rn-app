@@ -75,14 +75,17 @@ export function HarvestSummary({
   const harvestCentroid = turf.centroid(harvestAreas[0].geometry);
   const center = harvestCentroid.geometry.coordinates as LngLat;
 
-  const features = useMemo((): GeoJSON.FeatureCollection => ({
-    type: "FeatureCollection",
-    features: harvestAreas.map((area) => ({
-      type: "Feature",
-      properties: {},
-      geometry: area.geometry,
-    })),
-  }), [harvestAreas]);
+  const features = useMemo(
+    (): GeoJSON.FeatureCollection => ({
+      type: "FeatureCollection",
+      features: harvestAreas.map((area) => ({
+        type: "Feature",
+        properties: {},
+        geometry: area.geometry,
+      })),
+    }),
+    [harvestAreas],
+  );
   const formattedDate = formatLocalizedDate(date, locale, "long");
   return (
     <ScrollView

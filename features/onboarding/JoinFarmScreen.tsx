@@ -17,9 +17,8 @@ export function JoinFarmScreen({ navigation }: JoinFarmScreenProps) {
   const [code, setCode] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const acceptInviteMutation = useAcceptInviteMutation(
-    undefined,
-    () => setErrorMessage(t("onboarding.join_farm.invalid_code")),
+  const acceptInviteMutation = useAcceptInviteMutation(undefined, () =>
+    setErrorMessage(t("onboarding.join_farm.invalid_code")),
   );
 
   function onSubmit() {
@@ -29,7 +28,9 @@ export function JoinFarmScreen({ navigation }: JoinFarmScreenProps) {
 
   return (
     <ContentView headerVisible={false}>
-      <View style={{ justifyContent: "center", flex: 1, padding: theme.spacing.m }}>
+      <View
+        style={{ justifyContent: "center", flex: 1, padding: theme.spacing.m }}
+      >
         <H1 style={{ color: theme.colors.primary }}>
           {t("onboarding.join_farm.heading")}
         </H1>
@@ -49,7 +50,9 @@ export function JoinFarmScreen({ navigation }: JoinFarmScreenProps) {
           />
         </View>
         {errorMessage != null && (
-          <ErrorText style={{ marginTop: theme.spacing.s }}>{errorMessage}</ErrorText>
+          <ErrorText style={{ marginTop: theme.spacing.s }}>
+            {errorMessage}
+          </ErrorText>
         )}
         <View style={{ marginTop: theme.spacing.l }}>
           <Button

@@ -75,7 +75,14 @@ export function SelectAnimalsModal({
     }
 
     return result.sort((a, b) => a.name.localeCompare(b.name));
-  }, [animals, selectedTypes, showSelectedOnly, selectedIds, birthdayFrom, birthdayTo]);
+  }, [
+    animals,
+    selectedTypes,
+    showSelectedOnly,
+    selectedIds,
+    birthdayFrom,
+    birthdayTo,
+  ]);
 
   // Fuse.js search
   const fuse = new Fuse(filteredAnimals, {
@@ -192,7 +199,10 @@ export function SelectAnimalsModal({
         horizontal
         showsHorizontalScrollIndicator={false}
         style={{ marginTop: theme.spacing.s, flexGrow: 0 }}
-        contentContainerStyle={{ gap: theme.spacing.xs, paddingVertical: theme.spacing.xs }}
+        contentContainerStyle={{
+          gap: theme.spacing.xs,
+          paddingVertical: theme.spacing.xs,
+        }}
       >
         <FilterChip
           label={t("animals.selected_only")}

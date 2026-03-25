@@ -18,8 +18,7 @@ export type HarvestDetailsScreenProps = StackScreenProps<"HarvestDetails">;
 export type SelectHarvestCropAndDateScreenProps =
   StackScreenProps<"SelectHarvestCropAndDate">;
 
-export type ConfigureHarvestScreenProps =
-  StackScreenProps<"ConfigureHarvest">;
+export type ConfigureHarvestScreenProps = StackScreenProps<"ConfigureHarvest">;
 
 export type SetHarvestQuantityScreenProps =
   StackScreenProps<"SetHarvestQuantity">;

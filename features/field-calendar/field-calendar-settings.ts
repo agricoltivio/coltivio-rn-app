@@ -41,6 +41,7 @@ export const FIELD_CALENDAR_ITEMS = {
   fieldEventsMap: {
     translationKey: "field_calendar.field_events_map",
     route: "FieldEventsMap",
+    membershipRequired: true,
   },
 } as const;
 

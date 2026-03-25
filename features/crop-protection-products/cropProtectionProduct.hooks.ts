@@ -19,7 +19,7 @@ export function useCropProtectionProductsQuery(enabled: boolean = true) {
 
 export function useCropProtectionProductByIdQuery(
   cropProtectionProductId: string,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
@@ -27,7 +27,7 @@ export function useCropProtectionProductByIdQuery(
       .queryKey,
     queryFn: () =>
       api.cropProtectionProducts.getCropProtectionProductById(
-        cropProtectionProductId
+        cropProtectionProductId,
       ),
     enabled,
   });
@@ -36,14 +36,14 @@ export function useCropProtectionProductByIdQuery(
 
 export function useCreateCropProtectionProductMutation(
   onSuccess?: (cropProtectionProduct: CropProtectionProduct) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
     mutationFn: (cropProtectionProduct: CropProtectionProductCreateInput) => {
       return api.cropProtectionProducts.createCropProtectionProduct(
-        cropProtectionProduct
+        cropProtectionProduct,
       );
     },
     onSuccess: (cropProtectionProduct) => {
@@ -58,7 +58,7 @@ export function useCreateCropProtectionProductMutation(
 
 export function useUpdateCropProtectionProductMutation(
   onSuccess?: (cropProtectionProduct: CropProtectionProduct) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const api = useApi();
   const queryClient = useQueryClient();
@@ -69,7 +69,7 @@ export function useUpdateCropProtectionProductMutation(
     }: CropProtectionProductUpdateInput & { id: string }) => {
       return api.cropProtectionProducts.updateCropProtectionProduct(
         id,
-        cropProtectionProduct
+        cropProtectionProduct,
       );
     },
     onSuccess: (cropProtectionProduct) => {
@@ -84,14 +84,14 @@ export function useUpdateCropProtectionProductMutation(
 
 export function useDeleteCropProtectionProductMutation(
   onSuccess?: () => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const api = useApi();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (cropProtectionProductId: string) => {
       await api.cropProtectionProducts.deleteCropProtectionProduct(
-        cropProtectionProductId
+        cropProtectionProductId,
       );
       return cropProtectionProductId;
     },
@@ -110,7 +110,7 @@ export function useDeleteCropProtectionProductMutation(
 
 export function useIsCropProtectionProductInUseQuery(
   cropProtectionProductId: string,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
@@ -118,7 +118,7 @@ export function useIsCropProtectionProductInUseQuery(
       .queryKey,
     queryFn: () =>
       api.cropProtectionProducts.isCropProtectionProductInUse(
-        cropProtectionProductId
+        cropProtectionProductId,
       ),
     enabled,
   });

@@ -91,9 +91,7 @@ export function PlotTillagesScreen({
       );
     }
     if (selectedActions.size > 0) {
-      filtered = filtered.filter((til) =>
-        selectedActions.has(til.actionLabel),
-      );
+      filtered = filtered.filter((til) => selectedActions.has(til.actionLabel));
     }
     if (searchText) {
       const fuse = new Fuse(filtered, {

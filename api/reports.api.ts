@@ -29,10 +29,15 @@ export function reportsApi(client: FetchClient) {
       });
       return data!.data;
     },
-    async downloadOutdoorJournalReport(input: DownloadOutdoorJournalReportInput) {
-      const { data } = await client.POST("/v1/reports/outdoorjournal/download", {
-        body: input,
-      });
+    async downloadOutdoorJournalReport(
+      input: DownloadOutdoorJournalReportInput,
+    ) {
+      const { data } = await client.POST(
+        "/v1/reports/outdoorjournal/download",
+        {
+          body: input,
+        },
+      );
       return data!.data;
     },
   };

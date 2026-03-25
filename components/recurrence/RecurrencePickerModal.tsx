@@ -26,11 +26,19 @@ export function RecurrencePickerModal({
 
   // Re-sync draft when the modal opens; default to weekly/1 if no existing value
   useEffect(() => {
-    if (visible) setDraft(value ?? { frequency: "weekly", interval: 1, until: null });
-  }, [visible]);
+    if (visible)
+      setDraft(value ?? { frequency: "weekly", interval: 1, until: null });
+  // value is intentionally excluded: draft should only sync when the modal opens,
+  // not while the user is editing inside it.
+  }, [visible]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      onRequestClose={onClose}
+    >
       {visible && (
         <Pressable
           style={{
@@ -42,7 +50,10 @@ export function RecurrencePickerModal({
           }}
           onPress={onClose}
         >
-          <KeyboardAvoidingView behavior="padding" style={{ width: "100%", maxWidth: 360 }}>
+          <KeyboardAvoidingView
+            behavior="padding"
+            style={{ width: "100%", maxWidth: 360 }}
+          >
             <Pressable
               style={{
                 backgroundColor: theme.colors.white,
@@ -53,7 +64,13 @@ export function RecurrencePickerModal({
               }}
               onPress={(e) => e.stopPropagation()}
             >
-              <Text style={{ fontSize: 18, fontWeight: "700", color: theme.colors.text }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: "700",
+                  color: theme.colors.text,
+                }}
+              >
                 {t("tasks.recurrence")}
               </Text>
 
@@ -70,12 +87,21 @@ export function RecurrencePickerModal({
                     alignItems: "center",
                   }}
                 >
-                  <Text style={{ fontSize: 15, fontWeight: "600", color: theme.colors.gray1 }}>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "600",
+                      color: theme.colors.gray1,
+                    }}
+                  >
                     {t("buttons.cancel")}
                   </Text>
                 </Pressable>
                 <Pressable
-                  onPress={() => { onConfirm(draft); onClose(); }}
+                  onPress={() => {
+                    onConfirm(draft);
+                    onClose();
+                  }}
                   style={{
                     flex: 1,
                     paddingVertical: 12,
@@ -84,7 +110,13 @@ export function RecurrencePickerModal({
                     alignItems: "center",
                   }}
                 >
-                  <Text style={{ fontSize: 15, fontWeight: "600", color: theme.colors.white }}>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "600",
+                      color: theme.colors.white,
+                    }}
+                  >
                     {t("buttons.confirm")}
                   </Text>
                 </Pressable>

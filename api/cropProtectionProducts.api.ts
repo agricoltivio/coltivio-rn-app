@@ -19,7 +19,7 @@ export function cropProtectionProductsApi(client: FetchClient) {
       return data!.data.result;
     },
     async getCropProtectionProductById(
-      cropProtectionProductId: string
+      cropProtectionProductId: string,
     ): Promise<CropProtectionProduct> {
       const { data } = await client.GET(
         "/v1/cropProtectionProducts/byId/{cropProtectionProductId}",
@@ -29,13 +29,13 @@ export function cropProtectionProductsApi(client: FetchClient) {
               cropProtectionProductId,
             },
           },
-        }
+        },
       );
       return data!.data;
     },
 
     async createCropProtectionProduct(
-      cropProtectionProduct: CropProtectionProductCreateInput
+      cropProtectionProduct: CropProtectionProductCreateInput,
     ): Promise<CropProtectionProduct> {
       const { data } = await client.POST("/v1/cropProtectionProducts", {
         body: cropProtectionProduct,
@@ -45,7 +45,7 @@ export function cropProtectionProductsApi(client: FetchClient) {
 
     async updateCropProtectionProduct(
       cropProtectionProductId: string,
-      cropProtectionProduct: CropProtectionProductUpdateInput
+      cropProtectionProduct: CropProtectionProductUpdateInput,
     ): Promise<CropProtectionProduct> {
       const { data: newData } = await client.PATCH(
         "/v1/cropProtectionProducts/byId/{cropProtectionProductId}",
@@ -56,7 +56,7 @@ export function cropProtectionProductsApi(client: FetchClient) {
             },
           },
           body: cropProtectionProduct,
-        }
+        },
       );
       return newData!.data;
     },
@@ -70,11 +70,11 @@ export function cropProtectionProductsApi(client: FetchClient) {
               cropProtectionProductId,
             },
           },
-        }
+        },
       );
     },
     async isCropProtectionProductInUse(
-      cropProtectionProductId: string
+      cropProtectionProductId: string,
     ): Promise<boolean> {
       const { data } = await client.GET(
         "/v1/cropProtectionProducts/byId/{cropProtectionProductId}/inUse",
@@ -84,7 +84,7 @@ export function cropProtectionProductsApi(client: FetchClient) {
               cropProtectionProductId,
             },
           },
-        }
+        },
       );
       return data!.data.inUse;
     },

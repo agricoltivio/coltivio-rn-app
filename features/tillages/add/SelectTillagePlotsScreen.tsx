@@ -46,7 +46,13 @@ export function SelectTillagePlotsScreen({
   );
 
   const handleDrawComplete = useCallback(
-    (intersections: Array<{ plot: Plot; geometry: GeoJSON.MultiPolygon; size: number }>) => {
+    (
+      intersections: Array<{
+        plot: Plot;
+        geometry: GeoJSON.MultiPolygon;
+        size: number;
+      }>,
+    ) => {
       for (const { plot, geometry, size } of intersections) {
         putPlot({
           name: plot.name,
@@ -77,7 +83,9 @@ export function SelectTillagePlotsScreen({
         onDrawComplete={handleDrawComplete}
         enableDrawing
         portalName="AddTillageMap"
-        onNavigateToOnboarding={() => navigation.navigate("SelectPlotsOnboarding")}
+        onNavigateToOnboarding={() =>
+          navigation.navigate("SelectPlotsOnboarding")
+        }
       />
     </ContentView>
   );

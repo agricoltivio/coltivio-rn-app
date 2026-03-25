@@ -1,5 +1,5 @@
 import { OutdoorSchedule } from "@/api/herds.api";
-import { addWeeks, addMonths, addYears } from "date-fns";
+import { addWeeks, addMonths, addYears, setDay, getDay } from "date-fns";
 
 export type OutdoorBar = {
   scheduleId: string;
@@ -31,6 +31,16 @@ export type OutdoorTimelineData = {
 
 const MS_PER_DAY = 86_400_000;
 
+const WEEKDAY_INDEX: Record<string, number> = {
+  SU: 0,
+  MO: 1,
+  TU: 2,
+  WE: 3,
+  TH: 4,
+  FR: 5,
+  SA: 6,
+};
+
 function daysBetween(a: Date, b: Date): number {
   return Math.floor((b.getTime() - a.getTime()) / MS_PER_DAY);
 }
@@ -44,7 +54,10 @@ type ScheduleInput = {
   recurrence: {
     frequency: "weekly" | "monthly" | "yearly";
     interval: number;
+    byWeekday: string[] | null;
+    byMonthDay: number | null;
     until: string | null;
+    count: number | null;
   } | null;
 };
 
@@ -57,34 +70,39 @@ export function buildOutdoorTimelineData(
   const currentYear = new Date().getFullYear();
   const startYear = currentYear - 3;
   const endYear = currentYear + 3;
-  const years = Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i);
+  const years = Array.from(
+    { length: endYear - startYear + 1 },
+    (_, i) => startYear + i,
+  );
 
   const epochStart = new Date(startYear, 0, 1);
   const epochEnd = new Date(endYear, 11, 31, 23, 59, 59, 999);
   const totalDays = daysBetween(epochStart, epochEnd) + 1;
 
-  const herdRows: OutdoorHerdData[] = herds.map(({ herdId, herdName, schedules }) => {
-    const bars: OutdoorBar[] = [];
+  const herdRows: OutdoorHerdData[] = herds.map(
+    ({ herdId, herdName, schedules }) => {
+      const bars: OutdoorBar[] = [];
 
-    for (const schedule of schedules) {
-      const occurrences = expandSchedule(schedule, epochStart, epochEnd);
-      for (const occ of occurrences) {
-        bars.push({
-          scheduleId: schedule.id,
-          herdName,
-          herdId,
-          startDay: occ.startDay,
-          endDay: occ.endDay,
-          isOpenEnded: occ.isOpenEnded,
-          notes: schedule.notes,
-          scheduleType: schedule.type,
-        });
+      for (const schedule of schedules) {
+        const occurrences = expandSchedule(schedule, epochStart, epochEnd);
+        for (const occ of occurrences) {
+          bars.push({
+            scheduleId: schedule.id,
+            herdName,
+            herdId,
+            startDay: occ.startDay,
+            endDay: occ.endDay,
+            isOpenEnded: occ.isOpenEnded,
+            notes: schedule.notes,
+            scheduleType: schedule.type,
+          });
+        }
       }
-    }
 
-    bars.sort((a, b) => a.startDay - b.startDay);
-    return { herdId, herdName, bars };
-  });
+      bars.sort((a, b) => a.startDay - b.startDay);
+      return { herdId, herdName, bars };
+    },
+  );
 
   return { herds: herdRows, epochStart, totalDays, years };
 }
@@ -109,7 +127,10 @@ export function buildSingleHerdTimelineData(
           ? {
               frequency: s.recurrence.frequency,
               interval: s.recurrence.interval,
+              byWeekday: s.recurrence.byWeekday ?? null,
+              byMonthDay: s.recurrence.byMonthDay ?? null,
               until: s.recurrence.until,
+              count: s.recurrence.count ?? null,
             }
           : null,
       })),
@@ -153,40 +174,69 @@ function expandSchedule(
   }
 
   // Recurring: expand using interval and frequency
-  const { frequency, interval, until } = schedule.recurrence;
+  const { frequency, interval, until, count, byWeekday, byMonthDay } =
+    schedule.recurrence;
   const untilDate = until ? new Date(until) : epochEnd;
   const limit = Math.min(untilDate.getTime(), epochEnd.getTime());
   const results: OccurrenceResult[] = [];
   let current = new Date(baseStart);
-  // Safety: cap at 500 occurrences to avoid runaway loops
-  let count = 0;
+  let occurrenceCount = 0;
 
-  while (current.getTime() <= limit && count < 500) {
-    const occStart = current;
-    const occEnd = new Date(occStart.getTime() + durationMs);
+  while (current.getTime() <= limit && occurrenceCount < 500) {
+    if (count !== null && occurrenceCount >= count) break;
 
-    const clampedStart = occStart < epochStart ? epochStart : occStart;
-    const clampedEnd = occEnd > epochEnd ? epochEnd : occEnd;
-
-    if (clampedEnd >= epochStart && clampedStart <= epochEnd) {
-      results.push({
-        startDay: daysBetween(epochStart, clampedStart),
-        endDay: daysBetween(epochStart, clampedEnd),
-        isOpenEnded: false,
-      });
+    if (frequency === "weekly" && byWeekday && byWeekday.length > 0) {
+      // Emit one occurrence per specified weekday within this week iteration
+      for (const wd of byWeekday) {
+        if (count !== null && occurrenceCount >= count) break;
+        const occStart = setDay(current, WEEKDAY_INDEX[wd], {
+          weekStartsOn: getDay(current) as 0 | 1 | 2 | 3 | 4 | 5 | 6,
+        });
+        if (occStart < baseStart) continue;
+        const occEnd = new Date(occStart.getTime() + durationMs);
+        const clampedStart = occStart < epochStart ? epochStart : occStart;
+        const clampedEnd = occEnd > epochEnd ? epochEnd : occEnd;
+        if (clampedEnd >= epochStart && clampedStart <= epochEnd) {
+          results.push({
+            startDay: daysBetween(epochStart, clampedStart),
+            endDay: daysBetween(epochStart, clampedEnd),
+            isOpenEnded: false,
+          });
+        }
+        occurrenceCount++;
+      }
+    } else {
+      let occStart = current;
+      if (frequency === "monthly" && byMonthDay !== null) {
+        occStart = new Date(occStart);
+        occStart.setDate(byMonthDay);
+      }
+      const occEnd = new Date(occStart.getTime() + durationMs);
+      const clampedStart = occStart < epochStart ? epochStart : occStart;
+      const clampedEnd = occEnd > epochEnd ? epochEnd : occEnd;
+      if (clampedEnd >= epochStart && clampedStart <= epochEnd) {
+        results.push({
+          startDay: daysBetween(epochStart, clampedStart),
+          endDay: daysBetween(epochStart, clampedEnd),
+          isOpenEnded: false,
+        });
+      }
+      occurrenceCount++;
     }
 
-    // Advance to next occurrence
-    count++;
+    // Advance to the next week/month/year iteration
     switch (frequency) {
       case "weekly":
-        current = addWeeks(baseStart, count * interval);
+        current = addWeeks(
+          baseStart,
+          Math.floor(occurrenceCount / (byWeekday?.length ?? 1)) * interval,
+        );
         break;
       case "monthly":
-        current = addMonths(baseStart, count * interval);
+        current = addMonths(baseStart, occurrenceCount * interval);
         break;
       case "yearly":
-        current = addYears(baseStart, count * interval);
+        current = addYears(baseStart, occurrenceCount * interval);
         break;
     }
   }

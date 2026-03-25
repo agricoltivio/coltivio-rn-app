@@ -28,7 +28,7 @@ export function layersApi(client: FetchClient) {
     async getPlotsWithinRadiusOfPoint(
       latitude: number,
       longitude: number,
-      radiusInKm: number
+      radiusInKm: number,
     ) {
       const { data } = await client.GET("/v1/layers/plots/radius", {
         params: {
@@ -51,7 +51,7 @@ export function layersApi(client: FetchClient) {
               federalFarmId,
             },
           },
-        }
+        },
       );
       return data!.data.result;
     },
@@ -65,7 +65,7 @@ export function layersApi(client: FetchClient) {
               bufferInKm,
             },
           },
-        }
+        },
       );
       return data!.data.result;
     },
@@ -74,7 +74,7 @@ export function layersApi(client: FetchClient) {
       longitude: number,
       latitude: number,
       radiusInKm: number,
-      limit: number
+      limit: number,
     ): Promise<string[]> {
       const { data } = await client.GET("/v1/layers/federalFarmIds", {
         params: {

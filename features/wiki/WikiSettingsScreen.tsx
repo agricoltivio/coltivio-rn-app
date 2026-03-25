@@ -18,7 +18,9 @@ export function WikiSettingsScreen() {
         <Switch
           label={t("wiki.only_private")}
           value={localSettings.wikiOnlyPrivate}
-          onChange={(e) => updateLocalSettings("wikiOnlyPrivate", e.nativeEvent.value)}
+          onChange={(e) =>
+            updateLocalSettings("wikiOnlyPrivate", e.nativeEvent.value)
+          }
           style={{ marginTop: theme.spacing.l }}
         />
       </ContentView>

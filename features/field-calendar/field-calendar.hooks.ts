@@ -21,11 +21,13 @@ export function useDownloadFieldCalendarReportMutation(
   const api = useApi();
   return useMutation({
     mutationFn: async (input: GenerateFieldCalendarReportInput) => {
-      const { base64, fileName } = await api.reports.downloadFieldCalendarReport(input);
+      const { base64, fileName } =
+        await api.reports.downloadFieldCalendarReport(input);
       const file = new File(Paths.cache, fileName);
       file.write(base64, { encoding: "base64" });
       await shareAsync(file.uri, {
-        mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        mimeType:
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
     },
     onSuccess,

@@ -61,7 +61,13 @@ export function SelectCropProtectionApplicationPlotsScreen({
   );
 
   const handleDrawComplete = useCallback(
-    (intersections: Array<{ plot: Plot; geometry: GeoJSON.MultiPolygon; size: number }>) => {
+    (
+      intersections: Array<{
+        plot: Plot;
+        geometry: GeoJSON.MultiPolygon;
+        size: number;
+      }>,
+    ) => {
       for (const { plot, geometry, size } of intersections) {
         putPlot({
           name: plot.name,
@@ -86,7 +92,8 @@ export function SelectCropProtectionApplicationPlotsScreen({
               const unit = data?.unit;
 
               if (unit === "amount_per_hectare") {
-                const totalHectares = selectedPlots.reduce((acc, p) => acc + p.size, 0) / 10000;
+                const totalHectares =
+                  selectedPlots.reduce((acc, p) => acc + p.size, 0) / 10000;
                 setTotalNumberOfUnits(totalHectares);
                 for (const plot of selectedPlots) {
                   putPlot({ ...plot, numberOfUnits: plot.size / 10000 });
@@ -117,7 +124,9 @@ export function SelectCropProtectionApplicationPlotsScreen({
         onDrawComplete={handleDrawComplete}
         enableDrawing
         portalName="CropProtectionApplicationMap"
-        onNavigateToOnboarding={() => navigation.navigate("SelectPlotsOnboarding")}
+        onNavigateToOnboarding={() =>
+          navigation.navigate("SelectPlotsOnboarding")
+        }
       />
     </ContentView>
   );

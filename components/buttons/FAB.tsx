@@ -1,8 +1,7 @@
 import { ColtivioTheme } from "@/theme/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import styled, { useTheme } from "styled-components/native";
+import { useTheme } from "styled-components/native";
 
 type FABProps = {
   icon: {
@@ -15,7 +14,6 @@ type FABProps = {
 
 export function FAB({ onPress, color: type = "mocha", icon }: FABProps) {
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
   return (
     <View
       style={{
@@ -45,14 +43,3 @@ export function FAB({ onPress, color: type = "mocha", icon }: FABProps) {
     </View>
   );
 }
-
-const ButtonContainer = styled.TouchableOpacity<{
-  type: "primary" | "secondary" | "accent";
-}>`
-  background-color: ${({ theme, type }) => theme.colors[type]};
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  justify-content: center;
-  align-items: center;
-`;

@@ -20,12 +20,29 @@ import {
 import { ManageAnimalCategoriesScreenProps } from "./navigation/animals-routes";
 
 const CATEGORY_OPTIONS = [
-  "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9",
-  "B1", "B2", "B3",
-  "C1", "C2",
-  "D1", "D2", "D3",
-  "E1", "E2", "E3", "E4",
-  "F1", "F2",
+  "A1",
+  "A2",
+  "A3",
+  "A4",
+  "A5",
+  "A6",
+  "A7",
+  "A8",
+  "A9",
+  "B1",
+  "B2",
+  "B3",
+  "C1",
+  "C2",
+  "D1",
+  "D2",
+  "D3",
+  "E1",
+  "E2",
+  "E3",
+  "E4",
+  "F1",
+  "F2",
 ].map((val) => ({ label: val, value: val }));
 
 type CategoryEntry = {
@@ -119,7 +136,8 @@ export function ManageAnimalCategoriesScreen({
   function handleModalConfirm() {
     const newEntry: CategoryEntry = {
       startDate: modalStartDate.toISOString(),
-      endDate: modalHasEndDate && modalEndDate ? modalEndDate.toISOString() : null,
+      endDate:
+        modalHasEndDate && modalEndDate ? modalEndDate.toISOString() : null,
       category: modalCategory,
     };
     if (editingIndex !== null) {

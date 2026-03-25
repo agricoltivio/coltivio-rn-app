@@ -66,7 +66,7 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
         console.error(
           "Missing access_token or refresh_token",
           access_token != null,
-          refresh_token != null
+          refresh_token != null,
         );
         setUrlError(t("errors.unexpected"));
         return;

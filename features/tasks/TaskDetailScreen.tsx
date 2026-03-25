@@ -10,7 +10,15 @@ import { H2, Subtitle } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Alert, FlatList, Modal, Pressable, ScrollView as RNScrollView, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  Modal,
+  Pressable,
+  ScrollView as RNScrollView,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 import {
@@ -29,7 +37,13 @@ type LinkDetailModalProps = {
   onNavigate: (link: TaskDetail["links"][number]) => void;
 };
 
-function LinkDetailModal({ visible, items, linkTypeLabel, onClose, onNavigate }: LinkDetailModalProps) {
+function LinkDetailModal({
+  visible,
+  items,
+  linkTypeLabel,
+  onClose,
+  onNavigate,
+}: LinkDetailModalProps) {
   const theme = useTheme();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
@@ -43,20 +57,49 @@ function LinkDetailModal({ visible, items, linkTypeLabel, onClose, onNavigate }:
   const filtered = useMemo(() => {
     if (!search) return items;
     const q = search.toLowerCase();
-    return items.filter((i) => (i.displayName ?? i.linkedId).toLowerCase().includes(q));
+    return items.filter((i) =>
+      (i.displayName ?? i.linkedId).toLowerCase().includes(q),
+    );
   }, [items, search]);
 
   return (
-    <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
+    <Modal
+      visible={visible}
+      animationType="slide"
+      presentationStyle="pageSheet"
+      onRequestClose={onClose}
+    >
       <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
-        <View style={{ paddingTop: insets.top, backgroundColor: theme.colors.background }}>
-          <View style={{ height: 44, flexDirection: "row", alignItems: "center", paddingHorizontal: 8, justifyContent: "flex-end" }}>
-            <Pressable onPress={onClose} style={{ paddingHorizontal: 8, paddingVertical: 4 }}>
+        <View
+          style={{
+            paddingTop: insets.top,
+            backgroundColor: theme.colors.background,
+          }}
+        >
+          <View
+            style={{
+              height: 44,
+              flexDirection: "row",
+              alignItems: "center",
+              paddingHorizontal: 8,
+              justifyContent: "flex-end",
+            }}
+          >
+            <Pressable
+              onPress={onClose}
+              style={{ paddingHorizontal: 8, paddingVertical: 4 }}
+            >
               <Ionicons name="close" size={28} color={theme.colors.primary} />
             </Pressable>
           </View>
         </View>
-        <View style={{ flex: 1, paddingHorizontal: theme.spacing.m, paddingTop: theme.spacing.s }}>
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: theme.spacing.m,
+            paddingTop: theme.spacing.s,
+          }}
+        >
           <H2>{linkTypeLabel}</H2>
           <View style={{ marginTop: theme.spacing.m }}>
             <TextInput
@@ -70,11 +113,22 @@ function LinkDetailModal({ visible, items, linkTypeLabel, onClose, onNavigate }:
             <FlatList
               data={filtered}
               keyExtractor={(item) => item.id}
-              contentContainerStyle={{ borderTopRightRadius: 10, borderTopLeftRadius: 10, overflow: "hidden", backgroundColor: filtered.length > 0 ? theme.colors.white : undefined }}
+              contentContainerStyle={{
+                borderTopRightRadius: 10,
+                borderTopLeftRadius: 10,
+                overflow: "hidden",
+                backgroundColor:
+                  filtered.length > 0 ? theme.colors.white : undefined,
+              }}
               renderItem={({ item }) => (
-                <ListItem style={{ paddingVertical: 5 }} onPress={() => onNavigate(item)}>
+                <ListItem
+                  style={{ paddingVertical: 5 }}
+                  onPress={() => onNavigate(item)}
+                >
                   <ListItem.Content>
-                    <ListItem.Title>{item.displayName ?? item.linkedId}</ListItem.Title>
+                    <ListItem.Title>
+                      {item.displayName ?? item.linkedId}
+                    </ListItem.Title>
                   </ListItem.Content>
                   <ListItem.Chevron />
                 </ListItem>
@@ -87,7 +141,10 @@ function LinkDetailModal({ visible, items, linkTypeLabel, onClose, onNavigate }:
   );
 }
 
-function recurrenceSummary(value: { frequency: string; interval: number }, t: (key: string) => string): string {
+function recurrenceSummary(
+  value: { frequency: string; interval: number },
+  t: (key: string) => string,
+): string {
   const n = value.interval;
   const unitSingular: Record<string, string> = {
     weekly: t("animals.week"),
@@ -99,7 +156,10 @@ function recurrenceSummary(value: { frequency: string; interval: number }, t: (k
     monthly: t("animals.months"),
     yearly: t("animals.years"),
   };
-  const unit = n === 1 ? (unitSingular[value.frequency] ?? value.frequency) : (unitPlural[value.frequency] ?? value.frequency);
+  const unit =
+    n === 1
+      ? (unitSingular[value.frequency] ?? value.frequency)
+      : (unitPlural[value.frequency] ?? value.frequency);
   return `${t("animals.every")} ${n} ${unit}`;
 }
 
@@ -136,15 +196,27 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
   const deleteMutation = useDeleteTaskMutation(() => navigation.goBack());
 
   const [linkDetailVisible, setLinkDetailVisible] = useState(false);
-  const [linkDetailItems, setLinkDetailItems] = useState<TaskDetail["links"]>([]);
+  const [linkDetailItems, setLinkDetailItems] = useState<TaskDetail["links"]>(
+    [],
+  );
   const [linkDetailType, setLinkDetailType] = useState<LinkType>("animal");
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <View style={{ flexDirection: "row" }}>
-          <Ionicons name="create-outline" size={35} color={theme.colors.primary} onPress={() => navigation.navigate("TaskForm", { taskId })} />
-          <Ionicons name="trash-outline" size={35} color={theme.colors.danger} onPress={onDeletePress} />
+          <Ionicons
+            name="create-outline"
+            size={35}
+            color={theme.colors.primary}
+            onPress={() => navigation.navigate("TaskForm", { taskId })}
+          />
+          <Ionicons
+            name="trash-outline"
+            size={35}
+            color={theme.colors.danger}
+            onPress={onDeletePress}
+          />
         </View>
       ),
     });
@@ -165,7 +237,9 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
     if (!task) return;
     const nextStatus = task.status === "todo" ? "done" : "todo";
     setStatusMutation.mutate(nextStatus, {
-      onSuccess: () => { if (nextStatus === "done") navigation.goBack(); },
+      onSuccess: () => {
+        if (nextStatus === "done") navigation.goBack();
+      },
     });
   }
 
@@ -175,7 +249,10 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
     for (const link of task.links) {
       map.set(link.linkType, [...(map.get(link.linkType) ?? []), link]);
     }
-    return Array.from(map.entries()).map(([linkType, items]) => ({ linkType, items }));
+    return Array.from(map.entries()).map(([linkType, items]) => ({
+      linkType,
+      items,
+    }));
   }, [task?.links]);
 
   function openLinkGroup(linkType: LinkType, items: TaskDetail["links"]) {
@@ -220,147 +297,197 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
 
   return (
     <>
-    <ContentView headerVisible footerComponent={
-      <BottomActionContainer>
-        <Button
-          title={task.status === "done" ? t("tasks.reopen") : t("tasks.mark_done")}
-          onPress={onToggleStatus}
-          loading={setStatusMutation.isPending}
-        />
-      </BottomActionContainer>
-    }>
-      <ScrollView>
-        <H2>{task.name}</H2>
+      <ContentView
+        headerVisible
+        footerComponent={
+          <BottomActionContainer>
+            <Button
+              title={
+                task.status === "done"
+                  ? t("tasks.reopen")
+                  : t("tasks.mark_done")
+              }
+              onPress={onToggleStatus}
+              loading={setStatusMutation.isPending}
+            />
+          </BottomActionContainer>
+        }
+      >
+        <ScrollView>
+          <H2>{task.name}</H2>
 
-        {/* Status + due date + assignee + labels as chips */}
-        {(task.status === "done" || task.dueDate != null || task.assignee != null || task.labels.length > 0) && (
-          <RNScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={{ marginTop: theme.spacing.s }}
-            contentContainerStyle={{ gap: theme.spacing.xs, paddingVertical: theme.spacing.xs }}
-          >
-            {task.status === "done" && (
-              <Chip
-                label={t("tasks.status_done")}
-                bgColor={theme.colors.success}
-                textColor={theme.colors.white}
-              />
-            )}
-            {task.dueDate != null && (
-              <Chip
-                label={new Date(task.dueDate as string).toLocaleDateString()}
-                bgColor={theme.colors.danger}
-                textColor={theme.colors.white}
-              />
-            )}
-            {task.assignee != null && (
-              <Chip
-                label={task.assignee.fullName ?? task.assignee.email}
-                bgColor={theme.colors.blue}
-                textColor={theme.colors.white}
-              />
-            )}
-            {task.labels.map((label) => (
-              <Chip key={label} label={label} />
-            ))}
-          </RNScrollView>
-        )}
-
-        {/* Description */}
-        {task.description != null && (
-          <View style={{ marginTop: theme.spacing.l }}>
-            <Subtitle style={{ color: theme.colors.gray2, marginBottom: theme.spacing.xxs }}>
-              {t("forms.labels.description")}
-            </Subtitle>
-            <Subtitle>{task.description}</Subtitle>
-          </View>
-        )}
-
-        {/* Recurrence */}
-        {task.recurrence != null && (
-          <Row label={t("tasks.recurrence")}>
-            <Subtitle>{recurrenceSummary(task.recurrence, (k) => t(k))}</Subtitle>
-          </Row>
-        )}
-
-        {/* Checklist */}
-        {task.checklistItems.length > 0 && (
-          <View style={{ marginTop: theme.spacing.m }}>
-            <Subtitle style={{ color: theme.colors.gray2, marginBottom: theme.spacing.xs }}>
-              {t("tasks.checklist")}
-            </Subtitle>
-            {task.checklistItems.map((item) => (
-              <Pressable
-                key={item.id}
-                onPress={() =>
-                  toggleChecklistMutation.mutate({ itemId: item.id, done: !item.done })
-                }
-                style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.s, paddingVertical: theme.spacing.xs }}
-              >
-                <Ionicons
-                  name={item.done ? "checkbox" : "square-outline"}
-                  size={22}
-                  color={item.done ? theme.colors.primary : theme.colors.gray3}
+          {/* Status + due date + assignee + labels as chips */}
+          {(task.status === "done" ||
+            task.dueDate != null ||
+            task.assignee != null ||
+            task.labels.length > 0) && (
+            <RNScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={{ marginTop: theme.spacing.s }}
+              contentContainerStyle={{
+                gap: theme.spacing.xs,
+                paddingVertical: theme.spacing.xs,
+              }}
+            >
+              {task.status === "done" && (
+                <Chip
+                  label={t("tasks.status_done")}
+                  bgColor={theme.colors.success}
+                  textColor={theme.colors.white}
                 />
-                <View>
-                  <Subtitle style={item.done ? { textDecorationLine: "line-through", color: theme.colors.gray3 } : undefined}>
-                    {item.name}
-                  </Subtitle>
-                  {item.dueDate != null && (
-                    <Subtitle style={{ fontSize: 11, color: theme.colors.gray2 }}>
-                      {new Date(item.dueDate as string).toLocaleDateString()}
+              )}
+              {task.dueDate != null && (
+                <Chip
+                  label={new Date(task.dueDate as string).toLocaleDateString()}
+                  bgColor={theme.colors.danger}
+                  textColor={theme.colors.white}
+                />
+              )}
+              {task.assignee != null && (
+                <Chip
+                  label={task.assignee.fullName ?? task.assignee.email}
+                  bgColor={theme.colors.blue}
+                  textColor={theme.colors.white}
+                />
+              )}
+              {task.labels.map((label) => (
+                <Chip key={label} label={label} />
+              ))}
+            </RNScrollView>
+          )}
+
+          {/* Description */}
+          {task.description != null && (
+            <View style={{ marginTop: theme.spacing.l }}>
+              <Subtitle
+                style={{
+                  color: theme.colors.gray2,
+                  marginBottom: theme.spacing.xxs,
+                }}
+              >
+                {t("forms.labels.description")}
+              </Subtitle>
+              <Subtitle>{task.description}</Subtitle>
+            </View>
+          )}
+
+          {/* Recurrence */}
+          {task.recurrence != null && (
+            <Row label={t("tasks.recurrence")}>
+              <Subtitle>
+                {recurrenceSummary(task.recurrence, (k) => t(k))}
+              </Subtitle>
+            </Row>
+          )}
+
+          {/* Checklist */}
+          {task.checklistItems.length > 0 && (
+            <View style={{ marginTop: theme.spacing.m }}>
+              <Subtitle
+                style={{
+                  color: theme.colors.gray2,
+                  marginBottom: theme.spacing.xs,
+                }}
+              >
+                {t("tasks.checklist")}
+              </Subtitle>
+              {task.checklistItems.map((item) => (
+                <Pressable
+                  key={item.id}
+                  onPress={() =>
+                    toggleChecklistMutation.mutate({
+                      itemId: item.id,
+                      done: !item.done,
+                    })
+                  }
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: theme.spacing.s,
+                    paddingVertical: theme.spacing.xs,
+                  }}
+                >
+                  <Ionicons
+                    name={item.done ? "checkbox" : "square-outline"}
+                    size={22}
+                    color={
+                      item.done ? theme.colors.primary : theme.colors.gray3
+                    }
+                  />
+                  <View>
+                    <Subtitle
+                      style={
+                        item.done
+                          ? {
+                              textDecorationLine: "line-through",
+                              color: theme.colors.gray3,
+                            }
+                          : undefined
+                      }
+                    >
+                      {item.name}
                     </Subtitle>
-                  )}
-                </View>
-              </Pressable>
-            ))}
-          </View>
-        )}
+                    {item.dueDate != null && (
+                      <Subtitle
+                        style={{ fontSize: 11, color: theme.colors.gray2 }}
+                      >
+                        {new Date(item.dueDate as string).toLocaleDateString()}
+                      </Subtitle>
+                    )}
+                  </View>
+                </Pressable>
+              ))}
+            </View>
+          )}
 
-        {/* Links */}
-        {groupedLinks.length > 0 && (
-          <View style={{ gap: theme.spacing.s, marginTop: theme.spacing.m }}>
-            <Subtitle style={{ color: theme.colors.gray2 }}>{t("tasks.links")}</Subtitle>
-            {groupedLinks.map(({ linkType, items }) => {
-              const title: string =
-                items.length === 1
-                  ? (items[0].displayName ?? items[0].linkedId)
-                  : `${items.length} ${linkTypePluralLabels[linkType]}`;
-              return (
-                <View key={linkType} style={{ gap: theme.spacing.xs }}>
-                  <Subtitle style={{ color: theme.colors.gray2 }}>{linkTypeLabels[linkType]}</Subtitle>
-                  <ListItem
-                    style={{
-                      backgroundColor: theme.colors.white,
-                      borderRadius: 8,
-                      borderWidth: 1,
-                      borderColor: theme.colors.primary,
-                    }}
-                    onPress={() => openLinkGroup(linkType, items)}
-                  >
-                    <ListItem.Content>
-                      <ListItem.Title style={{ color: theme.colors.primary }}>
-                        {title}
-                      </ListItem.Title>
-                    </ListItem.Content>
-                    <ListItem.Chevron />
-                  </ListItem>
-                </View>
-              );
-            })}
-          </View>
-        )}
-      </ScrollView>
-    </ContentView>
+          {/* Links */}
+          {groupedLinks.length > 0 && (
+            <View style={{ gap: theme.spacing.s, marginTop: theme.spacing.m }}>
+              <Subtitle style={{ color: theme.colors.gray2 }}>
+                {t("tasks.links")}
+              </Subtitle>
+              {groupedLinks.map(({ linkType, items }) => {
+                const title: string =
+                  items.length === 1
+                    ? (items[0].displayName ?? items[0].linkedId)
+                    : `${items.length} ${linkTypePluralLabels[linkType]}`;
+                return (
+                  <View key={linkType} style={{ gap: theme.spacing.xs }}>
+                    <Subtitle style={{ color: theme.colors.gray2 }}>
+                      {linkTypeLabels[linkType]}
+                    </Subtitle>
+                    <ListItem
+                      style={{
+                        backgroundColor: theme.colors.white,
+                        borderRadius: 8,
+                        borderWidth: 1,
+                        borderColor: theme.colors.primary,
+                      }}
+                      onPress={() => openLinkGroup(linkType, items)}
+                    >
+                      <ListItem.Content>
+                        <ListItem.Title style={{ color: theme.colors.primary }}>
+                          {title}
+                        </ListItem.Title>
+                      </ListItem.Content>
+                      <ListItem.Chevron />
+                    </ListItem>
+                  </View>
+                );
+              })}
+            </View>
+          )}
+        </ScrollView>
+      </ContentView>
 
-    <LinkDetailModal
-      visible={linkDetailVisible}
-      items={linkDetailItems}
-      linkTypeLabel={linkTypePluralLabels[linkDetailType]}
-      onClose={() => setLinkDetailVisible(false)}
-      onNavigate={navigateToLink}
-    />
+      <LinkDetailModal
+        visible={linkDetailVisible}
+        items={linkDetailItems}
+        linkTypeLabel={linkTypePluralLabels[linkDetailType]}
+        onClose={() => setLinkDetailVisible(false)}
+        onNavigate={navigateToLink}
+      />
     </>
   );
 }
@@ -370,9 +497,12 @@ function Row({ label, children }: RowProps) {
   const theme = useTheme();
   return (
     <View style={{ marginTop: theme.spacing.m }}>
-      <Subtitle style={{ color: theme.colors.gray2, marginBottom: theme.spacing.xxs }}>{label}</Subtitle>
+      <Subtitle
+        style={{ color: theme.colors.gray2, marginBottom: theme.spacing.xxs }}
+      >
+        {label}
+      </Subtitle>
       {children}
     </View>
   );
 }
-

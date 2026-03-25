@@ -315,7 +315,8 @@
     "delete_farm": "Supprimer la ferme",
     "enter_farm_name_to_delete": "Pour supprimer votre ferme, entrez le nom de la ferme et confirmez l'action.",
     "chose_option_to_delete_account": "Si vous souhaitez également supprimer votre compte, activez l'option 'Supprimer le compte'.",
-    "delete_account": "Supprimer le compte"
+    "delete_account": "Supprimer le compte",
+    "membership": "Adhésion"
   },
   "plots": {
     "plots": "Champs",
@@ -957,15 +958,24 @@
     }
   },
   "agri_coltivio": {
+    "promo_intro": "Ravi que tu utilises Coltivio !",
     "subheading": "Ensemble pour une agriculture libre et indépendante",
     "section_1": "AgriColtivio, qui a développé cette application, est une association à but non lucratif visant à renforcer les petites et moyennes exploitations agricoles.",
+    "section_1_pre": "AgriColtivio, qui a développé cette application, est une ",
+    "section_1_bold": "association à but non lucratif",
+    "section_1_post": " visant à renforcer les petites et moyennes exploitations agricoles.",
+    "community_text": "Rejoignez une communauté qui défend une agriculture ouverte et équitable.",
+    "community_text_2": "Participez aux décisions sur l'évolution du projet et profitez des échanges avec d'autres membres ainsi que d'autres avantages.",
     "section_2": "Cette application est open source, ce qui signifie que le code source est accessible publiquement - transparent et vérifiable.",
     "section_3_bold": "La sécurité des données est une priorité absolue.",
     "section_3": "Toutes les données sont stockées exclusivement sur des serveurs situés dans l'UE et sont soumises aux strictes réglementations RGPD en matière de protection des données.",
-    "section_4": "Le fonctionnement et le développement de cette application sont financés uniquement par des dons volontaires.",
-    "section_5_title": "Aidez à maintenir l'application gratuite et indépendante pour tous.",
-    "section_5": "Devenez membre ou soutenez-nous par un don. Chaque contribution compte – grande ou petite.",
-    "section_6": "Merci de faire partie de l'aventure."
+    "section_4": "Le fonctionnement et le développement de cette application sont financés uniquement par des dons et des cotisations.",
+    "support_prefix": "Soutenez-nous par un ",
+    "support_donation": "don",
+    "support_middle": " ou devenez ",
+    "support_member": "membre",
+    "become_member": "En savoir plus",
+    "support_suffix": "."
   },
   "ear_tags": {
     "ear_tags": "Marques auriculaires",
@@ -1344,5 +1354,27 @@
       "step4_heading": "Masquer les entrées publiques",
       "step4_body": "Appuyez sur l'icône des paramètres pour afficher uniquement vos entrées privées."
     }
+  },
+  "membership": {
+    "title": "Adhésion",
+    "status_label": "Statut",
+    "status_trial": "Période d'essai",
+    "status_active": "Actif",
+    "status_inactive": "Inactif",
+    "auto_renewing": "Renouvellement automatique",
+    "cancels_at_period_end": "Résiliation en fin de période",
+    "trial_ends": "La période d'essai se termine le",
+    "starts_after_trial": "Votre abonnement démarrera automatiquement après la période d'essai.",
+    "valid_until": "Valable jusqu'au",
+    "manage": "Gérer l'adhésion",
+    "become_member": "En savoir plus",
+    "community_heading": "Rejoignez la communauté",
+    "community_text": "Rejoignez une communauté qui défend une agriculture ouverte et équitable. Aidez à développer le projet et profitez d'avantages réservés exclusivement aux membres.",
+    "expiry_banner": "Votre adhésion expire dans {{days}} jours.",
+    "trial_expiry_banner": "Votre période d'essai expire dans {{days}} jours.",
+    "expired_banner": "Votre adhésion a expiré.",
+    "expired_grace_banner": "Votre adhésion a expiré. Accès maintenu encore {{days}} jours.",
+    "farmAlreadyHasMembership": "L'un de vos collègues est déjà membre de l'association — votre exploitation a déjà un accès complet. Vous pouvez quand même souscrire votre propre adhésion et soutenir l'association.",
+    "delete_account_warning": "Vous avez une adhésion active. Si vous supprimez votre compte, vous perdrez l'accès à la gestion de l'adhésion. Conservez votre compte pour gérer l'adhésion sur app.coltivio.ch."
   }
 }

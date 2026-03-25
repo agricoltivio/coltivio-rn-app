@@ -143,7 +143,7 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
       options={{ title: "" }}
       component={TreatmentsExportScreen}
     />,
-<Stack.Screen
+    <Stack.Screen
       key="create-treatment"
       name="CreateTreatment"
       options={{ title: "" }}

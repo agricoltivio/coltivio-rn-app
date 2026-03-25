@@ -7,8 +7,7 @@ export type Task =
 export type TaskDetail =
   components["schemas"]["GetV1TasksByIdTaskIdPositiveResponse"]["data"];
 
-export type TaskCreateInput =
-  components["schemas"]["PostV1TasksRequestBody"];
+export type TaskCreateInput = components["schemas"]["PostV1TasksRequestBody"];
 
 export type TaskUpdateInput =
   components["schemas"]["PatchV1TasksByIdTaskIdRequestBody"];
@@ -42,7 +41,10 @@ export function tasksApi(client: FetchClient) {
       return data!.data;
     },
 
-    async updateTask(taskId: string, body: TaskUpdateInput): Promise<TaskDetail> {
+    async updateTask(
+      taskId: string,
+      body: TaskUpdateInput,
+    ): Promise<TaskDetail> {
       const { data } = await client.PATCH("/v1/tasks/byId/{taskId}", {
         params: { path: { taskId } },
         body,
@@ -56,7 +58,10 @@ export function tasksApi(client: FetchClient) {
       });
     },
 
-    async setTaskStatus(taskId: string, status: TaskStatus): Promise<TaskStatusUpdateResult> {
+    async setTaskStatus(
+      taskId: string,
+      status: TaskStatus,
+    ): Promise<TaskStatusUpdateResult> {
       const { data } = await client.PATCH("/v1/tasks/byId/{taskId}/status", {
         params: { path: { taskId } },
         body: { status },

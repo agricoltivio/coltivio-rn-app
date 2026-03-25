@@ -315,7 +315,8 @@
     "delete_farm": "Hof löschen",
     "enter_farm_name_to_delete": "Um deinen Hof zu löschen, gib den Hofnamen ein und bestätige den Vorgang.",
     "chose_option_to_delete_account": "Wenn du auch dein Konto löschen möchtest, aktiviere die Option 'Konto löschen'.",
-    "delete_account": "Konto löschen"
+    "delete_account": "Konto löschen",
+    "membership": "Mitgliedschaft"
   },
   "plots": {
     "plots": "Schläge",
@@ -957,15 +958,24 @@
     }
   },
   "agri_coltivio": {
+    "promo_intro": "Schön, dass du Coltivio nutzt!",
     "subheading": "Gemeinsam für eine freie und unabhängige Landwirtschaft ",
     "section_1": "AgriColtivio, welcher diese App entwickelt, ist ein gemeinnütziger Verein, der zum Ziel hat, kleine und mittelgrosse landwirtschaftliche Betriebe zu stärken.",
+    "section_1_pre": "AgriColtivio, welcher diese App entwickelt, ist ein ",
+    "section_1_bold": "gemeinnütziger Verein",
+    "section_1_post": ", der zum Ziel hat, kleine und mittelgrosse landwirtschaftliche Betriebe zu stärken.",
+    "community_text": "Werde Teil einer Gemeinschaft welche für eine offene und faire Landwirtschaft steht.",
+    "community_text_2": "Entscheide mit, wie sich das Projekt weiterentwickelt und profitiere vom Austausch mit anderen Mitgliedern sowie weiteren Vorteilen.",
     "section_2": "Diese App ist Open Source. Das bedeutet, dass der Quellcode offen einsehbar ist - transparent und überprüfbar.",
     "section_3_bold": "Datensicherheit hat höchste Priorität. ",
     "section_3": "Alle Daten werden ausschliesslich auf Servern innerhalb der EU gespeichert und unterliegen den strengen Datenschutzrichtlinien der DSGVO.",
-    "section_4": "Der Betrieb und die Weiterentwicklung dieser App wird ausschliesslich durch freiwillige Spenden finanziert",
-    "section_5_title": "Hilf mit damit die App weiterhin frei und unabhängig für alle zur Verfügung steht.",
-    "section_5": "Werde Mitglied oder unterstütze uns mit einer Spende. Jeder Beitrag hilft – ob klein oder gross.",
-    "section_6": "Danke, dass du Teil davon bist."
+    "section_4": "Der Betrieb und die Weiterentwicklung dieser App wird ausschliesslich durch Spenden und Mitgliedschaften finanziert.",
+    "support_prefix": "Unterstütze uns mit einer ",
+    "support_donation": "Spende",
+    "support_middle": " oder werde ",
+    "support_member": "Mitglied",
+    "become_member": "Mehr erfahren",
+    "support_suffix": "."
   },
   "ear_tags": {
     "ear_tags": "Ohrmarken",
@@ -1346,5 +1356,27 @@
       "step4_heading": "Öffentliche Einträge ausblenden",
       "step4_body": "Tippe auf das Einstellungen-Symbol, um nur deine privaten Einträge anzuzeigen."
     }
+  },
+  "membership": {
+    "title": "Mitgliedschaft",
+    "status_label": "Status",
+    "status_trial": "Testphase",
+    "status_active": "Aktiv",
+    "status_inactive": "Inaktiv",
+    "auto_renewing": "Wird automatisch verlängert",
+    "cancels_at_period_end": "Kündigung am Periodenende",
+    "trial_ends": "Testphase endet am",
+    "starts_after_trial": "Deine Mitgliedschaft startet automatisch nach der Testphase.",
+    "valid_until": "Gültig bis",
+    "manage": "Mitgliedschaft verwalten",
+    "become_member": "Mehr erfahren",
+    "community_heading": "Werde Teil der Community",
+    "community_text": "Werde Teil einer Gemeinschaft welche für eine offene und faire Landwirtschaft steht. Hilf mit das Projekt weiterzuentwickeln und profitiere von Vorteilen welche nur Mitgliedern zur Verfügung stehen.",
+    "expiry_banner": "Deine Mitgliedschaft endet in {{days}} Tagen.",
+    "trial_expiry_banner": "Deine Testphase endet in {{days}} Tagen.",
+    "expired_banner": "Deine Mitgliedschaft ist abgelaufen.",
+    "expired_grace_banner": "Deine Mitgliedschaft ist abgelaufen. Du hast noch {{days}} Tage Zugang.",
+    "farmAlreadyHasMembership": "Einer deiner Hofmitglieder ist bereits Vereinsmitglied — dein Hof hat bereits vollen Zugang. Du kannst trotzdem eine eigene Mitgliedschaft abschliessen und den Verein unterstützen.",
+    "delete_account_warning": "Du hast eine aktive Mitgliedschaft. Wenn du dein Konto löschst, verlierst du den Zugang zur Mitgliedschaftsverwaltung. Behalte dein Konto um die Mitgliedschaft auf app.coltivio.ch zu verwalten."
   }
 }

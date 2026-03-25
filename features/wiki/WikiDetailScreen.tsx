@@ -10,7 +10,11 @@ import { ActivityIndicator, Alert, View, Text } from "react-native";
 import { WikiMarkdown } from "@/features/wiki/components/WikiMarkdown";
 import styled from "styled-components/native";
 import { useTheme } from "styled-components/native";
-import { useDeleteWikiEntryMutation, useSubmitWikiEntryMutation, useWikiDetailQuery } from "./wiki.hooks";
+import {
+  useDeleteWikiEntryMutation,
+  useSubmitWikiEntryMutation,
+  useWikiDetailQuery,
+} from "./wiki.hooks";
 import { WikiDetailScreenProps } from "./navigation/wiki-routes";
 
 function findTranslation<T extends { locale: string }>(
@@ -72,7 +76,11 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
   function onDeletePress() {
     Alert.alert(t("buttons.delete"), t("wiki.delete_confirm"), [
       { text: t("buttons.cancel"), style: "cancel" },
-      { text: t("buttons.delete"), style: "destructive", onPress: () => deleteMutation.mutate(entryId) },
+      {
+        text: t("buttons.delete"),
+        style: "destructive",
+        onPress: () => deleteMutation.mutate(entryId),
+      },
     ]);
   }
 
@@ -115,7 +123,9 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
                   type="accent"
                   iconSize={24}
                   color={theme.colors.primary}
-                  onPress={() => navigation.navigate("WikiEntryForm", { entryId })}
+                  onPress={() =>
+                    navigation.navigate("WikiEntryForm", { entryId })
+                  }
                 />
                 <IonIconButton
                   icon="trash-outline"
@@ -131,7 +141,9 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
                 type="accent"
                 iconSize={24}
                 color={theme.colors.primary}
-                onPress={() => navigation.navigate("WikiChangeRequest", { entryId })}
+                onPress={() =>
+                  navigation.navigate("WikiChangeRequest", { entryId })
+                }
               />
             )}
           </View>
@@ -155,14 +167,24 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
               </Chip>
             )}
             {isRejected && (
-              <Chip style={{ backgroundColor: theme.colors.secondary, borderColor: theme.colors.secondary }}>
+              <Chip
+                style={{
+                  backgroundColor: theme.colors.secondary,
+                  borderColor: theme.colors.secondary,
+                }}
+              >
                 <Text style={[chipTextStyle, { color: theme.colors.white }]}>
                   {t("wiki.changes_requested")}
                 </Text>
               </Chip>
             )}
             {isInReview && (
-              <Chip style={{ backgroundColor: theme.colors.blue, borderColor: theme.colors.blue }}>
+              <Chip
+                style={{
+                  backgroundColor: theme.colors.blue,
+                  borderColor: theme.colors.blue,
+                }}
+              >
                 <Text style={[chipTextStyle, { color: theme.colors.white }]}>
                   {t("wiki.in_review")}
                 </Text>
@@ -182,7 +204,6 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
         >
           {entryTranslation?.body ?? ""}
         </WikiMarkdown>
-
       </ScrollView>
     </ContentView>
   );
@@ -201,7 +222,6 @@ const chipTextStyle = {
   fontSize: 13,
   fontWeight: "500" as const,
 };
-
 
 const FooterButton = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.colors.mocha};

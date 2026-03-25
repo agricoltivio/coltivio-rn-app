@@ -3,6 +3,14 @@ export type HomeTileConfig = {
   visible: boolean;
 };
 
+export type HomeTileMeta = {
+  translationKey: string;
+  route: string;
+  image: number;
+  routeParams?: Record<string, never>;
+  membershipRequired?: boolean;
+};
+
 export const HOME_TILES = {
   farm: {
     translationKey: "home.tiles.farm",
@@ -34,6 +42,7 @@ export const HOME_TILES = {
     translationKey: "home.tiles.tasks",
     route: "TaskList",
     image: require("@/assets/images/tasks.png"),
+    membershipRequired: true,
   },
 } as const;
 

@@ -52,7 +52,7 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
       },
       {
         emailRedirectTo: redirectTo,
-      }
+      },
     );
     if (error || !data) {
       console.error(error?.code || error?.message);

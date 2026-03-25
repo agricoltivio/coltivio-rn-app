@@ -10,15 +10,25 @@ export function expandRecurrence(
   queryFromDate: Date,
   queryToDate: Date,
 ): PlotCropRotation[] {
-  const recurrence = (rotation as PlotCropRotation & { recurrence?: { interval: number; until?: string } }).recurrence;
+  const recurrence = (
+    rotation as PlotCropRotation & {
+      recurrence?: { interval: number; until?: string };
+    }
+  ).recurrence;
 
   if (!recurrence) {
     // No recurrence, return as-is if within range
     const rotationStart = new Date(rotation.fromDate);
     const rotationEnd = new Date(rotation.toDate);
     if (
-      isWithinInterval(rotationStart, { start: queryFromDate, end: queryToDate }) ||
-      isWithinInterval(rotationEnd, { start: queryFromDate, end: queryToDate }) ||
+      isWithinInterval(rotationStart, {
+        start: queryFromDate,
+        end: queryToDate,
+      }) ||
+      isWithinInterval(rotationEnd, {
+        start: queryFromDate,
+        end: queryToDate,
+      }) ||
       (rotationStart <= queryFromDate && rotationEnd >= queryToDate)
     ) {
       return [rotation];
@@ -50,8 +60,14 @@ export function expandRecurrence(
 
     // Only include if within the query range
     if (
-      isWithinInterval(currentDate, { start: queryFromDate, end: queryToDate }) ||
-      isWithinInterval(occurrenceEnd, { start: queryFromDate, end: queryToDate }) ||
+      isWithinInterval(currentDate, {
+        start: queryFromDate,
+        end: queryToDate,
+      }) ||
+      isWithinInterval(occurrenceEnd, {
+        start: queryFromDate,
+        end: queryToDate,
+      }) ||
       (currentDate <= queryFromDate && occurrenceEnd >= queryToDate)
     ) {
       entries.push({
@@ -82,5 +98,7 @@ export function expandAllRecurrences(
   queryFromDate: Date,
   queryToDate: Date,
 ): PlotCropRotation[] {
-  return rotations.flatMap(rotation => expandRecurrence(rotation, queryFromDate, queryToDate));
+  return rotations.flatMap((rotation) =>
+    expandRecurrence(rotation, queryFromDate, queryToDate),
+  );
 }

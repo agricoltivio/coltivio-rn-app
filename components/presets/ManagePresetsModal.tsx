@@ -10,7 +10,6 @@ import {
   View,
 } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 import { TextInput } from "../inputs/TextInput";
 import { Body, H3 } from "@/theme/Typography";
@@ -39,7 +38,6 @@ export const ManagePresetsModal = forwardRef<
 >(({ presets, onRename, onDelete, title }, ref) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
   const [visible, setVisible] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
@@ -106,120 +104,121 @@ export const ManagePresetsModal = forwardRef<
         onPress={handleClose}
       >
         <KeyboardAvoidingView behavior="padding">
-        <Pressable
-          style={{
-            backgroundColor: theme.colors.white,
-            borderRadius: 16,
-            padding: theme.spacing.l,
-            width: "100%",
-            maxWidth: 400,
-            maxHeight: "80%",
-          }}
-          onPress={(e) => e.stopPropagation()}
-        >
-          <H3 style={{ marginBottom: theme.spacing.m }}>
-            {title ?? t("presets.manage_presets")}
-          </H3>
-
-          <ScrollView
-            style={{ flexGrow: 0 }}
-            showsVerticalScrollIndicator={false}
+          <Pressable
+            style={{
+              backgroundColor: theme.colors.white,
+              borderRadius: 16,
+              padding: theme.spacing.l,
+              width: "100%",
+              maxWidth: 400,
+              maxHeight: "80%",
+            }}
+            onPress={(e) => e.stopPropagation()}
           >
-            {presets.length === 0 ? (
-              <Body
-                style={{
-                  color: theme.colors.gray1,
-                  textAlign: "center",
-                  paddingVertical: theme.spacing.l,
-                }}
-              >
-                {t("presets.no_presets")}
-              </Body>
-            ) : (
-              <View style={{ gap: theme.spacing.s }}>
-                {presets.map((preset) => (
-                  <View
-                    key={preset.id}
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      backgroundColor: theme.colors.gray4,
-                      borderRadius: 10,
-                      padding: theme.spacing.s,
-                    }}
-                  >
-                    {editingId === preset.id ? (
-                      <View
-                        style={{
-                          flex: 1,
-                          flexDirection: "row",
-                          alignItems: "center",
-                          gap: theme.spacing.s,
-                        }}
-                      >
-                        <View style={{ flex: 1 }}>
-                          <TextInput
-                            value={editName}
-                            onChangeText={setEditName}
-                            hideLabel
-                            autoFocus
-                          />
-                        </View>
-                        <TouchableOpacity onPress={handleSaveEdit}>
-                          <MaterialIcons
-                            name="check"
-                            size={24}
-                            color={theme.colors.success}
-                          />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={handleCancelEdit}>
-                          <MaterialIcons
-                            name="close"
-                            size={24}
-                            color={theme.colors.gray1}
-                          />
-                        </TouchableOpacity>
-                      </View>
-                    ) : (
-                      <>
-                        <Body style={{ flex: 1 }}>{preset.name}</Body>
-                        <TouchableOpacity
-                          onPress={() => handleStartEdit(preset)}
-                          style={{ padding: theme.spacing.xs }}
-                        >
-                          <MaterialIcons
-                            name="edit"
-                            size={20}
-                            color={theme.colors.gray1}
-                          />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          onPress={() => handleDelete(preset)}
-                          style={{ padding: theme.spacing.xs }}
-                        >
-                          <MaterialIcons
-                            name="delete"
-                            size={20}
-                            color={theme.colors.danger}
-                          />
-                        </TouchableOpacity>
-                      </>
-                    )}
-                  </View>
-                ))}
-              </View>
-            )}
-          </ScrollView>
+            <H3 style={{ marginBottom: theme.spacing.m }}>
+              {title ?? t("presets.manage_presets")}
+            </H3>
 
-          <Button
-            title={t("buttons.close")}
-            type="accent"
-            style={{ marginTop: theme.spacing.l }}
-            onPress={handleClose}
-          />
-        </Pressable>
+            <ScrollView
+              style={{ flexGrow: 0 }}
+              showsVerticalScrollIndicator={false}
+            >
+              {presets.length === 0 ? (
+                <Body
+                  style={{
+                    color: theme.colors.gray1,
+                    textAlign: "center",
+                    paddingVertical: theme.spacing.l,
+                  }}
+                >
+                  {t("presets.no_presets")}
+                </Body>
+              ) : (
+                <View style={{ gap: theme.spacing.s }}>
+                  {presets.map((preset) => (
+                    <View
+                      key={preset.id}
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        backgroundColor: theme.colors.gray4,
+                        borderRadius: 10,
+                        padding: theme.spacing.s,
+                      }}
+                    >
+                      {editingId === preset.id ? (
+                        <View
+                          style={{
+                            flex: 1,
+                            flexDirection: "row",
+                            alignItems: "center",
+                            gap: theme.spacing.s,
+                          }}
+                        >
+                          <View style={{ flex: 1 }}>
+                            <TextInput
+                              value={editName}
+                              onChangeText={setEditName}
+                              hideLabel
+                              autoFocus
+                            />
+                          </View>
+                          <TouchableOpacity onPress={handleSaveEdit}>
+                            <MaterialIcons
+                              name="check"
+                              size={24}
+                              color={theme.colors.success}
+                            />
+                          </TouchableOpacity>
+                          <TouchableOpacity onPress={handleCancelEdit}>
+                            <MaterialIcons
+                              name="close"
+                              size={24}
+                              color={theme.colors.gray1}
+                            />
+                          </TouchableOpacity>
+                        </View>
+                      ) : (
+                        <>
+                          <Body style={{ flex: 1 }}>{preset.name}</Body>
+                          <TouchableOpacity
+                            onPress={() => handleStartEdit(preset)}
+                            style={{ padding: theme.spacing.xs }}
+                          >
+                            <MaterialIcons
+                              name="edit"
+                              size={20}
+                              color={theme.colors.gray1}
+                            />
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            onPress={() => handleDelete(preset)}
+                            style={{ padding: theme.spacing.xs }}
+                          >
+                            <MaterialIcons
+                              name="delete"
+                              size={20}
+                              color={theme.colors.danger}
+                            />
+                          </TouchableOpacity>
+                        </>
+                      )}
+                    </View>
+                  ))}
+                </View>
+              )}
+            </ScrollView>
+
+            <Button
+              title={t("buttons.close")}
+              type="accent"
+              style={{ marginTop: theme.spacing.l }}
+              onPress={handleClose}
+            />
+          </Pressable>
         </KeyboardAvoidingView>
       </Pressable>
     </Modal>
   );
 });
+ManagePresetsModal.displayName = "ManagePresetsModal";

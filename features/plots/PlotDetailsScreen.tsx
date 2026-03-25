@@ -37,12 +37,15 @@ export function PlotDetailsScreen({
     ? (turf.centroid(plot.geometry).geometry.coordinates as LngLat)
     : undefined;
 
-  const features = useMemo((): GeoJSON.FeatureCollection => ({
-    type: "FeatureCollection",
-    features: hasGeometry
-      ? [{ type: "Feature", properties: {}, geometry: plot.geometry }]
-      : [],
-  }), [plot.geometry, hasGeometry]);
+  const features = useMemo(
+    (): GeoJSON.FeatureCollection => ({
+      type: "FeatureCollection",
+      features: hasGeometry
+        ? [{ type: "Feature", properties: {}, geometry: plot.geometry }]
+        : [],
+    }),
+    [plot.geometry, hasGeometry],
+  );
 
   return (
     <ContentView
@@ -79,7 +82,12 @@ export function PlotDetailsScreen({
         </H3>
         {center && (
           <View style={{ marginTop: theme.spacing.m }}>
-            <StaticMapPreview center={center} zoom={16} features={features} height={250} />
+            <StaticMapPreview
+              center={center}
+              zoom={16}
+              features={features}
+              height={250}
+            />
           </View>
         )}
         <Card style={{ marginTop: theme.spacing.m }}>
@@ -103,7 +111,7 @@ export function PlotDetailsScreen({
                     new Date(plot.cuttingDate),
                     locale,
                     "long",
-                    false
+                    false,
                   )
                 : ""
             }

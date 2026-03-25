@@ -1,5 +1,13 @@
 import { useState, useEffect } from "react";
-import { Modal, View, Text, Pressable, TextInput, ScrollView, Keyboard } from "react-native";
+import {
+  Modal,
+  View,
+  Text,
+  Pressable,
+  TextInput,
+  ScrollView,
+  Keyboard,
+} from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useTheme } from "styled-components/native";
 import { useTranslation } from "react-i18next";
@@ -123,275 +131,280 @@ export function RotationEditModal({
         }}
         onPress={onClose}
       >
-        <KeyboardAvoidingView behavior="padding" style={{ width: "100%", maxWidth: 360 }}>
-        <Pressable
-          style={{
-            backgroundColor: theme.colors.white,
-            borderRadius: 16,
-            width: "100%",
-            overflow: "visible",
-          }}
-          onPress={() => Keyboard.dismiss()}
+        <KeyboardAvoidingView
+          behavior="padding"
+          style={{ width: "100%", maxWidth: 360 }}
         >
-          <ScrollView
-            keyboardShouldPersistTaps="handled"
-            scrollEnabled={false}
-            contentContainerStyle={{ padding: theme.spacing.l }}
-            style={{ overflow: "visible" }}
-          >
-          <Text
+          <Pressable
             style={{
-              fontSize: 18,
-              fontWeight: "700",
-              color: theme.colors.text,
-              marginBottom: theme.spacing.m,
+              backgroundColor: theme.colors.white,
+              borderRadius: 16,
+              width: "100%",
+              overflow: "visible",
             }}
+            onPress={() => Keyboard.dismiss()}
           >
-            {rotation?.rotationId
-              ? t("crop_rotations.plan.edit_rotation")
-              : t("crop_rotations.plan.add_rotation_title")}
-          </Text>
-
-          {/* Plot Select */}
-          <View style={{ marginBottom: theme.spacing.m }}>
-            <Select
-              label={t("plots.plot")}
-              value={plotId}
-              data={plotOptions}
-              onChange={setPlotId}
-              enableSearch
-            />
-          </View>
-
-          {/* Crop Select */}
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              gap: theme.spacing.xs,
-              marginBottom: theme.spacing.m,
-            }}
-          >
-            <View style={{ flex: 1 }}>
-              <Select
-                label={t("crops.crop")}
-                value={cropId}
-                data={cropOptions}
-                onChange={setCropId}
-                enableSearch
-              />
-            </View>
-            {onNavigateToCreateCrop && (
-              <IonIconButton
-                icon="add"
-                color="black"
-                iconSize={25}
-                type="accent"
-                onPress={onNavigateToCreateCrop}
-              />
-            )}
-          </View>
-
-          {/* Duration */}
-          <Text
-            style={{
-              fontSize: 14,
-              fontWeight: "600",
-              color: theme.colors.gray1,
-              marginBottom: theme.spacing.xs,
-            }}
-          >
-            {t("crop_rotations.plan.duration")}
-          </Text>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              gap: theme.spacing.s,
-              marginBottom: theme.spacing.m,
-            }}
-          >
-            <CompactDatePicker date={fromDate} onDateChange={setFromDate} />
-            <Text style={{ color: theme.colors.gray2 }}>-</Text>
-            <CompactDatePicker
-              date={toDate}
-              onDateChange={setToDate}
-              minimumDate={fromDate}
-            />
-          </View>
-
-          {/* Recurrence */}
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginTop: theme.spacing.m,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 14,
-                fontWeight: "600",
-                color: theme.colors.gray1,
-                marginBottom: theme.spacing.xs,
-              }}
+            <ScrollView
+              keyboardShouldPersistTaps="handled"
+              scrollEnabled={false}
+              contentContainerStyle={{ padding: theme.spacing.l }}
+              style={{ overflow: "visible" }}
             >
-              {t("crop_rotations.plan.recurrence_optional")}
-            </Text>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: "700",
+                  color: theme.colors.text,
+                  marginBottom: theme.spacing.m,
+                }}
+              >
+                {rotation?.rotationId
+                  ? t("crop_rotations.plan.edit_rotation")
+                  : t("crop_rotations.plan.add_rotation_title")}
+              </Text>
 
-            {hasRecurrence && (
-              <Pressable onPress={() => setHasRecurrence(false)}>
-                <Ionicons
-                  name="close-circle"
-                  size={24}
-                  color={theme.colors.gray2}
+              {/* Plot Select */}
+              <View style={{ marginBottom: theme.spacing.m }}>
+                <Select
+                  label={t("plots.plot")}
+                  value={plotId}
+                  data={plotOptions}
+                  onChange={setPlotId}
+                  enableSearch
                 />
-              </Pressable>
-            )}
-          </View>
-          {hasRecurrence ? (
-            <>
+              </View>
+
+              {/* Crop Select */}
               <View
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
-                  flexWrap: "wrap",
-                  gap: theme.spacing.s,
+                  gap: theme.spacing.xs,
+                  marginBottom: theme.spacing.m,
+                }}
+              >
+                <View style={{ flex: 1 }}>
+                  <Select
+                    label={t("crops.crop")}
+                    value={cropId}
+                    data={cropOptions}
+                    onChange={setCropId}
+                    enableSearch
+                  />
+                </View>
+                {onNavigateToCreateCrop && (
+                  <IonIconButton
+                    icon="add"
+                    color="black"
+                    iconSize={25}
+                    type="accent"
+                    onPress={onNavigateToCreateCrop}
+                  />
+                )}
+              </View>
+
+              {/* Duration */}
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontWeight: "600",
+                  color: theme.colors.gray1,
                   marginBottom: theme.spacing.xs,
                 }}
               >
-                <Text style={{ fontSize: 14, color: theme.colors.text }}>
-                  {t("crop_rotations.plan.every")}
-                </Text>
-                <TextInput
-                  value={interval}
-                  onChangeText={(text) => {
-                    if (!text) setInterval("");
-                    const num = parseInt(text);
-                    if (!isNaN(num) && num > 0) setInterval(String(num));
-                  }}
-                  keyboardType="numbers-and-punctuation"
-                  returnKeyType="done"
-                  blurOnSubmit
-                  style={{
-                    width: 50,
-                    borderWidth: 1,
-                    borderColor: theme.colors.gray3,
-                    borderRadius: 8,
-                    paddingHorizontal: 8,
-                    paddingVertical: 6,
-                    fontSize: 14,
-                    textAlign: "center",
-                  }}
+                {t("crop_rotations.plan.duration")}
+              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: theme.spacing.s,
+                  marginBottom: theme.spacing.m,
+                }}
+              >
+                <CompactDatePicker date={fromDate} onDateChange={setFromDate} />
+                <Text style={{ color: theme.colors.gray2 }}>-</Text>
+                <CompactDatePicker
+                  date={toDate}
+                  onDateChange={setToDate}
+                  minimumDate={fromDate}
                 />
-                <Text style={{ fontSize: 14, color: theme.colors.text }}>
-                  {parseInt(interval) === 1
-                    ? t("crop_rotations.plan.year")
-                    : t("crop_rotations.plan.years")}
-                </Text>
               </View>
-              <CompactDatePicker
-                date={until}
-                onDateChange={(d) => {
-                  setUntil(d);
-                  setHasUntil(true);
-                }}
-                minimumDate={toDate}
-                label={hasUntil ? t("crop_rotations.plan.until") : undefined}
-                placeholder={t("crop_rotations.plan.add_end_date")}
-                hasValue={hasUntil}
-                onClear={() => setHasUntil(false)}
-              />
-            </>
-          ) : (
-            <Pressable
-              onPress={() => setHasRecurrence(true)}
-              style={{
-                backgroundColor: theme.colors.gray5,
-                paddingHorizontal: theme.spacing.s,
-                paddingVertical: theme.spacing.xs,
-                borderRadius: 8,
-                alignSelf: "flex-start",
-              }}
-            >
-              <Text style={{ fontSize: 15, color: theme.colors.text }}>
-                {t("crop_rotations.plan.add_recurrence")}
-              </Text>
-            </Pressable>
-          )}
 
-          {/* Actions */}
-          <View
-            style={{
-              flexDirection: "row",
-              gap: theme.spacing.s,
-              marginTop: theme.spacing.l,
-            }}
-          >
-            {rotation && onDelete && (
-              <Pressable
-                onPress={handleDelete}
+              {/* Recurrence */}
+              <View
                 style={{
-                  paddingVertical: 12,
-                  paddingHorizontal: 16,
-                  backgroundColor: theme.colors.danger + "15",
-                  borderRadius: 10,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginTop: theme.spacing.m,
                 }}
               >
-                <Ionicons
-                  name="trash-outline"
-                  size={20}
-                  color={theme.colors.danger}
-                />
-              </Pressable>
-            )}
-            <Pressable
-              onPress={onClose}
-              style={{
-                flex: 1,
-                paddingVertical: 12,
-                backgroundColor: theme.colors.gray5,
-                borderRadius: 10,
-                alignItems: "center",
-              }}
-            >
-              <Text
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontWeight: "600",
+                    color: theme.colors.gray1,
+                    marginBottom: theme.spacing.xs,
+                  }}
+                >
+                  {t("crop_rotations.plan.recurrence_optional")}
+                </Text>
+
+                {hasRecurrence && (
+                  <Pressable onPress={() => setHasRecurrence(false)}>
+                    <Ionicons
+                      name="close-circle"
+                      size={24}
+                      color={theme.colors.gray2}
+                    />
+                  </Pressable>
+                )}
+              </View>
+              {hasRecurrence ? (
+                <>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      flexWrap: "wrap",
+                      gap: theme.spacing.s,
+                      marginBottom: theme.spacing.xs,
+                    }}
+                  >
+                    <Text style={{ fontSize: 14, color: theme.colors.text }}>
+                      {t("crop_rotations.plan.every")}
+                    </Text>
+                    <TextInput
+                      value={interval}
+                      onChangeText={(text) => {
+                        if (!text) setInterval("");
+                        const num = parseInt(text);
+                        if (!isNaN(num) && num > 0) setInterval(String(num));
+                      }}
+                      keyboardType="numbers-and-punctuation"
+                      returnKeyType="done"
+                      blurOnSubmit
+                      style={{
+                        width: 50,
+                        borderWidth: 1,
+                        borderColor: theme.colors.gray3,
+                        borderRadius: 8,
+                        paddingHorizontal: 8,
+                        paddingVertical: 6,
+                        fontSize: 14,
+                        textAlign: "center",
+                      }}
+                    />
+                    <Text style={{ fontSize: 14, color: theme.colors.text }}>
+                      {parseInt(interval) === 1
+                        ? t("crop_rotations.plan.year")
+                        : t("crop_rotations.plan.years")}
+                    </Text>
+                  </View>
+                  <CompactDatePicker
+                    date={until}
+                    onDateChange={(d) => {
+                      setUntil(d);
+                      setHasUntil(true);
+                    }}
+                    minimumDate={toDate}
+                    label={
+                      hasUntil ? t("crop_rotations.plan.until") : undefined
+                    }
+                    placeholder={t("crop_rotations.plan.add_end_date")}
+                    hasValue={hasUntil}
+                    onClear={() => setHasUntil(false)}
+                  />
+                </>
+              ) : (
+                <Pressable
+                  onPress={() => setHasRecurrence(true)}
+                  style={{
+                    backgroundColor: theme.colors.gray5,
+                    paddingHorizontal: theme.spacing.s,
+                    paddingVertical: theme.spacing.xs,
+                    borderRadius: 8,
+                    alignSelf: "flex-start",
+                  }}
+                >
+                  <Text style={{ fontSize: 15, color: theme.colors.text }}>
+                    {t("crop_rotations.plan.add_recurrence")}
+                  </Text>
+                </Pressable>
+              )}
+
+              {/* Actions */}
+              <View
                 style={{
-                  fontSize: 15,
-                  fontWeight: "600",
-                  color: theme.colors.gray1,
+                  flexDirection: "row",
+                  gap: theme.spacing.s,
+                  marginTop: theme.spacing.l,
                 }}
               >
-                {t("buttons.cancel")}
-              </Text>
-            </Pressable>
-            <Pressable
-              onPress={handleSave}
-              disabled={!plotId || !cropId}
-              style={{
-                flex: 1,
-                paddingVertical: 12,
-                backgroundColor:
-                  !plotId || !cropId
-                    ? theme.colors.gray3
-                    : theme.colors.primary,
-                borderRadius: 10,
-                alignItems: "center",
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontWeight: "600",
-                  color: theme.colors.white,
-                }}
-              >
-                {t("buttons.confirm")}
-              </Text>
-            </Pressable>
-          </View>
-          </ScrollView>
-        </Pressable>
+                {rotation && onDelete && (
+                  <Pressable
+                    onPress={handleDelete}
+                    style={{
+                      paddingVertical: 12,
+                      paddingHorizontal: 16,
+                      backgroundColor: theme.colors.danger + "15",
+                      borderRadius: 10,
+                    }}
+                  >
+                    <Ionicons
+                      name="trash-outline"
+                      size={20}
+                      color={theme.colors.danger}
+                    />
+                  </Pressable>
+                )}
+                <Pressable
+                  onPress={onClose}
+                  style={{
+                    flex: 1,
+                    paddingVertical: 12,
+                    backgroundColor: theme.colors.gray5,
+                    borderRadius: 10,
+                    alignItems: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "600",
+                      color: theme.colors.gray1,
+                    }}
+                  >
+                    {t("buttons.cancel")}
+                  </Text>
+                </Pressable>
+                <Pressable
+                  onPress={handleSave}
+                  disabled={!plotId || !cropId}
+                  style={{
+                    flex: 1,
+                    paddingVertical: 12,
+                    backgroundColor:
+                      !plotId || !cropId
+                        ? theme.colors.gray3
+                        : theme.colors.primary,
+                    borderRadius: 10,
+                    alignItems: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "600",
+                      color: theme.colors.white,
+                    }}
+                  >
+                    {t("buttons.confirm")}
+                  </Text>
+                </Pressable>
+              </View>
+            </ScrollView>
+          </Pressable>
         </KeyboardAvoidingView>
       </Pressable>
     </Modal>

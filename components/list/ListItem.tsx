@@ -14,7 +14,7 @@ const PressableListItem = styled.Pressable<{ hideBottomDivider?: boolean }>`
 `;
 
 export function ListItem(
-  props: PressableProps & { hideBottomDivider?: boolean }
+  props: PressableProps & { hideBottomDivider?: boolean },
 ) {
   return <PressableListItem {...props} />;
 }

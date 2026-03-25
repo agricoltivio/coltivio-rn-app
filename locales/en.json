@@ -315,7 +315,8 @@
     "delete_farm": "Delete Farm",
     "enter_farm_name_to_delete": "To delete your farm, enter the farm name.",
     "chose_option_to_delete_account": "To also delete your account, enable 'Delete Account'.",
-    "delete_account": "Delete Account"
+    "delete_account": "Delete Account",
+    "membership": "Membership"
   },
   "plots": {
     "plots": "Plots",
@@ -957,15 +958,24 @@
     }
   },
   "agri_coltivio": {
+    "promo_intro": "Great that you're using Coltivio!",
     "subheading": "Together for free and independent agriculture",
     "section_1": "AgriColtivio, which developed this app, is a non-profit association aimed at strengthening small and medium-sized farms.",
+    "section_1_pre": "AgriColtivio, which developed this app, is a ",
+    "section_1_bold": "non-profit association",
+    "section_1_post": " aimed at strengthening small and medium-sized farms.",
+    "community_text": "Become part of a community that stands for open and fair agriculture.",
+    "community_text_2": "Have a say in how the project evolves and benefit from the exchange with other members as well as further perks.",
     "section_2": "This app is open source, meaning that the source code is publicly accessible - transparent and verifiable.",
     "section_3_bold": "Data security is a top priority.",
     "section_3": "All data is stored exclusively on servers within the EU and is subject to strict GDPR data protection regulations.",
-    "section_4": "The operation and further development of this app are funded solely through voluntary donations.",
-    "section_5_title": "Help ensure the app remains free and independent for everyone.",
-    "section_5": "Become a member or support us with a donation. Every contribution helps – big or small.",
-    "section_6": "Thank you for being part of it."
+    "section_4": "The operation and further development of this app are funded solely through donations and memberships.",
+    "support_prefix": "Support us with a ",
+    "support_donation": "donation",
+    "support_middle": " or become a ",
+    "support_member": "member",
+    "become_member": "Learn more",
+    "support_suffix": "."
   },
   "ear_tags": {
     "ear_tags": "Ear Tags",
@@ -1344,5 +1354,27 @@
       "step4_heading": "Hide Public Entries",
       "step4_body": "Tap the settings icon to show only your private entries."
     }
+  },
+  "membership": {
+    "title": "Membership",
+    "status_label": "Status",
+    "status_trial": "Trial",
+    "status_active": "Active",
+    "status_inactive": "Inactive",
+    "auto_renewing": "Renews automatically",
+    "cancels_at_period_end": "Cancels at end of period",
+    "trial_ends": "Trial ends on",
+    "starts_after_trial": "Your membership will start automatically after the trial.",
+    "valid_until": "Valid until",
+    "manage": "Manage membership",
+    "become_member": "Learn more",
+    "community_heading": "Join the Community",
+    "community_text": "Become part of a community that stands for open and fair agriculture. Help develop the project further and benefit from perks available exclusively to members.",
+    "expiry_banner": "Your membership expires in {{days}} days.",
+    "trial_expiry_banner": "Your trial expires in {{days}} days.",
+    "expired_banner": "Your membership has expired.",
+    "expired_grace_banner": "Your membership has expired. Access continues for {{days}} more days.",
+    "farmAlreadyHasMembership": "One of your farm members is already an association member — your farm already has full access. You can still get your own membership and support the association.",
+    "delete_account_warning": "You have an active membership. If you delete your account, you will lose access to membership management. Keep your account to manage the membership at app.coltivio.ch."
   }
 }

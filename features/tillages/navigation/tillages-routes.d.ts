@@ -16,11 +16,9 @@ export type TillageDetailsScreenProps = StackScreenProps<"TillageDetails">;
 export type SelectTillageDateScreenProps =
   StackScreenProps<"SelectTillageDate">;
 
-export type ConfigureTillageScreenProps =
-  StackScreenProps<"ConfigureTillage">;
+export type ConfigureTillageScreenProps = StackScreenProps<"ConfigureTillage">;
 
 export type SelectTillagePlotsScreenProps =
   StackScreenProps<"SelectTillagePlots">;
 
-export type TillageSummaryScreenProps =
-  StackScreenProps<"TillageSummary">;
+export type TillageSummaryScreenProps = StackScreenProps<"TillageSummary">;

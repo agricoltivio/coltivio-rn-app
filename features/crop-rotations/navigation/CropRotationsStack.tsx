@@ -23,7 +23,7 @@ export function renderCropsRotationStack() {
       }}
       component={CropRotationsOfYearListScreen}
     />,
-<Stack.Screen
+    <Stack.Screen
       key="edit-plot-crop-rotation"
       name="EditPlotCropRotation"
       options={{

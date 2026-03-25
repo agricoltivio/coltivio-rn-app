@@ -28,7 +28,9 @@ export function CreateCropProtectionProductScreen({
 
   const createCropProtectionProductMutation =
     useCreateCropProtectionProductMutation((product) => {
-      if (previousRoute.name === "SelectCropProtectionApplicationProductAndDate") {
+      if (
+        previousRoute.name === "SelectCropProtectionApplicationProductAndDate"
+      ) {
         navigation.popTo("SelectCropProtectionApplicationProductAndDate", {
           productId: product.id,
         });

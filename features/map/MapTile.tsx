@@ -22,10 +22,13 @@ export const MapTile = ({ showMap = true }: { showMap?: boolean }) => {
         plot.geometry.coordinates.map((polygonCoords) => ({
           type: "Feature" as const,
           properties: {
-            color: hexToRgba(plotIdToColor(plot.id), theme.map.defaultFillAlpha),
+            color: hexToRgba(
+              plotIdToColor(plot.id),
+              theme.map.defaultFillAlpha,
+            ),
           },
           geometry: { type: "Polygon" as const, coordinates: polygonCoords },
-        }))
+        })),
       ),
     }),
     [plots, theme],

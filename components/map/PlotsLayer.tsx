@@ -1,9 +1,6 @@
 import { Plot } from "@/api/plots.api";
 import { hexToRgba, plotIdToColor } from "@/theme/theme";
-import {
-  GeoJSONSource,
-  Layer,
-} from "@maplibre/maplibre-react-native";
+import { GeoJSONSource, Layer } from "@maplibre/maplibre-react-native";
 import * as turf from "@turf/turf";
 import React, { useMemo } from "react";
 import { useTheme } from "styled-components/native";
@@ -47,10 +44,13 @@ export function PlotsLayer({
             id: plot.id,
             name: plot.name,
             selected: selectedPlotIds.includes(plot.id) ? 1 : 0,
-            color: hexToRgba(plotIdToColor(plot.id), theme.map.defaultFillAlpha),
+            color: hexToRgba(
+              plotIdToColor(plot.id),
+              theme.map.defaultFillAlpha,
+            ),
           },
           geometry: { type: "Polygon" as const, coordinates: polygonCoords },
-        }))
+        })),
       ),
     };
   }, [plots, selectedPlotIds, theme]);
@@ -62,7 +62,9 @@ export function PlotsLayer({
     return {
       type: "FeatureCollection",
       features: plots.map((plot) => {
-        const centroid = turf.centerOfMass(turf.multiPolygon(plot.geometry.coordinates));
+        const centroid = turf.centerOfMass(
+          turf.multiPolygon(plot.geometry.coordinates),
+        );
         return {
           type: "Feature" as const,
           properties: { name: plot.name },
@@ -72,7 +74,10 @@ export function PlotsLayer({
     };
   }, [plots, showZoomLabels]);
 
-  const selectedFillColor = hexToRgba(resolvedSelectedColor, theme.map.defaultFillAlpha);
+  const selectedFillColor = hexToRgba(
+    resolvedSelectedColor,
+    theme.map.defaultFillAlpha,
+  );
 
   const sid = idSuffix ? `-${idSuffix}` : "";
 

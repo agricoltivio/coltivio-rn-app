@@ -1,108 +1,65 @@
 import { OutdoorScheduleCreateInput } from "@/api/herds.api";
+import { addWeeks, addMonths, addYears } from "date-fns";
 
-const MS_PER_DAY = 86_400_000;
+// Expand one schedule into its concrete date occurrences up to rangeEnd.
+function expandOccurrences(
+  schedule: OutdoorScheduleCreateInput,
+  rangeEnd: Date,
+): Array<{ from: Date; to: Date }> {
+  const from = new Date(schedule.startDate);
+  const to = schedule.endDate ? new Date(schedule.endDate) : new Date(from);
+
+  if (!schedule.recurrence) {
+    return [{ from, to }];
+  }
+
+  const { frequency, interval, until } = schedule.recurrence;
+  const effectiveUntil =
+    until && new Date(until) < rangeEnd ? new Date(until) : rangeEnd;
+
+  const durationMs = to.getTime() - from.getTime();
+  const ranges: Array<{ from: Date; to: Date }> = [];
+  let current = new Date(from);
+
+  while (current <= effectiveUntil) {
+    ranges.push({
+      from: new Date(current),
+      to: new Date(current.getTime() + durationMs),
+    });
+    if (frequency === "weekly") current = addWeeks(current, interval);
+    else if (frequency === "monthly") current = addMonths(current, interval);
+    else current = addYears(current, interval);
+  }
+
+  return ranges;
+}
 
 /**
- * Check if any pair of outdoor schedules overlap, accounting for recurrence.
- * Reuses the same approach as PlanCropRotationsScreen conflict detection.
+ * Check if any pair of outdoor schedules overlap, accounting for recurrence
+ * across all frequencies (weekly, monthly, yearly) by fully expanding occurrences.
  */
 export function hasScheduleOverlaps(
   schedules: OutdoorScheduleCreateInput[],
 ): boolean {
   if (schedules.length < 2) return false;
 
-  const getDayOfYear = (date: Date) => {
-    const start = new Date(date.getFullYear(), 0, 0);
-    return Math.floor((date.getTime() - start.getTime()) / MS_PER_DAY);
-  };
+  // Derive range end from the latest until date across all schedules,
+  // falling back to 25 years from now so open-ended recurrences are bounded.
+  const defaultEnd = new Date(new Date().getFullYear() + 25, 11, 31);
+  const rangeEnd = schedules.reduce((max, s) => {
+    if (!s.recurrence?.until) return max;
+    const until = new Date(s.recurrence.until);
+    return until > max ? until : max;
+  }, defaultEnd);
 
-  // Check if two day-of-year ranges overlap (for recurring schedules)
-  const dayRangesOverlap = (
-    aFromDay: number,
-    aToDay: number,
-    bFromDay: number,
-    bToDay: number,
-  ) => {
-    if (aFromDay <= aToDay && bFromDay <= bToDay) {
-      return aFromDay <= bToDay && aToDay >= bFromDay;
-    }
-    // If either range wraps around year boundary, treat as overlapping
-    return true;
-  };
-
-  // Get all years a schedule occurs in
-  const getOccurrenceYears = (
-    startYear: number,
-    interval: number,
-    untilYear: number | null,
-    rangeStart: number,
-    rangeEnd: number,
-  ): Set<number> => {
-    const years = new Set<number>();
-    const effectiveEnd = untilYear ? Math.min(untilYear, rangeEnd) : rangeEnd;
-    for (let year = startYear; year <= effectiveEnd; year += interval) {
-      if (year >= rangeStart) years.add(year);
-    }
-    return years;
-  };
-
-  const shareCommonYear = (
-    a: OutdoorScheduleCreateInput,
-    b: OutdoorScheduleCreateInput,
-  ): boolean => {
-    const rangeStart = new Date().getFullYear() - 10;
-    const rangeEnd = new Date().getFullYear() + 25;
-
-    const aStart = new Date(a.startDate);
-    const bStart = new Date(b.startDate);
-    const aInterval = a.recurrence?.interval ?? 1;
-    const bInterval = b.recurrence?.interval ?? 1;
-    const aUntilYear = a.recurrence?.until
-      ? new Date(a.recurrence.until).getFullYear()
-      : null;
-    const bUntilYear = b.recurrence?.until
-      ? new Date(b.recurrence.until).getFullYear()
-      : null;
-
-    if (!a.recurrence && !b.recurrence) {
-      return aStart.getFullYear() === bStart.getFullYear();
-    }
-
-    const aYears = a.recurrence
-      ? getOccurrenceYears(aStart.getFullYear(), aInterval, aUntilYear, rangeStart, rangeEnd)
-      : new Set([aStart.getFullYear()]);
-    const bYears = b.recurrence
-      ? getOccurrenceYears(bStart.getFullYear(), bInterval, bUntilYear, rangeStart, rangeEnd)
-      : new Set([bStart.getFullYear()]);
-
-    for (const year of aYears) {
-      if (bYears.has(year)) return true;
-    }
-    return false;
-  };
+  const expanded = schedules.map((s) => expandOccurrences(s, rangeEnd));
 
   for (let i = 0; i < schedules.length; i++) {
     for (let j = i + 1; j < schedules.length; j++) {
-      const a = schedules[i];
-      const b = schedules[j];
-      const aStart = new Date(a.startDate);
-      const bStart = new Date(b.startDate);
-      const aEnd = a.endDate ? new Date(a.endDate) : aStart;
-      const bEnd = b.endDate ? new Date(b.endDate) : bStart;
-
-      if (a.recurrence || b.recurrence) {
-        // Recurring: check day-of-year overlap AND shared occurrence year
-        const aFromDay = getDayOfYear(aStart);
-        const aToDay = getDayOfYear(aEnd);
-        const bFromDay = getDayOfYear(bStart);
-        const bToDay = getDayOfYear(bEnd);
-
-        if (dayRangesOverlap(aFromDay, aToDay, bFromDay, bToDay) && shareCommonYear(a, b)) {
-          return true;
+      for (const a of expanded[i]) {
+        for (const b of expanded[j]) {
+          if (a.from <= b.to && a.to >= b.from) return true;
         }
-      } else {
-        // Non-recurring: check actual date overlap
-        if (aStart <= bEnd && aEnd >= bStart) return true;
       }
     }
   }

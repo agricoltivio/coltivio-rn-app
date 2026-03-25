@@ -1,5 +1,10 @@
 import { useApi } from "@/api/api";
-import { DrugCreateInput, DrugCreateResponse, DrugUpdateInput, DrugUpdateResponse } from "@/api/drugs.api";
+import {
+  DrugCreateInput,
+  DrugCreateResponse,
+  DrugUpdateInput,
+  DrugUpdateResponse,
+} from "@/api/drugs.api";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 

@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 export function useTillagesQuery(
   fromDate?: Date,
   toDate?: Date,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
@@ -19,7 +19,7 @@ export function useTillagesQuery(
 
 export function useTillagesForPlotQuery(
   plotId: string,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
@@ -52,7 +52,7 @@ export function useTillageYearsQuery(enabled: boolean = true) {
 
 export function useCreateTillagesMutation(
   onSuccess?: (tillages: Tillage[]) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
@@ -76,7 +76,7 @@ export function useCreateTillagesMutation(
 
 export function useDeleteTillageMutation(
   onSuccess?: () => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const api = useApi();
   const queryClient = useQueryClient();

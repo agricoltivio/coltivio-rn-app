@@ -24,7 +24,9 @@ export function HerdsScreen({ navigation }: HerdsScreenProps) {
       navigation.replace("HerdsOnboarding" as never);
     }
   }, []);
-  const herds = unsortedHerds?.slice().sort((a, b) => a.name.localeCompare(b.name));
+  const herds = unsortedHerds
+    ?.slice()
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   const renderItem = useCallback(
     ({ item: herd }: { item: Herd }) => (

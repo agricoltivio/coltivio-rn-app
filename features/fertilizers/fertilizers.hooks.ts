@@ -19,7 +19,7 @@ export function useFertilizersQuery(enabled: boolean = true) {
 
 export function useFertilizerByIdQuery(
   fertilizerId: string,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
@@ -32,7 +32,7 @@ export function useFertilizerByIdQuery(
 
 export function useCreateFertilizerMutation(
   onSuccess?: (fertilizer: Fertilizer) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
@@ -52,7 +52,7 @@ export function useCreateFertilizerMutation(
 
 export function useUpdateFertilizerMutation(
   onSuccess?: (fertilizer: Fertilizer) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const api = useApi();
   const queryClient = useQueryClient();
@@ -75,7 +75,7 @@ export function useUpdateFertilizerMutation(
 
 export function useDeleteFertilizerMutation(
   onSuccess?: () => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const api = useApi();
   const queryClient = useQueryClient();
@@ -99,7 +99,7 @@ export function useDeleteFertilizerMutation(
 
 export function useIsFertilizerInUseQuery(
   fertilizerId: string,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({

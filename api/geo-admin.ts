@@ -31,12 +31,12 @@ export type LocationSearchResult = {
   lon: number;
 };
 export async function searchAddressLocation(
-  query: string
+  query: string,
 ): Promise<LocationSearchResult[]> {
   const response = await fetch(
     `https://api.geo.admin.ch/rest/services/api/SearchServer?searchText=${encodeURIComponent(
-      query
-    )}&type=locations&origins=address`
+      query,
+    )}&type=locations&origins=address`,
   );
   if (!response.ok) {
     throw new Error(`Response status: ${response.status}`);

@@ -33,13 +33,24 @@ function scaleUnit(unit: string, maxValue: number): DisplayUnit {
 
 function formatYValue(raw: string, unitLabel: string): string {
   const n = Number(raw);
-  const formatted = n === Math.floor(n) ? String(Math.round(n)) : (Math.round(n * 10) / 10).toString();
+  const formatted =
+    n === Math.floor(n)
+      ? String(Math.round(n))
+      : (Math.round(n * 10) / 10).toString();
   return `${formatted} ${unitLabel}`;
 }
 
 const YEAR_COLORS = [
-  "#4A90D9", "#E67E22", "#2ECC71", "#9B59B6", "#E74C3C",
-  "#1ABC9C", "#F39C12", "#3498DB", "#8E44AD", "#27AE60",
+  "#4A90D9",
+  "#E67E22",
+  "#2ECC71",
+  "#9B59B6",
+  "#E74C3C",
+  "#1ABC9C",
+  "#F39C12",
+  "#3498DB",
+  "#8E44AD",
+  "#27AE60",
 ];
 function getYearColor(index: number) {
   return YEAR_COLORS[index % YEAR_COLORS.length];
@@ -63,7 +74,11 @@ function Legend({ labels }: { labels: { text: string; color: string }[] }) {
       {labels.map((label) => (
         <View
           key={label.text}
-          style={{ flexDirection: "row", alignItems: "center", marginRight: 12 }}
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginRight: 12,
+          }}
         >
           <View
             style={{
@@ -115,7 +130,9 @@ function YearMultiSelect({
               borderColor: color,
             }}
           >
-            <Subtitle style={{ color: isSelected ? "#fff" : color, fontSize: 13 }}>
+            <Subtitle
+              style={{ color: isSelected ? "#fff" : color, fontSize: 13 }}
+            >
               {year}
             </Subtitle>
           </TouchableOpacity>
@@ -151,9 +168,13 @@ function FertilizerFilter({
               paddingHorizontal: 12,
               paddingVertical: 5,
               borderRadius: 16,
-              backgroundColor: isSelected ? theme.colors.primary : theme.colors.white,
+              backgroundColor: isSelected
+                ? theme.colors.primary
+                : theme.colors.white,
               borderWidth: 1,
-              borderColor: isSelected ? theme.colors.primary : theme.colors.gray3,
+              borderColor: isSelected
+                ? theme.colors.primary
+                : theme.colors.gray3,
             }}
           >
             <Subtitle
@@ -183,7 +204,11 @@ function MonthlyLineChart({
   unit: DisplayUnit;
 }) {
   const theme = useTheme();
-  const [selectedPoint, setSelectedPoint] = useState<{ month: number; year: number; value: number } | null>(null);
+  const [selectedPoint, setSelectedPoint] = useState<{
+    month: number;
+    year: number;
+    value: number;
+  } | null>(null);
 
   // Build cumulative totals so months without entries carry forward the last value
   const lineSets = selectedYears.map((year) => {
@@ -195,7 +220,12 @@ function MonthlyLineChart({
       return {
         value,
         label: MONTH_LABELS[month],
-        onPress: () => setSelectedPoint({ month, year, value: Math.round(value * 100) / 100 }),
+        onPress: () =>
+          setSelectedPoint({
+            month,
+            year,
+            value: Math.round(value * 100) / 100,
+          }),
       };
     });
     return { data, color: getYearColor(yearIdx >= 0 ? yearIdx : 0) };
@@ -214,8 +244,15 @@ function MonthlyLineChart({
   return (
     <View style={{ gap: 4 }}>
       {selectedPoint && (
-        <Text style={{ fontSize: 12, color: theme.colors.gray1, textAlign: "center" }}>
-          {MONTH_LABELS[selectedPoint.month]} {selectedPoint.year} · {formatYValue(String(selectedPoint.value), unit.label)}
+        <Text
+          style={{
+            fontSize: 12,
+            color: theme.colors.gray1,
+            textAlign: "center",
+          }}
+        >
+          {MONTH_LABELS[selectedPoint.month]} {selectedPoint.year} ·{" "}
+          {formatYValue(String(selectedPoint.value), unit.label)}
         </Text>
       )}
       <LineChart
@@ -268,13 +305,18 @@ function MonthlyGroupedBarChart({
   unit: DisplayUnit;
 }) {
   const theme = useTheme();
-  const [selectedBar, setSelectedBar] = useState<{ month: number; year: number; value: number } | null>(null);
+  const [selectedBar, setSelectedBar] = useState<{
+    month: number;
+    year: number;
+    value: number;
+  } | null>(null);
 
   const yearCount = selectedYears.length;
   const barWidth = 12;
   const innerGap = yearCount > 1 ? 3 : 0;
   const groupGap = 16;
-  const groupWidth = yearCount * barWidth + Math.max(yearCount - 1, 0) * innerGap;
+  const groupWidth =
+    yearCount * barWidth + Math.max(yearCount - 1, 0) * innerGap;
 
   const noOfSections = 3;
   const barData: barDataItem[] = [];
@@ -309,13 +351,23 @@ function MonthlyGroupedBarChart({
     }
   }
 
-  const maxValue = dataMax === 0 ? noOfSections : Math.ceil(dataMax / noOfSections) * noOfSections;
+  const maxValue =
+    dataMax === 0
+      ? noOfSections
+      : Math.ceil(dataMax / noOfSections) * noOfSections;
 
   return (
     <View style={{ flex: 1, gap: 4 }}>
       {selectedBar && (
-        <Text style={{ fontSize: 12, color: theme.colors.gray1, textAlign: "center" }}>
-          {MONTH_LABELS[selectedBar.month]} {selectedBar.year} · {formatYValue(String(selectedBar.value), unit.label)}
+        <Text
+          style={{
+            fontSize: 12,
+            color: theme.colors.gray1,
+            textAlign: "center",
+          }}
+        >
+          {MONTH_LABELS[selectedBar.month]} {selectedBar.year} ·{" "}
+          {formatYValue(String(selectedBar.value), unit.label)}
         </Text>
       )}
       <BarChart
@@ -464,8 +516,16 @@ export function FertilizerApplicationDashboard({
           <Card key={fertName}>
             <Card.Title style={{ flex: 1 }}>{fertName}</Card.Title>
             <Card.Content style={{ gap: theme.spacing.l }}>
-              <View style={{ gap: theme.spacing.s, marginTop: theme.spacing.s }}>
-                <Text style={{ fontSize: 14, fontWeight: "600", color: theme.colors.gray2 }}>
+              <View
+                style={{ gap: theme.spacing.s, marginTop: theme.spacing.s }}
+              >
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontWeight: "600",
+                    color: theme.colors.gray2,
+                  }}
+                >
                   {t("harvests.total_amount")}
                 </Text>
                 <MonthlyLineChart
@@ -479,7 +539,13 @@ export function FertilizerApplicationDashboard({
                 style={{ height: 1, backgroundColor: theme.colors.gray4 }}
               />
               <View style={{ gap: theme.spacing.s }}>
-                <Text style={{ fontSize: 14, fontWeight: "600", color: theme.colors.gray2 }}>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontWeight: "600",
+                    color: theme.colors.gray2,
+                  }}
+                >
                   {t("harvests.amount_per_month")}
                 </Text>
                 <MonthlyGroupedBarChart

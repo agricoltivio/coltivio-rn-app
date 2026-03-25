@@ -18,11 +18,7 @@ export function HomeTile({
 }: HomeTileProps) {
   const theme = useTheme();
   return (
-    <TouchableOpacity
-      style={[style]}
-      onPress={onPress}
-      disabled={disabled}
-    >
+    <TouchableOpacity style={[style]} onPress={onPress} disabled={disabled}>
       <Card
         elevated
         style={[

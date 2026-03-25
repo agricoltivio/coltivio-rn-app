@@ -19,7 +19,6 @@ import Animated, {
 
 import { useLocalSettings } from "@/features/user/LocalSettingsContext";
 import { useNavigation } from "@react-navigation/native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 
 type SpeedDialItem = {
@@ -39,7 +38,6 @@ const TIMING_CONFIG = { duration: 220, easing: Easing.out(Easing.quad) };
 
 export function SpeedDial({ items }: SpeedDialProps) {
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const { localSettings } = useLocalSettings();
   const isOpen = useSharedValue(0);

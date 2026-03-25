@@ -18,7 +18,13 @@ export function renderFieldCalendarStack(theme: DefaultTheme, navigation: any) {
         title: "",
         headerRight() {
           return (
-            <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.m }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: theme.spacing.m,
+              }}
+            >
               <Ionicons
                 size={35}
                 name="settings-outline"

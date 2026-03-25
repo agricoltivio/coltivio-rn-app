@@ -1,11 +1,9 @@
 import { Button } from "@/components/buttons/Button";
 import { Card } from "@/components/card/Card";
 import { CompactDatePicker } from "@/components/datepicker/CompactDatePicker";
-import { DatePicker } from "@/components/datepicker/DatePicker";
-import { H3 } from "@/theme/Typography";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Modal, TouchableOpacity, View } from "react-native";
+import { Modal, View } from "react-native";
 import { useSafeAreaFrame } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 

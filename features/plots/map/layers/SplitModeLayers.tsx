@@ -16,7 +16,13 @@ import {
   type LngLat,
 } from "@maplibre/maplibre-react-native";
 import * as turf from "@turf/turf";
-import React, { forwardRef, useImperativeHandle, useMemo, useRef, useState } from "react";
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { Alert } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -38,29 +44,39 @@ export const SplitModeLayers = forwardRef<SplitModeLayersHandle>(
     modeRef.current = mode;
 
     // Tracks the drawn polygon's coordinates during the polygon-edit phase for size label
-    const [drawnPolygonCoords, setDrawnPolygonCoords] = useState<LngLat[] | null>(null);
+    const [drawnPolygonCoords, setDrawnPolygonCoords] = useState<
+      LngLat[] | null
+    >(null);
 
     const currentPolygons = mode.type === "split" ? mode.currentPolygons : [];
-    const activeToolMode = mode.type === "split" ? mode.activeToolMode : "none" as const;
+    const activeToolMode =
+      mode.type === "split" ? mode.activeToolMode : ("none" as const);
     const hasMultiplePolygons = currentPolygons.length >= 2;
 
     // Size labels shown at the centroid of each split result polygon
-    const splitLabelsData = useMemo((): GeoJSON.FeatureCollection => ({
-      type: "FeatureCollection",
-      features: currentPolygons.map((geom) => {
-        const area = round(turf.area(geom), 0);
-        const centroid = turf.centroid(geom);
-        return {
-          type: "Feature",
-          properties: { label: `${area / 100}a` },
-          geometry: centroid.geometry,
-        };
+    const splitLabelsData = useMemo(
+      (): GeoJSON.FeatureCollection => ({
+        type: "FeatureCollection",
+        features: currentPolygons.map((geom) => {
+          const area = round(turf.area(geom), 0);
+          const centroid = turf.centroid(geom);
+          return {
+            type: "Feature",
+            properties: { label: `${area / 100}a` },
+            geometry: centroid.geometry,
+          };
+        }),
       }),
-    }), [currentPolygons]);
+      [currentPolygons],
+    );
 
     // Size label for the polygon being edited in polygon-edit mode
     const drawnPolygonLabelData = useMemo((): GeoJSON.FeatureCollection => {
-      if (activeToolMode !== "polygon-edit" || !drawnPolygonCoords || drawnPolygonCoords.length < 3) {
+      if (
+        activeToolMode !== "polygon-edit" ||
+        !drawnPolygonCoords ||
+        drawnPolygonCoords.length < 3
+      ) {
         return { type: "FeatureCollection", features: [] };
       }
       const poly = GeoSpatials.lngLatToMultiPolygon([drawnPolygonCoords]);
@@ -68,30 +84,38 @@ export const SplitModeLayers = forwardRef<SplitModeLayersHandle>(
       const centroid = turf.centroid(poly);
       return {
         type: "FeatureCollection",
-        features: [{
-          type: "Feature",
-          properties: { label: `${area / 100}a` },
-          geometry: centroid.geometry,
-        }],
+        features: [
+          {
+            type: "Feature",
+            properties: { label: `${area / 100}a` },
+            geometry: centroid.geometry,
+          },
+        ],
       };
     }, [activeToolMode, drawnPolygonCoords]);
 
     // GeoJSON for the split polygon fills
-    const splitFeatureCollection = useMemo((): GeoJSON.FeatureCollection => ({
-      type: "FeatureCollection",
-      features: currentPolygons.flatMap((geom, i) =>
-        geom.coordinates.map((polygonCoords) => ({
-          type: "Feature" as const,
-          properties: {
-            color: hasMultiplePolygons
-              ? indexToDistinctColor(i)
-              : hexToRgba(theme.map.defaultFillColor, theme.map.defaultFillAlpha),
-            opacity: hasMultiplePolygons ? 0.6 : theme.map.defaultFillAlpha,
-          },
-          geometry: { type: "Polygon" as const, coordinates: polygonCoords },
-        }))
-      ),
-    }), [currentPolygons, hasMultiplePolygons, theme]);
+    const splitFeatureCollection = useMemo(
+      (): GeoJSON.FeatureCollection => ({
+        type: "FeatureCollection",
+        features: currentPolygons.flatMap((geom, i) =>
+          geom.coordinates.map((polygonCoords) => ({
+            type: "Feature" as const,
+            properties: {
+              color: hasMultiplePolygons
+                ? indexToDistinctColor(i)
+                : hexToRgba(
+                    theme.map.defaultFillColor,
+                    theme.map.defaultFillAlpha,
+                  ),
+              opacity: hasMultiplePolygons ? 0.6 : theme.map.defaultFillAlpha,
+            },
+            geometry: { type: "Polygon" as const, coordinates: polygonCoords },
+          })),
+        ),
+      }),
+      [currentPolygons, hasMultiplePolygons, theme],
+    );
 
     useImperativeHandle(ref, () => ({
       handleMapPress(lngLat: LngLat) {
@@ -143,7 +167,7 @@ export const SplitModeLayers = forwardRef<SplitModeLayersHandle>(
           }
         }
         const validPolylines = newPolygons.filter(
-          (p) => p.coordinates.length > 0 && turf.area(p) > 0.1
+          (p) => p.coordinates.length > 0 && turf.area(p) > 0.1,
         );
         dispatch({ type: "SET_SPLIT_POLYGONS", polygons: validPolylines });
         drawingRef.current?.reset();
@@ -159,7 +183,10 @@ export const SplitModeLayers = forwardRef<SplitModeLayersHandle>(
         }
         const newPolygons: GeoJSON.MultiPolygon[] = [];
         for (const currentPolygon of currentMode.currentPolygons) {
-          const result = cutPolygonFromMultiPolygonLngLat(currentPolygon, coords);
+          const result = cutPolygonFromMultiPolygonLngLat(
+            currentPolygon,
+            coords,
+          );
           if (result) {
             newPolygons.push(result.remaining, result.plots);
           } else {
@@ -168,7 +195,7 @@ export const SplitModeLayers = forwardRef<SplitModeLayersHandle>(
         }
         // Filter out zero-area degenerate polygons (floating-point artifacts from cuts)
         const validPolygons = newPolygons.filter(
-          (p) => p.coordinates.length > 0 && turf.area(p) > 0.1
+          (p) => p.coordinates.length > 0 && turf.area(p) > 0.1,
         );
         setDrawnPolygonCoords(null);
         dispatch({ type: "SET_SPLIT_POLYGONS", polygons: validPolygons });
@@ -179,10 +206,13 @@ export const SplitModeLayers = forwardRef<SplitModeLayersHandle>(
     if (mode.type !== "split") return null;
 
     const drawMode: "draw-polygon" | "draw-polyline" | "edit" | "none" =
-      activeToolMode === "polyline" ? "draw-polyline" :
-      activeToolMode === "polygon" ? "draw-polygon" :
-      activeToolMode === "polygon-edit" ? "edit" :
-      "none";
+      activeToolMode === "polyline"
+        ? "draw-polyline"
+        : activeToolMode === "polygon"
+          ? "draw-polygon"
+          : activeToolMode === "polygon-edit"
+            ? "edit"
+            : "none";
 
     const labelLayerPaint = {
       "text-color": "#FFFFFF",
@@ -228,7 +258,9 @@ export const SplitModeLayers = forwardRef<SplitModeLayersHandle>(
         </GeoJSONSource>
 
         {/* Drawing overlay — only during active drawing/editing phases */}
-        {(activeToolMode === "polyline" || activeToolMode === "polygon" || activeToolMode === "polygon-edit") && (
+        {(activeToolMode === "polyline" ||
+          activeToolMode === "polygon" ||
+          activeToolMode === "polygon-edit") && (
           <DrawingOverlay
             ref={drawingRef}
             mode={drawMode}

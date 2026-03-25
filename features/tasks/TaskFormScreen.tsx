@@ -43,7 +43,14 @@ import { useHerdsQuery } from "@/features/animals/herds.hooks";
 import { useMyWikiEntriesQuery } from "@/features/wiki/wiki.hooks";
 
 type LinkInput = {
-  linkType: "animal" | "plot" | "contact" | "order" | "wiki_entry" | "treatment" | "herd";
+  linkType:
+    | "animal"
+    | "plot"
+    | "contact"
+    | "order"
+    | "wiki_entry"
+    | "treatment"
+    | "herd";
   linkedId: string;
   displayName: string;
 };
@@ -63,7 +70,7 @@ type FormValues = {
 
 // Entity type options for link picker modal — "animal" covers both animals + herds via a sub-toggle
 const ENTITY_TYPES = ["animal", "plot", "wiki_entry"] as const;
-type EntityType = typeof ENTITY_TYPES[number];
+type EntityType = (typeof ENTITY_TYPES)[number];
 type AllLinkType = LinkInput["linkType"];
 
 // Which sub-view is active when entityType === "animal"
@@ -94,13 +101,19 @@ function LinkPickerModal({
   const insets = useSafeAreaInsets();
 
   // Step 1: choose entity type. Step 2: browse + multi-select entities.
-  const [step, setStep] = useState<"type_select" | "entity_list">("type_select");
+  const [step, setStep] = useState<"type_select" | "entity_list">(
+    "type_select",
+  );
   const [entityType, setEntityType] = useState<EntityType | null>(null);
   const [animalSubView, setAnimalSubView] = useState<AnimalSubView>("animals");
   const [search, setSearch] = useState("");
-  const [selectedAnimalTypes, setSelectedAnimalTypes] = useState<Set<AnimalType>>(new Set());
+  const [selectedAnimalTypes, setSelectedAnimalTypes] = useState<
+    Set<AnimalType>
+  >(new Set());
   // Tracks items selected in the current picker session, keyed by linkedId
-  const [pendingLinks, setPendingLinks] = useState<Map<string, LinkInput>>(new Map());
+  const [pendingLinks, setPendingLinks] = useState<Map<string, LinkInput>>(
+    new Map(),
+  );
 
   const { animals } = useAnimalsQuery(false, undefined, visible);
   const { plots } = useFarmPlotsQuery();
@@ -111,7 +124,7 @@ function LinkPickerModal({
   useEffect(() => {
     if (!visible) return;
     const map = new Map<string, LinkInput>();
-    for (const link of (initialSelectedLinks ?? [])) {
+    for (const link of initialSelectedLinks ?? []) {
       map.set(link.linkedId, link);
     }
     setPendingLinks(map);
@@ -157,20 +170,25 @@ function LinkPickerModal({
   // Filtered + searched herds
   const filteredHerds = useMemo(() => {
     const q = search.toLowerCase();
-    return (herds ?? []).filter((h) => !search || h.name.toLowerCase().includes(q));
+    return (herds ?? []).filter(
+      (h) => !search || h.name.toLowerCase().includes(q),
+    );
   }, [herds, search]);
 
   // Filtered + searched plots
   const filteredPlots = useMemo(() => {
     const q = search.toLowerCase();
-    return (plots ?? []).filter((p) => !search || (p.name ?? "").toLowerCase().includes(q));
+    return (plots ?? []).filter(
+      (p) => !search || (p.name ?? "").toLowerCase().includes(q),
+    );
   }, [plots, search]);
 
   // Filtered + searched wiki entries
   const filteredWikiEntries = useMemo(() => {
     const q = search.toLowerCase();
     return (wikiEntries ?? []).filter((e) => {
-      const translation = e.translations.find((tr) => tr.locale === "de") ?? e.translations[0];
+      const translation =
+        e.translations.find((tr) => tr.locale === "de") ?? e.translations[0];
       return !search || (translation?.title ?? "").toLowerCase().includes(q);
     });
   }, [wikiEntries, search]);
@@ -196,22 +214,46 @@ function LinkPickerModal({
   // All visible items in the current entity list view, for select all / clear
   const currentItems: LinkInput[] = useMemo(() => {
     if (entityType === "animal" && animalSubView === "animals") {
-      return filteredAnimals.map((a) => ({ linkType: "animal" as AllLinkType, linkedId: a.id, displayName: a.name }));
+      return filteredAnimals.map((a) => ({
+        linkType: "animal" as AllLinkType,
+        linkedId: a.id,
+        displayName: a.name,
+      }));
     }
     if (entityType === "animal" && animalSubView === "herds") {
-      return filteredHerds.map((h) => ({ linkType: "herd" as AllLinkType, linkedId: h.id, displayName: h.name }));
+      return filteredHerds.map((h) => ({
+        linkType: "herd" as AllLinkType,
+        linkedId: h.id,
+        displayName: h.name,
+      }));
     }
     if (entityType === "plot") {
-      return filteredPlots.map((p) => ({ linkType: "plot" as AllLinkType, linkedId: p.id, displayName: p.name ?? p.id }));
+      return filteredPlots.map((p) => ({
+        linkType: "plot" as AllLinkType,
+        linkedId: p.id,
+        displayName: p.name ?? p.id,
+      }));
     }
     if (entityType === "wiki_entry") {
       return filteredWikiEntries.map((e) => {
-        const translation = e.translations.find((tr) => tr.locale === "de") ?? e.translations[0];
-        return { linkType: "wiki_entry" as AllLinkType, linkedId: e.id, displayName: translation?.title ?? e.id };
+        const translation =
+          e.translations.find((tr) => tr.locale === "de") ?? e.translations[0];
+        return {
+          linkType: "wiki_entry" as AllLinkType,
+          linkedId: e.id,
+          displayName: translation?.title ?? e.id,
+        };
       });
     }
     return [];
-  }, [entityType, animalSubView, filteredAnimals, filteredHerds, filteredPlots, filteredWikiEntries]);
+  }, [
+    entityType,
+    animalSubView,
+    filteredAnimals,
+    filteredHerds,
+    filteredPlots,
+    filteredWikiEntries,
+  ]);
 
   function handleSelectAll() {
     setPendingLinks((prev) => {
@@ -229,7 +271,11 @@ function LinkPickerModal({
     });
   }
 
-  function toggleItem(linkType: AllLinkType, linkedId: string, displayName: string) {
+  function toggleItem(
+    linkType: AllLinkType,
+    linkedId: string,
+    displayName: string,
+  ) {
     setPendingLinks((prev) => {
       const next = new Map(prev);
       if (next.has(linkedId)) {
@@ -286,27 +332,58 @@ function LinkPickerModal({
 
   // Fake navigation header matching the stack navigator's header height
   const navHeader = (button: React.ReactNode) => (
-    <View style={{ paddingTop: insets.top, backgroundColor: theme.colors.background }}>
-      <View style={{ height: 44, flexDirection: "row", alignItems: "center", paddingHorizontal: 8 }}>
+    <View
+      style={{
+        paddingTop: insets.top,
+        backgroundColor: theme.colors.background,
+      }}
+    >
+      <View
+        style={{
+          height: 44,
+          flexDirection: "row",
+          alignItems: "center",
+          paddingHorizontal: 8,
+        }}
+      >
         {button}
       </View>
     </View>
   );
 
   return (
-    <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={handleClose}>
-
+    <Modal
+      visible={visible}
+      animationType="slide"
+      presentationStyle="pageSheet"
+      onRequestClose={handleClose}
+    >
       {/* Step 1 — entity type selection */}
       {step === "type_select" && (
         <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
           {navHeader(
-            <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end" }}>
-              <Pressable onPress={handleClose} style={{ paddingHorizontal: 8, paddingVertical: 4 }}>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "flex-end",
+              }}
+            >
+              <Pressable
+                onPress={handleClose}
+                style={{ paddingHorizontal: 8, paddingVertical: 4 }}
+              >
                 <Ionicons name="close" size={28} color={theme.colors.primary} />
               </Pressable>
-            </View>
+            </View>,
           )}
-          <View style={{ flex: 1, paddingHorizontal: theme.spacing.m, paddingTop: theme.spacing.s }}>
+          <View
+            style={{
+              flex: 1,
+              paddingHorizontal: theme.spacing.m,
+              paddingTop: theme.spacing.s,
+            }}
+          >
             <H2>{t("tasks.add_link")}</H2>
             <View style={{ marginTop: theme.spacing.m, gap: theme.spacing.s }}>
               {ENTITY_TYPES.map((type) => (
@@ -322,9 +399,20 @@ function LinkPickerModal({
                     padding: theme.spacing.m,
                   }}
                 >
-                  <Ionicons name={entityTypeIcons[type]} size={24} color={theme.colors.primary} />
-                  <Subtitle style={{ fontSize: 16 }}>{entityTypeLabels[type]}</Subtitle>
-                  <Ionicons name="chevron-forward" size={18} color={theme.colors.gray2} style={{ marginLeft: "auto" }} />
+                  <Ionicons
+                    name={entityTypeIcons[type]}
+                    size={24}
+                    color={theme.colors.primary}
+                  />
+                  <Subtitle style={{ fontSize: 16 }}>
+                    {entityTypeLabels[type]}
+                  </Subtitle>
+                  <Ionicons
+                    name="chevron-forward"
+                    size={18}
+                    color={theme.colors.gray2}
+                    style={{ marginLeft: "auto" }}
+                  />
                 </Pressable>
               ))}
             </View>
@@ -337,143 +425,250 @@ function LinkPickerModal({
         <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
           {navHeader(
             initialEntityType == null ? (
-              <Pressable onPress={handleBack} style={{ paddingHorizontal: 8, paddingVertical: 4 }}>
-                <Ionicons name="chevron-back" size={28} color={theme.colors.primary} />
+              <Pressable
+                onPress={handleBack}
+                style={{ paddingHorizontal: 8, paddingVertical: 4 }}
+              >
+                <Ionicons
+                  name="chevron-back"
+                  size={28}
+                  color={theme.colors.primary}
+                />
               </Pressable>
             ) : (
-              <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end" }}>
-                <Pressable onPress={handleClose} style={{ paddingHorizontal: 8, paddingVertical: 4 }}>
-                  <Ionicons name="close" size={28} color={theme.colors.primary} />
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <Pressable
+                  onPress={handleClose}
+                  style={{ paddingHorizontal: 8, paddingVertical: 4 }}
+                >
+                  <Ionicons
+                    name="close"
+                    size={28}
+                    color={theme.colors.primary}
+                  />
                 </Pressable>
               </View>
-            )
+            ),
           )}
-          <View style={{ flex: 1, paddingHorizontal: theme.spacing.m, paddingTop: theme.spacing.s }}>
-          <H2>{entityTypePluralLabels[entityType]}</H2>
-
-          {/* Search */}
-          <View style={{ marginTop: theme.spacing.m }}>
-            <TextInput
-              hideLabel
-              placeholder={t("forms.placeholders.search")}
-              onChangeText={setSearch}
-              value={search}
-            />
-          </View>
-
-          {/* Filter chips: sub-view toggle + animal type chips in one scroll row */}
-          <RNScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={{ marginTop: theme.spacing.s, flexGrow: 0 }}
-            contentContainerStyle={{ gap: theme.spacing.xs, paddingVertical: theme.spacing.xs }}
+          <View
+            style={{
+              flex: 1,
+              paddingHorizontal: theme.spacing.m,
+              paddingTop: theme.spacing.s,
+            }}
           >
-            {entityType === "animal" && (["animals", "herds"] as AnimalSubView[]).map((view) => (
-              <Chip
-                key={view}
-                label={view === "animals" ? t("tasks.link_types.animal") : t("tasks.link_types.herd")}
-                active={animalSubView === view}
-                onPress={() => { setAnimalSubView(view); setSearch(""); setSelectedAnimalTypes(new Set()); }}
-              />
-            ))}
-            {entityType === "animal" && animalSubView === "animals" && availableAnimalTypes.map((animalType) => (
-              <Chip
-                key={animalType}
-                label={ANIMAL_TYPE_LABELS[animalType]}
-                active={selectedAnimalTypes.has(animalType)}
-                onPress={() => toggleAnimalType(animalType)}
-              />
-            ))}
-          </RNScrollView>
+            <H2>{entityTypePluralLabels[entityType]}</H2>
 
-          {/* Select all / Clear */}
-          <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: theme.spacing.m }}>
-            <TouchableOpacity onPress={handleSelectAll}>
-              <Subtitle style={{ color: theme.colors.primary }}>
-                {t("treatments.select_all", { count: currentItems.length })}
-              </Subtitle>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleClearAll}>
-              <Subtitle style={{ color: theme.colors.gray1 }}>
-                {t("treatments.clear_selection")}
-              </Subtitle>
-            </TouchableOpacity>
-          </View>
+            {/* Search */}
+            <View style={{ marginTop: theme.spacing.m }}>
+              <TextInput
+                hideLabel
+                placeholder={t("forms.placeholders.search")}
+                onChangeText={setSearch}
+                value={search}
+              />
+            </View>
 
-          {/* Entity list */}
-          <View style={{ marginTop: theme.spacing.s, flex: 1 }}>
-            {entityType === "animal" && animalSubView === "animals" && (
-              <FlatList
-                data={filteredAnimals}
-                keyExtractor={(item) => item.id}
-                contentContainerStyle={{ borderTopRightRadius: 10, borderTopLeftRadius: 10, overflow: "hidden", backgroundColor: filteredAnimals.length > 0 ? theme.colors.white : undefined }}
-                renderItem={({ item }) => (
-                  <ListItem style={{ paddingVertical: 5 }} onPress={() => toggleItem("animal", item.id, item.earTag?.number ? `${item.earTag.number} — ${item.name}` : item.name)}>
-                    <ListItem.Checkbox checked={pendingLinks.has(item.id)} />
-                    <ListItem.Content>
-                      <ListItem.Title>
-                        {item.earTag?.number ? `${item.earTag.number} — ` : ""}{item.name}
-                      </ListItem.Title>
-                      <ListItem.Body>{ANIMAL_TYPE_LABELS[item.type]}</ListItem.Body>
-                    </ListItem.Content>
-                  </ListItem>
-                )}
-              />
-            )}
-            {entityType === "animal" && animalSubView === "herds" && (
-              <FlatList
-                data={filteredHerds}
-                keyExtractor={(item) => item.id}
-                contentContainerStyle={{ borderTopRightRadius: 10, borderTopLeftRadius: 10, overflow: "hidden", backgroundColor: filteredHerds.length > 0 ? theme.colors.white : undefined }}
-                renderItem={({ item }) => (
-                  <ListItem style={{ paddingVertical: 5 }} onPress={() => toggleItem("herd", item.id, item.name)}>
-                    <ListItem.Checkbox checked={pendingLinks.has(item.id)} />
-                    <ListItem.Content>
-                      <ListItem.Title>{item.name}</ListItem.Title>
-                    </ListItem.Content>
-                  </ListItem>
-                )}
-              />
-            )}
-            {entityType === "plot" && (
-              <FlatList
-                data={filteredPlots}
-                keyExtractor={(item) => item.id}
-                contentContainerStyle={{ borderTopRightRadius: 10, borderTopLeftRadius: 10, overflow: "hidden", backgroundColor: filteredPlots.length > 0 ? theme.colors.white : undefined }}
-                renderItem={({ item }) => (
-                  <ListItem style={{ paddingVertical: 5 }} onPress={() => toggleItem("plot", item.id, item.name ?? item.id)}>
-                    <ListItem.Checkbox checked={pendingLinks.has(item.id)} />
-                    <ListItem.Content>
-                      <ListItem.Title>{item.name ?? item.id}</ListItem.Title>
-                    </ListItem.Content>
-                  </ListItem>
-                )}
-              />
-            )}
-            {entityType === "wiki_entry" && (
-              <FlatList
-                data={filteredWikiEntries}
-                keyExtractor={(item) => item.id}
-                contentContainerStyle={{ borderTopRightRadius: 10, borderTopLeftRadius: 10, overflow: "hidden", backgroundColor: filteredWikiEntries.length > 0 ? theme.colors.white : undefined }}
-                renderItem={({ item }) => {
-                  const translation = item.translations.find((tr) => tr.locale === "de") ?? item.translations[0];
-                  const title = translation?.title ?? item.id;
-                  return (
-                    <ListItem style={{ paddingVertical: 5 }} onPress={() => toggleItem("wiki_entry", item.id, title)}>
+            {/* Filter chips: sub-view toggle + animal type chips in one scroll row */}
+            <RNScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={{ marginTop: theme.spacing.s, flexGrow: 0 }}
+              contentContainerStyle={{
+                gap: theme.spacing.xs,
+                paddingVertical: theme.spacing.xs,
+              }}
+            >
+              {entityType === "animal" &&
+                (["animals", "herds"] as AnimalSubView[]).map((view) => (
+                  <Chip
+                    key={view}
+                    label={
+                      view === "animals"
+                        ? t("tasks.link_types.animal")
+                        : t("tasks.link_types.herd")
+                    }
+                    active={animalSubView === view}
+                    onPress={() => {
+                      setAnimalSubView(view);
+                      setSearch("");
+                      setSelectedAnimalTypes(new Set());
+                    }}
+                  />
+                ))}
+              {entityType === "animal" &&
+                animalSubView === "animals" &&
+                availableAnimalTypes.map((animalType) => (
+                  <Chip
+                    key={animalType}
+                    label={ANIMAL_TYPE_LABELS[animalType]}
+                    active={selectedAnimalTypes.has(animalType)}
+                    onPress={() => toggleAnimalType(animalType)}
+                  />
+                ))}
+            </RNScrollView>
+
+            {/* Select all / Clear */}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginTop: theme.spacing.m,
+              }}
+            >
+              <TouchableOpacity onPress={handleSelectAll}>
+                <Subtitle style={{ color: theme.colors.primary }}>
+                  {t("treatments.select_all", { count: currentItems.length })}
+                </Subtitle>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleClearAll}>
+                <Subtitle style={{ color: theme.colors.gray1 }}>
+                  {t("treatments.clear_selection")}
+                </Subtitle>
+              </TouchableOpacity>
+            </View>
+
+            {/* Entity list */}
+            <View style={{ marginTop: theme.spacing.s, flex: 1 }}>
+              {entityType === "animal" && animalSubView === "animals" && (
+                <FlatList
+                  data={filteredAnimals}
+                  keyExtractor={(item) => item.id}
+                  contentContainerStyle={{
+                    borderTopRightRadius: 10,
+                    borderTopLeftRadius: 10,
+                    overflow: "hidden",
+                    backgroundColor:
+                      filteredAnimals.length > 0
+                        ? theme.colors.white
+                        : undefined,
+                  }}
+                  renderItem={({ item }) => (
+                    <ListItem
+                      style={{ paddingVertical: 5 }}
+                      onPress={() =>
+                        toggleItem(
+                          "animal",
+                          item.id,
+                          item.earTag?.number
+                            ? `${item.earTag.number} — ${item.name}`
+                            : item.name,
+                        )
+                      }
+                    >
                       <ListItem.Checkbox checked={pendingLinks.has(item.id)} />
                       <ListItem.Content>
-                        <ListItem.Title>{title}</ListItem.Title>
+                        <ListItem.Title>
+                          {item.earTag?.number
+                            ? `${item.earTag.number} — `
+                            : ""}
+                          {item.name}
+                        </ListItem.Title>
+                        <ListItem.Body>
+                          {ANIMAL_TYPE_LABELS[item.type]}
+                        </ListItem.Body>
                       </ListItem.Content>
                     </ListItem>
-                  );
-                }}
-              />
-            )}
-          </View>
+                  )}
+                />
+              )}
+              {entityType === "animal" && animalSubView === "herds" && (
+                <FlatList
+                  data={filteredHerds}
+                  keyExtractor={(item) => item.id}
+                  contentContainerStyle={{
+                    borderTopRightRadius: 10,
+                    borderTopLeftRadius: 10,
+                    overflow: "hidden",
+                    backgroundColor:
+                      filteredHerds.length > 0 ? theme.colors.white : undefined,
+                  }}
+                  renderItem={({ item }) => (
+                    <ListItem
+                      style={{ paddingVertical: 5 }}
+                      onPress={() => toggleItem("herd", item.id, item.name)}
+                    >
+                      <ListItem.Checkbox checked={pendingLinks.has(item.id)} />
+                      <ListItem.Content>
+                        <ListItem.Title>{item.name}</ListItem.Title>
+                      </ListItem.Content>
+                    </ListItem>
+                  )}
+                />
+              )}
+              {entityType === "plot" && (
+                <FlatList
+                  data={filteredPlots}
+                  keyExtractor={(item) => item.id}
+                  contentContainerStyle={{
+                    borderTopRightRadius: 10,
+                    borderTopLeftRadius: 10,
+                    overflow: "hidden",
+                    backgroundColor:
+                      filteredPlots.length > 0 ? theme.colors.white : undefined,
+                  }}
+                  renderItem={({ item }) => (
+                    <ListItem
+                      style={{ paddingVertical: 5 }}
+                      onPress={() =>
+                        toggleItem("plot", item.id, item.name ?? item.id)
+                      }
+                    >
+                      <ListItem.Checkbox checked={pendingLinks.has(item.id)} />
+                      <ListItem.Content>
+                        <ListItem.Title>{item.name ?? item.id}</ListItem.Title>
+                      </ListItem.Content>
+                    </ListItem>
+                  )}
+                />
+              )}
+              {entityType === "wiki_entry" && (
+                <FlatList
+                  data={filteredWikiEntries}
+                  keyExtractor={(item) => item.id}
+                  contentContainerStyle={{
+                    borderTopRightRadius: 10,
+                    borderTopLeftRadius: 10,
+                    overflow: "hidden",
+                    backgroundColor:
+                      filteredWikiEntries.length > 0
+                        ? theme.colors.white
+                        : undefined,
+                  }}
+                  renderItem={({ item }) => {
+                    const translation =
+                      item.translations.find((tr) => tr.locale === "de") ??
+                      item.translations[0];
+                    const title = translation?.title ?? item.id;
+                    return (
+                      <ListItem
+                        style={{ paddingVertical: 5 }}
+                        onPress={() => toggleItem("wiki_entry", item.id, title)}
+                      >
+                        <ListItem.Checkbox
+                          checked={pendingLinks.has(item.id)}
+                        />
+                        <ListItem.Content>
+                          <ListItem.Title>{title}</ListItem.Title>
+                        </ListItem.Content>
+                      </ListItem>
+                    );
+                  }}
+                />
+              )}
+            </View>
           </View>
           <BottomActionContainer>
             <Button
-              title={t("treatments.confirm_selection", { count: selectedCount })}
+              title={t("treatments.confirm_selection", {
+                count: selectedCount,
+              })}
               onPress={handleConfirm}
             />
           </BottomActionContainer>
@@ -490,7 +685,12 @@ type GenerateChecklistModalProps = {
   onConfirm: (selected: LinkInput[]) => void;
 };
 
-function GenerateChecklistModal({ visible, items, onClose, onConfirm }: GenerateChecklistModalProps) {
+function GenerateChecklistModal({
+  visible,
+  items,
+  onClose,
+  onConfirm,
+}: GenerateChecklistModalProps) {
   const theme = useTheme();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
@@ -519,16 +719,43 @@ function GenerateChecklistModal({ visible, items, onClose, onConfirm }: Generate
   }
 
   return (
-    <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
+    <Modal
+      visible={visible}
+      animationType="slide"
+      presentationStyle="pageSheet"
+      onRequestClose={onClose}
+    >
       <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
-        <View style={{ paddingTop: insets.top, backgroundColor: theme.colors.background }}>
-          <View style={{ height: 44, flexDirection: "row", alignItems: "center", paddingHorizontal: 8, justifyContent: "flex-end" }}>
-            <Pressable onPress={onClose} style={{ paddingHorizontal: 8, paddingVertical: 4 }}>
+        <View
+          style={{
+            paddingTop: insets.top,
+            backgroundColor: theme.colors.background,
+          }}
+        >
+          <View
+            style={{
+              height: 44,
+              flexDirection: "row",
+              alignItems: "center",
+              paddingHorizontal: 8,
+              justifyContent: "flex-end",
+            }}
+          >
+            <Pressable
+              onPress={onClose}
+              style={{ paddingHorizontal: 8, paddingVertical: 4 }}
+            >
               <Ionicons name="close" size={28} color={theme.colors.primary} />
             </Pressable>
           </View>
         </View>
-        <View style={{ flex: 1, paddingHorizontal: theme.spacing.m, paddingTop: theme.spacing.s }}>
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: theme.spacing.m,
+            paddingTop: theme.spacing.s,
+          }}
+        >
           <H2>{t("tasks.checklist")}</H2>
           <View style={{ marginTop: theme.spacing.m }}>
             <TextInput
@@ -538,13 +765,31 @@ function GenerateChecklistModal({ visible, items, onClose, onConfirm }: Generate
               value={search}
             />
           </View>
-          <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: theme.spacing.m }}>
-            <TouchableOpacity onPress={() => setSelected(new Set(filtered.map((i) => i.linkedId)))}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginTop: theme.spacing.m,
+            }}
+          >
+            <TouchableOpacity
+              onPress={() =>
+                setSelected(new Set(filtered.map((i) => i.linkedId)))
+              }
+            >
               <Subtitle style={{ color: theme.colors.primary }}>
                 {t("treatments.select_all", { count: filtered.length })}
               </Subtitle>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setSelected((prev) => { const next = new Set(prev); filtered.forEach((i) => next.delete(i.linkedId)); return next; })}>
+            <TouchableOpacity
+              onPress={() =>
+                setSelected((prev) => {
+                  const next = new Set(prev);
+                  filtered.forEach((i) => next.delete(i.linkedId));
+                  return next;
+                })
+              }
+            >
               <Subtitle style={{ color: theme.colors.gray1 }}>
                 {t("treatments.clear_selection")}
               </Subtitle>
@@ -554,9 +799,18 @@ function GenerateChecklistModal({ visible, items, onClose, onConfirm }: Generate
             <FlatList
               data={filtered}
               keyExtractor={(item) => item.linkedId}
-              contentContainerStyle={{ borderTopRightRadius: 10, borderTopLeftRadius: 10, overflow: "hidden", backgroundColor: filtered.length > 0 ? theme.colors.white : undefined }}
+              contentContainerStyle={{
+                borderTopRightRadius: 10,
+                borderTopLeftRadius: 10,
+                overflow: "hidden",
+                backgroundColor:
+                  filtered.length > 0 ? theme.colors.white : undefined,
+              }}
               renderItem={({ item }) => (
-                <ListItem style={{ paddingVertical: 5 }} onPress={() => toggleItem(item.linkedId)}>
+                <ListItem
+                  style={{ paddingVertical: 5 }}
+                  onPress={() => toggleItem(item.linkedId)}
+                >
                   <ListItem.Checkbox checked={selected.has(item.linkedId)} />
                   <ListItem.Content>
                     <ListItem.Title>{item.displayName}</ListItem.Title>
@@ -569,7 +823,9 @@ function GenerateChecklistModal({ visible, items, onClose, onConfirm }: Generate
         <BottomActionContainer>
           <Button
             title={t("treatments.confirm_selection", { count: selected.size })}
-            onPress={() => onConfirm(items.filter((i) => selected.has(i.linkedId)))}
+            onPress={() =>
+              onConfirm(items.filter((i) => selected.has(i.linkedId)))
+            }
           />
         </BottomActionContainer>
       </View>
@@ -597,21 +853,38 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
   const [recurrenceModalVisible, setRecurrenceModalVisible] = useState(false);
   const [linkPickerVisible, setLinkPickerVisible] = useState(false);
   // State for opening the picker in edit mode (pre-filtered + pre-selected)
-  const [linkPickerInitialEntityType, setLinkPickerInitialEntityType] = useState<EntityType | null>(null);
-  const [linkPickerInitialAnimalSubView, setLinkPickerInitialAnimalSubView] = useState<AnimalSubView>("animals");
-  const [linkPickerInitialLinks, setLinkPickerInitialLinks] = useState<LinkInput[]>([]);
+  const [linkPickerInitialEntityType, setLinkPickerInitialEntityType] =
+    useState<EntityType | null>(null);
+  const [linkPickerInitialAnimalSubView, setLinkPickerInitialAnimalSubView] =
+    useState<AnimalSubView>("animals");
+  const [linkPickerInitialLinks, setLinkPickerInitialLinks] = useState<
+    LinkInput[]
+  >([]);
   const [generateModalVisible, setGenerateModalVisible] = useState(false);
   const [generateModalItems, setGenerateModalItems] = useState<LinkInput[]>([]);
 
   // Track whether we've initialized form from existing task
   const [initialized, setInitialized] = useState(false);
 
-  const { control, handleSubmit, reset, formState: { errors } } = useForm<FormValues>({
-    defaultValues: { name: "", description: "", assigneeId: undefined, checklistItems: [] },
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormValues>({
+    defaultValues: {
+      name: "",
+      description: "",
+      assigneeId: undefined,
+      checklistItems: [],
+    },
   });
 
-  const { fields: checklistFields, append: appendChecklist, remove: removeChecklist } =
-    useFieldArray({ control, name: "checklistItems" });
+  const {
+    fields: checklistFields,
+    append: appendChecklist,
+    remove: removeChecklist,
+  } = useFieldArray({ control, name: "checklistItems" });
 
   // Initialize form when editing and task is loaded
   React.useEffect(() => {
@@ -621,19 +894,31 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
       name: taskDetail.name,
       description: taskDetail.description ?? "",
       assigneeId: taskDetail.assigneeId ?? undefined,
-      dueDate: taskDetail.dueDate != null ? new Date(taskDetail.dueDate as string) : null,
+      dueDate:
+        taskDetail.dueDate != null
+          ? new Date(taskDetail.dueDate as string)
+          : null,
       checklistItems: taskDetail.checklistItems.map((item) => ({
         name: item.name,
         dueDate: item.dueDate != null ? String(item.dueDate) : undefined,
       })),
     });
     setLabels(taskDetail.labels);
-    setLinks(taskDetail.links.map((l) => ({ linkType: l.linkType, linkedId: l.linkedId, displayName: l.displayName ?? l.linkedId })));
+    setLinks(
+      taskDetail.links.map((l) => ({
+        linkType: l.linkType,
+        linkedId: l.linkedId,
+        displayName: l.displayName ?? l.linkedId,
+      })),
+    );
     if (taskDetail.recurrence != null) {
       setRecurrence({
         frequency: taskDetail.recurrence.frequency,
         interval: taskDetail.recurrence.interval,
-        until: taskDetail.recurrence.until != null ? String(taskDetail.recurrence.until) : null,
+        until:
+          taskDetail.recurrence.until != null
+            ? String(taskDetail.recurrence.until)
+            : null,
       });
     }
     setInitialized(true);
@@ -652,9 +937,16 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
       .filter((item) => item.name.trim().length > 0)
       .map((item) => ({ name: item.name, dueDate: item.dueDate }));
 
-    const linksPayload = links.map((l) => ({ linkType: l.linkType, linkedId: l.linkedId }));
+    const linksPayload = links.map((l) => ({
+      linkType: l.linkType,
+      linkedId: l.linkedId,
+    }));
     const recurrencePayload = recurrence
-      ? { frequency: recurrence.frequency, interval: recurrence.interval, until: recurrence.until ?? undefined }
+      ? {
+          frequency: recurrence.frequency,
+          interval: recurrence.interval,
+          until: recurrence.until ?? undefined,
+        }
       : null;
 
     if (isEditing) {
@@ -718,7 +1010,10 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
       const existing = map.get(link.linkType) ?? [];
       map.set(link.linkType, [...existing, link]);
     }
-    return Array.from(map.entries()).map(([linkType, items]) => ({ linkType, items }));
+    return Array.from(map.entries()).map(([linkType, items]) => ({
+      linkType,
+      items,
+    }));
   }, [links]);
 
   function openAddLinkPicker() {
@@ -729,7 +1024,10 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
 
   // Open picker pre-filtered to a specific linkType group for editing
   function openEditLinkGroup(linkType: AllLinkType) {
-    const entityType: EntityType = (linkType === "animal" || linkType === "herd") ? "animal" : linkType as EntityType;
+    const entityType: EntityType =
+      linkType === "animal" || linkType === "herd"
+        ? "animal"
+        : (linkType as EntityType);
     const subView: AnimalSubView = linkType === "herd" ? "herds" : "animals";
     setLinkPickerInitialEntityType(entityType);
     setLinkPickerInitialAnimalSubView(subView);
@@ -750,9 +1048,12 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
   function handleLinksConfirm(confirmedLinks: LinkInput[]) {
     if (linkPickerInitialEntityType != null) {
       // Edit mode: replace all links of the specific linkType being edited
-      const replacedLinkType: AllLinkType = linkPickerInitialEntityType === "animal"
-        ? (linkPickerInitialAnimalSubView === "herds" ? "herd" : "animal")
-        : linkPickerInitialEntityType as AllLinkType;
+      const replacedLinkType: AllLinkType =
+        linkPickerInitialEntityType === "animal"
+          ? linkPickerInitialAnimalSubView === "herds"
+            ? "herd"
+            : "animal"
+          : (linkPickerInitialEntityType as AllLinkType);
       setLinks((prev) => [
         ...prev.filter((l) => l.linkType !== replacedLinkType),
         ...confirmedLinks,
@@ -761,7 +1062,10 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
       // Add mode: merge confirmed links, avoiding duplicates by linkedId
       setLinks((prev) => {
         const existingIds = new Set(prev.map((l) => l.linkedId));
-        return [...prev, ...confirmedLinks.filter((l) => !existingIds.has(l.linkedId))];
+        return [
+          ...prev,
+          ...confirmedLinks.filter((l) => !existingIds.has(l.linkedId)),
+        ];
       });
     }
     setLinkPickerVisible(false);
@@ -769,26 +1073,33 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
 
   return (
     <>
-      <ContentView headerVisible footerComponent={
-        <BottomActionContainer>
-          <Button
-            title={t("buttons.save")}
-            onPress={handleSubmit(onSubmit)}
-            loading={isSaving}
-            disabled={isSaving}
-          />
-        </BottomActionContainer>
-      }>
+      <ContentView
+        headerVisible
+        footerComponent={
+          <BottomActionContainer>
+            <Button
+              title={t("buttons.save")}
+              onPress={handleSubmit(onSubmit)}
+              loading={isSaving}
+              disabled={isSaving}
+            />
+          </BottomActionContainer>
+        }
+      >
         <ScrollView>
           <H2>{isEditing ? t("tasks.edit_task") : t("tasks.new_task")}</H2>
           <View style={{ gap: theme.spacing.m, marginTop: theme.spacing.m }}>
-
             {/* Name */}
             <RHTextInput
               name="name"
               control={control}
               label={t("forms.labels.name")}
-              rules={{ required: { value: true, message: t("forms.validation.required") } }}
+              rules={{
+                required: {
+                  value: true,
+                  message: t("forms.validation.required"),
+                },
+              }}
               error={errors.name?.message}
             />
 
@@ -819,7 +1130,9 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
             {/* Recurrence */}
             <View style={{ gap: theme.spacing.m, marginTop: theme.spacing.m }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Subtitle style={{ color: theme.colors.gray2, flex: 1 }}>{t("tasks.recurrence")}</Subtitle>
+                <Subtitle style={{ color: theme.colors.gray2, flex: 1 }}>
+                  {t("tasks.recurrence")}
+                </Subtitle>
                 {!recurrence && (
                   <IonIconButton
                     type="accent"
@@ -843,7 +1156,9 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
             {/* Checklist items */}
             <View style={{ gap: theme.spacing.m, marginTop: theme.spacing.m }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Subtitle style={{ color: theme.colors.gray2, flex: 1 }}>{t("tasks.checklist")}</Subtitle>
+                <Subtitle style={{ color: theme.colors.gray2, flex: 1 }}>
+                  {t("tasks.checklist")}
+                </Subtitle>
                 <IonIconButton
                   type="accent"
                   icon="add"
@@ -853,7 +1168,14 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
                 />
               </View>
               {checklistFields.map((field, index) => (
-                <View key={field.id} style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}>
+                <View
+                  key={field.id}
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: theme.spacing.xs,
+                  }}
+                >
                   <View style={{ flex: 1 }}>
                     <RHTextInput
                       name={`checklistItems.${index}.name`}
@@ -863,7 +1185,11 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
                     />
                   </View>
                   <Pressable onPress={() => removeChecklist(index)}>
-                    <Ionicons name="close-circle-outline" size={24} color={theme.colors.danger} />
+                    <Ionicons
+                      name="close-circle-outline"
+                      size={24}
+                      color={theme.colors.danger}
+                    />
                   </Pressable>
                 </View>
               ))}
@@ -872,22 +1198,35 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
             {/* Labels */}
             <View style={{ gap: theme.spacing.m, marginTop: theme.spacing.m }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Subtitle style={{ color: theme.colors.gray2, flex: 1 }}>{t("tasks.labels")}</Subtitle>
+                <Subtitle style={{ color: theme.colors.gray2, flex: 1 }}>
+                  {t("tasks.labels")}
+                </Subtitle>
                 <IonIconButton
                   type="accent"
                   icon="add"
                   iconSize={18}
                   color={theme.colors.primary}
-                  onPress={() => { setLabelDialogInput(""); setLabelDialogVisible(true); }}
+                  onPress={() => {
+                    setLabelDialogInput("");
+                    setLabelDialogVisible(true);
+                  }}
                 />
               </View>
               {labels.length > 0 && (
-                <View style={{ flexDirection: "row", flexWrap: "wrap", gap: theme.spacing.xs }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    gap: theme.spacing.xs,
+                  }}
+                >
                   {labels.map((label) => (
                     <Chip
                       key={label}
                       label={label}
-                      onRemove={() => setLabels((prev) => prev.filter((l) => l !== label))}
+                      onRemove={() =>
+                        setLabels((prev) => prev.filter((l) => l !== label))
+                      }
                     />
                   ))}
                 </View>
@@ -897,7 +1236,9 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
             {/* Links — grouped by entity type, card per group like CreateTreatmentScreen */}
             <View style={{ gap: theme.spacing.m, marginTop: theme.spacing.m }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Subtitle style={{ color: theme.colors.gray2, flex: 1 }}>{t("tasks.links")}</Subtitle>
+                <Subtitle style={{ color: theme.colors.gray2, flex: 1 }}>
+                  {t("tasks.links")}
+                </Subtitle>
                 <IonIconButton
                   type="accent"
                   icon="add"
@@ -908,8 +1249,16 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
               </View>
               {groupedLinks.map(({ linkType, items }) => (
                 <View key={linkType} style={{ gap: theme.spacing.xs }}>
-                  <Subtitle style={{ color: theme.colors.gray2 }}>{linkTypeLabels[linkType]}</Subtitle>
-                  <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}>
+                  <Subtitle style={{ color: theme.colors.gray2 }}>
+                    {linkTypeLabels[linkType]}
+                  </Subtitle>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: theme.spacing.xs,
+                    }}
+                  >
                     <ListItem
                       style={{
                         flex: 1,
@@ -922,7 +1271,9 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
                     >
                       <ListItem.Content>
                         <ListItem.Title style={{ color: theme.colors.primary }}>
-                          {items.length === 1 ? items[0].displayName : `${items.length} ${linkTypePluralLabels[linkType]}`}
+                          {items.length === 1
+                            ? items[0].displayName
+                            : `${items.length} ${linkTypePluralLabels[linkType]}`}
                         </ListItem.Title>
                       </ListItem.Content>
                       <ListItem.Chevron />
@@ -937,7 +1288,6 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
                 </View>
               ))}
             </View>
-
           </View>
         </ScrollView>
       </ContentView>
@@ -950,7 +1300,12 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
         onRequestClose={() => setLabelDialogVisible(false)}
       >
         <Pressable
-          style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.4)", justifyContent: "center", alignItems: "center" }}
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(0,0,0,0.4)",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
           onPress={() => setLabelDialogVisible(false)}
         >
           <Pressable
@@ -961,9 +1316,13 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
               width: "80%",
               gap: theme.spacing.m,
             }}
-            onPress={() => {/* prevent backdrop close */}}
+            onPress={() => {
+              /* prevent backdrop close */
+            }}
           >
-            <Subtitle style={{ fontSize: 16, fontWeight: "600" }}>{t("tasks.add_label")}</Subtitle>
+            <Subtitle style={{ fontSize: 16, fontWeight: "600" }}>
+              {t("tasks.add_label")}
+            </Subtitle>
             <RNTextInput
               value={labelDialogInput}
               onChangeText={setLabelDialogInput}
@@ -985,9 +1344,20 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
                 fontSize: 16,
               }}
             />
-            <View style={{ flexDirection: "row", justifyContent: "flex-end", gap: theme.spacing.s }}>
-              <Pressable onPress={() => setLabelDialogVisible(false)} style={{ padding: theme.spacing.s }}>
-                <Subtitle style={{ color: theme.colors.gray1 }}>{t("buttons.cancel")}</Subtitle>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                gap: theme.spacing.s,
+              }}
+            >
+              <Pressable
+                onPress={() => setLabelDialogVisible(false)}
+                style={{ padding: theme.spacing.s }}
+              >
+                <Subtitle style={{ color: theme.colors.gray1 }}>
+                  {t("buttons.cancel")}
+                </Subtitle>
               </Pressable>
               <Pressable
                 onPress={() => {
@@ -998,7 +1368,11 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
                 }}
                 style={{ padding: theme.spacing.s }}
               >
-                <Subtitle style={{ color: theme.colors.primary, fontWeight: "600" }}>{t("buttons.ok")}</Subtitle>
+                <Subtitle
+                  style={{ color: theme.colors.primary, fontWeight: "600" }}
+                >
+                  {t("buttons.ok")}
+                </Subtitle>
               </Pressable>
             </View>
           </Pressable>
@@ -1031,7 +1405,10 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
   );
 }
 
-function recurrenceSummary(value: RecurrenceValue, t: (key: string) => string): string {
+function recurrenceSummary(
+  value: RecurrenceValue,
+  t: (key: string) => string,
+): string {
   const n = value.interval;
   const unitSingular: Record<RecurrenceValue["frequency"], string> = {
     weekly: t("animals.week"),
@@ -1043,6 +1420,7 @@ function recurrenceSummary(value: RecurrenceValue, t: (key: string) => string): 
     monthly: t("animals.months"),
     yearly: t("animals.years"),
   };
-  const unit = n === 1 ? unitSingular[value.frequency] : unitPlural[value.frequency];
+  const unit =
+    n === 1 ? unitSingular[value.frequency] : unitPlural[value.frequency];
   return `${t("animals.every")} ${n} ${unit}`;
 }

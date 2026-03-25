@@ -20,7 +20,7 @@ export type OverlapWarning = {
 export function useOverlapValidation(
   plotId: string,
   plannedRotations: RotationEntry[],
-  existingRotations: PlotCropRotation[]
+  existingRotations: PlotCropRotation[],
 ): Map<string, OverlapWarning> {
   return useMemo(() => {
     const warnings = new Map<string, OverlapWarning>();
@@ -35,7 +35,11 @@ export function useOverlapValidation(
         const otherRotation = plannedRotations[i];
         if (!otherRotation.cropId) continue;
         // Skip checking against self (in case of editing existing)
-        if (rotation.rotationId && otherRotation.rotationId === rotation.rotationId) continue;
+        if (
+          rotation.rotationId &&
+          otherRotation.rotationId === rotation.rotationId
+        )
+          continue;
 
         const otherRanges = expandRotation(otherRotation);
         if (hasOverlap(rotationRanges, otherRanges)) {
@@ -59,13 +63,17 @@ export function useOverlapValidation(
           if (existingRotation.plotId !== plotId) continue;
           // Skip if this existing rotation is already being edited in our plan
           if (rotation.rotationId === existingRotation.id) continue;
-          const isInPlan = plannedRotations.some(r => r.rotationId === existingRotation.id);
+          const isInPlan = plannedRotations.some(
+            (r) => r.rotationId === existingRotation.id,
+          );
           if (isInPlan) continue;
 
-          const existingRanges: DateRange[] = [{
-            from: new Date(existingRotation.fromDate),
-            to: new Date(existingRotation.toDate),
-          }];
+          const existingRanges: DateRange[] = [
+            {
+              from: new Date(existingRotation.fromDate),
+              to: new Date(existingRotation.toDate),
+            },
+          ];
 
           if (hasOverlap(rotationRanges, existingRanges)) {
             warnings.set(rotation.entryId, {

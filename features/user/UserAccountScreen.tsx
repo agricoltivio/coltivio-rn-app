@@ -90,7 +90,6 @@ export function UserAccountScreen({ navigation }: UserAccountScreenProps) {
                   navigation.navigate("ChangePassword");
                 }}
                 style={{ backgroundColor: theme.colors.white }}
-                hideBottomDivider
               >
                 <ListItem.Content>
                   <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
@@ -100,6 +99,18 @@ export function UserAccountScreen({ navigation }: UserAccountScreenProps) {
                 <ListItem.Chevron />
               </ListItem>
             ) : null}
+            <ListItem
+              onPress={() => navigation.navigate("UserMembership")}
+              style={{ backgroundColor: theme.colors.white }}
+              hideBottomDivider
+            >
+              <ListItem.Content>
+                <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
+                  {t("farm.membership")}
+                </ListItem.Title>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
           </View>
         </View>
       </ScrollView>

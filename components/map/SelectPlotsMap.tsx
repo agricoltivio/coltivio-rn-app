@@ -14,21 +14,25 @@ import { LabelLayer } from "@/components/map/LabelLayer";
 import { MapLayerToggle } from "@/features/map/MapLayerToggle";
 import { MapShowLocationToggle } from "@/features/map/MapShowLocationToggle";
 import { TopLeftBackButton } from "@/features/map/TopLeftBackButton";
-import { IonIconButton } from "@/components/buttons/IconButton";
+import {
+  IonIconButton,
+  MaterialCommunityIconButton,
+} from "@/components/buttons/IconButton";
 import { GeoSpatials, type LngLat } from "@/utils/geo-spatials";
 import { hexToRgba } from "@/theme/theme";
 import { round } from "@/utils/math";
-import { PortalHost } from "@gorhom/portal";
+import { Portal, PortalHost } from "@gorhom/portal";
 import { type CameraRef, type MapRef } from "@maplibre/maplibre-react-native";
-import {
-  GeoJSONSource,
-  Layer,
-} from "@maplibre/maplibre-react-native";
+import { GeoJSONSource, Layer } from "@maplibre/maplibre-react-native";
 import * as turf from "@turf/turf";
-import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import { MapControls } from "@/features/map/overlays/MapControls";
-import { Portal } from "@gorhom/portal";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { StyleSheet, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -45,7 +49,13 @@ type SelectedPlotArea = {
 type SelectPlotsMapProps = {
   selectedPlotsById: Record<string, SelectedPlotArea>;
   onTogglePlot: (plot: Plot) => void;
-  onDrawComplete?: (intersections: Array<{ plot: Plot; geometry: GeoJSON.MultiPolygon; size: number }>) => void;
+  onDrawComplete?: (
+    intersections: {
+      plot: Plot;
+      geometry: GeoJSON.MultiPolygon;
+      size: number;
+    }[],
+  ) => void;
   enableDrawing?: boolean;
   portalName?: string;
   onNavigateToOnboarding?: () => void;
@@ -71,7 +81,10 @@ export function SelectPlotsMap({
   const { farm } = useFarmQuery();
   const { plots: allPlots } = useFarmPlotsQuery();
   // Exclude plots with no geometry (size 0) — they can't be rendered or meaningfully selected.
-  const plots = useMemo(() => allPlots?.filter((p) => p.size > 0) ?? null, [allPlots]);
+  const plots = useMemo(
+    () => allPlots?.filter((p) => p.size > 0) ?? null,
+    [allPlots],
+  );
   const [mapVisible, setMapVisible] = useState(false);
   const [showUserLocation, setShowUserLocation] = useState(false);
   const [drawPhase, setDrawPhase] = useState<DrawPhase>("idle");
@@ -114,7 +127,10 @@ export function SelectPlotsMap({
   }, [selectedPlotsById]);
 
   const handlePlotPress = useCallback(
-    (event: { stopPropagation(): void; nativeEvent: { features: GeoJSON.Feature[] } }) => {
+    (event: {
+      stopPropagation(): void;
+      nativeEvent: { features: GeoJSON.Feature[] };
+    }) => {
       if (drawPhase !== "idle") return;
       event.stopPropagation();
       const feature = event.nativeEvent.features[0];
@@ -178,25 +194,33 @@ export function SelectPlotsMap({
       const isClosed = drawingRef.current?.isClosed() ?? false;
       if (!isClosed) return;
 
-      const features = await map.queryRenderedFeatures(
-        [event.x, event.y],
-        { layers: [LAYER_IDS.VERTICES, LAYER_IDS.MIDPOINTS] },
-      );
+      const features = await map.queryRenderedFeatures([event.x, event.y], {
+        layers: [LAYER_IDS.VERTICES, LAYER_IDS.MIDPOINTS],
+      });
       if (features.length === 0) return;
       const feature = features[0];
       const props = feature.properties;
       if (!props) return;
 
-      const offsetLngLat = await map.unproject([event.absoluteX, event.absoluteY - DRAG_Y_OFFSET]);
+      const offsetLngLat = await map.unproject([
+        event.absoluteX,
+        event.absoluteY - DRAG_Y_OFFSET,
+      ]);
 
       if (props.type === "vertex" && typeof props.index === "number") {
         dragState.current = { index: props.index };
         drawingRef.current?.updateVertex(props.index, offsetLngLat);
         setDragPanEnabled(false);
-      } else if (props.type === "midpoint" && typeof props.afterIndex === "number") {
+      } else if (
+        props.type === "midpoint" &&
+        typeof props.afterIndex === "number"
+      ) {
         const geometry = feature.geometry;
         if (geometry.type === "Point") {
-          const lngLat: LngLat = [geometry.coordinates[0], geometry.coordinates[1]];
+          const lngLat: LngLat = [
+            geometry.coordinates[0],
+            geometry.coordinates[1],
+          ];
           drawingRef.current?.insertVertex(props.afterIndex, lngLat);
           const newIndex = props.afterIndex + 1;
           dragState.current = { index: newIndex };
@@ -209,14 +233,20 @@ export function SelectPlotsMap({
       if (!dragState.current) return;
       const map = mapRef.current;
       if (!map) return;
-      const lngLat = await map.unproject([event.absoluteX, event.absoluteY - DRAG_Y_OFFSET]);
+      const lngLat = await map.unproject([
+        event.absoluteX,
+        event.absoluteY - DRAG_Y_OFFSET,
+      ]);
       drawingRef.current?.updateVertex(dragState.current.index, lngLat);
     })
     .onEnd(async (event) => {
       if (!dragState.current) {
         const map = mapRef.current;
         if (map) {
-          const lngLat = await map.unproject([event.absoluteX, event.absoluteY]);
+          const lngLat = await map.unproject([
+            event.absoluteX,
+            event.absoluteY,
+          ]);
           drawingRef.current?.handleMapTap(lngLat);
         }
       }
@@ -236,56 +266,65 @@ export function SelectPlotsMap({
     <View style={StyleSheet.absoluteFill}>
       <GestureDetector gesture={panGesture}>
         <View collapsable={false} style={{ flex: 1 }}>
-        <MapLibreMap
-          ref={mapRef}
-          cameraRef={cameraRef}
-          loading={!mapVisible}
-          initialCenter={farmCenter}
-          initialZoom={16}
-          baseLayer={baseLayer}
-          dragPan={dragPanEnabled}
-          showUserLocation={showUserLocation}
-          onPress={handleMapPress}
-        >
-          {/* All plots — no selectedPlotIds passed; selectedAreasData handles highlighting */}
-          <PlotsLayer
-            plots={plots}
-            onPlotPress={handlePlotPress}
-            showZoomLabels
-          />
-
-          {/* Selected area overlays — full plot geometry for tapped, intersection for drawn */}
-          <GeoJSONSource id="selected-areas" data={selectedAreasData}>
-            <Layer
-              type="fill"
-              id="selected-areas-fill"
-              paint={{
-                "fill-color": hexToRgba(theme.colors.secondary, theme.map.defaultFillAlpha),
-                "fill-opacity": 1,
-              }}
+          <MapLibreMap
+            ref={mapRef}
+            cameraRef={cameraRef}
+            loading={!mapVisible}
+            initialCenter={farmCenter}
+            initialZoom={16}
+            baseLayer={baseLayer}
+            dragPan={dragPanEnabled}
+            showUserLocation={showUserLocation}
+            onPress={handleMapPress}
+          >
+            {/* All plots — selectedPlotIds drives selection coloring (success fill + yellow stroke) */}
+            <PlotsLayer
+              plots={plots}
+              selectedPlotIds={Object.keys(selectedPlotsById)}
+              onPlotPress={handlePlotPress}
+              showZoomLabels
             />
-            <Layer
-              type="line"
-              id="selected-areas-stroke"
-              paint={{ "line-color": "white", "line-width": theme.map.defaultStrokeWidth }}
-            />
-          </GeoJSONSource>
 
-          {/* Labels */}
-          <LabelLayer labels={selectedLabels} />
+            {/* Selected area overlays — only needed when drawing, to show partial intersection geometry */}
+            {enableDrawing && (
+              <GeoJSONSource id="selected-areas" data={selectedAreasData}>
+                <Layer
+                  type="fill"
+                  id="selected-areas-fill"
+                  paint={{
+                    "fill-color": hexToRgba(
+                      theme.colors.secondary,
+                      theme.map.defaultFillAlpha,
+                    ),
+                    "fill-opacity": 1,
+                  }}
+                />
+                <Layer
+                  type="line"
+                  id="selected-areas-stroke"
+                  paint={{
+                    "line-color": "white",
+                    "line-width": theme.map.defaultStrokeWidth,
+                  }}
+                />
+              </GeoJSONSource>
+            )}
 
-          {/* Drawing overlay — active during draw and edit phases */}
-          {enableDrawing && drawPhase !== "idle" && (
-            <DrawingOverlay
-              ref={drawingRef}
-              mode={drawPhase === "edit" ? "edit" : "draw-polygon"}
-              mapRef={mapRef}
-              onCoordinatesChange={handleDrawingChange}
-            />
-          )}
+            {/* Labels */}
+            <LabelLayer labels={selectedLabels} />
 
-          <HomeMarkerLayer center={farmCenter} />
-        </MapLibreMap>
+            {/* Drawing overlay — active during draw and edit phases */}
+            {enableDrawing && drawPhase !== "idle" && (
+              <DrawingOverlay
+                ref={drawingRef}
+                mode={drawPhase === "edit" ? "edit" : "draw-polygon"}
+                mapRef={mapRef}
+                onCoordinatesChange={handleDrawingChange}
+              />
+            )}
+
+            <HomeMarkerLayer center={farmCenter} />
+          </MapLibreMap>
         </View>
       </GestureDetector>
 

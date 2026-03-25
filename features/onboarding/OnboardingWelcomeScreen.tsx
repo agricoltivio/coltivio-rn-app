@@ -6,13 +6,17 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 
-export function OnboardingWelcomeScreen({ navigation }: OnboardingWelcomeScreenProps) {
+export function OnboardingWelcomeScreen({
+  navigation,
+}: OnboardingWelcomeScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
 
   return (
     <ContentView headerVisible={false}>
-      <View style={{ justifyContent: "center", flex: 1, padding: theme.spacing.m }}>
+      <View
+        style={{ justifyContent: "center", flex: 1, padding: theme.spacing.m }}
+      >
         <H1 style={{ color: theme.colors.primary }}>
           {t("onboarding.welcome.heading")}
         </H1>

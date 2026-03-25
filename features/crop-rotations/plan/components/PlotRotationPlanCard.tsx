@@ -4,7 +4,10 @@ import { useTheme } from "styled-components/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Crop } from "@/api/crops.api";
 import { PlotCropRotation } from "@/api/crop-rotations.api";
-import { usePlanCropRotationsStore, RotationEntry } from "../plan-crop-rotations.store";
+import {
+  usePlanCropRotationsStore,
+  RotationEntry,
+} from "../plan-crop-rotations.store";
 import { RotationEntryRow } from "./RotationEntryRow";
 import { useOverlapValidation } from "../hooks/useOverlapValidation";
 import { useWaitingTimeValidation } from "../hooks/useWaitingTimeValidation";
@@ -23,15 +26,25 @@ export function PlotRotationPlanCard({
   existingRotations,
 }: PlotRotationPlanCardProps) {
   const theme = useTheme();
-  const { getPlotPlan, addRotation, updateRotation, removeRotation } = usePlanCropRotationsStore();
+  const { getPlotPlan, addRotation, updateRotation, removeRotation } =
+    usePlanCropRotationsStore();
 
   const plotPlan = getPlotPlan(plotId);
   const rotations = plotPlan?.rotations || [];
 
-  const cropOptions = crops.map(c => ({ label: c.name, value: c.id }));
+  const cropOptions = crops.map((c) => ({ label: c.name, value: c.id }));
 
-  const overlapWarnings = useOverlapValidation(plotId, rotations, existingRotations);
-  const waitingTimeWarnings = useWaitingTimeValidation(plotId, rotations, existingRotations, crops);
+  const overlapWarnings = useOverlapValidation(
+    plotId,
+    rotations,
+    existingRotations,
+  );
+  const waitingTimeWarnings = useWaitingTimeValidation(
+    plotId,
+    rotations,
+    existingRotations,
+    crops,
+  );
 
   const handleAddRotation = () => {
     const newRotation: RotationEntry = {
@@ -93,7 +106,9 @@ export function PlotRotationPlanCard({
                 existingRotations={existingRotations}
                 canDelete={rotations.length > 0}
                 warning={warning?.message}
-                onUpdate={updates => updateRotation(plotId, rotation.entryId, updates)}
+                onUpdate={(updates) =>
+                  updateRotation(plotId, rotation.entryId, updates)
+                }
                 onDelete={() => removeRotation(plotId, rotation.entryId)}
               />
             </Fragment>
@@ -117,7 +132,11 @@ export function PlotRotationPlanCard({
           borderStyle: "dashed",
         }}
       >
-        <Ionicons name="add-circle-outline" size={20} color={theme.colors.primary} />
+        <Ionicons
+          name="add-circle-outline"
+          size={20}
+          color={theme.colors.primary}
+        />
         <Text
           style={{
             fontSize: 15,

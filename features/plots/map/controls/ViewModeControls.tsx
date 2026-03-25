@@ -10,8 +10,14 @@ type ViewModeControlsProps = {
 
 export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
   const theme = useTheme();
-  const { mode, dispatch, plots, controlsExpanded, setControlsExpanded, navigation } =
-    usePlotsMapContext();
+  const {
+    mode,
+    dispatch,
+    plots,
+    controlsExpanded,
+    setControlsExpanded,
+    navigation,
+  } = usePlotsMapContext();
 
   if (mode.type !== "view") return null;
 
@@ -22,10 +28,7 @@ export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
   const hasSelection = !!selectedPlot;
 
   return (
-    <MapControls
-      expanded={controlsExpanded}
-      onToggle={setControlsExpanded}
-    >
+    <MapControls expanded={controlsExpanded} onToggle={setControlsExpanded}>
       {/* Create */}
       <MaterialCommunityIconButton
         style={{

@@ -25,7 +25,16 @@ type AnimalType =
   | "pig"
   | "deer";
 
-type DoseUnit = "tablet" | "capsule" | "patch" | "dose" | "mg" | "mcg" | "g" | "ml" | "drop";
+type DoseUnit =
+  | "tablet"
+  | "capsule"
+  | "patch"
+  | "dose"
+  | "mg"
+  | "mcg"
+  | "g"
+  | "ml"
+  | "drop";
 type DosePerUnit = "kg" | "animal" | "day" | "total_amount";
 
 interface TreatmentDefFormValues {
@@ -331,7 +340,9 @@ export function CreateDrugScreen({ route, navigation }: CreateDrugScreenProps) {
                         label={t("drugs.dose_value")}
                         placeholder="0.0"
                         float
-                        error={errors.drugTreatment?.[index]?.doseValue?.message}
+                        error={
+                          errors.drugTreatment?.[index]?.doseValue?.message
+                        }
                       />
                     </View>
                     <View style={{ flex: 1 }}>

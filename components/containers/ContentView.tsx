@@ -9,10 +9,6 @@ type ContentViewProps = ViewProps & {
   footerComponent?: React.ReactNode;
 };
 
-const defaultProps = {
-  headerVisible: true,
-};
-
 export const ContentView: React.FC<ContentViewProps> = ({
   style,
   headerVisible = true,

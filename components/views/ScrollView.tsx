@@ -27,7 +27,9 @@ export function ScrollView({
   // a re-render during keyboard-induced auto-scroll can steal input focus on the simulator.
   const scrolledRef = useRef(false);
 
-  const handleScroll = (event: { nativeEvent: { contentOffset: { y: number } } }) => {
+  const handleScroll = (event: {
+    nativeEvent: { contentOffset: { y: number } };
+  }) => {
     const offsetY = event.nativeEvent.contentOffset.y;
     if (offsetY > 50 && !scrolledRef.current) {
       scrolledRef.current = true;

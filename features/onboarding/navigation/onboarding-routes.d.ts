@@ -12,7 +12,8 @@ export type OnboardingStackParamList = {
   FarmSummary: undefined;
 };
 
-export type OnboardingWelcomeScreenProps = StackScreenProps<"OnboardingWelcome">;
+export type OnboardingWelcomeScreenProps =
+  StackScreenProps<"OnboardingWelcome">;
 export type JoinFarmScreenProps = StackScreenProps<"JoinFarm">;
 export type SelectFarmNameScreenProps = StackScreenProps<"SelectFarmName">;
 

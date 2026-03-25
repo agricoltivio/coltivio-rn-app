@@ -7,7 +7,9 @@ import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { TasksOnboardingScreenProps } from "./navigation/tasks-routes";
 
-export function TasksOnboardingScreen({ navigation }: TasksOnboardingScreenProps) {
+export function TasksOnboardingScreen({
+  navigation,
+}: TasksOnboardingScreenProps) {
   const theme = useTheme();
   const { t } = useTranslation();
   const { updateLocalSettings } = useLocalSettings();
@@ -54,7 +56,11 @@ export function TasksOnboardingScreen({ navigation }: TasksOnboardingScreenProps
             justifyContent: "center",
           }}
         >
-          <Ionicons name="checkbox-outline" size={36} color={theme.colors.primary} />
+          <Ionicons
+            name="checkbox-outline"
+            size={36}
+            color={theme.colors.primary}
+          />
         </View>
         <Subtitle style={{ color: theme.colors.gray1, flexShrink: 1 }}>
           {t("tasks.onboarding.step2_icon_hint")}

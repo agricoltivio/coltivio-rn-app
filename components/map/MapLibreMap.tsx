@@ -37,8 +37,7 @@ const EMPTY_STYLE: StyleSpecification = {
 const TILE_URLS = {
   satellite:
     "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/3857/{z}/{x}/{y}.jpeg",
-  map:
-    "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg",
+  map: "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg",
 } as const;
 
 export const MapLibreMap = forwardRef<MapRef, MapLibreMapProps>(
@@ -91,8 +90,7 @@ export const MapLibreMap = forwardRef<MapRef, MapLibreMapProps>(
                 type="raster"
                 id="satellite-layer"
                 layout={{
-                  visibility:
-                    baseLayer === "satellite" ? "visible" : "none",
+                  visibility: baseLayer === "satellite" ? "visible" : "none",
                 }}
               />
             </RasterSource>

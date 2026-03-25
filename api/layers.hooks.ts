@@ -7,7 +7,7 @@ import _ from "lodash";
 
 export function useInfiniteQueryParcelsByBBox(
   bboxPolygon: GeoJSON.Feature,
-  bufferInMeters: number = 500
+  bufferInMeters: number = 500,
 ) {
   const api = useApi();
 
@@ -15,7 +15,7 @@ export function useInfiniteQueryParcelsByBBox(
     useInfiniteQuery({
       queryFn: () =>
         api.layers.getPlotsByBbox(
-          GeoSpatials.bufferedBBox(bboxPolygon, bufferInMeters)
+          GeoSpatials.bufferedBBox(bboxPolygon, bufferInMeters),
         ),
       queryKey: queryKeys.parcelLayer.all.queryKey,
       getNextPageParam: () => true,
@@ -26,7 +26,7 @@ export function useInfiniteQueryParcelsByBBox(
   const { parcels, boundingBoxes } = useMemo(() => {
     const parcels = _.uniqBy(
       data?.pages.flatMap((page) => page.parcels),
-      "id"
+      "id",
     );
     const boundingBoxes = data?.pages.map((page) => page.bbox) ?? [];
     return { parcels, boundingBoxes };
@@ -38,7 +38,7 @@ export function useInfiniteQueryParcelsByBBox(
     }
 
     return !boundingBoxes.some((bbox) =>
-      GeoSpatials.isWithinBBox(bboxPolygon, bbox, 500)
+      GeoSpatials.isWithinBBox(bboxPolygon, bbox, 500),
     );
   }, [boundingBoxes, bboxPolygon, fetchStatus]);
   return {

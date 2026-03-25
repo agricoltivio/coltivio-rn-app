@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Text } from "react-native";
 import { useTheme } from "styled-components/native";
 
 type ChipProps = {
@@ -19,13 +19,39 @@ type ChipProps = {
   small?: boolean;
 };
 
-export function Chip({ label, active = false, accent = false, onPress, onRemove, bgColor: bgColorProp, textColor: textColorProp, small = false }: ChipProps) {
+export function Chip({
+  label,
+  active = false,
+  accent = false,
+  onPress,
+  onRemove,
+  bgColor: bgColorProp,
+  textColor: textColorProp,
+  small = false,
+}: ChipProps) {
   const theme = useTheme();
 
-  const bgColor = bgColorProp ?? (active ? theme.colors.primary : theme.colors.white);
-  const borderColor = bgColorProp ? bgColorProp : (active || accent ? theme.colors.primary : theme.colors.gray3);
-  const textColor = textColorProp ?? (active ? theme.colors.white : accent ? theme.colors.primary : theme.colors.gray1);
-  const iconColor = textColorProp ?? (active ? theme.colors.white : accent ? theme.colors.primary : theme.colors.gray2);
+  const bgColor =
+    bgColorProp ?? (active ? theme.colors.primary : theme.colors.white);
+  const borderColor = bgColorProp
+    ? bgColorProp
+    : active || accent
+      ? theme.colors.primary
+      : theme.colors.gray3;
+  const textColor =
+    textColorProp ??
+    (active
+      ? theme.colors.white
+      : accent
+        ? theme.colors.primary
+        : theme.colors.gray1);
+  const iconColor =
+    textColorProp ??
+    (active
+      ? theme.colors.white
+      : accent
+        ? theme.colors.primary
+        : theme.colors.gray2);
 
   return (
     <Pressable
@@ -55,11 +81,7 @@ export function Chip({ label, active = false, accent = false, onPress, onRemove,
       </Text>
       {onRemove && (
         <Pressable onPress={onRemove} hitSlop={8}>
-          <Ionicons
-            name="close"
-            size={16}
-            color={iconColor}
-          />
+          <Ionicons name="close" size={16} color={iconColor} />
         </Pressable>
       )}
     </Pressable>

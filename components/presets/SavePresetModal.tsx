@@ -1,6 +1,6 @@
 import { Button } from "@/components/buttons/Button";
 import { TextInput } from "@/components/inputs/TextInput";
-import { Body, H3 } from "@/theme/Typography";
+import { H3 } from "@/theme/Typography";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, View, Pressable } from "react-native";
@@ -17,52 +17,54 @@ type SavePresetModalProps = {
   loading?: boolean;
 };
 
-export const SavePresetModal = forwardRef<SavePresetModalRef, SavePresetModalProps>(
-  ({ onSave, loading }, ref) => {
-    const { t } = useTranslation();
-    const theme = useTheme();
-    const [visible, setVisible] = useState(false);
-    const [name, setName] = useState("");
+export const SavePresetModal = forwardRef<
+  SavePresetModalRef,
+  SavePresetModalProps
+>(({ onSave, loading }, ref) => {
+  const { t } = useTranslation();
+  const theme = useTheme();
+  const [visible, setVisible] = useState(false);
+  const [name, setName] = useState("");
 
-    useImperativeHandle(ref, () => ({
-      open: () => {
-        setName("");
-        setVisible(true);
-      },
-      close: () => setVisible(false),
-    }));
+  useImperativeHandle(ref, () => ({
+    open: () => {
+      setName("");
+      setVisible(true);
+    },
+    close: () => setVisible(false),
+  }));
 
-    const handleSave = () => {
-      if (name.trim()) {
-        onSave(name.trim());
-        setVisible(false);
-        setName("");
-      }
-    };
-
-    const handleCancel = () => {
+  const handleSave = () => {
+    if (name.trim()) {
+      onSave(name.trim());
       setVisible(false);
       setName("");
-    };
+    }
+  };
 
-    return (
-      <Modal
-        visible={visible}
-        transparent
-        animationType="fade"
-        onRequestClose={handleCancel}
+  const handleCancel = () => {
+    setVisible(false);
+    setName("");
+  };
+
+  return (
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      onRequestClose={handleCancel}
+    >
+      <Pressable
+        style={{
+          flex: 1,
+          backgroundColor: "rgba(0,0,0,0.5)",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: theme.spacing.l,
+        }}
+        onPress={handleCancel}
       >
-        <Pressable
-          style={{
-            flex: 1,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: theme.spacing.l,
-          }}
-          onPress={handleCancel}
-        >
-          <KeyboardAvoidingView behavior="padding" style={{ width: "100%" }}>
+        <KeyboardAvoidingView behavior="padding" style={{ width: "100%" }}>
           <Pressable
             style={{
               backgroundColor: theme.colors.white,
@@ -107,9 +109,9 @@ export const SavePresetModal = forwardRef<SavePresetModalRef, SavePresetModalPro
               />
             </View>
           </Pressable>
-          </KeyboardAvoidingView>
-        </Pressable>
-      </Modal>
-    );
-  },
-);
+        </KeyboardAvoidingView>
+      </Pressable>
+    </Modal>
+  );
+});
+SavePresetModal.displayName = "SavePresetModal";

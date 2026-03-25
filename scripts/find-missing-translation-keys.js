@@ -20,7 +20,7 @@ function findMissingKeysAndValues(template, target) {
       } else {
         const childMissing = findMissingKeysAndValues(
           template[key],
-          target[key]
+          target[key],
         );
         if (Object.keys(childMissing).length > 0) {
           missing[key] = childMissing;
@@ -39,7 +39,7 @@ function generateMissingKeysFile(template, targets, outputPath) {
       const filePath = outputPath.replace("{index}", `${index}`);
       fs.writeFileSync(filePath, JSON.stringify(missing, null, 2), "utf-8");
       console.log(
-        `📝 Missing keys for object at index ${index} written to ${filePath}`
+        `📝 Missing keys for object at index ${index} written to ${filePath}`,
       );
     } else {
       console.log(`✅ Object at index ${index} has all required keys.`);

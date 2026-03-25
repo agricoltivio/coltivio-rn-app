@@ -1,5 +1,5 @@
 import { ActivityIndicator, StyleProp, ViewStyle } from "react-native";
-import styled, { useTheme } from "styled-components/native";
+import styled from "styled-components/native";
 
 export type ButtonProps = {
   onPress?: () => void;
@@ -48,10 +48,10 @@ const ButtonContainer = styled.TouchableOpacity<{
     disabled
       ? theme.colors.gray3
       : type === "primary"
-      ? theme.colors.mocha
-      : type === "accent"
-      ? theme.colors.white
-      : theme.colors[type]};
+        ? theme.colors.mocha
+        : type === "accent"
+          ? theme.colors.white
+          : theme.colors[type]};
   padding: 12px;
   border-radius: ${({ theme }) => theme.radii.m}px;
   border: ${({ theme, type }) =>

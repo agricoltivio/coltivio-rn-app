@@ -158,7 +158,10 @@ export function ConfigureCropProtectionApplicationScreen({
     });
 
     // Skip quantity screen for special units
-    if (values.unit === "total_amount" || values.unit === "amount_per_hectare") {
+    if (
+      values.unit === "total_amount" ||
+      values.unit === "amount_per_hectare"
+    ) {
       if (values.unit === "total_amount") {
         setTotalNumberOfUnits(1);
       }

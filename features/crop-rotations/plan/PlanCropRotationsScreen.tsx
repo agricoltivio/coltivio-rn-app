@@ -22,12 +22,15 @@ import {
   usePlanCropRotationsMutation,
 } from "../crop-rotations.hooks";
 import { PlanCropRotationsScreenProps } from "../navigation/crop-rotations-routes.d";
+import { hasRotationOverlap } from "./plan-crop-rotations-conflict-utils";
 import { CropRotationTimeline } from "../timeline/CropRotationTimeline";
 import { TimelineBar, TimelineData } from "../timeline/timeline-utils";
 import { ZoomLevel } from "../timeline/ZoomLevelToggle";
 import { TIMELINE_HEADER_HEIGHT } from "../timeline/TimelineHeader";
 import { ROW_HEIGHT } from "../timeline/TimelinePlotRow";
 import { addYears, subYears } from "date-fns";
+import { Button } from "@/components/buttons/Button";
+import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 
 const MS_PER_DAY = 86_400_000;
 
@@ -134,77 +137,14 @@ export function PlanCropRotationsScreen({
   // For recurring rotations, check both day-of-year overlap AND that they occur in a common year
   const rotationsWithConflicts = useMemo(() => {
     const conflicts = new Map<string, string>();
-
-    // Helper to get day-of-year (0-365)
-    const getDayOfYear = (date: Date) => {
-      const start = new Date(date.getFullYear(), 0, 0);
-      const diff = date.getTime() - start.getTime();
-      return Math.floor(diff / MS_PER_DAY);
-    };
-
-    // Check if two day-of-year ranges overlap
-    const dayRangesOverlap = (
-      aFromDay: number,
-      aToDay: number,
-      bFromDay: number,
-      bToDay: number,
-    ) => {
-      if (aFromDay <= aToDay && bFromDay <= bToDay) {
-        return aFromDay <= bToDay && aToDay >= bFromDay;
-      }
-      // If either range wraps (e.g., Nov-Feb), treat as overlapping
-      return true;
-    };
-
-    // Get all years a rotation occurs in (within a range)
-    const getOccurrenceYears = (
-      startYear: number,
-      interval: number,
-      untilYear: number | null,
-      rangeStart: number,
-      rangeEnd: number,
-    ): Set<number> => {
-      const years = new Set<number>();
-      const effectiveEnd = untilYear ? Math.min(untilYear, rangeEnd) : rangeEnd;
-      for (let year = startYear; year <= effectiveEnd; year += interval) {
-        if (year >= rangeStart) {
-          years.add(year);
-        }
-      }
-      return years;
-    };
-
-    // Check if two rotations share any common years
-    const shareCommonYear = (a: RotationEntry, b: RotationEntry): boolean => {
-      const rangeStart = new Date().getFullYear() - 10;
-      const rangeEnd = new Date().getFullYear() + 25;
-
-      const aStartYear = a.fromDate.getFullYear();
-      const bStartYear = b.fromDate.getFullYear();
-      const aInterval = a.recurrence?.interval || 1;
-      const bInterval = b.recurrence?.interval || 1;
-      const aUntilYear = a.recurrence?.until?.getFullYear() || null;
-      const bUntilYear = b.recurrence?.until?.getFullYear() || null;
-
-      // If neither has recurrence, they only occur in their start years
-      if (!a.recurrence && !b.recurrence) {
-        return aStartYear === bStartYear;
-      }
-
-      // Get all years each rotation occurs (non-recurring = single year only)
-      const aYears = a.recurrence
-        ? getOccurrenceYears(aStartYear, aInterval, aUntilYear, rangeStart, rangeEnd)
-        : new Set([aStartYear]);
-      const bYears = b.recurrence
-        ? getOccurrenceYears(bStartYear, bInterval, bUntilYear, rangeStart, rangeEnd)
-        : new Set([bStartYear]);
-
-      // Check for any common year
-      for (const year of aYears) {
-        if (bYears.has(year)) return true;
-      }
-      return false;
-    };
+    const currentYear = new Date().getFullYear();
+    const allRotations = plotPlans.flatMap((p) => p.rotations);
+    const maxUntilYear = allRotations.reduce((max, r) => {
+      const until = r.recurrence?.until?.getFullYear();
+      return until && until > max ? until : max;
+    }, currentYear + 25);
+    const rangeStart = currentYear - 10;
+    const rangeEnd = maxUntilYear;
 
     plotPlans.forEach((plan) => {
       const rotations = plan.rotations;
@@ -214,24 +154,7 @@ export function PlanCropRotationsScreen({
           const b = rotations[j];
           if (!a.cropId || !b.cropId) continue;
 
-          let hasOverlap = false;
-
-          if (a.recurrence || b.recurrence) {
-            // Both must share a common year AND have overlapping day-of-year ranges
-            const aFromDay = getDayOfYear(a.fromDate);
-            const aToDay = getDayOfYear(a.toDate);
-            const bFromDay = getDayOfYear(b.fromDate);
-            const bToDay = getDayOfYear(b.toDate);
-
-            hasOverlap =
-              dayRangesOverlap(aFromDay, aToDay, bFromDay, bToDay) &&
-              shareCommonYear(a, b);
-          } else {
-            // Neither has recurrence - check actual date overlap
-            hasOverlap = a.fromDate <= b.toDate && a.toDate >= b.fromDate;
-          }
-
-          if (hasOverlap) {
+          if (hasRotationOverlap(a, b, rangeStart, rangeEnd)) {
             const cropNameA =
               crops?.find((c) => c.id === a.cropId)?.name ||
               t("crop_rotations.crop_rotation");
@@ -261,8 +184,14 @@ export function PlanCropRotationsScreen({
     const warnings = new Map<string, string>();
     if (!crops) return warnings;
 
-    const rangeStart = new Date().getFullYear() - 10;
-    const rangeEnd = new Date().getFullYear() + 25;
+    const currentYear = new Date().getFullYear();
+    const allRotations = plotPlans.flatMap((p) => p.rotations);
+    const maxUntilYear = allRotations.reduce((max, r) => {
+      const until = r.recurrence?.until?.getFullYear();
+      return until && until > max ? until : max;
+    }, currentYear + 25);
+    const rangeStart = currentYear - 10;
+    const rangeEnd = maxUntilYear;
 
     // Get all years a rotation occurs in
     const getYears = (rotation: RotationEntry): number[] => {
@@ -280,23 +209,43 @@ export function PlanCropRotationsScreen({
 
     // Determine effective waiting time for a pair of rotations
     const getEffectiveWaitingTime = (
-      cropA: typeof crops[number],
-      cropB: typeof crops[number],
+      cropA: (typeof crops)[number],
+      cropB: (typeof crops)[number],
       sameCrop: boolean,
-    ): { waitingTime: number; isFamilyLevel: boolean; familyName: string } | null => {
+    ): {
+      waitingTime: number;
+      isFamilyLevel: boolean;
+      familyName: string;
+    } | null => {
       if (sameCrop) {
         // Same crop: use crop's own waiting time, fall back to family
         if (cropA.waitingTimeInYears) {
-          return { waitingTime: cropA.waitingTimeInYears, isFamilyLevel: false, familyName: "" };
+          return {
+            waitingTime: cropA.waitingTimeInYears,
+            isFamilyLevel: false,
+            familyName: "",
+          };
         }
         if (cropA.family?.waitingTimeInYears) {
-          return { waitingTime: cropA.family.waitingTimeInYears, isFamilyLevel: true, familyName: cropA.family.name };
+          return {
+            waitingTime: cropA.family.waitingTimeInYears,
+            isFamilyLevel: true,
+            familyName: cropA.family.name,
+          };
         }
         return null;
       }
       // Different crops, same family
-      if (cropA.familyId && cropA.familyId === cropB.familyId && cropA.family?.waitingTimeInYears) {
-        return { waitingTime: cropA.family.waitingTimeInYears, isFamilyLevel: true, familyName: cropA.family.name };
+      if (
+        cropA.familyId &&
+        cropA.familyId === cropB.familyId &&
+        cropA.family?.waitingTimeInYears
+      ) {
+        return {
+          waitingTime: cropA.family.waitingTimeInYears,
+          isFamilyLevel: true,
+          familyName: cropA.family.name,
+        };
       }
       return null;
     };
@@ -313,8 +262,14 @@ export function PlanCropRotationsScreen({
         if (!info) continue;
         if (rotation.recurrence.interval < info.waitingTime) {
           const msg = info.isFamilyLevel
-            ? t("crop_rotations.plan.waiting_time_warning_family", { family: info.familyName, waitingTime: info.waitingTime })
-            : t("crop_rotations.plan.waiting_time_warning_crop", { crop: crop.name, waitingTime: info.waitingTime });
+            ? t("crop_rotations.plan.waiting_time_warning_family", {
+                family: info.familyName,
+                waitingTime: info.waitingTime,
+              })
+            : t("crop_rotations.plan.waiting_time_warning_crop", {
+                crop: crop.name,
+                waitingTime: info.waitingTime,
+              });
           warnings.set(rotation.entryId, msg);
         }
       }
@@ -331,7 +286,8 @@ export function PlanCropRotationsScreen({
           if (!cropA || !cropB) continue;
 
           const sameCrop = a.cropId === b.cropId;
-          const sameFamily = !sameCrop && !!cropA.familyId && cropA.familyId === cropB.familyId;
+          const sameFamily =
+            !sameCrop && !!cropA.familyId && cropA.familyId === cropB.familyId;
           if (!sameCrop && !sameFamily) continue;
 
           const info = getEffectiveWaitingTime(cropA, cropB, sameCrop);
@@ -340,7 +296,9 @@ export function PlanCropRotationsScreen({
           // Merge occurrence years and check consecutive gaps
           const aYears = getYears(a);
           const bYears = getYears(b);
-          const allYears = [...new Set([...aYears, ...bYears])].sort((x, y) => x - y);
+          const allYears = [...new Set([...aYears, ...bYears])].sort(
+            (x, y) => x - y,
+          );
 
           let violation = false;
           for (let k = 1; k < allYears.length; k++) {
@@ -352,8 +310,14 @@ export function PlanCropRotationsScreen({
 
           if (violation) {
             const msg = info.isFamilyLevel
-              ? t("crop_rotations.plan.waiting_time_warning_family", { family: info.familyName, waitingTime: info.waitingTime })
-              : t("crop_rotations.plan.waiting_time_warning_crop", { crop: cropA.name, waitingTime: info.waitingTime });
+              ? t("crop_rotations.plan.waiting_time_warning_family", {
+                  family: info.familyName,
+                  waitingTime: info.waitingTime,
+                })
+              : t("crop_rotations.plan.waiting_time_warning_crop", {
+                  crop: cropA.name,
+                  waitingTime: info.waitingTime,
+                });
             if (!warnings.has(a.entryId)) warnings.set(a.entryId, msg);
             if (!warnings.has(b.entryId)) warnings.set(b.entryId, msg);
           }
@@ -668,18 +632,10 @@ export function PlanCropRotationsScreen({
             />
           );
         })}
-
       </ScrollView>
 
       {/* Save Button */}
-      <View
-        style={{
-          padding: theme.spacing.m,
-          backgroundColor: theme.colors.white,
-          borderTopWidth: 1,
-          borderTopColor: theme.colors.gray4,
-        }}
-      >
+      <BottomActionContainer>
         {hasConflicts && (
           <Text
             style={{
@@ -692,34 +648,13 @@ export function PlanCropRotationsScreen({
             {t("crop_rotations.plan.resolve_conflicts_warning")}
           </Text>
         )}
-        <Pressable
+        <Button
           onPress={handleSave}
           disabled={saving || hasConflicts}
-          style={{
-            backgroundColor:
-              saving || hasConflicts
-                ? theme.colors.gray3
-                : theme.colors.primary,
-            paddingVertical: 14,
-            borderRadius: 10,
-            alignItems: "center",
-          }}
-        >
-          {saving ? (
-            <ActivityIndicator color={theme.colors.white} />
-          ) : (
-            <Text
-              style={{
-                fontSize: 16,
-                fontWeight: "600",
-                color: theme.colors.white,
-              }}
-            >
-              {t("crop_rotations.plan.save_plan")}
-            </Text>
-          )}
-        </Pressable>
-      </View>
+          loading={saving}
+          title={t("crop_rotations.plan.save_plan")}
+        />
+      </BottomActionContainer>
 
       {/* Edit Modal */}
       <RotationEditModal

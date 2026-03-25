@@ -61,10 +61,7 @@ export function HomeTilesSettingsScreen() {
   }
 
   return (
-    <ScrollView
-      headerTitleOnScroll={t("home_tiles.title")}
-      showHeaderOnScroll
-    >
+    <ScrollView headerTitleOnScroll={t("home_tiles.title")} showHeaderOnScroll>
       <ContentView>
         <H2>{t("home_tiles.title")}</H2>
 
@@ -77,7 +74,10 @@ export function HomeTilesSettingsScreen() {
               e.nativeEvent.value ? "grid" : "list",
             )
           }
-          style={{ paddingVertical: theme.spacing.s, marginTop: theme.spacing.m }}
+          style={{
+            paddingVertical: theme.spacing.s,
+            marginTop: theme.spacing.m,
+          }}
         />
 
         {/* Visible tiles with reorder and remove */}

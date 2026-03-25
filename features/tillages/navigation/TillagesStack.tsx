@@ -16,7 +16,7 @@ export function renderTillagesStack() {
       }}
       component={TillagesScreen}
     />,
-<Stack.Screen
+    <Stack.Screen
       key="tillage-details"
       name="TillageDetails"
       options={{

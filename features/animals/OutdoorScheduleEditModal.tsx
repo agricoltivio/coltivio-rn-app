@@ -4,7 +4,10 @@ import {
   OutdoorScheduleType,
 } from "@/api/herds.api";
 import { CompactDatePicker } from "@/components/datepicker/CompactDatePicker";
-import { RecurrencePicker, RecurrenceValue } from "@/components/recurrence/RecurrencePicker";
+import {
+  RecurrencePicker,
+  RecurrenceValue,
+} from "@/components/recurrence/RecurrencePicker";
 import { Select } from "@/components/select/Select";
 import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -80,7 +83,10 @@ export function OutdoorScheduleEditModal({
 
   // Compute duration in days to filter out frequencies shorter than the event span
   const frequencyOptions = useMemo(() => {
-    const all: Array<{ label: string; value: "weekly" | "monthly" | "yearly" }> = [
+    const all: Array<{
+      label: string;
+      value: "weekly" | "monthly" | "yearly";
+    }> = [
       { label: t("animals.frequency_types.weekly"), value: "weekly" },
       { label: t("animals.frequency_types.monthly"), value: "monthly" },
       { label: t("animals.frequency_types.yearly"), value: "yearly" },
@@ -134,172 +140,180 @@ export function OutdoorScheduleEditModal({
           }}
           onPress={onClose}
         >
-          <KeyboardAvoidingView behavior="padding" style={{ width: "100%", maxWidth: 360 }}>
-          <Pressable
-            style={{
-              backgroundColor: theme.colors.white,
-              borderRadius: 16,
-              padding: theme.spacing.l,
-              width: "100%",
-              overflow: "visible",
-            }}
-            onPress={(e) => e.stopPropagation()}
+          <KeyboardAvoidingView
+            behavior="padding"
+            style={{ width: "100%", maxWidth: 360 }}
           >
-            <Text
+            <Pressable
               style={{
-                fontSize: 18,
-                fontWeight: "700",
-                color: theme.colors.text,
-                marginBottom: theme.spacing.m,
+                backgroundColor: theme.colors.white,
+                borderRadius: 16,
+                padding: theme.spacing.l,
+                width: "100%",
+                overflow: "visible",
               }}
+              onPress={(e) => e.stopPropagation()}
             >
-              {schedule
-                ? t("animals.edit_outdoor_schedule")
-                : t("animals.new_outdoor_schedule")}
-            </Text>
-
-            {/* Type */}
-            <View style={{ marginBottom: theme.spacing.m }}>
-              <Select
-                label={t("animals.outdoor_type")}
-                value={scheduleType}
-                data={[
-                  {
-                    label: t("animals.outdoor_types.pasture"),
-                    value: "pasture",
-                  },
-                  {
-                    label: t("animals.outdoor_types.exercise_yard"),
-                    value: "exercise_yard",
-                  },
-                ]}
-                onChange={(val) => setScheduleType(val as OutdoorScheduleType)}
-              />
-            </View>
-
-            {/* Start date */}
-            <Text
-              style={{
-                fontSize: 14,
-                fontWeight: "600",
-                color: theme.colors.gray1,
-                marginBottom: theme.spacing.xs,
-              }}
-            >
-              {t("animals.start_date")}
-            </Text>
-            <View style={{ marginBottom: theme.spacing.m }}>
-              <CompactDatePicker date={startDate} onDateChange={setStartDate} />
-            </View>
-
-            {/* End date (optional) */}
-            <Text
-              style={{
-                fontSize: 14,
-                fontWeight: "600",
-                color: theme.colors.gray1,
-                marginBottom: theme.spacing.xs,
-              }}
-            >
-              {t("animals.end_date_optional")}
-            </Text>
-            <View style={{ marginBottom: theme.spacing.m }}>
-              <CompactDatePicker
-                date={endDate ?? new Date()}
-                onDateChange={(d) => {
-                  setEndDate(d);
-                  setHasEndDate(true);
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: "700",
+                  color: theme.colors.text,
+                  marginBottom: theme.spacing.m,
                 }}
-                minimumDate={startDate}
-                placeholder={t("animals.end_date")}
-                hasValue={hasEndDate}
-                onClear={() => {
-                  setHasEndDate(false);
-                  setEndDate(null);
+              >
+                {schedule
+                  ? t("animals.edit_outdoor_schedule")
+                  : t("animals.new_outdoor_schedule")}
+              </Text>
+
+              {/* Type */}
+              <View style={{ marginBottom: theme.spacing.m }}>
+                <Select
+                  label={t("animals.outdoor_type")}
+                  value={scheduleType}
+                  data={[
+                    {
+                      label: t("animals.outdoor_types.pasture"),
+                      value: "pasture",
+                    },
+                    {
+                      label: t("animals.outdoor_types.exercise_yard"),
+                      value: "exercise_yard",
+                    },
+                  ]}
+                  onChange={(val) =>
+                    setScheduleType(val as OutdoorScheduleType)
+                  }
+                />
+              </View>
+
+              {/* Start date */}
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontWeight: "600",
+                  color: theme.colors.gray1,
+                  marginBottom: theme.spacing.xs,
                 }}
-              />
-            </View>
+              >
+                {t("animals.start_date")}
+              </Text>
+              <View style={{ marginBottom: theme.spacing.m }}>
+                <CompactDatePicker
+                  date={startDate}
+                  onDateChange={setStartDate}
+                />
+              </View>
 
-            {/* Recurrence (optional) */}
-            <Text
-              style={{
-                fontSize: 14,
-                fontWeight: "600",
-                color: theme.colors.gray1,
-                marginBottom: theme.spacing.xs,
-              }}
-            >
-              {t("animals.recurrence_optional")}
-            </Text>
-            <View style={{ marginBottom: theme.spacing.l }}>
-              <RecurrencePicker
-                value={recurrence}
-                onChange={setRecurrence}
-                frequencyOptions={frequencyOptions}
-              />
-            </View>
+              {/* End date (optional) */}
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontWeight: "600",
+                  color: theme.colors.gray1,
+                  marginBottom: theme.spacing.xs,
+                }}
+              >
+                {t("animals.end_date_optional")}
+              </Text>
+              <View style={{ marginBottom: theme.spacing.m }}>
+                <CompactDatePicker
+                  date={endDate ?? new Date()}
+                  onDateChange={(d) => {
+                    setEndDate(d);
+                    setHasEndDate(true);
+                  }}
+                  minimumDate={startDate}
+                  placeholder={t("animals.end_date")}
+                  hasValue={hasEndDate}
+                  onClear={() => {
+                    setHasEndDate(false);
+                    setEndDate(null);
+                  }}
+                />
+              </View>
 
-            {/* Actions */}
-            <View style={{ flexDirection: "row", gap: theme.spacing.s }}>
-              {schedule && onDelete && (
+              {/* Recurrence (optional) */}
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontWeight: "600",
+                  color: theme.colors.gray1,
+                  marginBottom: theme.spacing.xs,
+                }}
+              >
+                {t("animals.recurrence_optional")}
+              </Text>
+              <View style={{ marginBottom: theme.spacing.l }}>
+                <RecurrencePicker
+                  value={recurrence}
+                  onChange={setRecurrence}
+                  frequencyOptions={frequencyOptions}
+                />
+              </View>
+
+              {/* Actions */}
+              <View style={{ flexDirection: "row", gap: theme.spacing.s }}>
+                {schedule && onDelete && (
+                  <Pressable
+                    onPress={handleDelete}
+                    style={{
+                      paddingVertical: 12,
+                      paddingHorizontal: 16,
+                      backgroundColor: theme.colors.danger + "15",
+                      borderRadius: 10,
+                    }}
+                  >
+                    <Ionicons
+                      name="trash-outline"
+                      size={20}
+                      color={theme.colors.danger}
+                    />
+                  </Pressable>
+                )}
                 <Pressable
-                  onPress={handleDelete}
+                  onPress={onClose}
                   style={{
+                    flex: 1,
                     paddingVertical: 12,
-                    paddingHorizontal: 16,
-                    backgroundColor: theme.colors.danger + "15",
+                    backgroundColor: theme.colors.gray5,
                     borderRadius: 10,
+                    alignItems: "center",
                   }}
                 >
-                  <Ionicons
-                    name="trash-outline"
-                    size={20}
-                    color={theme.colors.danger}
-                  />
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "600",
+                      color: theme.colors.gray1,
+                    }}
+                  >
+                    {t("buttons.cancel")}
+                  </Text>
                 </Pressable>
-              )}
-              <Pressable
-                onPress={onClose}
-                style={{
-                  flex: 1,
-                  paddingVertical: 12,
-                  backgroundColor: theme.colors.gray5,
-                  borderRadius: 10,
-                  alignItems: "center",
-                }}
-              >
-                <Text
+                <Pressable
+                  onPress={handleSave}
                   style={{
-                    fontSize: 15,
-                    fontWeight: "600",
-                    color: theme.colors.gray1,
+                    flex: 1,
+                    paddingVertical: 12,
+                    backgroundColor: theme.colors.primary,
+                    borderRadius: 10,
+                    alignItems: "center",
                   }}
                 >
-                  {t("buttons.cancel")}
-                </Text>
-              </Pressable>
-              <Pressable
-                onPress={handleSave}
-                style={{
-                  flex: 1,
-                  paddingVertical: 12,
-                  backgroundColor: theme.colors.primary,
-                  borderRadius: 10,
-                  alignItems: "center",
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 15,
-                    fontWeight: "600",
-                    color: theme.colors.white,
-                  }}
-                >
-                  {t("buttons.confirm")}
-                </Text>
-              </Pressable>
-            </View>
-          </Pressable>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: "600",
+                      color: theme.colors.white,
+                    }}
+                  >
+                    {t("buttons.confirm")}
+                  </Text>
+                </Pressable>
+              </View>
+            </Pressable>
           </KeyboardAvoidingView>
         </Pressable>
       )}

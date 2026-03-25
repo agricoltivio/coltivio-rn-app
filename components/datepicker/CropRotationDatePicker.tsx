@@ -15,22 +15,6 @@ type CropRotationDatePickerProps = {
   label?: string;
 };
 
-// Check if a date is within a rotation period (excluding permanent rotations)
-function isDateInRotation(date: Date, rotation: PlotCropRotation): boolean {
-  const toDate = new Date(rotation.toDate);
-  const fromDate = new Date(rotation.fromDate);
-  const dateTime = date.getTime();
-  return dateTime >= fromDate.getTime() && dateTime <= toDate.getTime();
-}
-
-// Get all rotations that include a specific date
-function getRotationForDate(
-  date: Date,
-  rotations: PlotCropRotation[],
-): PlotCropRotation | undefined {
-  return rotations.find((r) => isDateInRotation(date, r));
-}
-
 export function CropRotationDatePicker({
   date,
   existingRotations,

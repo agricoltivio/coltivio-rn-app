@@ -7,7 +7,9 @@ import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { WikiOnboardingScreenProps } from "./navigation/wiki-routes";
 
-export function WikiOnboardingScreen({ navigation }: WikiOnboardingScreenProps) {
+export function WikiOnboardingScreen({
+  navigation,
+}: WikiOnboardingScreenProps) {
   const theme = useTheme();
   const { t } = useTranslation();
   const { updateLocalSettings } = useLocalSettings();
@@ -63,7 +65,11 @@ export function WikiOnboardingScreen({ navigation }: WikiOnboardingScreenProps) 
           justifyContent: "center",
         }}
       >
-        <Ionicons name="settings-outline" size={36} color={theme.colors.primary} />
+        <Ionicons
+          name="settings-outline"
+          size={36}
+          color={theme.colors.primary}
+        />
       </View>
     </View>,
   ];

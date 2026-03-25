@@ -1,7 +1,6 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import React from "react";
 import { Dimensions, Platform, Pressable, Text, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { locale } from "@/locales/i18n";
@@ -69,10 +68,12 @@ export function CompactDatePicker({
 
   useEffect(() => {
     mountedRef.current = true;
+    // Captured in the effect body so the cleanup closure uses the same Set instance
+    const timers = pendingTimers.current;
     return () => {
       mountedRef.current = false;
-      for (const t of pendingTimers.current) clearTimeout(t);
-      pendingTimers.current.clear();
+      for (const t of timers) clearTimeout(t);
+      timers.clear();
     };
   }, []);
 

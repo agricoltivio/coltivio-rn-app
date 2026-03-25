@@ -9,7 +9,12 @@ import { round } from "@/utils/math";
 import Fuse from "fuse.js";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, SectionList, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  SectionList,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useTheme } from "styled-components/native";
 import { PlotCropProtectionApplicationsScreenProps } from "./navigation/plots-routes";
 import {

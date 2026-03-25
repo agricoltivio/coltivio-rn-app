@@ -25,7 +25,7 @@ export function useAvailableEarTagsQuery(enabled: boolean = true) {
 
 export function useCreateEarTagRangeMutation(
   onSuccess?: () => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
@@ -45,7 +45,7 @@ export function useCreateEarTagRangeMutation(
 
 export function useDeleteEarTagRangeMutation(
   onSuccess?: () => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const api = useApi();
   const queryClient = useQueryClient();

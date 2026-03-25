@@ -19,7 +19,7 @@ export function useCropFamiliesQuery(enabled: boolean = true) {
 
 export function useCropFamilyByIdQuery(
   familyId: string,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
@@ -32,7 +32,7 @@ export function useCropFamilyByIdQuery(
 
 export function useCreateCropFamilyMutation(
   onSuccess?: (cropFamily: CropFamily) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
@@ -52,7 +52,7 @@ export function useCreateCropFamilyMutation(
 
 export function useUpdateCropFamilyMutation(
   onSuccess?: (cropFamily: CropFamily) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const api = useApi();
   const queryClient = useQueryClient();
@@ -75,7 +75,7 @@ export function useUpdateCropFamilyMutation(
 
 export function useDeleteCropFamilyMutation(
   onSuccess?: () => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const api = useApi();
   const queryClient = useQueryClient();
@@ -99,7 +99,7 @@ export function useDeleteCropFamilyMutation(
 
 export function useIsCropFamilyInUseQuery(
   familyId: string,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({

@@ -48,10 +48,19 @@ type ActiveLabel = {
   type: FieldEvent["type"];
 };
 
-const EMPTY_GEOJSON: FeatureCollection = { type: "FeatureCollection", features: [] };
+const EMPTY_GEOJSON: FeatureCollection = {
+  type: "FeatureCollection",
+  features: [],
+};
 
 // Floating label that rises and fades out — rendered as a geo-anchored Marker
-function FloatingLabel({ lng, lat, plotName, action, type }: Omit<ActiveLabel, "key">) {
+function FloatingLabel({
+  lng,
+  lat,
+  plotName,
+  action,
+  type,
+}: Omit<ActiveLabel, "key">) {
   const opacity = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(0)).current;
   const color = EVENT_COLORS[type];
@@ -60,8 +69,16 @@ function FloatingLabel({ lng, lat, plotName, action, type }: Omit<ActiveLabel, "
     Animated.sequence([
       // Pop in quickly
       Animated.parallel([
-        Animated.timing(opacity, { toValue: 1, duration: 200, useNativeDriver: true }),
-        Animated.timing(translateY, { toValue: -14, duration: 200, useNativeDriver: true }),
+        Animated.timing(opacity, {
+          toValue: 1,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+        Animated.timing(translateY, {
+          toValue: -14,
+          duration: 200,
+          useNativeDriver: true,
+        }),
       ]),
       // Float up and fade out over remaining lifetime
       Animated.parallel([
@@ -81,7 +98,9 @@ function FloatingLabel({ lng, lat, plotName, action, type }: Omit<ActiveLabel, "
 
   return (
     <Marker lngLat={[lng, lat] as LngLat} anchor="bottom">
-      <Animated.View style={{ opacity, transform: [{ translateY }], alignItems: "center" }}>
+      <Animated.View
+        style={{ opacity, transform: [{ translateY }], alignItems: "center" }}
+      >
         <View
           style={{
             backgroundColor: color,
@@ -91,8 +110,12 @@ function FloatingLabel({ lng, lat, plotName, action, type }: Omit<ActiveLabel, "
             alignItems: "center",
           }}
         >
-          <Text style={{ color: "#fff", fontWeight: "700", fontSize: 12 }}>{plotName}</Text>
-          <Text style={{ color: "rgba(255,255,255,0.85)", fontSize: 11 }}>{action}</Text>
+          <Text style={{ color: "#fff", fontWeight: "700", fontSize: 12 }}>
+            {plotName}
+          </Text>
+          <Text style={{ color: "rgba(255,255,255,0.85)", fontSize: 11 }}>
+            {action}
+          </Text>
         </View>
         {/* Callout triangle pointing down to the location */}
         <View
@@ -127,7 +150,9 @@ function formatDate(dateStr: string): string {
   });
 }
 
-export function FieldEventsMapScreen({ navigation }: FieldEventsMapScreenProps) {
+export function FieldEventsMapScreen({
+  navigation,
+}: FieldEventsMapScreenProps) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const { farm } = useFarmQuery();
@@ -136,7 +161,8 @@ export function FieldEventsMapScreen({ navigation }: FieldEventsMapScreenProps) 
   const [year, setYear] = useState(currentYear);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState<Speed>(1);
-  const [playedFeatures, setPlayedFeatures] = useState<FeatureCollection>(EMPTY_GEOJSON);
+  const [playedFeatures, setPlayedFeatures] =
+    useState<FeatureCollection>(EMPTY_GEOJSON);
   const [activeLabels, setActiveLabels] = useState<ActiveLabel[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentDate, setCurrentDate] = useState<string | null>(null);
@@ -169,7 +195,11 @@ export function FieldEventsMapScreen({ navigation }: FieldEventsMapScreenProps) 
   useEffect(() => {
     if (!mapVisible || !farm?.location?.coordinates) return;
     const [lng, lat] = farm.location.coordinates;
-    cameraRef.current?.flyTo({ center: [lng, lat] as LngLat, zoom: 14, duration: 800 });
+    cameraRef.current?.flyTo({
+      center: [lng, lat] as LngLat,
+      zoom: 14,
+      duration: 800,
+    });
   }, [mapVisible]);
 
   function reset() {
@@ -189,11 +219,19 @@ export function FieldEventsMapScreen({ navigation }: FieldEventsMapScreenProps) 
     const ev = sortedEventsRef.current[index];
     if (!ev) return;
 
-    const center = turf.centerOfMass({ type: "Feature", geometry: ev.geometry, properties: {} });
+    const center = turf.centerOfMass({
+      type: "Feature",
+      geometry: ev.geometry,
+      properties: {},
+    });
     const [lng, lat] = center.geometry.coordinates;
 
     // Follow each event — fly to its centroid at zoom 16
-    cameraRef.current?.flyTo({ center: [lng, lat] as LngLat, zoom: 16, duration: 900 });
+    cameraRef.current?.flyTo({
+      center: [lng, lat] as LngLat,
+      zoom: 16,
+      duration: 900,
+    });
 
     setCurrentDate(ev.date);
 
@@ -214,7 +252,14 @@ export function FieldEventsMapScreen({ navigation }: FieldEventsMapScreenProps) 
     const labelKey = `${ev.id}-${index}-${Date.now()}`;
     setActiveLabels((prev) => [
       ...prev,
-      { key: labelKey, lng, lat, plotName: ev.plotName, action: ev.action, type: ev.type },
+      {
+        key: labelKey,
+        lng,
+        lat,
+        plotName: ev.plotName,
+        action: ev.action,
+        type: ev.type,
+      },
     ]);
     setTimeout(() => {
       setActiveLabels((prev) => prev.filter((l) => l.key !== labelKey));
@@ -242,7 +287,8 @@ export function FieldEventsMapScreen({ navigation }: FieldEventsMapScreenProps) 
     : [7.4474, 46.9481];
 
   const done = currentIndex >= sortedEvents.length && sortedEvents.length > 0;
-  const progress = sortedEvents.length > 0 ? currentIndex / sortedEvents.length : 0;
+  const progress =
+    sortedEvents.length > 0 ? currentIndex / sortedEvents.length : 0;
 
   return (
     <View style={styles.container}>
@@ -261,7 +307,11 @@ export function FieldEventsMapScreen({ navigation }: FieldEventsMapScreenProps) 
           <Layer
             type="line"
             id="field-events-stroke"
-            paint={{ "line-color": ["get", "color"], "line-width": 1.5, "line-opacity": 0.9 }}
+            paint={{
+              "line-color": ["get", "color"],
+              "line-width": 1.5,
+              "line-opacity": 0.9,
+            }}
           />
         </GeoJSONSource>
 
@@ -287,7 +337,10 @@ export function FieldEventsMapScreen({ navigation }: FieldEventsMapScreenProps) 
 
       {/* Current date — top center, only shown once playback starts */}
       {currentDate && (
-        <View style={[styles.dateDisplay, { top: insets.top + 12 }]} pointerEvents="none">
+        <View
+          style={[styles.dateDisplay, { top: insets.top + 12 }]}
+          pointerEvents="none"
+        >
           <View style={styles.pill}>
             <Text style={styles.pillText}>{formatDate(currentDate)}</Text>
           </View>
@@ -301,7 +354,10 @@ export function FieldEventsMapScreen({ navigation }: FieldEventsMapScreenProps) 
             <Ionicons name="chevron-back" size={18} color="#fff" />
           </TouchableOpacity>
           <Text style={[styles.pillText, { marginHorizontal: 6 }]}>{year}</Text>
-          <TouchableOpacity onPress={() => setYear((y) => y + 1)} disabled={year >= currentYear}>
+          <TouchableOpacity
+            onPress={() => setYear((y) => y + 1)}
+            disabled={year >= currentYear}
+          >
             <Ionicons
               name="chevron-forward"
               size={18}
@@ -315,13 +371,21 @@ export function FieldEventsMapScreen({ navigation }: FieldEventsMapScreenProps) 
       {events !== undefined && events.length === 0 && (
         <View style={styles.noEventsOverlay} pointerEvents="none">
           <View style={styles.noEventsBadge}>
-            <Text style={styles.noEventsText}>{t("field_calendar.no_events_for_year")}</Text>
+            <Text style={styles.noEventsText}>
+              {t("field_calendar.no_events_for_year")}
+            </Text>
           </View>
         </View>
       )}
 
       {/* Bottom controls — hidden when no events */}
-      <View style={[styles.bottomControls, { paddingBottom: insets.bottom + 12 }, events !== undefined && events.length === 0 && { display: "none" }]}>
+      <View
+        style={[
+          styles.bottomControls,
+          { paddingBottom: insets.bottom + 12 },
+          events !== undefined && events.length === 0 && { display: "none" },
+        ]}
+      >
         {/* Legend */}
         <View style={styles.legendRow}>
           {(Object.entries(EVENT_COLORS) as [FieldEvent["type"], string][]).map(
@@ -347,7 +411,11 @@ export function FieldEventsMapScreen({ navigation }: FieldEventsMapScreenProps) 
               onPress={() => setIsPlaying((p) => !p)}
               style={styles.playButton}
             >
-              <Ionicons name={isPlaying ? "pause" : "play"} size={22} color="#fff" />
+              <Ionicons
+                name={isPlaying ? "pause" : "play"}
+                size={22}
+                color="#fff"
+              />
             </TouchableOpacity>
           )}
 
@@ -356,9 +424,17 @@ export function FieldEventsMapScreen({ navigation }: FieldEventsMapScreenProps) 
               <Pressable
                 key={s}
                 onPress={() => setSpeed(s)}
-                style={[styles.speedButton, speed === s && styles.speedButtonActive]}
+                style={[
+                  styles.speedButton,
+                  speed === s && styles.speedButtonActive,
+                ]}
               >
-                <Text style={[styles.speedText, speed === s && styles.speedTextActive]}>
+                <Text
+                  style={[
+                    styles.speedText,
+                    speed === s && styles.speedTextActive,
+                  ]}
+                >
                   {s}×
                 </Text>
               </Pressable>
@@ -366,7 +442,9 @@ export function FieldEventsMapScreen({ navigation }: FieldEventsMapScreenProps) 
           </View>
 
           <View style={styles.progressBarContainer}>
-            <View style={[styles.progressBarFill, { width: `${progress * 100}%` }]} />
+            <View
+              style={[styles.progressBarFill, { width: `${progress * 100}%` }]}
+            />
           </View>
 
           <Text style={styles.progressText}>

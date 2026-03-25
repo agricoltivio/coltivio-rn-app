@@ -26,10 +26,7 @@ import { hasScheduleOverlaps } from "./schedule-overlap-utils";
 // Local schedule with a temp id for list keys
 type LocalSchedule = OutdoorScheduleCreateInput & { tempId: string };
 
-export function HerdEditScreen({
-  route,
-  navigation,
-}: HerdEditScreenProps) {
+export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
   const locale = i18n.language;
@@ -69,15 +66,15 @@ export function HerdEditScreen({
 
   // Animal IDs: use route params (from SelectAnimals) or fall back to herd data
   const selectedAnimalIds =
-    route.params?.animalIds ??
-    herd?.animals.map((a) => a.id) ??
-    [];
+    route.params?.animalIds ?? herd?.animals.map((a) => a.id) ?? [];
 
   const updateHerdMutation = useUpdateHerdMutation(() => navigation.goBack());
   const deleteHerdMutation = useDeleteHerdMutation(() => navigation.goBack());
 
   const [scheduleModalVisible, setScheduleModalVisible] = useState(false);
-  const [editingSchedule, setEditingSchedule] = useState<LocalSchedule | null>(null);
+  const [editingSchedule, setEditingSchedule] = useState<LocalSchedule | null>(
+    null,
+  );
 
   // Dirty check: name changed, animals changed, or schedules changed
   const initialAnimalIds = herd?.animals.map((a) => a.id) ?? [];
@@ -101,7 +98,8 @@ export function HerdEditScreen({
     });
   }, [localSchedules, herd]);
 
-  const isDirty = (herd != null && name !== herd.name) || animalsChanged || schedulesChanged;
+  const isDirty =
+    (herd != null && name !== herd.name) || animalsChanged || schedulesChanged;
 
   // Overlap detection
   const hasOverlaps = useMemo(
@@ -171,7 +169,10 @@ export function HerdEditScreen({
             ? {
                 frequency: s.recurrence.frequency,
                 interval: s.recurrence.interval,
+                byWeekday: s.recurrence.byWeekday ?? null,
+                byMonthDay: s.recurrence.byMonthDay ?? null,
                 until: s.recurrence.until ?? null,
+                count: s.recurrence.count ?? null,
               }
             : null,
         })),
@@ -181,7 +182,9 @@ export function HerdEditScreen({
 
   const animalsText = (() => {
     if (selectedAnimalIds.length === 0) return t("common.no_entries");
-    return t("treatments.n_animals_selected", { count: selectedAnimalIds.length });
+    return t("treatments.n_animals_selected", {
+      count: selectedAnimalIds.length,
+    });
   })();
 
   if (!herd) return null;
@@ -203,9 +206,7 @@ export function HerdEditScreen({
               {t("animals.schedule_overlap_warning")}
             </Text>
           )}
-          <View
-            style={{ flexDirection: "row", gap: theme.spacing.s }}
-          >
+          <View style={{ flexDirection: "row", gap: theme.spacing.s }}>
             <Button
               style={{ flexGrow: 1 }}
               type="danger"
@@ -306,19 +307,21 @@ export function HerdEditScreen({
             />
           </View>
           {/* Outdoor schedule timeline */}
-          {timelineData && timelineData.herds.length > 0 && timelineData.herds[0].bars.length > 0 && (
-            <View style={{ height: 200, marginBottom: theme.spacing.s }}>
-              <OutdoorScheduleTimeline
-                timelineData={timelineData}
-                onBarPress={(scheduleId) => {
-                  const schedule = localSchedules.find(
-                    (s) => s.tempId === scheduleId,
-                  );
-                  if (schedule) openScheduleModal(schedule);
-                }}
-              />
-            </View>
-          )}
+          {timelineData &&
+            timelineData.herds.length > 0 &&
+            timelineData.herds[0].bars.length > 0 && (
+              <View style={{ height: 200, marginBottom: theme.spacing.s }}>
+                <OutdoorScheduleTimeline
+                  timelineData={timelineData}
+                  onBarPress={(scheduleId) => {
+                    const schedule = localSchedules.find(
+                      (s) => s.tempId === scheduleId,
+                    );
+                    if (schedule) openScheduleModal(schedule);
+                  }}
+                />
+              </View>
+            )}
           {localSchedules.length === 0 && (
             <Subtitle>{t("common.no_entries")}</Subtitle>
           )}

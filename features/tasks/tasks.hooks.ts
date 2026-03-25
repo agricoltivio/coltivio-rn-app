@@ -51,7 +51,9 @@ export function useDeleteTaskMutation(onSuccess?: () => void) {
   return useMutation({
     mutationFn: (taskId: string) => api.tasks.deleteTask(taskId),
     onSuccess: (_, taskId) => {
-      queryClient.removeQueries({ queryKey: queryKeys.tasks.byId(taskId).queryKey });
+      queryClient.removeQueries({
+        queryKey: queryKeys.tasks.byId(taskId).queryKey,
+      });
       queryClient.invalidateQueries({ queryKey: queryKeys.tasks._def });
       onSuccess?.();
     },
@@ -76,7 +78,9 @@ export function useToggleChecklistItemMutation(taskId: string) {
     mutationFn: ({ itemId, done }: { itemId: string; done: boolean }) =>
       api.tasks.toggleChecklistItem(taskId, itemId, done),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.tasks.byId(taskId).queryKey });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.tasks.byId(taskId).queryKey,
+      });
     },
   });
 }

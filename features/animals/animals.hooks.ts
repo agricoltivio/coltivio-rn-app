@@ -138,7 +138,9 @@ export function useSetCustomOutdoorJournalCategoriesMutation(
     }) => api.animals.setCustomOutdoorJournalCategories(animalId, input),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.animals._def });
-      queryClient.invalidateQueries({ queryKey: queryKeys.outdoorJournal._def });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.outdoorJournal._def,
+      });
       onSuccess?.();
     },
     onError,

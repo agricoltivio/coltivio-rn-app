@@ -22,7 +22,7 @@ export function useExpandRecurrence(
   fromDate: Date,
   toDate: Date,
   recurrence?: RecurrenceRule,
-  windowDays: number = 365
+  windowDays: number = 365,
 ): DateRange[] {
   return useMemo(() => {
     if (!recurrence || !recurrence.until) {
@@ -47,7 +47,10 @@ export function useExpandRecurrence(
   }, [fromDate, toDate, recurrence, windowDays]);
 }
 
-export function hasOverlap(rangesA: DateRange[], rangesB: DateRange[]): boolean {
+export function hasOverlap(
+  rangesA: DateRange[],
+  rangesB: DateRange[],
+): boolean {
   for (const rangeA of rangesA) {
     for (const rangeB of rangesB) {
       if (rangeA.from <= rangeB.to && rangeA.to >= rangeB.from) {

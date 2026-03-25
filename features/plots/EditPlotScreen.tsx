@@ -3,10 +3,7 @@ import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { useForm } from "react-hook-form";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import {
-  usePlotByIdQuery,
-  useUpdatePlotMutation,
-} from "./plots.hooks";
+import { usePlotByIdQuery, useUpdatePlotMutation } from "./plots.hooks";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2 } from "@/theme/Typography";
@@ -27,7 +24,13 @@ type EditPlotFormValues = {
   size: string;
 };
 
-export function EditPlotScreen({ route, navigation }: { route: { params: { plotId: string } }; navigation: { goBack: () => void; navigate: (...args: unknown[]) => void } }) {
+export function EditPlotScreen({
+  route,
+  navigation,
+}: {
+  route: { params: { plotId: string } };
+  navigation: { goBack: () => void; navigate: (...args: unknown[]) => void };
+}) {
   const { t } = useTranslation();
   const { plotId } = route.params;
   const theme = useTheme();

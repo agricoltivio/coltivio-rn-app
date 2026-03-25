@@ -12,19 +12,27 @@ export function useCropProtectionApplicationPresetsQuery(enabled = true) {
 
   const { data, ...rest } = useQuery({
     queryKey: queryKeys.cropProtectionApplicationPresets.all.queryKey,
-    queryFn: () => api.cropProtectionApplicationPresets.getCropProtectionApplicationPresets(),
+    queryFn: () =>
+      api.cropProtectionApplicationPresets.getCropProtectionApplicationPresets(),
     enabled,
   });
 
   return { cropProtectionApplicationPresets: data, ...rest };
 }
 
-export function useCropProtectionApplicationPresetByIdQuery(presetId: string, enabled = true) {
+export function useCropProtectionApplicationPresetByIdQuery(
+  presetId: string,
+  enabled = true,
+) {
   const api = useApi();
 
   const { data, ...rest } = useQuery({
-    queryKey: queryKeys.cropProtectionApplicationPresets.byId(presetId).queryKey,
-    queryFn: () => api.cropProtectionApplicationPresets.getCropProtectionApplicationPresetById(presetId),
+    queryKey:
+      queryKeys.cropProtectionApplicationPresets.byId(presetId).queryKey,
+    queryFn: () =>
+      api.cropProtectionApplicationPresets.getCropProtectionApplicationPresetById(
+        presetId,
+      ),
     enabled,
   });
 
@@ -40,7 +48,9 @@ export function useCreateCropProtectionApplicationPresetMutation(
   return useMutation({
     mutationKey: ["createCropProtectionApplicationPreset"],
     mutationFn: (preset: CropProtectionApplicationPresetCreateInput) => {
-      return api.cropProtectionApplicationPresets.createCropProtectionApplicationPreset(preset);
+      return api.cropProtectionApplicationPresets.createCropProtectionApplicationPreset(
+        preset,
+      );
     },
     onError: (error) => {
       console.error(error);
@@ -70,7 +80,10 @@ export function useUpdateCropProtectionApplicationPresetMutation(
       id,
       ...preset
     }: CropProtectionApplicationPresetUpdateInput & { id: string }) => {
-      return api.cropProtectionApplicationPresets.updateCropProtectionApplicationPreset(id, preset);
+      return api.cropProtectionApplicationPresets.updateCropProtectionApplicationPreset(
+        id,
+        preset,
+      );
     },
     onSuccess: (preset) => {
       queryClient.invalidateQueries({
@@ -85,13 +98,17 @@ export function useUpdateCropProtectionApplicationPresetMutation(
   });
 }
 
-export function useDeleteCropProtectionApplicationPresetMutation(onSuccess?: () => void) {
+export function useDeleteCropProtectionApplicationPresetMutation(
+  onSuccess?: () => void,
+) {
   const api = useApi();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (presetId: string) => {
-      await api.cropProtectionApplicationPresets.deleteCropProtectionApplicationPreset(presetId);
+      await api.cropProtectionApplicationPresets.deleteCropProtectionApplicationPreset(
+        presetId,
+      );
       return presetId;
     },
     onSuccess: (id) => {

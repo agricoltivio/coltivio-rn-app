@@ -10,7 +10,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 export function useCropProtectionApplicationsQuery(
   fromDate?: Date,
   toDate?: Date,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
@@ -18,7 +18,7 @@ export function useCropProtectionApplicationsQuery(
     queryFn: () =>
       api.cropProtectionApplications.getCropProtectionApplications(
         fromDate,
-        toDate
+        toDate,
       ),
     enabled,
   });
@@ -27,14 +27,14 @@ export function useCropProtectionApplicationsQuery(
 
 export function useCropProtectionApplicationsForPlotQuery(
   plotId: string,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
     queryKey: queryKeys.cropProtectionApplications.byPlotId(plotId).queryKey,
     queryFn: () =>
       api.cropProtectionApplications.getCropProtectionApplicationsForPlot(
-        plotId
+        plotId,
       ),
     enabled,
   });
@@ -43,16 +43,16 @@ export function useCropProtectionApplicationsForPlotQuery(
 
 export function useCropProtectionApplicationQuery(
   cropProtectionApplicationId: string,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
     queryKey: queryKeys.cropProtectionApplications.byId(
-      cropProtectionApplicationId
+      cropProtectionApplicationId,
     ).queryKey,
     queryFn: () =>
       api.cropProtectionApplications.getCropProtectionApplicationById(
-        cropProtectionApplicationId
+        cropProtectionApplicationId,
       ),
     enabled,
   });
@@ -60,7 +60,7 @@ export function useCropProtectionApplicationQuery(
 }
 
 export function useCropProtectionApplicationYearsQuery(
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
@@ -74,16 +74,16 @@ export function useCropProtectionApplicationYearsQuery(
 
 export function useCreateCropProtectionApplicationsMutation(
   onSuccess?: (cropProtectionApplications: CropProtectionApplication[]) => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
   const createCropProtectionApplicationMutation = useMutation({
     mutationFn: (
-      cropProtectionApplications: CropProtectionApplicationsBatchCreateInput
+      cropProtectionApplications: CropProtectionApplicationsBatchCreateInput,
     ) => {
       return api.cropProtectionApplications.createCropProtectionApplications(
-        cropProtectionApplications
+        cropProtectionApplications,
       );
     },
     onError: (error) => {
@@ -102,14 +102,14 @@ export function useCreateCropProtectionApplicationsMutation(
 
 export function useDeleteCropProtectionApplicationMutation(
   onSuccess?: () => void,
-  onError?: (error: Error) => void
+  onError?: (error: Error) => void,
 ) {
   const api = useApi();
   const queryClient = useQueryClient();
   const deleteCropProtectionApplicationMutation = useMutation({
     mutationFn: async (cropProtectionApplicationId: string) => {
       await api.cropProtectionApplications.deleteCropProtectionApplication(
-        cropProtectionApplicationId
+        cropProtectionApplicationId,
       );
       return cropProtectionApplicationId;
     },
@@ -128,7 +128,7 @@ export function useDeleteCropProtectionApplicationMutation(
 }
 
 export function useCropProtectionApplicationSummariesOfFarmQuery(
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
@@ -142,7 +142,7 @@ export function useCropProtectionApplicationSummariesOfFarmQuery(
 
 export function useCropProtectionApplicationSummariesOfPlotQuery(
   plotId: string,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
@@ -150,7 +150,7 @@ export function useCropProtectionApplicationSummariesOfPlotQuery(
       queryKeys.cropProtectionApplications.summariesByPlotId(plotId).queryKey,
     queryFn: () =>
       api.cropProtectionApplications.getCropProtectionApplicationSummariesForPlot(
-        plotId
+        plotId,
       ),
     enabled,
   });

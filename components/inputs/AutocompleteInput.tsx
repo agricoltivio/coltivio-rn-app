@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  Keyboard,
-  ScrollView,
-  View,
-} from "react-native";
+import { ActivityIndicator, Keyboard, ScrollView, View } from "react-native";
 import { TextInput } from "./TextInput";
 import { ListItem } from "../list/ListItem";
 import { useTheme } from "styled-components/native";
@@ -14,7 +8,6 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { useSafeAreaFrame } from "react-native-safe-area-context";
 
 export type AutocompleteInputProps<T> = {
   label?: string;

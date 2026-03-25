@@ -47,6 +47,13 @@ type LocalSettingsData = {
   wikiOnlyPrivate: boolean;
   wikiOnboardingCompleted: boolean;
   tasksOnboardingCompleted: boolean;
+  // Stores the ISO date string of the expiry date the membership banner was dismissed for.
+  // When a new subscription period starts (new date), the banner reappears automatically.
+  dismissedMembershipBannerForDate: string | null;
+  // ISO date string of the very first time the app was opened (set once, never updated).
+  firstLaunchDate: string | null;
+  // Whether the AgriColtivio membership promo modal has been shown and dismissed.
+  agriColtivioPromoShown: boolean;
 };
 
 type LocalSettingActions = {
@@ -84,6 +91,9 @@ export const defaultLocalSettings: LocalSettingsData = {
   wikiOnlyPrivate: false,
   wikiOnboardingCompleted: false,
   tasksOnboardingCompleted: false,
+  dismissedMembershipBannerForDate: null,
+  firstLaunchDate: null,
+  agriColtivioPromoShown: false,
 };
 
 export const LocalSettingsContext = createContext<LocalSettings>({
@@ -149,10 +159,22 @@ export function LocalSettingsProvider({ children }: PropsWithChildren) {
           setLocalSettings({
             ...defaultLocalSettings,
             ...stored,
-            animalsGroups: mergeGroups(stored.animalsGroups ?? [], DEFAULT_ANIMALS_GROUPS),
-            fieldCalendarGroups: mergeGroups(stored.fieldCalendarGroups ?? [], DEFAULT_FIELD_CALENDAR_GROUPS),
-            speedDialItems: mergeSpeedDialItems(stored.speedDialItems ?? [], DEFAULT_SPEED_DIAL_ITEMS),
-            homeTiles: mergeHomeTiles(stored.homeTiles ?? [], DEFAULT_HOME_TILES),
+            animalsGroups: mergeGroups(
+              stored.animalsGroups ?? [],
+              DEFAULT_ANIMALS_GROUPS,
+            ),
+            fieldCalendarGroups: mergeGroups(
+              stored.fieldCalendarGroups ?? [],
+              DEFAULT_FIELD_CALENDAR_GROUPS,
+            ),
+            speedDialItems: mergeSpeedDialItems(
+              stored.speedDialItems ?? [],
+              DEFAULT_SPEED_DIAL_ITEMS,
+            ),
+            homeTiles: mergeHomeTiles(
+              stored.homeTiles ?? [],
+              DEFAULT_HOME_TILES,
+            ),
           });
         }
       }

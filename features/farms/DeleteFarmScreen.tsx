@@ -6,12 +6,16 @@ import { ContentView } from "@/components/containers/ContentView";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
 import { DeleteFarmScreenProps } from "./navigation/farm-routes";
-import { H2, Label, Subtitle } from "@/theme/Typography";
+import { Body, H2, Label, Subtitle } from "@/theme/Typography";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Switch, View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { useDeleteFarmMutation, useFarmQuery } from "./farms.hooks";
+import {
+  useDeleteFarmMutation,
+  useFarmQuery,
+  useMembershipStatusQuery,
+} from "./farms.hooks";
 import { useTranslation } from "react-i18next";
 
 export function DeleteFarmScreen({}: DeleteFarmScreenProps) {
@@ -19,7 +23,19 @@ export function DeleteFarmScreen({}: DeleteFarmScreenProps) {
   const theme = useTheme();
   const [deleteAccount, setDeleteAccount] = useState(false);
   const { farm } = useFarmQuery();
+  const { membershipStatus } = useMembershipStatusQuery();
   const { clearSession } = useSession();
+
+  const now = new Date();
+  const membershipPeriodEnd = membershipStatus?.lastPeriodEnd
+    ? new Date(membershipStatus.lastPeriodEnd as string)
+    : null;
+  const membershipTrialEnd = membershipStatus?.trialEnd
+    ? new Date(membershipStatus.trialEnd as string)
+    : null;
+  const hasMembershipActive =
+    (membershipPeriodEnd !== null && membershipPeriodEnd > now) ||
+    (membershipTrialEnd !== null && membershipTrialEnd > now);
 
   const {
     handleSubmit,
@@ -86,6 +102,18 @@ export function DeleteFarmScreen({}: DeleteFarmScreenProps) {
             onChange={() => setDeleteAccount((prev) => !prev)}
           />
         </View>
+        {deleteAccount && hasMembershipActive ? (
+          <Card
+            style={{
+              backgroundColor: theme.colors.yellow,
+              marginTop: theme.spacing.m,
+            }}
+          >
+            <Body style={{ color: theme.colors.black }}>
+              {t("membership.delete_account_warning")}
+            </Body>
+          </Card>
+        ) : null}
 
         <View style={{ marginTop: theme.spacing.l }}>
           <RHTextInput

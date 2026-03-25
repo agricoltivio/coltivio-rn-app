@@ -78,14 +78,17 @@ export function CropProtectionApplicationSummary({
   const centroid = turf.centroid(plots[0].geometry);
   const center = centroid.geometry.coordinates as LngLat;
 
-  const features = useMemo((): GeoJSON.FeatureCollection => ({
-    type: "FeatureCollection",
-    features: plots.map((p) => ({
-      type: "Feature",
-      properties: {},
-      geometry: p.geometry,
-    })),
-  }), [plots]);
+  const features = useMemo(
+    (): GeoJSON.FeatureCollection => ({
+      type: "FeatureCollection",
+      features: plots.map((p) => ({
+        type: "Feature",
+        properties: {},
+        geometry: p.geometry,
+      })),
+    }),
+    [plots],
+  );
   const formattedDate = formatLocalizedDateTime(new Date(date), locale, "long");
   return (
     <ScrollView
@@ -97,7 +100,12 @@ export function CropProtectionApplicationSummary({
       <H2>{t("crop_protection_applications.crop_protection")}</H2>
       <H3>{formattedDate}</H3>
       <View style={{ marginTop: theme.spacing.m }}>
-        <StaticMapPreview center={center} zoom={17} features={features} height={250} />
+        <StaticMapPreview
+          center={center}
+          zoom={17}
+          features={features}
+          height={250}
+        />
       </View>
       <Card style={{ marginTop: theme.spacing.m }}>
         <SummaryItem label={t("forms.labels.area")} value={`${size / 100}a`} />

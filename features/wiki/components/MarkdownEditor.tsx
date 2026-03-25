@@ -12,6 +12,7 @@ import Constants from "expo-constants";
 import * as ImagePicker from "expo-image-picker";
 import { marked } from "marked";
 import { NodeHtmlMarkdown } from "node-html-markdown";
+import { useMembership } from "@/features/farms/farms.hooks";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -50,17 +51,28 @@ type Props = {
   readOnly?: boolean;
 };
 
-export function MarkdownEditor({ value, onChange, label, entryId, readOnly }: Props) {
+export function MarkdownEditor({
+  value,
+  onChange,
+  label,
+  entryId,
+  readOnly,
+}: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
+  const { isActive } = useMembership();
 
   if (readOnly) {
     return (
       <View>
         {label && <Label>{label}</Label>}
         <View style={styles.preview}>
-          {value ? <WikiMarkdown>{value}</WikiMarkdown> : <PreviewText>…</PreviewText>}
+          {value ? (
+            <WikiMarkdown>{value}</WikiMarkdown>
+          ) : (
+            <PreviewText>…</PreviewText>
+          )}
         </View>
       </View>
     );
@@ -89,6 +101,7 @@ export function MarkdownEditor({ value, onChange, label, entryId, readOnly }: Pr
               entryId={entryId}
               onClose={() => setIsOpen(false)}
               closeLabel={t("buttons.close")}
+              showImageUpload={isActive}
             />
           )}
         </View>
@@ -103,9 +116,17 @@ type EditorContentProps = {
   entryId: string;
   onClose: () => void;
   closeLabel: string;
+  showImageUpload: boolean;
 };
 
-function EditorContent({ value, onChange, entryId, onClose, closeLabel }: EditorContentProps) {
+function EditorContent({
+  value,
+  onChange,
+  entryId,
+  onClose,
+  closeLabel,
+  showImageUpload,
+}: EditorContentProps) {
   const api = useApi();
   const isFirstRender = useRef(true);
 
@@ -144,11 +165,17 @@ function EditorContent({ value, onChange, entryId, onClose, closeLabel }: Editor
           const asset = result.assets[0];
           const filename = asset.fileName ?? `image_${Date.now()}`;
 
-          const { signedUrl, path } = await api.wiki.getImageSignedUrl(entryId, filename);
+          const { signedUrl, path } = await api.wiki.getImageSignedUrl(
+            entryId,
+            filename,
+          );
 
           const fileResponse = await fetch(asset.uri);
           const blob = await fileResponse.blob();
-          await fetch(resolveLocalUrl(signedUrl), { method: "PUT", body: blob });
+          await fetch(resolveLocalUrl(signedUrl), {
+            method: "PUT",
+            body: blob,
+          });
 
           const { publicUrl } = await api.wiki.registerImage(entryId, path);
 
@@ -156,7 +183,7 @@ function EditorContent({ value, onChange, entryId, onClose, closeLabel }: Editor
           // Insert a paragraph after the image so the cursor has somewhere to go
           setTimeout(() => {
             editor.webviewRef.current?.injectJavaScript(
-              `window.editor.chain().focus('end').createParagraphNear().run(); true;`
+              `window.editor.chain().focus('end').createParagraphNear().run(); true;`,
             );
           }, 50);
         } catch {
@@ -180,12 +207,22 @@ function EditorContent({ value, onChange, entryId, onClose, closeLabel }: Editor
         behavior={Platform.OS === "ios" ? "padding" : undefined}
         style={styles.keyboardAvoidingView}
       >
-        <Toolbar editor={editor} items={[
-          // Remove code (5) and strikethrough (7), insert image at position 5
-          ...DEFAULT_TOOLBAR_ITEMS.slice(0, 5),
-          imageToolbarItem,
-          ...DEFAULT_TOOLBAR_ITEMS.slice(6).filter((_, i) => i !== 1), // skip strikethrough (was index 7)
-        ]} />
+        <Toolbar
+          editor={editor}
+          items={
+            showImageUpload
+              ? [
+                  // Remove code (5) and strikethrough (7), insert image at position 5
+                  ...DEFAULT_TOOLBAR_ITEMS.slice(0, 5),
+                  imageToolbarItem,
+                  ...DEFAULT_TOOLBAR_ITEMS.slice(6).filter((_, i) => i !== 1),
+                ]
+              : [
+                  ...DEFAULT_TOOLBAR_ITEMS.slice(0, 5),
+                  ...DEFAULT_TOOLBAR_ITEMS.slice(6).filter((_, i) => i !== 1),
+                ]
+          }
+        />
       </KeyboardAvoidingView>
     </>
   );

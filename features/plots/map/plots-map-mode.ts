@@ -46,8 +46,15 @@ export type PlotsMapMode =
 
 export type PlotsMapAction =
   | { type: "SELECT_PLOT"; plotId: string | null }
-  | { type: "ENTER_SPLIT"; plotId: string; initialGeometry: GeoJSON.MultiPolygon }
-  | { type: "SET_SPLIT_TOOL"; tool: "polyline" | "polygon" | "polygon-edit" | "extract" | "none" }
+  | {
+      type: "ENTER_SPLIT";
+      plotId: string;
+      initialGeometry: GeoJSON.MultiPolygon;
+    }
+  | {
+      type: "SET_SPLIT_TOOL";
+      tool: "polyline" | "polygon" | "polygon-edit" | "extract" | "none";
+    }
   | { type: "SET_SPLIT_POLYGONS"; polygons: GeoJSON.MultiPolygon[] }
   | { type: "ENTER_MERGE"; primaryPlotId: string }
   | { type: "TOGGLE_MERGE_PLOT"; plotId: string }
@@ -185,8 +192,6 @@ export function usePlotsMapContext() {
 
 // --- Initial state ---
 
-export function createInitialMode(
-  selectedPlotId?: string,
-): PlotsMapMode {
+export function createInitialMode(selectedPlotId?: string): PlotsMapMode {
   return { type: "view", selectedPlotId: selectedPlotId ?? null };
 }
