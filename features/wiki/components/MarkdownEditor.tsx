@@ -9,10 +9,10 @@ import {
 import { useApi } from "@/api/api";
 import { Ionicons } from "@expo/vector-icons";
 import Constants from "expo-constants";
+import * as ImageManipulator from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
 import { marked } from "marked";
 import { NodeHtmlMarkdown } from "node-html-markdown";
-import { useMembership } from "@/features/farms/farms.hooks";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -61,7 +61,6 @@ export function MarkdownEditor({
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
-  const { isActive } = useMembership();
 
   if (readOnly) {
     return (
@@ -100,8 +99,8 @@ export function MarkdownEditor({
               onChange={onChange}
               entryId={entryId}
               onClose={() => setIsOpen(false)}
-              closeLabel={t("buttons.close")}
-              showImageUpload={isActive}
+              closeLabel={t("buttons.finish")}
+              showImageUpload={true}
             />
           )}
         </View>
@@ -128,6 +127,7 @@ function EditorContent({
   showImageUpload,
 }: EditorContentProps) {
   const api = useApi();
+  const { t } = useTranslation();
   const isFirstRender = useRef(true);
 
   const editor = useEditorBridge({
@@ -163,15 +163,42 @@ function EditorContent({
           if (result.canceled || !result.assets[0]) return;
 
           const asset = result.assets[0];
-          const filename = asset.fileName ?? `image_${Date.now()}`;
+
+          // Resize to max 1200px on the longest side (preserves aspect ratio),
+          // convert to JPEG for cross-platform support (handles HEIC from iOS),
+          // and compress to reduce file size.
+          const MAX_DIM = 1200;
+          const { width, height } = asset;
+          const resizeAction: ImageManipulator.Action | undefined =
+            width > MAX_DIM || height > MAX_DIM
+              ? width >= height
+                ? { resize: { width: MAX_DIM } }
+                : { resize: { height: MAX_DIM } }
+              : undefined;
+
+          const manipulated = await ImageManipulator.manipulateAsync(
+            asset.uri,
+            resizeAction ? [resizeAction] : [],
+            { format: ImageManipulator.SaveFormat.JPEG, compress: 0.8 },
+          );
+
+          const fileResponse = await fetch(manipulated.uri);
+          const blob = await fileResponse.blob();
+
+          const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+          if (blob.size > MAX_FILE_SIZE) {
+            Alert.alert(t("common.error"), t("wiki.image_too_large"));
+            return;
+          }
+
+          const rawFilename = asset.fileName ?? `image_${Date.now()}`;
+          const filename = rawFilename.replace(/\.[^.]+$/, ".jpg");
 
           const { signedUrl, path } = await api.wiki.getImageSignedUrl(
             entryId,
             filename,
           );
 
-          const fileResponse = await fetch(asset.uri);
-          const blob = await fileResponse.blob();
           await fetch(resolveLocalUrl(signedUrl), {
             method: "PUT",
             body: blob,

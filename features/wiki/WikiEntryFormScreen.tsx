@@ -4,7 +4,6 @@ import { ContentView } from "@/components/containers/ContentView";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { locale } from "@/locales/i18n";
-import { H3 } from "@/theme/Typography";
 import * as Crypto from "expo-crypto";
 import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -59,7 +58,7 @@ export function WikiEntryFormScreen({
   // On edit we use the existing entryId instead.
   const imageEntryId = useRef(entryId ?? Crypto.randomUUID()).current;
 
-  const { control, handleSubmit, setValue } = useForm<FormValues>({
+  const { control, handleSubmit, setValue, watch } = useForm<FormValues>({
     defaultValues: {
       categoryId: "",
       de_title: "",
@@ -138,6 +137,10 @@ export function WikiEntryFormScreen({
   }
 
   const isPending = createMutation.isPending || updateMutation.isPending;
+  const categoryId = watch("categoryId");
+  const titles = watch(["de_title", "en_title", "it_title", "fr_title"]);
+  const hasAnyTitle = titles.some((title) => title?.trim().length > 0);
+  const isSaveDisabled = isPending || !categoryId || !hasAnyTitle;
 
   return (
     <ContentView
@@ -146,13 +149,13 @@ export function WikiEntryFormScreen({
         <BottomActionContainer>
           <TouchableOpacity
             onPress={handleSubmit(onSubmit)}
-            disabled={isPending}
+            disabled={isSaveDisabled}
             style={{
               backgroundColor: theme.colors.mocha,
               borderRadius: theme.radii.m,
               paddingVertical: theme.spacing.m,
               alignItems: "center",
-              opacity: isPending ? 0.6 : 1,
+              opacity: isSaveDisabled ? 0.6 : 1,
             }}
           >
             <SaveLabel>{t("buttons.save")}</SaveLabel>
@@ -197,36 +200,23 @@ export function WikiEntryFormScreen({
                 gap: theme.spacing.s,
               }}
             >
-              {loc === "de" && (
-                <H3 style={{ color: theme.colors.gray2, fontSize: 12 }}>
-                  {t("wiki.required_locale_hint")}
-                </H3>
-              )}
               <Controller
                 control={control}
                 name={`${loc}_title`}
-                rules={loc === "de" ? { required: true } : undefined}
                 render={({
                   field: { onChange, onBlur, value },
-                  fieldState,
                 }) => (
                   <TextInput
                     label={t("wiki.title")}
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
-                    error={
-                      fieldState.error
-                        ? t("forms.validation.required")
-                        : undefined
-                    }
                   />
                 )}
               />
               <Controller
                 control={control}
                 name={`${loc}_body`}
-                rules={loc === "de" ? { required: true } : undefined}
                 render={({ field: { onChange, value } }) => (
                   <MarkdownEditor
                     label={t("wiki.body")}

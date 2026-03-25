@@ -1342,6 +1342,7 @@
     "in_review": "Under Review",
     "required_locale_hint": "German is required",
     "changes_requested": "Changes requested",
+    "image_too_large": "The image is too large (max. 10 MB).",
     "only_private": "Only show private entries",
     "settings": "Settings",
     "onboarding": {

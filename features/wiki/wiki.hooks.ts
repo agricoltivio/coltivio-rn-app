@@ -168,9 +168,7 @@ export function useSubmitChangeRequestDraftMutation(onSuccess?: () => void) {
     mutationFn: (changeRequestId: string) =>
       api.wiki.submitChangeRequestDraft(changeRequestId),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.wiki.myChangeRequests.queryKey,
-      });
+      queryClient.invalidateQueries({ queryKey: queryKeys.wiki._def });
       onSuccess?.();
     },
   });

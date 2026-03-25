@@ -1344,6 +1344,7 @@
     "in_review": "In Prüfung",
     "required_locale_hint": "Deutsch ist erforderlich",
     "changes_requested": "Änderungen angefordert",
+    "image_too_large": "Das Bild ist zu gross (max. 10 MB).",
     "only_private": "Nur private Einträge anzeigen",
     "settings": "Einstellungen",
     "onboarding": {

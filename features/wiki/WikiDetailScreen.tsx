@@ -12,6 +12,7 @@ import styled from "styled-components/native";
 import { useTheme } from "styled-components/native";
 import {
   useDeleteWikiEntryMutation,
+  useSubmitChangeRequestDraftMutation,
   useSubmitWikiEntryMutation,
   useWikiDetailQuery,
 } from "./wiki.hooks";
@@ -33,7 +34,8 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
   const { entryId } = route.params;
   const { entry, isLoading } = useWikiDetailQuery(entryId);
 
-  const submitMutation = useSubmitWikiEntryMutation(() => {});
+  const submitMutation = useSubmitWikiEntryMutation();
+  const resubmitCRMutation = useSubmitChangeRequestDraftMutation();
   const deleteMutation = useDeleteWikiEntryMutation(() => navigation.goBack());
 
   if (isLoading) {
@@ -60,16 +62,25 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
   const isPrivate = entry.visibility === "private";
   const isPublished =
     entry.visibility === "public" && entry.status === "published";
-  const isEditable =
-    isPrivate && (entry.status === "draft" || entry.status === "rejected");
-  const isRejected = isPrivate && entry.status === "rejected";
-  const isInReview =
-    entry.status === "submitted" || entry.status === "under_review";
+  const activeCR = entry.activeChangeRequest;
+  const isEditable = isPrivate && entry.status === "draft";
+  const isUnderReview = entry.status === "under_review";
+  const hasChangesRequested = activeCR?.status === "changes_requested";
+
 
   function onPublishPress() {
     Alert.alert(t("wiki.share"), t("wiki.share_confirm"), [
       { text: t("buttons.cancel"), style: "cancel" },
-      { text: t("wiki.share"), onPress: () => submitMutation.mutate(entryId) },
+      {
+        text: t("wiki.share"),
+        onPress: () => {
+          if (hasChangesRequested && activeCR) {
+            resubmitCRMutation.mutate(activeCR.id);
+          } else {
+            submitMutation.mutate(entryId);
+          }
+        },
+      },
     ]);
   }
 
@@ -92,8 +103,8 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
           <BottomActionContainer>
             <FooterButton
               onPress={onPublishPress}
-              disabled={submitMutation.isPending}
-              style={{ opacity: submitMutation.isPending ? 0.6 : 1 }}
+              disabled={submitMutation.isPending || resubmitCRMutation.isPending}
+              style={{ opacity: (submitMutation.isPending || resubmitCRMutation.isPending) ? 0.6 : 1 }}
             >
               <ActionLabel>{t("wiki.share")}</ActionLabel>
             </FooterButton>
@@ -141,9 +152,19 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
                 type="accent"
                 iconSize={24}
                 color={theme.colors.primary}
-                onPress={() =>
-                  navigation.navigate("WikiChangeRequest", { entryId })
-                }
+                onPress={() => {
+                  // Flow B: if there's already a changes_requested CR, edit its proposed translations
+                  if (
+                    activeCR?.type === "change_request" &&
+                    activeCR?.status === "changes_requested"
+                  ) {
+                    navigation.navigate("WikiChangeRequestDraft", {
+                      changeRequestId: activeCR.id,
+                    });
+                  } else {
+                    navigation.navigate("WikiChangeRequest", { entryId });
+                  }
+                }}
               />
             )}
           </View>
@@ -166,7 +187,7 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
                 <Text style={chipTextStyle}>{t("wiki.private")}</Text>
               </Chip>
             )}
-            {isRejected && (
+            {hasChangesRequested && (
               <Chip
                 style={{
                   backgroundColor: theme.colors.secondary,
@@ -178,7 +199,8 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
                 </Text>
               </Chip>
             )}
-            {isInReview && (
+
+            {isUnderReview && (
               <Chip
                 style={{
                   backgroundColor: theme.colors.blue,
@@ -186,7 +208,7 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
                 }}
               >
                 <Text style={[chipTextStyle, { color: theme.colors.white }]}>
-                  {t("wiki.in_review")}
+                  {t("wiki.status.under_review")}
                 </Text>
               </Chip>
             )}
