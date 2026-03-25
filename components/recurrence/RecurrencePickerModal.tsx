@@ -28,8 +28,8 @@ export function RecurrencePickerModal({
   useEffect(() => {
     if (visible)
       setDraft(value ?? { frequency: "weekly", interval: 1, until: null });
-  // value is intentionally excluded: draft should only sync when the modal opens,
-  // not while the user is editing inside it.
+    // value is intentionally excluded: draft should only sync when the modal opens,
+    // not while the user is editing inside it.
   }, [visible]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
