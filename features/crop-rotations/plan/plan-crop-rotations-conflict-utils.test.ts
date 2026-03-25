@@ -423,4 +423,18 @@ describe("hasRotationOverlap", () => {
       ),
     ).toBe(true);
   });
+
+  // Regression: three sequential year-spanning rotations every 3 years were
+  // falsely flagged as overlapping because day-of-year arithmetic treated
+  // their shared [1,31] (January) sub-ranges as colliding even though they
+  // belonged to different calendar years.
+  test("regression: three sequential year-spanning rotations every 3 years → no overlap", () => {
+    const r1 = makeRotation(d("2026-12-01"), d("2027-01-31"), { interval: 3 }); // Dec–Jan
+    const r2 = makeRotation(d("2027-02-01"), d("2027-08-01"), { interval: 3 }); // Feb–Aug
+    const r3 = makeRotation(d("2027-08-02"), d("2028-01-31"), { interval: 3 }); // Aug–Jan
+
+    expect(hasRotationOverlap(r1, r2, RANGE_START, RANGE_END)).toBe(false);
+    expect(hasRotationOverlap(r1, r3, RANGE_START, RANGE_END)).toBe(false);
+    expect(hasRotationOverlap(r2, r3, RANGE_START, RANGE_END)).toBe(false);
+  });
 });

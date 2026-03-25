@@ -1,3 +1,4 @@
+import { addYears } from "date-fns";
 import type { RotationEntry } from "./plan-crop-rotations.store";
 
 const MS_PER_DAY = 86_400_000;
@@ -56,71 +57,50 @@ export function getOccurrenceYears(
   return years;
 }
 
-// Returns true if two rotation entries overlap in time.
-// For recurring rotations: both must share a common occurrence year AND have
-// overlapping day-of-year windows.
-// For non-recurring: checks actual date range overlap.
+// Expand a rotation into concrete {from, to} date pairs within the given year range.
+// For recurring rotations, generates each occurrence until `until` or rangeEnd.
+function getOccurrences(
+  rotation: RotationEntry,
+  rangeStartYear: number,
+  rangeEndYear: number,
+): { from: Date; to: Date }[] {
+  if (!rotation.recurrence) {
+    return [{ from: rotation.fromDate, to: rotation.toDate }];
+  }
+
+  const rangeStart = new Date(rangeStartYear, 0, 1);
+  const rangeEnd = new Date(rangeEndYear, 11, 31, 23, 59, 59, 999);
+  const durationMs = rotation.toDate.getTime() - rotation.fromDate.getTime();
+  const untilTime = rotation.recurrence.until
+    ? Math.min(rotation.recurrence.until.getTime(), rangeEnd.getTime())
+    : rangeEnd.getTime();
+
+  const occurrences: { from: Date; to: Date }[] = [];
+  let currentFrom = new Date(rotation.fromDate);
+
+  while (currentFrom.getTime() <= untilTime) {
+    const currentTo = new Date(currentFrom.getTime() + durationMs);
+    if (currentTo >= rangeStart) {
+      occurrences.push({ from: new Date(currentFrom), to: currentTo });
+    }
+    currentFrom = addYears(currentFrom, rotation.recurrence.interval);
+  }
+
+  return occurrences;
+}
+
+// Returns true if two rotation entries overlap in actual calendar time.
+// Expands recurrences to concrete occurrences and compares timestamps directly,
+// avoiding the false-positive produced by day-of-year arithmetic on year-spanning ranges.
 export function hasRotationOverlap(
   a: RotationEntry,
   b: RotationEntry,
   rangeStart: number,
   rangeEnd: number,
 ): boolean {
-  if (!a.recurrence && !b.recurrence) {
-    return a.fromDate <= b.toDate && a.toDate >= b.fromDate;
-  }
-
-  // At least one is recurring: check day-of-year overlap first (cheap)
-  if (
-    !dayRangesOverlap(
-      getDayOfYear(a.fromDate),
-      getDayOfYear(a.toDate),
-      getDayOfYear(b.fromDate),
-      getDayOfYear(b.toDate),
-    )
-  )
-    return false;
-
-  // Then check that the two entries share at least one common year
-  const aStartYear = a.fromDate.getFullYear();
-  const aEndYear = a.toDate.getFullYear();
-  const bStartYear = b.fromDate.getFullYear();
-  const bEndYear = b.toDate.getFullYear();
-
-  const aYears = a.recurrence
-    ? getOccurrenceYears(
-        aStartYear,
-        a.recurrence.interval,
-        a.recurrence.until?.getFullYear() ?? null,
-        rangeStart,
-        rangeEnd,
-        aEndYear - aStartYear,
-      )
-    : new Set(
-        Array.from(
-          { length: aEndYear - aStartYear + 1 },
-          (_, i) => aStartYear + i,
-        ),
-      );
-
-  const bYears = b.recurrence
-    ? getOccurrenceYears(
-        bStartYear,
-        b.recurrence.interval,
-        b.recurrence.until?.getFullYear() ?? null,
-        rangeStart,
-        rangeEnd,
-        bEndYear - bStartYear,
-      )
-    : new Set(
-        Array.from(
-          { length: bEndYear - bStartYear + 1 },
-          (_, i) => bStartYear + i,
-        ),
-      );
-
-  for (const year of aYears) {
-    if (bYears.has(year)) return true;
-  }
-  return false;
+  const aOccurrences = getOccurrences(a, rangeStart, rangeEnd);
+  const bOccurrences = getOccurrences(b, rangeStart, rangeEnd);
+  return aOccurrences.some((ao) =>
+    bOccurrences.some((bo) => ao.from <= bo.to && ao.to >= bo.from),
+  );
 }
