@@ -46,7 +46,18 @@ export function FieldCalendarScreen({ navigation }: FieldCalendarScreenProps) {
             const groupMeta = FIELD_CALENDAR_GROUPS[groupId];
             if (!groupMeta) return null;
 
-            const visibleItems = group.items.filter((item) => item.visible);
+            const visibleItems = group.items.filter((item) => {
+              if (!item.visible) return false;
+              const itemMeta = FIELD_CALENDAR_ITEMS[item.itemId as ItemId];
+              if (!itemMeta) return false;
+              if (
+                "membershipRequired" in itemMeta &&
+                itemMeta.membershipRequired &&
+                !isActive
+              )
+                return false;
+              return true;
+            });
             if (visibleItems.length === 0) return null;
 
             return (
@@ -57,14 +68,7 @@ export function FieldCalendarScreen({ navigation }: FieldCalendarScreenProps) {
               >
                 {visibleItems.map((item, index) => {
                   const itemId = item.itemId as ItemId;
-                  const itemMeta = FIELD_CALENDAR_ITEMS[itemId];
-                  if (!itemMeta) return null;
-                  if (
-                    "membershipRequired" in itemMeta &&
-                    itemMeta.membershipRequired &&
-                    !isActive
-                  )
-                    return null;
+                  const itemMeta = FIELD_CALENDAR_ITEMS[itemId]!;
 
                   return (
                     <List.Item
