@@ -5,6 +5,7 @@ import {
   ScrollView,
   Pressable,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { useTheme } from "styled-components/native";
 import { CommonActions, useNavigation } from "@react-navigation/native";
@@ -530,6 +531,53 @@ export function PlanCropRotationsScreen({
 
     setSaving(true);
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Check if any past-dated rotation is new or has been modified
+    const hasModifiedPastRotation = plotPlans.some((plan) =>
+      plan.rotations.some((rotation) => {
+        if (rotation.fromDate >= today) return false;
+
+        // Non-recurring and still ongoing → skip
+        if (!rotation.recurrence && rotation.toDate >= today) return false;
+
+        // New rotation placed in the past
+        if (!rotation.rotationId) return true;
+
+        // Existing rotation — compare against original server data
+        const original = plotCropRotations?.find(
+          (r) => r.id === rotation.rotationId,
+        );
+        if (!original) return true;
+
+        // Crop, date, or interval changes always affect past occurrences → warn
+        if (
+          rotation.cropId !== original.cropId ||
+          rotation.fromDate.getTime() !== new Date(original.fromDate).getTime() ||
+          rotation.toDate.getTime() !== new Date(original.toDate).getTime() ||
+          rotation.recurrence?.interval !== original.recurrence?.interval
+        )
+          return true;
+
+        // Only the until date changed: skip warning if new until is today or future
+        const currentUntil = rotation.recurrence?.until;
+        const originalUntil = original.recurrence?.until
+          ? new Date(original.recurrence.until)
+          : undefined;
+        const untilChanged =
+          currentUntil?.toISOString().slice(0, 10) !==
+          originalUntil?.toISOString().slice(0, 10);
+
+        if (untilChanged) {
+          // Warn only if the new until is in the past
+          return !!(currentUntil && currentUntil < today);
+        }
+
+        return false;
+      }),
+    );
+
     const input = {
       plots: plotPlans.map((plan) => ({
         plotId: plan.plotId,
@@ -547,6 +595,22 @@ export function PlanCropRotationsScreen({
         })),
       })),
     };
+
+    if (hasModifiedPastRotation) {
+      Alert.alert(
+        t("crop_rotations.plan.past_rotations_warning_title"),
+        t("crop_rotations.plan.past_rotations_warning_message"),
+        [
+          {
+            text: t("buttons.cancel"),
+            style: "cancel",
+            onPress: () => setSaving(false),
+          },
+          { text: t("buttons.confirm"), onPress: () => planMutation.mutate(input) },
+        ],
+      );
+      return;
+    }
 
     planMutation.mutate(input);
   };

@@ -929,7 +929,9 @@
       "repeats_every_years": "Si ripete ogni {{count}} anni",
       "until_date": "fino al {{date}}",
       "waiting_time_warning_crop": "Tempo di attesa non rispettato: {{crop}} ({{waitingTime}} anni)",
-      "waiting_time_warning_family": "Tempo di attesa della famiglia {{family}} non rispettato ({{waitingTime}} anni)"
+      "waiting_time_warning_family": "Tempo di attesa della famiglia {{family}} non rispettato ({{waitingTime}} anni)",
+      "past_rotations_warning_title": "Rotazioni passate interessate",
+      "past_rotations_warning_message": "Queste modifiche interessano rotazioni nel passato. Vuoi comunque continuare?"
     },
     "timeline": {
       "today": "Oggi",

@@ -929,7 +929,9 @@
       "repeats_every_years": "Wiederholt sich alle {{count}} Jahre",
       "until_date": "bis {{date}}",
       "waiting_time_warning_crop": "Wartezeit nicht eingehalten: {{crop}} ({{waitingTime}} Jahre)",
-      "waiting_time_warning_family": "Wartezeit der Familie {{family}} nicht eingehalten ({{waitingTime}} Jahre)"
+      "waiting_time_warning_family": "Wartezeit der Familie {{family}} nicht eingehalten ({{waitingTime}} Jahre)",
+      "past_rotations_warning_title": "Vergangene Fruchtfolgen betroffen",
+      "past_rotations_warning_message": "Diese Änderungen betreffen Fruchtfolgen in der Vergangenheit. Möchtest du trotzdem fortfahren?"
     },
     "timeline": {
       "today": "Heute",
