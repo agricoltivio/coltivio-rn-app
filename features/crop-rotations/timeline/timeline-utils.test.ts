@@ -40,6 +40,7 @@ function makeRotation(
     toDate,
     crop: { ...DEFAULT_CROP, name: cropName },
     plot: { name: plotName },
+    recurrence: null,
   };
 }
 

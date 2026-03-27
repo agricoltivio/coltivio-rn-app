@@ -939,6 +939,23 @@
       "zoom_years": "Anni",
       "zoom_months": "Mesi",
       "zoom_weeks": "Settimane"
+    },
+    "draft_plans": {
+      "title": "Bozze",
+      "create": "Crea nuova bozza",
+      "name_placeholder": "Nome della bozza",
+      "select_plots_to_seed": "Seleziona i campi da includere nella bozza",
+      "apply": "Applica bozza",
+      "apply_confirm_title": "Applicare la bozza?",
+      "apply_confirm_message": "Le rotazioni dei campi nella bozza verranno sostituite. I campi non presenti in questa bozza rimarranno invariati.",
+      "applied_success": "Bozza applicata",
+      "delete_confirm": "Eliminare la bozza?",
+      "no_drafts": "Nessuna bozza presente",
+      "updated_at": "Ultima modifica: {{date}}",
+      "add_plots": "Aggiungi campi",
+      "select_plots_to_add": "Seleziona i campi da aggiungere alla bozza",
+      "edit_plots": "Modifica campi",
+      "select_plots_to_edit": "Seleziona i campi da includere in questa bozza"
     }
   },
   "reports": {

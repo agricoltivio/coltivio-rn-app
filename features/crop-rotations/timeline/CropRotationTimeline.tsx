@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useCallback, useEffect, useMemo, useRef, useState, memo } from "react";
 import { View, Text, LayoutChangeEvent } from "react-native";
 import { Pressable } from "react-native-gesture-handler";
@@ -28,6 +29,7 @@ type CropRotationTimelineProps = {
   onBarPress: (rotationId: string, plotName: string) => void;
   onPlotPress?: (plotId: string) => void;
   onZoomChange?: (zoomLevel: ZoomLevel) => void;
+  onAddPlot?: () => void;
 };
 
 const PLOT_LABEL_WIDTH = 100;
@@ -205,6 +207,7 @@ export function CropRotationTimeline({
   onBarPress,
   onPlotPress,
   onZoomChange,
+  onAddPlot,
 }: CropRotationTimelineProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -567,13 +570,15 @@ export function CropRotationTimeline({
                 height: totalHeaderHeight,
                 borderBottomWidth: 1,
                 borderBottomColor: theme.colors.gray4,
-                justifyContent: "flex-end",
+                flexDirection: "row",
+                alignItems: "flex-end",
                 paddingHorizontal: 6,
                 paddingBottom: 6,
               }}
             >
               <Text
                 style={{
+                  flex: 1,
                   fontSize: 11,
                   fontWeight: "600",
                   color: theme.colors.gray2,
@@ -581,6 +586,11 @@ export function CropRotationTimeline({
               >
                 {t("crop_rotations.timeline.plot")}
               </Text>
+              {onAddPlot && (
+                <Pressable onPress={onAddPlot} hitSlop={6}>
+                  <Ionicons name="create-outline" size={16} color={theme.colors.primary} />
+                </Pressable>
+              )}
             </View>
             {/* Plot names - synced with body vertical scroll, tappable to navigate */}
             <Animated.ScrollView

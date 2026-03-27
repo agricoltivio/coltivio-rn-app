@@ -939,6 +939,23 @@
       "zoom_years": "Années",
       "zoom_months": "Mois",
       "zoom_weeks": "Semaines"
+    },
+    "draft_plans": {
+      "title": "Brouillons",
+      "create": "Créer un nouveau brouillon",
+      "name_placeholder": "Nom du brouillon",
+      "select_plots_to_seed": "Sélectionner les champs à inclure dans le brouillon",
+      "apply": "Appliquer le brouillon",
+      "apply_confirm_title": "Appliquer le brouillon?",
+      "apply_confirm_message": "Les rotations des champs dans ce brouillon seront remplacées. Les champs non présents dans ce brouillon resteront inchangés.",
+      "applied_success": "Brouillon appliqué",
+      "delete_confirm": "Supprimer le brouillon?",
+      "no_drafts": "Aucun brouillon",
+      "updated_at": "Dernière modification: {{date}}",
+      "add_plots": "Ajouter des champs",
+      "select_plots_to_add": "Sélectionner les champs à ajouter au brouillon",
+      "edit_plots": "Modifier les champs",
+      "select_plots_to_edit": "Sélectionner les champs à inclure dans ce brouillon"
     }
   },
   "reports": {

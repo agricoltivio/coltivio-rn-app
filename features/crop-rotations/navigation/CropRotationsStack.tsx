@@ -4,6 +4,11 @@ import { CropRotationsScreen } from "../CropRotationsScreen";
 import { EditCropRotationScreen } from "../EditCropRotationScreen";
 import { PlanCropRotationsScreen } from "../plan/PlanCropRotationsScreen";
 import { SelectPlotsForPlanScreen } from "../plan/SelectPlotsForPlanScreen";
+import { DraftPlansScreen } from "../drafts/DraftPlansScreen";
+import { DraftPlanDetailScreen } from "../drafts/DraftPlanDetailScreen";
+import { CreateDraftPlanScreen } from "../drafts/CreateDraftPlanScreen";
+import { AddPlotsToDraftScreen } from "../drafts/AddPlotsToDraftScreen";
+import { PlanDraftRotationsScreen } from "../drafts/PlanDraftRotationsScreen";
 
 export function renderCropsRotationStack() {
   return [
@@ -47,6 +52,44 @@ export function renderCropsRotationStack() {
         headerShown: false,
       }}
       component={SelectPlotsForPlanScreen}
+    />,
+    <Stack.Screen
+      key="draft-plans"
+      name="DraftPlans"
+      options={{
+        title: "",
+      }}
+      component={DraftPlansScreen}
+    />,
+    <Stack.Screen
+      key="draft-plan-detail"
+      name="DraftPlanDetail"
+      options={{
+        title: "",
+      }}
+      component={DraftPlanDetailScreen}
+    />,
+    <Stack.Screen
+      key="create-draft-plan"
+      name="CreateDraftPlan"
+      options={{
+        title: "",
+      }}
+      component={CreateDraftPlanScreen}
+    />,
+    <Stack.Screen
+      key="add-plots-to-draft"
+      name="AddPlotsToDraft"
+      options={{ title: "" }}
+      component={AddPlotsToDraftScreen}
+    />,
+    <Stack.Screen
+      key="plan-draft-rotations"
+      name="PlanDraftRotations"
+      options={{
+        title: "",
+      }}
+      component={PlanDraftRotationsScreen}
     />,
   ];
 }

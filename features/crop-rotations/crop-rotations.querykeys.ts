@@ -10,4 +10,6 @@ export const cropRotationsQueryKeys = createQueryKeys("cropRotations", {
     includeRecurrence: boolean = false,
   ) => [plotIds, onlyCurrent, expand, includeRecurrence],
   years: null,
+  draftPlans: null,
+  draftPlanById: (draftPlanId: string) => [draftPlanId],
 });
