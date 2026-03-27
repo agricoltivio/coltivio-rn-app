@@ -2,9 +2,7 @@ import { useEffect, useMemo, useState, useRef } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import {
-  usePlanCropRotationsStore,
-} from "./plan-crop-rotations.store";
+import { usePlanCropRotationsStore } from "./plan-crop-rotations.store";
 import { useCropsQuery } from "@/features/crops/crops.hooks";
 import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
 import {
@@ -27,12 +25,8 @@ export function PlanCropRotationsScreen({
     navigation.setOptions({ title: t("crop_rotations.plan.title") });
   }, [navigation, t]);
 
-  const {
-    plotPlans,
-    setPlotIds,
-    initializeFromExisting,
-    reset,
-  } = usePlanCropRotationsStore();
+  const { plotPlans, setPlotIds, initializeFromExisting, reset } =
+    usePlanCropRotationsStore();
   const { crops, isLoading: cropsLoading } = useCropsQuery();
   const { plots, isLoading: plotsLoading } = useFarmPlotsQuery();
   const [saving, setSaving] = useState(false);
@@ -60,7 +54,12 @@ export function PlanCropRotationsScreen({
       }
       initializedRef.current = true;
     }
-  }, [plotCropRotations, plotIdsFromParams, initializeFromExisting, setPlotIds]);
+  }, [
+    plotCropRotations,
+    plotIdsFromParams,
+    initializeFromExisting,
+    setPlotIds,
+  ]);
 
   useEffect(() => {
     return () => {

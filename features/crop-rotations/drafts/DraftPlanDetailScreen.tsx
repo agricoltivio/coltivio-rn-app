@@ -2,7 +2,13 @@ import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
 import { H2, Subtitle } from "@/theme/Typography";
 import React, { useEffect, useMemo, useState } from "react";
-import { ActivityIndicator, Alert, Pressable, TextInput, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Pressable,
+  TextInput,
+  View,
+} from "react-native";
 import { useTheme } from "styled-components/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
@@ -24,7 +30,10 @@ import { DraftPlanDetailScreenProps } from "../navigation/crop-rotations-routes.
 
 const TIMELINE_RANGE_YEARS = 10;
 
-export function DraftPlanDetailScreen({ route, navigation }: DraftPlanDetailScreenProps) {
+export function DraftPlanDetailScreen({
+  route,
+  navigation,
+}: DraftPlanDetailScreenProps) {
   const { draftPlanId } = route.params;
   const { t } = useTranslation();
   const theme = useTheme();
@@ -54,20 +63,18 @@ export function DraftPlanDetailScreen({ route, navigation }: DraftPlanDetailScre
 
   const { draftPlan } = useDraftPlanQuery(draftPlanId);
   const { plots: allPlots } = useFarmPlotsQuery();
-  const applyMutation = useApplyDraftPlanMutation(
-    () => {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 2,
-          routes: [
-            { name: "Home" },
-            { name: "FieldCalendar" },
-            { name: "CropRotations" },
-          ],
-        }),
-      );
-    },
-  );
+  const applyMutation = useApplyDraftPlanMutation(() => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 2,
+        routes: [
+          { name: "Home" },
+          { name: "FieldCalendar" },
+          { name: "CropRotations" },
+        ],
+      }),
+    );
+  });
 
   // Flatten draftPlan.plots[].rotations into the shape buildMultiYearTimelineData expects.
   const draftRotations = useMemo(() => {
@@ -83,11 +90,18 @@ export function DraftPlanDetailScreen({ route, navigation }: DraftPlanDetailScre
         fromDate: rotation.fromDate,
         toDate: rotation.toDate,
         crop: rotation.crop,
-        plot: { id: plotData.plotId, name: plotNameById.get(plotData.plotId) ?? "" },
+        plot: {
+          id: plotData.plotId,
+          name: plotNameById.get(plotData.plotId) ?? "",
+        },
         recurrence: rotation.recurrence
-          ? { id: rotation.recurrence.id, interval: rotation.recurrence.interval, until: rotation.recurrence.until }
+          ? {
+              id: rotation.recurrence.id,
+              interval: rotation.recurrence.interval,
+              until: rotation.recurrence.until,
+            }
           : null,
-      }))
+      })),
     );
   }, [draftPlan, allPlots]);
 
@@ -126,7 +140,9 @@ export function DraftPlanDetailScreen({ route, navigation }: DraftPlanDetailScre
   const timelinePlots = useMemo(() => {
     if (selectedCropNames.size === 0) return filteredPlots;
     if (!filteredPlots) return undefined;
-    const plotIdsWithRotations = new Set(filteredRotations.map((r) => r.plotId));
+    const plotIdsWithRotations = new Set(
+      filteredRotations.map((r) => r.plotId),
+    );
     return filteredPlots.filter((p) => plotIdsWithRotations.has(p.id));
   }, [filteredPlots, filteredRotations, selectedCropNames]);
 
@@ -135,7 +151,10 @@ export function DraftPlanDetailScreen({ route, navigation }: DraftPlanDetailScre
     if (!transitionDone || !filteredPlots) return null;
     // Show skeleton while draft plan or plots are still loading
     if (!draftPlan || !allPlots) {
-      return buildSkeletonTimelineData(timelinePlots ?? filteredPlots, timelineYears);
+      return buildSkeletonTimelineData(
+        timelinePlots ?? filteredPlots,
+        timelineYears,
+      );
     }
     const expanded = expandRotations(
       filteredRotations,
@@ -143,7 +162,17 @@ export function DraftPlanDetailScreen({ route, navigation }: DraftPlanDetailScre
       timelineToYear,
     );
     return buildMultiYearTimelineData(expanded, timelineYears, timelinePlots);
-  }, [transitionDone, filteredPlots, draftPlan, allPlots, filteredRotations, timelineFromYear, timelineToYear, timelineYears, timelinePlots]);
+  }, [
+    transitionDone,
+    filteredPlots,
+    draftPlan,
+    allPlots,
+    filteredRotations,
+    timelineFromYear,
+    timelineToYear,
+    timelineYears,
+    timelinePlots,
+  ]);
 
   function handleToggleCrop(cropName: string) {
     setSelectedCropNames((prev) => {
@@ -190,9 +219,7 @@ export function DraftPlanDetailScreen({ route, navigation }: DraftPlanDetailScre
   return (
     <ContentView headerVisible>
       {/* Title row with Apply button */}
-      <View
-        style={{ flexDirection: "row", alignItems: "center" }}
-      >
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
         <H2 style={{ flex: 1 }}>
           {draftPlan?.name ?? t("crop_rotations.draft_plans.title")}
         </H2>
@@ -251,11 +278,17 @@ export function DraftPlanDetailScreen({ route, navigation }: DraftPlanDetailScre
               timelineData={timelineData}
               onBarPress={handleBarPress}
               onPlotPress={handlePlotPress}
-              onAddPlot={() => navigation.navigate("AddPlotsToDraft", { draftPlanId })}
+              onAddPlot={() =>
+                navigation.navigate("AddPlotsToDraft", { draftPlanId })
+              }
             />
             {(!draftPlan || !allPlots) && (
               <ActivityIndicator
-                style={{ position: "absolute", top: theme.spacing.xl, alignSelf: "center" }}
+                style={{
+                  position: "absolute",
+                  top: theme.spacing.xl,
+                  alignSelf: "center",
+                }}
               />
             )}
           </>
@@ -266,7 +299,9 @@ export function DraftPlanDetailScreen({ route, navigation }: DraftPlanDetailScre
 
       <FAB
         icon={{ name: "create-outline", color: "white" }}
-        onPress={() => navigation.navigate("SelectPlotsForPlan", { draftPlanId })}
+        onPress={() =>
+          navigation.navigate("SelectPlotsForPlan", { draftPlanId })
+        }
       />
     </ContentView>
   );

@@ -25,7 +25,10 @@ import { AddPlotsToDraftScreenProps } from "../navigation/crop-rotations-routes.
 const SEED_FROM_YEARS_BACK = 10;
 const SEED_TO_YEARS_FORWARD = 10;
 
-export function AddPlotsToDraftScreen({ route, navigation }: AddPlotsToDraftScreenProps) {
+export function AddPlotsToDraftScreen({
+  route,
+  navigation,
+}: AddPlotsToDraftScreenProps) {
   const { draftPlanId } = route.params;
   const { t } = useTranslation();
   const theme = useTheme();
@@ -37,8 +40,14 @@ export function AddPlotsToDraftScreen({ route, navigation }: AddPlotsToDraftScre
   const { plots, isLoading: plotsLoading } = useFarmPlotsQuery();
   const { draftPlan, isLoading: draftLoading } = useDraftPlanQuery(draftPlanId);
 
-  const seedFromDate = useMemo(() => subYears(new Date(), SEED_FROM_YEARS_BACK), []);
-  const seedToDate = useMemo(() => addYears(new Date(), SEED_TO_YEARS_FORWARD), []);
+  const seedFromDate = useMemo(
+    () => subYears(new Date(), SEED_FROM_YEARS_BACK),
+    [],
+  );
+  const seedToDate = useMemo(
+    () => addYears(new Date(), SEED_TO_YEARS_FORWARD),
+    [],
+  );
   const allPlotIds = useMemo(() => (plots ?? []).map((p) => p.id), [plots]);
 
   const { plotCropRotations: cropRotations } = useCropRotationsByPlotIdsQuery(
@@ -95,10 +104,21 @@ export function AddPlotsToDraftScreen({ route, navigation }: AddPlotsToDraftScre
     const existingByPlotId = new Map(draftPlan.plots.map((p) => [p.plotId, p]));
 
     // Seed rotations from farm for newly added plots
-    const seedRotationsByPlotId = new Map<string, { cropId: string; fromDate: string; toDate: string; recurrenceInterval?: number; recurrenceUntil?: string }[]>();
-    for (const r of (cropRotations ?? [])) {
-      if (!selectedIds.has(r.plotId) || existingByPlotId.has(r.plotId)) continue;
-      if (!seedRotationsByPlotId.has(r.plotId)) seedRotationsByPlotId.set(r.plotId, []);
+    const seedRotationsByPlotId = new Map<
+      string,
+      {
+        cropId: string;
+        fromDate: string;
+        toDate: string;
+        recurrenceInterval?: number;
+        recurrenceUntil?: string;
+      }[]
+    >();
+    for (const r of cropRotations ?? []) {
+      if (!selectedIds.has(r.plotId) || existingByPlotId.has(r.plotId))
+        continue;
+      if (!seedRotationsByPlotId.has(r.plotId))
+        seedRotationsByPlotId.set(r.plotId, []);
       seedRotationsByPlotId.get(r.plotId)!.push({
         cropId: r.cropId,
         fromDate: r.fromDate,
@@ -162,7 +182,9 @@ export function AddPlotsToDraftScreen({ route, navigation }: AddPlotsToDraftScre
         </BottomActionContainer>
       }
     >
-      <Subtitle style={{ marginTop: theme.spacing.m, color: theme.colors.gray1 }}>
+      <Subtitle
+        style={{ marginTop: theme.spacing.m, color: theme.colors.gray1 }}
+      >
         {t("crop_rotations.draft_plans.select_plots_to_edit")}
       </Subtitle>
 

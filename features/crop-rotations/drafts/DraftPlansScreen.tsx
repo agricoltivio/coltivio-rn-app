@@ -22,23 +22,21 @@ export function DraftPlansScreen({ navigation }: DraftPlansScreenProps) {
   const deleteMutation = useDeleteDraftPlanMutation();
 
   function handleDelete(plan: DraftPlanSummary) {
-    Alert.alert(
-      t("crop_rotations.draft_plans.delete_confirm"),
-      plan.name,
-      [
-        { text: t("buttons.cancel"), style: "cancel" },
-        {
-          text: t("buttons.delete"),
-          style: "destructive",
-          onPress: () => deleteMutation.mutate({ draftPlanId: plan.id }),
-        },
-      ],
-    );
+    Alert.alert(t("crop_rotations.draft_plans.delete_confirm"), plan.name, [
+      { text: t("buttons.cancel"), style: "cancel" },
+      {
+        text: t("buttons.delete"),
+        style: "destructive",
+        onPress: () => deleteMutation.mutate({ draftPlanId: plan.id }),
+      },
+    ]);
   }
 
   const renderItem = ({ item }: { item: DraftPlanSummary }) => (
     <ListItem
-      onPress={() => navigation.navigate("DraftPlanDetail", { draftPlanId: item.id })}
+      onPress={() =>
+        navigation.navigate("DraftPlanDetail", { draftPlanId: item.id })
+      }
     >
       <ListItem.Content>
         <ListItem.Title>{item.name}</ListItem.Title>
@@ -50,7 +48,11 @@ export function DraftPlansScreen({ navigation }: DraftPlansScreenProps) {
       </ListItem.Content>
       <ListItem.RightIcon>
         <Pressable onPress={() => handleDelete(item)} hitSlop={8}>
-          <Ionicons name="trash-outline" size={20} color={theme.colors.danger} />
+          <Ionicons
+            name="trash-outline"
+            size={20}
+            color={theme.colors.danger}
+          />
         </Pressable>
       </ListItem.RightIcon>
     </ListItem>

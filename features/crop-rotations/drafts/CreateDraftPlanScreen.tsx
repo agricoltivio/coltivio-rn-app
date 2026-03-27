@@ -23,7 +23,9 @@ import { Plot } from "@/api/plots.api";
 const SEED_FROM_YEARS_BACK = 10;
 const SEED_TO_YEARS_FORWARD = 10;
 
-export function CreateDraftPlanScreen({ navigation }: CreateDraftPlanScreenProps) {
+export function CreateDraftPlanScreen({
+  navigation,
+}: CreateDraftPlanScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
 
@@ -54,11 +56,9 @@ export function CreateDraftPlanScreen({ navigation }: CreateDraftPlanScreenProps
     allPlotIds.length > 0,
   );
 
-  const createMutation = useCreateDraftPlanMutation(
-    (plan) => {
-      navigation.replace("DraftPlanDetail", { draftPlanId: plan.id });
-    },
-  );
+  const createMutation = useCreateDraftPlanMutation((plan) => {
+    navigation.replace("DraftPlanDetail", { draftPlanId: plan.id });
+  });
 
   const sortedPlots = useMemo((): Plot[] => {
     if (!plots) return [];
@@ -92,8 +92,17 @@ export function CreateDraftPlanScreen({ navigation }: CreateDraftPlanScreenProps
     if (!draftName.trim()) return;
 
     // Group rotations by plotId to match the new plots-based schema
-    const plotRotationsMap = new Map<string, { cropId: string; fromDate: string; toDate: string; recurrenceInterval?: number; recurrenceUntil?: string }[]>();
-    for (const r of (cropRotations ?? [])) {
+    const plotRotationsMap = new Map<
+      string,
+      {
+        cropId: string;
+        fromDate: string;
+        toDate: string;
+        recurrenceInterval?: number;
+        recurrenceUntil?: string;
+      }[]
+    >();
+    for (const r of cropRotations ?? []) {
       if (!selectedIds.has(r.plotId)) continue;
       if (!plotRotationsMap.has(r.plotId)) plotRotationsMap.set(r.plotId, []);
       plotRotationsMap.get(r.plotId)!.push({
@@ -108,7 +117,9 @@ export function CreateDraftPlanScreen({ navigation }: CreateDraftPlanScreenProps
     for (const id of selectedIds) {
       if (!plotRotationsMap.has(id)) plotRotationsMap.set(id, []);
     }
-    const plots = Array.from(plotRotationsMap.entries()).map(([plotId, rotations]) => ({ plotId, rotations }));
+    const plots = Array.from(plotRotationsMap.entries()).map(
+      ([plotId, rotations]) => ({ plotId, rotations }),
+    );
 
     createMutation.mutate({ name: draftName.trim(), plots });
   }
@@ -136,7 +147,9 @@ export function CreateDraftPlanScreen({ navigation }: CreateDraftPlanScreenProps
           <Button
             title={t("crop_rotations.draft_plans.create")}
             onPress={handleCreate}
-            disabled={!draftName.trim() || createMutation.isPending || plotsLoading}
+            disabled={
+              !draftName.trim() || createMutation.isPending || plotsLoading
+            }
             loading={createMutation.isPending}
           />
         </BottomActionContainer>
@@ -169,7 +182,9 @@ export function CreateDraftPlanScreen({ navigation }: CreateDraftPlanScreenProps
       </View>
 
       {/* Subtitle for plot selection */}
-      <Subtitle style={{ marginTop: theme.spacing.m, color: theme.colors.gray1 }}>
+      <Subtitle
+        style={{ marginTop: theme.spacing.m, color: theme.colors.gray1 }}
+      >
         {t("crop_rotations.draft_plans.select_plots_to_seed")}
       </Subtitle>
 

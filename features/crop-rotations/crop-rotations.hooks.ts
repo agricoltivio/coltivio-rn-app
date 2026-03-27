@@ -252,7 +252,10 @@ export function useDraftPlansQuery() {
   return { draftPlans: data as DraftPlanSummary[] | undefined, ...rest };
 }
 
-export function useDraftPlanQuery(draftPlanId: string, enabled: boolean = true) {
+export function useDraftPlanQuery(
+  draftPlanId: string,
+  enabled: boolean = true,
+) {
   const api = useApi();
   const { data, ...rest } = useQuery({
     queryKey: queryKeys.cropRotations.draftPlanById(draftPlanId).queryKey,

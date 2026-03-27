@@ -14,7 +14,10 @@ import { PlotRotationsEditor } from "../plan/components/PlotRotationsEditor";
 import { DraftPlanRotation } from "@/api/crop-rotations.api";
 
 // Map a DraftPlanRotation (from draftPlan.plots[].rotations[]) to the shape initializeFromExisting expects
-function draftRotationToPlotCropRotation(rotation: DraftPlanRotation, plotId: string) {
+function draftRotationToPlotCropRotation(
+  rotation: DraftPlanRotation,
+  plotId: string,
+) {
   return {
     id: rotation.id,
     farmId: rotation.farmId,
@@ -60,7 +63,9 @@ export function PlanDraftRotationsScreen({
     if (!initializedRef.current && draftPlan) {
       const relevantRotations = draftPlan.plots
         .filter((p) => plotIds.includes(p.plotId))
-        .flatMap((p) => p.rotations.map((r) => draftRotationToPlotCropRotation(r, p.plotId)));
+        .flatMap((p) =>
+          p.rotations.map((r) => draftRotationToPlotCropRotation(r, p.plotId)),
+        );
 
       if (relevantRotations.length > 0) {
         initializeFromExisting(plotIds, relevantRotations);

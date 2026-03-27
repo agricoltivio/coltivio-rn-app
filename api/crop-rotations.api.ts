@@ -16,7 +16,9 @@ export type DraftPlanCreateInput =
 export type DraftPlanUpdateInput =
   components["schemas"]["PatchV1CropRotationsDraftPlansByIdDraftPlanIdRequestBody"];
 
-export type DraftPlanPlotInput = NonNullable<DraftPlanCreateInput["plots"]>[number];
+export type DraftPlanPlotInput = NonNullable<
+  DraftPlanCreateInput["plots"]
+>[number];
 
 export type CropRotation =
   components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsPositiveResponse"]["data"]["result"][number];
@@ -76,9 +78,7 @@ export function cropRotationsApi(client: FetchClient) {
             fromDate: fromDate?.toISOString(),
             toDate: toDate?.toISOString(),
             expand:
-              options.expand !== undefined
-                ? String(options.expand)
-                : undefined,
+              options.expand !== undefined ? String(options.expand) : undefined,
             withRecurrences:
               options.withRecurrences !== undefined
                 ? String(options.withRecurrences)

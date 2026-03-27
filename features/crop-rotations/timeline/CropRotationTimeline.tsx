@@ -588,7 +588,11 @@ export function CropRotationTimeline({
               </Text>
               {onAddPlot && (
                 <Pressable onPress={onAddPlot} hitSlop={6}>
-                  <Ionicons name="create-outline" size={16} color={theme.colors.primary} />
+                  <Ionicons
+                    name="create-outline"
+                    size={16}
+                    color={theme.colors.primary}
+                  />
                 </Pressable>
               )}
             </View>

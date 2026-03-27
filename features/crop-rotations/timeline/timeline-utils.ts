@@ -67,7 +67,15 @@ export function buildSkeletonTimelineData(
 ): TimelineData {
   const sortedYears = [...years].sort((a, b) => a - b);
   const epochStart = new Date(sortedYears[0], 0, 1);
-  const epochEnd = new Date(sortedYears[sortedYears.length - 1], 11, 31, 23, 59, 59, 999);
+  const epochEnd = new Date(
+    sortedYears[sortedYears.length - 1],
+    11,
+    31,
+    23,
+    59,
+    59,
+    999,
+  );
   const totalDays = daysBetween(epochStart, epochEnd) + 1;
   return {
     epochStart,

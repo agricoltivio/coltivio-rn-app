@@ -1,8 +1,4 @@
-import {
-  useCallback,
-  useMemo,
-  useState,
-} from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Alert, ScrollView, Text, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useTranslation } from "react-i18next";
@@ -122,8 +118,7 @@ export function PlotRotationsEditor({
       const startYear = rotation.fromDate.getFullYear();
       if (!rotation.recurrence) return [startYear];
       const interval = rotation.recurrence.interval;
-      const untilYear =
-        rotation.recurrence.until?.getFullYear() ?? rangeEnd;
+      const untilYear = rotation.recurrence.until?.getFullYear() ?? rangeEnd;
       const effectiveEnd = Math.min(untilYear, rangeEnd);
       const years: number[] = [];
       for (let y = startYear; y <= effectiveEnd; y += interval) {
@@ -209,9 +204,7 @@ export function PlotRotationsEditor({
 
           const sameCrop = a.cropId === b.cropId;
           const sameFamily =
-            !sameCrop &&
-            !!cropA.familyId &&
-            cropA.familyId === cropB.familyId;
+            !sameCrop && !!cropA.familyId && cropA.familyId === cropB.familyId;
           if (!sameCrop && !sameFamily) continue;
 
           const info = getEffectiveWaitingTime(cropA, cropB, sameCrop);
@@ -361,9 +354,7 @@ export function PlotRotationsEditor({
       totalDays,
       epochStart,
       years,
-      plots: timelinePlots.sort((a, b) =>
-        a.plotName.localeCompare(b.plotName),
-      ),
+      plots: timelinePlots.sort((a, b) => a.plotName.localeCompare(b.plotName)),
     };
   }, [selectedPlots, crops, plotPlans, rotationsWithConflicts]);
 
@@ -382,10 +373,7 @@ export function PlotRotationsEditor({
     if (zoomLevel === "weeks")
       headerHeight += YEAR_ROW_HEIGHT + WEEK_ROW_HEIGHT;
     const contentHeight = plotCount * ROW_HEIGHT;
-    return Math.min(
-      headerHeight + contentHeight + EXTRA_PADDING,
-      400,
-    );
+    return Math.min(headerHeight + contentHeight + EXTRA_PADDING, 400);
   }, [timelineData, zoomLevel]);
 
   // Open modal for bar press

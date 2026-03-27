@@ -114,11 +114,24 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
     if (!transitionDone || !filteredPlots) return null;
     // Show skeleton while rotations are still loading
     if (!filteredCropRotations) {
-      return buildSkeletonTimelineData(timelinePlots ?? filteredPlots, timelineYears);
+      return buildSkeletonTimelineData(
+        timelinePlots ?? filteredPlots,
+        timelineYears,
+      );
     }
     // Data is already server-expanded — no expandRotations() needed
-    return buildMultiYearTimelineData(filteredCropRotations, timelineYears, timelinePlots);
-  }, [filteredCropRotations, filteredPlots, transitionDone, timelineYears, timelinePlots]);
+    return buildMultiYearTimelineData(
+      filteredCropRotations,
+      timelineYears,
+      timelinePlots,
+    );
+  }, [
+    filteredCropRotations,
+    filteredPlots,
+    transitionDone,
+    timelineYears,
+    timelinePlots,
+  ]);
 
   function handleToggleCrop(cropName: string) {
     setSelectedCropNames((prev) => {
@@ -204,7 +217,11 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
             {/* Overlay spinner until bars are filled in */}
             {!filteredCropRotations && (
               <ActivityIndicator
-                style={{ position: "absolute", top: theme.spacing.xl, alignSelf: "center" }}
+                style={{
+                  position: "absolute",
+                  top: theme.spacing.xl,
+                  alignSelf: "center",
+                }}
               />
             )}
           </>
