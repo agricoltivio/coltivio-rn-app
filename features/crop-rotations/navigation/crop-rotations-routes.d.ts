@@ -9,7 +9,13 @@ export type CropRotationsStackParamList = {
   };
 
   PlanCropRotations: { plotIds?: string[]; previousScreen?: "PlotDetails" };
-  SelectPlotsForPlan: undefined;
+  SelectPlotsForPlan: { draftPlanId?: string };
+
+  DraftPlans: undefined;
+  DraftPlanDetail: { draftPlanId: string };
+  CreateDraftPlan: undefined;
+  AddPlotsToDraft: { draftPlanId: string };
+  PlanDraftRotations: { draftPlanId: string; plotIds: string[] };
 };
 
 export type CropRotationsScreenProps = StackScreenProps<"CropRotations">;
@@ -23,3 +29,10 @@ export type PlanCropRotationsScreenProps =
   StackScreenProps<"PlanCropRotations">;
 export type SelectPlotsForPlanScreenProps =
   StackScreenProps<"SelectPlotsForPlan">;
+
+export type DraftPlansScreenProps = StackScreenProps<"DraftPlans">;
+export type DraftPlanDetailScreenProps = StackScreenProps<"DraftPlanDetail">;
+export type CreateDraftPlanScreenProps = StackScreenProps<"CreateDraftPlan">;
+export type AddPlotsToDraftScreenProps = StackScreenProps<"AddPlotsToDraft">;
+export type PlanDraftRotationsScreenProps =
+  StackScreenProps<"PlanDraftRotations">;

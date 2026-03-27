@@ -59,6 +59,83 @@ const MONTH_SHORT = [
 
 export type SimplePlot = { id: string; name: string };
 
+// Builds a TimelineData with the correct epoch/grid but no bars — cheap to
+// compute and can be shown immediately while the full expansion is pending.
+export function buildSkeletonTimelineData(
+  plots: SimplePlot[],
+  years: number[],
+): TimelineData {
+  const sortedYears = [...years].sort((a, b) => a - b);
+  const epochStart = new Date(sortedYears[0], 0, 1);
+  const epochEnd = new Date(
+    sortedYears[sortedYears.length - 1],
+    11,
+    31,
+    23,
+    59,
+    59,
+    999,
+  );
+  const totalDays = daysBetween(epochStart, epochEnd) + 1;
+  return {
+    epochStart,
+    totalDays,
+    years: sortedYears,
+    plots: plots.map((p) => ({ plotId: p.id, plotName: p.name, bars: [] })),
+  };
+}
+
+// Expands base (non-expanded) crop rotations that have recurrence info into
+// individual per-occurrence entries within the given year range.
+// Rotations without recurrence are returned as-is.
+export function expandRotations(
+  rotations: CropRotationWithPlot[],
+  fromYear: number,
+  toYear: number,
+): CropRotationWithPlot[] {
+  const epochStart = new Date(fromYear, 0, 1);
+  const epochEnd = new Date(toYear, 11, 31, 23, 59, 59, 999);
+  const result: CropRotationWithPlot[] = [];
+
+  for (const rotation of rotations) {
+    if (!rotation.recurrence) {
+      result.push(rotation);
+      continue;
+    }
+
+    const { interval, until } = rotation.recurrence;
+    const untilDate = until ? new Date(until) : epochEnd;
+    const effectiveEnd = untilDate < epochEnd ? untilDate : epochEnd;
+
+    let currentFrom = new Date(rotation.fromDate);
+    let currentTo = new Date(rotation.toDate);
+    const durationMs = currentTo.getTime() - currentFrom.getTime();
+
+    let iteration = 0;
+    while (currentFrom <= effectiveEnd && iteration < 200) {
+      if (currentTo >= epochStart) {
+        result.push({
+          ...rotation,
+          fromDate: currentFrom.toISOString(),
+          toDate: currentTo.toISOString(),
+          // Clear recurrence on expanded instances so buildMultiYearTimelineData
+          // treats each as a standalone bar
+          recurrence: null,
+        });
+      }
+      currentFrom = new Date(
+        currentFrom.getFullYear() + interval,
+        currentFrom.getMonth(),
+        currentFrom.getDate(),
+      );
+      currentTo = new Date(currentFrom.getTime() + durationMs);
+      iteration++;
+    }
+  }
+
+  return result;
+}
+
 // Groups crop rotations by plot and calculates bar positions as absolute day offsets from epochStart.
 // Open-ended rotations (infinite toDate) extend to epoch end with isOpenEnded flag.
 // Dates are clamped to the epoch boundaries (Jan 1 earliest year .. Dec 31 latest year).

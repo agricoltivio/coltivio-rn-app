@@ -11,6 +11,10 @@ import {
   CropRotationUpdateResult,
   CropRotationPlanInput,
   CropRotationPlanResult,
+  DraftPlan,
+  DraftPlanSummary,
+  DraftPlanCreateInput,
+  DraftPlanUpdateInput,
 } from "@/api/crop-rotations.api";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -28,11 +32,13 @@ export function useCropRotationsQuery(
   fromDate?: Date,
   toDate?: Date,
   enabled: boolean = true,
+  options: { expand?: boolean; withRecurrences?: boolean } = {},
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
     queryKey: queryKeys.cropRotations.all(fromDate, toDate).queryKey,
-    queryFn: () => api.cropRotations.getCropRotations(fromDate, toDate),
+    queryFn: () =>
+      api.cropRotations.getCropRotations(fromDate, toDate, options),
     enabled,
   });
   return { cropRotations: data, ...rest };
@@ -229,6 +235,125 @@ export function usePlanCropRotationsMutation(
         queryKey: queryKeys.plots._def,
       });
       onSuccess && onSuccess(data);
+    },
+    onError: (error) => {
+      console.error(error);
+      onError && onError(error);
+    },
+  });
+}
+
+export function useDraftPlansQuery() {
+  const api = useApi();
+  const { data, ...rest } = useQuery({
+    queryKey: queryKeys.cropRotations.draftPlans.queryKey,
+    queryFn: () => api.cropRotations.getDraftPlans(),
+  });
+  return { draftPlans: data as DraftPlanSummary[] | undefined, ...rest };
+}
+
+export function useDraftPlanQuery(
+  draftPlanId: string,
+  enabled: boolean = true,
+) {
+  const api = useApi();
+  const { data, ...rest } = useQuery({
+    queryKey: queryKeys.cropRotations.draftPlanById(draftPlanId).queryKey,
+    queryFn: () => api.cropRotations.getDraftPlan(draftPlanId),
+    enabled,
+  });
+  return { draftPlan: data as DraftPlan | undefined, ...rest };
+}
+
+export function useCreateDraftPlanMutation(
+  onSuccess?: (plan: DraftPlan) => void,
+  onError?: (error: Error) => void,
+) {
+  const queryClient = useQueryClient();
+  const api = useApi();
+  return useMutation({
+    mutationFn: (input: DraftPlanCreateInput) =>
+      api.cropRotations.createDraftPlan(input),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.cropRotations.draftPlans.queryKey,
+      });
+      onSuccess && onSuccess(data);
+    },
+    onError: (error) => {
+      console.error(error);
+      onError && onError(error);
+    },
+  });
+}
+
+export function useUpdateDraftPlanMutation(
+  onSuccess?: (plan: DraftPlan) => void,
+  onError?: (error: Error) => void,
+) {
+  const queryClient = useQueryClient();
+  const api = useApi();
+  return useMutation({
+    mutationFn: ({
+      draftPlanId,
+      ...input
+    }: DraftPlanUpdateInput & { draftPlanId: string }) =>
+      api.cropRotations.updateDraftPlan(draftPlanId, input),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.cropRotations.draftPlans.queryKey,
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.cropRotations.draftPlanById(data.id).queryKey,
+      });
+      onSuccess && onSuccess(data);
+    },
+    onError: (error) => {
+      console.error(error);
+      onError && onError(error);
+    },
+  });
+}
+
+export function useDeleteDraftPlanMutation(
+  onSuccess?: () => void,
+  onError?: (error: Error) => void,
+) {
+  const queryClient = useQueryClient();
+  const api = useApi();
+  return useMutation({
+    mutationFn: ({ draftPlanId }: { draftPlanId: string }) =>
+      api.cropRotations.deleteDraftPlan(draftPlanId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.cropRotations.draftPlans.queryKey,
+      });
+      onSuccess && onSuccess();
+    },
+    onError: (error) => {
+      console.error(error);
+      onError && onError(error);
+    },
+  });
+}
+
+export function useApplyDraftPlanMutation(
+  onSuccess?: () => void,
+  onError?: (error: Error) => void,
+) {
+  const queryClient = useQueryClient();
+  const api = useApi();
+  return useMutation({
+    mutationFn: ({ draftPlanId }: { draftPlanId: string }) =>
+      api.cropRotations.applyDraftPlan(draftPlanId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.cropRotations._def,
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.plots._def,
+      });
+      onSuccess && onSuccess();
     },
     onError: (error) => {
       console.error(error);

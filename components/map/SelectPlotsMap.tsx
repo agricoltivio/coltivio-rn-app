@@ -60,6 +60,8 @@ type SelectPlotsMapProps = {
   portalName?: string;
   onNavigateToOnboarding?: () => void;
   children?: React.ReactNode;
+  /** When provided, only these plot IDs are shown on the map */
+  allowedPlotIds?: string[];
 };
 
 const DRAG_Y_OFFSET = 40;
@@ -75,16 +77,21 @@ export function SelectPlotsMap({
   portalName = "SelectPlotsMap",
   onNavigateToOnboarding,
   children,
+  allowedPlotIds,
 }: SelectPlotsMapProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const { farm } = useFarmQuery();
   const { plots: allPlots } = useFarmPlotsQuery();
   // Exclude plots with no geometry (size 0) — they can't be rendered or meaningfully selected.
-  const plots = useMemo(
-    () => allPlots?.filter((p) => p.size > 0) ?? null,
-    [allPlots],
-  );
+  // When allowedPlotIds is set, further restrict to only those plots.
+  const plots = useMemo(() => {
+    if (!allPlots) return null;
+    const withGeometry = allPlots.filter((p) => p.size > 0);
+    if (!allowedPlotIds) return withGeometry;
+    const allowed = new Set(allowedPlotIds);
+    return withGeometry.filter((p) => allowed.has(p.id));
+  }, [allPlots, allowedPlotIds]);
   const [mapVisible, setMapVisible] = useState(false);
   const [showUserLocation, setShowUserLocation] = useState(false);
   const [drawPhase, setDrawPhase] = useState<DrawPhase>("idle");

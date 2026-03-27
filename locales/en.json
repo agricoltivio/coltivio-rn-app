@@ -939,6 +939,23 @@
       "zoom_years": "Years",
       "zoom_months": "Months",
       "zoom_weeks": "Weeks"
+    },
+    "draft_plans": {
+      "title": "Drafts",
+      "create": "Create New Draft",
+      "name_placeholder": "Draft name",
+      "select_plots_to_seed": "Select plots to include in draft",
+      "apply": "Apply Draft",
+      "apply_confirm_title": "Apply Draft?",
+      "apply_confirm_message": "Rotations for plots in this draft will be replaced. Plots not present in this draft will remain unchanged.",
+      "applied_success": "Draft was applied",
+      "delete_confirm": "Delete Draft?",
+      "no_drafts": "No drafts yet",
+      "updated_at": "Last modified: {{date}}",
+      "add_plots": "Add plots",
+      "select_plots_to_add": "Select plots to add to the draft",
+      "edit_plots": "Edit plots",
+      "select_plots_to_edit": "Select which plots are included in this draft"
     }
   },
   "reports": {

@@ -1,6 +1,25 @@
 import { FetchClient } from "./api";
 import { components } from "./v1";
 
+export type DraftPlanSummary =
+  components["schemas"]["GetV1CropRotationsDraftPlansPositiveResponse"]["data"]["result"][number];
+
+export type DraftPlan =
+  components["schemas"]["GetV1CropRotationsDraftPlansByIdDraftPlanIdPositiveResponse"]["data"];
+
+export type DraftPlanPlot = DraftPlan["plots"][number];
+export type DraftPlanRotation = DraftPlanPlot["rotations"][number];
+
+export type DraftPlanCreateInput =
+  components["schemas"]["PostV1CropRotationsDraftPlansRequestBody"];
+
+export type DraftPlanUpdateInput =
+  components["schemas"]["PatchV1CropRotationsDraftPlansByIdDraftPlanIdRequestBody"];
+
+export type DraftPlanPlotInput = NonNullable<
+  DraftPlanCreateInput["plots"]
+>[number];
+
 export type CropRotation =
   components["schemas"]["GetV1PlotsByIdPlotIdCropRotationsPositiveResponse"]["data"]["result"][number];
 export type CropRotationCreateInput =
@@ -48,12 +67,22 @@ export function cropRotationsApi(client: FetchClient) {
       return data!.data;
     },
 
-    async getCropRotations(fromDate?: Date, toDate?: Date) {
+    async getCropRotations(
+      fromDate?: Date,
+      toDate?: Date,
+      options: { expand?: boolean; withRecurrences?: boolean } = {},
+    ) {
       const { data } = await client.GET("/v1/cropRotations", {
         params: {
           query: {
             fromDate: fromDate?.toISOString(),
             toDate: toDate?.toISOString(),
+            expand:
+              options.expand !== undefined ? String(options.expand) : undefined,
+            withRecurrences:
+              options.withRecurrences !== undefined
+                ? String(options.withRecurrences)
+                : undefined,
           },
         },
       });
@@ -154,6 +183,50 @@ export function cropRotationsApi(client: FetchClient) {
         body: input,
       });
       return data!.data.result;
+    },
+
+    async getDraftPlans(): Promise<DraftPlanSummary[]> {
+      const { data } = await client.GET("/v1/cropRotations/draftPlans");
+      return data!.data.result;
+    },
+
+    async createDraftPlan(input: DraftPlanCreateInput): Promise<DraftPlan> {
+      const { data } = await client.POST("/v1/cropRotations/draftPlans", {
+        body: input,
+      });
+      return data!.data;
+    },
+
+    async getDraftPlan(draftPlanId: string): Promise<DraftPlan> {
+      const { data } = await client.GET(
+        "/v1/cropRotations/draftPlans/byId/{draftPlanId}",
+        { params: { path: { draftPlanId } } },
+      );
+      return data!.data;
+    },
+
+    async updateDraftPlan(
+      draftPlanId: string,
+      input: DraftPlanUpdateInput,
+    ): Promise<DraftPlan> {
+      const { data } = await client.PATCH(
+        "/v1/cropRotations/draftPlans/byId/{draftPlanId}",
+        { body: input, params: { path: { draftPlanId } } },
+      );
+      return data!.data;
+    },
+
+    async deleteDraftPlan(draftPlanId: string): Promise<void> {
+      await client.DELETE("/v1/cropRotations/draftPlans/byId/{draftPlanId}", {
+        params: { path: { draftPlanId } },
+      });
+    },
+
+    async applyDraftPlan(draftPlanId: string): Promise<void> {
+      await client.POST(
+        "/v1/cropRotations/draftPlans/byId/{draftPlanId}/apply",
+        { body: {}, params: { path: { draftPlanId } } },
+      );
     },
   };
 }

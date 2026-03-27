@@ -939,6 +939,23 @@
       "zoom_years": "Jahre",
       "zoom_months": "Monate",
       "zoom_weeks": "Wochen"
+    },
+    "draft_plans": {
+      "title": "Entwürfe",
+      "create": "Neuen Entwurf erstellen",
+      "name_placeholder": "Name des Entwurfs",
+      "select_plots_to_seed": "Schläge für den Entwurf auswählen",
+      "apply": "Entwurf anwenden",
+      "apply_confirm_title": "Entwurf anwenden?",
+      "apply_confirm_message": "Die Fruchtfolgen der Schläge im Entwurf werden ersetzt. Schläge, die nicht im Entwurf enthalten sind, bleiben unverändert.",
+      "applied_success": "Entwurf wurde angewendet",
+      "delete_confirm": "Entwurf löschen?",
+      "no_drafts": "Keine Entwürfe vorhanden",
+      "updated_at": "Zuletzt geändert: {{date}}",
+      "add_plots": "Schläge hinzufügen",
+      "select_plots_to_add": "Schläge auswählen, die dem Entwurf hinzugefügt werden sollen",
+      "edit_plots": "Schläge bearbeiten",
+      "select_plots_to_edit": "Schläge auswählen, die in diesem Entwurf enthalten sein sollen"
     }
   },
   "reports": {

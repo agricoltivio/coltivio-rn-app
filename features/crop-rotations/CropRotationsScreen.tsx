@@ -1,20 +1,21 @@
 import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
 import { CropRotationsScreenProps } from "./navigation/crop-rotations-routes";
-import { H2 } from "@/theme/Typography";
-import React, { useMemo, useState } from "react";
-import { TextInput, View } from "react-native";
+import { H2, Subtitle } from "@/theme/Typography";
+import React, { useEffect, useMemo, useState } from "react";
+import { ActivityIndicator, Pressable, TextInput, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCropRotationsQuery } from "./crop-rotations.hooks";
 import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
+import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { CropRotationTimeline } from "./timeline/CropRotationTimeline";
 import {
   buildMultiYearTimelineData,
+  buildSkeletonTimelineData,
   SimplePlot,
 } from "./timeline/timeline-utils";
 import { CropFilterChips } from "./components/CropFilterChips";
-import { Ionicons } from "@expo/vector-icons";
 
 const TIMELINE_RANGE_YEARS = 10;
 
@@ -25,6 +26,14 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
     new Set(),
   );
   const [searchQuery, setSearchQuery] = useState("");
+  const [transitionDone, setTransitionDone] = useState(false);
+
+  useEffect(() => {
+    return navigation.addListener("transitionEnd", () => {
+      // Defer by one frame so React can commit lighter work before mounting the heavy timeline
+      requestAnimationFrame(() => setTransitionDone(true));
+    });
+  }, [navigation]);
 
   // Fixed ±10 year range for the timeline (avoids permanent rotations with year 5000 end dates)
   const currentYear = new Date().getFullYear();
@@ -47,10 +56,12 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
     () => new Date(timelineToYear + 1, 0, 1),
     [timelineToYear],
   );
+  // Use server-side expansion — avoids client-side expandRotations() work on the JS thread
   const { cropRotations } = useCropRotationsQuery(
     timelineFromDate,
     timelineToDate,
     true,
+    { expand: true },
   );
 
   // Fetch all farm plots so we can show plots without crop rotations too
@@ -99,13 +110,28 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
   }, [filteredPlots, filteredCropRotations, selectedCropNames]);
 
   const timelineData = useMemo(() => {
-    if (!filteredCropRotations) return null;
+    // Don't mount the timeline during the navigation transition — it's expensive
+    if (!transitionDone || !filteredPlots) return null;
+    // Show skeleton while rotations are still loading
+    if (!filteredCropRotations) {
+      return buildSkeletonTimelineData(
+        timelinePlots ?? filteredPlots,
+        timelineYears,
+      );
+    }
+    // Data is already server-expanded — no expandRotations() needed
     return buildMultiYearTimelineData(
       filteredCropRotations,
       timelineYears,
       timelinePlots,
     );
-  }, [filteredCropRotations, timelineYears, timelinePlots]);
+  }, [
+    filteredCropRotations,
+    filteredPlots,
+    transitionDone,
+    timelineYears,
+    timelinePlots,
+  ]);
 
   function handleToggleCrop(cropName: string) {
     setSelectedCropNames((prev) => {
@@ -130,7 +156,14 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
 
   return (
     <ContentView headerVisible>
-      <H2>{t("crop_rotations.crop_rotation")}</H2>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <H2 style={{ flex: 1 }}>{t("crop_rotations.crop_rotation")}</H2>
+        <Pressable onPress={() => navigation.navigate("DraftPlans")}>
+          <Subtitle style={{ color: theme.colors.primary }}>
+            {t("crop_rotations.draft_plans.title")}
+          </Subtitle>
+        </Pressable>
+      </View>
 
       {/* Search bar */}
       <View
@@ -174,18 +207,32 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
       )}
 
       <View style={{ flex: 1, marginTop: theme.spacing.m }}>
-        {timelineData && (
-          <CropRotationTimeline
-            timelineData={timelineData}
-            onBarPress={handleBarPress}
-            onPlotPress={handlePlotPress}
-          />
+        {timelineData ? (
+          <>
+            <CropRotationTimeline
+              timelineData={timelineData}
+              onBarPress={handleBarPress}
+              onPlotPress={handlePlotPress}
+            />
+            {/* Overlay spinner until bars are filled in */}
+            {!filteredCropRotations && (
+              <ActivityIndicator
+                style={{
+                  position: "absolute",
+                  top: theme.spacing.xl,
+                  alignSelf: "center",
+                }}
+              />
+            )}
+          </>
+        ) : (
+          <ActivityIndicator style={{ marginTop: theme.spacing.xl }} />
         )}
       </View>
 
       <FAB
         icon={{ name: "create-outline", color: "white" }}
-        onPress={() => navigation.navigate("SelectPlotsForPlan")}
+        onPress={() => navigation.navigate("SelectPlotsForPlan", {})}
       />
     </ContentView>
   );
