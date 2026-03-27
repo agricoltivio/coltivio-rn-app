@@ -54,6 +54,7 @@ export function useChangeRequestNotesQuery(changeRequestId: string) {
   const { data, ...rest } = useQuery({
     queryKey: queryKeys.wiki.changeRequestNotes(changeRequestId).queryKey,
     queryFn: () => api.wiki.getChangeRequestNotes(changeRequestId),
+    enabled: !!changeRequestId,
   });
   return { notes: data ?? [], ...rest };
 }

@@ -2,7 +2,6 @@ import { WikiTranslationInput } from "@/api/wiki.api";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
-import { Ionicons } from "@expo/vector-icons";
 import { H3, Subtitle } from "@/theme/Typography";
 import * as Crypto from "expo-crypto";
 import React, { useEffect, useRef, useState } from "react";
@@ -20,16 +19,14 @@ import styled from "styled-components/native";
 import { useTheme } from "styled-components/native";
 import { TextInput } from "@/components/inputs/TextInput";
 import { MarkdownEditor } from "./components/MarkdownEditor";
+import { CommentsSection } from "./components/CommentsSection";
 import {
-  useAddChangeRequestNoteMutation,
-  useChangeRequestNotesQuery,
   useMyChangeRequestsQuery,
   useSubmitChangeRequestDraftMutation,
   useUpdateChangeRequestDraftMutation,
 } from "./wiki.hooks";
 import { WikiChangeRequestDraftScreenProps } from "./navigation/wiki-routes";
 import { locale } from "@/locales/i18n";
-import { useSession } from "@/auth/SessionProvider";
 
 type LocaleKey = "de" | "en" | "it" | "fr";
 const LOCALES: LocaleKey[] = ["de", "en", "it", "fr"];
@@ -52,8 +49,6 @@ export function WikiChangeRequestDraftScreen({
   const { t } = useTranslation();
   const theme = useTheme();
   const { changeRequestId } = route.params;
-  const { authUser } = useSession();
-  const [noteText, setNoteText] = useState("");
   // Stable UUID for image uploads in case changeRequest.entryId is unavailable
   const imageEntryId = useRef(Crypto.randomUUID()).current;
 
@@ -67,7 +62,6 @@ export function WikiChangeRequestDraftScreen({
   const changeRequest = changeRequests.find((cr) => cr.id === changeRequestId);
   // Only draft CRs can be edited — under_review means it's been submitted and awaits review
   const isEditable = changeRequest?.status === "draft";
-  const { notes } = useChangeRequestNotesQuery(changeRequestId);
 
   const { control, handleSubmit, setValue } = useForm<FormValues>({
     defaultValues: {
@@ -107,8 +101,6 @@ export function WikiChangeRequestDraftScreen({
     navigation.goBack();
   });
 
-  const addNoteMutation = useAddChangeRequestNoteMutation(changeRequestId);
-
   function buildTranslations(values: FormValues): WikiTranslationInput[] {
     const translations: WikiTranslationInput[] = [];
     translations.push({
@@ -138,13 +130,6 @@ export function WikiChangeRequestDraftScreen({
         onPress: () => submitMutation.mutate(changeRequestId),
       },
     ]);
-  }
-
-  function onSendNote() {
-    const text = noteText.trim();
-    if (!text) return;
-    addNoteMutation.mutate(text);
-    setNoteText("");
   }
 
   const isPending = updateMutation.isPending || submitMutation.isPending;
@@ -279,97 +264,7 @@ export function WikiChangeRequestDraftScreen({
               </TouchableOpacity>
             )}
 
-            {/* Comments thread */}
-            <View
-              style={{
-                borderTopWidth: 1,
-                borderTopColor: theme.colors.gray4,
-                paddingTop: theme.spacing.m,
-              }}
-            >
-              <H3 style={{ marginBottom: theme.spacing.s }}>
-                {t("wiki.comments")}
-              </H3>
-              {notes.map((note) => {
-                const isOwn = note.authorId === authUser?.id;
-                const time =
-                  typeof note.createdAt === "string"
-                    ? new Date(note.createdAt).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })
-                    : "";
-                return (
-                  <View
-                    key={note.id}
-                    style={{
-                      alignSelf: isOwn ? "flex-end" : "flex-start",
-                      maxWidth: "80%",
-                      marginBottom: theme.spacing.xs,
-                    }}
-                  >
-                    <View
-                      style={{
-                        backgroundColor: isOwn
-                          ? theme.colors.primary
-                          : theme.colors.gray5,
-                        borderRadius: theme.radii.m,
-                        borderBottomRightRadius: isOwn ? 4 : theme.radii.m,
-                        borderBottomLeftRadius: isOwn ? theme.radii.m : 4,
-                        padding: theme.spacing.s,
-                      }}
-                    >
-                      <NoteText isOwn={isOwn}>{note.body}</NoteText>
-                    </View>
-                    {time ? (
-                      <Text
-                        style={{
-                          fontSize: 11,
-                          color: theme.colors.gray2,
-                          marginTop: 2,
-                          alignSelf: isOwn ? "flex-end" : "flex-start",
-                        }}
-                      >
-                        {time}
-                      </Text>
-                    ) : null}
-                  </View>
-                );
-              })}
-            </View>
-
-            {/* Comment input */}
-            <View
-              style={{
-                flexDirection: "row",
-                gap: theme.spacing.s,
-                alignItems: "flex-end",
-              }}
-            >
-              <View style={{ flex: 1 }}>
-                <TextInput
-                  hideLabel
-                  placeholder={t("wiki.add_comment")}
-                  value={noteText}
-                  onChangeText={setNoteText}
-                  multiline
-                  returnKeyType="default"
-                />
-              </View>
-              <TouchableOpacity
-                onPress={onSendNote}
-                disabled={addNoteMutation.isPending || !noteText.trim()}
-                style={{
-                  backgroundColor: theme.colors.primary,
-                  borderRadius: theme.radii.xxl,
-                  padding: theme.spacing.s,
-                  opacity:
-                    addNoteMutation.isPending || !noteText.trim() ? 0.4 : 1,
-                }}
-              >
-                <Ionicons name="send" size={20} color="white" />
-              </TouchableOpacity>
-            </View>
+            <CommentsSection changeRequestId={changeRequestId} />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -405,8 +300,3 @@ const ButtonLabel = styled.Text`
   font-weight: 600;
 `;
 
-const NoteText = styled.Text<{ isOwn: boolean }>`
-  font-size: 14px;
-  color: ${({ theme, isOwn }) =>
-    isOwn ? theme.colors.white : theme.colors.primary};
-`;

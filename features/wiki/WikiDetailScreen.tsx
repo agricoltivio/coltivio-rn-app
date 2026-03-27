@@ -6,8 +6,9 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
-import { ActivityIndicator, Alert, View, Text } from "react-native";
+import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, View, Text, TouchableOpacity } from "react-native";
 import { WikiMarkdown } from "@/features/wiki/components/WikiMarkdown";
+import { CommentsSection } from "@/features/wiki/components/CommentsSection";
 import styled from "styled-components/native";
 import { useTheme } from "styled-components/native";
 import {
@@ -66,7 +67,7 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
   const isEditable = isPrivate && entry.status === "draft";
   const isUnderReview = entry.status === "under_review";
   const hasChangesRequested = activeCR?.status === "changes_requested";
-
+  const showComments = !!activeCR;
 
   function onPublishPress() {
     Alert.alert(t("wiki.share"), t("wiki.share_confirm"), [
@@ -103,8 +104,15 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
           <BottomActionContainer>
             <FooterButton
               onPress={onPublishPress}
-              disabled={submitMutation.isPending || resubmitCRMutation.isPending}
-              style={{ opacity: (submitMutation.isPending || resubmitCRMutation.isPending) ? 0.6 : 1 }}
+              disabled={
+                submitMutation.isPending || resubmitCRMutation.isPending
+              }
+              style={{
+                opacity:
+                  submitMutation.isPending || resubmitCRMutation.isPending
+                    ? 0.6
+                    : 1,
+              }}
             >
               <ActionLabel>{t("wiki.share")}</ActionLabel>
             </FooterButton>
@@ -112,6 +120,10 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
         ) : undefined
       }
     >
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+      >
       <ScrollView
         showHeaderOnScroll
         headerTitleOnScroll={entryTranslation?.title ?? ""}
@@ -226,7 +238,12 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
         >
           {entryTranslation?.body ?? ""}
         </WikiMarkdown>
+
+        {showComments && activeCR && (
+          <CommentsSection changeRequestId={activeCR.id} />
+        )}
       </ScrollView>
+      </KeyboardAvoidingView>
     </ContentView>
   );
 }
@@ -257,3 +274,4 @@ const ActionLabel = styled.Text`
   font-size: 16px;
   font-weight: 600;
 `;
+

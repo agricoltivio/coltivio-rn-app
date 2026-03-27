@@ -155,7 +155,6 @@ function EditorContent({
     onPress:
       ({ editor: e }) =>
       async () => {
-        try {
           const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ["images"],
             quality: 0.8,
@@ -164,58 +163,77 @@ function EditorContent({
 
           const asset = result.assets[0];
 
-          // Resize to max 1200px on the longest side (preserves aspect ratio),
+          // Resize to the chosen max dimension on the longest side (preserves aspect ratio),
           // convert to JPEG for cross-platform support (handles HEIC from iOS),
           // and compress to reduce file size.
-          const MAX_DIM = 1200;
-          const { width, height } = asset;
-          const resizeAction: ImageManipulator.Action | undefined =
-            width > MAX_DIM || height > MAX_DIM
-              ? width >= height
-                ? { resize: { width: MAX_DIM } }
-                : { resize: { height: MAX_DIM } }
-              : undefined;
+          async function uploadImage(maxDim: number) {
+            try {
+              const { width, height } = asset;
+              const resizeAction: ImageManipulator.Action | undefined =
+                width > maxDim || height > maxDim
+                  ? width >= height
+                    ? { resize: { width: maxDim } }
+                    : { resize: { height: maxDim } }
+                  : undefined;
 
-          const manipulated = await ImageManipulator.manipulateAsync(
-            asset.uri,
-            resizeAction ? [resizeAction] : [],
-            { format: ImageManipulator.SaveFormat.JPEG, compress: 0.8 },
-          );
+              const manipulated = await ImageManipulator.manipulateAsync(
+                asset.uri,
+                resizeAction ? [resizeAction] : [],
+                { format: ImageManipulator.SaveFormat.JPEG, compress: 0.8 },
+              );
 
-          const fileResponse = await fetch(manipulated.uri);
-          const blob = await fileResponse.blob();
+              const fileResponse = await fetch(manipulated.uri);
+              const blob = await fileResponse.blob();
 
-          const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
-          if (blob.size > MAX_FILE_SIZE) {
-            Alert.alert(t("common.error"), t("wiki.image_too_large"));
-            return;
+              const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+              if (blob.size > MAX_FILE_SIZE) {
+                Alert.alert(t("common.error"), t("wiki.image_too_large"));
+                return;
+              }
+
+              const rawFilename = asset.fileName ?? `image_${Date.now()}`;
+              const filename = rawFilename.replace(/\.[^.]+$/, ".jpg");
+
+              const { signedUrl, path } = await api.wiki.getImageSignedUrl(
+                entryId,
+                filename,
+              );
+
+              await fetch(resolveLocalUrl(signedUrl), {
+                method: "PUT",
+                body: blob,
+              });
+
+              const { publicUrl } = await api.wiki.registerImage(entryId, path);
+
+              const resolvedUrl = resolveLocalUrl(publicUrl);
+              e.setImage(resolvedUrl);
+              // Insert a paragraph after the image so the cursor has somewhere to go
+              setTimeout(() => {
+                editor.webviewRef.current?.injectJavaScript(
+                  `window.editor.chain().focus('end').createParagraphNear().run(); true;`,
+                );
+              }, 50);
+            } catch {
+              Alert.alert("Fehler", "Bild konnte nicht hochgeladen werden.");
+            }
           }
 
-          const rawFilename = asset.fileName ?? `image_${Date.now()}`;
-          const filename = rawFilename.replace(/\.[^.]+$/, ".jpg");
-
-          const { signedUrl, path } = await api.wiki.getImageSignedUrl(
-            entryId,
-            filename,
-          );
-
-          await fetch(resolveLocalUrl(signedUrl), {
-            method: "PUT",
-            body: blob,
-          });
-
-          const { publicUrl } = await api.wiki.registerImage(entryId, path);
-
-          e.setImage(resolveLocalUrl(publicUrl));
-          // Insert a paragraph after the image so the cursor has somewhere to go
-          setTimeout(() => {
-            editor.webviewRef.current?.injectJavaScript(
-              `window.editor.chain().focus('end').createParagraphNear().run(); true;`,
-            );
-          }, 50);
-        } catch {
-          Alert.alert("Fehler", "Bild konnte nicht hochgeladen werden.");
-        }
+          Alert.alert(t("wiki.image_size"), undefined, [
+            {
+              text: t("wiki.image_size_small"),
+              onPress: () => uploadImage(400),
+            },
+            {
+              text: t("wiki.image_size_medium"),
+              onPress: () => uploadImage(700),
+            },
+            {
+              text: t("wiki.image_size_large"),
+              onPress: () => uploadImage(1200),
+            },
+            { text: t("buttons.cancel"), style: "cancel" },
+          ]);
       },
     active: () => false,
     disabled: () => false,

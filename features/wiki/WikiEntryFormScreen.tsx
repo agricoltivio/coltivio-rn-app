@@ -203,9 +203,7 @@ export function WikiEntryFormScreen({
               <Controller
                 control={control}
                 name={`${loc}_title`}
-                render={({
-                  field: { onChange, onBlur, value },
-                }) => (
+                render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
                     label={t("wiki.title")}
                     value={value}
