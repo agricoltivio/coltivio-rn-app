@@ -32,6 +32,8 @@ import { fieldEventsApi } from "./field-events.api";
 import { wikiApi } from "./wiki.api";
 import { tasksApi } from "./tasks.api";
 import { membershipApi } from "./membership.api";
+import { animalJournalApi } from "./animal-journal.api";
+import { plotJournalApi } from "./plot-journal.api";
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 // const baseUrl = "http://localhost:8000/";
@@ -115,5 +117,7 @@ export function api(client: FetchClient) {
     wiki: wikiApi(client),
     tasks: tasksApi(client),
     membership: membershipApi(client),
+    animalJournal: animalJournalApi(client),
+    plotJournal: plotJournalApi(client),
   };
 }

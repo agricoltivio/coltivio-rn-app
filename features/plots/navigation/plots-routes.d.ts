@@ -27,6 +27,9 @@ export type PlotsStackParamList = {
   SplitPlotSummary: { plotId: string };
   MergePlotSummary: { plotIds: string[]; primaryPlotId: string };
   PlotList: undefined;
+  PlotJournal: { plotId: string };
+  PlotJournalEntry: { entryId: string; plotId: string };
+  PlotJournalEntryForm: { plotId: string; entryId?: string };
 };
 
 export type PlotsMapScreenProps = StackScreenProps<"PlotsMap">;
@@ -55,3 +58,7 @@ export type SplitPlotOnboardingScreenProps =
 export type SplitPlotSummaryScreenProps = StackScreenProps<"SplitPlotSummary">;
 export type MergePlotSummaryScreenProps = StackScreenProps<"MergePlotSummary">;
 export type PlotListScreenProps = StackScreenProps<"PlotList">;
+export type PlotJournalScreenProps = StackScreenProps<"PlotJournal">;
+export type PlotJournalEntryScreenProps = StackScreenProps<"PlotJournalEntry">;
+export type PlotJournalEntryFormScreenProps =
+  StackScreenProps<"PlotJournalEntryForm">;

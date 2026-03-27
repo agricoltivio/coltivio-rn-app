@@ -18,7 +18,7 @@ import React, {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, View } from "react-native";
+import { Pressable, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
 import { usePlotsMapContext } from "./plots-map-mode";
@@ -233,6 +233,39 @@ export function PlotDetailsDrawer() {
                 <ListItem.Chevron />
               </ListItem>
             </View>
+
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("PlotJournal", { plotId: selectedPlot.id })
+              }
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: theme.spacing.xs,
+                marginTop: theme.spacing.m,
+                padding: 12,
+                borderRadius: theme.radii.m,
+                borderWidth: 1.5,
+                borderColor: theme.colors.primary,
+                backgroundColor: theme.colors.white,
+              }}
+            >
+              <Ionicons
+                name="book-outline"
+                size={18}
+                color={theme.colors.primary}
+              />
+              <Body
+                style={{
+                  color: theme.colors.primary,
+                  fontWeight: "600",
+                  fontSize: 16,
+                }}
+              >
+                {t("animals.journal")}
+              </Body>
+            </TouchableOpacity>
 
             <Button
               style={{ marginTop: theme.spacing.m }}

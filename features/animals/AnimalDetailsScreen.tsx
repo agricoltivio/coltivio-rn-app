@@ -294,6 +294,29 @@ export function AnimalDetailsScreen({
           </View>
         )}
 
+        {/* Journal */}
+        <View style={{ marginTop: theme.spacing.l }}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("AnimalJournal", { animalId })}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: theme.spacing.xs,
+              padding: 12,
+              borderRadius: theme.radii.m,
+              borderWidth: 1.5,
+              borderColor: theme.colors.primary,
+              backgroundColor: theme.colors.white,
+            }}
+          >
+            <Ionicons name="book-outline" size={18} color={theme.colors.primary} />
+            <Subtitle style={{ color: theme.colors.primary, fontWeight: "600", fontSize: 16 }}>
+              {t("animals.journal")}
+            </Subtitle>
+          </TouchableOpacity>
+        </View>
+
         {/* Children */}
         <View style={{ marginTop: theme.spacing.l }}>
           <View

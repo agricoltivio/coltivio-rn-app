@@ -55,6 +55,9 @@ export type AnimalsStackParamList = {
   BatchEditAction: { animalIds: string[] };
   UncategorizedAnimals: { animals: UncategorizedAnimal[] };
   ManageAnimalCategories: { animalId: string };
+  AnimalJournal: { animalId: string };
+  AnimalJournalEntry: { entryId: string; animalId: string };
+  AnimalJournalEntryForm: { animalId: string; entryId?: string };
 };
 
 export type AnimalsHubScreenProps = StackScreenProps<"AnimalsHub">;
@@ -94,3 +97,8 @@ export type UncategorizedAnimalsScreenProps =
   StackScreenProps<"UncategorizedAnimals">;
 export type ManageAnimalCategoriesScreenProps =
   StackScreenProps<"ManageAnimalCategories">;
+export type AnimalJournalScreenProps = StackScreenProps<"AnimalJournal">;
+export type AnimalJournalEntryScreenProps =
+  StackScreenProps<"AnimalJournalEntry">;
+export type AnimalJournalEntryFormScreenProps =
+  StackScreenProps<"AnimalJournalEntryForm">;

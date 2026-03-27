@@ -30,6 +30,9 @@ import { BatchSelectAnimalsScreen } from "../BatchSelectAnimalsScreen";
 import { BatchEditActionScreen } from "../BatchEditActionScreen";
 import { UncategorizedAnimalsScreen } from "../UncategorizedAnimalsScreen";
 import { ManageAnimalCategoriesScreen } from "../ManageAnimalCategoriesScreen";
+import { AnimalJournalScreen } from "../AnimalJournalScreen";
+import { AnimalJournalEntryScreen } from "../AnimalJournalEntryScreen";
+import { AnimalJournalEntryFormScreen } from "../AnimalJournalEntryFormScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { DefaultTheme } from "styled-components/native";
 
@@ -250,6 +253,24 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
       name="ManageAnimalCategories"
       options={{ title: "" }}
       component={ManageAnimalCategoriesScreen}
+    />,
+    <Stack.Screen
+      key="animal-journal"
+      name="AnimalJournal"
+      options={{ title: "" }}
+      component={AnimalJournalScreen}
+    />,
+    <Stack.Screen
+      key="animal-journal-entry"
+      name="AnimalJournalEntry"
+      options={{ title: "" }}
+      component={AnimalJournalEntryScreen}
+    />,
+    <Stack.Screen
+      key="animal-journal-entry-form"
+      name="AnimalJournalEntryForm"
+      options={{ title: "" }}
+      component={AnimalJournalEntryFormScreen}
     />,
   ];
 }

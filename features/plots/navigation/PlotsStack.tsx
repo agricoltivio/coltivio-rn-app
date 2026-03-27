@@ -20,6 +20,9 @@ import { MergePlotsOnboardingScreen } from "../MergePlotsOnboardingScreen";
 import { AdjustPlotOnboardingScreen } from "../AdjustPlotOnboardingScreen";
 import { SplitPlotSummaryScreen } from "../SplitPlotSummaryScreen";
 import { PlotListScreen } from "../map/PlotListScreen";
+import { PlotJournalScreen } from "../PlotJournalScreen";
+import { PlotJournalEntryScreen } from "../PlotJournalEntryScreen";
+import { PlotJournalEntryFormScreen } from "../PlotJournalEntryFormScreen";
 
 const closeHeaderRight =
   (
@@ -193,6 +196,24 @@ export function renderPlotsStack(
         presentation: "modal",
         headerShown: false,
       }}
+    />,
+    <Stack.Screen
+      key="plot-journal"
+      name="PlotJournal"
+      options={{ title: "" }}
+      component={PlotJournalScreen}
+    />,
+    <Stack.Screen
+      key="plot-journal-entry"
+      name="PlotJournalEntry"
+      options={{ title: "" }}
+      component={PlotJournalEntryScreen}
+    />,
+    <Stack.Screen
+      key="plot-journal-entry-form"
+      name="PlotJournalEntryForm"
+      options={{ title: "" }}
+      component={PlotJournalEntryFormScreen}
     />,
   ];
 }

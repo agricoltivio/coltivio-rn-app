@@ -28,6 +28,8 @@ import { outdoorJournalQueryKeys } from "@/features/animals/outdoor-journal.quer
 import { fieldEventsQueryKeys } from "@/features/field-calendar/fieldEvents.querykeys";
 import { wikiQueryKeys } from "@/features/wiki/wiki.querykeys";
 import { tasksQueryKeys } from "@/features/tasks/tasks.querykeys";
+import { animalJournalQueryKeys } from "@/features/animals/animal-journal.querykeys";
+import { plotJournalQueryKeys } from "@/features/plots/plot-journal.querykeys";
 
 export const queryKeys = mergeQueryKeys(
   animalsQueryKeys,
@@ -59,4 +61,6 @@ export const queryKeys = mergeQueryKeys(
   fieldEventsQueryKeys,
   wikiQueryKeys,
   tasksQueryKeys,
+  animalJournalQueryKeys,
+  plotJournalQueryKeys,
 );

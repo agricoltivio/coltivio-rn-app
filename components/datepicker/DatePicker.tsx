@@ -1,7 +1,7 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { TextInput } from "../inputs/TextInput";
 import React, { useCallback, useRef, useState } from "react";
-import { Platform, Pressable, TouchableOpacity, View } from "react-native";
+import { Keyboard, Platform, Pressable, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "styled-components/native";
 import { useTranslation } from "react-i18next";
@@ -42,6 +42,7 @@ export function DatePicker({
   const [tempDate, setTempDate] = useState<Date>(date || new Date());
 
   const openPicker = useCallback(() => {
+    Keyboard.dismiss();
     setTempDate(date || new Date());
     if (Platform.OS === "ios") {
       bottomSheetModalRef.current?.present();
