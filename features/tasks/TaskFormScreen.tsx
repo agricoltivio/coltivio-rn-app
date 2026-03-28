@@ -15,7 +15,7 @@ import { TextInput } from "@/components/inputs/TextInput";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import {
@@ -833,6 +833,92 @@ function GenerateChecklistModal({
   );
 }
 
+function ChecklistItemRow({
+  value,
+  onChangeText,
+  onBlur,
+  onSubmitEditing,
+  blurOnSubmit = true,
+  onRemove,
+  placeholder,
+}: {
+  value: string;
+  onChangeText: (text: string) => void;
+  onBlur: () => void;
+  onSubmitEditing?: () => void;
+  blurOnSubmit?: boolean;
+  onRemove?: () => void;
+  placeholder?: string;
+}) {
+  const theme = useTheme();
+  const [editing, setEditing] = useState(false);
+  const inputRef = useRef<RNTextInput>(null);
+
+  function handlePress() {
+    setEditing(true);
+    setTimeout(() => inputRef.current?.focus(), 50);
+  }
+
+  function handleBlur() {
+    setEditing(false);
+    onBlur();
+  }
+
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        gap: theme.spacing.s,
+        paddingVertical: theme.spacing.xs,
+      }}
+    >
+      <Ionicons name="square-outline" size={22} color={theme.colors.gray3} />
+      {editing ? (
+        <RNTextInput
+          ref={inputRef}
+          value={value}
+          onChangeText={onChangeText}
+          onBlur={handleBlur}
+          placeholder={placeholder}
+          placeholderTextColor={theme.colors.gray3}
+          returnKeyType="done"
+          blurOnSubmit={blurOnSubmit}
+          onSubmitEditing={onSubmitEditing ?? handleBlur}
+          style={{
+            flex: 1,
+            borderBottomWidth: 1,
+            borderBottomColor: theme.colors.primary,
+            paddingVertical: 2,
+            fontSize: 15,
+            color: theme.colors.gray0,
+          }}
+        />
+      ) : (
+        <Pressable onPress={handlePress} style={{ flex: 1 }}>
+          <Subtitle
+            style={{
+              color: value ? theme.colors.gray0 : theme.colors.gray3,
+              fontSize: 15,
+            }}
+          >
+            {value || placeholder}
+          </Subtitle>
+        </Pressable>
+      )}
+      {onRemove !== undefined && value.length > 0 && (
+        <Pressable onPress={onRemove} hitSlop={8}>
+          <Ionicons
+            name="close-circle-outline"
+            size={20}
+            color={theme.colors.gray3}
+          />
+        </Pressable>
+      )}
+    </View>
+  );
+}
+
 export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -870,6 +956,9 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
     control,
     handleSubmit,
     reset,
+    watch,
+    setValue,
+    getValues,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
@@ -885,6 +974,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
     append: appendChecklist,
     remove: removeChecklist,
   } = useFieldArray({ control, name: "checklistItems" });
+  const [ghostText, setGhostText] = useState("");
 
   // Initialize form when editing and task is loaded
   React.useEffect(() => {
@@ -1154,45 +1244,52 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
             </View>
 
             {/* Checklist items */}
-            <View style={{ gap: theme.spacing.m, marginTop: theme.spacing.m }}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Subtitle style={{ color: theme.colors.gray2, flex: 1 }}>
-                  {t("tasks.checklist")}
-                </Subtitle>
-                <IonIconButton
-                  type="accent"
-                  icon="add"
-                  iconSize={18}
-                  color={theme.colors.primary}
-                  onPress={() => appendChecklist({ name: "" })}
-                />
-              </View>
+            <View style={{ marginTop: theme.spacing.m }}>
+              <Subtitle
+                style={{
+                  color: theme.colors.gray2,
+                  marginBottom: theme.spacing.xs,
+                }}
+              >
+                {t("tasks.checklist")}
+              </Subtitle>
               {checklistFields.map((field, index) => (
-                <View
+                <ChecklistItemRow
                   key={field.id}
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: theme.spacing.xs,
+                  value={watch(`checklistItems.${index}.name`)}
+                  onChangeText={(text) =>
+                    setValue(`checklistItems.${index}.name`, text)
+                  }
+                  onBlur={() => {
+                    if (
+                      getValues(`checklistItems.${index}.name`).trim() === ""
+                    ) {
+                      removeChecklist(index);
+                    }
                   }}
-                >
-                  <View style={{ flex: 1 }}>
-                    <RHTextInput
-                      name={`checklistItems.${index}.name`}
-                      control={control}
-                      placeholder={t("forms.labels.name")}
-                      hideLabel
-                    />
-                  </View>
-                  <Pressable onPress={() => removeChecklist(index)}>
-                    <Ionicons
-                      name="close-circle-outline"
-                      size={24}
-                      color={theme.colors.danger}
-                    />
-                  </Pressable>
-                </View>
+                  onRemove={() => removeChecklist(index)}
+                  placeholder={t("forms.labels.name")}
+                />
               ))}
+              {/* Ghost row — accumulates text locally; submit appends and stays focused for next item */}
+              <ChecklistItemRow
+                value={ghostText}
+                onChangeText={setGhostText}
+                onBlur={() => {
+                  if (ghostText.trim().length > 0) {
+                    appendChecklist({ name: ghostText.trim() });
+                    setGhostText("");
+                  }
+                }}
+                blurOnSubmit={false}
+                onSubmitEditing={() => {
+                  if (ghostText.trim().length > 0) {
+                    appendChecklist({ name: ghostText.trim() });
+                    setGhostText("");
+                  }
+                }}
+                placeholder={t("tasks.add_checklist_item")}
+              />
             </View>
 
             {/* Labels */}

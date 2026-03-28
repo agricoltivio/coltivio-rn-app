@@ -3,6 +3,7 @@ import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { Chip } from "@/components/chips/Chip";
+import { Card } from "@/components/card/Card";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
@@ -161,6 +162,39 @@ function recurrenceSummary(
       ? (unitSingular[value.frequency] ?? value.frequency)
       : (unitPlural[value.frequency] ?? value.frequency);
   return `${t("animals.every")} ${n} ${unit}`;
+}
+
+function SectionCard({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  const theme = useTheme();
+  const [open, setOpen] = useState(true);
+  return (
+    <Card style={{ marginTop: theme.spacing.m }}>
+      <Pressable
+        onPress={() => setOpen((v) => !v)}
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Subtitle style={{ color: theme.colors.gray2 }}>{label}</Subtitle>
+        <Ionicons
+          name={open ? "chevron-up" : "chevron-down"}
+          size={16}
+          color={theme.colors.gray2}
+        />
+      </Pressable>
+      {open && (
+        <View style={{ marginTop: theme.spacing.s }}>{children}</View>
+      )}
+    </Card>
+  );
 }
 
 export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
@@ -359,39 +393,23 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
 
           {/* Description */}
           {task.description != null && (
-            <View style={{ marginTop: theme.spacing.l }}>
-              <Subtitle
-                style={{
-                  color: theme.colors.gray2,
-                  marginBottom: theme.spacing.xxs,
-                }}
-              >
-                {t("forms.labels.description")}
-              </Subtitle>
+            <SectionCard label={t("forms.labels.description")}>
               <Subtitle>{task.description}</Subtitle>
-            </View>
+            </SectionCard>
           )}
 
           {/* Recurrence */}
           {task.recurrence != null && (
-            <Row label={t("tasks.recurrence")}>
+            <SectionCard label={t("tasks.recurrence")}>
               <Subtitle>
                 {recurrenceSummary(task.recurrence, (k) => t(k))}
               </Subtitle>
-            </Row>
+            </SectionCard>
           )}
 
           {/* Checklist */}
           {task.checklistItems.length > 0 && (
-            <View style={{ marginTop: theme.spacing.m }}>
-              <Subtitle
-                style={{
-                  color: theme.colors.gray2,
-                  marginBottom: theme.spacing.xs,
-                }}
-              >
-                {t("tasks.checklist")}
-              </Subtitle>
+            <SectionCard label={t("tasks.checklist")}>
               {task.checklistItems.map((item) => (
                 <Pressable
                   key={item.id}
@@ -411,72 +429,64 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
                   <Ionicons
                     name={item.done ? "checkbox" : "square-outline"}
                     size={22}
-                    color={
-                      item.done ? theme.colors.primary : theme.colors.gray3
-                    }
+                    color={item.done ? theme.colors.primary : theme.colors.gray3}
                   />
                   <View>
                     <Subtitle
                       style={
                         item.done
-                          ? {
-                              textDecorationLine: "line-through",
-                              color: theme.colors.gray3,
-                            }
+                          ? { textDecorationLine: "line-through", color: theme.colors.gray3 }
                           : undefined
                       }
                     >
                       {item.name}
                     </Subtitle>
                     {item.dueDate != null && (
-                      <Subtitle
-                        style={{ fontSize: 11, color: theme.colors.gray2 }}
-                      >
+                      <Subtitle style={{ fontSize: 11, color: theme.colors.gray2 }}>
                         {new Date(item.dueDate as string).toLocaleDateString()}
                       </Subtitle>
                     )}
                   </View>
                 </Pressable>
               ))}
-            </View>
+            </SectionCard>
           )}
 
           {/* Links */}
           {groupedLinks.length > 0 && (
-            <View style={{ gap: theme.spacing.s, marginTop: theme.spacing.m }}>
-              <Subtitle style={{ color: theme.colors.gray2 }}>
-                {t("tasks.links")}
-              </Subtitle>
-              {groupedLinks.map(({ linkType, items }) => {
-                const title: string =
-                  items.length === 1
-                    ? (items[0].displayName ?? items[0].linkedId)
-                    : `${items.length} ${linkTypePluralLabels[linkType]}`;
-                return (
-                  <View key={linkType} style={{ gap: theme.spacing.xs }}>
-                    <Subtitle style={{ color: theme.colors.gray2 }}>
-                      {linkTypeLabels[linkType]}
-                    </Subtitle>
-                    <ListItem
-                      style={{
-                        backgroundColor: theme.colors.white,
-                        borderRadius: 8,
-                        borderWidth: 1,
-                        borderColor: theme.colors.primary,
-                      }}
-                      onPress={() => openLinkGroup(linkType, items)}
-                    >
-                      <ListItem.Content>
-                        <ListItem.Title style={{ color: theme.colors.primary }}>
-                          {title}
-                        </ListItem.Title>
-                      </ListItem.Content>
-                      <ListItem.Chevron />
-                    </ListItem>
-                  </View>
-                );
-              })}
-            </View>
+            <SectionCard label={t("tasks.links")}>
+              <View style={{ gap: theme.spacing.s }}>
+                {groupedLinks.map(({ linkType, items }) => {
+                  const title: string =
+                    items.length === 1
+                      ? (items[0].displayName ?? items[0].linkedId)
+                      : `${items.length} ${linkTypePluralLabels[linkType]}`;
+                  return (
+                    <View key={linkType} style={{ gap: theme.spacing.xs }}>
+                      <Subtitle style={{ color: theme.colors.gray2 }}>
+                        {linkTypeLabels[linkType]}
+                      </Subtitle>
+                      <ListItem
+                        style={{
+                          backgroundColor: theme.colors.background,
+                          borderRadius: 8,
+                          borderWidth: 1,
+                          borderColor: theme.colors.primary,
+                        }}
+                        onPress={() => openLinkGroup(linkType, items)}
+                      >
+                        <ListItem.Content>
+                          <ListItem.Title style={{ color: theme.colors.primary }}>
+                            {title}
+                          </ListItem.Title>
+                        </ListItem.Content>
+                        <ListItem.Chevron />
+                      </ListItem>
+                    </View>
+                  );
+                })}
+              </View>
+            </SectionCard>
           )}
         </ScrollView>
       </ContentView>
@@ -492,17 +502,3 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
   );
 }
 
-type RowProps = { label: string; children: React.ReactNode };
-function Row({ label, children }: RowProps) {
-  const theme = useTheme();
-  return (
-    <View style={{ marginTop: theme.spacing.m }}>
-      <Subtitle
-        style={{ color: theme.colors.gray2, marginBottom: theme.spacing.xxs }}
-      >
-        {label}
-      </Subtitle>
-      {children}
-    </View>
-  );
-}
