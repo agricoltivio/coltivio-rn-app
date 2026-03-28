@@ -1,6 +1,6 @@
 import { H3 } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native";
+import { Keyboard, TouchableOpacity } from "react-native";
 import { useTheme } from "styled-components/native";
 
 export function NavigationButton({
@@ -18,7 +18,10 @@ export function NavigationButton({
   return (
     <TouchableOpacity
       disabled={disabled}
-      onPress={onPress}
+      onPress={() => {
+        Keyboard.dismiss();
+        onPress();
+      }}
       style={{
         alignItems: "center",
       }}
