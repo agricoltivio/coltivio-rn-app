@@ -21,6 +21,7 @@ import { useTranslation } from "react-i18next";
 import { Pressable, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
+import { useMembership } from "@/features/farms/farms.hooks";
 import { usePlotsMapContext } from "./plots-map-mode";
 
 export function PlotDetailsDrawer() {
@@ -29,6 +30,7 @@ export function PlotDetailsDrawer() {
   const { mode, dispatch, navigation } = usePlotsMapContext();
   // Use all plots (including size-0) so selecting a plot with no geometry still opens the drawer
   const { plots: allPlots } = useFarmPlotsQuery();
+  const { isActive: isMember } = useMembership();
 
   const [sheetIndex, setSheetIndex] = useState(0);
   const snapPoints = useMemo(() => [200, "85%"], []);
@@ -234,6 +236,7 @@ export function PlotDetailsDrawer() {
               </ListItem>
             </View>
 
+            {isMember && (
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate("PlotJournal", { plotId: selectedPlot.id })
@@ -266,6 +269,7 @@ export function PlotDetailsDrawer() {
                 {t("animals.journal")}
               </Body>
             </TouchableOpacity>
+            )}
 
             <Button
               style={{ marginTop: theme.spacing.m }}

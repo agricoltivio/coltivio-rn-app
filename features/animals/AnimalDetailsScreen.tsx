@@ -15,6 +15,7 @@ import {
   useDeleteAnimalMutation,
   useUpdateAnimalMutation,
 } from "./animals.hooks";
+import { useMembership } from "@/features/farms/farms.hooks";
 import { AnimalDetailsScreenProps } from "./navigation/animals-routes";
 import { formatLocalizedDate } from "@/utils/date";
 import { locale } from "@/locales/i18n";
@@ -28,6 +29,7 @@ export function AnimalDetailsScreen({
   const theme = useTheme();
   const animalId = route.params.animalId;
   const { animal } = useAnimalByIdQuery(animalId);
+  const { isActive: isMember } = useMembership();
 
   const deleteAnimalMutation = useDeleteAnimalMutation(() =>
     navigation.goBack(),
@@ -294,7 +296,8 @@ export function AnimalDetailsScreen({
           </View>
         )}
 
-        {/* Journal */}
+        {/* Journal — members only */}
+        {isMember && (
         <View style={{ marginTop: theme.spacing.l }}>
           <TouchableOpacity
             onPress={() => navigation.navigate("AnimalJournal", { animalId })}
@@ -316,6 +319,7 @@ export function AnimalDetailsScreen({
             </Subtitle>
           </TouchableOpacity>
         </View>
+        )}
 
         {/* Children */}
         <View style={{ marginTop: theme.spacing.l }}>

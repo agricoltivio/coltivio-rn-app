@@ -37,6 +37,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { farm } = useFarmQuery();
   const { isActive, isInGracePeriod, graceDaysRemaining } = useMembership();
   const { membershipStatus } = useMembershipStatusQuery();
+  const { isLoading: isFarmLoading } = useFarmQuery();
   const theme = useTheme();
   const { localSettings, updateLocalSettings } = useLocalSettings();
 
@@ -134,8 +135,10 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
     );
   const isCancelled =
     !membershipStatus?.autoRenewing || !!membershipStatus?.cancelAtPeriodEnd;
-  // Show expiry-soon banner only to the user who owns the membership
+  // Show expiry-soon banner only to the user who owns the membership.
+  // Guard on !isFarmLoading to avoid a flash while farm.membership.status is not yet known.
   const showExpirySoonBanner =
+    !isFarmLoading &&
     !!membershipStatus &&
     isCancelled &&
     !isBannerDismissed &&
@@ -145,7 +148,9 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
     daysUntilExpiry <= 10;
   // Show expired/grace notice to the user who had the membership.
   // isInGracePeriod means isActive=true, so we check it separately.
+  // Guard on !isFarmLoading for the same reason.
   const showExpiredBanner =
+    !isFarmLoading &&
     !!membershipStatus &&
     isCancelled &&
     !isBannerDismissed &&
