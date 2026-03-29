@@ -246,7 +246,7 @@
       },
       "modal_not_found": {
         "heading": "Il tuo numero azienda",
-        "body": "Purtroppo non abbiamo trovato particelle nella tua posizione. I cantoni Obvaldo, Nidvaldo e Vaud non sono ancora supportati. Puoi saltare questo passaggio e disegnare manualmente le superfici."
+        "body": "Purtroppo non abbiamo trovato particelle nella tua posizione. I cantoni Obvaldo, Nidvaldo e Vaud non sono ancora supportati. Puoi saltare questo passaggio e disegnare manualmente le superfici. Se il tuo cantone non è incluso, contattaci all'indirizzo support@coltivi.ch."
       },
       "confirmation": "{{federalFarmId}} è il tuo codice azienda agricola?",
       "select_on_map_hint": "Non conosci il tuo numero aziendale? Tocca qui per selezionare una parcella sulla mappa."

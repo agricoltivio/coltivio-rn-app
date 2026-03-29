@@ -246,7 +246,7 @@
       },
       "modal_not_found": {
         "heading": "Deine Betriebsnummer",
-        "body": "Leider haben wir keine Parzellen an deinem Standort gefunden. Die Kantone Obwalden, Nidwalden und Waadt sind leider noch nicht unterstützt. Du kannst diesen Schritt überspringen und die Flächen manuell einzeichnen."
+        "body": "Leider haben wir keine Parzellen an deinem Standort gefunden. Die Kantone Obwalden, Nidwalden und Waadt sind leider noch nicht unterstützt. Du kannst diesen Schritt überspringen und die Flächen manuell einzeichnen. Falls dein Kanton nicht dabei ist, kontaktiere uns bitte unter support@coltivi.ch."
       },
       "confirmation": "Ist {{federalFarmId}} deine Betriebsnummer?",
       "select_on_map_hint": "Betriebsnummer unbekannt? Hier tippen, um eine Parzelle auf der Karte auszuwählen."

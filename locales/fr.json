@@ -246,7 +246,7 @@
       },
       "modal_not_found": {
         "heading": "Votre numéro d'exploitation",
-        "body": "Malheureusement, nous n'avons trouvé aucun champ à votre emplacement. Les cantons Obwald, Nidwald et Vaud ne sont pas encore pris en charge. Vous pouvez passer cette étape et dessiner les champs manuellement."
+        "body": "Malheureusement, nous n'avons trouvé aucun champ à votre emplacement. Les cantons Obwald, Nidwald et Vaud ne sont pas encore pris en charge. Vous pouvez passer cette étape et dessiner les champs manuellement. Si votre canton ne figure pas dans la liste, veuillez nous contacter à support@coltivi.ch."
       },
       "confirmation": "Est-ce que {{federalFarmId}} est votre numéro d'enregistrement de l'exploitation agricole ?",
       "select_on_map_hint": "Numéro d'exploitation inconnu ? Appuyez ici pour sélectionner une parcelle sur la carte."

@@ -246,7 +246,7 @@
       },
       "modal_not_found": {
         "heading": "Your Farm Registration Number",
-        "body": "Unfortunately, we could not find any parcels at your location. The Cantons of Obwalden, Nidwalden and Waadt are unfortunately not yet supported. You can skip this step and manually draw your plots."
+        "body": "Unfortunately, we could not find any parcels at your location. The Cantons of Obwalden, Nidwalden and Waadt are unfortunately not yet supported. You can skip this step and manually draw your plots. If your canton is not listed, please contact us at support@coltivi.ch."
       },
       "confirmation": "Is {{federalFarmId}} your farm registration number?",
       "select_on_map_hint": "Don't know your farm number? Tap here to select a parcel on the map."

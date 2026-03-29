@@ -31,7 +31,7 @@ export function SelectFederalFarmIdScreen({
   const insets = useSafeAreaInsets();
   const { data, setData } = useOnboarding();
 
-  const { plots } = usePlotsByLocationQuery(data.location!, 1, !!data.location);
+  const { plots, isFetching: isFetchingPlots } = usePlotsByLocationQuery(data.location!, 1, !!data.location);
 
   const [searchText, setSearchText] = useState("");
   const debouncedSearchText = useDebounce(searchText, 800);
@@ -91,20 +91,28 @@ export function SelectFederalFarmIdScreen({
             value={searchText}
             onChangeText={setSearchText}
           />
-          <Pressable
-            onPress={() => navigation.navigate("SelectFederalFarmIdParcelMap")}
-          >
-            <Card>
-              <Text
-                style={{
-                  color: theme.colors.primary,
-                  fontSize: 15,
-                }}
-              >
-                {t("onboarding.federal_farm_number.select_on_map_hint")}
+          {!isFetchingPlots && uniqueFarmIds.length === 0 && searchText === "" ? (
+            <Card style={{ backgroundColor: theme.colors.yellow }}>
+              <Text style={{ fontSize: 15, color: theme.colors.black }}>
+                {t("onboarding.federal_farm_number.modal_not_found.body")}
               </Text>
             </Card>
-          </Pressable>
+          ) : (
+            <Pressable
+              onPress={() => navigation.navigate("SelectFederalFarmIdParcelMap")}
+            >
+              <Card>
+                <Text
+                  style={{
+                    color: theme.colors.primary,
+                    fontSize: 15,
+                  }}
+                >
+                  {t("onboarding.federal_farm_number.select_on_map_hint")}
+                </Text>
+              </Card>
+            </Pressable>
+          )}
           {displayedIds.map((farmId) => (
             <Pressable key={farmId} onPress={() => setSelectedFarmId(farmId)}>
               <Card>
