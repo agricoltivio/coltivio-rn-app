@@ -5,6 +5,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
 import { H2 } from "@/theme/Typography";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Fuse from "fuse.js";
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -94,8 +95,9 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
     if (activeLabels.size > 0) {
       result = result.filter((t) => t.labels.some((l) => activeLabels.has(l)));
     }
-    // Sort by due date ascending (no due date goes last), then alphabetically
+    // Pinned tasks float to the top, then sort by due date ascending, then alphabetically
     return [...result].sort((a, b) => {
+      if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
       if (a.dueDate != null && b.dueDate != null) {
         return (
           new Date(a.dueDate as string).getTime() -
@@ -160,6 +162,14 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
             </View>
           )}
         </ListItem.Content>
+        {item.pinned && (
+          <MaterialCommunityIcons
+            name="pin"
+            size={16}
+            color={theme.colors.primary}
+            style={{ marginRight: theme.spacing.xs }}
+          />
+        )}
         <ListItem.Chevron />
       </ListItem>
     );

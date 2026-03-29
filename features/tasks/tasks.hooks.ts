@@ -71,6 +71,17 @@ export function useSetTaskStatusMutation(taskId: string) {
   });
 }
 
+export function useTogglePinMutation(taskId: string) {
+  const queryClient = useQueryClient();
+  const api = useApi();
+  return useMutation({
+    mutationFn: (pinned: boolean) => api.tasks.updateTask(taskId, { pinned }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.tasks._def });
+    },
+  });
+}
+
 export function useToggleChecklistItemMutation(taskId: string) {
   const queryClient = useQueryClient();
   const api = useApi();

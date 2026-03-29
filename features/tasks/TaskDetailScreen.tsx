@@ -1,6 +1,4 @@
 import { TaskDetail } from "@/api/tasks.api";
-import { Button } from "@/components/buttons/Button";
-import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { Chip } from "@/components/chips/Chip";
 import { Card } from "@/components/card/Card";
@@ -9,6 +7,7 @@ import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
+import { IonIconButton, MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -27,6 +26,7 @@ import {
   useSetTaskStatusMutation,
   useTaskDetailQuery,
   useToggleChecklistItemMutation,
+  useTogglePinMutation,
 } from "./tasks.hooks";
 import { TaskDetailScreenProps } from "./navigation/tasks-routes";
 
@@ -228,6 +228,7 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
   const setStatusMutation = useSetTaskStatusMutation(taskId);
   const toggleChecklistMutation = useToggleChecklistItemMutation(taskId);
   const deleteMutation = useDeleteTaskMutation(() => navigation.goBack());
+  const togglePinMutation = useTogglePinMutation(taskId);
 
   const [linkDetailVisible, setLinkDetailVisible] = useState(false);
   const [linkDetailItems, setLinkDetailItems] = useState<TaskDetail["links"]>(
@@ -236,25 +237,8 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
   const [linkDetailType, setLinkDetailType] = useState<LinkType>("animal");
 
   React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <View style={{ flexDirection: "row" }}>
-          <Ionicons
-            name="create-outline"
-            size={35}
-            color={theme.colors.primary}
-            onPress={() => navigation.navigate("TaskForm", { taskId })}
-          />
-          <Ionicons
-            name="trash-outline"
-            size={35}
-            color={theme.colors.danger}
-            onPress={onDeletePress}
-          />
-        </View>
-      ),
-    });
-  }, [navigation, task]);
+    navigation.setOptions({ headerRight: () => null });
+  }, [navigation]);
 
   function onDeletePress() {
     Alert.alert(t("tasks.delete_confirm"), t("tasks.delete_confirm_message"), [
@@ -331,24 +315,35 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
 
   return (
     <>
-      <ContentView
-        headerVisible
-        footerComponent={
-          <BottomActionContainer>
-            <Button
-              title={
-                task.status === "done"
-                  ? t("tasks.reopen")
-                  : t("tasks.mark_done")
-              }
-              onPress={onToggleStatus}
-              loading={setStatusMutation.isPending}
-            />
-          </BottomActionContainer>
-        }
-      >
+      <ContentView headerVisible>
         <ScrollView>
-          <H2>{task.name}</H2>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}>
+            <H2 style={{ flex: 1 }}>{task.name}</H2>
+            <MaterialCommunityIconButton
+              icon={task.pinned ? "pin" : "pin-outline"}
+              type={task.pinned ? "primary" : "accent"}
+              color={task.pinned ? "white" : theme.colors.primary}
+              onPress={() => togglePinMutation.mutate(!task.pinned)}
+            />
+            <IonIconButton
+              icon={task.status === "done" ? "checkmark-circle" : "checkmark-circle-outline"}
+              type={task.status === "done" ? "success" : "accent"}
+              color={task.status === "done" ? "white" : theme.colors.success}
+              loading={setStatusMutation.isPending}
+              onPress={onToggleStatus}
+            />
+            <IonIconButton
+              icon="create-outline"
+              type="accent"
+              color={theme.colors.primary}
+              onPress={() => navigation.navigate("TaskForm", { taskId })}
+            />
+            <IonIconButton
+              icon="trash-outline"
+              type="danger"
+              onPress={onDeletePress}
+            />
+          </View>
 
           {/* Status + due date + assignee + labels as chips */}
           {(task.status === "done" ||
