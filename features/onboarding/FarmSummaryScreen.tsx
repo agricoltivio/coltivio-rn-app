@@ -9,17 +9,13 @@ import { NavigationButton } from "./NavigationButton";
 import { useOnboarding } from "./OnboardingContext";
 import { Stepper } from "./Stepper";
 import { FarmSummaryPage } from "./pages/FarmSummaryPage";
-import { makeRedirectUri } from "expo-auth-session";
 import { supabase } from "@/supabase/supabase";
 import { useSession } from "@/auth/SessionProvider";
 import { useUserQuery } from "../user/users.hooks";
 import { useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/cache/query-keys";
 
-const redirectTo = makeRedirectUri({
-  scheme: "ch.agricoltivio.coltivio",
-  path: "EmailVerified",
-});
+const redirectTo = `${process.env.EXPO_PUBLIC_WEB_URL}/auth/confirm`;
 
 export function FarmSummaryScreen({ navigation }: FarmSummaryScreenProps) {
   const { t } = useTranslation();

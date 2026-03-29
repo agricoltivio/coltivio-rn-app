@@ -6,7 +6,6 @@ import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
 import { supabase } from "@/supabase/supabase";
 import { Body, H2 } from "@/theme/Typography";
-import { makeRedirectUri } from "expo-auth-session";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -15,10 +14,7 @@ import { useTheme } from "styled-components/native";
 import { ChangeEmailScreenProps } from "./navigation/user-routes";
 import { useUpdateUserMutation, useUserQuery } from "./users.hooks";
 
-const redirectTo = makeRedirectUri({
-  scheme: "ch.agricoltivio.coltivio",
-  path: "EmailVerified",
-});
+const redirectTo = `${process.env.EXPO_PUBLIC_WEB_URL}/auth/confirm`;
 
 export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
   const { t } = useTranslation();

@@ -8,16 +8,12 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { makeRedirectUri } from "expo-auth-session";
 import { supabase } from "@/supabase/supabase";
 import { useState } from "react";
 import { ForgotPasswordScreenProps } from "@/features/auth/navigation/auth-routes";
 import { isLength } from "lodash";
 
-const redirectTo = makeRedirectUri({
-  scheme: "ch.agricoltivio.coltivio",
-  path: "ResetPassword",
-});
+const redirectTo = `${process.env.EXPO_PUBLIC_WEB_URL}/reset-password`;
 
 export function ForgotPasswordScreen({
   navigation,
