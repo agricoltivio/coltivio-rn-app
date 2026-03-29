@@ -5,7 +5,7 @@ export default ({ config }) => {
     name: "coltivio",
     slug: "coltivio",
     owner: "agricoltivio",
-    version: "1.0.1",
+    version: "1.0.2",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
     scheme: process.env.SCHEME,
