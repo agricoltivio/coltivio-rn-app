@@ -163,12 +163,13 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
           )}
         </ListItem.Content>
         {item.pinned && (
-          <MaterialCommunityIcons
-            name="pin"
-            size={16}
-            color={theme.colors.primary}
-            style={{ marginRight: theme.spacing.xs }}
-          />
+          <View style={{ justifyContent: "center", alignItems: "center", width: 28 }}>
+            <MaterialCommunityIcons
+              name="pin"
+              size={16}
+              color={theme.colors.gray3}
+            />
+          </View>
         )}
         <ListItem.Chevron />
       </ListItem>

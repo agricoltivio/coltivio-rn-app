@@ -1267,7 +1267,8 @@
     "title": "Configure Home Screen",
     "active_tiles": "Active Elements",
     "hidden_tiles": "Hidden Tiles",
-    "show_tiles": "Show tiles"
+    "show_tiles": "Show tiles",
+    "show_upcoming_tasks": "Show upcoming tasks"
   },
   "permissions": {
     "location": {

@@ -44,6 +44,7 @@ type LocalSettingsData = {
   speedDialItems: SpeedDialActionConfig[];
   homeTiles: HomeTileConfig[];
   homeTilesLayout: "grid" | "list";
+  showUpcomingTasks: boolean;
   wikiOnlyPrivate: boolean;
   wikiOnboardingCompleted: boolean;
   tasksOnboardingCompleted: boolean;
@@ -88,6 +89,7 @@ export const defaultLocalSettings: LocalSettingsData = {
   speedDialItems: DEFAULT_SPEED_DIAL_ITEMS,
   homeTiles: DEFAULT_HOME_TILES,
   homeTilesLayout: "list",
+  showUpcomingTasks: true,
   wikiOnlyPrivate: false,
   wikiOnboardingCompleted: false,
   tasksOnboardingCompleted: false,

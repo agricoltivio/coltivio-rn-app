@@ -1267,7 +1267,8 @@
     "title": "Configura schermata principale",
     "active_tiles": "Elementi attivi",
     "hidden_tiles": "Riquadri nascosti",
-    "show_tiles": "Mostra riquadri"
+    "show_tiles": "Mostra riquadri",
+    "show_upcoming_tasks": "Mostra attività imminenti"
   },
   "permissions": {
     "location": {

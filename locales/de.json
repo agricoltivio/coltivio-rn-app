@@ -283,6 +283,8 @@
   },
   "home": {
     "welcome_text": "Hallo {{displayName}},",
+    "upcoming_tasks": "Anstehende Aufgaben",
+    "no_upcoming_tasks": "Keine anstehenden Aufgaben in den nächsten 3 Tagen",
     "tiles": {
       "farm": "Mein Hof",
       "plots": "Schläge",
@@ -1286,7 +1288,8 @@
     "title": "Startseite konfigurieren",
     "active_tiles": "Aktive Elemente",
     "hidden_tiles": "Versteckte Kacheln",
-    "show_tiles": "Kacheln anzeigen"
+    "show_tiles": "Kacheln anzeigen",
+    "show_upcoming_tasks": "Anstehende Aufgaben anzeigen"
   },
   "permissions": {
     "location": {

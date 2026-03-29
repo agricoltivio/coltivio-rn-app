@@ -1267,7 +1267,8 @@
     "title": "Configurer l'accueil",
     "active_tiles": "Éléments actifs",
     "hidden_tiles": "Tuiles masquées",
-    "show_tiles": "Afficher les tuiles"
+    "show_tiles": "Afficher les tuiles",
+    "show_upcoming_tasks": "Afficher les tâches à venir"
   },
   "permissions": {
     "location": {

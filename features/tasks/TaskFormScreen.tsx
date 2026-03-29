@@ -1015,7 +1015,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
   }, [task, isEditing, initialized]);
 
   const createMutation = useCreateTaskMutation(() => {
-    navigation.navigate("TaskList");
+    navigation.popTo("TaskList");
   });
 
   const updateMutation = useUpdateTaskMutation(taskId ?? "", () => {

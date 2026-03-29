@@ -28,6 +28,7 @@ import { useLocalSettings } from "../user/LocalSettingsContext";
 import { useUserQuery } from "../user/users.hooks";
 import { HomeTile } from "./HomeTile";
 import { HOME_TILES } from "./home-tiles-settings";
+import { UpcomingTasksTile } from "./UpcomingTasksTile";
 import { HomeScreenProps } from "./navigation/home-routes";
 import { SPEED_DIAL_ACTIONS } from "./speed-dial-settings";
 
@@ -261,6 +262,10 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
               <MapTile />
             </View>
           </View>
+
+          {isActive && localSettings.showUpcomingTasks && (
+            <UpcomingTasksTile />
+          )}
 
           {isList ? (
             // List layout: full-width rows with small image icon and chevron

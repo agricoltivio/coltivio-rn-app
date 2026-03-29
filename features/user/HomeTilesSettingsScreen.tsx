@@ -11,12 +11,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
+import { useMembership } from "@/features/farms/farms.hooks";
 import { useLocalSettings } from "./LocalSettingsContext";
 
 export function HomeTilesSettingsScreen() {
   const { t } = useTranslation();
   const theme = useTheme();
   const { localSettings, updateLocalSettings } = useLocalSettings();
+  const { isActive } = useMembership();
 
   const tiles = localSettings.homeTiles;
   const visibleTiles = tiles.filter((i) => i.visible);
@@ -79,6 +81,17 @@ export function HomeTilesSettingsScreen() {
             marginTop: theme.spacing.m,
           }}
         />
+
+        {isActive && (
+          <Switch
+            label={t("home_tiles.show_upcoming_tasks")}
+            value={localSettings.showUpcomingTasks}
+            onChange={(e) =>
+              updateLocalSettings("showUpcomingTasks", e.nativeEvent.value)
+            }
+            style={{ paddingVertical: theme.spacing.s }}
+          />
+        )}
 
         {/* Visible tiles with reorder and remove */}
         <View
