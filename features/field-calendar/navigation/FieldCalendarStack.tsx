@@ -1,5 +1,5 @@
 import { Stack } from "@/navigation/stack";
-import { Ionicons } from "@expo/vector-icons";
+import { IonIconButton } from "@/components/buttons/IconButton";
 import { FieldCalendarExportScreen } from "../FieldCalendarExportScreen";
 import { FieldCalendarExportSuccessScreen } from "../FieldCalendarExportSuccessScreen";
 import { FieldCalendarScreen } from "../FieldCalendarScreen";
@@ -18,22 +18,18 @@ export function renderFieldCalendarStack(theme: DefaultTheme, navigation: any) {
         title: "",
         headerRight() {
           return (
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: theme.spacing.m,
-              }}
-            >
-              <Ionicons
-                size={35}
-                name="settings-outline"
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <IonIconButton
+                icon="settings-outline"
+                type="ghost"
+                iconSize={30}
                 color={theme.colors.primary}
                 onPress={() => navigation.navigate("FieldCalendarSettings")}
               />
-              <Ionicons
-                size={35}
-                name="share-outline"
+              <IonIconButton
+                icon="share-outline"
+                type="ghost"
+                iconSize={30}
                 color={theme.colors.primary}
                 onPress={() => navigation.navigate("FieldCalendarExport")}
               />

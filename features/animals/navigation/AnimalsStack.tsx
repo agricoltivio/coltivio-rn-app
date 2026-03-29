@@ -33,7 +33,7 @@ import { ManageAnimalCategoriesScreen } from "../ManageAnimalCategoriesScreen";
 import { AnimalJournalScreen } from "../AnimalJournalScreen";
 import { AnimalJournalEntryScreen } from "../AnimalJournalEntryScreen";
 import { AnimalJournalEntryFormScreen } from "../AnimalJournalEntryFormScreen";
-import { Ionicons } from "@expo/vector-icons";
+import { IonIconButton } from "@/components/buttons/IconButton";
 import { DefaultTheme } from "styled-components/native";
 
 export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
@@ -45,9 +45,10 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
         title: "",
         headerRight() {
           return (
-            <Ionicons
-              size={35}
-              name="settings-outline"
+            <IonIconButton
+              icon="settings-outline"
+              type="ghost"
+              iconSize={30}
               color={theme.colors.primary}
               onPress={() => navigation.navigate("AnimalsSettings")}
             />
@@ -129,9 +130,10 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
         title: "",
         headerRight() {
           return (
-            <Ionicons
-              size={35}
-              name="share-outline"
+            <IonIconButton
+              icon="share-outline"
+              type="ghost"
+              iconSize={30}
               color={theme.colors.primary}
               onPress={() => navigation.navigate("TreatmentsExport")}
             />
@@ -207,9 +209,10 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
         title: "",
         headerRight() {
           return (
-            <Ionicons
-              size={35}
-              name="share-outline"
+            <IonIconButton
+              icon="share-outline"
+              type="ghost"
+              iconSize={30}
               color={theme.colors.primary}
               onPress={() => navigation.navigate("OutdoorJournalExport")}
             />

@@ -1,5 +1,5 @@
 import { Stack } from "@/navigation/stack";
-import { Ionicons } from "@expo/vector-icons";
+import { IonIconButton } from "@/components/buttons/IconButton";
 import { DefaultTheme } from "styled-components/native";
 import { HomeScreen } from "../HomeScreen";
 import { SpeedDialOnboardingScreen } from "../SpeedDialOnboardingScreen";
@@ -14,24 +14,27 @@ export function renderHomeStack(theme: DefaultTheme, navigation: any) {
       options={{
         title: "",
 
-        headerRight(props) {
+        headerRight() {
           return (
-            <View style={{ flexDirection: "row" }}>
-              <Ionicons
-                size={35}
-                name="settings-outline"
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <IonIconButton
+                icon="settings-outline"
+                type="ghost"
+                iconSize={30}
                 color={theme.colors.primary}
                 onPress={() => navigation.navigate("AppSettings")}
               />
-              <Ionicons
-                size={40}
-                name="information-circle-outline"
+              <IonIconButton
+                icon="information-circle-outline"
+                type="ghost"
+                iconSize={30}
                 color={theme.colors.primary}
                 onPress={() => navigation.navigate("AgriColtivioInfo")}
               />
-              <Ionicons
-                size={40}
-                name="person-circle-outline"
+              <IonIconButton
+                icon="person-circle-outline"
+                type="ghost"
+                iconSize={30}
                 color={theme.colors.primary}
                 onPress={() => navigation.navigate("UserAccount")}
               />

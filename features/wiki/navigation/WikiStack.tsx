@@ -1,5 +1,5 @@
 import { Stack } from "@/navigation/stack";
-import { Ionicons } from "@expo/vector-icons";
+import { IonIconButton } from "@/components/buttons/IconButton";
 import { DefaultTheme } from "styled-components/native";
 import { WikiListScreen } from "../WikiListScreen";
 import { WikiDetailScreen } from "../WikiDetailScreen";
@@ -18,9 +18,10 @@ export function renderWikiStack(theme: DefaultTheme, navigation: any) {
         title: "",
         headerRight() {
           return (
-            <Ionicons
-              size={35}
-              name="settings-outline"
+            <IonIconButton
+              icon="settings-outline"
+              type="ghost"
+              iconSize={30}
               color={theme.colors.primary}
               onPress={() => navigation.navigate("WikiSettings")}
             />

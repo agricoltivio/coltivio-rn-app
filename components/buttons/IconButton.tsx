@@ -11,7 +11,7 @@ type ButtonBaseProps = {
   onPress?: () => void;
   style?: StyleProp<ViewStyle>;
   disabled?: boolean;
-  type?: "primary" | "secondary" | "accent" | "danger" | "success";
+  type?: "primary" | "secondary" | "accent" | "danger" | "success" | "ghost";
   loading?: boolean;
   children: React.ReactNode;
 };
@@ -20,7 +20,7 @@ export type IconButtonProps = {
   onPress?: () => void;
   style?: StyleProp<ViewStyle>;
   disabled?: boolean;
-  type?: "primary" | "secondary" | "accent" | "danger" | "success";
+  type?: "primary" | "secondary" | "accent" | "danger" | "success" | "ghost";
   loading?: boolean;
   iconSize?: number;
   color?: string;
@@ -103,7 +103,7 @@ export function MaterialIconButton({
 }
 
 const ButtonContainer = styled.TouchableOpacity<{
-  type: "primary" | "secondary" | "accent" | "danger" | "success";
+  type: "primary" | "secondary" | "accent" | "danger" | "success" | "ghost";
   disabled?: boolean;
 }>`
   flex-direction: row;
@@ -112,8 +112,10 @@ const ButtonContainer = styled.TouchableOpacity<{
       ? theme.colors.gray3
       : type === "accent"
         ? theme.colors.white
-        : theme.colors[type]};
-  padding: 5px;
+        : type === "ghost"
+          ? "transparent"
+          : theme.colors[type]};
+  padding: ${({ type }) => type === "ghost" ? "0px 4px" : "5px"};
   border-radius: ${({ theme }) => theme.radii.m}px;
   border: ${({ theme, type }) =>
     type === "accent" ? `1px solid ${theme.colors.primary}` : "none"};
