@@ -164,7 +164,7 @@ export function OutdoorJournalScreen({
               borderRadius: 10,
               padding: theme.spacing.m,
               borderLeftWidth: 4,
-              borderLeftColor: theme.colors.yellow,
+              borderLeftColor: theme.colors.warning,
               flexDirection: "row",
               alignItems: "center",
               gap: theme.spacing.xs,
@@ -173,7 +173,7 @@ export function OutdoorJournalScreen({
             <Ionicons
               name="alert-circle"
               size={20}
-              color={theme.colors.yellow}
+              color={theme.colors.warning}
             />
             <Subtitle style={{ flex: 1 }}>
               {t("animals.uncategorized_animals_warning", {

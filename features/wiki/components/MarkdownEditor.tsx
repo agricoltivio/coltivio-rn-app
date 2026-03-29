@@ -322,6 +322,6 @@ const PreviewText = styled.Text`
 
 const CloseText = styled.Text`
   font-size: 16px;
-  color: ${({ theme }) => theme.colors.mocha};
+  color: ${({ theme }) => theme.colors.buttonPrimary};
   font-weight: 600;
 `;

@@ -113,7 +113,7 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
                 <View
                   style={{
                     borderRadius: 10,
-                    backgroundColor: theme.colors.yellow,
+                    backgroundColor: theme.colors.warning,
                     opacity: 0.7,
                     marginTop: theme.spacing.m,
                     padding: theme.spacing.s,
@@ -139,7 +139,7 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
             <View
               style={{
                 borderRadius: 10,
-                backgroundColor: theme.colors.yellow,
+                backgroundColor: theme.colors.warning,
                 opacity: 0.7,
                 marginTop: theme.spacing.m,
                 padding: theme.spacing.s,

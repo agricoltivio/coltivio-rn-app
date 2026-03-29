@@ -2,24 +2,16 @@ export interface ColtivioTheme {
   colors: {
     background: string;
     text: string;
-    primaryText: string;
     primary: string;
-    secondary: string;
+    secondary: string; // semantic: secondary button fill (lavender)
     accent: string;
+    buttonPrimary: string; // primary filled button background
+    amber: string; // orange accent — wiki, map polygon highlights
     success: string;
     danger: string;
-    error: string;
-    failure: string;
-    yellow: string;
-    black: string;
-    darkBlue: string;
+    warning: string;
     blue: string;
-    orchid: string;
-    amethyst: string;
-    lavender: string;
-    purple: string;
-    mauve: string;
-    mocha: string;
+    black: string;
     gray0: string;
     gray1: string;
     gray2: string;
@@ -74,25 +66,15 @@ export const coltivioTheme: ColtivioTheme = {
     // background: "#9ca498",
     // background: hexToRgba("#212123", 0.3),
     text: "#212123",
-    primaryText: "#2a5159",
-    // primary: "#8C4227 ",
     primary: "#2a5159",
-    secondary: "#DB751D", // https://mobilepalette.netlify.app/?color=2a5159
+    secondary: "#9b8bb4", // lavender — secondary button fill
     accent: "#F4FAFB",
-    // #85A60F additional one
+    buttonPrimary: "#8b6b55", // mocha — primary filled button background
+    amber: "#DB751D", // wiki styling, map polygon highlights, sign-in accent
     success: "#85A60F",
     danger: "#CD0E61",
-    failure: "#CD0E61",
-    yellow: "#FFC745",
-    darkBlue: "1E3A8A",
+    warning: "#FFC745",
     blue: "#4285F4",
-    orchid: "#b284be",
-    amethyst: "#7a4f9e",
-    mauve: "#8a6878",
-    mocha: "#8b6b55",
-    lavender: "#9b8bb4",
-    purple: "#5d3b5c",
-    error: "#CD0E61",
     black: "#212123",
     gray0: "#111111",
     gray1: "#555555",

@@ -83,7 +83,7 @@ export function SpeedDial({ items }: SpeedDialProps) {
               width: MAIN_SIZE,
               height: MAIN_SIZE,
               borderRadius: MAIN_SIZE / 2,
-              shadowColor: theme.colors.amethyst,
+              shadowColor: theme.colors.buttonPrimary,
               shadowOffset: { width: 0, height: 6 },
               shadowOpacity: 0.7,
               shadowRadius: 5,
@@ -93,7 +93,7 @@ export function SpeedDial({ items }: SpeedDialProps) {
           ]}
         >
           <LinearGradient
-            colors={[`${theme.colors.mocha}dd`, theme.colors.mocha]}
+            colors={[`${theme.colors.buttonPrimary}dd`, theme.colors.buttonPrimary]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={{

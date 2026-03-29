@@ -48,7 +48,7 @@ const ButtonContainer = styled.TouchableOpacity<{
     disabled
       ? theme.colors.gray3
       : type === "primary"
-        ? theme.colors.mocha
+        ? theme.colors.buttonPrimary
         : type === "accent"
           ? theme.colors.white
           : theme.colors[type]};

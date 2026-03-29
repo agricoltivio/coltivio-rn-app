@@ -105,7 +105,7 @@ export function DeleteFarmScreen({}: DeleteFarmScreenProps) {
         {deleteAccount && hasMembershipActive ? (
           <Card
             style={{
-              backgroundColor: theme.colors.yellow,
+              backgroundColor: theme.colors.warning,
               marginTop: theme.spacing.m,
             }}
           >

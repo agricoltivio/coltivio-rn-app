@@ -92,7 +92,7 @@ export function SelectFederalFarmIdScreen({
             onChangeText={setSearchText}
           />
           {!isFetchingPlots && uniqueFarmIds.length === 0 && searchText === "" ? (
-            <Card style={{ backgroundColor: theme.colors.yellow }}>
+            <Card style={{ backgroundColor: theme.colors.warning }}>
               <Text style={{ fontSize: 15, color: theme.colors.black }}>
                 {t("onboarding.federal_farm_number.modal_not_found.body")}
               </Text>

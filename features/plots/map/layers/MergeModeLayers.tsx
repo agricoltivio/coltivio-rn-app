@@ -33,7 +33,7 @@ export function MergeModeLayers() {
     <PlotsLayer
       plots={visiblePlots}
       selectedPlotIds={selectedPlotIds}
-      selectedColor={theme.colors.secondary}
+      selectedColor={theme.colors.amber}
       onPlotPress={handlePlotPress}
       showZoomLabels
     />

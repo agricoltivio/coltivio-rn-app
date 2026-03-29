@@ -278,7 +278,7 @@ const LocaleTab = styled(TouchableOpacity)<{ active: boolean }>`
   align-items: center;
   border-radius: ${({ theme }) => theme.radii.s}px;
   background-color: ${({ theme, active }) =>
-    active ? theme.colors.mocha : theme.colors.gray5};
+    active ? theme.colors.buttonPrimary : theme.colors.gray5};
 `;
 
 const LocaleTabLabel = styled.Text<{ active: boolean }>`
@@ -289,7 +289,7 @@ const LocaleTabLabel = styled.Text<{ active: boolean }>`
 `;
 
 const FooterButton = styled.TouchableOpacity`
-  background-color: ${({ theme }) => theme.colors.mocha};
+  background-color: ${({ theme }) => theme.colors.buttonPrimary};
   border-radius: ${({ theme }) => theme.radii.m}px;
   padding-vertical: ${({ theme }) => theme.spacing.m}px;
   align-items: center;

@@ -300,7 +300,7 @@ export function SelectPlotsMap({
                   id="selected-areas-fill"
                   paint={{
                     "fill-color": hexToRgba(
-                      theme.colors.secondary,
+                      theme.colors.amber,
                       theme.map.defaultFillAlpha,
                     ),
                     "fill-opacity": 1,

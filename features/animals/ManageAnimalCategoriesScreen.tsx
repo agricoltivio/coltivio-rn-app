@@ -196,7 +196,7 @@ export function ManageAnimalCategoriesScreen({
               borderRadius: 10,
               padding: theme.spacing.m,
               borderLeftWidth: 4,
-              borderLeftColor: theme.colors.yellow,
+              borderLeftColor: theme.colors.warning,
               flexDirection: "row",
               alignItems: "center",
               gap: theme.spacing.xs,
@@ -205,7 +205,7 @@ export function ManageAnimalCategoriesScreen({
             <Ionicons
               name="alert-circle"
               size={20}
-              color={theme.colors.yellow}
+              color={theme.colors.warning}
             />
             <Subtitle style={{ flex: 1 }}>
               {t("animals.category_overlap_warning")}
@@ -230,7 +230,7 @@ export function ManageAnimalCategoriesScreen({
                 gap: theme.spacing.s,
                 ...(overlappingIndices.has(index) && {
                   borderWidth: 1,
-                  borderColor: theme.colors.yellow,
+                  borderColor: theme.colors.warning,
                 }),
               }}
             >

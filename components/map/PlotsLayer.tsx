@@ -108,7 +108,7 @@ export function PlotsLayer({
             "line-color": [
               "case",
               ["==", ["get", "selected"], 1],
-              theme.colors.yellow,
+              theme.colors.warning,
               "white",
             ],
             "line-width": [

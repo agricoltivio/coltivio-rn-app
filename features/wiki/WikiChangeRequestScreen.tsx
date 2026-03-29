@@ -175,7 +175,7 @@ export function WikiChangeRequestScreen({
             onPress={handleSubmit(onSubmit)}
             disabled={isPending}
             style={{
-              backgroundColor: theme.colors.mocha,
+              backgroundColor: theme.colors.buttonPrimary,
               borderRadius: theme.radii.m,
               paddingVertical: theme.spacing.m,
               alignItems: "center",
@@ -196,7 +196,7 @@ const LocaleTab = styled(TouchableOpacity)<{ active: boolean }>`
   align-items: center;
   border-radius: ${({ theme }) => theme.radii.s}px;
   background-color: ${({ theme, active }) =>
-    active ? theme.colors.mocha : theme.colors.gray5};
+    active ? theme.colors.buttonPrimary : theme.colors.gray5};
 `;
 
 const LocaleTabLabel = styled.Text<{ active: boolean }>`

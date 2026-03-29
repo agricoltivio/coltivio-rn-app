@@ -422,7 +422,7 @@ export function CreateTreatmentScreen({
                 borderRadius: 10,
                 padding: theme.spacing.m,
                 borderLeftWidth: 4,
-                borderLeftColor: theme.colors.yellow,
+                borderLeftColor: theme.colors.warning,
               }}
             >
               <Subtitle style={{ color: theme.colors.gray1 }}>

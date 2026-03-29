@@ -117,7 +117,7 @@ export const MapLibreMap = forwardRef<MapRef, MapLibreMapProps>(
 
         {(loading || !mapReady) && (
           <View style={styles.loadingOverlay}>
-            <ActivityIndicator size="large" color={theme.colors.secondary} />
+            <ActivityIndicator size="large" color={theme.colors.amber} />
           </View>
         )}
       </View>

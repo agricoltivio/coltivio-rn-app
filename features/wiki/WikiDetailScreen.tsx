@@ -202,8 +202,8 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
             {hasChangesRequested && (
               <Chip
                 style={{
-                  backgroundColor: theme.colors.secondary,
-                  borderColor: theme.colors.secondary,
+                  backgroundColor: theme.colors.amber,
+                  borderColor: theme.colors.amber,
                 }}
               >
                 <Text style={[chipTextStyle, { color: theme.colors.white }]}>
@@ -233,7 +233,7 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
             heading1: { color: theme.colors.primary, lineHeight: 40 },
             heading2: { color: theme.colors.primary, lineHeight: 32 },
             heading3: { color: theme.colors.primary, lineHeight: 28 },
-            link: { color: theme.colors.secondary },
+            link: { color: theme.colors.amber },
           }}
         >
           {entryTranslation?.body ?? ""}
@@ -263,7 +263,7 @@ const chipTextStyle = {
 };
 
 const FooterButton = styled.TouchableOpacity`
-  background-color: ${({ theme }) => theme.colors.mocha};
+  background-color: ${({ theme }) => theme.colors.buttonPrimary};
   border-radius: ${({ theme }) => theme.radii.m}px;
   padding-vertical: ${({ theme }) => theme.spacing.m}px;
   align-items: center;

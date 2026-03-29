@@ -177,7 +177,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
             {showExpirySoonBanner && daysUntilExpiry !== null ? (
               <TouchableOpacity
                 style={{
-                  backgroundColor: theme.colors.yellow,
+                  backgroundColor: theme.colors.warning,
                   borderRadius: theme.radii.m,
                   padding: theme.spacing.m,
                   marginTop: theme.spacing.m,
@@ -206,7 +206,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
               <TouchableOpacity
                 style={{
                   backgroundColor: isInGracePeriod
-                    ? theme.colors.yellow
+                    ? theme.colors.warning
                     : theme.colors.danger,
                   borderRadius: theme.radii.m,
                   padding: theme.spacing.m,

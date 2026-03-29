@@ -137,11 +137,11 @@ export function PlotRotationsList({
                 borderLeftWidth: hasConflict || showWarningStyle ? 3 : 0,
                 borderLeftColor: hasConflict
                   ? theme.colors.danger
-                  : theme.colors.yellow,
+                  : theme.colors.warning,
                 backgroundColor: hasConflict
                   ? theme.colors.danger + "08"
                   : showWarningStyle
-                    ? theme.colors.yellow + "12"
+                    ? theme.colors.warning + "12"
                     : "transparent",
               }}
             >
@@ -181,7 +181,7 @@ export function PlotRotationsList({
                 <Text
                   style={{
                     fontSize: 12,
-                    color: theme.colors.yellow,
+                    color: theme.colors.warning,
                     marginTop: 4,
                   }}
                 >

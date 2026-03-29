@@ -150,7 +150,7 @@ export function SpeedDialSettingsBody() {
                   <Ionicons
                     name="trash-outline"
                     size={22}
-                    color={theme.colors.error}
+                    color={theme.colors.danger}
                   />
                 </TouchableOpacity>
               </View>

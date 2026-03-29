@@ -12,7 +12,7 @@ type FABProps = {
   onPress?: () => void;
 };
 
-export function FAB({ onPress, color: type = "mocha", icon }: FABProps) {
+export function FAB({ onPress, color: type = "buttonPrimary", icon }: FABProps) {
   const theme = useTheme();
   return (
     <View

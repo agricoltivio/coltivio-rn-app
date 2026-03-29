@@ -145,7 +145,7 @@ export const DrawingOverlay = forwardRef<
   DrawingOverlayProps
 >(function DrawingOverlay({ mode, onCoordinatesChange }, ref) {
   const theme = useTheme();
-  const drawColor = theme.colors.yellow;
+  const drawColor = theme.colors.warning;
   const [coordinates, setCoordinates] = useState<LngLat[]>([]);
   const [closed, setClosed] = useState(false);
 

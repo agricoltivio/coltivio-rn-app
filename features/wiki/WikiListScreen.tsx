@@ -327,7 +327,7 @@ function StatusBadge({ status, theme }: StatusBadgeProps) {
   const { t } = useTranslation();
   const bgColor =
     status === "draft"
-      ? theme.colors.secondary
+      ? theme.colors.amber
       : status === "submitted" || status === "under_review"
         ? theme.colors.blue
         : theme.colors.gray4;

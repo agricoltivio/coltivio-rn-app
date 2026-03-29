@@ -127,7 +127,7 @@ export function SignInScreen({ navigation }: SignInScreenProps) {
             >
               {t("signin.signup_text")}{" "}
               <Text
-                style={{ fontSize: 18, color: theme.colors.secondary }}
+                style={{ fontSize: 18, color: theme.colors.amber }}
                 onPress={() => navigation.navigate("SignUp")}
               >
                 {t("buttons.signup")}
@@ -139,7 +139,7 @@ export function SignInScreen({ navigation }: SignInScreenProps) {
               marginTop: theme.spacing.s,
               marginLeft: theme.spacing.s,
               fontSize: 18,
-              color: theme.colors.secondary,
+              color: theme.colors.amber,
             }}
             onPress={() => navigation.navigate("ForgotPassword")}
           >

@@ -127,7 +127,7 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
             <Ionicons
               name="alert-circle"
               size={22}
-              color={theme.colors.yellow}
+              color={theme.colors.warning}
             />
           )}
         </View>
@@ -196,13 +196,13 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
             borderRadius: 10,
             padding: theme.spacing.m,
             borderLeftWidth: 4,
-            borderLeftColor: theme.colors.yellow,
+            borderLeftColor: theme.colors.warning,
             flexDirection: "row",
             alignItems: "center",
             gap: theme.spacing.xs,
           }}
         >
-          <Ionicons name="alert-circle" size={20} color={theme.colors.yellow} />
+          <Ionicons name="alert-circle" size={20} color={theme.colors.warning} />
           <Subtitle>
             {t("animals.unregistered_count", { count: unregisteredCount })}
           </Subtitle>
