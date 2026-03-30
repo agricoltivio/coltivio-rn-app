@@ -56,6 +56,7 @@ type LinkInput = {
 };
 
 type ChecklistItemInput = {
+  id?: string;
   name: string;
   dueDate?: string;
 };
@@ -989,6 +990,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
           ? new Date(taskDetail.dueDate as string)
           : null,
       checklistItems: taskDetail.checklistItems.map((item) => ({
+        id: item.id,
         name: item.name,
         dueDate: item.dueDate != null ? String(item.dueDate) : undefined,
       })),
@@ -1025,7 +1027,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
   function onSubmit(values: FormValues) {
     const checklistItems = values.checklistItems
       .filter((item) => item.name.trim().length > 0)
-      .map((item) => ({ name: item.name, dueDate: item.dueDate }));
+      .map((item) => ({ id: item.id, name: item.name, dueDate: item.dueDate }));
 
     const linksPayload = links.map((l) => ({
       linkType: l.linkType,
