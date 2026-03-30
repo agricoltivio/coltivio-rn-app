@@ -1,5 +1,11 @@
 import { useApi } from "@/api/api";
-import { TaskCreateInput, TaskStatus, TaskUpdateInput } from "@/api/tasks.api";
+import {
+  Task,
+  TaskCreateInput,
+  TaskDetail,
+  TaskStatus,
+  TaskUpdateInput,
+} from "@/api/tasks.api";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -65,7 +71,26 @@ export function useSetTaskStatusMutation(taskId: string) {
   const api = useApi();
   return useMutation({
     mutationFn: (status: TaskStatus) => api.tasks.setTaskStatus(taskId, status),
-    onSuccess: () => {
+    onMutate: async () => {
+      // Cancel in-flight refetches so they don't overwrite the optimistic update
+      await queryClient.cancelQueries({ queryKey: queryKeys.tasks._def });
+      // Snapshot all task list caches for rollback
+      const previousData = queryClient.getQueriesData<Task[]>({
+        queryKey: queryKeys.tasks._def,
+      });
+      // Optimistically remove the task from all list caches
+      queryClient.setQueriesData<Task[]>(
+        { queryKey: queryKeys.tasks._def },
+        (old) => (Array.isArray(old) ? old.filter((t) => t.id !== taskId) : old),
+      );
+      return { previousData };
+    },
+    onError: (_err, _vars, context) => {
+      context?.previousData.forEach(([key, data]) => {
+        queryClient.setQueryData(key, data);
+      });
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.tasks._def });
     },
   });
@@ -88,10 +113,39 @@ export function useToggleChecklistItemMutation(taskId: string) {
   return useMutation({
     mutationFn: ({ itemId, done }: { itemId: string; done: boolean }) =>
       api.tasks.toggleChecklistItem(taskId, itemId, done),
-    onSuccess: () => {
+    onMutate: async ({ itemId, done }) => {
+      await queryClient.cancelQueries({
+        queryKey: queryKeys.tasks.byId(taskId).queryKey,
+      });
+      const previousTask = queryClient.getQueryData<TaskDetail>(
+        queryKeys.tasks.byId(taskId).queryKey,
+      );
+      queryClient.setQueryData<TaskDetail>(
+        queryKeys.tasks.byId(taskId).queryKey,
+        (old) => {
+          if (!old) return old;
+          return {
+            ...old,
+            checklistItems: old.checklistItems.map((item) =>
+              item.id === itemId ? { ...item, done } : item,
+            ),
+          };
+        },
+      );
+      return { previousTask };
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.tasks.byId(taskId).queryKey,
       });
+    },
+    onError: (_err, _vars, context) => {
+      if (context?.previousTask) {
+        queryClient.setQueryData(
+          queryKeys.tasks.byId(taskId).queryKey,
+          context.previousTask,
+        );
+      }
     },
   });
 }

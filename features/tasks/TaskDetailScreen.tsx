@@ -225,6 +225,7 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
   const { taskId } = route.params;
 
   const { task, isLoading } = useTaskDetailQuery(taskId);
+
   const setStatusMutation = useSetTaskStatusMutation(taskId);
   const toggleChecklistMutation = useToggleChecklistItemMutation(taskId);
   const deleteMutation = useDeleteTaskMutation(() => navigation.goBack());
@@ -405,7 +406,9 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
           {/* Checklist */}
           {task.checklistItems.length > 0 && (
             <SectionCard label={t("tasks.checklist")}>
-              {task.checklistItems.map((item) => (
+              {[...task.checklistItems]
+                .sort((a, b) => a.position - b.position)
+                .map((item) => (
                 <Pressable
                   key={item.id}
                   onPress={() =>

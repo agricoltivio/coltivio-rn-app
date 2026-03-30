@@ -7,20 +7,52 @@ import { ListItem } from "@/components/list/ListItem";
 import { H2 } from "@/theme/Typography";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Fuse from "fuse.js";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
-  FlatList,
+  Dimensions,
   ScrollView as RNScrollView,
   View,
 } from "react-native";
 import { useTheme } from "styled-components/native";
-import { useTasksQuery } from "./tasks.hooks";
+import ReanimatedSwipeable, {
+  SwipeableMethods,
+} from "react-native-gesture-handler/ReanimatedSwipeable";
+import Animated, {
+  FadeOut,
+  LinearTransition,
+  SharedValue,
+  useAnimatedStyle,
+} from "react-native-reanimated";
+import { useTasksQuery, useSetTaskStatusMutation } from "./tasks.hooks";
 import { TaskListScreenProps } from "./navigation/tasks-routes";
 import { useLocalSettings } from "@/features/user/LocalSettingsContext";
 import { useEffect } from "react";
 import { TaskStatus } from "@/api/tasks.api";
+
+// Separate component so useAnimatedStyle can be called as a proper hook
+function SwipeCompleteAction({ drag }: { drag: SharedValue<number> }) {
+  const theme = useTheme();
+  const animatedStyle = useAnimatedStyle(() => ({
+    // drag is negative when swiping left; expand the action to fill swiped space
+    width: Math.max(80, -drag.value),
+  }));
+  return (
+    <Animated.View
+      style={[
+        {
+          backgroundColor: theme.colors.success,
+          justifyContent: "center",
+          alignItems: "center",
+        },
+        animatedStyle,
+      ]}
+    >
+      <MaterialCommunityIcons name="check" size={24} color="white" />
+    </Animated.View>
+  );
+}
 
 export function TaskListScreen({ navigation }: TaskListScreenProps) {
   const { t } = useTranslation();
@@ -118,14 +150,21 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
     });
   }
 
-  function renderTask({ item }: { item: Task }) {
+  function TaskListItem({
+    item,
+    onPress,
+  }: {
+    item: Task;
+    onPress: () => void;
+  }) {
+    const swipeableRef = useRef<SwipeableMethods>(null);
+    const setStatusMutation = useSetTaskStatusMutation(item.id);
     const assigneeName = item.assignee?.fullName ?? item.assignee?.email;
     const hasChips =
       item.dueDate != null || assigneeName != null || item.labels.length > 0;
-    return (
-      <ListItem
-        onPress={() => navigation.navigate("TaskDetail", { taskId: item.id })}
-      >
+
+    const listItem = (
+      <ListItem onPress={onPress}>
         <ListItem.Content>
           <ListItem.Title>{item.name}</ListItem.Title>
           {hasChips && (
@@ -163,7 +202,9 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
           )}
         </ListItem.Content>
         {item.pinned && (
-          <View style={{ justifyContent: "center", alignItems: "center", width: 28 }}>
+          <View
+            style={{ justifyContent: "center", alignItems: "center", width: 28 }}
+          >
             <MaterialCommunityIcons
               name="pin"
               size={16}
@@ -173,6 +214,27 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
         )}
         <ListItem.Chevron />
       </ListItem>
+    );
+
+    if (status !== "todo") {
+      return listItem;
+    }
+
+    return (
+      <ReanimatedSwipeable
+        ref={swipeableRef}
+        renderRightActions={(_, drag) => (
+          <SwipeCompleteAction drag={drag} />
+        )}
+        rightThreshold={Dimensions.get("window").width / 4}
+        onSwipeableOpen={(direction) => {
+          if (direction === "left") {
+            setStatusMutation.mutate("done");
+          }
+        }}
+      >
+        {listItem}
+      </ReanimatedSwipeable>
     );
   }
 
@@ -244,10 +306,20 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
         <ActivityIndicator style={{ marginTop: 40 }} size="large" />
       ) : (
         <View style={{ flex: 1, marginTop: theme.spacing.m }}>
-          <FlatList
+          <Animated.FlatList
             data={filteredTasks}
             keyExtractor={(item) => item.id}
-            renderItem={renderTask}
+            itemLayoutAnimation={LinearTransition}
+            renderItem={({ item }) => (
+              <Animated.View exiting={FadeOut.duration(200)}>
+                <TaskListItem
+                  item={item}
+                  onPress={() =>
+                    navigation.navigate("TaskDetail", { taskId: item.id })
+                  }
+                />
+              </Animated.View>
+            )}
             contentContainerStyle={{
               borderTopRightRadius: 10,
               borderTopLeftRadius: 10,
