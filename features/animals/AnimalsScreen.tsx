@@ -2,6 +2,8 @@ import { AnimalWithWaitingTimeFlag } from "@/api/animals.api";
 import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
+import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
+import { Chip } from "@/components/chips/Chip";
 import { ListItem } from "@/components/list/ListItem";
 import { H2, Subtitle } from "@/theme/Typography";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -18,6 +20,15 @@ import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
 import { AnimalsScreenProps } from "./navigation/animals-routes";
 
+
+// HSL-based color from string — 360 possible hues, no palette collisions
+function animalTypeColor(type: string): string {
+  let hash = 0;
+  for (let i = 0; i < type.length; i++) hash = type.charCodeAt(i) + ((hash << 5) - hash);
+  const hue = Math.abs(hash) % 360;
+  return `hsl(${hue}, 60%, 40%)`;
+}
+
 export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -27,6 +38,8 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
   const [unregisteredOnly, setUnregisteredOnly] = useState(false);
   const [onlyWithWaitingPeriod, setOnlyWithWaitingPeriod] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<Set<string>>(new Set());
+  const [sortField, setSortField] = useState<"name" | "earTag" | "age">("name");
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
 
   // Count unregistered animals (only among living animals by default)
   const unregisteredCount = useMemo(() => {
@@ -60,13 +73,28 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
       result = result.filter((a) => selectedTypes.has(a.type));
     }
 
-    return result.sort((a, b) => a.name.localeCompare(b.name));
+    const multiplier = sortDir === "asc" ? 1 : -1;
+    return [...result].sort((a, b) => {
+      if (sortField === "earTag") {
+        const at = a.earTag?.number ?? "";
+        const bt = b.earTag?.number ?? "";
+        return multiplier * at.localeCompare(bt, undefined, { numeric: true });
+      }
+      if (sortField === "age") {
+        const ad = a.dateOfBirth ? new Date(a.dateOfBirth).getTime() : Infinity;
+        const bd = b.dateOfBirth ? new Date(b.dateOfBirth).getTime() : Infinity;
+        return multiplier * (ad - bd);
+      }
+      return multiplier * a.name.localeCompare(b.name);
+    });
   }, [
     animals,
     showDead,
     unregisteredOnly,
     onlyWithWaitingPeriod,
     selectedTypes,
+    sortField,
+    sortDir,
   ]);
 
   const animalTypes = useMemo(() => {
@@ -96,44 +124,46 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
   }
 
   const renderItem = useCallback(
-    ({ item: animal }: { item: AnimalWithWaitingTimeFlag }) => (
-      <ListItem
-        key={animal.id}
-        style={{ paddingVertical: 5 }}
-        onPress={() =>
-          navigation.navigate("AnimalDetails", {
-            animalId: animal.id,
-          })
-        }
-      >
-        <ListItem.Content>
-          <ListItem.Title>{animal.name}</ListItem.Title>
-          <ListItem.Body>
-            {t(`animals.animal_types.${animal.type}`)}
-            {animal.earTag ? ` - ${animal.earTag.number}` : ""}
-          </ListItem.Body>
-        </ListItem.Content>
-        <View
+    ({ item: animal }: { item: AnimalWithWaitingTimeFlag }) => {
+      const birthdate = animal.dateOfBirth
+        ? new Date(animal.dateOfBirth).toLocaleDateString()
+        : null;
+      const stripeColor = !animal.registered
+        ? theme.colors.warning
+        : !animal.milkAndMeatUsable
+          ? theme.colors.blue
+          : undefined;
+      return (
+        <ListItem
+          key={animal.id}
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            gap: theme.spacing.xxs,
+            paddingVertical: 5,
+            borderLeftWidth: stripeColor ? 4 : 0,
+            borderLeftColor: stripeColor,
           }}
+          onPress={() => navigation.navigate("AnimalDetails", { animalId: animal.id })}
         >
-          {!animal.milkAndMeatUsable && (
-            <Ionicons name="time" size={22} color={theme.colors.blue} />
-          )}
-          {!animal.registered && (
-            <Ionicons
-              name="alert-circle"
-              size={22}
-              color={theme.colors.warning}
+          <ListItem.Content>
+            <ListItem.Title numberOfLines={1}>{animal.name}</ListItem.Title>
+            {animal.earTag && (
+              <ListItem.Body numberOfLines={1}>{animal.earTag.number}</ListItem.Body>
+            )}
+          </ListItem.Content>
+          <View style={{ flexDirection: "row", alignItems: "center", alignSelf: "center", gap: theme.spacing.xs }}>
+            {birthdate && (
+              <Chip small label={birthdate} bgColor={theme.colors.gray4} />
+            )}
+            <Chip
+              small
+              label={t(`animals.animal_types.${animal.type}`)}
+              bgColor={animalTypeColor(animal.type)}
+              textColor="#fff"
             />
-          )}
-        </View>
-        <ListItem.Chevron />
-      </ListItem>
-    ),
+          </View>
+          <ListItem.Chevron />
+        </ListItem>
+      );
+    },
     [t, navigation, theme],
   );
 
@@ -231,19 +261,51 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
         </View>
       ) : null}
 
-      {/* Batch edit button */}
-      {animals && animals.length > 0 && (
-        <TouchableOpacity
-          onPress={() => navigation.navigate("BatchSelectAnimals")}
-          style={{ marginTop: theme.spacing.m }}
-        >
-          <MaterialCommunityIcons
-            name="checkbox-multiple-marked-outline"
-            size={26}
+      {/* Toolbar: batch edit (left) + sort control (right) */}
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginTop: theme.spacing.m,
+        }}
+      >
+        {animals && animals.length > 0 ? (
+          <TouchableOpacity onPress={() => navigation.navigate("BatchSelectAnimals")}>
+            <MaterialCommunityIcons
+              name="checkbox-multiple-marked-outline"
+              size={26}
+              color={theme.colors.primary}
+            />
+          </TouchableOpacity>
+        ) : (
+          <View />
+        )}
+        <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}>
+          <TouchableOpacity
+            onPress={() =>
+              setSortField((f) =>
+                f === "name" ? "earTag" : f === "earTag" ? "age" : "name",
+              )
+            }
+          >
+            <Subtitle style={{ textDecorationLine: "underline", color: theme.colors.primary }}>
+              {sortField === "name"
+                ? t("animals.sort_by_name")
+                : sortField === "earTag"
+                  ? t("animals.sort_by_ear_tag")
+                  : t("animals.sort_by_age")}
+            </Subtitle>
+          </TouchableOpacity>
+          <MaterialCommunityIconButton
+            type="ghost"
+            icon={sortDir === "asc" ? "sort-ascending" : "sort-descending"}
+            iconSize={22}
             color={theme.colors.primary}
+            onPress={() => setSortDir((d) => (d === "asc" ? "desc" : "asc"))}
           />
-        </TouchableOpacity>
-      )}
+        </View>
+      </View>
 
       {/* Animal list */}
       <View style={{ marginTop: theme.spacing.s, flex: 1 }}>
