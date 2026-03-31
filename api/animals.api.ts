@@ -35,6 +35,17 @@ export type AnimalImportInput =
 export type AnimalImportResponse =
   components["schemas"]["PostV1AnimalsImportPositiveResponse"]["data"];
 
+export type AnimalImportPreviewResponse =
+  components["schemas"]["PostV1AnimalsImportPreviewPositiveResponse"]["data"];
+
+export type ParsedImportRow = AnimalImportPreviewResponse["rows"][number];
+
+export type AnimalImportCommitInput =
+  components["schemas"]["PostV1AnimalsImportCommitRequestBody"];
+
+export type AnimalImportCommitResponse =
+  components["schemas"]["PostV1AnimalsImportCommitPositiveResponse"]["data"];
+
 export type CustomOutdoorJournalCategoryInput =
   components["schemas"]["PutV1AnimalsByIdAnimalIdCustomOutdoorJournalCategoriesRequestBody"];
 
@@ -136,6 +147,43 @@ export function animalsApi(client: FetchClient) {
           }
           return formData;
         },
+      });
+      return data!.data;
+    },
+
+    async previewImport(
+      file: { uri: string; name: string; mimeType?: string },
+      skipHeaderRow = true,
+    ): Promise<AnimalImportPreviewResponse> {
+      const filePayload = {
+        uri: file.uri,
+        name: file.name,
+        type:
+          file.mimeType ??
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      } as unknown as string;
+      const { data } = await client.POST("/v1/animals/import/preview", {
+        body: {
+          file: filePayload,
+          skipHeaderRow: skipHeaderRow ? "true" : "false",
+        },
+        bodySerializer: (body) => {
+          const formData = new FormData();
+          formData.append("file", body.file as unknown as Blob);
+          if (body.skipHeaderRow) {
+            formData.append("skipHeaderRow", body.skipHeaderRow);
+          }
+          return formData;
+        },
+      });
+      return data!.data;
+    },
+
+    async commitImport(
+      body: AnimalImportCommitInput,
+    ): Promise<AnimalImportCommitResponse> {
+      const { data } = await client.POST("/v1/animals/import/commit", {
+        body,
       });
       return data!.data;
     },

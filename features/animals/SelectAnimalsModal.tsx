@@ -3,6 +3,7 @@ import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
+import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import { ListItem } from "@/components/list/ListItem";
 import { H2, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate, getMinMaxIso } from "@/utils/date";
@@ -38,6 +39,8 @@ export function SelectAnimalsModal({
   const [selectedIds, setSelectedIds] = useState<Set<string>>(
     new Set(initialSelectedIds),
   );
+  const [sortField, setSortField] = useState<"name" | "earTag" | "age">("name");
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
   const [selectedTypes, setSelectedTypes] = useState<Set<string>>(new Set());
   const [showSelectedOnly, setShowSelectedOnly] = useState(false);
   const [birthdayFrom, setBirthdayFrom] = useState<Date | null>(null);
@@ -74,7 +77,20 @@ export function SelectAnimalsModal({
       result = result.filter((a) => new Date(a.dateOfBirth) <= birthdayTo);
     }
 
-    return result.sort((a, b) => a.name.localeCompare(b.name));
+    const multiplier = sortDir === "asc" ? 1 : -1;
+    return [...result].sort((a, b) => {
+      if (sortField === "earTag") {
+        const at = a.earTag?.number ?? "";
+        const bt = b.earTag?.number ?? "";
+        return multiplier * at.localeCompare(bt, undefined, { numeric: true });
+      }
+      if (sortField === "age") {
+        const ad = a.dateOfBirth ? new Date(a.dateOfBirth).getTime() : Infinity;
+        const bd = b.dateOfBirth ? new Date(b.dateOfBirth).getTime() : Infinity;
+        return multiplier * (ad - bd);
+      }
+      return multiplier * a.name.localeCompare(b.name);
+    });
   }, [
     animals,
     selectedTypes,
@@ -82,6 +98,8 @@ export function SelectAnimalsModal({
     selectedIds,
     birthdayFrom,
     birthdayTo,
+    sortField,
+    sortDir,
   ]);
 
   // Fuse.js search
@@ -226,6 +244,40 @@ export function SelectAnimalsModal({
           />
         ))}
       </RNScrollView>
+
+      {/* Sort toolbar */}
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "flex-end",
+          marginTop: theme.spacing.s,
+          gap: theme.spacing.xs,
+        }}
+      >
+        <TouchableOpacity
+          onPress={() =>
+            setSortField((f) =>
+              f === "name" ? "earTag" : f === "earTag" ? "age" : "name",
+            )
+          }
+        >
+          <Subtitle style={{ textDecorationLine: "underline", color: theme.colors.primary }}>
+            {sortField === "name"
+              ? t("animals.sort_by_name")
+              : sortField === "earTag"
+                ? t("animals.sort_by_ear_tag")
+                : t("animals.sort_by_age")}
+          </Subtitle>
+        </TouchableOpacity>
+        <MaterialCommunityIconButton
+          type="ghost"
+          icon={sortDir === "asc" ? "sort-ascending" : "sort-descending"}
+          iconSize={22}
+          color={theme.colors.primary}
+          onPress={() => setSortDir((d) => (d === "asc" ? "desc" : "asc"))}
+        />
+      </View>
 
       {/* Select all / Clear buttons */}
       <View

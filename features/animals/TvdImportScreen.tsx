@@ -56,39 +56,16 @@ export function TvdImportScreen({ navigation }: TvdImportScreenProps) {
     }
   }
 
-  async function handleImport() {
+  async function handlePreview() {
     if (!selectedFile || !animalType) return;
 
     setLoading(true);
     try {
-      const filePayload = {
-        uri: selectedFile.uri,
-        name: selectedFile.name,
-        type:
-          selectedFile.mimeType ??
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      } as unknown as string; // FormData expects this shape on React Native
-
-      const result = await api.animals.importAnimals({
-        file: filePayload,
+      const result = await api.animals.previewImport(selectedFile);
+      navigation.navigate("TvdImportPreview", {
+        rows: result.rows,
         type: animalType,
-        skipHeaderRow: "true",
       });
-
-      const { summary, skipped } = result;
-      let message = t("animals.tvd_import.success_message", {
-        imported: summary.imported,
-        total: summary.totalRows,
-      });
-      if (skipped.length > 0) {
-        message +=
-          "\n\n" +
-          t("animals.tvd_import.skipped_message", {
-            count: summary.skipped,
-          });
-      }
-
-      Alert.alert(t("animals.tvd_import.success_title"), message);
       setSelectedFile(null);
     } catch {
       const fileForSharing = selectedFile;
@@ -126,8 +103,8 @@ export function TvdImportScreen({ navigation }: TvdImportScreenProps) {
       footerComponent={
         <BottomActionContainer>
           <Button
-            title={t("animals.tvd_import.import_button")}
-            onPress={handleImport}
+            title={t("animals.tvd_import.preview_button")}
+            onPress={handlePreview}
             disabled={!selectedFile || !animalType || loading}
             loading={loading}
           />

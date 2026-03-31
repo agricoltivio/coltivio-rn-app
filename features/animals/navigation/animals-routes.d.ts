@@ -1,5 +1,8 @@
 import { StackScreenProps } from "@react-navigation/native-stack";
 import { UncategorizedAnimal } from "@/api/outdoor-journal.api";
+import { AnimalType, ParsedImportRow } from "@/api/animals.api";
+
+export type EditablePreviewRow = ParsedImportRow & { mergeAnimalId: string | null };
 
 export type AnimalsStackParamList = {
   AnimalsHub: undefined;
@@ -42,6 +45,22 @@ export type AnimalsStackParamList = {
   };
   TvdImport: undefined;
   TvdImportOnboarding: undefined;
+  TvdImportPreview: {
+    rows: ParsedImportRow[];
+    type: AnimalType;
+    rowEdit?: { rowIndex: number; updatedRow: EditablePreviewRow };
+  };
+  TvdImportRowDetail: {
+    rowIndex: number;
+    row: EditablePreviewRow;
+    type: AnimalType;
+    mergeSelection?: { rowIndex: number; animalId: string };
+  };
+  SelectSingleAnimal: {
+    animalType: AnimalType;
+    previousScreen: "TvdImportRowDetail";
+    rowIndex: number;
+  };
   Herds: undefined;
   OutdoorJournal: undefined;
   OutdoorJournalExport: undefined;
@@ -82,6 +101,11 @@ export type AnimalsSettingsScreenProps = StackScreenProps<"AnimalsSettings">;
 export type TvdImportScreenProps = StackScreenProps<"TvdImport">;
 export type TvdImportOnboardingScreenProps =
   StackScreenProps<"TvdImportOnboarding">;
+export type TvdImportPreviewScreenProps = StackScreenProps<"TvdImportPreview">;
+export type TvdImportRowDetailScreenProps =
+  StackScreenProps<"TvdImportRowDetail">;
+export type SelectSingleAnimalScreenProps =
+  StackScreenProps<"SelectSingleAnimal">;
 export type HerdsScreenProps = StackScreenProps<"Herds">;
 export type OutdoorJournalScreenProps = StackScreenProps<"OutdoorJournal">;
 export type OutdoorJournalExportScreenProps =

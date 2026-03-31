@@ -19,6 +19,9 @@ import { AnimalsOnboardingScreen } from "../AnimalsOnboardingScreen";
 import { AnimalsSettingsScreen } from "../AnimalsSettingsScreen";
 import { TvdImportScreen } from "../TvdImportScreen";
 import { TvdImportOnboardingScreen } from "../TvdImportOnboardingScreen";
+import { TvdImportPreviewScreen } from "../TvdImportPreviewScreen";
+import { TvdImportRowDetailScreen } from "../TvdImportRowDetailScreen";
+import { SelectSingleAnimalModal } from "../SelectSingleAnimalModal";
 import { HerdsScreen } from "../HerdsScreen";
 import { CreateHerdScreen } from "../CreateHerdScreen";
 import { HerdEditScreen } from "../HerdEditScreen";
@@ -183,6 +186,24 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
       name="TvdImport"
       options={{ title: "" }}
       component={TvdImportScreen}
+    />,
+    <Stack.Screen
+      key="tvd-import-preview"
+      name="TvdImportPreview"
+      options={{ title: "" }}
+      component={TvdImportPreviewScreen}
+    />,
+    <Stack.Screen
+      key="tvd-import-row-detail"
+      name="TvdImportRowDetail"
+      options={{ title: "" }}
+      component={TvdImportRowDetailScreen}
+    />,
+    <Stack.Screen
+      key="select-single-animal"
+      name="SelectSingleAnimal"
+      options={{ title: "" }}
+      component={SelectSingleAnimalModal}
     />,
     <Stack.Screen
       key="herds"
