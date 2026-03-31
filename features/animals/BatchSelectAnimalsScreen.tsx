@@ -31,15 +31,18 @@ export function BatchSelectAnimalsScreen({
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [selectedTypes, setSelectedTypes] = useState<Set<string>>(new Set());
   const [showSelectedOnly, setShowSelectedOnly] = useState(false);
+  const [showDead, setShowDead] = useState(false);
 
   const animalTypes = useMemo(() => {
     return [...new Set(animals?.map((animal) => animal.type))];
   }, [animals]);
 
-  // Filter: exclude dead animals, apply type filter and selected-only filter
+  // Filter: exclude dead animals unless showDead, apply type filter and selected-only filter
   const filteredAnimals = useMemo(() => {
     let result = animals ?? [];
-    result = result.filter((a) => !a.dateOfDeath);
+    if (!showDead) {
+      result = result.filter((a) => !a.dateOfDeath);
+    }
 
     if (selectedTypes.size > 0) {
       result = result.filter((a) => selectedTypes.has(a.type));
@@ -49,7 +52,7 @@ export function BatchSelectAnimalsScreen({
     }
 
     return result.sort((a, b) => a.name.localeCompare(b.name));
-  }, [animals, selectedTypes, showSelectedOnly, selectedIds]);
+  }, [animals, showDead, selectedTypes, showSelectedOnly, selectedIds]);
 
   const fuse = new Fuse(filteredAnimals, {
     minMatchCharLength: 1,
@@ -157,6 +160,12 @@ export function BatchSelectAnimalsScreen({
           label={t("animals.selected_only")}
           active={showSelectedOnly}
           onPress={() => setShowSelectedOnly((prev) => !prev)}
+          theme={theme}
+        />
+        <FilterChip
+          label={t("animals.show_dead")}
+          active={showDead}
+          onPress={() => setShowDead((prev) => !prev)}
           theme={theme}
         />
         {animalTypes.map((animalType) => (
