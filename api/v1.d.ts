@@ -1444,6 +1444,22 @@ export interface paths {
         patch: operations["PatchV1AnimalsBatch"];
         trace?: never;
     };
+    "/v1/animals/familyTree": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1AnimalsFamilyTree"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1AnimalsFamilyTree"];
+        patch?: never;
+        trace?: never;
+    };
     "/v1/animals/import": {
         parameters: {
             query?: never;
@@ -7006,6 +7022,35 @@ export interface components {
                 fatherId?: string;
             };
         };
+        /** @enum {string} */
+        GetV1AnimalsFamilyTreeParameterType: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+        GetV1AnimalsFamilyTreePositiveResponse: {
+            data: {
+                nodes: {
+                    id: string;
+                    name: string;
+                    earTagNumber: string | null;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfBirth: string;
+                    /**
+                     * Format: date-time
+                     * @description YYYY-MM-DDTHH:mm:ss.sssZ
+                     */
+                    dateOfDeath: string | null;
+                    /** @enum {string} */
+                    sex: "male" | "female";
+                }[];
+                edges: {
+                    parentId: string;
+                    childId: string;
+                    /** @enum {string} */
+                    relation: "mother" | "father";
+                }[];
+            };
+        };
         PostV1AnimalsImportPositiveResponse: {
             data: {
                 skipped: {
@@ -9367,6 +9412,7 @@ export interface components {
             items: {
                 productId: string;
                 quantity: number;
+                unitPrice?: number;
             }[];
         };
         GetV1OrdersInvoiceSettingsPositiveResponse: {
@@ -9652,6 +9698,7 @@ export interface components {
         PostV1OrdersByIdOrderIdItemsRequestBody: {
             productId: string;
             quantity: number;
+            unitPrice?: number;
         };
         PatchV1OrdersByIdOrderIdItemsByIdOrderItemIdPositiveResponse: {
             data: {
@@ -18372,6 +18419,66 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
                 };
+            };
+        };
+    };
+    GetV1AnimalsFamilyTree: {
+        parameters: {
+            query: {
+                /** @description GET /v1/animals/familyTree Parameter */
+                type: components["schemas"]["GetV1AnimalsFamilyTreeParameterType"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/animals/familyTree Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1AnimalsFamilyTreePositiveResponse"];
+                };
+            };
+            /** @description GET /v1/animals/familyTree Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1AnimalsFamilyTree: {
+        parameters: {
+            query: {
+                /** @description HEAD /v1/animals/familyTree Parameter */
+                type: components["schemas"]["GetV1AnimalsFamilyTreeParameterType"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/animals/familyTree Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/animals/familyTree Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

@@ -1,6 +1,11 @@
 import { FetchClient } from "./api";
 import { components } from "./v1";
 
+export type FamilyTreeData =
+  components["schemas"]["GetV1AnimalsFamilyTreePositiveResponse"]["data"];
+export type FamilyTreeNode = FamilyTreeData["nodes"][number];
+export type FamilyTreeEdge = FamilyTreeData["edges"][number];
+
 export type AnimalWithWaitingTimeFlag =
   components["schemas"]["GetV1AnimalsPositiveResponse"]["data"]["result"][number];
 export type AnimalType = AnimalWithWaitingTimeFlag["type"];
@@ -199,6 +204,13 @@ export function animalsApi(client: FetchClient) {
           body: input,
         },
       );
+      return data!.data;
+    },
+
+    async getFamilyTree(type: AnimalType): Promise<FamilyTreeData> {
+      const { data } = await client.GET("/v1/animals/familyTree", {
+        params: { query: { type } },
+      });
       return data!.data;
     },
 

@@ -1171,6 +1171,20 @@
       "delete_n_animals": "{{count}} Tiere löschen",
       "select_action": "Aktion auswählen"
     },
+    "family_tree": "Stammbaum",
+    "select_type_for_tree": "Tierart auswählen",
+    "hide_dead": "Tote ausblenden",
+    "view_details": "Details anzeigen",
+    "charts": {
+      "title": "Statistiken",
+      "born_this_year": "Geburten (dieses Jahr)",
+      "died": "Verenden",
+      "slaughtered": "Geschlachtet",
+      "animals_by_type": "Tiere nach Tierart",
+      "age_distribution": "Altersverteilung (lebende Tiere)",
+      "age_months": "Alter (Jahre)",
+      "no_data": "Keine Daten vorhanden"
+    },
     "tvd_import": {
       "title": "TVD Import",
       "experimental": "Diese Funktion ist in Entwicklung.",

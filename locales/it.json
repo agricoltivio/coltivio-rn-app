@@ -1157,6 +1157,20 @@
       "step3_heading": "Tutto pronto!",
       "step3_body": "Ora puoi creare mandrie e definire programmi di uscita."
     },
+    "family_tree": "Albero genealogico",
+    "select_type_for_tree": "Seleziona specie",
+    "hide_dead": "Nascondi deceduti",
+    "view_details": "Vedi dettagli",
+    "charts": {
+      "title": "Statistiche",
+      "born_this_year": "Nati (quest'anno)",
+      "died": "Deceduti",
+      "slaughtered": "Macellati",
+      "animals_by_type": "Animali per specie",
+      "age_distribution": "Distribuzione delle età (animali vivi)",
+      "age_months": "Età (anni)",
+      "no_data": "Nessun dato disponibile"
+    },
     "tvd_import": {
       "title": "Importazione TVD",
       "experimental": "Questa funzione è in sviluppo.",

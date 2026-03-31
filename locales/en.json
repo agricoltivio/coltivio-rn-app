@@ -1157,6 +1157,20 @@
       "step3_heading": "Done!",
       "step3_body": "You can now create herds and define outdoor schedules."
     },
+    "family_tree": "Family Tree",
+    "select_type_for_tree": "Select animal type",
+    "hide_dead": "Hide deceased",
+    "view_details": "View details",
+    "charts": {
+      "title": "Statistics",
+      "born_this_year": "Born (this year)",
+      "died": "Died",
+      "slaughtered": "Slaughtered",
+      "animals_by_type": "Animals by type",
+      "age_distribution": "Age distribution (living animals)",
+      "age_months": "Age (years)",
+      "no_data": "No data available"
+    },
     "tvd_import": {
       "title": "TVD Import",
       "experimental": "This feature is in development.",

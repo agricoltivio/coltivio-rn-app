@@ -1,4 +1,5 @@
 import { Stack } from "@/navigation/stack";
+import { View } from "react-native";
 import { AnimalsHubScreen } from "../AnimalsHubScreen";
 import { EarTagsScreen } from "../EarTagsScreen";
 import { CreateEarTagRangeScreen } from "../CreateEarTagRangeScreen";
@@ -36,7 +37,10 @@ import { ManageAnimalCategoriesScreen } from "../ManageAnimalCategoriesScreen";
 import { AnimalJournalScreen } from "../AnimalJournalScreen";
 import { AnimalJournalEntryScreen } from "../AnimalJournalEntryScreen";
 import { AnimalJournalEntryFormScreen } from "../AnimalJournalEntryFormScreen";
+import { AnimalChartsScreen } from "../AnimalChartsScreen";
+import { FamilyTreeScreen } from "../FamilyTreeScreen";
 import { IonIconButton } from "@/components/buttons/IconButton";
+import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import { DefaultTheme } from "styled-components/native";
 
 export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
@@ -75,7 +79,29 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
     <Stack.Screen
       key="animals"
       name="Animals"
-      options={{ title: "" }}
+      options={{
+        title: "",
+        headerRight() {
+          return (
+            <View style={{ flexDirection: "row" }}>
+              <MaterialCommunityIconButton
+                icon="sitemap"
+                type="ghost"
+                iconSize={24}
+                color={theme.colors.primary}
+                onPress={() => navigation.navigate("FamilyTree", {})}
+              />
+              <IonIconButton
+                icon="bar-chart-outline"
+                type="ghost"
+                iconSize={26}
+                color={theme.colors.primary}
+                onPress={() => navigation.navigate("AnimalCharts")}
+              />
+            </View>
+          );
+        },
+      }}
       component={AnimalsScreen}
     />,
     <Stack.Screen
@@ -295,6 +321,18 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
       name="AnimalJournalEntryForm"
       options={{ title: "" }}
       component={AnimalJournalEntryFormScreen}
+    />,
+    <Stack.Screen
+      key="animal-charts"
+      name="AnimalCharts"
+      options={{ title: "" }}
+      component={AnimalChartsScreen}
+    />,
+    <Stack.Screen
+      key="family-tree"
+      name="FamilyTree"
+      options={{ title: "" }}
+      component={FamilyTreeScreen}
     />,
   ];
 }

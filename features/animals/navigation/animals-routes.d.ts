@@ -77,6 +77,8 @@ export type AnimalsStackParamList = {
   AnimalJournal: { animalId: string };
   AnimalJournalEntry: { entryId: string; animalId: string };
   AnimalJournalEntryForm: { animalId: string; entryId?: string };
+  AnimalCharts: undefined;
+  FamilyTree: { animalType?: AnimalType; focusedAnimalId?: string };
 };
 
 export type AnimalsHubScreenProps = StackScreenProps<"AnimalsHub">;
@@ -126,3 +128,5 @@ export type AnimalJournalEntryScreenProps =
   StackScreenProps<"AnimalJournalEntry">;
 export type AnimalJournalEntryFormScreenProps =
   StackScreenProps<"AnimalJournalEntryForm">;
+export type AnimalChartsScreenProps = StackScreenProps<"AnimalCharts">;
+export type FamilyTreeScreenProps = StackScreenProps<"FamilyTree">;

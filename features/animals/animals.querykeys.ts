@@ -8,4 +8,5 @@ export const animalsQueryKeys = createQueryKeys("animals", {
   living: null,
   byId: (animalId: string) => [animalId],
   children: (animalId: string) => [animalId],
+  familyTree: (type: string) => [type],
 });

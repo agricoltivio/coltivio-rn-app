@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@10play/tentap-editor": "^1.0.1",
+    "@dagrejs/dagre": "^3.0.0",
     "@expo/vector-icons": "^15.0.3",
     "@gorhom/bottom-sheet": "^5",
     "@gorhom/portal": "^1.0.14",
@@ -114,6 +115,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@types/dagre": "^0.7.54",
     "@types/jest": "^29.5.12",
     "@types/lodash": "^4.17.13",
     "@types/react": "~19.1.10",

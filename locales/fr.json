@@ -1157,6 +1157,20 @@
       "step3_heading": "Terminé !",
       "step3_body": "Vous pouvez maintenant créer des troupeaux et définir des plannings de sorties."
     },
+    "family_tree": "Arbre généalogique",
+    "select_type_for_tree": "Sélectionner l'espèce",
+    "hide_dead": "Masquer les décédés",
+    "view_details": "Voir les détails",
+    "charts": {
+      "title": "Statistiques",
+      "born_this_year": "Nés (cette année)",
+      "died": "Décédés",
+      "slaughtered": "Abattus",
+      "animals_by_type": "Animaux par espèce",
+      "age_distribution": "Distribution des âges (animaux vivants)",
+      "age_months": "Âge (années)",
+      "no_data": "Aucune donnée disponible"
+    },
     "tvd_import": {
       "title": "Import TVD",
       "experimental": "Cette fonctionnalité est en développement.",

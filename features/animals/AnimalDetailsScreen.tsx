@@ -1,5 +1,5 @@
 import { Button } from "@/components/buttons/Button";
-import { IonIconButton } from "@/components/buttons/IconButton";
+import { IonIconButton, MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
@@ -101,7 +101,16 @@ export function AnimalDetailsScreen({
       }
     >
       <ScrollView showHeaderOnScroll headerTitleOnScroll={animal.name}>
-        <H2>{animal.name}</H2>
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+          <H2>{animal.name}</H2>
+          <MaterialCommunityIconButton
+            type="accent"
+            icon="sitemap"
+            iconSize={22}
+            color={theme.colors.primary}
+            onPress={() => navigation.navigate("FamilyTree", { animalType: animal.type, focusedAnimalId: animal.id })}
+          />
+        </View>
 
         {/* Basic info */}
         <View

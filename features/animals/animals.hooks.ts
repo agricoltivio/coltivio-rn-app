@@ -8,6 +8,7 @@ import {
   AnimalUpdateInput,
   AnimalUpdateResponse,
   CustomOutdoorJournalCategoryInput,
+  FamilyTreeData,
 } from "@/api/animals.api";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -27,6 +28,15 @@ export function useAnimalsQuery(
     enabled,
   });
   return { animals: data, ...rest };
+}
+
+export function useFamilyTreeQuery(animalType: AnimalType) {
+  const api = useApi();
+  const { data, ...rest } = useQuery<FamilyTreeData>({
+    queryKey: queryKeys.animals.familyTree(animalType).queryKey,
+    queryFn: () => api.animals.getFamilyTree(animalType),
+  });
+  return { familyTree: data, ...rest };
 }
 
 export function useAnimalByIdQuery(animalId: string, enabled: boolean = true) {
