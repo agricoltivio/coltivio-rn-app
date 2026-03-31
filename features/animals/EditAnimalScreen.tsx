@@ -104,7 +104,9 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
       id: animalId,
       ...data,
       dateOfBirth: data.dateOfBirth?.toISOString(),
-      dateOfDeath: data.dateOfDeath?.toISOString(),
+      dateOfDeath: data.dateOfDeath ? data.dateOfDeath.toISOString() : null,
+      // clear deathReason when death date is removed
+      deathReason: data.dateOfDeath ? (data.deathReason ?? null) : null,
     });
   }
 
