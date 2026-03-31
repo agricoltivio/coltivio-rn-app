@@ -1059,7 +1059,9 @@
       "slaughtered": "Slaughtered"
     },
     "mother": "Mother",
+    "mother_ear_tag_number": "Mother Ear Tag",
     "father": "Father",
+    "father_ear_tag_number": "Father Ear Tag",
     "children": "Offspring",
     "add_child": "Add Offspring",
     "no_children": "No Offspring",

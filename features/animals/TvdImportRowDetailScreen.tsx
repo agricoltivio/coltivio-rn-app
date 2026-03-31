@@ -23,6 +23,10 @@ type RowFormValues = {
   sex: "male" | "female";
   dateOfBirth: Date;
   usage: "milk" | "other";
+  motherEarTagNumber: string;
+  fatherEarTagNumber: string;
+  dateOfDeath: Date | undefined;
+  deathReason: "died" | "slaughtered" | undefined;
 };
 
 export function TvdImportRowDetailScreen({
@@ -61,6 +65,10 @@ export function TvdImportRowDetailScreen({
       sex: row.sex ?? undefined,
       dateOfBirth: row.dateOfBirth ? new Date(row.dateOfBirth) : undefined,
       usage: row.usage ?? undefined,
+      motherEarTagNumber: row.motherEarTagNumber ?? "",
+      fatherEarTagNumber: row.fatherEarTagNumber ?? "",
+      dateOfDeath: row.dateOfDeath ? new Date(row.dateOfDeath) : undefined,
+      deathReason: (row.deathReason ?? (row.dateOfDeath ? "died" : undefined)) ?? undefined,
     },
   });
 
@@ -72,6 +80,10 @@ export function TvdImportRowDetailScreen({
       sex: values.sex,
       dateOfBirth: values.dateOfBirth ? values.dateOfBirth.toISOString() : null,
       usage: values.usage,
+      motherEarTagNumber: values.motherEarTagNumber || null,
+      fatherEarTagNumber: values.fatherEarTagNumber || null,
+      dateOfDeath: values.dateOfDeath ? values.dateOfDeath.toISOString() : null,
+      deathReason: values.dateOfDeath ? (values.deathReason ?? "died") : null,
       mergeAnimalId,
     };
     navigation.popTo("TvdImportPreview", { rowEdit: { rowIndex, updatedRow } }, { merge: true });
@@ -160,6 +172,35 @@ export function TvdImportRowDetailScreen({
             rules={{ required: { value: true, message: t("forms.validation.required") } }}
             error={errors.usage?.message}
             data={usageData}
+          />
+
+          <RHTextInput
+            name="motherEarTagNumber"
+            control={control}
+            label={t("animals.mother_ear_tag_number")}
+          />
+
+          <RHTextInput
+            name="fatherEarTagNumber"
+            control={control}
+            label={t("animals.father_ear_tag_number")}
+          />
+
+          <RHDatePicker
+            name="dateOfDeath"
+            control={control}
+            label={t("animals.date_of_death")}
+            mode="date"
+          />
+
+          <RHSelect
+            name="deathReason"
+            control={control}
+            label={t("animals.death_reason")}
+            data={[
+              { label: t("animals.death_reasons.died"), value: "died" },
+              { label: t("animals.death_reasons.slaughtered"), value: "slaughtered" },
+            ]}
           />
 
           {/* Merge section — always visible */}

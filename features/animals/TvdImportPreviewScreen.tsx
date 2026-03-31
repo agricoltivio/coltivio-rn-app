@@ -66,6 +66,10 @@ export function TvdImportPreviewScreen({
         sex: r.sex!,
         dateOfBirth: r.dateOfBirth!,
         usage: r.usage!,
+        motherEarTagNumber: r.motherEarTagNumber ?? null,
+        fatherEarTagNumber: r.fatherEarTagNumber ?? null,
+        dateOfDeath: r.dateOfDeath ?? null,
+        deathReason: r.dateOfDeath ? (r.deathReason ?? "died") : null,
         mergeAnimalId: r.mergeAnimalId ?? null,
       }));
 

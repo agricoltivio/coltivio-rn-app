@@ -1059,7 +1059,9 @@
       "slaughtered": "Macellato"
     },
     "mother": "Madre",
+    "mother_ear_tag_number": "Marchio madre",
     "father": "Padre",
+    "father_ear_tag_number": "Marchio padre",
     "children": "Discendenti",
     "add_child": "Aggiungi discendente",
     "no_children": "Nessun discendente",

@@ -1059,7 +1059,9 @@
       "slaughtered": "Abattu"
     },
     "mother": "Mère",
+    "mother_ear_tag_number": "Marque auriculaire mère",
     "father": "Père",
+    "father_ear_tag_number": "Marque auriculaire père",
     "children": "Descendants",
     "add_child": "Ajouter un descendant",
     "no_children": "Aucun descendant",

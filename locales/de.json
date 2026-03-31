@@ -1061,7 +1061,9 @@
       "slaughtered": "Geschlachtet"
     },
     "mother": "Mutter",
+    "mother_ear_tag_number": "Ohrmarke Mutter",
     "father": "Vater",
+    "father_ear_tag_number": "Ohrmarke Vater",
     "children": "Nachkommen",
     "add_child": "Nachkommen hinzufügen",
     "no_children": "Keine Nachkommen",
