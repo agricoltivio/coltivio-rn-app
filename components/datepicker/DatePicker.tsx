@@ -39,11 +39,11 @@ export function DatePicker({
   const [open, setOpen] = useState(false);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   // Temporary date while user is selecting in iOS modal before confirming
-  const [tempDate, setTempDate] = useState<Date>(date || new Date());
+  const [tempDate, setTempDate] = useState<Date>(date ?? new Date());
 
   const openPicker = useCallback(() => {
     Keyboard.dismiss();
-    setTempDate(date || new Date());
+    setTempDate(date ?? new Date());
     if (Platform.OS === "ios") {
       bottomSheetModalRef.current?.present();
     } else {
@@ -51,10 +51,11 @@ export function DatePicker({
     }
   }, [date]);
 
-  const handleConfirm = useCallback(() => {
+  // Not memoized so it always closes over the latest tempDate
+  function handleConfirm() {
     onConfirm(tempDate);
     bottomSheetModalRef.current?.dismiss();
-  }, [tempDate, onConfirm]);
+  }
 
   function formatDate(date?: Date) {
     if (!date) {
