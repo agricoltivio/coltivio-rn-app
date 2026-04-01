@@ -9,6 +9,7 @@ type OutdoorTimelineHerdRowProps = {
   scale: number;
   visibleStartDay: number;
   visibleEndDay: number;
+  todayDay: number;
   onBarPress: (scheduleId: string) => void;
 };
 
@@ -19,19 +20,22 @@ export const OutdoorTimelineHerdRow = memo(function OutdoorTimelineHerdRow({
   scale,
   visibleStartDay,
   visibleEndDay,
+  todayDay,
   onBarPress,
 }: OutdoorTimelineHerdRowProps) {
   const theme = useTheme();
 
+  // Today's absolute pixel position within the timeline content
+  const todayLeft = todayDay * scale;
+
   // Cull bars to visible range with large padding for smoother scrolling
   const visibleBars = useMemo(() => {
     const padding = (visibleEndDay - visibleStartDay) * 3;
-    return bars.filter((bar) => {
-      return (
+    return bars.filter(
+      (bar) =>
         bar.endDay > visibleStartDay - padding &&
-        bar.startDay < visibleEndDay + padding
-      );
-    });
+        bar.startDay < visibleEndDay + padding,
+    );
   }, [bars, visibleStartDay, visibleEndDay]);
 
   const handleBarPress = useCallback(
@@ -56,6 +60,7 @@ export const OutdoorTimelineHerdRow = memo(function OutdoorTimelineHerdRow({
           bar={bar}
           left={bar.startDay * scale}
           width={(bar.endDay - bar.startDay) * scale}
+          todayLeft={todayLeft}
           onPress={handleBarPress}
         />
       ))}

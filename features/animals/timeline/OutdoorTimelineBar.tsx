@@ -7,6 +7,7 @@ type OutdoorTimelineBarProps = {
   bar: OutdoorBar;
   left: number;
   width: number;
+  todayLeft: number;
   onPress: (scheduleId: string) => void;
 };
 
@@ -16,6 +17,7 @@ export const OutdoorTimelineBar = memo(function OutdoorTimelineBar({
   bar,
   left,
   width,
+  todayLeft,
   onPress,
 }: OutdoorTimelineBarProps) {
   const barWidth = Math.max(width, MIN_BAR_WIDTH);
@@ -26,8 +28,20 @@ export const OutdoorTimelineBar = memo(function OutdoorTimelineBar({
       : bar.scheduleType === "exercise_yard"
         ? "#FF9800"
         : stringToColor(bar.herdName);
+
+  // How far today falls within this bar (in pixels from the bar's left edge)
+  const todayOffset = todayLeft - left;
+  // Past portion: from bar start up to today (clamped to bar bounds)
+  const pastWidth = Math.min(Math.max(todayOffset, 0), barWidth);
+  // Future portion: everything after today within this bar
+  const futureWidth = barWidth - pastWidth;
+  const hasPast = pastWidth > 0;
+  const hasFuture = futureWidth > 0;
+
   const showLabel = barWidth > 50;
-  const bgColor = hexToRgba(color, 0.75);
+  const solidBgColor = hexToRgba(color, 0.75);
+  const futureBgColor = hexToRgba(color, 0.25);
+  const futureBorderColor = hexToRgba(color, 0.55);
 
   return (
     <TouchableOpacity
@@ -39,13 +53,68 @@ export const OutdoorTimelineBar = memo(function OutdoorTimelineBar({
         width: barWidth,
         top: 4,
         bottom: 4,
-        backgroundColor: bgColor,
-        borderRadius: 4,
         justifyContent: "center",
         paddingHorizontal: 4,
-        overflow: "hidden",
       }}
     >
+      {/* Past portion — solid fill */}
+      {hasPast && (
+        <View
+          style={{
+            position: "absolute",
+            left: 0,
+            width: pastWidth,
+            top: 0,
+            bottom: 0,
+            backgroundColor: solidBgColor,
+            // Round only the left corners when a future portion follows
+            borderTopLeftRadius: 4,
+            borderBottomLeftRadius: 4,
+            borderTopRightRadius: hasFuture ? 0 : 4,
+            borderBottomRightRadius: hasFuture ? 0 : 4,
+            overflow: "hidden",
+          }}
+        >
+          {/* Semi-transparent overlay on right edge for open-ended schedules */}
+          {bar.isOpenEnded && !hasFuture && (
+            <View
+              style={{
+                position: "absolute",
+                right: 0,
+                top: 0,
+                bottom: 0,
+                width: Math.min(20, pastWidth * 0.3),
+                backgroundColor: hexToRgba("#ffffff", 0.35),
+              }}
+            />
+          )}
+        </View>
+      )}
+
+      {/* Future portion — lighter fill with dashed border to signal projection */}
+      {hasFuture && (
+        <View
+          style={{
+            position: "absolute",
+            left: pastWidth,
+            width: futureWidth,
+            top: 0,
+            bottom: 0,
+            backgroundColor: futureBgColor,
+            // Round only the right corners when a past portion precedes
+            borderTopLeftRadius: hasPast ? 0 : 4,
+            borderBottomLeftRadius: hasPast ? 0 : 4,
+            borderTopRightRadius: 4,
+            borderBottomRightRadius: 4,
+            borderWidth: 1.5,
+            borderStyle: "dashed",
+            borderColor: futureBorderColor,
+            borderLeftWidth: hasPast ? 0 : 1.5,
+          }}
+        />
+      )}
+
+      {/* Label rendered on top of both portions */}
       {showLabel && bar.notes && (
         <Text
           numberOfLines={1}
@@ -57,19 +126,6 @@ export const OutdoorTimelineBar = memo(function OutdoorTimelineBar({
         >
           {bar.notes}
         </Text>
-      )}
-      {/* Semi-transparent overlay on right edge for open-ended schedules */}
-      {bar.isOpenEnded && (
-        <View
-          style={{
-            position: "absolute",
-            right: 0,
-            top: 0,
-            bottom: 0,
-            width: Math.min(20, barWidth * 0.3),
-            backgroundColor: hexToRgba("#ffffff", 0.35),
-          }}
-        />
       )}
     </TouchableOpacity>
   );

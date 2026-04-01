@@ -25,6 +25,9 @@ export function buildJournalTimelineData(
   const epochEnd = new Date(endYear, 11, 31, 23, 59, 59, 999);
   const totalDays =
     Math.floor((epochEnd.getTime() - epochStart.getTime()) / MS_PER_DAY) + 1;
+  const todayDay = Math.floor(
+    (new Date().getTime() - epochStart.getTime()) / MS_PER_DAY,
+  );
 
   // Group entries by category
   const byCategory = new Map<string, OutdoorJournalEntry[]>();
@@ -65,6 +68,7 @@ export function buildJournalTimelineData(
         startDay: Math.max(0, startDay),
         endDay: Math.min(totalDays, endDay),
         isOpenEnded: false,
+        isFuture: startDay > todayDay,
         notes: String(entry.animalCount),
         animalCount: entry.animalCount,
         startDate: entry.startDate,

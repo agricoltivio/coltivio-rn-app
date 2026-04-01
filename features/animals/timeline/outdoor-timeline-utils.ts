@@ -8,6 +8,7 @@ export type OutdoorBar = {
   startDay: number; // days since epochStart
   endDay: number; // days since epochStart
   isOpenEnded: boolean;
+  isFuture: boolean; // starts after today — rendered as projection
   notes: string | null;
   scheduleType?: "pasture" | "exercise_yard";
   // Journal-specific metadata
@@ -78,6 +79,7 @@ export function buildOutdoorTimelineData(
   const epochStart = new Date(startYear, 0, 1);
   const epochEnd = new Date(endYear, 11, 31, 23, 59, 59, 999);
   const totalDays = daysBetween(epochStart, epochEnd) + 1;
+  const todayDay = daysBetween(epochStart, new Date());
 
   const herdRows: OutdoorHerdData[] = herds.map(
     ({ herdId, herdName, schedules }) => {
@@ -93,6 +95,7 @@ export function buildOutdoorTimelineData(
             startDay: occ.startDay,
             endDay: occ.endDay,
             isOpenEnded: occ.isOpenEnded,
+            isFuture: occ.startDay > todayDay,
             notes: schedule.notes,
             scheduleType: schedule.type,
           });

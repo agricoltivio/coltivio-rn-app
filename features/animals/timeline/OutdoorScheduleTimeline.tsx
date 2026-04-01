@@ -455,10 +455,11 @@ export function OutdoorScheduleTimeline({
         scale={scale}
         visibleStartDay={barVisibleRange.start}
         visibleEndDay={barVisibleRange.end}
+        todayDay={todayDay}
         onBarPress={onBarPress}
       />
     ),
-    [scale, barVisibleRange.start, barVisibleRange.end, onBarPress],
+    [scale, barVisibleRange.start, barVisibleRange.end, todayDay, onBarPress],
   );
 
   const getItemLayout = useCallback(
