@@ -120,11 +120,15 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
 
   const { familyTree, isLoading } = useFamilyTreeQuery(animalType ?? ("goat" as AnimalType));
 
-  // Pan gesture state
+  // Pan + zoom gesture state
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const savedX = useSharedValue(0);
   const savedY = useSharedValue(0);
+  const scale = useSharedValue(1);
+  const savedScale = useSharedValue(1);
+  const focalX = useSharedValue(0);
+  const focalY = useSharedValue(0);
 
   // Filter nodes/edges based on hideDead
   const { nodes, edges } = useMemo(() => {
@@ -170,7 +174,9 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
     return ids;
   }, [selectedId, edges]);
 
+  // maxPointers(1) prevents pan from firing during pinch (two fingers), avoiding conflicts
   const panGesture = Gesture.Pan()
+    .maxPointers(1)
     .onUpdate((e) => {
       translateX.value = savedX.value + e.translationX;
       translateY.value = savedY.value + e.translationY;
@@ -180,8 +186,34 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
       savedY.value = translateY.value;
     });
 
+  const pinchGesture = Gesture.Pinch()
+    .onStart((e) => {
+      // Capture the world point under the initial focal point as the zoom anchor
+      focalX.value = e.focalX;
+      focalY.value = e.focalY;
+    })
+    .onUpdate((e) => {
+      const newScale = Math.max(0.3, Math.min(3, savedScale.value * e.scale));
+      // e.focalX/Y is the CURRENT midpoint of the two fingers — project the initial
+      // anchor world point to that screen position so the focal point never drifts
+      translateX.value = e.focalX - (focalX.value - savedX.value) * (newScale / savedScale.value);
+      translateY.value = e.focalY - (focalY.value - savedY.value) * (newScale / savedScale.value);
+      scale.value = newScale;
+    })
+    .onEnd(() => {
+      savedScale.value = scale.value;
+      savedX.value = translateX.value;
+      savedY.value = translateY.value;
+    });
+
+  const combinedGesture = Gesture.Simultaneous(panGesture, pinchGesture);
+
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }, { translateY: translateY.value }],
+    transform: [
+      { translateX: translateX.value },
+      { translateY: translateY.value },
+      { scale: scale.value },
+    ],
   }));
 
   function handleTypeSelect(type: AnimalType) {
@@ -189,6 +221,12 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
     setShowTypePicker(false);
     centeredRef.current = false;
     setSelectedId(null);
+    scale.value = 1;
+    savedScale.value = 1;
+    translateX.value = 0;
+    translateY.value = 0;
+    savedX.value = 0;
+    savedY.value = 0;
   }
 
   const hasSelection = selectedId !== null;
@@ -245,14 +283,14 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
       </View>
 
       {/* Canvas */}
-      <View style={{ flex: 1, overflow: "hidden" }}>
-        {isLoading && animalType ? (
-          <ActivityIndicator style={{ marginTop: theme.spacing.xl }} color={theme.colors.primary} />
-        ) : !animalType || nodes.length === 0 ? (
-          <Subtitle style={{ marginTop: theme.spacing.m }}>{t("common.no_entries")}</Subtitle>
-        ) : (
-          <GestureDetector gesture={panGesture}>
-            <Animated.View style={[{ width: canvasWidth, height: canvasHeight }, animatedStyle]}>
+      <GestureDetector gesture={combinedGesture}>
+        <View style={{ flex: 1, overflow: "hidden" }}>
+          {isLoading && animalType ? (
+            <ActivityIndicator style={{ marginTop: theme.spacing.xl }} color={theme.colors.primary} />
+          ) : !animalType || nodes.length === 0 ? (
+            <Subtitle style={{ marginTop: theme.spacing.m }}>{t("common.no_entries")}</Subtitle>
+          ) : (
+            <Animated.View style={[{ width: canvasWidth, height: canvasHeight, transformOrigin: 'top left' }, animatedStyle]}>
               {/* SVG edges */}
               <Svg
                 style={{ position: "absolute", top: 0, left: 0 }}
@@ -342,9 +380,9 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
                 );
               })}
             </Animated.View>
-          </GestureDetector>
-        )}
-      </View>
+          )}
+        </View>
+      </GestureDetector>
     </ContentView>
   );
 }
