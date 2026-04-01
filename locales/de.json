@@ -1389,8 +1389,16 @@
       "submitted": "Eingereicht",
       "under_review": "In Prüfung",
       "published": "Veröffentlicht",
+      "approved": "Angenommen",
       "rejected": "Abgelehnt"
     },
+    "my_submissions": "Meine Einreichungen",
+    "submissions_filter_all": "Alle",
+    "submissions_filter_active": "Aktiv",
+    "submissions_filter_resolved": "Abgeschlossen",
+    "activity_changes_requested": "Eine Einreichung erfordert Änderungen",
+    "activity_approved": "Eine Einreichung wurde angenommen",
+    "activity_rejected": "Eine Einreichung wurde abgelehnt",
     "create_entry": "Neuer Eintrag",
     "edit_entry": "Bearbeiten",
     "submit": "Einreichen",
@@ -1426,8 +1434,8 @@
       "step2_body": "Erstelle ganz persönliche Einträge, die nur du sehen kannst.",
       "step3_heading": "Mit der Community teilen",
       "step3_body": "Teile deine Einträge mit der Community. Sie durchlaufen einen Prüfprozess, bevor sie veröffentlicht werden.",
-      "step4_heading": "Öffentliche Einträge ausblenden",
-      "step4_body": "Tippe auf das Einstellungen-Symbol, um nur deine privaten Einträge anzuzeigen."
+      "step4_heading": "Deine Einreichungen & Einstellungen",
+      "step4_body": "Mit dem Dokument-Symbol siehst du deine Einreichungen und ihren Status. Mit dem Einstellungen-Symbol kannst du nur private Einträge anzeigen."
     }
   },
   "membership": {

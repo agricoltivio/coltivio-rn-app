@@ -1385,8 +1385,16 @@
       "submitted": "Inviato",
       "under_review": "In Revisione",
       "published": "Pubblicato",
+      "approved": "Approvato",
       "rejected": "Rifiutato"
     },
+    "my_submissions": "Le Mie Proposte",
+    "submissions_filter_all": "Tutte",
+    "submissions_filter_active": "Attive",
+    "submissions_filter_resolved": "Concluse",
+    "activity_changes_requested": "Una proposta richiede modifiche",
+    "activity_approved": "Una proposta è stata approvata",
+    "activity_rejected": "Una proposta è stata rifiutata",
     "create_entry": "Nuova Voce",
     "edit_entry": "Modifica",
     "submit": "Invia",
@@ -1422,8 +1430,8 @@
       "step2_body": "Crea voci personali che solo tu puoi vedere.",
       "step3_heading": "Condividi con la community",
       "step3_body": "Condividi le tue voci con la community. Passano attraverso un processo di revisione prima di essere pubblicate.",
-      "step4_heading": "Nascondi le voci pubbliche",
-      "step4_body": "Tocca l'icona delle impostazioni per mostrare solo le tue voci private."
+      "step4_heading": "Proposte e Impostazioni",
+      "step4_body": "L'icona del documento mostra le tue proposte e il loro stato. L'icona delle impostazioni ti permette di mostrare solo le voci private."
     }
   },
   "membership": {

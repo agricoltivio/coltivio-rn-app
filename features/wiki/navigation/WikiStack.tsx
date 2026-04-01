@@ -1,6 +1,7 @@
 import { Stack } from "@/navigation/stack";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { DefaultTheme } from "styled-components/native";
+import { View } from "react-native";
 import { WikiListScreen } from "../WikiListScreen";
 import { WikiDetailScreen } from "../WikiDetailScreen";
 import { WikiEntryFormScreen } from "../WikiEntryFormScreen";
@@ -8,6 +9,8 @@ import { WikiChangeRequestScreen } from "../WikiChangeRequestScreen";
 import { WikiChangeRequestDraftScreen } from "../WikiChangeRequestDraftScreen";
 import { WikiSettingsScreen } from "../WikiSettingsScreen";
 import { WikiOnboardingScreen } from "../WikiOnboardingScreen";
+import { WikiMySubmissionsScreen } from "../WikiMySubmissionsScreen";
+import { WikiSubmissionsButton } from "../components/WikiSubmissionsButton";
 
 export function renderWikiStack(theme: DefaultTheme, navigation: any) {
   return [
@@ -18,13 +21,18 @@ export function renderWikiStack(theme: DefaultTheme, navigation: any) {
         title: "",
         headerRight() {
           return (
-            <IonIconButton
-              icon="settings-outline"
-              type="ghost"
-              iconSize={30}
-              color={theme.colors.primary}
-              onPress={() => navigation.navigate("WikiSettings")}
-            />
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <WikiSubmissionsButton
+                onPress={() => navigation.navigate("WikiMySubmissions")}
+              />
+              <IonIconButton
+                icon="settings-outline"
+                type="ghost"
+                iconSize={30}
+                color={theme.colors.primary}
+                onPress={() => navigation.navigate("WikiSettings")}
+              />
+            </View>
           );
         },
       }}
@@ -65,6 +73,12 @@ export function renderWikiStack(theme: DefaultTheme, navigation: any) {
       name="WikiOnboarding"
       options={{ headerShown: false }}
       component={WikiOnboardingScreen}
+    />,
+    <Stack.Screen
+      key="wiki-my-submissions"
+      name="WikiMySubmissions"
+      options={{ title: "" }}
+      component={WikiMySubmissionsScreen}
     />,
   ];
 }

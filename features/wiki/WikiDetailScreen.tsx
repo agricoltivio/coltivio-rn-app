@@ -8,12 +8,10 @@ import { IonIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, View, Text, TouchableOpacity } from "react-native";
 import { WikiMarkdown } from "@/features/wiki/components/WikiMarkdown";
-import { CommentsSection } from "@/features/wiki/components/CommentsSection";
 import styled from "styled-components/native";
 import { useTheme } from "styled-components/native";
 import {
   useDeleteWikiEntryMutation,
-  useSubmitChangeRequestDraftMutation,
   useSubmitWikiEntryMutation,
   useWikiDetailQuery,
 } from "./wiki.hooks";
@@ -36,7 +34,6 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
   const { entry, isLoading } = useWikiDetailQuery(entryId);
 
   const submitMutation = useSubmitWikiEntryMutation();
-  const resubmitCRMutation = useSubmitChangeRequestDraftMutation();
   const deleteMutation = useDeleteWikiEntryMutation(() => navigation.goBack());
 
   if (isLoading) {
@@ -65,23 +62,14 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
     entry.visibility === "public" && entry.status === "published";
   const activeCR = entry.activeChangeRequest;
   const isEditable = isPrivate && entry.status === "draft";
-  const isUnderReview = entry.status === "under_review";
-  const hasChangesRequested = activeCR?.status === "changes_requested";
-  const showComments = !!activeCR;
+  // Share button only shown for private drafts with no active CR — once a CR exists, the revision
+  // cycle happens entirely in WikiChangeRequestDraftScreen.
+  const showShareButton = isEditable && !activeCR;
 
   function onPublishPress() {
     Alert.alert(t("wiki.share"), t("wiki.share_confirm"), [
       { text: t("buttons.cancel"), style: "cancel" },
-      {
-        text: t("wiki.share"),
-        onPress: () => {
-          if (hasChangesRequested && activeCR) {
-            resubmitCRMutation.mutate(activeCR.id);
-          } else {
-            submitMutation.mutate(entryId);
-          }
-        },
-      },
+      { text: t("wiki.share"), onPress: () => submitMutation.mutate(entryId) },
     ]);
   }
 
@@ -100,19 +88,12 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
     <ContentView
       headerVisible
       footerComponent={
-        isEditable ? (
+        showShareButton ? (
           <BottomActionContainer>
             <FooterButton
               onPress={onPublishPress}
-              disabled={
-                submitMutation.isPending || resubmitCRMutation.isPending
-              }
-              style={{
-                opacity:
-                  submitMutation.isPending || resubmitCRMutation.isPending
-                    ? 0.6
-                    : 1,
-              }}
+              disabled={submitMutation.isPending}
+              style={{ opacity: submitMutation.isPending ? 0.6 : 1 }}
             >
               <ActionLabel>{t("wiki.share")}</ActionLabel>
             </FooterButton>
@@ -199,31 +180,6 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
                 <Text style={chipTextStyle}>{t("wiki.private")}</Text>
               </Chip>
             )}
-            {hasChangesRequested && (
-              <Chip
-                style={{
-                  backgroundColor: theme.colors.amber,
-                  borderColor: theme.colors.amber,
-                }}
-              >
-                <Text style={[chipTextStyle, { color: theme.colors.white }]}>
-                  {t("wiki.changes_requested")}
-                </Text>
-              </Chip>
-            )}
-
-            {isUnderReview && (
-              <Chip
-                style={{
-                  backgroundColor: theme.colors.blue,
-                  borderColor: theme.colors.blue,
-                }}
-              >
-                <Text style={[chipTextStyle, { color: theme.colors.white }]}>
-                  {t("wiki.status.under_review")}
-                </Text>
-              </Chip>
-            )}
           </View>
         </View>
 
@@ -239,9 +195,6 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
           {entryTranslation?.body ?? ""}
         </WikiMarkdown>
 
-        {showComments && activeCR && (
-          <CommentsSection changeRequestId={activeCR.id} />
-        )}
       </ScrollView>
       </KeyboardAvoidingView>
     </ContentView>

@@ -13,8 +13,10 @@ import {
 
 export function CommentsSection({
   changeRequestId,
+  readOnly = false,
 }: {
   changeRequestId: string;
+  readOnly?: boolean;
 }) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -113,38 +115,40 @@ export function CommentsSection({
         );
       })}
 
-      <View
-        style={{
-          flexDirection: "row",
-          gap: theme.spacing.s,
-          alignItems: "flex-end",
-          marginTop: theme.spacing.s,
-          marginBottom: theme.spacing.xl,
-        }}
-      >
-        <View style={{ flex: 1 }}>
-          <TextInput
-            hideLabel
-            placeholder={t("wiki.add_comment")}
-            value={commentText}
-            onChangeText={setCommentText}
-            multiline
-            returnKeyType="default"
-          />
-        </View>
-        <TouchableOpacity
-          onPress={onSend}
-          disabled={addNoteMutation.isPending}
+      {!readOnly && (
+        <View
           style={{
-            backgroundColor: theme.colors.primary,
-            borderRadius: theme.radii.xxl,
-            padding: theme.spacing.s,
-            opacity: addNoteMutation.isPending ? 0.4 : 1,
+            flexDirection: "row",
+            gap: theme.spacing.s,
+            alignItems: "flex-end",
+            marginTop: theme.spacing.s,
+            marginBottom: theme.spacing.xl,
           }}
         >
-          <Ionicons name="send" size={20} color="white" />
-        </TouchableOpacity>
-      </View>
+          <View style={{ flex: 1 }}>
+            <TextInput
+              hideLabel
+              placeholder={t("wiki.add_comment")}
+              value={commentText}
+              onChangeText={setCommentText}
+              multiline
+              returnKeyType="default"
+            />
+          </View>
+          <TouchableOpacity
+            onPress={onSend}
+            disabled={addNoteMutation.isPending}
+            style={{
+              backgroundColor: theme.colors.primary,
+              borderRadius: theme.radii.xxl,
+              padding: theme.spacing.s,
+              opacity: addNoteMutation.isPending ? 0.4 : 1,
+            }}
+          >
+            <Ionicons name="send" size={20} color="white" />
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 }

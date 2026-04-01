@@ -1385,8 +1385,16 @@
       "submitted": "Submitted",
       "under_review": "Under Review",
       "published": "Published",
+      "approved": "Approved",
       "rejected": "Rejected"
     },
+    "my_submissions": "My Submissions",
+    "submissions_filter_all": "All",
+    "submissions_filter_active": "Active",
+    "submissions_filter_resolved": "Resolved",
+    "activity_changes_requested": "A submission requires changes",
+    "activity_approved": "A submission was approved",
+    "activity_rejected": "A submission was denied",
     "create_entry": "New Entry",
     "edit_entry": "Edit",
     "submit": "Submit",
@@ -1422,8 +1430,8 @@
       "step2_body": "Create personal entries that only you can see.",
       "step3_heading": "Share with the Community",
       "step3_body": "Share your entries with the community. They go through a review process before being published.",
-      "step4_heading": "Hide Public Entries",
-      "step4_body": "Tap the settings icon to show only your private entries."
+      "step4_heading": "Submissions & Settings",
+      "step4_body": "The document icon shows your submissions and their status. The settings icon lets you show only private entries."
     }
   },
   "membership": {

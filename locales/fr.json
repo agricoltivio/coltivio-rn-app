@@ -1385,8 +1385,16 @@
       "submitted": "Soumis",
       "under_review": "En Révision",
       "published": "Publié",
+      "approved": "Approuvé",
       "rejected": "Rejeté"
     },
+    "my_submissions": "Mes Soumissions",
+    "submissions_filter_all": "Toutes",
+    "submissions_filter_active": "Actives",
+    "submissions_filter_resolved": "Résolues",
+    "activity_changes_requested": "Une soumission nécessite des modifications",
+    "activity_approved": "Une soumission a été approuvée",
+    "activity_rejected": "Une soumission a été refusée",
     "create_entry": "Nouvelle Entrée",
     "edit_entry": "Modifier",
     "submit": "Soumettre",
@@ -1422,8 +1430,8 @@
       "step2_body": "Créez des entrées personnelles que vous seul pouvez voir.",
       "step3_heading": "Partager avec la communauté",
       "step3_body": "Partagez vos entrées avec la communauté. Elles passent par un processus de révision avant d'être publiées.",
-      "step4_heading": "Masquer les entrées publiques",
-      "step4_body": "Appuyez sur l'icône des paramètres pour afficher uniquement vos entrées privées."
+      "step4_heading": "Soumissions et Paramètres",
+      "step4_body": "L'icône document affiche vos soumissions et leur statut. L'icône paramètres permet d'afficher uniquement vos entrées privées."
     }
   },
   "membership": {

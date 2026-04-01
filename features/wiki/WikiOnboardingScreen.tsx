@@ -53,23 +53,29 @@ export function WikiOnboardingScreen({
       </H3>
       <View
         style={{
-          alignSelf: "center",
-          marginTop: theme.spacing.xl,
-          width: 64,
-          height: 64,
-          borderRadius: 16,
-          borderWidth: 2,
-          borderColor: theme.colors.gray3,
-          backgroundColor: "rgba(52, 52, 52, 0.08)",
-          alignItems: "center",
+          flexDirection: "row",
           justifyContent: "center",
+          gap: theme.spacing.m,
+          marginTop: theme.spacing.xl,
         }}
       >
-        <Ionicons
-          name="settings-outline"
-          size={36}
-          color={theme.colors.primary}
-        />
+        {(["document-text-outline", "settings-outline"] as const).map((icon) => (
+          <View
+            key={icon}
+            style={{
+              width: 64,
+              height: 64,
+              borderRadius: 16,
+              borderWidth: 2,
+              borderColor: theme.colors.gray3,
+              backgroundColor: "rgba(52, 52, 52, 0.08)",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Ionicons name={icon} size={36} color={theme.colors.primary} />
+          </View>
+        ))}
       </View>
     </View>,
   ];

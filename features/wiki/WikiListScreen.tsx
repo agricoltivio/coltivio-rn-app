@@ -5,11 +5,11 @@ import { FilterChips } from "@/components/filters/FilterChips";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
 import { locale } from "@/locales/i18n";
-import { H2, H3, Subtitle } from "@/theme/Typography";
+import { H2, H3 } from "@/theme/Typography";
 import { useLocalSettings } from "@/features/user/LocalSettingsContext";
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, SectionList, View } from "react-native";
+import { ActivityIndicator, SectionList, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import {
   useMyChangeRequestsQuery,
@@ -36,6 +36,9 @@ type Section = {
   data: MergedEntry[];
 };
 
+// Priority order for banner: changes_requested > rejected > approved
+type BannerActivity = "changes_requested" | "rejected" | "approved" | null;
+
 export function WikiListScreen({ navigation }: WikiListScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -57,26 +60,16 @@ export function WikiListScreen({ navigation }: WikiListScreenProps) {
   const { myEntries, isLoading: myLoading } = useMyWikiEntriesQuery();
   const { changeRequests } = useMyChangeRequestsQuery();
 
-  // Entries with in-flight status (submitted / under_review)
-  const pendingEntries = useMemo(
-    () =>
-      (myEntries ?? []).filter(
-        (e) => e.status === "submitted" || e.status === "under_review",
-      ),
-    [myEntries],
-  );
-
-  // Change requests that are draft (need action) or under_review
-  const pendingChangeRequests = useMemo(
-    () =>
-      changeRequests.filter(
-        (cr) => cr.status === "draft" || cr.status === "under_review",
-      ),
-    [changeRequests],
-  );
-
-  const hasPendingSection =
-    pendingEntries.length > 0 || pendingChangeRequests.length > 0;
+  // Determine if there's unseen activity to show a banner
+  const bannerActivity = useMemo((): BannerActivity => {
+    const unseen = changeRequests.filter(
+      (cr) => cr.status !== localSettings.wikiSeenCrStatuses[cr.id],
+    );
+    if (unseen.some((cr) => cr.status === "changes_requested")) return "changes_requested";
+    if (unseen.some((cr) => cr.status === "rejected")) return "rejected";
+    if (unseen.some((cr) => cr.status === "approved")) return "approved";
+    return null;
+  }, [changeRequests, localSettings.wikiSeenCrStatuses]);
 
   const sections = useMemo((): Section[] => {
     if (!publicEntries && !myEntries) return [];
@@ -160,9 +153,41 @@ export function WikiListScreen({ navigation }: WikiListScreenProps) {
     return names.sort((a, b) => a.localeCompare(b));
   }, [publicEntries, myEntries]);
 
+  const bannerLabel =
+    bannerActivity === "changes_requested"
+      ? t("wiki.activity_changes_requested")
+      : bannerActivity === "rejected"
+        ? t("wiki.activity_rejected")
+        : bannerActivity === "approved"
+          ? t("wiki.activity_approved")
+          : null;
+
+  const bannerColor =
+    bannerActivity === "changes_requested"
+      ? theme.colors.amber
+      : bannerActivity === "rejected"
+        ? theme.colors.danger
+        : theme.colors.blue;
+
   return (
     <ContentView headerVisible>
       <H2>{t("wiki.wiki")}</H2>
+
+      {bannerLabel && (
+        <TouchableOpacity
+          onPress={() => navigation.navigate("WikiMySubmissions")}
+          style={{
+            backgroundColor: bannerColor,
+            borderRadius: theme.radii.m,
+            paddingVertical: theme.spacing.s,
+            paddingHorizontal: theme.spacing.m,
+            marginTop: theme.spacing.s,
+          }}
+        >
+          <H3 style={{ color: theme.colors.white }}>{bannerLabel}</H3>
+        </TouchableOpacity>
+      )}
+
       <View
         style={{ marginTop: theme.spacing.m, marginBottom: theme.spacing.s }}
       >
@@ -200,76 +225,6 @@ export function WikiListScreen({ navigation }: WikiListScreenProps) {
               borderTopLeftRadius: 10,
               overflow: "hidden",
             }}
-            ListHeaderComponent={
-              hasPendingSection ? (
-                <View style={{ marginBottom: theme.spacing.m }}>
-                  <View
-                    style={{
-                      paddingVertical: theme.spacing.s,
-                      paddingHorizontal: theme.spacing.xs,
-                    }}
-                  >
-                    <H3>{t("wiki.pending_section")}</H3>
-                  </View>
-                  <View
-                    style={{
-                      borderTopRightRadius: 10,
-                      borderTopLeftRadius: 10,
-                      overflow: "hidden",
-                    }}
-                  >
-                    {pendingEntries.map((entry) => {
-                      const translation = findTranslation(
-                        entry.translations,
-                        locale,
-                      );
-                      return (
-                        <ListItem
-                          key={entry.id}
-                          onPress={() =>
-                            navigation.navigate("WikiDetail", {
-                              entryId: entry.id,
-                            })
-                          }
-                        >
-                          <ListItem.Content>
-                            <ListItem.Title>
-                              {translation?.title ?? ""}
-                            </ListItem.Title>
-                          </ListItem.Content>
-                          <StatusBadge status={entry.status} theme={theme} />
-                          <ListItem.Chevron />
-                        </ListItem>
-                      );
-                    })}
-                    {pendingChangeRequests.map((cr) => {
-                      const translation = findTranslation(
-                        cr.translations,
-                        locale,
-                      );
-                      return (
-                        <ListItem
-                          key={cr.id}
-                          onPress={() =>
-                            navigation.navigate("WikiChangeRequestDraft", {
-                              changeRequestId: cr.id,
-                            })
-                          }
-                        >
-                          <ListItem.Content>
-                            <ListItem.Title>
-                              {translation?.title ?? ""}
-                            </ListItem.Title>
-                          </ListItem.Content>
-                          <StatusBadge status={cr.status} theme={theme} />
-                          <ListItem.Chevron />
-                        </ListItem>
-                      );
-                    })}
-                  </View>
-                </View>
-              ) : null
-            }
             renderSectionHeader={({ section: { title } }) => (
               <View
                 style={{
@@ -295,7 +250,7 @@ export function WikiListScreen({ navigation }: WikiListScreenProps) {
                   }
                 >
                   <ListItem.Content>
-                    <ListItem.Title>{displayTitle}</ListItem.Title>
+                    <ListItem.Title numberOfLines={1}>{displayTitle}</ListItem.Title>
                   </ListItem.Content>
                   <ListItem.Chevron />
                 </ListItem>
@@ -315,45 +270,5 @@ export function WikiListScreen({ navigation }: WikiListScreenProps) {
         onPress={() => navigation.navigate("WikiEntryForm", {})}
       />
     </ContentView>
-  );
-}
-
-type StatusBadgeProps = {
-  status: string;
-  theme: ReturnType<typeof useTheme>;
-};
-
-function StatusBadge({ status, theme }: StatusBadgeProps) {
-  const { t } = useTranslation();
-  const bgColor =
-    status === "draft"
-      ? theme.colors.amber
-      : status === "submitted" || status === "under_review"
-        ? theme.colors.blue
-        : theme.colors.gray4;
-
-  const statusLabels: Record<string, string> = {
-    draft: t("wiki.changes_requested"),
-    submitted: t("wiki.status.submitted"),
-    under_review: t("wiki.status.under_review"),
-    published: t("wiki.status.published"),
-    rejected: t("wiki.status.rejected"),
-  };
-  const label = statusLabels[status] ?? status;
-
-  return (
-    <View
-      style={{
-        backgroundColor: bgColor,
-        borderRadius: theme.radii.s,
-        paddingHorizontal: theme.spacing.s,
-        paddingVertical: theme.spacing.xxs,
-        marginRight: theme.spacing.xs,
-      }}
-    >
-      <Subtitle style={{ color: theme.colors.white, fontSize: 11 }}>
-        {label}
-      </Subtitle>
-    </View>
   );
 }

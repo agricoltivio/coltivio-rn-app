@@ -61,9 +61,11 @@ export function WikiChangeRequestDraftScreen({
   const { changeRequests } = useMyChangeRequestsQuery();
   const changeRequest = changeRequests.find((cr) => cr.id === changeRequestId);
   // Only draft CRs can be edited — under_review means it's been submitted and awaits review
-  const isEditable = changeRequest?.status === "draft";
+  const isEditable =
+    changeRequest?.status === "draft" ||
+    changeRequest?.status === "changes_requested";
 
-  const { control, handleSubmit, setValue } = useForm<FormValues>({
+  const { control, handleSubmit, setValue, getValues, formState: { isDirty } } = useForm<FormValues>({
     defaultValues: {
       de_title: "",
       de_body: "",
@@ -90,13 +92,7 @@ export function WikiChangeRequestDraftScreen({
     }
   }, [changeRequest, setValue]);
 
-  const updateMutation = useUpdateChangeRequestDraftMutation(
-    changeRequestId,
-    () => {
-      navigation.goBack();
-    },
-  );
-
+  const updateMutation = useUpdateChangeRequestDraftMutation(changeRequestId);
   const submitMutation = useSubmitChangeRequestDraftMutation(() => {
     navigation.goBack();
   });
@@ -119,7 +115,10 @@ export function WikiChangeRequestDraftScreen({
   }
 
   function onSave(values: FormValues) {
-    updateMutation.mutate({ translations: buildTranslations(values) });
+    updateMutation.mutate(
+      { translations: buildTranslations(values) },
+      { onSuccess: () => navigation.goBack() },
+    );
   }
 
   function onSubmitPress() {
@@ -127,7 +126,17 @@ export function WikiChangeRequestDraftScreen({
       { text: t("buttons.cancel"), style: "cancel" },
       {
         text: t("wiki.submit"),
-        onPress: () => submitMutation.mutate(changeRequestId),
+        onPress: () => {
+          if (isDirty) {
+            // Implicitly save dirty changes before submitting
+            updateMutation.mutate(
+              { translations: buildTranslations(getValues()) },
+              { onSuccess: () => submitMutation.mutate(changeRequestId) },
+            );
+          } else {
+            submitMutation.mutate(changeRequestId);
+          }
+        },
       },
     ]);
   }
@@ -161,8 +170,8 @@ export function WikiChangeRequestDraftScreen({
           <View
             style={{ gap: theme.spacing.m, paddingBottom: theme.spacing.xxl }}
           >
-            {/* "Changes requested" notice — shown when reviewer sent the CR back as draft */}
-            {isEditable && (
+            {/* "Changes requested" notice — shown when reviewer sent the CR back */}
+            {changeRequest?.status === "changes_requested" && (
               <View
                 style={{
                   backgroundColor: "#FEF3C7",
@@ -251,20 +260,26 @@ export function WikiChangeRequestDraftScreen({
                 onPress={handleSubmit(onSave)}
                 disabled={isPending}
                 style={{
-                  backgroundColor: theme.colors.gray4,
+                  backgroundColor: theme.colors.secondary,
                   borderRadius: theme.radii.m,
                   paddingVertical: theme.spacing.m,
                   alignItems: "center",
                   opacity: isPending ? 0.6 : 1,
                 }}
               >
-                <ButtonLabel style={{ color: theme.colors.primary }}>
+                <ButtonLabel style={{ color: theme.colors.white }}>
                   {t("buttons.save")}
                 </ButtonLabel>
               </TouchableOpacity>
             )}
 
-            <CommentsSection changeRequestId={changeRequestId} />
+            <CommentsSection
+              changeRequestId={changeRequestId}
+              readOnly={
+                changeRequest?.status === "approved" ||
+                changeRequest?.status === "rejected"
+              }
+            />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

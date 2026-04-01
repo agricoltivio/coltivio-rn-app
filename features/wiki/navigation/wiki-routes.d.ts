@@ -8,6 +8,7 @@ export type WikiStackParamList = {
   WikiChangeRequestDraft: { changeRequestId: string };
   WikiSettings: undefined;
   WikiOnboarding: undefined;
+  WikiMySubmissions: undefined;
 };
 
 export type WikiListScreenProps = StackScreenProps<"WikiList">;
@@ -19,3 +20,5 @@ export type WikiChangeRequestDraftScreenProps =
   StackScreenProps<"WikiChangeRequestDraft">;
 export type WikiSettingsScreenProps = StackScreenProps<"WikiSettings">;
 export type WikiOnboardingScreenProps = StackScreenProps<"WikiOnboarding">;
+export type WikiMySubmissionsScreenProps =
+  StackScreenProps<"WikiMySubmissions">;
