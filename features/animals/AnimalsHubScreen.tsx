@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "styled-components/native";
 import { useLocalSettings } from "../user/LocalSettingsContext";
+import { useMembership } from "../farms/farms.hooks";
+import { usePermissions } from "../user/users.hooks";
 import { ANIMALS_GROUPS, ANIMALS_ITEMS } from "./animals-settings";
 
 type GroupId = keyof typeof ANIMALS_GROUPS;
@@ -16,6 +18,8 @@ export function AnimalsHubScreen({ navigation }: AnimalsHubScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { localSettings } = useLocalSettings();
+  const { canRead } = usePermissions();
+  const { isActive } = useMembership();
 
   // Redirect to onboarding if not completed
   useEffect(() => {
@@ -41,7 +45,14 @@ export function AnimalsHubScreen({ navigation }: AnimalsHubScreenProps) {
             const groupMeta = ANIMALS_GROUPS[groupId];
             if (!groupMeta) return null;
 
-            const visibleItems = group.items.filter((item) => item.visible);
+            const visibleItems = group.items.filter((item) => {
+              if (!item.visible) return false;
+              const meta = ANIMALS_ITEMS[item.itemId];
+              if (!meta) return false;
+              if (!canRead(meta.feature)) return false;
+              if (meta.membershipRequired && !isActive) return false;
+              return true;
+            });
             if (visibleItems.length === 0) return null;
 
             return (

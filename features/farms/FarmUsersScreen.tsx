@@ -3,9 +3,9 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { Button } from "@/components/buttons/Button";
 import { Chip } from "@/components/chips/Chip";
 import { TextInput } from "@/components/inputs/TextInput";
-import { FarmInvite } from "@/api/farms.api";
+import { CreateInviteInput, FarmInvite, PermissionFeature } from "@/api/farms.api";
 import { FarmUser } from "@/api/user.api";
-import { H2, H3 } from "@/theme/Typography";
+import { Body, H2, H3 } from "@/theme/Typography";
 import { FarmUsersScreenProps } from "./navigation/farm-routes";
 import {
   useCreateInviteMutation,
@@ -23,6 +23,17 @@ import { Alert, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import styled from "styled-components/native";
 import { Ionicons } from "@expo/vector-icons";
+import { Select } from "@/components/select/Select";
+import { Checkbox } from "@/components/inputs/Checkbox";
+
+const ALL_FEATURES: PermissionFeature[] = [
+  "animals",
+  "field_calendar",
+  "commerce",
+  "tasks",
+];
+
+type InvitePermissionAccess = "none" | "read" | "write";
 
 function getInviteStatus(invite: FarmInvite): "pending" | "used" | "expired" {
   if (invite.usedAt != null) return "used";
@@ -38,6 +49,11 @@ export function FarmUsersScreen({ navigation }: FarmUsersScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const [email, setEmail] = useState("");
+  const [inviteRole, setInviteRole] = useState<"owner" | "member">("member");
+  // Map of feature → access for the invite form (default "none" = unchecked)
+  const [invitePermissions, setInvitePermissions] = useState<
+    Map<PermissionFeature, InvitePermissionAccess>
+  >(new Map());
 
   const { user: currentUser } = useUserQuery();
   const isOwner = currentUser?.farmRole === "owner";
@@ -46,14 +62,45 @@ export function FarmUsersScreen({ navigation }: FarmUsersScreenProps) {
   const { users: members = [] } = useFarmUsersQuery();
   const { data: invites = [] } = useFarmInvitesQuery();
 
-  const createInviteMutation = useCreateInviteMutation(() => setEmail(""));
+  function resetInviteForm() {
+    setEmail("");
+    setInviteRole("member");
+    setInvitePermissions(new Map());
+  }
+
+  const createInviteMutation = useCreateInviteMutation(resetInviteForm);
   const revokeInviteMutation = useRevokeInviteMutation();
   const removeMemberMutation = useRemoveMemberMutation();
   const updateRoleMutation = useUpdateMemberRoleMutation();
 
   function onInvite() {
     if (!email.trim()) return;
-    createInviteMutation.mutate(email.trim());
+    const input: CreateInviteInput = {
+      email: email.trim(),
+      role: inviteRole,
+      // For member invites, always send all features explicitly; default is "none"
+      permissions:
+        inviteRole === "member"
+          ? ALL_FEATURES.map((feature) => ({
+              feature,
+              access: invitePermissions.get(feature) ?? "none",
+            }))
+          : undefined,
+    };
+    createInviteMutation.mutate(input);
+  }
+
+  function onToggleInvitePermission(
+    feature: PermissionFeature,
+    level: "read" | "write",
+  ) {
+    setInvitePermissions((prev) => {
+      const next = new Map(prev);
+      const current = next.get(feature) ?? "none";
+      // Selecting the same level again clears it back to "none"
+      next.set(feature, current === level ? "none" : level);
+      return next;
+    });
   }
 
   function onRemoveMember(member: FarmUser) {
@@ -138,6 +185,23 @@ export function FarmUsersScreen({ navigation }: FarmUsersScreenProps) {
                     <View
                       style={{ flexDirection: "row", gap: theme.spacing.s }}
                     >
+                      {role === "member" && (
+                        <TouchableOpacity
+                          onPress={() =>
+                            navigation.navigate("MemberPermissions", {
+                              userId: member.id,
+                              memberName: member.fullName ?? member.email,
+                            })
+                          }
+                          hitSlop={8}
+                        >
+                          <Ionicons
+                            name="settings-outline"
+                            size={22}
+                            color={theme.colors.gray1}
+                          />
+                        </TouchableOpacity>
+                      )}
                       <TouchableOpacity
                         onPress={() => onToggleRole(member)}
                         disabled={updateRoleMutation.isPending}
@@ -224,6 +288,120 @@ export function FarmUsersScreen({ navigation }: FarmUsersScreenProps) {
               autoCorrect={false}
               keyboardType="email-address"
             />
+            <View style={{ marginTop: theme.spacing.m }}>
+              <Select
+                label={t("farm.invite_role_label")}
+                value={inviteRole}
+                onChange={(v) => setInviteRole(v as "owner" | "member")}
+                data={[
+                  { value: "member", label: t("farm.role_member") },
+                  { value: "owner", label: t("farm.role_owner") },
+                ]}
+              />
+            </View>
+
+            {/* Permission checkboxes — only relevant for member invites */}
+            {inviteRole === "member" && (
+              <View style={{ marginTop: theme.spacing.l }}>
+                <H3 style={{ marginBottom: theme.spacing.xs }}>
+                  {t("farm.invite_permissions_title")}
+                </H3>
+                <Body
+                  style={{
+                    color: theme.colors.gray1,
+                    marginBottom: theme.spacing.m,
+                  }}
+                >
+                  {t("farm.invite_permissions_description")}
+                </Body>
+                <View
+                  style={{
+                    backgroundColor: theme.colors.white,
+                    borderRadius: theme.radii.m,
+                    overflow: "hidden",
+                  }}
+                >
+                  {/* Header row */}
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      paddingHorizontal: theme.spacing.m,
+                      paddingVertical: theme.spacing.s,
+                      borderBottomWidth: 1,
+                      borderBottomColor: theme.colors.gray4,
+                    }}
+                  >
+                    <Body style={{ flex: 1, color: theme.colors.gray1 }} />
+                    <Body
+                      style={{
+                        width: 56,
+                        textAlign: "center",
+                        color: theme.colors.gray1,
+                        fontSize: 13,
+                      }}
+                    >
+                      {t("farm.permission_read")}
+                    </Body>
+                    <Body
+                      style={{
+                        width: 56,
+                        textAlign: "center",
+                        color: theme.colors.gray1,
+                        fontSize: 13,
+                      }}
+                    >
+                      {t("farm.permission_write")}
+                    </Body>
+                  </View>
+                  {ALL_FEATURES.map((feature, index) => {
+                    const access = invitePermissions.get(feature) ?? "none";
+                    return (
+                      <View
+                        key={feature}
+                        style={{
+                          flexDirection: "row",
+                          alignItems: "center",
+                          paddingHorizontal: theme.spacing.m,
+                          paddingVertical: theme.spacing.s,
+                          borderBottomWidth:
+                            index < ALL_FEATURES.length - 1 ? 1 : 0,
+                          borderBottomColor: theme.colors.gray4,
+                        }}
+                      >
+                        <Body style={{ flex: 1 }}>
+                          {t(
+                            `farm.permission_feature_${feature}` as Parameters<
+                              typeof t
+                            >[0],
+                          )}
+                        </Body>
+                        <View
+                          style={{ width: 56, alignItems: "center" }}
+                        >
+                          <Checkbox
+                            checked={access === "read"}
+                            onPress={() =>
+                              onToggleInvitePermission(feature, "read")
+                            }
+                          />
+                        </View>
+                        <View
+                          style={{ width: 56, alignItems: "center" }}
+                        >
+                          <Checkbox
+                            checked={access === "write"}
+                            onPress={() =>
+                              onToggleInvitePermission(feature, "write")
+                            }
+                          />
+                        </View>
+                      </View>
+                    );
+                  })}
+                </View>
+              </View>
+            )}
+
             <View style={{ marginTop: theme.spacing.m }}>
               <Button
                 type="primary"

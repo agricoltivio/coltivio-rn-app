@@ -8,6 +8,7 @@ import {
 } from "./cropProtectionApplications.hooks";
 import { CropProtectionApplicationSummary } from "./CropProtectionApplicationSummary";
 import { useTranslation } from "react-i18next";
+import { usePermissions } from "@/features/user/users.hooks";
 
 export function CropProtectionApplicationDetailsScreen({
   route,
@@ -15,6 +16,7 @@ export function CropProtectionApplicationDetailsScreen({
 }: CropProtectionApplicationDetailsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const cropProtectionApplicationId = route.params.cropProtectionApplicationId;
   const { cropProtectionApplication } = useCropProtectionApplicationQuery(
     cropProtectionApplicationId,
@@ -54,12 +56,14 @@ export function CropProtectionApplicationDetailsScreen({
         additionalNotes={additionalNotes}
         productUnit={cropProtectionApplication.product.unit ?? "kg"}
       />
-      <Button
-        style={{ marginBottom: theme.spacing.m }}
-        type="secondary"
-        title={t("buttons.delete")}
-        onPress={onDelete}
-      />
+      {canWrite("field_calendar") && (
+        <Button
+          style={{ marginBottom: theme.spacing.m }}
+          type="secondary"
+          title={t("buttons.delete")}
+          onPress={onDelete}
+        />
+      )}
     </ContentView>
   );
 }

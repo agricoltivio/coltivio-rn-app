@@ -29,6 +29,7 @@ import {
   useTogglePinMutation,
 } from "./tasks.hooks";
 import { TaskDetailScreenProps } from "./navigation/tasks-routes";
+import { usePermissions } from "@/features/user/users.hooks";
 
 type LinkDetailModalProps = {
   visible: boolean;
@@ -199,6 +200,7 @@ function SectionCard({
 
 export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
   const { t } = useTranslation();
+  const { canWrite, canRead } = usePermissions();
 
   type LinkType = TaskDetail["links"][number]["linkType"];
 
@@ -280,7 +282,14 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
     setLinkDetailVisible(true);
   }
 
+  function canReadLink(linkType: LinkType): boolean {
+    if (linkType === "animal" || linkType === "herd") return canRead("animals");
+    if (linkType === "plot") return canRead("field_calendar");
+    return true; // wiki_entry: no feature gate
+  }
+
   function navigateToLink(link: TaskDetail["links"][number]) {
+    if (!canReadLink(link.linkType)) return;
     setLinkDetailVisible(false);
     switch (link.linkType) {
       case "animal":
@@ -320,30 +329,38 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
         <ScrollView>
           <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}>
             <H2 style={{ flex: 1 }}>{task.name}</H2>
-            <MaterialCommunityIconButton
-              icon={task.pinned ? "pin" : "pin-outline"}
-              type={task.pinned ? "primary" : "accent"}
-              color={task.pinned ? "white" : theme.colors.primary}
-              onPress={() => togglePinMutation.mutate(!task.pinned)}
-            />
-            <IonIconButton
-              icon={task.status === "done" ? "checkmark-circle" : "checkmark-circle-outline"}
-              type={task.status === "done" ? "success" : "accent"}
-              color={task.status === "done" ? "white" : theme.colors.success}
-              loading={setStatusMutation.isPending}
-              onPress={onToggleStatus}
-            />
-            <IonIconButton
-              icon="create-outline"
-              type="accent"
-              color={theme.colors.primary}
-              onPress={() => navigation.navigate("TaskForm", { taskId })}
-            />
-            <IonIconButton
-              icon="trash-outline"
-              type="danger"
-              onPress={onDeletePress}
-            />
+            {canWrite("tasks") && (
+              <MaterialCommunityIconButton
+                icon={task.pinned ? "pin" : "pin-outline"}
+                type={task.pinned ? "primary" : "accent"}
+                color={task.pinned ? "white" : theme.colors.primary}
+                onPress={() => togglePinMutation.mutate(!task.pinned)}
+              />
+            )}
+            {canWrite("tasks") && (
+              <IonIconButton
+                icon={task.status === "done" ? "checkmark-circle" : "checkmark-circle-outline"}
+                type={task.status === "done" ? "success" : "accent"}
+                color={task.status === "done" ? "white" : theme.colors.success}
+                loading={setStatusMutation.isPending}
+                onPress={onToggleStatus}
+              />
+            )}
+            {canWrite("tasks") && (
+              <>
+                <IonIconButton
+                  icon="create-outline"
+                  type="accent"
+                  color={theme.colors.primary}
+                  onPress={() => navigation.navigate("TaskForm", { taskId })}
+                />
+                <IonIconButton
+                  icon="trash-outline"
+                  type="danger"
+                  onPress={onDeletePress}
+                />
+              </>
+            )}
           </View>
 
           {/* Status + due date + assignee + labels as chips */}
@@ -411,11 +428,11 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
                 .map((item) => (
                 <Pressable
                   key={item.id}
-                  onPress={() =>
+                  onPress={canWrite("tasks") ? () =>
                     toggleChecklistMutation.mutate({
                       itemId: item.id,
                       done: !item.done,
-                    })
+                    }) : undefined
                   }
                   style={{
                     flexDirection: "row",
@@ -471,14 +488,14 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
                           borderWidth: 1,
                           borderColor: theme.colors.primary,
                         }}
-                        onPress={() => openLinkGroup(linkType, items)}
+                        onPress={canReadLink(linkType) ? () => openLinkGroup(linkType, items) : undefined}
                       >
                         <ListItem.Content>
                           <ListItem.Title style={{ color: theme.colors.primary }}>
                             {title}
                           </ListItem.Title>
                         </ListItem.Content>
-                        <ListItem.Chevron />
+                        {canReadLink(linkType) && <ListItem.Chevron />}
                       </ListItem>
                     </View>
                   );

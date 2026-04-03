@@ -15,6 +15,7 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { Button } from "@/components/buttons/Button";
 import { useTheme } from "styled-components/native";
 import { useTranslation } from "react-i18next";
+import { usePermissions } from "@/features/user/users.hooks";
 import { Card } from "@/components/card/Card";
 
 export function EditCropFamilyScreen({
@@ -23,6 +24,7 @@ export function EditCropFamilyScreen({
 }: EditCropFamilyScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const familyId = route.params.familyId;
   const { cropFamily } = useCropFamilyByIdQuery(familyId);
   const { inUse } = useIsCropFamilyInUseQuery(familyId);
@@ -74,33 +76,37 @@ export function EditCropFamilyScreen({
               gap: theme.spacing.s,
             }}
           >
-            <Button
-              style={{ flexGrow: 1 }}
-              type="danger"
-              title={t("buttons.delete")}
-              onPress={onDelete}
-              disabled={
-                inUse ||
-                updateCropFamilyMutation.isPending ||
-                deleteCropFamilyMutation.isPending
-              }
-              loading={deleteCropFamilyMutation.isPending}
-            />
+            {canWrite("field_calendar") && (
+              <Button
+                style={{ flexGrow: 1 }}
+                type="danger"
+                title={t("buttons.delete")}
+                onPress={onDelete}
+                disabled={
+                  inUse ||
+                  updateCropFamilyMutation.isPending ||
+                  deleteCropFamilyMutation.isPending
+                }
+                loading={deleteCropFamilyMutation.isPending}
+              />
+            )}
 
-            <Button
-              style={{ flexGrow: 1 }}
-              title={t("buttons.save")}
-              onPress={handleSubmit(onSubmit)}
-              disabled={
-                !isDirty ||
-                updateCropFamilyMutation.isPending ||
-                deleteCropFamilyMutation.isPending
-              }
-              loading={
-                updateCropFamilyMutation.isPending ||
-                deleteCropFamilyMutation.isPending
-              }
-            />
+            {canWrite("field_calendar") && (
+              <Button
+                style={{ flexGrow: 1 }}
+                title={t("buttons.save")}
+                onPress={handleSubmit(onSubmit)}
+                disabled={
+                  !isDirty ||
+                  updateCropFamilyMutation.isPending ||
+                  deleteCropFamilyMutation.isPending
+                }
+                loading={
+                  updateCropFamilyMutation.isPending ||
+                  deleteCropFamilyMutation.isPending
+                }
+              />
+            )}
           </View>
         </BottomActionContainer>
       }

@@ -316,7 +316,19 @@
     "enter_farm_name_to_delete": "Per eliminare la tua azienda agricola, inserisci il nome dell'azienda e conferma l'azione.",
     "chose_option_to_delete_account": "Se vuoi anche eliminare il tuo account, abilita l'opzione 'Elimina Account'.",
     "delete_account": "Elimina Account",
-    "membership": "Abbonamento"
+    "membership": "Abbonamento",
+    "member_permissions": "Permessi",
+    "member_permissions_description": "Definisce quali funzioni questo membro può modificare. Per impostazione predefinita, ogni membro ha accesso in lettura.",
+    "permission_write": "Accesso in scrittura",
+    "invite_role_label": "Ruolo",
+    "invite_permissions_title": "Permessi",
+    "invite_permissions_description": "Definisce l'accesso per ogni funzione. Per impostazione predefinita il membro non ha accesso.",
+    "permission_read": "Lettura",
+    "permission_none": "Nessun accesso",
+    "permission_feature_animals": "Animali",
+    "permission_feature_tasks": "Compiti",
+    "permission_feature_field_calendar": "Calendario dei campi",
+    "permission_feature_commerce": "Commercio"
   },
   "plots": {
     "plots": "Campi",
@@ -1418,7 +1430,6 @@
     "image_size_medium": "Media (700px)",
     "image_size_large": "Grande (1200px)",
     "only_private": "Mostra solo voci private",
-    "comments": "Commenti",
     "moderator": "Moderatore",
     "no_comments": "Ancora nessun commento.",
     "add_comment": "Aggiungi un commento…",

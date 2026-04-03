@@ -4,6 +4,7 @@ import { EditFarmLocationScreen } from "../EditFarmLocationScreen";
 import { EditFarmNameScreen } from "../EditFarmNameScreen";
 import { FarmScreen } from "../FarmScreen";
 import { FarmUsersScreen } from "../FarmUsersScreen";
+import { MemberPermissionsScreen } from "../MemberPermissionsScreen";
 import { SearchFarmLocationModal } from "../SearchFarmLocationModal";
 
 export function renderFarmStack() {
@@ -44,6 +45,14 @@ export function renderFarmStack() {
       key="farm-users"
       name="FarmUsers"
       component={FarmUsersScreen}
+      options={{
+        title: "",
+      }}
+    />,
+    <Stack.Screen
+      key="member-permissions"
+      name="MemberPermissions"
+      component={MemberPermissionsScreen}
       options={{
         title: "",
       }}

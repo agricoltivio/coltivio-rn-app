@@ -15,6 +15,7 @@ import { addDays } from "date-fns";
 import { useEffect, useMemo } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { usePermissions } from "@/features/user/users.hooks";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
@@ -76,6 +77,7 @@ export function EditTreatmentScreen({
 }: EditTreatmentScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const treatmentId = route.params.treatmentId!;
   const preselectedDrugId = route.params?.drugId;
   const { treatment } = useTreatmentByIdQuery(treatmentId);
@@ -367,28 +369,32 @@ export function EditTreatmentScreen({
               gap: theme.spacing.s,
             }}
           >
-            <Button
-              style={{ flexGrow: 1 }}
-              type="danger"
-              title={t("buttons.delete")}
-              onPress={onDelete}
-              disabled={
-                updateTreatmentMutation.isPending ||
-                deleteTreatmentMutation.isPending
-              }
-              loading={deleteTreatmentMutation.isPending}
-            />
-            <Button
-              style={{ flexGrow: 1 }}
-              title={t("buttons.save")}
-              onPress={handleSubmit(onSubmit)}
-              disabled={
-                !canSave ||
-                updateTreatmentMutation.isPending ||
-                deleteTreatmentMutation.isPending
-              }
-              loading={updateTreatmentMutation.isPending}
-            />
+            {canWrite("animals") && (
+              <Button
+                style={{ flexGrow: 1 }}
+                type="danger"
+                title={t("buttons.delete")}
+                onPress={onDelete}
+                disabled={
+                  updateTreatmentMutation.isPending ||
+                  deleteTreatmentMutation.isPending
+                }
+                loading={deleteTreatmentMutation.isPending}
+              />
+            )}
+            {canWrite("animals") && (
+              <Button
+                style={{ flexGrow: 1 }}
+                title={t("buttons.save")}
+                onPress={handleSubmit(onSubmit)}
+                disabled={
+                  !canSave ||
+                  updateTreatmentMutation.isPending ||
+                  deleteTreatmentMutation.isPending
+                }
+                loading={updateTreatmentMutation.isPending}
+              />
+            )}
           </View>
         </BottomActionContainer>
       }
@@ -482,17 +488,19 @@ export function EditTreatmentScreen({
                 error={errors.drugId?.message}
               />
             </View>
-            <IonIconButton
-              icon="add"
-              iconSize={24}
-              color="black"
-              type="accent"
-              onPress={() =>
-                navigation.navigate("CreateDrug", {
-                  previousScreen: "EditTreatment",
-                })
-              }
-            />
+            {canWrite("animals") && (
+              <IonIconButton
+                icon="add"
+                iconSize={24}
+                color="black"
+                type="accent"
+                onPress={() =>
+                  navigation.navigate("CreateDrug", {
+                    previousScreen: "EditTreatment",
+                  })
+                }
+              />
+            )}
           </View>
 
           {/* Drug validation warning */}

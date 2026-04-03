@@ -11,6 +11,7 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Subtitle } from "@/theme/Typography";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { usePermissions } from "@/features/user/users.hooks";
 import { Alert, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import {
@@ -88,6 +89,7 @@ const DOSE_PER_UNITS: DosePerUnit[] = ["animal", "kg", "day", "total_amount"];
 export function EditDrugScreen({ route, navigation }: EditDrugScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const drugId = route.params.drugId!;
   const { drug } = useDrugByIdQuery(drugId);
 
@@ -219,32 +221,36 @@ export function EditDrugScreen({ route, navigation }: EditDrugScreenProps) {
               gap: theme.spacing.s,
             }}
           >
-            <Button
-              style={{ flexGrow: 1 }}
-              type="danger"
-              title={t("buttons.delete")}
-              onPress={onDelete}
-              disabled={
-                updateDrugMutation.isPending ||
-                deleteDrugMutation.isPending ||
-                checkDrugInUseMutation.isPending
-              }
-              loading={
-                deleteDrugMutation.isPending || checkDrugInUseMutation.isPending
-              }
-            />
-            <Button
-              style={{ flexGrow: 1 }}
-              title={t("buttons.save")}
-              onPress={handleSubmit(onSubmit)}
-              disabled={
-                (!isDirty && !treatmentsChanged) ||
-                !isValid ||
-                updateDrugMutation.isPending ||
-                deleteDrugMutation.isPending
-              }
-              loading={updateDrugMutation.isPending}
-            />
+            {canWrite("animals") && (
+              <Button
+                style={{ flexGrow: 1 }}
+                type="danger"
+                title={t("buttons.delete")}
+                onPress={onDelete}
+                disabled={
+                  updateDrugMutation.isPending ||
+                  deleteDrugMutation.isPending ||
+                  checkDrugInUseMutation.isPending
+                }
+                loading={
+                  deleteDrugMutation.isPending || checkDrugInUseMutation.isPending
+                }
+              />
+            )}
+            {canWrite("animals") && (
+              <Button
+                style={{ flexGrow: 1 }}
+                title={t("buttons.save")}
+                onPress={handleSubmit(onSubmit)}
+                disabled={
+                  (!isDirty && !treatmentsChanged) ||
+                  !isValid ||
+                  updateDrugMutation.isPending ||
+                  deleteDrugMutation.isPending
+                }
+                loading={updateDrugMutation.isPending}
+              />
+            )}
           </View>
         </BottomActionContainer>
       }

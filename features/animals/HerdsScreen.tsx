@@ -11,10 +11,12 @@ import { useTheme } from "styled-components/native";
 import { useLocalSettings } from "../user/LocalSettingsContext";
 import { useHerdsQuery } from "./herds.hooks";
 import { HerdsScreenProps } from "./navigation/animals-routes";
+import { usePermissions } from "@/features/user/users.hooks";
 
 export function HerdsScreen({ navigation }: HerdsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const { localSettings } = useLocalSettings();
   const { herds: unsortedHerds, isLoading } = useHerdsQuery();
 
@@ -71,10 +73,12 @@ export function HerdsScreen({ navigation }: HerdsScreenProps) {
           )}
         </View>
       </ScrollView>
-      <FAB
-        icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("CreateHerd", {})}
-      />
+      {canWrite("animals") && (
+        <FAB
+          icon={{ name: "add", color: "white" }}
+          onPress={() => navigation.navigate("CreateHerd", {})}
+        />
+      )}
     </ContentView>
   );
 }

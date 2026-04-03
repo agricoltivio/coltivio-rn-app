@@ -16,6 +16,7 @@ import {
   useUpdateAnimalMutation,
 } from "./animals.hooks";
 import { useMembership } from "@/features/farms/farms.hooks";
+import { usePermissions } from "@/features/user/users.hooks";
 import { AnimalDetailsScreenProps } from "./navigation/animals-routes";
 import { formatLocalizedDate } from "@/utils/date";
 import { locale } from "@/locales/i18n";
@@ -27,6 +28,7 @@ export function AnimalDetailsScreen({
 }: AnimalDetailsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const animalId = route.params.animalId;
   const { animal } = useAnimalByIdQuery(animalId);
   const { isActive: isMember } = useMembership();
@@ -76,28 +78,30 @@ export function AnimalDetailsScreen({
     <ContentView
       headerVisible
       footerComponent={
-        <BottomActionContainer>
-          <View
-            style={{
-              flexDirection: "row",
-              gap: theme.spacing.s,
-            }}
-          >
-            <Button
-              style={{ flexGrow: 1 }}
-              type="danger"
-              title={t("buttons.delete")}
-              onPress={onDelete}
-              disabled={deleteAnimalMutation.isPending}
-              loading={deleteAnimalMutation.isPending}
-            />
-            <Button
-              style={{ flexGrow: 1 }}
-              title={t("buttons.edit")}
-              onPress={() => navigation.navigate("EditAnimal", { animalId })}
-            />
-          </View>
-        </BottomActionContainer>
+        canWrite("animals") ? (
+          <BottomActionContainer>
+            <View
+              style={{
+                flexDirection: "row",
+                gap: theme.spacing.s,
+              }}
+            >
+              <Button
+                style={{ flexGrow: 1 }}
+                type="danger"
+                title={t("buttons.delete")}
+                onPress={onDelete}
+                disabled={deleteAnimalMutation.isPending}
+                loading={deleteAnimalMutation.isPending}
+              />
+              <Button
+                style={{ flexGrow: 1 }}
+                title={t("buttons.edit")}
+                onPress={() => navigation.navigate("EditAnimal", { animalId })}
+              />
+            </View>
+          </BottomActionContainer>
+        ) : undefined
       }
     >
       <ScrollView showHeaderOnScroll headerTitleOnScroll={animal.name}>
@@ -409,17 +413,19 @@ export function AnimalDetailsScreen({
             }}
           >
             <H3>{t("treatments.treatments")}</H3>
-            <IonIconButton
-              icon="add"
-              color="black"
-              iconSize={25}
-              type="accent"
-              onPress={() =>
-                navigation.navigate("CreateTreatment", {
-                  animalIds: [animalId],
-                })
-              }
-            />
+            {canWrite("animals") && (
+              <IonIconButton
+                icon="add"
+                color="black"
+                iconSize={25}
+                type="accent"
+                onPress={() =>
+                  navigation.navigate("CreateTreatment", {
+                    animalIds: [animalId],
+                  })
+                }
+              />
+            )}
           </View>
           {animal?.treatments.length === 0 ? (
             <Subtitle style={{ marginTop: theme.spacing.s }}>

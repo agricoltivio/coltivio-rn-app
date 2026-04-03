@@ -8,10 +8,12 @@ import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useEarTagsQuery } from "./earTags.hooks";
 import { EarTagsScreenProps } from "./navigation/animals-routes";
+import { usePermissions } from "@/features/user/users.hooks";
 
 export function EarTagsScreen({ navigation }: EarTagsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const { earTags } = useEarTagsQuery();
 
   return (
@@ -47,10 +49,12 @@ export function EarTagsScreen({ navigation }: EarTagsScreenProps) {
           </View>
         </View>
       </ScrollView>
-      <FAB
-        icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("CreateEarTagRange")}
-      />
+      {canWrite("animals") && (
+        <FAB
+          icon={{ name: "add", color: "white" }}
+          onPress={() => navigation.navigate("CreateEarTagRange")}
+        />
+      )}
     </ContentView>
   );
 }

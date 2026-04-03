@@ -17,12 +17,14 @@ import { formatLocalizedDate } from "@/utils/date";
 import { locale } from "@/locales/i18n";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
+import { usePermissions } from "@/features/user/users.hooks";
 
 export function PlotDetailsScreen({
   route,
   navigation,
 }: PlotDetailsScreenProps) {
   const { t } = useTranslation();
+  const { canWrite } = usePermissions();
   const { plotId } = route.params;
   const { plot, error } = usePlotByIdQuery(plotId);
   const theme = useTheme();
@@ -52,20 +54,24 @@ export function PlotDetailsScreen({
       footerComponent={
         <BottomActionContainer>
           <View style={{ gap: theme.spacing.s, flexDirection: "row" }}>
-            <Button
-              style={{ flexGrow: 1 }}
-              type="danger"
-              title={t("buttons.delete")}
-              onPress={() =>
-                navigation.navigate("DeletePlot", { plotId, name: plot.name })
-              }
-            />
-            <Button
-              style={{ flexGrow: 1 }}
-              type="accent"
-              title={t("buttons.edit")}
-              onPress={() => navigation.navigate("EditPlot", { plotId })}
-            />
+            {canWrite("field_calendar") && (
+              <Button
+                style={{ flexGrow: 1 }}
+                type="danger"
+                title={t("buttons.delete")}
+                onPress={() =>
+                  navigation.navigate("DeletePlot", { plotId, name: plot.name })
+                }
+              />
+            )}
+            {canWrite("field_calendar") && (
+              <Button
+                style={{ flexGrow: 1 }}
+                type="accent"
+                title={t("buttons.edit")}
+                onPress={() => navigation.navigate("EditPlot", { plotId })}
+              />
+            )}
           </View>
         </BottomActionContainer>
       }

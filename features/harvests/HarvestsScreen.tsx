@@ -20,12 +20,14 @@ import { useTheme } from "styled-components/native";
 import { HarvestDashboard } from "./components/HarvestDashboard";
 import { useHarvestSummariesOfFarm, useHarvestsQuery } from "./harvests.hooks";
 import { HarvestsScreenProps } from "./navigation/harvest-routes";
+import { usePermissions } from "@/features/user/users.hooks";
 
 type ViewMode = "dashboard" | "list";
 
 export function HarvestsScreen({ navigation }: HarvestsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
 
   const [viewMode, setViewMode] = useState<ViewMode>("dashboard");
   const [searchText, setSearchText] = useState("");
@@ -180,10 +182,12 @@ export function HarvestsScreen({ navigation }: HarvestsScreenProps) {
         </View>
       )}
 
-      <FAB
-        icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("SelectHarvestCropAndDate")}
-      />
+      {canWrite("field_calendar") && (
+        <FAB
+          icon={{ name: "add", color: "white" }}
+          onPress={() => navigation.navigate("SelectHarvestCropAndDate")}
+        />
+      )}
     </ContentView>
   );
 }

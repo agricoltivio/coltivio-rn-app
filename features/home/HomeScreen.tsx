@@ -25,7 +25,7 @@ import {
   useMembershipStatusQuery,
 } from "../farms/farms.hooks";
 import { useLocalSettings } from "../user/LocalSettingsContext";
-import { useUserQuery } from "../user/users.hooks";
+import { useUserQuery, usePermissions } from "../user/users.hooks";
 import { HomeTile } from "./HomeTile";
 import { HOME_TILES } from "./home-tiles-settings";
 import { UpcomingTasksTile } from "./UpcomingTasksTile";
@@ -35,6 +35,7 @@ import { SPEED_DIAL_ACTIONS } from "./speed-dial-settings";
 export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { t } = useTranslation();
   const { user } = useUserQuery();
+  const { getAccess } = usePermissions();
   const { farm } = useFarmQuery();
   const { isActive, isInGracePeriod, graceDaysRemaining } = useMembership();
   const { membershipStatus } = useMembershipStatusQuery();
@@ -63,13 +64,20 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
         const meta = HOME_TILES[tile.id as keyof typeof HOME_TILES];
         const membershipRequired =
           "membershipRequired" in meta && meta.membershipRequired;
-        return !membershipRequired || isActive;
+        if (membershipRequired && !isActive) return false;
+        // Hide tiles when user has no access to the relevant feature
+        if (tile.id === "plots" && getAccess("field_calendar") === "none") return false;
+        if (tile.id === "tasks" && getAccess("tasks") === "none") return false;
+        if (tile.id === "animalHusbandry" && getAccess("animals") === "none") return false;
+        if (tile.id === "fieldCalendar" && getAccess("field_calendar") === "none") return false;
+        return true;
       })
       .map((tile) => ({
         id: tile.id,
         ...HOME_TILES[tile.id as keyof typeof HOME_TILES],
       }));
-  }, [localSettings.homeTiles, isActive]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [localSettings.homeTiles, isActive, user]);
 
   function navigateToTile(tileId: string) {
     if (tileId === "plots") {

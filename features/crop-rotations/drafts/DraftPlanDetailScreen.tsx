@@ -27,6 +27,7 @@ import {
   useApplyDraftPlanMutation,
 } from "../crop-rotations.hooks";
 import { DraftPlanDetailScreenProps } from "../navigation/crop-rotations-routes.d";
+import { usePermissions } from "@/features/user/users.hooks";
 
 const TIMELINE_RANGE_YEARS = 10;
 
@@ -37,6 +38,7 @@ export function DraftPlanDetailScreen({
   const { draftPlanId } = route.params;
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
 
   const [selectedCropNames, setSelectedCropNames] = useState<Set<string>>(
     new Set(),
@@ -297,12 +299,14 @@ export function DraftPlanDetailScreen({
         )}
       </View>
 
-      <FAB
-        icon={{ name: "create-outline", color: "white" }}
-        onPress={() =>
-          navigation.navigate("SelectPlotsForPlan", { draftPlanId })
-        }
-      />
+      {canWrite("field_calendar") && (
+        <FAB
+          icon={{ name: "create-outline", color: "white" }}
+          onPress={() =>
+            navigation.navigate("SelectPlotsForPlan", { draftPlanId })
+          }
+        />
+      )}
     </ContentView>
   );
 }

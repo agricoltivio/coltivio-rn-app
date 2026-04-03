@@ -25,6 +25,7 @@ import { Image } from "expo-image";
 import { useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
+import { usePermissions } from "@/features/user/users.hooks";
 
 function resolveLocalUrl(url: string): string {
   const lanIp = Constants.expoConfig?.hostUri?.split(":").shift();
@@ -38,6 +39,7 @@ export function PlotJournalEntryScreen({
 }: PlotJournalEntryScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const { entryId, plotId } = route.params;
   const { entry } = usePlotJournalEntryQuery(entryId);
   const deleteMutation = useDeletePlotJournalEntryMutation();
@@ -78,25 +80,27 @@ export function PlotJournalEntryScreen({
           }}
         >
           <H2 style={{ flex: 1 }}>{entry.title}</H2>
-          <View style={{ flexDirection: "row", gap: theme.spacing.xs }}>
-            <IonIconButton
-              icon="trash-outline"
-              type="accent"
-              iconSize={22}
-              color={theme.colors.danger}
-              onPress={handleDelete}
-              disabled={deleteMutation.isPending}
-            />
-            <IonIconButton
-              icon="create-outline"
-              type="accent"
-              iconSize={22}
-              color={theme.colors.primary}
-              onPress={() =>
-                navigation.navigate("PlotJournalEntryForm", { plotId, entryId })
-              }
-            />
-          </View>
+          {canWrite("field_calendar") && (
+            <View style={{ flexDirection: "row", gap: theme.spacing.xs }}>
+              <IonIconButton
+                icon="trash-outline"
+                type="accent"
+                iconSize={22}
+                color={theme.colors.danger}
+                onPress={handleDelete}
+                disabled={deleteMutation.isPending}
+              />
+              <IonIconButton
+                icon="create-outline"
+                type="accent"
+                iconSize={22}
+                color={theme.colors.primary}
+                onPress={() =>
+                  navigation.navigate("PlotJournalEntryForm", { plotId, entryId })
+                }
+              />
+            </View>
+          )}
         </View>
 
         <View

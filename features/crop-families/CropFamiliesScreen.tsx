@@ -9,10 +9,12 @@ import { useTheme } from "styled-components/native";
 import { useCropFamiliesQuery } from "./cropFamilies.hooks";
 import { CropFamiliesScreenProps } from "./navigation/crop-families-routes";
 import { useTranslation } from "react-i18next";
+import { usePermissions } from "@/features/user/users.hooks";
 
 export function CropFamiliesScreen({ navigation }: CropFamiliesScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const { cropFamilies } = useCropFamiliesQuery();
 
   return (
@@ -57,10 +59,12 @@ export function CropFamiliesScreen({ navigation }: CropFamiliesScreenProps) {
           </View>
         </View>
       </ScrollView>
-      <FAB
-        icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("CreateCropFamily")}
-      />
+      {canWrite("field_calendar") && (
+        <FAB
+          icon={{ name: "add", color: "white" }}
+          onPress={() => navigation.navigate("CreateCropFamily")}
+        />
+      )}
     </ContentView>
   );
 }

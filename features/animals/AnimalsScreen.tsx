@@ -19,6 +19,7 @@ import {
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
 import { AnimalsScreenProps } from "./navigation/animals-routes";
+import { usePermissions } from "@/features/user/users.hooks";
 
 
 // HSL-based color from string — 360 possible hues, no palette collisions
@@ -32,6 +33,7 @@ function animalTypeColor(type: string): string {
 export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const { animals, isLoading } = useAnimalsQuery();
   const [searchText, setSearchText] = useState("");
   const [showDead, setShowDead] = useState(false);
@@ -326,10 +328,12 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
         />
       </View>
 
-      <FAB
-        icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("CreateAnimal")}
-      />
+      {canWrite("animals") && (
+        <FAB
+          icon={{ name: "add", color: "white" }}
+          onPress={() => navigation.navigate("CreateAnimal")}
+        />
+      )}
     </ContentView>
   );
 }

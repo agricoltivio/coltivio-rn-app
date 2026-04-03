@@ -8,6 +8,7 @@ import {
 } from "./fertilizerApplications.hooks";
 import { FertilizerApplicationSummary } from "./FertilizerApplicationSummary";
 import { useTranslation } from "react-i18next";
+import { usePermissions } from "@/features/user/users.hooks";
 
 export function FertilizerApplicationDetailsScreen({
   route,
@@ -15,6 +16,7 @@ export function FertilizerApplicationDetailsScreen({
 }: FertilizerApplicationDetailsScreenProps) {
   const theme = useTheme();
   const { t } = useTranslation();
+  const { canWrite } = usePermissions();
   const fertilizerApplicationId = route.params.fertilizerApplicationId;
   const { fertilizerApplication } = useFertilizerApplicationQuery(
     fertilizerApplicationId,
@@ -53,12 +55,14 @@ export function FertilizerApplicationDetailsScreen({
         additionalNotes={additionalNotes}
         productUnit={fertilizerApplication.fertilizer.unit ?? "kg"}
       />
-      <Button
-        style={{ marginBottom: theme.spacing.m }}
-        type="secondary"
-        title={t("buttons.delete")}
-        onPress={onDelete}
-      />
+      {canWrite("field_calendar") && (
+        <Button
+          style={{ marginBottom: theme.spacing.m }}
+          type="secondary"
+          title={t("buttons.delete")}
+          onPress={onDelete}
+        />
+      )}
     </ContentView>
   );
 }

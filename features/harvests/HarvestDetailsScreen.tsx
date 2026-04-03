@@ -6,12 +6,14 @@ import { useDeleteHarvestMutation, useHarvestQuery } from "./harvests.hooks";
 import { HarvestSummary } from "./HarvestSummary";
 import { useTranslation } from "react-i18next";
 import { round } from "@/utils/math";
+import { usePermissions } from "@/features/user/users.hooks";
 
 export function HarvestDetailsScreen({
   route,
   navigation,
 }: HarvestDetailsScreenProps) {
   const { t } = useTranslation();
+  const { canWrite } = usePermissions();
   const harvestId = route.params.harvestId;
   const { harvest } = useHarvestQuery(harvestId);
 
@@ -41,13 +43,15 @@ export function HarvestDetailsScreen({
   return (
     <ContentView
       footerComponent={
-        <BottomActionContainer>
-          <Button
-            type="secondary"
-            title={t("buttons.delete")}
-            onPress={onDelete}
-          />
-        </BottomActionContainer>
+        canWrite("field_calendar") ? (
+          <BottomActionContainer>
+            <Button
+              type="secondary"
+              title={t("buttons.delete")}
+              onPress={onDelete}
+            />
+          </BottomActionContainer>
+        ) : undefined
       }
     >
       <HarvestSummary

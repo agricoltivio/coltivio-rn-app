@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { useTheme } from "styled-components/native";
 import { Card } from "@/components/card/Card";
 import { useTranslation } from "react-i18next";
+import { usePermissions } from "@/features/user/users.hooks";
 
 export function EditFertilizerScreen({
   route,
@@ -23,6 +24,7 @@ export function EditFertilizerScreen({
 }: EditFertilizerScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const fertilizerId = route.params.fertilizerId;
   const { fertilizer } = useFertilizerByIdQuery(fertilizerId);
   const { inUse, isFetching: isFetchingInUse } =
@@ -70,29 +72,33 @@ export function EditFertilizerScreen({
       footerComponent={
         <BottomActionContainer>
           <View style={{ flexDirection: "row", gap: theme.spacing.s }}>
-            <Button
-              style={{ flexGrow: 1 }}
-              type="danger"
-              title={t("buttons.delete")}
-              onPress={handleSubmit(onDelete)}
-              disabled={
-                deleteFertilizerMutation.isPending ||
-                updateFertilizerMutation.isPending ||
-                inUse
-              }
-              loading={deleteFertilizerMutation.isPending}
-            />
-            <Button
-              style={{ flexGrow: 1 }}
-              title={t("buttons.save")}
-              onPress={handleSubmit(onSubmit)}
-              disabled={
-                !isDirty ||
-                updateFertilizerMutation.isPending ||
-                deleteFertilizerMutation.isPending
-              }
-              loading={updateFertilizerMutation.isPending}
-            />
+            {canWrite("field_calendar") && (
+              <Button
+                style={{ flexGrow: 1 }}
+                type="danger"
+                title={t("buttons.delete")}
+                onPress={handleSubmit(onDelete)}
+                disabled={
+                  deleteFertilizerMutation.isPending ||
+                  updateFertilizerMutation.isPending ||
+                  inUse
+                }
+                loading={deleteFertilizerMutation.isPending}
+              />
+            )}
+            {canWrite("field_calendar") && (
+              <Button
+                style={{ flexGrow: 1 }}
+                title={t("buttons.save")}
+                onPress={handleSubmit(onSubmit)}
+                disabled={
+                  !isDirty ||
+                  updateFertilizerMutation.isPending ||
+                  deleteFertilizerMutation.isPending
+                }
+                loading={updateFertilizerMutation.isPending}
+              />
+            )}
           </View>
         </BottomActionContainer>
       }

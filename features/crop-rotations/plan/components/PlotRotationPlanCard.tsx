@@ -11,6 +11,7 @@ import {
 import { RotationEntryRow } from "./RotationEntryRow";
 import { useOverlapValidation } from "../hooks/useOverlapValidation";
 import { useWaitingTimeValidation } from "../hooks/useWaitingTimeValidation";
+import { usePermissions } from "@/features/user/users.hooks";
 
 type PlotRotationPlanCardProps = {
   plotId: string;
@@ -26,6 +27,7 @@ export function PlotRotationPlanCard({
   existingRotations,
 }: PlotRotationPlanCardProps) {
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const { getPlotPlan, addRotation, updateRotation, removeRotation } =
     usePlanCropRotationsStore();
 
@@ -104,7 +106,7 @@ export function PlotRotationPlanCard({
                 plotId={plotId}
                 crops={cropOptions}
                 existingRotations={existingRotations}
-                canDelete={rotations.length > 0}
+                canDelete={rotations.length > 0 && canWrite("field_calendar")}
                 warning={warning?.message}
                 onUpdate={(updates) =>
                   updateRotation(plotId, rotation.entryId, updates)

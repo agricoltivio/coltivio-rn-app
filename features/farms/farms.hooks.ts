@@ -1,10 +1,14 @@
 import { useApi } from "@/api/api";
 import {
   AcceptInviteResult,
+  CreateInviteInput,
   Farm,
   FarmCreated,
   FarmInvite,
   FarmUpdateInput,
+  MemberPermission,
+  PermissionAccess,
+  PermissionFeature,
 } from "@/api/farms.api";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -89,9 +93,12 @@ export function useAcceptInviteMutation(
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (code: string) => api.farms.acceptInvite(code),
-    onSuccess: (user) => {
-      // Setting farmId on the user cache makes hasFarm true → RootStack auto-transitions to app
-      queryClient.setQueryData(queryKeys.users.me.queryKey, () => user);
+    onSuccess: async (user) => {
+      // Refetch the full /me response (which includes farmPermissions) so hasFarm becomes true
+      // and RootStack auto-transitions to the app stack.
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.users.me.queryKey,
+      });
       onSuccess && onSuccess(user);
     },
     onError: (error) => {
@@ -115,12 +122,57 @@ export function useCreateInviteMutation(
   const api = useApi();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (email: string) => api.farms.createInvite(email),
+    mutationFn: (input: CreateInviteInput) => api.farms.createInvite(input),
     onSuccess: (invite) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.farms.invites.queryKey,
       });
       onSuccess && onSuccess(invite);
+    },
+    onError: (error) => console.error(error),
+  });
+}
+
+export function useMemberPermissionsQuery(userId: string) {
+  const api = useApi();
+  const { data, ...rest } = useQuery({
+    queryKey: queryKeys.farms.memberPermissions(userId).queryKey,
+    queryFn: () => api.farms.getMemberPermissions(userId),
+    enabled: userId.length > 0,
+  });
+  return { permissions: data ?? [], ...rest };
+}
+
+export function useSetMemberPermissionMutation(userId: string) {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      feature,
+      access,
+    }: {
+      feature: PermissionFeature;
+      access: PermissionAccess;
+    }) => api.farms.setMemberPermission(userId, feature, access),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.farms.memberPermissions(userId).queryKey,
+      });
+    },
+    onError: (error) => console.error(error),
+  });
+}
+
+export function useDeleteMemberPermissionMutation(userId: string) {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (feature: PermissionFeature) =>
+      api.farms.deleteMemberPermission(userId, feature),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.farms.memberPermissions(userId).queryKey,
+      });
     },
     onError: (error) => console.error(error),
   });

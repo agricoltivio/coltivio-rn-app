@@ -9,12 +9,14 @@ import { useTheme } from "styled-components/native";
 import { useCropProtectionProductsQuery } from "./cropProtectionProduct.hooks";
 import { CropProtectionProductsScreenProps } from "./navigation/crop-protection-product-routes";
 import { useTranslation } from "react-i18next";
+import { usePermissions } from "@/features/user/users.hooks";
 
 export function CropProtectionProductsScreen({
   route,
   navigation,
 }: CropProtectionProductsScreenProps) {
   const { t } = useTranslation();
+  const { canWrite } = usePermissions();
   const theme = useTheme();
   const { cropProtectionProducts } = useCropProtectionProductsQuery();
 
@@ -59,10 +61,12 @@ export function CropProtectionProductsScreen({
           </View>
         </ContentView>
       </ScrollView>
-      <FAB
-        icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("CreateCropProtectionProduct")}
-      />
+      {canWrite("field_calendar") && (
+        <FAB
+          icon={{ name: "add", color: "white" }}
+          onPress={() => navigation.navigate("CreateCropProtectionProduct")}
+        />
+      )}
     </>
   );
 }

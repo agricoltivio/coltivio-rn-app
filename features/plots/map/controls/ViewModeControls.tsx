@@ -1,5 +1,6 @@
 import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import { MapControls } from "@/features/map/overlays/MapControls";
+import { usePermissions } from "@/features/user/users.hooks";
 import React from "react";
 import { useTheme } from "styled-components/native";
 import { usePlotsMapContext } from "../plots-map-mode";
@@ -18,6 +19,7 @@ export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
     setControlsExpanded,
     navigation,
   } = usePlotsMapContext();
+  const { canWrite } = usePermissions();
 
   if (mode.type !== "view") return null;
 
@@ -26,6 +28,9 @@ export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
     ? plots.find((p) => p.id === selectedPlotId)
     : undefined;
   const hasSelection = !!selectedPlot;
+
+  // Read-only members see no edit controls on the map
+  if (!canWrite("field_calendar")) return null;
 
   return (
     <MapControls expanded={controlsExpanded} onToggle={setControlsExpanded}>

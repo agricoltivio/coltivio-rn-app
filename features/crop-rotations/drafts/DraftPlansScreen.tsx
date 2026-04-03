@@ -13,11 +13,13 @@ import {
   useDeleteDraftPlanMutation,
 } from "../crop-rotations.hooks";
 import { DraftPlansScreenProps } from "../navigation/crop-rotations-routes.d";
+import { usePermissions } from "@/features/user/users.hooks";
 
 export function DraftPlansScreen({ navigation }: DraftPlansScreenProps) {
   const { t, i18n } = useTranslation();
   const locale = i18n.language;
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const { draftPlans, isLoading } = useDraftPlansQuery();
   const deleteMutation = useDeleteDraftPlanMutation();
 
@@ -46,15 +48,17 @@ export function DraftPlansScreen({ navigation }: DraftPlansScreenProps) {
           })}
         </ListItem.Body>
       </ListItem.Content>
-      <ListItem.RightIcon>
-        <Pressable onPress={() => handleDelete(item)} hitSlop={8}>
-          <Ionicons
-            name="trash-outline"
-            size={20}
-            color={theme.colors.danger}
-          />
-        </Pressable>
-      </ListItem.RightIcon>
+      {canWrite("field_calendar") && (
+        <ListItem.RightIcon>
+          <Pressable onPress={() => handleDelete(item)} hitSlop={8}>
+            <Ionicons
+              name="trash-outline"
+              size={20}
+              color={theme.colors.danger}
+            />
+          </Pressable>
+        </ListItem.RightIcon>
+      )}
     </ListItem>
   );
 
@@ -78,10 +82,12 @@ export function DraftPlansScreen({ navigation }: DraftPlansScreenProps) {
         />
       </View>
 
-      <FAB
-        icon={{ name: "add-outline", color: "white" }}
-        onPress={() => navigation.navigate("CreateDraftPlan")}
-      />
+      {canWrite("field_calendar") && (
+        <FAB
+          icon={{ name: "add-outline", color: "white" }}
+          onPress={() => navigation.navigate("CreateDraftPlan")}
+        />
+      )}
     </ContentView>
   );
 }
