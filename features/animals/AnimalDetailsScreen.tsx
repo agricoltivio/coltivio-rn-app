@@ -159,6 +159,7 @@ export function AnimalDetailsScreen({
             </ListItem.Content>
             <Switch
               value={animal.registered}
+              disabled={!canWrite("animals")}
               onChange={() =>
                 updateRegisteredMutation.mutate({
                   id: animalId,
@@ -344,18 +345,20 @@ export function AnimalDetailsScreen({
             }}
           >
             <H3>{t("animals.children")}</H3>
-            <IonIconButton
-              icon="add"
-              color="black"
-              iconSize={25}
-              type="accent"
-              onPress={() =>
-                navigation.navigate("SelectChildren", {
-                  animalId,
-                  sex: animal.sex,
-                })
-              }
-            />
+            {canWrite("animals") && (
+              <IonIconButton
+                icon="add"
+                color="black"
+                iconSize={25}
+                type="accent"
+                onPress={() =>
+                  navigation.navigate("SelectChildren", {
+                    animalId,
+                    sex: animal.sex,
+                  })
+                }
+              />
+            )}
           </View>
           {children.length === 0 ? (
             <Subtitle style={{ marginTop: theme.spacing.s }}>
@@ -386,16 +389,18 @@ export function AnimalDetailsScreen({
                       {t(`animals.animal_types.${child.type}`)}
                     </ListItem.Body>
                   </ListItem.Content>
-                  <TouchableOpacity
-                    onPress={() => handleRemoveChild(child.id)}
-                    style={{ padding: theme.spacing.xs }}
-                  >
-                    <Ionicons
-                      name="trash-outline"
-                      size={20}
-                      color={theme.colors.danger}
-                    />
-                  </TouchableOpacity>
+                  {canWrite("animals") && (
+                    <TouchableOpacity
+                      onPress={() => handleRemoveChild(child.id)}
+                      style={{ padding: theme.spacing.xs }}
+                    >
+                      <Ionicons
+                        name="trash-outline"
+                        size={20}
+                        color={theme.colors.danger}
+                      />
+                    </TouchableOpacity>
+                  )}
                   <ListItem.Chevron />
                 </ListItem>
               ))}

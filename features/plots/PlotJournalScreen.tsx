@@ -19,12 +19,14 @@ import { locale } from "@/locales/i18n";
 import { usePlotJournalQuery } from "./plot-journal.hooks";
 import { PlotJournalScreenProps } from "./navigation/plots-routes";
 import { PlotJournalEntry } from "@/api/plot-journal.api";
+import { usePermissions } from "@/features/user/users.hooks";
 
 export function PlotJournalScreen({ route, navigation }: PlotJournalScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { plotId } = route.params;
   const { entries, isLoading } = usePlotJournalQuery(plotId);
+  const { canWrite } = usePermissions();
 
   const [searchText, setSearchText] = useState("");
   const [dateFrom, setDateFrom] = useState<Date | null>(null);
@@ -72,13 +74,15 @@ export function PlotJournalScreen({ route, navigation }: PlotJournalScreenProps)
         }}
       >
         <H2>{t("animals.journal")}</H2>
-        <IonIconButton
-          icon="add-outline"
-          type="accent"
-          iconSize={22}
-          color={theme.colors.primary}
-          onPress={() => navigation.navigate("PlotJournalEntryForm", { plotId })}
-        />
+        {canWrite("field_calendar") && (
+          <IonIconButton
+            icon="add-outline"
+            type="accent"
+            iconSize={22}
+            color={theme.colors.primary}
+            onPress={() => navigation.navigate("PlotJournalEntryForm", { plotId })}
+          />
+        )}
       </View>
 
       <View style={{ marginTop: theme.spacing.m }}>

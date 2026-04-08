@@ -16,8 +16,8 @@ type PlotRotationsListProps = {
   plotName: string;
   rotations: RotationWithConflict[];
   crops: Crop[];
-  onRotationPress: (rotation: RotationEntry) => void;
-  onAddPress: () => void;
+  onRotationPress?: (rotation: RotationEntry) => void;
+  onAddPress?: () => void;
 };
 
 export function PlotRotationsList({
@@ -83,29 +83,31 @@ export function PlotRotationsList({
         >
           {plotName}
         </Text>
-        <Pressable
-          onPress={onAddPress}
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 4,
-          }}
-        >
-          <Ionicons
-            name="add-circle-outline"
-            size={18}
-            color={theme.colors.primary}
-          />
-          <Text
+        {onAddPress && (
+          <Pressable
+            onPress={onAddPress}
             style={{
-              fontSize: 14,
-              fontWeight: "600",
-              color: theme.colors.primary,
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 4,
             }}
           >
-            {t("buttons.add")}
-          </Text>
-        </Pressable>
+            <Ionicons
+              name="add-circle-outline"
+              size={18}
+              color={theme.colors.primary}
+            />
+            <Text
+              style={{
+                fontSize: 14,
+                fontWeight: "600",
+                color: theme.colors.primary,
+              }}
+            >
+              {t("buttons.add")}
+            </Text>
+          </Pressable>
+        )}
       </View>
 
       {/* Rotations list */}
@@ -129,7 +131,7 @@ export function PlotRotationsList({
           return (
             <Pressable
               key={rotation.entryId}
-              onPress={() => onRotationPress(rotation)}
+              onPress={onRotationPress ? () => onRotationPress(rotation) : undefined}
               style={{
                 padding: theme.spacing.m,
                 borderBottomWidth: index < rotations.length - 1 ? 1 : 0,

@@ -5,6 +5,7 @@ import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { useCropFamiliesQuery } from "@/features/crop-families/cropFamilies.hooks";
+import { usePermissions } from "@/features/user/users.hooks";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Control, FieldErrors } from "react-hook-form";
@@ -26,6 +27,7 @@ export function CropForm({ control, errors }: CropFormProps) {
   const theme = useTheme();
   const navigation = useNavigation();
   const { cropFamilies } = useCropFamiliesQuery();
+  const { canWrite } = usePermissions();
 
   const familyOptions = (cropFamilies ?? []).map((family) => ({
     label: family.name,
@@ -86,14 +88,16 @@ export function CropForm({ control, errors }: CropFormProps) {
               data={familyOptions}
             />
           </View>
-          <IonIconButton
-            icon="add"
-            type="accent"
-            color="black"
-            iconSize={24}
-            onPress={() => navigation.navigate("CreateCropFamily")}
-            style={{ marginBottom: 1 }}
-          />
+          {canWrite("field_calendar") && (
+            <IonIconButton
+              icon="add"
+              type="accent"
+              color="black"
+              iconSize={24}
+              onPress={() => navigation.navigate("CreateCropFamily")}
+              style={{ marginBottom: 1 }}
+            />
+          )}
         </View>
         <RHNumberInput
           name="waitingTimeInYears"

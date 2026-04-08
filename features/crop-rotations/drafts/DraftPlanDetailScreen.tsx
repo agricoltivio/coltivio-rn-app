@@ -225,11 +225,13 @@ export function DraftPlanDetailScreen({
         <H2 style={{ flex: 1 }}>
           {draftPlan?.name ?? t("crop_rotations.draft_plans.title")}
         </H2>
-        <Pressable onPress={handleApply}>
-          <Subtitle style={{ color: theme.colors.primary }}>
-            {t("crop_rotations.draft_plans.apply")}
-          </Subtitle>
-        </Pressable>
+        {canWrite("field_calendar") && (
+          <Pressable onPress={handleApply}>
+            <Subtitle style={{ color: theme.colors.primary }}>
+              {t("crop_rotations.draft_plans.apply")}
+            </Subtitle>
+          </Pressable>
+        )}
       </View>
 
       {/* Search bar */}

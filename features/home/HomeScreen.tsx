@@ -35,7 +35,7 @@ import { SPEED_DIAL_ACTIONS } from "./speed-dial-settings";
 export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { t } = useTranslation();
   const { user } = useUserQuery();
-  const { getAccess } = usePermissions();
+  const { getAccess, canWrite } = usePermissions();
   const { farm } = useFarmQuery();
   const { isActive, isInGracePeriod, graceDaysRemaining } = useMembership();
   const { membershipStatus } = useMembershipStatusQuery();
@@ -45,7 +45,13 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   const speedDialItems = useMemo(() => {
     return localSettings.speedDialItems
-      .filter((item) => item.active && item.id in SPEED_DIAL_ACTIONS)
+      .filter((item) => {
+        if (!item.active || !(item.id in SPEED_DIAL_ACTIONS)) return false;
+        const action = SPEED_DIAL_ACTIONS[item.id as keyof typeof SPEED_DIAL_ACTIONS];
+        if ("membershipRequired" in action && action.membershipRequired && !isActive) return false;
+        if (!canWrite(action.accessFeature)) return false;
+        return true;
+      })
       .map((item) => {
         const action =
           SPEED_DIAL_ACTIONS[item.id as keyof typeof SPEED_DIAL_ACTIONS];
@@ -55,7 +61,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
           onPress: () => navigation.navigate(action.route as never),
         };
       });
-  }, [localSettings.speedDialItems, t, navigation]);
+  }, [localSettings.speedDialItems, isActive, canWrite, navigation]);
 
   const visibleTiles = useMemo(() => {
     return localSettings.homeTiles
@@ -253,25 +259,27 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                 </TouchableOpacity>
               </TouchableOpacity>
             ) : null}
-            <View
-              style={{
-                flex: 1,
-                marginTop: theme.spacing.l,
-                backgroundColor: theme.colors.white,
-                height: 250,
-                elevation: 8,
-                shadowColor: theme.colors.gray1,
-                shadowOffset: { width: 3, height: 3 },
-                shadowOpacity: 0.8,
-                shadowRadius: 5,
-                borderRadius: 10,
-              }}
-            >
-              <MapTile />
-            </View>
+            {getAccess("field_calendar") !== "none" && (
+              <View
+                style={{
+                  flex: 1,
+                  marginTop: theme.spacing.l,
+                  backgroundColor: theme.colors.white,
+                  height: 250,
+                  elevation: 8,
+                  shadowColor: theme.colors.gray1,
+                  shadowOffset: { width: 3, height: 3 },
+                  shadowOpacity: 0.8,
+                  shadowRadius: 5,
+                  borderRadius: 10,
+                }}
+              >
+                <MapTile />
+              </View>
+            )}
           </View>
 
-          {isActive && localSettings.showUpcomingTasks && (
+          {isActive && localSettings.showUpcomingTasks && getAccess("tasks") !== "none" && (
             <UpcomingTasksTile />
           )}
 
