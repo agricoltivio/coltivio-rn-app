@@ -25,7 +25,7 @@ import {
   useMembershipStatusQuery,
 } from "../farms/farms.hooks";
 import { useLocalSettings } from "../user/LocalSettingsContext";
-import { useUserQuery } from "../user/users.hooks";
+import { useUserQuery, usePermissions } from "../user/users.hooks";
 import { HomeTile } from "./HomeTile";
 import { HOME_TILES } from "./home-tiles-settings";
 import { UpcomingTasksTile } from "./UpcomingTasksTile";
@@ -35,6 +35,7 @@ import { SPEED_DIAL_ACTIONS } from "./speed-dial-settings";
 export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { t } = useTranslation();
   const { user } = useUserQuery();
+  const { getAccess, canWrite } = usePermissions();
   const { farm } = useFarmQuery();
   const { isActive, isInGracePeriod, graceDaysRemaining } = useMembership();
   const { membershipStatus } = useMembershipStatusQuery();
@@ -44,7 +45,19 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   const speedDialItems = useMemo(() => {
     return localSettings.speedDialItems
-      .filter((item) => item.active && item.id in SPEED_DIAL_ACTIONS)
+      .filter((item) => {
+        if (!item.active || !(item.id in SPEED_DIAL_ACTIONS)) return false;
+        const action =
+          SPEED_DIAL_ACTIONS[item.id as keyof typeof SPEED_DIAL_ACTIONS];
+        if (
+          "membershipRequired" in action &&
+          action.membershipRequired &&
+          !isActive
+        )
+          return false;
+        if (!canWrite(action.accessFeature)) return false;
+        return true;
+      })
       .map((item) => {
         const action =
           SPEED_DIAL_ACTIONS[item.id as keyof typeof SPEED_DIAL_ACTIONS];
@@ -54,7 +67,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
           onPress: () => navigation.navigate(action.route as never),
         };
       });
-  }, [localSettings.speedDialItems, t, navigation]);
+  }, [localSettings.speedDialItems, isActive, canWrite, navigation]);
 
   const visibleTiles = useMemo(() => {
     return localSettings.homeTiles
@@ -63,13 +76,26 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
         const meta = HOME_TILES[tile.id as keyof typeof HOME_TILES];
         const membershipRequired =
           "membershipRequired" in meta && meta.membershipRequired;
-        return !membershipRequired || isActive;
+        if (membershipRequired && !isActive) return false;
+        // Hide tiles when user has no access to the relevant feature
+        if (tile.id === "plots" && getAccess("field_calendar") === "none")
+          return false;
+        if (tile.id === "tasks" && getAccess("tasks") === "none") return false;
+        if (tile.id === "animalHusbandry" && getAccess("animals") === "none")
+          return false;
+        if (
+          tile.id === "fieldCalendar" &&
+          getAccess("field_calendar") === "none"
+        )
+          return false;
+        return true;
       })
       .map((tile) => ({
         id: tile.id,
         ...HOME_TILES[tile.id as keyof typeof HOME_TILES],
       }));
-  }, [localSettings.homeTiles, isActive]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [localSettings.homeTiles, isActive, user]);
 
   function navigateToTile(tileId: string) {
     if (tileId === "plots") {
@@ -245,27 +271,29 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                 </TouchableOpacity>
               </TouchableOpacity>
             ) : null}
-            <View
-              style={{
-                flex: 1,
-                marginTop: theme.spacing.l,
-                backgroundColor: theme.colors.white,
-                height: 250,
-                elevation: 8,
-                shadowColor: theme.colors.gray1,
-                shadowOffset: { width: 3, height: 3 },
-                shadowOpacity: 0.8,
-                shadowRadius: 5,
-                borderRadius: 10,
-              }}
-            >
-              <MapTile />
-            </View>
+            {getAccess("field_calendar") !== "none" && (
+              <View
+                style={{
+                  flex: 1,
+                  marginTop: theme.spacing.l,
+                  backgroundColor: theme.colors.white,
+                  height: 250,
+                  elevation: 8,
+                  shadowColor: theme.colors.gray1,
+                  shadowOffset: { width: 3, height: 3 },
+                  shadowOpacity: 0.8,
+                  shadowRadius: 5,
+                  borderRadius: 10,
+                }}
+              >
+                <MapTile />
+              </View>
+            )}
           </View>
 
-          {isActive && localSettings.showUpcomingTasks && (
-            <UpcomingTasksTile />
-          )}
+          {isActive &&
+            localSettings.showUpcomingTasks &&
+            getAccess("tasks") !== "none" && <UpcomingTasksTile />}
 
           {isList ? (
             // List layout: full-width rows with small image icon and chevron

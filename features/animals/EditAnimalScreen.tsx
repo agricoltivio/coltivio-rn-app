@@ -4,6 +4,7 @@ import { H2, H3, Subtitle } from "@/theme/Typography";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { usePermissions } from "@/features/user/users.hooks";
 import { Alert, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { Button } from "@/components/buttons/Button";
@@ -24,6 +25,7 @@ import { EditAnimalScreenProps } from "./navigation/animals-routes";
 export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const animalId = route.params!.animalId!;
   const herdIdParam = route.params?.herdId;
   const { animal } = useAnimalByIdQuery(animalId);
@@ -129,27 +131,32 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
               gap: theme.spacing.s,
             }}
           >
-            <Button
-              style={{ flexGrow: 1 }}
-              type="danger"
-              title={t("buttons.delete")}
-              onPress={onDelete}
-              disabled={
-                updateAnimalMutation.isPending || deleteAnimalMutation.isPending
-              }
-              loading={deleteAnimalMutation.isPending}
-            />
-            <Button
-              style={{ flexGrow: 1 }}
-              title={t("buttons.save")}
-              onPress={handleSubmit(onSubmit)}
-              disabled={
-                !isDirty ||
-                updateAnimalMutation.isPending ||
-                deleteAnimalMutation.isPending
-              }
-              loading={updateAnimalMutation.isPending}
-            />
+            {canWrite("animals") && (
+              <Button
+                style={{ flexGrow: 1 }}
+                type="danger"
+                title={t("buttons.delete")}
+                onPress={onDelete}
+                disabled={
+                  updateAnimalMutation.isPending ||
+                  deleteAnimalMutation.isPending
+                }
+                loading={deleteAnimalMutation.isPending}
+              />
+            )}
+            {canWrite("animals") && (
+              <Button
+                style={{ flexGrow: 1 }}
+                title={t("buttons.save")}
+                onPress={handleSubmit(onSubmit)}
+                disabled={
+                  !isDirty ||
+                  updateAnimalMutation.isPending ||
+                  deleteAnimalMutation.isPending
+                }
+                loading={updateAnimalMutation.isPending}
+              />
+            )}
           </View>
         </BottomActionContainer>
       }

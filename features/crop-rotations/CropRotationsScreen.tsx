@@ -7,6 +7,7 @@ import { ActivityIndicator, Pressable, TextInput, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCropRotationsQuery } from "./crop-rotations.hooks";
 import { useMembership } from "@/features/farms/farms.hooks";
+import { usePermissions } from "@/features/user/users.hooks";
 import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
 import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
@@ -23,6 +24,7 @@ const TIMELINE_RANGE_YEARS = 10;
 export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const { isActive: isMember } = useMembership();
   const [selectedCropNames, setSelectedCropNames] = useState<Set<string>>(
     new Set(),
@@ -234,10 +236,12 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
         )}
       </View>
 
-      <FAB
-        icon={{ name: "create-outline", color: "white" }}
-        onPress={() => navigation.navigate("SelectPlotsForPlan", {})}
-      />
+      {canWrite("field_calendar") && (
+        <FAB
+          icon={{ name: "create-outline", color: "white" }}
+          onPress={() => navigation.navigate("SelectPlotsForPlan", {})}
+        />
+      )}
     </ContentView>
   );
 }

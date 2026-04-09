@@ -11,11 +11,14 @@ import { EditFarmNameScreenProps } from "./navigation/farm-routes";
 import { Button } from "@/components/buttons/Button";
 import { ScrollView } from "@/components/views/ScrollView";
 import { useTranslation } from "react-i18next";
+import { useUserQuery } from "@/features/user/users.hooks";
 
 export function EditFarmNameScreen({ navigation }: EditFarmNameScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { farm } = useFarmQuery();
+  const { user } = useUserQuery();
+  const isOwner = user?.farmRole === "owner";
 
   const updateFarmMutation = useUpdateFarmMutation(() => navigation.goBack());
   const {
@@ -33,14 +36,16 @@ export function EditFarmNameScreen({ navigation }: EditFarmNameScreenProps) {
   return (
     <ContentView
       footerComponent={
-        <BottomActionContainer>
-          <Button
-            onPress={handleSubmit(onSubmit)}
-            title={t("buttons.save")}
-            disabled={!isDirty || updateFarmMutation.isPending}
-            loading={updateFarmMutation.isPending}
-          />
-        </BottomActionContainer>
+        isOwner ? (
+          <BottomActionContainer>
+            <Button
+              onPress={handleSubmit(onSubmit)}
+              title={t("buttons.save")}
+              disabled={!isDirty || updateFarmMutation.isPending}
+              loading={updateFarmMutation.isPending}
+            />
+          </BottomActionContainer>
+        ) : undefined
       }
     >
       <ScrollView
@@ -61,6 +66,7 @@ export function EditFarmNameScreen({ navigation }: EditFarmNameScreenProps) {
               },
             }}
             error={errors.name?.message}
+            disabled={!isOwner}
           />
         </View>
       </ScrollView>

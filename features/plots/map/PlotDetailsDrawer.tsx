@@ -237,38 +237,40 @@ export function PlotDetailsDrawer() {
             </View>
 
             {isMember && (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("PlotJournal", { plotId: selectedPlot.id })
-              }
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: theme.spacing.xs,
-                marginTop: theme.spacing.m,
-                padding: 12,
-                borderRadius: theme.radii.m,
-                borderWidth: 1.5,
-                borderColor: theme.colors.primary,
-                backgroundColor: theme.colors.white,
-              }}
-            >
-              <Ionicons
-                name="book-outline"
-                size={18}
-                color={theme.colors.primary}
-              />
-              <Body
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("PlotJournal", {
+                    plotId: selectedPlot.id,
+                  })
+                }
                 style={{
-                  color: theme.colors.primary,
-                  fontWeight: "600",
-                  fontSize: 16,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: theme.spacing.xs,
+                  marginTop: theme.spacing.m,
+                  padding: 12,
+                  borderRadius: theme.radii.m,
+                  borderWidth: 1.5,
+                  borderColor: theme.colors.primary,
+                  backgroundColor: theme.colors.white,
                 }}
               >
-                {t("animals.journal")}
-              </Body>
-            </TouchableOpacity>
+                <Ionicons
+                  name="book-outline"
+                  size={18}
+                  color={theme.colors.primary}
+                />
+                <Body
+                  style={{
+                    color: theme.colors.primary,
+                    fontWeight: "600",
+                    fontSize: 16,
+                  }}
+                >
+                  {t("animals.journal")}
+                </Body>
+              </TouchableOpacity>
             )}
 
             <Button

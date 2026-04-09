@@ -13,7 +13,8 @@ import { AnimalChartsScreenProps } from "./navigation/animals-routes";
 // HSL-based color from string — same as AnimalsScreen
 function animalTypeColor(type: string): string {
   let hash = 0;
-  for (let i = 0; i < type.length; i++) hash = type.charCodeAt(i) + ((hash << 5) - hash);
+  for (let i = 0; i < type.length; i++)
+    hash = type.charCodeAt(i) + ((hash << 5) - hash);
   const hue = Math.abs(hash) % 360;
   return `hsl(${hue}, 60%, 40%)`;
 }
@@ -46,7 +47,8 @@ function hslToHex(hslStr: string): string {
 // Deterministic jitter offset from a string id so dots don't all stack on one horizontal line
 function jitterFromId(id: string, range: number): number {
   let hash = 0;
-  for (let i = 0; i < id.length; i++) hash = id.charCodeAt(i) + ((hash << 5) - hash);
+  for (let i = 0; i < id.length; i++)
+    hash = id.charCodeAt(i) + ((hash << 5) - hash);
   return ((Math.abs(hash) % 1000) / 1000) * range;
 }
 
@@ -63,8 +65,14 @@ function StatCard({ label, value }: { label: string; value: number }) {
         gap: theme.spacing.xxs,
       }}
     >
-      <Text style={{ fontSize: 28, fontWeight: "700", color: theme.colors.primary }}>{value}</Text>
-      <Subtitle style={{ textAlign: "center", fontSize: 12, color: theme.colors.gray2 }}>
+      <Text
+        style={{ fontSize: 28, fontWeight: "700", color: theme.colors.primary }}
+      >
+        {value}
+      </Text>
+      <Subtitle
+        style={{ textAlign: "center", fontSize: 12, color: theme.colors.gray2 }}
+      >
         {label}
       </Subtitle>
     </View>
@@ -75,9 +83,19 @@ function TypeLegend({ types }: { types: string[] }) {
   const { t } = useTranslation();
   const theme = useTheme();
   return (
-    <View style={{ flexDirection: "row", flexWrap: "wrap", gap: theme.spacing.xs, marginTop: theme.spacing.s }}>
+    <View
+      style={{
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: theme.spacing.xs,
+        marginTop: theme.spacing.s,
+      }}
+    >
       {types.map((type) => (
-        <View key={type} style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+        <View
+          key={type}
+          style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+        >
           <View
             style={{
               width: 10,
@@ -212,10 +230,13 @@ export function AnimalChartsScreen(_props: AnimalChartsScreenProps) {
     if (!animals) return { bornThisYear: 0, diedCount: 0, slaughteredCount: 0 };
     return {
       bornThisYear: animals.filter(
-        (a) => a.dateOfBirth && new Date(a.dateOfBirth).getFullYear() === currentYear,
+        (a) =>
+          a.dateOfBirth &&
+          new Date(a.dateOfBirth).getFullYear() === currentYear,
       ).length,
       diedCount: animals.filter((a) => a.deathReason === "died").length,
-      slaughteredCount: animals.filter((a) => a.deathReason === "slaughtered").length,
+      slaughteredCount: animals.filter((a) => a.deathReason === "slaughtered")
+        .length,
     };
   }, [animals, currentYear]);
 
@@ -243,7 +264,9 @@ export function AnimalChartsScreen(_props: AnimalChartsScreenProps) {
     let maxAge = 1;
     for (const a of animals) {
       if (a.dateOfDeath || !a.dateOfBirth) continue;
-      const ageYears = (now - new Date(a.dateOfBirth).getTime()) / (1000 * 60 * 60 * 24 * 365.25);
+      const ageYears =
+        (now - new Date(a.dateOfBirth).getTime()) /
+        (1000 * 60 * 60 * 24 * 365.25);
       if (ageYears < 0) continue;
       if (ageYears > maxAge) maxAge = ageYears;
       points.push({
@@ -260,14 +283,26 @@ export function AnimalChartsScreen(_props: AnimalChartsScreenProps) {
 
   return (
     <ContentView headerVisible>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: theme.spacing.m, paddingBottom: theme.spacing.xl }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          gap: theme.spacing.m,
+          paddingBottom: theme.spacing.xl,
+        }}
+      >
         <H2>{t("animals.charts.title")}</H2>
 
         {/* Stat cards */}
         <View style={{ flexDirection: "row", gap: theme.spacing.s }}>
-          <StatCard label={t("animals.charts.born_this_year")} value={bornThisYear} />
+          <StatCard
+            label={t("animals.charts.born_this_year")}
+            value={bornThisYear}
+          />
           <StatCard label={t("animals.charts.died")} value={diedCount} />
-          <StatCard label={t("animals.charts.slaughtered")} value={slaughteredCount} />
+          <StatCard
+            label={t("animals.charts.slaughtered")}
+            value={slaughteredCount}
+          />
         </View>
 
         {!hasAnimals ? (
@@ -282,7 +317,9 @@ export function AnimalChartsScreen(_props: AnimalChartsScreenProps) {
                 padding: theme.spacing.m,
               }}
             >
-              <Subtitle style={{ fontWeight: "600", marginBottom: theme.spacing.s }}>
+              <Subtitle
+                style={{ fontWeight: "600", marginBottom: theme.spacing.s }}
+              >
                 {t("animals.charts.animals_by_type")}
               </Subtitle>
               <View style={{ alignItems: "center" }}>
@@ -307,14 +344,28 @@ export function AnimalChartsScreen(_props: AnimalChartsScreenProps) {
                   padding: theme.spacing.m,
                 }}
               >
-                <Subtitle style={{ fontWeight: "600", marginBottom: theme.spacing.xs }}>
+                <Subtitle
+                  style={{ fontWeight: "600", marginBottom: theme.spacing.xs }}
+                >
                   {t("animals.charts.age_distribution")}
                 </Subtitle>
-                <Subtitle style={{ fontSize: 11, color: theme.colors.gray2, marginBottom: theme.spacing.s }}>
+                <Subtitle
+                  style={{
+                    fontSize: 11,
+                    color: theme.colors.gray2,
+                    marginBottom: theme.spacing.s,
+                  }}
+                >
                   {t("animals.charts.age_months")}
                 </Subtitle>
                 <AgeScatterPlot points={scatterPoints} maxAge={maxAgeYears} />
-                <TypeLegend types={animalTypes.filter((type) => scatterPoints.some((p) => p.color === hslToHex(animalTypeColor(type))))} />
+                <TypeLegend
+                  types={animalTypes.filter((type) =>
+                    scatterPoints.some(
+                      (p) => p.color === hslToHex(animalTypeColor(type)),
+                    ),
+                  )}
+                />
               </View>
             )}
           </>

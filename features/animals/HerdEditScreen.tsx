@@ -10,6 +10,7 @@ import { H2, H3, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { usePermissions } from "@/features/user/users.hooks";
 import { Text, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import {
@@ -29,6 +30,7 @@ type LocalSchedule = OutdoorScheduleCreateInput & { tempId: string };
 export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const locale = i18n.language;
   const herdId = route.params?.herdId!;
   const { herd } = useHerdByIdQuery(herdId);
@@ -207,28 +209,32 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
             </Text>
           )}
           <View style={{ flexDirection: "row", gap: theme.spacing.s }}>
-            <Button
-              style={{ flexGrow: 1 }}
-              type="danger"
-              title={t("buttons.delete")}
-              onPress={handleDelete}
-              disabled={
-                updateHerdMutation.isPending || deleteHerdMutation.isPending
-              }
-              loading={deleteHerdMutation.isPending}
-            />
-            <Button
-              style={{ flexGrow: 1 }}
-              title={t("buttons.save")}
-              onPress={handleSave}
-              disabled={
-                !isDirty ||
-                hasOverlaps ||
-                updateHerdMutation.isPending ||
-                deleteHerdMutation.isPending
-              }
-              loading={updateHerdMutation.isPending}
-            />
+            {canWrite("animals") && (
+              <Button
+                style={{ flexGrow: 1 }}
+                type="danger"
+                title={t("buttons.delete")}
+                onPress={handleDelete}
+                disabled={
+                  updateHerdMutation.isPending || deleteHerdMutation.isPending
+                }
+                loading={deleteHerdMutation.isPending}
+              />
+            )}
+            {canWrite("animals") && (
+              <Button
+                style={{ flexGrow: 1 }}
+                title={t("buttons.save")}
+                onPress={handleSave}
+                disabled={
+                  !isDirty ||
+                  hasOverlaps ||
+                  updateHerdMutation.isPending ||
+                  deleteHerdMutation.isPending
+                }
+                loading={updateHerdMutation.isPending}
+              />
+            )}
           </View>
         </BottomActionContainer>
       }
@@ -385,12 +391,16 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
           }
           setScheduleModalVisible(false);
         }}
-        onDelete={(scheduleId) => {
-          setLocalSchedules((prev) =>
-            prev.filter((s) => s.tempId !== scheduleId),
-          );
-          setScheduleModalVisible(false);
-        }}
+        onDelete={
+          canWrite("animals")
+            ? (scheduleId) => {
+                setLocalSchedules((prev) =>
+                  prev.filter((s) => s.tempId !== scheduleId),
+                );
+                setScheduleModalVisible(false);
+              }
+            : undefined
+        }
         onClose={() => setScheduleModalVisible(false)}
       />
     </ContentView>

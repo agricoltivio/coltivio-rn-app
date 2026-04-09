@@ -1,5 +1,8 @@
 import { Button } from "@/components/buttons/Button";
-import { IonIconButton, MaterialCommunityIconButton } from "@/components/buttons/IconButton";
+import {
+  IonIconButton,
+  MaterialCommunityIconButton,
+} from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
@@ -16,6 +19,7 @@ import {
   useUpdateAnimalMutation,
 } from "./animals.hooks";
 import { useMembership } from "@/features/farms/farms.hooks";
+import { usePermissions } from "@/features/user/users.hooks";
 import { AnimalDetailsScreenProps } from "./navigation/animals-routes";
 import { formatLocalizedDate } from "@/utils/date";
 import { locale } from "@/locales/i18n";
@@ -27,6 +31,7 @@ export function AnimalDetailsScreen({
 }: AnimalDetailsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const animalId = route.params.animalId;
   const { animal } = useAnimalByIdQuery(animalId);
   const { isActive: isMember } = useMembership();
@@ -76,39 +81,52 @@ export function AnimalDetailsScreen({
     <ContentView
       headerVisible
       footerComponent={
-        <BottomActionContainer>
-          <View
-            style={{
-              flexDirection: "row",
-              gap: theme.spacing.s,
-            }}
-          >
-            <Button
-              style={{ flexGrow: 1 }}
-              type="danger"
-              title={t("buttons.delete")}
-              onPress={onDelete}
-              disabled={deleteAnimalMutation.isPending}
-              loading={deleteAnimalMutation.isPending}
-            />
-            <Button
-              style={{ flexGrow: 1 }}
-              title={t("buttons.edit")}
-              onPress={() => navigation.navigate("EditAnimal", { animalId })}
-            />
-          </View>
-        </BottomActionContainer>
+        canWrite("animals") ? (
+          <BottomActionContainer>
+            <View
+              style={{
+                flexDirection: "row",
+                gap: theme.spacing.s,
+              }}
+            >
+              <Button
+                style={{ flexGrow: 1 }}
+                type="danger"
+                title={t("buttons.delete")}
+                onPress={onDelete}
+                disabled={deleteAnimalMutation.isPending}
+                loading={deleteAnimalMutation.isPending}
+              />
+              <Button
+                style={{ flexGrow: 1 }}
+                title={t("buttons.edit")}
+                onPress={() => navigation.navigate("EditAnimal", { animalId })}
+              />
+            </View>
+          </BottomActionContainer>
+        ) : undefined
       }
     >
       <ScrollView showHeaderOnScroll headerTitleOnScroll={animal.name}>
-        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
           <H2>{animal.name}</H2>
           <MaterialCommunityIconButton
             type="accent"
             icon="sitemap"
             iconSize={22}
             color={theme.colors.primary}
-            onPress={() => navigation.navigate("FamilyTree", { animalType: animal.type, focusedAnimalId: animal.id })}
+            onPress={() =>
+              navigation.navigate("FamilyTree", {
+                animalType: animal.type,
+                focusedAnimalId: animal.id,
+              })
+            }
           />
         </View>
 
@@ -155,6 +173,7 @@ export function AnimalDetailsScreen({
             </ListItem.Content>
             <Switch
               value={animal.registered}
+              disabled={!canWrite("animals")}
               onChange={() =>
                 updateRegisteredMutation.mutate({
                   id: animalId,
@@ -307,27 +326,37 @@ export function AnimalDetailsScreen({
 
         {/* Journal — members only */}
         {isMember && (
-        <View style={{ marginTop: theme.spacing.l }}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("AnimalJournal", { animalId })}
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: theme.spacing.xs,
-              padding: 12,
-              borderRadius: theme.radii.m,
-              borderWidth: 1.5,
-              borderColor: theme.colors.primary,
-              backgroundColor: theme.colors.white,
-            }}
-          >
-            <Ionicons name="book-outline" size={18} color={theme.colors.primary} />
-            <Subtitle style={{ color: theme.colors.primary, fontWeight: "600", fontSize: 16 }}>
-              {t("animals.journal")}
-            </Subtitle>
-          </TouchableOpacity>
-        </View>
+          <View style={{ marginTop: theme.spacing.l }}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("AnimalJournal", { animalId })}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: theme.spacing.xs,
+                padding: 12,
+                borderRadius: theme.radii.m,
+                borderWidth: 1.5,
+                borderColor: theme.colors.primary,
+                backgroundColor: theme.colors.white,
+              }}
+            >
+              <Ionicons
+                name="book-outline"
+                size={18}
+                color={theme.colors.primary}
+              />
+              <Subtitle
+                style={{
+                  color: theme.colors.primary,
+                  fontWeight: "600",
+                  fontSize: 16,
+                }}
+              >
+                {t("animals.journal")}
+              </Subtitle>
+            </TouchableOpacity>
+          </View>
         )}
 
         {/* Children */}
@@ -340,18 +369,20 @@ export function AnimalDetailsScreen({
             }}
           >
             <H3>{t("animals.children")}</H3>
-            <IonIconButton
-              icon="add"
-              color="black"
-              iconSize={25}
-              type="accent"
-              onPress={() =>
-                navigation.navigate("SelectChildren", {
-                  animalId,
-                  sex: animal.sex,
-                })
-              }
-            />
+            {canWrite("animals") && (
+              <IonIconButton
+                icon="add"
+                color="black"
+                iconSize={25}
+                type="accent"
+                onPress={() =>
+                  navigation.navigate("SelectChildren", {
+                    animalId,
+                    sex: animal.sex,
+                  })
+                }
+              />
+            )}
           </View>
           {children.length === 0 ? (
             <Subtitle style={{ marginTop: theme.spacing.s }}>
@@ -382,16 +413,18 @@ export function AnimalDetailsScreen({
                       {t(`animals.animal_types.${child.type}`)}
                     </ListItem.Body>
                   </ListItem.Content>
-                  <TouchableOpacity
-                    onPress={() => handleRemoveChild(child.id)}
-                    style={{ padding: theme.spacing.xs }}
-                  >
-                    <Ionicons
-                      name="trash-outline"
-                      size={20}
-                      color={theme.colors.danger}
-                    />
-                  </TouchableOpacity>
+                  {canWrite("animals") && (
+                    <TouchableOpacity
+                      onPress={() => handleRemoveChild(child.id)}
+                      style={{ padding: theme.spacing.xs }}
+                    >
+                      <Ionicons
+                        name="trash-outline"
+                        size={20}
+                        color={theme.colors.danger}
+                      />
+                    </TouchableOpacity>
+                  )}
                   <ListItem.Chevron />
                 </ListItem>
               ))}
@@ -409,17 +442,19 @@ export function AnimalDetailsScreen({
             }}
           >
             <H3>{t("treatments.treatments")}</H3>
-            <IonIconButton
-              icon="add"
-              color="black"
-              iconSize={25}
-              type="accent"
-              onPress={() =>
-                navigation.navigate("CreateTreatment", {
-                  animalIds: [animalId],
-                })
-              }
-            />
+            {canWrite("animals") && (
+              <IonIconButton
+                icon="add"
+                color="black"
+                iconSize={25}
+                type="accent"
+                onPress={() =>
+                  navigation.navigate("CreateTreatment", {
+                    animalIds: [animalId],
+                  })
+                }
+              />
+            )}
           </View>
           {animal?.treatments.length === 0 ? (
             <Subtitle style={{ marginTop: theme.spacing.s }}>

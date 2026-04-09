@@ -20,6 +20,7 @@ import { ROW_HEIGHT } from "../../timeline/TimelinePlotRow";
 import { hasRotationOverlap } from "../plan-crop-rotations-conflict-utils";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
+import { usePermissions } from "@/features/user/users.hooks";
 
 const MS_PER_DAY = 86_400_000;
 
@@ -44,6 +45,7 @@ export function PlotRotationsEditor({
 }: PlotRotationsEditorProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
 
   const { plotPlans, addRotation, updateRotation, removeRotation } =
     usePlanCropRotationsStore();
@@ -542,36 +544,44 @@ export function PlotRotationsEditor({
               plotName={plot.name}
               rotations={rotations}
               crops={crops}
-              onRotationPress={(rotation) =>
-                handleRotationPress(plot.id, rotation)
+              onRotationPress={
+                canWrite("field_calendar")
+                  ? (rotation) => handleRotationPress(plot.id, rotation)
+                  : undefined
               }
-              onAddPress={() => handleAddRotation(plot.id)}
+              onAddPress={
+                canWrite("field_calendar")
+                  ? () => handleAddRotation(plot.id)
+                  : undefined
+              }
             />
           );
         })}
       </ScrollView>
 
       {/* Save button */}
-      <BottomActionContainer>
-        {hasConflicts && (
-          <Text
-            style={{
-              fontSize: 13,
-              color: theme.colors.danger,
-              textAlign: "center",
-              marginBottom: theme.spacing.s,
-            }}
-          >
-            {t("crop_rotations.plan.resolve_conflicts_warning")}
-          </Text>
-        )}
-        <Button
-          onPress={handleSavePress}
-          disabled={saving || hasConflicts}
-          loading={saving}
-          title={t("crop_rotations.plan.save_plan")}
-        />
-      </BottomActionContainer>
+      {canWrite("field_calendar") && (
+        <BottomActionContainer>
+          {hasConflicts && (
+            <Text
+              style={{
+                fontSize: 13,
+                color: theme.colors.danger,
+                textAlign: "center",
+                marginBottom: theme.spacing.s,
+              }}
+            >
+              {t("crop_rotations.plan.resolve_conflicts_warning")}
+            </Text>
+          )}
+          <Button
+            onPress={handleSavePress}
+            disabled={saving || hasConflicts}
+            loading={saving}
+            title={t("crop_rotations.plan.save_plan")}
+          />
+        </BottomActionContainer>
+      )}
 
       {/* Edit modal */}
       <RotationEditModal
@@ -581,7 +591,11 @@ export function PlotRotationsEditor({
         crops={crops}
         selectedPlotId={editingPlotId}
         onSave={handleModalSave}
-        onDelete={editingRotation ? handleModalDelete : undefined}
+        onDelete={
+          editingRotation && canWrite("field_calendar")
+            ? handleModalDelete
+            : undefined
+        }
         onClose={() => setEditModalVisible(false)}
         onNavigateToCreateCrop={() => {
           setEditModalVisible(false);

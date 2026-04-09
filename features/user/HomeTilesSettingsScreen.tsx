@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useMembership } from "@/features/farms/farms.hooks";
+import { usePermissions } from "./users.hooks";
 import { useLocalSettings } from "./LocalSettingsContext";
 
 export function HomeTilesSettingsScreen() {
@@ -19,8 +20,23 @@ export function HomeTilesSettingsScreen() {
   const theme = useTheme();
   const { localSettings, updateLocalSettings } = useLocalSettings();
   const { isActive } = useMembership();
+  const { getAccess } = usePermissions();
 
-  const tiles = localSettings.homeTiles;
+  function isTileAccessible(id: string): boolean {
+    const meta = HOME_TILES[id as keyof typeof HOME_TILES];
+    if (!meta) return false;
+    if ("membershipRequired" in meta && meta.membershipRequired && !isActive)
+      return false;
+    if (id === "plots" && getAccess("field_calendar") === "none") return false;
+    if (id === "tasks" && getAccess("tasks") === "none") return false;
+    if (id === "animalHusbandry" && getAccess("animals") === "none")
+      return false;
+    if (id === "fieldCalendar" && getAccess("field_calendar") === "none")
+      return false;
+    return true;
+  }
+
+  const tiles = localSettings.homeTiles.filter((i) => isTileAccessible(i.id));
   const visibleTiles = tiles.filter((i) => i.visible);
   const hiddenTiles = tiles.filter((i) => !i.visible);
 

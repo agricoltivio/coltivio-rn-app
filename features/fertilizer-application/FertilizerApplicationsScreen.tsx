@@ -24,6 +24,7 @@ import {
   useFertilizerApplicationsQuery,
 } from "./fertilizerApplications.hooks";
 import { FertilizerApplicationsScreenProps } from "./navigation/fertilizer-application-routes";
+import { usePermissions } from "@/features/user/users.hooks";
 
 type ViewMode = "dashboard" | "list";
 
@@ -32,6 +33,7 @@ export function FertilizerApplicationsScreen({
 }: FertilizerApplicationsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
 
   const [viewMode, setViewMode] = useState<ViewMode>("dashboard");
   const [searchText, setSearchText] = useState("");
@@ -177,10 +179,12 @@ export function FertilizerApplicationsScreen({
         </View>
       )}
 
-      <FAB
-        icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("SelectFertilizerAndDate", {})}
-      />
+      {canWrite("field_calendar") && (
+        <FAB
+          icon={{ name: "add", color: "white" }}
+          onPress={() => navigation.navigate("SelectFertilizerAndDate", {})}
+        />
+      )}
     </ContentView>
   );
 }

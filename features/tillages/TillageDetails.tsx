@@ -5,6 +5,7 @@ import { useTheme } from "styled-components/native";
 import { useDeleteTillageMutation, useTillageQuery } from "./tillages.hooks";
 import { TillageSummary } from "./TillageSummary";
 import { useTranslation } from "react-i18next";
+import { usePermissions } from "@/features/user/users.hooks";
 
 export function TillageDetailsScreen({
   route,
@@ -12,6 +13,7 @@ export function TillageDetailsScreen({
 }: TillageDetailsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const tillageId = route.params.tillageId;
   const { tillage } = useTillageQuery(tillageId);
 
@@ -44,12 +46,14 @@ export function TillageDetailsScreen({
         hidePlotList
         additionalNotes={additionalNotes}
       />
-      <Button
-        style={{ marginBottom: theme.spacing.m }}
-        type="secondary"
-        title={t("buttons.delete")}
-        onPress={onDelete}
-      />
+      {canWrite("field_calendar") && (
+        <Button
+          style={{ marginBottom: theme.spacing.m }}
+          type="secondary"
+          title={t("buttons.delete")}
+          onPress={onDelete}
+        />
+      )}
     </ContentView>
   );
 }

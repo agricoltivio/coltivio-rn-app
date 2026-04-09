@@ -14,7 +14,10 @@ import {
   View,
 } from "react-native";
 import { useTheme } from "styled-components/native";
-import { useAnimalJournalEntryQuery, useDeleteJournalEntryMutation } from "./animal-journal.hooks";
+import {
+  useAnimalJournalEntryQuery,
+  useDeleteJournalEntryMutation,
+} from "./animal-journal.hooks";
 import { AnimalJournalEntryScreenProps } from "./navigation/animals-routes";
 import { AnimalJournalImage } from "@/api/animal-journal.api";
 import { IonIconButton } from "@/components/buttons/IconButton";
@@ -29,6 +32,7 @@ import { Image } from "expo-image";
 import { useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
+import { usePermissions } from "@/features/user/users.hooks";
 
 export function AnimalJournalEntryScreen({
   route,
@@ -36,6 +40,7 @@ export function AnimalJournalEntryScreen({
 }: AnimalJournalEntryScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const { entryId, animalId } = route.params;
   const { entry } = useAnimalJournalEntryQuery(entryId);
   const deleteMutation = useDeleteJournalEntryMutation();
@@ -77,25 +82,30 @@ export function AnimalJournalEntryScreen({
           }}
         >
           <H2 style={{ flex: 1 }}>{entry.title}</H2>
-          <View style={{ flexDirection: "row", gap: theme.spacing.xs }}>
-            <IonIconButton
-              icon="trash-outline"
-              type="accent"
-              iconSize={22}
-              color={theme.colors.danger}
-              onPress={handleDelete}
-              disabled={deleteMutation.isPending}
-            />
-            <IonIconButton
-              icon="create-outline"
-              type="accent"
-              iconSize={22}
-              color={theme.colors.primary}
-              onPress={() =>
-                navigation.navigate("AnimalJournalEntryForm", { animalId, entryId })
-              }
-            />
-          </View>
+          {canWrite("animals") && (
+            <View style={{ flexDirection: "row", gap: theme.spacing.xs }}>
+              <IonIconButton
+                icon="trash-outline"
+                type="accent"
+                iconSize={22}
+                color={theme.colors.danger}
+                onPress={handleDelete}
+                disabled={deleteMutation.isPending}
+              />
+              <IonIconButton
+                icon="create-outline"
+                type="accent"
+                iconSize={22}
+                color={theme.colors.primary}
+                onPress={() =>
+                  navigation.navigate("AnimalJournalEntryForm", {
+                    animalId,
+                    entryId,
+                  })
+                }
+              />
+            </View>
+          )}
         </View>
 
         <View
@@ -187,7 +197,8 @@ export function AnimalJournalEntryScreen({
             onPress={() => setFullscreenImage(null)}
             style={{
               position: "absolute",
-              top: (StatusBar.currentHeight ?? 0) + insets.top + theme.spacing.s,
+              top:
+                (StatusBar.currentHeight ?? 0) + insets.top + theme.spacing.s,
               right: theme.spacing.m,
               zIndex: 10,
               padding: theme.spacing.xs,

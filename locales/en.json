@@ -316,7 +316,19 @@
     "enter_farm_name_to_delete": "To delete your farm, enter the farm name.",
     "chose_option_to_delete_account": "To also delete your account, enable 'Delete Account'.",
     "delete_account": "Delete Account",
-    "membership": "Membership"
+    "membership": "Membership",
+    "member_permissions": "Permissions",
+    "member_permissions_description": "Defines which features this member can edit. By default, every member has read access.",
+    "permission_write": "Write access",
+    "invite_role_label": "Role",
+    "invite_permissions_title": "Permissions",
+    "invite_permissions_description": "Defines access for each feature. By default the member has no access.",
+    "permission_read": "Read",
+    "permission_none": "No access",
+    "permission_feature_animals": "Animals",
+    "permission_feature_tasks": "Tasks",
+    "permission_feature_field_calendar": "Field calendar",
+    "permission_feature_commerce": "Commerce"
   },
   "plots": {
     "plots": "Plots",
@@ -1418,7 +1430,6 @@
     "image_size_medium": "Medium (700px)",
     "image_size_large": "Large (1200px)",
     "only_private": "Only show private entries",
-    "comments": "Comments",
     "moderator": "Moderator",
     "no_comments": "No comments yet.",
     "add_comment": "Add a comment…",

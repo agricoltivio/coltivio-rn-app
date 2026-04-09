@@ -3,6 +3,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { FertilizersScreenProps } from "./navigation/fertilizer-routes";
+import { usePermissions } from "@/features/user/users.hooks";
 import { H2, Subtitle } from "@/theme/Typography";
 import React from "react";
 import { View } from "react-native";
@@ -15,6 +16,7 @@ export function FertilizersScreen({
   navigation,
 }: FertilizersScreenProps) {
   const { t } = useTranslation();
+  const { canWrite } = usePermissions();
   const theme = useTheme();
   const { fertilizers } = useFertilizersQuery();
 
@@ -57,10 +59,12 @@ export function FertilizersScreen({
           </View>
         </ContentView>
       </ScrollView>
-      <FAB
-        icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("CreateFertilizer")}
-      />
+      {canWrite("field_calendar") && (
+        <FAB
+          icon={{ name: "add", color: "white" }}
+          onPress={() => navigation.navigate("CreateFertilizer")}
+        />
+      )}
     </>
   );
 }

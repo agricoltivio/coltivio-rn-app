@@ -68,7 +68,8 @@ export function TvdImportRowDetailScreen({
       motherEarTagNumber: row.motherEarTagNumber ?? "",
       fatherEarTagNumber: row.fatherEarTagNumber ?? "",
       dateOfDeath: row.dateOfDeath ? new Date(row.dateOfDeath) : undefined,
-      deathReason: (row.deathReason ?? (row.dateOfDeath ? "died" : undefined)) ?? undefined,
+      deathReason:
+        row.deathReason ?? (row.dateOfDeath ? "died" : undefined) ?? undefined,
     },
   });
 
@@ -86,7 +87,11 @@ export function TvdImportRowDetailScreen({
       deathReason: values.dateOfDeath ? (values.deathReason ?? "died") : null,
       mergeAnimalId,
     };
-    navigation.popTo("TvdImportPreview", { rowEdit: { rowIndex, updatedRow } }, { merge: true });
+    navigation.popTo(
+      "TvdImportPreview",
+      { rowEdit: { rowIndex, updatedRow } },
+      { merge: true },
+    );
   }
 
   const sexData = [
@@ -137,7 +142,12 @@ export function TvdImportRowDetailScreen({
             name="name"
             control={control}
             label={t("forms.labels.name")}
-            rules={{ required: { value: true, message: t("forms.validation.required") } }}
+            rules={{
+              required: {
+                value: true,
+                message: t("forms.validation.required"),
+              },
+            }}
             error={errors.name?.message}
           />
 
@@ -151,7 +161,12 @@ export function TvdImportRowDetailScreen({
             name="sex"
             control={control}
             label={t("forms.labels.sex")}
-            rules={{ required: { value: true, message: t("forms.validation.required") } }}
+            rules={{
+              required: {
+                value: true,
+                message: t("forms.validation.required"),
+              },
+            }}
             error={errors.sex?.message}
             data={sexData}
           />
@@ -161,7 +176,12 @@ export function TvdImportRowDetailScreen({
             control={control}
             label={t("animals.date_of_birth")}
             mode="date"
-            rules={{ required: { value: true, message: t("forms.validation.required") } }}
+            rules={{
+              required: {
+                value: true,
+                message: t("forms.validation.required"),
+              },
+            }}
             error={errors.dateOfBirth?.message}
           />
 
@@ -169,7 +189,12 @@ export function TvdImportRowDetailScreen({
             name="usage"
             control={control}
             label={t("animals.usage")}
-            rules={{ required: { value: true, message: t("forms.validation.required") } }}
+            rules={{
+              required: {
+                value: true,
+                message: t("forms.validation.required"),
+              },
+            }}
             error={errors.usage?.message}
             data={usageData}
           />
@@ -199,7 +224,10 @@ export function TvdImportRowDetailScreen({
             label={t("animals.death_reason")}
             data={[
               { label: t("animals.death_reasons.died"), value: "died" },
-              { label: t("animals.death_reasons.slaughtered"), value: "slaughtered" },
+              {
+                label: t("animals.death_reasons.slaughtered"),
+                value: "slaughtered",
+              },
             ]}
           />
 
@@ -215,7 +243,12 @@ export function TvdImportRowDetailScreen({
             }}
           >
             {row.earTagAssigned && (
-              <Subtitle style={{ color: theme.colors.warning, marginBottom: theme.spacing.s }}>
+              <Subtitle
+                style={{
+                  color: theme.colors.warning,
+                  marginBottom: theme.spacing.s,
+                }}
+              >
                 {t("animals.tvd_import.ear_tag_assigned_warning")}
               </Subtitle>
             )}
@@ -223,13 +256,20 @@ export function TvdImportRowDetailScreen({
             {mergeAnimal ? (
               <View>
                 <Subtitle>
-                  {t("animals.tvd_import.merge_animal_set", { name: mergeAnimal.name })}
+                  {t("animals.tvd_import.merge_animal_set", {
+                    name: mergeAnimal.name,
+                  })}
                 </Subtitle>
                 <TouchableOpacity
                   onPress={() => setMergeAnimalId(null)}
                   style={{ marginTop: theme.spacing.xs }}
                 >
-                  <Subtitle style={{ color: theme.colors.primary, textDecorationLine: "underline" }}>
+                  <Subtitle
+                    style={{
+                      color: theme.colors.primary,
+                      textDecorationLine: "underline",
+                    }}
+                  >
                     {t("animals.tvd_import.clear_merge")}
                   </Subtitle>
                 </TouchableOpacity>

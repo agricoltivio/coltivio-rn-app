@@ -7,19 +7,29 @@ import { formatLocalizedDate } from "@/utils/date";
 import Fuse from "fuse.js";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FlatList, ScrollView as RNScrollView, TouchableOpacity, View } from "react-native";
+import {
+  FlatList,
+  ScrollView as RNScrollView,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useTheme } from "styled-components/native";
 import { locale } from "@/locales/i18n";
 import { useAnimalJournalQuery } from "./animal-journal.hooks";
 import { AnimalJournalScreenProps } from "./navigation/animals-routes";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { AnimalJournalEntry } from "@/api/animal-journal.api";
+import { usePermissions } from "@/features/user/users.hooks";
 
-export function AnimalJournalScreen({ route, navigation }: AnimalJournalScreenProps) {
+export function AnimalJournalScreen({
+  route,
+  navigation,
+}: AnimalJournalScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { animalId } = route.params;
   const { entries, isLoading } = useAnimalJournalQuery(animalId);
+  const { canWrite } = usePermissions();
 
   const [searchText, setSearchText] = useState("");
   const [dateFrom, setDateFrom] = useState<Date | null>(null);
@@ -70,13 +80,17 @@ export function AnimalJournalScreen({ route, navigation }: AnimalJournalScreenPr
         }}
       >
         <H2>{t("animals.journal")}</H2>
-        <IonIconButton
-          icon="add-outline"
-          type="accent"
-          iconSize={22}
-          color={theme.colors.primary}
-          onPress={() => navigation.navigate("AnimalJournalEntryForm", { animalId })}
-        />
+        {canWrite("animals") && (
+          <IonIconButton
+            icon="add-outline"
+            type="accent"
+            iconSize={22}
+            color={theme.colors.primary}
+            onPress={() =>
+              navigation.navigate("AnimalJournalEntryForm", { animalId })
+            }
+          />
+        )}
       </View>
 
       {/* Search */}

@@ -6,6 +6,7 @@ import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "./farms.hooks";
 import { useTranslation } from "react-i18next";
+import { useUserQuery } from "@/features/user/users.hooks";
 
 export function EditFarmLocationScreen({
   navigation,
@@ -13,6 +14,8 @@ export function EditFarmLocationScreen({
   const { t } = useTranslation();
   const theme = useTheme();
   const { farm } = useFarmQuery();
+  const { user } = useUserQuery();
+  const isOwner = user?.farmRole === "owner";
 
   return (
     <ContentView>
@@ -20,8 +23,9 @@ export function EditFarmLocationScreen({
       <View style={{ flex: 1, marginTop: theme.spacing.m }}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("SearchFarmLocation");
+            if (isOwner) navigation.navigate("SearchFarmLocation");
           }}
+          disabled={!isOwner}
         >
           <TextInput
             placeholder={t("forms.placeholders.location_search")}

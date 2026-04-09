@@ -1,3 +1,5 @@
+import type { PermissionFeature } from "@/features/user/users.hooks";
+
 export type AnimalsItemConfig = {
   itemId: string;
   visible: boolean;
@@ -9,22 +11,48 @@ export type AnimalsGroupConfig = {
   items: AnimalsItemConfig[];
 };
 
-// Maps itemId → translation key + navigation route
-export const ANIMALS_ITEMS = {
-  animals: { translationKey: "animals.animals", route: "Animals" },
-  earTags: { translationKey: "ear_tags.ear_tags", route: "EarTags" },
-  drugs: { translationKey: "drugs.drugs", route: "Drugs" },
+export type AnimalsItemMeta = {
+  translationKey: string;
+  route: string;
+  feature: PermissionFeature;
+  membershipRequired?: boolean;
+};
+
+// Maps itemId → translation key + navigation route + required permission feature
+export const ANIMALS_ITEMS: Record<string, AnimalsItemMeta> = {
+  animals: {
+    translationKey: "animals.animals",
+    route: "Animals",
+    feature: "animals",
+  },
+  earTags: {
+    translationKey: "ear_tags.ear_tags",
+    route: "EarTags",
+    feature: "animals",
+  },
+  drugs: { translationKey: "drugs.drugs", route: "Drugs", feature: "animals" },
   treatments: {
     translationKey: "treatments.treatments",
     route: "Treatments",
+    feature: "animals",
   },
-  tvdImport: { translationKey: "animals.tvd_import.title", route: "TvdImport" },
-  herds: { translationKey: "animals.herds", route: "Herds" },
+  tvdImport: {
+    translationKey: "animals.tvd_import.title",
+    route: "TvdImport",
+    feature: "animals",
+  },
+  herds: {
+    translationKey: "animals.herds",
+    route: "Herds",
+    feature: "animals",
+  },
   outdoorJournal: {
     translationKey: "animals.outdoor_journal",
     route: "OutdoorJournal",
+    feature: "animals",
+    membershipRequired: true,
   },
-} as const;
+};
 
 // Maps groupId → translation key
 export const ANIMALS_GROUPS = {

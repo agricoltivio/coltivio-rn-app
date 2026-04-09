@@ -68,12 +68,8 @@ export function useDeleteJournalEntryMutation() {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
-    mutationFn: ({
-      entryId,
-    }: {
-      entryId: string;
-      animalId: string;
-    }) => api.animalJournal.deleteJournalEntry(entryId),
+    mutationFn: ({ entryId }: { entryId: string; animalId: string }) =>
+      api.animalJournal.deleteJournalEntry(entryId),
     onSuccess: (_data, { animalId }) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.animalJournal.byAnimalId(animalId).queryKey,

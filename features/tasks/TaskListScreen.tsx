@@ -28,6 +28,7 @@ import Animated, {
 import { useTasksQuery, useSetTaskStatusMutation } from "./tasks.hooks";
 import { TaskListScreenProps } from "./navigation/tasks-routes";
 import { useLocalSettings } from "@/features/user/LocalSettingsContext";
+import { usePermissions } from "@/features/user/users.hooks";
 import { useEffect } from "react";
 import { TaskStatus } from "@/api/tasks.api";
 
@@ -66,6 +67,7 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
   );
 
   const { localSettings } = useLocalSettings();
+  const { canWrite } = usePermissions();
   const { tasks, isLoading } = useTasksQuery(status);
 
   useEffect(() => {
@@ -203,7 +205,11 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
         </ListItem.Content>
         {item.pinned && (
           <View
-            style={{ justifyContent: "center", alignItems: "center", width: 28 }}
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              width: 28,
+            }}
           >
             <MaterialCommunityIcons
               name="pin"
@@ -216,16 +222,14 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
       </ListItem>
     );
 
-    if (status !== "todo") {
+    if (status !== "todo" || !canWrite("tasks")) {
       return listItem;
     }
 
     return (
       <ReanimatedSwipeable
         ref={swipeableRef}
-        renderRightActions={(_, drag) => (
-          <SwipeCompleteAction drag={drag} />
-        )}
+        renderRightActions={(_, drag) => <SwipeCompleteAction drag={drag} />}
         rightThreshold={Dimensions.get("window").width / 4}
         onSwipeableOpen={(direction) => {
           if (direction === "left") {
@@ -334,10 +338,12 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
         </View>
       )}
 
-      <FAB
-        icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("TaskForm", {})}
-      />
+      {canWrite("tasks") && (
+        <FAB
+          icon={{ name: "add", color: "white" }}
+          onPress={() => navigation.navigate("TaskForm", {})}
+        />
+      )}
     </ContentView>
   );
 }

@@ -10,6 +10,12 @@ export type AcceptInviteResult =
   components["schemas"]["PostV1FarmInvitesAcceptPositiveResponse"]["data"];
 export type FarmInvite =
   components["schemas"]["GetV1FarmInvitesPositiveResponse"]["data"]["result"][number];
+export type CreateInviteInput =
+  components["schemas"]["PostV1FarmInvitesRequestBody"];
+export type MemberPermission =
+  components["schemas"]["GetV1FarmMembersByIdUserIdPermissionsPositiveResponse"]["data"]["result"][number];
+export type PermissionFeature = MemberPermission["feature"];
+export type PermissionAccess = "read" | "write";
 
 export function farmApi(client: FetchClient) {
   return {
@@ -47,9 +53,9 @@ export function farmApi(client: FetchClient) {
       return data!.data;
     },
 
-    async createInvite(email: string): Promise<FarmInvite> {
+    async createInvite(input: CreateInviteInput): Promise<FarmInvite> {
       const { data } = await client.POST("/v1/farm/invites", {
-        body: { email },
+        body: input,
       });
       return data!.data;
     },
@@ -79,6 +85,35 @@ export function farmApi(client: FetchClient) {
         params: { path: { userId } },
         body: { role },
       });
+    },
+
+    async getMemberPermissions(userId: string): Promise<MemberPermission[]> {
+      const { data } = await client.GET(
+        "/v1/farm/members/byId/{userId}/permissions",
+        { params: { path: { userId } } },
+      );
+      return data!.data.result;
+    },
+
+    async setMemberPermission(
+      userId: string,
+      feature: PermissionFeature,
+      access: PermissionAccess,
+    ): Promise<void> {
+      await client.PUT(
+        "/v1/farm/members/byId/{userId}/permissions/byFeature/{feature}",
+        { params: { path: { userId, feature } }, body: { access } },
+      );
+    },
+
+    async deleteMemberPermission(
+      userId: string,
+      feature: PermissionFeature,
+    ): Promise<void> {
+      await client.DELETE(
+        "/v1/farm/members/byId/{userId}/permissions/byFeature/{feature}",
+        { params: { path: { userId, feature } } },
+      );
     },
   };
 }

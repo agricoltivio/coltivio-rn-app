@@ -129,7 +129,10 @@ export function PlotJournalEntryFormScreen({
       journalEntryId,
       pending.filename,
     );
-    await fetch(resolveLocalUrl(signedUrl), { method: "PUT", body: pending.blob });
+    await fetch(resolveLocalUrl(signedUrl), {
+      method: "PUT",
+      body: pending.blob,
+    });
     return api.plotJournal.registerImage(journalEntryId, path);
   }
 

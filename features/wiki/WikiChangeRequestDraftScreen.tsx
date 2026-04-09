@@ -65,7 +65,13 @@ export function WikiChangeRequestDraftScreen({
     changeRequest?.status === "draft" ||
     changeRequest?.status === "changes_requested";
 
-  const { control, handleSubmit, setValue, getValues, formState: { isDirty } } = useForm<FormValues>({
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    getValues,
+    formState: { isDirty },
+  } = useForm<FormValues>({
     defaultValues: {
       de_title: "",
       de_body: "",
@@ -314,4 +320,3 @@ const ButtonLabel = styled.Text`
   font-size: 16px;
   font-weight: 600;
 `;
-

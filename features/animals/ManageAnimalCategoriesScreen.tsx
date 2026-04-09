@@ -8,6 +8,7 @@ import { H2, Subtitle } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
 import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { usePermissions } from "@/features/user/users.hooks";
 import { Modal, Pressable, Text, View } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useTheme } from "styled-components/native";
@@ -57,6 +58,7 @@ export function ManageAnimalCategoriesScreen({
 }: ManageAnimalCategoriesScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const { animalId } = route.params;
   const { animal } = useAnimalByIdQuery(animalId);
 
@@ -258,37 +260,43 @@ export function ManageAnimalCategoriesScreen({
                     : t("animals.open_ended")}
                 </Text>
               </View>
-              <Pressable
-                onPress={() => openEditModal(index)}
-                style={{ padding: theme.spacing.xs }}
-              >
-                <Ionicons
-                  name="pencil"
-                  size={20}
-                  color={theme.colors.primary}
-                />
-              </Pressable>
-              <Pressable
-                onPress={() => handleDelete(index)}
-                style={{ padding: theme.spacing.xs }}
-              >
-                <Ionicons
-                  name="trash-outline"
-                  size={20}
-                  color={theme.colors.danger}
-                />
-              </Pressable>
+              {canWrite("animals") && (
+                <Pressable
+                  onPress={() => openEditModal(index)}
+                  style={{ padding: theme.spacing.xs }}
+                >
+                  <Ionicons
+                    name="pencil"
+                    size={20}
+                    color={theme.colors.primary}
+                  />
+                </Pressable>
+              )}
+              {canWrite("animals") && (
+                <Pressable
+                  onPress={() => handleDelete(index)}
+                  style={{ padding: theme.spacing.xs }}
+                >
+                  <Ionicons
+                    name="trash-outline"
+                    size={20}
+                    color={theme.colors.danger}
+                  />
+                </Pressable>
+              )}
             </View>
           ))}
         </View>
 
         {/* Add button */}
-        <Button
-          type="accent"
-          title={t("animals.add_category_entry")}
-          onPress={openAddModal}
-          style={{ marginTop: theme.spacing.m }}
-        />
+        {canWrite("animals") && (
+          <Button
+            type="accent"
+            title={t("animals.add_category_entry")}
+            onPress={openAddModal}
+            style={{ marginTop: theme.spacing.m }}
+          />
+        )}
       </ScrollView>
 
       {/* Edit/Add Modal */}

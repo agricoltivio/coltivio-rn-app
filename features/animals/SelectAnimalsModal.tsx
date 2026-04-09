@@ -262,7 +262,12 @@ export function SelectAnimalsModal({
             )
           }
         >
-          <Subtitle style={{ textDecorationLine: "underline", color: theme.colors.primary }}>
+          <Subtitle
+            style={{
+              textDecorationLine: "underline",
+              color: theme.colors.primary,
+            }}
+          >
             {sortField === "name"
               ? t("animals.sort_by_name")
               : sortField === "earTag"

@@ -22,7 +22,10 @@ function MarkdownImage({
 }) {
   const resolvedSrc = resolveLocalUrl(src);
   const { width: screenWidth } = useWindowDimensions();
-  const [naturalSize, setNaturalSize] = useState<{ width: number; height: number } | null>(null);
+  const [naturalSize, setNaturalSize] = useState<{
+    width: number;
+    height: number;
+  } | null>(null);
 
   useEffect(() => {
     Image.getSize(resolvedSrc, (w, h) => {
@@ -40,7 +43,11 @@ function MarkdownImage({
       <Image
         key={nodeKey}
         source={{ uri: resolvedSrc }}
-        style={{ width: maxWidth, height: maxWidth * (9 / 16), alignSelf: "flex-start" }}
+        style={{
+          width: maxWidth,
+          height: maxWidth * (9 / 16),
+          alignSelf: "flex-start",
+        }}
         resizeMode="contain"
       />
     );
@@ -57,7 +64,11 @@ function MarkdownImage({
     <Image
       key={nodeKey}
       source={{ uri: resolvedSrc }}
-      style={{ width: displayWidth, height: displayHeight, alignSelf: "flex-start" }}
+      style={{
+        width: displayWidth,
+        height: displayHeight,
+        alignSelf: "flex-start",
+      }}
       resizeMode="contain"
       accessible={!!alt}
       accessibilityLabel={alt}

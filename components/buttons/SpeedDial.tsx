@@ -93,7 +93,10 @@ export function SpeedDial({ items }: SpeedDialProps) {
           ]}
         >
           <LinearGradient
-            colors={[`${theme.colors.buttonPrimary}dd`, theme.colors.buttonPrimary]}
+            colors={[
+              `${theme.colors.buttonPrimary}dd`,
+              theme.colors.buttonPrimary,
+            ]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={{

@@ -14,10 +14,12 @@ import { ActivityIndicator, SectionList, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useTreatmentsQuery } from "./treatments.hooks";
 import { TreatmentsScreenProps } from "./navigation/animals-routes";
+import { usePermissions } from "@/features/user/users.hooks";
 
 export function TreatmentsScreen({ navigation }: TreatmentsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const { treatments } = useTreatmentsQuery();
 
   const [searchText, setSearchText] = useState("");
@@ -170,10 +172,12 @@ export function TreatmentsScreen({ navigation }: TreatmentsScreenProps) {
         />
       )}
 
-      <FAB
-        icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("CreateTreatment", {})}
-      />
+      {canWrite("animals") && (
+        <FAB
+          icon={{ name: "add", color: "white" }}
+          onPress={() => navigation.navigate("CreateTreatment", {})}
+        />
+      )}
     </ContentView>
   );
 }

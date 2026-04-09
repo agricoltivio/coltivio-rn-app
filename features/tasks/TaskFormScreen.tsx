@@ -41,6 +41,7 @@ import { useAnimalsQuery } from "@/features/animals/animals.hooks";
 import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
 import { useHerdsQuery } from "@/features/animals/herds.hooks";
 import { useMyWikiEntriesQuery } from "@/features/wiki/wiki.hooks";
+import { usePermissions } from "@/features/user/users.hooks";
 
 type LinkInput = {
   linkType:
@@ -100,6 +101,13 @@ function LinkPickerModal({
   const { t } = useTranslation();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  const { canRead } = usePermissions();
+
+  const availableEntityTypes = ENTITY_TYPES.filter((type) => {
+    if (type === "animal") return canRead("animals");
+    if (type === "plot") return canRead("field_calendar");
+    return true; // wiki_entry: no feature gate
+  });
 
   // Step 1: choose entity type. Step 2: browse + multi-select entities.
   const [step, setStep] = useState<"type_select" | "entity_list">(
@@ -387,7 +395,7 @@ function LinkPickerModal({
           >
             <H2>{t("tasks.add_link")}</H2>
             <View style={{ marginTop: theme.spacing.m, gap: theme.spacing.s }}>
-              {ENTITY_TYPES.map((type) => (
+              {availableEntityTypes.map((type) => (
                 <Pressable
                   key={type}
                   onPress={() => handleEntityTypeSelect(type)}

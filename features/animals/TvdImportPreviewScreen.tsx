@@ -26,7 +26,10 @@ export function TvdImportPreviewScreen({
   const { type } = route.params;
 
   const [rows, setRows] = useState<EditablePreviewRow[]>(() =>
-    route.params.rows.map((row: ParsedImportRow) => ({ ...row, mergeAnimalId: null })),
+    route.params.rows.map((row: ParsedImportRow) => ({
+      ...row,
+      mergeAnimalId: null,
+    })),
   );
   const [loading, setLoading] = useState(false);
 
@@ -46,8 +49,7 @@ export function TvdImportPreviewScreen({
 
   // Rows that will actually be sent to the server (earTagAssigned without merge are still sent but server skips them)
   const rowsToCommit = useMemo(
-    () =>
-      rows.filter((r) => r.name && r.sex && r.dateOfBirth && r.usage),
+    () => rows.filter((r) => r.name && r.sex && r.dateOfBirth && r.usage),
     [rows],
   );
 

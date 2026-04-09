@@ -21,7 +21,9 @@ export function plotJournalApi(client: FetchClient) {
     async createJournalEntry(
       plotId: string,
       body: components["schemas"]["PostV1PlotsByIdPlotIdJournalRequestBody"],
-    ): Promise<components["schemas"]["PostV1PlotsByIdPlotIdJournalPositiveResponse"]["data"]> {
+    ): Promise<
+      components["schemas"]["PostV1PlotsByIdPlotIdJournalPositiveResponse"]["data"]
+    > {
       const { data } = await client.POST("/v1/plots/byId/{plotId}/journal", {
         params: { path: { plotId } },
         body,
@@ -29,7 +31,9 @@ export function plotJournalApi(client: FetchClient) {
       return data!.data;
     },
 
-    async getJournalEntryById(entryId: string): Promise<PlotJournalEntryDetail> {
+    async getJournalEntryById(
+      entryId: string,
+    ): Promise<PlotJournalEntryDetail> {
       const { data } = await client.GET("/v1/plots/journal/byId/{entryId}", {
         params: { path: { entryId } },
       });
@@ -39,7 +43,9 @@ export function plotJournalApi(client: FetchClient) {
     async updateJournalEntry(
       entryId: string,
       body: components["schemas"]["PatchV1PlotsJournalByIdEntryIdRequestBody"],
-    ): Promise<components["schemas"]["PatchV1PlotsJournalByIdEntryIdPositiveResponse"]["data"]> {
+    ): Promise<
+      components["schemas"]["PatchV1PlotsJournalByIdEntryIdPositiveResponse"]["data"]
+    > {
       const { data } = await client.PATCH("/v1/plots/journal/byId/{entryId}", {
         params: { path: { entryId } },
         body,

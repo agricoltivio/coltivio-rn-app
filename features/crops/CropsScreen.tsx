@@ -9,10 +9,12 @@ import { useTheme } from "styled-components/native";
 import { useCropsQuery } from "./crops.hooks";
 import { CropsScreenProps } from "./navigation/crops-routes";
 import { useTranslation } from "react-i18next";
+import { usePermissions } from "@/features/user/users.hooks";
 
 export function CropsScreen({ navigation }: CropsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const { crops } = useCropsQuery();
 
   return (
@@ -50,10 +52,12 @@ export function CropsScreen({ navigation }: CropsScreenProps) {
           </View>
         </View>
       </ScrollView>
-      <FAB
-        icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("CreateCrop")}
-      />
+      {canWrite("field_calendar") && (
+        <FAB
+          icon={{ name: "add", color: "white" }}
+          onPress={() => navigation.navigate("CreateCrop")}
+        />
+      )}
     </ContentView>
   );
 }

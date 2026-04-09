@@ -21,7 +21,9 @@ export function animalJournalApi(client: FetchClient) {
     async createJournalEntry(
       animalId: string,
       body: components["schemas"]["PostV1AnimalsByIdAnimalIdJournalRequestBody"],
-    ): Promise<components["schemas"]["PostV1AnimalsByIdAnimalIdJournalPositiveResponse"]["data"]> {
+    ): Promise<
+      components["schemas"]["PostV1AnimalsByIdAnimalIdJournalPositiveResponse"]["data"]
+    > {
       const { data } = await client.POST(
         "/v1/animals/byId/{animalId}/journal",
         {
@@ -32,7 +34,9 @@ export function animalJournalApi(client: FetchClient) {
       return data!.data;
     },
 
-    async getJournalEntryById(entryId: string): Promise<AnimalJournalEntryDetail> {
+    async getJournalEntryById(
+      entryId: string,
+    ): Promise<AnimalJournalEntryDetail> {
       const { data } = await client.GET("/v1/animals/journal/byId/{entryId}", {
         params: { path: { entryId } },
       });
@@ -42,7 +46,9 @@ export function animalJournalApi(client: FetchClient) {
     async updateJournalEntry(
       entryId: string,
       body: components["schemas"]["PatchV1AnimalsJournalByIdEntryIdRequestBody"],
-    ): Promise<components["schemas"]["PatchV1AnimalsJournalByIdEntryIdPositiveResponse"]["data"]> {
+    ): Promise<
+      components["schemas"]["PatchV1AnimalsJournalByIdEntryIdPositiveResponse"]["data"]
+    > {
       const { data } = await client.PATCH(
         "/v1/animals/journal/byId/{entryId}",
         {

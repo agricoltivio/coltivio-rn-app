@@ -7,6 +7,7 @@ import { EditCropProtectionProductScreenProps } from "./navigation/crop-protecti
 import { H2, H3 } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { usePermissions } from "@/features/user/users.hooks";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import {
@@ -26,6 +27,7 @@ export function EditCropProtectionProductScreen({
 }: EditCropProtectionProductScreenProps) {
   const theme = useTheme();
   const { t } = useTranslation();
+  const { canWrite } = usePermissions();
   const cropProtectionProductId = route.params.cropProtectionProductId;
   const { cropProtectionProduct } = useCropProtectionProductByIdQuery(
     cropProtectionProductId,
@@ -72,29 +74,33 @@ export function EditCropProtectionProductScreen({
       footerComponent={
         <BottomActionContainer>
           <View style={{ flexDirection: "row", gap: theme.spacing.s }}>
-            <Button
-              style={{ flexGrow: 1 }}
-              type="danger"
-              title={t("buttons.delete")}
-              onPress={handleSubmit(onDelete)}
-              disabled={
-                deleteCropProtectionProductMutation.isPending ||
-                updateCropProtectionProductMutation.isPending ||
-                inUse
-              }
-              loading={deleteCropProtectionProductMutation.isPending}
-            />
-            <Button
-              style={{ flexGrow: 1 }}
-              title={t("buttons.save")}
-              onPress={handleSubmit(onSubmit)}
-              disabled={
-                !isDirty ||
-                updateCropProtectionProductMutation.isPending ||
-                deleteCropProtectionProductMutation.isPending
-              }
-              loading={updateCropProtectionProductMutation.isPending}
-            />
+            {canWrite("field_calendar") && (
+              <Button
+                style={{ flexGrow: 1 }}
+                type="danger"
+                title={t("buttons.delete")}
+                onPress={handleSubmit(onDelete)}
+                disabled={
+                  deleteCropProtectionProductMutation.isPending ||
+                  updateCropProtectionProductMutation.isPending ||
+                  inUse
+                }
+                loading={deleteCropProtectionProductMutation.isPending}
+              />
+            )}
+            {canWrite("field_calendar") && (
+              <Button
+                style={{ flexGrow: 1 }}
+                title={t("buttons.save")}
+                onPress={handleSubmit(onSubmit)}
+                disabled={
+                  !isDirty ||
+                  updateCropProtectionProductMutation.isPending ||
+                  deleteCropProtectionProductMutation.isPending
+                }
+                loading={updateCropProtectionProductMutation.isPending}
+              />
+            )}
           </View>
         </BottomActionContainer>
       }

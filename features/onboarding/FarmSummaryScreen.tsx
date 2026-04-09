@@ -32,7 +32,7 @@ export function FarmSummaryScreen({ navigation }: FarmSummaryScreenProps) {
   const createFarmMutation = useCreateFarmMutation(
     () => {
       syncMissingLocalIdsMutation.mutate();
-    // Only send verification email if user hasn't verified yet
+      // Only send verification email if user hasn't verified yet
       if (!user?.emailVerified) {
         setTimeout(() => {
           supabase.auth.signInWithOtp({
@@ -48,7 +48,9 @@ export function FarmSummaryScreen({ navigation }: FarmSummaryScreenProps) {
     // user so farmId is set and RootStack auto-transitions to the app.
     (error) => {
       if (error.message?.includes("User already has a farm")) {
-        queryClient.invalidateQueries({ queryKey: queryKeys.users.me.queryKey });
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.users.me.queryKey,
+        });
       }
     },
   );

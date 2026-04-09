@@ -11,6 +11,8 @@ import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
+import { useMembership } from "@/features/farms/farms.hooks";
+import { usePermissions } from "./users.hooks";
 import { useLocalSettings } from "./LocalSettingsContext";
 
 const MAX_ACTIVE = 4;
@@ -21,7 +23,21 @@ export function SpeedDialSettingsBody() {
   const theme = useTheme();
   const { localSettings, updateLocalSettings } = useLocalSettings();
 
-  const items = localSettings.speedDialItems;
+  const { isActive } = useMembership();
+  const { canWrite } = usePermissions();
+
+  function isActionAccessible(id: string): boolean {
+    const meta = SPEED_DIAL_ACTIONS[id as keyof typeof SPEED_DIAL_ACTIONS];
+    if (!meta) return false;
+    if ("membershipRequired" in meta && meta.membershipRequired && !isActive)
+      return false;
+    if (!canWrite(meta.accessFeature)) return false;
+    return true;
+  }
+
+  const items = localSettings.speedDialItems.filter((i) =>
+    isActionAccessible(i.id),
+  );
   const activeItems = items.filter((i) => i.active);
   const inactiveItems = items.filter((i) => !i.active);
 

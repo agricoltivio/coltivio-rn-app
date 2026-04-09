@@ -19,12 +19,13 @@ import {
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
 import { AnimalsScreenProps } from "./navigation/animals-routes";
-
+import { usePermissions } from "@/features/user/users.hooks";
 
 // HSL-based color from string — 360 possible hues, no palette collisions
 function animalTypeColor(type: string): string {
   let hash = 0;
-  for (let i = 0; i < type.length; i++) hash = type.charCodeAt(i) + ((hash << 5) - hash);
+  for (let i = 0; i < type.length; i++)
+    hash = type.charCodeAt(i) + ((hash << 5) - hash);
   const hue = Math.abs(hash) % 360;
   return `hsl(${hue}, 60%, 40%)`;
 }
@@ -32,6 +33,7 @@ function animalTypeColor(type: string): string {
 export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const { animals, isLoading } = useAnimalsQuery();
   const [searchText, setSearchText] = useState("");
   const [showDead, setShowDead] = useState(false);
@@ -141,15 +143,26 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
             borderLeftWidth: stripeColor ? 4 : 0,
             borderLeftColor: stripeColor,
           }}
-          onPress={() => navigation.navigate("AnimalDetails", { animalId: animal.id })}
+          onPress={() =>
+            navigation.navigate("AnimalDetails", { animalId: animal.id })
+          }
         >
           <ListItem.Content>
             <ListItem.Title numberOfLines={1}>{animal.name}</ListItem.Title>
             {animal.earTag && (
-              <ListItem.Body numberOfLines={1}>{animal.earTag.number}</ListItem.Body>
+              <ListItem.Body numberOfLines={1}>
+                {animal.earTag.number}
+              </ListItem.Body>
             )}
           </ListItem.Content>
-          <View style={{ flexDirection: "row", alignItems: "center", alignSelf: "center", gap: theme.spacing.xs }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              alignSelf: "center",
+              gap: theme.spacing.xs,
+            }}
+          >
             {birthdate && (
               <Chip small label={birthdate} bgColor={theme.colors.gray4} />
             )}
@@ -232,7 +245,11 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
             gap: theme.spacing.xs,
           }}
         >
-          <Ionicons name="alert-circle" size={20} color={theme.colors.warning} />
+          <Ionicons
+            name="alert-circle"
+            size={20}
+            color={theme.colors.warning}
+          />
           <Subtitle>
             {t("animals.unregistered_count", { count: unregisteredCount })}
           </Subtitle>
@@ -271,7 +288,9 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
         }}
       >
         {animals && animals.length > 0 ? (
-          <TouchableOpacity onPress={() => navigation.navigate("BatchSelectAnimals")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("BatchSelectAnimals")}
+          >
             <MaterialCommunityIcons
               name="checkbox-multiple-marked-outline"
               size={26}
@@ -281,7 +300,13 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
         ) : (
           <View />
         )}
-        <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: theme.spacing.xs,
+          }}
+        >
           <TouchableOpacity
             onPress={() =>
               setSortField((f) =>
@@ -289,7 +314,12 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
               )
             }
           >
-            <Subtitle style={{ textDecorationLine: "underline", color: theme.colors.primary }}>
+            <Subtitle
+              style={{
+                textDecorationLine: "underline",
+                color: theme.colors.primary,
+              }}
+            >
               {sortField === "name"
                 ? t("animals.sort_by_name")
                 : sortField === "earTag"
@@ -326,10 +356,12 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
         />
       </View>
 
-      <FAB
-        icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("CreateAnimal")}
-      />
+      {canWrite("animals") && (
+        <FAB
+          icon={{ name: "add", color: "white" }}
+          onPress={() => navigation.navigate("CreateAnimal")}
+        />
+      )}
     </ContentView>
   );
 }

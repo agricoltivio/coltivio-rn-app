@@ -15,11 +15,13 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { Button } from "@/components/buttons/Button";
 import { useTheme } from "styled-components/native";
 import { useTranslation } from "react-i18next";
+import { usePermissions } from "@/features/user/users.hooks";
 import { Card } from "@/components/card/Card";
 
 export function EditCropScreen({ route, navigation }: EditCropScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const cropId = route.params.cropId;
   const { crop } = useCropByIdQuery(cropId);
   const { inUse } = useIsCropInUseQuery(cropId);
@@ -72,32 +74,36 @@ export function EditCropScreen({ route, navigation }: EditCropScreenProps) {
               gap: theme.spacing.s,
             }}
           >
-            <Button
-              style={{ flexGrow: 1 }}
-              type="danger"
-              title={t("buttons.delete")}
-              onPress={onDelete}
-              disabled={
-                inUse ||
-                updateCropMutation.isPending ||
-                deleteCropMutation.isPending
-              }
-              loading={deleteCropMutation.isPending}
-            />
+            {canWrite("field_calendar") && (
+              <Button
+                style={{ flexGrow: 1 }}
+                type="danger"
+                title={t("buttons.delete")}
+                onPress={onDelete}
+                disabled={
+                  inUse ||
+                  updateCropMutation.isPending ||
+                  deleteCropMutation.isPending
+                }
+                loading={deleteCropMutation.isPending}
+              />
+            )}
 
-            <Button
-              style={{ flexGrow: 1 }}
-              title={t("buttons.save")}
-              onPress={handleSubmit(onSubmit)}
-              disabled={
-                !isDirty ||
-                updateCropMutation.isPending ||
-                deleteCropMutation.isPending
-              }
-              loading={
-                updateCropMutation.isPending || deleteCropMutation.isPending
-              }
-            />
+            {canWrite("field_calendar") && (
+              <Button
+                style={{ flexGrow: 1 }}
+                title={t("buttons.save")}
+                onPress={handleSubmit(onSubmit)}
+                disabled={
+                  !isDirty ||
+                  updateCropMutation.isPending ||
+                  deleteCropMutation.isPending
+                }
+                loading={
+                  updateCropMutation.isPending || deleteCropMutation.isPending
+                }
+              />
+            )}
           </View>
         </BottomActionContainer>
       }

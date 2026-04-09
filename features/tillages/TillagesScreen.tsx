@@ -13,10 +13,12 @@ import { ActivityIndicator, SectionList, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { TillagesScreenProps } from "./navigation/tillages-routes";
 import { useTillagesQuery } from "./tillages.hooks";
+import { usePermissions } from "@/features/user/users.hooks";
 
 export function TillagesScreen({ navigation }: TillagesScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const { tillages } = useTillagesQuery();
 
   const [searchText, setSearchText] = useState("");
@@ -212,10 +214,12 @@ export function TillagesScreen({ navigation }: TillagesScreenProps) {
         />
       )}
 
-      <FAB
-        icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("SelectTillageDate")}
-      />
+      {canWrite("field_calendar") && (
+        <FAB
+          icon={{ name: "add", color: "white" }}
+          onPress={() => navigation.navigate("SelectTillageDate")}
+        />
+      )}
     </ContentView>
   );
 }

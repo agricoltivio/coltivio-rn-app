@@ -12,10 +12,12 @@ import { FlatList, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useDrugsQuery } from "./drugs.hooks";
 import { DrugsScreenProps } from "./navigation/animals-routes";
+import { usePermissions } from "@/features/user/users.hooks";
 
 export function DrugsScreen({ navigation }: DrugsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const { drugs } = useDrugsQuery();
   const [searchText, setSearchText] = useState("");
 
@@ -86,10 +88,12 @@ export function DrugsScreen({ navigation }: DrugsScreenProps) {
           )}
         </View>
       </ScrollView>
-      <FAB
-        icon={{ name: "add", color: "white" }}
-        onPress={() => navigation.navigate("CreateDrug", {})}
-      />
+      {canWrite("animals") && (
+        <FAB
+          icon={{ name: "add", color: "white" }}
+          onPress={() => navigation.navigate("CreateDrug", {})}
+        />
+      )}
     </ContentView>
   );
 }
