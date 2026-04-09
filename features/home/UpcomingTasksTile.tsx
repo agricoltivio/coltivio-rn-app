@@ -43,16 +43,31 @@ export function UpcomingTasksTile() {
     // Pressing the card background navigates to task list
     <Pressable onPress={() => navigation.navigate("TaskList")}>
       <Card style={{ marginTop: theme.spacing.m, padding: 0 }}>
-        <View style={{ padding: theme.spacing.m, paddingBottom: upcomingTasks.length > 0 ? theme.spacing.xs : theme.spacing.m }}>
+        <View
+          style={{
+            padding: theme.spacing.m,
+            paddingBottom:
+              upcomingTasks.length > 0 ? theme.spacing.xs : theme.spacing.m,
+          }}
+        >
           <Subtitle style={{ fontWeight: "700", color: theme.colors.text }}>
             {t("home.upcoming_tasks")}
           </Subtitle>
         </View>
 
         {isLoading ? (
-          <ActivityIndicator style={{ marginBottom: theme.spacing.m }} size="small" />
+          <ActivityIndicator
+            style={{ marginBottom: theme.spacing.m }}
+            size="small"
+          />
         ) : upcomingTasks.length === 0 ? (
-          <Subtitle style={{ paddingHorizontal: theme.spacing.m, paddingBottom: theme.spacing.m, color: theme.colors.gray3 }}>
+          <Subtitle
+            style={{
+              paddingHorizontal: theme.spacing.m,
+              paddingBottom: theme.spacing.m,
+              color: theme.colors.gray3,
+            }}
+          >
             {t("home.no_upcoming_tasks")}
           </Subtitle>
         ) : (
@@ -60,7 +75,9 @@ export function UpcomingTasksTile() {
             <TaskRow
               key={task.id}
               task={task}
-              onPress={() => navigation.navigate("TaskDetail", { taskId: task.id })}
+              onPress={() =>
+                navigation.navigate("TaskDetail", { taskId: task.id })
+              }
             />
           ))
         )}
@@ -90,13 +107,20 @@ function TaskRow({ task, onPress }: { task: Task; onPress: () => void }) {
       <Text
         numberOfLines={1}
         ellipsizeMode="tail"
-        style={{ flex: 1, fontSize: 15, fontWeight: "500", color: theme.colors.text }}
+        style={{
+          flex: 1,
+          fontSize: 15,
+          fontWeight: "500",
+          color: theme.colors.text,
+        }}
       >
         {task.name}
       </Text>
 
       {/* Chips right-aligned: assignee first, then due date */}
-      <View style={{ flexDirection: "row", gap: theme.spacing.xxs, flexShrink: 0 }}>
+      <View
+        style={{ flexDirection: "row", gap: theme.spacing.xxs, flexShrink: 0 }}
+      >
         {assigneeName != null && (
           <Chip
             small

@@ -72,7 +72,10 @@ export function SelectSingleAnimalModal({
         ? formatLocalizedDate(new Date(item.dateOfBirth), locale)
         : null;
       return (
-        <ListItem style={{ paddingVertical: 5 }} onPress={() => handleSelect(item)}>
+        <ListItem
+          style={{ paddingVertical: 5 }}
+          onPress={() => handleSelect(item)}
+        >
           <ListItem.Content>
             <ListItem.Title>
               {item.earTag?.number ? `${item.earTag.number} - ` : ""}
@@ -117,7 +120,12 @@ export function SelectSingleAnimalModal({
             )
           }
         >
-          <Subtitle style={{ textDecorationLine: "underline", color: theme.colors.primary }}>
+          <Subtitle
+            style={{
+              textDecorationLine: "underline",
+              color: theme.colors.primary,
+            }}
+          >
             {sortField === "name"
               ? t("animals.sort_by_name")
               : sortField === "earTag"
@@ -143,7 +151,8 @@ export function SelectSingleAnimalModal({
             borderTopRightRadius: 10,
             borderTopLeftRadius: 10,
             overflow: "hidden",
-            backgroundColor: searchResult.length > 0 ? theme.colors.white : undefined,
+            backgroundColor:
+              searchResult.length > 0 ? theme.colors.white : undefined,
           }}
           data={searchResult}
           keyExtractor={(item) => item.id}

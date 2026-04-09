@@ -21,7 +21,10 @@ import { PlotJournalScreenProps } from "./navigation/plots-routes";
 import { PlotJournalEntry } from "@/api/plot-journal.api";
 import { usePermissions } from "@/features/user/users.hooks";
 
-export function PlotJournalScreen({ route, navigation }: PlotJournalScreenProps) {
+export function PlotJournalScreen({
+  route,
+  navigation,
+}: PlotJournalScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { plotId } = route.params;
@@ -80,7 +83,9 @@ export function PlotJournalScreen({ route, navigation }: PlotJournalScreenProps)
             type="accent"
             iconSize={22}
             color={theme.colors.primary}
-            onPress={() => navigation.navigate("PlotJournalEntryForm", { plotId })}
+            onPress={() =>
+              navigation.navigate("PlotJournalEntryForm", { plotId })
+            }
           />
         )}
       </View>

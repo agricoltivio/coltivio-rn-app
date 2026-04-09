@@ -2,7 +2,9 @@ import { StackScreenProps } from "@react-navigation/native-stack";
 import { UncategorizedAnimal } from "@/api/outdoor-journal.api";
 import { AnimalType, ParsedImportRow } from "@/api/animals.api";
 
-export type EditablePreviewRow = ParsedImportRow & { mergeAnimalId: string | null };
+export type EditablePreviewRow = ParsedImportRow & {
+  mergeAnimalId: string | null;
+};
 
 export type AnimalsStackParamList = {
   AnimalsHub: undefined;

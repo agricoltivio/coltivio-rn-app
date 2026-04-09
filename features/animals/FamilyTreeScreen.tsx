@@ -35,7 +35,13 @@ function buildLayout(
   edges: FamilyTreeEdge[],
 ): { layoutMap: LayoutMap; canvasWidth: number; canvasHeight: number } {
   const g = new dagre.graphlib.Graph();
-  g.setGraph({ rankdir: "TB", nodesep: 24, ranksep: 52, marginx: 20, marginy: 20 });
+  g.setGraph({
+    rankdir: "TB",
+    nodesep: 24,
+    ranksep: 52,
+    marginx: 20,
+    marginy: 20,
+  });
   g.setDefaultEdgeLabel(() => ({}));
   for (const n of nodes) {
     g.setNode(n.id, { width: NODE_W, height: NODE_H });
@@ -72,12 +78,39 @@ function TypePickerModal({
   const theme = useTheme();
   return (
     <Modal visible={visible} transparent animationType="fade">
-      <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.4)", justifyContent: "center", alignItems: "center" }}>
-        <View style={{ backgroundColor: theme.colors.white, borderRadius: 14, padding: theme.spacing.l, width: 280 }}>
-          <Subtitle style={{ fontWeight: "600", marginBottom: theme.spacing.m, textAlign: "center" }}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "rgba(0,0,0,0.4)",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: theme.colors.white,
+            borderRadius: 14,
+            padding: theme.spacing.l,
+            width: 280,
+          }}
+        >
+          <Subtitle
+            style={{
+              fontWeight: "600",
+              marginBottom: theme.spacing.m,
+              textAlign: "center",
+            }}
+          >
             {t("animals.select_type_for_tree")}
           </Subtitle>
-          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: theme.spacing.s, justifyContent: "center" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              gap: theme.spacing.s,
+              justifyContent: "center",
+            }}
+          >
             {availableTypes.map((type) => (
               <TouchableOpacity
                 key={type}
@@ -107,9 +140,13 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
   const { animalType: initialType, focusedAnimalId } = route.params ?? {};
-  const [animalType, setAnimalType] = useState<AnimalType | undefined>(initialType);
+  const [animalType, setAnimalType] = useState<AnimalType | undefined>(
+    initialType,
+  );
   const [showTypePicker, setShowTypePicker] = useState(!initialType);
-  const [selectedId, setSelectedId] = useState<string | null>(focusedAnimalId ?? null);
+  const [selectedId, setSelectedId] = useState<string | null>(
+    focusedAnimalId ?? null,
+  );
   const [hideDead, setHideDead] = useState(false);
 
   const { animals } = useAnimalsQuery(false);
@@ -118,7 +155,9 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
     [animals],
   );
 
-  const { familyTree, isLoading } = useFamilyTreeQuery(animalType ?? ("goat" as AnimalType));
+  const { familyTree, isLoading } = useFamilyTreeQuery(
+    animalType ?? ("goat" as AnimalType),
+  );
 
   // Pan + zoom gesture state
   const translateX = useSharedValue(0);
@@ -144,7 +183,10 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
   }, [familyTree, hideDead]);
 
   const { layoutMap, canvasWidth, canvasHeight } = useMemo(
-    () => (nodes.length > 0 ? buildLayout(nodes, edges) : { layoutMap: {}, canvasWidth: 0, canvasHeight: 0 }),
+    () =>
+      nodes.length > 0
+        ? buildLayout(nodes, edges)
+        : { layoutMap: {}, canvasWidth: 0, canvasHeight: 0 },
     [nodes, edges],
   );
 
@@ -156,7 +198,7 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
     if (!pos) return;
     centeredRef.current = true;
     const x = -(pos.x + NODE_W / 2) + screenWidth / 2;
-    const y = -(pos.y + NODE_H / 2) + (screenHeight / 2);
+    const y = -(pos.y + NODE_H / 2) + screenHeight / 2;
     translateX.value = x;
     translateY.value = y;
     savedX.value = x;
@@ -196,8 +238,12 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
       const newScale = Math.max(0.3, Math.min(3, savedScale.value * e.scale));
       // e.focalX/Y is the CURRENT midpoint of the two fingers — project the initial
       // anchor world point to that screen position so the focal point never drifts
-      translateX.value = e.focalX - (focalX.value - savedX.value) * (newScale / savedScale.value);
-      translateY.value = e.focalY - (focalY.value - savedY.value) * (newScale / savedScale.value);
+      translateX.value =
+        e.focalX -
+        (focalX.value - savedX.value) * (newScale / savedScale.value);
+      translateY.value =
+        e.focalY -
+        (focalY.value - savedY.value) * (newScale / savedScale.value);
       scale.value = newScale;
     })
     .onEnd(() => {
@@ -233,7 +279,11 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
 
   return (
     <ContentView headerVisible>
-      <TypePickerModal visible={showTypePicker} availableTypes={availableTypes} onSelect={handleTypeSelect} />
+      <TypePickerModal
+        visible={showTypePicker}
+        availableTypes={availableTypes}
+        onSelect={handleTypeSelect}
+      />
 
       {/* Toolbar */}
       <View
@@ -255,7 +305,9 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
           }}
         >
           <Subtitle style={{ color: theme.colors.white, fontSize: 13 }}>
-            {animalType ? t(`animals.animal_types.${animalType}`) : t("animals.select_type_for_tree")}
+            {animalType
+              ? t(`animals.animal_types.${animalType}`)
+              : t("animals.select_type_for_tree")}
           </Subtitle>
         </TouchableOpacity>
 
@@ -266,7 +318,9 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
             paddingHorizontal: 12,
             paddingVertical: 6,
             borderRadius: 20,
-            backgroundColor: hideDead ? theme.colors.primary : theme.colors.white,
+            backgroundColor: hideDead
+              ? theme.colors.primary
+              : theme.colors.white,
             borderWidth: 1,
             borderColor: hideDead ? theme.colors.primary : theme.colors.gray3,
           }}
@@ -286,11 +340,25 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
       <GestureDetector gesture={combinedGesture}>
         <View style={{ flex: 1, overflow: "hidden" }}>
           {isLoading && animalType ? (
-            <ActivityIndicator style={{ marginTop: theme.spacing.xl }} color={theme.colors.primary} />
+            <ActivityIndicator
+              style={{ marginTop: theme.spacing.xl }}
+              color={theme.colors.primary}
+            />
           ) : !animalType || nodes.length === 0 ? (
-            <Subtitle style={{ marginTop: theme.spacing.m }}>{t("common.no_entries")}</Subtitle>
+            <Subtitle style={{ marginTop: theme.spacing.m }}>
+              {t("common.no_entries")}
+            </Subtitle>
           ) : (
-            <Animated.View style={[{ width: canvasWidth, height: canvasHeight, transformOrigin: 'top left' }, animatedStyle]}>
+            <Animated.View
+              style={[
+                {
+                  width: canvasWidth,
+                  height: canvasHeight,
+                  transformOrigin: "top left",
+                },
+                animatedStyle,
+              ]}
+            >
               {/* SVG edges */}
               <Svg
                 style={{ position: "absolute", top: 0, left: 0 }}
@@ -301,7 +369,10 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
                   const from = layoutMap[edge.parentId];
                   const to = layoutMap[edge.childId];
                   if (!from || !to) return null;
-                  const highlighted = hasSelection && (edge.parentId === selectedId || edge.childId === selectedId);
+                  const highlighted =
+                    hasSelection &&
+                    (edge.parentId === selectedId ||
+                      edge.childId === selectedId);
                   const dimmed = hasSelection && !highlighted;
                   return (
                     <Line
@@ -310,7 +381,9 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
                       y1={from.y + NODE_H}
                       x2={to.x + NODE_W / 2}
                       y2={to.y}
-                      stroke={highlighted ? theme.colors.primary : theme.colors.gray3}
+                      stroke={
+                        highlighted ? theme.colors.primary : theme.colors.gray3
+                      }
                       strokeWidth={highlighted ? 2 : 1.5}
                       opacity={dimmed ? 0.15 : 1}
                     />
@@ -338,42 +411,87 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
                       backgroundColor: theme.colors.white,
                       borderRadius: 8,
                       borderWidth: isSelected ? 2 : 1,
-                      borderColor: isSelected ? theme.colors.primary : theme.colors.gray3,
+                      borderColor: isSelected
+                        ? theme.colors.primary
+                        : theme.colors.gray3,
                       padding: 6,
                       opacity: dimmed ? 0.18 : isDead && !isSelected ? 0.5 : 1,
                       justifyContent: "center",
                     }}
                     activeOpacity={0.7}
-                    onPress={() => setSelectedId((id) => (id === node.id ? null : node.id))}
+                    onPress={() =>
+                      setSelectedId((id) => (id === node.id ? null : node.id))
+                    }
                   >
-                    <Text numberOfLines={1} style={{ fontWeight: "600", fontSize: 13, color: theme.colors.text }}>
+                    <Text
+                      numberOfLines={1}
+                      style={{
+                        fontWeight: "600",
+                        fontSize: 13,
+                        color: theme.colors.text,
+                      }}
+                    >
                       {node.name}
                     </Text>
                     {node.earTagNumber && (
-                      <Text numberOfLines={1} style={{ fontSize: 11, color: theme.colors.gray2 }}>
+                      <Text
+                        numberOfLines={1}
+                        style={{ fontSize: 11, color: theme.colors.gray2 }}
+                      >
                         {node.earTagNumber}
                       </Text>
                     )}
                     {(() => {
-                      const endDate = node.dateOfDeath ? new Date(node.dateOfDeath) : new Date();
-                      const ageMonths = Math.floor((endDate.getTime() - new Date(node.dateOfBirth).getTime()) / (1000 * 60 * 60 * 24 * 30.44));
-                      const ageLabel = ageMonths < 12 ? `${ageMonths}m` : `${Math.floor(ageMonths / 12)}y`;
+                      const endDate = node.dateOfDeath
+                        ? new Date(node.dateOfDeath)
+                        : new Date();
+                      const ageMonths = Math.floor(
+                        (endDate.getTime() -
+                          new Date(node.dateOfBirth).getTime()) /
+                          (1000 * 60 * 60 * 24 * 30.44),
+                      );
+                      const ageLabel =
+                        ageMonths < 12
+                          ? `${ageMonths}m`
+                          : `${Math.floor(ageMonths / 12)}y`;
                       return (
-                        <View style={{ flexDirection: "row", alignItems: "center", gap: 3 }}>
-                          <Text style={{ fontSize: 11, color: theme.colors.gray2 }}>{ageLabel}</Text>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            gap: 3,
+                          }}
+                        >
+                          <Text
+                            style={{ fontSize: 11, color: theme.colors.gray2 }}
+                          >
+                            {ageLabel}
+                          </Text>
                           {node.dateOfDeath && (
-                            <MaterialCommunityIcons name="cross" size={12} color={theme.colors.gray2} />
+                            <MaterialCommunityIcons
+                              name="cross"
+                              size={12}
+                              color={theme.colors.gray2}
+                            />
                           )}
                         </View>
                       );
                     })()}
                     {isSelected && (
                       <TouchableOpacity
-                        onPress={() => navigation.navigate("AnimalDetails", { animalId: node.id })}
+                        onPress={() =>
+                          navigation.navigate("AnimalDetails", {
+                            animalId: node.id,
+                          })
+                        }
                         hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
                         style={{ position: "absolute", top: 4, right: 4 }}
                       >
-                        <MaterialCommunityIcons name="open-in-new" size={14} color={theme.colors.primary} />
+                        <MaterialCommunityIcons
+                          name="open-in-new"
+                          size={14}
+                          color={theme.colors.primary}
+                        />
                       </TouchableOpacity>
                     )}
                   </TouchableOpacity>

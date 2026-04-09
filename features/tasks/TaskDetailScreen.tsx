@@ -7,7 +7,10 @@ import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
-import { IonIconButton, MaterialCommunityIconButton } from "@/components/buttons/IconButton";
+import {
+  IonIconButton,
+  MaterialCommunityIconButton,
+} from "@/components/buttons/IconButton";
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -191,9 +194,7 @@ function SectionCard({
           color={theme.colors.gray2}
         />
       </Pressable>
-      {open && (
-        <View style={{ marginTop: theme.spacing.s }}>{children}</View>
-      )}
+      {open && <View style={{ marginTop: theme.spacing.s }}>{children}</View>}
     </Card>
   );
 }
@@ -327,7 +328,13 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
     <>
       <ContentView headerVisible>
         <ScrollView>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: theme.spacing.xs,
+            }}
+          >
             <H2 style={{ flex: 1 }}>{task.name}</H2>
             {canWrite("tasks") && (
               <MaterialCommunityIconButton
@@ -339,7 +346,11 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
             )}
             {canWrite("tasks") && (
               <IonIconButton
-                icon={task.status === "done" ? "checkmark-circle" : "checkmark-circle-outline"}
+                icon={
+                  task.status === "done"
+                    ? "checkmark-circle"
+                    : "checkmark-circle-outline"
+                }
                 type={task.status === "done" ? "success" : "accent"}
                 color={task.status === "done" ? "white" : theme.colors.success}
                 loading={setStatusMutation.isPending}
@@ -426,44 +437,56 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
               {[...task.checklistItems]
                 .sort((a, b) => a.position - b.position)
                 .map((item) => (
-                <Pressable
-                  key={item.id}
-                  onPress={canWrite("tasks") ? () =>
-                    toggleChecklistMutation.mutate({
-                      itemId: item.id,
-                      done: !item.done,
-                    }) : undefined
-                  }
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: theme.spacing.s,
-                    paddingVertical: theme.spacing.xs,
-                  }}
-                >
-                  <Ionicons
-                    name={item.done ? "checkbox" : "square-outline"}
-                    size={22}
-                    color={item.done ? theme.colors.primary : theme.colors.gray3}
-                  />
-                  <View>
-                    <Subtitle
-                      style={
-                        item.done
-                          ? { textDecorationLine: "line-through", color: theme.colors.gray3 }
-                          : undefined
+                  <Pressable
+                    key={item.id}
+                    onPress={
+                      canWrite("tasks")
+                        ? () =>
+                            toggleChecklistMutation.mutate({
+                              itemId: item.id,
+                              done: !item.done,
+                            })
+                        : undefined
+                    }
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: theme.spacing.s,
+                      paddingVertical: theme.spacing.xs,
+                    }}
+                  >
+                    <Ionicons
+                      name={item.done ? "checkbox" : "square-outline"}
+                      size={22}
+                      color={
+                        item.done ? theme.colors.primary : theme.colors.gray3
                       }
-                    >
-                      {item.name}
-                    </Subtitle>
-                    {item.dueDate != null && (
-                      <Subtitle style={{ fontSize: 11, color: theme.colors.gray2 }}>
-                        {new Date(item.dueDate as string).toLocaleDateString()}
+                    />
+                    <View>
+                      <Subtitle
+                        style={
+                          item.done
+                            ? {
+                                textDecorationLine: "line-through",
+                                color: theme.colors.gray3,
+                              }
+                            : undefined
+                        }
+                      >
+                        {item.name}
                       </Subtitle>
-                    )}
-                  </View>
-                </Pressable>
-              ))}
+                      {item.dueDate != null && (
+                        <Subtitle
+                          style={{ fontSize: 11, color: theme.colors.gray2 }}
+                        >
+                          {new Date(
+                            item.dueDate as string,
+                          ).toLocaleDateString()}
+                        </Subtitle>
+                      )}
+                    </View>
+                  </Pressable>
+                ))}
             </SectionCard>
           )}
 
@@ -488,10 +511,16 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
                           borderWidth: 1,
                           borderColor: theme.colors.primary,
                         }}
-                        onPress={canReadLink(linkType) ? () => openLinkGroup(linkType, items) : undefined}
+                        onPress={
+                          canReadLink(linkType)
+                            ? () => openLinkGroup(linkType, items)
+                            : undefined
+                        }
                       >
                         <ListItem.Content>
-                          <ListItem.Title style={{ color: theme.colors.primary }}>
+                          <ListItem.Title
+                            style={{ color: theme.colors.primary }}
+                          >
                             {title}
                           </ListItem.Title>
                         </ListItem.Content>
@@ -516,4 +545,3 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
     </>
   );
 }
-

@@ -81,7 +81,8 @@ export function useSetTaskStatusMutation(taskId: string) {
       // Optimistically remove the task from all list caches
       queryClient.setQueriesData<Task[]>(
         { queryKey: queryKeys.tasks._def },
-        (old) => (Array.isArray(old) ? old.filter((t) => t.id !== taskId) : old),
+        (old) =>
+          Array.isArray(old) ? old.filter((t) => t.id !== taskId) : old,
       );
       return { previousData };
     },

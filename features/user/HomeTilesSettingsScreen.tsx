@@ -25,11 +25,14 @@ export function HomeTilesSettingsScreen() {
   function isTileAccessible(id: string): boolean {
     const meta = HOME_TILES[id as keyof typeof HOME_TILES];
     if (!meta) return false;
-    if ("membershipRequired" in meta && meta.membershipRequired && !isActive) return false;
+    if ("membershipRequired" in meta && meta.membershipRequired && !isActive)
+      return false;
     if (id === "plots" && getAccess("field_calendar") === "none") return false;
     if (id === "tasks" && getAccess("tasks") === "none") return false;
-    if (id === "animalHusbandry" && getAccess("animals") === "none") return false;
-    if (id === "fieldCalendar" && getAccess("field_calendar") === "none") return false;
+    if (id === "animalHusbandry" && getAccess("animals") === "none")
+      return false;
+    if (id === "fieldCalendar" && getAccess("field_calendar") === "none")
+      return false;
     return true;
   }
 

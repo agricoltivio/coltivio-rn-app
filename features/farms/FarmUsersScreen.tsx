@@ -3,7 +3,11 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { Button } from "@/components/buttons/Button";
 import { Chip } from "@/components/chips/Chip";
 import { TextInput } from "@/components/inputs/TextInput";
-import { CreateInviteInput, FarmInvite, PermissionFeature } from "@/api/farms.api";
+import {
+  CreateInviteInput,
+  FarmInvite,
+  PermissionFeature,
+} from "@/api/farms.api";
 import { FarmUser } from "@/api/user.api";
 import { Body, H2, H3 } from "@/theme/Typography";
 import { FarmUsersScreenProps } from "./navigation/farm-routes";
@@ -375,9 +379,7 @@ export function FarmUsersScreen({ navigation }: FarmUsersScreenProps) {
                             >[0],
                           )}
                         </Body>
-                        <View
-                          style={{ width: 56, alignItems: "center" }}
-                        >
+                        <View style={{ width: 56, alignItems: "center" }}>
                           <Checkbox
                             checked={access === "read"}
                             onPress={() =>
@@ -385,9 +387,7 @@ export function FarmUsersScreen({ navigation }: FarmUsersScreenProps) {
                             }
                           />
                         </View>
-                        <View
-                          style={{ width: 56, alignItems: "center" }}
-                        >
+                        <View style={{ width: 56, alignItems: "center" }}>
                           <Checkbox
                             checked={access === "write"}
                             onPress={() =>

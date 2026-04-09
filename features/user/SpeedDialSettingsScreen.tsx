@@ -29,12 +29,15 @@ export function SpeedDialSettingsBody() {
   function isActionAccessible(id: string): boolean {
     const meta = SPEED_DIAL_ACTIONS[id as keyof typeof SPEED_DIAL_ACTIONS];
     if (!meta) return false;
-    if ("membershipRequired" in meta && meta.membershipRequired && !isActive) return false;
+    if ("membershipRequired" in meta && meta.membershipRequired && !isActive)
+      return false;
     if (!canWrite(meta.accessFeature)) return false;
     return true;
   }
 
-  const items = localSettings.speedDialItems.filter((i) => isActionAccessible(i.id));
+  const items = localSettings.speedDialItems.filter((i) =>
+    isActionAccessible(i.id),
+  );
   const activeItems = items.filter((i) => i.active);
   const inactiveItems = items.filter((i) => !i.active);
 

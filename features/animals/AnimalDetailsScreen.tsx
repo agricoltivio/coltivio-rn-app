@@ -1,5 +1,8 @@
 import { Button } from "@/components/buttons/Button";
-import { IonIconButton, MaterialCommunityIconButton } from "@/components/buttons/IconButton";
+import {
+  IonIconButton,
+  MaterialCommunityIconButton,
+} from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
@@ -105,14 +108,25 @@ export function AnimalDetailsScreen({
       }
     >
       <ScrollView showHeaderOnScroll headerTitleOnScroll={animal.name}>
-        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
           <H2>{animal.name}</H2>
           <MaterialCommunityIconButton
             type="accent"
             icon="sitemap"
             iconSize={22}
             color={theme.colors.primary}
-            onPress={() => navigation.navigate("FamilyTree", { animalType: animal.type, focusedAnimalId: animal.id })}
+            onPress={() =>
+              navigation.navigate("FamilyTree", {
+                animalType: animal.type,
+                focusedAnimalId: animal.id,
+              })
+            }
           />
         </View>
 
@@ -312,27 +326,37 @@ export function AnimalDetailsScreen({
 
         {/* Journal — members only */}
         {isMember && (
-        <View style={{ marginTop: theme.spacing.l }}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("AnimalJournal", { animalId })}
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: theme.spacing.xs,
-              padding: 12,
-              borderRadius: theme.radii.m,
-              borderWidth: 1.5,
-              borderColor: theme.colors.primary,
-              backgroundColor: theme.colors.white,
-            }}
-          >
-            <Ionicons name="book-outline" size={18} color={theme.colors.primary} />
-            <Subtitle style={{ color: theme.colors.primary, fontWeight: "600", fontSize: 16 }}>
-              {t("animals.journal")}
-            </Subtitle>
-          </TouchableOpacity>
-        </View>
+          <View style={{ marginTop: theme.spacing.l }}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("AnimalJournal", { animalId })}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: theme.spacing.xs,
+                padding: 12,
+                borderRadius: theme.radii.m,
+                borderWidth: 1.5,
+                borderColor: theme.colors.primary,
+                backgroundColor: theme.colors.white,
+              }}
+            >
+              <Ionicons
+                name="book-outline"
+                size={18}
+                color={theme.colors.primary}
+              />
+              <Subtitle
+                style={{
+                  color: theme.colors.primary,
+                  fontWeight: "600",
+                  fontSize: 16,
+                }}
+              >
+                {t("animals.journal")}
+              </Subtitle>
+            </TouchableOpacity>
+          </View>
         )}
 
         {/* Children */}

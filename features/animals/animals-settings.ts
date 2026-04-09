@@ -20,13 +20,38 @@ export type AnimalsItemMeta = {
 
 // Maps itemId → translation key + navigation route + required permission feature
 export const ANIMALS_ITEMS: Record<string, AnimalsItemMeta> = {
-  animals: { translationKey: "animals.animals", route: "Animals", feature: "animals" },
-  earTags: { translationKey: "ear_tags.ear_tags", route: "EarTags", feature: "animals" },
+  animals: {
+    translationKey: "animals.animals",
+    route: "Animals",
+    feature: "animals",
+  },
+  earTags: {
+    translationKey: "ear_tags.ear_tags",
+    route: "EarTags",
+    feature: "animals",
+  },
   drugs: { translationKey: "drugs.drugs", route: "Drugs", feature: "animals" },
-  treatments: { translationKey: "treatments.treatments", route: "Treatments", feature: "animals" },
-  tvdImport: { translationKey: "animals.tvd_import.title", route: "TvdImport", feature: "animals" },
-  herds: { translationKey: "animals.herds", route: "Herds", feature: "animals" },
-  outdoorJournal: { translationKey: "animals.outdoor_journal", route: "OutdoorJournal", feature: "animals", membershipRequired: true },
+  treatments: {
+    translationKey: "treatments.treatments",
+    route: "Treatments",
+    feature: "animals",
+  },
+  tvdImport: {
+    translationKey: "animals.tvd_import.title",
+    route: "TvdImport",
+    feature: "animals",
+  },
+  herds: {
+    translationKey: "animals.herds",
+    route: "Herds",
+    feature: "animals",
+  },
+  outdoorJournal: {
+    translationKey: "animals.outdoor_journal",
+    route: "OutdoorJournal",
+    feature: "animals",
+    membershipRequired: true,
+  },
 };
 
 // Maps groupId → translation key

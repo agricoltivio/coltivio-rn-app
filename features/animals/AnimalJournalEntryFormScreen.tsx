@@ -6,12 +6,7 @@ import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2 } from "@/theme/Typography";
 import { useTranslation } from "react-i18next";
-import {
-  ActivityIndicator,
-  Alert,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ActivityIndicator, Alert, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useForm } from "react-hook-form";
 import {
@@ -67,7 +62,9 @@ export function AnimalJournalEntryFormScreen({
   // Images shown in the form:
   // - Edit mode: starts from existing entry images, mutable via local state
   // - Create mode: empty until entry is created
-  const [uploadedImages, setUploadedImages] = useState<AnimalJournalImage[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<AnimalJournalImage[]>(
+    [],
+  );
   const [pendingImages, setPendingImages] = useState<PendingImage[]>([]);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -83,7 +80,11 @@ export function AnimalJournalEntryFormScreen({
   const updateMutation = useUpdateJournalEntryMutation();
   const deleteMutation = useDeleteJournalEntryMutation();
 
-  const { control, handleSubmit, formState: { errors } } = useForm<FormValues>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
     defaultValues: {
       title: "",
       date: new Date(),
@@ -215,22 +216,18 @@ export function AnimalJournalEntryFormScreen({
 
   function handleDelete() {
     if (!entryId) return;
-    Alert.alert(
-      t("animals.delete_journal_entry"),
-      undefined,
-      [
-        { text: t("buttons.cancel"), style: "cancel" },
-        {
-          text: t("buttons.delete"),
-          style: "destructive",
-          onPress: async () => {
-            await deleteMutation.mutateAsync({ entryId, animalId });
-            // Pop back to the journal list
-            navigation.pop(2);
-          },
+    Alert.alert(t("animals.delete_journal_entry"), undefined, [
+      { text: t("buttons.cancel"), style: "cancel" },
+      {
+        text: t("buttons.delete"),
+        style: "destructive",
+        onPress: async () => {
+          await deleteMutation.mutateAsync({ entryId, animalId });
+          // Pop back to the journal list
+          navigation.pop(2);
         },
-      ],
-    );
+      },
+    ]);
   }
 
   const isBusy =
@@ -366,7 +363,11 @@ export function AnimalJournalEntryFormScreen({
               {isUploadingImage ? (
                 <ActivityIndicator size="small" color={theme.colors.primary} />
               ) : (
-                <Ionicons name="camera-outline" size={24} color={theme.colors.gray1} />
+                <Ionicons
+                  name="camera-outline"
+                  size={24}
+                  color={theme.colors.gray1}
+                />
               )}
             </TouchableOpacity>
           </View>

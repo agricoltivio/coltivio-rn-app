@@ -47,8 +47,14 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
     return localSettings.speedDialItems
       .filter((item) => {
         if (!item.active || !(item.id in SPEED_DIAL_ACTIONS)) return false;
-        const action = SPEED_DIAL_ACTIONS[item.id as keyof typeof SPEED_DIAL_ACTIONS];
-        if ("membershipRequired" in action && action.membershipRequired && !isActive) return false;
+        const action =
+          SPEED_DIAL_ACTIONS[item.id as keyof typeof SPEED_DIAL_ACTIONS];
+        if (
+          "membershipRequired" in action &&
+          action.membershipRequired &&
+          !isActive
+        )
+          return false;
         if (!canWrite(action.accessFeature)) return false;
         return true;
       })
@@ -72,17 +78,23 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
           "membershipRequired" in meta && meta.membershipRequired;
         if (membershipRequired && !isActive) return false;
         // Hide tiles when user has no access to the relevant feature
-        if (tile.id === "plots" && getAccess("field_calendar") === "none") return false;
+        if (tile.id === "plots" && getAccess("field_calendar") === "none")
+          return false;
         if (tile.id === "tasks" && getAccess("tasks") === "none") return false;
-        if (tile.id === "animalHusbandry" && getAccess("animals") === "none") return false;
-        if (tile.id === "fieldCalendar" && getAccess("field_calendar") === "none") return false;
+        if (tile.id === "animalHusbandry" && getAccess("animals") === "none")
+          return false;
+        if (
+          tile.id === "fieldCalendar" &&
+          getAccess("field_calendar") === "none"
+        )
+          return false;
         return true;
       })
       .map((tile) => ({
         id: tile.id,
         ...HOME_TILES[tile.id as keyof typeof HOME_TILES],
       }));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localSettings.homeTiles, isActive, user]);
 
   function navigateToTile(tileId: string) {
@@ -279,9 +291,9 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
             )}
           </View>
 
-          {isActive && localSettings.showUpcomingTasks && getAccess("tasks") !== "none" && (
-            <UpcomingTasksTile />
-          )}
+          {isActive &&
+            localSettings.showUpcomingTasks &&
+            getAccess("tasks") !== "none" && <UpcomingTasksTile />}
 
           {isList ? (
             // List layout: full-width rows with small image icon and chevron

@@ -14,7 +14,10 @@ import {
   View,
 } from "react-native";
 import { useTheme } from "styled-components/native";
-import { useAnimalJournalEntryQuery, useDeleteJournalEntryMutation } from "./animal-journal.hooks";
+import {
+  useAnimalJournalEntryQuery,
+  useDeleteJournalEntryMutation,
+} from "./animal-journal.hooks";
 import { AnimalJournalEntryScreenProps } from "./navigation/animals-routes";
 import { AnimalJournalImage } from "@/api/animal-journal.api";
 import { IonIconButton } from "@/components/buttons/IconButton";
@@ -95,7 +98,10 @@ export function AnimalJournalEntryScreen({
                 iconSize={22}
                 color={theme.colors.primary}
                 onPress={() =>
-                  navigation.navigate("AnimalJournalEntryForm", { animalId, entryId })
+                  navigation.navigate("AnimalJournalEntryForm", {
+                    animalId,
+                    entryId,
+                  })
                 }
               />
             </View>
@@ -191,7 +197,8 @@ export function AnimalJournalEntryScreen({
             onPress={() => setFullscreenImage(null)}
             style={{
               position: "absolute",
-              top: (StatusBar.currentHeight ?? 0) + insets.top + theme.spacing.s,
+              top:
+                (StatusBar.currentHeight ?? 0) + insets.top + theme.spacing.s,
               right: theme.spacing.m,
               zIndex: 10,
               padding: theme.spacing.xs,

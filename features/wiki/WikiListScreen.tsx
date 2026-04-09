@@ -9,7 +9,12 @@ import { H2, H3 } from "@/theme/Typography";
 import { useLocalSettings } from "@/features/user/LocalSettingsContext";
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, SectionList, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  SectionList,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useTheme } from "styled-components/native";
 import {
   useMyChangeRequestsQuery,
@@ -65,7 +70,8 @@ export function WikiListScreen({ navigation }: WikiListScreenProps) {
     const unseen = changeRequests.filter(
       (cr) => cr.status !== localSettings.wikiSeenCrStatuses[cr.id],
     );
-    if (unseen.some((cr) => cr.status === "changes_requested")) return "changes_requested";
+    if (unseen.some((cr) => cr.status === "changes_requested"))
+      return "changes_requested";
     if (unseen.some((cr) => cr.status === "rejected")) return "rejected";
     if (unseen.some((cr) => cr.status === "approved")) return "approved";
     return null;
@@ -250,7 +256,9 @@ export function WikiListScreen({ navigation }: WikiListScreenProps) {
                   }
                 >
                   <ListItem.Content>
-                    <ListItem.Title numberOfLines={1}>{displayTitle}</ListItem.Title>
+                    <ListItem.Title numberOfLines={1}>
+                      {displayTitle}
+                    </ListItem.Title>
                   </ListItem.Content>
                   <ListItem.Chevron />
                 </ListItem>

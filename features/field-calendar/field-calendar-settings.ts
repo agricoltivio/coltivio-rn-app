@@ -20,16 +20,57 @@ export type FieldCalendarItemMeta = {
 
 // Maps itemId → translation key + navigation route + required permission feature
 export const FIELD_CALENDAR_ITEMS: Record<string, FieldCalendarItemMeta> = {
-  cropFamilies: { translationKey: "field_calendar.crop_families", route: "CropFamilies", feature: "field_calendar" },
-  crops: { translationKey: "field_calendar.crops", route: "Crops", feature: "field_calendar" },
-  cropRotations: { translationKey: "field_calendar.crop_rotations", route: "CropRotations", feature: "field_calendar" },
-  tillages: { translationKey: "field_calendar.tillages", route: "Tillages", feature: "field_calendar" },
-  fertilizers: { translationKey: "field_calendar.fertilizers", route: "Fertilizers", feature: "field_calendar" },
-  fertilizerApplications: { translationKey: "field_calendar.fertilizer_applications", route: "FertilizerApplications", feature: "field_calendar" },
-  cropProtectionProducts: { translationKey: "field_calendar.crop_protection_products", route: "CropProtectionProducts", feature: "field_calendar" },
-  cropProtectionApplications: { translationKey: "field_calendar.crop_protection_applications", route: "CropProtectionApplications", feature: "field_calendar" },
-  harvests: { translationKey: "field_calendar.harvests", route: "Harvests", feature: "field_calendar" },
-  fieldEventsMap: { translationKey: "field_calendar.field_events_map", route: "FieldEventsMap", feature: "field_calendar", membershipRequired: true },
+  cropFamilies: {
+    translationKey: "field_calendar.crop_families",
+    route: "CropFamilies",
+    feature: "field_calendar",
+  },
+  crops: {
+    translationKey: "field_calendar.crops",
+    route: "Crops",
+    feature: "field_calendar",
+  },
+  cropRotations: {
+    translationKey: "field_calendar.crop_rotations",
+    route: "CropRotations",
+    feature: "field_calendar",
+  },
+  tillages: {
+    translationKey: "field_calendar.tillages",
+    route: "Tillages",
+    feature: "field_calendar",
+  },
+  fertilizers: {
+    translationKey: "field_calendar.fertilizers",
+    route: "Fertilizers",
+    feature: "field_calendar",
+  },
+  fertilizerApplications: {
+    translationKey: "field_calendar.fertilizer_applications",
+    route: "FertilizerApplications",
+    feature: "field_calendar",
+  },
+  cropProtectionProducts: {
+    translationKey: "field_calendar.crop_protection_products",
+    route: "CropProtectionProducts",
+    feature: "field_calendar",
+  },
+  cropProtectionApplications: {
+    translationKey: "field_calendar.crop_protection_applications",
+    route: "CropProtectionApplications",
+    feature: "field_calendar",
+  },
+  harvests: {
+    translationKey: "field_calendar.harvests",
+    route: "Harvests",
+    feature: "field_calendar",
+  },
+  fieldEventsMap: {
+    translationKey: "field_calendar.field_events_map",
+    route: "FieldEventsMap",
+    feature: "field_calendar",
+    membershipRequired: true,
+  },
 };
 
 // Maps groupId → translation key

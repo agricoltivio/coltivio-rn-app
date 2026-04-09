@@ -96,7 +96,10 @@ export function PlotJournalEntryScreen({
                 iconSize={22}
                 color={theme.colors.primary}
                 onPress={() =>
-                  navigation.navigate("PlotJournalEntryForm", { plotId, entryId })
+                  navigation.navigate("PlotJournalEntryForm", {
+                    plotId,
+                    entryId,
+                  })
                 }
               />
             </View>
@@ -190,7 +193,8 @@ export function PlotJournalEntryScreen({
             onPress={() => setFullscreenImage(null)}
             style={{
               position: "absolute",
-              top: (StatusBar.currentHeight ?? 0) + insets.top + theme.spacing.s,
+              top:
+                (StatusBar.currentHeight ?? 0) + insets.top + theme.spacing.s,
               right: theme.spacing.m,
               zIndex: 10,
               padding: theme.spacing.xs,

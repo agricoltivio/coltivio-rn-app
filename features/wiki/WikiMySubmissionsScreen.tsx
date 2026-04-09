@@ -57,8 +57,10 @@ export function WikiMySubmissionsScreen({
   };
 
   const filtered = useMemo(() => {
-    if (filter === "active") return changeRequests.filter((cr) => ACTIVE_STATUSES.has(cr.status));
-    if (filter === "resolved") return changeRequests.filter((cr) => RESOLVED_STATUSES.has(cr.status));
+    if (filter === "active")
+      return changeRequests.filter((cr) => ACTIVE_STATUSES.has(cr.status));
+    if (filter === "resolved")
+      return changeRequests.filter((cr) => RESOLVED_STATUSES.has(cr.status));
     return changeRequests;
   }, [changeRequests, filter]);
 
@@ -66,7 +68,9 @@ export function WikiMySubmissionsScreen({
     <ContentView headerVisible>
       <ScrollView>
         <H2>{t("wiki.my_submissions")}</H2>
-        <View style={{ marginTop: theme.spacing.m, marginBottom: theme.spacing.s }}>
+        <View
+          style={{ marginTop: theme.spacing.m, marginBottom: theme.spacing.s }}
+        >
           <FilterChips
             items={(["active", "resolved", "all"] as StatusFilter[]).map(
               (f) => filterLabels[f],

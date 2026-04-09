@@ -138,7 +138,8 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
                 title={t("buttons.delete")}
                 onPress={onDelete}
                 disabled={
-                  updateAnimalMutation.isPending || deleteAnimalMutation.isPending
+                  updateAnimalMutation.isPending ||
+                  deleteAnimalMutation.isPending
                 }
                 loading={deleteAnimalMutation.isPending}
               />

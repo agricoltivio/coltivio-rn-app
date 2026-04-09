@@ -205,7 +205,11 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
         </ListItem.Content>
         {item.pinned && (
           <View
-            style={{ justifyContent: "center", alignItems: "center", width: 28 }}
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              width: 28,
+            }}
           >
             <MaterialCommunityIcons
               name="pin"
@@ -225,9 +229,7 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
     return (
       <ReanimatedSwipeable
         ref={swipeableRef}
-        renderRightActions={(_, drag) => (
-          <SwipeCompleteAction drag={drag} />
-        )}
+        renderRightActions={(_, drag) => <SwipeCompleteAction drag={drag} />}
         rightThreshold={Dimensions.get("window").width / 4}
         onSwipeableOpen={(direction) => {
           if (direction === "left") {

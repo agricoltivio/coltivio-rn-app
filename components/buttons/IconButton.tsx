@@ -115,7 +115,7 @@ const ButtonContainer = styled.TouchableOpacity<{
         : type === "ghost"
           ? "transparent"
           : theme.colors[type]};
-  padding: ${({ type }) => type === "ghost" ? "0px 4px" : "5px"};
+  padding: ${({ type }) => (type === "ghost" ? "0px 4px" : "5px")};
   border-radius: ${({ theme }) => theme.radii.m}px;
   border: ${({ theme, type }) =>
     type === "accent" ? `1px solid ${theme.colors.primary}` : "none"};

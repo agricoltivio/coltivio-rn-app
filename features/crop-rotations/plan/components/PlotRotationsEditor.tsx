@@ -544,10 +544,16 @@ export function PlotRotationsEditor({
               plotName={plot.name}
               rotations={rotations}
               crops={crops}
-              onRotationPress={canWrite("field_calendar") ? (rotation) =>
-                handleRotationPress(plot.id, rotation) : undefined
+              onRotationPress={
+                canWrite("field_calendar")
+                  ? (rotation) => handleRotationPress(plot.id, rotation)
+                  : undefined
               }
-              onAddPress={canWrite("field_calendar") ? () => handleAddRotation(plot.id) : undefined}
+              onAddPress={
+                canWrite("field_calendar")
+                  ? () => handleAddRotation(plot.id)
+                  : undefined
+              }
             />
           );
         })}
@@ -585,7 +591,11 @@ export function PlotRotationsEditor({
         crops={crops}
         selectedPlotId={editingPlotId}
         onSave={handleModalSave}
-        onDelete={editingRotation && canWrite("field_calendar") ? handleModalDelete : undefined}
+        onDelete={
+          editingRotation && canWrite("field_calendar")
+            ? handleModalDelete
+            : undefined
+        }
         onClose={() => setEditModalVisible(false)}
         onNavigateToCreateCrop={() => {
           setEditModalVisible(false);

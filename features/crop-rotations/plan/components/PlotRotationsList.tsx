@@ -131,7 +131,9 @@ export function PlotRotationsList({
           return (
             <Pressable
               key={rotation.entryId}
-              onPress={onRotationPress ? () => onRotationPress(rotation) : undefined}
+              onPress={
+                onRotationPress ? () => onRotationPress(rotation) : undefined
+              }
               style={{
                 padding: theme.spacing.m,
                 borderBottomWidth: index < rotations.length - 1 ? 1 : 0,

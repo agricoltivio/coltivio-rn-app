@@ -44,8 +44,7 @@ export function MemberPermissionsScreen({
     }
   }
 
-  const isPending =
-    setPermission.isPending || deletePermission.isPending;
+  const isPending = setPermission.isPending || deletePermission.isPending;
 
   return (
     <ContentView>
@@ -83,8 +82,7 @@ export function MemberPermissionsScreen({
                   style={{
                     paddingHorizontal: theme.spacing.m,
                     paddingVertical: theme.spacing.m,
-                    borderBottomWidth:
-                      index < ALL_FEATURES.length - 1 ? 1 : 0,
+                    borderBottomWidth: index < ALL_FEATURES.length - 1 ? 1 : 0,
                     borderBottomColor: theme.colors.gray4,
                   }}
                 >
@@ -95,7 +93,9 @@ export function MemberPermissionsScreen({
                       >[0],
                     )}
                     value={isWrite}
-                    onChange={(e) => onToggleWrite(feature, e.nativeEvent.value)}
+                    onChange={(e) =>
+                      onToggleWrite(feature, e.nativeEvent.value)
+                    }
                     disabled={isPending}
                   />
                 </View>

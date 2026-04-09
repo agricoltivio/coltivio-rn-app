@@ -391,12 +391,16 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
           }
           setScheduleModalVisible(false);
         }}
-        onDelete={canWrite("animals") ? (scheduleId) => {
-          setLocalSchedules((prev) =>
-            prev.filter((s) => s.tempId !== scheduleId),
-          );
-          setScheduleModalVisible(false);
-        } : undefined}
+        onDelete={
+          canWrite("animals")
+            ? (scheduleId) => {
+                setLocalSchedules((prev) =>
+                  prev.filter((s) => s.tempId !== scheduleId),
+                );
+                setScheduleModalVisible(false);
+              }
+            : undefined
+        }
         onClose={() => setScheduleModalVisible(false)}
       />
     </ContentView>

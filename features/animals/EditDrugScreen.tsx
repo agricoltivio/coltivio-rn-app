@@ -233,7 +233,8 @@ export function EditDrugScreen({ route, navigation }: EditDrugScreenProps) {
                   checkDrugInUseMutation.isPending
                 }
                 loading={
-                  deleteDrugMutation.isPending || checkDrugInUseMutation.isPending
+                  deleteDrugMutation.isPending ||
+                  checkDrugInUseMutation.isPending
                 }
               />
             )}

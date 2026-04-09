@@ -3,7 +3,9 @@ import { UpdateUserInput, User } from "@/api/user.api";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-export type PermissionFeature = NonNullable<User["farmPermissions"]>[number]["feature"];
+export type PermissionFeature = NonNullable<
+  User["farmPermissions"]
+>[number]["feature"];
 
 export function usePermissions() {
   const { user } = useUserQuery();

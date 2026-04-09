@@ -6,7 +6,15 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
-import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, View, Text, TouchableOpacity } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  View,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { WikiMarkdown } from "@/features/wiki/components/WikiMarkdown";
 import styled from "styled-components/native";
 import { useTheme } from "styled-components/native";
@@ -105,97 +113,100 @@ export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
-      <ScrollView
-        showHeaderOnScroll
-        headerTitleOnScroll={entryTranslation?.title ?? ""}
-      >
-        <View style={{ marginBottom: theme.spacing.m }}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-            }}
-          >
-            <H2 style={{ flex: 1, marginRight: theme.spacing.s }}>
-              {entryTranslation?.title ?? ""}
-            </H2>
-            {isEditable && (
-              <View style={{ flexDirection: "row", gap: theme.spacing.xs }}>
+        <ScrollView
+          showHeaderOnScroll
+          headerTitleOnScroll={entryTranslation?.title ?? ""}
+        >
+          <View style={{ marginBottom: theme.spacing.m }}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+              }}
+            >
+              <H2 style={{ flex: 1, marginRight: theme.spacing.s }}>
+                {entryTranslation?.title ?? ""}
+              </H2>
+              {isEditable && (
+                <View style={{ flexDirection: "row", gap: theme.spacing.xs }}>
+                  <IonIconButton
+                    icon="create-outline"
+                    type="accent"
+                    iconSize={24}
+                    color={theme.colors.primary}
+                    onPress={() =>
+                      navigation.navigate("WikiEntryForm", { entryId })
+                    }
+                  />
+                  <IonIconButton
+                    icon="trash-outline"
+                    type="danger"
+                    iconSize={24}
+                    onPress={onDeletePress}
+                  />
+                </View>
+              )}
+              {isPublished && (
                 <IonIconButton
                   icon="create-outline"
                   type="accent"
                   iconSize={24}
                   color={theme.colors.primary}
-                  onPress={() =>
-                    navigation.navigate("WikiEntryForm", { entryId })
-                  }
+                  onPress={() => {
+                    // Flow B: if there's already a changes_requested CR, edit its proposed translations
+                    if (
+                      activeCR?.type === "change_request" &&
+                      activeCR?.status === "changes_requested"
+                    ) {
+                      navigation.navigate("WikiChangeRequestDraft", {
+                        changeRequestId: activeCR.id,
+                      });
+                    } else {
+                      navigation.navigate("WikiChangeRequest", { entryId });
+                    }
+                  }}
                 />
-                <IonIconButton
-                  icon="trash-outline"
-                  type="danger"
-                  iconSize={24}
-                  onPress={onDeletePress}
-                />
-              </View>
-            )}
-            {isPublished && (
-              <IonIconButton
-                icon="create-outline"
-                type="accent"
-                iconSize={24}
-                color={theme.colors.primary}
-                onPress={() => {
-                  // Flow B: if there's already a changes_requested CR, edit its proposed translations
-                  if (
-                    activeCR?.type === "change_request" &&
-                    activeCR?.status === "changes_requested"
-                  ) {
-                    navigation.navigate("WikiChangeRequestDraft", {
-                      changeRequestId: activeCR.id,
-                    });
-                  } else {
-                    navigation.navigate("WikiChangeRequest", { entryId });
-                  }
-                }}
-              />
-            )}
+              )}
+            </View>
+
+            <View
+              style={{
+                flexDirection: "row",
+                gap: theme.spacing.xs,
+                marginTop: theme.spacing.xs,
+                flexWrap: "wrap",
+              }}
+            >
+              {categoryTranslation && (
+                <Chip>
+                  <Text style={chipTextStyle}>{categoryTranslation.name}</Text>
+                </Chip>
+              )}
+              {isPrivate && (
+                <Chip>
+                  <Text style={chipTextStyle}>{t("wiki.private")}</Text>
+                </Chip>
+              )}
+            </View>
           </View>
 
-          <View
+          <WikiMarkdown
             style={{
-              flexDirection: "row",
-              gap: theme.spacing.xs,
-              marginTop: theme.spacing.xs,
-              flexWrap: "wrap",
+              body: {
+                color: theme.colors.primary,
+                fontSize: 16,
+                lineHeight: 24,
+              },
+              heading1: { color: theme.colors.primary, lineHeight: 40 },
+              heading2: { color: theme.colors.primary, lineHeight: 32 },
+              heading3: { color: theme.colors.primary, lineHeight: 28 },
+              link: { color: theme.colors.amber },
             }}
           >
-            {categoryTranslation && (
-              <Chip>
-                <Text style={chipTextStyle}>{categoryTranslation.name}</Text>
-              </Chip>
-            )}
-            {isPrivate && (
-              <Chip>
-                <Text style={chipTextStyle}>{t("wiki.private")}</Text>
-              </Chip>
-            )}
-          </View>
-        </View>
-
-        <WikiMarkdown
-          style={{
-            body: { color: theme.colors.primary, fontSize: 16, lineHeight: 24 },
-            heading1: { color: theme.colors.primary, lineHeight: 40 },
-            heading2: { color: theme.colors.primary, lineHeight: 32 },
-            heading3: { color: theme.colors.primary, lineHeight: 28 },
-            link: { color: theme.colors.amber },
-          }}
-        >
-          {entryTranslation?.body ?? ""}
-        </WikiMarkdown>
-
-      </ScrollView>
+            {entryTranslation?.body ?? ""}
+          </WikiMarkdown>
+        </ScrollView>
       </KeyboardAvoidingView>
     </ContentView>
   );
@@ -227,4 +238,3 @@ const ActionLabel = styled.Text`
   font-size: 16px;
   font-weight: 600;
 `;
-
