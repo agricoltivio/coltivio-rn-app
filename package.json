@@ -1,6 +1,6 @@
 {
   "name": "coltivio",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Open-source farm management app built with React Native and Expo",
   "repository": {
     "type": "git",
