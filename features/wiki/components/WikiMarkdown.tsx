@@ -1,6 +1,6 @@
 import Constants from "expo-constants";
 import React, { useEffect, useState } from "react";
-import { Image, PixelRatio, useWindowDimensions } from "react-native";
+import { Image, PixelRatio, ScrollView, Text, View, useWindowDimensions } from "react-native";
 import Markdown, { type MarkdownProps } from "react-native-markdown-display";
 import type { PropsWithChildren } from "react";
 
@@ -76,6 +76,37 @@ function MarkdownImage({
   );
 }
 
+// Default table styles applied to every WikiMarkdown instance so all usages
+// (detail screen, editor preview) get consistent table rendering.
+// gray4 = #dddddd from the app theme.
+const defaultTableStyle: MarkdownProps["style"] = {
+  table: { borderWidth: 1, borderColor: "#dddddd", borderRadius: 4 },
+  tr: { borderBottomWidth: 1, borderColor: "#dddddd", flexDirection: "row" },
+  th: { width: 120, padding: 6, borderRightWidth: 1, borderColor: "#dddddd" },
+  td: { width: 120, padding: 6, borderRightWidth: 1, borderColor: "#dddddd" },
+};
+
+// Wrap tables in a horizontal ScrollView so many-column tables don't get squeezed.
+// Bold th text via a Text wrapper (fontWeight is stripped from _VIEW_SAFE_th so
+// it can't be applied on the View directly).
+const tableRule: MarkdownProps["rules"] = {
+  table: (node, children, _parent, styles) => (
+    <ScrollView
+      key={node.key}
+      horizontal
+      showsHorizontalScrollIndicator
+      style={{ marginVertical: 4 }}
+    >
+      <View style={styles._VIEW_SAFE_table}>{children}</View>
+    </ScrollView>
+  ),
+  th: (node, children, _parent, styles) => (
+    <View key={node.key} style={styles._VIEW_SAFE_th}>
+      <Text style={{ fontWeight: "bold" }}>{children}</Text>
+    </View>
+  ),
+};
+
 // react-native-markdown-display spreads a props object containing `key` into
 // FitImage, which React 18 rejects. Override the image rule to pass key directly.
 const imageRule: MarkdownProps["rules"] = {
@@ -91,7 +122,15 @@ const imageRule: MarkdownProps["rules"] = {
 
 export function WikiMarkdown({
   rules,
+  style,
   ...props
 }: PropsWithChildren<MarkdownProps>) {
-  return <Markdown rules={{ ...imageRule, ...rules }} {...props} />;
+  const mergedStyle = { ...defaultTableStyle, ...style };
+  return (
+    <Markdown
+      rules={{ ...imageRule, ...tableRule, ...rules }}
+      style={mergedStyle}
+      {...props}
+    />
+  );
 }
