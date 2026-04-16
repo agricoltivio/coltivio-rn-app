@@ -4,6 +4,7 @@ import { ChangeEmailScreen } from "../ChangeEmailScreen";
 import { ChangePasswordScren } from "../ChangePasswordScreen";
 import { ChangeUserNameScreen } from "../ChangeUserNameScreen";
 import { HomeTilesSettingsScreen } from "../HomeTilesSettingsScreen";
+import { MapSettingsScreen } from "../MapSettingsScreen";
 import { SpeedDialSettingsScreen } from "../SpeedDialSettingsScreen";
 import { UserAccountScreen } from "../UserAccountScreen";
 import { OnboardingSettingsScreen } from "../UserSettingsScreen";
@@ -50,6 +51,14 @@ export function renderUserStack() {
       key="home-tiles-settings"
       name="HomeTilesSettings"
       component={HomeTilesSettingsScreen}
+      options={{
+        title: "",
+      }}
+    />,
+    <Stack.Screen
+      key="map-settings"
+      name="MapSettings"
+      component={MapSettingsScreen}
       options={{
         title: "",
       }}

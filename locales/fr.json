@@ -345,6 +345,12 @@
         "crop": "Culture : {{crop}}"
       }
     },
+    "color_mode": {
+      "plot": "Parcelle",
+      "crop": "Culture",
+      "usage": "Utilisation",
+      "cutting": "Date de coupe"
+    },
     "add": {
       "map": {
         "mode_select": {
@@ -1309,7 +1315,14 @@
     "app_settings": "Paramètres",
     "speed_dial_enabled": "Accès rapide",
     "speed_dial_settings": "Configurer l'accès rapide",
-    "home_tiles_settings": "Configurer l'accueil"
+    "home_tiles_settings": "Configurer l'accueil",
+    "map": {
+      "title": "Carte",
+      "layer_heading": "Couche de carte par défaut",
+      "layer_satellite": "Satellite",
+      "layer_map": "Carte routière",
+      "color_mode_heading": "Coloration des parcelles par défaut"
+    }
   },
   "home_tiles": {
     "title": "Configurer l'accueil",

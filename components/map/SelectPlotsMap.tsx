@@ -136,11 +136,24 @@ export function SelectPlotsMap({
   const handlePlotPress = useCallback(
     (event: {
       stopPropagation(): void;
-      nativeEvent: { features: GeoJSON.Feature[] };
+      nativeEvent: { features: GeoJSON.Feature[]; lngLat: [number, number] };
     }) => {
       if (drawPhase !== "idle") return;
       event.stopPropagation();
-      const feature = event.nativeEvent.features[0];
+      const { features, lngLat } = event.nativeEvent;
+      // When nested plots overlap, pick the one whose boundary is nearest to the tap point
+      let feature: GeoJSON.Feature | undefined;
+      if (features.length <= 1) {
+        feature = features[0];
+      } else {
+        const tapPoint = turf.point(lngLat);
+        const distances = features.map((f) => {
+          if (f.geometry.type !== "Polygon") return Infinity;
+          const exteriorRing = turf.lineString(f.geometry.coordinates[0]);
+          return turf.nearestPointOnLine(exteriorRing, tapPoint).properties.dist ?? Infinity;
+        });
+        feature = features[distances.indexOf(Math.min(...distances))];
+      }
       const plotId = feature?.properties?.id;
       if (typeof plotId === "string" && plots) {
         const plot = plots.find((p) => p.id === plotId);

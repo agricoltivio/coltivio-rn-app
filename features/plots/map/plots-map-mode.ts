@@ -1,6 +1,7 @@
 import { Plot } from "@/api/plots.api";
 import { type DrawingOverlayRef } from "@/components/map/DrawingOverlay";
 import { type BaseLayer } from "@/components/map/MapLibreMap";
+import { type PlotColorMode } from "@/components/map/PlotsLayer";
 import { type MapRef, type CameraRef } from "@maplibre/maplibre-react-native";
 import { NavigationProp } from "@react-navigation/native";
 import { createContext, useContext, Dispatch } from "react";
@@ -178,6 +179,8 @@ type PlotsMapContextValue = {
   setControlsExpanded: (expanded: boolean) => void;
   baseLayer: BaseLayer;
   setBaseLayer: (layer: BaseLayer) => void;
+  plotColorMode: PlotColorMode;
+  setPlotColorMode: (mode: PlotColorMode) => void;
 };
 
 export const PlotsMapContext = createContext<PlotsMapContextValue | null>(null);

@@ -169,6 +169,12 @@ export const SplitModeLayers = forwardRef<SplitModeLayersHandle>(
         const validPolylines = newPolygons.filter(
           (p) => p.coordinates.length > 0 && turf.area(p) > 0.1,
         );
+        // If the polygon count didn't increase, the line didn't fully cross any polygon
+        if (validPolylines.length <= currentMode.currentPolygons.length) {
+          Alert.alert(t("plots.split.split_failed"));
+          drawingRef.current?.reset();
+          return;
+        }
         dispatch({ type: "SET_SPLIT_POLYGONS", polygons: validPolylines });
         drawingRef.current?.reset();
         dispatch({ type: "SET_SPLIT_TOOL", tool: "none" });

@@ -57,6 +57,8 @@ type LocalSettingsData = {
   firstLaunchDate: string | null;
   // Whether the AgriColtivio membership promo modal has been shown and dismissed.
   agriColtivioPromoShown: boolean;
+  defaultMapLayer: "satellite" | "map";
+  defaultPlotColorMode: "plot" | "crop" | "usage" | "cutting";
 };
 
 type LocalSettingActions = {
@@ -99,6 +101,8 @@ export const defaultLocalSettings: LocalSettingsData = {
   dismissedMembershipBannerForDate: null,
   firstLaunchDate: null,
   agriColtivioPromoShown: false,
+  defaultMapLayer: "satellite",
+  defaultPlotColorMode: "crop",
 };
 
 export const LocalSettingsContext = createContext<LocalSettings>({

@@ -347,6 +347,12 @@
         "crop": "Kultur: {{crop}}"
       }
     },
+    "color_mode": {
+      "plot": "Schlag",
+      "crop": "Kultur",
+      "usage": "Nutzung",
+      "cutting": "Schnittzeit"
+    },
     "add": {
       "map": {
         "mode_select": {
@@ -1330,7 +1336,14 @@
     "app_settings": "Einstellungen",
     "speed_dial_enabled": "Schnellzugriff",
     "speed_dial_settings": "Schnellzugriff konfigurieren",
-    "home_tiles_settings": "Startseite konfigurieren"
+    "home_tiles_settings": "Startseite konfigurieren",
+    "map": {
+      "title": "Karte",
+      "layer_heading": "Standard-Kartenlayer",
+      "layer_satellite": "Satellitenbild",
+      "layer_map": "Strassenkarte",
+      "color_mode_heading": "Standard-Schlagfärbung"
+    }
   },
   "home_tiles": {
     "title": "Startseite konfigurieren",

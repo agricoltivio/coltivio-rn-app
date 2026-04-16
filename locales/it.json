@@ -345,6 +345,12 @@
         "crop": "Coltura: {{crop}}"
       }
     },
+    "color_mode": {
+      "plot": "Campo",
+      "crop": "Coltura",
+      "usage": "Utilizzo",
+      "cutting": "Data taglio"
+    },
     "add": {
       "map": {
         "mode_select": {
@@ -1309,7 +1315,14 @@
     "app_settings": "Impostazioni",
     "speed_dial_enabled": "Accesso rapido",
     "speed_dial_settings": "Configura accesso rapido",
-    "home_tiles_settings": "Configura schermata principale"
+    "home_tiles_settings": "Configura schermata principale",
+    "map": {
+      "title": "Mappa",
+      "layer_heading": "Layer mappa predefinito",
+      "layer_satellite": "Satellite",
+      "layer_map": "Mappa stradale",
+      "color_mode_heading": "Colorazione campi predefinita"
+    }
   },
   "home_tiles": {
     "title": "Configura schermata principale",

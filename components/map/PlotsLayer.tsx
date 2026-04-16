@@ -1,9 +1,27 @@
 import { Plot } from "@/api/plots.api";
-import { hexToRgba, plotIdToColor } from "@/theme/theme";
-import { GeoJSONSource, Layer } from "@maplibre/maplibre-react-native";
+import { hexToRgba, indexToDistinctColor, plotIdToColor } from "@/theme/theme";
+import { GeoJSONSource, Layer, type LngLat } from "@maplibre/maplibre-react-native";
 import * as turf from "@turf/turf";
 import React, { useMemo } from "react";
 import { useTheme } from "styled-components/native";
+
+export type PlotColorMode = "plot" | "crop" | "usage" | "cutting";
+
+// Determines the fill color for a single plot based on the active color mode.
+export function resolvePlotColor(plot: Plot, mode: PlotColorMode): string {
+  switch (mode) {
+    case "crop":
+      return plotIdToColor(plot.currentCropRotation?.cropId ?? "__no_crop__");
+    case "usage":
+      return plotIdToColor(String(plot.usage ?? "__no_usage__"));
+    case "cutting": {
+      if (!plot.cuttingDate) return plotIdToColor("__no_cutting__");
+      return indexToDistinctColor(new Date(plot.cuttingDate).getMonth());
+    }
+    default:
+      return plotIdToColor(plot.id);
+  }
+}
 
 type PlotsLayerProps = {
   plots: Plot[];
@@ -12,12 +30,14 @@ type PlotsLayerProps = {
   selectedColor?: string;
   onPlotPress?: (event: {
     stopPropagation(): void;
-    nativeEvent: { features: GeoJSON.Feature[] };
+    nativeEvent: { features: GeoJSON.Feature[]; lngLat: LngLat };
   }) => void;
   /** Show name labels for all plots when zoomed in (minZoom 14). One label per plot. */
   showZoomLabels?: boolean;
   /** Unique suffix for source/layer IDs to avoid conflicts when multiple PlotsLayers are mounted */
   idSuffix?: string;
+  /** Controls how plot fill colors are derived. Defaults to "plot" (per-plot stable color). */
+  plotColorMode?: PlotColorMode;
 };
 
 export function PlotsLayer({
@@ -27,6 +47,7 @@ export function PlotsLayer({
   onPlotPress,
   showZoomLabels = false,
   idSuffix = "",
+  plotColorMode = "plot",
 }: PlotsLayerProps) {
   const theme = useTheme();
   const resolvedSelectedColor = selectedColor ?? theme.colors.success;
@@ -45,7 +66,7 @@ export function PlotsLayer({
             name: plot.name,
             selected: selectedPlotIds.includes(plot.id) ? 1 : 0,
             color: hexToRgba(
-              plotIdToColor(plot.id),
+              resolvePlotColor(plot, plotColorMode),
               theme.map.defaultFillAlpha,
             ),
           },
@@ -53,7 +74,7 @@ export function PlotsLayer({
         })),
       ),
     };
-  }, [plots, selectedPlotIds, theme]);
+  }, [plots, selectedPlotIds, plotColorMode, theme]);
 
   // One label per plot at the centroid of the full MultiPolygon geometry.
   // Built from the original plots array (not the flattened sub-polygons).

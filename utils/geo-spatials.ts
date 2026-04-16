@@ -228,70 +228,96 @@ export function splitMultiPolygonByLine(
     turf.clone(multiPolygon),
   );
   const cleanLine: GeoJSON.LineString = turf.cleanCoords(turf.clone(line));
-
   const flattened = turf.flatten(cleanMulti);
+  const lineCoords = cleanLine.coordinates as number[][];
 
-  // Buffer the line by a tiny amount to use as a cutter, then classify resulting
-  // pieces by which side of the line's half-plane their centroid falls on.
-  const cutter = turf.buffer(cleanLine, 1e-9, { units: "meters" })!;
+  // Extend the line well beyond the polygon in both directions so the half-planes
+  // cover the full plot regardless of where the user drew the line.
+  // Use 20× the polygon's diagonal as the extension/offset distance.
+  const bbox = turf.bbox(cleanMulti);
+  const diagKm = turf.distance(
+    turf.point([bbox[0], bbox[1]]),
+    turf.point([bbox[2], bbox[3]]),
+  );
+  const extDist = Math.max(diagKm * 20, 10); // km, at least 10km
+  const bearing = turf.bearing(
+    turf.point(lineCoords[0]),
+    turf.point(lineCoords[lineCoords.length - 1]),
+  );
+  const extStart = turf.destination(
+    turf.point(lineCoords[0]),
+    -extDist,
+    bearing,
+    { units: "kilometers" },
+  ).geometry.coordinates;
+  const extEnd = turf.destination(
+    turf.point(lineCoords[lineCoords.length - 1]),
+    extDist,
+    bearing,
+    { units: "kilometers" },
+  ).geometry.coordinates;
+  const extCoords = [extStart, ...lineCoords, extEnd];
+  const extLineFeature = turf.lineString(extCoords);
 
-  const allPieces: number[][][][] = [];
+  // Build two half-plane polygons — one on each side of the extended line
+  const offsetA = turf.lineOffset(extLineFeature, extDist, {
+    units: "kilometers",
+  });
+  const offsetB = turf.lineOffset(extLineFeature, -extDist, {
+    units: "kilometers",
+  });
+  const coordsA = turf.getCoords(offsetA) as number[][];
+  const coordsB = turf.getCoords(offsetB) as number[][];
+  const halfPlaneA = turf.polygon([
+    [...extCoords, ...[...coordsA].reverse(), extCoords[0]],
+  ]);
+  const halfPlaneB = turf.polygon([
+    [...extCoords, ...[...coordsB].reverse(), extCoords[0]],
+  ]);
+
+  const sideA: GeoJSON.Polygon["coordinates"][] = [];
+  const sideB: GeoJSON.Polygon["coordinates"][] = [];
   let anySplit = false;
 
+  const pushGeom = (
+    target: GeoJSON.Polygon["coordinates"][],
+    geom: GeoJSON.Geometry,
+  ) => {
+    if (geom.type === "Polygon") target.push(geom.coordinates);
+    else if (geom.type === "MultiPolygon")
+      for (const c of geom.coordinates) target.push(c);
+  };
+
   for (const feature of flattened.features) {
-    const intersections = turf.lineIntersect(cleanLine, feature);
-    if (intersections.features.length < 2) {
-      allPieces.push(feature.geometry.coordinates);
-      continue;
-    }
+    const pieceA = turf.intersect(
+      turf.featureCollection([feature, halfPlaneA]),
+    );
+    const pieceB = turf.intersect(
+      turf.featureCollection([feature, halfPlaneB]),
+    );
+    const aHasArea = pieceA && turf.area(pieceA) > 0.1;
+    const bHasArea = pieceB && turf.area(pieceB) > 0.1;
 
-    const diff = turf.difference(turf.featureCollection([feature, cutter]));
-    if (!diff) {
-      allPieces.push(feature.geometry.coordinates);
-      continue;
-    }
-
-    if (diff.geometry.type === "MultiPolygon") {
+    if (aHasArea && bHasArea) {
       anySplit = true;
-      for (const coords of diff.geometry.coordinates) allPieces.push(coords);
-    } else if (diff.geometry.type === "Polygon") {
-      anySplit = true;
-      allPieces.push(diff.geometry.coordinates);
-    } else {
-      allPieces.push(feature.geometry.coordinates);
+      pushGeom(sideA, pieceA.geometry);
+      pushGeom(sideB, pieceB.geometry);
+    } else if (aHasArea) {
+      pushGeom(sideA, feature.geometry);
+    } else if (bHasArea) {
+      pushGeom(sideB, feature.geometry);
     }
   }
 
   if (!anySplit) return null;
 
-  // Build half-plane to classify each piece by side of the cut line
-  const lineFeature = turf.lineString(cleanLine.coordinates);
-  const offsetLine = turf.lineOffset(lineFeature, 50, { units: "kilometers" });
-  const offsetCoords = (turf.getCoords(offsetLine) as number[][]).reverse();
-  const halfPlaneRing = [
-    ...cleanLine.coordinates,
-    ...offsetCoords,
-    cleanLine.coordinates[0],
-  ];
-  const halfPlane = turf.polygon([halfPlaneRing]);
-
-  const sideA: number[][][][] = [];
-  const sideB: number[][][][] = [];
-
-  for (const coords of allPieces) {
-    const centroid = turf.centroid(turf.polygon(coords));
-    if (turf.booleanPointInPolygon(centroid, halfPlane)) {
-      sideA.push(coords);
-    } else {
-      sideB.push(coords);
-    }
-  }
-
-  const cleanSplitCoords = (coords: number[][][][]) =>
-    coords
+  const toMultiPolygon = (
+    coords: GeoJSON.Polygon["coordinates"][],
+  ): GeoJSON.MultiPolygon => ({
+    type: "MultiPolygon",
+    coordinates: coords
       .map((c) => {
-        const poly = turf.polygon(c);
-        const truncated = turf.truncate(poly, { precision: 8 });
+        const truncated = turf.truncate(turf.polygon(c), { precision: 8 });
         try {
           return turf.cleanCoords(truncated).geometry.coordinates;
         } catch {
@@ -304,17 +330,14 @@ export function splitMultiPolygonByLine(
         } catch {
           return false;
         }
-      });
+      }),
+  });
 
-  const result: GeoJSON.MultiPolygon[] = [];
-  if (sideA.length > 0) {
-    result.push({ type: "MultiPolygon", coordinates: cleanSplitCoords(sideA) });
-  }
-  if (sideB.length > 0) {
-    result.push({ type: "MultiPolygon", coordinates: cleanSplitCoords(sideB) });
-  }
-
-  return result.length >= 2 ? result : null;
+  const resultA = toMultiPolygon(sideA);
+  const resultB = toMultiPolygon(sideB);
+  return resultA.coordinates.length > 0 && resultB.coordinates.length > 0
+    ? [resultA, resultB]
+    : null;
 }
 
 /**

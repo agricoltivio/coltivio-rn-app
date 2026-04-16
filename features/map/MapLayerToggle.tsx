@@ -8,14 +8,16 @@ import styled, { useTheme } from "styled-components/native";
 type MapLayerToggleProps = {
   baseLayer: BaseLayer;
   onToggle: (layer: BaseLayer) => void;
+  /** When provided, renders top-left at this top value instead of bottom-right. */
+  topOffset?: number;
 };
 
-export function MapLayerToggle({ baseLayer, onToggle }: MapLayerToggleProps) {
+export function MapLayerToggle({ baseLayer, onToggle, topOffset }: MapLayerToggleProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
 
   return (
-    <AbsoluteView insets={insets}>
+    <AbsoluteView insets={insets} topOffset={topOffset}>
       <MaterialCommunityIconButton
         type="accent"
         color={theme.colors.black}
@@ -29,9 +31,13 @@ export function MapLayerToggle({ baseLayer, onToggle }: MapLayerToggleProps) {
   );
 }
 
-const AbsoluteView = styled.View<InsetsProps>`
+type AbsoluteViewProps = InsetsProps & { topOffset?: number };
+
+const AbsoluteView = styled.View<AbsoluteViewProps>`
   position: absolute;
-  right: ${({ theme }) => theme.spacing.xxl}px;
-  bottom: ${({ insets, theme }) => insets.bottom}px;
+  ${({ topOffset, theme, insets }) =>
+    topOffset !== undefined
+      ? `left: ${theme.spacing.m}px; top: ${topOffset}px;`
+      : `right: ${theme.spacing.xxl}px; bottom: ${insets.bottom}px;`}
   align-items: center;
 `;

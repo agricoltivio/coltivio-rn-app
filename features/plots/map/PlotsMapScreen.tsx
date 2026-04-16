@@ -5,6 +5,7 @@ import { DrawingOverlayRef, LAYER_IDS } from "@/components/map/DrawingOverlay";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { InsetsProps } from "@/constants/Screen";
 import { MapLayerToggle } from "@/features/map/MapLayerToggle";
+import { MapPlotColorToggle } from "@/features/map/MapPlotColorToggle";
 import { MapShowLocationToggle } from "@/features/map/MapShowLocationToggle";
 import { TopLeftBackButton } from "@/features/map/TopLeftBackButton";
 
@@ -36,6 +37,7 @@ import {
   createInitialMode,
   plotsMapReducer,
 } from "./plots-map-mode";
+import { type PlotColorMode } from "@/components/map/PlotsLayer";
 import { MapLayers } from "./MapLayers";
 import { MapOverlays } from "./MapOverlays";
 import { PlotDetailsDrawer } from "./PlotDetailsDrawer";
@@ -62,7 +64,8 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
   const [plotListVisible, setPlotListVisible] = useState(false);
   const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
   const [controlsExpanded, setControlsExpanded] = useState(false);
-  const [baseLayer, setBaseLayer] = useState<BaseLayer>("satellite");
+  const [baseLayer, setBaseLayer] = useState<BaseLayer>(localSettings.defaultMapLayer);
+  const [plotColorMode, setPlotColorMode] = useState<PlotColorMode>(localSettings.defaultPlotColorMode);
   const [dragPanEnabled, setDragPanEnabled] = useState(true);
 
   const mapRef = useRef<MapRef>(null);
@@ -286,8 +289,10 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       drawingRef,
       baseLayer,
       setBaseLayer,
+      plotColorMode,
+      setPlotColorMode,
     }),
-    [mode, dispatch, mapPlots, navigation, controlsExpanded, baseLayer],
+    [mode, dispatch, mapPlots, navigation, controlsExpanded, baseLayer, plotColorMode],
   );
 
   if (!farm || !plots) return null;
@@ -332,8 +337,13 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
           </View>
         </GestureDetector>
 
-        <MapLayerToggle baseLayer={baseLayer} onToggle={setBaseLayer} />
         <MapShowLocationToggle onShowLocationChange={setShowsUserLocation} />
+        <MapLayerToggle
+          baseLayer={baseLayer}
+          onToggle={setBaseLayer}
+          topOffset={insets.top + theme.spacing.s + 150}
+        />
+        <MapPlotColorToggle topOffset={insets.top + theme.spacing.s + 200} />
         <TopLeftBackButton />
 
         {/* Plot list button */}

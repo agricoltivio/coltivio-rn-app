@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { StaticMapPreview } from "@/components/map/StaticMapPreview";
-import { hexToRgba, plotIdToColor } from "@/theme/theme";
+import { resolvePlotColor } from "@/components/map/PlotsLayer";
+import { hexToRgba } from "@/theme/theme";
 import { type LngLat } from "@maplibre/maplibre-react-native";
 import { useNavigation } from "@react-navigation/native";
 import React, { useMemo } from "react";
@@ -8,12 +9,14 @@ import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../farms/farms.hooks";
 import { useFarmPlotsQuery } from "../plots/plots.hooks";
+import { useLocalSettings } from "../user/LocalSettingsContext";
 
 export const MapTile = ({ showMap = true }: { showMap?: boolean }) => {
   const navigation = useNavigation();
   const theme = useTheme();
   const { farm } = useFarmQuery();
   const { plots } = useFarmPlotsQuery();
+  const { localSettings } = useLocalSettings();
 
   const features = useMemo(
     (): GeoJSON.FeatureCollection => ({
@@ -23,7 +26,7 @@ export const MapTile = ({ showMap = true }: { showMap?: boolean }) => {
           type: "Feature" as const,
           properties: {
             color: hexToRgba(
-              plotIdToColor(plot.id),
+              resolvePlotColor(plot, localSettings.defaultPlotColorMode),
               theme.map.defaultFillAlpha,
             ),
           },
@@ -31,7 +34,7 @@ export const MapTile = ({ showMap = true }: { showMap?: boolean }) => {
         })),
       ),
     }),
-    [plots, theme],
+    [plots, localSettings.defaultPlotColorMode, theme],
   );
 
   if (!farm || !plots) {

@@ -345,6 +345,12 @@
         "crop": "Crop: {{crop}}"
       }
     },
+    "color_mode": {
+      "plot": "Plot",
+      "crop": "Crop",
+      "usage": "Usage",
+      "cutting": "Cutting date"
+    },
     "add": {
       "map": {
         "mode_select": {
@@ -1309,7 +1315,14 @@
     "app_settings": "Settings",
     "speed_dial_enabled": "Quick Access",
     "speed_dial_settings": "Configure Quick Access",
-    "home_tiles_settings": "Configure Home Screen"
+    "home_tiles_settings": "Configure Home Screen",
+    "map": {
+      "title": "Map",
+      "layer_heading": "Default Map Layer",
+      "layer_satellite": "Satellite",
+      "layer_map": "Street Map",
+      "color_mode_heading": "Default Plot Coloring"
+    }
   },
   "home_tiles": {
     "title": "Configure Home Screen",
