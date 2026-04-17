@@ -1205,6 +1205,7 @@
       "send_file": "Send file",
       "onboarding_heading": "Import animals from TVD",
       "onboarding_body": "This import requires an Excel file from the \"Tierbestand\" (livestock) section of TVD. Export it using the \"Excel generieren\" button.",
+      "onboarding_columns_hint": "Select the mother and father ear tag number columns as well as death date if you want to import that data.",
       "preview_button": "Preview",
       "preview_title": "Import Preview",
       "auto_skip_warning": "{{count}} animal(s) with an already assigned ear tag will be skipped. Assign a merge animal to import them.",

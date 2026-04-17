@@ -1205,6 +1205,7 @@
       "send_file": "Envoyer le fichier",
       "onboarding_heading": "Importer des animaux depuis la TVD",
       "onboarding_body": "L'importation nécessite un fichier Excel de la section « Tierbestand » de la TVD. Exportez-le via le bouton « Excel generieren ».",
+      "onboarding_columns_hint": "Sélectionne les colonnes boucle auriculaire mère et père ainsi que date de décès si tu souhaites importer ces données.",
       "preview_button": "Aperçu",
       "preview_title": "Aperçu de l'importation",
       "auto_skip_warning": "{{count}} animal(aux) avec une marque auriculaire déjà assignée seront ignorés. Assignez un animal à fusionner pour les importer.",

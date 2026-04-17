@@ -1219,6 +1219,7 @@
       "send_file": "Datei senden",
       "onboarding_heading": "Tiere aus TVD importieren",
       "onboarding_body": "Für den Import wird eine Excel-Datei aus dem «Tierbestand» der TVD benötigt. Exportiere diese über den Button «Excel generieren».",
+      "onboarding_columns_hint": "Wähle die Spalten Ohrmarkennummer Mutter und Vater sowie Todesdatum falls du diese Daten importieren möchtest.",
       "preview_button": "Vorschau",
       "preview_title": "Importvorschau",
       "auto_skip_warning": "{{count}} Tier(e) mit bereits vergebener Ohrmarke werden übersprungen. Weise ihnen ein Tier zum Zusammenführen zu, um sie zu importieren.",

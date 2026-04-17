@@ -32,6 +32,14 @@ export function TvdImportOnboardingScreen({
       >
         {t("animals.tvd_import.onboarding_body")}
       </H3>
+      <H3
+        style={{
+          color: theme.colors.primary,
+          marginTop: theme.spacing.m,
+        }}
+      >
+        {t("animals.tvd_import.onboarding_columns_hint")}
+      </H3>
       <Image
         source={require("@/assets/images/tvd-export-small.jpg")}
         style={{
