@@ -1,6 +1,10 @@
 import { Plot } from "@/api/plots.api";
 import { hexToRgba, indexToDistinctColor, plotIdToColor } from "@/theme/theme";
-import { GeoJSONSource, Layer, type LngLat } from "@maplibre/maplibre-react-native";
+import {
+  GeoJSONSource,
+  Layer,
+  type LngLat,
+} from "@maplibre/maplibre-react-native";
 import * as turf from "@turf/turf";
 import React, { useMemo } from "react";
 import { useTheme } from "styled-components/native";

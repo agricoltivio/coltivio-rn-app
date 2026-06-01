@@ -150,7 +150,10 @@ export function SelectPlotsMap({
         const distances = features.map((f) => {
           if (f.geometry.type !== "Polygon") return Infinity;
           const exteriorRing = turf.lineString(f.geometry.coordinates[0]);
-          return turf.nearestPointOnLine(exteriorRing, tapPoint).properties.dist ?? Infinity;
+          return (
+            turf.nearestPointOnLine(exteriorRing, tapPoint).properties.dist ??
+            Infinity
+          );
         });
         feature = features[distances.indexOf(Math.min(...distances))];
       }

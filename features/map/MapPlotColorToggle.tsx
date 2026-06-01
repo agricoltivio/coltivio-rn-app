@@ -50,7 +50,9 @@ export function MapPlotColorToggle({ topOffset }: MapPlotColorToggleProps) {
                 }}
               >
                 <OptionRow>
-                  <OptionLabel active={isActive}>{t(option.labelKey)}</OptionLabel>
+                  <OptionLabel active={isActive}>
+                    {t(option.labelKey)}
+                  </OptionLabel>
                 </OptionRow>
               </TouchableOpacity>
             );
@@ -83,9 +85,7 @@ const ButtonContainer = styled.View<ButtonContainerProps>`
 const OptionsPanel = styled.View<{ topLeft: boolean }>`
   position: absolute;
   ${({ topLeft }) =>
-    topLeft
-      ? `left: 52px; top: 0;`
-      : `bottom: 52px; right: 0;`}
+    topLeft ? `left: 52px; top: 0;` : `bottom: 52px; right: 0;`}
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.radii.m}px;
   padding: ${({ theme }) => theme.spacing.xs}px;
@@ -98,11 +98,13 @@ const OptionsPanel = styled.View<{ topLeft: boolean }>`
 `;
 
 const OptionRow = styled.View`
-  padding: ${({ theme }) => theme.spacing.xs}px ${({ theme }) => theme.spacing.s}px;
+  padding: ${({ theme }) => theme.spacing.xs}px
+    ${({ theme }) => theme.spacing.s}px;
 `;
 
 const OptionLabel = styled.Text<{ active: boolean }>`
   font-size: 14px;
-  color: ${({ theme, active }) => (active ? theme.colors.primary : theme.colors.black)};
+  color: ${({ theme, active }) =>
+    active ? theme.colors.primary : theme.colors.black};
   font-weight: ${({ active }) => (active ? "600" : "400")};
 `;

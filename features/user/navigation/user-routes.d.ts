@@ -26,8 +26,7 @@ export type SpeedDialSettingsScreenProps =
 export type HomeTilesSettingsScreenProps =
   StackScreenProps<"HomeTilesSettings">;
 export type MapSettingsScreenProps = StackScreenProps<"MapSettings">;
-export type LanguageSettingsScreenProps =
-  StackScreenProps<"LanguageSettings">;
+export type LanguageSettingsScreenProps = StackScreenProps<"LanguageSettings">;
 export type ChangeUserNameScreenProps = StackScreenProps<"ChangeUserName">;
 
 export type ChangeEmailScreenProps = StackScreenProps<"ChangeEmail">;
