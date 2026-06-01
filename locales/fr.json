@@ -1323,6 +1323,9 @@
       "layer_satellite": "Satellite",
       "layer_map": "Carte routière",
       "color_mode_heading": "Coloration des parcelles par défaut"
+    },
+    "language": {
+      "title": "Langue"
     }
   },
   "home_tiles": {

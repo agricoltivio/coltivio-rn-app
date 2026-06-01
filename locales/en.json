@@ -1323,6 +1323,9 @@
       "layer_satellite": "Satellite",
       "layer_map": "Street Map",
       "color_mode_heading": "Default Plot Coloring"
+    },
+    "language": {
+      "title": "Language"
     }
   },
   "home_tiles": {

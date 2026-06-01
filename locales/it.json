@@ -1323,6 +1323,9 @@
       "layer_satellite": "Satellite",
       "layer_map": "Mappa stradale",
       "color_mode_heading": "Colorazione campi predefinita"
+    },
+    "language": {
+      "title": "Lingua"
     }
   },
   "home_tiles": {

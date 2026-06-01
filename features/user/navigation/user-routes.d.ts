@@ -7,6 +7,7 @@ export type UserStackParamList = {
   SpeedDialSettings: undefined;
   HomeTilesSettings: undefined;
   MapSettings: undefined;
+  LanguageSettings: undefined;
   ChangeUserName: undefined;
   ChangeEmail: undefined;
   ChangeEmailPending: { newEmail: string };
@@ -25,6 +26,8 @@ export type SpeedDialSettingsScreenProps =
 export type HomeTilesSettingsScreenProps =
   StackScreenProps<"HomeTilesSettings">;
 export type MapSettingsScreenProps = StackScreenProps<"MapSettings">;
+export type LanguageSettingsScreenProps =
+  StackScreenProps<"LanguageSettings">;
 export type ChangeUserNameScreenProps = StackScreenProps<"ChangeUserName">;
 
 export type ChangeEmailScreenProps = StackScreenProps<"ChangeEmail">;
