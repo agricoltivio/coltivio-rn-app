@@ -2,7 +2,6 @@ import { ContentView } from "@/components/containers/ContentView";
 import { FilterChips } from "@/components/filters/FilterChips";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
-import { locale } from "@/locales/i18n";
 import { H2, H3, Headline } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
 import Fuse from "fuse.js";
@@ -17,7 +16,8 @@ export function PlotTillagesScreen({
   navigation,
   route,
 }: PlotTillagesScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const theme = useTheme();
   const { plotId, name } = route.params;
   const { tillages } = useTillagesForPlotQuery(plotId);
@@ -111,7 +111,7 @@ export function PlotTillagesScreen({
       .map(Number)
       .sort((a, b) => b - a)
       .map((year) => ({ title: year.toString(), data: grouped[year] }));
-  }, [tillages, selectedYears, selectedActions, searchText, t]);
+  }, [tillages, selectedYears, selectedActions, searchText, t, locale]);
 
   const renderItem = useCallback(
     ({

@@ -14,7 +14,6 @@ import { useTheme } from "styled-components/native";
 import { usePlotByIdQuery } from "./plots.hooks";
 import { UsageCode } from "./usage-codes";
 import { formatLocalizedDate } from "@/utils/date";
-import { locale } from "@/locales/i18n";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { usePermissions } from "@/features/user/users.hooks";
@@ -23,7 +22,8 @@ export function PlotDetailsScreen({
   route,
   navigation,
 }: PlotDetailsScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const { canWrite } = usePermissions();
   const { plotId } = route.params;
   const { plot, error } = usePlotByIdQuery(plotId);

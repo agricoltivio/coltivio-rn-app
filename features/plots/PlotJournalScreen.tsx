@@ -15,7 +15,6 @@ import {
   View,
 } from "react-native";
 import { useTheme } from "styled-components/native";
-import { locale } from "@/locales/i18n";
 import { usePlotJournalQuery } from "./plot-journal.hooks";
 import { PlotJournalScreenProps } from "./navigation/plots-routes";
 import { PlotJournalEntry } from "@/api/plot-journal.api";
@@ -25,7 +24,8 @@ export function PlotJournalScreen({
   route,
   navigation,
 }: PlotJournalScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const theme = useTheme();
   const { plotId } = route.params;
   const { entries, isLoading } = usePlotJournalQuery(plotId);

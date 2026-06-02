@@ -1,8 +1,8 @@
-import { locale } from "@/locales/i18n";
 import { stringToColor } from "@/theme/theme";
 import { Subtitle } from "@/theme/Typography";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { stackDataItem } from "react-native-gifted-charts";
 import { useTheme } from "styled-components/native";
@@ -13,6 +13,8 @@ import { HomeTile } from "./HomeTile";
 export function ForagesHarvestTile() {
   const theme = useTheme();
   const navigation = useNavigation();
+  const { i18n } = useTranslation();
+  const locale = i18n.language;
   const { harvestSummaries } = useHarvestSummariesOfFarm();
   if (!harvestSummaries) {
     return null;

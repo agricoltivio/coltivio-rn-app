@@ -1,7 +1,7 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
-import i18n, { AppLocale, getDeviceLocale } from "@/locales/i18n";
+import { AppLocale } from "@/locales/i18n";
 import { H2 } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
@@ -10,8 +10,8 @@ import { useTheme } from "styled-components/native";
 import { useLocalSettings } from "./LocalSettingsContext";
 import { LanguageSettingsScreenProps } from "./navigation/user-routes";
 
-// Native language names, shown untranslated (each in its own language).
-const LANGUAGE_OPTIONS: Array<{ value: AppLocale; label: string }> = [
+// Native language names, shown untranslated.
+const LANGUAGE_OPTIONS: { value: AppLocale; label: string }[] = [
   { value: "de", label: "Deutsch" },
   { value: "fr", label: "Français" },
   { value: "it", label: "Italiano" },
@@ -19,12 +19,9 @@ const LANGUAGE_OPTIONS: Array<{ value: AppLocale; label: string }> = [
 ];
 
 export function LanguageSettingsScreen(_props: LanguageSettingsScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const theme = useTheme();
-  const { localSettings, updateLocalSettings } = useLocalSettings();
-
-  // Before the first manual choice, the device language is highlighted.
-  const activeLocale = localSettings.preferredLocale ?? getDeviceLocale();
+  const { updateLocalSettings } = useLocalSettings();
 
   return (
     <ScrollView
@@ -43,7 +40,7 @@ export function LanguageSettingsScreen(_props: LanguageSettingsScreenProps) {
           }}
         >
           {LANGUAGE_OPTIONS.map((option, index) => {
-            const isActive = activeLocale === option.value;
+            const isActive = i18n.language === option.value;
             return (
               <ListItem
                 key={option.value}

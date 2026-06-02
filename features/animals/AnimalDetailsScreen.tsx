@@ -22,14 +22,14 @@ import { useMembership } from "@/features/farms/farms.hooks";
 import { usePermissions } from "@/features/user/users.hooks";
 import { AnimalDetailsScreenProps } from "./navigation/animals-routes";
 import { formatLocalizedDate } from "@/utils/date";
-import { locale } from "@/locales/i18n";
 import { Switch } from "@/components/inputs/Switch";
 
 export function AnimalDetailsScreen({
   route,
   navigation,
 }: AnimalDetailsScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const theme = useTheme();
   const { canWrite } = usePermissions();
   const animalId = route.params.animalId;

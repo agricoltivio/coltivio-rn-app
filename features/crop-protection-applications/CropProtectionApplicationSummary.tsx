@@ -6,7 +6,6 @@ import { Card } from "@/components/card/Card";
 import { ListItem } from "@/components/list/ListItem";
 import { StaticMapPreview } from "@/components/map/StaticMapPreview";
 import { ScrollView } from "@/components/views/ScrollView";
-import { locale } from "@/locales/i18n";
 import { Body, H2, H3 } from "@/theme/Typography";
 import { formatLocalizedDateTime } from "@/utils/date";
 import { type LngLat } from "@maplibre/maplibre-react-native";
@@ -71,7 +70,8 @@ export function CropProtectionApplicationSummary({
   hidePlotList,
   productUnit = "kg",
 }: CropProtectionApplicationSummaryProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const theme = useTheme();
   const size = plots.reduce((acc, plot) => acc + plot.size, 0);
 

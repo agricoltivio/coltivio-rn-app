@@ -26,7 +26,6 @@ import {
   useUpdateChangeRequestDraftMutation,
 } from "./wiki.hooks";
 import { WikiChangeRequestDraftScreenProps } from "./navigation/wiki-routes";
-import { locale } from "@/locales/i18n";
 
 type LocaleKey = "de" | "en" | "it" | "fr";
 const LOCALES: LocaleKey[] = ["de", "en", "it", "fr"];
@@ -46,7 +45,8 @@ export function WikiChangeRequestDraftScreen({
   route,
   navigation,
 }: WikiChangeRequestDraftScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const theme = useTheme();
   const { changeRequestId } = route.params;
   // Stable UUID for image uploads in case changeRequest.entryId is unavailable

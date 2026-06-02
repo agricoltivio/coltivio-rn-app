@@ -8,7 +8,6 @@ import { useMemo, useState } from "react";
 import { FlatList, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCropRotationsQuery } from "./crop-rotations.hooks";
-import { locale } from "@/locales/i18n";
 import { formatLocalizedDate, isInfiniteDate } from "@/utils/date";
 import { useTranslation } from "react-i18next";
 import { ViewMode, ViewModeToggle } from "./components/ViewModeToggle";
@@ -20,7 +19,8 @@ export function CropRotationsOfYearListScreen({
   route,
   navigation,
 }: CropRotationsOfYearListScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const { year } = route.params;
   const theme = useTheme();
   const fromDate = new Date(year, 0, 1);

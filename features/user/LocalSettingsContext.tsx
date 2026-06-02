@@ -23,7 +23,7 @@ import {
   DEFAULT_SPEED_DIAL_ITEMS,
   SpeedDialActionConfig,
 } from "../home/speed-dial-settings";
-import i18n, { AppLocale, getDeviceLocale } from "@/locales/i18n";
+import { AppLocale, applyAppLocale } from "@/locales/i18n";
 type LocalSettingsData = {
   editPlotOnboardingCompleted: boolean;
   fieldCalendarGroups: FieldCalendarGroupConfig[];
@@ -190,9 +190,7 @@ export function LocalSettingsProvider({ children }: PropsWithChildren) {
               DEFAULT_HOME_TILES,
             ),
           });
-          // Apply the persisted language choice; without one, follow the device
-          // (i18n already initialised with the device locale, so this is a no-op).
-          i18n.changeLanguage(stored.preferredLocale ?? getDeviceLocale());
+          applyAppLocale(stored.preferredLocale);
         }
       }
     });

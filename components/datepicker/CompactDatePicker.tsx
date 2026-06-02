@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Dimensions, Platform, Pressable, Text, View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { locale } from "@/locales/i18n";
 import { Ionicons } from "@expo/vector-icons";
 import { Button } from "@/components/buttons/Button";
 
@@ -47,7 +46,8 @@ export function CompactDatePicker({
   autoOpen,
 }: CompactDatePickerProps) {
   const theme = useTheme();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const containerRef = useRef<View>(null);
   const mountedRef = useRef(true);
   const pendingTimers = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());

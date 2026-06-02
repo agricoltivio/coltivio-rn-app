@@ -3,7 +3,6 @@ import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
-import { locale } from "@/locales/i18n";
 import { H2, H3, Headline, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
 import { round } from "@/utils/math";
@@ -25,7 +24,8 @@ import { usePermissions } from "@/features/user/users.hooks";
 type ViewMode = "dashboard" | "list";
 
 export function HarvestsScreen({ navigation }: HarvestsScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const theme = useTheme();
   const { canWrite } = usePermissions();
 
@@ -83,7 +83,7 @@ export function HarvestsScreen({ navigation }: HarvestsScreenProps) {
       .map(Number)
       .sort((a, b) => b - a)
       .map((year) => ({ title: year.toString(), data: grouped[year] }));
-  }, [harvests, searchText, t]);
+  }, [harvests, searchText, t, locale]);
 
   return (
     <ContentView headerVisible>

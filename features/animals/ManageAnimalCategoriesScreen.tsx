@@ -13,7 +13,6 @@ import { Modal, Pressable, Text, View } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useTheme } from "styled-components/native";
 import { formatLocalizedDate } from "@/utils/date";
-import { locale } from "@/locales/i18n";
 import {
   useAnimalByIdQuery,
   useSetCustomOutdoorJournalCategoriesMutation,
@@ -56,7 +55,8 @@ export function ManageAnimalCategoriesScreen({
   route,
   navigation,
 }: ManageAnimalCategoriesScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const theme = useTheme();
   const { canWrite } = usePermissions();
   const { animalId } = route.params;

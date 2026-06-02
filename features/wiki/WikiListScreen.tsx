@@ -4,7 +4,6 @@ import { ContentView } from "@/components/containers/ContentView";
 import { FilterChips } from "@/components/filters/FilterChips";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
-import { locale } from "@/locales/i18n";
 import { H2, H3 } from "@/theme/Typography";
 import { useLocalSettings } from "@/features/user/LocalSettingsContext";
 import React, { useEffect, useMemo, useState } from "react";
@@ -45,7 +44,8 @@ type Section = {
 type BannerActivity = "changes_requested" | "rejected" | "approved" | null;
 
 export function WikiListScreen({ navigation }: WikiListScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const theme = useTheme();
   const [searchText, setSearchText] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<Set<string>>(
@@ -138,7 +138,14 @@ export function WikiListScreen({ navigation }: WikiListScreenProps) {
     return Object.keys(grouped)
       .sort((a, b) => a.localeCompare(b))
       .map((title) => ({ title, data: grouped[title] }));
-  }, [publicEntries, myEntries, searchText, onlyPrivate, selectedCategories]);
+  }, [
+    publicEntries,
+    myEntries,
+    searchText,
+    onlyPrivate,
+    selectedCategories,
+    locale,
+  ]);
 
   const isLoading = publicLoading || myLoading;
 
@@ -157,7 +164,7 @@ export function WikiListScreen({ navigation }: WikiListScreenProps) {
       }
     }
     return names.sort((a, b) => a.localeCompare(b));
-  }, [publicEntries, myEntries]);
+  }, [publicEntries, myEntries, locale]);
 
   const bannerLabel =
     bannerActivity === "changes_requested"

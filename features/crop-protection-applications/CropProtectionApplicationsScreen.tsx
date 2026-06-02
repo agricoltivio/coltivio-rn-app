@@ -3,7 +3,6 @@ import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
-import { locale } from "@/locales/i18n";
 import { H2, H3, Headline, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
 import { round } from "@/utils/math";
@@ -30,7 +29,8 @@ type ViewMode = "dashboard" | "list";
 export function CropProtectionApplicationsScreen({
   navigation,
 }: CropProtectionApplicationsScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const theme = useTheme();
   const { canWrite } = usePermissions();
 
@@ -84,7 +84,7 @@ export function CropProtectionApplicationsScreen({
       .map(Number)
       .sort((a, b) => b - a)
       .map((year) => ({ title: year.toString(), data: grouped[year] }));
-  }, [cropProtectionApplications, searchText]);
+  }, [cropProtectionApplications, searchText, locale]);
 
   return (
     <ContentView headerVisible>
