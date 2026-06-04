@@ -3,6 +3,7 @@ import { renderAgriColtivioStack } from "@/features/agri-coltivio/navigation/Agr
 import { renderWikiStack } from "@/features/wiki/navigation/WikiStack";
 import { renderTasksStack } from "@/features/tasks/navigation/TasksStack";
 import { renderAnimalsStack } from "@/features/animals/navigation/AnimalsStack";
+import { renderBioComplianceStack } from "@/features/bio-compliance/navigation/BioComplianceStack";
 import { renderAuthStack } from "@/features/auth/navigation/AuthStack";
 import { renderCropProtectionApplicationStack } from "@/features/crop-protection-applications/navigation/CropProtectionApplicationStack";
 import { renderCropProtectionProductStack } from "@/features/crop-protection-products/navigation/CropProtectionProductStack";
@@ -102,6 +103,7 @@ export function RootStack() {
           {renderCropProtectionApplicationStack()}
           {renderCropProtectionProductStack()}
           {renderAnimalsStack(theme, navigation)}
+          {renderBioComplianceStack()}
           {renderAgriColtivioStack()}
           {renderWikiStack(theme, navigation)}
           {renderTasksStack(theme, navigation)}

@@ -88,6 +88,12 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
           getAccess("field_calendar") === "none"
         )
           return false;
+        if (
+          tile.id === "bioCompliance" &&
+          getAccess("animals") === "none" &&
+          getAccess("field_calendar") === "none"
+        )
+          return false;
         return true;
       })
       .map((tile) => ({
@@ -312,16 +318,25 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                   hideBottomDivider={index === visibleTiles.length - 1}
                   style={{ alignItems: "center" }}
                 >
-                  <Image
-                    source={tile.image}
-                    contentFit="contain"
-                    style={{
-                      width: 36,
-                      height: 36,
-                      opacity: 0.85,
-                      marginLeft: theme.spacing.m,
-                    }}
-                  />
+                  {"icon" in tile && tile.icon ? (
+                    <Ionicons
+                      name={tile.icon as keyof typeof Ionicons.glyphMap}
+                      size={32}
+                      color={theme.colors.primary}
+                      style={{ opacity: 0.85, marginLeft: theme.spacing.m }}
+                    />
+                  ) : (
+                    <Image
+                      source={tile.image}
+                      contentFit="contain"
+                      style={{
+                        width: 36,
+                        height: 36,
+                        opacity: 0.85,
+                        marginLeft: theme.spacing.m,
+                      }}
+                    />
+                  )}
                   <ListItem.Content>
                     <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
                       {t(tile.translationKey)}
@@ -349,16 +364,33 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                   onPress={() => navigateToTile(tile.id)}
                   style={{ width: "47%" }}
                 >
-                  <Image
-                    source={tile.image}
-                    contentFit="contain"
-                    style={{
-                      height: 110,
-                      opacity: 0.9,
-                      borderBottomLeftRadius: 10,
-                      borderBottomRightRadius: 10,
-                    }}
-                  />
+                  {"icon" in tile && tile.icon ? (
+                    <View
+                      style={{
+                        height: 110,
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Ionicons
+                        name={tile.icon as keyof typeof Ionicons.glyphMap}
+                        size={72}
+                        color={theme.colors.primary}
+                        style={{ opacity: 0.9 }}
+                      />
+                    </View>
+                  ) : (
+                    <Image
+                      source={tile.image}
+                      contentFit="contain"
+                      style={{
+                        height: 110,
+                        opacity: 0.9,
+                        borderBottomLeftRadius: 10,
+                        borderBottomRightRadius: 10,
+                      }}
+                    />
+                  )}
                 </HomeTile>
               ))}
             </View>

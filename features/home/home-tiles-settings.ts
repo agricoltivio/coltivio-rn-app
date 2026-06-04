@@ -6,7 +6,10 @@ export type HomeTileConfig = {
 export type HomeTileMeta = {
   translationKey: string;
   route: string;
-  image: number;
+  /** Image asset tile (require(...)). Either image or icon must be set. */
+  image?: number;
+  /** Ionicons glyph tile, rendered in primary color instead of an image. */
+  icon?: string;
   routeParams?: Record<string, never>;
   membershipRequired?: boolean;
 };
@@ -33,6 +36,11 @@ export const HOME_TILES = {
     route: "FieldCalendar",
     image: require("@/assets/images/harvest-icon.png"),
   },
+  bioCompliance: {
+    translationKey: "home.tiles.bio_compliance",
+    route: "BioCompliance",
+    icon: "leaf-outline",
+  },
   wiki: {
     translationKey: "home.tiles.wiki",
     route: "WikiList",
@@ -51,6 +59,7 @@ export const DEFAULT_HOME_TILES: HomeTileConfig[] = [
   { id: "plots", visible: true },
   { id: "animalHusbandry", visible: true },
   { id: "fieldCalendar", visible: true },
+  { id: "bioCompliance", visible: true },
   { id: "wiki", visible: true },
   { id: "tasks", visible: true },
 ];
