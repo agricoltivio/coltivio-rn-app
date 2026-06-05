@@ -1,7 +1,7 @@
 {
   "bio_compliance": {
     "withdrawalKinds": { "milk": "Lait", "meat": "Viande", "organs": "Organes" },
-    "title": "Bio Suisse Bourgeon",
+    "title": "Bourgeon Check",
     "banner": {
       "title": "Auto-contrôle indicatif",
       "description": "Ce contrôle est une indication basée sur vos données saisies et ne remplace pas un contrôle bio officiel."
@@ -313,7 +313,7 @@
   "home": {
     "welcome_text": "Salut {{displayName}},",
     "tiles": {
-      "bio_compliance": "Bio Suisse Bourgeon",
+      "bio_compliance": "Bourgeon Check",
       "farm": "Ma ferme",
       "plots": "Champs",
       "machines": "Machines",

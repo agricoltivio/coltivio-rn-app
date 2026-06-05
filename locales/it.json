@@ -1,7 +1,7 @@
 {
   "bio_compliance": {
     "withdrawalKinds": { "milk": "Latte", "meat": "Carne", "organs": "Organi" },
-    "title": "Bio Suisse Gemma",
+    "title": "Gemma Check",
     "banner": {
       "title": "Autocontrollo indicativo",
       "description": "Questo controllo è un'indicazione basata sui dati registrati e non sostituisce un controllo bio ufficiale."
@@ -313,7 +313,7 @@
   "home": {
     "welcome_text": "Ciao {{displayName}},",
     "tiles": {
-      "bio_compliance": "Bio Suisse Gemma",
+      "bio_compliance": "Gemma Check",
       "farm": "La Mia Azienda",
       "plots": "Campi",
       "machines": "Macchine",

@@ -1,7 +1,7 @@
 {
   "bio_compliance": {
     "withdrawalKinds": { "milk": "Milch", "meat": "Fleisch", "organs": "Organe" },
-    "title": "Bio Suisse Knospe",
+    "title": "Knospe Check",
     "banner": {
       "title": "Indikative Selbstprüfung",
       "description": "Diese Prüfung ist ein Hinweis aus euren erfassten Daten und ersetzt keine offizielle Bio-Kontrolle."
@@ -315,7 +315,7 @@
     "upcoming_tasks": "Anstehende Aufgaben",
     "no_upcoming_tasks": "Keine anstehenden Aufgaben in den nächsten 3 Tagen",
     "tiles": {
-      "bio_compliance": "Bio Suisse Knospe",
+      "bio_compliance": "Knospe Check",
       "farm": "Mein Hof",
       "plots": "Schläge",
       "machines": "Maschinen",

@@ -1,7 +1,7 @@
 {
   "bio_compliance": {
     "withdrawalKinds": { "milk": "Milk", "meat": "Meat", "organs": "Organs" },
-    "title": "Bio Suisse Knospe",
+    "title": "Knospe Check",
     "banner": {
       "title": "Indicative self-check",
       "description": "This check is an indication based on your recorded data and does not replace an official organic inspection."
@@ -313,7 +313,7 @@
   "home": {
     "welcome_text": "Hello {{displayName}},",
     "tiles": {
-      "bio_compliance": "Bio Suisse Knospe",
+      "bio_compliance": "Knospe Check",
       "farm": "My Farm",
       "plots": "Plots",
       "machines": "Equipment",
