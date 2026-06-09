@@ -1,6 +1,5 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
-import { locale } from "@/locales/i18n";
 import { H2, Subtitle } from "@/theme/Typography";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -36,7 +35,8 @@ function findTranslation<T extends { locale: string }>(
 }
 
 export function WikiDetailScreen({ route, navigation }: WikiDetailScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const theme = useTheme();
   const { entryId } = route.params;
   const { entry, isLoading } = useWikiDetailQuery(entryId);

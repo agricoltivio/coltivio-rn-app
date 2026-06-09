@@ -1,5 +1,5 @@
 import { Card } from "@/components/card/Card";
-import { locale } from "@/locales/i18n";
+import i18n from "@/locales/i18n";
 import { Subtitle } from "@/theme/Typography";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -57,7 +57,9 @@ function getYearColor(index: number) {
 }
 
 const MONTH_LABELS = Array.from({ length: 12 }, (_, i) =>
-  new Intl.DateTimeFormat(locale, { month: "short" }).format(new Date(2024, i)),
+  new Intl.DateTimeFormat(i18n.language, { month: "short" }).format(
+    new Date(2024, i),
+  ),
 );
 
 function Legend({ labels }: { labels: { text: string; color: string }[] }) {

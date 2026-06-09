@@ -29,6 +29,7 @@ keystore.properties
 .cxx/
 *.keystore
 !debug.keystore
+android
 playstore.json
 
 # iOS specifics to ignore:

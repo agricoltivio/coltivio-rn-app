@@ -1344,6 +1344,9 @@
       "layer_satellite": "Satellitenbild",
       "layer_map": "Strassenkarte",
       "color_mode_heading": "Standard-Schlagfärbung"
+    },
+    "language": {
+      "title": "Sprache"
     }
   },
   "home_tiles": {

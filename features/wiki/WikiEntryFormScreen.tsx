@@ -3,7 +3,6 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
-import { locale } from "@/locales/i18n";
 import * as Crypto from "expo-crypto";
 import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -40,7 +39,8 @@ export function WikiEntryFormScreen({
   route,
   navigation,
 }: WikiEntryFormScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const theme = useTheme();
   const { entryId } = route.params ?? {};
   const isEdit = !!entryId;

@@ -3,7 +3,6 @@ import { FilterChips } from "@/components/filters/FilterChips";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { useLocalSettings } from "@/features/user/LocalSettingsContext";
-import { locale } from "@/locales/i18n";
 import { H2 } from "@/theme/Typography";
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -31,7 +30,8 @@ function findTranslation<T extends { locale: string }>(
 export function WikiMySubmissionsScreen({
   navigation,
 }: WikiMySubmissionsScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const theme = useTheme();
   const { changeRequests, isLoading } = useMyChangeRequestsQuery();
   const { localSettings, updateLocalSettings } = useLocalSettings();

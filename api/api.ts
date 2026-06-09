@@ -21,7 +21,7 @@ import { cropProtectionApplicationsApi } from "./cropProtectionApplications.api"
 import { cropProtectionProductsApi } from "./cropProtectionProducts.api";
 import { cropProtectionApplicationPresetsApi } from "./cropProtectionApplicationPresets.api";
 import { earTagsApi } from "./earTags.api";
-import { locale } from "@/locales/i18n";
+import i18n from "@/locales/i18n";
 import { reportsApi } from "./reports.api";
 import { drugsApi } from "./drugs.api";
 import { treatmentsApi } from "./treatments.api";
@@ -52,7 +52,7 @@ const middleware: Middleware = {
   },
   async onRequest({ request, options }) {
     request.headers.set("Accept", "application/json");
-    request.headers.set("Accept-Language", locale);
+    request.headers.set("Accept-Language", i18n.language);
   },
 };
 

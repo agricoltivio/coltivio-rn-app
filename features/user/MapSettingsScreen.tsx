@@ -104,7 +104,8 @@ export function MapSettingsScreen(_props: MapSettingsScreenProps) {
           }}
         >
           {COLOR_MODE_OPTIONS.map((option, index) => {
-            const isActive = localSettings.defaultPlotColorMode === option.value;
+            const isActive =
+              localSettings.defaultPlotColorMode === option.value;
             return (
               <ListItem
                 key={option.value}

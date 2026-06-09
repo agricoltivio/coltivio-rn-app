@@ -2,7 +2,6 @@ import { BottomDrawerModal } from "@/components/bottom-drawer/BottomDrawerModal"
 import { Button } from "@/components/buttons/Button";
 import { Card } from "@/components/card/Card";
 import { ListItem } from "@/components/list/ListItem";
-import { locale } from "@/locales/i18n";
 import { Body, H3, Label } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
 import { Ionicons } from "@expo/vector-icons";
@@ -25,7 +24,8 @@ import { useMembership } from "@/features/farms/farms.hooks";
 import { usePlotsMapContext } from "./plots-map-mode";
 
 export function PlotDetailsDrawer() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const theme = useTheme();
   const { mode, dispatch, navigation } = usePlotsMapContext();
   // Use all plots (including size-0) so selecting a plot with no geometry still opens the drawer

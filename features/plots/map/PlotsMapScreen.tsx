@@ -64,8 +64,12 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
   const [plotListVisible, setPlotListVisible] = useState(false);
   const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
   const [controlsExpanded, setControlsExpanded] = useState(false);
-  const [baseLayer, setBaseLayer] = useState<BaseLayer>(localSettings.defaultMapLayer);
-  const [plotColorMode, setPlotColorMode] = useState<PlotColorMode>(localSettings.defaultPlotColorMode);
+  const [baseLayer, setBaseLayer] = useState<BaseLayer>(
+    localSettings.defaultMapLayer,
+  );
+  const [plotColorMode, setPlotColorMode] = useState<PlotColorMode>(
+    localSettings.defaultPlotColorMode,
+  );
   const [dragPanEnabled, setDragPanEnabled] = useState(true);
 
   const mapRef = useRef<MapRef>(null);
@@ -292,7 +296,15 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       plotColorMode,
       setPlotColorMode,
     }),
-    [mode, dispatch, mapPlots, navigation, controlsExpanded, baseLayer, plotColorMode],
+    [
+      mode,
+      dispatch,
+      mapPlots,
+      navigation,
+      controlsExpanded,
+      baseLayer,
+      plotColorMode,
+    ],
   );
 
   if (!farm || !plots) return null;

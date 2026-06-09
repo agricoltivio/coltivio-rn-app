@@ -23,6 +23,7 @@ import {
   DEFAULT_SPEED_DIAL_ITEMS,
   SpeedDialActionConfig,
 } from "../home/speed-dial-settings";
+import { AppLocale, applyAppLocale } from "@/locales/i18n";
 type LocalSettingsData = {
   editPlotOnboardingCompleted: boolean;
   fieldCalendarGroups: FieldCalendarGroupConfig[];
@@ -59,6 +60,9 @@ type LocalSettingsData = {
   agriColtivioPromoShown: boolean;
   defaultMapLayer: "satellite" | "map";
   defaultPlotColorMode: "plot" | "crop" | "usage" | "cutting";
+  // Manually chosen app language. null = never chosen, so the app follows the
+  // device language (only the initial state, never shown as a UI option).
+  preferredLocale: AppLocale | null;
 };
 
 type LocalSettingActions = {
@@ -103,6 +107,7 @@ export const defaultLocalSettings: LocalSettingsData = {
   agriColtivioPromoShown: false,
   defaultMapLayer: "satellite",
   defaultPlotColorMode: "crop",
+  preferredLocale: null,
 };
 
 export const LocalSettingsContext = createContext<LocalSettings>({
@@ -185,6 +190,7 @@ export function LocalSettingsProvider({ children }: PropsWithChildren) {
               DEFAULT_HOME_TILES,
             ),
           });
+          applyAppLocale(stored.preferredLocale);
         }
       }
     });

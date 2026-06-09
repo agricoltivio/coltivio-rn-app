@@ -2,7 +2,6 @@ import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
-import { locale } from "@/locales/i18n";
 import Constants from "expo-constants";
 import {
   Alert,
@@ -37,7 +36,8 @@ export function PlotJournalEntryScreen({
   route,
   navigation,
 }: PlotJournalEntryScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const theme = useTheme();
   const { canWrite } = usePermissions();
   const { entryId, plotId } = route.params;

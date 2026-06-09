@@ -12,7 +12,11 @@ type MapLayerToggleProps = {
   topOffset?: number;
 };
 
-export function MapLayerToggle({ baseLayer, onToggle, topOffset }: MapLayerToggleProps) {
+export function MapLayerToggle({
+  baseLayer,
+  onToggle,
+  topOffset,
+}: MapLayerToggleProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
 

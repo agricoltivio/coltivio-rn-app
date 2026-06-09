@@ -14,7 +14,6 @@ import {
   View,
 } from "react-native";
 import { useTheme } from "styled-components/native";
-import { locale } from "@/locales/i18n";
 import { useAnimalJournalQuery } from "./animal-journal.hooks";
 import { AnimalJournalScreenProps } from "./navigation/animals-routes";
 import { IonIconButton } from "@/components/buttons/IconButton";
@@ -25,7 +24,8 @@ export function AnimalJournalScreen({
   route,
   navigation,
 }: AnimalJournalScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const theme = useTheme();
   const { animalId } = route.params;
   const { entries, isLoading } = useAnimalJournalQuery(animalId);

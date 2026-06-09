@@ -1,8 +1,8 @@
 import { PlotCropRotation } from "@/api/crop-rotations.api";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Modal, Pressable, Text, View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { locale } from "@/locales/i18n";
 import { CropRotationCalendar } from "./CropRotationCalendar";
 
 type CropRotationDatePickerProps = {
@@ -23,6 +23,8 @@ export function CropRotationDatePicker({
   label,
 }: CropRotationDatePickerProps) {
   const theme = useTheme();
+  const { i18n } = useTranslation();
+  const locale = i18n.language;
   const [isOpen, setIsOpen] = useState(false);
 
   const formattedDate = new Intl.DateTimeFormat(locale, {

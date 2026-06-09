@@ -1,6 +1,6 @@
 import { Controller, FieldValues, UseControllerProps } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { DatePicker, DatePickerProps } from "../datepicker/DatePicker";
-import { locale } from "@/locales/i18n";
 
 type RHTextInputProps<T extends FieldValues> = UseControllerProps<T> &
   Omit<DatePickerProps, "onConfirm" | "onBlur" | "date" | "locale">;
@@ -15,6 +15,8 @@ export function RHDatePicker<T extends FieldValues>({
   error,
   mode,
 }: RHTextInputProps<T>) {
+  const { i18n } = useTranslation();
+  const locale = i18n.language;
   return (
     <Controller
       control={control}

@@ -30,7 +30,10 @@ export function ViewModeLayers() {
           // Use only the exterior ring (coordinates[0]) to avoid polygonToLine's
           // FeatureCollection return type when the polygon has holes.
           const exteriorRing = turf.lineString(f.geometry.coordinates[0]);
-          return turf.nearestPointOnLine(exteriorRing, tapPoint).properties.dist ?? Infinity;
+          return (
+            turf.nearestPointOnLine(exteriorRing, tapPoint).properties.dist ??
+            Infinity
+          );
         });
         const minIndex = distances.indexOf(Math.min(...distances));
         feature = features[minIndex];

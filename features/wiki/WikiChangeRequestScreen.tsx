@@ -1,7 +1,6 @@
 import { WikiTranslationInput } from "@/api/wiki.api";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
-import { locale } from "@/locales/i18n";
 import { H3 } from "@/theme/Typography";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -35,7 +34,8 @@ export function WikiChangeRequestScreen({
   route,
   navigation,
 }: WikiChangeRequestScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const theme = useTheme();
   const { entryId } = route.params;
 

@@ -1,6 +1,13 @@
 import Constants from "expo-constants";
 import React, { useEffect, useState } from "react";
-import { Image, PixelRatio, ScrollView, Text, View, useWindowDimensions } from "react-native";
+import {
+  Image,
+  PixelRatio,
+  ScrollView,
+  Text,
+  View,
+  useWindowDimensions,
+} from "react-native";
 import Markdown, { type MarkdownProps } from "react-native-markdown-display";
 import type { PropsWithChildren } from "react";
 
