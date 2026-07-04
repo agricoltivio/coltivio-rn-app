@@ -31,7 +31,7 @@ import { outdoorJournalApi } from "./outdoor-journal.api";
 import { fieldEventsApi } from "./field-events.api";
 import { wikiApi } from "./wiki.api";
 import { tasksApi } from "./tasks.api";
-import { membershipApi } from "./membership.api";
+import { authApi } from "./auth.api";
 import { animalJournalApi } from "./animal-journal.api";
 import { plotJournalApi } from "./plot-journal.api";
 
@@ -116,7 +116,7 @@ export function api(client: FetchClient) {
     fieldEvents: fieldEventsApi(client),
     wiki: wikiApi(client),
     tasks: tasksApi(client),
-    membership: membershipApi(client),
+    auth: authApi(client),
     animalJournal: animalJournalApi(client),
     plotJournal: plotJournalApi(client),
   };

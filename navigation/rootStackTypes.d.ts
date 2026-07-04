@@ -1,6 +1,5 @@
 import { CropProtectionUnit } from "@/api/cropProtectionProducts.api";
 import { FertilizerUnit } from "@/api/fertilizers.api";
-import { AgriColtivioStackParamList } from "@/features/agri-coltivio/navigation/agri-coltivio-routes";
 import { AnimalsStackParamList } from "@/features/animals/navigation/animals-routes";
 import { WikiStackParamList } from "@/features/wiki/navigation/wiki-routes";
 import { TasksStackParamList } from "@/features/tasks/navigation/tasks-routes";
@@ -40,7 +39,6 @@ export type RootStackParamList = AuthStackParamList &
   CropProtectionProductsStackParamList &
   CropProtectionApplicationStackParamList &
   FieldCalendarStackParamList &
-  AgriColtivioStackParamList &
   AnimalsStackParamList &
   WikiStackParamList &
   TasksStackParamList & {

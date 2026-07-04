@@ -204,9 +204,12 @@ function EditorContent({
               body: blob,
             });
 
-            const { publicUrl } = await api.wiki.registerImage(entryId, path);
+            const { signedUrl: registeredUrl } = await api.wiki.registerImage(
+              entryId,
+              path,
+            );
 
-            const resolvedUrl = resolveLocalUrl(publicUrl);
+            const resolvedUrl = resolveLocalUrl(registeredUrl);
             e.setImage(resolvedUrl);
             // Insert a paragraph after the image so the cursor has somewhere to go
             setTimeout(() => {

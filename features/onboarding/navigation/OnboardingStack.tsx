@@ -1,5 +1,4 @@
 import { FarmSummaryScreen } from "@/features/onboarding/FarmSummaryScreen";
-import { JoinFarmScreen } from "@/features/onboarding/JoinFarmScreen";
 import { OnboardingPreferenceScreen } from "@/features/onboarding/OnboardingPreferenceScreen";
 import { OnboardingWelcomeScreen } from "@/features/onboarding/OnboardingWelcomeScreen";
 import { SelectFarmLocationScreen } from "@/features/onboarding/SelectFarmLocationScreen";
@@ -18,11 +17,6 @@ export function renderOnboardingStack(theme: DefaultTheme) {
         <Stack.Screen
           name="OnboardingWelcome"
           component={OnboardingWelcomeScreen}
-          options={{ title: "", headerShown: false }}
-        />
-        <Stack.Screen
-          name="JoinFarm"
-          component={JoinFarmScreen}
           options={{ title: "", headerShown: false }}
         />
         <Stack.Screen

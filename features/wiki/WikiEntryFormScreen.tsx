@@ -13,9 +13,9 @@ import styled from "styled-components/native";
 import { MarkdownEditor } from "./components/MarkdownEditor";
 import {
   useCreateWikiEntryMutation,
-  useMyWikiEntriesQuery,
   useUpdateWikiEntryMutation,
   useWikiCategoriesQuery,
+  useWikiDetailQuery,
 } from "./wiki.hooks";
 import { WikiEntryFormScreenProps } from "./navigation/wiki-routes";
 import { TextInput } from "@/components/inputs/TextInput";
@@ -52,7 +52,7 @@ export function WikiEntryFormScreen({
   );
 
   const { categories } = useWikiCategoriesQuery();
-  const { myEntries } = useMyWikiEntriesQuery();
+  const { entry } = useWikiDetailQuery(entryId ?? "");
 
   // Pre-generate a UUID so images can be uploaded before the entry is saved (matches web behaviour).
   // On edit we use the existing entryId instead.
@@ -74,9 +74,7 @@ export function WikiEntryFormScreen({
 
   // Pre-fill form when editing an existing entry
   useEffect(() => {
-    if (!isEdit || !myEntries) return;
-    const entry = myEntries.find((e) => e.id === entryId);
-    if (!entry) return;
+    if (!isEdit || !entry) return;
 
     setValue("categoryId", entry.categoryId);
     for (const loc of LOCALES) {
@@ -86,7 +84,7 @@ export function WikiEntryFormScreen({
         setValue(`${loc}_body`, translation.body);
       }
     }
-  }, [isEdit, entryId, myEntries, setValue]);
+  }, [isEdit, entry, setValue]);
 
   const createMutation = useCreateWikiEntryMutation((newEntryId) => {
     navigation.replace("WikiDetail", { entryId: newEntryId });

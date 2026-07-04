@@ -1,19 +1,14 @@
 import { useApi } from "@/api/api";
 import {
-  AcceptInviteResult,
-  CreateInviteInput,
   Farm,
   FarmCreated,
-  FarmInvite,
   FarmUpdateInput,
-  MemberPermission,
   PermissionAccess,
   PermissionFeature,
 } from "@/api/farms.api";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { OnboardingData } from "../onboarding/OnboardingContext";
-import { User } from "@/api/user.api";
 
 export function useFarmQuery(enabled: boolean = true) {
   const api = useApi();
@@ -85,54 +80,6 @@ export function useCreateFarmMutation(
   return createFarmMutation;
 }
 
-export function useAcceptInviteMutation(
-  onSuccess?: (user: AcceptInviteResult) => void,
-  onError?: (error: Error) => void,
-) {
-  const api = useApi();
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (code: string) => api.farms.acceptInvite(code),
-    onSuccess: async (user) => {
-      // Refetch the full /me response (which includes farmPermissions) so hasFarm becomes true
-      // and RootStack auto-transitions to the app stack.
-      await queryClient.invalidateQueries({
-        queryKey: queryKeys.users.me.queryKey,
-      });
-      onSuccess && onSuccess(user);
-    },
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
-  });
-}
-
-export function useFarmInvitesQuery() {
-  const api = useApi();
-  return useQuery({
-    queryKey: queryKeys.farms.invites.queryKey,
-    queryFn: () => api.farms.getInvites(),
-  });
-}
-
-export function useCreateInviteMutation(
-  onSuccess?: (invite: FarmInvite) => void,
-) {
-  const api = useApi();
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (input: CreateInviteInput) => api.farms.createInvite(input),
-    onSuccess: (invite) => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.farms.invites.queryKey,
-      });
-      onSuccess && onSuccess(invite);
-    },
-    onError: (error) => console.error(error),
-  });
-}
-
 export function useMemberPermissionsQuery(userId: string) {
   const api = useApi();
   const { data, ...rest } = useQuery({
@@ -178,21 +125,6 @@ export function useDeleteMemberPermissionMutation(userId: string) {
   });
 }
 
-export function useRevokeInviteMutation(onSuccess?: () => void) {
-  const api = useApi();
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (inviteId: string) => api.farms.revokeInvite(inviteId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.farms.invites.queryKey,
-      });
-      onSuccess && onSuccess();
-    },
-    onError: (error) => console.error(error),
-  });
-}
-
 export function useRemoveMemberMutation(onSuccess?: () => void) {
   const api = useApi();
   const queryClient = useQueryClient();
@@ -225,58 +157,10 @@ export function useUpdateMemberRoleMutation(onSuccess?: () => void) {
   });
 }
 
-const MEMBERSHIP_GRACE_PERIOD_DAYS = 10;
-
+// Standalone builds have no membership/subscription concept — every farm is
+// always fully active.
 export function useMembership() {
-  const { farm } = useFarmQuery();
-  const { membershipStatus } = useMembershipStatusQuery();
-  const status = farm?.membership.status;
-
-  // Determine the most recent expiry date from paid period or trial
-  const relevantEndDate = (() => {
-    const lastPeriodEnd =
-      typeof membershipStatus?.lastPeriodEnd === "string" &&
-      membershipStatus.lastPeriodEnd.length > 0
-        ? new Date(membershipStatus.lastPeriodEnd)
-        : null;
-    const trialEnd =
-      typeof membershipStatus?.trialEnd === "string" &&
-      membershipStatus.trialEnd.length > 0
-        ? new Date(membershipStatus.trialEnd)
-        : null;
-    return lastPeriodEnd ?? trialEnd;
-  })();
-
-  const daysSinceExpiry =
-    relevantEndDate !== null
-      ? Math.floor(
-          (Date.now() - relevantEndDate.getTime()) / (1000 * 60 * 60 * 24),
-        )
-      : null;
-
-  // Grace period: farm status is "none" but membership expired less than GRACE days ago
-  const isInGracePeriod =
-    status === "none" &&
-    daysSinceExpiry !== null &&
-    daysSinceExpiry >= 0 &&
-    daysSinceExpiry < MEMBERSHIP_GRACE_PERIOD_DAYS;
-
-  const graceDaysRemaining =
-    isInGracePeriod && daysSinceExpiry !== null
-      ? MEMBERSHIP_GRACE_PERIOD_DAYS - daysSinceExpiry
-      : 0;
-
-  const isActive = status === "active" || status === "trial" || isInGracePeriod;
-  return { isActive, isInGracePeriod, graceDaysRemaining };
-}
-
-export function useMembershipStatusQuery() {
-  const api = useApi();
-  const { data, ...rest } = useQuery({
-    queryKey: queryKeys.farms.membershipStatus.queryKey,
-    queryFn: () => api.membership.getMembershipStatus(),
-  });
-  return { membershipStatus: data, ...rest };
+  return { isActive: true, isInGracePeriod: false, graceDaysRemaining: 0 };
 }
 
 export function useDeleteFarmMutation(

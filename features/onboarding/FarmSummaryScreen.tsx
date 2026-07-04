@@ -9,19 +9,12 @@ import { NavigationButton } from "./NavigationButton";
 import { useOnboarding } from "./OnboardingContext";
 import { Stepper } from "./Stepper";
 import { FarmSummaryPage } from "./pages/FarmSummaryPage";
-import { supabase } from "@/supabase/supabase";
-import { useSession } from "@/auth/SessionProvider";
-import { useUserQuery } from "../user/users.hooks";
 import { useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/cache/query-keys";
-
-const redirectTo = `${process.env.EXPO_PUBLIC_WEB_URL}/auth/confirm`;
 
 export function FarmSummaryScreen({ navigation }: FarmSummaryScreenProps) {
   const { t } = useTranslation();
   const { data } = useOnboarding();
-  const { authUser } = useSession();
-  const { user } = useUserQuery();
   const theme = useTheme();
   const queryClient = useQueryClient();
 
@@ -32,17 +25,6 @@ export function FarmSummaryScreen({ navigation }: FarmSummaryScreenProps) {
   const createFarmMutation = useCreateFarmMutation(
     () => {
       syncMissingLocalIdsMutation.mutate();
-      // Only send verification email if user hasn't verified yet
-      if (!user?.emailVerified) {
-        setTimeout(() => {
-          supabase.auth.signInWithOtp({
-            email: authUser!.email!,
-            options: {
-              emailRedirectTo: redirectTo,
-            },
-          });
-        }, 1000);
-      }
     },
     // If the farm was already created (e.g. success but navigation failed), refetch the
     // user so farmId is set and RootStack auto-transitions to the app.

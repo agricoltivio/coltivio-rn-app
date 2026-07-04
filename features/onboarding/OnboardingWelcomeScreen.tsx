@@ -29,11 +29,6 @@ export function OnboardingWelcomeScreen({
             title={t("onboarding.welcome.create_farm")}
             onPress={() => navigation.navigate("SelectFarmName")}
           />
-          <Button
-            type="accent"
-            title={t("onboarding.welcome.join_farm")}
-            onPress={() => navigation.navigate("JoinFarm")}
-          />
         </View>
       </View>
     </ContentView>

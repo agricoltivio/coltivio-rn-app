@@ -46,18 +46,8 @@ type LocalSettingsData = {
   homeTiles: HomeTileConfig[];
   homeTilesLayout: "grid" | "list";
   showUpcomingTasks: boolean;
-  wikiOnlyPrivate: boolean;
   wikiOnboardingCompleted: boolean;
-  // Maps CR id → last seen status, used to detect unseen activity on submissions
-  wikiSeenCrStatuses: Record<string, string>;
   tasksOnboardingCompleted: boolean;
-  // Stores the ISO date string of the expiry date the membership banner was dismissed for.
-  // When a new subscription period starts (new date), the banner reappears automatically.
-  dismissedMembershipBannerForDate: string | null;
-  // ISO date string of the very first time the app was opened (set once, never updated).
-  firstLaunchDate: string | null;
-  // Whether the AgriColtivio membership promo modal has been shown and dismissed.
-  agriColtivioPromoShown: boolean;
   defaultMapLayer: "satellite" | "map";
   defaultPlotColorMode: "plot" | "crop" | "usage" | "cutting";
   // Manually chosen app language. null = never chosen, so the app follows the
@@ -98,13 +88,8 @@ export const defaultLocalSettings: LocalSettingsData = {
   homeTiles: DEFAULT_HOME_TILES,
   homeTilesLayout: "list",
   showUpcomingTasks: true,
-  wikiOnlyPrivate: false,
   wikiOnboardingCompleted: false,
-  wikiSeenCrStatuses: {},
   tasksOnboardingCompleted: false,
-  dismissedMembershipBannerForDate: null,
-  firstLaunchDate: null,
-  agriColtivioPromoShown: false,
   defaultMapLayer: "satellite",
   defaultPlotColorMode: "crop",
   preferredLocale: null,

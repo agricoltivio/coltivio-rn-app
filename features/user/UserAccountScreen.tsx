@@ -18,8 +18,7 @@ export function UserAccountScreen({ navigation }: UserAccountScreenProps) {
   const theme = useTheme();
   const { user } = useUserQuery();
   const queryClient = useQueryClient();
-  const { clearSession, authUser } = useSession();
-  const usesSocialLogin = authUser?.app_metadata.provider !== "email";
+  const { clearSession } = useSession();
 
   return (
     <ContentView
@@ -62,51 +61,11 @@ export function UserAccountScreen({ navigation }: UserAccountScreenProps) {
               onPress={() => {
                 navigation.navigate("ChangeUserName");
               }}
-            >
-              <ListItem.Content>
-                <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
-                  {t("forms.labels.name")}
-                </ListItem.Title>
-              </ListItem.Content>
-              <ListItem.Chevron />
-            </ListItem>
-            <ListItem
-              style={{ backgroundColor: theme.colors.white }}
-              onPress={() => {
-                navigation.navigate("ChangeEmail");
-              }}
-              hideBottomDivider={usesSocialLogin}
-            >
-              <ListItem.Content>
-                <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
-                  {t("forms.labels.email")}
-                </ListItem.Title>
-              </ListItem.Content>
-              <ListItem.Chevron />
-            </ListItem>
-            {!usesSocialLogin ? (
-              <ListItem
-                onPress={() => {
-                  navigation.navigate("ChangePassword");
-                }}
-                style={{ backgroundColor: theme.colors.white }}
-              >
-                <ListItem.Content>
-                  <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
-                    {t("forms.labels.password")}
-                  </ListItem.Title>
-                </ListItem.Content>
-                <ListItem.Chevron />
-              </ListItem>
-            ) : null}
-            <ListItem
-              onPress={() => navigation.navigate("UserMembership")}
-              style={{ backgroundColor: theme.colors.white }}
               hideBottomDivider
             >
               <ListItem.Content>
                 <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
-                  {t("farm.membership")}
+                  {t("forms.labels.name")}
                 </ListItem.Title>
               </ListItem.Content>
               <ListItem.Chevron />

@@ -1,5 +1,4 @@
 import { useSession } from "@/auth/SessionProvider";
-import { renderAgriColtivioStack } from "@/features/agri-coltivio/navigation/AgriColtivioStack";
 import { renderWikiStack } from "@/features/wiki/navigation/WikiStack";
 import { renderTasksStack } from "@/features/tasks/navigation/TasksStack";
 import { renderAnimalsStack } from "@/features/animals/navigation/AnimalsStack";
@@ -102,7 +101,6 @@ export function RootStack() {
           {renderCropProtectionApplicationStack()}
           {renderCropProtectionProductStack()}
           {renderAnimalsStack(theme, navigation)}
-          {renderAgriColtivioStack()}
           {renderWikiStack(theme, navigation)}
           {renderTasksStack(theme, navigation)}
         </Stack.Group>

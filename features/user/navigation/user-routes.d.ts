@@ -9,12 +9,7 @@ export type UserStackParamList = {
   MapSettings: undefined;
   LanguageSettings: undefined;
   ChangeUserName: undefined;
-  ChangeEmail: undefined;
-  ChangeEmailPending: { newEmail: string };
-  EmailVerified: undefined;
-  ChangePassword: undefined;
   DevSettings: undefined;
-  UserMembership: undefined;
 };
 
 export type UserAccountScreenProps = StackScreenProps<"UserAccount">;
@@ -28,11 +23,4 @@ export type HomeTilesSettingsScreenProps =
 export type MapSettingsScreenProps = StackScreenProps<"MapSettings">;
 export type LanguageSettingsScreenProps = StackScreenProps<"LanguageSettings">;
 export type ChangeUserNameScreenProps = StackScreenProps<"ChangeUserName">;
-
-export type ChangeEmailScreenProps = StackScreenProps<"ChangeEmail">;
-export type ChangeEmailPendingScreenProps =
-  StackScreenProps<"ChangeEmailPending">;
-export type EmailVerifiedScreenProps = StackScreenProps<"EmailVerified">;
-export type ChangePasswordScreenProps = StackScreenProps<"ChangePassword">;
 export type DevSettingsScreenProps = StackScreenProps<"DevSettings">;
-export type UserMembershipScreenProps = StackScreenProps<"UserMembership">;
