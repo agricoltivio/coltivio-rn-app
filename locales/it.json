@@ -285,6 +285,8 @@
   },
   "home": {
     "welcome_text": "Ciao {{displayName}},",
+    "upcoming_tasks": "Attività in scadenza",
+    "no_upcoming_tasks": "Nessuna attività in scadenza nei prossimi 3 giorni",
     "tiles": {
       "farm": "La Mia Azienda",
       "plots": "Campi",

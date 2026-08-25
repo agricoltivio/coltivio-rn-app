@@ -285,6 +285,8 @@
   },
   "home": {
     "welcome_text": "Hello {{displayName}},",
+    "upcoming_tasks": "Upcoming Tasks",
+    "no_upcoming_tasks": "No upcoming tasks in the next 3 days",
     "tiles": {
       "farm": "My Farm",
       "plots": "Plots",
