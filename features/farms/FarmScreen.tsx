@@ -28,11 +28,10 @@ export function FarmScreen({ navigation }: FarmScreenProps) {
   const { farmStats } = useFarmStatsQuery();
   const { users } = useFarmUsersQuery();
 
-  const roleColors: Record<"owner" | "member", { bg: string; text: string }> =
-    {
-      owner: { bg: theme.colors.primary + "22", text: theme.colors.primary },
-      member: { bg: theme.colors.gray3, text: theme.colors.gray1 },
-    };
+  const roleColors: Record<"owner" | "member", { bg: string; text: string }> = {
+    owner: { bg: theme.colors.primary + "22", text: theme.colors.primary },
+    member: { bg: theme.colors.gray3, text: theme.colors.gray1 },
+  };
   const roleLabels: Record<"owner" | "member", string> = {
     owner: t("farm.role_owner"),
     member: t("farm.role_member"),
@@ -147,10 +146,12 @@ export function FarmScreen({ navigation }: FarmScreenProps) {
                   color: hslToHex(animalTypeColor(type)),
                   label: String(count),
                 }))}
-                legendItems={farmStats.animals.byType.map(({ type, count }) => ({
-                  color: hslToHex(animalTypeColor(type)),
-                  label: `${t(`animals.animal_types.${type}`)} (${count})`,
-                }))}
+                legendItems={farmStats.animals.byType.map(
+                  ({ type, count }) => ({
+                    color: hslToHex(animalTypeColor(type)),
+                    label: `${t(`animals.animal_types.${type}`)} (${count})`,
+                  }),
+                )}
                 emptyMessage={t("animals.charts.no_data")}
               />
 

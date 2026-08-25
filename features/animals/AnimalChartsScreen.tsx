@@ -1,10 +1,7 @@
 import { AnimalWithWaitingTimeFlag } from "@/api/animals.api";
 import { StatCard } from "@/components/card/StatCard";
 import { ChartLegend } from "@/components/charts/ChartLegend";
-import {
-  animalTypeColor,
-  hslToHex,
-} from "@/components/charts/chartColors";
+import { animalTypeColor, hslToHex } from "@/components/charts/chartColors";
 import { DonutChartCard } from "@/components/charts/DonutChartCard";
 import { ContentView } from "@/components/containers/ContentView";
 import { H2, Subtitle } from "@/theme/Typography";
