@@ -298,6 +298,7 @@
   },
   "farm": {
     "farm": "Ma ferme",
+    "edit_farm": "Modifier la ferme",
     "farm_name": "Nom de la ferme",
     "location": "Localisation",
     "users": "Utilisateurs",
@@ -330,7 +331,11 @@
     "permission_feature_animals": "Animaux",
     "permission_feature_tasks": "Tâches",
     "permission_feature_field_calendar": "Calendrier des champs",
-    "permission_feature_commerce": "Commerce"
+    "permission_feature_commerce": "Commerce",
+    "charts": {
+      "crops_by_area": "Cultures par surface",
+      "no_crops": "Aucune culture active"
+    }
   },
   "plots": {
     "plots": "Champs",

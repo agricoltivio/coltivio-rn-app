@@ -2,8 +2,7 @@ import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type FarmStackParamList = {
   Farm: undefined;
-  EditFarmName: undefined;
-  EditFarmLocation: undefined;
+  EditFarm: undefined;
   SearchFarmLocation: undefined;
   DeleteFarm: undefined;
   FarmUsers: undefined;
@@ -11,9 +10,7 @@ export type FarmStackParamList = {
 };
 
 export type FarmScreenProps = StackScreenProps<"Farm">;
-export type EditFarmNameScreenProps = StackScreenProps<"EditFarmName">;
-
-export type EditFarmLocationScreenProps = StackScreenProps<"EditFarmLocation">;
+export type EditFarmScreenProps = StackScreenProps<"EditFarm">;
 
 export type SearchFarmLocationModalProps =
   StackScreenProps<"SearchFarmLocation">;

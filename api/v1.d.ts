@@ -164,6 +164,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/farm/stats": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetV1FarmStats"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head: operations["HeadV1FarmStats"];
+        patch?: never;
+        trace?: never;
+    };
     "/v1/farm/invites": {
         parameters: {
             query?: never;
@@ -3316,6 +3332,30 @@ export interface components {
                     type: "harvest" | "fertilizerApplication" | "cropProtectionApplication" | "tillage";
                     action: string;
                 }[];
+            };
+        };
+        GetV1FarmStatsPositiveResponse: {
+            data: {
+                plots: {
+                    total: number;
+                    totalAreaM2: number;
+                };
+                animals: {
+                    totalLiving: number;
+                    byType: {
+                        /** @enum {string} */
+                        type: "goat" | "sheep" | "cow" | "horse" | "donkey" | "pig" | "deer";
+                        count: number;
+                    }[];
+                };
+                cropRotations: {
+                    active: {
+                        cropName: string;
+                        category: string;
+                        plotCount: number;
+                        totalAreaM2: number;
+                    }[];
+                };
             };
         };
         GetV1FarmInvitesPositiveResponse: {
@@ -12579,6 +12619,60 @@ export interface operations {
                 content?: never;
             };
             /** @description HEAD /v1/farm/fieldEvents Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetV1FarmStats: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description GET /v1/farm/stats Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1FarmStatsPositiveResponse"];
+                };
+            };
+            /** @description GET /v1/farm/stats Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    HeadV1FarmStats: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description HEAD /v1/farm/stats Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description HEAD /v1/farm/stats Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;

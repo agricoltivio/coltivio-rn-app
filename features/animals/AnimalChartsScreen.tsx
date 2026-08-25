@@ -1,48 +1,20 @@
 import { AnimalWithWaitingTimeFlag } from "@/api/animals.api";
+import { StatCard } from "@/components/card/StatCard";
+import { ChartLegend } from "@/components/charts/ChartLegend";
+import {
+  animalTypeColor,
+  hslToHex,
+} from "@/components/charts/chartColors";
+import { DonutChartCard } from "@/components/charts/DonutChartCard";
 import { ContentView } from "@/components/containers/ContentView";
 import { H2, Subtitle } from "@/theme/Typography";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { LayoutChangeEvent, ScrollView, Text, View } from "react-native";
-import { PieChart } from "react-native-gifted-charts";
+import { LayoutChangeEvent, ScrollView, View } from "react-native";
 import { Circle, G, Line, Svg, Text as SvgText } from "react-native-svg";
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
 import { AnimalChartsScreenProps } from "./navigation/animals-routes";
-
-// HSL-based color from string — same as AnimalsScreen
-function animalTypeColor(type: string): string {
-  let hash = 0;
-  for (let i = 0; i < type.length; i++)
-    hash = type.charCodeAt(i) + ((hash << 5) - hash);
-  const hue = Math.abs(hash) % 360;
-  return `hsl(${hue}, 60%, 40%)`;
-}
-
-// Convert an HSL string to a hex-compatible form for SVG (react-native-svg doesn't support hsl())
-// We derive r,g,b from the hsl values directly.
-function hslToHex(hslStr: string): string {
-  const match = hslStr.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/);
-  if (!match) return "#888888";
-  const h = Number(match[1]) / 360;
-  const s = Number(match[2]) / 100;
-  const l = Number(match[3]) / 100;
-  const hue2rgb = (p: number, q: number, t: number) => {
-    let tt = t;
-    if (tt < 0) tt += 1;
-    if (tt > 1) tt -= 1;
-    if (tt < 1 / 6) return p + (q - p) * 6 * tt;
-    if (tt < 1 / 2) return q;
-    if (tt < 2 / 3) return p + (q - p) * (2 / 3 - tt) * 6;
-    return p;
-  };
-  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-  const p = 2 * l - q;
-  const r = Math.round(hue2rgb(p, q, h + 1 / 3) * 255);
-  const g = Math.round(hue2rgb(p, q, h) * 255);
-  const b = Math.round(hue2rgb(p, q, h - 1 / 3) * 255);
-  return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
-}
 
 // Deterministic jitter offset from a string id so dots don't all stack on one horizontal line
 function jitterFromId(id: string, range: number): number {
@@ -50,67 +22,6 @@ function jitterFromId(id: string, range: number): number {
   for (let i = 0; i < id.length; i++)
     hash = id.charCodeAt(i) + ((hash << 5) - hash);
   return ((Math.abs(hash) % 1000) / 1000) * range;
-}
-
-function StatCard({ label, value }: { label: string; value: number }) {
-  const theme = useTheme();
-  return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: theme.colors.white,
-        borderRadius: theme.radii.l,
-        padding: theme.spacing.m,
-        alignItems: "center",
-        gap: theme.spacing.xxs,
-      }}
-    >
-      <Text
-        style={{ fontSize: 28, fontWeight: "700", color: theme.colors.primary }}
-      >
-        {value}
-      </Text>
-      <Subtitle
-        style={{ textAlign: "center", fontSize: 12, color: theme.colors.gray2 }}
-      >
-        {label}
-      </Subtitle>
-    </View>
-  );
-}
-
-function TypeLegend({ types }: { types: string[] }) {
-  const { t } = useTranslation();
-  const theme = useTheme();
-  return (
-    <View
-      style={{
-        flexDirection: "row",
-        flexWrap: "wrap",
-        gap: theme.spacing.xs,
-        marginTop: theme.spacing.s,
-      }}
-    >
-      {types.map((type) => (
-        <View
-          key={type}
-          style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
-        >
-          <View
-            style={{
-              width: 10,
-              height: 10,
-              borderRadius: 5,
-              backgroundColor: hslToHex(animalTypeColor(type)),
-            }}
-          />
-          <Subtitle style={{ fontSize: 12, color: theme.colors.gray2 }}>
-            {t(`animals.animal_types.${type}`)}
-          </Subtitle>
-        </View>
-      ))}
-    </View>
-  );
 }
 
 type ScatterPoint = {
@@ -251,7 +162,7 @@ export function AnimalChartsScreen(_props: AnimalChartsScreenProps) {
     const pie = types.map((type) => ({
       value: counts[type],
       color: hslToHex(animalTypeColor(type)),
-      text: String(counts[type]),
+      label: String(counts[type]),
     }));
     return { pieData: pie, animalTypes: types };
   }, [animals]);
@@ -310,30 +221,15 @@ export function AnimalChartsScreen(_props: AnimalChartsScreenProps) {
         ) : (
           <>
             {/* Pie chart: animals per type */}
-            <View
-              style={{
-                backgroundColor: theme.colors.white,
-                borderRadius: theme.radii.l,
-                padding: theme.spacing.m,
-              }}
-            >
-              <Subtitle
-                style={{ fontWeight: "600", marginBottom: theme.spacing.s }}
-              >
-                {t("animals.charts.animals_by_type")}
-              </Subtitle>
-              <View style={{ alignItems: "center" }}>
-                <PieChart
-                  data={pieData}
-                  radius={80}
-                  innerRadius={40}
-                  showText
-                  textColor="#fff"
-                  textSize={13}
-                />
-              </View>
-              <TypeLegend types={animalTypes} />
-            </View>
+            <DonutChartCard
+              title={t("animals.charts.animals_by_type")}
+              data={pieData}
+              legendItems={animalTypes.map((type, index) => ({
+                color: hslToHex(animalTypeColor(type)),
+                label: `${t(`animals.animal_types.${type}`)} (${pieData[index].value})`,
+              }))}
+              emptyMessage={t("animals.charts.no_data")}
+            />
 
             {/* Scatter: age distribution */}
             {scatterPoints.length > 0 && (
@@ -359,12 +255,17 @@ export function AnimalChartsScreen(_props: AnimalChartsScreenProps) {
                   {t("animals.charts.age_months")}
                 </Subtitle>
                 <AgeScatterPlot points={scatterPoints} maxAge={maxAgeYears} />
-                <TypeLegend
-                  types={animalTypes.filter((type) =>
-                    scatterPoints.some(
-                      (p) => p.color === hslToHex(animalTypeColor(type)),
-                    ),
-                  )}
+                <ChartLegend
+                  items={animalTypes
+                    .filter((type) =>
+                      scatterPoints.some(
+                        (p) => p.color === hslToHex(animalTypeColor(type)),
+                      ),
+                    )
+                    .map((type) => ({
+                      color: hslToHex(animalTypeColor(type)),
+                      label: t(`animals.animal_types.${type}`),
+                    }))}
                 />
               </View>
             )}
