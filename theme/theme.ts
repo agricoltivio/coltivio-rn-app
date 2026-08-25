@@ -42,6 +42,11 @@ export interface ColtivioTheme {
     xl: number;
     xxl: number;
   };
+  charts: {
+    years: string[];
+    grid: string;
+    axisLabel: string;
+  };
 }
 
 const colorPalette = {
@@ -105,6 +110,22 @@ export const coltivioTheme: ColtivioTheme = {
     l: 12,
     xl: 20,
     xxl: 1000,
+  },
+  charts: {
+    years: [
+      "#4A90D9",
+      "#E67E22",
+      "#2ECC71",
+      "#9B59B6",
+      "#E74C3C",
+      "#1ABC9C",
+      "#F39C12",
+      "#3498DB",
+      "#8E44AD",
+      "#27AE60",
+    ],
+    grid: "#dddddd", // gray4
+    axisLabel: "#777777", // gray2
   },
 };
 

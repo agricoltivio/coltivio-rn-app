@@ -11606,10 +11606,10 @@ vary@~1.1.2:
   resolved "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
 
-victory-native@^41.12.1:
-  version "41.20.2"
-  resolved "https://registry.npmjs.org/victory-native/-/victory-native-41.20.2.tgz"
-  integrity sha512-gc6DPnfoAHYnaWndXfrITlBvKdLKtoq3J4muBn/Sawu528+MfByAI8LlJBboDGHE1rLBWsgiS58h67D3Ulmtqg==
+victory-native@^41.26.0:
+  version "41.26.0"
+  resolved "https://registry.yarnpkg.com/victory-native/-/victory-native-41.26.0.tgz#4940a88bd66b0869513349249e4f70be8cfd8166"
+  integrity sha512-NCRPQKdK99cIREXvtefEnGlOf29gd3RBMb5qVQ49+weY+mG6UHbBu4Wru7TObDyZo0NgywPWZP4dno9K8bz+Cg==
   dependencies:
     d3-scale "^4.0.2"
     d3-shape "^3.2.0"
