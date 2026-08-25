@@ -1,418 +1,43 @@
+import { CropProtectionApplicationSummary } from "@/api/cropProtectionApplications.api";
 import { Card } from "@/components/card/Card";
-import i18n from "@/locales/i18n";
-import { Subtitle } from "@/theme/Typography";
+import { CategoryFilter } from "@/components/charts/CategoryFilter";
+import {
+  ChartMode,
+  ChartViewSwitcher,
+} from "@/components/charts/ChartViewSwitcher";
+import { MonthCartesianChart } from "@/components/charts/MonthCartesianChart";
+import { UnitBreakdownEntry } from "@/components/charts/unitBreakdown";
+import { scaleUnit } from "@/components/charts/unitScaling";
+import { YearMultiSelect } from "@/components/charts/YearMultiSelect";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-import {
-  BarChart,
-  LineChart,
-  barDataItem,
-  lineDataItem,
-} from "react-native-gifted-charts";
+import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { CropProtectionApplicationSummary } from "@/api/cropProtectionApplications.api";
+import {
+  accumulateAppliedCropProtectionsUpToMonth,
+  aggregateAppliedCropProtectionsByYearMonth,
+  aggregateCropProtectionApplicationsByProduct,
+} from "../cropProtectionApplication.utils";
 
-type DisplayUnit = { label: string; divisor: number };
+const MAX_SELECTED_YEARS = 5;
 
-// Scale a raw value + unit string to a human-friendly unit.
-// kg → kg / dt / t; l → ml / l / hl; anything else: no scaling.
-function scaleUnit(unit: string, maxValue: number): DisplayUnit {
-  if (unit === "kg") {
-    if (maxValue >= 1000) return { label: "t", divisor: 1000 };
-    if (maxValue >= 100) return { label: "dt", divisor: 100 };
-    return { label: "kg", divisor: 1 };
-  }
-  if (unit === "l") {
-    if (maxValue >= 100) return { label: "hl", divisor: 100 };
-    if (maxValue >= 1) return { label: "l", divisor: 1 };
-    return { label: "ml", divisor: 0.001 };
-  }
-  return { label: unit, divisor: 1 };
-}
-
-function formatYValue(raw: string, unitLabel: string): string {
-  const n = Number(raw);
-  const formatted =
-    n === Math.floor(n)
-      ? String(Math.round(n))
-      : (Math.round(n * 10) / 10).toString();
-  return `${formatted} ${unitLabel}`;
-}
-
-const YEAR_COLORS = [
-  "#4A90D9",
-  "#E67E22",
-  "#2ECC71",
-  "#9B59B6",
-  "#E74C3C",
-  "#1ABC9C",
-  "#F39C12",
-  "#3498DB",
-  "#8E44AD",
-  "#27AE60",
-];
-function getYearColor(index: number) {
-  return YEAR_COLORS[index % YEAR_COLORS.length];
-}
-
-const MONTH_LABELS = Array.from({ length: 12 }, (_, i) =>
-  new Intl.DateTimeFormat(i18n.language, { month: "short" }).format(
-    new Date(2024, i),
-  ),
-);
-
-function Legend({ labels }: { labels: { text: string; color: string }[] }) {
-  const theme = useTheme();
-  return (
-    <View
-      style={{
-        flexDirection: "row",
-        flexWrap: "wrap",
-        justifyContent: "center",
-        marginTop: theme.spacing.s,
-      }}
-    >
-      {labels.map((label) => (
-        <View
-          key={label.text}
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginRight: 12,
-          }}
-        >
-          <View
-            style={{
-              height: 12,
-              width: 12,
-              borderRadius: 6,
-              backgroundColor: label.color,
-              marginRight: 6,
-            }}
-          />
-          <Text style={{ fontSize: 14, color: theme.colors.gray2 }}>
-            {label.text}
-          </Text>
-        </View>
-      ))}
-    </View>
-  );
-}
-
-function YearMultiSelect({
-  years,
-  selectedYears,
-  onToggle,
-}: {
-  years: number[];
-  selectedYears: number[];
-  onToggle: (year: number) => void;
-}) {
-  const theme = useTheme();
-  return (
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{ gap: 6 }}
-    >
-      {years.map((year, index) => {
-        const isSelected = selectedYears.includes(year);
-        const color = getYearColor(index);
-        return (
-          <TouchableOpacity
-            key={year}
-            onPress={() => onToggle(year)}
-            style={{
-              paddingHorizontal: 10,
-              paddingVertical: 4,
-              borderRadius: 14,
-              backgroundColor: isSelected ? color : theme.colors.white,
-              borderWidth: 1.5,
-              borderColor: color,
-            }}
-          >
-            <Subtitle
-              style={{ color: isSelected ? "#fff" : color, fontSize: 13 }}
-            >
-              {year}
-            </Subtitle>
-          </TouchableOpacity>
-        );
-      })}
-    </ScrollView>
-  );
-}
-
-function ProductFilter({
-  products,
-  selected,
-  onToggle,
-}: {
-  products: string[];
-  selected: string[];
-  onToggle: (name: string) => void;
-}) {
-  const theme = useTheme();
-  return (
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{ gap: 6 }}
-    >
-      {products.map((name) => {
-        const isSelected = selected.includes(name);
-        return (
-          <TouchableOpacity
-            key={name}
-            onPress={() => onToggle(name)}
-            style={{
-              paddingHorizontal: 12,
-              paddingVertical: 5,
-              borderRadius: 16,
-              backgroundColor: isSelected
-                ? theme.colors.primary
-                : theme.colors.white,
-              borderWidth: 1,
-              borderColor: isSelected
-                ? theme.colors.primary
-                : theme.colors.gray3,
-            }}
-          >
-            <Subtitle
-              style={{
-                color: isSelected ? "#fff" : theme.colors.gray1,
-                fontSize: 13,
-              }}
-            >
-              {name}
-            </Subtitle>
-          </TouchableOpacity>
-        );
-      })}
-    </ScrollView>
-  );
-}
-
-function MonthlyLineChart({
-  monthlyData,
-  selectedYears,
-  availableYears,
-  unit,
-}: {
-  monthlyData: Record<number, number[]>;
-  selectedYears: number[];
-  availableYears: number[];
-  unit: DisplayUnit;
-}) {
-  const theme = useTheme();
-  const [selectedPoint, setSelectedPoint] = useState<{
-    month: number;
-    year: number;
-    value: number;
-  } | null>(null);
-
-  const lineSets = selectedYears.map((year) => {
-    const yearIdx = availableYears.indexOf(year);
-    let cumulative = 0;
-    const data: lineDataItem[] = Array.from({ length: 12 }, (_, month) => {
-      cumulative += monthlyData[year]?.[month] ?? 0;
-      const value = cumulative / unit.divisor;
-      return {
-        value,
-        label: MONTH_LABELS[month],
-        onPress: () =>
-          setSelectedPoint({
-            month,
-            year,
-            value: Math.round(value * 100) / 100,
-          }),
-      };
-    });
-    return { data, color: getYearColor(yearIdx >= 0 ? yearIdx : 0) };
-  });
-  if (lineSets.length === 0) return null;
-  let dataMax = 0;
-  for (const set of lineSets)
-    for (const point of set.data)
-      if ((point.value ?? 0) > dataMax) dataMax = point.value ?? 0;
-  const maxValue = dataMax === 0 ? 10 : Math.ceil(dataMax * 1.15);
-  return (
-    <View style={{ gap: 4 }}>
-      {selectedPoint && (
-        <Text
-          style={{
-            fontSize: 12,
-            color: theme.colors.gray1,
-            textAlign: "center",
-          }}
-        >
-          {MONTH_LABELS[selectedPoint.month]} {selectedPoint.year} ·{" "}
-          {formatYValue(String(selectedPoint.value), unit.label)}
-        </Text>
-      )}
-      <LineChart
-        data={lineSets[0].data}
-        {...(lineSets[1] ? { data2: lineSets[1].data } : {})}
-        {...(lineSets[2] ? { data3: lineSets[2].data } : {})}
-        {...(lineSets[3] ? { data4: lineSets[3].data } : {})}
-        {...(lineSets[4] ? { data5: lineSets[4].data } : {})}
-        color1={lineSets[0]?.color}
-        color2={lineSets[1]?.color}
-        color3={lineSets[2]?.color}
-        color4={lineSets[3]?.color}
-        color5={lineSets[4]?.color}
-        dataPointsColor1={lineSets[0]?.color}
-        dataPointsColor2={lineSets[1]?.color}
-        dataPointsColor3={lineSets[2]?.color}
-        dataPointsColor4={lineSets[3]?.color}
-        dataPointsColor5={lineSets[4]?.color}
-        maxValue={maxValue}
-        mostNegativeValue={0}
-        height={140}
-        spacing={44}
-        initialSpacing={15}
-        endSpacing={10}
-        dataPointsHeight={5}
-        dataPointsWidth={5}
-        xAxisColor={theme.colors.gray4}
-        yAxisColor={theme.colors.gray4}
-        yAxisTextStyle={{ color: theme.colors.gray2, fontSize: 10 }}
-        xAxisLabelTextStyle={{ color: theme.colors.gray2, fontSize: 9 }}
-        rulesColor={theme.colors.gray4}
-        rulesType="dashed"
-        noOfSections={4}
-        yAxisLabelWidth={45}
-        formatYLabel={(v) => formatYValue(v, unit.label)}
-      />
-    </View>
-  );
-}
-
-function MonthlyGroupedBarChart({
-  monthlyData,
-  selectedYears,
-  availableYears,
-  unit,
-}: {
-  monthlyData: Record<number, number[]>;
-  selectedYears: number[];
-  availableYears: number[];
-  unit: DisplayUnit;
-}) {
-  const theme = useTheme();
-  const [selectedBar, setSelectedBar] = useState<{
-    month: number;
-    year: number;
-    value: number;
-  } | null>(null);
-
-  const yearCount = selectedYears.length;
-  const barWidth = 12;
-  const innerGap = yearCount > 1 ? 3 : 0;
-  const groupGap = 16;
-  const groupWidth =
-    yearCount * barWidth + Math.max(yearCount - 1, 0) * innerGap;
-
-  const noOfSections = 3;
-  const barData: barDataItem[] = [];
-  let dataMax = 0;
-  for (let month = 0; month < 12; month++) {
-    for (let i = 0; i < yearCount; i++) {
-      const year = selectedYears[i];
-      const yearIdx = availableYears.indexOf(year);
-      const value = (monthlyData[year]?.[month] ?? 0) / unit.divisor;
-      if (value > dataMax) dataMax = value;
-      const item: barDataItem = {
-        value,
-        frontColor: getYearColor(yearIdx >= 0 ? yearIdx : i),
-      };
-      if (i === 0) {
-        item.label = MONTH_LABELS[month];
-        item.labelTextStyle = { color: theme.colors.gray2, fontSize: 9 };
-        if (yearCount > 1) item.labelWidth = groupWidth;
-      }
-      if (i < yearCount - 1) item.spacing = innerGap;
-      barData.push(item);
-    }
-  }
-
-  const maxValue =
-    dataMax === 0
-      ? noOfSections
-      : Math.ceil(dataMax / noOfSections) * noOfSections;
-
-  return (
-    <View style={{ flex: 1, gap: 4 }}>
-      {selectedBar && (
-        <Text
-          style={{
-            fontSize: 12,
-            color: theme.colors.gray1,
-            textAlign: "center",
-          }}
-        >
-          {MONTH_LABELS[selectedBar.month]} {selectedBar.year} ·{" "}
-          {formatYValue(String(selectedBar.value), unit.label)}
-        </Text>
-      )}
-      <BarChart
-        data={barData}
-        barWidth={barWidth}
-        spacing={groupGap}
-        roundedTop
-        height={120}
-        maxValue={maxValue}
-        rulesThickness={1}
-        rulesColor={theme.colors.gray4}
-        xAxisThickness={1}
-        xAxisColor={theme.colors.gray4}
-        yAxisThickness={0}
-        yAxisTextStyle={{ color: theme.colors.gray2, fontSize: 10 }}
-        yAxisLabelWidth={45}
-        noOfSections={noOfSections}
-        formatYLabel={(v) => formatYValue(v, unit.label)}
-        onPress={(item: barDataItem, index: number) => {
-          const barMonth = Math.floor(index / yearCount);
-          const yearIdx = index % yearCount;
-          setSelectedBar({
-            month: barMonth,
-            year: selectedYears[yearIdx],
-            value: Math.round((item.value ?? 0) * 100) / 100,
-          });
-        }}
-      />
-    </View>
-  );
-}
-
-type Props = {
+type CropProtectionApplicationDashboardProps = {
   summaries: CropProtectionApplicationSummary[];
 };
 
-export function CropProtectionApplicationDashboard({ summaries }: Props) {
-  const { t } = useTranslation();
+export function CropProtectionApplicationDashboard({
+  summaries,
+}: CropProtectionApplicationDashboardProps) {
   const theme = useTheme();
 
+  // Used for consistent year → color mapping across every card, even though
+  // each card now picks its own years independently.
   const availableYears = useMemo(
     () => [...new Set(summaries.map((s) => s.year))].sort((a, b) => b - a),
     [summaries],
   );
 
-  const [selectedYears, setSelectedYears] = useState<number[]>(() =>
-    availableYears.length > 0 ? [availableYears[0]] : [],
-  );
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
-
-  const toggleYear = useCallback((year: number) => {
-    setSelectedYears((prev) => {
-      if (prev.includes(year)) {
-        if (prev.length === 1) return prev;
-        return prev.filter((y) => y !== year);
-      }
-      return [...prev, year].sort((a, b) => a - b);
-    });
-  }, []);
 
   const toggleProduct = useCallback((name: string) => {
     setSelectedProducts((prev) =>
@@ -435,108 +60,171 @@ export function CropProtectionApplicationDashboard({ summaries }: Props) {
   const visibleProducts =
     selectedProducts.length === 0 ? allProducts : selectedProducts;
 
-  type ProdData = Record<
-    string,
-    { unit: string; monthly: Record<number, number[]> }
-  >;
-  const prodData = useMemo(() => {
-    const result: ProdData = {};
-    for (const s of summaries) {
-      if (!selectedYears.includes(s.year)) continue;
-      for (const ap of s.appliedCropProtections) {
-        if (ap.totalAmount === 0) continue;
-        if (!result[ap.productName])
-          result[ap.productName] = { unit: ap.unit, monthly: {} };
-        const entry = result[ap.productName];
-        if (!entry.monthly[s.year]) {
-          entry.monthly[s.year] = new Array(12).fill(0);
-        }
-        entry.monthly[s.year][s.month] += ap.totalAmount;
-      }
-    }
-    return result;
-  }, [summaries, selectedYears]);
+  const prodData = useMemo(
+    () => aggregateCropProtectionApplicationsByProduct(summaries),
+    [summaries],
+  );
 
   return (
     <View style={{ gap: theme.spacing.m }}>
-      <YearMultiSelect
-        years={availableYears}
-        selectedYears={selectedYears}
-        onToggle={toggleYear}
-      />
       {allProducts.length > 1 && (
-        <ProductFilter
-          products={allProducts}
+        <CategoryFilter
+          items={allProducts}
           selected={selectedProducts}
           onToggle={toggleProduct}
         />
       )}
-      <Legend
-        labels={selectedYears.map((year) => ({
-          text: year.toString(),
-          color: getYearColor(availableYears.indexOf(year)),
-        }))}
-      />
 
       {visibleProducts.map((prodName) => {
         const data = prodData[prodName];
         if (!data) return null;
-
-        let maxAmount = 0;
-        for (const yearMonths of Object.values(data.monthly)) {
-          for (const v of yearMonths) {
-            if (v > maxAmount) maxAmount = v;
-          }
-        }
-        const displayUnit = scaleUnit(data.unit, maxAmount);
-
         return (
-          <Card key={prodName}>
-            <Card.Title style={{ flex: 1 }}>{prodName}</Card.Title>
-            <Card.Content style={{ gap: theme.spacing.l }}>
-              <View
-                style={{ gap: theme.spacing.s, marginTop: theme.spacing.s }}
-              >
-                <Text
-                  style={{
-                    fontSize: 14,
-                    fontWeight: "600",
-                    color: theme.colors.gray2,
-                  }}
-                >
-                  {t("harvests.total_amount")}
-                </Text>
-                <MonthlyLineChart
-                  monthlyData={data.monthly}
-                  selectedYears={selectedYears}
-                  availableYears={availableYears}
-                  unit={displayUnit}
-                />
-              </View>
-              <View
-                style={{ height: 1, backgroundColor: theme.colors.gray4 }}
-              />
-              <View style={{ gap: theme.spacing.s }}>
-                <Text
-                  style={{
-                    fontSize: 14,
-                    fontWeight: "600",
-                    color: theme.colors.gray2,
-                  }}
-                >
-                  {t("harvests.amount_per_month")}
-                </Text>
-                <MonthlyGroupedBarChart
-                  monthlyData={data.monthly}
-                  selectedYears={selectedYears}
-                  availableYears={availableYears}
-                  unit={displayUnit}
-                />
-              </View>
-            </Card.Content>
-          </Card>
+          <ProductCard
+            key={prodName}
+            productName={prodName}
+            unit={data.unit}
+            monthly={data.monthly}
+            summaries={summaries}
+            availableYears={availableYears}
+          />
         );
       })}
     </View>
+  );
+}
+
+type ProductCardProps = {
+  productName: string;
+  unit: string;
+  monthly: Record<number, number[]>;
+  summaries: CropProtectionApplicationSummary[];
+  // All years with data across the whole dashboard, used only for a
+  // consistent year → color mapping (this card's own selectable years are
+  // narrower — see cardYears below).
+  availableYears: number[];
+};
+
+// One product's card: title + chart-mode switcher on one line, its own year
+// selector + legend, then the chart.
+function ProductCard({
+  productName,
+  unit,
+  monthly,
+  summaries,
+  availableYears,
+}: ProductCardProps) {
+  const { t } = useTranslation();
+  const theme = useTheme();
+  const [chartMode, setChartMode] = useState<ChartMode>("cumulative");
+
+  // Years this product actually has data for (monthly covers every year
+  // present in the summaries, not just a globally selected range).
+  const cardYears = useMemo(
+    () =>
+      Object.keys(monthly)
+        .map(Number)
+        .sort((a, b) => b - a),
+    [monthly],
+  );
+  const [selectedYears, setSelectedYears] = useState<number[]>(() =>
+    cardYears.length > 0 ? [cardYears[0]] : [],
+  );
+
+  const toggleYear = useCallback((year: number) => {
+    setSelectedYears((prev) => {
+      if (prev.includes(year)) {
+        if (prev.length === 1) return prev;
+        return prev.filter((y) => y !== year);
+      }
+      if (prev.length >= MAX_SELECTED_YEARS) return prev;
+      return [...prev, year].sort((a, b) => a - b);
+    });
+  }, []);
+
+  const chartViewOptions = useMemo(
+    () => [
+      { key: "cumulative" as const, label: t("harvests.chart_total") },
+      { key: "monthly" as const, label: t("harvests.chart_per_month") },
+    ],
+    [t],
+  );
+
+  // Find the max raw amount across this card's selected years/months to pick
+  // the right unit scale
+  let maxAmount = 0;
+  for (const year of selectedYears) {
+    for (const v of monthly[year] ?? []) {
+      if (v > maxAmount) maxAmount = v;
+    }
+  }
+  const displayUnit = scaleUnit(unit, maxAmount);
+  const perUnitLabel = t(`units.short.${unit}`, { defaultValue: unit });
+
+  const breakdownByYearMonth = useMemo(
+    () => aggregateAppliedCropProtectionsByYearMonth(summaries, productName),
+    [summaries, productName],
+  );
+
+  const getBreakdown = (
+    year: number,
+    month: number,
+  ): UnitBreakdownEntry[] => {
+    const row =
+      chartMode === "cumulative"
+        ? accumulateAppliedCropProtectionsUpToMonth(
+            breakdownByYearMonth,
+            year,
+            month,
+          )
+        : (breakdownByYearMonth[year]?.[month] ?? {
+            totalAmount: 0,
+            totalProducedUnits: 0,
+          });
+    if (row.totalProducedUnits === 0) return [];
+    return [
+      {
+        label: t("common.applications"),
+        count: row.totalProducedUnits,
+        amountPerUnit: row.totalAmount / row.totalProducedUnits,
+      },
+    ];
+  };
+
+  return (
+    <Card>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 8,
+        }}
+      >
+        <Card.Title style={{ flex: 1 }}>{productName}</Card.Title>
+        <ChartViewSwitcher
+          value={chartMode}
+          onChange={setChartMode}
+          options={chartViewOptions}
+        />
+      </View>
+      <Card.Content style={{ gap: theme.spacing.s }}>
+        {cardYears.length > 1 && (
+          <YearMultiSelect
+            years={cardYears}
+            selectedYears={selectedYears}
+            onToggle={toggleYear}
+          />
+        )}
+        <MonthCartesianChart
+          mode={chartMode}
+          monthlyData={monthly}
+          selectedYears={selectedYears}
+          availableYears={availableYears}
+          unit={displayUnit}
+          perUnitLabel={perUnitLabel}
+          getBreakdown={getBreakdown}
+        />
+      </Card.Content>
+    </Card>
   );
 }

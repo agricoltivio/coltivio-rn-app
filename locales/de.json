@@ -139,7 +139,9 @@
     "total_amount": "Gesamtmenge",
     "dashboard": "Dashboard",
     "list": "Liste",
-    "notes": "Notizen"
+    "notes": "Notizen",
+    "applications": "Anwendungen",
+    "average": "Durchschnitt"
   },
   "presets": {
     "preset": "Vorlage",
@@ -752,7 +754,9 @@
     "comparison_year": "Vergleichsjahr",
     "select_comparison_year": "Vergleichsjahr wählen",
     "total_amount": "Totale Menge",
-    "amount_per_month": "Menge pro Monat"
+    "amount_per_month": "Menge pro Monat",
+    "chart_total": "Total",
+    "chart_per_month": "Pro Monat"
   },
   "fertilizers": {
     "fertilizer": "Dünger",

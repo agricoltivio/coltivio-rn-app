@@ -7,7 +7,6 @@ import { View } from "react-native";
 import { stackDataItem } from "react-native-gifted-charts";
 import { useTheme } from "styled-components/native";
 import { useHarvestSummariesOfFarm } from "../harvests/harvests.hooks";
-import { HarvestStackChart } from "../harvests/HarvestStackChart";
 import { HomeTile } from "./HomeTile";
 
 export function ForagesHarvestTile() {
@@ -56,7 +55,6 @@ export function ForagesHarvestTile() {
       onPress={() => navigation.navigate("FieldCalendar")}
     >
       <View style={{ padding: theme.spacing.m }}>
-        {/* <HarvestStackChart stackChartData={data} labels={[...forageNames]} /> */}
         {data.length === 0 ? (
           <Subtitle
             style={{
