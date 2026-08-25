@@ -4,6 +4,7 @@ import React from "react";
 import { useTheme } from "styled-components/native";
 import { usePlotsMapContext } from "../plots-map-mode";
 import { useAddPlotStore } from "../../add-plots.store";
+import { CreateModeChooser } from "./CreateModeChooser";
 
 export function CreateModeControls() {
   const theme = useTheme();
@@ -14,11 +15,41 @@ export function CreateModeControls() {
 
   const { drawingAction, newPolygon } = mode;
 
+  // Initial choice between drawing a new area or picking an existing parcel
+  if (drawingAction === "choose") {
+    return <CreateModeChooser />;
+  }
+
+  // Browsing nearby cadastral parcels — only a cancel (exits create mode) and info control
+  if (drawingAction === "parcel") {
+    return (
+      <MapControls>
+        <MaterialCommunityIconButton
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="close-circle-outline"
+          onPress={() => dispatch({ type: "EXIT_MODE" })}
+        />
+        <MaterialCommunityIconButton
+          style={{ backgroundColor: theme.colors.accent }}
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="information-outline"
+          onPress={() =>
+            navigation.navigate("MapDrawOnboarding", { variant: "parcel" })
+          }
+        />
+      </MapControls>
+    );
+  }
+
   // Drawing/edit mode — show undo, cancel, and confirm controls
   if (drawingAction === "draw" || drawingAction === "edit") {
     return (
       <MapControls>
-        {/* Cancel */}
+        {/* Cancel — exits create mode directly, same as the other modes */}
         <MaterialCommunityIconButton
           type="accent"
           color="black"
@@ -26,15 +57,8 @@ export function CreateModeControls() {
           icon="close-circle-outline"
           onPress={() => {
             drawingRef.current?.reset();
-            if (drawingAction === "draw") {
-              // No polygon yet — exit create mode entirely
-              addPlotStore.reset();
-              dispatch({ type: "EXIT_MODE" });
-            } else {
-              // Editing existing polygon — reset drawing and go back to draw mode
-              dispatch({ type: "SET_CREATE_POLYGON", polygon: null });
-              dispatch({ type: "SET_CREATE_ACTION", action: "draw" });
-            }
+            addPlotStore.reset();
+            dispatch({ type: "EXIT_MODE" });
           }}
         />
         {/* Undo */}

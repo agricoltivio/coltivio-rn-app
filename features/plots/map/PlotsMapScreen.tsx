@@ -107,6 +107,10 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
     }
   }, [mode.type]);
 
+  // Extracted to avoid a complex expression in the dependency array below —
+  // re-fires the onboarding effect when the create sub-step changes (e.g. "choose" -> "draw"/"parcel").
+  const createDrawingAction = mode.type === "create" ? mode.drawingAction : null;
+
   // Auto-show the relevant onboarding the first time each tool is used
   useEffect(() => {
     switch (mode.type) {
@@ -126,18 +130,28 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
         }
         break;
       case "create":
-        if (!localSettings.addPlotDrawOnboardingCompleted) {
+        if (
+          createDrawingAction === "draw" &&
+          !localSettings.addPlotDrawOnboardingCompleted
+        ) {
           navigation.navigate("MapDrawOnboarding", { variant: "create" });
+        } else if (
+          createDrawingAction === "parcel" &&
+          !localSettings.addPlotParcelOnboardingCompleted
+        ) {
+          navigation.navigate("MapDrawOnboarding", { variant: "parcel" });
         }
         break;
     }
   }, [
     mode.type,
+    createDrawingAction,
     navigation,
     localSettings.splitPlotOnboardingCompleted,
     localSettings.mergePlotsOnboardingCompleted,
     localSettings.editPlotOnboardingCompleted,
     localSettings.addPlotDrawOnboardingCompleted,
+    localSettings.addPlotParcelOnboardingCompleted,
   ]);
 
   // Extracted to avoid complex expression in the dependency array.
@@ -355,7 +369,13 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
           onToggle={setBaseLayer}
           topOffset={insets.top + theme.spacing.s + 150}
         />
-        <MapPlotColorToggle topOffset={insets.top + theme.spacing.s + 200} />
+        {mode.type === "view" && (
+          <MapPlotColorToggle
+            plotColorMode={plotColorMode}
+            onChange={setPlotColorMode}
+            topOffset={insets.top + theme.spacing.s + 200}
+          />
+        )}
         <TopLeftBackButton />
 
         {/* Plot list button */}

@@ -1,7 +1,6 @@
 import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import { type PlotColorMode } from "@/components/map/PlotsLayer";
 import { InsetsProps } from "@/constants/Screen";
-import { usePlotsMapContext } from "@/features/plots/map/plots-map-mode";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
@@ -21,18 +20,21 @@ const MODE_OPTIONS: ModeOption[] = [
 ];
 
 type MapPlotColorToggleProps = {
+  plotColorMode: PlotColorMode;
+  onChange: (mode: PlotColorMode) => void;
   /** When provided, renders top-left at this top value; panel opens to the right. */
   topOffset?: number;
 };
 
-export function MapPlotColorToggle({ topOffset }: MapPlotColorToggleProps) {
+export function MapPlotColorToggle({
+  plotColorMode,
+  onChange,
+  topOffset,
+}: MapPlotColorToggleProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const { mode, plotColorMode, setPlotColorMode } = usePlotsMapContext();
   const [expanded, setExpanded] = useState(false);
-
-  if (mode.type !== "view") return null;
 
   return (
     // Container is sized to the button only; panel is absolutely positioned without affecting layout
@@ -45,7 +47,7 @@ export function MapPlotColorToggle({ topOffset }: MapPlotColorToggleProps) {
               <TouchableOpacity
                 key={option.mode}
                 onPress={() => {
-                  setPlotColorMode(option.mode);
+                  onChange(option.mode);
                   setExpanded(false);
                 }}
               >

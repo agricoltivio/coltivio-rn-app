@@ -6,7 +6,7 @@ import { type MapRef, type CameraRef } from "@maplibre/maplibre-react-native";
 import { NavigationProp } from "@react-navigation/native";
 import { createContext, useContext, Dispatch } from "react";
 
-export type DrawAction = "select" | "edit" | "draw";
+export type DrawAction = "select" | "edit" | "draw" | "choose" | "parcel";
 
 // --- Mode types ---
 
@@ -133,7 +133,7 @@ export function plotsMapReducer(
       return state;
 
     case "ENTER_CREATE":
-      return { type: "create", drawingAction: "draw", newPolygon: null };
+      return { type: "create", drawingAction: "choose", newPolygon: null };
 
     case "SET_CREATE_ACTION":
       if (state.type === "create") {
