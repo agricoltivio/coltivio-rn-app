@@ -2,15 +2,25 @@ import { DrawingOverlay } from "@/components/map/DrawingOverlay";
 import { PlotsLayer } from "@/components/map/PlotsLayer";
 import { GeoSpatials } from "@/utils/geo-spatials";
 import { round } from "@/utils/math";
+import { hexToRgba } from "@/theme/theme";
+import { usePlotsByLocationQuery } from "@/features/federal-plots/federalPlots.hooks";
 import {
   GeoJSONSource,
   Layer,
   type LngLat,
 } from "@maplibre/maplibre-react-native";
 import * as turf from "@turf/turf";
-import React, { forwardRef, useImperativeHandle, useMemo } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from "react";
 import { useTheme } from "styled-components/native";
 import { usePlotsMapContext } from "../plots-map-mode";
+
+const PARCEL_SEARCH_RADIUS_KM = 4;
 
 export type CreateModeLayersHandle = {
   handleMapPress: (lngLat: LngLat) => void;
@@ -19,8 +29,7 @@ export type CreateModeLayersHandle = {
 export const CreateModeLayers = forwardRef<CreateModeLayersHandle>(
   function CreateModeLayers(_props, ref) {
     const theme = useTheme();
-    const { mode, dispatch, plots, mapRef, drawingRef, navigation } =
-      usePlotsMapContext();
+    const { mode, dispatch, plots, mapRef, drawingRef } = usePlotsMapContext();
 
     useImperativeHandle(ref, () => ({
       handleMapPress(lngLat: LngLat) {
@@ -33,6 +42,104 @@ export const CreateModeLayers = forwardRef<CreateModeLayersHandle>(
 
     const drawingAction = mode.type === "create" ? mode.drawingAction : "draw";
     const newPolygon = mode.type === "create" ? mode.newPolygon : undefined;
+
+    // Center the parcel search on the current viewport rather than the farm location,
+    // so it follows wherever the user has panned/zoomed to before picking a parcel.
+    const [parcelSearchCenter, setParcelSearchCenter] = useState<LngLat | null>(
+      null,
+    );
+    useEffect(() => {
+      if (drawingAction !== "parcel") {
+        setParcelSearchCenter(null);
+        return;
+      }
+      let cancelled = false;
+      mapRef.current?.getCenter().then((center) => {
+        if (!cancelled) setParcelSearchCenter(center);
+      });
+      return () => {
+        cancelled = true;
+      };
+    }, [drawingAction, mapRef]);
+
+    const { plots: nearbyParcels } = usePlotsByLocationQuery(
+      {
+        lat: parcelSearchCenter?.[1] ?? 0,
+        lng: parcelSearchCenter?.[0] ?? 0,
+      },
+      PARCEL_SEARCH_RADIUS_KM,
+      drawingAction === "parcel" && parcelSearchCenter !== null,
+    );
+
+    const parcelsFeatureCollection = useMemo(
+      (): GeoJSON.FeatureCollection => ({
+        type: "FeatureCollection",
+        features: nearbyParcels
+          .filter((parcel) => parcel.geometry.coordinates.length > 0)
+          .map((parcel) => ({
+            type: "Feature",
+            properties: { id: parcel.id },
+            geometry: parcel.geometry,
+          })),
+      }),
+      [nearbyParcels],
+    );
+
+    // Parcel number label, placed at each parcel's centroid
+    const parcelLabelsData = useMemo(
+      (): GeoJSON.FeatureCollection => ({
+        type: "FeatureCollection",
+        features: nearbyParcels
+          .filter(
+            (parcel) => parcel.geometry.coordinates.length > 0 && parcel.localId,
+          )
+          .map((parcel) => ({
+            type: "Feature",
+            properties: { label: parcel.localId },
+            geometry: turf.centroid(parcel.geometry).geometry,
+          })),
+      }),
+      [nearbyParcels],
+    );
+
+    function handleParcelPress(event: {
+      stopPropagation(): void;
+      nativeEvent: { features: GeoJSON.Feature[] };
+    }) {
+      event.stopPropagation();
+      const feature = event.nativeEvent.features[0];
+      const parcelId = feature?.properties?.id;
+      if (typeof parcelId !== "number") return;
+      const parcel = nearbyParcels.find((p) => p.id === parcelId);
+      if (!parcel) return;
+
+      const geometry = parcel.geometry;
+
+      // loadCoordinates synchronously triggers onDrawingComplete below, which dispatches its
+      // own (bare) SET_CREATE_POLYGON + SET_CREATE_ACTION. Dispatch our richer polygon (with
+      // usage/localId/cuttingDate from the registry) afterwards so it applies last and wins.
+      const outerRing = geometry.coordinates[0]?.[0];
+      if (outerRing && outerRing.length >= 4) {
+        const coords: LngLat[] = outerRing
+          .slice(0, -1)
+          .map((c) => [c[0], c[1]] as LngLat);
+        drawingRef.current?.loadCoordinates(coords);
+      }
+
+      const centroid = turf.centroid(geometry);
+      dispatch({
+        type: "SET_CREATE_POLYGON",
+        polygon: {
+          geometry,
+          centroid: centroid.geometry,
+          size: parcel.size,
+          usage: parcel.usage,
+          localId: parcel.localId ?? undefined,
+          cuttingDate: parcel.cuttingDate ?? undefined,
+        },
+      });
+      dispatch({ type: "SET_CREATE_ACTION", action: "edit" });
+    }
 
     // Info card for new polygon — shown in select and edit modes
     const infoLabelData = useMemo((): GeoJSON.FeatureCollection => {
@@ -108,6 +215,52 @@ export const CreateModeLayers = forwardRef<CreateModeLayersHandle>(
         {/* Background: existing plots dimmed */}
         <PlotsLayer plots={plots} />
 
+        {/* Nearby cadastral parcels, tap to pick one */}
+        {drawingAction === "parcel" && (
+          <GeoJSONSource
+            id="create-parcels"
+            data={parcelsFeatureCollection}
+            onPress={handleParcelPress}
+          >
+            <Layer
+              type="fill"
+              id="create-parcels-fill"
+              paint={{
+                "fill-color": hexToRgba(theme.colors.accent, 0.3),
+                "fill-opacity": 1,
+              }}
+            />
+            <Layer
+              type="line"
+              id="create-parcels-stroke"
+              paint={{
+                "line-color": "white",
+                "line-width": theme.map.defaultStrokeWidth,
+              }}
+            />
+          </GeoJSONSource>
+        )}
+        {drawingAction === "parcel" && (
+          <GeoJSONSource id="create-parcels-labels" data={parcelLabelsData}>
+            <Layer
+              type="symbol"
+              id="create-parcels-labels-text"
+              layout={{
+                "text-field": ["get", "label"],
+                "text-size": 14,
+                "text-anchor": "center",
+                "text-allow-overlap": true,
+                "text-ignore-placement": true,
+              }}
+              paint={{
+                "text-color": "#FFFFFF",
+                "text-halo-color": "#000000",
+                "text-halo-width": 2,
+              }}
+            />
+          </GeoJSONSource>
+        )}
+
         {/* New polygon preview in select mode */}
         {newPolygon && drawingAction === "select" ? (
           <>
@@ -176,8 +329,11 @@ export const CreateModeLayers = forwardRef<CreateModeLayersHandle>(
           </GeoJSONSource>
         )}
 
-        {/* Drawing overlay for draw/edit modes */}
-        {drawingAction !== "select" && (
+        {/* Drawing overlay for draw/edit modes. Also mounted (inert) during "parcel" browsing
+            so drawingRef is already live when a parcel is tapped and loadCoordinates is called. */}
+        {(drawingAction === "draw" ||
+          drawingAction === "edit" ||
+          drawingAction === "parcel") && (
           <DrawingOverlay
             ref={drawingRef}
             mode={drawingAction === "edit" ? "edit" : "draw-polygon"}
