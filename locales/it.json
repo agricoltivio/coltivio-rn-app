@@ -285,6 +285,8 @@
   },
   "home": {
     "welcome_text": "Ciao {{displayName}},",
+    "upcoming_tasks": "Attività in scadenza",
+    "no_upcoming_tasks": "Nessuna attività in scadenza nei prossimi 3 giorni",
     "tiles": {
       "farm": "La Mia Azienda",
       "plots": "Campi",
@@ -298,6 +300,7 @@
   },
   "farm": {
     "farm": "Azienda Agricola",
+    "edit_farm": "Modifica Azienda Agricola",
     "farm_name": "Nome Azienda Agricola",
     "location": "Posizione",
     "users": "Utenti",
@@ -330,7 +333,11 @@
     "permission_feature_animals": "Animali",
     "permission_feature_tasks": "Compiti",
     "permission_feature_field_calendar": "Calendario dei campi",
-    "permission_feature_commerce": "Commercio"
+    "permission_feature_commerce": "Commercio",
+    "charts": {
+      "crops_by_area": "Colture per superficie",
+      "no_crops": "Nessuna coltura attiva"
+    }
   },
   "plots": {
     "plots": "Campi",

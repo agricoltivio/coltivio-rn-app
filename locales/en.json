@@ -285,6 +285,8 @@
   },
   "home": {
     "welcome_text": "Hello {{displayName}},",
+    "upcoming_tasks": "Upcoming Tasks",
+    "no_upcoming_tasks": "No upcoming tasks in the next 3 days",
     "tiles": {
       "farm": "My Farm",
       "plots": "Plots",
@@ -298,6 +300,7 @@
   },
   "farm": {
     "farm": "Farm",
+    "edit_farm": "Edit Farm",
     "farm_name": "Farm Name",
     "location": "Location",
     "users": "Users",
@@ -330,7 +333,11 @@
     "permission_feature_animals": "Animals",
     "permission_feature_tasks": "Tasks",
     "permission_feature_field_calendar": "Field calendar",
-    "permission_feature_commerce": "Commerce"
+    "permission_feature_commerce": "Commerce",
+    "charts": {
+      "crops_by_area": "Crops by area",
+      "no_crops": "No active crops"
+    }
   },
   "plots": {
     "plots": "Plots",

@@ -26,6 +26,17 @@ export function useFarmQuery(enabled: boolean = true) {
   return { farm: data, ...rest };
 }
 
+export function useFarmStatsQuery(enabled: boolean = true) {
+  const api = useApi();
+  const { data, ...rest } = useQuery({
+    queryKey: queryKeys.farms.stats.queryKey,
+    queryFn: () => api.farms.getFarmStats(),
+    enabled,
+  });
+
+  return { farmStats: data, ...rest };
+}
+
 export function useUpdateFarmMutation(
   onSuccess?: (farm: Farm) => void,
   onError?: (error: Error) => void,

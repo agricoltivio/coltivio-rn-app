@@ -1,19 +1,19 @@
 import { useTheme } from "styled-components/native";
 import { useFarmQuery, useUpdateFarmMutation } from "./farms.hooks";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ContentView } from "@/components/containers/ContentView";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
-import { H2, Body } from "@/theme/Typography";
-import { View } from "react-native";
-import { EditFarmNameScreenProps } from "./navigation/farm-routes";
+import { TextInput } from "@/components/inputs/TextInput";
+import { H2 } from "@/theme/Typography";
+import { TouchableOpacity, View } from "react-native";
+import { EditFarmScreenProps } from "./navigation/farm-routes";
 import { Button } from "@/components/buttons/Button";
 import { ScrollView } from "@/components/views/ScrollView";
 import { useTranslation } from "react-i18next";
 import { useUserQuery } from "@/features/user/users.hooks";
 
-export function EditFarmNameScreen({ navigation }: EditFarmNameScreenProps) {
+export function EditFarmScreen({ navigation }: EditFarmScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { farm } = useFarmQuery();
@@ -51,10 +51,16 @@ export function EditFarmNameScreen({ navigation }: EditFarmNameScreenProps) {
       <ScrollView
         keyboardAware
         showHeaderOnScroll
-        headerTitleOnScroll={t("farm.farm_name")}
+        headerTitleOnScroll={t("farm.edit_farm")}
       >
-        <H2>{t("farm.farm_name")}</H2>
-        <View style={{ flex: 1, marginTop: theme.spacing.m }}>
+        <H2>{t("farm.edit_farm")}</H2>
+        <View
+          style={{
+            flex: 1,
+            marginTop: theme.spacing.m,
+            gap: theme.spacing.m,
+          }}
+        >
           <RHTextInput
             name="name"
             control={control}
@@ -68,6 +74,20 @@ export function EditFarmNameScreen({ navigation }: EditFarmNameScreenProps) {
             error={errors.name?.message}
             disabled={!isOwner}
           />
+          <TouchableOpacity
+            onPress={() => {
+              if (isOwner) navigation.navigate("SearchFarmLocation");
+            }}
+            disabled={!isOwner}
+          >
+            <TextInput
+              placeholder={t("forms.placeholders.location_search")}
+              label={t("forms.labels.location")}
+              value={farm?.address}
+              pointerEvents="none"
+              disabled
+            />
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </ContentView>

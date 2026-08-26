@@ -16,6 +16,8 @@ export type MemberPermission =
   components["schemas"]["GetV1FarmMembersByIdUserIdPermissionsPositiveResponse"]["data"]["result"][number];
 export type PermissionFeature = MemberPermission["feature"];
 export type PermissionAccess = "read" | "write";
+export type FarmStats =
+  components["schemas"]["GetV1FarmStatsPositiveResponse"]["data"];
 
 export function farmApi(client: FetchClient) {
   return {
@@ -26,6 +28,11 @@ export function farmApi(client: FetchClient) {
 
     async getFarm(): Promise<Farm> {
       const { data } = await client.GET(`/v1/farm`);
+      return data!.data;
+    },
+
+    async getFarmStats(): Promise<FarmStats> {
+      const { data } = await client.GET("/v1/farm/stats");
       return data!.data;
     },
 

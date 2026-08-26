@@ -1,7 +1,6 @@
 import { Stack } from "@/navigation/stack";
 import { DeleteFarmScreen } from "../DeleteFarmScreen";
-import { EditFarmLocationScreen } from "../EditFarmLocationScreen";
-import { EditFarmNameScreen } from "../EditFarmNameScreen";
+import { EditFarmScreen } from "../EditFarmScreen";
 import { FarmScreen } from "../FarmScreen";
 import { FarmUsersScreen } from "../FarmUsersScreen";
 import { MemberPermissionsScreen } from "../MemberPermissionsScreen";
@@ -18,17 +17,9 @@ export function renderFarmStack() {
       }}
     />,
     <Stack.Screen
-      key="edit-farm-name"
-      name="EditFarmName"
-      component={EditFarmNameScreen}
-      options={{
-        title: "",
-      }}
-    />,
-    <Stack.Screen
-      key="edit-farm-location"
-      name="EditFarmLocation"
-      component={EditFarmLocationScreen}
+      key="edit-farm"
+      name="EditFarm"
+      component={EditFarmScreen}
       options={{
         title: "",
       }}

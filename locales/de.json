@@ -300,6 +300,7 @@
   },
   "farm": {
     "farm": "Mein Hof",
+    "edit_farm": "Hof bearbeiten",
     "farm_name": "Hofname",
     "location": "Standort",
     "users": "Nutzer",
@@ -332,7 +333,11 @@
     "permission_feature_animals": "Tiere",
     "permission_feature_tasks": "Aufgaben",
     "permission_feature_field_calendar": "Feldkalender",
-    "permission_feature_commerce": "Handel"
+    "permission_feature_commerce": "Handel",
+    "charts": {
+      "crops_by_area": "Kulturen nach Fläche",
+      "no_crops": "Keine aktiven Kulturen"
+    }
   },
   "plots": {
     "plots": "Schläge",
@@ -1202,7 +1207,7 @@
     "charts": {
       "title": "Statistiken",
       "born_this_year": "Geburten (dieses Jahr)",
-      "died": "Verenden",
+      "died": "Verendet",
       "slaughtered": "Geschlachtet",
       "animals_by_type": "Tiere nach Tierart",
       "age_distribution": "Altersverteilung (lebende Tiere)",
