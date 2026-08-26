@@ -52,6 +52,9 @@ Sentry.init({
 // });
 
 const prefix = Linking.createURL("/");
+// Temporary diagnostic — confirm the running build actually has the custom URL scheme baked in
+// (relevant while debugging the Stripe checkout in-app-browser redirect not closing).
+console.log("[app] Linking.createURL prefix:", prefix);
 
 const queryClient = new QueryClient();
 

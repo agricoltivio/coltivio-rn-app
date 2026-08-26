@@ -14,6 +14,8 @@ import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { OnboardingData } from "../onboarding/OnboardingContext";
 import { User } from "@/api/user.api";
+import * as Linking from "expo-linking";
+import * as WebBrowser from "expo-web-browser";
 
 export function useFarmQuery(enabled: boolean = true) {
   const api = useApi();
@@ -288,6 +290,121 @@ export function useMembershipStatusQuery() {
     queryFn: () => api.membership.getMembershipStatus(),
   });
   return { membershipStatus: data, ...rest };
+}
+
+export function useMembershipCheckoutMutation() {
+  const api = useApi();
+  const queryClient = useQueryClient();
+
+  async function refreshMembership() {
+    await queryClient.invalidateQueries({
+      queryKey: queryKeys.farms.membershipStatus.queryKey,
+    });
+    await queryClient.invalidateQueries({
+      queryKey: queryKeys.farms.farm.queryKey,
+    });
+  }
+
+  return useMutation({
+    mutationFn: async (autoRenew: boolean) => {
+      // Redirect back into the app itself (via the app's own URL scheme) instead of a web
+      // page — openAuthSessionAsync auto-closes the in-app browser once Stripe redirects here.
+      const successUrl = Linking.createURL("membership/success");
+      const cancelUrl = Linking.createURL("membership/cancel");
+      // Match on the bare scheme rather than the full success path — ASWebAuthenticationSession
+      // matching is scheme-based, and this also lets the same call catch the cancel redirect.
+      const schemeRedirect = Linking.createURL("");
+      // autoRenew picks the endpoint, which is what determines the payment methods Stripe's
+      // hosted checkout offers: recurring subscription (card only) vs. one-time payment (Twint too).
+      const url = autoRenew
+        ? await api.membership.createCheckoutSession(successUrl, cancelUrl)
+        : await api.membership.createManualCheckoutSession(successUrl, cancelUrl);
+      console.log("[membership checkout] opening", {
+        url,
+        successUrl,
+        cancelUrl,
+        schemeRedirect,
+      });
+      const result = await WebBrowser.openAuthSessionAsync(url, schemeRedirect, {
+        preferEphemeralSession: true,
+      });
+      console.log("[membership checkout] result", result);
+      const succeeded =
+        result.type === "success" && result.url.includes("membership/success");
+      if (!succeeded) return;
+
+      // The Stripe webhook that activates the membership on the backend can lag slightly
+      // behind the redirect, so refetch twice with a short gap rather than just once.
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      await refreshMembership();
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await refreshMembership();
+    },
+  });
+}
+
+export function useMembershipCancelMutation() {
+  const api = useApi();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => api.membership.cancelSubscription(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.farms.membershipStatus.queryKey,
+      });
+      queryClient.invalidateQueries({ queryKey: queryKeys.farms.farm.queryKey });
+    },
+  });
+}
+
+export function useMembershipReactivateMutation() {
+  const api = useApi();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => api.membership.reactivateSubscription(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.farms.membershipStatus.queryKey,
+      });
+      queryClient.invalidateQueries({ queryKey: queryKeys.farms.farm.queryKey });
+    },
+  });
+}
+
+export function useMembershipPaymentMethodMutation() {
+  const api = useApi();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async () => {
+      const redirectUrl = Linking.createURL("membership/payment-method");
+      const schemeRedirect = Linking.createURL("");
+      const url = await api.membership.createPaymentMethodSession(
+        redirectUrl,
+        redirectUrl,
+      );
+      console.log("[payment method] opening", { url, redirectUrl, schemeRedirect });
+      const result = await WebBrowser.openAuthSessionAsync(url, schemeRedirect, {
+        preferEphemeralSession: true,
+      });
+      console.log("[payment method] result", result);
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.farms.membershipStatus.queryKey,
+      });
+    },
+  });
+}
+
+export function useMembershipPaymentsQuery(enabled: boolean = true) {
+  const api = useApi();
+  const { data, ...rest } = useQuery({
+    queryKey: queryKeys.farms.membershipPayments.queryKey,
+    queryFn: () => api.membership.getPayments(),
+    enabled,
+  });
+  return { payments: data, ...rest };
 }
 
 export function useDeleteFarmMutation(

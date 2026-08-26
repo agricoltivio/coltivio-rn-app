@@ -5,5 +5,6 @@ export const farmsQueryKeys = createQueryKeys("farms", {
   stats: null,
   invites: null,
   membershipStatus: null,
+  membershipPayments: null,
   memberPermissions: (userId: string) => [{ userId }],
 });

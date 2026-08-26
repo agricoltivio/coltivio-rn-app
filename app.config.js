@@ -8,7 +8,13 @@ export default ({ config }) => {
     version: "1.0.3",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
-    scheme: process.env.SCHEME,
+    // Distinct per variant so the dev/test build never collides with production's URL scheme
+    // (a shared scheme across installed variants breaks ASWebAuthenticationSession redirects,
+    // e.g. Stripe checkout — iOS can't unambiguously route the callback).
+    scheme:
+      variant === "development"
+        ? "ch.agricoltivio.coltiviotest"
+        : "ch.agricoltivio.coltivio",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     splash: {

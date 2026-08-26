@@ -14,7 +14,6 @@ import { FarmUsersScreenProps } from "./navigation/farm-routes";
 import {
   useCreateInviteMutation,
   useFarmInvitesQuery,
-  useMembership,
   useRemoveMemberMutation,
   useRevokeInviteMutation,
   useUpdateMemberRoleMutation,
@@ -61,7 +60,6 @@ export function FarmUsersScreen({ navigation }: FarmUsersScreenProps) {
 
   const { user: currentUser } = useUserQuery();
   const isOwner = currentUser?.farmRole === "owner";
-  const { isActive } = useMembership();
 
   const { users: members = [] } = useFarmUsersQuery();
   const { data: invites = [] } = useFarmInvitesQuery();
@@ -240,8 +238,8 @@ export function FarmUsersScreen({ navigation }: FarmUsersScreenProps) {
           </View>
         )}
 
-        {/* Pending / past invites — only visible to owners with active membership */}
-        {isOwner && isActive && invites.length > 0 && (
+        {/* Pending / past invites — only visible to owners */}
+        {isOwner && invites.length > 0 && (
           <View style={{ marginTop: theme.spacing.l }}>
             <H3 style={{ marginBottom: theme.spacing.m }}>
               {t("farm.invite_user")}
@@ -278,8 +276,8 @@ export function FarmUsersScreen({ navigation }: FarmUsersScreenProps) {
           </View>
         )}
 
-        {/* Invite new user — only for owners with active membership */}
-        {isOwner && isActive && (
+        {/* Invite new user — only for owners */}
+        {isOwner && (
           <View style={{ marginTop: theme.spacing.xl }}>
             <H3 style={{ marginBottom: theme.spacing.m }}>
               {t("farm.invite_user")}

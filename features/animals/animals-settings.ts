@@ -15,7 +15,6 @@ export type AnimalsItemMeta = {
   translationKey: string;
   route: string;
   feature: PermissionFeature;
-  membershipRequired?: boolean;
 };
 
 // Maps itemId → translation key + navigation route + required permission feature
@@ -50,7 +49,6 @@ export const ANIMALS_ITEMS: Record<string, AnimalsItemMeta> = {
     translationKey: "animals.outdoor_journal",
     route: "OutdoorJournal",
     feature: "animals",
-    membershipRequired: true,
   },
 };
 

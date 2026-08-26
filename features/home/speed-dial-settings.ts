@@ -51,7 +51,6 @@ export const SPEED_DIAL_ACTIONS = {
     icon: "clipboard-check-outline",
     route: "TaskForm",
     accessFeature: "tasks" as const,
-    membershipRequired: true,
   },
 } as const;
 

@@ -7,7 +7,6 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "styled-components/native";
 import { useLocalSettings } from "../user/LocalSettingsContext";
-import { useMembership } from "../farms/farms.hooks";
 import { usePermissions } from "../user/users.hooks";
 import {
   FIELD_CALENDAR_GROUPS,
@@ -21,7 +20,6 @@ export function FieldCalendarScreen({ navigation }: FieldCalendarScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { localSettings } = useLocalSettings();
-  const { isActive } = useMembership();
   const { canRead } = usePermissions();
 
   // Redirect to onboarding if not completed
@@ -53,7 +51,6 @@ export function FieldCalendarScreen({ navigation }: FieldCalendarScreenProps) {
               const itemMeta = FIELD_CALENDAR_ITEMS[item.itemId as ItemId];
               if (!itemMeta) return false;
               if (!canRead(itemMeta.feature)) return false;
-              if (itemMeta.membershipRequired && !isActive) return false;
               return true;
             });
             if (visibleItems.length === 0) return null;
