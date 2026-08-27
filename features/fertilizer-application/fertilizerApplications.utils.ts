@@ -79,7 +79,10 @@ export function accumulateAppliedFertilizersUpToMonth(
   year: number,
   month: number,
 ): AppliedFertilizerRow {
-  const totals: AppliedFertilizerRow = { totalAmount: 0, totalProducedUnits: 0 };
+  const totals: AppliedFertilizerRow = {
+    totalAmount: 0,
+    totalProducedUnits: 0,
+  };
   const months = byYearMonth[year];
   if (!months) return totals;
   for (let m = 0; m <= month; m++) {

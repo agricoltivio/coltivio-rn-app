@@ -4,20 +4,14 @@ import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { MapTile } from "@/features/map/MapTile";
-import { Body, H2, H3 } from "@/theme/Typography";
+import { Body, H2 } from "@/theme/Typography";
 import { H1 } from "@/theme/Typography";
-import { openMembershipUrl } from "@/utils/membership";
+import { canLinkToMembership, goToMembershipScreen } from "@/utils/membership";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Modal,
-  SafeAreaView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Modal, SafeAreaView, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import {
   useFarmQuery,
@@ -26,6 +20,7 @@ import {
 } from "../farms/farms.hooks";
 import { useLocalSettings } from "../user/LocalSettingsContext";
 import { useUserQuery, usePermissions } from "../user/users.hooks";
+import { AgriColtivioPitch } from "../agri-coltivio/AgriColtivioPitch";
 import { HomeTile } from "./HomeTile";
 import { HOME_TILES } from "./home-tiles-settings";
 import { UpcomingTasksTile } from "./UpcomingTasksTile";
@@ -49,12 +44,6 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
         if (!item.active || !(item.id in SPEED_DIAL_ACTIONS)) return false;
         const action =
           SPEED_DIAL_ACTIONS[item.id as keyof typeof SPEED_DIAL_ACTIONS];
-        if (
-          "membershipRequired" in action &&
-          action.membershipRequired &&
-          !isActive
-        )
-          return false;
         if (!canWrite(action.accessFeature)) return false;
         return true;
       })
@@ -67,16 +56,12 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
           onPress: () => navigation.navigate(action.route as never),
         };
       });
-  }, [localSettings.speedDialItems, isActive, canWrite, navigation]);
+  }, [localSettings.speedDialItems, canWrite, navigation]);
 
   const visibleTiles = useMemo(() => {
     return localSettings.homeTiles
       .filter((tile) => tile.visible && tile.id in HOME_TILES)
       .filter((tile) => {
-        const meta = HOME_TILES[tile.id as keyof typeof HOME_TILES];
-        const membershipRequired =
-          "membershipRequired" in meta && meta.membershipRequired;
-        if (membershipRequired && !isActive) return false;
         // Hide tiles when user has no access to the relevant feature
         if (tile.id === "plots" && getAccess("field_calendar") === "none")
           return false;
@@ -135,9 +120,24 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
     ? (Date.now() - new Date(localSettings.firstLaunchDate).getTime()) /
       (1000 * 60 * 60 * 24)
     : 0;
+  const periodEndDate =
+    typeof membershipStatus?.lastPeriodEnd === "string" &&
+    membershipStatus.lastPeriodEnd.length > 0
+      ? new Date(membershipStatus.lastPeriodEnd)
+      : null;
+  // Resigned (Austritt), but the paid-through date hasn't passed yet — they can still undo it,
+  // so the "become a member" promo would wrongly send them into a brand new payment flow.
+  const canUndoResignation =
+    !!membershipStatus?.cancelledByUser &&
+    periodEndDate !== null &&
+    periodEndDate > new Date();
   // Show the promo modal once after 30 days, only to non-members
   const shouldShowPromo =
-    !isActive && !localSettings.agriColtivioPromoShown && daysSinceLaunch >= 30;
+    canLinkToMembership &&
+    !isActive &&
+    !canUndoResignation &&
+    !localSettings.agriColtivioPromoShown &&
+    daysSinceLaunch >= 30;
   const [promoVisible, setPromoVisible] = useState(shouldShowPromo);
 
   function dismissPromo() {
@@ -145,9 +145,9 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
     setPromoVisible(false);
   }
 
-  async function openMembershipAndDismiss() {
-    await openMembershipUrl();
+  function goToMembershipAndDismiss() {
     dismissPromo();
+    goToMembershipScreen(navigation, true);
   }
 
   const isBannerDismissed =
@@ -165,6 +165,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   // Show expiry-soon banner only to the user who owns the membership.
   // Guard on !isFarmLoading to avoid a flash while farm.membership.status is not yet known.
   const showExpirySoonBanner =
+    canLinkToMembership &&
     !isFarmLoading &&
     !!membershipStatus &&
     isCancelled &&
@@ -176,12 +177,17 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   // Show expired/grace notice to the user who had the membership.
   // isInGracePeriod means isActive=true, so we check it separately.
   // Guard on !isFarmLoading for the same reason.
+  // The date must have actually passed (daysUntilExpiry < 0) — isActive alone isn't enough,
+  // since an Austritt makes isActive false immediately even while periodEnd is still in the
+  // future, and that's a resignation notice, not an expiry notice.
   const showExpiredBanner =
+    canLinkToMembership &&
     !isFarmLoading &&
     !!membershipStatus &&
     isCancelled &&
     !isBannerDismissed &&
-    (isInGracePeriod || (!isActive && relevantExpiryIso !== null));
+    (isInGracePeriod ||
+      (!isActive && daysUntilExpiry !== null && daysUntilExpiry < 0));
 
   function dismissMembershipBanner() {
     if (relevantExpiryIso) {
@@ -291,9 +297,9 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
             )}
           </View>
 
-          {isActive &&
-            localSettings.showUpcomingTasks &&
-            getAccess("tasks") !== "none" && <UpcomingTasksTile />}
+          {localSettings.showUpcomingTasks && getAccess("tasks") !== "none" && (
+            <UpcomingTasksTile />
+          )}
 
           {isList ? (
             // List layout: full-width rows with small image icon and chevron
@@ -400,32 +406,18 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
             }}
           >
             <H2>{t("agri_coltivio.promo_intro")}</H2>
-            <Body style={{ marginTop: theme.spacing.m }}>
-              {t("agri_coltivio.section_1_pre")}
-              <Text style={{ fontWeight: "bold" }}>
-                {t("agri_coltivio.section_1_bold")}
-              </Text>
-              {t("agri_coltivio.section_1_post")}
-            </Body>
-            <Body style={{ marginTop: theme.spacing.l, fontWeight: "bold" }}>
-              {t("agri_coltivio.section_4")}
-            </Body>
-            <H3 style={{ marginTop: theme.spacing.l }}>
-              {t("membership.community_heading")}
-            </H3>
-            <Body style={{ marginTop: theme.spacing.m }}>
-              {t("agri_coltivio.community_text")}
-            </Body>
-            <Body style={{ marginTop: theme.spacing.s }}>
-              {t("agri_coltivio.community_text_2")}
-            </Body>
+            <AgriColtivioPitch />
           </ScrollView>
 
           {/* CTA pinned to bottom */}
           <View style={{ padding: theme.spacing.m }}>
+            <Body style={{ color: theme.colors.gray1, textAlign: "center" }}>
+              {t("membership.price_info")}
+            </Body>
             <Button
+              style={{ marginTop: theme.spacing.s }}
               title={t("agri_coltivio.become_member")}
-              onPress={openMembershipAndDismiss}
+              onPress={goToMembershipAndDismiss}
             />
           </View>
         </SafeAreaView>

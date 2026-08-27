@@ -18,18 +18,18 @@ export function renderHomeStack(theme: DefaultTheme, navigation: any) {
           return (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <IonIconButton
-                icon="settings-outline"
-                type="ghost"
-                iconSize={30}
-                color={theme.colors.primary}
-                onPress={() => navigation.navigate("AppSettings")}
-              />
-              <IonIconButton
                 icon="information-circle-outline"
                 type="ghost"
                 iconSize={30}
                 color={theme.colors.primary}
                 onPress={() => navigation.navigate("AgriColtivioInfo")}
+              />
+              <IonIconButton
+                icon="settings-outline"
+                type="ghost"
+                iconSize={30}
+                color={theme.colors.primary}
+                onPress={() => navigation.navigate("AppSettings")}
               />
               <IonIconButton
                 icon="person-circle-outline"

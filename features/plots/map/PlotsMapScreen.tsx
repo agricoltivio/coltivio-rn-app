@@ -109,7 +109,8 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
 
   // Extracted to avoid a complex expression in the dependency array below —
   // re-fires the onboarding effect when the create sub-step changes (e.g. "choose" -> "draw"/"parcel").
-  const createDrawingAction = mode.type === "create" ? mode.drawingAction : null;
+  const createDrawingAction =
+    mode.type === "create" ? mode.drawingAction : null;
 
   // Auto-show the relevant onboarding the first time each tool is used
   useEffect(() => {

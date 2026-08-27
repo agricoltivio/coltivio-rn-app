@@ -18,7 +18,6 @@ import {
   useDeleteAnimalMutation,
   useUpdateAnimalMutation,
 } from "./animals.hooks";
-import { useMembership } from "@/features/farms/farms.hooks";
 import { usePermissions } from "@/features/user/users.hooks";
 import { AnimalDetailsScreenProps } from "./navigation/animals-routes";
 import { formatLocalizedDate } from "@/utils/date";
@@ -34,7 +33,6 @@ export function AnimalDetailsScreen({
   const { canWrite } = usePermissions();
   const animalId = route.params.animalId;
   const { animal } = useAnimalByIdQuery(animalId);
-  const { isActive: isMember } = useMembership();
 
   const deleteAnimalMutation = useDeleteAnimalMutation(() =>
     navigation.goBack(),
@@ -324,40 +322,37 @@ export function AnimalDetailsScreen({
           </View>
         )}
 
-        {/* Journal — members only */}
-        {isMember && (
-          <View style={{ marginTop: theme.spacing.l }}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("AnimalJournal", { animalId })}
+        <View style={{ marginTop: theme.spacing.l }}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("AnimalJournal", { animalId })}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: theme.spacing.xs,
+              padding: 12,
+              borderRadius: theme.radii.m,
+              borderWidth: 1.5,
+              borderColor: theme.colors.primary,
+              backgroundColor: theme.colors.white,
+            }}
+          >
+            <Ionicons
+              name="book-outline"
+              size={18}
+              color={theme.colors.primary}
+            />
+            <Subtitle
               style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: theme.spacing.xs,
-                padding: 12,
-                borderRadius: theme.radii.m,
-                borderWidth: 1.5,
-                borderColor: theme.colors.primary,
-                backgroundColor: theme.colors.white,
+                color: theme.colors.primary,
+                fontWeight: "600",
+                fontSize: 16,
               }}
             >
-              <Ionicons
-                name="book-outline"
-                size={18}
-                color={theme.colors.primary}
-              />
-              <Subtitle
-                style={{
-                  color: theme.colors.primary,
-                  fontWeight: "600",
-                  fontSize: 16,
-                }}
-              >
-                {t("animals.journal")}
-              </Subtitle>
-            </TouchableOpacity>
-          </View>
-        )}
+              {t("animals.journal")}
+            </Subtitle>
+          </TouchableOpacity>
+        </View>
 
         {/* Children */}
         <View style={{ marginTop: theme.spacing.l }}>

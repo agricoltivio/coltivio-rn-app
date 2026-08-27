@@ -1,5 +1,8 @@
 import { CategoryFilter } from "@/components/charts/CategoryFilter";
-import { ChartMode, ChartViewSwitcher } from "@/components/charts/ChartViewSwitcher";
+import {
+  ChartMode,
+  ChartViewSwitcher,
+} from "@/components/charts/ChartViewSwitcher";
 import { MonthCartesianChart } from "@/components/charts/MonthCartesianChart";
 import { UnitBreakdownEntry } from "@/components/charts/unitBreakdown";
 import { scaleUnit } from "@/components/charts/unitScaling";
@@ -181,10 +184,7 @@ function HarvestCropCard({
     [harvestSummaries, cropName, conservationMethod],
   );
 
-  const getBreakdown = (
-    year: number,
-    month: number,
-  ): UnitBreakdownEntry[] => {
+  const getBreakdown = (year: number, month: number): UnitBreakdownEntry[] => {
     const rows =
       chartMode === "cumulative"
         ? accumulateProducedUnitsUpToMonth(breakdownByYearMonth, year, month)

@@ -13677,6 +13677,44 @@
         }
       }
     },
+    "/v1/membership/paymentMethod/intent": {
+      "post": {
+        "operationId": "PostV1MembershipPaymentMethodIntent",
+        "requestBody": {
+          "description": "POST /v1/membership/paymentMethod/intent Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1MembershipPaymentMethodIntentRequestBody"
+              }
+            }
+          }
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/membership/paymentMethod/intent Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1MembershipPaymentMethodIntentPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/membership/paymentMethod/intent Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/membership/subscription": {
       "delete": {
         "operationId": "DeleteV1MembershipSubscription",
@@ -13730,6 +13768,110 @@
           },
           "400": {
             "description": "POST /v1/membership/subscription Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/membership/subscription/intent": {
+      "post": {
+        "operationId": "PostV1MembershipSubscriptionIntent",
+        "requestBody": {
+          "description": "POST /v1/membership/subscription/intent Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1MembershipSubscriptionIntentRequestBody"
+              }
+            }
+          }
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/membership/subscription/intent Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1MembershipSubscriptionIntentPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/membership/subscription/intent Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/membership/subscription/autoRenew": {
+      "delete": {
+        "operationId": "DeleteV1MembershipSubscriptionAutoRenew",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "DELETE /v1/membership/subscription/autoRenew Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteV1MembershipSubscriptionAutoRenewPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "DELETE /v1/membership/subscription/autoRenew Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/membership/manual/intent": {
+      "post": {
+        "operationId": "PostV1MembershipManualIntent",
+        "requestBody": {
+          "description": "POST /v1/membership/manual/intent Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1MembershipManualIntentRequestBody"
+              }
+            }
+          }
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/membership/manual/intent Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1MembershipManualIntentPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/membership/manual/intent Negative response",
             "content": {
               "application/json": {
                 "schema": {
@@ -13846,6 +13988,44 @@
           },
           "400": {
             "description": "POST /v1/donations/checkout Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/donations/intent": {
+      "post": {
+        "operationId": "PostV1DonationsIntent",
+        "requestBody": {
+          "description": "POST /v1/donations/intent Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1DonationsIntentRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "POST /v1/donations/intent Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1DonationsIntentPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/donations/intent Negative response",
             "content": {
               "application/json": {
                 "schema": {
@@ -37408,6 +37588,31 @@
         },
         "required": ["successUrl", "cancelUrl"]
       },
+      "PostV1MembershipPaymentMethodIntentPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "setupIntentClientSecret": { "type": "string" },
+              "customerId": { "type": "string" },
+              "ephemeralKeySecret": { "type": "string" }
+            },
+            "required": [
+              "setupIntentClientSecret",
+              "customerId",
+              "ephemeralKeySecret"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1MembershipPaymentMethodIntentRequestBody": {
+        "type": "object",
+        "properties": {}
+      },
       "DeleteV1MembershipSubscriptionPositiveResponse": {
         "type": "object",
         "properties": {
@@ -37438,6 +37643,69 @@
         "type": "object",
         "properties": {}
       },
+      "PostV1MembershipSubscriptionIntentPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "paymentIntentClientSecret": { "type": "string" },
+              "customerId": { "type": "string" },
+              "ephemeralKeySecret": { "type": "string" }
+            },
+            "required": [
+              "paymentIntentClientSecret",
+              "customerId",
+              "ephemeralKeySecret"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1MembershipSubscriptionIntentRequestBody": {
+        "type": "object",
+        "properties": {}
+      },
+      "DeleteV1MembershipSubscriptionAutoRenewPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": { "cancelAtPeriodEnd": { "type": "boolean" } },
+            "required": ["cancelAtPeriodEnd"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1MembershipManualIntentPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "paymentIntentClientSecret": { "type": "string" },
+              "customerId": { "type": "string" },
+              "ephemeralKeySecret": { "type": "string" }
+            },
+            "required": [
+              "paymentIntentClientSecret",
+              "customerId",
+              "ephemeralKeySecret"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1MembershipManualIntentRequestBody": {
+        "type": "object",
+        "properties": {}
+      },
       "GetV1MembershipPaymentsPositiveResponse": {
         "type": "object",
         "properties": {
@@ -37464,6 +37732,7 @@
                     "cardBrand": { "type": ["string", "null"] },
                     "cardExpMonth": { "type": ["number", "null"] },
                     "cardExpYear": { "type": ["number", "null"] },
+                    "paymentMethodType": { "type": ["string", "null"] },
                     "createdAt": {}
                   },
                   "required": [
@@ -37479,6 +37748,7 @@
                     "cardBrand",
                     "cardExpMonth",
                     "cardExpYear",
+                    "paymentMethodType",
                     "createdAt"
                   ],
                   "additionalProperties": false
@@ -37540,6 +37810,35 @@
           "cancelUrl": { "type": "string", "format": "uri" }
         },
         "required": ["amount", "email", "successUrl", "cancelUrl"]
+      },
+      "PostV1DonationsIntentPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": { "paymentIntentClientSecret": { "type": "string" } },
+            "required": ["paymentIntentClientSecret"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1DonationsIntentRequestBody": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 9007199254740991
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+          }
+        },
+        "required": ["amount", "email"]
       },
       "PostV1AuthHandoffPositiveResponse": {
         "type": "object",

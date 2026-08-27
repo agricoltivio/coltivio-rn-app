@@ -1,4 +1,8 @@
-import { ConservationMethod, HarvestSummary, HarvestUnit } from "@/api/harvests.api";
+import {
+  ConservationMethod,
+  HarvestSummary,
+  HarvestUnit,
+} from "@/api/harvests.api";
 
 export const harvestingUnits: HarvestUnit[] = [
   "load",

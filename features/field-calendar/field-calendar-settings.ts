@@ -15,7 +15,6 @@ export type FieldCalendarItemMeta = {
   translationKey: string;
   route: string;
   feature: PermissionFeature;
-  membershipRequired?: boolean;
 };
 
 // Maps itemId → translation key + navigation route + required permission feature
@@ -69,7 +68,6 @@ export const FIELD_CALENDAR_ITEMS: Record<string, FieldCalendarItemMeta> = {
     translationKey: "field_calendar.field_events_map",
     route: "FieldEventsMap",
     feature: "field_calendar",
-    membershipRequired: true,
   },
 };
 

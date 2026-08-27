@@ -2820,6 +2820,22 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/v1/membership/paymentMethod/intent": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations["PostV1MembershipPaymentMethodIntent"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/v1/membership/subscription": {
     parameters: {
       query?: never;
@@ -2831,6 +2847,54 @@ export interface paths {
     put?: never;
     post: operations["PostV1MembershipSubscription"];
     delete: operations["DeleteV1MembershipSubscription"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/membership/subscription/intent": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations["PostV1MembershipSubscriptionIntent"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/membership/subscription/autoRenew": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete: operations["DeleteV1MembershipSubscriptionAutoRenew"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/membership/manual/intent": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations["PostV1MembershipManualIntent"];
+    delete?: never;
     options?: never;
     head?: never;
     patch?: never;
@@ -2878,6 +2942,22 @@ export interface paths {
     get?: never;
     put?: never;
     post: operations["PostV1DonationsCheckout"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/donations/intent": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations["PostV1DonationsIntent"];
     delete?: never;
     options?: never;
     head?: never;
@@ -12589,6 +12669,14 @@ export interface components {
       /** Format: uri */
       cancelUrl: string;
     };
+    PostV1MembershipPaymentMethodIntentPositiveResponse: {
+      data: {
+        setupIntentClientSecret: string;
+        customerId: string;
+        ephemeralKeySecret: string;
+      };
+    };
+    PostV1MembershipPaymentMethodIntentRequestBody: Record<string, never>;
     DeleteV1MembershipSubscriptionPositiveResponse: {
       data: {
         cancelAtPeriodEnd: boolean;
@@ -12600,6 +12688,27 @@ export interface components {
       };
     };
     PostV1MembershipSubscriptionRequestBody: Record<string, never>;
+    PostV1MembershipSubscriptionIntentPositiveResponse: {
+      data: {
+        paymentIntentClientSecret: string;
+        customerId: string;
+        ephemeralKeySecret: string;
+      };
+    };
+    PostV1MembershipSubscriptionIntentRequestBody: Record<string, never>;
+    DeleteV1MembershipSubscriptionAutoRenewPositiveResponse: {
+      data: {
+        cancelAtPeriodEnd: boolean;
+      };
+    };
+    PostV1MembershipManualIntentPositiveResponse: {
+      data: {
+        paymentIntentClientSecret: string;
+        customerId: string;
+        ephemeralKeySecret: string;
+      };
+    };
+    PostV1MembershipManualIntentRequestBody: Record<string, never>;
     GetV1MembershipPaymentsPositiveResponse: {
       data: {
         result: {
@@ -12616,6 +12725,7 @@ export interface components {
           cardBrand: string | null;
           cardExpMonth: number | null;
           cardExpYear: number | null;
+          paymentMethodType: string | null;
           createdAt: unknown;
         }[];
         count: number;
@@ -12640,6 +12750,16 @@ export interface components {
       successUrl: string;
       /** Format: uri */
       cancelUrl: string;
+    };
+    PostV1DonationsIntentPositiveResponse: {
+      data: {
+        paymentIntentClientSecret: string;
+      };
+    };
+    PostV1DonationsIntentRequestBody: {
+      amount: number;
+      /** Format: email */
+      email: string;
     };
     PostV1AuthHandoffPositiveResponse: {
       data: {
@@ -25388,6 +25508,40 @@ export interface operations {
       };
     };
   };
+  PostV1MembershipPaymentMethodIntent: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** @description POST /v1/membership/paymentMethod/intent Request body */
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["PostV1MembershipPaymentMethodIntentRequestBody"];
+      };
+    };
+    responses: {
+      /** @description POST /v1/membership/paymentMethod/intent Positive response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["PostV1MembershipPaymentMethodIntentPositiveResponse"];
+        };
+      };
+      /** @description POST /v1/membership/paymentMethod/intent Negative response */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+        };
+      };
+    };
+  };
   PostV1MembershipSubscription: {
     parameters: {
       query?: never;
@@ -25441,6 +25595,103 @@ export interface operations {
         };
       };
       /** @description DELETE /v1/membership/subscription Negative response */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+        };
+      };
+    };
+  };
+  PostV1MembershipSubscriptionIntent: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** @description POST /v1/membership/subscription/intent Request body */
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["PostV1MembershipSubscriptionIntentRequestBody"];
+      };
+    };
+    responses: {
+      /** @description POST /v1/membership/subscription/intent Positive response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["PostV1MembershipSubscriptionIntentPositiveResponse"];
+        };
+      };
+      /** @description POST /v1/membership/subscription/intent Negative response */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+        };
+      };
+    };
+  };
+  DeleteV1MembershipSubscriptionAutoRenew: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description DELETE /v1/membership/subscription/autoRenew Positive response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["DeleteV1MembershipSubscriptionAutoRenewPositiveResponse"];
+        };
+      };
+      /** @description DELETE /v1/membership/subscription/autoRenew Negative response */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+        };
+      };
+    };
+  };
+  PostV1MembershipManualIntent: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** @description POST /v1/membership/manual/intent Request body */
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["PostV1MembershipManualIntentRequestBody"];
+      };
+    };
+    responses: {
+      /** @description POST /v1/membership/manual/intent Positive response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["PostV1MembershipManualIntentPositiveResponse"];
+        };
+      };
+      /** @description POST /v1/membership/manual/intent Negative response */
       400: {
         headers: {
           [name: string]: unknown;
@@ -25563,6 +25814,40 @@ export interface operations {
         };
       };
       /** @description POST /v1/donations/checkout Negative response */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+        };
+      };
+    };
+  };
+  PostV1DonationsIntent: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** @description POST /v1/donations/intent Request body */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PostV1DonationsIntentRequestBody"];
+      };
+    };
+    responses: {
+      /** @description POST /v1/donations/intent Positive response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["PostV1DonationsIntentPositiveResponse"];
+        };
+      };
+      /** @description POST /v1/donations/intent Negative response */
       400: {
         headers: {
           [name: string]: unknown;

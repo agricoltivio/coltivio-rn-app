@@ -165,10 +165,7 @@ function ProductCard({
     [summaries, productName],
   );
 
-  const getBreakdown = (
-    year: number,
-    month: number,
-  ): UnitBreakdownEntry[] => {
+  const getBreakdown = (year: number, month: number): UnitBreakdownEntry[] => {
     const row =
       chartMode === "cumulative"
         ? accumulateAppliedCropProtectionsUpToMonth(

@@ -14,6 +14,10 @@ import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { OnboardingData } from "../onboarding/OnboardingContext";
 import { User } from "@/api/user.api";
+import * as Linking from "expo-linking";
+import { usePaymentSheet } from "@stripe/stripe-react-native";
+import { applePayParams, googlePayParams } from "@/utils/stripe";
+import { useLocalSettings } from "../user/LocalSettingsContext";
 
 export function useFarmQuery(enabled: boolean = true) {
   const api = useApi();
@@ -265,9 +269,12 @@ export function useMembership() {
         )
       : null;
 
-  // Grace period: farm status is "none" but membership expired less than GRACE days ago
+  // Grace period: farm status is "none" but membership expired less than GRACE days ago.
+  // Matches the backend (membership.ts isActive/isPaidMember): a user who explicitly cancelled
+  // (Austritt) doesn't get the grace buffer — their access already ended exactly at periodEnd.
   const isInGracePeriod =
     status === "none" &&
+    !membershipStatus?.cancelledByUser &&
     daysSinceExpiry !== null &&
     daysSinceExpiry >= 0 &&
     daysSinceExpiry < MEMBERSHIP_GRACE_PERIOD_DAYS;
@@ -288,6 +295,165 @@ export function useMembershipStatusQuery() {
     queryFn: () => api.membership.getMembershipStatus(),
   });
   return { membershipStatus: data, ...rest };
+}
+
+export function useMembershipCheckoutMutation() {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  const { initPaymentSheet, presentPaymentSheet } = usePaymentSheet();
+  const { updateLocalSettings } = useLocalSettings();
+
+  async function refreshMembership() {
+    await queryClient.invalidateQueries({
+      queryKey: queryKeys.farms.membershipStatus.queryKey,
+    });
+    await queryClient.invalidateQueries({
+      queryKey: queryKeys.farms.farm.queryKey,
+    });
+    await queryClient.invalidateQueries({
+      queryKey: queryKeys.farms.membershipPayments.queryKey,
+    });
+    // A new/renewed membership means any previously dismissed expiry banner no longer applies —
+    // let it show again next time this (or any future) membership actually expires.
+    updateLocalSettings("dismissedMembershipBannerForDate", null);
+  }
+
+  return useMutation({
+    mutationFn: async (autoRenew: boolean): Promise<boolean> => {
+      // autoRenew picks which intent to create, which is what determines the payment methods
+      // Stripe offers in the sheet: recurring subscription (card only) vs. one-time (Twint too).
+      const { paymentIntentClientSecret, customerId, ephemeralKeySecret } =
+        autoRenew
+          ? await api.membership.createSubscriptionIntent()
+          : await api.membership.createManualIntent();
+
+      const returnURL = Linking.createURL("stripe-redirect");
+      const { error: initError } = await initPaymentSheet({
+        merchantDisplayName: "AgriColtivio",
+        customerId,
+        customerEphemeralKeySecret: ephemeralKeySecret,
+        paymentIntentClientSecret,
+        // Needed for payment methods that redirect out for their own confirmation (e.g. Twint, 3DS).
+        returnURL,
+        applePay: applePayParams,
+        googlePay: googlePayParams,
+      });
+      if (initError) throw new Error(initError.message);
+
+      const { error: presentError } = await presentPaymentSheet();
+      if (presentError) {
+        // User dismissed the sheet without paying — not a failure.
+        if (presentError.code === "Canceled") return false;
+        throw new Error(presentError.message);
+      }
+
+      // The Stripe webhook that activates the membership on the backend can lag slightly
+      // behind the sheet closing, so refetch twice with a short gap rather than just once.
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      await refreshMembership();
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await refreshMembership();
+      return true;
+    },
+  });
+}
+
+export function useMembershipCancelMutation() {
+  const api = useApi();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => api.membership.cancelSubscription(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.farms.membershipStatus.queryKey,
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.farms.farm.queryKey,
+      });
+    },
+  });
+}
+
+export function useMembershipReactivateMutation() {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  const { updateLocalSettings } = useLocalSettings();
+
+  return useMutation({
+    mutationFn: () => api.membership.reactivateSubscription(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.farms.membershipStatus.queryKey,
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.farms.farm.queryKey,
+      });
+      // Withdrawing an Austritt means any previously dismissed expiry banner no longer
+      // applies — let it show again next time this membership actually expires.
+      updateLocalSettings("dismissedMembershipBannerForDate", null);
+    },
+  });
+}
+
+export function useMembershipDisableAutoRenewMutation() {
+  const api = useApi();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => api.membership.disableAutoRenew(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.farms.membershipStatus.queryKey,
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.farms.farm.queryKey,
+      });
+    },
+  });
+}
+
+export function useMembershipPaymentMethodMutation() {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  const { initPaymentSheet, presentPaymentSheet } = usePaymentSheet();
+
+  return useMutation({
+    mutationFn: async () => {
+      const { setupIntentClientSecret, customerId, ephemeralKeySecret } =
+        await api.membership.createPaymentMethodIntent();
+
+      const returnURL = Linking.createURL("stripe-redirect");
+      const { error: initError } = await initPaymentSheet({
+        merchantDisplayName: "AgriColtivio",
+        customerId,
+        customerEphemeralKeySecret: ephemeralKeySecret,
+        setupIntentClientSecret,
+        returnURL,
+      });
+      if (initError) throw new Error(initError.message);
+
+      const { error: presentError } = await presentPaymentSheet();
+      if (presentError && presentError.code !== "Canceled") {
+        throw new Error(presentError.message);
+      }
+      if (presentError?.code === "Canceled") return;
+
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.farms.membershipStatus.queryKey,
+      });
+    },
+  });
+}
+
+export function useMembershipPaymentsQuery(enabled: boolean = true) {
+  const api = useApi();
+  const { data, ...rest } = useQuery({
+    queryKey: queryKeys.farms.membershipPayments.queryKey,
+    queryFn: () => api.membership.getPayments(),
+    enabled,
+  });
+  return { payments: data, ...rest };
 }
 
 export function useDeleteFarmMutation(

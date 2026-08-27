@@ -27,7 +27,9 @@ export function CreateModeChooser() {
       <View style={{ marginTop: theme.spacing.l, gap: theme.spacing.s }}>
         <Button
           title={t("buttons.draw_area")}
-          onPress={() => dispatch({ type: "SET_CREATE_ACTION", action: "draw" })}
+          onPress={() =>
+            dispatch({ type: "SET_CREATE_ACTION", action: "draw" })
+          }
         />
         <Button
           title={t("buttons.parcel_select")}

@@ -6,7 +6,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, Pressable, TextInput, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCropRotationsQuery } from "./crop-rotations.hooks";
-import { useMembership } from "@/features/farms/farms.hooks";
 import { usePermissions } from "@/features/user/users.hooks";
 import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
 import { Ionicons } from "@expo/vector-icons";
@@ -25,7 +24,6 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { canWrite } = usePermissions();
-  const { isActive: isMember } = useMembership();
   const [selectedCropNames, setSelectedCropNames] = useState<Set<string>>(
     new Set(),
   );
@@ -162,13 +160,11 @@ export function CropRotationsScreen({ navigation }: CropRotationsScreenProps) {
     <ContentView headerVisible>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <H2 style={{ flex: 1 }}>{t("crop_rotations.crop_rotation")}</H2>
-        {isMember && (
-          <Pressable onPress={() => navigation.navigate("DraftPlans")}>
-            <Subtitle style={{ color: theme.colors.primary }}>
-              {t("crop_rotations.draft_plans.title")}
-            </Subtitle>
-          </Pressable>
-        )}
+        <Pressable onPress={() => navigation.navigate("DraftPlans")}>
+          <Subtitle style={{ color: theme.colors.primary }}>
+            {t("crop_rotations.draft_plans.title")}
+          </Subtitle>
+        </Pressable>
       </View>
 
       {/* Search bar */}

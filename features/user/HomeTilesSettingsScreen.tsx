@@ -11,7 +11,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { useMembership } from "@/features/farms/farms.hooks";
 import { usePermissions } from "./users.hooks";
 import { useLocalSettings } from "./LocalSettingsContext";
 
@@ -19,14 +18,11 @@ export function HomeTilesSettingsScreen() {
   const { t } = useTranslation();
   const theme = useTheme();
   const { localSettings, updateLocalSettings } = useLocalSettings();
-  const { isActive } = useMembership();
   const { getAccess } = usePermissions();
 
   function isTileAccessible(id: string): boolean {
     const meta = HOME_TILES[id as keyof typeof HOME_TILES];
     if (!meta) return false;
-    if ("membershipRequired" in meta && meta.membershipRequired && !isActive)
-      return false;
     if (id === "plots" && getAccess("field_calendar") === "none") return false;
     if (id === "tasks" && getAccess("tasks") === "none") return false;
     if (id === "animalHusbandry" && getAccess("animals") === "none")
@@ -98,16 +94,14 @@ export function HomeTilesSettingsScreen() {
           }}
         />
 
-        {isActive && (
-          <Switch
-            label={t("home_tiles.show_upcoming_tasks")}
-            value={localSettings.showUpcomingTasks}
-            onChange={(e) =>
-              updateLocalSettings("showUpcomingTasks", e.nativeEvent.value)
-            }
-            style={{ paddingVertical: theme.spacing.s }}
-          />
-        )}
+        <Switch
+          label={t("home_tiles.show_upcoming_tasks")}
+          value={localSettings.showUpcomingTasks}
+          onChange={(e) =>
+            updateLocalSettings("showUpcomingTasks", e.nativeEvent.value)
+          }
+          style={{ paddingVertical: theme.spacing.s }}
+        />
 
         {/* Visible tiles with reorder and remove */}
         <View

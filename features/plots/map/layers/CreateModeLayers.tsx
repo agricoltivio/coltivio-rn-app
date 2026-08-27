@@ -91,7 +91,8 @@ export const CreateModeLayers = forwardRef<CreateModeLayersHandle>(
         type: "FeatureCollection",
         features: nearbyParcels
           .filter(
-            (parcel) => parcel.geometry.coordinates.length > 0 && parcel.localId,
+            (parcel) =>
+              parcel.geometry.coordinates.length > 0 && parcel.localId,
           )
           .map((parcel) => ({
             type: "Feature",

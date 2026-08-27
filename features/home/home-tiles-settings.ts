@@ -8,7 +8,6 @@ export type HomeTileMeta = {
   route: string;
   image: number;
   routeParams?: Record<string, never>;
-  membershipRequired?: boolean;
 };
 
 export const HOME_TILES = {
@@ -42,7 +41,6 @@ export const HOME_TILES = {
     translationKey: "home.tiles.tasks",
     route: "TaskList",
     image: require("@/assets/images/tasks.png"),
-    membershipRequired: true,
   },
 } as const;
 
