@@ -14,7 +14,7 @@ export type UserStackParamList = {
   EmailVerified: undefined;
   ChangePassword: undefined;
   DevSettings: undefined;
-  UserMembership: undefined;
+  UserMembership: { autoOpenStatuten?: boolean } | undefined;
 };
 
 export type UserAccountScreenProps = StackScreenProps<"UserAccount">;

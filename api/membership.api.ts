@@ -7,6 +7,18 @@ export type MembershipStatus =
 export type MembershipPayment =
   components["schemas"]["GetV1MembershipPaymentsPositiveResponse"]["data"]["result"][number];
 
+export type PaymentIntentSheetParams = {
+  paymentIntentClientSecret: string;
+  customerId: string;
+  ephemeralKeySecret: string;
+};
+
+export type SetupIntentSheetParams = {
+  setupIntentClientSecret: string;
+  customerId: string;
+  ephemeralKeySecret: string;
+};
+
 export function membershipApi(client: FetchClient) {
   return {
     async getMembershipStatus(): Promise<MembershipStatus> {
@@ -14,34 +26,25 @@ export function membershipApi(client: FetchClient) {
       return data!.data;
     },
 
-    async createCheckoutSession(
-      successUrl: string,
-      cancelUrl: string,
-    ): Promise<string> {
-      const { data } = await client.POST("/v1/membership/checkout/subscription", {
-        body: { successUrl, cancelUrl },
+    async createSubscriptionIntent(): Promise<PaymentIntentSheetParams> {
+      const { data } = await client.POST("/v1/membership/subscription/intent", {
+        body: {},
       });
-      return data!.data.url;
+      return data!.data;
     },
 
-    async createManualCheckoutSession(
-      successUrl: string,
-      cancelUrl: string,
-    ): Promise<string> {
-      const { data } = await client.POST("/v1/membership/checkout/manual", {
-        body: { successUrl, cancelUrl },
+    async createManualIntent(): Promise<PaymentIntentSheetParams> {
+      const { data } = await client.POST("/v1/membership/manual/intent", {
+        body: {},
       });
-      return data!.data.url;
+      return data!.data;
     },
 
-    async createPaymentMethodSession(
-      successUrl: string,
-      cancelUrl: string,
-    ): Promise<string> {
-      const { data } = await client.POST("/v1/membership/paymentMethod", {
-        body: { successUrl, cancelUrl },
+    async createPaymentMethodIntent(): Promise<SetupIntentSheetParams> {
+      const { data } = await client.POST("/v1/membership/paymentMethod/intent", {
+        body: {},
       });
-      return data!.data.url;
+      return data!.data;
     },
 
     async cancelSubscription(): Promise<{ cancelAtPeriodEnd: boolean }> {
@@ -53,6 +56,11 @@ export function membershipApi(client: FetchClient) {
       const { data } = await client.POST("/v1/membership/subscription", {
         body: {},
       });
+      return data!.data;
+    },
+
+    async disableAutoRenew(): Promise<{ cancelAtPeriodEnd: boolean }> {
+      const { data } = await client.DELETE("/v1/membership/subscription/autoRenew");
       return data!.data;
     },
 

@@ -1,24 +1,27 @@
 import { Button } from "@/components/buttons/Button";
-import { Chip } from "@/components/chips/Chip";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem, ListItemContent } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { Body, H2, H3 } from "@/theme/Typography";
-import { useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, View } from "react-native";
+import { Alert, Switch, Text, View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { canLinkToMembership } from "@/utils/membership";
+import { canLinkToMembership, openMoreInfoUrl } from "@/utils/membership";
 import {
   useMembershipCancelMutation,
   useMembershipCheckoutMutation,
+  useMembershipDisableAutoRenewMutation,
   useMembershipPaymentMethodMutation,
   useMembershipPaymentsQuery,
   useMembershipReactivateMutation,
   useMembershipStatusQuery,
 } from "@/features/farms/farms.hooks";
 import { AgriColtivioPitch } from "@/features/agri-coltivio/AgriColtivioPitch";
+import { MembershipCancelledModal } from "@/features/agri-coltivio/MembershipCancelledModal";
+import { MembershipThankYouModal } from "@/features/agri-coltivio/MembershipThankYouModal";
 import { StatutenDialog } from "@/features/agri-coltivio/StatutenDialog";
 import { UserMembershipScreenProps } from "./navigation/user-routes";
 
@@ -53,16 +56,28 @@ function InfoRow({
   );
 }
 
-export function UserMembershipScreen({}: UserMembershipScreenProps) {
+export function UserMembershipScreen({ route }: UserMembershipScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { membershipStatus } = useMembershipStatusQuery();
   const checkoutMutation = useMembershipCheckoutMutation();
   const cancelMutation = useMembershipCancelMutation();
   const reactivateMutation = useMembershipReactivateMutation();
+  const disableAutoRenewMutation = useMembershipDisableAutoRenewMutation();
   const paymentMethodMutation = useMembershipPaymentMethodMutation();
 
   const [statutenVisible, setStatutenVisible] = useState(false);
+  const [thankYouVisible, setThankYouVisible] = useState(false);
+  const [cancelConfirmedVisible, setCancelConfirmedVisible] = useState(false);
+
+  // Reaching this screen from "become a member" elsewhere (info screen, home promo popup)
+  // opens the Statuten dialog immediately, so the whole checkout + thank-you flow happens
+  // here in one consistent place regardless of where the user started.
+  useEffect(() => {
+    if (route.params?.autoOpenStatuten) {
+      setStatutenVisible(true);
+    }
+  }, [route.params?.autoOpenStatuten]);
 
   const membership = membershipStatus;
   const trialEndStr = toDateString(membership?.trialEnd);
@@ -75,32 +90,44 @@ export function UserMembershipScreen({}: UserMembershipScreenProps) {
     ? new Date(membership.lastPeriodEnd as string)
     : null;
   const hasActiveTrial = trialEndDate !== null && trialEndDate > now;
-  const hasActivePeriod = periodEndDate !== null && periodEndDate > now;
-  const isActive = hasActiveTrial || hasActivePeriod;
+  // The raw paid period, regardless of whether the user has resigned from it.
+  const periodStillRunning = periodEndDate !== null && periodEndDate > now;
+  const cancelAtPeriodEnd = !!membership?.cancelAtPeriodEnd;
+  // Formal Vereins-Austritt (resignation) — takes effect immediately, unlike auto-renew off.
+  const cancelledByUser = !!membership?.cancelledByUser;
+  // Mirrors the backend (membership.ts isActive/isPaidMember): a resigned user is immediately
+  // out, even if their paid-through date hasn't arrived yet.
+  const isActive = hasActiveTrial || (periodStillRunning && !cancelledByUser);
   // Pure trial: trial running, no paid period lined up yet
   const isTrial = hasActiveTrial && !periodEndDate;
   // Trial running AND already subscribed — Stripe charges once the trial ends
   const isSubscribedDuringTrial = hasActiveTrial && !!periodEndDate;
   // Ever had a trial or paid period at all (vs. a brand new account)
   const hasHadMembership = !!(trialEndDate || periodEndDate);
-  const cancelAtPeriodEnd = !!membership?.cancelAtPeriodEnd;
-  const cancelledByUser = !!membership?.cancelledByUser;
+  // Resigned, but the paid-through date hasn't passed yet — the Austritt can still be undone.
+  const canUndoResignation = cancelledByUser && periodStillRunning;
 
-  // A real subscription to manage (cancel/reactivate/update payment method) — covers both an
+  // A real subscription to manage (auto-renew/cancel/update payment method) — covers both an
   // active paid period and "subscribed during trial"; a pure trial has nothing to manage yet.
   const hasManagedSubscription = isActive && !isTrial;
-  const showCancelButton =
-    hasManagedSubscription && !cancelledByUser && !cancelAtPeriodEnd;
-  const showReactivateButton =
-    hasManagedSubscription && (cancelAtPeriodEnd || cancelledByUser);
-  const showPaymentMethodButton = hasManagedSubscription && !cancelledByUser;
+  const showCancelButton = hasManagedSubscription;
+  // Only a real Stripe subscription can be toggled — one-time/manual payers (e.g. Twint, which
+  // never supports subscriptions) have nothing to switch, so the row is hidden for them entirely.
+  const showAutoRenewSwitch =
+    hasManagedSubscription && !isSubscribedDuringTrial && !!membership?.autoRenewing;
+  const showUndoButton = canUndoResignation;
+  const showPaymentMethodButton = hasManagedSubscription;
 
   const { payments } = useMembershipPaymentsQuery(hasHadMembership);
   // Filter out CHF 0 invoices Stripe generates when subscribing during a trial
   const visiblePayments = (payments ?? []).filter((p) => p.amount > 0);
 
   function onBecomeMemberConfirm(autoRenew: boolean) {
-    checkoutMutation.mutate(autoRenew);
+    checkoutMutation.mutate(autoRenew, {
+      onSuccess: (succeeded) => {
+        if (succeeded) setThankYouVisible(true);
+      },
+    });
   }
 
   function onCancelMembership() {
@@ -115,16 +142,27 @@ export function UserMembershipScreen({}: UserMembershipScreenProps) {
         {
           text: t("membership.cancel_dialog.confirm"),
           style: "destructive",
-          onPress: () => cancelMutation.mutate(),
+          onPress: () =>
+            cancelMutation.mutate(undefined, {
+              onSuccess: () => setCancelConfirmedVisible(true),
+            }),
         },
       ],
     );
   }
 
+  function onToggleAutoRenew(enabled: boolean) {
+    if (enabled) {
+      reactivateMutation.mutate();
+    } else {
+      disableAutoRenewMutation.mutate();
+    }
+  }
+
   return (
     <ContentView
       footerComponent={
-        canLinkToMembership && !hasManagedSubscription ? (
+        canLinkToMembership && !hasManagedSubscription && !canUndoResignation ? (
           <BottomActionContainer>
             <Body style={{ color: theme.colors.gray1, textAlign: "center" }}>
               {t("membership.price_info")}
@@ -140,11 +178,40 @@ export function UserMembershipScreen({}: UserMembershipScreenProps) {
               loading={checkoutMutation.isPending}
             />
           </BottomActionContainer>
+        ) : showCancelButton ? (
+          <BottomActionContainer>
+            <Button
+              type="danger"
+              title={t("membership.cancel_dialog.confirm")}
+              loading={cancelMutation.isPending}
+              onPress={onCancelMembership}
+            />
+          </BottomActionContainer>
         ) : undefined
       }
     >
       <ScrollView showHeaderOnScroll headerTitleOnScroll={t("membership.title")}>
         <H2>{t("membership.title")}</H2>
+
+        {canUndoResignation ? (
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: theme.spacing.s,
+              marginTop: theme.spacing.m,
+              marginHorizontal: theme.spacing.xs,
+              padding: theme.spacing.m,
+              borderRadius: theme.radii.l,
+              backgroundColor: theme.colors.danger + "22",
+            }}
+          >
+            <Ionicons name="alert-circle" size={20} color={theme.colors.danger} />
+            <Body style={{ color: theme.colors.danger, flex: 1 }}>
+              {t("membership.resigned_notice", { date: periodEndStr ?? "" })}
+            </Body>
+          </View>
+        ) : null}
 
         {hasHadMembership ? (
           <>
@@ -185,11 +252,25 @@ export function UserMembershipScreen({}: UserMembershipScreenProps) {
                 </ListItem>
               ) : null}
               {hasManagedSubscription && !isSubscribedDuringTrial && periodEndStr ? (
-                <InfoRow
-                  label={t("membership.valid_until")}
-                  value={periodEndStr}
-                  hideBottomDivider={!cancelAtPeriodEnd}
-                />
+                <InfoRow label={t("membership.valid_until")} value={periodEndStr} />
+              ) : null}
+              {showAutoRenewSwitch ? (
+                <ListItem hideBottomDivider>
+                  <ListItemContent>
+                    <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
+                      {t("membership.auto_renewing")}
+                    </ListItem.Title>
+                  </ListItemContent>
+                  <Switch
+                    style={{ marginRight: theme.spacing.m }}
+                    value={!cancelAtPeriodEnd}
+                    onValueChange={onToggleAutoRenew}
+                    disabled={
+                      disableAutoRenewMutation.isPending ||
+                      reactivateMutation.isPending
+                    }
+                  />
+                </ListItem>
               ) : null}
               {!isActive && !isTrial && periodEndStr ? (
                 <InfoRow
@@ -198,24 +279,28 @@ export function UserMembershipScreen({}: UserMembershipScreenProps) {
                   hideBottomDivider
                 />
               ) : null}
-              {cancelAtPeriodEnd && hasManagedSubscription && !isSubscribedDuringTrial ? (
-                <ListItem hideBottomDivider>
-                  <ListItemContent>
-                    <Chip
-                      label={t("membership.cancels_at_period_end")}
-                      bgColor={theme.colors.warning + "22"}
-                      textColor={theme.colors.warning}
-                    />
-                  </ListItemContent>
-                </ListItem>
-              ) : null}
             </View>
 
-            {hasManagedSubscription && (
+            {isActive && (
+              <Body style={{ marginTop: theme.spacing.m }}>
+                {t("membership.thank_you.body_pre")}
+                <Text
+                  style={{
+                    color: theme.colors.primary,
+                    textDecorationLine: "underline",
+                    fontWeight: "600",
+                  }}
+                  onPress={openMoreInfoUrl}
+                >
+                  {t("membership.thank_you.body_link")}
+                </Text>
+                {t("membership.thank_you.body_post")}
+              </Body>
+            )}
+
+            {(showPaymentMethodButton || showUndoButton) && (
               <View
                 style={{
-                  flexDirection: "row",
-                  flexWrap: "wrap",
                   gap: theme.spacing.s,
                   marginTop: theme.spacing.m,
                   marginHorizontal: theme.spacing.xs,
@@ -229,15 +314,7 @@ export function UserMembershipScreen({}: UserMembershipScreenProps) {
                     onPress={() => paymentMethodMutation.mutate()}
                   />
                 )}
-                {showCancelButton && (
-                  <Button
-                    type="danger"
-                    title={t("membership.cancel_dialog.confirm")}
-                    loading={cancelMutation.isPending}
-                    onPress={onCancelMembership}
-                  />
-                )}
-                {showReactivateButton && (
+                {showUndoButton && (
                   <Button
                     type="accent"
                     title={t("membership.reactivate")}
@@ -274,7 +351,9 @@ export function UserMembershipScreen({}: UserMembershipScreenProps) {
                         <ListItem.Body style={{ paddingLeft: theme.spacing.m }}>
                           {payment.cardBrand && payment.cardLast4
                             ? `${payment.cardBrand.toUpperCase()} •••• ${payment.cardLast4}`
-                            : "—"}
+                            : payment.paymentMethodType === "twint"
+                              ? t("membership.payment_method_twint")
+                              : "—"}
                         </ListItem.Body>
                       </ListItemContent>
                       <ListItem.Body style={{ paddingRight: theme.spacing.m }}>
@@ -296,6 +375,14 @@ export function UserMembershipScreen({}: UserMembershipScreenProps) {
         onClose={() => setStatutenVisible(false)}
         onConfirm={onBecomeMemberConfirm}
         showAutoRenewal
+      />
+      <MembershipThankYouModal
+        visible={thankYouVisible}
+        onClose={() => setThankYouVisible(false)}
+      />
+      <MembershipCancelledModal
+        visible={cancelConfirmedVisible}
+        onClose={() => setCancelConfirmedVisible(false)}
       />
     </ContentView>
   );

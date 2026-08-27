@@ -60,7 +60,13 @@ export default ({ config }) => {
       "expo-location",
       "expo-apple-authentication",
       "@react-native-community/datetimepicker",
-      "expo-web-browser",
+      [
+        "@stripe/stripe-react-native",
+        {
+          merchantIdentifier: "merchant.ch.agricoltivio.coltivio",
+          enableGooglePay: true,
+        },
+      ],
       [
         "@sentry/react-native/expo",
         {

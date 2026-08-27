@@ -2,16 +2,14 @@ import { FetchClient } from "./api";
 
 export function donationsApi(client: FetchClient) {
   return {
-    async createCheckoutSession(
+    async createIntent(
       amountRappen: number,
       email: string,
-      successUrl: string,
-      cancelUrl: string,
     ): Promise<string> {
-      const { data } = await client.POST("/v1/donations/checkout", {
-        body: { amount: amountRappen, email, successUrl, cancelUrl },
+      const { data } = await client.POST("/v1/donations/intent", {
+        body: { amount: amountRappen, email },
       });
-      return data!.data.url;
+      return data!.data.paymentIntentClientSecret;
     },
   };
 }

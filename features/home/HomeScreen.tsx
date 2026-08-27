@@ -6,7 +6,7 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { MapTile } from "@/features/map/MapTile";
 import { Body, H2 } from "@/theme/Typography";
 import { H1 } from "@/theme/Typography";
-import { canLinkToMembership } from "@/utils/membership";
+import { canLinkToMembership, goToMembershipScreen } from "@/utils/membership";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -16,13 +16,11 @@ import { useTheme } from "styled-components/native";
 import {
   useFarmQuery,
   useMembership,
-  useMembershipCheckoutMutation,
   useMembershipStatusQuery,
 } from "../farms/farms.hooks";
 import { useLocalSettings } from "../user/LocalSettingsContext";
 import { useUserQuery, usePermissions } from "../user/users.hooks";
 import { AgriColtivioPitch } from "../agri-coltivio/AgriColtivioPitch";
-import { StatutenDialog } from "../agri-coltivio/StatutenDialog";
 import { HomeTile } from "./HomeTile";
 import { HOME_TILES } from "./home-tiles-settings";
 import { UpcomingTasksTile } from "./UpcomingTasksTile";
@@ -36,7 +34,6 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { farm } = useFarmQuery();
   const { isActive, isInGracePeriod, graceDaysRemaining } = useMembership();
   const { membershipStatus } = useMembershipStatusQuery();
-  const checkoutMutation = useMembershipCheckoutMutation();
   const { isLoading: isFarmLoading } = useFarmQuery();
   const theme = useTheme();
   const { localSettings, updateLocalSettings } = useLocalSettings();
@@ -123,10 +120,22 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
     ? (Date.now() - new Date(localSettings.firstLaunchDate).getTime()) /
       (1000 * 60 * 60 * 24)
     : 0;
+  const periodEndDate =
+    typeof membershipStatus?.lastPeriodEnd === "string" &&
+    membershipStatus.lastPeriodEnd.length > 0
+      ? new Date(membershipStatus.lastPeriodEnd)
+      : null;
+  // Resigned (Austritt), but the paid-through date hasn't passed yet — they can still undo it,
+  // so the "become a member" promo would wrongly send them into a brand new payment flow.
+  const canUndoResignation =
+    !!membershipStatus?.cancelledByUser &&
+    periodEndDate !== null &&
+    periodEndDate > new Date();
   // Show the promo modal once after 30 days, only to non-members
   const shouldShowPromo =
     canLinkToMembership &&
     !isActive &&
+    !canUndoResignation &&
     !localSettings.agriColtivioPromoShown &&
     daysSinceLaunch >= 30;
   const [promoVisible, setPromoVisible] = useState(shouldShowPromo);
@@ -136,11 +145,9 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
     setPromoVisible(false);
   }
 
-  const [statutenVisible, setStatutenVisible] = useState(false);
-
-  async function openMembershipAndDismiss(autoRenew: boolean) {
-    await checkoutMutation.mutateAsync(autoRenew);
+  function goToMembershipAndDismiss() {
     dismissPromo();
+    goToMembershipScreen(navigation, true);
   }
 
   const isBannerDismissed =
@@ -170,13 +177,16 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   // Show expired/grace notice to the user who had the membership.
   // isInGracePeriod means isActive=true, so we check it separately.
   // Guard on !isFarmLoading for the same reason.
+  // The date must have actually passed (daysUntilExpiry < 0) — isActive alone isn't enough,
+  // since an Austritt makes isActive false immediately even while periodEnd is still in the
+  // future, and that's a resignation notice, not an expiry notice.
   const showExpiredBanner =
     canLinkToMembership &&
     !isFarmLoading &&
     !!membershipStatus &&
     isCancelled &&
     !isBannerDismissed &&
-    (isInGracePeriod || (!isActive && relevantExpiryIso !== null));
+    (isInGracePeriod || (!isActive && daysUntilExpiry !== null && daysUntilExpiry < 0));
 
   function dismissMembershipBanner() {
     if (relevantExpiryIso) {
@@ -405,17 +415,11 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
             <Button
               style={{ marginTop: theme.spacing.s }}
               title={t("agri_coltivio.become_member")}
-              onPress={() => setStatutenVisible(true)}
+              onPress={goToMembershipAndDismiss}
             />
           </View>
         </SafeAreaView>
       </Modal>
-
-      <StatutenDialog
-        visible={statutenVisible}
-        onClose={() => setStatutenVisible(false)}
-        onConfirm={openMembershipAndDismiss}
-      />
     </>
   );
 };

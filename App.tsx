@@ -31,6 +31,7 @@ import { KeyboardProvider } from "react-native-keyboard-controller";
 import * as Sentry from "@sentry/react-native";
 import { UrlProvider } from "./utils/url-context";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { handleURLCallback, StripeProvider } from "@stripe/stripe-react-native";
 
 Sentry.init({
   dsn: "https://9c83469da59d07c1442766ef1f55abd0@o4509156353638400.ingest.de.sentry.io/4509156358488144",
@@ -52,9 +53,20 @@ Sentry.init({
 // });
 
 const prefix = Linking.createURL("/");
-// Temporary diagnostic — confirm the running build actually has the custom URL scheme baked in
-// (relevant while debugging the Stripe checkout in-app-browser redirect not closing).
-console.log("[app] Linking.createURL prefix:", prefix);
+// Scheme-only, no path — needed by StripeProvider so payment methods that redirect out for their
+// own confirmation (e.g. bank/3DS challenges) can find their way back into the app.
+const stripeUrlScheme = Linking.createURL("").replace("://", "");
+
+// Redirect-based payment methods (e.g. Twint, 3DS) reopen the app via `stripeUrlScheme` once
+// confirmed. handleURLCallback is how the SDK finds out the redirect happened — without it,
+// the native payment sheet never resolves and stays stuck showing the redirect page. It's a
+// no-op (returns false) for any URL that isn't a Stripe callback, so it's safe to call for all.
+Linking.getInitialURL().then((url) => {
+  if (url) handleURLCallback(url);
+});
+Linking.addEventListener("url", (event) => {
+  handleURLCallback(event.url);
+});
 
 const queryClient = new QueryClient();
 
@@ -77,40 +89,57 @@ export default Sentry.wrap(function App() {
         <GestureHandlerRootView style={{ flex: 1 }}>
           <I18nextProvider i18n={i18n}>
             <ThemeProvider theme={coltivioTheme}>
-              <QueryClientProvider client={queryClient}>
-                <SessionProvider>
-                  <LocalSettingsProvider>
-                    <PortalProvider>
-                      <OnboardingProvider>
-                        <GestureHandlerRootView>
-                          <KeyboardProvider>
-                            <NavigationContainer
-                              linking={{
-                                prefixes: [prefix],
-                                getStateFromPath: (path, config) => {
-                                  const sanitizedPath = path.replace("#", "?");
-                                  return getStateFromPath(
-                                    sanitizedPath,
-                                    config,
-                                  );
-                                },
-                              }}
-                            >
-                              <StatusBar
-                                barStyle="dark-content"
-                                backgroundColor="#f6f6f6"
-                              />
-                              <RootStack />
-                            </NavigationContainer>
-                          </KeyboardProvider>
-                        </GestureHandlerRootView>
-                        {/* <ComponentsShowcase /> */}
-                        {/* <BottomSheetModalTest /> */}
-                      </OnboardingProvider>
-                    </PortalProvider>
-                  </LocalSettingsProvider>
-                </SessionProvider>
-              </QueryClientProvider>
+              <StripeProvider
+                publishableKey={
+                  process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? ""
+                }
+                urlScheme={stripeUrlScheme}
+                merchantIdentifier="merchant.ch.agricoltivio.coltivio"
+              >
+                <QueryClientProvider client={queryClient}>
+                  <SessionProvider>
+                    <LocalSettingsProvider>
+                      <PortalProvider>
+                        <OnboardingProvider>
+                          <GestureHandlerRootView>
+                            <KeyboardProvider>
+                              <NavigationContainer
+                                linking={{
+                                  prefixes: [prefix],
+                                  getStateFromPath: (path, config) => {
+                                    // Stripe's returnURL (e.g. after a Twint/3DS redirect) reopens the app on
+                                    // this path. There's no screen for it — the Stripe SDK's own URL listener
+                                    // resumes the payment sheet — so don't let react-navigation route it.
+                                    if (path.startsWith("stripe-redirect")) {
+                                      return undefined;
+                                    }
+                                    const sanitizedPath = path.replace(
+                                      "#",
+                                      "?",
+                                    );
+                                    return getStateFromPath(
+                                      sanitizedPath,
+                                      config,
+                                    );
+                                  },
+                                }}
+                              >
+                                <StatusBar
+                                  barStyle="dark-content"
+                                  backgroundColor="#f6f6f6"
+                                />
+                                <RootStack />
+                              </NavigationContainer>
+                            </KeyboardProvider>
+                          </GestureHandlerRootView>
+                          {/* <ComponentsShowcase /> */}
+                          {/* <BottomSheetModalTest /> */}
+                        </OnboardingProvider>
+                      </PortalProvider>
+                    </LocalSettingsProvider>
+                  </SessionProvider>
+                </QueryClientProvider>
+              </StripeProvider>
             </ThemeProvider>
           </I18nextProvider>
         </GestureHandlerRootView>
