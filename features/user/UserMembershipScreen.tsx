@@ -92,6 +92,11 @@ export function UserMembershipScreen({ route }: UserMembershipScreenProps) {
   const hasActiveTrial = trialEndDate !== null && trialEndDate > now;
   // The raw paid period, regardless of whether the user has resigned from it.
   const periodStillRunning = periodEndDate !== null && periodEndDate > now;
+  const daysUntilExpiry = periodEndDate
+    ? Math.ceil(
+        (periodEndDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
+      )
+    : null;
   const cancelAtPeriodEnd = !!membership?.cancelAtPeriodEnd;
   // Formal Vereins-Austritt (resignation) — takes effect immediately, unlike auto-renew off.
   const cancelledByUser = !!membership?.cancelledByUser;
@@ -119,6 +124,19 @@ export function UserMembershipScreen({ route }: UserMembershipScreenProps) {
     !!membership?.autoRenewing;
   const showUndoButton = canUndoResignation;
   const showPaymentMethodButton = hasManagedSubscription;
+  // Manual (non-auto-renewing) members can top up early — the backend stacks the new period on
+  // top of their remaining time instead of resetting it. Anyone with a subscription — even one
+  // that's set not to renew — can't: keeping "one live subscription = the membership" simple
+  // avoids ever having a subscription and a manual top-up both covering the same period. The
+  // backend rejects a manual payment whenever a live subscription exists, regardless of
+  // cancelAtPeriodEnd.
+  const showRenewButton =
+    hasManagedSubscription &&
+    !isSubscribedDuringTrial &&
+    !membership?.autoRenewing &&
+    daysUntilExpiry !== null &&
+    daysUntilExpiry >= 0 &&
+    daysUntilExpiry <= 60;
 
   const { payments } = useMembershipPaymentsQuery(hasHadMembership);
   // Filter out CHF 0 invoices Stripe generates when subscribing during a trial
@@ -314,7 +332,7 @@ export function UserMembershipScreen({ route }: UserMembershipScreenProps) {
               </Body>
             )}
 
-            {(showPaymentMethodButton || showUndoButton) && (
+            {(showPaymentMethodButton || showRenewButton || showUndoButton) && (
               <View
                 style={{
                   gap: theme.spacing.s,
@@ -322,6 +340,13 @@ export function UserMembershipScreen({ route }: UserMembershipScreenProps) {
                   marginHorizontal: theme.spacing.xs,
                 }}
               >
+                {showRenewButton && (
+                  <Button
+                    title={t("membership.renew")}
+                    loading={checkoutMutation.isPending}
+                    onPress={() => setStatutenVisible(true)}
+                  />
+                )}
                 {showPaymentMethodButton && (
                   <Button
                     type="accent"
