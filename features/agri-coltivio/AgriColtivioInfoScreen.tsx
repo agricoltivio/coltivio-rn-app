@@ -26,7 +26,8 @@ export function AgriColtivioInfoScreen({
     membershipStatus.lastPeriodEnd.length > 0
       ? new Date(membershipStatus.lastPeriodEnd)
       : null;
-  const periodStillRunning = periodEndDate !== null && periodEndDate > new Date();
+  const periodStillRunning =
+    periodEndDate !== null && periodEndDate > new Date();
   // Resigned (Austritt), but the paid-through date hasn't passed yet — they can still undo it
   // from the membership screen, so send them there instead of into a brand new payment flow.
   const canUndoResignation =
@@ -48,7 +49,9 @@ export function AgriColtivioInfoScreen({
               />
             ) : (
               <>
-                <Body style={{ color: theme.colors.gray1, textAlign: "center" }}>
+                <Body
+                  style={{ color: theme.colors.gray1, textAlign: "center" }}
+                >
                   {t("membership.price_info")}
                 </Body>
                 <Button

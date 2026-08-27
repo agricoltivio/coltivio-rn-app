@@ -114,7 +114,9 @@ export function UserMembershipScreen({ route }: UserMembershipScreenProps) {
   // Only a real Stripe subscription can be toggled — one-time/manual payers (e.g. Twint, which
   // never supports subscriptions) have nothing to switch, so the row is hidden for them entirely.
   const showAutoRenewSwitch =
-    hasManagedSubscription && !isSubscribedDuringTrial && !!membership?.autoRenewing;
+    hasManagedSubscription &&
+    !isSubscribedDuringTrial &&
+    !!membership?.autoRenewing;
   const showUndoButton = canUndoResignation;
   const showPaymentMethodButton = hasManagedSubscription;
 
@@ -162,7 +164,9 @@ export function UserMembershipScreen({ route }: UserMembershipScreenProps) {
   return (
     <ContentView
       footerComponent={
-        canLinkToMembership && !hasManagedSubscription && !canUndoResignation ? (
+        canLinkToMembership &&
+        !hasManagedSubscription &&
+        !canUndoResignation ? (
           <BottomActionContainer>
             <Body style={{ color: theme.colors.gray1, textAlign: "center" }}>
               {t("membership.price_info")}
@@ -190,7 +194,10 @@ export function UserMembershipScreen({ route }: UserMembershipScreenProps) {
         ) : undefined
       }
     >
-      <ScrollView showHeaderOnScroll headerTitleOnScroll={t("membership.title")}>
+      <ScrollView
+        showHeaderOnScroll
+        headerTitleOnScroll={t("membership.title")}
+      >
         <H2>{t("membership.title")}</H2>
 
         {canUndoResignation ? (
@@ -206,7 +213,11 @@ export function UserMembershipScreen({ route }: UserMembershipScreenProps) {
               backgroundColor: theme.colors.danger + "22",
             }}
           >
-            <Ionicons name="alert-circle" size={20} color={theme.colors.danger} />
+            <Ionicons
+              name="alert-circle"
+              size={20}
+              color={theme.colors.danger}
+            />
             <Body style={{ color: theme.colors.danger, flex: 1 }}>
               {t("membership.resigned_notice", { date: periodEndStr ?? "" })}
             </Body>
@@ -251,8 +262,13 @@ export function UserMembershipScreen({ route }: UserMembershipScreenProps) {
                   </ListItemContent>
                 </ListItem>
               ) : null}
-              {hasManagedSubscription && !isSubscribedDuringTrial && periodEndStr ? (
-                <InfoRow label={t("membership.valid_until")} value={periodEndStr} />
+              {hasManagedSubscription &&
+              !isSubscribedDuringTrial &&
+              periodEndStr ? (
+                <InfoRow
+                  label={t("membership.valid_until")}
+                  value={periodEndStr}
+                />
               ) : null}
               {showAutoRenewSwitch ? (
                 <ListItem hideBottomDivider>
@@ -345,7 +361,9 @@ export function UserMembershipScreen({ route }: UserMembershipScreenProps) {
                       hideBottomDivider={index === visiblePayments.length - 1}
                     >
                       <ListItemContent>
-                        <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
+                        <ListItem.Title
+                          style={{ paddingLeft: theme.spacing.m }}
+                        >
                           {toDateString(payment.createdAt) ?? "—"}
                         </ListItem.Title>
                         <ListItem.Body style={{ paddingLeft: theme.spacing.m }}>

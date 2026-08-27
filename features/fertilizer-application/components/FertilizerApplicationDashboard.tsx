@@ -37,9 +37,7 @@ export function FertilizerApplicationDashboard({
     [summaries],
   );
 
-  const [selectedFertilizers, setSelectedFertilizers] = useState<string[]>(
-    [],
-  );
+  const [selectedFertilizers, setSelectedFertilizers] = useState<string[]>([]);
 
   const toggleFertilizer = useCallback((name: string) => {
     setSelectedFertilizers((prev) =>
@@ -167,10 +165,7 @@ function FertilizerCard({
     [summaries, fertilizerName],
   );
 
-  const getBreakdown = (
-    year: number,
-    month: number,
-  ): UnitBreakdownEntry[] => {
+  const getBreakdown = (year: number, month: number): UnitBreakdownEntry[] => {
     const row =
       chartMode === "cumulative"
         ? accumulateAppliedFertilizersUpToMonth(

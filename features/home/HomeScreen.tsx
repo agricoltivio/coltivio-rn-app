@@ -186,7 +186,8 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
     !!membershipStatus &&
     isCancelled &&
     !isBannerDismissed &&
-    (isInGracePeriod || (!isActive && daysUntilExpiry !== null && daysUntilExpiry < 0));
+    (isInGracePeriod ||
+      (!isActive && daysUntilExpiry !== null && daysUntilExpiry < 0));
 
   function dismissMembershipBanner() {
     if (relevantExpiryIso) {
@@ -296,8 +297,9 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
             )}
           </View>
 
-          {localSettings.showUpcomingTasks &&
-            getAccess("tasks") !== "none" && <UpcomingTasksTile />}
+          {localSettings.showUpcomingTasks && getAccess("tasks") !== "none" && (
+            <UpcomingTasksTile />
+          )}
 
           {isList ? (
             // List layout: full-width rows with small image icon and chevron

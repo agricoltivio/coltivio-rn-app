@@ -41,9 +41,12 @@ export function membershipApi(client: FetchClient) {
     },
 
     async createPaymentMethodIntent(): Promise<SetupIntentSheetParams> {
-      const { data } = await client.POST("/v1/membership/paymentMethod/intent", {
-        body: {},
-      });
+      const { data } = await client.POST(
+        "/v1/membership/paymentMethod/intent",
+        {
+          body: {},
+        },
+      );
       return data!.data;
     },
 
@@ -60,7 +63,9 @@ export function membershipApi(client: FetchClient) {
     },
 
     async disableAutoRenew(): Promise<{ cancelAtPeriodEnd: boolean }> {
-      const { data } = await client.DELETE("/v1/membership/subscription/autoRenew");
+      const { data } = await client.DELETE(
+        "/v1/membership/subscription/autoRenew",
+      );
       return data!.data;
     },
 

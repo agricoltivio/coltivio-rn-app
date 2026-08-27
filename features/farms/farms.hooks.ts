@@ -322,9 +322,10 @@ export function useMembershipCheckoutMutation() {
     mutationFn: async (autoRenew: boolean): Promise<boolean> => {
       // autoRenew picks which intent to create, which is what determines the payment methods
       // Stripe offers in the sheet: recurring subscription (card only) vs. one-time (Twint too).
-      const { paymentIntentClientSecret, customerId, ephemeralKeySecret } = autoRenew
-        ? await api.membership.createSubscriptionIntent()
-        : await api.membership.createManualIntent();
+      const { paymentIntentClientSecret, customerId, ephemeralKeySecret } =
+        autoRenew
+          ? await api.membership.createSubscriptionIntent()
+          : await api.membership.createManualIntent();
 
       const returnURL = Linking.createURL("stripe-redirect");
       const { error: initError } = await initPaymentSheet({
@@ -367,7 +368,9 @@ export function useMembershipCancelMutation() {
       queryClient.invalidateQueries({
         queryKey: queryKeys.farms.membershipStatus.queryKey,
       });
-      queryClient.invalidateQueries({ queryKey: queryKeys.farms.farm.queryKey });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.farms.farm.queryKey,
+      });
     },
   });
 }
@@ -383,7 +386,9 @@ export function useMembershipReactivateMutation() {
       queryClient.invalidateQueries({
         queryKey: queryKeys.farms.membershipStatus.queryKey,
       });
-      queryClient.invalidateQueries({ queryKey: queryKeys.farms.farm.queryKey });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.farms.farm.queryKey,
+      });
       // Withdrawing an Austritt means any previously dismissed expiry banner no longer
       // applies — let it show again next time this membership actually expires.
       updateLocalSettings("dismissedMembershipBannerForDate", null);
@@ -401,7 +406,9 @@ export function useMembershipDisableAutoRenewMutation() {
       queryClient.invalidateQueries({
         queryKey: queryKeys.farms.membershipStatus.queryKey,
       });
-      queryClient.invalidateQueries({ queryKey: queryKeys.farms.farm.queryKey });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.farms.farm.queryKey,
+      });
     },
   });
 }

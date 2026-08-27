@@ -64,7 +64,9 @@ export function MembershipThankYouModal({
               </Text>
               {t("membership.thank_you.body_post")}
             </Body>
-            <Body style={{ marginTop: theme.spacing.s, color: theme.colors.gray1 }}>
+            <Body
+              style={{ marginTop: theme.spacing.s, color: theme.colors.gray1 }}
+            >
               {t("membership.thank_you.confirmation_note")}
             </Body>
           </ScrollView>
