@@ -31,6 +31,10 @@ export default ({ config }) => {
           : "ch.agricoltivio.coltivio",
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false,
+        // Opt out of iOS 26 Liquid Glass: it wraps headerRight icons in a
+        // floating capsule that has an upstream react-native-screens layout
+        // bug where it randomly stretches to near-full header width.
+        UIDesignRequiresCompatibility: true,
       },
       usesAppleSignIn: true,
       privacyManifest: "./privacy-manifest.json",
