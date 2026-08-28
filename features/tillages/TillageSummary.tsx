@@ -9,7 +9,8 @@ import { type LngLat } from "@maplibre/maplibre-react-native";
 import * as turf from "@turf/turf";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
 
 function SummaryItem({

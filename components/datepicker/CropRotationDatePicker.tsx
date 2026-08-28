@@ -1,7 +1,8 @@
 import { PlotCropRotation } from "@/api/crop-rotations.api";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Modal, Pressable, Text, View } from "react-native";
+import { Modal, Pressable, View } from "react-native";
+import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
 import { CropRotationCalendar } from "./CropRotationCalendar";
 

@@ -1,7 +1,8 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Dimensions, Platform, Pressable, Text, View } from "react-native";
+import { Dimensions, Platform, Pressable, View } from "react-native";
+import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Button } from "@/components/buttons/Button";

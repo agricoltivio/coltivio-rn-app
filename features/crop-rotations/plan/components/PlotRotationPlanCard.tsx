@@ -1,5 +1,6 @@
 import { Fragment } from "react";
-import { View, Text, Pressable } from "react-native";
+import { View, Pressable } from "react-native";
+import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
 import { Ionicons } from "@expo/vector-icons";
 import { Crop } from "@/api/crops.api";

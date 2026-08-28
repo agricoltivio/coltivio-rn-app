@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import {
   Modal,
   View,
-  Text,
   Pressable,
   TextInput,
   ScrollView,
   Keyboard,
 } from "react-native";
+import { Text } from "@/components/text/Text";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useTheme } from "styled-components/native";
 import { useTranslation } from "react-i18next";

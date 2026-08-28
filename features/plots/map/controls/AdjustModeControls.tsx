@@ -1,7 +1,7 @@
 import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import { MapControls } from "@/features/map/overlays/MapControls";
 import React from "react";
-import { Text } from "react-native";
+import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
 import { usePlotsMapContext } from "../plots-map-mode";
 import { AdjustModeLayersHandle } from "../layers/AdjustModeLayers";

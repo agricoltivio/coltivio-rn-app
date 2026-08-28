@@ -13,7 +13,6 @@ import {
   Platform,
   TouchableOpacity,
   View,
-  Text,
 } from "react-native";
 import styled from "styled-components/native";
 import { useTheme } from "styled-components/native";

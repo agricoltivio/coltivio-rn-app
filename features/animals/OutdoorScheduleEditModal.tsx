@@ -11,7 +11,8 @@ import {
 import { Select } from "@/components/select/Select";
 import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Modal, Pressable, Text, View } from "react-native";
+import { Modal, Pressable, View } from "react-native";
+import { Text } from "@/components/text/Text";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useTheme } from "styled-components/native";
 

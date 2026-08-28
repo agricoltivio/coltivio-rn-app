@@ -23,6 +23,7 @@ import { renderPlotsStack } from "@/features/plots/navigation/PlotsStack";
 import { renderTillagesStack } from "@/features/tillages/navigation/TillagesStack";
 import { renderUserStack } from "@/features/user/navigation/UserStack";
 import { useUserQuery } from "@/features/user/users.hooks";
+import { useAppFonts } from "@/theme/fonts";
 import { useNavigation } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect, useState } from "react";
@@ -39,6 +40,7 @@ export function RootStack() {
   const theme = useTheme();
   const [splashScreenVisible, setSplashScreenVisible] = useState(true);
   const navigation = useNavigation();
+  const [fontsLoaded] = useAppFonts();
   const {
     user,
     isFetched: userFetched,
@@ -49,7 +51,7 @@ export function RootStack() {
   const hasFarm = user?.farmId != null;
 
   useEffect(() => {
-    if (!splashScreenVisible || loadingFromStorage) {
+    if (!splashScreenVisible || loadingFromStorage || !fontsLoaded) {
       return;
     }
     if (token) {
@@ -60,9 +62,9 @@ export function RootStack() {
     // hide the splash screen after the token has been loaded
     SplashScreen.hideAsync();
     setSplashScreenVisible(false);
-  }, [loadingFromStorage, userFetched]);
+  }, [loadingFromStorage, userFetched, fontsLoaded]);
 
-  if (loadingFromStorage) {
+  if (loadingFromStorage || !fontsLoaded) {
     return null;
   }
   if (token && !userFetched) {

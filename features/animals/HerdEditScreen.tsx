@@ -11,7 +11,8 @@ import { formatLocalizedDate } from "@/utils/date";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/features/user/users.hooks";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
 import {
   useDeleteHerdMutation,

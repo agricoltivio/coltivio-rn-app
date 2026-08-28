@@ -9,7 +9,8 @@ import { Body, H2 } from "@/theme/Typography";
 import { Image } from "expo-image";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Keyboard, Text, View } from "react-native";
+import { Keyboard, View } from "react-native";
+import { Text } from "@/components/text/Text";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 

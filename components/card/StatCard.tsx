@@ -1,5 +1,6 @@
 import { Subtitle } from "@/theme/Typography";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
 
 export function StatCard({

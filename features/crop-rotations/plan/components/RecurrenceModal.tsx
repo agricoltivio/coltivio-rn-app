@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Modal, View, Text, Pressable, TextInput } from "react-native";
+import { Modal, View, Pressable, TextInput } from "react-native";
+import { Text } from "@/components/text/Text";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useTheme } from "styled-components/native";
 import { RecurrenceRule } from "../plan-crop-rotations.store";

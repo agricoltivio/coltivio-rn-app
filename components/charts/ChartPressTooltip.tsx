@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import { Text } from "@/components/text/Text";
 import { runOnJS, useAnimatedReaction } from "react-native-reanimated";
 import { useTheme } from "styled-components/native";
 import type { ChartPressState } from "victory-native";

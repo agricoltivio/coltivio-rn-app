@@ -1,7 +1,8 @@
 import { Body, H3 } from "@/theme/Typography";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
 import { DonationModal } from "./DonationModal";
 import { MembershipBenefitsList } from "./MembershipBenefitsList";

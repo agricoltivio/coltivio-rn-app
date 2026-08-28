@@ -1,56 +1,57 @@
 import { FontWeight } from "@shopify/react-native-skia";
 import React, { ReactNode } from "react";
-import { Text, TextStyle, StyleSheet, TextProps } from "react-native";
+import { TextStyle, StyleSheet, TextProps } from "react-native";
 import styled from "styled-components/native";
+import { Text } from "@/components/text/Text";
 
 interface TypographyProps extends TextProps {
   children: ReactNode;
   style?: TextStyle;
 }
 
-export const H1 = styled.Text`
+export const H1 = styled(Text)`
   font-size: 28px;
   font-weight: 700;
   color: ${(props) => props.theme.colors.primary};
 `;
 
-export const H2 = styled.Text`
+export const H2 = styled(Text)`
   font-size: 24px;
   font-weight: 700;
   color: ${(props) => props.theme.colors.primary};
 `;
 
-export const H3 = styled.Text`
+export const H3 = styled(Text)`
   font-size: 18px;
   font-weight: 600;
   color: ${(props) => props.theme.colors.primary};
 `;
 
-export const H4 = styled.Text`
+export const H4 = styled(Text)`
   font-size: 16px;
   font-weight: 600;
   color: ${(props) => props.theme.colors.primary};
 `;
 
-export const Title = styled.Text`
+export const Title = styled(Text)`
   font-size: 17px;
   font-weight: 600;
   color: ${(props) => props.theme.colors.gray0};
 `;
 
-export const Subtitle = styled.Text`
+export const Subtitle = styled(Text)`
   font-size: 16px;
   font-weight: 600;
   color: ${(props) => props.theme.colors.gray1};
 `;
 
-export const Label = styled.Text`
+export const Label = styled(Text)`
   font-size: 17px;
   font-weight: 600;
   color: ${(props) => props.theme.colors.gray1};
 `;
 
-export const Body = styled.Text`
+export const Body = styled(Text)`
   font-size: 17px;
   font-weight: 400;
   color: ${(props) => props.theme.colors.primary};

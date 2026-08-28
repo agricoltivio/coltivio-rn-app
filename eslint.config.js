@@ -20,6 +20,26 @@ module.exports = defineConfig([
           caughtErrors: "all",
         },
       ],
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "react-native",
+              importNames: ["Text"],
+              message:
+                "Import Text from '@/components/text/Text' instead — it applies the app's Inter font.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    // The one place allowed to import react-native's Text directly, since it wraps it.
+    files: ["components/text/Text.tsx"],
+    rules: {
+      "no-restricted-imports": "off",
     },
   },
 ]);

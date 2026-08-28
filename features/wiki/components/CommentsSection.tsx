@@ -4,7 +4,8 @@ import { H3 } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
+import { Text } from "@/components/text/Text";
 import styled, { useTheme } from "styled-components/native";
 import {
   useAddChangeRequestNoteMutation,

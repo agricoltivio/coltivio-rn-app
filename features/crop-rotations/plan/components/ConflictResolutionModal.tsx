@@ -1,4 +1,5 @@
-import { Modal, View, Text, Pressable } from "react-native";
+import { Modal, View, Pressable } from "react-native";
+import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
 import { format } from "date-fns";
 import { ConflictInfo } from "../hooks/useOverlapValidation";

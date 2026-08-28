@@ -1,6 +1,5 @@
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import React, { useEffect } from "react";
-import { Text } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,

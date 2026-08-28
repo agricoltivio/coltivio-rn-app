@@ -14,11 +14,11 @@ import {
   ActivityIndicator,
   Modal,
   ScrollView,
-  Text,
   TouchableOpacity,
   View,
   useWindowDimensions,
 } from "react-native";
+import { Text } from "@/components/text/Text";
 import { Line, Svg } from "react-native-svg";
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery, useFamilyTreeQuery } from "./animals.hooks";

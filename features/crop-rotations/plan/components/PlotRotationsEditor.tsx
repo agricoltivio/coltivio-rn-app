@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
-import { Alert, ScrollView, Text, View } from "react-native";
+import { Alert, ScrollView, View } from "react-native";
+import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
 import { useTranslation } from "react-i18next";
 import { addYears } from "date-fns";

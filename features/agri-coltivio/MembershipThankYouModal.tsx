@@ -2,7 +2,8 @@ import { Button } from "@/components/buttons/Button";
 import { Body, H2 } from "@/theme/Typography";
 import { openMoreInfoUrl } from "@/utils/membership";
 import { useTranslation } from "react-i18next";
-import { Modal, Pressable, ScrollView, Text } from "react-native";
+import { Modal, Pressable, ScrollView } from "react-native";
+import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
 
 type MembershipThankYouModalProps = {

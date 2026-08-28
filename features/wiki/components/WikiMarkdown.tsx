@@ -4,10 +4,10 @@ import {
   Image,
   PixelRatio,
   ScrollView,
-  Text,
   View,
   useWindowDimensions,
 } from "react-native";
+import { Text } from "@/components/text/Text";
 import Markdown, { type MarkdownProps } from "react-native-markdown-display";
 import type { PropsWithChildren } from "react";
 

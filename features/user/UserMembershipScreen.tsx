@@ -7,7 +7,8 @@ import { Body, H2, H3 } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, Switch, Text, View } from "react-native";
+import { Alert, Switch, View } from "react-native";
+import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
 import { canLinkToMembership, openMoreInfoUrl } from "@/utils/membership";
 import {

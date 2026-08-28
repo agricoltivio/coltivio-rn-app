@@ -3,7 +3,8 @@ import { Select } from "@/components/select/Select";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Pressable, TextInput, View } from "react-native";
+import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
 
 export type RecurrenceFrequency = "weekly" | "monthly" | "yearly";

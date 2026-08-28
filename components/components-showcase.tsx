@@ -1,4 +1,5 @@
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, View } from "react-native";
+import { Text } from "@/components/text/Text";
 import { Card } from "./card/Card";
 import { Body } from "@/theme/Typography";
 import { Button } from "./buttons/Button";

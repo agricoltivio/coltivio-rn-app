@@ -1,4 +1,5 @@
-import { Pressable, View, Text } from "react-native";
+import { Pressable, View } from "react-native";
+import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
 import { useTranslation } from "react-i18next";
 

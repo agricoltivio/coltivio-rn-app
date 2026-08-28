@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { stringToColor, hexToRgba } from "@/theme/theme";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
+import { Text } from "@/components/text/Text";
 import { OutdoorBar } from "./outdoor-timeline-utils";
 
 type OutdoorTimelineBarProps = {

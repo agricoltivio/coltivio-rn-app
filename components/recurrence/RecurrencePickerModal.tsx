@@ -1,7 +1,8 @@
 import { RecurrencePicker, RecurrenceValue } from "./RecurrencePicker";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Modal, Pressable, Text, View } from "react-native";
+import { Modal, Pressable, View } from "react-native";
+import { Text } from "@/components/text/Text";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useTheme } from "styled-components/native";
 

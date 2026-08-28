@@ -11,9 +11,9 @@ import {
   KeyboardAvoidingView,
   Platform,
   View,
-  Text,
   TouchableOpacity,
 } from "react-native";
+import { Text } from "@/components/text/Text";
 import { WikiMarkdown } from "@/features/wiki/components/WikiMarkdown";
 import styled from "styled-components/native";
 import { useTheme } from "styled-components/native";

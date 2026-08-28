@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useCallback, useEffect, useMemo, useRef, useState, memo } from "react";
-import { View, Text, LayoutChangeEvent } from "react-native";
+import { View, LayoutChangeEvent } from "react-native";
+import { Text } from "@/components/text/Text";
 import { Pressable } from "react-native-gesture-handler";
 import { useTheme } from "styled-components/native";
 import { useTranslation } from "react-i18next";

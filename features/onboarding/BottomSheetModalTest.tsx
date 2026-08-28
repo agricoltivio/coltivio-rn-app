@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useRef } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, StyleSheet, Button } from "react-native";
+import { Text } from "@/components/text/Text";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   BottomSheetModal,
