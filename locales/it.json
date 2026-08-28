@@ -286,7 +286,7 @@
   "home": {
     "welcome_text": "Ciao {{displayName}},",
     "upcoming_tasks": "Attività in scadenza",
-    "no_upcoming_tasks": "Nessuna attività in scadenza nei prossimi 3 giorni",
+    "no_upcoming_tasks": "Nessuna attività in scadenza",
     "tiles": {
       "farm": "La Mia Azienda",
       "plots": "Campi",
@@ -692,10 +692,8 @@
     "settings": "Impostazioni calendario dei campi",
     "groups": {
       "crops": "Colture",
-      "soil": "Lavorazione del terreno",
-      "fertilization": "Fertilizzazione",
-      "protection": "Trattamento fitosanitario",
-      "harvest": "Raccolta",
+      "measures": "Interventi",
+      "resources": "Mezzi di produzione",
       "export": "Esportazione",
       "tools": "Strumenti"
     },
@@ -1003,6 +1001,12 @@
     },
     "outdoor_journal": {
       "heading": "Esportazione diario all'aperto"
+    },
+    "animals": {
+      "heading": "Esportazione dati animali",
+      "subheading": "Esporta trattamenti e diario all'aperto come documento Excel.",
+      "select_sections": "Seleziona cosa esportare",
+      "treatments_journal": "Giornale dei trattamenti"
     }
   },
   "agri_coltivio": {
@@ -1120,9 +1124,11 @@
     "only_with_waiting_period": "Solo con periodo di attesa",
     "select_children": "Seleziona discendenti",
     "settings": "Impostazioni allevamento",
+    "export": "Esportazione",
     "groups": {
-      "animals": "Animali",
-      "health": "Salute"
+      "animals": "Bestiame",
+      "health": "Salute",
+      "tools": "Strumenti"
     },
     "onboarding": {
       "welcome_heading": "Benvenuto nell'allevamento",

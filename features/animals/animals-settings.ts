@@ -50,12 +50,18 @@ export const ANIMALS_ITEMS: Record<string, AnimalsItemMeta> = {
     route: "OutdoorJournal",
     feature: "animals",
   },
+  export: {
+    translationKey: "animals.export",
+    route: "AnimalsExport",
+    feature: "animals",
+  },
 };
 
 // Maps groupId → translation key
 export const ANIMALS_GROUPS = {
   animals: { translationKey: "animals.groups.animals" },
   health: { translationKey: "animals.groups.health" },
+  tools: { translationKey: "animals.groups.tools" },
 } as const;
 
 export const DEFAULT_ANIMALS_GROUPS: AnimalsGroupConfig[] = [
@@ -77,5 +83,10 @@ export const DEFAULT_ANIMALS_GROUPS: AnimalsGroupConfig[] = [
       { itemId: "drugs", visible: true },
       { itemId: "treatments", visible: true },
     ],
+  },
+  {
+    groupId: "tools",
+    visible: true,
+    items: [{ itemId: "export", visible: true }],
   },
 ];

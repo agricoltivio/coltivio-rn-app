@@ -286,7 +286,7 @@
   "home": {
     "welcome_text": "Salut {{displayName}},",
     "upcoming_tasks": "Tâches à venir",
-    "no_upcoming_tasks": "Aucune tâche à venir dans les 3 prochains jours",
+    "no_upcoming_tasks": "Aucune tâche à venir",
     "tiles": {
       "farm": "Ma ferme",
       "plots": "Champs",
@@ -692,10 +692,8 @@
     "settings": "Paramètres du calendrier cultural",
     "groups": {
       "crops": "Cultures",
-      "soil": "Travail du sol",
-      "fertilization": "Fertilisation",
-      "protection": "Protection des cultures",
-      "harvest": "Récolte",
+      "measures": "Interventions",
+      "resources": "Intrants",
       "export": "Export",
       "tools": "Outils"
     },
@@ -1003,6 +1001,12 @@
     },
     "outdoor_journal": {
       "heading": "Exportation du journal de sorties"
+    },
+    "animals": {
+      "heading": "Exportation des données animales",
+      "subheading": "Exportez les traitements et le journal de sorties sous forme de document Excel.",
+      "select_sections": "Sélectionnez ce qui doit être exporté",
+      "treatments_journal": "Journal des traitements"
     }
   },
   "agri_coltivio": {
@@ -1120,9 +1124,11 @@
     "only_with_waiting_period": "Avec délai d'attente uniquement",
     "select_children": "Sélectionner les descendants",
     "settings": "Paramètres de l'élevage",
+    "export": "Export",
     "groups": {
-      "animals": "Animaux",
-      "health": "Santé"
+      "animals": "Cheptel",
+      "health": "Santé",
+      "tools": "Outils"
     },
     "onboarding": {
       "welcome_heading": "Bienvenue dans l'élevage",

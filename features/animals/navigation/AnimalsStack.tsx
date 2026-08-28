@@ -39,6 +39,7 @@ import { AnimalJournalEntryScreen } from "../AnimalJournalEntryScreen";
 import { AnimalJournalEntryFormScreen } from "../AnimalJournalEntryFormScreen";
 import { AnimalChartsScreen } from "../AnimalChartsScreen";
 import { FamilyTreeScreen } from "../FamilyTreeScreen";
+import { AnimalsExportScreen } from "../AnimalsExportScreen";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import { DefaultTheme } from "styled-components/native";
@@ -52,13 +53,22 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
         title: "",
         headerRight() {
           return (
-            <IonIconButton
-              icon="settings-outline"
-              type="ghost"
-              iconSize={30}
-              color={theme.colors.primary}
-              onPress={() => navigation.navigate("AnimalsSettings")}
-            />
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <IonIconButton
+                icon="settings-outline"
+                type="ghost"
+                iconSize={30}
+                color={theme.colors.primary}
+                onPress={() => navigation.navigate("AnimalsSettings")}
+              />
+              <IonIconButton
+                icon="share-outline"
+                type="ghost"
+                iconSize={30}
+                color={theme.colors.primary}
+                onPress={() => navigation.navigate("AnimalsExport")}
+              />
+            </View>
           );
         },
       }}
@@ -333,6 +343,12 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
       name="FamilyTree"
       options={{ title: "" }}
       component={FamilyTreeScreen}
+    />,
+    <Stack.Screen
+      key="animals-export"
+      name="AnimalsExport"
+      options={{ title: "" }}
+      component={AnimalsExportScreen}
     />,
   ];
 }

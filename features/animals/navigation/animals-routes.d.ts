@@ -81,6 +81,7 @@ export type AnimalsStackParamList = {
   AnimalJournalEntryForm: { animalId: string; entryId?: string };
   AnimalCharts: undefined;
   FamilyTree: { animalType?: AnimalType; focusedAnimalId?: string };
+  AnimalsExport: undefined;
 };
 
 export type AnimalsHubScreenProps = StackScreenProps<"AnimalsHub">;
@@ -132,3 +133,4 @@ export type AnimalJournalEntryFormScreenProps =
   StackScreenProps<"AnimalJournalEntryForm">;
 export type AnimalChartsScreenProps = StackScreenProps<"AnimalCharts">;
 export type FamilyTreeScreenProps = StackScreenProps<"FamilyTree">;
+export type AnimalsExportScreenProps = StackScreenProps<"AnimalsExport">;

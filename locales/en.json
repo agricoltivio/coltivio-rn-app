@@ -286,7 +286,7 @@
   "home": {
     "welcome_text": "Hello {{displayName}},",
     "upcoming_tasks": "Upcoming Tasks",
-    "no_upcoming_tasks": "No upcoming tasks in the next 3 days",
+    "no_upcoming_tasks": "No upcoming tasks",
     "tiles": {
       "farm": "My Farm",
       "plots": "Plots",
@@ -692,10 +692,8 @@
     "settings": "Field Calendar Settings",
     "groups": {
       "crops": "Crops",
-      "soil": "Tillage",
-      "fertilization": "Fertilization",
-      "protection": "Crop Protection",
-      "harvest": "Harvest",
+      "measures": "Operations",
+      "resources": "Farm Inputs",
       "export": "Export",
       "tools": "Tools"
     },
@@ -1003,6 +1001,12 @@
     },
     "outdoor_journal": {
       "heading": "Outdoor Journal Export"
+    },
+    "animals": {
+      "heading": "Animal Data Export",
+      "subheading": "Export animal treatments and outdoor journal entries as an Excel document.",
+      "select_sections": "Select what should be exported",
+      "treatments_journal": "Treatment Journal"
     }
   },
   "agri_coltivio": {
@@ -1120,9 +1124,11 @@
     "only_with_waiting_period": "With waiting period only",
     "select_children": "Select Offspring",
     "settings": "Animal Husbandry Settings",
+    "export": "Export",
     "groups": {
-      "animals": "Animals",
-      "health": "Health"
+      "animals": "Livestock",
+      "health": "Health",
+      "tools": "Tools"
     },
     "onboarding": {
       "welcome_heading": "Welcome to Animal Husbandry",

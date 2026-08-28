@@ -286,7 +286,7 @@
   "home": {
     "welcome_text": "Hallo {{displayName}},",
     "upcoming_tasks": "Anstehende Aufgaben",
-    "no_upcoming_tasks": "Keine anstehenden Aufgaben in den nächsten 3 Tagen",
+    "no_upcoming_tasks": "Keine anstehenden Aufgaben",
     "tiles": {
       "farm": "Mein Hof",
       "plots": "Schläge",
@@ -688,14 +688,12 @@
     "harvests": "Ernte",
     "crop_protection_products": "Pflanzenschutzmittel",
     "crop_protection_applications": "Pflanzenschutz",
-    "export": "Exportieren",
+    "export": "Export",
     "settings": "Feldkalender Einstellungen",
     "groups": {
       "crops": "Kulturen",
-      "soil": "Bodenbearbeitung",
-      "fertilization": "Düngung",
-      "protection": "Pflanzenschutz",
-      "harvest": "Ernte",
+      "measures": "Maßnahmen",
+      "resources": "Betriebsmittel",
       "export": "Export",
       "tools": "Tools"
     },
@@ -1003,6 +1001,12 @@
     },
     "outdoor_journal": {
       "heading": "Auslaufjournal Export"
+    },
+    "animals": {
+      "heading": "Tierdaten Export",
+      "subheading": "Exportiere Behandlungen und Auslaufjournal als Excel Dokument.",
+      "select_sections": "Wähle was exportiert werden soll",
+      "treatments_journal": "Behandlungsjournal"
     }
   },
   "agri_coltivio": {
@@ -1120,9 +1124,11 @@
     "only_with_waiting_period": "Absetzfrist",
     "select_children": "Nachkommen auswählen",
     "settings": "Tierhaltung Einstellungen",
+    "export": "Export",
     "groups": {
-      "animals": "Tiere",
-      "health": "Gesundheit"
+      "animals": "Tierbestand",
+      "health": "Gesundheit",
+      "tools": "Tools"
     },
     "onboarding": {
       "welcome_heading": "Willkommen in der Tierhaltung",

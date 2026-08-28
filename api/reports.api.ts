@@ -10,6 +10,9 @@ export type DownloadTreatmentsReportInput =
 export type DownloadOutdoorJournalReportInput =
   components["schemas"]["PostV1ReportsOutdoorjournalDownloadRequestBody"];
 
+export type DownloadAnimalsReportInput =
+  components["schemas"]["PostV1ReportsAnimalsDownloadRequestBody"];
+
 export function reportsApi(client: FetchClient) {
   return {
     async sendFieldCalendarReport(input: GenerateFieldCalendarReportInput) {
@@ -38,6 +41,12 @@ export function reportsApi(client: FetchClient) {
           body: input,
         },
       );
+      return data!.data;
+    },
+    async downloadAnimalsReport(input: DownloadAnimalsReportInput) {
+      const { data } = await client.POST("/v1/reports/animals/download", {
+        body: input,
+      });
       return data!.data;
     },
   };
