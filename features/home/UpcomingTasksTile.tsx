@@ -22,21 +22,18 @@ export function UpcomingTasksTile() {
   const { tasks, isLoading } = useTasksQuery("todo");
 
   const upcomingTasks = useMemo(() => {
-    const now = new Date();
-    const cutoff = new Date(now);
-    cutoff.setDate(cutoff.getDate() + 3);
-    cutoff.setHours(23, 59, 59, 999);
-    return tasks
-      .filter(
-        (task) =>
-          task.dueDate != null && new Date(task.dueDate as string) <= cutoff,
-      )
+    const tasksWithDueDate = tasks
+      .filter((task) => task.dueDate != null)
       .sort(
         (a, b) =>
           new Date(a.dueDate as string).getTime() -
           new Date(b.dueDate as string).getTime(),
-      )
-      .slice(0, MAX_TASKS);
+      );
+    // Fall back to the first tasks without a due date if none have one
+    if (tasksWithDueDate.length === 0) {
+      return tasks.slice(0, MAX_TASKS);
+    }
+    return tasksWithDueDate.slice(0, MAX_TASKS);
   }, [tasks]);
 
   return (
