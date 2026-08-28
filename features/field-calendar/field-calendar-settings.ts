@@ -69,15 +69,18 @@ export const FIELD_CALENDAR_ITEMS: Record<string, FieldCalendarItemMeta> = {
     route: "FieldEventsMap",
     feature: "field_calendar",
   },
+  export: {
+    translationKey: "field_calendar.export",
+    route: "FieldCalendarExport",
+    feature: "field_calendar",
+  },
 };
 
 // Maps groupId → translation key
 export const FIELD_CALENDAR_GROUPS = {
   crops: { translationKey: "field_calendar.groups.crops" },
-  soil: { translationKey: "field_calendar.groups.soil" },
-  fertilization: { translationKey: "field_calendar.groups.fertilization" },
-  protection: { translationKey: "field_calendar.groups.protection" },
-  harvest: { translationKey: "field_calendar.groups.harvest" },
+  measures: { translationKey: "field_calendar.groups.measures" },
+  resources: { translationKey: "field_calendar.groups.resources" },
   tools: { translationKey: "field_calendar.groups.tools" },
 } as const;
 
@@ -92,39 +95,29 @@ export const DEFAULT_FIELD_CALENDAR_GROUPS: FieldCalendarGroupConfig[] = [
     ],
   },
   {
-    groupId: "soil",
+    groupId: "measures",
     visible: true,
-    items: [{ itemId: "tillages", visible: true }],
+    items: [
+      { itemId: "tillages", visible: true },
+      { itemId: "fertilizerApplications", visible: true },
+      { itemId: "cropProtectionApplications", visible: true },
+      { itemId: "harvests", visible: true },
+    ],
   },
   {
-    groupId: "fertilization",
+    groupId: "resources",
     visible: true,
     items: [
       { itemId: "fertilizers", visible: true },
-      { itemId: "fertilizerApplications", visible: true },
-    ],
-  },
-  {
-    groupId: "protection",
-    visible: true,
-    items: [
       { itemId: "cropProtectionProducts", visible: true },
-      { itemId: "cropProtectionApplications", visible: true },
     ],
-  },
-  {
-    groupId: "harvest",
-    visible: true,
-    items: [{ itemId: "harvests", visible: true }],
-  },
-  {
-    groupId: "export",
-    visible: true,
-    items: [{ itemId: "export", visible: true }],
   },
   {
     groupId: "tools",
     visible: true,
-    items: [{ itemId: "fieldEventsMap", visible: true }],
+    items: [
+      { itemId: "fieldEventsMap", visible: true },
+      { itemId: "export", visible: true },
+    ],
   },
 ];

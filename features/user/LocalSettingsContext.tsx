@@ -137,6 +137,68 @@ function mergeSpeedDialItems(
   return [...stored, ...newItems];
 }
 
+// One-time migration: the field calendar used to split Bodenbearbeitung/Düngung/
+// Pflanzenschutz/Ernte into four separate groups ("soil", "fertilization",
+// "protection", "harvest"). They were consolidated into a single "measures" group
+// (plus a new "resources" group for the product items that used to live alongside
+// them). This carries over each item's stored visibility into the new groups so
+// existing installs don't lose their customization when the old groupIds vanish
+// from FIELD_CALENDAR_GROUPS.
+function migrateFieldCalendarGroups(
+  stored: FieldCalendarGroupConfig[],
+): FieldCalendarGroupConfig[] {
+  const oldGroupIds = ["soil", "fertilization", "protection", "harvest"];
+  const oldGroupIndex = stored.findIndex((g) => oldGroupIds.includes(g.groupId));
+  if (oldGroupIndex === -1) {
+    return stored;
+  }
+
+  const itemVisibility = new Map<string, boolean>();
+  for (const group of stored) {
+    if (oldGroupIds.includes(group.groupId)) {
+      for (const item of group.items) {
+        itemVisibility.set(item.itemId, item.visible);
+      }
+    }
+  }
+
+  function buildGroup(
+    groupId: string,
+    itemIds: string[],
+  ): FieldCalendarGroupConfig {
+    return {
+      groupId,
+      visible: true,
+      items: itemIds
+        .filter((itemId) => itemVisibility.has(itemId))
+        .map((itemId) => ({ itemId, visible: itemVisibility.get(itemId)! })),
+    };
+  }
+  const measures = buildGroup("measures", [
+    "tillages",
+    "fertilizerApplications",
+    "cropProtectionApplications",
+    "harvests",
+  ]);
+  const resources = buildGroup("resources", [
+    "fertilizers",
+    "cropProtectionProducts",
+  ]);
+
+  const rest = stored.filter((g) => !oldGroupIds.includes(g.groupId));
+  // Re-insert the consolidated groups at the position the old groups used to occupy,
+  // so their placement relative to "crops"/"tools" stays where the user left it.
+  const restIndex = stored
+    .slice(0, oldGroupIndex)
+    .filter((g) => !oldGroupIds.includes(g.groupId)).length;
+  return [
+    ...rest.slice(0, restIndex),
+    measures,
+    resources,
+    ...rest.slice(restIndex),
+  ];
+}
+
 // Preserves stored order and visibility, appends new defaults not yet in storage
 function mergeGroups(
   stored: AnimalsGroupConfig[] | FieldCalendarGroupConfig[],
@@ -178,7 +240,7 @@ export function LocalSettingsProvider({ children }: PropsWithChildren) {
               DEFAULT_ANIMALS_GROUPS,
             ),
             fieldCalendarGroups: mergeGroups(
-              stored.fieldCalendarGroups ?? [],
+              migrateFieldCalendarGroups(stored.fieldCalendarGroups ?? []),
               DEFAULT_FIELD_CALENDAR_GROUPS,
             ),
             speedDialItems: mergeSpeedDialItems(
