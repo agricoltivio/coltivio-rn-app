@@ -1,10 +1,5 @@
 import { forwardRef } from "react";
-import {
-  Text as RNText,
-  StyleSheet,
-  TextProps,
-  TextStyle,
-} from "react-native";
+import { Text as RNText, StyleSheet, TextProps, TextStyle } from "react-native";
 import { FONT_BOLD, FONT_REGULAR, isBoldFontWeight } from "@/theme/fonts";
 
 // The app-wide Inter font is applied here so every screen gets it by
