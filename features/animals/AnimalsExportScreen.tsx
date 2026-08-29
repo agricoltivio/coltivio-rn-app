@@ -22,9 +22,7 @@ interface FormValues {
   generateOutdoorJournal: boolean;
 }
 
-export function AnimalsExportScreen({
-  navigation,
-}: AnimalsExportScreenProps) {
+export function AnimalsExportScreen({ navigation }: AnimalsExportScreenProps) {
   const year = new Date().getFullYear();
   const { from, to } = getYearRange(year);
   const theme = useTheme();

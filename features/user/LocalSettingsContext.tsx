@@ -148,7 +148,9 @@ function migrateFieldCalendarGroups(
   stored: FieldCalendarGroupConfig[],
 ): FieldCalendarGroupConfig[] {
   const oldGroupIds = ["soil", "fertilization", "protection", "harvest"];
-  const oldGroupIndex = stored.findIndex((g) => oldGroupIds.includes(g.groupId));
+  const oldGroupIndex = stored.findIndex((g) =>
+    oldGroupIds.includes(g.groupId),
+  );
   if (oldGroupIndex === -1) {
     return stored;
   }
