@@ -1,7 +1,11 @@
 import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type CropProtectionApplicationStackParamList = {
-  SelectCropProtectionApplicationProductAndDate: { productId?: string };
+  SelectCropProtectionApplicationProductAndDate: {
+    productId?: string;
+    plotId?: string;
+    name?: string;
+  };
   ConfigureCropProtectionApplication: undefined;
   SetCropProtectionApplicationUnitQuantity: undefined;
   SelectCropProtectionApplicationPlots: undefined;

@@ -71,8 +71,15 @@ export function ConfigureCropProtectionApplicationScreen({
   const deletePresetMutation =
     useDeleteCropProtectionApplicationPresetMutation();
 
-  const { setData, data, selectedProduct, setTotalNumberOfUnits } =
-    useAddCropProtectionApplicationStore();
+  const {
+    setData,
+    data,
+    selectedProduct,
+    setTotalNumberOfUnits,
+    preselectedPlotId,
+    selectedPlotsById,
+    putPlot,
+  } = useAddCropProtectionApplicationStore();
 
   const {
     control,
@@ -162,8 +169,27 @@ export function ConfigureCropProtectionApplicationScreen({
       values.unit === "total_amount" ||
       values.unit === "amount_per_hectare"
     ) {
-      if (values.unit === "total_amount") {
-        setTotalNumberOfUnits(1);
+      const preselectedPlot = preselectedPlotId
+        ? selectedPlotsById[preselectedPlotId]
+        : undefined;
+
+      if (values.unit === "amount_per_hectare") {
+        if (preselectedPlot) {
+          const hectares = preselectedPlot.size / 10000;
+          setTotalNumberOfUnits(hectares);
+          putPlot({ ...preselectedPlot, numberOfUnits: hectares });
+          navigation.navigate("DivideCropProtectionApplicationOnPlots");
+          return;
+        }
+        navigation.navigate("SelectCropProtectionApplicationPlots");
+        return;
+      }
+
+      setTotalNumberOfUnits(1);
+      if (preselectedPlot) {
+        putPlot({ ...preselectedPlot, numberOfUnits: 1 });
+        navigation.navigate("CropProtectionApplicationSummary");
+        return;
       }
       navigation.navigate("SelectCropProtectionApplicationPlots");
       return;

@@ -24,8 +24,14 @@ export function SetCropProtectionApplicationUnitQuantityScreen({
   const { t } = useTranslation();
   const theme = useTheme();
 
-  const { setTotalNumberOfUnits, data, totalNumberOfUnits } =
-    useAddCropProtectionApplicationStore();
+  const {
+    setTotalNumberOfUnits,
+    data,
+    totalNumberOfUnits,
+    preselectedPlotId,
+    selectedPlotsById,
+    putPlot,
+  } = useAddCropProtectionApplicationStore();
 
   const {
     control,
@@ -53,8 +59,17 @@ export function SetCropProtectionApplicationUnitQuantityScreen({
     t("harvests.labels.unit.other");
 
   function onSubmit(values: FormValues) {
-    setTotalNumberOfUnits(Number(values.numberOfApplications));
-    navigation.navigate("SelectCropProtectionApplicationPlots");
+    const total = Number(values.numberOfApplications);
+    setTotalNumberOfUnits(total);
+    const preselectedPlot = preselectedPlotId
+      ? selectedPlotsById[preselectedPlotId]
+      : undefined;
+    if (preselectedPlot) {
+      putPlot({ ...preselectedPlot, numberOfUnits: total });
+      navigation.navigate("CropProtectionApplicationSummary");
+    } else {
+      navigation.navigate("SelectCropProtectionApplicationPlots");
+    }
   }
 
   return (

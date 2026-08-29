@@ -6,6 +6,8 @@ import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { useFertilizersQuery } from "@/features/fertilizers/fertilizers.hooks";
+import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
+import { round } from "@/utils/math";
 import { H2 } from "@/theme/Typography";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -28,19 +30,39 @@ export function SelectFertilizerAndDateScreen({
   const theme = useTheme();
 
   const { fertilizers, isFetched: fertilizersLoaded } = useFertilizersQuery();
+  const { plots } = useFarmPlotsQuery();
   const {
     setFertilizerApplication,
     setSelectedFertilizer,
     fertilizerApplication,
     selectedFertilizer,
     reset,
+    putPlot,
+    setPreselectedPlotId,
   } = useCreateFertilizerApplicationStore();
 
   const preselectedFertilizerId = route.params?.fertilizerId;
+  const preselectedPlotId = route.params?.plotId;
 
   useEffect(() => {
     return () => reset();
   }, []);
+
+  // Launched from the plot details drawer with a plot already chosen — preselect it
+  // in the store so later steps can skip the plot-picker/divide screens.
+  useEffect(() => {
+    if (!preselectedPlotId) return;
+    const plot = plots?.find((p) => p.id === preselectedPlotId);
+    if (!plot) return;
+    putPlot({
+      plotId: plot.id,
+      name: plot.name,
+      geometry: plot.geometry,
+      size: round(plot.size, 0),
+      numberOfUnits: 0,
+    });
+    setPreselectedPlotId(plot.id);
+  }, [preselectedPlotId, plots]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const {
     control,

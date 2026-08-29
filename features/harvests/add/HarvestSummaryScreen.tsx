@@ -16,6 +16,7 @@ export function HarvestSummaryScreen({
     selectedCrop,
     totalProducedUnits = 0,
     harvest,
+    preselectedPlotId,
   } = useCreateHarvestStore();
 
   const {
@@ -31,14 +32,16 @@ export function HarvestSummaryScreen({
   const plotHarvests = Object.values(selectedPlotsById);
 
   const createHarvestMutation = useCreateHarvestMutation(() =>
-    navigation.reset({
-      index: 2,
-      routes: [
-        { name: "Home" },
-        { name: "FieldCalendar" },
-        { name: "Harvests" },
-      ],
-    }),
+    preselectedPlotId
+      ? navigation.popTo("PlotsMap", { selectedPlotId: preselectedPlotId })
+      : navigation.reset({
+          index: 2,
+          routes: [
+            { name: "Home" },
+            { name: "FieldCalendar" },
+            { name: "Harvests" },
+          ],
+        }),
   );
 
   function onSave() {

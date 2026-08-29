@@ -26,6 +26,11 @@ type CreateHarvestStore = {
   putHarvestPlot: (harvestPlot: SelectedHarvestPlot) => void;
   removeHarvestPlot: (plotId: string) => void;
   removeHarvestPlots: (plotIds: string[]) => void;
+  // Set when the flow is launched from the plot details drawer with a plot already
+  // chosen — skips the plot-picker/divide screens and routes the summary screen
+  // back to the map instead of the harvests list.
+  preselectedPlotId?: string;
+  setPreselectedPlotId: (plotId: string | undefined) => void;
   reset: () => void;
   resetSelectedPlots: () => void;
 };
@@ -60,12 +65,15 @@ export const useCreateHarvestStore = create<CreateHarvestStore>((set) => ({
         selectedPlotsById: selectedHarvestPlotsById,
       };
     }),
+  preselectedPlotId: undefined,
+  setPreselectedPlotId: (plotId) => set({ preselectedPlotId: plotId }),
   reset: () =>
     set(() => ({
       selectedPlotsById: {},
       totalProducedUnits: undefined,
       selectedCrop: undefined,
       harvest: undefined,
+      preselectedPlotId: undefined,
     })),
   resetSelectedPlots: () =>
     set(() => ({

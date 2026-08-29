@@ -19,6 +19,11 @@ type AddTillage = {
   putPlot: (plot: SelectedTillagePlot) => void;
   removePlot: (plotId: string) => void;
   removePlots: (plotIds: string[]) => void;
+  // Set when the flow is launched from the plot details drawer with a plot already
+  // chosen — skips the plot-picker screen and routes the summary screen back to
+  // the map instead of the tillages list.
+  preselectedPlotId?: string;
+  setPreselectedPlotId: (plotId: string | undefined) => void;
   reset: () => void;
   resetSelectedPlots: () => void;
 };
@@ -61,10 +66,13 @@ export const useAddTillageStore = create<AddTillage>((set) => ({
         selectedPlotsById: selectedPlotsById,
       };
     }),
+  preselectedPlotId: undefined,
+  setPreselectedPlotId: (plotId) => set({ preselectedPlotId: plotId }),
   reset: () =>
     set(() => ({
       selectedPlotsById: {},
       data: undefined,
+      preselectedPlotId: undefined,
     })),
   resetSelectedPlots: () =>
     set(() => ({

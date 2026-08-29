@@ -344,6 +344,10 @@
     "plot": "Champ",
     "plot_name": "Champ {{name}}",
     "plot_name_date": "{{date}} - Champ {{name}}",
+    "new_entry": "Nouvelle entrée",
+    "new_entry_menu": {
+      "heading": "Que souhaitez-vous enregistrer ?"
+    },
     "common": {
       "draw_area_overlap_info": "Si la zone chevauche un champ existant, celui-ci sera automatiquement réduit.",
       "affected_plots_warning": "Les champs suivants seront réduits par ce champ."

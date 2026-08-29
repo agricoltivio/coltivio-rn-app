@@ -3,7 +3,9 @@ import { StackScreenProps } from "@/navigation/rootStackTypes";
 export type HarvestStackParamList = {
   Harvests: undefined;
   HarvestDetails: { harvestId: string };
-  SelectHarvestCropAndDate: { cropId?: string } | undefined;
+  SelectHarvestCropAndDate:
+    | { cropId?: string; plotId?: string; name?: string }
+    | undefined;
   ConfigureHarvest: undefined;
   SetHarvestQuantity: undefined;
   SelectHarvestPlots: undefined;

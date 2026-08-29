@@ -30,6 +30,8 @@ yarn typecheck   # ensure no type errors
 
 If the changes touch files with related tests, run `yarn test` and make sure affected tests still pass.
 
+Never launch or interact with the iOS/Android simulator yourself (no `yarn ios`/`yarn android`, no simctl/adb driving). If manual UI verification is needed, ask the user to do it.
+
 ## Architecture
 
 ### Navigation

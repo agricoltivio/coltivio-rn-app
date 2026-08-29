@@ -30,6 +30,11 @@ type AddCropProtectionApplication = {
   putPlot: (plot: SelectedCropProtectionApplicationPlot) => void;
   removePlot: (plotId: string) => void;
   removePlots: (plotIds: string[]) => void;
+  // Set when the flow is launched from the plot details drawer with a plot already
+  // chosen — skips the plot-picker/divide screens and routes the summary screen
+  // back to the map instead of the crop protection applications list.
+  preselectedPlotId?: string;
+  setPreselectedPlotId: (plotId: string | undefined) => void;
   reset: () => void;
   resetSelectedPlots: () => void;
 };
@@ -76,12 +81,15 @@ export const useAddCropProtectionApplicationStore =
           selectedPlotsById: selectedPlotsById,
         };
       }),
+    preselectedPlotId: undefined,
+    setPreselectedPlotId: (plotId) => set({ preselectedPlotId: plotId }),
     reset: () =>
       set(() => ({
         totalNumberOfUnits: undefined,
         selectedProduct: undefined,
         selectedPlotsById: {},
         data: undefined,
+        preselectedPlotId: undefined,
       })),
     resetSelectedPlots: () =>
       set(() => ({

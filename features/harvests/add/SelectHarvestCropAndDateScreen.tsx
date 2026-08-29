@@ -12,6 +12,8 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCropsQuery } from "../../crops/crops.hooks";
+import { useFarmPlotsQuery } from "../../plots/plots.hooks";
+import { round } from "@/utils/math";
 import { SelectHarvestCropAndDateScreenProps } from "../navigation/harvest-routes";
 import { useCreateHarvestStore } from "./harvest.store";
 
@@ -28,15 +30,40 @@ export function SelectHarvestCropAndDateScreen({
   const theme = useTheme();
 
   const { crops, isFetched: cropsLoaded } = useCropsQuery();
-  const { setHarvest, setSelectedCrop, harvest, reset } =
-    useCreateHarvestStore();
+  const { plots } = useFarmPlotsQuery();
+  const {
+    setHarvest,
+    setSelectedCrop,
+    harvest,
+    reset,
+    putHarvestPlot,
+    setPreselectedPlotId,
+  } = useCreateHarvestStore();
 
   const preselectedCropId = route.params?.cropId;
+  const preselectedPlotId = route.params?.plotId;
 
   // Reset store on mount
   useEffect(() => {
     return () => reset();
   }, []);
+
+  // Launched from the plot details drawer with a plot already chosen — preselect it
+  // in the store so later steps can skip the plot-picker/divide screens.
+  useEffect(() => {
+    if (!preselectedPlotId) return;
+    const plot = plots?.find((p) => p.id === preselectedPlotId);
+    if (!plot) return;
+    putHarvestPlot({
+      plotId: plot.id,
+      name: plot.name,
+      geometry: plot.geometry,
+      harvestSize: round(plot.size, 0),
+      amountInKilos: 0,
+      numberOfUnits: 0,
+    });
+    setPreselectedPlotId(plot.id);
+  }, [preselectedPlotId, plots]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const {
     control,

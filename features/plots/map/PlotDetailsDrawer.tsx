@@ -17,7 +17,7 @@ import React, {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, TouchableOpacity, View } from "react-native";
+import { Modal, Pressable, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
 import { usePlotsMapContext } from "./plots-map-mode";
@@ -31,6 +31,7 @@ export function PlotDetailsDrawer() {
   const { plots: allPlots } = useFarmPlotsQuery();
 
   const [sheetIndex, setSheetIndex] = useState(0);
+  const [newEntryMenuVisible, setNewEntryMenuVisible] = useState(false);
   const snapPoints = useMemo(() => [200, "85%"], []);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -234,6 +235,12 @@ export function PlotDetailsDrawer() {
               </ListItem>
             </View>
 
+            <Button
+              style={{ marginTop: theme.spacing.m }}
+              title={t("plots.new_entry")}
+              onPress={() => setNewEntryMenuVisible(true)}
+            />
+
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate("PlotJournal", {
@@ -282,6 +289,81 @@ export function PlotDetailsDrawer() {
           </>
         )}
       </BottomDrawerModal>
+
+      <Modal
+        visible={newEntryMenuVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setNewEntryMenuVisible(false)}
+      >
+        <Pressable
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(0,0,0,0.5)",
+            justifyContent: "flex-end",
+          }}
+          onPress={() => setNewEntryMenuVisible(false)}
+        >
+          <Pressable
+            style={{
+              backgroundColor: theme.colors.white,
+              borderTopLeftRadius: 16,
+              borderTopRightRadius: 16,
+              paddingHorizontal: theme.spacing.l,
+              paddingBottom: theme.spacing.xl,
+            }}
+            onPress={(e) => e.stopPropagation()}
+          >
+            <H3
+              style={{
+                marginTop: theme.spacing.l,
+                marginBottom: theme.spacing.s,
+              }}
+            >
+              {t("plots.new_entry_menu.heading")}
+            </H3>
+            {selectedPlot &&
+              (
+                [
+                  {
+                    label: t("harvests.harvest"),
+                    route: "SelectHarvestCropAndDate" as const,
+                  },
+                  {
+                    label: t("fertilizer_application.fertilizer_application"),
+                    route: "SelectFertilizerAndDate" as const,
+                  },
+                  {
+                    label: t("crop_protection_applications.crop_protection"),
+                    route:
+                      "SelectCropProtectionApplicationProductAndDate" as const,
+                  },
+                  {
+                    label: t("tillages.tillage"),
+                    route: "SelectTillageDate" as const,
+                  },
+                ] as const
+              ).map(({ label, route }, index, actions) => (
+                <ListItem
+                  key={route}
+                  onPress={() => {
+                    setNewEntryMenuVisible(false);
+                    navigation.navigate(route, {
+                      plotId: selectedPlot.id,
+                      name: selectedPlot.name,
+                    });
+                  }}
+                  hideBottomDivider={index === actions.length - 1}
+                >
+                  <ListItem.Content>
+                    <ListItem.Title>{label}</ListItem.Title>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+              ))}
+          </Pressable>
+        </Pressable>
+      </Modal>
     </BottomSheetModalProvider>
   );
 }
