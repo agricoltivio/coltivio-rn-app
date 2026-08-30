@@ -5,6 +5,7 @@ export type FertilizerApplicationsStackParamList = {
     fertilizerId?: string;
     plotId?: string;
     name?: string;
+    returnTo?: "PlotsMap" | "PlotFertilizerApplications";
   };
   ConfigureFertilizerApplication: undefined;
   SetFertilizerApplicationUnitQuantity: undefined;

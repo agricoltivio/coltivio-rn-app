@@ -351,6 +351,7 @@ export function PlotDetailsDrawer() {
                     navigation.navigate(route, {
                       plotId: selectedPlot.id,
                       name: selectedPlot.name,
+                      returnTo: "PlotsMap",
                     });
                   }}
                   hideBottomDivider={index === actions.length - 1}

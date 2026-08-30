@@ -104,6 +104,7 @@ export function FertilizerApplicationsScreen({
           headerTitleOnScroll={t(
             "fertilizer_application.fertilizer_application",
           )}
+          contentContainerStyle={{ paddingBottom: 120 }}
         >
           {!ready || summariesLoading ? (
             <ActivityIndicator style={{ marginTop: 40 }} size="large" />

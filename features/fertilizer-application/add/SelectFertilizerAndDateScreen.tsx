@@ -39,17 +39,20 @@ export function SelectFertilizerAndDateScreen({
     reset,
     putPlot,
     setPreselectedPlotId,
+    setReturnTo,
   } = useCreateFertilizerApplicationStore();
 
   const preselectedFertilizerId = route.params?.fertilizerId;
   const preselectedPlotId = route.params?.plotId;
+  const returnTo = route.params?.returnTo;
 
   useEffect(() => {
     return () => reset();
   }, []);
 
-  // Launched from the plot details drawer with a plot already chosen — preselect it
-  // in the store so later steps can skip the plot-picker/divide screens.
+  // Launched with a plot already chosen (plot details drawer, or the FAB on the
+  // plot-scoped fertilizer applications list) — preselect it in the store so later
+  // steps can skip the plot-picker/divide screens.
   useEffect(() => {
     if (!preselectedPlotId) return;
     const plot = plots?.find((p) => p.id === preselectedPlotId);
@@ -62,6 +65,7 @@ export function SelectFertilizerAndDateScreen({
       numberOfUnits: 0,
     });
     setPreselectedPlotId(plot.id);
+    setReturnTo(returnTo);
   }, [preselectedPlotId, plots]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const {

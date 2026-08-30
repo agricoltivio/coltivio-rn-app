@@ -17,6 +17,7 @@ export function HarvestSummaryScreen({
     totalProducedUnits = 0,
     harvest,
     preselectedPlotId,
+    returnTo,
   } = useCreateHarvestStore();
 
   const {
@@ -31,18 +32,25 @@ export function HarvestSummaryScreen({
   const totalProducedKilos = totalProducedUnits * kilosPerUnit;
   const plotHarvests = Object.values(selectedPlotsById);
 
-  const createHarvestMutation = useCreateHarvestMutation(() =>
-    preselectedPlotId
-      ? navigation.popTo("PlotsMap", { selectedPlotId: preselectedPlotId })
-      : navigation.reset({
-          index: 2,
-          routes: [
-            { name: "Home" },
-            { name: "FieldCalendar" },
-            { name: "Harvests" },
-          ],
-        }),
-  );
+  const createHarvestMutation = useCreateHarvestMutation(() => {
+    if (preselectedPlotId && returnTo === "PlotHarvests") {
+      navigation.popTo("PlotHarvests", {
+        plotId: preselectedPlotId,
+        name: selectedPlotsById[preselectedPlotId].name,
+      });
+    } else if (preselectedPlotId) {
+      navigation.popTo("PlotsMap", { selectedPlotId: preselectedPlotId });
+    } else {
+      navigation.reset({
+        index: 2,
+        routes: [
+          { name: "Home" },
+          { name: "FieldCalendar" },
+          { name: "Harvests" },
+        ],
+      });
+    }
+  });
 
   function onSave() {
     createHarvestMutation.mutate({

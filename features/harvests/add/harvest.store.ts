@@ -26,11 +26,14 @@ type CreateHarvestStore = {
   putHarvestPlot: (harvestPlot: SelectedHarvestPlot) => void;
   removeHarvestPlot: (plotId: string) => void;
   removeHarvestPlots: (plotIds: string[]) => void;
-  // Set when the flow is launched from the plot details drawer with a plot already
-  // chosen — skips the plot-picker/divide screens and routes the summary screen
-  // back to the map instead of the harvests list.
+  // Set when the flow is launched with a plot already chosen (from the plot details
+  // drawer, or the FAB on the plot-scoped harvests list) — skips the plot-picker/
+  // divide screens. `returnTo` is the screen the summary screen navigates back to:
+  // the map or the plot-scoped harvests list.
   preselectedPlotId?: string;
   setPreselectedPlotId: (plotId: string | undefined) => void;
+  returnTo?: "PlotsMap" | "PlotHarvests";
+  setReturnTo: (returnTo: "PlotsMap" | "PlotHarvests" | undefined) => void;
   reset: () => void;
   resetSelectedPlots: () => void;
 };
@@ -67,6 +70,8 @@ export const useCreateHarvestStore = create<CreateHarvestStore>((set) => ({
     }),
   preselectedPlotId: undefined,
   setPreselectedPlotId: (plotId) => set({ preselectedPlotId: plotId }),
+  returnTo: undefined,
+  setReturnTo: (returnTo) => set({ returnTo }),
   reset: () =>
     set(() => ({
       selectedPlotsById: {},
@@ -74,6 +79,7 @@ export const useCreateHarvestStore = create<CreateHarvestStore>((set) => ({
       selectedCrop: undefined,
       harvest: undefined,
       preselectedPlotId: undefined,
+      returnTo: undefined,
     })),
   resetSelectedPlots: () =>
     set(() => ({

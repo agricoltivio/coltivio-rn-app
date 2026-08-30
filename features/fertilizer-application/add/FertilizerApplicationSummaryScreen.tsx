@@ -20,6 +20,7 @@ export function FertilizerApplicationSummaryScreen({
     totalNumberOfApplications = 0,
     fertilizerApplication,
     preselectedPlotId,
+    returnTo,
   } = useCreateFertilizerApplicationStore();
 
   const { date, method, unit, additionalNotes, amountPerUnit } =
@@ -28,18 +29,25 @@ export function FertilizerApplicationSummaryScreen({
   const selectedPlots = Object.values(selectedPlotsById);
 
   const createFertilizerApplicationMutation =
-    useCreateFertilizerApplicationsMutation(() =>
-      preselectedPlotId
-        ? navigation.popTo("PlotsMap", { selectedPlotId: preselectedPlotId })
-        : navigation.reset({
-            index: 2,
-            routes: [
-              { name: "Home" },
-              { name: "FieldCalendar" },
-              { name: "FertilizerApplications" },
-            ],
-          }),
-    );
+    useCreateFertilizerApplicationsMutation(() => {
+      if (preselectedPlotId && returnTo === "PlotFertilizerApplications") {
+        navigation.popTo("PlotFertilizerApplications", {
+          plotId: preselectedPlotId,
+          name: selectedPlotsById[preselectedPlotId].name,
+        });
+      } else if (preselectedPlotId) {
+        navigation.popTo("PlotsMap", { selectedPlotId: preselectedPlotId });
+      } else {
+        navigation.reset({
+          index: 2,
+          routes: [
+            { name: "Home" },
+            { name: "FieldCalendar" },
+            { name: "FertilizerApplications" },
+          ],
+        });
+      }
+    });
 
   function onSave() {
     createFertilizerApplicationMutation.mutate({

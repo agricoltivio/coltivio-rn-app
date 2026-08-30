@@ -1,9 +1,11 @@
+import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
 import { FilterChips } from "@/components/filters/FilterChips";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
 import { H2, H3, Headline } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
+import { usePermissions } from "@/features/user/users.hooks";
 import Fuse from "fuse.js";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -19,6 +21,7 @@ export function PlotTillagesScreen({
   const { t, i18n } = useTranslation();
   const locale = i18n.language;
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const { plotId, name } = route.params;
   const { tillages } = useTillagesForPlotQuery(plotId);
 
@@ -204,6 +207,19 @@ export function PlotTillagesScreen({
             overflow: "hidden",
           }}
           renderItem={renderItem}
+        />
+      )}
+
+      {canWrite("field_calendar") && (
+        <FAB
+          icon={{ name: "add", color: "white" }}
+          onPress={() =>
+            navigation.navigate("SelectTillageDate", {
+              plotId,
+              name,
+              returnTo: "PlotTillages",
+            })
+          }
         />
       )}
     </ContentView>

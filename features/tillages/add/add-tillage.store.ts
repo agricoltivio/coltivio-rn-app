@@ -19,11 +19,14 @@ type AddTillage = {
   putPlot: (plot: SelectedTillagePlot) => void;
   removePlot: (plotId: string) => void;
   removePlots: (plotIds: string[]) => void;
-  // Set when the flow is launched from the plot details drawer with a plot already
-  // chosen — skips the plot-picker screen and routes the summary screen back to
-  // the map instead of the tillages list.
+  // Set when the flow is launched with a plot already chosen (from the plot details
+  // drawer, or the FAB on the plot-scoped tillages list) — skips the plot-picker
+  // screen. `returnTo` is the screen the summary screen navigates back to: the map
+  // or the plot-scoped tillages list.
   preselectedPlotId?: string;
   setPreselectedPlotId: (plotId: string | undefined) => void;
+  returnTo?: "PlotsMap" | "PlotTillages";
+  setReturnTo: (returnTo: "PlotsMap" | "PlotTillages" | undefined) => void;
   reset: () => void;
   resetSelectedPlots: () => void;
 };
@@ -68,11 +71,14 @@ export const useAddTillageStore = create<AddTillage>((set) => ({
     }),
   preselectedPlotId: undefined,
   setPreselectedPlotId: (plotId) => set({ preselectedPlotId: plotId }),
+  returnTo: undefined,
+  setReturnTo: (returnTo) => set({ returnTo }),
   reset: () =>
     set(() => ({
       selectedPlotsById: {},
       data: undefined,
       preselectedPlotId: undefined,
+      returnTo: undefined,
     })),
   resetSelectedPlots: () =>
     set(() => ({

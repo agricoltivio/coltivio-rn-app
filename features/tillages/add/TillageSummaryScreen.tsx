@@ -11,23 +11,31 @@ export function TillageSummaryScreen({
   navigation,
 }: TillageSummaryScreenProps) {
   const { t } = useTranslation();
-  const { selectedPlotsById, data, preselectedPlotId } = useAddTillageStore();
+  const { selectedPlotsById, data, preselectedPlotId, returnTo } =
+    useAddTillageStore();
   const { date, action, customAction, additionalNotes } = data as TillageBase;
 
   const selectedPlots = Object.values(selectedPlotsById);
 
-  const createTillagesMutation = useCreateTillagesMutation(() =>
-    preselectedPlotId
-      ? navigation.popTo("PlotsMap", { selectedPlotId: preselectedPlotId })
-      : navigation.reset({
-          index: 2,
-          routes: [
-            { name: "Home" },
-            { name: "FieldCalendar" },
-            { name: "Tillages" },
-          ],
-        }),
-  );
+  const createTillagesMutation = useCreateTillagesMutation(() => {
+    if (preselectedPlotId && returnTo === "PlotTillages") {
+      navigation.popTo("PlotTillages", {
+        plotId: preselectedPlotId,
+        name: selectedPlotsById[preselectedPlotId].name,
+      });
+    } else if (preselectedPlotId) {
+      navigation.popTo("PlotsMap", { selectedPlotId: preselectedPlotId });
+    } else {
+      navigation.reset({
+        index: 2,
+        routes: [
+          { name: "Home" },
+          { name: "FieldCalendar" },
+          { name: "Tillages" },
+        ],
+      });
+    }
+  });
 
   function onSave() {
     createTillagesMutation.mutate({

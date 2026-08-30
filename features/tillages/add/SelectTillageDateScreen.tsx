@@ -26,18 +26,20 @@ export function SelectTillageDateScreen({
   const theme = useTheme();
 
   const { plots } = useFarmPlotsQuery();
-  const { setData, data, reset, putPlot, setPreselectedPlotId } =
+  const { setData, data, reset, putPlot, setPreselectedPlotId, setReturnTo } =
     useAddTillageStore();
 
   const preselectedPlotId = route.params?.plotId;
+  const returnTo = route.params?.returnTo;
 
   // Reset store on mount
   useEffect(() => {
     return () => reset();
   }, []);
 
-  // Launched from the plot details drawer with a plot already chosen — preselect it
-  // in the store so later steps can skip the plot-picker screen.
+  // Launched with a plot already chosen (plot details drawer, or the FAB on the
+  // plot-scoped tillages list) — preselect it in the store so later steps can skip
+  // the plot-picker screen.
   useEffect(() => {
     if (!preselectedPlotId) return;
     const plot = plots?.find((p) => p.id === preselectedPlotId);
@@ -49,6 +51,7 @@ export function SelectTillageDateScreen({
       size: round(plot.size, 0),
     });
     setPreselectedPlotId(plot.id);
+    setReturnTo(returnTo);
   }, [preselectedPlotId, plots]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const {

@@ -38,18 +38,21 @@ export function SelectHarvestCropAndDateScreen({
     reset,
     putHarvestPlot,
     setPreselectedPlotId,
+    setReturnTo,
   } = useCreateHarvestStore();
 
   const preselectedCropId = route.params?.cropId;
   const preselectedPlotId = route.params?.plotId;
+  const returnTo = route.params?.returnTo;
 
   // Reset store on mount
   useEffect(() => {
     return () => reset();
   }, []);
 
-  // Launched from the plot details drawer with a plot already chosen — preselect it
-  // in the store so later steps can skip the plot-picker/divide screens.
+  // Launched with a plot already chosen (plot details drawer, or the FAB on the
+  // plot-scoped harvests list) — preselect it in the store so later steps can skip
+  // the plot-picker/divide screens.
   useEffect(() => {
     if (!preselectedPlotId) return;
     const plot = plots?.find((p) => p.id === preselectedPlotId);
@@ -63,6 +66,7 @@ export function SelectHarvestCropAndDateScreen({
       numberOfUnits: 0,
     });
     setPreselectedPlotId(plot.id);
+    setReturnTo(returnTo);
   }, [preselectedPlotId, plots]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const {
