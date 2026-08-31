@@ -28,6 +28,9 @@ export function SetFertilizerApplicationUnitQuantityScreen({
     setTotalNumberOfApplications,
     fertilizerApplication,
     totalNumberOfApplications,
+    preselectedPlotId,
+    selectedPlotsById,
+    putPlot,
   } = useCreateFertilizerApplicationStore();
 
   const {
@@ -56,8 +59,17 @@ export function SetFertilizerApplicationUnitQuantityScreen({
     t("harvests.labels.unit.other");
 
   function onSubmit(values: FormValues) {
-    setTotalNumberOfApplications(Number(values.numberOfApplications));
-    navigation.navigate("SelectFertilizerApplicationPlots");
+    const total = Number(values.numberOfApplications);
+    setTotalNumberOfApplications(total);
+    const preselectedPlot = preselectedPlotId
+      ? selectedPlotsById[preselectedPlotId]
+      : undefined;
+    if (preselectedPlot) {
+      putPlot({ ...preselectedPlot, numberOfUnits: total });
+      navigation.navigate("FertilizerApplicationSummary");
+    } else {
+      navigation.navigate("SelectFertilizerApplicationPlots");
+    }
   }
 
   return (

@@ -105,6 +105,7 @@ export function HarvestsScreen({ navigation }: HarvestsScreenProps) {
         <ScrollView
           showHeaderOnScroll
           headerTitleOnScroll={t("harvests.harvest")}
+          contentContainerStyle={{ paddingBottom: 120 }}
         >
           {!ready || summariesLoading ? (
             <ActivityIndicator style={{ marginTop: 40 }} size="large" />

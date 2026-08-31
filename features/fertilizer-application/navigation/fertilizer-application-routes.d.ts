@@ -1,7 +1,12 @@
 import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type FertilizerApplicationsStackParamList = {
-  SelectFertilizerAndDate: { fertilizerId?: string };
+  SelectFertilizerAndDate: {
+    fertilizerId?: string;
+    plotId?: string;
+    name?: string;
+    returnTo?: "PlotsMap" | "PlotFertilizerApplications";
+  };
   ConfigureFertilizerApplication: undefined;
   SetFertilizerApplicationUnitQuantity: undefined;
   SelectFertilizerApplicationPlots: undefined;

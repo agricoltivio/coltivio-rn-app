@@ -344,6 +344,10 @@
     "plot": "Plot",
     "plot_name": "Plot {{name}}",
     "plot_name_date": "{{date}} - Plot {{name}}",
+    "new_entry": "New entry",
+    "new_entry_menu": {
+      "heading": "What would you like to log?"
+    },
     "common": {
       "draw_area_overlap_info": "Overlapping an existing plot will automatically reduce the area.",
       "affected_plots_warning": "Warning: Overlapping plots will be reduced."

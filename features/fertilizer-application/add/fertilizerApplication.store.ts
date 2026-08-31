@@ -28,6 +28,16 @@ type CreateFertilizerApplicationStore = {
   putPlot: (plot: SelectedFertilizerApplicationPlot) => void;
   removePlot: (plotId: string) => void;
   removePlots: (plotIds: string[]) => void;
+  // Set when the flow is launched with a plot already chosen (from the plot details
+  // drawer, or the FAB on the plot-scoped fertilizer applications list) — skips the
+  // plot-picker/divide screens. `returnTo` is the screen the summary screen
+  // navigates back to: the map or the plot-scoped fertilizer applications list.
+  preselectedPlotId?: string;
+  setPreselectedPlotId: (plotId: string | undefined) => void;
+  returnTo?: "PlotsMap" | "PlotFertilizerApplications";
+  setReturnTo: (
+    returnTo: "PlotsMap" | "PlotFertilizerApplications" | undefined,
+  ) => void;
   reset: () => void;
   resetSelectedPlots: () => void;
 };
@@ -65,12 +75,18 @@ export const useCreateFertilizerApplicationStore =
         plotIds.forEach((plotId) => delete selectedPlotsById[plotId]);
         return { selectedPlotsById };
       }),
+    preselectedPlotId: undefined,
+    setPreselectedPlotId: (plotId) => set({ preselectedPlotId: plotId }),
+    returnTo: undefined,
+    setReturnTo: (returnTo) => set({ returnTo }),
     reset: () =>
       set(() => ({
         selectedPlotsById: {},
         fertilizerApplication: undefined,
         selectedFertilizer: undefined,
         totalNumberOfApplications: undefined,
+        preselectedPlotId: undefined,
+        returnTo: undefined,
       })),
     resetSelectedPlots: () => set(() => ({ selectedPlotsById: {} })),
   }));

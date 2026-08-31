@@ -344,6 +344,10 @@
     "plot": "Schlag",
     "plot_name": "Schlag {{name}}",
     "plot_name_date": "{{date}} - Schlag {{name}}",
+    "new_entry": "Neuer Eintrag",
+    "new_entry_menu": {
+      "heading": "Was möchtest du erfassen?"
+    },
     "common": {
       "draw_area_overlap_info": "Wenn die Fläche einen existierenden Schlag überlappt, wird dieser automatisch verkleinert.",
       "affected_plots_warning": "Folgende Schläge werden durch diesen Schlag verkleinert."

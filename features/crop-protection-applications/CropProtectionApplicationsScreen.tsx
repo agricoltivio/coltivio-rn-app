@@ -106,6 +106,7 @@ export function CropProtectionApplicationsScreen({
           headerTitleOnScroll={t(
             "crop_protection_applications.crop_protection",
           )}
+          contentContainerStyle={{ paddingBottom: 120 }}
         >
           {!ready || summariesLoading ? (
             <ActivityIndicator style={{ marginTop: 40 }} size="large" />

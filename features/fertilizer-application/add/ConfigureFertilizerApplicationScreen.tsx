@@ -66,6 +66,9 @@ export function ConfigureFertilizerApplicationScreen({
     fertilizerApplication,
     selectedFertilizer,
     setTotalNumberOfApplications,
+    preselectedPlotId,
+    selectedPlotsById,
+    putPlot,
   } = useCreateFertilizerApplicationStore();
 
   const fertilizerId = fertilizerApplication?.fertilizerId;
@@ -163,8 +166,27 @@ export function ConfigureFertilizerApplicationScreen({
       values.unit === "total_amount" ||
       values.unit === "amount_per_hectare"
     ) {
-      if (values.unit === "total_amount") {
-        setTotalNumberOfApplications(1);
+      const preselectedPlot = preselectedPlotId
+        ? selectedPlotsById[preselectedPlotId]
+        : undefined;
+
+      if (values.unit === "amount_per_hectare") {
+        if (preselectedPlot) {
+          const hectares = preselectedPlot.size / 10000;
+          setTotalNumberOfApplications(hectares);
+          putPlot({ ...preselectedPlot, numberOfUnits: hectares });
+          navigation.navigate("DivideFertilizerApplicationOnPlots");
+          return;
+        }
+        navigation.navigate("SelectFertilizerApplicationPlots");
+        return;
+      }
+
+      setTotalNumberOfApplications(1);
+      if (preselectedPlot) {
+        putPlot({ ...preselectedPlot, numberOfUnits: 1 });
+        navigation.navigate("FertilizerApplicationSummary");
+        return;
       }
       navigation.navigate("SelectFertilizerApplicationPlots");
       return;

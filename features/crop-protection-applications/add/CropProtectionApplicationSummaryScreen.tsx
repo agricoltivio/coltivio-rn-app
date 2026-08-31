@@ -20,6 +20,8 @@ export function CropProtectionApplicationSummaryScreen({
     selectedProduct,
     totalNumberOfUnits: totalNumberOfApplications = 0,
     data,
+    preselectedPlotId,
+    returnTo,
   } = useAddCropProtectionApplicationStore();
 
   const { date, time, method, unit, additionalNotes, amountPerUnit } =
@@ -31,16 +33,25 @@ export function CropProtectionApplicationSummaryScreen({
   const selectedPlots = Object.values(selectedPlotsById);
 
   const createCropProtectionApplicationMutation =
-    useCreateCropProtectionApplicationsMutation(() =>
-      navigation.reset({
-        index: 2,
-        routes: [
-          { name: "Home" },
-          { name: "FieldCalendar" },
-          { name: "CropProtectionApplications" },
-        ],
-      }),
-    );
+    useCreateCropProtectionApplicationsMutation(() => {
+      if (preselectedPlotId && returnTo === "PlotCropProtectionApplications") {
+        navigation.popTo("PlotCropProtectionApplications", {
+          plotId: preselectedPlotId,
+          name: selectedPlotsById[preselectedPlotId].name,
+        });
+      } else if (preselectedPlotId) {
+        navigation.popTo("PlotsMap", { selectedPlotId: preselectedPlotId });
+      } else {
+        navigation.reset({
+          index: 2,
+          routes: [
+            { name: "Home" },
+            { name: "FieldCalendar" },
+            { name: "CropProtectionApplications" },
+          ],
+        });
+      }
+    });
 
   function onSave() {
     createCropProtectionApplicationMutation.mutate({

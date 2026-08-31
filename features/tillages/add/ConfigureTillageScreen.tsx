@@ -27,7 +27,7 @@ export function ConfigureTillageScreen({
   const { t } = useTranslation();
   const theme = useTheme();
 
-  const { setData, data } = useAddTillageStore();
+  const { setData, data, preselectedPlotId } = useAddTillageStore();
 
   const {
     control,
@@ -59,7 +59,9 @@ export function ConfigureTillageScreen({
       additionalNotes: values.additionalNotes,
     });
 
-    navigation.navigate("SelectTillagePlots");
+    navigation.navigate(
+      preselectedPlotId ? "TillageSummary" : "SelectTillagePlots",
+    );
   }
 
   return (

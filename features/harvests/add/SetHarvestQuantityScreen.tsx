@@ -22,8 +22,14 @@ export function SetHarvestQuantityScreen({
   const { t } = useTranslation();
   const theme = useTheme();
 
-  const { setTotalProducedUnits, harvest, totalProducedUnits } =
-    useCreateHarvestStore();
+  const {
+    setTotalProducedUnits,
+    harvest,
+    totalProducedUnits,
+    preselectedPlotId,
+    selectedPlotsById,
+    putHarvestPlot,
+  } = useCreateHarvestStore();
 
   const {
     control,
@@ -49,8 +55,17 @@ export function SetHarvestQuantityScreen({
     t("harvests.labels.unit.other");
 
   function onSubmit(values: FormValues) {
-    setTotalProducedUnits(Number(values.totalProducedUnits));
-    navigation.navigate("SelectHarvestPlots");
+    const total = Number(values.totalProducedUnits);
+    setTotalProducedUnits(total);
+    const preselectedPlot = preselectedPlotId
+      ? selectedPlotsById[preselectedPlotId]
+      : undefined;
+    if (preselectedPlot) {
+      putHarvestPlot({ ...preselectedPlot, numberOfUnits: total });
+      navigation.navigate("HarvestSummary");
+    } else {
+      navigation.navigate("SelectHarvestPlots");
+    }
   }
 
   return (

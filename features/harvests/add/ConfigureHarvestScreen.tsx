@@ -55,8 +55,14 @@ export function ConfigureHarvestScreen({
   const updatePresetMutation = useUpdateHarvestPresetMutation();
   const deletePresetMutation = useDeleteHarvestPresetMutation();
 
-  const { setHarvest, harvest, setTotalProducedUnits } =
-    useCreateHarvestStore();
+  const {
+    setHarvest,
+    harvest,
+    setTotalProducedUnits,
+    preselectedPlotId,
+    selectedPlotsById,
+    putHarvestPlot,
+  } = useCreateHarvestStore();
 
   const {
     control,
@@ -137,7 +143,15 @@ export function ConfigureHarvestScreen({
     // If total_amount, skip quantity screen (set to 1)
     if (values.unit === "total_amount") {
       setTotalProducedUnits(1);
-      navigation.navigate("SelectHarvestPlots");
+      const preselectedPlot = preselectedPlotId
+        ? selectedPlotsById[preselectedPlotId]
+        : undefined;
+      if (preselectedPlot) {
+        putHarvestPlot({ ...preselectedPlot, numberOfUnits: 1 });
+        navigation.navigate("HarvestSummary");
+      } else {
+        navigation.navigate("SelectHarvestPlots");
+      }
     } else {
       navigation.navigate("SetHarvestQuantity");
     }

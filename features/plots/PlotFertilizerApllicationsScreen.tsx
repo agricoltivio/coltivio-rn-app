@@ -1,3 +1,4 @@
+import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
@@ -5,6 +6,7 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Headline, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
 import { round } from "@/utils/math";
+import { usePermissions } from "@/features/user/users.hooks";
 import Fuse from "fuse.js";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -31,6 +33,7 @@ export function PlotFertilizerApplicationsScreen({
   const { t, i18n } = useTranslation();
   const locale = i18n.language;
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const { plotId, name } = route.params;
 
   const [viewMode, setViewMode] = useState<ViewMode>("dashboard");
@@ -132,6 +135,7 @@ export function PlotFertilizerApplicationsScreen({
           headerTitleOnScroll={t(
             "fertilizer_application.fertilizer_application",
           )}
+          contentContainerStyle={{ paddingBottom: 120 }}
         >
           {summariesLoading ? (
             <ActivityIndicator style={{ marginTop: 40 }} size="large" />
@@ -180,6 +184,19 @@ export function PlotFertilizerApplicationsScreen({
             />
           )}
         </View>
+      )}
+
+      {canWrite("field_calendar") && (
+        <FAB
+          icon={{ name: "add", color: "white" }}
+          onPress={() =>
+            navigation.navigate("SelectFertilizerAndDate", {
+              plotId,
+              name,
+              returnTo: "PlotFertilizerApplications",
+            })
+          }
+        />
       )}
     </ContentView>
   );

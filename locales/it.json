@@ -344,6 +344,10 @@
     "plot": "Campo",
     "plot_name": "Campo {{name}}",
     "plot_name_date": "{{date}} - Campo {{name}}",
+    "new_entry": "Nuova voce",
+    "new_entry_menu": {
+      "heading": "Cosa vuoi registrare?"
+    },
     "common": {
       "draw_area_overlap_info": "Se l'area si sovrappone a un campo esistente, verrà automaticamente ridotta.",
       "affected_plots_warning": "Attenzione, i seguenti campi verranno ridotti da questo campo."
