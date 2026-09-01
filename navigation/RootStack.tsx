@@ -46,8 +46,12 @@ export function RootStack() {
   const [splashScreenVisible, setSplashScreenVisible] = useState(true);
   const navigation = useNavigation();
   const [fontsLoaded] = useAppFonts();
-  const { activeFarmId, setActiveFarmId, clearActiveFarmId, loadingActiveFarm } =
-    useActiveFarm();
+  const {
+    activeFarmId,
+    setActiveFarmId,
+    clearActiveFarmId,
+    loadingActiveFarm,
+  } = useActiveFarm();
   const {
     farms,
     isFetched: farmsFetched,
@@ -83,9 +87,7 @@ export function RootStack() {
   // into the generic error stack.
   const staleFarmId =
     error?.message?.includes("You are not a member of the specified farm") ||
-    farmsError?.message?.includes(
-      "You are not a member of the specified farm",
-    );
+    farmsError?.message?.includes("You are not a member of the specified farm");
   useEffect(() => {
     if (staleFarmId) {
       // clearActiveFarmId also discards the query cache, which includes refetching

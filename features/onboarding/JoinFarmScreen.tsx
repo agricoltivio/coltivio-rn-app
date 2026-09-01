@@ -24,9 +24,7 @@ export function JoinFarmScreen({ navigation }: JoinFarmScreenProps) {
       // needed. Reached in-app from the My Farm switcher: "Home" is already in this
       // navigator's history — popTo prunes the join-farm flow off the stack, so the back
       // button doesn't lead back into it.
-      if (
-        navigation.getState().routes.some((route) => route.name === "Farm")
-      ) {
+      if (navigation.getState().routes.some((route) => route.name === "Farm")) {
         navigation.popTo("Home");
       }
     },

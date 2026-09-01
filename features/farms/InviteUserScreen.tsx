@@ -111,7 +111,10 @@ export function InviteUserScreen({}: InviteUserScreenProps) {
 
   return (
     <ContentView>
-      <ScrollView headerTitleOnScroll={t("farm.invite_user")} showHeaderOnScroll>
+      <ScrollView
+        headerTitleOnScroll={t("farm.invite_user")}
+        showHeaderOnScroll
+      >
         <H2>{t("farm.invite_user")}</H2>
 
         <View style={{ marginTop: theme.spacing.l }}>

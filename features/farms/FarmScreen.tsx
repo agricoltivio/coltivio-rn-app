@@ -149,9 +149,7 @@ export function FarmScreen({ navigation }: FarmScreenProps) {
                     </View>
                     <View style={{ flex: 1 }}>
                       <Body>{user.fullName ?? user.email}</Body>
-                      {user.fullName ? (
-                        <Caption1>{user.email}</Caption1>
-                      ) : null}
+                      {user.fullName ? <Caption1>{user.email}</Caption1> : null}
                     </View>
                     {isOwner && !isSelf ? (
                       <View
