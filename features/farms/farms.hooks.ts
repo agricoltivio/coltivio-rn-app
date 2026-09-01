@@ -18,6 +18,7 @@ import * as Linking from "expo-linking";
 import { usePaymentSheet } from "@stripe/stripe-react-native";
 import { applePayParams, googlePayParams } from "@/utils/stripe";
 import { useLocalSettings } from "../user/LocalSettingsContext";
+import { useActiveFarm } from "./ActiveFarmContext";
 
 export function useFarmQuery(enabled: boolean = true) {
   const api = useApi();
@@ -28,6 +29,17 @@ export function useFarmQuery(enabled: boolean = true) {
   });
 
   return { farm: data, ...rest };
+}
+
+export function useFarmsQuery(enabled: boolean = true) {
+  const api = useApi();
+  const { data, ...rest } = useQuery({
+    queryKey: queryKeys.farms.list.queryKey,
+    queryFn: () => api.farms.getFarms(),
+    enabled,
+  });
+
+  return { farms: data, ...rest };
 }
 
 export function useFarmStatsQuery(enabled: boolean = true) {
@@ -70,7 +82,7 @@ export function useCreateFarmMutation(
   onError?: (error: Error) => void,
 ) {
   const api = useApi();
-  const queryClient = useQueryClient();
+  const { setActiveFarmId } = useActiveFarm();
   const createFarmMutation = useMutation({
     mutationFn: async (data: OnboardingData) => {
       const farm = await api.farms.createFarm({
@@ -88,12 +100,12 @@ export function useCreateFarmMutation(
       console.error(error);
       onError && onError(error);
     },
-    onSuccess: async ({ farm }) => {
-      // Fetch fresh user data after farm creation so farmId is guaranteed to be set
-      // by the server. Using setQueryData with a partial update risks being overwritten
-      // by an in-flight useUserQuery fetch that started before the farm existed.
-      const freshUser = await api.users.getLoggedInUser();
-      queryClient.setQueryData(queryKeys.users.me.queryKey, freshUser);
+    onSuccess: ({ farm }) => {
+      // The backend doesn't auto-select the new farm — do it locally so the user lands in
+      // the right context immediately (both for onboarding and "create another farm").
+      // setActiveFarmId also discards the query cache (query keys aren't farm-scoped), so
+      // users.me/farms.list/etc. all come back fresh for the new farm.
+      setActiveFarmId(farm.id);
       onSuccess && onSuccess(farm);
     },
   });
@@ -105,15 +117,15 @@ export function useAcceptInviteMutation(
   onError?: (error: Error) => void,
 ) {
   const api = useApi();
-  const queryClient = useQueryClient();
+  const { setActiveFarmId } = useActiveFarm();
   return useMutation({
     mutationFn: (code: string) => api.farms.acceptInvite(code),
-    onSuccess: async (user) => {
-      // Refetch the full /me response (which includes farmPermissions) so hasFarm becomes true
-      // and RootStack auto-transitions to the app stack.
-      await queryClient.invalidateQueries({
-        queryKey: queryKeys.users.me.queryKey,
-      });
+    onSuccess: (user) => {
+      // The backend doesn't auto-select the joined farm — do it locally, same as create.
+      // See useCreateFarmMutation above for why no manual cache invalidation is needed here.
+      if (user.farmId) {
+        setActiveFarmId(user.farmId);
+      }
       onSuccess && onSuccess(user);
     },
     onError: (error) => {
@@ -461,17 +473,18 @@ export function useDeleteFarmMutation(
   onError?: (error: Error) => void,
 ) {
   const api = useApi();
-  const queryClient = useQueryClient();
+  const { clearActiveFarmId } = useActiveFarm();
 
   const deleteFarmMutation = useMutation({
     mutationFn: async (deleteAccount: boolean) => {
       await api.farms.deleteFarm(deleteAccount);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.users._def,
-      });
-      queryClient.removeQueries();
+      // The deleted farm's id is no longer valid to send as x-farm-id. clearActiveFarmId
+      // updates the value request middleware reads before discarding the query cache, so the
+      // refetch it triggers (e.g. the farms list, driving auto-select or the picker) never
+      // goes out with the stale id and 403s.
+      clearActiveFarmId();
       onSuccess && onSuccess();
     },
     onError: (error) => {

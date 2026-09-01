@@ -318,8 +318,8 @@
     "role_owner": "Propriétaire",
     "role_member": "Membre",
     "delete_farm": "Supprimer la ferme",
-    "enter_farm_name_to_delete": "Pour supprimer votre ferme, entrez le nom de la ferme et confirmez l'action.",
-    "chose_option_to_delete_account": "Si vous souhaitez également supprimer votre compte, activez l'option 'Supprimer le compte'.",
+    "danger_zone": "Zone de danger",
+    "danger_zone_description": "La suppression de votre ferme efface définitivement toutes ses données. Cette action est irréversible.",
     "delete_account": "Supprimer le compte",
     "membership": "Adhésion à l'association",
     "member_permissions": "Autorisations",
@@ -334,10 +334,19 @@
     "permission_feature_tasks": "Tâches",
     "permission_feature_field_calendar": "Calendrier des champs",
     "permission_feature_commerce": "Commerce",
+    "switcher": {
+      "title": "Changer de ferme",
+      "create_another": "+ Créer une autre ferme",
+      "join_with_code": "Rejoindre une ferme avec un code"
+    },
     "charts": {
       "crops_by_area": "Cultures par surface",
       "no_crops": "Aucune culture active"
     }
+  },
+  "farm_picker": {
+    "heading": "Sélectionner une ferme",
+    "subheading": "Vous appartenez à plusieurs fermes. Choisissez celle avec laquelle travailler."
   },
   "plots": {
     "plots": "Champs",

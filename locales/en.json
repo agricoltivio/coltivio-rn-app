@@ -318,8 +318,8 @@
     "role_owner": "Owner",
     "role_member": "Member",
     "delete_farm": "Delete Farm",
-    "enter_farm_name_to_delete": "To delete your farm, enter the farm name.",
-    "chose_option_to_delete_account": "To also delete your account, enable 'Delete Account'.",
+    "danger_zone": "Danger Zone",
+    "danger_zone_description": "Deleting your farm permanently removes all its data. This cannot be undone.",
     "delete_account": "Delete Account",
     "membership": "Association Membership",
     "member_permissions": "Permissions",
@@ -334,10 +334,19 @@
     "permission_feature_tasks": "Tasks",
     "permission_feature_field_calendar": "Field calendar",
     "permission_feature_commerce": "Commerce",
+    "switcher": {
+      "title": "Switch farm",
+      "create_another": "+ Create another farm",
+      "join_with_code": "Join a farm with a code"
+    },
     "charts": {
       "crops_by_area": "Crops by area",
       "no_crops": "No active crops"
     }
+  },
+  "farm_picker": {
+    "heading": "Select a farm",
+    "subheading": "You belong to multiple farms. Choose which one to work with."
   },
   "plots": {
     "plots": "Plots",
