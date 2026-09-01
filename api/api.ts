@@ -69,11 +69,34 @@ const authMiddleware = (token: string): Middleware => ({
     return request;
   },
 });
+
+// The active farm id lives here, outside React state, on purpose. It's read by
+// farmMiddleware at the moment each request is actually sent — not by any hook at render
+// time — so it can never be a stale value captured by a component that hasn't re-rendered
+// yet. ActiveFarmContext (features/farms/ActiveFarmContext.tsx) is the sole writer, via
+// setActiveFarmIdForRequests, whenever the selection changes.
+let currentActiveFarmId: string | null = null;
+
+export function setActiveFarmIdForRequests(farmId: string | null) {
+  currentActiveFarmId = farmId;
+}
+
+// x-farm-id is not part of the OpenAPI spec (the backend reads it manually in its auth
+// middleware), so it's attached by hand here rather than via generated request typing.
+const farmMiddleware: Middleware = {
+  async onRequest({ request, options }) {
+    if (currentActiveFarmId) {
+      request.headers.set("x-farm-id", currentActiveFarmId);
+    }
+    return request;
+  },
+};
+
 export function createAuthClient(token: string) {
   const authClient = createClient<paths>({
     baseUrl,
   });
-  authClient.use(middleware, authMiddleware(token));
+  authClient.use(middleware, authMiddleware(token), farmMiddleware);
   return authClient;
 }
 

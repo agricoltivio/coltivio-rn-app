@@ -17,8 +17,18 @@ export function JoinFarmScreen({ navigation }: JoinFarmScreenProps) {
   const [code, setCode] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const acceptInviteMutation = useAcceptInviteMutation(undefined, () =>
-    setErrorMessage(t("onboarding.join_farm.invalid_code")),
+  const acceptInviteMutation = useAcceptInviteMutation(
+    () => {
+      // Reached from onboarding (0 farms): RootStack auto-transitions to the main app stack
+      // once the joined farm is active, discarding this navigator — no explicit navigation
+      // needed. Reached in-app from the My Farm switcher: "Home" is already in this
+      // navigator's history — popTo prunes the join-farm flow off the stack, so the back
+      // button doesn't lead back into it.
+      if (navigation.getState().routes.some((route) => route.name === "Farm")) {
+        navigation.popTo("Home");
+      }
+    },
+    () => setErrorMessage(t("onboarding.join_farm.invalid_code")),
   );
 
   function onSubmit() {

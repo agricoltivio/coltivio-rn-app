@@ -318,8 +318,11 @@
     "role_owner": "Proprietario",
     "role_member": "Membro",
     "delete_farm": "Elimina Azienda Agricola",
-    "enter_farm_name_to_delete": "Per eliminare la tua azienda agricola, inserisci il nome dell'azienda e conferma l'azione.",
-    "chose_option_to_delete_account": "Se vuoi anche eliminare il tuo account, abilita l'opzione 'Elimina Account'.",
+    "danger_zone": "Zona pericolosa",
+    "danger_zone_description": "L'eliminazione della tua azienda agricola rimuove permanentemente tutti i suoi dati. Questa azione non può essere annullata.",
+    "leave_farm": "Lascia l'azienda agricola",
+    "leave_farm_description": "Perderai l'accesso ai dati di questa azienda agricola. Potrai unirti di nuovo in futuro se verrai invitato.",
+    "leave_farm_only_member_hint": "Sei l'unico membro di questa azienda agricola. Eliminala invece, se non ti serve più.",
     "delete_account": "Elimina Account",
     "membership": "Iscrizione all'associazione",
     "member_permissions": "Permessi",
@@ -334,10 +337,19 @@
     "permission_feature_tasks": "Compiti",
     "permission_feature_field_calendar": "Calendario dei campi",
     "permission_feature_commerce": "Commercio",
+    "switcher": {
+      "title": "Cambia azienda agricola",
+      "create_another": "+ Crea un'altra azienda agricola",
+      "join_with_code": "Unisciti a un'azienda agricola con un codice"
+    },
     "charts": {
       "crops_by_area": "Colture per superficie",
       "no_crops": "Nessuna coltura attiva"
     }
+  },
+  "farm_picker": {
+    "heading": "Seleziona un'azienda agricola",
+    "subheading": "Appartieni a più aziende agricole. Scegli con quale lavorare."
   },
   "plots": {
     "plots": "Campi",

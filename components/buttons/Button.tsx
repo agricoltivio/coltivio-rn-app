@@ -1,5 +1,5 @@
 import { ActivityIndicator, StyleProp, ViewStyle } from "react-native";
-import styled from "styled-components/native";
+import styled, { useTheme } from "styled-components/native";
 
 export type ButtonProps = {
   onPress?: () => void;
@@ -7,7 +7,7 @@ export type ButtonProps = {
   style?: StyleProp<ViewStyle>;
   fontSize?: number;
   disabled?: boolean;
-  type?: "primary" | "secondary" | "accent" | "danger";
+  type?: "primary" | "secondary" | "accent" | "danger" | "dangerGhost";
   loading?: boolean;
 };
 
@@ -20,6 +20,14 @@ export function Button({
   onPress,
   loading = false,
 }: ButtonProps) {
+  const theme = useTheme();
+  const spinnerColor = disabled
+    ? "white"
+    : type === "accent"
+      ? theme.colors.primary
+      : type === "dangerGhost"
+        ? theme.colors.danger
+        : "white";
   return (
     <ButtonContainer
       onPress={onPress}
@@ -27,12 +35,12 @@ export function Button({
       type={type}
       disabled={disabled}
     >
-      <ButtonText type={type} fontSize={fontSize}>
+      <ButtonText type={type} fontSize={fontSize} disabled={disabled}>
         {title}
       </ButtonText>
       <ActivityIndicator
         style={{ position: "absolute", right: 20 }}
-        color={"white"}
+        color={spinnerColor}
         animating={loading}
       />
     </ButtonContainer>
@@ -40,7 +48,7 @@ export function Button({
 }
 
 const ButtonContainer = styled.TouchableOpacity<{
-  type: "primary" | "secondary" | "accent" | "danger";
+  type: "primary" | "secondary" | "accent" | "danger" | "dangerGhost";
   disabled?: boolean;
 }>`
   flex-direction: row;
@@ -49,23 +57,36 @@ const ButtonContainer = styled.TouchableOpacity<{
       ? theme.colors.gray3
       : type === "primary"
         ? theme.colors.buttonPrimary
-        : type === "accent"
+        : type === "accent" || type === "dangerGhost"
           ? theme.colors.white
           : theme.colors[type]};
   padding: 12px;
   border-radius: ${({ theme }) => theme.radii.m}px;
-  border: ${({ theme, type }) =>
-    type === "accent" ? `1.5px solid ${theme.colors.primary}` : "none"};
+  border: ${({ theme, type, disabled }) =>
+    disabled
+      ? "none"
+      : type === "accent"
+        ? `1.5px solid ${theme.colors.primary}`
+        : type === "dangerGhost"
+          ? `1.5px solid ${theme.colors.danger}`
+          : "none"};
   justify-content: center;
   align-items: center;
 `;
 
 const ButtonText = styled.Text<{
-  type: "primary" | "secondary" | "accent" | "danger";
+  type: "primary" | "secondary" | "accent" | "danger" | "dangerGhost";
   fontSize?: number;
+  disabled?: boolean;
 }>`
-  color: ${({ theme, type }) =>
-    type === "accent" ? theme.colors.primary : theme.colors.white};
+  color: ${({ theme, type, disabled }) =>
+    disabled
+      ? theme.colors.white
+      : type === "accent"
+        ? theme.colors.primary
+        : type === "dangerGhost"
+          ? theme.colors.danger
+          : theme.colors.white};
   font-size: ${({ fontSize }) => fontSize ?? 16}px;
   font-weight: 600;
 `;

@@ -19,6 +19,7 @@ import {
 } from "react-native-safe-area-context";
 import { ThemeProvider } from "styled-components";
 import { SessionProvider } from "./auth/SessionProvider";
+import { ActiveFarmProvider } from "./features/farms/ActiveFarmContext";
 import { OnboardingProvider } from "./features/onboarding/OnboardingContext";
 import i18n from "./locales/i18n";
 import { RootStack } from "./navigation/RootStack";
@@ -98,45 +99,47 @@ export default Sentry.wrap(function App() {
               >
                 <QueryClientProvider client={queryClient}>
                   <SessionProvider>
-                    <LocalSettingsProvider>
-                      <PortalProvider>
-                        <OnboardingProvider>
-                          <GestureHandlerRootView>
-                            <KeyboardProvider>
-                              <NavigationContainer
-                                linking={{
-                                  prefixes: [prefix],
-                                  getStateFromPath: (path, config) => {
-                                    // Stripe's returnURL (e.g. after a Twint/3DS redirect) reopens the app on
-                                    // this path. There's no screen for it — the Stripe SDK's own URL listener
-                                    // resumes the payment sheet — so don't let react-navigation route it.
-                                    if (path.startsWith("stripe-redirect")) {
-                                      return undefined;
-                                    }
-                                    const sanitizedPath = path.replace(
-                                      "#",
-                                      "?",
-                                    );
-                                    return getStateFromPath(
-                                      sanitizedPath,
-                                      config,
-                                    );
-                                  },
-                                }}
-                              >
-                                <StatusBar
-                                  barStyle="dark-content"
-                                  backgroundColor="#f6f6f6"
-                                />
-                                <RootStack />
-                              </NavigationContainer>
-                            </KeyboardProvider>
-                          </GestureHandlerRootView>
-                          {/* <ComponentsShowcase /> */}
-                          {/* <BottomSheetModalTest /> */}
-                        </OnboardingProvider>
-                      </PortalProvider>
-                    </LocalSettingsProvider>
+                    <ActiveFarmProvider>
+                      <LocalSettingsProvider>
+                        <PortalProvider>
+                          <OnboardingProvider>
+                            <GestureHandlerRootView>
+                              <KeyboardProvider>
+                                <NavigationContainer
+                                  linking={{
+                                    prefixes: [prefix],
+                                    getStateFromPath: (path, config) => {
+                                      // Stripe's returnURL (e.g. after a Twint/3DS redirect) reopens the app on
+                                      // this path. There's no screen for it — the Stripe SDK's own URL listener
+                                      // resumes the payment sheet — so don't let react-navigation route it.
+                                      if (path.startsWith("stripe-redirect")) {
+                                        return undefined;
+                                      }
+                                      const sanitizedPath = path.replace(
+                                        "#",
+                                        "?",
+                                      );
+                                      return getStateFromPath(
+                                        sanitizedPath,
+                                        config,
+                                      );
+                                    },
+                                  }}
+                                >
+                                  <StatusBar
+                                    barStyle="dark-content"
+                                    backgroundColor="#f6f6f6"
+                                  />
+                                  <RootStack />
+                                </NavigationContainer>
+                              </KeyboardProvider>
+                            </GestureHandlerRootView>
+                            {/* <ComponentsShowcase /> */}
+                            {/* <BottomSheetModalTest /> */}
+                          </OnboardingProvider>
+                        </PortalProvider>
+                      </LocalSettingsProvider>
+                    </ActiveFarmProvider>
                   </SessionProvider>
                 </QueryClientProvider>
               </StripeProvider>

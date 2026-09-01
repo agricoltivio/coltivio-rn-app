@@ -11,9 +11,14 @@ import { renderCropFamiliesStack } from "@/features/crop-families/navigation/Cro
 import { renderCropsStack } from "@/features/crops/navigation/CropsStack";
 import { renderErrorStack } from "@/features/errors/navigation/ErrorStack";
 import {
+  renderFarmCreationModalStack,
+  renderFarmCreationStack,
   renderFarmModalStack,
   renderFarmStack,
 } from "@/features/farms/navigation/FarmStack";
+import { renderFarmPickerStack } from "@/features/farms/navigation/FarmPickerStack";
+import { useActiveFarm } from "@/features/farms/ActiveFarmContext";
+import { useFarmsQuery } from "@/features/farms/farms.hooks";
 import { renderFertilizerApplicationStack } from "@/features/fertilizer-application/navigation/FertilizerApplicationStack";
 import { renderFertilizerStack } from "@/features/fertilizers/navigation/FertilizerStack";
 import { renderFieldCalendarStack } from "@/features/field-calendar/navigation/FieldCalendarStack";
@@ -42,32 +47,93 @@ export function RootStack() {
   const navigation = useNavigation();
   const [fontsLoaded] = useAppFonts();
   const {
+    activeFarmId,
+    setActiveFarmId,
+    clearActiveFarmId,
+    loadingActiveFarm,
+  } = useActiveFarm();
+  const {
+    farms,
+    isFetched: farmsFetched,
+    error: farmsError,
+  } = useFarmsQuery(token != null);
+  const {
     user,
     isFetched: userFetched,
     isFetching,
     error,
   } = useUserQuery(token != null);
 
-  const hasFarm = user?.farmId != null;
+  const hasFarms = (farms?.count ?? 0) > 0;
+  // 2+ farms and no valid (or stale) local selection — block on the picker rather than
+  // guessing, since there's no server-side "current farm" concept to fall back to.
+  const needsFarmPicker =
+    farms != null &&
+    farms.count >= 2 &&
+    (activeFarmId == null ||
+      !farms.result.some((farm) => farm.id === activeFarmId));
+
+  // Auto-select a single-farm user's only farm — no picker UI needed, matches today's
+  // behavior where the x-farm-id header can be omitted entirely.
+  useEffect(() => {
+    if (farms?.count === 1 && activeFarmId !== farms.result[0].id) {
+      setActiveFarmId(farms.result[0].id);
+    }
+  }, [farms, activeFarmId]);
+
+  // Any farm-scoped request — including the farms list itself — 403s when the stored farm id
+  // is stale (e.g. the farm was just deleted, or the user was removed from it on another
+  // device). Drop the selection and let the farm picker gate re-prompt, instead of falling
+  // into the generic error stack.
+  const staleFarmId =
+    error?.message?.includes("You are not a member of the specified farm") ||
+    farmsError?.message?.includes("You are not a member of the specified farm");
+  useEffect(() => {
+    if (staleFarmId) {
+      // clearActiveFarmId also discards the query cache, which includes refetching
+      // farms.list — no need to invalidate it separately here.
+      clearActiveFarmId();
+    }
+  }, [staleFarmId]);
 
   useEffect(() => {
     if (!splashScreenVisible || loadingFromStorage || !fontsLoaded) {
       return;
     }
     if (token) {
-      if (!userFetched) {
+      if (!farmsFetched || loadingActiveFarm) {
+        return;
+      }
+      if (hasFarms && !needsFarmPicker && !userFetched) {
         return;
       }
     }
     // hide the splash screen after the token has been loaded
     SplashScreen.hideAsync();
     setSplashScreenVisible(false);
-  }, [loadingFromStorage, userFetched, fontsLoaded]);
+  }, [
+    loadingFromStorage,
+    farmsFetched,
+    loadingActiveFarm,
+    hasFarms,
+    needsFarmPicker,
+    userFetched,
+    fontsLoaded,
+  ]);
 
   if (loadingFromStorage || !fontsLoaded) {
     return null;
   }
-  if (token && !userFetched) {
+  if (token && (!farmsFetched || loadingActiveFarm)) {
+    return null;
+  }
+  // A stale farm id is a recoverable, transient state — clearActiveFarmId (triggered by the
+  // effect above) is about to make the next farms/me fetch succeed. Wait rather than flashing
+  // the generic error stack.
+  if (token && staleFarmId) {
+    return null;
+  }
+  if (token && hasFarms && !needsFarmPicker && !userFetched) {
     return null;
   }
   function renderStacks() {
@@ -75,15 +141,24 @@ export function RootStack() {
     if (!token) {
       return renderAuthStack(theme);
     }
+    if (farmsError) {
+      console.error(farmsError);
+      return renderErrorStack(theme);
+    }
+
+    if (!hasFarms) {
+      return renderOnboardingStack(theme);
+    }
+
+    if (needsFarmPicker) {
+      return renderFarmPickerStack();
+    }
+
     if (error || (!user && isFetching)) {
       if (error) {
         console.error(error);
       }
       return renderErrorStack(theme);
-    }
-
-    if (!hasFarm) {
-      return renderOnboardingStack(theme);
     }
 
     return (
@@ -92,6 +167,7 @@ export function RootStack() {
           {renderHomeStack(theme, navigation)}
           {renderUserStack()}
           {renderFarmStack()}
+          {renderFarmCreationStack()}
           {renderPlotsStack(theme, navigation)}
           {renderCropsRotationStack()}
           {renderTillagesStack()}
@@ -119,6 +195,7 @@ export function RootStack() {
           }}
         >
           {renderFarmModalStack()}
+          {renderFarmCreationModalStack()}
           <Stack.Screen
             name="MapDrawOnboarding"
             component={MapDrawOnboardingScreen}

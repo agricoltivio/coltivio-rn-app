@@ -572,6 +572,42 @@
         }
       }
     },
+    "/v1/farms": {
+      "get": {
+        "operationId": "GetV1Farms",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/farms Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1FarmsPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/farms Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1Farms",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": { "description": "HEAD /v1/farms Positive response" },
+          "400": { "description": "HEAD /v1/farms Negative response" }
+        }
+      }
+    },
     "/v1/farm": {
       "post": {
         "operationId": "PostV1Farm",
@@ -1030,6 +1066,34 @@
           },
           "400": {
             "description": "DELETE /v1/farm/invites/byId/:inviteId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/farm/members/me": {
+      "delete": {
+        "operationId": "DeleteV1FarmMembersMe",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "DELETE /v1/farm/members/me Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteV1FarmMembersMePositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "DELETE /v1/farm/members/me Negative response",
             "content": {
               "application/json": {
                 "schema": {
@@ -15123,6 +15187,35 @@
         "properties": { "token": { "type": "string" } },
         "required": ["token"]
       },
+      "GetV1FarmsPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "name": { "type": "string" },
+                    "address": { "type": "string" },
+                    "role": { "type": "string", "enum": ["owner", "member"] }
+                  },
+                  "required": ["id", "name", "address", "role"],
+                  "additionalProperties": false
+                }
+              },
+              "count": { "type": "number" }
+            },
+            "required": ["result", "count"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
       "PostV1FarmPositiveResponse": {
         "type": "object",
         "properties": {
@@ -15846,6 +15939,18 @@
         "required": ["code"]
       },
       "DeleteV1FarmInvitesByIdInviteIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "DeleteV1FarmMembersMePositiveResponse": {
         "type": "object",
         "properties": {
           "data": {
