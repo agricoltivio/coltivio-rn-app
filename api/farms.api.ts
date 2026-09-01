@@ -92,6 +92,10 @@ export function farmApi(client: FetchClient) {
       });
     },
 
+    async leaveFarm(): Promise<void> {
+      await client.DELETE("/v1/farm/members/me");
+    },
+
     async updateMemberRole(
       userId: string,
       role: "owner" | "member",

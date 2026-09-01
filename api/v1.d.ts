@@ -244,6 +244,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/farm/members/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["DeleteV1FarmMembersMe"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/farm/members/byId/{userId}": {
         parameters: {
             query?: never;
@@ -3540,6 +3556,9 @@ export interface components {
             code: string;
         };
         DeleteV1FarmInvitesByIdInviteIdPositiveResponse: {
+            data: Record<string, never>;
+        };
+        DeleteV1FarmMembersMePositiveResponse: {
             data: Record<string, never>;
         };
         DeleteV1FarmMembersByIdUserIdPositiveResponse: {
@@ -13063,6 +13082,35 @@ export interface operations {
                 };
             };
             /** @description DELETE /v1/farm/invites/byId/:inviteId Negative response */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+                };
+            };
+        };
+    };
+    DeleteV1FarmMembersMe: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description DELETE /v1/farm/members/me Positive response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteV1FarmMembersMePositiveResponse"];
+                };
+            };
+            /** @description DELETE /v1/farm/members/me Negative response */
             400: {
                 headers: {
                     [name: string]: unknown;

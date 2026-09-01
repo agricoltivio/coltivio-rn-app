@@ -233,6 +233,17 @@ export function useRemoveMemberMutation(onSuccess?: () => void) {
   });
 }
 
+export function useLeaveFarmMutation(onSuccess?: () => void) {
+  const api = useApi();
+  return useMutation({
+    mutationFn: () => api.farms.leaveFarm(),
+    onSuccess: () => {
+      onSuccess && onSuccess();
+    },
+    onError: (error) => console.error(error),
+  });
+}
+
 export function useUpdateMemberRoleMutation(onSuccess?: () => void) {
   const api = useApi();
   const queryClient = useQueryClient();
