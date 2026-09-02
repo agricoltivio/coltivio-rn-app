@@ -32,12 +32,25 @@ export function HomeTile({
       >
         {title ? (
           <Card.Title
-            style={{ padding: theme.spacing.s, color: theme.colors.primary }}
+            style={{
+              padding: theme.spacing.s,
+              color: theme.colors.primary,
+              textAlign: "center",
+            }}
           >
             {title}
           </Card.Title>
         ) : null}
-        <Card.Content style={{ marginTop: 0, overflow: "hidden" }}>
+        {/* paddingBottom mirrors the title's padding above the icon. Without it
+            the only space under the icon is the transparent margin baked into
+            the asset, so the icon reads as sitting too low in the tile. */}
+        <Card.Content
+          style={{
+            marginTop: 0,
+            paddingBottom: theme.spacing.s,
+            overflow: "hidden",
+          }}
+        >
           {children}
         </Card.Content>
       </Card>

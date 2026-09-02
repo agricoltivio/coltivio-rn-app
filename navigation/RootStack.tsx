@@ -28,6 +28,7 @@ import { renderPlotsStack } from "@/features/plots/navigation/PlotsStack";
 import { renderTillagesStack } from "@/features/tillages/navigation/TillagesStack";
 import { renderUserStack } from "@/features/user/navigation/UserStack";
 import { useUserQuery } from "@/features/user/users.hooks";
+import { SplashView } from "@/features/splash/SplashView";
 import { useAppFonts } from "@/theme/fonts";
 import { useNavigation } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
@@ -96,45 +97,37 @@ export function RootStack() {
     }
   }, [staleFarmId]);
 
+  // Hand over from the native splash to SplashView as soon as Inter is ready.
+  // SplashView keeps the same composition on screen while the session, farms
+  // and user still load, so there is no white frame in between.
   useEffect(() => {
-    if (!splashScreenVisible || loadingFromStorage || !fontsLoaded) {
+    if (!splashScreenVisible || !fontsLoaded) {
       return;
     }
-    if (token) {
-      if (!farmsFetched || loadingActiveFarm) {
-        return;
-      }
-      if (hasFarms && !needsFarmPicker && !userFetched) {
-        return;
-      }
-    }
-    // hide the splash screen after the token has been loaded
     SplashScreen.hideAsync();
     setSplashScreenVisible(false);
-  }, [
-    loadingFromStorage,
-    farmsFetched,
-    loadingActiveFarm,
-    hasFarms,
-    needsFarmPicker,
-    userFetched,
-    fontsLoaded,
-  ]);
+  }, [splashScreenVisible, fontsLoaded]);
 
-  if (loadingFromStorage || !fontsLoaded) {
+  // Inter is not ready yet, so rendering SplashView would show its text in the
+  // system font for a frame and then swap. The native splash still covers the
+  // screen at this point and carries the same brand ground.
+  if (!fontsLoaded) {
     return null;
   }
+  if (loadingFromStorage) {
+    return <SplashView />;
+  }
   if (token && (!farmsFetched || loadingActiveFarm)) {
-    return null;
+    return <SplashView />;
   }
   // A stale farm id is a recoverable, transient state — clearActiveFarmId (triggered by the
   // effect above) is about to make the next farms/me fetch succeed. Wait rather than flashing
   // the generic error stack.
   if (token && staleFarmId) {
-    return null;
+    return <SplashView />;
   }
   if (token && hasFarms && !needsFarmPicker && !userFetched) {
-    return null;
+    return <SplashView />;
   }
   function renderStacks() {
     // in case no token is available, render the sign in screen

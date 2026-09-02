@@ -143,6 +143,10 @@
     "applications": "applications",
     "average": "Avg"
   },
+  "splash": {
+    "tagline": "By Farmers. For Farmers.",
+    "loading": "Loading..."
+  },
   "presets": {
     "preset": "Preset",
     "presets": "Presets",

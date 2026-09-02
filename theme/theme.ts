@@ -6,6 +6,7 @@ export interface ColtivioTheme {
     secondary: string; // semantic: secondary button fill (lavender)
     accent: string;
     buttonPrimary: string; // primary filled button background
+    brand: string; // Secondary1 from the brand kit, filled button on the brand ground
     amber: string; // orange accent — wiki, map polygon highlights
     success: string;
     danger: string;
@@ -75,6 +76,7 @@ export const coltivioTheme: ColtivioTheme = {
     secondary: "#9b8bb4", // lavender — secondary button fill
     accent: "#F4FAFB",
     buttonPrimary: "#8b6b55", // mocha — primary filled button background
+    brand: "#82d59d", // Secondary1 — filled button on the brand gradient, dark label
     amber: "#DB751D", // wiki styling, map polygon highlights, sign-in accent
     success: "#85A60F",
     danger: "#CD0E61",

@@ -7,7 +7,7 @@ export type ButtonProps = {
   style?: StyleProp<ViewStyle>;
   fontSize?: number;
   disabled?: boolean;
-  type?: "primary" | "secondary" | "accent" | "danger" | "dangerGhost";
+  type?: "primary" | "secondary" | "accent" | "brand" | "danger" | "dangerGhost";
   loading?: boolean;
 };
 
@@ -23,7 +23,7 @@ export function Button({
   const theme = useTheme();
   const spinnerColor = disabled
     ? "white"
-    : type === "accent"
+    : type === "accent" || type === "brand"
       ? theme.colors.primary
       : type === "dangerGhost"
         ? theme.colors.danger
@@ -48,7 +48,7 @@ export function Button({
 }
 
 const ButtonContainer = styled.TouchableOpacity<{
-  type: "primary" | "secondary" | "accent" | "danger" | "dangerGhost";
+  type: "primary" | "secondary" | "accent" | "brand" | "danger" | "dangerGhost";
   disabled?: boolean;
 }>`
   flex-direction: row;
@@ -75,14 +75,14 @@ const ButtonContainer = styled.TouchableOpacity<{
 `;
 
 const ButtonText = styled.Text<{
-  type: "primary" | "secondary" | "accent" | "danger" | "dangerGhost";
+  type: "primary" | "secondary" | "accent" | "brand" | "danger" | "dangerGhost";
   fontSize?: number;
   disabled?: boolean;
 }>`
   color: ${({ theme, type, disabled }) =>
     disabled
       ? theme.colors.white
-      : type === "accent"
+      : type === "accent" || type === "brand"
         ? theme.colors.primary
         : type === "dangerGhost"
           ? theme.colors.danger

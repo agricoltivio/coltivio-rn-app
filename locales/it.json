@@ -143,6 +143,10 @@
     "applications": "applicazioni",
     "average": "Media"
   },
+  "splash": {
+    "tagline": "Da contadini. Per contadini.",
+    "loading": "Caricamento..."
+  },
   "presets": {
     "preset": "Modello",
     "presets": "Modelli",
