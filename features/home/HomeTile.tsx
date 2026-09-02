@@ -18,7 +18,18 @@ export function HomeTile({
 }: HomeTileProps) {
   const theme = useTheme();
   return (
-    <TouchableOpacity style={[style]} onPress={onPress} disabled={disabled}>
+    // activeOpacity: without it this lands on the RN default of 0.2, which made
+    // the card wash out to nearly the page background. MapTile and the banners
+    // on the same screen use 0.8.
+    // delayPressIn: a scroll that starts on a tile would otherwise flash that
+    // dimmed state before the ScrollView cancels the touch.
+    <TouchableOpacity
+      style={[style]}
+      onPress={onPress}
+      disabled={disabled}
+      activeOpacity={0.8}
+      delayPressIn={80}
+    >
       <Card
         elevated
         style={[

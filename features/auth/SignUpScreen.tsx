@@ -161,7 +161,7 @@ export function SignUpScreen() {
         <Button
           style={{ marginTop: theme.spacing.xl }}
           title={t("buttons.signup")}
-          type="brand"
+          type="secondary"
           onPress={handleSubmit(onSubmit)}
           loading={fetching}
           disabled={!isDirty || fetching}

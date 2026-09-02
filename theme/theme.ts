@@ -3,10 +3,9 @@ export interface ColtivioTheme {
     background: string;
     text: string;
     primary: string;
-    secondary: string; // semantic: secondary button fill (lavender)
+    secondary: string; // semantic: secondary button fill
     accent: string;
     buttonPrimary: string; // primary filled button background
-    brand: string; // Secondary1 from the brand kit, filled button on the brand ground
     amber: string; // orange accent — wiki, map polygon highlights
     success: string;
     danger: string;
@@ -50,33 +49,22 @@ export interface ColtivioTheme {
   };
 }
 
-const colorPalette = {
-  purple: "#5A31F4",
-  green: "#0ECD9D",
-  red: "#CD0E61",
-  black: "#0B0B0B",
-  white: "#F0F2F3",
-  gray0: "#111111",
-  gray1: "#555555",
-  gray2: "#777777",
-  gray3: "#999999",
-  gray4: "#eeeeee",
-};
-
 export const coltivioTheme: ColtivioTheme = {
   colors: {
-    // background: "#EBF7FA",
+    // Secondary2 (#e6e6a5) from the kit was tried here and reverted: as a
+    // full-bleed surface it is too much colour. It stays an accent.
     background: "#f6f6f6",
-    // background: "#FFF1E5",
-    // background: "#FDF1E7",
-    // background: "#9ca498",
-    // background: hexToRgba("#212123", 0.3),
     text: "#212123",
     primary: "#2a5159",
-    secondary: "#9b8bb4", // lavender — secondary button fill
+    // Secondary1 from the brand kit. Carries a dark label: white on this green
+    // is 1.76:1. It is the fill that still reads on the brand gradient, which
+    // is why the auth screens use it.
+    secondary: "#82d59d",
     accent: "#F4FAFB",
-    buttonPrimary: "#8b6b55", // mocha — primary filled button background
-    brand: "#82d59d", // Secondary1 — filled button on the brand gradient, dark label
+    // Primary1 from the brand kit, same value as `primary`. White label at
+    // 8.68:1, and 6.71:1 against the background, so it is the strong fill on
+    // light surfaces.
+    buttonPrimary: "#2a5159",
     amber: "#DB751D", // wiki styling, map polygon highlights, sign-in accent
     success: "#85A60F",
     danger: "#CD0E61",

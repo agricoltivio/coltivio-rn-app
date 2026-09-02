@@ -24,7 +24,7 @@ export function PasswordResetLinkSentScreen({
         footerComponent={
           <BottomActionContainer transparent>
             <Button
-              type="brand"
+              type="secondary"
               onPress={() =>
                 navigation.reset({
                   index: 0,

@@ -111,13 +111,13 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
             {urlError != null ? (
               <Button
                 title={t("buttons.back")}
-                type="brand"
+                type="secondary"
                 onPress={() => navigation.navigate("SignIn")}
               />
             ) : (
               <Button
                 title={t("buttons.save")}
-                type="brand"
+                type="secondary"
                 onPress={handleSubmit(onSubmit)}
                 disabled={!isDirty || urlError != null}
               />

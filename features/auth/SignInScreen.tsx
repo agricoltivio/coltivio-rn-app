@@ -101,6 +101,21 @@ export function SignInScreen({ navigation }: SignInScreenProps) {
             />
           </View>
 
+          {/* Sits directly under the password field and right aligned, so it
+              reads as belonging to that field rather than to the form. */}
+          <Text
+            style={{
+              alignSelf: "flex-end",
+              marginTop: theme.spacing.xs,
+              fontSize: 15,
+              color: BRAND_ACCENT,
+              fontWeight: "600",
+            }}
+            onPress={() => navigation.navigate("ForgotPassword")}
+          >
+            {t("buttons.forgot_password")}
+          </Text>
+
           {error && (
             <View
               style={{
@@ -116,42 +131,36 @@ export function SignInScreen({ navigation }: SignInScreenProps) {
               <Body style={{ fontWeight: 800, color: "white" }}>{error}</Body>
             </View>
           )}
-          <View style={{ marginTop: theme.spacing.m }}>
-            <Button
-              title="Anmelden"
-              type="brand"
-              disabled={fetching}
-              loading={fetching}
-              onPress={onSignIn}
-            />
-            <Text
-              style={{
-                color: BRAND_OFF_WHITE,
-                fontSize: 18,
-                marginTop: theme.spacing.m,
-                marginLeft: theme.spacing.s,
-              }}
-            >
-              {t("signin.signup_text")}{" "}
-              <Text
-                style={{ fontSize: 18, color: BRAND_ACCENT, fontWeight: "600" }}
-                onPress={() => navigation.navigate("SignUp")}
-              >
-                {t("buttons.signup")}
-              </Text>
-            </Text>
-          </View>
+
+          <Button
+            style={{ marginTop: theme.spacing.l }}
+            title="Anmelden"
+            type="secondary"
+            disabled={fetching}
+            loading={fetching}
+            onPress={onSignIn}
+          />
+
+          {/* One line, centred under the button. French is the longest at
+              "Vous n'avez pas encore de compte ? S'inscrire", hence the small
+              size plus shrink-to-fit rather than a wrap. */}
           <Text
+            numberOfLines={1}
+            adjustsFontSizeToFit
             style={{
-              marginTop: theme.spacing.s,
-              marginLeft: theme.spacing.s,
-              fontSize: 18,
-              color: BRAND_ACCENT,
-              fontWeight: "600",
+              marginTop: theme.spacing.m,
+              textAlign: "center",
+              fontSize: 14,
+              color: BRAND_OFF_WHITE,
             }}
-            onPress={() => navigation.navigate("ForgotPassword")}
           >
-            {t("buttons.forgot_password")}
+            {t("signin.signup_text")}{" "}
+            <Text
+              style={{ color: BRAND_ACCENT, fontWeight: "600" }}
+              onPress={() => navigation.navigate("SignUp")}
+            >
+              {t("buttons.signup")}
+            </Text>
           </Text>
         </View>
       </ScrollView>

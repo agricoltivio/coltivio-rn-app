@@ -41,7 +41,9 @@ export function ScrollView({
     } else if (offsetY <= 50 && scrolledRef.current) {
       scrolledRef.current = false;
       navigation.setOptions({
-        headerStyle: { backgroundColor: theme.colors.gray5 },
+        // Back to the page background, not gray5: the two were near identical
+        // while the background was #f6f6f6, they are not any more.
+        headerStyle: { backgroundColor: theme.colors.background },
         headerShadowVisible: false,
         title: "",
       });

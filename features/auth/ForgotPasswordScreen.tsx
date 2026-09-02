@@ -52,7 +52,7 @@ export function ForgotPasswordScreen({
           <BottomActionContainer transparent>
             <Button
               title={t("buttons.send_email")}
-              type="brand"
+              type="secondary"
               onPress={handleSubmit(onSubmit)}
               disabled={!isDirty || loading}
             />

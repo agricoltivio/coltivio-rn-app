@@ -46,7 +46,7 @@ export function HarvestDetailsScreen({
         canWrite("field_calendar") ? (
           <BottomActionContainer>
             <Button
-              type="secondary"
+              type="primary"
               title={t("buttons.delete")}
               onPress={onDelete}
             />

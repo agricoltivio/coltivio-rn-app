@@ -26,7 +26,6 @@ export function UserAccountScreen({ navigation }: UserAccountScreenProps) {
       footerComponent={
         <BottomActionContainer>
           <Button
-            type="secondary"
             title={t("buttons.signout")}
             onPress={() => {
               clearSession();

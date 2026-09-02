@@ -76,7 +76,7 @@ export function FarmScreen({ navigation }: FarmScreenProps) {
       footerComponent={
         <BottomActionContainer>
           <Button
-            type="secondary"
+            type="primary"
             title={t("farm.switcher.title")}
             onPress={() => setSwitcherVisible(true)}
           />
