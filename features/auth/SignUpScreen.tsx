@@ -1,10 +1,7 @@
 import { useSession } from "@/auth/SessionProvider";
 import { Button } from "@/components/buttons/Button";
 import { ContentView } from "@/components/containers/ContentView";
-import {
-  AUTH_HEADER_OFFSET,
-  BRAND_OFF_WHITE,
-} from "@/features/splash/brand";
+import { AUTH_HEADER_OFFSET, BRAND_OFF_WHITE } from "@/features/splash/brand";
 import { BrandBackground } from "@/features/splash/BrandBackground";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";

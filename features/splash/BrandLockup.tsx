@@ -1,11 +1,7 @@
 import { Image } from "expo-image";
 import { StyleProp, View, ViewStyle } from "react-native";
 
-import {
-  GAP_TO_WORDMARK,
-  MARK_TO_WORDMARK,
-  WORDMARK_ASPECT,
-} from "./brand";
+import { GAP_TO_WORDMARK, MARK_TO_WORDMARK, WORDMARK_ASPECT } from "./brand";
 
 type BrandLockupProps = {
   /** Width of the wordmark. The mark and the gap scale with it. */

@@ -6,7 +6,12 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { SignInScreenProps } from "@/features/auth/navigation/auth-routes";
 import { BrandBackground } from "@/features/splash/BrandBackground";
 import { BrandLockup } from "@/features/splash/BrandLockup";
-import { BRAND_ACCENT, BRAND_OFF_WHITE, LOCKUP_WIDTH, w } from "@/features/splash/brand";
+import {
+  BRAND_ACCENT,
+  BRAND_OFF_WHITE,
+  LOCKUP_WIDTH,
+  w,
+} from "@/features/splash/brand";
 import { supabase } from "@/supabase/supabase";
 import { Body } from "@/theme/Typography";
 import { useState } from "react";

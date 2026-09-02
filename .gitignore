@@ -65,3 +65,7 @@ coltivio-797c630e24ef.json
 
 
 *.tar.gz
+# Local prettier preferences. The repo itself is formatted with prettier
+# defaults; committing a config with a different printWidth reformats
+# every file. Keep personal settings out of the tree.
+.prettierrc
