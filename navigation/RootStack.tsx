@@ -28,7 +28,7 @@ import { renderPlotsStack } from "@/features/plots/navigation/PlotsStack";
 import { renderTillagesStack } from "@/features/tillages/navigation/TillagesStack";
 import { renderUserStack } from "@/features/user/navigation/UserStack";
 import { useUserQuery } from "@/features/user/users.hooks";
-import { SplashView } from "@/features/splash/SplashView";
+import { SplashView } from "@/components/branding/SplashView";
 import { useAppFonts } from "@/theme/fonts";
 import { useNavigation } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";

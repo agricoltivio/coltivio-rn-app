@@ -1,11 +1,9 @@
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
-import { ContentView } from "@/components/containers/ContentView";
+import { BrandedContentView } from "@/components/containers/BrandedContentView";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
 import { ResetPasswordScreenProps } from "@/features/auth/navigation/auth-routes";
-import { BrandBackground } from "@/features/splash/BrandBackground";
-import { AUTH_HEADER_OFFSET } from "@/features/splash/brand";
 import { supabase } from "@/supabase/supabase";
 import { Body, H2 } from "@/theme/Typography";
 import { useUrl } from "@/utils/url-context";
@@ -15,7 +13,6 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 
 type FromValues = {
@@ -34,7 +31,6 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
   const [urlError, setUrlError] = useState<string | null>(null);
   const { t } = useTranslation();
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
   const [authState, setAutState] = useState<{
     accessToken: string;
     refreshToken: string;
@@ -103,92 +99,35 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
     }
   }
   return (
-    <BrandBackground>
-      <ContentView
-        style={{ paddingTop: insets.top + AUTH_HEADER_OFFSET }}
-        footerComponent={
-          <BottomActionContainer transparent>
-            {urlError != null ? (
-              <Button
-                title={t("buttons.back")}
-                type="secondary"
-                onPress={() => navigation.navigate("SignIn")}
-              />
-            ) : (
-              <Button
-                title={t("buttons.save")}
-                type="secondary"
-                onPress={handleSubmit(onSubmit)}
-                disabled={!isDirty || urlError != null}
-              />
-            )}
-          </BottomActionContainer>
-        }
-      >
-        {/* No showHeaderOnScroll here: it repaints the header white on scroll,
-            which would cut a light bar across the gradient. */}
-        <ScrollView keyboardAware>
-          <H2 style={{ color: theme.colors.offWhite }}>
-            {t("forgot_password.reset_password")}
-          </H2>
+    <BrandedContentView
+      footerComponent={
+        <BottomActionContainer transparent>
+          {urlError != null ? (
+            <Button
+              title={t("buttons.back")}
+              type="secondary"
+              onPress={() => navigation.navigate("SignIn")}
+            />
+          ) : (
+            <Button
+              title={t("buttons.save")}
+              type="secondary"
+              onPress={handleSubmit(onSubmit)}
+              disabled={!isDirty || urlError != null}
+            />
+          )}
+        </BottomActionContainer>
+      }
+    >
+      {/* No showHeaderOnScroll here: it repaints the header white on scroll,
+          which would cut a light bar across the gradient. */}
+      <ScrollView keyboardAware>
+        <H2 style={{ color: theme.colors.offWhite }}>
+          {t("forgot_password.reset_password")}
+        </H2>
 
-          <View style={{ marginTop: theme.spacing.xl, gap: theme.spacing.s }}>
-            {urlError ? (
-              <View
-                style={{
-                  borderRadius: 10,
-                  backgroundColor: theme.colors.danger,
-                  opacity: 0.7,
-                  marginTop: theme.spacing.m,
-                  padding: theme.spacing.s,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Body style={{ fontWeight: 800, color: "white" }}>
-                  {urlError}
-                </Body>
-              </View>
-            ) : (
-              <>
-                <RHTextInput
-                  control={control}
-                  autoCapitalize="none"
-                  name="password"
-                  label={t("forms.labels.password")}
-                  placeholder={t("forms.placeholders.password_requirements")}
-                  secureTextEntry
-                  rules={{
-                    required: {
-                      value: true,
-                      message: t("forms.validation.required"),
-                    },
-                    minLength: {
-                      value: 6,
-                      message: t("forms.validation.password_min_length"),
-                    },
-                  }}
-                  error={errors.password?.message}
-                />
-                <RHTextInput
-                  control={control}
-                  autoCapitalize="none"
-                  name="passwordRepeat"
-                  label={t("forms.labels.password_repeat")}
-                  secureTextEntry
-                  rules={{
-                    validate: (value) => {
-                      if (value !== password) {
-                        return t("forms.validation.password_repeat_invalid");
-                      }
-                    },
-                  }}
-                  error={errors.passwordRepeat?.message}
-                />
-              </>
-            )}
-          </View>
-          {error && (
+        <View style={{ marginTop: theme.spacing.xl, gap: theme.spacing.s }}>
+          {urlError ? (
             <View
               style={{
                 borderRadius: 10,
@@ -200,11 +139,65 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
                 alignItems: "center",
               }}
             >
-              <Body style={{ fontWeight: 800, color: "white" }}>{error}</Body>
+              <Body style={{ fontWeight: 800, color: "white" }}>
+                {urlError}
+              </Body>
             </View>
+          ) : (
+            <>
+              <RHTextInput
+                control={control}
+                autoCapitalize="none"
+                name="password"
+                label={t("forms.labels.password")}
+                placeholder={t("forms.placeholders.password_requirements")}
+                secureTextEntry
+                rules={{
+                  required: {
+                    value: true,
+                    message: t("forms.validation.required"),
+                  },
+                  minLength: {
+                    value: 6,
+                    message: t("forms.validation.password_min_length"),
+                  },
+                }}
+                error={errors.password?.message}
+              />
+              <RHTextInput
+                control={control}
+                autoCapitalize="none"
+                name="passwordRepeat"
+                label={t("forms.labels.password_repeat")}
+                secureTextEntry
+                rules={{
+                  validate: (value) => {
+                    if (value !== password) {
+                      return t("forms.validation.password_repeat_invalid");
+                    }
+                  },
+                }}
+                error={errors.passwordRepeat?.message}
+              />
+            </>
           )}
-        </ScrollView>
-      </ContentView>
-    </BrandBackground>
+        </View>
+        {error && (
+          <View
+            style={{
+              borderRadius: 10,
+              backgroundColor: theme.colors.danger,
+              opacity: 0.7,
+              marginTop: theme.spacing.m,
+              padding: theme.spacing.s,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Body style={{ fontWeight: 800, color: "white" }}>{error}</Body>
+          </View>
+        )}
+      </ScrollView>
+    </BrandedContentView>
   );
 }
