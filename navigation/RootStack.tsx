@@ -44,7 +44,8 @@ SplashScreen.preventAutoHideAsync();
 export function RootStack() {
   const { loadingFromStorage, token } = useSession();
   const theme = useTheme();
-  const [splashScreenVisible, setSplashScreenVisible] = useState(true);
+  const [nativeSplashHidden, setNativeSplashHidden] = useState(false);
+  const [initialLoadDone, setInitialLoadDone] = useState(false);
   const navigation = useNavigation();
   const [fontsLoaded] = useAppFonts();
   const {
@@ -66,8 +67,6 @@ export function RootStack() {
   } = useUserQuery(token != null);
 
   const hasFarms = (farms?.count ?? 0) > 0;
-  // 2+ farms and no valid (or stale) local selection — block on the picker rather than
-  // guessing, since there's no server-side "current farm" concept to fall back to.
   const needsFarmPicker =
     farms != null &&
     farms.count >= 2 &&
@@ -82,14 +81,6 @@ export function RootStack() {
     }
   }, [farms, activeFarmId]);
 
-  // The stored selection can point at a farm the user is no longer (or never was) a member
-  // of: farm deleted elsewhere, kicked on another device, or a stale value left over from a
-  // previously signed-in account. Two signals, no error-string matching:
-  //  - the farms list loaded and the selection isn't in it, or
-  //  - the farms list itself failed while a selection is set (the backend rejects an
-  //    x-farm-id the caller can't access, so the selection is the likely cause).
-  // Either way: drop the selection, which also discards the query cache and refetches the
-  // farms list unscoped — then auto-select / the picker re-resolves it.
   const hasInvalidFarmSelection =
     activeFarmId != null &&
     ((farms != null &&
@@ -101,40 +92,40 @@ export function RootStack() {
     }
   }, [hasInvalidFarmSelection]);
 
-  // Hand over from the native splash to SplashView as soon as Inter is ready.
-  // SplashView keeps the same composition on screen while the session, farms
-  // and user still load, so there is no white frame in between.
+  const stillResolvingSession =
+    loadingFromStorage ||
+    (token != null &&
+      (!farmsFetched ||
+        loadingActiveFarm ||
+        hasInvalidFarmSelection ||
+        (hasFarms && !needsFarmPicker && !userFetched)));
+
+  // Hand over from the native splash to SplashView as soon as Inter is ready — SplashView
+  // draws the same composition, so there's no white frame while the session, farms and user
+  // still load on a cold start.
   useEffect(() => {
-    if (!splashScreenVisible || !fontsLoaded) {
+    if (nativeSplashHidden || !fontsLoaded) {
       return;
     }
     SplashScreen.hideAsync();
-    setSplashScreenVisible(false);
-  }, [splashScreenVisible, fontsLoaded]);
+    setNativeSplashHidden(true);
+  }, [nativeSplashHidden, fontsLoaded]);
 
-  // Inter is not ready yet, so rendering SplashView would show its text in the
-  // system font for a frame and then swap. The native splash still covers the
-  // screen at this point and carries the same brand ground.
+  useEffect(() => {
+    if (fontsLoaded && !stillResolvingSession) {
+      setInitialLoadDone(true);
+    }
+  }, [fontsLoaded, stillResolvingSession]);
+
   if (!fontsLoaded) {
     return null;
   }
-  if (loadingFromStorage) {
-    return <SplashView />;
+
+  if (stillResolvingSession) {
+    return initialLoadDone ? null : <SplashView />;
   }
-  if (token && (!farmsFetched || loadingActiveFarm)) {
-    return <SplashView />;
-  }
-  // An invalid farm selection is a recoverable, transient state — clearActiveFarmId
-  // (triggered by the effect above) is about to make the next farms/me fetch succeed.
-  // Wait rather than flashing the generic error stack.
-  if (token && hasInvalidFarmSelection) {
-    return <SplashView />;
-  }
-  if (token && hasFarms && !needsFarmPicker && !userFetched) {
-    return <SplashView />;
-  }
+
   function renderStacks() {
-    // in case no token is available, render the sign in screen
     if (!token) {
       return renderAuthStack(theme);
     }

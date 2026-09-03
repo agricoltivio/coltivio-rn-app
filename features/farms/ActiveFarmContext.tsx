@@ -1,5 +1,6 @@
 import { setActiveFarmIdForRequests } from "@/api/api";
 import { useSession } from "@/auth/SessionProvider";
+import { queryKeys } from "@/cache/query-keys";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -67,11 +68,17 @@ export function ActiveFarmProvider({ children }: PropsWithChildren) {
     if (authUser) {
       AsyncStorage.setItem(storageKeyForUser(authUser.id), farmId);
     }
-    // Only wipe when actually switching away from a previously-selected farm — not on the
-    // first-ever selection (nothing farm-scoped is cached yet at that point), since query
-    // keys aren't farm-scoped and would otherwise leak the previous farm's data.
     if (previousFarmId !== null && previousFarmId !== farmId) {
+      // Switching between existing farms: every farm-scoped query holds the old farm's data.
       queryClient.removeQueries();
+    } else {
+      // First-ever selection (onboarding, or joining a first farm): no farm-scoped data is
+      // cached yet, but farms.list / farm / users.me were all fetched before this farm
+      // existed. Drop just those so they refetch fresh — otherwise RootStack briefly sees a
+      // farm selected that isn't in the (stale, empty) farms list and treats it as invalid.
+      queryClient.removeQueries({ queryKey: queryKeys.farms.list.queryKey });
+      queryClient.removeQueries({ queryKey: queryKeys.farms.farm.queryKey });
+      queryClient.removeQueries({ queryKey: queryKeys.users.me.queryKey });
     }
   }
 
