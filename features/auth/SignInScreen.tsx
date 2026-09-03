@@ -6,12 +6,7 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { SignInScreenProps } from "@/features/auth/navigation/auth-routes";
 import { BrandBackground } from "@/features/splash/BrandBackground";
 import { BrandLockup } from "@/features/splash/BrandLockup";
-import {
-  BRAND_ACCENT,
-  BRAND_OFF_WHITE,
-  LOCKUP_WIDTH,
-  w,
-} from "@/features/splash/brand";
+import { LOCKUP_WIDTH, w } from "@/features/splash/brand";
 import { supabase } from "@/supabase/supabase";
 import { Body } from "@/theme/Typography";
 import { useState } from "react";
@@ -78,7 +73,7 @@ export function SignInScreen({ navigation }: SignInScreenProps) {
             numberOfLines={1}
             adjustsFontSizeToFit
             style={{
-              color: BRAND_ACCENT,
+              color: theme.colors.secondary,
               fontSize: width * TAGLINE_SIZE,
               letterSpacing: width * TAGLINE_SIZE * -0.03,
               includeFontPadding: false,
@@ -113,7 +108,7 @@ export function SignInScreen({ navigation }: SignInScreenProps) {
               alignSelf: "flex-end",
               marginTop: theme.spacing.xs,
               fontSize: 15,
-              color: BRAND_ACCENT,
+              color: theme.colors.secondary,
               fontWeight: "600",
             }}
             onPress={() => navigation.navigate("ForgotPassword")}
@@ -156,12 +151,12 @@ export function SignInScreen({ navigation }: SignInScreenProps) {
               marginTop: theme.spacing.m,
               textAlign: "center",
               fontSize: 14,
-              color: BRAND_OFF_WHITE,
+              color: theme.colors.offWhite,
             }}
           >
             {t("signin.signup_text")}{" "}
             <Text
-              style={{ color: BRAND_ACCENT, fontWeight: "600" }}
+              style={{ color: theme.colors.secondary, fontWeight: "600" }}
               onPress={() => navigation.navigate("SignUp")}
             >
               {t("buttons.signup")}

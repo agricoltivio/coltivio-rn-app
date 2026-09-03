@@ -431,7 +431,7 @@ export function SelectPlotsMap({
             {/* Idle: show polygon tool button */}
             {drawPhase === "idle" && (
               <MaterialCommunityIconButton
-                style={{ backgroundColor: theme.colors.accent }}
+                style={{ backgroundColor: theme.colors.surface }}
                 type="accent"
                 color="black"
                 iconSize={30}
@@ -471,7 +471,7 @@ export function SelectPlotsMap({
             )}
             {onNavigateToOnboarding && (
               <MaterialCommunityIconButton
-                style={{ backgroundColor: theme.colors.accent }}
+                style={{ backgroundColor: theme.colors.surface }}
                 type="accent"
                 color="black"
                 iconSize={30}

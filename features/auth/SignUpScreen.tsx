@@ -1,7 +1,7 @@
 import { useSession } from "@/auth/SessionProvider";
 import { Button } from "@/components/buttons/Button";
 import { ContentView } from "@/components/containers/ContentView";
-import { AUTH_HEADER_OFFSET, BRAND_OFF_WHITE } from "@/features/splash/brand";
+import { AUTH_HEADER_OFFSET } from "@/features/splash/brand";
 import { BrandBackground } from "@/features/splash/BrandBackground";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
@@ -75,7 +75,7 @@ export function SignUpScreen() {
         {/* No showHeaderOnScroll here: it repaints the header white on scroll,
             which would cut a light bar across the gradient. */}
         <ScrollView keyboardAware>
-          <H2 style={{ color: BRAND_OFF_WHITE }}>
+          <H2 style={{ color: theme.colors.offWhite }}>
             {t("signup.create_account")}
           </H2>
           <View style={{ marginTop: theme.spacing.xl, gap: theme.spacing.s }}>

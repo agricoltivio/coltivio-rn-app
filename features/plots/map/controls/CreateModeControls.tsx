@@ -32,7 +32,7 @@ export function CreateModeControls() {
           onPress={() => dispatch({ type: "EXIT_MODE" })}
         />
         <MaterialCommunityIconButton
-          style={{ backgroundColor: theme.colors.accent }}
+          style={{ backgroundColor: theme.colors.surface }}
           type="accent"
           color="black"
           iconSize={30}
@@ -85,7 +85,7 @@ export function CreateModeControls() {
         />
         {/* Info */}
         <MaterialCommunityIconButton
-          style={{ backgroundColor: theme.colors.accent }}
+          style={{ backgroundColor: theme.colors.surface }}
           type="accent"
           color="black"
           iconSize={30}

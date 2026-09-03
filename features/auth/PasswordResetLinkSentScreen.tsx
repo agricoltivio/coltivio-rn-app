@@ -3,7 +3,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { PasswordResetLinkSentScreenProps } from "@/features/auth/navigation/auth-routes";
 import { BrandBackground } from "@/features/splash/BrandBackground";
-import { AUTH_HEADER_OFFSET, BRAND_OFF_WHITE } from "@/features/splash/brand";
+import { AUTH_HEADER_OFFSET } from "@/features/splash/brand";
 import { H3 } from "@/theme/Typography";
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -36,13 +36,13 @@ export function PasswordResetLinkSentScreen({
           </BottomActionContainer>
         }
       >
-        <H3 style={{ marginTop: theme.spacing.xl, color: BRAND_OFF_WHITE }}>
+        <H3 style={{ marginTop: theme.spacing.xl, color: theme.colors.offWhite }}>
           {t("forgot_password.reset_link_sent", { email })}
         </H3>
-        <H3 style={{ marginTop: theme.spacing.m, color: BRAND_OFF_WHITE }}>
+        <H3 style={{ marginTop: theme.spacing.m, color: theme.colors.offWhite }}>
           {t("forgot_password.mail_being_deliverd")}
         </H3>
-        <H3 style={{ marginTop: theme.spacing.m, color: BRAND_OFF_WHITE }}>
+        <H3 style={{ marginTop: theme.spacing.m, color: theme.colors.offWhite }}>
           {t("common.if_problem_contact_support")}
         </H3>
       </ContentView>

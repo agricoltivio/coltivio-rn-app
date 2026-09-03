@@ -1,4 +1,3 @@
-import { BRAND_OFF_WHITE } from "@/features/splash/brand";
 import { Stack } from "@/navigation/stack";
 import { DefaultTheme } from "styled-components/native";
 import { ForgotPasswordScreen } from "../ForgotPasswordScreen";
@@ -17,7 +16,7 @@ export function renderAuthStack(theme: DefaultTheme) {
     headerShown: true,
     title: "",
     headerTransparent: true,
-    headerTintColor: BRAND_OFF_WHITE,
+    headerTintColor: theme.colors.offWhite,
     headerStyle: { backgroundColor: "transparent" },
     contentStyle: { backgroundColor: "transparent" },
   } as const;

@@ -5,7 +5,7 @@ import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
 import { ResetPasswordScreenProps } from "@/features/auth/navigation/auth-routes";
 import { BrandBackground } from "@/features/splash/BrandBackground";
-import { AUTH_HEADER_OFFSET, BRAND_OFF_WHITE } from "@/features/splash/brand";
+import { AUTH_HEADER_OFFSET } from "@/features/splash/brand";
 import { supabase } from "@/supabase/supabase";
 import { Body, H2 } from "@/theme/Typography";
 import { useUrl } from "@/utils/url-context";
@@ -128,7 +128,7 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
         {/* No showHeaderOnScroll here: it repaints the header white on scroll,
             which would cut a light bar across the gradient. */}
         <ScrollView keyboardAware>
-          <H2 style={{ color: BRAND_OFF_WHITE }}>
+          <H2 style={{ color: theme.colors.offWhite }}>
             {t("forgot_password.reset_password")}
           </H2>
 

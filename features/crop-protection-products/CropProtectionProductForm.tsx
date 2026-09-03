@@ -47,7 +47,7 @@ export function CropProtectionProductForm({
         <Card
           elevated
           style={{
-            backgroundColor: theme.colors.accent,
+            backgroundColor: theme.colors.surface,
             margin: theme.spacing.s,
           }}
         >

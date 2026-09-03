@@ -1,7 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { StyleProp, StyleSheet, ViewStyle } from "react-native";
+import { useTheme } from "styled-components/native";
 
-import { BRAND_GRADIENT } from "./brand";
 import { SplashLineart } from "./SplashLineart";
 
 type BrandBackgroundProps = {
@@ -11,9 +11,10 @@ type BrandBackgroundProps = {
 
 /** The brand ground: horizontal gradient with the line art anchored bottom. */
 export function BrandBackground({ children, style }: BrandBackgroundProps) {
+  const theme = useTheme();
   return (
     <LinearGradient
-      colors={[...BRAND_GRADIENT]}
+      colors={[...theme.gradients.brand]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
       style={[styles.container, style]}

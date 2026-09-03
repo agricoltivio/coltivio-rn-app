@@ -227,7 +227,7 @@ export const CreateModeLayers = forwardRef<CreateModeLayersHandle>(
               type="fill"
               id="create-parcels-fill"
               paint={{
-                "fill-color": hexToRgba(theme.colors.accent, 0.3),
+                "fill-color": hexToRgba(theme.colors.surface, 0.3),
                 "fill-opacity": 1,
               }}
             />

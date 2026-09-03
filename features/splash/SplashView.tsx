@@ -1,10 +1,11 @@
 import { useTranslation } from "react-i18next";
 import { StyleSheet, useWindowDimensions, View } from "react-native";
+import { useTheme } from "styled-components/native";
 
 import { Text } from "@/components/text/Text";
 import { BrandBackground } from "./BrandBackground";
 import { BrandLockup } from "./BrandLockup";
-import { BRAND_ACCENT, LOCKUP_WIDTH, h, w } from "./brand";
+import { LOCKUP_WIDTH, h, w } from "./brand";
 
 // Positions measured off the brand mockup (assets/ph.png). Sizes scale with the
 // screen width so the lockup keeps its proportions, positions scale with the
@@ -30,6 +31,7 @@ const LINE_BOX = 1.3;
  */
 export function SplashView() {
   const { t } = useTranslation();
+  const theme = useTheme();
   const { width, height } = useWindowDimensions();
 
   const taglineSize = width * TAGLINE_SIZE;
@@ -58,6 +60,7 @@ export function SplashView() {
             {
               fontSize: taglineSize,
               letterSpacing: taglineSize * TAGLINE_TRACKING,
+              color: theme.colors.secondary,
             },
           ]}
         >
@@ -73,6 +76,7 @@ export function SplashView() {
             {
               fontSize: loadingSize,
               letterSpacing: loadingSize * LOADING_TRACKING,
+              color: theme.colors.secondary,
             },
           ]}
         >
@@ -96,7 +100,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
-    color: BRAND_ACCENT,
     textAlign: "center",
     // Android otherwise adds ascent padding, which shifts the line inside its
     // box and breaks the alignment the ratios above are built on.

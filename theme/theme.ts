@@ -4,7 +4,8 @@ export interface ColtivioTheme {
     text: string;
     primary: string;
     secondary: string; // semantic: secondary button fill
-    accent: string;
+    surface: string; // semantic: card/chip background
+    offWhite: string; // semantic: text/tint on the brand gradient
     buttonPrimary: string; // primary filled button background
     amber: string; // orange accent — wiki, map polygon highlights
     success: string;
@@ -24,6 +25,9 @@ export interface ColtivioTheme {
     defaultStrokeWidth: number;
     defaultFillAlpha: number;
     defaultFillColor: string;
+  };
+  gradients: {
+    brand: readonly [string, string]; // splash / auth screen ground
   };
   spacing: {
     xxs: number;
@@ -60,7 +64,8 @@ export const coltivioTheme: ColtivioTheme = {
     // is 1.76:1. It is the fill that still reads on the brand gradient, which
     // is why the auth screens use it.
     secondary: "#82d59d",
-    accent: "#F4FAFB",
+    surface: "#F4FAFB",
+    offWhite: "#F4FAFB",
     // Primary1 from the brand kit, same value as `primary`. White label at
     // 8.68:1, and 6.71:1 against the background, so it is the strong fill on
     // light surfaces.
@@ -83,6 +88,9 @@ export const coltivioTheme: ColtivioTheme = {
     defaultStrokeWidth: 1,
     defaultFillAlpha: 0.5,
     defaultFillColor: "#4285F4",
+  },
+  gradients: {
+    brand: ["#2b525a", "#73aea2"],
   },
   spacing: {
     xxs: 4,

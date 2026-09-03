@@ -2,10 +2,6 @@
 // Everything the splash and the sign-in screen share lives here so the two
 // cannot drift apart.
 
-export const BRAND_GRADIENT = ["#2b525a", "#73aea2"] as const;
-export const BRAND_ACCENT = "#82d59d";
-export const BRAND_OFF_WHITE = "#f4fafb";
-
 export const MOCKUP_WIDTH = 1320;
 export const MOCKUP_HEIGHT = 2868;
 

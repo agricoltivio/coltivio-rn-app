@@ -39,7 +39,7 @@ export function MergeModeControls() {
       />
       {/* Info */}
       <MaterialCommunityIconButton
-        style={{ backgroundColor: theme.colors.accent }}
+        style={{ backgroundColor: theme.colors.surface }}
         type="accent"
         color="black"
         iconSize={30}

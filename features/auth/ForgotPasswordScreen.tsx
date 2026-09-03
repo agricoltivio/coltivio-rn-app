@@ -5,7 +5,7 @@ import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
 import { ForgotPasswordScreenProps } from "@/features/auth/navigation/auth-routes";
 import { BrandBackground } from "@/features/splash/BrandBackground";
-import { AUTH_HEADER_OFFSET, BRAND_OFF_WHITE } from "@/features/splash/brand";
+import { AUTH_HEADER_OFFSET } from "@/features/splash/brand";
 import { supabase } from "@/supabase/supabase";
 import { Body, H2, H3 } from "@/theme/Typography";
 import { useState } from "react";
@@ -62,10 +62,10 @@ export function ForgotPasswordScreen({
         {/* No showHeaderOnScroll here: it repaints the header white on scroll,
             which would cut a light bar across the gradient. */}
         <ScrollView keyboardAware>
-          <H2 style={{ color: BRAND_OFF_WHITE }}>
+          <H2 style={{ color: theme.colors.offWhite }}>
             {t("forgot_password.reset_password")}
           </H2>
-          <H3 style={{ marginTop: theme.spacing.s, color: BRAND_OFF_WHITE }}>
+          <H3 style={{ marginTop: theme.spacing.s, color: theme.colors.offWhite }}>
             {t("forgot_password.enter_email")}
           </H3>
           <View style={{ marginTop: theme.spacing.xl, gap: theme.spacing.s }}>
