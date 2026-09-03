@@ -1,6 +1,6 @@
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
-import { ContentView } from "@/components/containers/ContentView";
+import { BrandedContentView } from "@/components/containers/BrandedContentView";
 import { PasswordResetLinkSentScreenProps } from "@/features/auth/navigation/auth-routes";
 import { H3 } from "@/theme/Typography";
 import { useTranslation } from "react-i18next";
@@ -14,10 +14,11 @@ export function PasswordResetLinkSentScreen({
   const theme = useTheme();
   const { email } = route.params;
   return (
-    <ContentView
+    <BrandedContentView
       footerComponent={
-        <BottomActionContainer>
+        <BottomActionContainer transparent>
           <Button
+            type="secondary"
             onPress={() =>
               navigation.reset({
                 index: 0,
@@ -29,15 +30,15 @@ export function PasswordResetLinkSentScreen({
         </BottomActionContainer>
       }
     >
-      <H3 style={{ marginTop: theme.spacing.xl }}>
+      <H3 style={{ marginTop: theme.spacing.xl, color: theme.colors.offWhite }}>
         {t("forgot_password.reset_link_sent", { email })}
       </H3>
-      <H3 style={{ marginTop: theme.spacing.m }}>
+      <H3 style={{ marginTop: theme.spacing.m, color: theme.colors.offWhite }}>
         {t("forgot_password.mail_being_deliverd")}
       </H3>
-      <H3 style={{ marginTop: theme.spacing.m }}>
+      <H3 style={{ marginTop: theme.spacing.m, color: theme.colors.offWhite }}>
         {t("common.if_problem_contact_support")}
       </H3>
-    </ContentView>
+    </BrandedContentView>
   );
 }

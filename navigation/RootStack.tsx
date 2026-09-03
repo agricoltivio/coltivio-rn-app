@@ -28,6 +28,7 @@ import { renderPlotsStack } from "@/features/plots/navigation/PlotsStack";
 import { renderTillagesStack } from "@/features/tillages/navigation/TillagesStack";
 import { renderUserStack } from "@/features/user/navigation/UserStack";
 import { useUserQuery } from "@/features/user/users.hooks";
+import { SplashView } from "@/components/branding/SplashView";
 import { useAppFonts } from "@/theme/fonts";
 import { useNavigation } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
@@ -43,7 +44,8 @@ SplashScreen.preventAutoHideAsync();
 export function RootStack() {
   const { loadingFromStorage, token } = useSession();
   const theme = useTheme();
-  const [splashScreenVisible, setSplashScreenVisible] = useState(true);
+  const [nativeSplashHidden, setNativeSplashHidden] = useState(false);
+  const [initialLoadDone, setInitialLoadDone] = useState(false);
   const navigation = useNavigation();
   const [fontsLoaded] = useAppFonts();
   const {
@@ -65,8 +67,6 @@ export function RootStack() {
   } = useUserQuery(token != null);
 
   const hasFarms = (farms?.count ?? 0) > 0;
-  // 2+ farms and no valid (or stale) local selection — block on the picker rather than
-  // guessing, since there's no server-side "current farm" concept to fall back to.
   const needsFarmPicker =
     farms != null &&
     farms.count >= 2 &&
@@ -81,63 +81,51 @@ export function RootStack() {
     }
   }, [farms, activeFarmId]);
 
-  // Any farm-scoped request — including the farms list itself — 403s when the stored farm id
-  // is stale (e.g. the farm was just deleted, or the user was removed from it on another
-  // device). Drop the selection and let the farm picker gate re-prompt, instead of falling
-  // into the generic error stack.
-  const staleFarmId =
-    error?.message?.includes("You are not a member of the specified farm") ||
-    farmsError?.message?.includes("You are not a member of the specified farm");
+  const hasInvalidFarmSelection =
+    activeFarmId != null &&
+    ((farms != null &&
+      !farms.result.some((farm) => farm.id === activeFarmId)) ||
+      farmsError != null);
   useEffect(() => {
-    if (staleFarmId) {
-      // clearActiveFarmId also discards the query cache, which includes refetching
-      // farms.list — no need to invalidate it separately here.
+    if (hasInvalidFarmSelection) {
       clearActiveFarmId();
     }
-  }, [staleFarmId]);
+  }, [hasInvalidFarmSelection]);
 
+  const stillResolvingSession =
+    loadingFromStorage ||
+    (token != null &&
+      (!farmsFetched ||
+        loadingActiveFarm ||
+        hasInvalidFarmSelection ||
+        (hasFarms && !needsFarmPicker && !userFetched)));
+
+  // Hand over from the native splash to SplashView as soon as Inter is ready — SplashView
+  // draws the same composition, so there's no white frame while the session, farms and user
+  // still load on a cold start.
   useEffect(() => {
-    if (!splashScreenVisible || loadingFromStorage || !fontsLoaded) {
+    if (nativeSplashHidden || !fontsLoaded) {
       return;
     }
-    if (token) {
-      if (!farmsFetched || loadingActiveFarm) {
-        return;
-      }
-      if (hasFarms && !needsFarmPicker && !userFetched) {
-        return;
-      }
-    }
-    // hide the splash screen after the token has been loaded
     SplashScreen.hideAsync();
-    setSplashScreenVisible(false);
-  }, [
-    loadingFromStorage,
-    farmsFetched,
-    loadingActiveFarm,
-    hasFarms,
-    needsFarmPicker,
-    userFetched,
-    fontsLoaded,
-  ]);
+    setNativeSplashHidden(true);
+  }, [nativeSplashHidden, fontsLoaded]);
 
-  if (loadingFromStorage || !fontsLoaded) {
+  useEffect(() => {
+    if (fontsLoaded && !stillResolvingSession) {
+      setInitialLoadDone(true);
+    }
+  }, [fontsLoaded, stillResolvingSession]);
+
+  if (!fontsLoaded) {
     return null;
   }
-  if (token && (!farmsFetched || loadingActiveFarm)) {
-    return null;
+
+  if (stillResolvingSession) {
+    return initialLoadDone ? null : <SplashView />;
   }
-  // A stale farm id is a recoverable, transient state — clearActiveFarmId (triggered by the
-  // effect above) is about to make the next farms/me fetch succeed. Wait rather than flashing
-  // the generic error stack.
-  if (token && staleFarmId) {
-    return null;
-  }
-  if (token && hasFarms && !needsFarmPicker && !userFetched) {
-    return null;
-  }
+
   function renderStacks() {
-    // in case no token is available, render the sign in screen
     if (!token) {
       return renderAuthStack(theme);
     }

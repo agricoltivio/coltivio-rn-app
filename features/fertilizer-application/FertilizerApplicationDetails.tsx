@@ -58,7 +58,7 @@ export function FertilizerApplicationDetailsScreen({
       {canWrite("field_calendar") && (
         <Button
           style={{ marginBottom: theme.spacing.m }}
-          type="secondary"
+          type="primary"
           title={t("buttons.delete")}
           onPress={onDelete}
         />

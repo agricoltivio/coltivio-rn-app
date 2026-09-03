@@ -276,7 +276,7 @@ export function TvdImportRowDetailScreen({
               </View>
             ) : (
               <Button
-                type="secondary"
+                type="primary"
                 title={t("animals.tvd_import.assign_merge_animal")}
                 onPress={() =>
                   navigation.navigate("SelectSingleAnimal", {

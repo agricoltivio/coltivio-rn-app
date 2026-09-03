@@ -37,7 +37,7 @@ export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
       {/* Create */}
       <MaterialCommunityIconButton
         style={{
-          backgroundColor: theme.colors.accent,
+          backgroundColor: theme.colors.surface,
           opacity: hasSelection ? 0.4 : 1,
         }}
         type="accent"
@@ -50,7 +50,7 @@ export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
       {/* Split */}
       <MaterialCommunityIconButton
         style={{
-          backgroundColor: theme.colors.accent,
+          backgroundColor: theme.colors.surface,
           opacity: hasSelection ? 1 : 0.4,
         }}
         type="accent"
@@ -71,7 +71,7 @@ export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
       {/* Merge */}
       <MaterialCommunityIconButton
         style={{
-          backgroundColor: theme.colors.accent,
+          backgroundColor: theme.colors.surface,
           opacity: hasSelection ? 1 : 0.4,
         }}
         type="accent"
@@ -91,7 +91,7 @@ export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
       {/* Adjust */}
       <MaterialCommunityIconButton
         style={{
-          backgroundColor: theme.colors.accent,
+          backgroundColor: theme.colors.surface,
           opacity: hasSelection ? 1 : 0.4,
         }}
         type="accent"
@@ -108,7 +108,7 @@ export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
       {/* Delete */}
       <MaterialCommunityIconButton
         style={{
-          backgroundColor: theme.colors.accent,
+          backgroundColor: theme.colors.surface,
           opacity: hasSelection ? 1 : 0.4,
         }}
         type="accent"
@@ -120,7 +120,7 @@ export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
       />
       {/* Info */}
       <MaterialCommunityIconButton
-        style={{ backgroundColor: theme.colors.accent }}
+        style={{ backgroundColor: theme.colors.surface }}
         type="accent"
         color="black"
         iconSize={30}

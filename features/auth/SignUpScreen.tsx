@@ -1,6 +1,6 @@
 import { useSession } from "@/auth/SessionProvider";
 import { Button } from "@/components/buttons/Button";
-import { ContentView } from "@/components/containers/ContentView";
+import { BrandedContentView } from "@/components/containers/BrandedContentView";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
 import { supabase } from "@/supabase/supabase";
@@ -64,13 +64,13 @@ export function SignUpScreen() {
   }
 
   return (
-    <ContentView headerVisible>
-      <ScrollView
-        showHeaderOnScroll
-        headerTitleOnScroll={t("signup.create_account")}
-        keyboardAware
-      >
-        <H2 style={{ color: theme.colors.primary }}>
+    // Same ground as the sign-in screen and the splash, so the whole signed-out
+    // flow looks like one thing.
+    <BrandedContentView>
+      {/* No showHeaderOnScroll here: it repaints the header white on scroll,
+          which would cut a light bar across the gradient. */}
+      <ScrollView keyboardAware>
+        <H2 style={{ color: theme.colors.offWhite }}>
           {t("signup.create_account")}
         </H2>
         <View style={{ marginTop: theme.spacing.xl, gap: theme.spacing.s }}>
@@ -153,10 +153,11 @@ export function SignUpScreen() {
       <Button
         style={{ marginTop: theme.spacing.xl }}
         title={t("buttons.signup")}
+        type="secondary"
         onPress={handleSubmit(onSubmit)}
         loading={fetching}
         disabled={!isDirty || fetching}
       />
-    </ContentView>
+    </BrandedContentView>
   );
 }

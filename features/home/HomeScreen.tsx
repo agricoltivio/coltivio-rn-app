@@ -200,6 +200,10 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   return (
     <>
+      {/* Known and accepted: Android 12+ stretches the content at both
+          edges, which smears the tiles and their shadows enough that the
+          near-white card fill looks like it shifts colour. overScrollMode
+          "never" removes it but the screen then feels dead at the edges. */}
       <ScrollView showHeaderOnScroll headerTitleOnScroll={farm?.name}>
         <ContentView headerVisible={true}>
           <View>
@@ -324,7 +328,6 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                     style={{
                       width: 36,
                       height: 36,
-                      opacity: 0.85,
                       marginLeft: theme.spacing.m,
                     }}
                   />
@@ -358,12 +361,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                   <Image
                     source={tile.image}
                     contentFit="contain"
-                    style={{
-                      height: 110,
-                      opacity: 0.9,
-                      borderBottomLeftRadius: 10,
-                      borderBottomRightRadius: 10,
-                    }}
+                    style={{ height: 92 }}
                   />
                 </HomeTile>
               ))}

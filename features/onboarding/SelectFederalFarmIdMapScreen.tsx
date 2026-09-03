@@ -99,7 +99,7 @@ export function SelectFederalFarmIdMapScreen({
     [],
   );
 
-  const fillColor = hexToRgba(theme.colors.accent, 0.3);
+  const fillColor = hexToRgba(theme.colors.surface, 0.3);
 
   return (
     <View style={{ flex: 1, paddingBottom: insets.bottom }}>

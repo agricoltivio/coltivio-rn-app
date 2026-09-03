@@ -1,17 +1,16 @@
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
-import { ContentView } from "@/components/containers/ContentView";
+import { BrandedContentView } from "@/components/containers/BrandedContentView";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
+import { ForgotPasswordScreenProps } from "@/features/auth/navigation/auth-routes";
+import { supabase } from "@/supabase/supabase";
 import { Body, H2, H3 } from "@/theme/Typography";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { supabase } from "@/supabase/supabase";
-import { useState } from "react";
-import { ForgotPasswordScreenProps } from "@/features/auth/navigation/auth-routes";
-import { isLength } from "lodash";
 
 const redirectTo = `${process.env.EXPO_PUBLIC_WEB_URL}/reset-password`;
 
@@ -29,10 +28,6 @@ export function ForgotPasswordScreen({
   const [loading, setLoading] = useState(false);
 
   async function onSubmit({ email }: { email: string }) {
-    // const { error } = await supabase.auth.signInWithOtp({
-    //   email: email,
-    //   options: { emailRedirectTo: redirectTo },
-    // });
     setLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo,
@@ -46,26 +41,27 @@ export function ForgotPasswordScreen({
     }
   }
   return (
-    <ContentView
+    <BrandedContentView
       footerComponent={
-        <BottomActionContainer>
+        <BottomActionContainer transparent>
           <Button
             title={t("buttons.send_email")}
+            type="secondary"
             onPress={handleSubmit(onSubmit)}
             disabled={!isDirty || loading}
           />
         </BottomActionContainer>
       }
     >
-      <ScrollView
-        showHeaderOnScroll
-        headerTitleOnScroll={t("forgot_password.reset_password")}
-        keyboardAware
-      >
-        <H2 style={{ color: theme.colors.primary }}>
+      {/* No showHeaderOnScroll here: it repaints the header white on scroll,
+          which would cut a light bar across the gradient. */}
+      <ScrollView keyboardAware>
+        <H2 style={{ color: theme.colors.offWhite }}>
           {t("forgot_password.reset_password")}
         </H2>
-        <H3 style={{ marginTop: theme.spacing.s }}>
+        <H3
+          style={{ marginTop: theme.spacing.s, color: theme.colors.offWhite }}
+        >
           {t("forgot_password.enter_email")}
         </H3>
         <View style={{ marginTop: theme.spacing.xl, gap: theme.spacing.s }}>
@@ -98,6 +94,6 @@ export function ForgotPasswordScreen({
           </View>
         )}
       </ScrollView>
-    </ContentView>
+    </BrandedContentView>
   );
 }

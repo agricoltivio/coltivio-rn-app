@@ -143,6 +143,10 @@
     "applications": "Anwendungen",
     "average": "Durchschnitt"
   },
+  "splash": {
+    "tagline": "Von Bauern. Für Bauern.",
+    "loading": "Wird geladen..."
+  },
   "presets": {
     "preset": "Vorlage",
     "presets": "Vorlagen",

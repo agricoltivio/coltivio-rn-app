@@ -128,7 +128,9 @@ export default Sentry.wrap(function App() {
                                 >
                                   <StatusBar
                                     barStyle="dark-content"
-                                    backgroundColor="#f6f6f6"
+                                    backgroundColor={
+                                      coltivioTheme.colors.background
+                                    }
                                   />
                                   <RootStack />
                                 </NavigationContainer>
