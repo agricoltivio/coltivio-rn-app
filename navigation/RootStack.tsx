@@ -82,20 +82,24 @@ export function RootStack() {
     }
   }, [farms, activeFarmId]);
 
-  // Any farm-scoped request — including the farms list itself — 403s when the stored farm id
-  // is stale (e.g. the farm was just deleted, or the user was removed from it on another
-  // device). Drop the selection and let the farm picker gate re-prompt, instead of falling
-  // into the generic error stack.
-  const staleFarmId =
-    error?.message?.includes("You are not a member of the specified farm") ||
-    farmsError?.message?.includes("You are not a member of the specified farm");
+  // The stored selection can point at a farm the user is no longer (or never was) a member
+  // of: farm deleted elsewhere, kicked on another device, or a stale value left over from a
+  // previously signed-in account. Two signals, no error-string matching:
+  //  - the farms list loaded and the selection isn't in it, or
+  //  - the farms list itself failed while a selection is set (the backend rejects an
+  //    x-farm-id the caller can't access, so the selection is the likely cause).
+  // Either way: drop the selection, which also discards the query cache and refetches the
+  // farms list unscoped — then auto-select / the picker re-resolves it.
+  const hasInvalidFarmSelection =
+    activeFarmId != null &&
+    ((farms != null &&
+      !farms.result.some((farm) => farm.id === activeFarmId)) ||
+      farmsError != null);
   useEffect(() => {
-    if (staleFarmId) {
-      // clearActiveFarmId also discards the query cache, which includes refetching
-      // farms.list — no need to invalidate it separately here.
+    if (hasInvalidFarmSelection) {
       clearActiveFarmId();
     }
-  }, [staleFarmId]);
+  }, [hasInvalidFarmSelection]);
 
   // Hand over from the native splash to SplashView as soon as Inter is ready.
   // SplashView keeps the same composition on screen while the session, farms
@@ -120,10 +124,10 @@ export function RootStack() {
   if (token && (!farmsFetched || loadingActiveFarm)) {
     return <SplashView />;
   }
-  // A stale farm id is a recoverable, transient state — clearActiveFarmId (triggered by the
-  // effect above) is about to make the next farms/me fetch succeed. Wait rather than flashing
-  // the generic error stack.
-  if (token && staleFarmId) {
+  // An invalid farm selection is a recoverable, transient state — clearActiveFarmId
+  // (triggered by the effect above) is about to make the next farms/me fetch succeed.
+  // Wait rather than flashing the generic error stack.
+  if (token && hasInvalidFarmSelection) {
     return <SplashView />;
   }
   if (token && hasFarms && !needsFarmPicker && !userFetched) {
