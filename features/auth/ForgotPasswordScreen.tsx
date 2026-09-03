@@ -59,7 +59,9 @@ export function ForgotPasswordScreen({
         <H2 style={{ color: theme.colors.offWhite }}>
           {t("forgot_password.reset_password")}
         </H2>
-        <H3 style={{ marginTop: theme.spacing.s, color: theme.colors.offWhite }}>
+        <H3
+          style={{ marginTop: theme.spacing.s, color: theme.colors.offWhite }}
+        >
           {t("forgot_password.enter_email")}
         </H3>
         <View style={{ marginTop: theme.spacing.xl, gap: theme.spacing.s }}>
