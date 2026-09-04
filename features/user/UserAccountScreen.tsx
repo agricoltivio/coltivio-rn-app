@@ -83,9 +83,7 @@ export function UserAccountScreen({ navigation }: UserAccountScreenProps) {
                 </ListItem.Title>
               </ListItem.Content>
               {user && !user.emailVerified ? (
-                <Body
-                  style={{ color: theme.colors.danger, fontWeight: "600" }}
-                >
+                <Body style={{ color: theme.colors.danger, fontWeight: "600" }}>
                   {t("users.email_not_verified_short")}
                 </Body>
               ) : null}

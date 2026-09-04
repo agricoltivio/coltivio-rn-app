@@ -7,5 +7,7 @@ const LOCALIZED = ["en", "fr", "it"];
  */
 export function privacyPolicyUrl(language: string): string {
   const lang = language.slice(0, 2);
-  return LOCALIZED.includes(lang) ? `${LANDING_URL}/${lang}/privacy/` : `${LANDING_URL}/privacy/`;
+  return LOCALIZED.includes(lang)
+    ? `${LANDING_URL}/${lang}/privacy/`
+    : `${LANDING_URL}/privacy/`;
 }
