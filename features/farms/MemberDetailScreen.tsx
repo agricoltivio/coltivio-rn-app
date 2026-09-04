@@ -1,30 +1,25 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { Select } from "@/components/select/Select";
-import { Switch } from "@/components/inputs/Switch";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { Body, H2, H3 } from "@/theme/Typography";
-import { PermissionFeature } from "@/api/farms.api";
+import { PermissionAccess, PermissionFeature } from "@/api/farms.api";
 import {
-  useDeleteMemberPermissionMutation,
   useMemberPermissionsQuery,
   useSetMemberPermissionMutation,
   useUpdateMemberRoleMutation,
 } from "./farms.hooks";
+import {
+  ALL_PERMISSION_FEATURES,
+  PermissionAccessTable,
+} from "./PermissionAccessTable";
 import { useFarmUsersQuery } from "@/features/tasks/tasks.hooks";
 import { MemberDetailScreenProps } from "./navigation/farm-routes";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { useTheme } from "styled-components/native";
-
-const ALL_FEATURES: PermissionFeature[] = [
-  "animals",
-  "field_calendar",
-  "commerce",
-  "tasks",
-];
 
 export function MemberDetailScreen({
   route,
@@ -41,11 +36,10 @@ export function MemberDetailScreen({
   const { permissions, isLoading: permissionsLoading } =
     useMemberPermissionsQuery(userId);
   const setPermission = useSetMemberPermissionMutation(userId);
-  const deletePermission = useDeleteMemberPermissionMutation(userId);
   const updateRoleMutation = useUpdateMemberRoleMutation();
 
-  const accessMap = new Map<PermissionFeature, "read" | "write">(
-    permissions.map((p) => [p.feature, p.access as "read" | "write"]),
+  const accessMap = new Map<PermissionFeature, PermissionAccess>(
+    permissions.map((p) => [p.feature, p.access]),
   );
 
   // Role and permission edits are staged locally and only sent on "Save" — these two pieces
@@ -54,19 +48,21 @@ export function MemberDetailScreen({
     null,
   );
   const [permissionOverrides, setPermissionOverrides] = useState<
-    Map<PermissionFeature, boolean>
+    Map<PermissionFeature, PermissionAccess>
   >(new Map());
 
   const role = roleOverride ?? originalRole;
 
-  function isWriteFor(feature: PermissionFeature): boolean {
-    const override = permissionOverrides.get(feature);
-    if (override !== undefined) return override;
-    return accessMap.get(feature) === "write";
+  function savedAccessFor(feature: PermissionFeature): PermissionAccess {
+    return accessMap.get(feature) ?? "none";
   }
 
-  function onToggleWrite(feature: PermissionFeature, enabled: boolean) {
-    setPermissionOverrides((prev) => new Map(prev).set(feature, enabled));
+  function accessFor(feature: PermissionFeature): PermissionAccess {
+    return permissionOverrides.get(feature) ?? savedAccessFor(feature);
+  }
+
+  function onChangeAccess(feature: PermissionFeature, access: PermissionAccess) {
+    setPermissionOverrides((prev) => new Map(prev).set(feature, access));
   }
 
   function onChangeRole(value: string) {
@@ -74,27 +70,20 @@ export function MemberDetailScreen({
   }
 
   const roleDirty = role !== originalRole;
-  const permissionsDirty = ALL_FEATURES.some(
-    (feature) => isWriteFor(feature) !== (accessMap.get(feature) === "write"),
+  const permissionsDirty = ALL_PERMISSION_FEATURES.some(
+    (feature) => accessFor(feature) !== savedAccessFor(feature),
   );
-  const isSaving =
-    updateRoleMutation.isPending ||
-    setPermission.isPending ||
-    deletePermission.isPending;
+  const isSaving = updateRoleMutation.isPending || setPermission.isPending;
 
   async function onSave() {
     const pendingSaves: Promise<unknown>[] = [];
     if (roleDirty) {
       pendingSaves.push(updateRoleMutation.mutateAsync({ userId, role }));
     }
-    for (const feature of ALL_FEATURES) {
-      const isWrite = isWriteFor(feature);
-      if (isWrite === (accessMap.get(feature) === "write")) continue;
-      pendingSaves.push(
-        isWrite
-          ? setPermission.mutateAsync({ feature, access: "write" })
-          : deletePermission.mutateAsync(feature),
-      );
+    for (const feature of ALL_PERMISSION_FEATURES) {
+      const access = accessFor(feature);
+      if (access === savedAccessFor(feature)) continue;
+      pendingSaves.push(setPermission.mutateAsync({ feature, access }));
     }
     try {
       await Promise.all(pendingSaves);
@@ -149,39 +138,11 @@ export function MemberDetailScreen({
             {permissionsLoading ? (
               <ActivityIndicator color={theme.colors.primary} />
             ) : (
-              <View
-                style={{
-                  backgroundColor: theme.colors.white,
-                  borderRadius: theme.radii.m,
-                  overflow: "hidden",
-                }}
-              >
-                {ALL_FEATURES.map((feature, index) => (
-                  <View
-                    key={feature}
-                    style={{
-                      paddingHorizontal: theme.spacing.m,
-                      paddingVertical: theme.spacing.m,
-                      borderBottomWidth:
-                        index < ALL_FEATURES.length - 1 ? 1 : 0,
-                      borderBottomColor: theme.colors.gray4,
-                    }}
-                  >
-                    <Switch
-                      label={t(
-                        `farm.permission_feature_${feature}` as Parameters<
-                          typeof t
-                        >[0],
-                      )}
-                      value={isWriteFor(feature)}
-                      onChange={(e) =>
-                        onToggleWrite(feature, e.nativeEvent.value)
-                      }
-                      disabled={isSaving}
-                    />
-                  </View>
-                ))}
-              </View>
+              <PermissionAccessTable
+                accessFor={accessFor}
+                onChange={onChangeAccess}
+                disabled={isSaving}
+              />
             )}
           </View>
         )}

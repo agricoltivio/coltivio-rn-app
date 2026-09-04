@@ -15,7 +15,7 @@ export type CreateInviteInput =
 export type MemberPermission =
   components["schemas"]["GetV1FarmMembersByIdUserIdPermissionsPositiveResponse"]["data"]["result"][number];
 export type PermissionFeature = MemberPermission["feature"];
-export type PermissionAccess = "read" | "write";
+export type PermissionAccess = MemberPermission["access"];
 export type FarmStats =
   components["schemas"]["GetV1FarmStatsPositiveResponse"]["data"];
 export type FarmsList =
