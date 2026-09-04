@@ -79,7 +79,10 @@ export function InviteUserScreen({}: InviteUserScreenProps) {
     return invitePermissions.get(feature) ?? "none";
   }
 
-  function onChangeAccess(feature: PermissionFeature, access: PermissionAccess) {
+  function onChangeAccess(
+    feature: PermissionFeature,
+    access: PermissionAccess,
+  ) {
     setInvitePermissions((prev) => new Map(prev).set(feature, access));
   }
 

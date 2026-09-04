@@ -61,7 +61,10 @@ export function MemberDetailScreen({
     return permissionOverrides.get(feature) ?? savedAccessFor(feature);
   }
 
-  function onChangeAccess(feature: PermissionFeature, access: PermissionAccess) {
+  function onChangeAccess(
+    feature: PermissionFeature,
+    access: PermissionAccess,
+  ) {
     setPermissionOverrides((prev) => new Map(prev).set(feature, access));
   }
 
