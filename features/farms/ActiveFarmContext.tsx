@@ -13,14 +13,14 @@ import {
 
 type ActiveFarm = {
   activeFarmId: string | null;
-  loadingActiveFarm: boolean;
+  farmSelectionHydrated: boolean;
   setActiveFarmId: (farmId: string) => void;
   clearActiveFarmId: () => void;
 };
 
 const ActiveFarmContext = createContext<ActiveFarm>({
   activeFarmId: null,
-  loadingActiveFarm: false,
+  farmSelectionHydrated: true,
   setActiveFarmId: () => {},
   clearActiveFarmId: () => {},
 });
@@ -36,27 +36,36 @@ export function ActiveFarmProvider({ children }: PropsWithChildren) {
   const { authUser } = useSession();
   const queryClient = useQueryClient();
   const [activeFarmId, setActiveFarmIdState] = useState<string | null>(null);
-  const [loadingActiveFarm, setLoadingActiveFarm] = useState(false);
+  const [hydratedForUserId, setHydratedForUserId] = useState<string | null>(
+    null,
+  );
+  const farmSelectionHydrated = authUser
+    ? hydratedForUserId === authUser.id
+    : true;
 
   useEffect(() => {
     if (!authUser) {
       setActiveFarmIdForRequests(null);
       setActiveFarmIdState(null);
+      setHydratedForUserId(null);
       return;
     }
     let isMounted = true;
-    setLoadingActiveFarm(true);
     AsyncStorage.getItem(storageKeyForUser(authUser.id)).then((value) => {
-      if (isMounted) {
-        setActiveFarmIdForRequests(value);
-        setActiveFarmIdState(value);
-        setLoadingActiveFarm(false);
+      if (!isMounted) {
+        return;
       }
+      setActiveFarmIdForRequests(value);
+      setActiveFarmIdState(value);
+      if (value && queryClient.getQueryData(queryKeys.users.me.queryKey)) {
+        queryClient.removeQueries({ queryKey: queryKeys.users.me.queryKey });
+      }
+      setHydratedForUserId(authUser.id);
     });
     return () => {
       isMounted = false;
     };
-  }, [authUser]);
+  }, [authUser, queryClient]);
 
   function setActiveFarmId(farmId: string) {
     const previousFarmId = activeFarmId;
@@ -98,7 +107,7 @@ export function ActiveFarmProvider({ children }: PropsWithChildren) {
     <ActiveFarmContext.Provider
       value={{
         activeFarmId,
-        loadingActiveFarm,
+        farmSelectionHydrated,
         setActiveFarmId,
         clearActiveFarmId,
       }}
