@@ -207,7 +207,9 @@
     "errors": {
       "email_taken": "This email is already in use",
       "unexpected": "An unexpected error occurred"
-    }
+    },
+    "newsletter_consent": "Yes, I would like to receive information about the AgriColtivio association and new features by email. You can unsubscribe at any time.",
+    "privacy_policy": "Privacy policy"
   },
   "signin": {
     "signup_text": "Don't have an account yet?"
@@ -281,7 +283,9 @@
     "resend_verification_email": "Resend Verification Email",
     "new_password": "New Password",
     "change_display_name": "Edit Name",
-    "verification_mail_sent": "An email has been sent to {{email}} to verify your address."
+    "verification_mail_sent": "An email has been sent to {{email}} to verify your address.",
+    "email_not_verified_banner": "Email address not confirmed yet. Confirm now.",
+    "email_not_verified_short": "Not confirmed"
   },
   "home": {
     "welcome_text": "Hello {{displayName}},",

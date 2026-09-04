@@ -9,17 +9,10 @@ import { NavigationButton } from "./NavigationButton";
 import { useOnboarding } from "./OnboardingContext";
 import { Stepper } from "./Stepper";
 import { FarmSummaryPage } from "./pages/FarmSummaryPage";
-import { supabase } from "@/supabase/supabase";
-import { useSession } from "@/auth/SessionProvider";
-import { useUserQuery } from "../user/users.hooks";
-
-const redirectTo = `${process.env.EXPO_PUBLIC_WEB_URL}/auth/confirm`;
 
 export function FarmSummaryScreen({ navigation }: FarmSummaryScreenProps) {
   const { t } = useTranslation();
   const { data } = useOnboarding();
-  const { authUser } = useSession();
-  const { user } = useUserQuery();
   const theme = useTheme();
 
   const syncMissingLocalIdsMutation = useSyncMissingLocalIdsMutation(
@@ -28,22 +21,6 @@ export function FarmSummaryScreen({ navigation }: FarmSummaryScreenProps) {
   );
   const createFarmMutation = useCreateFarmMutation(() => {
     syncMissingLocalIdsMutation.mutate();
-    // Only send verification email if user hasn't verified yet
-    if (!user?.emailVerified) {
-      setTimeout(() => {
-        supabase.auth.signInWithOtp({
-          email: authUser!.email!,
-          options: {
-            emailRedirectTo: redirectTo,
-          },
-        });
-      }, 1000);
-    }
-    // Reached from onboarding (0 farms): RootStack auto-transitions to the main app stack
-    // once the new farm is active, discarding this navigator — no explicit navigation needed.
-    // Reached in-app from the My Farm switcher ("create another farm"): "Home" is already in
-    // this navigator's history — popTo prunes the whole create-farm flow off the stack, so
-    // the back button doesn't lead back into it.
     if (navigation.getState().routes.some((route) => route.name === "Farm")) {
       navigation.popTo("Home");
     }

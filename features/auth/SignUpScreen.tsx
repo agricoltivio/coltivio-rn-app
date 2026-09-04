@@ -3,13 +3,16 @@ import { Button } from "@/components/buttons/Button";
 import { ContentView } from "@/components/containers/ContentView";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
+import { api, createAuthClient } from "@/api/api";
+import { Checkbox } from "@/components/inputs/Checkbox";
+import { privacyPolicyUrl } from "@/utils/links";
 import { supabase } from "@/supabase/supabase";
 import { Body, H2 } from "@/theme/Typography";
 import * as Sentry from "@sentry/react-native";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { Linking, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 
 type FormValues = {
@@ -21,9 +24,10 @@ type FormValues = {
 
 export function SignUpScreen() {
   const theme = useTheme();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [error, setError] = useState<string | null>(null);
   const [fetching, setFetching] = useState(false);
+  const [newsletterConsent, setNewsletterConsent] = useState(false);
   const { setSession } = useSession();
 
   const {
@@ -58,6 +62,15 @@ export function SignUpScreen() {
     } else if (!data?.session) {
       setError(t("signup.errors.unexpected"));
     } else {
+      if (newsletterConsent) {
+        try {
+          await api(
+            createAuthClient(data.session.access_token),
+          ).users.updateUser({ newsletterConsent: true });
+        } catch (consentError) {
+          Sentry.captureException(consentError);
+        }
+      }
       setSession(data?.session);
     }
     setFetching(false);
@@ -133,6 +146,36 @@ export function SignUpScreen() {
             }}
             error={errors.passwordRepeat?.message}
           />
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "flex-start",
+              gap: theme.spacing.s,
+              marginTop: theme.spacing.s,
+            }}
+          >
+            <Checkbox
+              checked={newsletterConsent}
+              onPress={() => setNewsletterConsent(!newsletterConsent)}
+            />
+            <TouchableOpacity
+              style={{ flex: 1 }}
+              activeOpacity={0.8}
+              onPress={() => setNewsletterConsent(!newsletterConsent)}
+            >
+              <Body>
+                {t("signup.newsletter_consent")}{" "}
+                <Body
+                  style={{ textDecorationLine: "underline" }}
+                  onPress={() =>
+                    Linking.openURL(privacyPolicyUrl(i18n.language))
+                  }
+                >
+                  {t("signup.privacy_policy")}
+                </Body>
+              </Body>
+            </TouchableOpacity>
+          </View>
         </View>
         {error && (
           <View

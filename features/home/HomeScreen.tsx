@@ -1,3 +1,4 @@
+import { Banner } from "@/components/banners/Banner";
 import { Button } from "@/components/buttons/Button";
 import { SpeedDial } from "@/components/buttons/SpeedDial";
 import { ContentView } from "@/components/containers/ContentView";
@@ -207,6 +208,12 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
               <H1>{t("home.welcome_text", { displayName: user?.fullName })}</H1>
             ) : null}
             <H2>{farm?.name}</H2>
+            {user && !user.emailVerified ? (
+              <Banner
+                title={t("users.email_not_verified_banner")}
+                onPress={() => navigation.navigate("ChangeEmail")}
+              />
+            ) : null}
             {showExpirySoonBanner && daysUntilExpiry !== null ? (
               <TouchableOpacity
                 style={{

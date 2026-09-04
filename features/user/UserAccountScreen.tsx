@@ -82,6 +82,13 @@ export function UserAccountScreen({ navigation }: UserAccountScreenProps) {
                   {t("forms.labels.email")}
                 </ListItem.Title>
               </ListItem.Content>
+              {user && !user.emailVerified ? (
+                <Body
+                  style={{ color: theme.colors.danger, fontWeight: "600" }}
+                >
+                  {t("users.email_not_verified_short")}
+                </Body>
+              ) : null}
               <ListItem.Chevron />
             </ListItem>
             {!usesSocialLogin ? (
