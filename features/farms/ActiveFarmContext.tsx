@@ -36,7 +36,9 @@ export function ActiveFarmProvider({ children }: PropsWithChildren) {
   const { authUser } = useSession();
   const queryClient = useQueryClient();
   const [activeFarmId, setActiveFarmIdState] = useState<string | null>(null);
-  const [hydratedForUserId, setHydratedForUserId] = useState<string | null>(null);
+  const [hydratedForUserId, setHydratedForUserId] = useState<string | null>(
+    null,
+  );
   const farmSelectionHydrated = authUser
     ? hydratedForUserId === authUser.id
     : true;
