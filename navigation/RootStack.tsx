@@ -52,7 +52,7 @@ export function RootStack() {
     activeFarmId,
     setActiveFarmId,
     clearActiveFarmId,
-    loadingActiveFarm,
+    farmSelectionHydrated,
   } = useActiveFarm();
   const {
     farms,
@@ -64,7 +64,7 @@ export function RootStack() {
     isFetched: userFetched,
     isFetching,
     error,
-  } = useUserQuery(token != null);
+  } = useUserQuery(token != null && farmSelectionHydrated);
 
   const hasFarms = (farms?.count ?? 0) > 0;
   const needsFarmPicker =
@@ -96,7 +96,7 @@ export function RootStack() {
     loadingFromStorage ||
     (token != null &&
       (!farmsFetched ||
-        loadingActiveFarm ||
+        !farmSelectionHydrated ||
         hasInvalidFarmSelection ||
         (hasFarms && !needsFarmPicker && !userFetched)));
 
