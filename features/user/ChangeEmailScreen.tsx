@@ -4,6 +4,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
+import { useApi } from "@/api/api";
 import { supabase } from "@/supabase/supabase";
 import { Body, H2 } from "@/theme/Typography";
 import React, { useEffect, useState } from "react";
@@ -12,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { ChangeEmailScreenProps } from "./navigation/user-routes";
-import { useUpdateUserMutation, useUserQuery } from "./users.hooks";
+import { useUserQuery } from "./users.hooks";
 
 const redirectTo = `${process.env.EXPO_PUBLIC_WEB_URL}/auth/confirm`;
 
@@ -32,7 +33,8 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
     defaultValues: { email: user?.email ?? undefined },
   });
 
-  const updateUserMutation = useUpdateUserMutation();
+  const api = useApi();
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (verificationMailSent && user?.emailVerified) {
@@ -42,6 +44,7 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
   }, [user]);
 
   async function onSubmit({ email }: { email: string }) {
+    setSubmitting(true);
     const { error, data } = await supabase.auth.updateUser(
       {
         email,
@@ -50,28 +53,23 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
         emailRedirectTo: redirectTo,
       },
     );
+    setSubmitting(false);
     if (error || !data) {
       console.error(error?.code || error?.message);
       setError(t("errors.unexpected_retry"));
     } else {
       setUser(data.user);
-      updateUserMutation.mutate({ emailVerified: false });
       navigation.navigate("ChangeEmailPending", { newEmail: email });
     }
   }
   async function sendVerificationEmail() {
-    const { error } = await supabase.auth.signInWithOtp({
-      email: user!.email,
-      options: {
-        emailRedirectTo: redirectTo,
-      },
-    });
-    if (error) {
-      console.error(error);
-      setError(t("errors.unexpected_retry"));
-    } else {
+    try {
+      await api.users.sendVerificationEmail();
       setVerificationMailSent(true);
       setError(null);
+    } catch (error) {
+      console.error(error);
+      setError(t("errors.unexpected_retry"));
     }
   }
 
@@ -83,8 +81,8 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
           <Button
             onPress={handleSubmit(onSubmit)}
             title={t("buttons.save")}
-            disabled={!isDirty || !!error || updateUserMutation.isPending}
-            loading={updateUserMutation.isPending}
+            disabled={!isDirty || !!error || submitting}
+            loading={submitting}
           />
         </BottomActionContainer>
       }

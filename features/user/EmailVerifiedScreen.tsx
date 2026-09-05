@@ -9,14 +9,14 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { EmailVerifiedScreenProps } from "./navigation/user-routes";
-import { useUpdateUserMutation } from "./users.hooks";
+import { useUserQuery } from "./users.hooks";
 
 export function EmailVerifiedScreen({ navigation }: EmailVerifiedScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const [error, setError] = useState<string | null>(null);
 
-  const updateUserMutation = useUpdateUserMutation();
+  const { refetch: refetchUser } = useUserQuery();
 
   const { url } = useUrl();
   useEffect(() => {
@@ -51,7 +51,7 @@ export function EmailVerifiedScreen({ navigation }: EmailVerifiedScreenProps) {
         setError(t("errors.unexpected"));
         return;
       } else {
-        updateUserMutation.mutate({ emailVerified: true });
+        refetchUser();
       }
     };
     verifyEmailFromUrl();
