@@ -28,6 +28,7 @@ import { renderPlotsStack } from "@/features/plots/navigation/PlotsStack";
 import { renderTillagesStack } from "@/features/tillages/navigation/TillagesStack";
 import { renderUserStack } from "@/features/user/navigation/UserStack";
 import { useUserQuery } from "@/features/user/users.hooks";
+import { LoadingScreen } from "@/components/branding/LoadingScreen";
 import { SplashView } from "@/components/branding/SplashView";
 import { useAppFonts } from "@/theme/fonts";
 import { useNavigation } from "@react-navigation/native";
@@ -81,9 +82,15 @@ export function RootStack() {
     }
   }, [farms, activeFarmId]);
 
+  // farms.count === 1 is excluded here — that case is fully handled by the
+  // auto-select effect above. Without this exclusion, both effects fire off
+  // the same stale render when a user drops from 2 farms to 1 (e.g. removed
+  // from one of them): auto-select reassigns to the remaining farm, then this
+  // effect immediately clears it again, before settling on the next render.
   const hasInvalidFarmSelection =
     activeFarmId != null &&
     ((farms != null &&
+      farms.count !== 1 &&
       !farms.result.some((farm) => farm.id === activeFarmId)) ||
       farmsError != null);
   useEffect(() => {
@@ -122,7 +129,7 @@ export function RootStack() {
   }
 
   if (stillResolvingSession) {
-    return initialLoadDone ? null : <SplashView />;
+    return initialLoadDone ? <LoadingScreen /> : <SplashView />;
   }
 
   function renderStacks() {

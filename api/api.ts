@@ -1,4 +1,5 @@
 import { useSession } from "@/auth/SessionProvider";
+import { supabase } from "@/supabase/supabase";
 import Constants from "expo-constants";
 import createClient, { Middleware } from "openapi-fetch";
 import { animalsApi } from "./animals.api";
@@ -44,9 +45,30 @@ const baseUrl = apiUrl ?? localUrl;
 
 export type FetchClient = typeof client;
 
+// Deduped so a burst of parallel 401s (e.g. every active query failing around
+// the same time because the session is genuinely dead) only triggers one
+// refresh call instead of one per failed request.
+let refreshInFlight: ReturnType<typeof supabase.auth.refreshSession> | null =
+  null;
+
+function triggerTokenRefresh() {
+  if (!refreshInFlight) {
+    refreshInFlight = supabase.auth.refreshSession().finally(() => {
+      refreshInFlight = null;
+    });
+  }
+}
+
 const middleware: Middleware = {
   async onResponse({ request, response, options }) {
     if (!response.ok) {
+      if (response.status === 401) {
+        // Recovers a merely-stale session for the next request, or — if the
+        // refresh token itself is dead — auth-js's own _callRefreshToken
+        // removes the session and emits SIGNED_OUT, which SessionProvider
+        // already turns into token=null, routing back to the auth stack.
+        triggerTokenRefresh();
+      }
       const content = await response.json();
       throw new Error(`${response.url}: ${response.status} - ${content.error}`);
     }
