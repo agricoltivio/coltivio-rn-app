@@ -211,7 +211,9 @@
     "errors": {
       "email_taken": "Cet email est déjà utilisé",
       "unexpected": "Une erreur inattendue s'est produite"
-    }
+    },
+    "newsletter_consent": "Oui, je souhaite recevoir par e-mail des informations sur l'association AgriColtivio et sur les nouvelles fonctionnalités. Tu peux te désabonner à tout moment.",
+    "privacy_policy": "Déclaration de protection des données"
   },
   "signin": {
     "signup_text": "Vous n'avez pas encore de compte ?"
@@ -285,7 +287,9 @@
     "resend_verification_email": "Renvoyer l'e-mail",
     "new_password": "Nouveau mot de passe",
     "change_display_name": "Modifier le nom d'affichage",
-    "verification_mail_sent": "Un e-mail a été envoyé à {{email}} pour vérifier votre adresse e-mail."
+    "verification_mail_sent": "Un e-mail a été envoyé à {{email}} pour vérifier votre adresse e-mail.",
+    "email_not_verified_banner": "Adresse e-mail pas encore confirmée. Confirme maintenant.",
+    "email_not_verified_short": "Non confirmée"
   },
   "home": {
     "welcome_text": "Salut {{displayName}},",

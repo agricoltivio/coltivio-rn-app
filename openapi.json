@@ -1529,6 +1529,44 @@
         }
       }
     },
+    "/v1/me/verification-email": {
+      "post": {
+        "operationId": "PostV1MeVerificationEmail",
+        "requestBody": {
+          "description": "POST /v1/me/verification-email Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1MeVerificationEmailRequestBody"
+              }
+            }
+          }
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/me/verification-email Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1MeVerificationEmailPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/me/verification-email Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/plots": {
       "get": {
         "operationId": "GetV1Plots",
@@ -14216,6 +14254,44 @@
         }
       }
     },
+    "/v1/auth/verify-email": {
+      "post": {
+        "operationId": "PostV1AuthVerifyEmail",
+        "requestBody": {
+          "description": "POST /v1/auth/verify-email Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1AuthVerifyEmailRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "POST /v1/auth/verify-email Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1AuthVerifyEmailPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/auth/verify-email Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/forum/threads": {
       "get": {
         "operationId": "GetV1ForumThreads",
@@ -16194,7 +16270,7 @@
         "type": "object",
         "properties": {
           "fullName": { "type": "string" },
-          "emailVerified": { "type": "boolean" }
+          "newsletterConsent": { "type": "boolean" }
         }
       },
       "GetV1MePositiveResponse": {
@@ -16247,6 +16323,23 @@
         },
         "required": ["data"],
         "additionalProperties": false
+      },
+      "PostV1MeVerificationEmailPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": { "sent": { "type": "boolean" } },
+            "required": ["sent"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1MeVerificationEmailRequestBody": {
+        "type": "object",
+        "properties": {}
       },
       "GetV1PlotsPositiveResponse": {
         "type": "object",
@@ -38071,6 +38164,24 @@
           "redirectTo": { "type": "string", "format": "uri" }
         },
         "required": ["token", "redirectTo"]
+      },
+      "PostV1AuthVerifyEmailPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": { "url": { "type": "string" } },
+            "required": ["url"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1AuthVerifyEmailRequestBody": {
+        "type": "object",
+        "properties": { "token": { "type": "string" } },
+        "required": ["token"]
       },
       "GetV1ForumThreadsParameterType": {
         "type": "string",
