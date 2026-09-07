@@ -44,11 +44,24 @@ const baseUrl = apiUrl ?? localUrl;
 
 export type FetchClient = typeof client;
 
+export class ApiError extends Error {
+  constructor(
+    public readonly status: number,
+    message: string,
+  ) {
+    super(message);
+    this.name = "ApiError";
+  }
+}
+
 const middleware: Middleware = {
   async onResponse({ request, response, options }) {
     if (!response.ok) {
       const content = await response.json();
-      throw new Error(`${response.url}: ${response.status} - ${content.error}`);
+      throw new ApiError(
+        response.status,
+        `${response.url}: ${response.status} - ${content.error}`,
+      );
     }
   },
   async onRequest({ request, options }) {

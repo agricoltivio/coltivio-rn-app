@@ -4,7 +4,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
-import { useApi } from "@/api/api";
+import { ApiError, useApi } from "@/api/api";
 import { supabase } from "@/supabase/supabase";
 import { Body, H2 } from "@/theme/Typography";
 import React, { useEffect, useState } from "react";
@@ -69,7 +69,11 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
       setError(null);
     } catch (error) {
       console.error(error);
-      setError(t("errors.unexpected_retry"));
+      setError(
+        error instanceof ApiError && error.status === 429
+          ? t("users.verification_email_cooldown")
+          : t("errors.unexpected_retry"),
+      );
     }
   }
 
@@ -107,8 +111,7 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
                 <View
                   style={{
                     borderRadius: 10,
-                    backgroundColor: theme.colors.warning,
-                    opacity: 0.7,
+                    backgroundColor: theme.colors.secondary,
                     marginTop: theme.spacing.m,
                     padding: theme.spacing.s,
                     justifyContent: "center",
@@ -133,8 +136,7 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
             <View
               style={{
                 borderRadius: 10,
-                backgroundColor: theme.colors.warning,
-                opacity: 0.7,
+                backgroundColor: theme.colors.secondary,
                 marginTop: theme.spacing.m,
                 padding: theme.spacing.s,
                 justifyContent: "center",

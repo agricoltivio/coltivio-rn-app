@@ -284,6 +284,7 @@
     "email_not_verified": "Email address not verified!",
     "email_change_pending": "Verify your new email address",
     "email_change_verification_sent": "An email has been sent to verify your new address. Once verified, your new address will be active.",
+    "verification_email_cooldown": "We just sent you an email. Please wait a few minutes before requesting a new one.",
     "resend_verification_email": "Resend Verification Email",
     "new_password": "New Password",
     "change_display_name": "Edit Name",

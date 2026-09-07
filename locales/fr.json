@@ -284,6 +284,7 @@
     "email_not_verified": "Adresse e-mail non vérifiée !",
     "email_change_pending": "Veuillez vérifier votre nouvelle adresse e-mail",
     "email_change_verification_sent": "Un e-mail a été envoyé pour vérifier votre nouvelle adresse. Une fois confirmée, la nouvelle adresse sera activée.",
+    "verification_email_cooldown": "Nous venons de vous envoyer un e-mail. Veuillez patienter quelques minutes avant d'en demander un nouveau.",
     "resend_verification_email": "Renvoyer l'e-mail",
     "new_password": "Nouveau mot de passe",
     "change_display_name": "Modifier le nom d'affichage",

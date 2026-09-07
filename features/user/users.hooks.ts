@@ -36,7 +36,8 @@ export function useUserQuery(enabled: boolean = true) {
   const { data, error, ...rest } = useQuery({
     queryKey: queryKeys.users.me.queryKey,
     queryFn: () => api.users.getLoggedInUser(),
-    staleTime: 5 * 60 * 1000,
+    staleTime: (query) =>
+      query.state.data?.emailVerified === false ? 0 : 5 * 60 * 1000,
     enabled,
   });
   return { user: data, error, ...rest };

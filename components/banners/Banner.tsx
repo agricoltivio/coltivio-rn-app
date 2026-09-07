@@ -6,7 +6,7 @@ import { H2 } from "@/theme/Typography";
 
 type BannerProps = {
   title: string;
-  variant?: "warning" | "danger";
+  variant?: "brand" | "danger";
   onPress?: () => void;
   onDismiss?: () => void;
   style?: ViewStyle;
@@ -18,7 +18,7 @@ type BannerProps = {
  */
 export function Banner({
   title,
-  variant = "warning",
+  variant = "brand",
   onPress,
   onDismiss,
   style,
@@ -30,7 +30,9 @@ export function Banner({
   return (
     <TouchableOpacity
       style={{
-        backgroundColor: isDanger ? theme.colors.danger : theme.colors.warning,
+        backgroundColor: isDanger
+          ? theme.colors.danger
+          : theme.colors.secondary,
         borderRadius: theme.radii.m,
         padding: theme.spacing.m,
         marginTop: theme.spacing.m,
