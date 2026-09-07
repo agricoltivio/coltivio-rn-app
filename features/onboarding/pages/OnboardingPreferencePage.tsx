@@ -30,7 +30,7 @@ export function OnboardingPreferencePage() {
             ? theme.colors.primary
             : theme.colors.gray4,
           backgroundColor: !onboardingsDisabled
-            ? theme.colors.accent
+            ? theme.colors.surface
             : "transparent",
         }}
         onPress={() => updateLocalSettings("onboardingsDisabled", false)}
@@ -57,7 +57,7 @@ export function OnboardingPreferencePage() {
             ? theme.colors.primary
             : theme.colors.gray4,
           backgroundColor: onboardingsDisabled
-            ? theme.colors.accent
+            ? theme.colors.surface
             : "transparent",
         }}
         onPress={() => updateLocalSettings("onboardingsDisabled", true)}

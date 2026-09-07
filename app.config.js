@@ -1,8 +1,11 @@
 export default ({ config }) => {
   const variant = process.env.APP_VARIANT;
+  // "demo" gets its own package so it installs alongside the regular app, used
+  // to show the Bio Suisse pilot without replacing the main install.
+  const isDemo = variant === "demo";
   return {
     ...config,
-    name: "coltivio",
+    name: isDemo ? "Coltivio Demo" : "coltivio",
     slug: "coltivio",
     owner: "agricoltivio",
     version: "1.0.3",
@@ -11,22 +14,26 @@ export default ({ config }) => {
     // Distinct per variant so the dev/test build never collides with production's URL scheme
     // (a shared scheme across installed variants breaks ASWebAuthenticationSession redirects,
     // e.g. Stripe checkout — iOS can't unambiguously route the callback).
-    scheme:
-      variant === "development"
+    scheme: isDemo
+      ? "ch.agricoltivio.coltiviodemo"
+      : variant === "development"
         ? "ch.agricoltivio.coltiviotest"
         : "ch.agricoltivio.coltivio",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
-    splash: {
-      image: "./assets/images/splash-icon.png",
-      resizeMode: "contain",
-      backgroundColor: "#ffffff",
-    },
     ios: {
       ...config.ios,
       supportsTablet: false,
-      bundleIdentifier:
-        variant === "development"
+      // iOS 18 picks the variant that matches the home screen appearance.
+      // Light is the mark on white, dark is the reversed mark on the brand
+      // gradient. No tinted variant, iOS derives one from the light icon.
+      icon: {
+        light: "./assets/images/icon.png",
+        dark: "./assets/images/icon-dark.png",
+      },
+      bundleIdentifier: isDemo
+        ? "ch.agricoltivio.coltiviodemo"
+        : variant === "development"
           ? "ch.agricoltivio.coltiviotest"
           : "ch.agricoltivio.coltivio",
       infoPlist: {
@@ -43,10 +50,13 @@ export default ({ config }) => {
       ...config.android,
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon.png",
-        backgroundColor: "#ffffff",
+        // Tinted background for the demo build, so the two installs are
+        // distinguishable on the home screen at a glance.
+        backgroundColor: isDemo ? "#e8f0d8" : "#ffffff",
       },
-      package:
-        variant === "development"
+      package: isDemo
+        ? "ch.agricoltivio.coltiviodemo"
+        : variant === "development"
           ? "ch.agricoltivio.coltiviotest"
           : "ch.agricoltivio.coltivio",
       permissions: [
@@ -58,6 +68,24 @@ export default ({ config }) => {
       typedRoutes: true,
     },
     plugins: [
+      // The native splash can only centre one image on a solid colour, so it
+      // just holds the brand ground and the mark. SplashView takes over from
+      // there and draws the full composition (gradient, wordmark, line art).
+      // imageWidth is sized to match the mark SplashView draws (20% of the
+      // screen width, so roughly 85dp on a typical phone). The mark still
+      // moves up on handover, but it does not also change size.
+      [
+        "expo-splash-screen",
+        {
+          image: "./assets/images/splash-icon.png",
+          backgroundColor: "#2a5159",
+          imageWidth: 85,
+          dark: {
+            image: "./assets/images/splash-icon.png",
+            backgroundColor: "#2a5159",
+          },
+        },
+      ],
       "expo-localization",
       "expo-secure-store",
       "expo-font",

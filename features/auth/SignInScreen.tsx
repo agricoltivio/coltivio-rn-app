@@ -1,18 +1,21 @@
 import { useSession } from "@/auth/SessionProvider";
 import { Button } from "@/components/buttons/Button";
-import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
+import { Text } from "@/components/text/Text";
 import { ScrollView } from "@/components/views/ScrollView";
 import { SignInScreenProps } from "@/features/auth/navigation/auth-routes";
+import { BrandBackground } from "@/components/branding/BrandBackground";
+import { BrandLockup } from "@/components/branding/BrandLockup";
+import { LOCKUP_WIDTH, w } from "@/components/branding/brand";
 import { supabase } from "@/supabase/supabase";
-import { Body, H2 } from "@/theme/Typography";
-import { Image } from "expo-image";
+import { Body } from "@/theme/Typography";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Keyboard, View } from "react-native";
-import { Text } from "@/components/text/Text";
+import { Keyboard, useWindowDimensions, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
+
+const TAGLINE_SIZE = w(41.5);
 
 export function SignInScreen({ navigation }: SignInScreenProps) {
   const insets = useSafeAreaInsets();
@@ -22,6 +25,7 @@ export function SignInScreen({ navigation }: SignInScreenProps) {
   const [error, setError] = useState<string | null>(null);
   const { setSession } = useSession();
   const [fetching, setFetching] = useState(false);
+  const { width } = useWindowDimensions();
 
   async function onSignIn() {
     setFetching(true);
@@ -46,40 +50,41 @@ export function SignInScreen({ navigation }: SignInScreenProps) {
   }
   const theme = useTheme();
   return (
-    <ContentView
-      style={{
-        paddingHorizontal: 0,
-        paddingTop: 0,
-        backgroundColor: "#1f1f21",
-      }}
-    >
+    // Same ground as the splash, so the app does not change its look between
+    // the loading screen and the first thing a signed-out user sees.
+    <BrandBackground>
       <ScrollView
-        style={{ flex: 1, backgroundColor: "#1f1f21" }}
+        style={{ flex: 1 }}
+        contentContainerStyle={{
+          paddingBottom: insets.bottom + theme.spacing.xl,
+        }}
         keyboardAware
         keyboardBottomOffset={70}
       >
-        <Image
-          source={require("@/assets/images/login.jpeg")}
-          style={{ height: 300, opacity: 0.9 }}
-        />
-        <View>
-          <H2
-            style={{
-              color: theme.colors.accent,
-              fontSize: 50,
-              textAlign: "center",
-            }}
-          >
-            Coltivio
-          </H2>
-        </View>
         <View
           style={{
-            padding: theme.spacing.m,
-            paddingTop: theme.spacing.xxl,
-            flex: 1,
+            alignItems: "center",
+            paddingTop: insets.top + theme.spacing.xxl,
+            paddingBottom: theme.spacing.xl,
           }}
         >
+          <BrandLockup width={width * LOCKUP_WIDTH} />
+          <Text
+            numberOfLines={1}
+            adjustsFontSizeToFit
+            style={{
+              color: theme.colors.secondary,
+              fontSize: width * TAGLINE_SIZE,
+              letterSpacing: width * TAGLINE_SIZE * -0.03,
+              includeFontPadding: false,
+              maxWidth: "80%",
+              marginTop: theme.spacing.m,
+            }}
+          >
+            {t("splash.tagline")}
+          </Text>
+        </View>
+        <View style={{ padding: theme.spacing.m }}>
           <View style={{ gap: theme.spacing.s }}>
             <TextInput
               label={t("forms.labels.email")}
@@ -96,6 +101,21 @@ export function SignInScreen({ navigation }: SignInScreenProps) {
             />
           </View>
 
+          {/* Sits directly under the password field and right aligned, so it
+              reads as belonging to that field rather than to the form. */}
+          <Text
+            style={{
+              alignSelf: "flex-end",
+              marginTop: theme.spacing.xs,
+              fontSize: 15,
+              color: theme.colors.secondary,
+              fontWeight: "600",
+            }}
+            onPress={() => navigation.navigate("ForgotPassword")}
+          >
+            {t("buttons.forgot_password")}
+          </Text>
+
           {error && (
             <View
               style={{
@@ -111,46 +131,39 @@ export function SignInScreen({ navigation }: SignInScreenProps) {
               <Body style={{ fontWeight: 800, color: "white" }}>{error}</Body>
             </View>
           )}
-          <View style={{ marginTop: theme.spacing.m }}>
-            <Button
-              title="Anmelden"
-              disabled={fetching}
-              loading={fetching}
-              onPress={onSignIn}
-            />
-            <Text
-              style={{
-                color: theme.colors.accent,
-                fontSize: 18,
-                marginTop: theme.spacing.m,
-                marginLeft: theme.spacing.s,
-              }}
-            >
-              {t("signin.signup_text")}{" "}
-              <Text
-                style={{ fontSize: 18, color: theme.colors.amber }}
-                onPress={() => navigation.navigate("SignUp")}
-              >
-                {t("buttons.signup")}
-              </Text>
-            </Text>
-          </View>
+
+          <Button
+            style={{ marginTop: theme.spacing.l }}
+            title="Anmelden"
+            type="secondary"
+            disabled={fetching}
+            loading={fetching}
+            onPress={onSignIn}
+          />
+
+          {/* One line, centred under the button. French is the longest at
+              "Vous n'avez pas encore de compte ? S'inscrire", hence the small
+              size plus shrink-to-fit rather than a wrap. */}
           <Text
+            numberOfLines={1}
+            adjustsFontSizeToFit
             style={{
-              marginTop: theme.spacing.s,
-              marginLeft: theme.spacing.s,
-              fontSize: 18,
-              color: theme.colors.amber,
+              marginTop: theme.spacing.m,
+              textAlign: "center",
+              fontSize: 14,
+              color: theme.colors.offWhite,
             }}
-            onPress={() => navigation.navigate("ForgotPassword")}
           >
-            {t("buttons.forgot_password")}
+            {t("signin.signup_text")}{" "}
+            <Text
+              style={{ color: theme.colors.secondary, fontWeight: "600" }}
+              onPress={() => navigation.navigate("SignUp")}
+            >
+              {t("buttons.signup")}
+            </Text>
           </Text>
-          <View
-            style={{ marginTop: theme.spacing.l, alignItems: "center" }}
-          ></View>
         </View>
       </ScrollView>
-    </ContentView>
+    </BrandBackground>
   );
 }

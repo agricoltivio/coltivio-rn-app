@@ -74,9 +74,6 @@ export function SessionProvider({ children }: PropsWithChildren) {
       }
     });
     supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT") {
-        queryClient.removeQueries();
-      }
       setToken(session?.access_token ?? null);
       setAuthUser(session?.user ?? null);
     });
@@ -84,6 +81,22 @@ export function SessionProvider({ children }: PropsWithChildren) {
       isMounted = false;
     };
   }, []);
+
+  // Wipe every cached query when the session ends. This runs in an effect reacting to
+  // `token` becoming null — deliberately not inside the SIGNED_OUT callback — because by
+  // the time an effect runs, the tree has re-rendered with all query observers disabled
+  // (they're gated on `token != null`). Clearing while observers are still enabled makes
+  // removeQueries() trigger an immediate refetch that goes out with the just-signed-out
+  // user's token (React hasn't re-rendered yet), repopulating the cache with their data —
+  // which is exactly the "new user briefly sees the previous user's farm" bug.
+  // cancelQueries() first kills anything already on the wire so a late response can't
+  // zombie-repopulate a removed query.
+  useEffect(() => {
+    if (token === null) {
+      queryClient.cancelQueries();
+      queryClient.removeQueries();
+    }
+  }, [token, queryClient]);
 
   function setUser(user: User) {
     setAuthUser(user);

@@ -7,7 +7,6 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { UserAccountScreenProps } from "./navigation/user-routes";
 import { Body } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
-import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -17,7 +16,6 @@ export function UserAccountScreen({ navigation }: UserAccountScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { user } = useUserQuery();
-  const queryClient = useQueryClient();
   const { clearSession, authUser } = useSession();
   const usesSocialLogin = authUser?.app_metadata.provider !== "email";
 
@@ -26,11 +24,9 @@ export function UserAccountScreen({ navigation }: UserAccountScreenProps) {
       footerComponent={
         <BottomActionContainer>
           <Button
-            type="secondary"
             title={t("buttons.signout")}
             onPress={() => {
               clearSession();
-              queryClient.removeQueries();
             }}
           />
         </BottomActionContainer>

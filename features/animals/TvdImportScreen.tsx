@@ -136,7 +136,7 @@ export function TvdImportScreen({ navigation }: TvdImportScreenProps) {
 
         <View style={{ marginTop: theme.spacing.l }}>
           <Button
-            type="secondary"
+            type="primary"
             title={
               selectedFile
                 ? selectedFile.name

@@ -6,12 +6,15 @@ import { useTheme } from "styled-components/native";
 type BottomActionContainerProps = PropsWithChildren & {
   style?: ViewStyle;
   floating?: boolean;
+  /** Drops the bar's own fill and divider, for screens on the brand ground. */
+  transparent?: boolean;
 };
 
 export function BottomActionContainer({
   children,
   style,
   floating = false,
+  transparent = false,
 }: BottomActionContainerProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
@@ -20,8 +23,8 @@ export function BottomActionContainer({
     <View
       style={[
         {
-          backgroundColor: theme.colors.gray5,
-          borderTopWidth: 0.5,
+          backgroundColor: transparent ? "transparent" : theme.colors.gray5,
+          borderTopWidth: transparent ? 0 : 0.5,
           borderColor: theme.colors.gray3,
           padding: theme.spacing.m,
           paddingBottom: insets.bottom + theme.spacing.s,

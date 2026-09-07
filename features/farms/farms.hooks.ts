@@ -103,8 +103,7 @@ export function useCreateFarmMutation(
     onSuccess: ({ farm }) => {
       // The backend doesn't auto-select the new farm — do it locally so the user lands in
       // the right context immediately (both for onboarding and "create another farm").
-      // setActiveFarmId also discards the query cache (query keys aren't farm-scoped), so
-      // users.me/farms.list/etc. all come back fresh for the new farm.
+      // setActiveFarmId refetches farms.list / farm / users.me so they reflect the new farm.
       setActiveFarmId(farm.id);
       onSuccess && onSuccess(farm);
     },
@@ -122,7 +121,7 @@ export function useAcceptInviteMutation(
     mutationFn: (code: string) => api.farms.acceptInvite(code),
     onSuccess: (user) => {
       // The backend doesn't auto-select the joined farm — do it locally, same as create.
-      // See useCreateFarmMutation above for why no manual cache invalidation is needed here.
+      // setActiveFarmId refetches farms.list / farm / users.me so they reflect the new farm.
       if (user.farmId) {
         setActiveFarmId(user.farmId);
       }

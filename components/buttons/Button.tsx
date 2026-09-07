@@ -23,7 +23,7 @@ export function Button({
   const theme = useTheme();
   const spinnerColor = disabled
     ? "white"
-    : type === "accent"
+    : type === "accent" || type === "secondary"
       ? theme.colors.primary
       : type === "dangerGhost"
         ? theme.colors.danger
@@ -82,7 +82,7 @@ const ButtonText = styled.Text<{
   color: ${({ theme, type, disabled }) =>
     disabled
       ? theme.colors.white
-      : type === "accent"
+      : type === "accent" || type === "secondary"
         ? theme.colors.primary
         : type === "dangerGhost"
           ? theme.colors.danger

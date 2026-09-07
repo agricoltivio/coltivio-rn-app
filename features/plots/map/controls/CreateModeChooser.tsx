@@ -40,7 +40,7 @@ export function CreateModeChooser() {
         />
         <Button
           title={t("buttons.cancel")}
-          type="secondary"
+          type="primary"
           onPress={() => dispatch({ type: "EXIT_MODE" })}
         />
       </View>

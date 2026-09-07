@@ -14,33 +14,33 @@ export const HOME_TILES = {
   farm: {
     translationKey: "home.tiles.farm",
     route: "Farm",
-    image: require("@/assets/images/farm-icon-6.png"),
+    image: require("@/assets/images/ic-farm.png"),
   },
   plots: {
     translationKey: "home.tiles.plots",
     route: "PlotsMap",
-    image: require("@/assets/images/field-calendar-icon-4.png"),
+    image: require("@/assets/images/ic-plots.png"),
     routeParams: {} as Record<string, never>,
   },
   animalHusbandry: {
     translationKey: "home.tiles.animal_husbandry",
     route: "AnimalsHub",
-    image: require("@/assets/images/animals-icon.png"),
+    image: require("@/assets/images/ic-animals.png"),
   },
   fieldCalendar: {
     translationKey: "home.tiles.field_calendar",
     route: "FieldCalendar",
-    image: require("@/assets/images/harvest-icon.png"),
+    image: require("@/assets/images/ic-field-cal.png"),
   },
   wiki: {
     translationKey: "home.tiles.wiki",
     route: "WikiList",
-    image: require("@/assets/images/wiki.png"),
+    image: require("@/assets/images/ic-wiki.png"),
   },
   tasks: {
     translationKey: "home.tiles.tasks",
     route: "TaskList",
-    image: require("@/assets/images/tasks.png"),
+    image: require("@/assets/images/ic-tasks.png"),
   },
 } as const;
 

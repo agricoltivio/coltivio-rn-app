@@ -108,7 +108,7 @@ export function DevSettingsScreen() {
 
         <Button
           title="Select All"
-          type="secondary"
+          type="primary"
           onPress={selectAll}
           style={{ marginTop: theme.spacing.m }}
         />

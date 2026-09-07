@@ -1,6 +1,6 @@
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
-import { ContentView } from "@/components/containers/ContentView";
+import { BrandedContentView } from "@/components/containers/BrandedContentView";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
 import { ResetPasswordScreenProps } from "@/features/auth/navigation/auth-routes";
@@ -99,17 +99,19 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
     }
   }
   return (
-    <ContentView
+    <BrandedContentView
       footerComponent={
-        <BottomActionContainer>
+        <BottomActionContainer transparent>
           {urlError != null ? (
             <Button
               title={t("buttons.back")}
+              type="secondary"
               onPress={() => navigation.navigate("SignIn")}
             />
           ) : (
             <Button
               title={t("buttons.save")}
+              type="secondary"
               onPress={handleSubmit(onSubmit)}
               disabled={!isDirty || urlError != null}
             />
@@ -117,12 +119,10 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
         </BottomActionContainer>
       }
     >
-      <ScrollView
-        showHeaderOnScroll
-        headerTitleOnScroll={t("forgot_password.reset_password")}
-        keyboardAware
-      >
-        <H2 style={{ color: theme.colors.primary }}>
+      {/* No showHeaderOnScroll here: it repaints the header white on scroll,
+          which would cut a light bar across the gradient. */}
+      <ScrollView keyboardAware>
+        <H2 style={{ color: theme.colors.offWhite }}>
           {t("forgot_password.reset_password")}
         </H2>
 
@@ -198,6 +198,6 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
           </View>
         )}
       </ScrollView>
-    </ContentView>
+    </BrandedContentView>
   );
 }

@@ -30,7 +30,7 @@ export function UnexpectedErrorScreen({}: UnexpectedErrorScreenProps) {
         <BottomActionContainer>
           <Button
             style={{ marginTop: theme.spacing.l }}
-            type="secondary"
+            type="primary"
             title={t("buttons.signout")}
             onPress={() => {
               clearSession();

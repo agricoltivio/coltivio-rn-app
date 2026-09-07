@@ -157,7 +157,7 @@ export function SplitModeControls({ splitLayersRef }: SplitModeControlsProps) {
       />
       {/* Polyline split tool */}
       <MaterialCommunityIconButton
-        style={{ backgroundColor: theme.colors.accent }}
+        style={{ backgroundColor: theme.colors.surface }}
         type="accent"
         color="black"
         iconSize={30}
@@ -166,7 +166,7 @@ export function SplitModeControls({ splitLayersRef }: SplitModeControlsProps) {
       />
       {/* Polygon cut tool */}
       <MaterialCommunityIconButton
-        style={{ backgroundColor: theme.colors.accent }}
+        style={{ backgroundColor: theme.colors.surface }}
         type="accent"
         color="black"
         iconSize={30}
@@ -176,7 +176,7 @@ export function SplitModeControls({ splitLayersRef }: SplitModeControlsProps) {
       {/* Extract sub-polygon — only for MultiPolygons with >1 ring */}
       {currentPolygons.some((p) => p.coordinates.length > 1) && (
         <MaterialCommunityIconButton
-          style={{ backgroundColor: theme.colors.accent }}
+          style={{ backgroundColor: theme.colors.surface }}
           type="accent"
           color="black"
           iconSize={30}
@@ -195,7 +195,7 @@ export function SplitModeControls({ splitLayersRef }: SplitModeControlsProps) {
       />
       {/* Info */}
       <MaterialCommunityIconButton
-        style={{ backgroundColor: theme.colors.accent }}
+        style={{ backgroundColor: theme.colors.surface }}
         type="accent"
         color="black"
         iconSize={30}
