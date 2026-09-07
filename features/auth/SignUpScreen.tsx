@@ -157,16 +157,20 @@ export function SignUpScreen() {
             <Checkbox
               checked={newsletterConsent}
               onPress={() => setNewsletterConsent(!newsletterConsent)}
+              color={theme.colors.offWhite}
             />
             <TouchableOpacity
               style={{ flex: 1 }}
               activeOpacity={0.8}
               onPress={() => setNewsletterConsent(!newsletterConsent)}
             >
-              <Body>
+              <Body style={{ color: theme.colors.offWhite }}>
                 {t("signup.newsletter_consent")}{" "}
                 <Body
-                  style={{ textDecorationLine: "underline" }}
+                  style={{
+                    color: theme.colors.offWhite,
+                    textDecorationLine: "underline",
+                  }}
                   onPress={() =>
                     Linking.openURL(privacyPolicyUrl(i18n.language))
                   }
