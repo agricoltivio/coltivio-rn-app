@@ -43,6 +43,21 @@ export function useUserQuery(enabled: boolean = true) {
   return { user: data, error, ...rest };
 }
 
+export function useSendVerificationEmailMutation(
+  onSuccess?: () => void,
+  onError?: (error: Error) => void,
+) {
+  const api = useApi();
+  return useMutation({
+    mutationFn: () => api.users.sendVerificationEmail(),
+    onSuccess,
+    onError: (error) => {
+      console.error(error);
+      onError && onError(error);
+    },
+  });
+}
+
 export function useUpdateUserMutation(
   onSuccess?: () => void,
   onError?: (error: Error) => void,

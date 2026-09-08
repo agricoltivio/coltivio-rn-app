@@ -289,7 +289,9 @@
     "new_password": "Nuova Password",
     "change_display_name": "Modifica Nome Visualizzato",
     "verification_mail_sent": "Una email è stata inviata a {{email}} per verificare il tuo indirizzo email.",
-    "email_not_verified_banner": "Indirizzo e-mail non ancora confermato. Conferma ora.",
+    "verification_mail_sent_title": "Email inviata",
+    "email_not_verified_banner": "Indirizzo e-mail non ancora confermato.",
+    "email_not_verified_banner_action": "Conferma ora",
     "email_not_verified_short": "Non confermato"
   },
   "home": {

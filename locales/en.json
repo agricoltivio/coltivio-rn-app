@@ -289,7 +289,9 @@
     "new_password": "New Password",
     "change_display_name": "Edit Name",
     "verification_mail_sent": "An email has been sent to {{email}} to verify your address.",
-    "email_not_verified_banner": "Email address not confirmed yet. Confirm now.",
+    "verification_mail_sent_title": "Email sent",
+    "email_not_verified_banner": "Email address not confirmed yet.",
+    "email_not_verified_banner_action": "Confirm now",
     "email_not_verified_short": "Not confirmed"
   },
   "home": {

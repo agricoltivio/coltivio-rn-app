@@ -12,7 +12,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Modal, SafeAreaView, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Modal,
+  SafeAreaView,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useTheme } from "styled-components/native";
 import {
   useFarmQuery,
@@ -20,7 +26,12 @@ import {
   useMembershipStatusQuery,
 } from "../farms/farms.hooks";
 import { useLocalSettings } from "../user/LocalSettingsContext";
-import { useUserQuery, usePermissions } from "../user/users.hooks";
+import {
+  useUserQuery,
+  usePermissions,
+  useSendVerificationEmailMutation,
+} from "../user/users.hooks";
+import { ApiError } from "@/api/api";
 import { AgriColtivioPitch } from "../agri-coltivio/AgriColtivioPitch";
 import { HomeTile } from "./HomeTile";
 import { HOME_TILES } from "./home-tiles-settings";
@@ -38,6 +49,21 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const { isLoading: isFarmLoading } = useFarmQuery();
   const theme = useTheme();
   const { localSettings, updateLocalSettings } = useLocalSettings();
+
+  const sendVerificationEmail = useSendVerificationEmailMutation(
+    () =>
+      Alert.alert(
+        t("users.verification_mail_sent_title"),
+        t("users.verification_mail_sent", { email: user?.email ?? "" }),
+      ),
+    (error) =>
+      Alert.alert(
+        t("errors.unexpected"),
+        error instanceof ApiError && error.status === 429
+          ? t("users.verification_email_cooldown")
+          : t("errors.unexpected_retry"),
+      ),
+  );
 
   const speedDialItems = useMemo(() => {
     return localSettings.speedDialItems
@@ -214,79 +240,40 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
             <H2>{farm?.name}</H2>
             {user && !user.emailVerified ? (
               <Banner
+                variant="brand"
                 title={t("users.email_not_verified_banner")}
-                onPress={() => navigation.navigate("ChangeEmail")}
+                actionLabel={t("users.email_not_verified_banner_action")}
+                loading={sendVerificationEmail.isPending}
+                onPress={() => sendVerificationEmail.mutate()}
               />
             ) : null}
             {showExpirySoonBanner && daysUntilExpiry !== null ? (
-              <TouchableOpacity
-                style={{
-                  backgroundColor: theme.colors.warning,
-                  borderRadius: theme.radii.m,
-                  padding: theme.spacing.m,
-                  marginTop: theme.spacing.m,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-                activeOpacity={0.8}
-                onPress={() => navigation.navigate("UserMembership")}
-              >
-                <H2
-                  style={{ color: theme.colors.black, fontSize: 15, flex: 1 }}
-                >
-                  {isTrial
+              <Banner
+                variant="warning"
+                title={
+                  isTrial
                     ? t("membership.trial_expiry_banner", {
                         days: daysUntilExpiry,
                       })
-                    : t("membership.expiry_banner", { days: daysUntilExpiry })}
-                </H2>
-                <TouchableOpacity onPress={dismissMembershipBanner} hitSlop={8}>
-                  <Ionicons name="close" size={20} color={theme.colors.black} />
-                </TouchableOpacity>
-              </TouchableOpacity>
+                    : t("membership.expiry_banner", { days: daysUntilExpiry })
+                }
+                onPress={() => navigation.navigate("UserMembership")}
+                onDismiss={dismissMembershipBanner}
+              />
             ) : null}
             {showExpiredBanner ? (
-              <TouchableOpacity
-                style={{
-                  backgroundColor: isInGracePeriod
-                    ? theme.colors.warning
-                    : theme.colors.danger,
-                  borderRadius: theme.radii.m,
-                  padding: theme.spacing.m,
-                  marginTop: theme.spacing.m,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-                activeOpacity={0.8}
-                onPress={() => navigation.navigate("UserMembership")}
-              >
-                <H2
-                  style={{
-                    color: isInGracePeriod
-                      ? theme.colors.black
-                      : theme.colors.white,
-                    fontSize: 15,
-                    flex: 1,
-                  }}
-                >
-                  {isInGracePeriod
+              <Banner
+                variant={isInGracePeriod ? "warning" : "danger"}
+                title={
+                  isInGracePeriod
                     ? t("membership.expired_grace_banner", {
                         days: graceDaysRemaining,
                       })
-                    : t("membership.expired_banner")}
-                </H2>
-                <TouchableOpacity onPress={dismissMembershipBanner} hitSlop={8}>
-                  <Ionicons
-                    name="close"
-                    size={20}
-                    color={
-                      isInGracePeriod ? theme.colors.black : theme.colors.white
-                    }
-                  />
-                </TouchableOpacity>
-              </TouchableOpacity>
+                    : t("membership.expired_banner")
+                }
+                onPress={() => navigation.navigate("UserMembership")}
+                onDismiss={dismissMembershipBanner}
+              />
             ) : null}
             {getAccess("field_calendar") !== "none" && (
               <View

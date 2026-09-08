@@ -289,7 +289,9 @@
     "new_password": "Nouveau mot de passe",
     "change_display_name": "Modifier le nom d'affichage",
     "verification_mail_sent": "Un e-mail a été envoyé à {{email}} pour vérifier votre adresse e-mail.",
-    "email_not_verified_banner": "Adresse e-mail pas encore confirmée. Confirme maintenant.",
+    "verification_mail_sent_title": "E-mail envoyé",
+    "email_not_verified_banner": "Adresse e-mail pas encore confirmée.",
+    "email_not_verified_banner_action": "Confirmer maintenant",
     "email_not_verified_short": "Non confirmée"
   },
   "home": {

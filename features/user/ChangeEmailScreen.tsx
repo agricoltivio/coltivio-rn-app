@@ -6,6 +6,7 @@ import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
 import { ApiError, useApi } from "@/api/api";
 import { supabase } from "@/supabase/supabase";
+import { hexToRgba } from "@/theme/theme";
 import { Body, H2 } from "@/theme/Typography";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -111,14 +112,18 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
                 <View
                   style={{
                     borderRadius: 10,
-                    backgroundColor: theme.colors.secondary,
+                    backgroundColor: hexToRgba(theme.colors.primary, 0.12),
+                    borderWidth: 1,
+                    borderColor: theme.colors.primary,
                     marginTop: theme.spacing.m,
                     padding: theme.spacing.s,
                     justifyContent: "center",
                     alignItems: "center",
                   }}
                 >
-                  <Body style={{ fontWeight: 800 }}>
+                  <Body
+                    style={{ fontWeight: 800, color: theme.colors.primary }}
+                  >
                     {t("users.email_not_verified")}
                   </Body>
                 </View>
