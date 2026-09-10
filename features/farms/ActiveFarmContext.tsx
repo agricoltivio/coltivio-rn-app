@@ -50,22 +50,38 @@ export function ActiveFarmProvider({ children }: PropsWithChildren) {
       setHydratedForUserId(null);
       return;
     }
+    // Hydrate the persisted selection once per signed-in user. Without this guard the
+    // effect re-runs on every authUser identity change and re-asserts the stored value
+    // onto the request middleware's module var — which can clobber a selection the user
+    // just made (its write to AsyncStorage may not have flushed yet).
+    if (hydratedForUserId === authUser.id) {
+      return;
+    }
     let isMounted = true;
-    AsyncStorage.getItem(storageKeyForUser(authUser.id)).then((value) => {
-      if (!isMounted) {
-        return;
-      }
-      setActiveFarmIdForRequests(value);
-      setActiveFarmIdState(value);
-      if (value && queryClient.getQueryData(queryKeys.users.me.queryKey)) {
-        queryClient.removeQueries({ queryKey: queryKeys.users.me.queryKey });
-      }
-      setHydratedForUserId(authUser.id);
-    });
+    AsyncStorage.getItem(storageKeyForUser(authUser.id))
+      .then((value) => {
+        if (!isMounted) {
+          return;
+        }
+        setActiveFarmIdForRequests(value);
+        setActiveFarmIdState(value);
+        if (value && queryClient.getQueryData(queryKeys.users.me.queryKey)) {
+          queryClient.removeQueries({ queryKey: queryKeys.users.me.queryKey });
+        }
+        setHydratedForUserId(authUser.id);
+      })
+      .catch(() => {
+        if (!isMounted) {
+          return;
+        }
+        // Treat a read failure as "no stored selection" so the app doesn't hang on the
+        // splash screen (RootStack gates rendering on farmSelectionHydrated).
+        setHydratedForUserId(authUser.id);
+      });
     return () => {
       isMounted = false;
     };
-  }, [authUser, queryClient]);
+  }, [authUser, hydratedForUserId, queryClient]);
 
   function setActiveFarmId(farmId: string) {
     const previousFarmId = activeFarmId;
