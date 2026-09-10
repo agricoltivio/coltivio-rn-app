@@ -100,7 +100,15 @@ export function FarmScreen({ navigation }: FarmScreenProps) {
               justifyContent: "space-between",
             }}
           >
-            <H2>{farm?.name}</H2>
+            <H2
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={{ flex: 1, marginRight: theme.spacing.s }}
+            >
+              {[farm?.name, farm?.federalId?.replace(/\s/g, "")]
+                .filter(Boolean)
+                .join(" - ")}
+            </H2>
             <TouchableOpacity
               onPress={() => navigation.navigate("EditFarm")}
               hitSlop={10}
