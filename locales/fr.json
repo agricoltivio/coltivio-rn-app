@@ -799,7 +799,8 @@
     "units": {
       "bag": "Sac",
       "load": "Charge",
-      "amount_per_hectare": "Quantité par hectare"
+      "amount_per_hectare": "Quantité par hectare",
+      "other": "unités"
     },
     "select_quantity": {
       "heading": "Quelle quantité a été appliquée ?"

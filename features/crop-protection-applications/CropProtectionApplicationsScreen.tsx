@@ -5,7 +5,7 @@ import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Headline, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
-import { round } from "@/utils/math";
+import { formatApplicationAmount } from "@/utils/units";
 import Fuse from "fuse.js";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -172,8 +172,16 @@ export function CropProtectionApplicationsScreen({
                       })}
                     </ListItem.Title>
                     <ListItem.Body>
-                      {round(cpa.numberOfUnits * cpa.amountPerUnit, 2)}
-                      {cpa.unit} {cpa.product.name}
+                      {formatApplicationAmount(
+                        {
+                          unit: cpa.unit,
+                          numberOfUnits: cpa.numberOfUnits,
+                          amountPerUnit: cpa.amountPerUnit,
+                          productUnit: cpa.product.unit,
+                        },
+                        t,
+                      )}{" "}
+                      {cpa.product.name}
                     </ListItem.Body>
                   </ListItem.Content>
                   <ListItem.Chevron />
