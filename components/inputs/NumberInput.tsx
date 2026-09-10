@@ -12,10 +12,12 @@ export function NumberInput({
     if (!onChangeText) {
       return;
     }
+    // locale keyboards (de/it/fr) emit a comma as the decimal separator
+    const normalized = value.replace(/,/g, ".");
     if (float) {
-      return onChangeText(value.replace(/[^0-9.]|(?<!^)\.(?=.*\.)/g, ""));
+      return onChangeText(normalized.replace(/[^0-9.]|(?<!^)\.(?=.*\.)/g, ""));
     } else {
-      onChangeText(value.replace(/[^0-9]/g, ""));
+      onChangeText(normalized.replace(/[^0-9]/g, ""));
     }
   }
 
