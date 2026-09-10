@@ -2,10 +2,7 @@ import { round } from "./math";
 
 // Narrow view of i18next's `t` — just the string-returning call shape this
 // module needs. The real `t` from useTranslation() satisfies it.
-type TranslateFn = (
-  key: string,
-  options?: { defaultValue?: string },
-) => string;
+type TranslateFn = (key: string, options?: { defaultValue?: string }) => string;
 
 type Unit = "ml" | "l" | "g" | "kg" | "dt" | "t";
 
