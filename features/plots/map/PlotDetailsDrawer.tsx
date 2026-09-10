@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next";
 import { Modal, Pressable, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
+import { usePermissions } from "@/features/user/users.hooks";
 import { usePlotsMapContext } from "./plots-map-mode";
 
 export function PlotDetailsDrawer() {
@@ -27,6 +28,7 @@ export function PlotDetailsDrawer() {
   const locale = i18n.language;
   const theme = useTheme();
   const { mode, dispatch, navigation } = usePlotsMapContext();
+  const { canWrite } = usePermissions();
   // Use all plots (including size-0) so selecting a plot with no geometry still opens the drawer
   const { plots: allPlots } = useFarmPlotsQuery();
 
@@ -235,11 +237,13 @@ export function PlotDetailsDrawer() {
               </ListItem>
             </View>
 
-            <Button
-              style={{ marginTop: theme.spacing.m }}
-              title={t("plots.new_entry")}
-              onPress={() => setNewEntryMenuVisible(true)}
-            />
+            {canWrite("field_calendar") && (
+              <Button
+                style={{ marginTop: theme.spacing.m }}
+                title={t("plots.new_entry")}
+                onPress={() => setNewEntryMenuVisible(true)}
+              />
+            )}
 
             <TouchableOpacity
               onPress={() =>
