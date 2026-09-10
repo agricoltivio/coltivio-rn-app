@@ -799,7 +799,8 @@
     "units": {
       "bag": "Bag",
       "load": "Load",
-      "amount_per_hectare": "Amount per Hectare"
+      "amount_per_hectare": "Amount per Hectare",
+      "other": "units"
     },
     "select_quantity": {
       "heading": "How much was applied?"

@@ -799,7 +799,8 @@
     "units": {
       "bag": "Sack",
       "load": "Fuder",
-      "amount_per_hectare": "Menge pro Hektare"
+      "amount_per_hectare": "Menge pro Hektare",
+      "other": "Einheiten"
     },
     "select_quantity": {
       "heading": "Wie viel wurde ausgebracht?"

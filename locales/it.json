@@ -799,7 +799,8 @@
     "units": {
       "bag": "Sacco",
       "load": "Carico",
-      "amount_per_hectare": "Quantità per ettaro"
+      "amount_per_hectare": "Quantità per ettaro",
+      "other": "unità"
     },
     "select_quantity": {
       "heading": "Quanto è stato distribuito?"
