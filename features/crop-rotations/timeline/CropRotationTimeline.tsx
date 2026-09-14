@@ -1,8 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useCallback, useEffect, useMemo, useRef, useState, memo } from "react";
-import { View, LayoutChangeEvent } from "react-native";
+import { View, LayoutChangeEvent, Pressable } from "react-native";
 import { Text } from "@/components/text/Text";
-import { Pressable } from "react-native-gesture-handler";
 import { useTheme } from "styled-components/native";
 import { useTranslation } from "react-i18next";
 import Animated, {
@@ -22,7 +21,11 @@ import {
 } from "./timeline-utils";
 import { TimelinePlotRow, ROW_HEIGHT } from "./TimelinePlotRow";
 import { TimelineHeader, TIMELINE_HEADER_HEIGHT } from "./TimelineHeader";
-import { ZoomLevel, getScaleForZoomLevel } from "./ZoomLevelToggle";
+import {
+  ZoomLevel,
+  ZoomLevelToggle,
+  getScaleForZoomLevel,
+} from "./ZoomLevelToggle";
 import { scheduleOnRN } from "react-native-worklets";
 
 type CropRotationTimelineProps = {
@@ -146,62 +149,6 @@ const YearDivider = memo(function YearDivider({
     />
   );
 });
-
-// Local zoom toggle using RNGH Pressable so it responds during scroll momentum
-const ZOOM_LEVELS: ZoomLevel[] = ["years", "months", "weeks"];
-const ZOOM_LABELS = {
-  years: "crop_rotations.timeline.zoom_years",
-  months: "crop_rotations.timeline.zoom_months",
-  weeks: "crop_rotations.timeline.zoom_weeks",
-} as const;
-
-function CropRotationZoomLevelToggle({
-  zoomLevel,
-  onChangeZoomLevel,
-}: {
-  zoomLevel: ZoomLevel;
-  onChangeZoomLevel: (level: ZoomLevel) => void;
-}) {
-  const { t } = useTranslation();
-  const theme = useTheme();
-  return (
-    <View
-      style={{
-        flexDirection: "row",
-        backgroundColor: theme.colors.gray4,
-        borderRadius: theme.radii.l,
-        padding: 2,
-        alignSelf: "flex-start",
-      }}
-    >
-      {ZOOM_LEVELS.map((key) => {
-        const isActive = zoomLevel === key;
-        return (
-          <Pressable
-            key={key}
-            onPress={() => onChangeZoomLevel(key)}
-            style={{
-              paddingVertical: 6,
-              paddingHorizontal: 12,
-              borderRadius: theme.radii.l - 2,
-              backgroundColor: isActive ? theme.colors.primary : "transparent",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 12,
-                fontWeight: "600",
-                color: isActive ? theme.colors.white : theme.colors.gray2,
-              }}
-            >
-              {t(ZOOM_LABELS[key])}
-            </Text>
-          </Pressable>
-        );
-      })}
-    </View>
-  );
-}
 
 export function CropRotationTimeline({
   timelineData,
@@ -529,7 +476,7 @@ export function CropRotationTimeline({
           gap: theme.spacing.s,
         }}
       >
-        <CropRotationZoomLevelToggle
+        <ZoomLevelToggle
           zoomLevel={zoomLevel}
           onChangeZoomLevel={handleZoomLevelChange}
         />
