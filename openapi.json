@@ -38170,8 +38170,8 @@
         "properties": {
           "data": {
             "type": "object",
-            "properties": { "url": { "type": "string" } },
-            "required": ["url"],
+            "properties": { "verified": { "type": "boolean" } },
+            "required": ["verified"],
             "additionalProperties": false
           }
         },
