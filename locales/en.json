@@ -337,17 +337,17 @@
     "delete_account": "Delete Account",
     "membership": "Association Membership",
     "member_permissions": "Permissions",
-    "member_permissions_description": "Defines which features this member can edit. By default, every member has read access.",
-    "permission_write": "Write access",
+    "member_permissions_description": "Defines what this member can access. Without a selection they have no access.",
+    "permission_write": "Write",
     "invite_role_label": "Role",
     "invite_permissions_title": "Permissions",
     "invite_permissions_description": "Defines access for each feature. By default the member has no access.",
     "permission_read": "Read",
-    "permission_none": "No access",
+    "permission_none": "None",
     "permission_feature_animals": "Animals",
     "permission_feature_tasks": "Tasks",
     "permission_feature_field_calendar": "Field calendar",
-    "permission_feature_commerce": "Commerce",
+    "permission_feature_commerce": "Sales",
     "switcher": {
       "title": "Switch farm",
       "create_another": "+ Create another farm",
@@ -806,7 +806,8 @@
     "units": {
       "bag": "Bag",
       "load": "Load",
-      "amount_per_hectare": "Amount per Hectare"
+      "amount_per_hectare": "Amount per Hectare",
+      "other": "units"
     },
     "select_quantity": {
       "heading": "How much was applied?"

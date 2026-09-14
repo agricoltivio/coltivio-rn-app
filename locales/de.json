@@ -337,17 +337,17 @@
     "delete_account": "Account löschen",
     "membership": "Vereinsmitgliedschaft",
     "member_permissions": "Berechtigungen",
-    "member_permissions_description": "Legt fest, welche Funktionen dieses Mitglied bearbeiten darf. Standardmässig hat jedes Mitglied Lesezugriff.",
-    "permission_write": "Schreibzugriff",
+    "member_permissions_description": "Legt fest, worauf dieses Mitglied zugreifen darf. Ohne Auswahl hat es keinen Zugriff.",
+    "permission_write": "Schreiben",
     "invite_role_label": "Rolle",
     "invite_permissions_title": "Berechtigungen",
     "invite_permissions_description": "Legt den Zugriff für jede Funktion fest. Standardmässig hat das Mitglied keinen Zugriff.",
     "permission_read": "Lesen",
-    "permission_none": "Kein Zugriff",
+    "permission_none": "Kein",
     "permission_feature_animals": "Tiere",
     "permission_feature_tasks": "Aufgaben",
     "permission_feature_field_calendar": "Feldkalender",
-    "permission_feature_commerce": "Handel",
+    "permission_feature_commerce": "Verkauf",
     "switcher": {
       "title": "Hof wechseln",
       "create_another": "+ Weiteren Hof erstellen",
@@ -806,7 +806,8 @@
     "units": {
       "bag": "Sack",
       "load": "Fuder",
-      "amount_per_hectare": "Menge pro Hektare"
+      "amount_per_hectare": "Menge pro Hektare",
+      "other": "Einheiten"
     },
     "select_quantity": {
       "heading": "Wie viel wurde ausgebracht?"

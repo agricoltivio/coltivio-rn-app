@@ -61,12 +61,10 @@ export function DivideCropProtectionApplicationOnPlotsScreen({
         } else {
           const fraction = plot.size / totalArea;
           let quantity = 0;
-          // we give the rest to the last item
+          // we give the rest to the last item, rounded to the precision of the
+          // entered total so the distributed amounts always sum back exactly
           if (index === selectedPlots.length - 1) {
-            quantity = round(
-              totalNumberOfApplications - totalDivided,
-              divisionPrecision,
-            );
+            quantity = round(totalNumberOfApplications - totalDivided, 2);
           } else {
             quantity = round(
               (totalNumberOfApplications - totalDivided) * fraction,

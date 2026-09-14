@@ -5,7 +5,7 @@ import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Headline, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
-import { round } from "@/utils/math";
+import { formatApplicationAmount } from "@/utils/units";
 import { usePermissions } from "@/features/user/users.hooks";
 import Fuse from "fuse.js";
 import { useCallback, useMemo, useState } from "react";
@@ -93,14 +93,22 @@ export function PlotFertilizerApplicationsScreen({
             {fa.formattedDate}
           </ListItem.Title>
           <ListItem.Body>
-            {round(fa.numberOfUnits * fa.amountPerUnit, 2)}
-            {fa.unit} {fa.fertilizer.name}
+            {formatApplicationAmount(
+              {
+                unit: fa.unit,
+                numberOfUnits: fa.numberOfUnits,
+                amountPerUnit: fa.amountPerUnit,
+                productUnit: fa.fertilizer.unit,
+              },
+              t,
+            )}{" "}
+            {fa.fertilizer.name}
           </ListItem.Body>
         </ListItem.Content>
         <ListItem.Chevron />
       </ListItem>
     ),
-    [navigation],
+    [navigation, t],
   );
 
   if (!fertilizerApplications) {

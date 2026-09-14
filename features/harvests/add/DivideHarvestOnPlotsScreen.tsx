@@ -35,7 +35,7 @@ export function DivideHarvestOnPlotsScreen({
       harvest?.unit === "square_bale" ||
       harvest?.unit === "crate"
       ? 0
-      : 1,
+      : 2,
   );
   const [error, setError] = useState<string | null>(null);
 
@@ -70,17 +70,10 @@ export function DivideHarvestOnPlotsScreen({
         } else {
           const fraction = area.harvestSize / totalArea;
           let quantity = 0;
-          // we give the rest to the last item
+          // we give the rest to the last item, rounded to the precision of the
+          // entered total so the distributed amounts always sum back exactly
           if (index === harvestAreas.length - 1) {
-            quantity = round(
-              totalProducedUnits - totalDivided,
-              divisionPrecision,
-            );
-          } else if (harvest?.unit === "load") {
-            quantity = round(
-              (totalProducedUnits - totalDivided) * fraction,
-              divisionPrecision,
-            );
+            quantity = round(totalProducedUnits - totalDivided, 2);
           } else {
             quantity = round(
               (totalProducedUnits - totalDivided) * fraction,

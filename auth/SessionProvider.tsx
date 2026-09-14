@@ -73,12 +73,15 @@ export function SessionProvider({ children }: PropsWithChildren) {
         setLoadingFromStorage(false);
       }
     });
-    supabase.auth.onAuthStateChange((event, session) => {
-      setToken(session?.access_token ?? null);
-      setAuthUser(session?.user ?? null);
-    });
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setToken(session?.access_token ?? null);
+        setAuthUser(session?.user ?? null);
+      },
+    );
     return () => {
       isMounted = false;
+      authListener.subscription.unsubscribe();
     };
   }, []);
 

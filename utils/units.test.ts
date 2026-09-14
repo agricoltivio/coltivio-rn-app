@@ -1,5 +1,20 @@
 import { describe, test, expect } from "@jest/globals";
-import { areUnitsCompatible, convertUnit } from "./units";
+import {
+  areUnitsCompatible,
+  convertUnit,
+  formatApplicationAmount,
+} from "./units";
+
+// Minimal translator stub: resolves the keys formatApplicationAmount uses and
+// otherwise returns the provided defaultValue (mirroring i18next behaviour).
+const translations: Record<string, string> = {
+  "units.short.ha": "ha",
+  "fertilizer_application.units.load": "Fuder",
+  "fertilizer_application.units.bag": "Sack",
+  "fertilizer_application.units.other": "Einheiten",
+};
+const t = (key: string, options?: { defaultValue?: string }): string =>
+  translations[key] ?? options?.defaultValue ?? key;
 
 describe("areUnitsCompatible", () => {
   test("ml and l are compatible (same volume group)", () => {
@@ -87,5 +102,91 @@ describe("convertUnit", () => {
 
   test("throws on incompatible units (l → g)", () => {
     expect(() => convertUnit(1, "l", "g")).toThrow();
+  });
+});
+
+describe("formatApplicationAmount", () => {
+  test("total_amount: total product amount + unit symbol, no space", () => {
+    expect(
+      formatApplicationAmount(
+        {
+          unit: "total_amount",
+          numberOfUnits: 2.5,
+          amountPerUnit: 2,
+          productUnit: "t",
+        },
+        t,
+      ),
+    ).toBe("5t");
+  });
+
+  test("amount_per_hectare: per-hectare rate + unit symbol + /ha", () => {
+    expect(
+      formatApplicationAmount(
+        {
+          unit: "amount_per_hectare",
+          numberOfUnits: 3,
+          amountPerUnit: 400,
+          productUnit: "kg",
+        },
+        t,
+      ),
+    ).toBe("400kg/ha");
+  });
+
+  test("load: number of units + translated word, with space", () => {
+    expect(
+      formatApplicationAmount(
+        {
+          unit: "load",
+          numberOfUnits: 5,
+          amountPerUnit: 800,
+          productUnit: "kg",
+        },
+        t,
+      ),
+    ).toBe("5 Fuder");
+  });
+
+  test("bag: number of units + translated word", () => {
+    expect(
+      formatApplicationAmount(
+        {
+          unit: "bag",
+          numberOfUnits: 12,
+          amountPerUnit: 25,
+          productUnit: "kg",
+        },
+        t,
+      ),
+    ).toBe("12 Sack");
+  });
+
+  test("other: falls back to generic units word", () => {
+    expect(
+      formatApplicationAmount(
+        {
+          unit: "other",
+          numberOfUnits: 3,
+          amountPerUnit: 10,
+          productUnit: "l",
+        },
+        t,
+      ),
+    ).toBe("3 Einheiten");
+  });
+
+  test("rounds to two decimals", () => {
+    expect(
+      formatApplicationAmount(
+        {
+          unit: "total_amount",
+          numberOfUnits: 3,
+          amountPerUnit: 1.111,
+          productUnit: "kg",
+        },
+        t,
+      ),
+    ).toBe("3.33kg");
   });
 });
