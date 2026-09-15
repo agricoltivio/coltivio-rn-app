@@ -12,6 +12,7 @@ import {
 import React, { forwardRef, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { useTheme } from "styled-components/native";
+import { MapAttribution } from "./MapAttribution";
 
 export type BaseLayer = "satellite" | "map";
 
@@ -24,6 +25,8 @@ type MapLibreMapProps = {
   dragPan?: boolean;
   onPress?: (event: { nativeEvent: { lngLat: LngLat } }) => void;
   cameraRef?: React.RefObject<CameraRef | null>;
+  // Lifts the source note above panels that screens overlay on the bottom of the map.
+  attributionBottomOffset?: number;
   children?: React.ReactNode;
 };
 
@@ -51,6 +54,7 @@ export const MapLibreMap = forwardRef<MapRef, MapLibreMapProps>(
       dragPan = true,
       onPress,
       cameraRef,
+      attributionBottomOffset,
       children,
     },
     ref,
@@ -114,6 +118,8 @@ export const MapLibreMap = forwardRef<MapRef, MapLibreMapProps>(
             {children}
           </Map>
         )}
+
+        {!loading && <MapAttribution bottomOffset={attributionBottomOffset} />}
 
         {(loading || !mapReady) && (
           <View style={styles.loadingOverlay}>

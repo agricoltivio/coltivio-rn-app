@@ -1382,7 +1382,8 @@
       "layer_heading": "Layer mappa predefinito",
       "layer_satellite": "Satellite",
       "layer_map": "Mappa stradale",
-      "color_mode_heading": "Colorazione campi predefinita"
+      "color_mode_heading": "Colorazione campi predefinita",
+      "attribution": "© swisstopo, Cantoni (geodienste.ch)"
     },
     "language": {
       "title": "Lingua"

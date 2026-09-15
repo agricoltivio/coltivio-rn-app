@@ -1382,7 +1382,8 @@
       "layer_heading": "Default Map Layer",
       "layer_satellite": "Satellite",
       "layer_map": "Street Map",
-      "color_mode_heading": "Default Plot Coloring"
+      "color_mode_heading": "Default Plot Coloring",
+      "attribution": "© swisstopo, cantons (geodienste.ch)"
     },
     "language": {
       "title": "Language"

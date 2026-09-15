@@ -39,6 +39,7 @@ export function SelectFederalFarmIdMapScreen({
   );
 
   const [federalFarmId, setFederalFarmId] = useState<string | undefined>();
+  const [bottomPanelHeight, setBottomPanelHeight] = useState(0);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("transitionEnd", () => {
@@ -107,6 +108,10 @@ export function SelectFederalFarmIdMapScreen({
         loading={!mapVisible || isFetchingPlots}
         initialCenter={initialCenter}
         initialZoom={17}
+        // The map already ends above the bottom inset, the panel does not.
+        attributionBottomOffset={
+          Math.max(bottomPanelHeight - insets.bottom, 0) + theme.spacing.xs
+        }
       >
         <GeoJSONSource
           id="federal-parcels"
@@ -149,6 +154,9 @@ export function SelectFederalFarmIdMapScreen({
       ) : null}
 
       <View
+        onLayout={(event) =>
+          setBottomPanelHeight(event.nativeEvent.layout.height)
+        }
         style={{
           position: "absolute",
           bottom: 0,

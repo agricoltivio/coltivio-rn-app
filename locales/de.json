@@ -1401,7 +1401,8 @@
       "layer_heading": "Standard-Kartenlayer",
       "layer_satellite": "Satellitenbild",
       "layer_map": "Strassenkarte",
-      "color_mode_heading": "Standard-Schlagfärbung"
+      "color_mode_heading": "Standard-Schlagfärbung",
+      "attribution": "© swisstopo, Kantone (geodienste.ch)"
     },
     "language": {
       "title": "Sprache"

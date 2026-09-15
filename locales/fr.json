@@ -1382,7 +1382,8 @@
       "layer_heading": "Couche de carte par défaut",
       "layer_satellite": "Satellite",
       "layer_map": "Carte routière",
-      "color_mode_heading": "Coloration des parcelles par défaut"
+      "color_mode_heading": "Coloration des parcelles par défaut",
+      "attribution": "© swisstopo, cantons (geodienste.ch)"
     },
     "language": {
       "title": "Langue"
