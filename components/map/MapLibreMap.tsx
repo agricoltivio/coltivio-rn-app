@@ -119,7 +119,9 @@ export const MapLibreMap = forwardRef<MapRef, MapLibreMapProps>(
           </Map>
         )}
 
-        {!loading && <MapAttribution bottomOffset={attributionBottomOffset} />}
+        {!loading && (
+          <MapAttribution alignRight bottomOffset={attributionBottomOffset} />
+        )}
 
         {(loading || !mapReady) && (
           <View style={styles.loadingOverlay}>

@@ -8,13 +8,17 @@ import { useTheme } from "styled-components/native";
 
 type MapAttributionProps = {
   bottomOffset?: number;
+  alignRight?: boolean;
 };
 
 /**
  * Source note for swisstopo and the cantonal geodata. The terms of use require it to be
  * visible on the map; the full per-canton attribution lives on the landing page.
  */
-export function MapAttribution({ bottomOffset }: MapAttributionProps) {
+export function MapAttribution({
+  bottomOffset,
+  alignRight,
+}: MapAttributionProps) {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
 
@@ -25,14 +29,17 @@ export function MapAttribution({ bottomOffset }: MapAttributionProps) {
       onPress={() => Linking.openURL(dataSourcesUrl(i18n.language))}
       style={[
         styles.pill,
-        {
-          left: theme.spacing.xs,
-          bottom: bottomOffset ?? theme.spacing.xs,
-        },
+        alignRight ? { right: theme.spacing.s } : { left: theme.spacing.xs },
+        { bottom: bottomOffset ?? theme.spacing.xs },
       ]}
     >
       <Text style={styles.text}>{t("settings.map.attribution")}</Text>
-      <Ionicons name="information-circle-outline" size={12} color="#333" />
+      <Ionicons
+        name="information-circle-outline"
+        size={11}
+        color="#fff"
+        style={styles.icon}
+      />
     </TouchableOpacity>
   );
 }
@@ -42,14 +49,18 @@ const styles = StyleSheet.create({
     position: "absolute",
     flexDirection: "row",
     alignItems: "center",
-    gap: 3,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 8,
-    backgroundColor: "rgba(255,255,255,0.8)",
+    gap: 2,
   },
   text: {
-    fontSize: 10,
-    color: "#333",
+    fontSize: 9,
+    color: "#fff",
+    textShadowColor: "rgba(0,0,0,0.6)",
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 2,
+  },
+  icon: {
+    textShadowColor: "rgba(0,0,0,0.6)",
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 2,
   },
 });

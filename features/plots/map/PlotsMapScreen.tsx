@@ -353,7 +353,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
               dragPan={dragPanEnabled}
               showUserLocation={showsUserLocation}
               onPress={handleMapPress}
-              attributionBottomOffset={insets.bottom + theme.spacing.xs}
+              attributionBottomOffset={insets.bottom}
             >
               <MapLayers
                 splitLayersRef={splitLayersRef}
