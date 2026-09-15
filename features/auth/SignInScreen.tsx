@@ -108,7 +108,7 @@ export function SignInScreen({ navigation }: SignInScreenProps) {
               alignSelf: "flex-end",
               marginTop: theme.spacing.xs,
               fontSize: 15,
-              color: theme.colors.secondary,
+              color: theme.colors.offWhite,
               fontWeight: "600",
             }}
             onPress={() => navigation.navigate("ForgotPassword")}
@@ -134,7 +134,7 @@ export function SignInScreen({ navigation }: SignInScreenProps) {
 
           <Button
             style={{ marginTop: theme.spacing.l }}
-            title="Anmelden"
+            title={t("buttons.login")}
             type="secondary"
             disabled={fetching}
             loading={fetching}
@@ -156,7 +156,7 @@ export function SignInScreen({ navigation }: SignInScreenProps) {
           >
             {t("signin.signup_text")}{" "}
             <Text
-              style={{ color: theme.colors.secondary, fontWeight: "600" }}
+              style={{ color: theme.colors.offWhite, fontWeight: "600" }}
               onPress={() => navigation.navigate("SignUp")}
             >
               {t("buttons.signup")}

@@ -211,7 +211,9 @@
     "errors": {
       "email_taken": "Diese E-Mail ist bereits vergeben",
       "unexpected": "Ein unerwarteter Fehler ist aufgetreten"
-    }
+    },
+    "newsletter_consent": "Ja, ich möchte Informationen zum Verein AgriColtivio und zu neuen Funktionen per E-Mail erhalten. Abmelden kannst du dich jederzeit.",
+    "privacy_policy": "Datenschutzerklärung"
   },
   "signin": {
     "signup_text": "Hast du noch keinen Account?"
@@ -282,10 +284,15 @@
     "email_not_verified": "Email Adresse noch nicht verifiziert!",
     "email_change_pending": "Verifizieren deine neue Email Adresse",
     "email_change_verification_sent": "Eine Email wurde versendet, um deine neue Adresse zu verifizieren. Sobald diese bestätigt ist, wird die neue Adresse aktiviert.",
+    "verification_email_cooldown": "Wir haben dir eben erst eine Email geschickt. Bitte warte ein paar Minuten, bevor du eine neue anforderst.",
     "resend_verification_email": "Email verifizieren",
     "new_password": "Neues Passwort",
     "change_display_name": "Namen bearbeiten",
-    "verification_mail_sent": "Eine Email wurde an {{email}} gesendet, um deine E-Mail-Adresse zu verifizieren."
+    "verification_mail_sent": "Eine Email wurde an {{email}} gesendet, um deine E-Mail-Adresse zu verifizieren.",
+    "verification_mail_sent_title": "Email gesendet",
+    "email_not_verified_banner": "E-Mail-Adresse noch nicht bestätigt.",
+    "email_not_verified_banner_action": "Jetzt bestätigen",
+    "email_not_verified_short": "Nicht bestätigt"
   },
   "home": {
     "welcome_text": "Hallo {{displayName}},",

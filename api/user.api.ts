@@ -19,6 +19,16 @@ export function userApi(client: FetchClient) {
       return data!.data;
     },
 
+    async sendVerificationEmail() {
+      const { data, error } = await client.POST("/v1/me/verification-email", {
+        body: {},
+      });
+      if (error) {
+        throw error;
+      }
+      return data!.data;
+    },
+
     async getFarmUsers(): Promise<FarmUser[]> {
       const { data } = await client.GET("/v1/users");
       return data!.data.result;

@@ -45,6 +45,16 @@ const baseUrl = apiUrl ?? localUrl;
 
 export type FetchClient = typeof client;
 
+export class ApiError extends Error {
+  constructor(
+    public readonly status: number,
+    message: string,
+  ) {
+    super(message);
+    this.name = "ApiError";
+  }
+}
+
 // Deduped so a burst of parallel 401s (e.g. every active query failing around
 // the same time because the session is genuinely dead) only triggers one
 // refresh call instead of one per failed request.
@@ -70,7 +80,10 @@ const middleware: Middleware = {
         triggerTokenRefresh();
       }
       const content = await response.json();
-      throw new Error(`${response.url}: ${response.status} - ${content.error}`);
+      throw new ApiError(
+        response.status,
+        `${response.url}: ${response.status} - ${content.error}`,
+      );
     }
   },
   async onRequest({ request, options }) {
