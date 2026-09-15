@@ -68,7 +68,7 @@ export function useFederalFarmIdSearchQuery(
     },
 
     enabled,
-    placeholderData: (prev) => prev || [],
+    retry: 1,
   });
   return { federalFarmIds: data, ...rest };
 }

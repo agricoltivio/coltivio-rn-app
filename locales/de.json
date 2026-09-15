@@ -23,7 +23,8 @@
     "send_email": "E-Mail senden",
     "forgot_password": "Passwort vergessen",
     "apply": "Anwenden",
-    "clear": "Löschen"
+    "clear": "Löschen",
+    "retry": "Erneut versuchen"
   },
   "forms": {
     "labels": {
@@ -101,7 +102,7 @@
     },
     "placeholders": {
       "location_search": "z.B. Straße, Hausnummer, Ort",
-      "federal_farm_number": "z.B. 123/555/4/1",
+      "federal_farm_number": "z.B. BEB113945 oder LU3862",
       "search": "Suche...",
       "weight_kg_per_harvest_unit": "z.B. 20kg pro Quaderballen",
       "password_requirements": "Mindestens 6 Zeichen"
@@ -252,12 +253,16 @@
         "heading": "Deine Betriebsnummer",
         "body": "Tippe auf eine deiner Parzellen, um deine Betriebsnummer auszuwählen."
       },
-      "modal_not_found": {
-        "heading": "Deine Betriebsnummer",
-        "body": "Leider haben wir keine Parzellen an deinem Standort gefunden. Die Kantone Obwalden, Nidwalden und Waadt sind leider noch nicht unterstützt. Du kannst diesen Schritt überspringen und die Flächen manuell einzeichnen. Falls dein Kanton nicht dabei ist, kontaktiere uns bitte unter support@coltivi.ch."
-      },
       "confirmation": "Ist {{federalFarmId}} deine Betriebsnummer?",
-      "select_on_map_hint": "Betriebsnummer unbekannt? Hier tippen, um eine Parzelle auf der Karte auszuwählen."
+      "confirmation_without_id": "Ohne Betriebsnummer fortfahren? Du zeichnest deine Flächen dann selbst ein. Die Kantone Obwalden, Nidwalden, Waadt und Basel-Stadt werden noch nicht unterstützt.",
+      "continue_without_id": "Ohne Betriebsnummer fortfahren",
+      "select_on_map_hint": "Betriebsnummer unbekannt? Hier tippen, um eine Parzelle auf der Karte auszuwählen.",
+      "search_min_chars": "Gib mindestens {{minChars}} Zeichen ein, um zu suchen.",
+      "search_empty": "Keine ähnliche Betriebsnummer zu «{{query}}» im Umkreis von ca. {{radiusKm}} km gefunden.",
+      "search_error": "Die Suche ist fehlgeschlagen. Bitte prüfe deine Internetverbindung.",
+      "nearby_loading": "Betriebsnummern in der Nähe werden gesucht…",
+      "nearby_error": "Betriebsnummern in der Nähe konnten nicht geladen werden. Bitte prüfe deine Internetverbindung.",
+      "not_found": "Im Umkreis von {{radiusKm}} km um «{{address}}» haben wir keine Betriebsnummer gefunden. Suche oben nach deiner Betriebsnummer oder gehe zurück und prüfe die Adresse. Die Kantone Obwalden, Nidwalden, Waadt und Basel-Stadt werden noch nicht unterstützt. Dort zeichnest du deine Flächen selbst ein. Ist dein Kanton nicht aufgeführt, melde dich unter support@coltivio.ch."
     },
     "summary": {
       "heading": "Geschafft!",

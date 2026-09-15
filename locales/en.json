@@ -23,7 +23,8 @@
     "send_email": "Send Email",
     "forgot_password": "Forgot Password",
     "apply": "Apply",
-    "clear": "Clear"
+    "clear": "Clear",
+    "retry": "Try again"
   },
   "forms": {
     "labels": {
@@ -101,7 +102,7 @@
     },
     "placeholders": {
       "location_search": "e.g., Street, House Number, City",
-      "federal_farm_number": "e.g., 123/555/4/1",
+      "federal_farm_number": "e.g., BEB113945 or LU3862",
       "search": "Search...",
       "weight_kg_per_harvest_unit": "e.g., 20kg per square bale",
       "password_requirements": "At least 6 characters"
@@ -252,12 +253,16 @@
         "heading": "Your Farm Registration Number",
         "body": "Tap one of your parcels to select your farm registration number."
       },
-      "modal_not_found": {
-        "heading": "Your Farm Registration Number",
-        "body": "Unfortunately, we could not find any parcels at your location. The Cantons of Obwalden, Nidwalden and Waadt are unfortunately not yet supported. You can skip this step and manually draw your plots. If your canton is not listed, please contact us at support@coltivi.ch."
-      },
       "confirmation": "Is {{federalFarmId}} your farm registration number?",
-      "select_on_map_hint": "Don't know your farm number? Tap here to select a parcel on the map."
+      "confirmation_without_id": "Continue without a farm registration number? You will then draw your plots yourself. The cantons of Obwalden, Nidwalden, Vaud and Basel-Stadt are not yet supported.",
+      "continue_without_id": "Continue without farm number",
+      "select_on_map_hint": "Don't know your farm number? Tap here to select a parcel on the map.",
+      "search_min_chars": "Enter at least {{minChars}} characters to search.",
+      "search_empty": "No farm number similar to “{{query}}” found within about {{radiusKm}} km.",
+      "search_error": "The search failed. Please check your internet connection.",
+      "nearby_loading": "Looking for farm numbers nearby…",
+      "nearby_error": "Farm numbers nearby could not be loaded. Please check your internet connection.",
+      "not_found": "We could not find any farm number within {{radiusKm}} km of “{{address}}”. Search for your farm number above or go back and check the address. The cantons of Obwalden, Nidwalden, Vaud and Basel-Stadt are not yet supported. There, you draw your plots yourself. If your canton is not listed, contact us at support@coltivio.ch."
     },
     "summary": {
       "heading": "All set!",
