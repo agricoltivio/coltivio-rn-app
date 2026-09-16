@@ -242,7 +242,12 @@ export function SelectFederalFarmIdScreen({
                   {t("onboarding.federal_farm_number.not_found_hint")}
                 </Text>
               </Card>
-              <Card>
+              <Card
+                style={{
+                  borderWidth: 1,
+                  borderColor: theme.colors.primary,
+                }}
+              >
                 <Text style={{ fontSize: 15, color: theme.colors.gray1 }}>
                   {t("onboarding.federal_farm_number.not_found_cantons")}
                 </Text>
