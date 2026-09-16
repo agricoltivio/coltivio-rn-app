@@ -199,10 +199,13 @@ function EditorContent({
               filename,
             );
 
-            await fetch(resolveLocalUrl(signedUrl), {
+            const uploadResponse = await fetch(resolveLocalUrl(signedUrl), {
               method: "PUT",
               body: blob,
             });
+            if (!uploadResponse.ok) {
+              throw new Error(`Image upload failed: ${uploadResponse.status}`);
+            }
 
             const { publicUrl } = await api.wiki.registerImage(entryId, path);
 
@@ -215,7 +218,7 @@ function EditorContent({
               );
             }, 50);
           } catch {
-            Alert.alert("Fehler", "Bild konnte nicht hochgeladen werden.");
+            Alert.alert(t("common.error"), t("wiki.image_upload_failed"));
           }
         }
 
