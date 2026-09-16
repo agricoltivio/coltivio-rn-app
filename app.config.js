@@ -5,7 +5,7 @@ export default ({ config }) => {
     name: isTest ? "Coltivio - Test" : "coltivio",
     slug: "coltivio",
     owner: "agricoltivio",
-    version: "1.0.3",
+    version: "1.0.4",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
     // Distinct per variant so the dev/test build never collides with production's URL scheme
