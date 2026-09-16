@@ -1426,9 +1426,9 @@
     "onboarding": {
       "step1_heading": "Manage tasks",
       "step1_body": "Create tasks, set due dates and assign them to collaborators.",
-      "step2_heading": "Links & checklists",
-      "step2_body": "Link tasks to plots, animals and more.",
-      "step2_icon_hint": "Tap this icon next to a link to automatically generate checklist items from it."
+      "step2_heading": "Generate checklists",
+      "step2_body": "Select animals or plots to automatically create checklist items from them.",
+      "step2_icon_hint": "Tap this icon next to the checklist to generate items from animals or plots."
     },
     "new_task": "New Task",
     "edit_task": "Edit Task",
@@ -1443,9 +1443,9 @@
     "recurrence": "Recurrence",
     "checklist": "Checklist",
     "add_checklist_item": "Add item",
-    "generate_checklist_items": "Generate items",
+    "generate_checklist_items": "Generate checklist",
+    "generate_checklist_items_hint": "Generate a checklist from your animals or plots.",
     "links": "Links",
-    "add_link": "Add link",
     "link_types": {
       "animal": "Animal",
       "animal_plural": "Animals",
