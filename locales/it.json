@@ -23,7 +23,8 @@
     "send_email": "Invia e-mail",
     "forgot_password": "Password dimenticata",
     "apply": "Applica",
-    "clear": "Cancella"
+    "clear": "Cancella",
+    "retry": "Riprova"
   },
   "forms": {
     "labels": {
@@ -101,7 +102,7 @@
     },
     "placeholders": {
       "location_search": "es. Via, Numero Civico, Città",
-      "federal_farm_number": "es. 123/555/4/1",
+      "federal_farm_number": "es. BEB113945 o LU3862",
       "search": "Cerca...",
       "weight_kg_per_harvest_unit": "es. 20kg per balla quadrata",
       "password_requirements": "Almeno 6 caratteri"
@@ -252,12 +253,18 @@
         "heading": "Il tuo Codice Azienda Agricola",
         "body": "Tocca una delle tue particelle per selezionare il tuo codice azienda agricola."
       },
-      "modal_not_found": {
-        "heading": "Il tuo numero azienda",
-        "body": "Purtroppo non abbiamo trovato particelle nella tua posizione. I cantoni Obvaldo, Nidvaldo e Vaud non sono ancora supportati. Puoi saltare questo passaggio e disegnare manualmente le superfici. Se il tuo cantone non è incluso, contattaci all'indirizzo support@coltivi.ch."
-      },
       "confirmation": "{{federalFarmId}} è il tuo codice azienda agricola?",
-      "select_on_map_hint": "Non conosci il tuo numero aziendale? Tocca qui per selezionare una parcella sulla mappa."
+      "confirmation_without_id": "Continuare senza codice azienda agricola? Disegnerai tu stesso le tue superfici.",
+      "continue_without_id": "Continua senza codice azienda",
+      "select_on_map_hint": "Non conosci il tuo numero aziendale? Tocca qui per selezionare una parcella sulla mappa.",
+      "search_min_chars": "Inserisci almeno {{minChars}} caratteri per cercare.",
+      "search_empty": "Nessun codice azienda simile a «{{query}}» trovato entro circa {{radiusKm}} km.",
+      "search_error": "La ricerca non è riuscita. Controlla la tua connessione internet.",
+      "nearby_loading": "Ricerca dei codici azienda nelle vicinanze…",
+      "nearby_error": "Non è stato possibile caricare i codici azienda nelle vicinanze. Controlla la tua connessione internet.",
+      "not_found": "Non abbiamo trovato alcun codice azienda entro {{radiusKm}} km da «{{address}}».",
+      "not_found_hint": "Cerca il tuo codice azienda qui sopra oppure torna indietro e verifica l'indirizzo.",
+      "not_found_cantons": "I cantoni Obvaldo, Nidvaldo, Vaud e Basilea Città non sono ancora supportati. Lì disegni tu stesso le tue superfici."
     },
     "summary": {
       "heading": "Tutto pronto!",

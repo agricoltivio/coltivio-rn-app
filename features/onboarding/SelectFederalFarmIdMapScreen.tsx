@@ -4,6 +4,7 @@ import { HomeMarkerLayer } from "@/components/map/HomeMarkerLayer";
 import { SelectFederalFarmIdParcelMapScreenProps } from "@/features/onboarding/navigation/onboarding-routes";
 import { hexToRgba } from "@/theme/theme";
 import { H3 } from "@/theme/Typography";
+import { Ionicons } from "@expo/vector-icons";
 import {
   GeoJSONSource,
   Layer,
@@ -15,14 +16,12 @@ import BottomSheet, {
 } from "@gorhom/bottom-sheet";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 import { usePlotsByLocationQuery } from "../federal-plots/federalPlots.hooks";
 import { MapInfoModal } from "../map/overlays/MapInfoModal";
-import { NavigationButton } from "./NavigationButton";
 import { useOnboarding } from "./OnboardingContext";
-import { Stepper } from "./Stepper";
 
 export function SelectFederalFarmIdMapScreen({
   navigation,
@@ -38,8 +37,12 @@ export function SelectFederalFarmIdMapScreen({
     !!data.location,
   );
 
-  const [federalFarmId, setFederalFarmId] = useState<string | undefined>();
-  const [bottomPanelHeight, setBottomPanelHeight] = useState(0);
+  // A new object on every tap, so tapping the same parcel again re-opens the sheet.
+  // It is not reset on close, so the content doesn't change during the close animation.
+  const [selection, setSelection] = useState<{
+    federalFarmId: string;
+  } | null>(null);
+  const confirmedRef = useRef(false);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("transitionEnd", () => {
@@ -50,27 +53,26 @@ export function SelectFederalFarmIdMapScreen({
 
   const bottomSheetModalRef = useRef<BottomSheet>(null);
 
-  const handleExpandBottomDrawer = useCallback(() => {
-    bottomSheetModalRef.current?.expand();
-  }, []);
-
-  const handleCloseBottomDrawer = useCallback(() => {
-    bottomSheetModalRef.current?.close();
-  }, []);
-
   const { lng, lat } = data.location!;
   const initialCenter: LngLat = [lng, lat];
 
   useEffect(() => {
-    if (federalFarmId) {
-      handleExpandBottomDrawer();
+    if (selection) {
+      bottomSheetModalRef.current?.expand();
     }
-  }, [federalFarmId]);
+  }, [selection]);
 
   function handleOnConfirm() {
-    setData({ ...data, federalFarmId: federalFarmId! });
-    handleCloseBottomDrawer();
-    navigation.navigate("OnboardingPreference");
+    if (!selection || confirmedRef.current) {
+      return;
+    }
+    confirmedRef.current = true;
+    const { federalFarmId } = selection;
+    setData((prev) => ({ ...prev, federalFarmId }));
+    bottomSheetModalRef.current?.close();
+    // replace instead of navigate, so going back from the next step lands on the farm number
+    // screen where the selection is visible
+    navigation.replace("OnboardingPreference");
   }
 
   const parcelsFeatureCollection = useMemo(
@@ -94,7 +96,7 @@ export function SelectFederalFarmIdMapScreen({
       const feature = event.nativeEvent.features[0];
       const fid = feature?.properties?.federalFarmId;
       if (typeof fid === "string") {
-        setFederalFarmId(fid);
+        setSelection({ federalFarmId: fid });
       }
     },
     [],
@@ -108,10 +110,6 @@ export function SelectFederalFarmIdMapScreen({
         loading={!mapVisible || isFetchingPlots}
         initialCenter={initialCenter}
         initialZoom={17}
-        // The map already ends above the bottom inset, the panel does not.
-        attributionBottomOffset={
-          Math.max(bottomPanelHeight - insets.bottom, 0) + theme.spacing.xs
-        }
       >
         <GeoJSONSource
           id="federal-parcels"
@@ -138,62 +136,36 @@ export function SelectFederalFarmIdMapScreen({
         <HomeMarkerLayer center={initialCenter} />
       </MapLibreMap>
 
-      {mapVisible && plots?.length > 0 ? (
+      {mapVisible && plots.some((plot) => plot.federalFarmId) ? (
         <MapInfoModal
           title={t("onboarding.federal_farm_number.modal.heading")}
           text={t("onboarding.federal_farm_number.modal.body")}
         />
       ) : null}
 
-      {mapVisible && !isFetchingPlots && plots?.length === 0 ? (
-        <MapInfoModal
-          title={t("onboarding.federal_farm_number.modal_not_found.heading")}
-          text={t("onboarding.federal_farm_number.modal_not_found.body")}
-          onClose={() => navigation.navigate("OnboardingPreference")}
-        />
-      ) : null}
-
-      <View
-        onLayout={(event) =>
-          setBottomPanelHeight(event.nativeEvent.layout.height)
-        }
+      <TouchableOpacity
         style={{
           position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          backgroundColor: theme.colors.background,
-          paddingVertical: theme.spacing.m,
-          paddingHorizontal: theme.spacing.m,
+          top: insets.top + 12,
+          left: 16,
+          width: 36,
+          height: 36,
+          borderRadius: 18,
+          backgroundColor: "rgba(0,0,0,0.55)",
+          justifyContent: "center",
+          alignItems: "center",
         }}
+        accessibilityRole="button"
+        accessibilityLabel={t("buttons.back")}
+        onPress={() => navigation.goBack()}
       >
-        <Stepper totalSteps={5} currentStep={3} />
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: insets.bottom + theme.spacing.s,
-            marginHorizontal: theme.spacing.m * 2,
-          }}
-        >
-          <NavigationButton
-            title={t("buttons.back")}
-            icon="arrow-back-circle-outline"
-            onPress={() => navigation.goBack()}
-          />
-          <NavigationButton
-            title={t("buttons.next")}
-            icon="arrow-forward-circle-outline"
-            onPress={() => navigation.navigate("OnboardingPreference")}
-          />
-        </View>
-      </View>
+        <Ionicons name="arrow-back" size={22} color="#fff" />
+      </TouchableOpacity>
+
       <BottomSheet
         ref={bottomSheetModalRef}
         enablePanDownToClose
         index={-1}
-        onClose={() => setFederalFarmId(undefined)}
         backdropComponent={(props) => {
           return <BottomSheetBackdrop disappearsOnIndex={-1} {...props} />;
         }}
@@ -212,7 +184,7 @@ export function SelectFederalFarmIdMapScreen({
             }}
           >
             {t("onboarding.federal_farm_number.confirmation", {
-              federalFarmId,
+              federalFarmId: selection?.federalFarmId,
             })}
           </H3>
           <Button title={t("buttons.confirm")} onPress={handleOnConfirm} />

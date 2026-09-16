@@ -4,7 +4,7 @@ import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
 import { SelectFarmLocationSearchModalProps } from "@/features/onboarding/navigation/onboarding-routes";
 import { useDebounce } from "@uidotdev/usehooks";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, FlatList, View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -17,6 +17,7 @@ export function SelectFarmLocationSearchModal({
   const { t } = useTranslation();
   const theme = useTheme();
   const { data, setData } = useOnboarding();
+  const initialLocationRef = useRef(data.location);
 
   const [locationSerachText, setLocationSearchText] = useState(
     data.location?.label || "",
@@ -36,10 +37,16 @@ export function SelectFarmLocationSearchModal({
     }
   }
   function selectLocation(location: LocationSearchResult) {
+    const initialLocation = initialLocationRef.current;
+    const locationChanged =
+      !initialLocation ||
+      initialLocation.lat !== location.lat ||
+      initialLocation.lng !== location.lon;
     setLocationSearchText(location.label);
     setData((prev) => ({
       ...prev,
       location: { label: location.label, lat: location.lat, lng: location.lon },
+      federalFarmId: locationChanged ? null : prev.federalFarmId,
     }));
     navigation.goBack();
   }
@@ -52,7 +59,7 @@ export function SelectFarmLocationSearchModal({
     </ListItem>
   );
   return (
-    <ContentView>
+    <ContentView headerVisible={false}>
       <View style={{ marginVertical: theme.spacing.m }}>
         <TextInput
           label={t("forms.labels.location_search")}

@@ -5,14 +5,15 @@ import { TextInput } from "@/components/inputs/TextInput";
 import { ScrollView } from "@/components/views/ScrollView";
 import { SelectFederalFarmIdMapScreenProps } from "@/features/onboarding/navigation/onboarding-routes";
 import { H3 } from "@/theme/Typography";
+import { Ionicons } from "@expo/vector-icons";
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { useDebounce } from "@uidotdev/usehooks";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, View } from "react-native";
+import { ActivityIndicator, Keyboard, Pressable, View } from "react-native";
 import { Text } from "@/components/text/Text";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
@@ -24,6 +25,16 @@ import { NavigationButton } from "./NavigationButton";
 import { useOnboarding } from "./OnboardingContext";
 import { Stepper } from "./Stepper";
 
+const NEARBY_RADIUS_KM = 1;
+const SEARCH_RADIUS_KM = 3;
+const SEARCH_LIMIT = 20;
+// The backend matches by trigram similarity, shorter queries (almost) never match
+const SEARCH_MIN_CHARS = 3;
+
+type SheetState =
+  | { kind: "confirmId"; federalFarmId: string }
+  | { kind: "withoutId" };
+
 export function SelectFederalFarmIdScreen({
   navigation,
 }: SelectFederalFarmIdMapScreenProps) {
@@ -32,22 +43,34 @@ export function SelectFederalFarmIdScreen({
   const insets = useSafeAreaInsets();
   const { data, setData } = useOnboarding();
 
-  const { plots, isFetching: isFetchingPlots } = usePlotsByLocationQuery(
+  const {
+    plots,
+    isFetching: isFetchingPlots,
+    isFetched: isPlotsFetched,
+    isError: isPlotsError,
+    refetch: refetchPlots,
+  } = usePlotsByLocationQuery(
     data.location!,
-    1,
+    NEARBY_RADIUS_KM,
     !!data.location,
   );
 
   const [searchText, setSearchText] = useState("");
-  const debouncedSearchText = useDebounce(searchText, 800);
+  const trimmedSearchText = searchText.trim();
+  const debouncedSearchText = useDebounce(trimmedSearchText, 800);
 
-  const { federalFarmIds } = useFederalFarmIdSearchQuery(
+  const {
+    federalFarmIds,
+    isFetching: isSearching,
+    isError: isSearchError,
+    refetch: refetchSearch,
+  } = useFederalFarmIdSearchQuery(
     debouncedSearchText,
     data.location?.lng!,
     data.location?.lat!,
-    3,
-    20,
-    debouncedSearchText !== "",
+    SEARCH_RADIUS_KM,
+    SEARCH_LIMIT,
+    debouncedSearchText.length >= SEARCH_MIN_CHARS,
   );
 
   const uniqueFarmIds = useMemo(
@@ -58,33 +81,93 @@ export function SelectFederalFarmIdScreen({
     [plots],
   );
 
-  // When search text is non-empty, show search results; otherwise show unique farm IDs from nearby parcels
-  const displayedIds =
-    searchText !== "" ? (federalFarmIds ?? []) : uniqueFarmIds;
+  // initialData ([]) counts as data, so only a first fetch or a retry after an error is "loading";
+  // background refetches (e.g. on app focus) keep showing the current result
+  const nearbyStatus =
+    isFetchingPlots && (!isPlotsFetched || isPlotsError)
+      ? "loading"
+      : isPlotsError
+        ? "error"
+        : uniqueFarmIds.length > 0
+          ? "found"
+          : "notFound";
 
-  const [selectedFarmId, setSelectedFarmId] = useState<string | undefined>();
+  const searchStatus =
+    trimmedSearchText.length === 0
+      ? "idle"
+      : trimmedSearchText.length < SEARCH_MIN_CHARS
+        ? "tooShort"
+        : trimmedSearchText !== debouncedSearchText || isSearching
+          ? "loading"
+          : isSearchError
+            ? "error"
+            : (federalFarmIds ?? []).length === 0
+              ? "empty"
+              : "results";
 
+  // The selected farm id is listed first. It can come from the search or the map, so the
+  // nearby list shows it even when it isn't one of the nearby farm ids.
+  function withSelectedFirst(farmIds: string[], addIfMissing: boolean) {
+    const selected = data.federalFarmId;
+    if (!selected || (!addIfMissing && !farmIds.includes(selected))) {
+      return farmIds;
+    }
+    return [selected, ...farmIds.filter((farmId) => farmId !== selected)];
+  }
+
+  const listedFarmIds =
+    searchStatus === "results"
+      ? withSelectedFirst(federalFarmIds ?? [], false)
+      : searchStatus === "idle"
+        ? withSelectedFirst(nearbyStatus === "found" ? uniqueFarmIds : [], true)
+        : [];
+
+  // A new object on every open, so tapping the same farm id again re-opens the sheet.
+  // It is not reset on close, so the content doesn't change during the close animation.
+  const [sheet, setSheet] = useState<SheetState | null>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
 
-  const handleExpandBottomDrawer = useCallback(() => {
-    bottomSheetRef.current?.expand();
-  }, []);
-
-  const handleCloseBottomDrawer = useCallback(() => {
-    bottomSheetRef.current?.close();
-  }, []);
-
   useEffect(() => {
-    if (selectedFarmId) {
-      handleExpandBottomDrawer();
+    if (sheet) {
+      bottomSheetRef.current?.expand();
     }
-  }, [selectedFarmId]);
+  }, [sheet]);
 
-  function handleOnConfirm() {
-    setData({ ...data, federalFarmId: selectedFarmId! });
-    handleCloseBottomDrawer();
+  function handleFarmIdPress(federalFarmId: string) {
+    Keyboard.dismiss();
+    if (federalFarmId === data.federalFarmId) {
+      setData((prev) => ({ ...prev, federalFarmId: null }));
+      return;
+    }
+    setSheet({ kind: "confirmId", federalFarmId });
+  }
+
+  function handleNext() {
+    // a selected farm id was already confirmed when it was tapped
+    if (data.federalFarmId) {
+      navigation.navigate("OnboardingPreference");
+      return;
+    }
+    setSheet({ kind: "withoutId" });
+  }
+
+  function handleSheetConfirm() {
+    if (sheet?.kind === "confirmId") {
+      const { federalFarmId } = sheet;
+      setData((prev) => ({ ...prev, federalFarmId }));
+    }
+    bottomSheetRef.current?.close();
     navigation.navigate("OnboardingPreference");
   }
+
+  const farmIdRows = listedFarmIds.map((farmId) => (
+    <FarmIdRow
+      key={farmId}
+      federalFarmId={farmId}
+      selected={farmId === data.federalFarmId}
+      onPress={() => handleFarmIdPress(farmId)}
+    />
+  ));
 
   return (
     <ContentView headerVisible={false}>
@@ -95,15 +178,81 @@ export function SelectFederalFarmIdScreen({
             placeholder={t("forms.placeholders.federal_farm_number")}
             value={searchText}
             onChangeText={setSearchText}
+            autoCapitalize="characters"
+            autoCorrect={false}
           />
-          {!isFetchingPlots &&
-          uniqueFarmIds.length === 0 &&
-          searchText === "" ? (
-            <Card style={{ backgroundColor: theme.colors.warning }}>
-              <Text style={{ fontSize: 15, color: theme.colors.black }}>
-                {t("onboarding.federal_farm_number.modal_not_found.body")}
+          {searchStatus === "tooShort" ? (
+            <Text style={{ fontSize: 15, color: theme.colors.gray1 }}>
+              {t("onboarding.federal_farm_number.search_min_chars", {
+                minChars: SEARCH_MIN_CHARS,
+              })}
+            </Text>
+          ) : null}
+          {searchStatus === "loading" ? (
+            <ActivityIndicator color={theme.colors.primary} />
+          ) : null}
+          {searchStatus === "error" ? (
+            <RetryCard
+              text={t("onboarding.federal_farm_number.search_error")}
+              onRetry={() => refetchSearch()}
+            />
+          ) : null}
+          {searchStatus === "empty" ? (
+            <Text style={{ fontSize: 15, color: theme.colors.gray1 }}>
+              {t("onboarding.federal_farm_number.search_empty", {
+                query: debouncedSearchText,
+                radiusKm: SEARCH_RADIUS_KM,
+              })}
+            </Text>
+          ) : null}
+          {searchStatus === "results" ? farmIdRows : null}
+          {nearbyStatus === "loading" ? (
+            <Card
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: theme.spacing.s,
+              }}
+            >
+              <ActivityIndicator color={theme.colors.primary} />
+              <Text style={{ fontSize: 15, color: theme.colors.gray1 }}>
+                {t("onboarding.federal_farm_number.nearby_loading")}
               </Text>
             </Card>
+          ) : nearbyStatus === "error" ? (
+            <RetryCard
+              text={t("onboarding.federal_farm_number.nearby_error")}
+              onRetry={() => refetchPlots()}
+            />
+          ) : nearbyStatus === "notFound" ? (
+            <>
+              <Card
+                style={{
+                  backgroundColor: theme.colors.warning,
+                  gap: theme.spacing.s,
+                }}
+              >
+                <Text style={{ fontSize: 15, color: theme.colors.black }}>
+                  {t("onboarding.federal_farm_number.not_found", {
+                    address: data.location?.label,
+                    radiusKm: NEARBY_RADIUS_KM,
+                  })}
+                </Text>
+                <Text style={{ fontSize: 15, color: theme.colors.black }}>
+                  {t("onboarding.federal_farm_number.not_found_hint")}
+                </Text>
+              </Card>
+              <Card
+                style={{
+                  borderWidth: 1,
+                  borderColor: theme.colors.primary,
+                }}
+              >
+                <Text style={{ fontSize: 15, color: theme.colors.gray1 }}>
+                  {t("onboarding.federal_farm_number.not_found_cantons")}
+                </Text>
+              </Card>
+            </>
           ) : (
             <Pressable
               onPress={() =>
@@ -122,15 +271,7 @@ export function SelectFederalFarmIdScreen({
               </Card>
             </Pressable>
           )}
-          {displayedIds.map((farmId) => (
-            <Pressable key={farmId} onPress={() => setSelectedFarmId(farmId)}>
-              <Card>
-                <Text style={{ fontSize: 16, color: theme.colors.gray0 }}>
-                  {farmId}
-                </Text>
-              </Card>
-            </Pressable>
-          ))}
+          {searchStatus === "idle" ? farmIdRows : null}
         </View>
       </ScrollView>
       <View style={{ padding: theme.spacing.m }}>
@@ -151,8 +292,7 @@ export function SelectFederalFarmIdScreen({
           <NavigationButton
             title={t("buttons.next")}
             icon="arrow-forward-circle-outline"
-            onPress={() => navigation.navigate("OnboardingPreference")}
-            disabled={!data.federalFarmId}
+            onPress={handleNext}
           />
         </View>
       </View>
@@ -160,7 +300,6 @@ export function SelectFederalFarmIdScreen({
         ref={bottomSheetRef}
         enablePanDownToClose
         index={-1}
-        onClose={() => setSelectedFarmId(undefined)}
         backdropComponent={(props) => (
           <BottomSheetBackdrop disappearsOnIndex={-1} {...props} />
         )}
@@ -178,13 +317,75 @@ export function SelectFederalFarmIdScreen({
               textAlign: "center",
             }}
           >
-            {t("onboarding.federal_farm_number.confirmation", {
-              federalFarmId: selectedFarmId,
-            })}
+            {sheet?.kind === "confirmId"
+              ? t("onboarding.federal_farm_number.confirmation", {
+                  federalFarmId: sheet.federalFarmId,
+                })
+              : t("onboarding.federal_farm_number.confirmation_without_id")}
           </H3>
-          <Button title={t("buttons.confirm")} onPress={handleOnConfirm} />
+          <Button
+            title={
+              sheet?.kind === "confirmId"
+                ? t("buttons.confirm")
+                : t("onboarding.federal_farm_number.continue_without_id")
+            }
+            onPress={handleSheetConfirm}
+          />
         </BottomSheetView>
       </BottomSheet>
     </ContentView>
+  );
+}
+
+function FarmIdRow({
+  federalFarmId,
+  selected,
+  onPress,
+}: {
+  federalFarmId: string;
+  selected: boolean;
+  onPress: () => void;
+}) {
+  const theme = useTheme();
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityState={{ selected }}
+    >
+      <Card
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          borderWidth: 2,
+          borderColor: selected ? theme.colors.primary : "transparent",
+        }}
+      >
+        <Text style={{ fontSize: 16, color: theme.colors.gray0 }}>
+          {federalFarmId}
+        </Text>
+        {selected ? (
+          <Ionicons
+            name="checkmark-circle"
+            size={22}
+            color={theme.colors.primary}
+          />
+        ) : null}
+      </Card>
+    </Pressable>
+  );
+}
+
+function RetryCard({ text, onRetry }: { text: string; onRetry: () => void }) {
+  const { t } = useTranslation();
+  const theme = useTheme();
+  return (
+    <Card
+      style={{ backgroundColor: theme.colors.warning, gap: theme.spacing.s }}
+    >
+      <Text style={{ fontSize: 15, color: theme.colors.black }}>{text}</Text>
+      <Button type="accent" title={t("buttons.retry")} onPress={onRetry} />
+    </Card>
   );
 }

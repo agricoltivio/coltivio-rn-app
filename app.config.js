@@ -1,11 +1,8 @@
 export default ({ config }) => {
-  const variant = process.env.APP_VARIANT;
-  // "demo" gets its own package so it installs alongside the regular app, used
-  // to show the Bio Suisse pilot without replacing the main install.
-  const isDemo = variant === "demo";
+  const isTest = process.env.APP_VARIANT === "development";
   return {
     ...config,
-    name: isDemo ? "Coltivio Demo" : "coltivio",
+    name: isTest ? "Coltivio - Test" : "coltivio",
     slug: "coltivio",
     owner: "agricoltivio",
     version: "1.0.3",
@@ -14,11 +11,9 @@ export default ({ config }) => {
     // Distinct per variant so the dev/test build never collides with production's URL scheme
     // (a shared scheme across installed variants breaks ASWebAuthenticationSession redirects,
     // e.g. Stripe checkout — iOS can't unambiguously route the callback).
-    scheme: isDemo
-      ? "ch.agricoltivio.coltiviodemo"
-      : variant === "development"
-        ? "ch.agricoltivio.coltiviotest"
-        : "ch.agricoltivio.coltivio",
+    scheme: isTest
+      ? "ch.agricoltivio.coltiviotest"
+      : "ch.agricoltivio.coltivio",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     ios: {
@@ -31,11 +26,9 @@ export default ({ config }) => {
         light: "./assets/images/icon.png",
         dark: "./assets/images/icon-dark.png",
       },
-      bundleIdentifier: isDemo
-        ? "ch.agricoltivio.coltiviodemo"
-        : variant === "development"
-          ? "ch.agricoltivio.coltiviotest"
-          : "ch.agricoltivio.coltivio",
+      bundleIdentifier: isTest
+        ? "ch.agricoltivio.coltiviotest"
+        : "ch.agricoltivio.coltivio",
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false,
         // Opt out of iOS 26 Liquid Glass: it wraps headerRight icons in a
@@ -50,15 +43,14 @@ export default ({ config }) => {
       ...config.android,
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon.png",
-        // Tinted background for the demo build, so the two installs are
-        // distinguishable on the home screen at a glance.
-        backgroundColor: isDemo ? "#e8f0d8" : "#ffffff",
+        // Tinted background for the test build, so it is distinguishable from
+        // the production app on the home screen at a glance. Amber rather than
+        // the demo build's #e8f0d8, so all three variants stay tellable apart.
+        backgroundColor: isTest ? "#f4c95d" : "#ffffff",
       },
-      package: isDemo
-        ? "ch.agricoltivio.coltiviodemo"
-        : variant === "development"
-          ? "ch.agricoltivio.coltiviotest"
-          : "ch.agricoltivio.coltivio",
+      package: isTest
+        ? "ch.agricoltivio.coltiviotest"
+        : "ch.agricoltivio.coltivio",
       permissions: [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
