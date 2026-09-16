@@ -254,7 +254,7 @@
         "body": "Appuyez sur l'une de vos parcelles pour sélectionner votre numéro d'exploitation."
       },
       "confirmation": "Est-ce que {{federalFarmId}} est votre numéro d'enregistrement de l'exploitation agricole ?",
-      "confirmation_without_id": "Continuer sans numéro d'exploitation ? Vous dessinerez alors vous-même vos surfaces. Les cantons d'Obwald, de Nidwald, de Vaud et de Bâle-Ville ne sont pas encore pris en charge.",
+      "confirmation_without_id": "Continuer sans numéro d'exploitation ? Vous dessinerez alors vous-même vos surfaces.",
       "continue_without_id": "Continuer sans numéro d'exploitation",
       "select_on_map_hint": "Numéro d'exploitation inconnu ? Appuyez ici pour sélectionner une parcelle sur la carte.",
       "search_min_chars": "Saisissez au moins {{minChars}} caractères pour lancer la recherche.",
@@ -262,7 +262,9 @@
       "search_error": "La recherche a échoué. Veuillez vérifier votre connexion internet.",
       "nearby_loading": "Recherche des numéros d'exploitation à proximité…",
       "nearby_error": "Les numéros d'exploitation à proximité n'ont pas pu être chargés. Veuillez vérifier votre connexion internet.",
-      "not_found": "Nous n'avons trouvé aucun numéro d'exploitation dans un rayon de {{radiusKm}} km autour de « {{address}} ». Recherchez votre numéro d'exploitation ci-dessus ou revenez en arrière pour vérifier l'adresse. Les cantons d'Obwald, de Nidwald, de Vaud et de Bâle-Ville ne sont pas encore pris en charge : vous y dessinez vous-même vos surfaces. Si votre canton ne figure pas dans la liste, contactez-nous à support@coltivio.ch."
+      "not_found": "Nous n'avons trouvé aucun numéro d'exploitation dans un rayon de {{radiusKm}} km autour de « {{address}} ».",
+      "not_found_hint": "Recherchez votre numéro d'exploitation ci-dessus ou revenez en arrière pour vérifier l'adresse.",
+      "not_found_cantons": "Les cantons d'Obwald, de Nidwald, de Vaud et de Bâle-Ville ne sont pas encore pris en charge. Vous y dessinez vous-même vos surfaces."
     },
     "summary": {
       "heading": "Tout est prêt !",

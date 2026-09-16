@@ -254,7 +254,7 @@
         "body": "Tippe auf eine deiner Parzellen, um deine Betriebsnummer auszuwählen."
       },
       "confirmation": "Ist {{federalFarmId}} deine Betriebsnummer?",
-      "confirmation_without_id": "Ohne Betriebsnummer fortfahren? Du zeichnest deine Flächen dann selbst ein. Die Kantone Obwalden, Nidwalden, Waadt und Basel-Stadt werden noch nicht unterstützt.",
+      "confirmation_without_id": "Ohne Betriebsnummer fortfahren? Du zeichnest deine Flächen dann selbst ein.",
       "continue_without_id": "Ohne Betriebsnummer fortfahren",
       "select_on_map_hint": "Betriebsnummer unbekannt? Hier tippen, um eine Parzelle auf der Karte auszuwählen.",
       "search_min_chars": "Gib mindestens {{minChars}} Zeichen ein, um zu suchen.",
@@ -262,7 +262,9 @@
       "search_error": "Die Suche ist fehlgeschlagen. Bitte prüfe deine Internetverbindung.",
       "nearby_loading": "Betriebsnummern in der Nähe werden gesucht…",
       "nearby_error": "Betriebsnummern in der Nähe konnten nicht geladen werden. Bitte prüfe deine Internetverbindung.",
-      "not_found": "Im Umkreis von {{radiusKm}} km um «{{address}}» haben wir keine Betriebsnummer gefunden. Suche oben nach deiner Betriebsnummer oder gehe zurück und prüfe die Adresse. Die Kantone Obwalden, Nidwalden, Waadt und Basel-Stadt werden noch nicht unterstützt. Dort zeichnest du deine Flächen selbst ein. Ist dein Kanton nicht aufgeführt, melde dich unter support@coltivio.ch."
+      "not_found": "Im Umkreis von {{radiusKm}} km um «{{address}}» haben wir keine Betriebsnummer gefunden.",
+      "not_found_hint": "Suche oben nach deiner Betriebsnummer oder gehe zurück und prüfe die Adresse.",
+      "not_found_cantons": "Die Kantone Obwalden, Nidwalden, Waadt und Basel-Stadt werden noch nicht unterstützt. Dort zeichnest du deine Flächen selbst ein."
     },
     "summary": {
       "heading": "Geschafft!",

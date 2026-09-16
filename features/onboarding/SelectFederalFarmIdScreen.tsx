@@ -225,14 +225,29 @@ export function SelectFederalFarmIdScreen({
               onRetry={() => refetchPlots()}
             />
           ) : nearbyStatus === "notFound" ? (
-            <Card style={{ backgroundColor: theme.colors.warning }}>
-              <Text style={{ fontSize: 15, color: theme.colors.black }}>
-                {t("onboarding.federal_farm_number.not_found", {
-                  address: data.location?.label,
-                  radiusKm: NEARBY_RADIUS_KM,
-                })}
-              </Text>
-            </Card>
+            <>
+              <Card
+                style={{
+                  backgroundColor: theme.colors.warning,
+                  gap: theme.spacing.s,
+                }}
+              >
+                <Text style={{ fontSize: 15, color: theme.colors.black }}>
+                  {t("onboarding.federal_farm_number.not_found", {
+                    address: data.location?.label,
+                    radiusKm: NEARBY_RADIUS_KM,
+                  })}
+                </Text>
+                <Text style={{ fontSize: 15, color: theme.colors.black }}>
+                  {t("onboarding.federal_farm_number.not_found_hint")}
+                </Text>
+              </Card>
+              <Card>
+                <Text style={{ fontSize: 15, color: theme.colors.gray1 }}>
+                  {t("onboarding.federal_farm_number.not_found_cantons")}
+                </Text>
+              </Card>
+            </>
           ) : (
             <Pressable
               onPress={() =>

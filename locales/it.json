@@ -254,7 +254,7 @@
         "body": "Tocca una delle tue particelle per selezionare il tuo codice azienda agricola."
       },
       "confirmation": "{{federalFarmId}} è il tuo codice azienda agricola?",
-      "confirmation_without_id": "Continuare senza codice azienda agricola? Disegnerai tu stesso le tue superfici. I cantoni Obvaldo, Nidvaldo, Vaud e Basilea Città non sono ancora supportati.",
+      "confirmation_without_id": "Continuare senza codice azienda agricola? Disegnerai tu stesso le tue superfici.",
       "continue_without_id": "Continua senza codice azienda",
       "select_on_map_hint": "Non conosci il tuo numero aziendale? Tocca qui per selezionare una parcella sulla mappa.",
       "search_min_chars": "Inserisci almeno {{minChars}} caratteri per cercare.",
@@ -262,7 +262,9 @@
       "search_error": "La ricerca non è riuscita. Controlla la tua connessione internet.",
       "nearby_loading": "Ricerca dei codici azienda nelle vicinanze…",
       "nearby_error": "Non è stato possibile caricare i codici azienda nelle vicinanze. Controlla la tua connessione internet.",
-      "not_found": "Non abbiamo trovato alcun codice azienda entro {{radiusKm}} km da «{{address}}». Cerca il tuo codice azienda qui sopra oppure torna indietro e verifica l'indirizzo. I cantoni Obvaldo, Nidvaldo, Vaud e Basilea Città non sono ancora supportati: lì disegni tu stesso le tue superfici. Se il tuo cantone non è elencato, contattaci all'indirizzo support@coltivio.ch."
+      "not_found": "Non abbiamo trovato alcun codice azienda entro {{radiusKm}} km da «{{address}}».",
+      "not_found_hint": "Cerca il tuo codice azienda qui sopra oppure torna indietro e verifica l'indirizzo.",
+      "not_found_cantons": "I cantoni Obvaldo, Nidvaldo, Vaud e Basilea Città non sono ancora supportati. Lì disegni tu stesso le tue superfici."
     },
     "summary": {
       "heading": "Tutto pronto!",

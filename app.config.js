@@ -2,7 +2,7 @@ export default ({ config }) => {
   const isTest = process.env.APP_VARIANT === "development";
   return {
     ...config,
-    name: isTest ? "coltivio - test" : "coltivio",
+    name: isTest ? "Coltivio - Test" : "coltivio",
     slug: "coltivio",
     owner: "agricoltivio",
     version: "1.0.3",
@@ -44,8 +44,9 @@ export default ({ config }) => {
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon.png",
         // Tinted background for the test build, so it is distinguishable from
-        // the production app on the home screen at a glance.
-        backgroundColor: isTest ? "#e8f0d8" : "#ffffff",
+        // the production app on the home screen at a glance. Amber rather than
+        // the demo build's #e8f0d8, so all three variants stay tellable apart.
+        backgroundColor: isTest ? "#f4c95d" : "#ffffff",
       },
       package: isTest
         ? "ch.agricoltivio.coltiviotest"
