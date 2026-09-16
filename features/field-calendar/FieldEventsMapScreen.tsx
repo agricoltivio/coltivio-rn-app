@@ -156,6 +156,7 @@ export function FieldEventsMapScreen({
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const { farm } = useFarmQuery();
+  const [bottomControlsHeight, setBottomControlsHeight] = useState(0);
 
   const currentYear = new Date().getFullYear();
   const [year, setYear] = useState(currentYear);
@@ -286,6 +287,8 @@ export function FieldEventsMapScreen({
     ? (farm.location.coordinates as LngLat)
     : [7.4474, 46.9481];
 
+  const hasNoEvents = events !== undefined && events.length === 0;
+
   const done = currentIndex >= sortedEvents.length && sortedEvents.length > 0;
   const progress =
     sortedEvents.length > 0 ? currentIndex / sortedEvents.length : 0;
@@ -297,6 +300,9 @@ export function FieldEventsMapScreen({
         initialCenter={farmCenter}
         initialZoom={14}
         cameraRef={cameraRef}
+        attributionBottomOffset={
+          (hasNoEvents ? insets.bottom : bottomControlsHeight) + 8
+        }
       >
         <GeoJSONSource id="field-events" data={playedFeatures}>
           <Layer
@@ -380,10 +386,13 @@ export function FieldEventsMapScreen({
 
       {/* Bottom controls — hidden when no events */}
       <View
+        onLayout={(event) =>
+          setBottomControlsHeight(event.nativeEvent.layout.height)
+        }
         style={[
           styles.bottomControls,
           { paddingBottom: insets.bottom + 12 },
-          events !== undefined && events.length === 0 && { display: "none" },
+          hasNoEvents && { display: "none" },
         ]}
       >
         {/* Legend */}

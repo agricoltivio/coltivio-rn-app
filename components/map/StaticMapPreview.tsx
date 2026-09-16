@@ -11,6 +11,7 @@ import { hexToRgba } from "@/theme/theme";
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { useTheme } from "styled-components/native";
+import { MapAttribution } from "./MapAttribution";
 
 type BaseLayer = "satellite" | "map";
 
@@ -50,7 +51,13 @@ export function StaticMapPreview({
 
   return (
     <View pointerEvents="box-none" style={[styles.container, { height }]}>
-      <Map style={styles.map} mapStyle={EMPTY_STYLE} dragPan={false}>
+      <Map
+        style={styles.map}
+        mapStyle={EMPTY_STYLE}
+        dragPan={false}
+        attribution={false}
+        logo={false}
+      >
         <Camera
           initialViewState={{
             center,
@@ -106,6 +113,8 @@ export function StaticMapPreview({
           />
         </GeoJSONSource>
       </Map>
+
+      <MapAttribution />
 
       {/* Layer toggle button */}
       {/* <TouchableOpacity
