@@ -1230,6 +1230,7 @@
     "edit_journal_entry": "Modifier l'entrée",
     "delete_journal_entry": "Supprimer l'entrée",
     "journal_entry_content": "Contenu",
+    "journal_images_upload_failed": "L'entrée a été enregistrée, mais toutes les images n'ont pas pu être téléversées. Tu peux les ajouter à nouveau en modifiant l'entrée.",
     "outdoor_journal": "Journal de sorties",
     "outdoor_journal_info": "Ce journal est généré automatiquement à partir des plannings de sorties des troupeaux et des catégories d'animaux définies.",
     "uncategorized_animals_warning": "{{count}} animaux sans catégorie",
@@ -1387,7 +1388,8 @@
       "layer_heading": "Couche de carte par défaut",
       "layer_satellite": "Satellite",
       "layer_map": "Carte routière",
-      "color_mode_heading": "Coloration des parcelles par défaut"
+      "color_mode_heading": "Coloration des parcelles par défaut",
+      "attribution": "© swisstopo, cantons (geodienste.ch)"
     },
     "language": {
       "title": "Langue"
@@ -1507,6 +1509,7 @@
     "required_locale_hint": "L'allemand est requis",
     "changes_requested": "Modifications demandées",
     "image_too_large": "L'image est trop grande (max. 10 Mo).",
+    "image_upload_failed": "L'image n'a pas pu être téléversée.",
     "image_size": "Choisir la taille de l'image",
     "image_size_small": "Petite (400px)",
     "image_size_medium": "Moyenne (700px)",

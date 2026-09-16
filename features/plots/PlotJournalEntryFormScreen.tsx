@@ -129,10 +129,13 @@ export function PlotJournalEntryFormScreen({
       journalEntryId,
       pending.filename,
     );
-    await fetch(resolveLocalUrl(signedUrl), {
+    const uploadResponse = await fetch(resolveLocalUrl(signedUrl), {
       method: "PUT",
       body: pending.blob,
     });
+    if (!uploadResponse.ok) {
+      throw new Error(`Image upload failed: ${uploadResponse.status}`);
+    }
     return api.plotJournal.registerImage(journalEntryId, path);
   }
 
@@ -146,7 +149,7 @@ export function PlotJournalEntryFormScreen({
         const uploaded = await uploadImageForEntry(entryId, pending);
         setUploadedImages((prev) => [...prev, uploaded]);
       } catch {
-        Alert.alert(t("common.error"), t("common.error"));
+        Alert.alert(t("common.error"), t("wiki.image_upload_failed"));
       } finally {
         setIsUploadingImage(false);
       }
@@ -181,12 +184,19 @@ export function PlotJournalEntryFormScreen({
         await updateMutation.mutateAsync({ entryId, plotId, body });
       } else {
         const created = await createMutation.mutateAsync({ plotId, body });
+        let hasFailedUploads = false;
         for (const pending of pendingImages) {
           try {
             await uploadImageForEntry(created.id, pending);
           } catch {
-            // Entry created — image upload failure is non-fatal
+            hasFailedUploads = true;
           }
+        }
+        if (hasFailedUploads) {
+          Alert.alert(
+            t("common.error"),
+            t("animals.journal_images_upload_failed"),
+          );
         }
       }
       navigation.goBack();
