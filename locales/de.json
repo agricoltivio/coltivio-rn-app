@@ -1444,6 +1444,7 @@
     "recurrence": "Wiederholung",
     "checklist": "Checkliste",
     "add_checklist_item": "Punkt hinzufügen",
+    "generate_checklist_items": "Punkte generieren",
     "links": "Verknüpfungen",
     "add_link": "Verknüpfung hinzufügen",
     "link_types": {

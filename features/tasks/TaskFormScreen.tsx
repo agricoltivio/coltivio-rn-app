@@ -947,6 +947,9 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
   const [recurrence, setRecurrence] = useState<RecurrenceValue | null>(null);
   const [recurrenceModalVisible, setRecurrenceModalVisible] = useState(false);
   const [linkPickerVisible, setLinkPickerVisible] = useState(false);
+  const [linkPickerMode, setLinkPickerMode] = useState<
+    "add" | "editGroup" | "generateChecklist"
+  >("add");
   // State for opening the picker in edit mode (pre-filtered + pre-selected)
   const [linkPickerInitialEntityType, setLinkPickerInitialEntityType] =
     useState<EntityType | null>(null);
@@ -1117,6 +1120,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
   }, [links]);
 
   function openAddLinkPicker() {
+    setLinkPickerMode("add");
     setLinkPickerInitialEntityType(null);
     setLinkPickerInitialLinks([]);
     setLinkPickerVisible(true);
@@ -1124,6 +1128,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
 
   // Open picker pre-filtered to a specific linkType group for editing
   function openEditLinkGroup(linkType: AllLinkType) {
+    setLinkPickerMode("editGroup");
     const entityType: EntityType =
       linkType === "animal" || linkType === "herd"
         ? "animal"
@@ -1132,6 +1137,14 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
     setLinkPickerInitialEntityType(entityType);
     setLinkPickerInitialAnimalSubView(subView);
     setLinkPickerInitialLinks(links.filter((l) => l.linkType === linkType));
+    setLinkPickerVisible(true);
+  }
+
+  // Opens the link picker; confirming implicitly links AND generates a checklist item per entity.
+  function openGenerateChecklistFromPicker() {
+    setLinkPickerMode("generateChecklist");
+    setLinkPickerInitialEntityType(null);
+    setLinkPickerInitialLinks([]);
     setLinkPickerVisible(true);
   }
 
@@ -1168,6 +1181,20 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
         ];
       });
     }
+    setLinkPickerVisible(false);
+  }
+
+  function handleGenerateChecklistFromPicker(confirmedLinks: LinkInput[]) {
+    // Same dedupe-by-linkedId merge as handleLinksConfirm's add-mode branch
+    setLinks((prev) => {
+      const existingIds = new Set(prev.map((l) => l.linkedId));
+      return [
+        ...prev,
+        ...confirmedLinks.filter((l) => !existingIds.has(l.linkedId)),
+      ];
+    });
+    // Same mapping as handleGenerateConfirm
+    appendChecklist(confirmedLinks.map((l) => ({ name: l.displayName })));
     setLinkPickerVisible(false);
   }
 
@@ -1255,14 +1282,24 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
 
             {/* Checklist items */}
             <View style={{ marginTop: theme.spacing.m }}>
-              <Subtitle
+              <View
                 style={{
-                  color: theme.colors.gray2,
+                  flexDirection: "row",
+                  alignItems: "center",
                   marginBottom: theme.spacing.xs,
                 }}
               >
-                {t("tasks.checklist")}
-              </Subtitle>
+                <Subtitle style={{ color: theme.colors.gray2, flex: 1 }}>
+                  {t("tasks.checklist")}
+                </Subtitle>
+                <IonIconButton
+                  type="accent"
+                  icon="sparkles-outline"
+                  iconSize={18}
+                  color={theme.colors.primary}
+                  onPress={openGenerateChecklistFromPicker}
+                />
+              </View>
               {checklistFields.map((field, index) => (
                 <ChecklistItemRow
                   key={field.id}
@@ -1496,7 +1533,11 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
       <LinkPickerModal
         visible={linkPickerVisible}
         onClose={() => setLinkPickerVisible(false)}
-        onConfirm={handleLinksConfirm}
+        onConfirm={
+          linkPickerMode === "generateChecklist"
+            ? handleGenerateChecklistFromPicker
+            : handleLinksConfirm
+        }
         initialEntityType={linkPickerInitialEntityType}
         initialAnimalSubView={linkPickerInitialAnimalSubView}
         initialSelectedLinks={linkPickerInitialLinks}

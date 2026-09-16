@@ -1443,6 +1443,7 @@
     "recurrence": "Recurrence",
     "checklist": "Checklist",
     "add_checklist_item": "Add item",
+    "generate_checklist_items": "Generate items",
     "links": "Links",
     "add_link": "Add link",
     "link_types": {
