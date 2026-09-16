@@ -23,7 +23,8 @@
     "send_email": "Send Email",
     "forgot_password": "Forgot Password",
     "apply": "Apply",
-    "clear": "Clear"
+    "clear": "Clear",
+    "retry": "Try again"
   },
   "forms": {
     "labels": {
@@ -101,7 +102,7 @@
     },
     "placeholders": {
       "location_search": "e.g., Street, House Number, City",
-      "federal_farm_number": "e.g., 123/555/4/1",
+      "federal_farm_number": "e.g., BEB113945 or LU3862",
       "search": "Search...",
       "weight_kg_per_harvest_unit": "e.g., 20kg per square bale",
       "password_requirements": "At least 6 characters"
@@ -252,12 +253,18 @@
         "heading": "Your Farm Registration Number",
         "body": "Tap one of your parcels to select your farm registration number."
       },
-      "modal_not_found": {
-        "heading": "Your Farm Registration Number",
-        "body": "Unfortunately, we could not find any parcels at your location. The Cantons of Obwalden, Nidwalden and Waadt are unfortunately not yet supported. You can skip this step and manually draw your plots. If your canton is not listed, please contact us at support@coltivi.ch."
-      },
       "confirmation": "Is {{federalFarmId}} your farm registration number?",
-      "select_on_map_hint": "Don't know your farm number? Tap here to select a parcel on the map."
+      "confirmation_without_id": "Continue without a farm registration number? You will then draw your plots yourself.",
+      "continue_without_id": "Continue without farm number",
+      "select_on_map_hint": "Don't know your farm number? Tap here to select a parcel on the map.",
+      "search_min_chars": "Enter at least {{minChars}} characters to search.",
+      "search_empty": "No farm number similar to “{{query}}” found within about {{radiusKm}} km.",
+      "search_error": "The search failed. Please check your internet connection.",
+      "nearby_loading": "Looking for farm numbers nearby…",
+      "nearby_error": "Farm numbers nearby could not be loaded. Please check your internet connection.",
+      "not_found": "We could not find any farm number within {{radiusKm}} km of “{{address}}”.",
+      "not_found_hint": "Search for your farm number above or go back and check the address.",
+      "not_found_cantons": "The cantons of Obwalden, Nidwalden, Vaud and Basel-Stadt are not yet supported. There, you draw your plots yourself."
     },
     "summary": {
       "heading": "All set!",
@@ -1225,6 +1232,7 @@
     "edit_journal_entry": "Edit entry",
     "delete_journal_entry": "Delete entry",
     "journal_entry_content": "Content",
+    "journal_images_upload_failed": "The entry was saved, but not all images could be uploaded. You can add them again by editing the entry.",
     "outdoor_journal": "Outdoor Journal",
     "outdoor_journal_info": "This journal is automatically generated from the outdoor schedules of the herds and the defined animal categories.",
     "uncategorized_animals_warning": "{{count}} animals without category",
@@ -1382,7 +1390,8 @@
       "layer_heading": "Default Map Layer",
       "layer_satellite": "Satellite",
       "layer_map": "Street Map",
-      "color_mode_heading": "Default Plot Coloring"
+      "color_mode_heading": "Default Plot Coloring",
+      "attribution": "© swisstopo, cantons (geodienste.ch)"
     },
     "language": {
       "title": "Language"
@@ -1503,6 +1512,7 @@
     "required_locale_hint": "German is required",
     "changes_requested": "Changes requested",
     "image_too_large": "The image is too large (max. 10 MB).",
+    "image_upload_failed": "The image could not be uploaded.",
     "image_size": "Choose image size",
     "image_size_small": "Small (400px)",
     "image_size_medium": "Medium (700px)",

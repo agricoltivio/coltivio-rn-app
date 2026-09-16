@@ -23,7 +23,8 @@
     "send_email": "E-Mail senden",
     "forgot_password": "Passwort vergessen",
     "apply": "Anwenden",
-    "clear": "Löschen"
+    "clear": "Löschen",
+    "retry": "Erneut versuchen"
   },
   "forms": {
     "labels": {
@@ -101,7 +102,7 @@
     },
     "placeholders": {
       "location_search": "z.B. Straße, Hausnummer, Ort",
-      "federal_farm_number": "z.B. 123/555/4/1",
+      "federal_farm_number": "z.B. BEB113945 oder LU3862",
       "search": "Suche...",
       "weight_kg_per_harvest_unit": "z.B. 20kg pro Quaderballen",
       "password_requirements": "Mindestens 6 Zeichen"
@@ -252,12 +253,18 @@
         "heading": "Deine Betriebsnummer",
         "body": "Tippe auf eine deiner Parzellen, um deine Betriebsnummer auszuwählen."
       },
-      "modal_not_found": {
-        "heading": "Deine Betriebsnummer",
-        "body": "Leider haben wir keine Parzellen an deinem Standort gefunden. Die Kantone Obwalden, Nidwalden und Waadt sind leider noch nicht unterstützt. Du kannst diesen Schritt überspringen und die Flächen manuell einzeichnen. Falls dein Kanton nicht dabei ist, kontaktiere uns bitte unter support@coltivi.ch."
-      },
       "confirmation": "Ist {{federalFarmId}} deine Betriebsnummer?",
-      "select_on_map_hint": "Betriebsnummer unbekannt? Hier tippen, um eine Parzelle auf der Karte auszuwählen."
+      "confirmation_without_id": "Ohne Betriebsnummer fortfahren? Du zeichnest deine Flächen dann selbst ein.",
+      "continue_without_id": "Ohne Betriebsnummer fortfahren",
+      "select_on_map_hint": "Betriebsnummer unbekannt? Hier tippen, um eine Parzelle auf der Karte auszuwählen.",
+      "search_min_chars": "Gib mindestens {{minChars}} Zeichen ein, um zu suchen.",
+      "search_empty": "Keine ähnliche Betriebsnummer zu «{{query}}» im Umkreis von ca. {{radiusKm}} km gefunden.",
+      "search_error": "Die Suche ist fehlgeschlagen. Bitte prüfe deine Internetverbindung.",
+      "nearby_loading": "Betriebsnummern in der Nähe werden gesucht…",
+      "nearby_error": "Betriebsnummern in der Nähe konnten nicht geladen werden. Bitte prüfe deine Internetverbindung.",
+      "not_found": "Im Umkreis von {{radiusKm}} km um «{{address}}» haben wir keine Betriebsnummer gefunden.",
+      "not_found_hint": "Suche oben nach deiner Betriebsnummer oder gehe zurück und prüfe die Adresse.",
+      "not_found_cantons": "Die Kantone Obwalden, Nidwalden, Waadt und Basel-Stadt werden noch nicht unterstützt. Dort zeichnest du deine Flächen selbst ein."
     },
     "summary": {
       "heading": "Geschafft!",
@@ -1225,6 +1232,7 @@
     "edit_journal_entry": "Eintrag bearbeiten",
     "delete_journal_entry": "Eintrag löschen",
     "journal_entry_content": "Inhalt",
+    "journal_images_upload_failed": "Der Eintrag wurde gespeichert, aber nicht alle Bilder konnten hochgeladen werden. Du kannst sie beim Bearbeiten des Eintrags erneut hinzufügen.",
     "outdoor_journal": "Auslaufjournal",
     "outdoor_journal_info": "Dieses Journal wird automatisch aus den Auslaufplänen der Herden und den definierten Tierkategorien erstellt.",
     "uncategorized_animals_warning": "{{count}} Tiere ohne Kategorie",
@@ -1401,7 +1409,8 @@
       "layer_heading": "Standard-Kartenlayer",
       "layer_satellite": "Satellitenbild",
       "layer_map": "Strassenkarte",
-      "color_mode_heading": "Standard-Schlagfärbung"
+      "color_mode_heading": "Standard-Schlagfärbung",
+      "attribution": "© swisstopo, Kantone (geodienste.ch)"
     },
     "language": {
       "title": "Sprache"
@@ -1505,6 +1514,7 @@
     "required_locale_hint": "Deutsch ist erforderlich",
     "changes_requested": "Änderungen angefordert",
     "image_too_large": "Das Bild ist zu gross (max. 10 MB).",
+    "image_upload_failed": "Das Bild konnte nicht hochgeladen werden.",
     "image_size": "Bildgrösse wählen",
     "image_size_small": "Klein (400px)",
     "image_size_medium": "Mittel (700px)",

@@ -23,7 +23,8 @@
     "send_email": "Envoyer e-mail",
     "forgot_password": "Mot de passe oublié",
     "apply": "Appliquer",
-    "clear": "Effacer"
+    "clear": "Effacer",
+    "retry": "Réessayer"
   },
   "forms": {
     "labels": {
@@ -101,7 +102,7 @@
     },
     "placeholders": {
       "location_search": "ex. Rue, Numéro, Ville",
-      "federal_farm_number": "ex. 123/555/4/1",
+      "federal_farm_number": "ex. BEB113945 ou LU3862",
       "search": "Rechercher...",
       "weight_kg_per_harvest_unit": "ex. 20kg par balle carrée",
       "password_requirements": "Au moins 6 caractères"
@@ -252,12 +253,18 @@
         "heading": "Votre numéro d'enregistrement de l'exploitation agricole",
         "body": "Appuyez sur l'une de vos parcelles pour sélectionner votre numéro d'exploitation."
       },
-      "modal_not_found": {
-        "heading": "Votre numéro d'exploitation",
-        "body": "Malheureusement, nous n'avons trouvé aucun champ à votre emplacement. Les cantons Obwald, Nidwald et Vaud ne sont pas encore pris en charge. Vous pouvez passer cette étape et dessiner les champs manuellement. Si votre canton ne figure pas dans la liste, veuillez nous contacter à support@coltivi.ch."
-      },
       "confirmation": "Est-ce que {{federalFarmId}} est votre numéro d'enregistrement de l'exploitation agricole ?",
-      "select_on_map_hint": "Numéro d'exploitation inconnu ? Appuyez ici pour sélectionner une parcelle sur la carte."
+      "confirmation_without_id": "Continuer sans numéro d'exploitation ? Vous dessinerez alors vous-même vos surfaces.",
+      "continue_without_id": "Continuer sans numéro d'exploitation",
+      "select_on_map_hint": "Numéro d'exploitation inconnu ? Appuyez ici pour sélectionner une parcelle sur la carte.",
+      "search_min_chars": "Saisissez au moins {{minChars}} caractères pour lancer la recherche.",
+      "search_empty": "Aucun numéro d'exploitation similaire à « {{query}} » trouvé dans un rayon d'environ {{radiusKm}} km.",
+      "search_error": "La recherche a échoué. Veuillez vérifier votre connexion internet.",
+      "nearby_loading": "Recherche des numéros d'exploitation à proximité…",
+      "nearby_error": "Les numéros d'exploitation à proximité n'ont pas pu être chargés. Veuillez vérifier votre connexion internet.",
+      "not_found": "Nous n'avons trouvé aucun numéro d'exploitation dans un rayon de {{radiusKm}} km autour de « {{address}} ».",
+      "not_found_hint": "Recherchez votre numéro d'exploitation ci-dessus ou revenez en arrière pour vérifier l'adresse.",
+      "not_found_cantons": "Les cantons d'Obwald, de Nidwald, de Vaud et de Bâle-Ville ne sont pas encore pris en charge. Vous y dessinez vous-même vos surfaces."
     },
     "summary": {
       "heading": "Tout est prêt !",
@@ -1225,6 +1232,7 @@
     "edit_journal_entry": "Modifier l'entrée",
     "delete_journal_entry": "Supprimer l'entrée",
     "journal_entry_content": "Contenu",
+    "journal_images_upload_failed": "L'entrée a été enregistrée, mais toutes les images n'ont pas pu être téléversées. Tu peux les ajouter à nouveau en modifiant l'entrée.",
     "outdoor_journal": "Journal de sorties",
     "outdoor_journal_info": "Ce journal est généré automatiquement à partir des plannings de sorties des troupeaux et des catégories d'animaux définies.",
     "uncategorized_animals_warning": "{{count}} animaux sans catégorie",
@@ -1382,7 +1390,8 @@
       "layer_heading": "Couche de carte par défaut",
       "layer_satellite": "Satellite",
       "layer_map": "Carte routière",
-      "color_mode_heading": "Coloration des parcelles par défaut"
+      "color_mode_heading": "Coloration des parcelles par défaut",
+      "attribution": "© swisstopo, cantons (geodienste.ch)"
     },
     "language": {
       "title": "Langue"
@@ -1503,6 +1512,7 @@
     "required_locale_hint": "L'allemand est requis",
     "changes_requested": "Modifications demandées",
     "image_too_large": "L'image est trop grande (max. 10 Mo).",
+    "image_upload_failed": "L'image n'a pas pu être téléversée.",
     "image_size": "Choisir la taille de l'image",
     "image_size_small": "Petite (400px)",
     "image_size_medium": "Moyenne (700px)",
