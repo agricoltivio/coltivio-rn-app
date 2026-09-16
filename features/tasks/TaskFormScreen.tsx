@@ -94,9 +94,9 @@ function ChecklistGenerationModal({
     Set<AnimalType>
   >(new Set());
   // Tracks items selected in the current picker session: id -> display name
-  const [pendingSelection, setPendingSelection] = useState<
-    Map<string, string>
-  >(new Map());
+  const [pendingSelection, setPendingSelection] = useState<Map<string, string>>(
+    new Map(),
+  );
 
   const { animals } = useAnimalsQuery(false, undefined, visible);
   const { plots } = useFarmPlotsQuery();
@@ -182,10 +182,19 @@ function ChecklistGenerationModal({
       return filteredHerds.map((h) => ({ id: h.id, displayName: h.name }));
     }
     if (entityType === "plot") {
-      return filteredPlots.map((p) => ({ id: p.id, displayName: p.name ?? p.id }));
+      return filteredPlots.map((p) => ({
+        id: p.id,
+        displayName: p.name ?? p.id,
+      }));
     }
     return [];
-  }, [entityType, animalSubView, filteredAnimals, filteredHerds, filteredPlots]);
+  }, [
+    entityType,
+    animalSubView,
+    filteredAnimals,
+    filteredHerds,
+    filteredPlots,
+  ]);
 
   function handleSelectAll() {
     setPendingSelection((prev) => {
