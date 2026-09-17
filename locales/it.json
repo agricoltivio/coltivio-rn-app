@@ -718,10 +718,10 @@
     "crop_rotations": "Rotazioni colturali",
     "tillages": "Lavorazioni del terreno",
     "fertilizers": "Fertilizzanti",
-    "fertilizer_applications": "Applicazioni di fertilizzanti",
+    "fertilizer_applications": "Fertilizzazioni",
     "harvests": "Raccolti",
     "crop_protection_products": "Prodotti fitosanitari",
-    "crop_protection_applications": "Trattamenti fitosanitari",
+    "crop_protection_applications": "Fitosanitari",
     "export": "Genera report",
     "settings": "Impostazioni calendario dei campi",
     "groups": {
@@ -804,11 +804,11 @@
     "default_machine_info": "Per semplificare la registrazione può essere definita una macchina con cui viene applicato questo fertilizzante."
   },
   "fertilizer_application": {
-    "fertilizer_application": "Distribuzione del fertilizzante",
-    "fertilizer_application_date": "Distribuzione del fertilizzante del {{date}}",
-    "fertilizer_application_year": "Distribuzione del fertilizzante {{year}}",
-    "fertilizer_application_plot_name": "Distribuzione del fertilizzante - {{name}}",
-    "add_fertilizer_application": "Nuova distribuzione del fertilizzante",
+    "fertilizer_application": "Fertilizzazione",
+    "fertilizer_application_date": "Fertilizzazione del {{date}}",
+    "fertilizer_application_year": "Fertilizzazione {{year}}",
+    "fertilizer_application_plot_name": "Fertilizzazione - {{name}}",
+    "add_fertilizer_application": "Nuova fertilizzazione",
     "application_configuration": "Configurazione distribuzione",
     "units": {
       "bag": "Sacco",
@@ -897,12 +897,12 @@
     "family_in_use_warning": "Questa famiglia di colture è in uso e quindi non può essere eliminata."
   },
   "crop_protection_applications": {
-    "crop_protection": "Trattamento fitosanitario",
-    "application_configuration": "Configurazione trattamento fitosanitario",
-    "add_application": "Nuovo trattamento fitosanitario",
-    "crop_protection_year": "Trattamento fitosanitario {{year}}",
-    "crop_protection_plot_name": "Trattamento fitosanitario - {{name}}",
-    "crop_protection_date": "Trattamento fitosanitario del {{date}}",
+    "crop_protection": "Fitosanitari",
+    "application_configuration": "Configurazione fitosanitari",
+    "add_application": "Nuovo fitosanitario",
+    "crop_protection_year": "Fitosanitari {{year}}",
+    "crop_protection_plot_name": "Fitosanitari - {{name}}",
+    "crop_protection_date": "Fitosanitari del {{date}}",
     "select_date": {
       "heading": "Quando è stato effettuato il trattamento?"
     },

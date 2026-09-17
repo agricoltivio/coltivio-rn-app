@@ -718,10 +718,10 @@
     "crop_rotations": "Rotations culturales",
     "tillages": "Travaux du sol",
     "fertilizers": "Engrais",
-    "fertilizer_applications": "Applications d'engrais",
+    "fertilizer_applications": "Fertilisations",
     "harvests": "Récoltes",
     "crop_protection_products": "Produits phytosanitaires",
-    "crop_protection_applications": "Protection des cultures",
+    "crop_protection_applications": "Phytosanitaires",
     "export": "Générer des rapports",
     "settings": "Paramètres du calendrier cultural",
     "groups": {
@@ -804,11 +804,11 @@
     "default_machine_info": "Pour faciliter l'enregistrement, une machine peut être définie pour appliquer cet engrais."
   },
   "fertilizer_application": {
-    "fertilizer_application": "Application d'engrais",
-    "fertilizer_application_date": "Application d'engrais {{date}}",
-    "fertilizer_application_year": "Application d'engrais {{year}}",
-    "fertilizer_application_plot_name": "Application d'engrais - {{name}}",
-    "add_fertilizer_application": "Nouvelle application d'engrais",
+    "fertilizer_application": "Fertilisation",
+    "fertilizer_application_date": "Fertilisation {{date}}",
+    "fertilizer_application_year": "Fertilisation {{year}}",
+    "fertilizer_application_plot_name": "Fertilisation - {{name}}",
+    "add_fertilizer_application": "Nouvelle fertilisation",
     "application_configuration": "Configuration de l'application",
     "units": {
       "bag": "Sac",
@@ -897,12 +897,12 @@
     "family_in_use_warning": "Cette famille de cultures est utilisée et ne peut donc pas être supprimée."
   },
   "crop_protection_applications": {
-    "crop_protection": "Protection des cultures",
-    "application_configuration": "Configuration de la protection des cultures",
-    "add_application": "Nouvelle mesure de protection des cultures",
-    "crop_protection_year": "Protection des cultures {{year}}",
-    "crop_protection_plot_name": "Protection des cultures - {{name}}",
-    "crop_protection_date": "Protection des cultures - {{date}}",
+    "crop_protection": "Phytosanitaire",
+    "application_configuration": "Configuration phytosanitaire",
+    "add_application": "Nouveau phytosanitaire",
+    "crop_protection_year": "Phytosanitaire {{year}}",
+    "crop_protection_plot_name": "Phytosanitaire - {{name}}",
+    "crop_protection_date": "Phytosanitaire {{date}}",
     "select_date": {
       "heading": "Quand la mesure a-t-elle été appliquée ?"
     },
