@@ -131,6 +131,32 @@ export function UserAccountScreen({ navigation }: UserAccountScreenProps) {
               <ListItem.Chevron />
             </ListItem>
           </View>
+          <View
+            style={{
+              borderRadius: 10,
+              overflow: "hidden",
+              backgroundColor: theme.colors.white,
+              marginTop: theme.spacing.l,
+            }}
+          >
+            <ListItem
+              onPress={() => navigation.navigate("DeleteAccount")}
+              style={{ backgroundColor: theme.colors.white }}
+              hideBottomDivider
+            >
+              <ListItem.Content>
+                <ListItem.Title
+                  style={{
+                    paddingLeft: theme.spacing.m,
+                    color: theme.colors.danger,
+                  }}
+                >
+                  {t("users.delete_account.title")}
+                </ListItem.Title>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
+          </View>
         </View>
       </ScrollView>
     </ContentView>

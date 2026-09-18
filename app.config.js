@@ -1,8 +1,29 @@
+// Each variant installs side by side with its own id, name and icon background:
+// test is the standalone release build, dev is the debug build that loads from Metro.
+const VARIANTS = {
+  production: {
+    id: "ch.agricoltivio.coltivio",
+    name: "coltivio",
+    iconBackground: "#ffffff",
+  },
+  development: {
+    id: "ch.agricoltivio.coltiviotest",
+    name: "Coltivio - Test",
+    iconBackground: "#f4c95d",
+  },
+  dev: {
+    id: "ch.agricoltivio.coltiviodev",
+    name: "Coltivio - Dev",
+    iconBackground: "#9fd3e6",
+  },
+};
+
 export default ({ config }) => {
-  const isTest = process.env.APP_VARIANT === "development";
+  const variant =
+    VARIANTS[process.env.APP_VARIANT ?? "production"] ?? VARIANTS.production;
   return {
     ...config,
-    name: isTest ? "Coltivio - Test" : "coltivio",
+    name: variant.name,
     slug: "coltivio",
     owner: "agricoltivio",
     version: "1.0.4",
@@ -11,9 +32,7 @@ export default ({ config }) => {
     // Distinct per variant so the dev/test build never collides with production's URL scheme
     // (a shared scheme across installed variants breaks ASWebAuthenticationSession redirects,
     // e.g. Stripe checkout — iOS can't unambiguously route the callback).
-    scheme: isTest
-      ? "ch.agricoltivio.coltiviotest"
-      : "ch.agricoltivio.coltivio",
+    scheme: variant.id,
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     ios: {
@@ -26,9 +45,7 @@ export default ({ config }) => {
         light: "./assets/images/icon.png",
         dark: "./assets/images/icon-dark.png",
       },
-      bundleIdentifier: isTest
-        ? "ch.agricoltivio.coltiviotest"
-        : "ch.agricoltivio.coltivio",
+      bundleIdentifier: variant.id,
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false,
         // Opt out of iOS 26 Liquid Glass: it wraps headerRight icons in a
@@ -43,14 +60,11 @@ export default ({ config }) => {
       ...config.android,
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon.png",
-        // Tinted background for the test build, so it is distinguishable from
-        // the production app on the home screen at a glance. Amber rather than
-        // the demo build's #e8f0d8, so all three variants stay tellable apart.
-        backgroundColor: isTest ? "#f4c95d" : "#ffffff",
+        // Tinted per variant so every build is recognisable on the home screen,
+        // none of them the demo build's #e8f0d8
+        backgroundColor: variant.iconBackground,
       },
-      package: isTest
-        ? "ch.agricoltivio.coltiviotest"
-        : "ch.agricoltivio.coltivio",
+      package: variant.id,
       permissions: [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",

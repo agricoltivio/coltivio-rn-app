@@ -486,8 +486,8 @@ export function useDeleteFarmMutation(
   const { clearActiveFarmId } = useActiveFarm();
 
   const deleteFarmMutation = useMutation({
-    mutationFn: async (deleteAccount: boolean) => {
-      await api.farms.deleteFarm(deleteAccount);
+    mutationFn: async () => {
+      await api.farms.deleteFarm();
     },
     onSuccess: () => {
       // The deleted farm's id is no longer valid to send as x-farm-id. clearActiveFarmId

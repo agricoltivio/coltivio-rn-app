@@ -51,13 +51,10 @@ export function farmApi(client: FetchClient) {
       return data!.data;
     },
 
-    async deleteFarm(deleteAccount: boolean = false) {
+    async deleteFarm() {
+      // Deleting the account moved to the profile (api.users.deleteAccount)
       await client.DELETE("/v1/farm", {
-        params: {
-          query: {
-            deleteAccount: deleteAccount ? "true" : "false",
-          },
-        },
+        params: { query: { deleteAccount: "false" } },
       });
     },
 

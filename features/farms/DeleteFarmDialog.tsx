@@ -1,19 +1,13 @@
-import { useSession } from "@/auth/SessionProvider";
 import { Button } from "@/components/buttons/Button";
-import { Card } from "@/components/card/Card";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
-import { Body, H3, Label } from "@/theme/Typography";
-import { useEffect, useState } from "react";
+import { Body, H3 } from "@/theme/Typography";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Modal, Pressable, Switch, View } from "react-native";
+import { Modal, Pressable, View } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useTheme } from "styled-components/native";
-import {
-  useDeleteFarmMutation,
-  useFarmQuery,
-  useMembershipStatusQuery,
-} from "./farms.hooks";
+import { useDeleteFarmMutation, useFarmQuery } from "./farms.hooks";
 import { FarmScreenProps } from "./navigation/farm-routes";
 
 type DeleteFarmDialogProps = {
@@ -30,9 +24,6 @@ export function DeleteFarmDialog({
   const { t } = useTranslation();
   const theme = useTheme();
   const { farm } = useFarmQuery();
-  const { membershipStatus } = useMembershipStatusQuery();
-  const { clearSession } = useSession();
-  const [deleteAccount, setDeleteAccount] = useState(false);
 
   const {
     handleSubmit,
@@ -45,35 +36,19 @@ export function DeleteFarmDialog({
   useEffect(() => {
     if (visible) {
       reset();
-      setDeleteAccount(false);
     }
   }, [visible, reset]);
 
-  const now = new Date();
-  const membershipPeriodEnd = membershipStatus?.lastPeriodEnd
-    ? new Date(membershipStatus.lastPeriodEnd as string)
-    : null;
-  const membershipTrialEnd = membershipStatus?.trialEnd
-    ? new Date(membershipStatus.trialEnd as string)
-    : null;
-  const hasMembershipActive =
-    (membershipPeriodEnd !== null && membershipPeriodEnd > now) ||
-    (membershipTrialEnd !== null && membershipTrialEnd > now);
-
   const deleteFarmMutation = useDeleteFarmMutation(() => {
     onClose();
-    if (deleteAccount) {
-      clearSession();
-      return;
-    }
     // If other farms remain, RootStack will auto-select the sole remaining one or show the
     // farm picker — but it stays on the same main app stack either way, so "Farm" underneath
     // this dialog is still on the stack and needs to be popped explicitly.
     navigation.popTo("Home");
   });
 
-  function onSubmit(data: { name: string }) {
-    deleteFarmMutation.mutate(deleteAccount);
+  function onSubmit() {
+    deleteFarmMutation.mutate();
   }
 
   return (
@@ -132,30 +107,6 @@ export function DeleteFarmDialog({
                 error={errors.name?.message}
               />
             </View>
-
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginTop: theme.spacing.l,
-              }}
-            >
-              <Label style={{ flex: 1 }}>{t("farm.delete_account")}</Label>
-              <Switch value={deleteAccount} onValueChange={setDeleteAccount} />
-            </View>
-
-            {deleteAccount && hasMembershipActive ? (
-              <Card
-                style={{
-                  backgroundColor: theme.colors.warning,
-                  marginTop: theme.spacing.m,
-                }}
-              >
-                <Body style={{ color: theme.colors.black }}>
-                  {t("membership.delete_account_warning")}
-                </Body>
-              </Card>
-            ) : null}
 
             <View
               style={{

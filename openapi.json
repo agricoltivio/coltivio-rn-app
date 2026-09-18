@@ -1567,6 +1567,85 @@
         }
       }
     },
+    "/v1/me/deletion-preview": {
+      "get": {
+        "operationId": "GetV1MeDeletionPreview",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/me/deletion-preview Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1MeDeletionPreviewPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/me/deletion-preview Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1MeDeletionPreview",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/me/deletion-preview Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/me/deletion-preview Negative response"
+          }
+        }
+      }
+    },
+    "/v1/me/deletion": {
+      "post": {
+        "operationId": "PostV1MeDeletion",
+        "requestBody": {
+          "description": "POST /v1/me/deletion Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1MeDeletionRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/me/deletion Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1MeDeletionPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/me/deletion Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/plots": {
       "get": {
         "operationId": "GetV1Plots",
@@ -16341,6 +16420,73 @@
         "type": "object",
         "properties": {}
       },
+      "GetV1MeDeletionPreviewPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "farms": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "name": { "type": "string" },
+                    "outcome": {
+                      "type": "string",
+                      "enum": ["leave", "transfer", "delete"]
+                    },
+                    "candidates": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string" },
+                          "fullName": { "type": ["string", "null"] },
+                          "email": { "type": "string" }
+                        },
+                        "required": ["id", "fullName", "email"],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": ["id", "name", "outcome", "candidates"],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["farms"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1MeDeletionPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1MeDeletionRequestBody": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "transfers": {
+            "type": "object",
+            "propertyNames": { "type": "string" },
+            "additionalProperties": { "type": "string" }
+          }
+        },
+        "required": ["email", "transfers"]
+      },
       "GetV1PlotsPositiveResponse": {
         "type": "object",
         "properties": {
@@ -17550,7 +17696,7 @@
                         "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
                       }
                     },
-                    "createdBy": { "type": "string" },
+                    "createdBy": { "type": ["string", "null"] },
                     "plotId": { "type": "string" },
                     "date": {
                       "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
@@ -24492,7 +24638,7 @@
                         "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
                       }
                     },
-                    "createdBy": { "type": "string" },
+                    "createdBy": { "type": ["string", "null"] },
                     "plotId": { "type": "string" },
                     "date": {
                       "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
@@ -24629,7 +24775,7 @@
                         "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
                       }
                     },
-                    "createdBy": { "type": "string" },
+                    "createdBy": { "type": ["string", "null"] },
                     "plotId": { "type": "string" },
                     "date": {
                       "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
@@ -24822,7 +24968,7 @@
                   "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
                 }
               },
-              "createdBy": { "type": "string" },
+              "createdBy": { "type": ["string", "null"] },
               "plotId": { "type": "string" },
               "date": {
                 "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
@@ -34250,7 +34396,7 @@
                       "type": "string",
                       "enum": ["private", "public"]
                     },
-                    "createdBy": { "type": "string" },
+                    "createdBy": { "type": ["string", "null"] },
                     "farmId": { "type": "string" },
                     "categoryId": { "type": "string" },
                     "category": {
@@ -34385,7 +34531,7 @@
                             "changes_requested"
                           ]
                         },
-                        "submittedBy": { "type": "string" },
+                        "submittedBy": { "type": ["string", "null"] },
                         "proposedCategoryId": { "type": ["string", "null"] },
                         "proposedFarmId": { "type": ["string", "null"] },
                         "createdAt": { "anyOf": [{ "type": "string" }, {}] },
@@ -34475,7 +34621,7 @@
                 ]
               },
               "visibility": { "type": "string", "enum": ["private", "public"] },
-              "createdBy": { "type": "string" },
+              "createdBy": { "type": ["string", "null"] },
               "farmId": { "type": "string" },
               "categoryId": { "type": "string" },
               "category": {
@@ -34608,7 +34754,7 @@
                       "changes_requested"
                     ]
                   },
-                  "submittedBy": { "type": "string" },
+                  "submittedBy": { "type": ["string", "null"] },
                   "proposedCategoryId": { "type": ["string", "null"] },
                   "proposedFarmId": { "type": ["string", "null"] },
                   "createdAt": { "anyOf": [{ "type": "string" }, {}] },
@@ -34729,7 +34875,7 @@
                       "type": "string",
                       "enum": ["private", "public"]
                     },
-                    "createdBy": { "type": "string" },
+                    "createdBy": { "type": ["string", "null"] },
                     "farmId": { "type": "string" },
                     "categoryId": { "type": "string" },
                     "category": {
@@ -34864,7 +35010,7 @@
                             "changes_requested"
                           ]
                         },
-                        "submittedBy": { "type": "string" },
+                        "submittedBy": { "type": ["string", "null"] },
                         "proposedCategoryId": { "type": ["string", "null"] },
                         "proposedFarmId": { "type": ["string", "null"] },
                         "createdAt": { "anyOf": [{ "type": "string" }, {}] },
@@ -34963,7 +35109,7 @@
                         "changes_requested"
                       ]
                     },
-                    "submittedBy": { "type": "string" },
+                    "submittedBy": { "type": ["string", "null"] },
                     "proposedCategoryId": { "type": ["string", "null"] },
                     "proposedFarmId": { "type": ["string", "null"] },
                     "createdAt": { "anyOf": [{ "type": "string" }, {}] },
@@ -35039,7 +35185,7 @@
                   "changes_requested"
                 ]
               },
-              "submittedBy": { "type": "string" },
+              "submittedBy": { "type": ["string", "null"] },
               "proposedCategoryId": { "type": ["string", "null"] },
               "proposedFarmId": { "type": ["string", "null"] },
               "createdAt": { "anyOf": [{ "type": "string" }, {}] },
@@ -35140,7 +35286,7 @@
                   "changes_requested"
                 ]
               },
-              "submittedBy": { "type": "string" },
+              "submittedBy": { "type": ["string", "null"] },
               "proposedCategoryId": { "type": ["string", "null"] },
               "proposedFarmId": { "type": ["string", "null"] },
               "createdAt": { "anyOf": [{ "type": "string" }, {}] },
@@ -35206,7 +35352,7 @@
                   "properties": {
                     "id": { "type": "string" },
                     "changeRequestId": { "type": "string" },
-                    "authorId": { "type": "string" },
+                    "authorId": { "type": ["string", "null"] },
                     "body": { "type": "string" },
                     "createdAt": { "anyOf": [{ "type": "string" }, {}] }
                   },
@@ -35237,7 +35383,7 @@
             "properties": {
               "id": { "type": "string" },
               "changeRequestId": { "type": "string" },
-              "authorId": { "type": "string" },
+              "authorId": { "type": ["string", "null"] },
               "body": { "type": "string" },
               "createdAt": { "anyOf": [{ "type": "string" }, {}] }
             },
@@ -35277,7 +35423,7 @@
                 ]
               },
               "visibility": { "type": "string", "enum": ["private", "public"] },
-              "createdBy": { "type": "string" },
+              "createdBy": { "type": ["string", "null"] },
               "farmId": { "type": "string" },
               "categoryId": { "type": "string" },
               "category": {
@@ -35410,7 +35556,7 @@
                       "changes_requested"
                     ]
                   },
-                  "submittedBy": { "type": "string" },
+                  "submittedBy": { "type": ["string", "null"] },
                   "proposedCategoryId": { "type": ["string", "null"] },
                   "proposedFarmId": { "type": ["string", "null"] },
                   "createdAt": { "anyOf": [{ "type": "string" }, {}] },
@@ -35494,7 +35640,7 @@
                 ]
               },
               "visibility": { "type": "string", "enum": ["private", "public"] },
-              "createdBy": { "type": "string" },
+              "createdBy": { "type": ["string", "null"] },
               "farmId": { "type": "string" },
               "categoryId": { "type": "string" },
               "category": {
@@ -35627,7 +35773,7 @@
                       "changes_requested"
                     ]
                   },
-                  "submittedBy": { "type": "string" },
+                  "submittedBy": { "type": ["string", "null"] },
                   "proposedCategoryId": { "type": ["string", "null"] },
                   "proposedFarmId": { "type": ["string", "null"] },
                   "createdAt": { "anyOf": [{ "type": "string" }, {}] },
@@ -35754,7 +35900,7 @@
                   "changes_requested"
                 ]
               },
-              "submittedBy": { "type": "string" },
+              "submittedBy": { "type": ["string", "null"] },
               "proposedCategoryId": { "type": ["string", "null"] },
               "proposedFarmId": { "type": ["string", "null"] },
               "createdAt": { "anyOf": [{ "type": "string" }, {}] },
@@ -35829,7 +35975,7 @@
                   "changes_requested"
                 ]
               },
-              "submittedBy": { "type": "string" },
+              "submittedBy": { "type": ["string", "null"] },
               "proposedCategoryId": { "type": ["string", "null"] },
               "proposedFarmId": { "type": ["string", "null"] },
               "createdAt": { "anyOf": [{ "type": "string" }, {}] },
@@ -36092,7 +36238,7 @@
                         "changes_requested"
                       ]
                     },
-                    "submittedBy": { "type": "string" },
+                    "submittedBy": { "type": ["string", "null"] },
                     "proposedCategoryId": { "type": ["string", "null"] },
                     "proposedFarmId": { "type": ["string", "null"] },
                     "createdAt": { "anyOf": [{ "type": "string" }, {}] },
@@ -36139,7 +36285,7 @@
                           "type": "string",
                           "enum": ["private", "public"]
                         },
-                        "createdBy": { "type": "string" },
+                        "createdBy": { "type": ["string", "null"] },
                         "farmId": { "type": "string" },
                         "categoryId": { "type": "string" },
                         "category": {
@@ -36290,7 +36436,7 @@
                                 "changes_requested"
                               ]
                             },
-                            "submittedBy": { "type": "string" },
+                            "submittedBy": { "type": ["string", "null"] },
                             "proposedCategoryId": {
                               "type": ["string", "null"]
                             },
@@ -36406,7 +36552,7 @@
                   "changes_requested"
                 ]
               },
-              "submittedBy": { "type": "string" },
+              "submittedBy": { "type": ["string", "null"] },
               "proposedCategoryId": { "type": ["string", "null"] },
               "proposedFarmId": { "type": ["string", "null"] },
               "createdAt": { "anyOf": [{ "type": "string" }, {}] },
@@ -36453,7 +36599,7 @@
                     "type": "string",
                     "enum": ["private", "public"]
                   },
-                  "createdBy": { "type": "string" },
+                  "createdBy": { "type": ["string", "null"] },
                   "farmId": { "type": "string" },
                   "categoryId": { "type": "string" },
                   "category": {
@@ -36586,7 +36732,7 @@
                           "changes_requested"
                         ]
                       },
-                      "submittedBy": { "type": "string" },
+                      "submittedBy": { "type": ["string", "null"] },
                       "proposedCategoryId": { "type": ["string", "null"] },
                       "proposedFarmId": { "type": ["string", "null"] },
                       "createdAt": { "anyOf": [{ "type": "string" }, {}] },
@@ -36732,7 +36878,7 @@
                   "properties": {
                     "id": { "type": "string" },
                     "changeRequestId": { "type": "string" },
-                    "authorId": { "type": "string" },
+                    "authorId": { "type": ["string", "null"] },
                     "body": { "type": "string" },
                     "createdAt": { "anyOf": [{ "type": "string" }, {}] }
                   },
@@ -36763,7 +36909,7 @@
             "properties": {
               "id": { "type": "string" },
               "changeRequestId": { "type": "string" },
-              "authorId": { "type": "string" },
+              "authorId": { "type": ["string", "null"] },
               "body": { "type": "string" },
               "createdAt": { "anyOf": [{ "type": "string" }, {}] }
             },
@@ -38008,7 +38154,7 @@
                   "type": "object",
                   "properties": {
                     "id": { "type": "string" },
-                    "userId": { "type": "string" },
+                    "userId": { "type": ["string", "null"] },
                     "stripePaymentId": { "type": "string" },
                     "stripeSubscriptionId": { "type": ["string", "null"] },
                     "amount": { "type": "number" },
@@ -38228,11 +38374,11 @@
                     },
                     "status": { "type": "string", "enum": ["open", "closed"] },
                     "isPinned": { "type": "boolean" },
-                    "createdBy": { "type": "string" },
+                    "createdBy": { "type": ["string", "null"] },
                     "createdAt": { "anyOf": [{ "type": "string" }, {}] },
                     "updatedAt": { "anyOf": [{ "type": "string" }, {}] },
                     "creator": {
-                      "type": "object",
+                      "type": ["object", "null"],
                       "properties": {
                         "id": { "type": "string" },
                         "fullName": { "type": ["string", "null"] }
@@ -38281,11 +38427,11 @@
               },
               "status": { "type": "string", "enum": ["open", "closed"] },
               "isPinned": { "type": "boolean" },
-              "createdBy": { "type": "string" },
+              "createdBy": { "type": ["string", "null"] },
               "createdAt": { "anyOf": [{ "type": "string" }, {}] },
               "updatedAt": { "anyOf": [{ "type": "string" }, {}] },
               "creator": {
-                "type": "object",
+                "type": ["object", "null"],
                 "properties": {
                   "id": { "type": "string" },
                   "fullName": { "type": ["string", "null"] }
@@ -38341,11 +38487,11 @@
               },
               "status": { "type": "string", "enum": ["open", "closed"] },
               "isPinned": { "type": "boolean" },
-              "createdBy": { "type": "string" },
+              "createdBy": { "type": ["string", "null"] },
               "createdAt": { "anyOf": [{ "type": "string" }, {}] },
               "updatedAt": { "anyOf": [{ "type": "string" }, {}] },
               "creator": {
-                "type": "object",
+                "type": ["object", "null"],
                 "properties": {
                   "id": { "type": "string" },
                   "fullName": { "type": ["string", "null"] }
@@ -38388,11 +38534,11 @@
               },
               "status": { "type": "string", "enum": ["open", "closed"] },
               "isPinned": { "type": "boolean" },
-              "createdBy": { "type": "string" },
+              "createdBy": { "type": ["string", "null"] },
               "createdAt": { "anyOf": [{ "type": "string" }, {}] },
               "updatedAt": { "anyOf": [{ "type": "string" }, {}] },
               "creator": {
-                "type": "object",
+                "type": ["object", "null"],
                 "properties": {
                   "id": { "type": "string" },
                   "fullName": { "type": ["string", "null"] }
@@ -38454,11 +38600,11 @@
                     "id": { "type": "string" },
                     "threadId": { "type": "string" },
                     "body": { "type": "string" },
-                    "createdBy": { "type": "string" },
+                    "createdBy": { "type": ["string", "null"] },
                     "createdAt": { "anyOf": [{ "type": "string" }, {}] },
                     "updatedAt": { "anyOf": [{ "type": "string" }, {}] },
                     "creator": {
-                      "type": "object",
+                      "type": ["object", "null"],
                       "properties": {
                         "id": { "type": "string" },
                         "fullName": { "type": ["string", "null"] }
@@ -38497,11 +38643,11 @@
               "id": { "type": "string" },
               "threadId": { "type": "string" },
               "body": { "type": "string" },
-              "createdBy": { "type": "string" },
+              "createdBy": { "type": ["string", "null"] },
               "createdAt": { "anyOf": [{ "type": "string" }, {}] },
               "updatedAt": { "anyOf": [{ "type": "string" }, {}] },
               "creator": {
-                "type": "object",
+                "type": ["object", "null"],
                 "properties": {
                   "id": { "type": "string" },
                   "fullName": { "type": ["string", "null"] }
@@ -38575,11 +38721,11 @@
               "id": { "type": "string" },
               "threadId": { "type": "string" },
               "body": { "type": "string" },
-              "createdBy": { "type": "string" },
+              "createdBy": { "type": ["string", "null"] },
               "createdAt": { "anyOf": [{ "type": "string" }, {}] },
               "updatedAt": { "anyOf": [{ "type": "string" }, {}] },
               "creator": {
-                "type": "object",
+                "type": ["object", "null"],
                 "properties": {
                   "id": { "type": "string" },
                   "fullName": { "type": ["string", "null"] }

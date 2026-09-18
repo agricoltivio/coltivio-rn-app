@@ -15,6 +15,7 @@ export type UserStackParamList = {
   ChangePassword: undefined;
   DevSettings: undefined;
   UserMembership: { autoOpenStatuten?: boolean } | undefined;
+  DeleteAccount: undefined;
 };
 
 export type UserAccountScreenProps = StackScreenProps<"UserAccount">;
@@ -36,3 +37,4 @@ export type EmailVerifiedScreenProps = StackScreenProps<"EmailVerified">;
 export type ChangePasswordScreenProps = StackScreenProps<"ChangePassword">;
 export type DevSettingsScreenProps = StackScreenProps<"DevSettings">;
 export type UserMembershipScreenProps = StackScreenProps<"UserMembership">;
+export type DeleteAccountScreenProps = StackScreenProps<"DeleteAccount">;

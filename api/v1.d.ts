@@ -388,6 +388,38 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/v1/me/deletion-preview": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations["GetV1MeDeletionPreview"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head: operations["HeadV1MeDeletionPreview"];
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/me/deletion": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations["PostV1MeDeletion"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/v1/plots": {
     parameters: {
       query?: never;
@@ -3706,6 +3738,30 @@ export interface components {
       };
     };
     PostV1MeVerificationEmailRequestBody: Record<string, never>;
+    GetV1MeDeletionPreviewPositiveResponse: {
+      data: {
+        farms: {
+          id: string;
+          name: string;
+          /** @enum {string} */
+          outcome: "leave" | "transfer" | "delete";
+          candidates: {
+            id: string;
+            fullName: string | null;
+            email: string;
+          }[];
+        }[];
+      };
+    };
+    PostV1MeDeletionPositiveResponse: {
+      data: Record<string, never>;
+    };
+    PostV1MeDeletionRequestBody: {
+      email: string;
+      transfers: {
+        [key: string]: string;
+      };
+    };
     GetV1PlotsPositiveResponse: {
       data: {
         result: {
@@ -4178,7 +4234,7 @@ export interface components {
            * @description YYYY-MM-DDTHH:mm:ss.sssZ
            */
           createdAt: string;
-          createdBy: string;
+          createdBy: string | null;
           plotId: string;
           /**
            * Format: date-time
@@ -7119,7 +7175,7 @@ export interface components {
            * @description YYYY-MM-DDTHH:mm:ss.sssZ
            */
           createdAt: string;
-          createdBy: string;
+          createdBy: string | null;
           plotId: string;
           /**
            * Format: date-time
@@ -7173,7 +7229,7 @@ export interface components {
            * @description YYYY-MM-DDTHH:mm:ss.sssZ
            */
           createdAt: string;
-          createdBy: string;
+          createdBy: string | null;
           plotId: string;
           /**
            * Format: date-time
@@ -7250,7 +7306,7 @@ export interface components {
          * @description YYYY-MM-DDTHH:mm:ss.sssZ
          */
         createdAt: string;
-        createdBy: string;
+        createdBy: string | null;
         plotId: string;
         /**
          * Format: date-time
@@ -11365,7 +11421,7 @@ export interface components {
             | "rejected";
           /** @enum {string} */
           visibility: "private" | "public";
-          createdBy: string;
+          createdBy: string | null;
           farmId: string;
           categoryId: string;
           category: {
@@ -11424,7 +11480,7 @@ export interface components {
               | "approved"
               | "rejected"
               | "changes_requested";
-            submittedBy: string;
+            submittedBy: string | null;
             proposedCategoryId: string | null;
             proposedFarmId: string | null;
             createdAt: string | unknown;
@@ -11454,7 +11510,7 @@ export interface components {
           | "rejected";
         /** @enum {string} */
         visibility: "private" | "public";
-        createdBy: string;
+        createdBy: string | null;
         farmId: string;
         categoryId: string;
         category: {
@@ -11513,7 +11569,7 @@ export interface components {
             | "approved"
             | "rejected"
             | "changes_requested";
-          submittedBy: string;
+          submittedBy: string | null;
           proposedCategoryId: string | null;
           proposedFarmId: string | null;
           createdAt: string | unknown;
@@ -11554,7 +11610,7 @@ export interface components {
             | "rejected";
           /** @enum {string} */
           visibility: "private" | "public";
-          createdBy: string;
+          createdBy: string | null;
           farmId: string;
           categoryId: string;
           category: {
@@ -11613,7 +11669,7 @@ export interface components {
               | "approved"
               | "rejected"
               | "changes_requested";
-            submittedBy: string;
+            submittedBy: string | null;
             proposedCategoryId: string | null;
             proposedFarmId: string | null;
             createdAt: string | unknown;
@@ -11645,7 +11701,7 @@ export interface components {
             | "approved"
             | "rejected"
             | "changes_requested";
-          submittedBy: string;
+          submittedBy: string | null;
           proposedCategoryId: string | null;
           proposedFarmId: string | null;
           createdAt: string | unknown;
@@ -11675,7 +11731,7 @@ export interface components {
           | "approved"
           | "rejected"
           | "changes_requested";
-        submittedBy: string;
+        submittedBy: string | null;
         proposedCategoryId: string | null;
         proposedFarmId: string | null;
         createdAt: string | unknown;
@@ -11715,7 +11771,7 @@ export interface components {
           | "approved"
           | "rejected"
           | "changes_requested";
-        submittedBy: string;
+        submittedBy: string | null;
         proposedCategoryId: string | null;
         proposedFarmId: string | null;
         createdAt: string | unknown;
@@ -11739,7 +11795,7 @@ export interface components {
         result: {
           id: string;
           changeRequestId: string;
-          authorId: string;
+          authorId: string | null;
           body: string;
           createdAt: string | unknown;
         }[];
@@ -11750,7 +11806,7 @@ export interface components {
       data: {
         id: string;
         changeRequestId: string;
-        authorId: string;
+        authorId: string | null;
         body: string;
         createdAt: string | unknown;
       };
@@ -11770,7 +11826,7 @@ export interface components {
           | "rejected";
         /** @enum {string} */
         visibility: "private" | "public";
-        createdBy: string;
+        createdBy: string | null;
         farmId: string;
         categoryId: string;
         category: {
@@ -11829,7 +11885,7 @@ export interface components {
             | "approved"
             | "rejected"
             | "changes_requested";
-          submittedBy: string;
+          submittedBy: string | null;
           proposedCategoryId: string | null;
           proposedFarmId: string | null;
           createdAt: string | unknown;
@@ -11857,7 +11913,7 @@ export interface components {
           | "rejected";
         /** @enum {string} */
         visibility: "private" | "public";
-        createdBy: string;
+        createdBy: string | null;
         farmId: string;
         categoryId: string;
         category: {
@@ -11916,7 +11972,7 @@ export interface components {
             | "approved"
             | "rejected"
             | "changes_requested";
-          submittedBy: string;
+          submittedBy: string | null;
           proposedCategoryId: string | null;
           proposedFarmId: string | null;
           createdAt: string | unknown;
@@ -11959,7 +12015,7 @@ export interface components {
           | "approved"
           | "rejected"
           | "changes_requested";
-        submittedBy: string;
+        submittedBy: string | null;
         proposedCategoryId: string | null;
         proposedFarmId: string | null;
         createdAt: string | unknown;
@@ -11988,7 +12044,7 @@ export interface components {
           | "approved"
           | "rejected"
           | "changes_requested";
-        submittedBy: string;
+        submittedBy: string | null;
         proposedCategoryId: string | null;
         proposedFarmId: string | null;
         createdAt: string | unknown;
@@ -12090,7 +12146,7 @@ export interface components {
             | "approved"
             | "rejected"
             | "changes_requested";
-          submittedBy: string;
+          submittedBy: string | null;
           proposedCategoryId: string | null;
           proposedFarmId: string | null;
           createdAt: string | unknown;
@@ -12114,7 +12170,7 @@ export interface components {
               | "rejected";
             /** @enum {string} */
             visibility: "private" | "public";
-            createdBy: string;
+            createdBy: string | null;
             farmId: string;
             categoryId: string;
             category: {
@@ -12173,7 +12229,7 @@ export interface components {
                 | "approved"
                 | "rejected"
                 | "changes_requested";
-              submittedBy: string;
+              submittedBy: string | null;
               proposedCategoryId: string | null;
               proposedFarmId: string | null;
               createdAt: string | unknown;
@@ -12205,7 +12261,7 @@ export interface components {
           | "approved"
           | "rejected"
           | "changes_requested";
-        submittedBy: string;
+        submittedBy: string | null;
         proposedCategoryId: string | null;
         proposedFarmId: string | null;
         createdAt: string | unknown;
@@ -12229,7 +12285,7 @@ export interface components {
             | "rejected";
           /** @enum {string} */
           visibility: "private" | "public";
-          createdBy: string;
+          createdBy: string | null;
           farmId: string;
           categoryId: string;
           category: {
@@ -12288,7 +12344,7 @@ export interface components {
               | "approved"
               | "rejected"
               | "changes_requested";
-            submittedBy: string;
+            submittedBy: string | null;
             proposedCategoryId: string | null;
             proposedFarmId: string | null;
             createdAt: string | unknown;
@@ -12331,7 +12387,7 @@ export interface components {
         result: {
           id: string;
           changeRequestId: string;
-          authorId: string;
+          authorId: string | null;
           body: string;
           createdAt: string | unknown;
         }[];
@@ -12342,7 +12398,7 @@ export interface components {
       data: {
         id: string;
         changeRequestId: string;
-        authorId: string;
+        authorId: string | null;
         body: string;
         createdAt: string | unknown;
       };
@@ -12842,7 +12898,7 @@ export interface components {
       data: {
         result: {
           id: string;
-          userId: string;
+          userId: string | null;
           stripePaymentId: string;
           stripeSubscriptionId: string | null;
           amount: number;
@@ -12938,13 +12994,13 @@ export interface components {
           /** @enum {string} */
           status: "open" | "closed";
           isPinned: boolean;
-          createdBy: string;
+          createdBy: string | null;
           createdAt: string | unknown;
           updatedAt: string | unknown;
           creator: {
             id: string;
             fullName: string | null;
-          };
+          } | null;
           replyCount?: number;
         }[];
         total: number;
@@ -12960,13 +13016,13 @@ export interface components {
         /** @enum {string} */
         status: "open" | "closed";
         isPinned: boolean;
-        createdBy: string;
+        createdBy: string | null;
         createdAt: string | unknown;
         updatedAt: string | unknown;
         creator: {
           id: string;
           fullName: string | null;
-        };
+        } | null;
         replyCount?: number;
       };
     };
@@ -12990,13 +13046,13 @@ export interface components {
         /** @enum {string} */
         status: "open" | "closed";
         isPinned: boolean;
-        createdBy: string;
+        createdBy: string | null;
         createdAt: string | unknown;
         updatedAt: string | unknown;
         creator: {
           id: string;
           fullName: string | null;
-        };
+        } | null;
         replyCount?: number;
       };
     };
@@ -13010,13 +13066,13 @@ export interface components {
         /** @enum {string} */
         status: "open" | "closed";
         isPinned: boolean;
-        createdBy: string;
+        createdBy: string | null;
         createdAt: string | unknown;
         updatedAt: string | unknown;
         creator: {
           id: string;
           fullName: string | null;
-        };
+        } | null;
         replyCount?: number;
       };
     };
@@ -13033,13 +13089,13 @@ export interface components {
           id: string;
           threadId: string;
           body: string;
-          createdBy: string;
+          createdBy: string | null;
           createdAt: string | unknown;
           updatedAt: string | unknown;
           creator: {
             id: string;
             fullName: string | null;
-          };
+          } | null;
         }[];
         count: number;
       };
@@ -13049,13 +13105,13 @@ export interface components {
         id: string;
         threadId: string;
         body: string;
-        createdBy: string;
+        createdBy: string | null;
         createdAt: string | unknown;
         updatedAt: string | unknown;
         creator: {
           id: string;
           fullName: string | null;
-        };
+        } | null;
       };
     };
     PostV1ForumThreadsByIdThreadIdRepliesRequestBody: {
@@ -13079,13 +13135,13 @@ export interface components {
         id: string;
         threadId: string;
         body: string;
-        createdBy: string;
+        createdBy: string | null;
         createdAt: string | unknown;
         updatedAt: string | unknown;
         creator: {
           id: string;
           fullName: string | null;
-        };
+        } | null;
       };
     };
     PatchV1ForumRepliesByIdReplyIdRequestBody: {
@@ -14530,6 +14586,94 @@ export interface operations {
         };
       };
       /** @description POST /v1/me/verification-email Negative response */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+        };
+      };
+    };
+  };
+  GetV1MeDeletionPreview: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description GET /v1/me/deletion-preview Positive response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GetV1MeDeletionPreviewPositiveResponse"];
+        };
+      };
+      /** @description GET /v1/me/deletion-preview Negative response */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+        };
+      };
+    };
+  };
+  HeadV1MeDeletionPreview: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description HEAD /v1/me/deletion-preview Positive response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description HEAD /v1/me/deletion-preview Negative response */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  PostV1MeDeletion: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** @description POST /v1/me/deletion Request body */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PostV1MeDeletionRequestBody"];
+      };
+    };
+    responses: {
+      /** @description POST /v1/me/deletion Positive response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["PostV1MeDeletionPositiveResponse"];
+        };
+      };
+      /** @description POST /v1/me/deletion Negative response */
       400: {
         headers: {
           [name: string]: unknown;

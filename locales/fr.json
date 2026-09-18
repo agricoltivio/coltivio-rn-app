@@ -299,7 +299,26 @@
     "verification_mail_sent_title": "E-mail envoyé",
     "email_not_verified_banner": "Adresse e-mail pas encore confirmée.",
     "email_not_verified_banner_action": "Confirmer maintenant",
-    "email_not_verified_short": "Non confirmée"
+    "email_not_verified_short": "Non confirmée",
+    "delete_account": {
+      "title": "Supprimer le compte",
+      "intro": "Ton compte et tes données personnelles seront supprimés définitivement.",
+      "farms_title": "Tes fermes",
+      "transfer_title": "Sera transmise",
+      "transfer_hint": "Tu es le seul propriétaire. Choisis qui reprend la ferme.",
+      "new_owner_label": "Nouveau propriétaire",
+      "delete_title": "Sera supprimée",
+      "delete_hint": "Tu es le seul membre. La ferme et toutes ses entrées seront supprimées.",
+      "leave_title": "Est conservée",
+      "leave_hint": "Tu la quittes, la ferme et ses entrées sont conservées.",
+      "kept_content": "Tes entrées dans les fermes conservées ainsi que tes contributions dans la Communauté et le Wiki restent disponibles sans ton nom.",
+      "membership_warning": "Tu as une adhésion active. Elle prend fin avec la suppression de ton compte, un abonnement en cours sera résilié.",
+      "confirm_label": "Saisis ton adresse e-mail pour confirmer",
+      "email_mismatch": "L'adresse e-mail ne correspond pas",
+      "confirm_button": "Supprimer définitivement le compte",
+      "preview_outdated": "Tes fermes ont changé entre-temps. Vérifie à nouveau les informations.",
+      "error": "Le compte n'a pas pu être supprimé. Réessaie plus tard."
+    }
   },
   "home": {
     "welcome_text": "Salut {{displayName}},",
@@ -341,7 +360,6 @@
     "leave_farm": "Quitter la ferme",
     "leave_farm_description": "Vous perdrez l'accès aux données de cette ferme. Vous pourrez la rejoindre à nouveau si vous êtes réinvité.",
     "leave_farm_only_member_hint": "Vous êtes le seul membre de cette ferme. Supprimez-la plutôt si vous n'en avez plus besoin.",
-    "delete_account": "Supprimer le compte",
     "membership": "Adhésion à l'association",
     "member_permissions": "Autorisations",
     "member_permissions_description": "Définit ce à quoi ce membre peut accéder. Sans sélection, il n'a aucun accès.",
@@ -1584,7 +1602,6 @@
     "expiry_banner": "Votre adhésion expire dans {{days}} jours.",
     "trial_expiry_banner": "Votre période d'essai expire dans {{days}} jours.",
     "expired_banner": "Votre adhésion a expiré.",
-    "expired_grace_banner": "Votre adhésion a expiré. Il vous reste {{days}} jours pour la renouveler.",
-    "delete_account_warning": "Tu as une adhésion active. Si tu supprimes ton compte, tu ne pourras plus gérer ni résilier ton adhésion. Conserve ton compte pour continuer à gérer ton adhésion."
+    "expired_grace_banner": "Votre adhésion a expiré. Il vous reste {{days}} jours pour la renouveler."
   }
 }
