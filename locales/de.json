@@ -1457,9 +1457,9 @@
     "onboarding": {
       "step1_heading": "Aufgaben verwalten",
       "step1_body": "Erstelle Aufgaben, setze Fälligkeitsdaten und weise sie Mitarbeitern zu.",
-      "step2_heading": "Verknüpfungen & Checklisten",
-      "step2_body": "Verknüpfe Aufgaben mit Schlägen, Tieren und mehr.",
-      "step2_icon_hint": "Tippe dieses Symbol neben einer Verknüpfung, um daraus automatisch Checklistenpunkte zu generieren."
+      "step2_heading": "Checklisten generieren",
+      "step2_body": "Wähle Tiere oder Schläge aus, um daraus automatisch Checklistenpunkte zu erstellen.",
+      "step2_icon_hint": "Tippe dieses Symbol bei der Checkliste, um Punkte aus Tieren oder Schlägen zu generieren."
     },
     "new_task": "Neue Aufgabe",
     "edit_task": "Aufgabe bearbeiten",
@@ -1474,8 +1474,9 @@
     "recurrence": "Wiederholung",
     "checklist": "Checkliste",
     "add_checklist_item": "Punkt hinzufügen",
+    "generate_checklist_items": "Checkliste generieren",
+    "generate_checklist_items_hint": "Generiere eine Checkliste aus deinen Tieren oder Schlägen.",
     "links": "Verknüpfungen",
-    "add_link": "Verknüpfung hinzufügen",
     "link_types": {
       "animal": "Tier",
       "animal_plural": "Tiere",

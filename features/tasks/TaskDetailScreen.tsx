@@ -1,9 +1,6 @@
-import { TaskDetail } from "@/api/tasks.api";
 import { ContentView } from "@/components/containers/ContentView";
 import { Chip } from "@/components/chips/Chip";
 import { Card } from "@/components/card/Card";
-import { TextInput } from "@/components/inputs/TextInput";
-import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
@@ -11,18 +8,15 @@ import {
   IonIconButton,
   MaterialCommunityIconButton,
 } from "@/components/buttons/IconButton";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
   Alert,
-  FlatList,
-  Modal,
   Pressable,
   ScrollView as RNScrollView,
   View,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 import {
   useDeleteTaskMutation,
@@ -33,118 +27,6 @@ import {
 } from "./tasks.hooks";
 import { TaskDetailScreenProps } from "./navigation/tasks-routes";
 import { usePermissions } from "@/features/user/users.hooks";
-
-type LinkDetailModalProps = {
-  visible: boolean;
-  items: TaskDetail["links"];
-  linkTypeLabel: string;
-  onClose: () => void;
-  onNavigate: (link: TaskDetail["links"][number]) => void;
-};
-
-function LinkDetailModal({
-  visible,
-  items,
-  linkTypeLabel,
-  onClose,
-  onNavigate,
-}: LinkDetailModalProps) {
-  const theme = useTheme();
-  const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
-  const [search, setSearch] = useState("");
-
-  useEffect(() => {
-    if (!visible) return;
-    setSearch("");
-  }, [visible]);
-
-  const filtered = useMemo(() => {
-    if (!search) return items;
-    const q = search.toLowerCase();
-    return items.filter((i) =>
-      (i.displayName ?? i.linkedId).toLowerCase().includes(q),
-    );
-  }, [items, search]);
-
-  return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      presentationStyle="pageSheet"
-      onRequestClose={onClose}
-    >
-      <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
-        <View
-          style={{
-            paddingTop: insets.top,
-            backgroundColor: theme.colors.background,
-          }}
-        >
-          <View
-            style={{
-              height: 44,
-              flexDirection: "row",
-              alignItems: "center",
-              paddingHorizontal: 8,
-              justifyContent: "flex-end",
-            }}
-          >
-            <Pressable
-              onPress={onClose}
-              style={{ paddingHorizontal: 8, paddingVertical: 4 }}
-            >
-              <Ionicons name="close" size={28} color={theme.colors.primary} />
-            </Pressable>
-          </View>
-        </View>
-        <View
-          style={{
-            flex: 1,
-            paddingHorizontal: theme.spacing.m,
-            paddingTop: theme.spacing.s,
-          }}
-        >
-          <H2>{linkTypeLabel}</H2>
-          <View style={{ marginTop: theme.spacing.m }}>
-            <TextInput
-              hideLabel
-              placeholder={t("forms.placeholders.search")}
-              onChangeText={setSearch}
-              value={search}
-            />
-          </View>
-          <View style={{ marginTop: theme.spacing.s, flex: 1 }}>
-            <FlatList
-              data={filtered}
-              keyExtractor={(item) => item.id}
-              contentContainerStyle={{
-                borderTopRightRadius: 10,
-                borderTopLeftRadius: 10,
-                overflow: "hidden",
-                backgroundColor:
-                  filtered.length > 0 ? theme.colors.white : undefined,
-              }}
-              renderItem={({ item }) => (
-                <ListItem
-                  style={{ paddingVertical: 5 }}
-                  onPress={() => onNavigate(item)}
-                >
-                  <ListItem.Content>
-                    <ListItem.Title>
-                      {item.displayName ?? item.linkedId}
-                    </ListItem.Title>
-                  </ListItem.Content>
-                  <ListItem.Chevron />
-                </ListItem>
-              )}
-            />
-          </View>
-        </View>
-      </View>
-    </Modal>
-  );
-}
 
 function recurrenceSummary(
   value: { frequency: string; interval: number },
@@ -201,29 +83,7 @@ function SectionCard({
 
 export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
   const { t } = useTranslation();
-  const { canWrite, canRead } = usePermissions();
-
-  type LinkType = TaskDetail["links"][number]["linkType"];
-
-  const linkTypeLabels: Record<LinkType, string> = {
-    animal: t("tasks.link_types.animal"),
-    plot: t("tasks.link_types.plot"),
-    wiki_entry: t("tasks.link_types.wiki_entry"),
-    herd: t("tasks.link_types.herd"),
-    contact: t("tasks.link_types.contact"),
-    order: t("tasks.link_types.order"),
-    treatment: t("tasks.link_types.treatment"),
-  };
-
-  const linkTypePluralLabels: Record<LinkType, string> = {
-    animal: t("tasks.link_types.animal_plural"),
-    plot: t("tasks.link_types.plot_plural"),
-    wiki_entry: t("tasks.link_types.wiki_entry_plural"),
-    herd: t("tasks.link_types.herd_plural"),
-    contact: t("tasks.link_types.contact_plural"),
-    order: t("tasks.link_types.order_plural"),
-    treatment: t("tasks.link_types.treatment_plural"),
-  };
+  const { canWrite } = usePermissions();
   const theme = useTheme();
   const { taskId } = route.params;
 
@@ -233,12 +93,6 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
   const toggleChecklistMutation = useToggleChecklistItemMutation(taskId);
   const deleteMutation = useDeleteTaskMutation(() => navigation.goBack());
   const togglePinMutation = useTogglePinMutation(taskId);
-
-  const [linkDetailVisible, setLinkDetailVisible] = useState(false);
-  const [linkDetailItems, setLinkDetailItems] = useState<TaskDetail["links"]>(
-    [],
-  );
-  const [linkDetailType, setLinkDetailType] = useState<LinkType>("animal");
 
   React.useLayoutEffect(() => {
     navigation.setOptions({ headerRight: () => null });
@@ -263,49 +117,6 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
         if (nextStatus === "done") navigation.goBack();
       },
     });
-  }
-
-  const groupedLinks = useMemo(() => {
-    if (!task) return [];
-    const map = new Map<LinkType, TaskDetail["links"]>();
-    for (const link of task.links) {
-      map.set(link.linkType, [...(map.get(link.linkType) ?? []), link]);
-    }
-    return Array.from(map.entries()).map(([linkType, items]) => ({
-      linkType,
-      items,
-    }));
-  }, [task?.links]);
-
-  function openLinkGroup(linkType: LinkType, items: TaskDetail["links"]) {
-    setLinkDetailType(linkType);
-    setLinkDetailItems(items);
-    setLinkDetailVisible(true);
-  }
-
-  function canReadLink(linkType: LinkType): boolean {
-    if (linkType === "animal" || linkType === "herd") return canRead("animals");
-    if (linkType === "plot") return canRead("field_calendar");
-    return true; // wiki_entry: no feature gate
-  }
-
-  function navigateToLink(link: TaskDetail["links"][number]) {
-    if (!canReadLink(link.linkType)) return;
-    setLinkDetailVisible(false);
-    switch (link.linkType) {
-      case "animal":
-        navigation.navigate("AnimalDetails", { animalId: link.linkedId });
-        break;
-      case "plot":
-        navigation.navigate("PlotsMap", { selectedPlotId: link.linkedId });
-        break;
-      case "wiki_entry":
-        navigation.navigate("WikiDetail", { entryId: link.linkedId });
-        break;
-      case "herd":
-        navigation.navigate("HerdEdit", { herdId: link.linkedId });
-        break;
-    }
   }
 
   if (isLoading) {
@@ -489,59 +300,8 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
                 ))}
             </SectionCard>
           )}
-
-          {/* Links */}
-          {groupedLinks.length > 0 && (
-            <SectionCard label={t("tasks.links")}>
-              <View style={{ gap: theme.spacing.s }}>
-                {groupedLinks.map(({ linkType, items }) => {
-                  const title: string =
-                    items.length === 1
-                      ? (items[0].displayName ?? items[0].linkedId)
-                      : `${items.length} ${linkTypePluralLabels[linkType]}`;
-                  return (
-                    <View key={linkType} style={{ gap: theme.spacing.xs }}>
-                      <Subtitle style={{ color: theme.colors.gray2 }}>
-                        {linkTypeLabels[linkType]}
-                      </Subtitle>
-                      <ListItem
-                        style={{
-                          backgroundColor: theme.colors.background,
-                          borderRadius: 8,
-                          borderWidth: 1,
-                          borderColor: theme.colors.primary,
-                        }}
-                        onPress={
-                          canReadLink(linkType)
-                            ? () => openLinkGroup(linkType, items)
-                            : undefined
-                        }
-                      >
-                        <ListItem.Content>
-                          <ListItem.Title
-                            style={{ color: theme.colors.primary }}
-                          >
-                            {title}
-                          </ListItem.Title>
-                        </ListItem.Content>
-                        {canReadLink(linkType) && <ListItem.Chevron />}
-                      </ListItem>
-                    </View>
-                  );
-                })}
-              </View>
-            </SectionCard>
-          )}
         </ScrollView>
       </ContentView>
-
-      <LinkDetailModal
-        visible={linkDetailVisible}
-        items={linkDetailItems}
-        linkTypeLabel={linkTypePluralLabels[linkDetailType]}
-        onClose={() => setLinkDetailVisible(false)}
-        onNavigate={navigateToLink}
-      />
     </>
   );
 }

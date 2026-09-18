@@ -57,7 +57,7 @@ export function TasksOnboardingScreen({
           }}
         >
           <Ionicons
-            name="checkbox-outline"
+            name="sparkles-outline"
             size={36}
             color={theme.colors.primary}
           />

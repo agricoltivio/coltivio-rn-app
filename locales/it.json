@@ -1456,9 +1456,9 @@
     "onboarding": {
       "step1_heading": "Gestisci le attività",
       "step1_body": "Crea attività, imposta scadenze e assegnale ai collaboratori.",
-      "step2_heading": "Collegamenti & liste di controllo",
-      "step2_body": "Collega attività a appezzamenti, animali e altro ancora.",
-      "step2_icon_hint": "Tocca questa icona accanto a un collegamento per generare automaticamente elementi della lista di controllo."
+      "step2_heading": "Genera liste di controllo",
+      "step2_body": "Seleziona animali o appezzamenti per creare automaticamente i punti della lista di controllo.",
+      "step2_icon_hint": "Tocca questa icona accanto alla lista di controllo per generare elementi da animali o appezzamenti."
     },
     "new_task": "Nuova attività",
     "edit_task": "Modifica attività",
@@ -1473,8 +1473,9 @@
     "recurrence": "Ricorrenza",
     "checklist": "Lista di controllo",
     "add_checklist_item": "Aggiungi elemento",
+    "generate_checklist_items": "Genera lista di controllo",
+    "generate_checklist_items_hint": "Genera una lista di controllo dai tuoi animali o appezzamenti.",
     "links": "Collegamento",
-    "add_link": "Aggiungi collegamento",
     "link_types": {
       "animal": "Animale",
       "animal_plural": "Animali",

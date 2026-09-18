@@ -1456,9 +1456,9 @@
     "onboarding": {
       "step1_heading": "Gérer les tâches",
       "step1_body": "Créez des tâches, définissez des dates d'échéance et assignez-les à des collaborateurs.",
-      "step2_heading": "Liens & listes de contrôle",
-      "step2_body": "Liez des tâches à des parcelles, des animaux et plus encore.",
-      "step2_icon_hint": "Appuyez sur cette icône à côté d'un lien pour générer automatiquement des éléments de liste de contrôle."
+      "step2_heading": "Générer des listes de contrôle",
+      "step2_body": "Sélectionnez des animaux ou des parcelles pour créer automatiquement des éléments de liste de contrôle.",
+      "step2_icon_hint": "Appuyez sur cette icône à côté de la liste de contrôle pour générer des éléments à partir d'animaux ou de parcelles."
     },
     "new_task": "Nouvelle tâche",
     "edit_task": "Modifier la tâche",
@@ -1473,8 +1473,9 @@
     "recurrence": "Récurrence",
     "checklist": "Liste de contrôle",
     "add_checklist_item": "Ajouter un élément",
+    "generate_checklist_items": "Générer une liste de contrôle",
+    "generate_checklist_items_hint": "Générez une liste de contrôle à partir de vos animaux ou parcelles.",
     "links": "Liens",
-    "add_link": "Ajouter un lien",
     "link_types": {
       "animal": "Animal",
       "animal_plural": "Animaux",
