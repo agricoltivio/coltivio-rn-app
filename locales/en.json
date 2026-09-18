@@ -304,11 +304,8 @@
       "title": "Delete account",
       "intro": "Your account and your personal data will be permanently deleted.",
       "farms_title": "Your farms",
-      "transfer_title": "Will be handed over",
-      "transfer_hint": "You are the only owner. Choose who takes over the farm.",
-      "new_owner_label": "New owner",
       "delete_title": "Will be deleted",
-      "delete_hint": "You are the only member. The farm and all its entries will be deleted.",
+      "delete_hint": "You are the only owner. The farm and all its entries will be deleted, also for the other members.",
       "leave_title": "Stays",
       "leave_hint": "You leave, the farm and its entries are kept.",
       "kept_content": "Your entries in farms that stay, as well as your posts in the Community and the Wiki, are kept without your name.",
@@ -316,7 +313,6 @@
       "confirm_label": "Enter your email address to confirm",
       "email_mismatch": "Email address does not match",
       "confirm_button": "Permanently delete account",
-      "preview_outdated": "Your farms have changed in the meantime. Please review the details again.",
       "error": "The account could not be deleted. Please try again later."
     }
   },

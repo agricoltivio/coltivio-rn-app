@@ -304,11 +304,8 @@
       "title": "Supprimer le compte",
       "intro": "Ton compte et tes données personnelles seront supprimés définitivement.",
       "farms_title": "Tes fermes",
-      "transfer_title": "Sera transmise",
-      "transfer_hint": "Tu es le seul propriétaire. Choisis qui reprend la ferme.",
-      "new_owner_label": "Nouveau propriétaire",
       "delete_title": "Sera supprimée",
-      "delete_hint": "Tu es le seul membre. La ferme et toutes ses entrées seront supprimées.",
+      "delete_hint": "Tu es le seul propriétaire. La ferme et toutes ses entrées seront supprimées, aussi pour les autres membres.",
       "leave_title": "Est conservée",
       "leave_hint": "Tu la quittes, la ferme et ses entrées sont conservées.",
       "kept_content": "Tes entrées dans les fermes conservées ainsi que tes contributions dans la Communauté et le Wiki restent disponibles sans ton nom.",
@@ -316,7 +313,6 @@
       "confirm_label": "Saisis ton adresse e-mail pour confirmer",
       "email_mismatch": "L'adresse e-mail ne correspond pas",
       "confirm_button": "Supprimer définitivement le compte",
-      "preview_outdated": "Tes fermes ont changé entre-temps. Vérifie à nouveau les informations.",
       "error": "Le compte n'a pas pu être supprimé. Réessaie plus tard."
     }
   },

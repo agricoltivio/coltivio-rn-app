@@ -4,12 +4,11 @@ import { Card } from "@/components/card/Card";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
-import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { useMembershipStatusQuery } from "@/features/farms/farms.hooks";
 import { Body, Caption1, H2, H3, Subtitle } from "@/theme/Typography";
 import { isMembershipActive } from "@/utils/membership";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, View } from "react-native";
@@ -23,40 +22,21 @@ import {
 
 type FormValues = {
   email: string;
-  // farmId -> userId of the new owner
-  transfers: Record<string, string>;
 };
 
 export function DeleteAccountScreen(_: DeleteAccountScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { user } = useUserQuery();
-  const { farms, isLoading, refetch } = useDeletionPreviewQuery();
+  const { farms, isLoading } = useDeletionPreviewQuery();
   const { membershipStatus } = useMembershipStatusQuery();
   const [error, setError] = useState<string | null>(null);
-  const { control, handleSubmit, reset, watch } = useForm<FormValues>({
-    defaultValues: { email: "", transfers: {} },
+  const { control, handleSubmit, watch } = useForm<FormValues>({
+    defaultValues: { email: "" },
   });
 
-  // Every fresh preview preselects the first member as successor, so a
-  // reloaded preview never keeps a choice that is no longer valid
-  useEffect(() => {
-    if (!farms) return;
-    const transfers = Object.fromEntries(
-      farms
-        .filter((farm) => farm.outcome === "transfer")
-        .map((farm) => [farm.id, farm.candidates[0].id]),
-    );
-    reset((values) => ({ ...values, transfers }));
-  }, [farms, reset]);
-
-  const deleteAccountMutation = useDeleteAccountMutation((mutationError) => {
-    if (mutationError.message === "preview_outdated") {
-      setError(t("users.delete_account.preview_outdated"));
-      refetch();
-    } else {
-      setError(t("users.delete_account.error"));
-    }
+  const deleteAccountMutation = useDeleteAccountMutation(() => {
+    setError(t("users.delete_account.error"));
   });
 
   const email = watch("email");
@@ -65,21 +45,13 @@ export function DeleteAccountScreen(_: DeleteAccountScreenProps) {
 
   function onSubmit(values: FormValues) {
     setError(null);
-    deleteAccountMutation.mutate({
-      email: values.email,
-      transfers: values.transfers,
-    });
+    deleteAccountMutation.mutate({ email: values.email });
   }
 
   const outcomeText: Record<
     DeletionOutcome,
     { title: string; hint: string; color: string }
   > = {
-    transfer: {
-      title: t("users.delete_account.transfer_title"),
-      hint: t("users.delete_account.transfer_hint"),
-      color: theme.colors.primary,
-    },
     delete: {
       title: t("users.delete_account.delete_title"),
       hint: t("users.delete_account.delete_hint"),
@@ -146,7 +118,16 @@ export function DeleteAccountScreen(_: DeleteAccountScreenProps) {
               if (group.length === 0) return null;
               const text = outcomeText[outcome];
               return (
-                <View key={outcome} style={{ gap: theme.spacing.s }}>
+                <Card
+                  key={outcome}
+                  style={[
+                    { gap: theme.spacing.s },
+                    outcome === "delete" && {
+                      borderWidth: 2,
+                      borderColor: theme.colors.danger,
+                    },
+                  ]}
+                >
                   <Subtitle style={{ color: text.color }}>
                     {text.title}
                   </Subtitle>
@@ -154,22 +135,11 @@ export function DeleteAccountScreen(_: DeleteAccountScreenProps) {
                     {text.hint}
                   </Caption1>
                   {group.map((farm) => (
-                    <Card key={farm.id}>
-                      <Body style={{ fontWeight: "600" }}>{farm.name}</Body>
-                      {outcome === "transfer" ? (
-                        <RHSelect
-                          name={`transfers.${farm.id}`}
-                          control={control}
-                          label={t("users.delete_account.new_owner_label")}
-                          data={farm.candidates.map((candidate) => ({
-                            label: candidate.fullName ?? candidate.email,
-                            value: candidate.id,
-                          }))}
-                        />
-                      ) : null}
-                    </Card>
+                    <Body key={farm.id} style={{ fontWeight: "600" }}>
+                      {farm.name}
+                    </Body>
                   ))}
-                </View>
+                </Card>
               );
             })}
           </View>

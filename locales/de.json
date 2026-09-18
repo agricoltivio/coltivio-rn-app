@@ -304,11 +304,8 @@
       "title": "Konto löschen",
       "intro": "Dein Konto und deine persönlichen Daten werden unwiderruflich gelöscht.",
       "farms_title": "Deine Höfe",
-      "transfer_title": "Wird übergeben",
-      "transfer_hint": "Du bist hier einziger Eigentümer. Wähle, wer den Hof übernimmt.",
-      "new_owner_label": "Neuer Eigentümer",
       "delete_title": "Wird gelöscht",
-      "delete_hint": "Du bist hier das einzige Mitglied. Der Hof und alle seine Einträge werden gelöscht.",
+      "delete_hint": "Du bist hier einziger Eigentümer. Der Hof und alle seine Einträge werden gelöscht, auch für die anderen Mitglieder.",
       "leave_title": "Bleibt bestehen",
       "leave_hint": "Du trittst aus, der Hof und seine Einträge bleiben erhalten.",
       "kept_content": "Deine Einträge in Höfen, die bestehen bleiben, sowie deine Beiträge im Treffpunkt und im Wiki bleiben ohne deinen Namen erhalten.",
@@ -316,7 +313,6 @@
       "confirm_label": "Gib zur Bestätigung deine E-Mail-Adresse ein",
       "email_mismatch": "E-Mail-Adresse stimmt nicht überein",
       "confirm_button": "Konto endgültig löschen",
-      "preview_outdated": "Deine Höfe haben sich in der Zwischenzeit verändert. Bitte prüfe die Angaben erneut.",
       "error": "Das Konto konnte nicht gelöscht werden. Bitte versuche es später erneut."
     }
   },

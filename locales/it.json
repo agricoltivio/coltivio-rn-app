@@ -304,11 +304,8 @@
       "title": "Elimina account",
       "intro": "Il tuo account e i tuoi dati personali verranno eliminati definitivamente.",
       "farms_title": "Le tue aziende",
-      "transfer_title": "Verrà trasferita",
-      "transfer_hint": "Sei l'unico proprietario. Scegli chi prende in carico l'azienda.",
-      "new_owner_label": "Nuovo proprietario",
       "delete_title": "Verrà eliminata",
-      "delete_hint": "Sei l'unico membro. L'azienda e tutti i suoi dati verranno eliminati.",
+      "delete_hint": "Sei l'unico proprietario. L'azienda e tutti i suoi dati verranno eliminati, anche per gli altri membri.",
       "leave_title": "Resta invariata",
       "leave_hint": "Esci dall'azienda, l'azienda e i suoi dati restano conservati.",
       "kept_content": "Le tue registrazioni nelle aziende che restano e i tuoi contributi nella Comunità e nel Wiki restano disponibili senza il tuo nome.",
@@ -316,7 +313,6 @@
       "confirm_label": "Inserisci il tuo indirizzo email per confermare",
       "email_mismatch": "L'indirizzo email non corrisponde",
       "confirm_button": "Elimina definitivamente l'account",
-      "preview_outdated": "Le tue aziende sono cambiate nel frattempo. Controlla di nuovo i dati.",
       "error": "Non è stato possibile eliminare l'account. Riprova più tardi."
     }
   },

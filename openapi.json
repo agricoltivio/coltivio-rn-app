@@ -16433,25 +16433,9 @@
                   "properties": {
                     "id": { "type": "string" },
                     "name": { "type": "string" },
-                    "outcome": {
-                      "type": "string",
-                      "enum": ["leave", "transfer", "delete"]
-                    },
-                    "candidates": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": { "type": "string" },
-                          "fullName": { "type": ["string", "null"] },
-                          "email": { "type": "string" }
-                        },
-                        "required": ["id", "fullName", "email"],
-                        "additionalProperties": false
-                      }
-                    }
+                    "outcome": { "type": "string", "enum": ["leave", "delete"] }
                   },
-                  "required": ["id", "name", "outcome", "candidates"],
+                  "required": ["id", "name", "outcome"],
                   "additionalProperties": false
                 }
               }
@@ -16477,15 +16461,8 @@
       },
       "PostV1MeDeletionRequestBody": {
         "type": "object",
-        "properties": {
-          "email": { "type": "string" },
-          "transfers": {
-            "type": "object",
-            "propertyNames": { "type": "string" },
-            "additionalProperties": { "type": "string" }
-          }
-        },
-        "required": ["email", "transfers"]
+        "properties": { "email": { "type": "string" } },
+        "required": ["email"]
       },
       "GetV1PlotsPositiveResponse": {
         "type": "object",
