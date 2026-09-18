@@ -1,13 +1,20 @@
+import { useSession } from "@/auth/SessionProvider";
 import { Button } from "@/components/buttons/Button";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { Body, H3 } from "@/theme/Typography";
+import { isMembershipActive } from "@/utils/membership";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Modal, Pressable, View } from "react-native";
+import { Alert, Modal, Pressable, View } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useTheme } from "styled-components/native";
-import { useDeleteFarmMutation, useFarmQuery } from "./farms.hooks";
+import {
+  useDeleteFarmMutation,
+  useFarmQuery,
+  useFarmsQuery,
+  useMembershipStatusQuery,
+} from "./farms.hooks";
 import { FarmScreenProps } from "./navigation/farm-routes";
 
 type DeleteFarmDialogProps = {
@@ -24,6 +31,11 @@ export function DeleteFarmDialog({
   const { t } = useTranslation();
   const theme = useTheme();
   const { farm } = useFarmQuery();
+  const { farms } = useFarmsQuery();
+  const { membershipStatus } = useMembershipStatusQuery();
+  const { clearSession } = useSession();
+  // Without a farm the app falls back to onboarding, where the account can't be deleted
+  const isLastFarm = farms?.count === 1;
 
   const {
     handleSubmit,
@@ -39,8 +51,12 @@ export function DeleteFarmDialog({
     }
   }, [visible, reset]);
 
-  const deleteFarmMutation = useDeleteFarmMutation(() => {
+  const deleteFarmMutation = useDeleteFarmMutation((deletedAccount) => {
     onClose();
+    if (deletedAccount) {
+      clearSession();
+      return;
+    }
     // If other farms remain, RootStack will auto-select the sole remaining one or show the
     // farm picker — but it stays on the same main app stack either way, so "Farm" underneath
     // this dialog is still on the stack and needs to be popped explicitly.
@@ -48,7 +64,30 @@ export function DeleteFarmDialog({
   });
 
   function onSubmit() {
-    deleteFarmMutation.mutate();
+    if (!isLastFarm) {
+      deleteFarmMutation.mutate(false);
+      return;
+    }
+    const message = [
+      t("farm.delete_last_farm.message"),
+      isMembershipActive(membershipStatus)
+        ? t("users.delete_account.membership_warning")
+        : null,
+    ]
+      .filter(Boolean)
+      .join("\n\n");
+    Alert.alert(t("farm.delete_last_farm.title"), message, [
+      { text: t("buttons.cancel"), style: "cancel" },
+      {
+        text: t("farm.delete_last_farm.farm_only"),
+        onPress: () => deleteFarmMutation.mutate(false),
+      },
+      {
+        text: t("farm.delete_last_farm.farm_and_account"),
+        style: "destructive",
+        onPress: () => deleteFarmMutation.mutate(true),
+      },
+    ]);
   }
 
   return (

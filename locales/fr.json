@@ -381,6 +381,12 @@
     "charts": {
       "crops_by_area": "Cultures par surface",
       "no_crops": "Aucune culture active"
+    },
+    "delete_last_farm": {
+      "title": "C'est ta dernière ferme",
+      "message": "Veux-tu aussi supprimer ton compte avec la ferme ? Sans ferme, tu ne pourras utiliser Coltivio qu'après avoir créé une nouvelle ferme ou en avoir rejoint une.",
+      "farm_only": "Supprimer seulement la ferme",
+      "farm_and_account": "Supprimer la ferme et le compte"
     }
   },
   "farm_picker": {

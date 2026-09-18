@@ -381,6 +381,12 @@
     "charts": {
       "crops_by_area": "Kulturen nach Fläche",
       "no_crops": "Keine aktiven Kulturen"
+    },
+    "delete_last_farm": {
+      "title": "Das ist dein letzter Hof",
+      "message": "Möchtest du zusammen mit dem Hof auch dein Konto löschen? Ohne Hof kannst du Coltivio erst wieder nutzen, wenn du einen neuen Hof erstellst oder einem beitrittst.",
+      "farm_only": "Nur Hof löschen",
+      "farm_and_account": "Hof und Konto löschen"
     }
   },
   "farm_picker": {

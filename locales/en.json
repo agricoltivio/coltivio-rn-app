@@ -381,6 +381,12 @@
     "charts": {
       "crops_by_area": "Crops by area",
       "no_crops": "No active crops"
+    },
+    "delete_last_farm": {
+      "title": "This is your last farm",
+      "message": "Do you also want to delete your account along with the farm? Without a farm you can only use Coltivio again after creating or joining one.",
+      "farm_only": "Delete farm only",
+      "farm_and_account": "Delete farm and account"
     }
   },
   "farm_picker": {

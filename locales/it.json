@@ -381,6 +381,12 @@
     "charts": {
       "crops_by_area": "Colture per superficie",
       "no_crops": "Nessuna coltura attiva"
+    },
+    "delete_last_farm": {
+      "title": "È la tua ultima azienda",
+      "message": "Vuoi eliminare anche il tuo account insieme all'azienda? Senza azienda potrai usare Coltivio solo dopo aver creato una nuova azienda o esserti unito a una.",
+      "farm_only": "Elimina solo l'azienda",
+      "farm_and_account": "Elimina azienda e account"
     }
   },
   "farm_picker": {
