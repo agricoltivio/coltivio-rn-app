@@ -13,6 +13,7 @@ import { DevSettingsScreen } from "../../farms/DevSettingsScreen";
 import { EmailVerifiedScreen } from "../EmailVerifiedScreen";
 import { ChangeEmailPendingScreen } from "../ChangeEmailPendingScreen";
 import { UserMembershipScreen } from "../UserMembershipScreen";
+import { DeleteAccountScreen } from "../DeleteAccountScreen";
 
 export function renderUserStack() {
   return [
@@ -122,6 +123,14 @@ export function renderUserStack() {
       key="user-membership"
       name="UserMembership"
       component={UserMembershipScreen}
+      options={{
+        title: "",
+      }}
+    />,
+    <Stack.Screen
+      key="delete-account"
+      name="DeleteAccount"
+      component={DeleteAccountScreen}
       options={{
         title: "",
       }}

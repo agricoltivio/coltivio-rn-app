@@ -51,13 +51,11 @@ export function farmApi(client: FetchClient) {
       return data!.data;
     },
 
+    // deleteAccount is only offered for the user's last farm, every other account deletion
+    // goes through the profile (api.users.deleteAccount)
     async deleteFarm(deleteAccount: boolean = false) {
       await client.DELETE("/v1/farm", {
-        params: {
-          query: {
-            deleteAccount: deleteAccount ? "true" : "false",
-          },
-        },
+        params: { query: { deleteAccount: deleteAccount ? "true" : "false" } },
       });
     },
 

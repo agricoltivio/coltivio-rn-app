@@ -1,17 +1,18 @@
 import { useSession } from "@/auth/SessionProvider";
 import { Button } from "@/components/buttons/Button";
-import { Card } from "@/components/card/Card";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
-import { Body, H3, Label } from "@/theme/Typography";
-import { useEffect, useState } from "react";
+import { Body, H3 } from "@/theme/Typography";
+import { isMembershipActive } from "@/utils/membership";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Modal, Pressable, Switch, View } from "react-native";
+import { Alert, Modal, Pressable, View } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useTheme } from "styled-components/native";
 import {
   useDeleteFarmMutation,
   useFarmQuery,
+  useFarmsQuery,
   useMembershipStatusQuery,
 } from "./farms.hooks";
 import { FarmScreenProps } from "./navigation/farm-routes";
@@ -30,9 +31,11 @@ export function DeleteFarmDialog({
   const { t } = useTranslation();
   const theme = useTheme();
   const { farm } = useFarmQuery();
+  const { farms } = useFarmsQuery();
   const { membershipStatus } = useMembershipStatusQuery();
   const { clearSession } = useSession();
-  const [deleteAccount, setDeleteAccount] = useState(false);
+  // Without a farm the app falls back to onboarding, where the account can't be deleted
+  const isLastFarm = farms?.count === 1;
 
   const {
     handleSubmit,
@@ -45,24 +48,12 @@ export function DeleteFarmDialog({
   useEffect(() => {
     if (visible) {
       reset();
-      setDeleteAccount(false);
     }
   }, [visible, reset]);
 
-  const now = new Date();
-  const membershipPeriodEnd = membershipStatus?.lastPeriodEnd
-    ? new Date(membershipStatus.lastPeriodEnd as string)
-    : null;
-  const membershipTrialEnd = membershipStatus?.trialEnd
-    ? new Date(membershipStatus.trialEnd as string)
-    : null;
-  const hasMembershipActive =
-    (membershipPeriodEnd !== null && membershipPeriodEnd > now) ||
-    (membershipTrialEnd !== null && membershipTrialEnd > now);
-
-  const deleteFarmMutation = useDeleteFarmMutation(() => {
+  const deleteFarmMutation = useDeleteFarmMutation((deletedAccount) => {
     onClose();
-    if (deleteAccount) {
+    if (deletedAccount) {
       clearSession();
       return;
     }
@@ -72,8 +63,31 @@ export function DeleteFarmDialog({
     navigation.popTo("Home");
   });
 
-  function onSubmit(data: { name: string }) {
-    deleteFarmMutation.mutate(deleteAccount);
+  function onSubmit() {
+    if (!isLastFarm) {
+      deleteFarmMutation.mutate(false);
+      return;
+    }
+    const message = [
+      t("farm.delete_last_farm.message"),
+      isMembershipActive(membershipStatus)
+        ? t("users.delete_account.membership_warning")
+        : null,
+    ]
+      .filter(Boolean)
+      .join("\n\n");
+    Alert.alert(t("farm.delete_last_farm.title"), message, [
+      { text: t("buttons.cancel"), style: "cancel" },
+      {
+        text: t("farm.delete_last_farm.farm_only"),
+        onPress: () => deleteFarmMutation.mutate(false),
+      },
+      {
+        text: t("farm.delete_last_farm.farm_and_account"),
+        style: "destructive",
+        onPress: () => deleteFarmMutation.mutate(true),
+      },
+    ]);
   }
 
   return (
@@ -132,30 +146,6 @@ export function DeleteFarmDialog({
                 error={errors.name?.message}
               />
             </View>
-
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginTop: theme.spacing.l,
-              }}
-            >
-              <Label style={{ flex: 1 }}>{t("farm.delete_account")}</Label>
-              <Switch value={deleteAccount} onValueChange={setDeleteAccount} />
-            </View>
-
-            {deleteAccount && hasMembershipActive ? (
-              <Card
-                style={{
-                  backgroundColor: theme.colors.warning,
-                  marginTop: theme.spacing.m,
-                }}
-              >
-                <Body style={{ color: theme.colors.black }}>
-                  {t("membership.delete_account_warning")}
-                </Body>
-              </Card>
-            ) : null}
 
             <View
               style={{

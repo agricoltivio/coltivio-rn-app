@@ -479,7 +479,7 @@ export function useMembershipPaymentsQuery(enabled: boolean = true) {
 }
 
 export function useDeleteFarmMutation(
-  onSuccess?: () => void,
+  onSuccess?: (deletedAccount: boolean) => void,
   onError?: (error: Error) => void,
 ) {
   const api = useApi();
@@ -489,13 +489,13 @@ export function useDeleteFarmMutation(
     mutationFn: async (deleteAccount: boolean) => {
       await api.farms.deleteFarm(deleteAccount);
     },
-    onSuccess: () => {
+    onSuccess: (_, deleteAccount) => {
       // The deleted farm's id is no longer valid to send as x-farm-id. clearActiveFarmId
       // updates the value request middleware reads before discarding the query cache, so the
       // refetch it triggers (e.g. the farms list, driving auto-select or the picker) never
       // goes out with the stale id and 403s.
       clearActiveFarmId();
-      onSuccess && onSuccess();
+      onSuccess && onSuccess(deleteAccount);
     },
     onError: (error) => {
       console.error(error);

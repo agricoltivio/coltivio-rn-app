@@ -4,4 +4,5 @@ export const userQueryKeys = createQueryKeys("users", {
   me: null,
   all: null,
   farms: null,
+  deletionPreview: null,
 });

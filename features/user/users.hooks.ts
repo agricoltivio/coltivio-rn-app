@@ -1,5 +1,7 @@
 import { useApi } from "@/api/api";
-import { UpdateUserInput, User } from "@/api/user.api";
+import { DeleteAccountInput, UpdateUserInput, User } from "@/api/user.api";
+import { useSession } from "@/auth/SessionProvider";
+import { useActiveFarm } from "@/features/farms/ActiveFarmContext";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -75,6 +77,34 @@ export function useUpdateUserMutation(
         queryKey: queryKeys.users.me.queryKey,
       });
       onSuccess && onSuccess();
+    },
+  });
+}
+
+export function useDeletionPreviewQuery() {
+  const api = useApi();
+  const { data, ...rest } = useQuery({
+    queryKey: queryKeys.users.deletionPreview.queryKey,
+    queryFn: () => api.users.getDeletionPreview(),
+    // Farm memberships can change at any time, the preview must be current when confirming
+    staleTime: 0,
+  });
+  return { farms: data, ...rest };
+}
+
+export function useDeleteAccountMutation(onError?: (error: Error) => void) {
+  const api = useApi();
+  const { clearSession } = useSession();
+  const { clearActiveFarmId } = useActiveFarm();
+  return useMutation({
+    mutationFn: (input: DeleteAccountInput) => api.users.deleteAccount(input),
+    onSuccess: async () => {
+      clearActiveFarmId();
+      await clearSession();
+    },
+    onError: (error) => {
+      console.error(error);
+      onError && onError(error);
     },
   });
 }
