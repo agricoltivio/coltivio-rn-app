@@ -5,6 +5,7 @@ export type User = components["schemas"]["GetV1MePositiveResponse"]["data"];
 export type UpdateUserInput = components["schemas"]["PatchV1MeRequestBody"];
 export type DeletionPreviewFarm =
   components["schemas"]["GetV1MeDeletionPreviewPositiveResponse"]["data"]["farms"][number];
+export type DeletionOutcome = DeletionPreviewFarm["outcome"];
 export type DeleteAccountInput =
   components["schemas"]["PostV1MeDeletionRequestBody"];
 export type FarmUser =

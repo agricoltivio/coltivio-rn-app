@@ -1,4 +1,4 @@
-import { DeletionPreviewFarm } from "@/api/user.api";
+import { DeletionOutcome } from "@/api/user.api";
 import { Button } from "@/components/buttons/Button";
 import { Card } from "@/components/card/Card";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -26,8 +26,6 @@ type FormValues = {
   // farmId -> userId of the new owner
   transfers: Record<string, string>;
 };
-
-const OUTCOMES = ["transfer", "delete", "leave"] as const;
 
 export function DeleteAccountScreen(_: DeleteAccountScreenProps) {
   const { t } = useTranslation();
@@ -74,7 +72,7 @@ export function DeleteAccountScreen(_: DeleteAccountScreenProps) {
   }
 
   const outcomeText: Record<
-    DeletionPreviewFarm["outcome"],
+    DeletionOutcome,
     { title: string; hint: string; color: string }
   > = {
     transfer: {
@@ -142,7 +140,8 @@ export function DeleteAccountScreen(_: DeleteAccountScreenProps) {
         {farms && farms.length > 0 ? (
           <View style={{ marginTop: theme.spacing.l, gap: theme.spacing.m }}>
             <H3>{t("users.delete_account.farms_title")}</H3>
-            {OUTCOMES.map((outcome) => {
+            {/* The Record forces outcomeText to cover every API outcome, so its keys are the full list */}
+            {(Object.keys(outcomeText) as DeletionOutcome[]).map((outcome) => {
               const group = farms.filter((farm) => farm.outcome === outcome);
               if (group.length === 0) return null;
               const text = outcomeText[outcome];
