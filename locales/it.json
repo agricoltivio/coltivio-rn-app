@@ -356,6 +356,7 @@
     "leave_farm": "Lascia l'azienda agricola",
     "leave_farm_description": "Perderai l'accesso ai dati di questa azienda agricola. Potrai unirti di nuovo in futuro se verrai invitato.",
     "leave_farm_only_member_hint": "Sei l'unico membro di questa azienda agricola. Eliminala invece, se non ti serve più.",
+    "leave_farm_only_owner_hint": "Sei l'unico proprietario di questa azienda agricola. Nomina prima un altro membro proprietario oppure elimina l'azienda.",
     "membership": "Iscrizione all'associazione",
     "member_permissions": "Permessi",
     "member_permissions_description": "Definisce a cosa può accedere questo membro. Senza selezione non ha accesso.",

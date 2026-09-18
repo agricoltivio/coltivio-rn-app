@@ -42,6 +42,12 @@ export function FarmScreen({ navigation }: FarmScreenProps) {
     farmLoading || farmStatsLoading || usersLoading || currentUserLoading;
   const isOwner = currentUser?.farmRole === "owner";
   const isOnlyMember = users.length === 1;
+  // The API refuses to let the last owner leave
+  const isOnlyOwner =
+    isOwner &&
+    !users.some(
+      (user) => user.id !== currentUser?.id && user.farmRole === "owner",
+    );
   const { clearActiveFarmId } = useActiveFarm();
   const [switcherVisible, setSwitcherVisible] = useState(false);
   const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
@@ -269,6 +275,8 @@ export function FarmScreen({ navigation }: FarmScreenProps) {
                   </Body>
                   {isOnlyMember ? (
                     <Caption1>{t("farm.leave_farm_only_member_hint")}</Caption1>
+                  ) : isOnlyOwner ? (
+                    <Caption1>{t("farm.leave_farm_only_owner_hint")}</Caption1>
                   ) : (
                     <Button
                       type="dangerGhost"

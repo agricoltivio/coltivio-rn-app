@@ -356,6 +356,7 @@
     "leave_farm": "Quitter la ferme",
     "leave_farm_description": "Vous perdrez l'accès aux données de cette ferme. Vous pourrez la rejoindre à nouveau si vous êtes réinvité.",
     "leave_farm_only_member_hint": "Vous êtes le seul membre de cette ferme. Supprimez-la plutôt si vous n'en avez plus besoin.",
+    "leave_farm_only_owner_hint": "Vous êtes le seul propriétaire de cette ferme. Nommez d'abord un autre membre propriétaire ou supprimez la ferme.",
     "membership": "Adhésion à l'association",
     "member_permissions": "Autorisations",
     "member_permissions_description": "Définit ce à quoi ce membre peut accéder. Sans sélection, il n'a aucun accès.",
