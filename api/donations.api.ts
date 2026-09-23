@@ -1,4 +1,8 @@
 import { FetchClient } from "./api";
+import { components } from "./v1";
+
+export type Donation =
+  components["schemas"]["GetV1DonationsPositiveResponse"]["data"]["result"][number];
 
 export function donationsApi(client: FetchClient) {
   return {
@@ -7,6 +11,11 @@ export function donationsApi(client: FetchClient) {
         body: { amount: amountRappen, email },
       });
       return data!.data.paymentIntentClientSecret;
+    },
+
+    async getDonations(): Promise<Donation[]> {
+      const { data } = await client.GET("/v1/donations");
+      return data!.data.result;
     },
   };
 }
