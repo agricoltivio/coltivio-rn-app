@@ -111,6 +111,8 @@ export default ({ config }) => {
           url: "https://sentry.io/",
           project: "react-native",
           organization: "agricoltivio",
+          // uploads the R8 mapping so native Android stack traces stay readable
+          experimental_android: { enableAndroidGradlePlugin: true },
         },
       ],
       [
@@ -120,6 +122,11 @@ export default ({ config }) => {
             compileSdkVersion: 36,
             targetSdkVersion: 36,
             buildToolsVersion: "36.0.0",
+            enableMinifyInReleaseBuilds: true,
+            enableShrinkResourcesInReleaseBuilds: true,
+            // stripe-react-native references its optional push-provisioning SDK, which we don't ship
+            extraProguardRules:
+              "-dontwarn com.stripe.android.pushProvisioning.**",
           },
           // ios: {
           //   deploymentTarget: "15.1",
