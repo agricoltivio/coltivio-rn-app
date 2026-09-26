@@ -22,6 +22,7 @@ import { SessionProvider } from "./auth/SessionProvider";
 import { ActiveFarmProvider } from "./features/farms/ActiveFarmContext";
 import { OnboardingProvider } from "./features/onboarding/OnboardingContext";
 import i18n from "./locales/i18n";
+import { GlobalErrorFallback } from "./components/errors/GlobalErrorFallback";
 import { RootStack } from "./navigation/RootStack";
 
 import { StatusBar } from "react-native";
@@ -88,61 +89,69 @@ export default Sentry.wrap(function App() {
         <GestureHandlerRootView style={{ flex: 1 }}>
           <I18nextProvider i18n={i18n}>
             <ThemeProvider theme={coltivioTheme}>
-              <StripeProvider
-                publishableKey={
-                  process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? ""
-                }
-                urlScheme={stripeUrlScheme}
-                merchantIdentifier="merchant.ch.agricoltivio.coltivio"
+              <Sentry.GlobalErrorBoundary
+                fallback={({ resetError }) => (
+                  <GlobalErrorFallback resetError={resetError} />
+                )}
               >
-                <QueryClientProvider client={queryClient}>
-                  <SessionProvider>
-                    <ActiveFarmProvider>
-                      <LocalSettingsProvider>
-                        <PortalProvider>
-                          <OnboardingProvider>
-                            <GestureHandlerRootView>
-                              <KeyboardProvider>
-                                <NavigationContainer
-                                  linking={{
-                                    prefixes: [prefix],
-                                    getStateFromPath: (path, config) => {
-                                      // Stripe's returnURL (e.g. after a Twint/3DS redirect) reopens the app on
-                                      // this path. There's no screen for it — the Stripe SDK's own URL listener
-                                      // resumes the payment sheet — so don't let react-navigation route it.
-                                      if (path.startsWith("stripe-redirect")) {
-                                        return undefined;
+                <StripeProvider
+                  publishableKey={
+                    process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? ""
+                  }
+                  urlScheme={stripeUrlScheme}
+                  merchantIdentifier="merchant.ch.agricoltivio.coltivio"
+                >
+                  <QueryClientProvider client={queryClient}>
+                    <SessionProvider>
+                      <ActiveFarmProvider>
+                        <LocalSettingsProvider>
+                          <PortalProvider>
+                            <OnboardingProvider>
+                              <GestureHandlerRootView>
+                                <KeyboardProvider>
+                                  <NavigationContainer
+                                    linking={{
+                                      prefixes: [prefix],
+                                      getStateFromPath: (path, config) => {
+                                        // Stripe's returnURL (e.g. after a Twint/3DS redirect) reopens the app on
+                                        // this path. There's no screen for it — the Stripe SDK's own URL listener
+                                        // resumes the payment sheet — so don't let react-navigation route it.
+                                        if (
+                                          path.startsWith("stripe-redirect")
+                                        ) {
+                                          return undefined;
+                                        }
+                                        const sanitizedPath = path.replace(
+                                          "#",
+                                          "?",
+                                        );
+                                        return getStateFromPath(
+                                          sanitizedPath,
+                                          config,
+                                        );
+                                      },
+                                    }}
+                                  >
+                                    <StatusBar
+                                      barStyle="dark-content"
+                                      backgroundColor={
+                                        coltivioTheme.colors.background
                                       }
-                                      const sanitizedPath = path.replace(
-                                        "#",
-                                        "?",
-                                      );
-                                      return getStateFromPath(
-                                        sanitizedPath,
-                                        config,
-                                      );
-                                    },
-                                  }}
-                                >
-                                  <StatusBar
-                                    barStyle="dark-content"
-                                    backgroundColor={
-                                      coltivioTheme.colors.background
-                                    }
-                                  />
-                                  <RootStack />
-                                </NavigationContainer>
-                              </KeyboardProvider>
-                            </GestureHandlerRootView>
-                            {/* <ComponentsShowcase /> */}
-                            {/* <BottomSheetModalTest /> */}
-                          </OnboardingProvider>
-                        </PortalProvider>
-                      </LocalSettingsProvider>
-                    </ActiveFarmProvider>
-                  </SessionProvider>
-                </QueryClientProvider>
-              </StripeProvider>
+                                    />
+                                    <RootStack />
+                                  </NavigationContainer>
+                                </KeyboardProvider>
+                              </GestureHandlerRootView>
+                              {/* <ComponentsShowcase /> */}
+                              {/* <BottomSheetModalTest /> */}
+                            </OnboardingProvider>
+                          </PortalProvider>
+                        </LocalSettingsProvider>
+                      </ActiveFarmProvider>
+                    </SessionProvider>
+                  </QueryClientProvider>
+                </StripeProvider>
+              </Sentry.GlobalErrorBoundary>
             </ThemeProvider>
           </I18nextProvider>
         </GestureHandlerRootView>
