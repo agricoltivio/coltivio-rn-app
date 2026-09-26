@@ -1,8 +1,6 @@
 import { FertilizerCreateInput } from "@/api/fertilizers.api";
-import { Card } from "@/components/card/Card";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
-import { H4 } from "@/theme/Typography";
 import React from "react";
 import { Control, FieldErrors } from "react-hook-form";
 import { useTranslation } from "react-i18next";

@@ -10,7 +10,7 @@ import { useUrl } from "@/utils/url-context";
 import * as Sentry from "@sentry/react-native";
 import * as Linking from "expo-linking";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -24,7 +24,6 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors, isDirty },
   } = useForm<FromValues>();
   const [error, setError] = useState<string | null>(null);
@@ -36,7 +35,7 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
     refreshToken: string;
   } | null>(null);
 
-  const password = watch("password");
+  const password = useWatch({ control, name: "password" });
 
   const { url } = useUrl();
   useEffect(() => {
@@ -77,7 +76,7 @@ export function ResetPasswordScreen({ navigation }: ResetPasswordScreenProps) {
       });
     };
     createSessionFromUrl();
-  }, [url]);
+  }, [url, t]);
 
   async function onSubmit({ password }: FromValues) {
     const { error } = await supabase.auth.setSession({

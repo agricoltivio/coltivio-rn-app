@@ -27,7 +27,7 @@ export function FieldCalendarScreen({ navigation }: FieldCalendarScreenProps) {
     if (!localSettings.fieldCalendarOnboardingCompleted) {
       navigation.replace("FieldCalendarOnboarding" as never);
     }
-  }, []);
+  }, [localSettings.fieldCalendarOnboardingCompleted, navigation]);
 
   const groups = localSettings.fieldCalendarGroups;
 

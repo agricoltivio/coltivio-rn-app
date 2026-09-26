@@ -58,7 +58,7 @@ export function WikiListScreen({ navigation }: WikiListScreenProps) {
     if (!localSettings.wikiOnboardingCompleted) {
       navigation.navigate("WikiOnboarding");
     }
-  }, []);
+  }, [localSettings.wikiOnboardingCompleted, navigation]);
 
   const { entries: publicEntries, isLoading: publicLoading } =
     usePublicWikiQuery();
@@ -217,7 +217,11 @@ export function WikiListScreen({ navigation }: WikiListScreenProps) {
             onToggle={(name) =>
               setSelectedCategories((prev) => {
                 const next = new Set(prev);
-                next.has(name) ? next.delete(name) : next.add(name);
+                if (next.has(name)) {
+                  next.delete(name);
+                } else {
+                  next.add(name);
+                }
                 return next;
               })
             }

@@ -14,7 +14,7 @@ export const MapOverlay: React.FC<MapOverlayProps> = ({ children, name }) => {
       console.log("remove");
       removeElement(name);
     };
-  }, []);
+  }, [children, name, addElement, removeElement]);
 
   return null;
 };

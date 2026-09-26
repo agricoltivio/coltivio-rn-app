@@ -1,4 +1,4 @@
-import { stringToColor, hexToRgba } from "@/theme/theme";
+import { stringToColor } from "@/theme/theme";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";

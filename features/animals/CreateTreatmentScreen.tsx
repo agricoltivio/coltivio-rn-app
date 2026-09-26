@@ -13,7 +13,7 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
 import { addDays } from "date-fns";
 import { useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -72,7 +72,10 @@ export function CreateTreatmentScreen({
 }: CreateTreatmentScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const selectedAnimalIds = route.params?.animalIds ?? [];
+  const selectedAnimalIds = useMemo(
+    () => route.params?.animalIds ?? [],
+    [route.params?.animalIds],
+  );
   const preselectedDrugId = route.params?.drugId;
   const { animals } = useAnimalsQuery();
   const { drugs } = useDrugsQuery();
@@ -81,7 +84,6 @@ export function CreateTreatmentScreen({
     control,
     handleSubmit,
     formState: { errors, dirtyFields },
-    watch,
     setValue,
   } = useForm<TreatmentFormValues>({
     defaultValues: {
@@ -93,9 +95,9 @@ export function CreateTreatmentScreen({
     },
   });
 
-  const selectedDrugId = watch("drugId");
-  const treatmentDate = watch("startDate");
-  const endDate = watch("endDate");
+  const selectedDrugId = useWatch({ control, name: "drugId" });
+  const treatmentDate = useWatch({ control, name: "startDate" });
+  const endDate = useWatch({ control, name: "endDate" });
 
   // shouldDirty: true ensures drug-sync effect fires when returning from CreateDrug.
   useEffect(() => {

@@ -10,7 +10,7 @@ import {
   QueryClientProvider,
   focusManager,
 } from "@tanstack/react-query";
-import React, { useEffect } from "react";
+import React from "react";
 import { AppState, type AppStateStatus } from "react-native";
 import { I18nextProvider } from "react-i18next";
 import {
@@ -23,7 +23,6 @@ import { ActiveFarmProvider } from "./features/farms/ActiveFarmContext";
 import { OnboardingProvider } from "./features/onboarding/OnboardingContext";
 import i18n from "./locales/i18n";
 import { RootStack } from "./navigation/RootStack";
-import "./theme/theme";
 
 import { StatusBar } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -31,7 +30,6 @@ import { LocalSettingsProvider } from "./features/user/LocalSettingsContext";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import * as Sentry from "@sentry/react-native";
 import { UrlProvider } from "./utils/url-context";
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { handleURLCallback, StripeProvider } from "@stripe/stripe-react-native";
 
 Sentry.init({

@@ -1,7 +1,7 @@
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
-import { Body, H3 } from "@/theme/Typography";
+import { Body } from "@/theme/Typography";
 import { useUrl } from "@/utils/url-context";
 import * as Linking from "expo-linking";
 import React, { useEffect, useState } from "react";
@@ -55,7 +55,7 @@ export function EmailVerifiedScreen({ navigation }: EmailVerifiedScreenProps) {
       }
     };
     verifyEmailFromUrl();
-  }, [url]);
+  }, [url, refetchUser, t]);
 
   return (
     <ContentView

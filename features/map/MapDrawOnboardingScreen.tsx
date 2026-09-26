@@ -155,7 +155,7 @@ export function MapDrawOnboardingScreen() {
       updateLocalSettings(onboardingKey, true);
     });
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, onboardingKey, updateLocalSettings]);
 
   function handleFinish() {
     navigation.goBack();

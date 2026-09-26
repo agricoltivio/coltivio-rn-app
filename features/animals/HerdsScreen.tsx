@@ -25,7 +25,7 @@ export function HerdsScreen({ navigation }: HerdsScreenProps) {
     if (!localSettings.herdsOnboardingCompleted) {
       navigation.replace("HerdsOnboarding" as never);
     }
-  }, []);
+  }, [localSettings.herdsOnboardingCompleted, navigation]);
   const herds = unsortedHerds
     ?.slice()
     .sort((a, b) => a.name.localeCompare(b.name));

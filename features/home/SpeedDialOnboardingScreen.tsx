@@ -1,6 +1,5 @@
 import { OnboardingScreen } from "@/features/onboarding/OnboardingScreen";
 import { useLocalSettings } from "@/features/user/LocalSettingsContext";
-import { SpeedDialSettingsBody } from "@/features/user/SpeedDialSettingsScreen";
 import { H1, H3 } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
@@ -21,7 +20,7 @@ export function SpeedDialOnboardingScreen({
   }
 
   const steps = [
-    <View>
+    <View key="welcome">
       <H1 style={{ color: theme.colors.primary }}>
         {t("speed_dial.onboarding.welcome_heading")}
       </H1>

@@ -1,22 +1,19 @@
 import { SplitPlotInput } from "@/api/plots.api";
 import * as turf from "@turf/turf";
 import { Button } from "@/components/buttons/Button";
-import { IonIconButton } from "@/components/buttons/IconButton";
 import { Card } from "@/components/card/Card";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
-import { InsetsProps } from "@/constants/Screen";
 import { indexToDistinctColor } from "@/theme/theme";
 import { Body, H2, H3, Subtitle } from "@/theme/Typography";
 import { useState } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import styled, { useTheme } from "styled-components/native";
+import { useTheme } from "styled-components/native";
 import { SplitPlotSummaryScreenProps } from "./navigation/plots-routes";
 import { useSplitPlotMutation } from "./plots.hooks";
 import { useSplitPlotStore } from "./split-plot.store";
@@ -37,7 +34,6 @@ export function SplitPlotSummaryScreen({
 }: SplitPlotSummaryScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
   const { plotId } = route.params;
   const {
     subPlots,
@@ -50,7 +46,6 @@ export function SplitPlotSummaryScreen({
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<SplitFormValues>({
     defaultValues: {
@@ -62,7 +57,7 @@ export function SplitPlotSummaryScreen({
     },
   });
 
-  const strategy = watch("strategy");
+  const strategy = useWatch({ control, name: "strategy" });
 
   const { fields } = useFieldArray({ control, name: "subPlots" });
 

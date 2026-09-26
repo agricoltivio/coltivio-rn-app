@@ -37,11 +37,11 @@ export function SelectCropProtectionApplicationPlotsScreen({
     if (!localSettings.mapDrawOnboardingCompleted) {
       navigation.navigate("SelectPlotsOnboarding");
     }
-  }, []);
+  }, [localSettings.mapDrawOnboardingCompleted, navigation]);
 
   useEffect(() => {
     return resetSelectedPlots;
-  }, []);
+  }, [resetSelectedPlots]);
 
   const handleTogglePlot = useCallback(
     (plot: Plot) => {
@@ -62,11 +62,11 @@ export function SelectCropProtectionApplicationPlotsScreen({
 
   const handleDrawComplete = useCallback(
     (
-      intersections: Array<{
+      intersections: {
         plot: Plot;
         geometry: GeoJSON.MultiPolygon;
         size: number;
-      }>,
+      }[],
     ) => {
       for (const { plot, geometry, size } of intersections) {
         putPlot({

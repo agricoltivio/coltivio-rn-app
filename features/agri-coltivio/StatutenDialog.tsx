@@ -5,13 +5,8 @@ import { Body, H2 } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Modal,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Modal, ScrollView, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 import { STATUTEN_TEXT } from "./statuten-text";
 

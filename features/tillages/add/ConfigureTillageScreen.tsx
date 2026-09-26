@@ -7,7 +7,7 @@ import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2 } from "@/theme/Typography";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -32,7 +32,6 @@ export function ConfigureTillageScreen({
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
@@ -42,7 +41,7 @@ export function ConfigureTillageScreen({
     },
   });
 
-  const action = watch("action");
+  const action = useWatch({ control, name: "action" });
 
   const actionOptions: { label: string; value: string }[] = tillageActions.map(
     (action) => ({

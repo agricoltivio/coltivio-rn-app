@@ -39,8 +39,7 @@ export function PlotHarvestsScreen({
   const [viewMode, setViewMode] = useState<ViewMode>("dashboard");
   const [searchText, setSearchText] = useState("");
 
-  const { harvests, isLoading: harvestsLoading } =
-    useHarvestsOfPlotQuery(plotId);
+  const { harvests } = useHarvestsOfPlotQuery(plotId);
   const { harvestSummaries, isLoading: summariesLoading } =
     useHarvestSummariesOfPlotQuery(plotId);
 

@@ -80,7 +80,7 @@ export function RootStack() {
     if (farms?.count === 1 && activeFarmId !== farms.result[0].id) {
       setActiveFarmId(farms.result[0].id);
     }
-  }, [farms, activeFarmId]);
+  }, [farms, activeFarmId, setActiveFarmId]);
 
   // farms.count === 1 is excluded here — that case is fully handled by the
   // auto-select effect above. Without this exclusion, both effects fire off
@@ -97,7 +97,7 @@ export function RootStack() {
     if (hasInvalidFarmSelection) {
       clearActiveFarmId();
     }
-  }, [hasInvalidFarmSelection]);
+  }, [hasInvalidFarmSelection, clearActiveFarmId]);
 
   const stillResolvingSession =
     loadingFromStorage ||
@@ -115,11 +115,13 @@ export function RootStack() {
       return;
     }
     SplashScreen.hideAsync();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: records that the native splash hand-off (external system) already ran
     setNativeSplashHidden(true);
   }, [nativeSplashHidden, fontsLoaded]);
 
   useEffect(() => {
     if (fontsLoaded && !stillResolvingSession) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: one-way latch that must remember initial load finished, not derivable from current render's inputs alone
       setInitialLoadDone(true);
     }
   }, [fontsLoaded, stillResolvingSession]);

@@ -37,6 +37,7 @@ export function TvdImportPreviewScreen({
   useEffect(() => {
     const rowEdit = route.params.rowEdit;
     if (!rowEdit) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: applies the row edit returned via navigation params
     setRows((prev) =>
       prev.map((r, i) => (i === rowEdit.rowIndex ? rowEdit.updatedRow : r)),
     );
@@ -170,7 +171,7 @@ export function TvdImportPreviewScreen({
         </ListItem>
       );
     },
-    [rows, t, locale, theme, navigation, type],
+    [t, locale, theme, navigation, type],
   );
 
   return (

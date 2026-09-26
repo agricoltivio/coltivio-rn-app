@@ -9,18 +9,18 @@ import { useTheme } from "styled-components/native";
 import { useLocalSettings } from "./LocalSettingsContext";
 import { MapSettingsScreenProps } from "./navigation/user-routes";
 
-const MAP_LAYER_OPTIONS: Array<{
+const MAP_LAYER_OPTIONS: {
   value: "satellite" | "map";
   labelKey: string;
-}> = [
+}[] = [
   { value: "satellite", labelKey: "settings.map.layer_satellite" },
   { value: "map", labelKey: "settings.map.layer_map" },
 ];
 
-const COLOR_MODE_OPTIONS: Array<{
+const COLOR_MODE_OPTIONS: {
   value: "plot" | "crop" | "usage" | "cutting";
   labelKey: string;
-}> = [
+}[] = [
   { value: "plot", labelKey: "plots.color_mode.plot" },
   { value: "crop", labelKey: "plots.color_mode.crop" },
   { value: "usage", labelKey: "plots.color_mode.usage" },

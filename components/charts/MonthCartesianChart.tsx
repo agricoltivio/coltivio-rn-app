@@ -157,6 +157,7 @@ export function MonthCartesianChart({
       if (right <= left) return;
       const ratio = (x - left) / (right - left);
       const index = Math.round(ratio * LAST_MONTH_INDEX);
+      // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
       pressState.matchedIndex.value = Math.min(
         LAST_MONTH_INDEX,
         Math.max(0, index),

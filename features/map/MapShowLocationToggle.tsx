@@ -25,13 +25,14 @@ export const MapShowLocationToggle = ({
       return;
     }
     if (permission?.status === PermissionStatus.GRANTED) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: syncs the toggle with the current permission status
       setShowLocationEnabled(true);
       onShowLocationChange && onShowLocationChange(true);
     } else {
       setShowLocationEnabled(false);
       onShowLocationChange && onShowLocationChange(false);
     }
-  }, [permission]);
+  }, [permission, onShowLocationChange]);
 
   const toggleShowLocation = async () => {
     if (showLocationEnabled) {

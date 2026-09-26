@@ -190,7 +190,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
         createLayersRef.current?.handleMapPress(event.nativeEvent.lngLat);
       }
     },
-    [mode.type, viewSelectedPlotId],
+    [mode.type, viewSelectedPlotId, dispatch],
   );
 
   // React to selectedPlotId route param changes (e.g. after saving a new plot).
@@ -213,6 +213,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
     .runOnJS(true)
     .enabled(isDrawingMode)
     .activateAfterLongPress(150)
+    // eslint-disable-next-line react-hooks/refs -- gesture-handler callback, runs as an event handler not during render
     .onStart(async (event) => {
       const map = mapRef.current;
       if (!map) return;
@@ -259,6 +260,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
         }
       }
     })
+    // eslint-disable-next-line react-hooks/refs -- gesture-handler callback, runs as an event handler not during render
     .onUpdate(async (event) => {
       if (!dragState.current) return;
       const map = mapRef.current;
@@ -269,6 +271,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       ]);
       drawingRef.current?.updateVertex(dragState.current.index, lngLat);
     })
+    // eslint-disable-next-line react-hooks/refs -- gesture-handler callback, runs as an event handler not during render
     .onEnd(async (event) => {
       if (!dragState.current) {
         const map = mapRef.current;
@@ -283,6 +286,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       dragState.current = null;
       setDragPanEnabled(true);
     })
+    // eslint-disable-next-line react-hooks/refs -- gesture-handler callback, runs as an event handler not during render
     .onFinalize(() => {
       dragState.current = null;
       setDragPanEnabled(true);

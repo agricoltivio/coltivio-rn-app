@@ -29,13 +29,13 @@ export function SelectPlotsForPlanScreen({
 
   useEffect(() => {
     return resetSelectedPlots;
-  }, []);
+  }, [resetSelectedPlots]);
 
   useEffect(() => {
     if (!localSettings.selectPlotsForPlanOnboardingCompleted) {
       navigation.navigate("MapDrawOnboarding", { variant: "cropRotation" });
     }
-  }, []);
+  }, [localSettings.selectPlotsForPlanOnboardingCompleted, navigation]);
 
   const handleTogglePlot = useCallback(
     (plot: Plot) => {

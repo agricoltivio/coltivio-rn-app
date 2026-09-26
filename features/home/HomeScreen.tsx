@@ -5,20 +5,14 @@ import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { MapTile } from "@/features/map/MapTile";
-import { Body, H2 } from "@/theme/Typography";
-import { H1 } from "@/theme/Typography";
+import { Body, H2 , H1 } from "@/theme/Typography";
 import { canLinkToMembership, goToMembershipScreen } from "@/utils/membership";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Alert,
-  Modal,
-  SafeAreaView,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, Modal, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 import {
   useFarmQuery,
@@ -120,6 +114,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   }
 
   const isList = localSettings.homeTilesLayout === "list";
+  const [now] = useState(() => Date.now());
 
   // Prefer lastPeriodEnd (paid) over trialEnd as the dismissal key — changes when subscription renews
   const relevantExpiryIso =
@@ -132,7 +127,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
         : null;
   const expiryDate = relevantExpiryIso ? new Date(relevantExpiryIso) : null;
   const daysUntilExpiry = expiryDate
-    ? Math.ceil((expiryDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+    ? Math.ceil((expiryDate.getTime() - now) / (1000 * 60 * 60 * 24))
     : null;
   // Set firstLaunchDate once on the very first render after the app is installed
   const didInitLaunchDate = useRef(false);
@@ -141,10 +136,10 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
       didInitLaunchDate.current = true;
       updateLocalSettings("firstLaunchDate", new Date().toISOString());
     }
-  }, [localSettings.firstLaunchDate]);
+  }, [localSettings.firstLaunchDate, updateLocalSettings]);
 
   const daysSinceLaunch = localSettings.firstLaunchDate
-    ? (Date.now() - new Date(localSettings.firstLaunchDate).getTime()) /
+    ? (now - new Date(localSettings.firstLaunchDate).getTime()) /
       (1000 * 60 * 60 * 24)
     : 0;
   const periodEndDate =

@@ -17,7 +17,7 @@ import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2 } from "@/theme/Typography";
 import { useEffect, useRef } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -50,17 +50,6 @@ export function ConfigureFertilizerApplicationScreen({
   const managePresetsRef = useRef<ManagePresetsModalRef>(null);
   const savePresetRef = useRef<SavePresetModalRef>(null);
 
-  const { fertilizerApplicationPresets, isFetched: presetsLoaded } =
-    useFertilizerApplicationPresetsQuery();
-  const createPresetMutation = useCreateFertilizerApplicationPresetMutation(
-    (preset) => {
-      savePresetRef.current?.close();
-      setValue("presetId", preset.id);
-    },
-  );
-  const updatePresetMutation = useUpdateFertilizerApplicationPresetMutation();
-  const deletePresetMutation = useDeleteFertilizerApplicationPresetMutation();
-
   const {
     setFertilizerApplication,
     fertilizerApplication,
@@ -73,16 +62,10 @@ export function ConfigureFertilizerApplicationScreen({
 
   const fertilizerId = fertilizerApplication?.fertilizerId;
 
-  // Filter presets by selected fertilizer
-  const filteredPresets =
-    fertilizerApplicationPresets?.filter(
-      (p) => p.fertilizerId === fertilizerId,
-    ) ?? [];
-
   const {
     control,
     handleSubmit,
-    watch,
+    getValues,
     setValue,
     formState: { errors },
   } = useForm<FormValues>({
@@ -94,8 +77,25 @@ export function ConfigureFertilizerApplicationScreen({
     },
   });
 
-  const presetId = watch("presetId");
-  const unit = watch("unit");
+  const { fertilizerApplicationPresets, isFetched: presetsLoaded } =
+    useFertilizerApplicationPresetsQuery();
+  const createPresetMutation = useCreateFertilizerApplicationPresetMutation(
+    (preset) => {
+      savePresetRef.current?.close();
+      setValue("presetId", preset.id);
+    },
+  );
+  const updatePresetMutation = useUpdateFertilizerApplicationPresetMutation();
+  const deletePresetMutation = useDeleteFertilizerApplicationPresetMutation();
+
+  // Filter presets by selected fertilizer
+  const filteredPresets =
+    fertilizerApplicationPresets?.filter(
+      (p) => p.fertilizerId === fertilizerId,
+    ) ?? [];
+
+  const presetId = useWatch({ control, name: "presetId" });
+  const unit = useWatch({ control, name: "unit" });
 
   // When preset is selected, populate fields; when cleared, reset them
   useEffect(() => {
@@ -133,7 +133,7 @@ export function ConfigureFertilizerApplicationScreen({
     }));
 
   const handleSaveAsPreset = (name: string) => {
-    const values = watch();
+    const values = getValues();
     if (!fertilizerId) return;
     createPresetMutation.mutate({
       name,

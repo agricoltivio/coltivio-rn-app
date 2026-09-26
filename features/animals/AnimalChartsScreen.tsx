@@ -1,4 +1,3 @@
-import { AnimalWithWaitingTimeFlag } from "@/api/animals.api";
 import { StatCard } from "@/components/card/StatCard";
 import { ChartLegend } from "@/components/charts/ChartLegend";
 import { animalTypeColor, hslToHex } from "@/components/charts/chartColors";
@@ -133,6 +132,7 @@ export function AnimalChartsScreen(_props: AnimalChartsScreenProps) {
   const { animals } = useAnimalsQuery(false);
 
   const currentYear = new Date().getFullYear();
+  const [now] = useState(() => Date.now());
 
   const { bornThisYear, diedCount, slaughteredCount } = useMemo(() => {
     if (!animals) return { bornThisYear: 0, diedCount: 0, slaughteredCount: 0 };
@@ -167,7 +167,6 @@ export function AnimalChartsScreen(_props: AnimalChartsScreenProps) {
   // Scatter: living animals with known birthdate, age in years
   const { scatterPoints, maxAgeYears } = useMemo(() => {
     if (!animals) return { scatterPoints: [], maxAgeYears: 1 };
-    const now = Date.now();
     const points: ScatterPoint[] = [];
     let maxAge = 1;
     for (const a of animals) {
@@ -185,7 +184,7 @@ export function AnimalChartsScreen(_props: AnimalChartsScreenProps) {
       });
     }
     return { scatterPoints: points, maxAgeYears: Math.ceil(maxAge) };
-  }, [animals]);
+  }, [animals, now]);
 
   const hasAnimals = (animals?.length ?? 0) > 0;
 

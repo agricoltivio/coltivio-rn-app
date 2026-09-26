@@ -26,28 +26,31 @@ export function PlotDetailsScreen({
   const locale = i18n.language;
   const { canWrite } = usePermissions();
   const { plotId } = route.params;
-  const { plot, error } = usePlotByIdQuery(plotId);
+  const { plot } = usePlotByIdQuery(plotId);
   const theme = useTheme();
 
   const size = plot?.size ?? 0;
+  const hasGeometry = !!plot && plot.geometry.coordinates.length > 0;
+
+  // useMemo must run unconditionally, so this stays above the `!plot` early return below
+  const features = useMemo(
+    (): GeoJSON.FeatureCollection => ({
+      type: "FeatureCollection",
+      features:
+        hasGeometry && plot
+          ? [{ type: "Feature", properties: {}, geometry: plot.geometry }]
+          : [],
+    }),
+    [plot, hasGeometry],
+  );
+
   if (!plot) {
     return null;
   }
 
-  const hasGeometry = plot.geometry.coordinates.length > 0;
   const center = hasGeometry
     ? (turf.centroid(plot.geometry).geometry.coordinates as LngLat)
     : undefined;
-
-  const features = useMemo(
-    (): GeoJSON.FeatureCollection => ({
-      type: "FeatureCollection",
-      features: hasGeometry
-        ? [{ type: "Feature", properties: {}, geometry: plot.geometry }]
-        : [],
-    }),
-    [plot.geometry, hasGeometry],
-  );
 
   return (
     <ContentView

@@ -48,7 +48,7 @@ export function SelectFertilizerAndDateScreen({
 
   useEffect(() => {
     return () => reset();
-  }, []);
+  }, [reset]);
 
   // Launched with a plot already chosen (plot details drawer, or the FAB on the
   // plot-scoped fertilizer applications list) — preselect it in the store so later

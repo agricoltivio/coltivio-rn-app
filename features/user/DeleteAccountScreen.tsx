@@ -9,7 +9,7 @@ import { useMembershipStatusQuery } from "@/features/farms/farms.hooks";
 import { Body, Caption1, H2, H3, Subtitle } from "@/theme/Typography";
 import { isMembershipActive } from "@/utils/membership";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -31,7 +31,7 @@ export function DeleteAccountScreen(_: DeleteAccountScreenProps) {
   const { farms, isLoading } = useDeletionPreviewQuery();
   const { membershipStatus } = useMembershipStatusQuery();
   const [error, setError] = useState<string | null>(null);
-  const { control, handleSubmit, watch } = useForm<FormValues>({
+  const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: { email: "" },
   });
 
@@ -39,7 +39,7 @@ export function DeleteAccountScreen(_: DeleteAccountScreenProps) {
     setError(t("users.delete_account.error"));
   });
 
-  const email = watch("email");
+  const email = useWatch({ control, name: "email" });
   const emailMatches =
     !!user && email.trim().toLowerCase() === user.email.trim().toLowerCase();
 

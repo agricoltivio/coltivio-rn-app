@@ -27,6 +27,7 @@ export const resources = {
   fr: { translation: fr },
 } as const;
 
+// eslint-disable-next-line import/no-named-as-default-member -- i18n.use/.init is i18next's documented singleton-instance API, not a named-export mixup
 i18n.use(initReactI18next).init({
   compatibilityJSON: "v3",
   fallbackLng: defaultLocale,
@@ -41,6 +42,7 @@ i18n.use(initReactI18next).init({
 
 // Applies the stored language choice, or follows the device when unset.
 export function applyAppLocale(preferred: AppLocale | null) {
+  // eslint-disable-next-line import/no-named-as-default-member -- i18n.changeLanguage is i18next's documented singleton-instance API, not a named-export mixup
   i18n.changeLanguage(preferred ?? resolveDeviceLocale());
 }
 

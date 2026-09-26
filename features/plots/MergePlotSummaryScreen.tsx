@@ -1,6 +1,5 @@
 import { MergePlotsInput } from "@/api/plots.api";
 import { Button } from "@/components/buttons/Button";
-import { IonIconButton } from "@/components/buttons/IconButton";
 import { Card } from "@/components/card/Card";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -10,16 +9,14 @@ import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
-import { InsetsProps } from "@/constants/Screen";
 import { Body, H2 } from "@/theme/Typography";
 import { round } from "@/utils/math";
 import * as turf from "@turf/turf";
 import { useMemo } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import styled, { useTheme } from "styled-components/native";
+import { useTheme } from "styled-components/native";
 import { MergePlotSummaryScreenProps } from "./navigation/plots-routes";
 import { useFarmPlotsQuery, useMergePlotsMutation } from "./plots.hooks";
 import { getUsageCodeSelectData } from "./usage-codes";
@@ -42,7 +39,6 @@ export function MergePlotSummaryScreen({
 }: MergePlotSummaryScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
   const { plotIds, primaryPlotId } = route.params;
   const { plots } = useFarmPlotsQuery();
 
@@ -82,7 +78,6 @@ export function MergePlotSummaryScreen({
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<MergeFormValues>({
     defaultValues: {
@@ -97,7 +92,7 @@ export function MergePlotSummaryScreen({
     },
   });
 
-  const strategy = watch("strategy");
+  const strategy = useWatch({ control, name: "strategy" });
 
   const mergeMutation = useMergePlotsMutation(
     (plot) => {

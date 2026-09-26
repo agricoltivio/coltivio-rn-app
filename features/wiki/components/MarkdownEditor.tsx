@@ -129,6 +129,9 @@ function EditorContent({
   const api = useApi();
   const { t } = useTranslation();
   const isFirstRender = useRef(true);
+  const onChangeRef = useRef(onChange);
+  // eslint-disable-next-line react-hooks/refs -- keeps the ref in sync with the latest onChange, avoiding a stale closure; only read asynchronously, not during this render
+  onChangeRef.current = onChange;
 
   const editor = useEditorBridge({
     initialContent: markdownToHtml(value),
@@ -147,7 +150,7 @@ function EditorContent({
       return;
     }
     if (htmlContent !== undefined) {
-      onChange(nhm.translate(htmlContent));
+      onChangeRef.current(nhm.translate(htmlContent));
     }
   }, [htmlContent]);
 

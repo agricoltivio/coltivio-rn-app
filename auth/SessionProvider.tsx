@@ -65,6 +65,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     let isMounted = true;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: marks the async session fetch below as in-flight
     setLoadingFromStorage(true);
     supabase.auth.getSession().then(({ data: { session }, error }) => {
       if (isMounted) {

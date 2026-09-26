@@ -1,8 +1,8 @@
-import { FamilyTreeEdge, FamilyTreeNode } from "@/api/animals.api";
+import { FamilyTreeEdge, FamilyTreeNode , AnimalType } from "@/api/animals.api";
 import { ContentView } from "@/components/containers/ContentView";
 import { Subtitle } from "@/theme/Typography";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import dagre from "@dagrejs/dagre";
+import { graphlib, layout } from "@dagrejs/dagre";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedStyle,
@@ -13,7 +13,6 @@ import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
   Modal,
-  ScrollView,
   TouchableOpacity,
   View,
   useWindowDimensions,
@@ -23,7 +22,6 @@ import { Line, Svg } from "react-native-svg";
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery, useFamilyTreeQuery } from "./animals.hooks";
 import { FamilyTreeScreenProps } from "./navigation/animals-routes";
-import { AnimalType } from "@/api/animals.api";
 
 const NODE_W = 130;
 const NODE_H = 70;
@@ -34,7 +32,7 @@ function buildLayout(
   nodes: FamilyTreeNode[],
   edges: FamilyTreeEdge[],
 ): { layoutMap: LayoutMap; canvasWidth: number; canvasHeight: number } {
-  const g = new dagre.graphlib.Graph();
+  const g = new graphlib.Graph();
   g.setGraph({
     rankdir: "TB",
     nodesep: 24,
@@ -50,7 +48,7 @@ function buildLayout(
     // dagre edge: parentId → childId (top-down)
     g.setEdge(e.parentId, e.childId);
   }
-  dagre.layout(g);
+  layout(g);
   const layoutMap: LayoutMap = {};
   for (const n of nodes) {
     const pos = g.node(n.id);
@@ -203,7 +201,16 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
     translateY.value = y;
     savedX.value = x;
     savedY.value = y;
-  }, [layoutMap, focusedAnimalId]);
+  }, [
+    layoutMap,
+    focusedAnimalId,
+    screenWidth,
+    screenHeight,
+    translateX,
+    translateY,
+    savedX,
+    savedY,
+  ]);
 
   // Connected node ids for highlight
   const connectedIds = useMemo(() => {
@@ -220,11 +227,15 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
   const panGesture = Gesture.Pan()
     .maxPointers(1)
     .onUpdate((e) => {
+      // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
       translateX.value = savedX.value + e.translationX;
+      // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
       translateY.value = savedY.value + e.translationY;
     })
     .onEnd(() => {
+      // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
       savedX.value = translateX.value;
+      // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
       savedY.value = translateY.value;
     });
 
@@ -238,9 +249,11 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
       const newScale = Math.max(0.3, Math.min(3, savedScale.value * e.scale));
       // e.focalX/Y is the CURRENT midpoint of the two fingers — project the initial
       // anchor world point to that screen position so the focal point never drifts
+      // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
       translateX.value =
         e.focalX -
         (focalX.value - savedX.value) * (newScale / savedScale.value);
+      // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
       translateY.value =
         e.focalY -
         (focalY.value - savedY.value) * (newScale / savedScale.value);
@@ -248,7 +261,9 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
     })
     .onEnd(() => {
       savedScale.value = scale.value;
+      // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
       savedX.value = translateX.value;
+      // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
       savedY.value = translateY.value;
     });
 
@@ -267,11 +282,16 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
     setShowTypePicker(false);
     centeredRef.current = false;
     setSelectedId(null);
+    // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
     scale.value = 1;
     savedScale.value = 1;
+    // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
     translateX.value = 0;
+    // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
     translateY.value = 0;
+    // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
     savedX.value = 0;
+    // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
     savedY.value = 0;
   }
 

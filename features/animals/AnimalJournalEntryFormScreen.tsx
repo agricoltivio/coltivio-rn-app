@@ -72,6 +72,7 @@ export function AnimalJournalEntryFormScreen({
   // Pre-fill uploadedImages when entry loads in edit mode
   useEffect(() => {
     if (entry && isEditMode) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: pre-fills local state from the loaded entry
       setUploadedImages(entry.images);
     }
   }, [entry, isEditMode]);
@@ -224,6 +225,7 @@ export function AnimalJournalEntryFormScreen({
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- appears to be a missing "delete" button wire-up (deleteMutation + confirm dialog exist, but no delete button in the JSX); flagging rather than deleting
   function handleDelete() {
     if (!entryId) return;
     Alert.alert(t("animals.delete_journal_entry"), undefined, [
