@@ -1,7 +1,4 @@
-import {
-  DrawingOverlay,
-  type DrawingOverlayRef,
-} from "@/components/map/DrawingOverlay";
+import { DrawingOverlay } from "@/components/map/DrawingOverlay";
 import { hexToRgba, indexToDistinctColor } from "@/theme/theme";
 import {
   GeoSpatials,
@@ -34,6 +31,10 @@ export type SplitModeLayersHandle = {
   handlePolygonCut: () => void;
 };
 
+// Stable reference so useMemo deps below don't see a "new" empty array every render
+// when mode.type !== "split".
+const EMPTY_POLYGONS: GeoJSON.MultiPolygon[] = [];
+
 export const SplitModeLayers = forwardRef<SplitModeLayersHandle>(
   function SplitModeLayers(_props, ref) {
     const theme = useTheme();
@@ -48,7 +49,8 @@ export const SplitModeLayers = forwardRef<SplitModeLayersHandle>(
       LngLat[] | null
     >(null);
 
-    const currentPolygons = mode.type === "split" ? mode.currentPolygons : [];
+    const currentPolygons =
+      mode.type === "split" ? mode.currentPolygons : EMPTY_POLYGONS;
     const activeToolMode =
       mode.type === "split" ? mode.activeToolMode : ("none" as const);
     const hasMultiplePolygons = currentPolygons.length >= 2;

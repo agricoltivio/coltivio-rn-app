@@ -23,13 +23,6 @@ export function ForagesHarvestTile() {
     (summary) => summary.year === currentYear,
   );
 
-  const forageNames = new Set(
-    harvestSummariesForCurrentYear.flatMap((summary) =>
-      summary.producedQuantities.map(
-        (producedQuantity) => producedQuantity.forageName,
-      ),
-    ),
-  );
   const data: stackDataItem[] = [];
   for (let {
     year,

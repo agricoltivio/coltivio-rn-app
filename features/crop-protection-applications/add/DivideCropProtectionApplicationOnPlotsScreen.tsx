@@ -48,11 +48,12 @@ export function DivideCropProtectionApplicationOnPlotsScreen({
 
   useEffect(() => {
     if (divideByArea) {
-      const totalArea = selectedPlots.reduce((acc, plot) => {
+      const plots = Object.values(selectedPlotsById);
+      const totalArea = plots.reduce((acc, plot) => {
         return acc + plot.size;
       }, 0);
       let totalDivided = 0;
-      selectedPlots.forEach((plot, index) => {
+      plots.forEach((plot, index) => {
         if (round(plot.size, divisionPrecision) === 0) {
           setQuantityByPlotId((prev) => ({
             ...prev,
@@ -63,7 +64,7 @@ export function DivideCropProtectionApplicationOnPlotsScreen({
           let quantity = 0;
           // we give the rest to the last item, rounded to the precision of the
           // entered total so the distributed amounts always sum back exactly
-          if (index === selectedPlots.length - 1) {
+          if (index === plots.length - 1) {
             quantity = round(totalNumberOfApplications - totalDivided, 2);
           } else {
             quantity = round(
@@ -87,7 +88,7 @@ export function DivideCropProtectionApplicationOnPlotsScreen({
         // });
       });
     }
-  }, [divideByArea, selectedPlotsById, divisionPrecision]);
+  }, [divideByArea, selectedPlotsById, divisionPrecision, totalNumberOfApplications]);
 
   const totalDivided = +Object.values(quantityByPlotId)
     .reduce((total, val) => total + Number(val), 0)
@@ -99,9 +100,10 @@ export function DivideCropProtectionApplicationOnPlotsScreen({
       totalDivided >= 0 &&
       totalDivided <= totalNumberOfApplications
     ) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: clears the error once the divided total becomes valid again
       setError(null);
     }
-  }, [totalDivided]);
+  }, [totalDivided, error, totalNumberOfApplications]);
 
   function handleRemove(plotId: string) {
     removePlot(plotId);

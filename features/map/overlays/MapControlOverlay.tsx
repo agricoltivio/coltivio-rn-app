@@ -15,7 +15,7 @@ export const MapControlOverlay: React.FC<MapControlOverlayProps> = ({
     return () => {
       removeMapControl(name);
     };
-  }, [children, name]);
+  }, [children, name, addMapControl, removeMapControl]);
 
   return null;
 };

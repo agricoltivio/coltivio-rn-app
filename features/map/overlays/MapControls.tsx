@@ -1,4 +1,4 @@
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React, { useEffect } from "react";
 import Animated, {
   useAnimatedStyle,
@@ -34,10 +34,11 @@ export const MapControls = ({
     if (isControlled) {
       isExpanded.value = expanded;
     }
-  }, [expanded, isControlled]);
+  }, [expanded, isControlled, isExpanded]);
 
   const toggleOverlay = () => {
     const next = !isExpanded.value;
+    // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
     isExpanded.value = next;
     if (onToggle) {
       onToggle(next);

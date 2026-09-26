@@ -1,7 +1,6 @@
 import { useApi } from "@/api/api";
 import {
   CropProtectionApplication,
-  CropProtectionApplicationCreateInput,
   CropProtectionApplicationsBatchCreateInput,
 } from "@/api/cropProtectionApplications.api";
 import { queryKeys } from "@/cache/query-keys";

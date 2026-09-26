@@ -8,7 +8,7 @@ import { ChangePasswordScreenProps } from "./navigation/user-routes";
 import { supabase } from "@/supabase/supabase";
 import { Body, H2 } from "@/theme/Typography";
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -22,10 +22,9 @@ export function ChangePasswordScren({ navigation }: ChangePasswordScreenProps) {
     control,
     handleSubmit,
     formState: { isDirty, errors },
-    watch,
   } = useForm<{ password: string; passwordRepeat: string }>();
 
-  const password = watch("password");
+  const password = useWatch({ control, name: "password" });
 
   async function onSubmit({ password }: { password: string }) {
     const { error, data } = await supabase.auth.updateUser({

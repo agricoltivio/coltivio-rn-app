@@ -8,7 +8,7 @@ import { ListItem } from "@/components/list/ListItem";
 import { H2, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate, getMinMaxIso } from "@/utils/date";
 import Fuse from "fuse.js";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   FlatList,

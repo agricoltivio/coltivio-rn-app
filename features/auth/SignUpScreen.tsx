@@ -10,7 +10,7 @@ import { supabase } from "@/supabase/supabase";
 import { Body, H2 } from "@/theme/Typography";
 import * as Sentry from "@sentry/react-native";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Linking, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -35,9 +35,8 @@ export function SignUpScreen() {
     handleSubmit,
     formState: { errors, isDirty },
     setError: setFormError,
-    watch,
   } = useForm<FormValues>();
-  const password = watch("password");
+  const password = useWatch({ control, name: "password" });
 
   async function onSubmit({ name, email, password }: FormValues) {
     setFetching(true);

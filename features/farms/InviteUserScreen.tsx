@@ -25,8 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useTheme } from "styled-components/native";
-import styled from "styled-components/native";
+import styled, { useTheme } from "styled-components/native";
 
 function getInviteStatus(invite: FarmInvite): "pending" | "used" | "expired" {
   if (invite.usedAt != null) return "used";
@@ -38,7 +37,7 @@ function getInviteStatus(invite: FarmInvite): "pending" | "used" | "expired" {
   return "pending";
 }
 
-export function InviteUserScreen({}: InviteUserScreenProps) {
+export function InviteUserScreen(_props: InviteUserScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const [email, setEmail] = useState("");

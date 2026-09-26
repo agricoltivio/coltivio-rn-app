@@ -24,7 +24,7 @@ export function AnimalsHubScreen({ navigation }: AnimalsHubScreenProps) {
     if (!localSettings.animalsOnboardingCompleted) {
       navigation.replace("AnimalsOnboarding" as never);
     }
-  }, []);
+  }, [localSettings.animalsOnboardingCompleted, navigation]);
 
   const groups = localSettings.animalsGroups;
 

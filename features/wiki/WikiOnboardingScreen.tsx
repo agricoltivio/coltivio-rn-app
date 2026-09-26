@@ -20,7 +20,7 @@ export function WikiOnboardingScreen({
   }
 
   const steps = [
-    <View>
+    <View key="step1">
       <H1 style={{ color: theme.colors.primary }}>
         {t("wiki.onboarding.step1_heading")}
       </H1>
@@ -28,7 +28,7 @@ export function WikiOnboardingScreen({
         {t("wiki.onboarding.step1_body")}
       </H3>
     </View>,
-    <View>
+    <View key="step2">
       <H1 style={{ color: theme.colors.primary }}>
         {t("wiki.onboarding.step2_heading")}
       </H1>
@@ -36,7 +36,7 @@ export function WikiOnboardingScreen({
         {t("wiki.onboarding.step2_body")}
       </H3>
     </View>,
-    <View>
+    <View key="step3">
       <H1 style={{ color: theme.colors.primary }}>
         {t("wiki.onboarding.step3_heading")}
       </H1>
@@ -44,7 +44,7 @@ export function WikiOnboardingScreen({
         {t("wiki.onboarding.step3_body")}
       </H3>
     </View>,
-    <View>
+    <View key="step4">
       <H1 style={{ color: theme.colors.primary }}>
         {t("wiki.onboarding.step4_heading")}
       </H1>

@@ -84,10 +84,12 @@ export function EditTreatmentScreen({
   const { animals } = useAnimalsQuery();
   const { drugs } = useDrugsQuery();
 
-  const selectedAnimalIds =
-    route.params?.animalIds ??
-    treatment?.animals.map((animal) => animal.id) ??
-    [];
+  const paramAnimalIds = route.params?.animalIds;
+  const treatmentAnimals = treatment?.animals;
+  const selectedAnimalIds = useMemo(
+    () => paramAnimalIds ?? treatmentAnimals?.map((animal) => animal.id) ?? [],
+    [paramAnimalIds, treatmentAnimals],
+  );
 
   const {
     control,

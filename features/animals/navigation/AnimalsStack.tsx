@@ -40,8 +40,7 @@ import { AnimalJournalEntryFormScreen } from "../AnimalJournalEntryFormScreen";
 import { AnimalChartsScreen } from "../AnimalChartsScreen";
 import { FamilyTreeScreen } from "../FamilyTreeScreen";
 import { AnimalsExportScreen } from "../AnimalsExportScreen";
-import { IonIconButton } from "@/components/buttons/IconButton";
-import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
+import { IonIconButton , MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import { DefaultTheme } from "styled-components/native";
 
 export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {

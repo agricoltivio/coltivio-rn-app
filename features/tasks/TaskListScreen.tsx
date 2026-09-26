@@ -1,4 +1,4 @@
-import { Task } from "@/api/tasks.api";
+import { Task , TaskStatus } from "@/api/tasks.api";
 import { FAB } from "@/components/buttons/FAB";
 import { Chip } from "@/components/chips/Chip";
 import { ContentView } from "@/components/containers/ContentView";
@@ -7,7 +7,7 @@ import { ListItem } from "@/components/list/ListItem";
 import { H2 } from "@/theme/Typography";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Fuse from "fuse.js";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState , useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
@@ -29,8 +29,6 @@ import { useTasksQuery, useSetTaskStatusMutation } from "./tasks.hooks";
 import { TaskListScreenProps } from "./navigation/tasks-routes";
 import { useLocalSettings } from "@/features/user/LocalSettingsContext";
 import { usePermissions } from "@/features/user/users.hooks";
-import { useEffect } from "react";
-import { TaskStatus } from "@/api/tasks.api";
 
 // Separate component so useAnimatedStyle can be called as a proper hook
 function SwipeCompleteAction({ drag }: { drag: SharedValue<number> }) {
@@ -74,9 +72,9 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
     if (!localSettings.tasksOnboardingCompleted) {
       navigation.navigate("TasksOnboarding");
     }
-  }, []);
+  }, [localSettings.tasksOnboardingCompleted, navigation]);
 
-  const now = new Date();
+  const [now] = useState(() => new Date());
 
   // Collect all unique labels across loaded tasks
   const availableLabels = useMemo(() => {
@@ -142,12 +140,16 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
       if (b.dueDate != null) return 1;
       return a.name.localeCompare(b.name);
     });
-  }, [search, fuse, tasks, activeLabels, activeAssignees, overdueOnly]);
+  }, [search, fuse, tasks, activeLabels, activeAssignees, overdueOnly, now]);
 
   function toggleLabel(label: string) {
     setActiveLabels((prev) => {
       const next = new Set(prev);
-      next.has(label) ? next.delete(label) : next.add(label);
+      if (next.has(label)) {
+        next.delete(label);
+      } else {
+        next.add(label);
+      }
       return next;
     });
   }
@@ -290,7 +292,11 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
             onPress={() =>
               setActiveAssignees((prev) => {
                 const next = new Set(prev);
-                next.has(id) ? next.delete(id) : next.add(id);
+                if (next.has(id)) {
+                  next.delete(id);
+                } else {
+                  next.add(id);
+                }
                 return next;
               })
             }

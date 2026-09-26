@@ -34,7 +34,6 @@ export default ({ config }) => {
     // e.g. Stripe checkout — iOS can't unambiguously route the callback).
     scheme: variant.id,
     userInterfaceStyle: "automatic",
-    newArchEnabled: true,
     ios: {
       ...config.ios,
       supportsTablet: false,
@@ -70,9 +69,6 @@ export default ({ config }) => {
         "android.permission.ACCESS_FINE_LOCATION",
       ],
     },
-    experiments: {
-      typedRoutes: true,
-    },
     plugins: [
       // The native splash can only centre one image on a solid colour, so it
       // just holds the brand ground and the mark. SplashView takes over from
@@ -97,6 +93,9 @@ export default ({ config }) => {
       "expo-font",
       "expo-location",
       "expo-apple-authentication",
+      "expo-image",
+      "expo-sharing",
+      "expo-status-bar",
       "@react-native-community/datetimepicker",
       [
         "@stripe/stripe-react-native",

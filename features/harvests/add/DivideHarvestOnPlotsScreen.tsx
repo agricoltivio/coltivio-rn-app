@@ -57,11 +57,12 @@ export function DivideHarvestOnPlotsScreen({
 
   useEffect(() => {
     if (divideByArea) {
-      const totalArea = harvestAreas.reduce((acc, harvestPlot) => {
+      const areas = Object.values(selectedHarvestPlotsById);
+      const totalArea = areas.reduce((acc, harvestPlot) => {
         return acc + harvestPlot.harvestSize;
       }, 0);
       let totalDivided = 0;
-      harvestAreas.forEach((area, index) => {
+      areas.forEach((area, index) => {
         if (round(area.harvestSize, divisionPrecision) === 0) {
           setQuantityByPlotId((prev) => ({
             ...prev,
@@ -72,7 +73,7 @@ export function DivideHarvestOnPlotsScreen({
           let quantity = 0;
           // we give the rest to the last item, rounded to the precision of the
           // entered total so the distributed amounts always sum back exactly
-          if (index === harvestAreas.length - 1) {
+          if (index === areas.length - 1) {
             quantity = round(totalProducedUnits - totalDivided, 2);
           } else {
             quantity = round(
@@ -96,7 +97,7 @@ export function DivideHarvestOnPlotsScreen({
         // });
       });
     }
-  }, [divideByArea, selectedHarvestPlotsById, divisionPrecision]);
+  }, [divideByArea, selectedHarvestPlotsById, divisionPrecision, totalProducedUnits]);
 
   const totalDivided = +Object.values(quantityByPlotId)
     .reduce((total, val) => total + Number(val), 0)
@@ -104,9 +105,10 @@ export function DivideHarvestOnPlotsScreen({
 
   useEffect(() => {
     if (error && totalDivided >= 0 && totalDivided <= totalProducedUnits) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: clears the error once the divided total becomes valid again
       setError(null);
     }
-  }, [totalDivided]);
+  }, [totalDivided, error, totalProducedUnits]);
 
   function handleRemove(plotId: string) {
     removeHarvestPlot(plotId);

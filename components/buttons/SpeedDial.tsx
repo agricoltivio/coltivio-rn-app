@@ -53,10 +53,12 @@ export function SpeedDial({ items }: SpeedDialProps) {
       return;
     }
     setModalVisible(true);
+    // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
     isOpen.value = withTiming(1, TIMING_CONFIG);
   }, [isOpen, localSettings.speedDialOnboardingCompleted, navigation]);
 
   const close = useCallback(() => {
+    // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
     isOpen.value = withTiming(0, TIMING_CONFIG);
     setTimeout(() => setModalVisible(false), TIMING_CONFIG.duration);
   }, [isOpen]);

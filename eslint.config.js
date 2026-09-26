@@ -5,12 +5,13 @@ const expoConfig = require("eslint-config-expo/flat");
 module.exports = defineConfig([
   expoConfig,
   {
-    ignores: ["dist/*"],
+    // dist/ is the export output; .expo/ holds generated caches (e.g. router.d.ts,
+    // generated even without expo-router installed) — neither is source code.
+    ignores: ["dist/*", ".expo/**"],
   },
   {
+    files: ["**/*.ts", "**/*.tsx"],
     rules: {
-      // styled-components uses 'styled' as both default and named export — this is intentional
-      "import/no-named-as-default": "off",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
@@ -20,6 +21,12 @@ module.exports = defineConfig([
           caughtErrors: "all",
         },
       ],
+    },
+  },
+  {
+    rules: {
+      // styled-components uses 'styled' as both default and named export — this is intentional
+      "import/no-named-as-default": "off",
       "no-restricted-imports": [
         "error",
         {

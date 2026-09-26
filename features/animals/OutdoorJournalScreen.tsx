@@ -27,7 +27,7 @@ export function OutdoorJournalScreen({
   const theme = useTheme();
   const locale = i18n.language;
   const { data } = useOutdoorJournalQuery();
-  console.log(data?.uncategorizedAnimals.length);
+  const entries = data?.entries;
 
   const [selectedCategories, setSelectedCategories] = useState<Set<string>>(
     new Set(),
@@ -36,16 +36,16 @@ export function OutdoorJournalScreen({
 
   // Categories present in the data
   const availableCategories = useMemo(() => {
-    if (!data?.entries) return [];
-    return [...new Set(data.entries.map((e) => e.category))].sort();
-  }, [data?.entries]);
+    if (!entries) return [];
+    return [...new Set(entries.map((e) => e.category))].sort();
+  }, [entries]);
 
   // Filter entries by selected categories (show all if none selected)
   const filteredEntries = useMemo(() => {
-    if (!data?.entries) return [];
-    if (selectedCategories.size === 0) return data.entries;
-    return data.entries.filter((e) => selectedCategories.has(e.category));
-  }, [data?.entries, selectedCategories]);
+    if (!entries) return [];
+    if (selectedCategories.size === 0) return entries;
+    return entries.filter((e) => selectedCategories.has(e.category));
+  }, [entries, selectedCategories]);
 
   const timelineData = useMemo(
     () => buildJournalTimelineData(filteredEntries),

@@ -36,6 +36,9 @@ type CropRotationTimelineProps = {
   onAddPlot?: () => void;
 };
 
+// Stable reference so the "not weeks" fallback doesn't recreate a new array every render
+const EMPTY_WEEK_LINES: GridLine[] = [];
+
 const PLOT_LABEL_WIDTH = 100;
 const MS_PER_DAY = 86_400_000;
 // Height of the year context row (shown in months/weeks views)
@@ -182,6 +185,7 @@ export function CropRotationTimeline({
   // Programmatic scroll helper - uses native .scrollTo() via animated ref .current
   const scrollAllHorizontalTo = useCallback(
     (x: number) => {
+      // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
       scrollX.value = x;
       const opts = { x, y: 0, animated: false };
       (headerScrollRef.current as any)?.scrollTo?.(opts);
@@ -259,10 +263,14 @@ export function CropRotationTimeline({
   }>({ key: 0, grids: {}, weeks: null });
 
   const cacheKey = totalDays + epochStart.getTime();
+  // eslint-disable-next-line react-hooks/refs -- manual memoization cache stored in a ref, deterministically keyed/invalidated during render
   if (gridCache.current.key !== cacheKey) {
+    // eslint-disable-next-line react-hooks/refs -- manual memoization cache stored in a ref, deterministically keyed/invalidated during render
     gridCache.current = { key: cacheKey, grids: {}, weeks: null };
   }
+  // eslint-disable-next-line react-hooks/refs -- manual memoization cache stored in a ref, deterministically keyed/invalidated during render
   if (!gridCache.current.grids[zoomLevel]) {
+    // eslint-disable-next-line react-hooks/refs -- manual memoization cache stored in a ref, deterministically keyed/invalidated during render
     gridCache.current.grids[zoomLevel] = getAllGridLines(
       totalDays,
       epochStart,
@@ -271,10 +279,13 @@ export function CropRotationTimeline({
   }
   const allGridLines = gridCache.current.grids[zoomLevel]!;
 
+  // eslint-disable-next-line react-hooks/refs -- manual memoization cache stored in a ref, deterministically keyed/invalidated during render
   if (zoomLevel === "weeks" && !gridCache.current.weeks) {
+    // eslint-disable-next-line react-hooks/refs -- manual memoization cache stored in a ref, deterministically keyed/invalidated during render
     gridCache.current.weeks = getAllWeekLines(totalDays, epochStart);
   }
-  const allWeekLines = zoomLevel === "weeks" ? gridCache.current.weeks! : [];
+  const allWeekLines =
+    zoomLevel === "weeks" ? gridCache.current.weeks! : EMPTY_WEEK_LINES;
 
   // Helper: compute center/halfSpan from barVisibleRange or fallback to todayDay
   const rangeCenter =
@@ -293,6 +304,7 @@ export function CropRotationTimeline({
   const headerGridLines = useMemo(() => {
     if (zoomLevel !== "weeks") return allGridLines;
     const buffer = rangeHalfSpan * 20;
+    // eslint-disable-next-line react-hooks/refs -- allGridLines is derived from the ref-backed memoization cache above, not a live ref read
     return allGridLines.filter(
       (line) =>
         line.day >= rangeCenter - buffer && line.day <= rangeCenter + buffer,
@@ -301,8 +313,9 @@ export function CropRotationTimeline({
 
   // Header week lines — same large buffer, only in weeks view
   const headerWeekLines = useMemo(() => {
-    if (zoomLevel !== "weeks") return [];
+    if (zoomLevel !== "weeks") return EMPTY_WEEK_LINES;
     const buffer = rangeHalfSpan * 20;
+    // eslint-disable-next-line react-hooks/refs -- allWeekLines is derived from the ref-backed memoization cache above, not a live ref read
     return allWeekLines.filter(
       (line) =>
         line.day >= rangeCenter - buffer && line.day <= rangeCenter + buffer,
@@ -312,6 +325,7 @@ export function CropRotationTimeline({
   // Body grid lines — smaller buffer, updates lazily (grid lines can pop in)
   const bodyGridLines = useMemo(() => {
     const buffer = rangeHalfSpan * 5;
+    // eslint-disable-next-line react-hooks/refs -- allGridLines is derived from the ref-backed memoization cache above, not a live ref read
     return allGridLines.filter(
       (line) =>
         line.day >= rangeCenter - buffer && line.day <= rangeCenter + buffer,
@@ -339,6 +353,7 @@ export function CropRotationTimeline({
   const horizontalScrollHandler = useAnimatedScrollHandler(
     {
       onScroll: (event) => {
+        // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
         scrollX.value = event.contentOffset.x;
         scrollTo(headerScrollRef, event.contentOffset.x, 0, false);
         if (isWeeksMounted.value) {
@@ -412,6 +427,7 @@ export function CropRotationTimeline({
         start: x / newScale,
         end: (x + viewportWidth) / newScale,
       });
+      // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
       isWeeksMounted.value = level === "weeks";
       // Double-dispatch: setTimeout waits for state commit, requestAnimationFrame
       // waits for the scroll views to apply the new contentSize before scrolling
@@ -431,9 +447,11 @@ export function CropRotationTimeline({
     ],
   );
 
-  // Notify parent of initial zoom level on mount
+  // Notify parent of initial zoom level on mount only — later zoom changes are
+  // already reported via the onZoomChange call inside the zoom handler above.
   useEffect(() => {
     onZoomChange?.(zoomLevel);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional: mount-only, not a live subscription to zoomLevel/onZoomChange
   }, []);
 
   // FlatList helpers
@@ -633,6 +651,7 @@ export function CropRotationTimeline({
                     }}
                   >
                     <TimelineHeader
+                      // eslint-disable-next-line react-hooks/refs -- headerGridLines is derived from the ref-backed memoization cache above, not a live ref read
                       gridLines={headerGridLines}
                       scale={scale}
                       contentWidth={contentWidth}

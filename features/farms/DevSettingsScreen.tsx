@@ -7,7 +7,6 @@ import { H2 } from "@/theme/Typography";
 import { useState } from "react";
 import { Alert } from "react-native";
 import { useTheme } from "styled-components/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   defaultLocalSettings,
   useLocalSettings,
@@ -48,7 +47,7 @@ type ResettableKey = (typeof RESETTABLE_KEYS)[number]["key"];
 
 export function DevSettingsScreen() {
   const theme = useTheme();
-  const { localSettings, updateLocalSettings } = useLocalSettings();
+  const { updateLocalSettings } = useLocalSettings();
   const [selected, setSelected] = useState<Set<ResettableKey>>(new Set());
 
   function toggle(key: ResettableKey) {

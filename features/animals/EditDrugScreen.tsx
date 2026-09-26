@@ -9,7 +9,7 @@ import { RHSwitch } from "@/components/inputs/RHSwitch";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Subtitle } from "@/theme/Typography";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/features/user/users.hooks";
 import { Alert, View } from "react-native";
@@ -97,7 +97,6 @@ export function EditDrugScreen({ route, navigation }: EditDrugScreenProps) {
     control,
     handleSubmit,
     formState: { errors, isDirty },
-    watch,
   } = useForm<DrugFormValues>({
     values: drug
       ? {
@@ -128,7 +127,8 @@ export function EditDrugScreen({ route, navigation }: EditDrugScreenProps) {
   const deleteDrugMutation = useDeleteDrugMutation(() => navigation.goBack());
   const checkDrugInUseMutation = useCheckDrugInUseMutation();
 
-  const watchedTreatments = watch("drugTreatment");
+  const watchedTreatments = useWatch({ control, name: "drugTreatment" });
+  const nameValue = useWatch({ control, name: "name" });
   const usedTypes = new Set(watchedTreatments?.map((d) => d.animalType) ?? []);
   const canAddMore = usedTypes.size < ANIMAL_TYPES.length;
 
@@ -187,7 +187,6 @@ export function EditDrugScreen({ route, navigation }: EditDrugScreenProps) {
     return null;
   }
 
-  const nameValue = watch("name");
   const treatmentsChanged = fields.length !== drug.drugTreatment.length;
   const isValid =
     nameValue?.length > 0 &&

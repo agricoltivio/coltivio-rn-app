@@ -6,14 +6,13 @@ import {
   FarmCreated,
   FarmInvite,
   FarmUpdateInput,
-  MemberPermission,
   PermissionAccess,
   PermissionFeature,
 } from "@/api/farms.api";
 import { queryKeys } from "@/cache/query-keys";
+import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { OnboardingData } from "../onboarding/OnboardingContext";
-import { User } from "@/api/user.api";
 import * as Linking from "expo-linking";
 import { usePaymentSheet } from "@stripe/stripe-react-native";
 import { applePayParams, googlePayParams } from "@/utils/stripe";
@@ -268,6 +267,7 @@ export function useMembership() {
   const { farm } = useFarmQuery();
   const { membershipStatus } = useMembershipStatusQuery();
   const status = farm?.membership.status;
+  const [now] = useState(() => Date.now());
 
   // Determine the most recent expiry date from paid period or trial
   const relevantEndDate = (() => {
@@ -286,9 +286,7 @@ export function useMembership() {
 
   const daysSinceExpiry =
     relevantEndDate !== null
-      ? Math.floor(
-          (Date.now() - relevantEndDate.getTime()) / (1000 * 60 * 60 * 24),
-        )
+      ? Math.floor((now - relevantEndDate.getTime()) / (1000 * 60 * 60 * 24))
       : null;
 
   // Grace period: farm status is "none" but membership expired less than GRACE days ago.

@@ -2,7 +2,7 @@ import { WikiTranslationInput } from "@/api/wiki.api";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
-import { H3, Subtitle } from "@/theme/Typography";
+import { H3 } from "@/theme/Typography";
 import * as Crypto from "expo-crypto";
 import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -14,8 +14,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import styled from "styled-components/native";
-import { useTheme } from "styled-components/native";
+import styled, { useTheme } from "styled-components/native";
 import { TextInput } from "@/components/inputs/TextInput";
 import { MarkdownEditor } from "./components/MarkdownEditor";
 import { CommentsSection } from "./components/CommentsSection";

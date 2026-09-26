@@ -34,6 +34,9 @@ type OutdoorScheduleTimelineProps = {
   onBarPress: (scheduleId: string) => void;
 };
 
+// Stable reference so the "not weeks" fallback doesn't recreate a new array every render
+const EMPTY_GRID_LINES: GridLine[] = [];
+
 const LABEL_WIDTH = 100;
 const MS_PER_DAY = 86_400_000;
 const YEAR_ROW_HEIGHT = 20;
@@ -222,6 +225,7 @@ export function OutdoorScheduleTimeline({
 
   const scrollAllHorizontalTo = useCallback(
     (x: number) => {
+      // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
       scrollX.value = x;
       const opts = { x, y: 0, animated: false };
       (headerScrollRef.current as any)?.scrollTo?.(opts);
@@ -292,10 +296,14 @@ export function OutdoorScheduleTimeline({
   }>({ key: 0, grids: {}, weeks: null });
 
   const cacheKey = totalDays + epochStart.getTime();
+  // eslint-disable-next-line react-hooks/refs -- manual memoization cache stored in a ref, deterministically keyed/invalidated during render
   if (gridCache.current.key !== cacheKey) {
+    // eslint-disable-next-line react-hooks/refs -- manual memoization cache stored in a ref, deterministically keyed/invalidated during render
     gridCache.current = { key: cacheKey, grids: {}, weeks: null };
   }
+  // eslint-disable-next-line react-hooks/refs -- manual memoization cache stored in a ref, deterministically keyed/invalidated during render
   if (!gridCache.current.grids[zoomLevel]) {
+    // eslint-disable-next-line react-hooks/refs -- manual memoization cache stored in a ref, deterministically keyed/invalidated during render
     gridCache.current.grids[zoomLevel] = getAllGridLines(
       totalDays,
       epochStart,
@@ -304,11 +312,11 @@ export function OutdoorScheduleTimeline({
   }
   const allGridLines = gridCache.current.grids[zoomLevel]!;
 
+  // eslint-disable-next-line react-hooks/refs -- manual memoization cache stored in a ref, deterministically keyed/invalidated during render
   if (zoomLevel === "weeks" && !gridCache.current.weeks) {
+    // eslint-disable-next-line react-hooks/refs -- manual memoization cache stored in a ref, deterministically keyed/invalidated during render
     gridCache.current.weeks = getAllWeekLines(totalDays, epochStart);
   }
-  const allWeekLines = zoomLevel === "weeks" ? gridCache.current.weeks! : [];
-
   const rangeCenter =
     barVisibleRange.end > barVisibleRange.start
       ? (barVisibleRange.start + barVisibleRange.end) / 2
@@ -323,23 +331,29 @@ export function OutdoorScheduleTimeline({
   const headerGridLines = useMemo(() => {
     if (zoomLevel !== "weeks") return allGridLines;
     const buffer = rangeHalfSpan * 20;
+    // eslint-disable-next-line react-hooks/refs -- allGridLines is derived from the ref-backed memoization cache above, not a live ref read
     return allGridLines.filter(
       (line) =>
         line.day >= rangeCenter - buffer && line.day <= rangeCenter + buffer,
     );
+    // eslint-disable-next-line react-hooks/preserve-manual-memoization -- allGridLines is derived from the ref-backed memoization cache above, which the compiler conservatively treats as mutable
   }, [zoomLevel, allGridLines, rangeCenter, rangeHalfSpan]);
 
   const headerWeekLines = useMemo(() => {
-    if (zoomLevel !== "weeks") return [];
+    if (zoomLevel !== "weeks") return EMPTY_GRID_LINES;
     const buffer = rangeHalfSpan * 20;
-    return allWeekLines.filter(
+    // eslint-disable-next-line react-hooks/refs -- gridCache is a ref-backed memoization cache populated deterministically above, not a live ref read
+    const weekLines = gridCache.current.weeks ?? [];
+    // eslint-disable-next-line react-hooks/refs -- weekLines is derived from the ref-backed memoization cache above, not a live ref read
+    return weekLines.filter(
       (line) =>
         line.day >= rangeCenter - buffer && line.day <= rangeCenter + buffer,
     );
-  }, [zoomLevel, allWeekLines, rangeCenter, rangeHalfSpan]);
+  }, [zoomLevel, rangeCenter, rangeHalfSpan]);
 
   const bodyGridLines = useMemo(() => {
     const buffer = rangeHalfSpan * 5;
+    // eslint-disable-next-line react-hooks/refs -- allGridLines is derived from the ref-backed memoization cache above, not a live ref read
     return allGridLines.filter(
       (line) =>
         line.day >= rangeCenter - buffer && line.day <= rangeCenter + buffer,
@@ -363,6 +377,7 @@ export function OutdoorScheduleTimeline({
   const horizontalScrollHandler = useAnimatedScrollHandler(
     {
       onScroll: (event) => {
+        // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
         scrollX.value = event.contentOffset.x;
         scrollTo(headerScrollRef, event.contentOffset.x, 0, false);
         if (isWeeksMounted.value) {
@@ -431,6 +446,7 @@ export function OutdoorScheduleTimeline({
         start: x / newScale,
         end: (x + viewportWidth) / newScale,
       });
+      // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
       isWeeksMounted.value = level === "weeks";
       // Double-dispatch: setTimeout waits for state commit, requestAnimationFrame
       // waits for the scroll views to apply the new contentSize before scrolling
@@ -628,6 +644,7 @@ export function OutdoorScheduleTimeline({
                     }}
                   >
                     <TimelineHeader
+                      // eslint-disable-next-line react-hooks/refs -- headerGridLines is derived from the ref-backed memoization cache above, not a live ref read
                       gridLines={headerGridLines}
                       scale={scale}
                       contentWidth={contentWidth}

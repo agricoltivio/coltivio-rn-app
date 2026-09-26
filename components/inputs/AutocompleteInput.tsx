@@ -56,6 +56,7 @@ export function AutocompleteInput<T>({
     setShowResults(false); // Hide results
     onResultSelect(item); // Set the selected item in the input
     Keyboard.dismiss();
+    // eslint-disable-next-line react-hooks/immutability -- Reanimated shared value assignment, not a React value
     translateY.value = withTiming(0, { duration: 400 }); // Moves back down
   };
 

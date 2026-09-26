@@ -29,18 +29,20 @@ const closeHeaderRight =
     theme: DefaultTheme,
     navigation: Omit<NavigationProp<RootStackParamList>, "getState">,
   ) =>
-  () => (
-    <Pressable
-      style={{
-        paddingHorizontal: 8,
-        paddingTop: Platform.OS === "android" ? theme.spacing.m : 4,
-        paddingBottom: 4,
-      }}
-      onPress={() => navigation.goBack()}
-    >
-      <Ionicons name="close" size={28} color={theme.colors.primary} />
-    </Pressable>
-  );
+  function CloseHeaderRight() {
+    return (
+      <Pressable
+        style={{
+          paddingHorizontal: 8,
+          paddingTop: Platform.OS === "android" ? theme.spacing.m : 4,
+          paddingBottom: 4,
+        }}
+        onPress={() => navigation.goBack()}
+      >
+        <Ionicons name="close" size={28} color={theme.colors.primary} />
+      </Pressable>
+    );
+  };
 
 export function renderPlotsStack(
   theme: DefaultTheme,

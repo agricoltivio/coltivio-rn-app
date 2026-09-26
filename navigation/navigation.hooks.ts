@@ -5,5 +5,5 @@ export function useSetTitle(title: string = "") {
   const navigation = useNavigation();
   useEffect(() => {
     navigation.setOptions({ title });
-  }, [title]);
+  }, [title, navigation]);
 }
