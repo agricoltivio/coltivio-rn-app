@@ -1,4 +1,3 @@
-import { FontWeight } from "@shopify/react-native-skia";
 import React, { ReactNode } from "react";
 import { TextStyle, StyleSheet, TextProps } from "react-native";
 import styled from "styled-components/native";

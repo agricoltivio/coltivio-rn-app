@@ -10,7 +10,6 @@ import { useTheme } from "styled-components/native";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { Switch } from "@/components/inputs/Switch";
-import { Ionicons } from "@expo/vector-icons";
 import { ListItem } from "@/components/list/ListItem";
 import {
   useAnimalByIdQuery,
@@ -75,6 +74,7 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
   // and query refetches after mutations
   useEffect(() => {
     if (animal) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: keeps the toggle synced with the loaded animal data
       setCustomCategoryEnabled(
         animal.customOutdoorJournalCategories.length > 0,
       );

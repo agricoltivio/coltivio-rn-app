@@ -1,4 +1,3 @@
-import { Treatment } from "@/api/treatments.api";
 import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
 import { FilterChips } from "@/components/filters/FilterChips";

@@ -7,9 +7,8 @@ import { useAcceptInviteMutation } from "@/features/farms/farms.hooks";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { View } from "react-native";
-import { useTheme } from "styled-components/native";
+import styled, { useTheme } from "styled-components/native";
 import { NavigationButton } from "./NavigationButton";
-import styled from "styled-components/native";
 
 export function JoinFarmScreen({ navigation }: JoinFarmScreenProps) {
   const { t } = useTranslation();

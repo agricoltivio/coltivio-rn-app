@@ -61,8 +61,8 @@ function FloatingLabel({
   action,
   type,
 }: Omit<ActiveLabel, "key">) {
-  const opacity = useRef(new Animated.Value(0)).current;
-  const translateY = useRef(new Animated.Value(0)).current;
+  const [opacity] = useState(() => new Animated.Value(0));
+  const [translateY] = useState(() => new Animated.Value(0));
   const color = EVENT_COLORS[type];
 
   useEffect(() => {
@@ -94,7 +94,7 @@ function FloatingLabel({
         }),
       ]),
     ]).start();
-  }, []);
+  }, [opacity, translateY]);
 
   return (
     <Marker lngLat={[lng, lat] as LngLat} anchor="bottom">
@@ -178,6 +178,7 @@ export function FieldEventsMapScreen({
   const cameraRef = useRef<CameraRef | null>(null);
   // Keep a ref so the interval callback always reads the latest index without deps
   const currentIndexRef = useRef(currentIndex);
+  // eslint-disable-next-line react-hooks/refs -- keeps the ref in sync with the latest value for an interval callback, avoiding a stale closure; only read asynchronously, not during this render
   currentIndexRef.current = currentIndex;
 
   const fromDate = useMemo(() => startOfYear(year), [year]);
@@ -190,9 +191,12 @@ export function FieldEventsMapScreen({
     [events],
   );
   const sortedEventsRef = useRef(sortedEvents);
+  // eslint-disable-next-line react-hooks/refs -- keeps the ref in sync with the latest value for stepEvent, avoiding a stale closure; only read asynchronously, not during this render
   sortedEventsRef.current = sortedEvents;
 
-  // Fly to farm location when map is ready
+  // Fly to farm location when map is ready — intentionally tied only to map
+  // visibility, not to farm.location.coordinates, so a background refetch of
+  // farm data doesn't snap the camera back after the user has panned away.
   useEffect(() => {
     if (!mapVisible || !farm?.location?.coordinates) return;
     const [lng, lat] = farm.location.coordinates;
@@ -201,6 +205,7 @@ export function FieldEventsMapScreen({
       zoom: 14,
       duration: 800,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional: see comment above
   }, [mapVisible]);
 
   function reset() {
@@ -213,6 +218,7 @@ export function FieldEventsMapScreen({
 
   // Reset when year changes or new events load
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: resets playback state when the year or event data changes
     reset();
   }, [year, events]);
 

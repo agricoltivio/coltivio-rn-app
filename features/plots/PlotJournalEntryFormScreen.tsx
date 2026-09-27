@@ -61,6 +61,7 @@ export function PlotJournalEntryFormScreen({
 
   useEffect(() => {
     if (entry && isEditMode) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: pre-fills local state from the loaded entry
       setUploadedImages(entry.images);
     }
   }, [entry, isEditMode]);

@@ -37,7 +37,9 @@ export function WikiMySubmissionsScreen({
   const { localSettings, updateLocalSettings } = useLocalSettings();
   const [filter, setFilter] = useState<StatusFilter>("active");
 
-  // Mark all current CR statuses as seen when this screen is opened
+  // Mark all current CR statuses as seen when this screen is opened.
+  // localSettings.wikiSeenCrStatuses is intentionally excluded: this effect writes
+  // to it, so including it would re-run the effect on its own write and loop.
   useEffect(() => {
     if (changeRequests.length === 0) return;
     const snapshot: Record<string, string> = {};
@@ -48,7 +50,8 @@ export function WikiMySubmissionsScreen({
       ...localSettings.wikiSeenCrStatuses,
       ...snapshot,
     });
-  }, [changeRequests]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- see comment above
+  }, [changeRequests, updateLocalSettings]);
 
   const filterLabels: Record<StatusFilter, string> = {
     all: t("wiki.submissions_filter_all"),

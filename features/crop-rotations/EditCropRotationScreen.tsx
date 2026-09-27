@@ -7,8 +7,7 @@ import { Switch } from "@/components/inputs/Switch";
 import { ScrollView } from "@/components/views/ScrollView";
 import { EditCropRotationScreenProps } from "./navigation/crop-rotations-routes";
 import { H2, H3 } from "@/theme/Typography";
-import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCropsQuery } from "../crops/crops.hooks";
@@ -49,7 +48,6 @@ export function EditCropRotationScreen({
     control,
     setValue,
     getValues,
-    watch,
     formState: { isDirty, errors },
   } = useForm<FormValues>({
     values: cropRotation
@@ -64,7 +62,7 @@ export function EditCropRotationScreen({
         }
       : undefined,
   });
-  const toDate = watch("toDate");
+  const toDate = useWatch({ control, name: "toDate" });
   const isPermanent = isInfiniteDate(toDate || new Date());
 
   function onSubmit({ cropId, fromDate, toDate, sowingDate }: FormValues) {

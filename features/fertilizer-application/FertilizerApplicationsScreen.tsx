@@ -1,4 +1,3 @@
-import { FertilizerApplication } from "@/api/fertilizerApplications.api";
 import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";

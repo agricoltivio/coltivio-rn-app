@@ -1,5 +1,4 @@
 import { View } from "react-native";
-import { ThemeConsumer } from "styled-components";
 import { useTheme } from "styled-components/native";
 
 function Step({ active }: { active: boolean }) {

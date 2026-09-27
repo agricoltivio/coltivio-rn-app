@@ -90,6 +90,7 @@ export function CompactDatePicker({
         setPickerMounted(false);
       };
     } else {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: unmount immediately when the popover closes
       setPickerMounted(false);
     }
   }, [visible]);

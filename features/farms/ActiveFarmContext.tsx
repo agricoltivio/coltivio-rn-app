@@ -46,6 +46,7 @@ export function ActiveFarmProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     if (!authUser) {
       setActiveFarmIdForRequests(null);
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: resets farm selection state on sign-out
       setActiveFarmIdState(null);
       setHydratedForUserId(null);
       return;

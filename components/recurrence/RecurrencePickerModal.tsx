@@ -28,6 +28,7 @@ export function RecurrencePickerModal({
   // Re-sync draft when the modal opens; default to weekly/1 if no existing value
   useEffect(() => {
     if (visible)
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: draft only resyncs when the modal opens
       setDraft(value ?? { frequency: "weekly", interval: 1, until: null });
     // value is intentionally excluded: draft should only sync when the modal opens,
     // not while the user is editing inside it.

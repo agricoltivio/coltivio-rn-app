@@ -42,10 +42,6 @@ export function PlotDetailsDrawer() {
     ? allPlots?.find((p) => p.id === selectedPlotId)
     : undefined;
 
-  const handleExpandBottomDrawer = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-
   const handleSheetChange = useCallback((index: number) => {
     if (index >= 0) setSheetIndex(index);
   }, []);
@@ -67,6 +63,7 @@ export function PlotDetailsDrawer() {
     } else {
       bottomSheetModalRef.current?.dismiss();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally keyed on selectedPlot?.id only, not the whole object (see comment above)
   }, [selectedPlot?.id]);
 
   // Don't render in non-view modes

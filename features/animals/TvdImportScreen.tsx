@@ -28,7 +28,7 @@ export function TvdImportScreen({ navigation }: TvdImportScreenProps) {
     if (!localSettings.tvdImportOnboardingCompleted) {
       navigation.replace("TvdImportOnboarding");
     }
-  }, []);
+  }, [localSettings.tvdImportOnboardingCompleted, navigation]);
   const [selectedFile, setSelectedFile] = useState<SelectedFile | null>(null);
   const [animalType, setAnimalType] = useState<AnimalType | null>(null);
   const [loading, setLoading] = useState(false);

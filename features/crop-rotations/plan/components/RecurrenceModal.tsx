@@ -30,6 +30,7 @@ export function RecurrenceModal({
 
   useEffect(() => {
     if (initialRecurrence) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: syncs local state from the external initialRecurrence value
       setInterval(initialRecurrence.interval);
       if (initialRecurrence.until) {
         setUntil(initialRecurrence.until);

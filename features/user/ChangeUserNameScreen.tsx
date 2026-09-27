@@ -28,7 +28,7 @@ export function ChangeUserNameScreen({
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { isDirty },
   } = useForm<{ name: string }>({
     defaultValues: { name: user?.fullName ?? undefined },
   });

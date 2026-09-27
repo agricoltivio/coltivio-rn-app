@@ -76,6 +76,7 @@ export function ManageAnimalCategoriesScreen({
   // Initialize entries from animal data
   useEffect(() => {
     if (animal) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: initializes local entries from the loaded animal data
       setEntries(
         animal.customOutdoorJournalCategories.map((e) => ({
           startDate: e.startDate,

@@ -1,5 +1,3 @@
-import { CropProtectionUnit } from "@/api/cropProtectionProducts.api";
-import { FertilizerUnit } from "@/api/fertilizers.api";
 import { AgriColtivioStackParamList } from "@/features/agri-coltivio/navigation/agri-coltivio-routes";
 import { AnimalsStackParamList } from "@/features/animals/navigation/animals-routes";
 import { WikiStackParamList } from "@/features/wiki/navigation/wiki-routes";
@@ -60,6 +58,7 @@ export type RootStackParamList = AuthStackParamList &
 
 declare global {
   namespace ReactNavigation {
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type -- react-navigation's documented global type-augmentation pattern; requires an interface (not a type alias) for declaration merging
     interface RootParamList extends RootStackParamList {}
   }
 }

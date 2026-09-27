@@ -51,7 +51,7 @@ export function SelectCropProtectionApplicationProductAndDateScreen({
 
   useEffect(() => {
     return () => reset();
-  }, []);
+  }, [reset]);
 
   // Launched with a plot already chosen (plot details drawer, or the FAB on the
   // plot-scoped crop protection applications list) — preselect it in the store so

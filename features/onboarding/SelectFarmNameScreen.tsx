@@ -17,6 +17,7 @@ export function SelectFarmNameScreen({
   const { t } = useTranslation();
   const { data, setData, clear } = useOnboarding();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- run once on mount only; `clear` is redeclared every render in OnboardingContext.tsx (not memoized), so adding it would wipe onboarding data on every re-render
   useEffect(() => clear(), []);
 
   return (

@@ -31,7 +31,7 @@ export function PlotListModal({
   const insets = useSafeAreaInsets();
   const [searchText, setSearchText] = useState("");
 
-  const sanitizedPlots: Array<Plot & { usageName: string }> =
+  const sanitizedPlots: (Plot & { usageName: string })[] =
     plots?.map((plot) => ({
       ...plot,
       usageName: plot.usage
@@ -97,7 +97,7 @@ export function PlotListModal({
         <ListItem.Chevron />
       </ListItem>
     ),
-    [handlePlotSelect],
+    [handlePlotSelect, t],
   );
 
   return (

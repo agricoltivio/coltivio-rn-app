@@ -43,6 +43,7 @@ export function RecurrencePicker({
   // Sync local state when value is set from outside (edit pre-population)
   useEffect(() => {
     if (value) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: syncs local draft state from an external value change
       setIntervalText(String(value.interval));
       if (value.until) setUntilDate(new Date(value.until));
     }

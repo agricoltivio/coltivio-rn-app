@@ -4,12 +4,11 @@ import { ContentView } from "@/components/containers/ContentView";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import * as Crypto from "expo-crypto";
-import React, { useEffect, useRef, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import React, { useEffect, useState } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
-import { useTheme } from "styled-components/native";
-import styled from "styled-components/native";
+import styled, { useTheme } from "styled-components/native";
 import { MarkdownEditor } from "./components/MarkdownEditor";
 import {
   useCreateWikiEntryMutation,
@@ -56,9 +55,9 @@ export function WikiEntryFormScreen({
 
   // Pre-generate a UUID so images can be uploaded before the entry is saved (matches web behaviour).
   // On edit we use the existing entryId instead.
-  const imageEntryId = useRef(entryId ?? Crypto.randomUUID()).current;
+  const [imageEntryId] = useState(() => entryId ?? Crypto.randomUUID());
 
-  const { control, handleSubmit, setValue, watch } = useForm<FormValues>({
+  const { control, handleSubmit, setValue } = useForm<FormValues>({
     defaultValues: {
       categoryId: "",
       de_title: "",
@@ -137,8 +136,11 @@ export function WikiEntryFormScreen({
   }
 
   const isPending = createMutation.isPending || updateMutation.isPending;
-  const categoryId = watch("categoryId");
-  const titles = watch(["de_title", "en_title", "it_title", "fr_title"]);
+  const categoryId = useWatch({ control, name: "categoryId" });
+  const titles = useWatch({
+    control,
+    name: ["de_title", "en_title", "it_title", "fr_title"],
+  });
   const hasAnyTitle = titles.some((title) => title?.trim().length > 0);
   const isSaveDisabled = isPending || !categoryId || !hasAnyTitle;
 
@@ -148,7 +150,7 @@ export function WikiEntryFormScreen({
       footerComponent={
         <BottomActionContainer>
           <TouchableOpacity
-            onPress={handleSubmit(onSubmit)}
+            onPress={() => handleSubmit(onSubmit)()}
             disabled={isSaveDisabled}
             style={{
               backgroundColor: theme.colors.buttonPrimary,

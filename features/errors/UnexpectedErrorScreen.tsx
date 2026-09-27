@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { AppState } from "react-native";
 import { useTheme } from "styled-components/native";
 
-export function UnexpectedErrorScreen({}: UnexpectedErrorScreenProps) {
+export function UnexpectedErrorScreen(_props: UnexpectedErrorScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const queryClient = useQueryClient();
@@ -23,7 +23,7 @@ export function UnexpectedErrorScreen({}: UnexpectedErrorScreenProps) {
     });
 
     return () => listener.remove();
-  }, []);
+  }, [queryClient]);
   return (
     <ContentView
       footerComponent={

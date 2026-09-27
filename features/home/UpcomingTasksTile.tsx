@@ -22,6 +22,7 @@ export function UpcomingTasksTile() {
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { tasks, isLoading } = useTasksQuery("todo");
 
+  // eslint-disable-next-line react-hooks/preserve-manual-memoization -- deps are correct ([tasks]); compiler bails out on this component for an unrelated reason
   const upcomingTasks = useMemo(() => {
     const tasksWithDueDate = tasks
       .filter((task) => task.dueDate != null)

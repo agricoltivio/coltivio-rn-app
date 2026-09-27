@@ -9,7 +9,7 @@ import { RHSwitch } from "@/components/inputs/RHSwitch";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Subtitle } from "@/theme/Typography";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -90,7 +90,6 @@ export function CreateDrugScreen({ route, navigation }: CreateDrugScreenProps) {
     control,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm<DrugFormValues>({
     defaultValues: {
       name: "",
@@ -124,7 +123,7 @@ export function CreateDrugScreen({ route, navigation }: CreateDrugScreenProps) {
     (error) => console.error(error),
   );
 
-  const watchedTreatments = watch("drugTreatment");
+  const watchedTreatments = useWatch({ control, name: "drugTreatment" });
   const usedTypes = new Set(watchedTreatments?.map((d) => d.animalType) ?? []);
   const canAddMore = usedTypes.size < ANIMAL_TYPES.length;
 
@@ -164,8 +163,8 @@ export function CreateDrugScreen({ route, navigation }: CreateDrugScreenProps) {
     });
   }
 
-  const nameValue = watch("name");
-  const receivedFromValue = watch("receivedFrom");
+  const nameValue = useWatch({ control, name: "name" });
+  const receivedFromValue = useWatch({ control, name: "receivedFrom" });
   const isValid =
     nameValue?.length > 0 &&
     receivedFromValue?.length > 0 &&

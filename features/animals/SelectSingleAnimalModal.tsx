@@ -58,14 +58,6 @@ export function SelectSingleAnimalModal({
       ? fuse.search(searchText).map((r) => r.item)
       : filteredAnimals;
 
-  function handleSelect(animal: AnimalWithWaitingTimeFlag) {
-    navigation.popTo(
-      previousScreen,
-      { mergeSelection: { rowIndex, animalId: animal.id } },
-      { merge: true },
-    );
-  }
-
   const renderItem = useCallback(
     ({ item }: { item: AnimalWithWaitingTimeFlag }) => {
       const dateLabel = item.dateOfBirth
@@ -74,7 +66,13 @@ export function SelectSingleAnimalModal({
       return (
         <ListItem
           style={{ paddingVertical: 5 }}
-          onPress={() => handleSelect(item)}
+          onPress={() =>
+            navigation.popTo(
+              previousScreen,
+              { mergeSelection: { rowIndex, animalId: item.id } },
+              { merge: true },
+            )
+          }
         >
           <ListItem.Content>
             <ListItem.Title>
@@ -87,7 +85,7 @@ export function SelectSingleAnimalModal({
         </ListItem>
       );
     },
-    [locale],
+    [locale, navigation, previousScreen, rowIndex],
   );
 
   return (

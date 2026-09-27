@@ -1,6 +1,5 @@
 import { useApi } from "@/api/api";
 import {
-  CropRotation,
   CropRotationCreateInput,
   CropRotationCreateResult,
   CropRotationCreateManyByCropInput,

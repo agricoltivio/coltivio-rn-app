@@ -16,7 +16,7 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import {
   FlatList,
@@ -105,6 +105,7 @@ function ChecklistGenerationModal({
   // Reset to a fresh selection whenever the modal opens
   useEffect(() => {
     if (!visible) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: resets selection state when the modal opens
     setPendingSelection(new Map());
     setSearch("");
     setSelectedAnimalTypes(new Set());
@@ -231,7 +232,11 @@ function ChecklistGenerationModal({
   function toggleAnimalType(type: AnimalType) {
     setSelectedAnimalTypes((prev) => {
       const next = new Set(prev);
-      next.has(type) ? next.delete(type) : next.add(type);
+      if (next.has(type)) {
+        next.delete(type);
+      } else {
+        next.add(type);
+      }
       return next;
     });
   }
@@ -654,7 +659,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
   const isEditing = taskId != null;
 
   // Load existing task when editing
-  const { task, isLoading: taskLoading } = useTaskDetailQuery(taskId ?? "");
+  const { task } = useTaskDetailQuery(taskId ?? "");
 
   const { users } = useFarmUsersQuery();
 
@@ -673,7 +678,6 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
     control,
     handleSubmit,
     reset,
-    watch,
     setValue,
     getValues,
     formState: { errors },
@@ -691,6 +695,9 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
     append: appendChecklist,
     remove: removeChecklist,
   } = useFieldArray({ control, name: "checklistItems" });
+  // Watched once for the whole array, then indexed per row below —
+  // calling useWatch inside the .map() itself would violate rules of hooks.
+  const watchedChecklistItems = useWatch({ control, name: "checklistItems" });
   const [ghostText, setGhostText] = useState("");
 
   // Initialize form when editing and task is loaded
@@ -711,6 +718,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
         dueDate: item.dueDate != null ? String(item.dueDate) : undefined,
       })),
     });
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: initializes local form state from the loaded task
     setLabels(taskDetail.labels);
     if (taskDetail.recurrence != null) {
       setRecurrence({
@@ -723,7 +731,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
       });
     }
     setInitialized(true);
-  }, [task, isEditing, initialized]);
+  }, [task, isEditing, initialized, reset]);
 
   const createMutation = useCreateTaskMutation(() => {
     navigation.popTo("TaskList");
@@ -895,7 +903,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
               {checklistFields.map((field, index) => (
                 <ChecklistItemRow
                   key={field.id}
-                  value={watch(`checklistItems.${index}.name`)}
+                  value={watchedChecklistItems?.[index]?.name ?? ""}
                   onChangeText={(text) =>
                     setValue(`checklistItems.${index}.name`, text)
                   }

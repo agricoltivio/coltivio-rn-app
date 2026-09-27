@@ -246,6 +246,7 @@ export function SelectPlotsMap({
     .runOnJS(true)
     .enabled(drawPhase !== "idle" && enableDrawing)
     .activateAfterLongPress(150)
+    // eslint-disable-next-line react-hooks/refs -- gesture-handler callback, runs as an event handler not during render
     .onStart(async (event) => {
       const map = mapRef.current;
       if (!map) return;
@@ -287,6 +288,7 @@ export function SelectPlotsMap({
         }
       }
     })
+    // eslint-disable-next-line react-hooks/refs -- gesture-handler callback, runs as an event handler not during render
     .onUpdate(async (event) => {
       if (!dragState.current) return;
       const map = mapRef.current;
@@ -297,6 +299,7 @@ export function SelectPlotsMap({
       ]);
       drawingRef.current?.updateVertex(dragState.current.index, lngLat);
     })
+    // eslint-disable-next-line react-hooks/refs -- gesture-handler callback, runs as an event handler not during render
     .onEnd(async (event) => {
       if (!dragState.current) {
         const map = mapRef.current;
@@ -311,6 +314,7 @@ export function SelectPlotsMap({
       dragState.current = null;
       setDragPanEnabled(true);
     })
+    // eslint-disable-next-line react-hooks/refs -- gesture-handler callback, runs as an event handler not during render
     .onFinalize(() => {
       dragState.current = null;
       setDragPanEnabled(true);

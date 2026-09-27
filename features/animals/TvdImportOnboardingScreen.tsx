@@ -20,7 +20,7 @@ export function TvdImportOnboardingScreen({
   }
 
   const steps = [
-    <View style={{ width: "100%" }}>
+    <View key="intro" style={{ width: "100%" }}>
       <H1 style={{ color: theme.colors.primary }}>
         {t("animals.tvd_import.onboarding_heading")}
       </H1>

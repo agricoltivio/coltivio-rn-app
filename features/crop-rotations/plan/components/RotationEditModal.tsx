@@ -59,6 +59,7 @@ export function RotationEditModal({
   // Reset form when modal opens with new rotation
   useEffect(() => {
     if (visible && rotation) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: resets the form from the rotation when the modal opens
       setPlotId(selectedPlotId || "");
       setCropId(rotation.cropId);
       setFromDate(rotation.fromDate);

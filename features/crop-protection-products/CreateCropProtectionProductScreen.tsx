@@ -19,7 +19,6 @@ export function CreateCropProtectionProductScreen({
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors, isDirty },
   } = useForm<CropProtectionProductFormValues>();
 

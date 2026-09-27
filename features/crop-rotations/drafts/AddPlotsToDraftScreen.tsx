@@ -61,6 +61,7 @@ export function AddPlotsToDraftScreen({
   // Pre-select plots already in the draft once data loads
   useEffect(() => {
     if (!initialized && draftPlan) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: pre-selects plots already in the draft once it loads
       setSelectedIds(new Set(draftPlan.plots.map((p) => p.plotId)));
       setInitialized(true);
     }

@@ -76,6 +76,7 @@ export function UserMembershipScreen({ route }: UserMembershipScreenProps) {
   // here in one consistent place regardless of where the user started.
   useEffect(() => {
     if (route.params?.autoOpenStatuten) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: opens the dialog when navigated here with that param
       setStatutenVisible(true);
     }
   }, [route.params?.autoOpenStatuten]);

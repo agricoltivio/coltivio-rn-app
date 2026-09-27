@@ -46,6 +46,7 @@ export function TvdImportRowDetailScreen({
   useEffect(() => {
     const sel = route.params.mergeSelection;
     if (sel && sel.rowIndex === rowIndex) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: applies the merge selection returned via navigation params
       setMergeAnimalId(sel.animalId);
     }
   }, [route.params.mergeSelection, rowIndex]);

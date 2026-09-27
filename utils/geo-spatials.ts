@@ -160,10 +160,10 @@ export class GeoSpatials {
   static thinOutCoordinates = (
     coordinates: LatLng[],
     minDistance: number,
-  ): Array<LatLng | undefined> => {
+  ): (LatLng | undefined)[] => {
     if (coordinates.length === 0) return [];
 
-    let result: Array<LatLng | undefined> = [coordinates[0]]; // Always keep the first point
+    let result: (LatLng | undefined)[] = [coordinates[0]]; // Always keep the first point
     let lastPoint = coordinates[0];
 
     for (let i = 1; i < coordinates.length; i++) {

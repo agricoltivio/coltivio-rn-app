@@ -22,11 +22,10 @@ export function SelectHarvestPlotsScreen({
   navigation,
 }: SelectHarvestPlotsScreenProps) {
   const { t } = useTranslation();
-  const { plots } = useFarmPlotsQuery();
+  useFarmPlotsQuery();
   const { localSettings } = useLocalSettings();
 
   const {
-    harvest,
     putHarvestPlot,
     removeHarvestPlot,
     selectedPlotsById,
@@ -38,11 +37,11 @@ export function SelectHarvestPlotsScreen({
     if (!localSettings.mapDrawOnboardingCompleted) {
       navigation.navigate("SelectPlotsOnboarding");
     }
-  }, []);
+  }, [localSettings.mapDrawOnboardingCompleted, navigation]);
 
   useEffect(() => {
     return resetSelectedPlots;
-  }, []);
+  }, [resetSelectedPlots]);
 
   const handleTogglePlot = useCallback(
     (plot: Plot) => {
@@ -64,11 +63,11 @@ export function SelectHarvestPlotsScreen({
 
   const handleDrawComplete = useCallback(
     (
-      intersections: Array<{
+      intersections: {
         plot: Plot;
         geometry: GeoJSON.MultiPolygon;
         size: number;
-      }>,
+      }[],
     ) => {
       for (const { plot, geometry, size } of intersections) {
         putHarvestPlot({

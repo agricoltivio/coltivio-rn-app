@@ -39,10 +39,11 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
 
   useEffect(() => {
     if (verificationMailSent && user?.emailVerified) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: clears the pending-verification flag once the email is verified
       setVerificationMailSent(false);
       setError(null);
     }
-  }, [user]);
+  }, [user, verificationMailSent]);
 
   async function onSubmit({ email }: { email: string }) {
     setSubmitting(true);

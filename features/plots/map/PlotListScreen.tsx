@@ -16,7 +16,7 @@ export function PlotListScreen({ navigation }: PlotListScreenProps) {
   const { plots } = useFarmPlotsQuery();
   const [searchText, setSearchText] = useState("");
 
-  const sanitizedPlots: Array<Plot & { usageName: string }> =
+  const sanitizedPlots: (Plot & { usageName: string })[] =
     plots?.map((plot) => ({
       ...plot,
       usageName: plot.usage
@@ -65,7 +65,7 @@ export function PlotListScreen({ navigation }: PlotListScreenProps) {
         <ListItem.Chevron />
       </ListItem>
     ),
-    [handlePlotSelect],
+    [handlePlotSelect, t],
   );
 
   return (

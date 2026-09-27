@@ -60,6 +60,7 @@ export function OutdoorScheduleEditModal({
   useEffect(() => {
     if (!visible) return;
     if (schedule) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: resets the form from the schedule when the modal opens
       setScheduleType(schedule.type);
       setStartDate(new Date(schedule.startDate));
       setEndDate(schedule.endDate ? new Date(schedule.endDate) : null);
@@ -84,10 +85,10 @@ export function OutdoorScheduleEditModal({
 
   // Compute duration in days to filter out frequencies shorter than the event span
   const frequencyOptions = useMemo(() => {
-    const all: Array<{
+    const all: {
       label: string;
       value: "weekly" | "monthly" | "yearly";
-    }> = [
+    }[] = [
       { label: t("animals.frequency_types.weekly"), value: "weekly" },
       { label: t("animals.frequency_types.monthly"), value: "monthly" },
       { label: t("animals.frequency_types.yearly"), value: "yearly" },

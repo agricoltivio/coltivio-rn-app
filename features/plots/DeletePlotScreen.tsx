@@ -17,7 +17,6 @@ export function DeletePlotScreen({ navigation, route }: DeletePlotScreenProps) {
   const { plotId, name } = route.params;
   const theme = useTheme();
 
-  navigation.getState().routes;
   const deletePlotMutation = useDeletePlotMutation(
     () => navigation.pop(3),
     (error) => console.error(error),

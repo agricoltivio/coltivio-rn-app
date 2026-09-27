@@ -19,7 +19,7 @@ export function HerdsOnboardingScreen({
   }
 
   const steps = [
-    <View>
+    <View key="step1">
       <H1 style={{ color: theme.colors.primary }}>
         {t("animals.herds_onboarding.step1_heading")}
       </H1>
@@ -32,7 +32,7 @@ export function HerdsOnboardingScreen({
         {t("animals.herds_onboarding.step1_body")}
       </H3>
     </View>,
-    <View>
+    <View key="step2">
       <H1 style={{ color: theme.colors.primary }}>
         {t("animals.herds_onboarding.step2_heading")}
       </H1>
@@ -45,7 +45,7 @@ export function HerdsOnboardingScreen({
         {t("animals.herds_onboarding.step2_body")}
       </H3>
     </View>,
-    <View>
+    <View key="step3">
       <H1 style={{ color: theme.colors.primary }}>
         {t("animals.herds_onboarding.step3_heading")}
       </H1>
