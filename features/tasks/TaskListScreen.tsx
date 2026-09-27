@@ -1,4 +1,4 @@
-import { Task , TaskStatus } from "@/api/tasks.api";
+import { Task, TaskStatus } from "@/api/tasks.api";
 import { FAB } from "@/components/buttons/FAB";
 import { Chip } from "@/components/chips/Chip";
 import { ContentView } from "@/components/containers/ContentView";
@@ -7,7 +7,7 @@ import { ListItem } from "@/components/list/ListItem";
 import { H2 } from "@/theme/Typography";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Fuse from "fuse.js";
-import React, { useMemo, useRef, useState , useEffect } from "react";
+import React, { useMemo, useRef, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,

@@ -1,4 +1,4 @@
-import { FamilyTreeEdge, FamilyTreeNode , AnimalType } from "@/api/animals.api";
+import { FamilyTreeEdge, FamilyTreeNode, AnimalType } from "@/api/animals.api";
 import { ContentView } from "@/components/containers/ContentView";
 import { Subtitle } from "@/theme/Typography";
 import { MaterialCommunityIcons } from "@expo/vector-icons";

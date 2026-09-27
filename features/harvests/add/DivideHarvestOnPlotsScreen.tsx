@@ -97,7 +97,12 @@ export function DivideHarvestOnPlotsScreen({
         // });
       });
     }
-  }, [divideByArea, selectedHarvestPlotsById, divisionPrecision, totalProducedUnits]);
+  }, [
+    divideByArea,
+    selectedHarvestPlotsById,
+    divisionPrecision,
+    totalProducedUnits,
+  ]);
 
   const totalDivided = +Object.values(quantityByPlotId)
     .reduce((total, val) => total + Number(val), 0)

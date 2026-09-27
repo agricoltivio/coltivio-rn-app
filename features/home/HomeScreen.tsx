@@ -5,7 +5,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { MapTile } from "@/features/map/MapTile";
-import { Body, H2 , H1 } from "@/theme/Typography";
+import { Body, H2, H1 } from "@/theme/Typography";
 import { canLinkToMembership, goToMembershipScreen } from "@/utils/membership";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";

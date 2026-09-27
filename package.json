@@ -38,7 +38,9 @@
   },
   "expo": {
     "install": {
-      "exclude": ["@sentry/react-native"]
+      "exclude": [
+        "@sentry/react-native"
+      ]
     }
   },
   "dependencies": {

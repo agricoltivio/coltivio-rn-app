@@ -88,7 +88,12 @@ export function DivideCropProtectionApplicationOnPlotsScreen({
         // });
       });
     }
-  }, [divideByArea, selectedPlotsById, divisionPrecision, totalNumberOfApplications]);
+  }, [
+    divideByArea,
+    selectedPlotsById,
+    divisionPrecision,
+    totalNumberOfApplications,
+  ]);
 
   const totalDivided = +Object.values(quantityByPlotId)
     .reduce((total, val) => total + Number(val), 0)

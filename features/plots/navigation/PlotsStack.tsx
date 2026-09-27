@@ -24,11 +24,10 @@ import { PlotJournalScreen } from "../PlotJournalScreen";
 import { PlotJournalEntryScreen } from "../PlotJournalEntryScreen";
 import { PlotJournalEntryFormScreen } from "../PlotJournalEntryFormScreen";
 
-const closeHeaderRight =
-  (
-    theme: DefaultTheme,
-    navigation: Omit<NavigationProp<RootStackParamList>, "getState">,
-  ) =>
+const closeHeaderRight = (
+  theme: DefaultTheme,
+  navigation: Omit<NavigationProp<RootStackParamList>, "getState">,
+) =>
   function CloseHeaderRight() {
     return (
       <Pressable
