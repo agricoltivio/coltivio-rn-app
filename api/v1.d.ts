@@ -3028,6 +3028,22 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/v1/donations": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations["GetV1Donations"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head: operations["HeadV1Donations"];
+    patch?: never;
+    trace?: never;
+  };
   "/v1/donations/checkout": {
     parameters: {
       query?: never;
@@ -12914,6 +12930,24 @@ export interface components {
       };
     };
     PostV1MembershipTrialRequestBody: Record<string, never>;
+    GetV1DonationsPositiveResponse: {
+      data: {
+        result: {
+          id: string;
+          userId: string | null;
+          email: string;
+          amount: number;
+          currency: string;
+          /** @enum {string} */
+          status: "pending" | "succeeded" | "failed" | "refunded";
+          paymentMethodType: string | null;
+          cardLast4: string | null;
+          cardBrand: string | null;
+          createdAt: unknown;
+        }[];
+        count: number;
+      };
+    };
     PostV1DonationsCheckoutPositiveResponse: {
       data: {
         url: string;
@@ -26211,6 +26245,60 @@ export interface operations {
         content: {
           "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
         };
+      };
+    };
+  };
+  GetV1Donations: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description GET /v1/donations Positive response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GetV1DonationsPositiveResponse"];
+        };
+      };
+      /** @description GET /v1/donations Negative response */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+        };
+      };
+    };
+  };
+  HeadV1Donations: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description HEAD /v1/donations Positive response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description HEAD /v1/donations Negative response */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };

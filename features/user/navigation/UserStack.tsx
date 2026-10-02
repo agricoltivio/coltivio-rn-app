@@ -13,6 +13,7 @@ import { DevSettingsScreen } from "../../farms/DevSettingsScreen";
 import { EmailVerifiedScreen } from "../EmailVerifiedScreen";
 import { ChangeEmailPendingScreen } from "../ChangeEmailPendingScreen";
 import { UserMembershipScreen } from "../UserMembershipScreen";
+import { UserDonationsScreen } from "../UserDonationsScreen";
 import { DeleteAccountScreen } from "../DeleteAccountScreen";
 
 export function renderUserStack() {
@@ -123,6 +124,14 @@ export function renderUserStack() {
       key="user-membership"
       name="UserMembership"
       component={UserMembershipScreen}
+      options={{
+        title: "",
+      }}
+    />,
+    <Stack.Screen
+      key="user-donations"
+      name="UserDonations"
+      component={UserDonationsScreen}
       options={{
         title: "",
       }}

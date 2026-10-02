@@ -1,7 +1,8 @@
 import { useApi } from "@/api/api";
+import { queryKeys } from "@/cache/query-keys";
 import { useUserQuery } from "@/features/user/users.hooks";
 import { usePaymentSheet } from "@stripe/stripe-react-native";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as Linking from "expo-linking";
 import { applePayParams, googlePayParams } from "@/utils/stripe";
 
@@ -9,6 +10,7 @@ export function useDonationCheckoutMutation() {
   const api = useApi();
   const { user } = useUserQuery();
   const { initPaymentSheet, presentPaymentSheet } = usePaymentSheet();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (amountChf: number): Promise<boolean> => {
@@ -37,5 +39,21 @@ export function useDonationCheckoutMutation() {
       }
       return true;
     },
+    onSuccess: (succeeded) => {
+      if (succeeded) {
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.donations.list.queryKey,
+        });
+      }
+    },
   });
+}
+
+export function useDonationsQuery() {
+  const api = useApi();
+  const { data, ...rest } = useQuery({
+    queryKey: queryKeys.donations.list.queryKey,
+    queryFn: () => api.donations.getDonations(),
+  });
+  return { donations: data, ...rest };
 }

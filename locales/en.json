@@ -1608,5 +1608,12 @@
     "trial_expiry_banner": "Your trial expires in {{days}} days.",
     "expired_banner": "Your membership has expired.",
     "expired_grace_banner": "Your membership has expired. You have {{days}} more days to renew."
+  },
+  "donations": {
+    "title": "Donations",
+    "intro": "Every contribution counts and helps us build an independent alternative that puts the interests of farmers first.",
+    "history_heading": "Your donations",
+    "cta": "Donate now",
+    "payment_method_twint": "Twint"
   }
 }

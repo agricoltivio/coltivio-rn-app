@@ -1607,5 +1607,12 @@
     "trial_expiry_banner": "Votre période d'essai expire dans {{days}} jours.",
     "expired_banner": "Votre adhésion a expiré.",
     "expired_grace_banner": "Votre adhésion a expiré. Il vous reste {{days}} jours pour la renouveler."
+  },
+  "donations": {
+    "title": "Dons",
+    "intro": "Chaque contribution compte et nous aide à construire une alternative indépendante qui place les intérêts des agricultrices et agriculteurs au premier plan.",
+    "history_heading": "Vos dons",
+    "cta": "Faire un don",
+    "payment_method_twint": "Twint"
   }
 }

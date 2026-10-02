@@ -1609,5 +1609,12 @@
     "trial_expiry_banner": "Deine Testphase endet in {{days}} Tagen.",
     "expired_banner": "Deine Mitgliedschaft ist abgelaufen.",
     "expired_grace_banner": "Deine Mitgliedschaft ist abgelaufen. Du hast noch {{days}} Tage, um sie zu verlängern."
+  },
+  "donations": {
+    "title": "Spenden",
+    "intro": "Jeder Beitrag zählt und hilft uns, eine unabhängige Alternative aufzubauen, bei der die Interessen der Bäuerinnen und Bauern im Vordergrund stehen.",
+    "history_heading": "Deine Spenden",
+    "cta": "Jetzt spenden",
+    "payment_method_twint": "Twint"
   }
 }

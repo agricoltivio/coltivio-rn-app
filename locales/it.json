@@ -1608,5 +1608,12 @@
     "trial_expiry_banner": "Il tuo periodo di prova scade in {{days}} giorni.",
     "expired_banner": "Il tuo abbonamento è scaduto.",
     "expired_grace_banner": "Il tuo abbonamento è scaduto. Hai ancora {{days}} giorni per rinnovarlo."
+  },
+  "donations": {
+    "title": "Donazioni",
+    "intro": "Ogni contributo conta e ci aiuta a costruire un'alternativa indipendente che mette al primo posto gli interessi delle agricoltrici e degli agricoltori.",
+    "history_heading": "Le tue donazioni",
+    "cta": "Dona ora",
+    "payment_method_twint": "Twint"
   }
 }

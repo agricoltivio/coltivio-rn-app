@@ -121,11 +121,22 @@ export function UserAccountScreen({ navigation }: UserAccountScreenProps) {
             <ListItem
               onPress={() => navigation.navigate("UserMembership")}
               style={{ backgroundColor: theme.colors.white }}
-              hideBottomDivider
             >
               <ListItem.Content>
                 <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
                   {t("farm.membership")}
+                </ListItem.Title>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
+            <ListItem
+              onPress={() => navigation.navigate("UserDonations")}
+              style={{ backgroundColor: theme.colors.white }}
+              hideBottomDivider
+            >
+              <ListItem.Content>
+                <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
+                  {t("donations.title")}
                 </ListItem.Title>
               </ListItem.Content>
               <ListItem.Chevron />
