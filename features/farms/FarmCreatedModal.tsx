@@ -73,14 +73,14 @@ export function FarmCreatedModal() {
                 <Trans
                   i18nKey="farm_created_modal.no_plots_hint"
                   components={{
-                    webapp: (
+                    email: (
                       <Body
                         style={{
                           fontWeight: "bold",
                           textDecorationLine: "underline",
                         }}
                         onPress={() =>
-                          Linking.openURL(`${process.env.EXPO_PUBLIC_WEB_URL}`)
+                          Linking.openURL("mailto:support@coltivio.ch")
                         }
                       />
                     ),

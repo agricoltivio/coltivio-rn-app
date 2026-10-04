@@ -1616,7 +1616,7 @@
     "message_no_date": "Deine Parzellen wurden aus den kantonalen Daten übernommen.",
     "review_hint": "Bitte überprüfe sie und passe sie bei Bedarf an.",
     "no_plots": "Leider konnten wir keine Parzellen zu deinem Betrieb finden.",
-    "no_plots_hint": "Importiere sie manuell in der <webapp>Webapp</webapp> (z.B. aus Lawis) oder zeichne sie in der Karte von Hand ein.",
+    "no_plots_hint": "Zeichne sie in der Karte von Hand ein oder melde dich bei <email>support@coltivio.ch</email>, wenn du Hilfe brauchst.",
     "lets_go": "Los geht's"
   }
 }

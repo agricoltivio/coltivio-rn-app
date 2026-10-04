@@ -1615,7 +1615,7 @@
     "message_no_date": "Le tue particelle sono state riprese dai dati cantonali.",
     "review_hint": "Controllale e modificale se necessario.",
     "no_plots": "Purtroppo non abbiamo trovato particelle per la tua azienda.",
-    "no_plots_hint": "Importale manualmente nell'<webapp>app web</webapp> (ad es. da Lawis) o disegnale a mano sulla mappa.",
+    "no_plots_hint": "Disegnale a mano sulla mappa o contatta <email>support@coltivio.ch</email> se hai bisogno di aiuto.",
     "lets_go": "Iniziamo"
   }
 }

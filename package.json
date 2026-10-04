@@ -30,6 +30,7 @@
     "eas:install": "eas build:run -p ios",
     "expo:update": "yarn expo install expo@latest && npx expo install --fix",
     "eas:build-production": "eas build --profile production --platform all",
+    "eas:build-production-apk": "eas build --profile production-apk --platform android",
     "eas:submit-ios": "eas submit --platform ios --latest",
     "eas:submit-android": "eas submit --platform android --latest"
   },

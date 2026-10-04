@@ -1614,7 +1614,7 @@
     "message_no_date": "Tes parcelles ont été reprises des données cantonales.",
     "review_hint": "Vérifie-les et adapte-les si nécessaire.",
     "no_plots": "Malheureusement, nous n'avons trouvé aucune parcelle pour ton exploitation.",
-    "no_plots_hint": "Importe-les manuellement dans l'<webapp>application web</webapp> (p. ex. depuis Lawis) ou dessine-les à la main sur la carte.",
+    "no_plots_hint": "Dessine-les à la main sur la carte ou contacte <email>support@coltivio.ch</email> si tu as besoin d'aide.",
     "lets_go": "C'est parti"
   }
 }

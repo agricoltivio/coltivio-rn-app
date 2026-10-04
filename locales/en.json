@@ -1615,7 +1615,7 @@
     "message_no_date": "Your plots were imported from the cantonal data.",
     "review_hint": "Please review them and adjust if needed.",
     "no_plots": "Unfortunately, we couldn't find any plots for your farm.",
-    "no_plots_hint": "Import them manually in the <webapp>web app</webapp> (e.g. from Lawis) or draw them by hand on the map.",
+    "no_plots_hint": "Draw them by hand on the map or contact <email>support@coltivio.ch</email> if you need help.",
     "lets_go": "Let's go"
   }
 }
