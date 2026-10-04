@@ -269,11 +269,11 @@
     "summary": {
       "heading": "Geschafft!",
       "subheading": "Dein Hof mit der Betriebsnummer {{federalFarmId}} ist bereit.",
+      "subheading_no_federal_farm_id": "Dein Hof ist bereit.",
       "plots_info": "Deine Flächen werden basierend auf deiner Betriebsnummer als Schläge hinzugefügt.",
       "crops_info": "Die momentane Kultur wird vom Nutzungscode abgeleitet.",
       "edit_plots_info": "Du kannst deine Flächen jederzeit unter 'Schläge' oder über die Karte bearbeiten.",
-      "press_save_to_finish": "Drücke 'Speichern', um ihn zu erstellen.",
-      "no_federal_farm_id": "Leider konnten wir deine Flächen nicht automatisch hinzufügen. Du kannst deine Flächen unter 'Schläge' oder unter der Karte manuell hinzufügen. Wir arbeiten daran, sobald wie möglich alle Standorte zu unterstützen."
+      "press_save_to_finish": "Drücke 'Speichern', um ihn zu erstellen."
     },
     "preference": {
       "heading": "Noch eine letzte Frage",
@@ -1609,5 +1609,14 @@
     "trial_expiry_banner": "Deine Testphase endet in {{days}} Tagen.",
     "expired_banner": "Deine Mitgliedschaft ist abgelaufen.",
     "expired_grace_banner": "Deine Mitgliedschaft ist abgelaufen. Du hast noch {{days}} Tage, um sie zu verlängern."
+  },
+  "farm_created_modal": {
+    "title": "Dein Betrieb ist eingerichtet",
+    "message": "Deine Parzellen wurden aus den kantonalen Daten übernommen (Stand <bold>{{date}}</bold>).",
+    "message_no_date": "Deine Parzellen wurden aus den kantonalen Daten übernommen.",
+    "review_hint": "Bitte überprüfe sie und passe sie bei Bedarf an.",
+    "no_plots": "Leider konnten wir keine Parzellen zu deinem Betrieb finden.",
+    "no_plots_hint": "Importiere sie manuell in der <webapp>Webapp</webapp> (z.B. aus Lawis) oder zeichne sie in der Karte von Hand ein.",
+    "lets_go": "Los geht's"
   }
 }

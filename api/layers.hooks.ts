@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useApi } from "@/api/api";
 import { GeoSpatials } from "@/utils/geo-spatials";
 import { queryKeys } from "@/cache/query-keys";
@@ -50,4 +50,13 @@ export function useInfiniteQueryParcelsByBBox(
     isFetchingMoreParcels: fetchNextPage,
     ...rest,
   };
+}
+
+export function useParcelLayerLastUpdatedQuery(enabled: boolean) {
+  const api = useApi();
+  return useQuery({
+    queryKey: queryKeys.parcelLayer.lastUpdated.queryKey,
+    queryFn: () => api.layers.getPlotsLastUpdated(),
+    enabled,
+  });
 }

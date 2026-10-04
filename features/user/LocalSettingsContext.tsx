@@ -58,6 +58,9 @@ type LocalSettingsData = {
   firstLaunchDate: string | null;
   // Whether the AgriColtivio membership promo modal has been shown and dismissed.
   agriColtivioPromoShown: boolean;
+  // Ids of newly created farms whose "farm set up" modal hasn't been dismissed yet.
+  // A pending list (not a "seen" list) so existing farms never get the modal.
+  farmCreatedModalPendingFarmIds: string[];
   defaultMapLayer: "satellite" | "map";
   defaultPlotColorMode: "plot" | "crop" | "usage" | "cutting";
   // Manually chosen app language. null = never chosen, so the app follows the
@@ -105,6 +108,7 @@ export const defaultLocalSettings: LocalSettingsData = {
   dismissedMembershipBannerForDate: null,
   firstLaunchDate: null,
   agriColtivioPromoShown: false,
+  farmCreatedModalPendingFarmIds: [],
   defaultMapLayer: "satellite",
   defaultPlotColorMode: "crop",
   preferredLocale: null,

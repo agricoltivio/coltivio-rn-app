@@ -400,6 +400,46 @@
         }
       }
     },
+    "/v1/layers/plots/lastUpdated": {
+      "get": {
+        "operationId": "GetV1LayersPlotsLastUpdated",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/layers/plots/lastUpdated Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsLastUpdatedPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/layers/plots/lastUpdated Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1LayersPlotsLastUpdated",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/layers/plots/lastUpdated Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/layers/plots/lastUpdated Negative response"
+          }
+        }
+      }
+    },
     "/v1/layers/federalFarmIds": {
       "get": {
         "operationId": "GetV1LayersFederalFarmIds",
@@ -14181,6 +14221,42 @@
         }
       }
     },
+    "/v1/donations": {
+      "get": {
+        "operationId": "GetV1Donations",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/donations Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1DonationsPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/donations Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1Donations",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": { "description": "HEAD /v1/donations Positive response" },
+          "400": { "description": "HEAD /v1/donations Negative response" }
+        }
+      }
+    },
     "/v1/donations/checkout": {
       "post": {
         "operationId": "PostV1DonationsCheckout",
@@ -14195,6 +14271,7 @@
           },
           "required": true
         },
+        "security": [{ "APIKEY_1": [] }],
         "responses": {
           "200": {
             "description": "POST /v1/donations/checkout Positive response",
@@ -14233,6 +14310,7 @@
           },
           "required": true
         },
+        "security": [{ "APIKEY_1": [] }],
         "responses": {
           "200": {
             "description": "POST /v1/donations/intent Positive response",
@@ -15302,6 +15380,28 @@
               "count": { "type": "number" }
             },
             "required": ["result", "count"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "GetV1LayersPlotsLastUpdatedPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "lastUpdated": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              }
+            },
+            "required": ["lastUpdated"],
             "additionalProperties": false
           }
         },
@@ -38192,6 +38292,55 @@
       "PostV1MembershipTrialRequestBody": {
         "type": "object",
         "properties": {}
+      },
+      "GetV1DonationsPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "userId": { "type": ["string", "null"] },
+                    "email": { "type": "string" },
+                    "amount": { "type": "number" },
+                    "currency": { "type": "string" },
+                    "status": {
+                      "type": "string",
+                      "enum": ["pending", "succeeded", "failed", "refunded"]
+                    },
+                    "paymentMethodType": { "type": ["string", "null"] },
+                    "cardLast4": { "type": ["string", "null"] },
+                    "cardBrand": { "type": ["string", "null"] },
+                    "createdAt": {}
+                  },
+                  "required": [
+                    "id",
+                    "userId",
+                    "email",
+                    "amount",
+                    "currency",
+                    "status",
+                    "paymentMethodType",
+                    "cardLast4",
+                    "cardBrand",
+                    "createdAt"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "count": { "type": "number" }
+            },
+            "required": ["result", "count"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
       },
       "PostV1DonationsCheckoutPositiveResponse": {
         "type": "object",

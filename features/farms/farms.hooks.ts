@@ -83,6 +83,7 @@ export function useCreateFarmMutation(
 ) {
   const api = useApi();
   const { setActiveFarmId } = useActiveFarm();
+  const { localSettings, updateLocalSettings } = useLocalSettings();
   const createFarmMutation = useMutation({
     mutationFn: async (data: OnboardingData) => {
       const farm = await api.farms.createFarm({
@@ -101,6 +102,11 @@ export function useCreateFarmMutation(
       onError && onError(error);
     },
     onSuccess: ({ farm }) => {
+      // Home shows the "farm set up" modal for this farm until dismissed
+      updateLocalSettings("farmCreatedModalPendingFarmIds", [
+        ...localSettings.farmCreatedModalPendingFarmIds,
+        farm.id,
+      ]);
       // The backend doesn't auto-select the new farm — do it locally so the user lands in
       // the right context immediately (both for onboarding and "create another farm").
       // setActiveFarmId refetches farms.list / farm / users.me so they reflect the new farm.

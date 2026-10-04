@@ -269,11 +269,11 @@
     "summary": {
       "heading": "Tutto pronto!",
       "subheading": "La tua azienda con il numero {{federalFarmId}} è pronta.",
+      "subheading_no_federal_farm_id": "La tua azienda è pronta.",
       "plots_info": "Le tue superfici verranno aggiunte come appezzamenti in base al tuo numero azienda.",
       "crops_info": "La coltura attuale viene derivata dal codice utilizzo.",
       "edit_plots_info": "Puoi modificare le tue superfici in qualsiasi momento sotto 'Appezzamenti' o tramite la mappa.",
-      "press_save_to_finish": "Premi Salva per creare la tua azienda agricola.",
-      "no_federal_farm_id": "Purtroppo non siamo riusciti ad aggiungere automaticamente le tue superfici. Puoi aggiungerle manualmente sotto 'Appezzamenti' o tramite la mappa. Stiamo lavorando per supportare tutte le località il prima possibile."
+      "press_save_to_finish": "Premi Salva per creare la tua azienda agricola."
     },
     "preference": {
       "heading": "Un'ultima domanda",
@@ -1608,5 +1608,14 @@
     "trial_expiry_banner": "Il tuo periodo di prova scade in {{days}} giorni.",
     "expired_banner": "Il tuo abbonamento è scaduto.",
     "expired_grace_banner": "Il tuo abbonamento è scaduto. Hai ancora {{days}} giorni per rinnovarlo."
+  },
+  "farm_created_modal": {
+    "title": "La tua azienda è pronta",
+    "message": "Le tue particelle sono state riprese dai dati cantonali (aggiornati al <bold>{{date}}</bold>).",
+    "message_no_date": "Le tue particelle sono state riprese dai dati cantonali.",
+    "review_hint": "Controllale e modificale se necessario.",
+    "no_plots": "Purtroppo non abbiamo trovato particelle per la tua azienda.",
+    "no_plots_hint": "Importale manualmente nell'<webapp>app web</webapp> (ad es. da Lawis) o disegnale a mano sulla mappa.",
+    "lets_go": "Iniziamo"
   }
 }
