@@ -1,4 +1,3 @@
-import { useParcelLayerLastUpdatedQuery } from "@/api/layers.hooks";
 import { Button } from "@/components/buttons/Button";
 import { Body, H3 } from "@/theme/Typography";
 import { Trans, useTranslation } from "react-i18next";
@@ -9,7 +8,7 @@ import { useLocalSettings } from "../user/LocalSettingsContext";
 import { useActiveFarm } from "./ActiveFarmContext";
 
 export function FarmCreatedModal() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const { activeFarmId } = useActiveFarm();
   const { localSettings, updateLocalSettings } = useLocalSettings();
@@ -18,14 +17,10 @@ export function FarmCreatedModal() {
     activeFarmId !== null &&
     localSettings.farmCreatedModalPendingFarmIds.includes(activeFarmId);
 
-  const lastUpdatedQuery = useParcelLayerLastUpdatedQuery(visible);
   const plotsQuery = useFarmPlotsQuery();
   // No plots after setup means the parcel import failed for this farm
   const hasNoPlots =
     plotsQuery.plots !== undefined && plotsQuery.plots.length === 0;
-  const isLoading =
-    (lastUpdatedQuery.isPending && lastUpdatedQuery.isFetching) ||
-    plotsQuery.isPending;
 
   function dismiss() {
     updateLocalSettings(
@@ -64,7 +59,7 @@ export function FarmCreatedModal() {
           <H3 style={{ marginBottom: theme.spacing.m }}>
             {t("farm_created_modal.title")}
           </H3>
-          {isLoading ? (
+          {plotsQuery.isPending ? (
             <ActivityIndicator color={theme.colors.primary} />
           ) : hasNoPlots ? (
             <>
@@ -90,23 +85,7 @@ export function FarmCreatedModal() {
             </>
           ) : (
             <>
-              <Body>
-                {lastUpdatedQuery.data ? (
-                  <Trans
-                    i18nKey="farm_created_modal.message"
-                    values={{
-                      date: lastUpdatedQuery.data.toLocaleDateString(
-                        i18n.language,
-                      ),
-                    }}
-                    components={{
-                      bold: <Body style={{ fontWeight: "bold" }} />,
-                    }}
-                  />
-                ) : (
-                  t("farm_created_modal.message_no_date")
-                )}
-              </Body>
+              <Body>{t("farm_created_modal.message")}</Body>
               <Body style={{ marginTop: theme.spacing.s }}>
                 {t("farm_created_modal.review_hint")}
               </Body>

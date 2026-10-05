@@ -1611,12 +1611,11 @@
     "expired_grace_banner": "Deine Mitgliedschaft ist abgelaufen. Du hast noch {{days}} Tage, um sie zu verlängern."
   },
   "farm_created_modal": {
-    "title": "Dein Betrieb ist eingerichtet",
-    "message": "Deine Parzellen wurden aus den kantonalen Daten übernommen (Stand <bold>{{date}}</bold>).",
-    "message_no_date": "Deine Parzellen wurden aus den kantonalen Daten übernommen.",
-    "review_hint": "Bitte überprüfe sie und passe sie bei Bedarf an.",
-    "no_plots": "Leider konnten wir keine Parzellen zu deinem Betrieb finden.",
-    "no_plots_hint": "Zeichne sie in der Karte von Hand ein oder melde dich bei <email>support@coltivio.ch</email>, wenn du Hilfe brauchst.",
+    "title": "Dein Betrieb ist startklar",
+    "message": "Wir haben deine Parzellen aus den kantonalen Daten übernommen. Da diese nicht immer auf dem neusten Stand sind, überprüfe sie bitte.",
+    "review_hint": "Bei Bedarf kannst du sie jederzeit in der Karte anpassen.",
+    "no_plots": "Leider haben wir für deinen Betrieb keine Parzellen gefunden.",
+    "no_plots_hint": "Du kannst sie in der Karte von Hand einzeichnen. Brauchst du Hilfe? Schreib uns an <email>support@coltivio.ch</email>.",
     "lets_go": "Los geht's"
   }
 }

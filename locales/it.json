@@ -1611,11 +1611,10 @@
   },
   "farm_created_modal": {
     "title": "La tua azienda è pronta",
-    "message": "Le tue particelle sono state riprese dai dati cantonali (aggiornati al <bold>{{date}}</bold>).",
-    "message_no_date": "Le tue particelle sono state riprese dai dati cantonali.",
-    "review_hint": "Controllale e modificale se necessario.",
+    "message": "Abbiamo ripreso le tue particelle dai dati cantonali. Poiché non sono sempre aggiornati, controllale per favore.",
+    "review_hint": "Puoi modificarle in qualsiasi momento sulla mappa.",
     "no_plots": "Purtroppo non abbiamo trovato particelle per la tua azienda.",
-    "no_plots_hint": "Disegnale a mano sulla mappa o contatta <email>support@coltivio.ch</email> se hai bisogno di aiuto.",
+    "no_plots_hint": "Puoi disegnarle a mano sulla mappa. Hai bisogno di aiuto? Scrivici a <email>support@coltivio.ch</email>.",
     "lets_go": "Iniziamo"
   }
 }

@@ -69,13 +69,6 @@ export function layersApi(client: FetchClient) {
       );
       return data!.data.result;
     },
-    async getPlotsLastUpdated() {
-      const { data } = await client.GET("/v1/layers/plots/lastUpdated");
-      if (!data) {
-        throw new Error("Missing content");
-      }
-      return new Date(data.data.lastUpdated);
-    },
     async getFederalFarmIds(
       query: string,
       longitude: number,

@@ -1610,11 +1610,10 @@
   },
   "farm_created_modal": {
     "title": "Ton exploitation est prête",
-    "message": "Tes parcelles ont été reprises des données cantonales (état au <bold>{{date}}</bold>).",
-    "message_no_date": "Tes parcelles ont été reprises des données cantonales.",
-    "review_hint": "Vérifie-les et adapte-les si nécessaire.",
+    "message": "Nous avons repris tes parcelles des données cantonales. Comme celles-ci ne sont pas toujours à jour, vérifie-les s'il te plaît.",
+    "review_hint": "Tu peux les adapter à tout moment sur la carte.",
     "no_plots": "Malheureusement, nous n'avons trouvé aucune parcelle pour ton exploitation.",
-    "no_plots_hint": "Dessine-les à la main sur la carte ou contacte <email>support@coltivio.ch</email> si tu as besoin d'aide.",
+    "no_plots_hint": "Tu peux les dessiner à la main sur la carte. Besoin d'aide ? Écris-nous à <email>support@coltivio.ch</email>.",
     "lets_go": "C'est parti"
   }
 }
