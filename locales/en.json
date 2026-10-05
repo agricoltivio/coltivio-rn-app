@@ -269,11 +269,11 @@
     "summary": {
       "heading": "All set!",
       "subheading": "Your farm with registration number {{federalFarmId}} is ready.",
+      "subheading_no_federal_farm_id": "Your farm is ready.",
       "plots_info": "Your plots will be added based on your farm registration number.",
       "crops_info": "The current crop will be derived from the usage code.",
       "edit_plots_info": "You can edit your plots at any time under 'Plots' or via the map.",
-      "press_save_to_finish": "Tap Save to create your farm.",
-      "no_federal_farm_id": "Unfortunately, we could not add your plots automatically. You can add your plots manually under 'Plots' or via the map. We are working to support all locations as soon as possible."
+      "press_save_to_finish": "Tap Save to create your farm."
     },
     "preference": {
       "heading": "One last question",
@@ -1608,5 +1608,13 @@
     "trial_expiry_banner": "Your trial expires in {{days}} days.",
     "expired_banner": "Your membership has expired.",
     "expired_grace_banner": "Your membership has expired. You have {{days}} more days to renew."
+  },
+  "farm_created_modal": {
+    "title": "Your farm is ready",
+    "message": "We imported your plots from the cantonal data. Since this data isn't always up to date, please review them.",
+    "review_hint": "You can adjust them on the map at any time.",
+    "no_plots": "Unfortunately, we couldn't find any plots for your farm.",
+    "no_plots_hint": "You can draw them by hand on the map. Need help? Write to us at <email>support@coltivio.ch</email>.",
+    "lets_go": "Let's go"
   }
 }

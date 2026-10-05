@@ -1719,6 +1719,84 @@
         }
       }
     },
+    "/v1/plots/import/preview": {
+      "post": {
+        "operationId": "PostV1PlotsImportPreview",
+        "requestBody": {
+          "description": "POST /v1/plots/import/preview Request body",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1PlotsImportPreviewRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/plots/import/preview Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1PlotsImportPreviewPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/plots/import/preview Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/plots/import/commit": {
+      "post": {
+        "operationId": "PostV1PlotsImportCommit",
+        "requestBody": {
+          "description": "POST /v1/plots/import/commit Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1PlotsImportCommitRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/plots/import/commit Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1PlotsImportCommitPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/plots/import/commit Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/plots/byId/{plotId}": {
       "get": {
         "operationId": "GetV1PlotsByIdPlotId",
@@ -14181,6 +14259,42 @@
         }
       }
     },
+    "/v1/donations": {
+      "get": {
+        "operationId": "GetV1Donations",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/donations Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1DonationsPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/donations Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1Donations",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": { "description": "HEAD /v1/donations Positive response" },
+          "400": { "description": "HEAD /v1/donations Negative response" }
+        }
+      }
+    },
     "/v1/donations/checkout": {
       "post": {
         "operationId": "PostV1DonationsCheckout",
@@ -14195,6 +14309,7 @@
           },
           "required": true
         },
+        "security": [{ "APIKEY_1": [] }],
         "responses": {
           "200": {
             "description": "POST /v1/donations/checkout Positive response",
@@ -14233,6 +14348,7 @@
           },
           "required": true
         },
+        "security": [{ "APIKEY_1": [] }],
         "responses": {
           "200": {
             "description": "POST /v1/donations/intent Positive response",
@@ -16840,6 +16956,152 @@
           "additionalNotes": { "type": "string" }
         },
         "required": ["name", "geometry", "size"]
+      },
+      "PostV1PlotsImportPreviewPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "completeness": {
+                "type": "string",
+                "enum": ["full", "partial", "geometries_only"]
+              },
+              "rows": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "rowNumber": { "type": "number" },
+                    "externalId": { "type": ["string", "null"] },
+                    "name": { "type": "string" },
+                    "localId": { "type": ["string", "null"] },
+                    "usage": { "type": ["number", "null"] },
+                    "usageName": { "type": ["string", "null"] },
+                    "size": { "type": "number" },
+                    "municipality": { "type": ["string", "null"] },
+                    "geometry": {
+                      "type": ["object", "null"],
+                      "properties": {
+                        "type": { "type": "string", "const": "MultiPolygon" },
+                        "coordinates": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "array",
+                              "items": {
+                                "type": "array",
+                                "items": { "type": "number" }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "required": ["type", "coordinates"],
+                      "additionalProperties": false
+                    },
+                    "overlappingPlotIds": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    },
+                    "parseErrors": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    }
+                  },
+                  "required": [
+                    "rowNumber",
+                    "externalId",
+                    "name",
+                    "localId",
+                    "usage",
+                    "usageName",
+                    "size",
+                    "municipality",
+                    "geometry",
+                    "overlappingPlotIds",
+                    "parseErrors"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["completeness", "rows"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1PlotsImportPreviewRequestBody": {
+        "type": "object",
+        "properties": { "file": { "type": "string", "format": "binary" } },
+        "required": ["file"]
+      },
+      "PostV1PlotsImportCommitPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": { "created": { "type": "number" } },
+            "required": ["created"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1PlotsImportCommitRequestBody": {
+        "type": "object",
+        "properties": {
+          "rows": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "localId": { "type": "string" },
+                "usage": { "type": "number" },
+                "additionalUsages": { "type": "string" },
+                "cuttingDate": {
+                  "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                  "type": ["string", "null"],
+                  "format": "date-time",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+                  "externalDocs": {
+                    "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                  }
+                },
+                "geometry": {
+                  "type": "object",
+                  "properties": {
+                    "type": { "type": "string", "const": "MultiPolygon" },
+                    "coordinates": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": { "type": "number" }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": ["type", "coordinates"]
+                },
+                "size": { "type": "number" },
+                "additionalNotes": { "type": "string" }
+              },
+              "required": ["name", "geometry", "size"]
+            }
+          }
+        },
+        "required": ["rows"]
       },
       "GetV1PlotsByIdPlotIdPositiveResponse": {
         "type": "object",
@@ -38192,6 +38454,55 @@
       "PostV1MembershipTrialRequestBody": {
         "type": "object",
         "properties": {}
+      },
+      "GetV1DonationsPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "userId": { "type": ["string", "null"] },
+                    "email": { "type": "string" },
+                    "amount": { "type": "number" },
+                    "currency": { "type": "string" },
+                    "status": {
+                      "type": "string",
+                      "enum": ["pending", "succeeded", "failed", "refunded"]
+                    },
+                    "paymentMethodType": { "type": ["string", "null"] },
+                    "cardLast4": { "type": ["string", "null"] },
+                    "cardBrand": { "type": ["string", "null"] },
+                    "createdAt": {}
+                  },
+                  "required": [
+                    "id",
+                    "userId",
+                    "email",
+                    "amount",
+                    "currency",
+                    "status",
+                    "paymentMethodType",
+                    "cardLast4",
+                    "cardBrand",
+                    "createdAt"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "count": { "type": "number" }
+            },
+            "required": ["result", "count"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
       },
       "PostV1DonationsCheckoutPositiveResponse": {
         "type": "object",

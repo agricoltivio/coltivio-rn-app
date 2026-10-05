@@ -13,18 +13,16 @@ export function FarmSummaryPage({ federalFarmId }: FarmSummaryPageProps) {
 
   return (
     <View style={{ width: "100%" }}>
+      <H2 style={{ color: theme.colors.primary }}>
+        {t("onboarding.summary.heading")}
+      </H2>
       {federalFarmId ? (
-        <>
-          <H2 style={{ color: theme.colors.primary }}>
-            {t("onboarding.summary.heading")}
-          </H2>
-          <H3 style={{ marginTop: theme.spacing.s }}>
-            {t("onboarding.summary.subheading", { federalFarmId })}
-          </H3>
-        </>
+        <H3 style={{ marginTop: theme.spacing.s }}>
+          {t("onboarding.summary.subheading", { federalFarmId })}
+        </H3>
       ) : (
         <H3 style={{ marginTop: theme.spacing.s }}>
-          {t("onboarding.summary.no_federal_farm_id")}
+          {t("onboarding.summary.subheading_no_federal_farm_id")}
         </H3>
       )}
     </View>

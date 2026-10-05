@@ -269,11 +269,11 @@
     "summary": {
       "heading": "Tout est prêt !",
       "subheading": "Votre ferme avec le numéro d'exploitation {{federalFarmId}} est prête.",
+      "subheading_no_federal_farm_id": "Votre ferme est prête.",
       "plots_info": "Vos surfaces seront ajoutées en tant que champs sur la base de votre numéro d'exploitation.",
       "crops_info": "La culture actuelle est dérivée du code d'utilisation.",
       "edit_plots_info": "Vous pouvez modifier vos surfaces à tout moment sous 'Champs' ou via la carte.",
-      "press_save_to_finish": "Appuyez sur Enregistrer pour créer votre ferme.",
-      "no_federal_farm_id": "Malheureusement, nous n'avons pas pu ajouter automatiquement vos surfaces. Vous pouvez les ajouter manuellement sous 'Champs' ou via la carte. Nous travaillons à supporter tous les emplacements dès que possible."
+      "press_save_to_finish": "Appuyez sur Enregistrer pour créer votre ferme."
     },
     "preference": {
       "heading": "Une dernière question",
@@ -1607,5 +1607,13 @@
     "trial_expiry_banner": "Votre période d'essai expire dans {{days}} jours.",
     "expired_banner": "Votre adhésion a expiré.",
     "expired_grace_banner": "Votre adhésion a expiré. Il vous reste {{days}} jours pour la renouveler."
+  },
+  "farm_created_modal": {
+    "title": "Ton exploitation est prête",
+    "message": "Nous avons repris tes parcelles des données cantonales. Comme celles-ci ne sont pas toujours à jour, vérifie-les s'il te plaît.",
+    "review_hint": "Tu peux les adapter à tout moment sur la carte.",
+    "no_plots": "Malheureusement, nous n'avons trouvé aucune parcelle pour ton exploitation.",
+    "no_plots_hint": "Tu peux les dessiner à la main sur la carte. Besoin d'aide ? Écris-nous à <email>support@coltivio.ch</email>.",
+    "lets_go": "C'est parti"
   }
 }
