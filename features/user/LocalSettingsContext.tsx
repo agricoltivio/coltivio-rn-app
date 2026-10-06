@@ -46,6 +46,11 @@ type LocalSettingsData = {
   homeTiles: HomeTileConfig[];
   homeTilesLayout: "grid" | "list";
   showUpcomingTasks: boolean;
+  // Home screen upcoming tasks tile: number of rows and which assignees to include
+  upcomingTasksCount: number;
+  upcomingTasksShowMine: boolean;
+  upcomingTasksShowUnassigned: boolean;
+  upcomingTasksShowOthers: boolean;
   wikiOnlyPrivate: boolean;
   wikiOnboardingCompleted: boolean;
   // Maps CR id → last seen status, used to detect unseen activity on submissions
@@ -101,6 +106,10 @@ export const defaultLocalSettings: LocalSettingsData = {
   homeTiles: DEFAULT_HOME_TILES,
   homeTilesLayout: "list",
   showUpcomingTasks: true,
+  upcomingTasksCount: 3,
+  upcomingTasksShowMine: true,
+  upcomingTasksShowUnassigned: true,
+  upcomingTasksShowOthers: true,
   wikiOnlyPrivate: false,
   wikiOnboardingCompleted: false,
   wikiSeenCrStatuses: {},

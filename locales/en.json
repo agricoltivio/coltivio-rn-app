@@ -329,6 +329,13 @@
       "community": "Community",
       "wiki": "Wiki",
       "tasks": "Tasks"
+    },
+    "upcoming_tasks_settings": {
+      "title": "Customize upcoming tasks",
+      "count": "Number of tasks",
+      "show_mine": "Show my tasks",
+      "show_unassigned": "Show unassigned tasks",
+      "show_others": "Show tasks assigned to others"
     }
   },
   "farm": {
@@ -1416,6 +1423,15 @@
     },
     "language": {
       "title": "Language"
+    },
+    "task_push_notifications": {
+      "label": "Notifications for due tasks",
+      "permission_denied": "Notifications are turned off in the system settings. Allow them there to be notified about due tasks.",
+      "open_settings": "Open system settings"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "tasks_due": "Due tasks"
     }
   },
   "home_tiles": {
@@ -1458,7 +1474,9 @@
       "step1_body": "Create tasks, set due dates and assign them to collaborators.",
       "step2_heading": "Generate checklists",
       "step2_body": "Select animals or plots to automatically create checklist items from them.",
-      "step2_icon_hint": "Tap this icon next to the checklist to generate items from animals or plots."
+      "step2_icon_hint": "Tap this icon next to the checklist to generate items from animals or plots.",
+      "step3_heading": "Notifications",
+      "step3_body": "Get a notification every morning at 9 am about tasks due that day. You can change this anytime in the settings."
     },
     "new_task": "New Task",
     "edit_task": "Edit Task",

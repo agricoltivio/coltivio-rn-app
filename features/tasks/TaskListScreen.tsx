@@ -1,6 +1,7 @@
 import { Task } from "@/api/tasks.api";
 import { FAB } from "@/components/buttons/FAB";
 import { Chip } from "@/components/chips/Chip";
+import { getDueDateColor } from "@/features/tasks/task-due-date";
 import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
@@ -28,7 +29,9 @@ import Animated, {
 import { useTasksQuery, useSetTaskStatusMutation } from "./tasks.hooks";
 import { TaskListScreenProps } from "./navigation/tasks-routes";
 import { useLocalSettings } from "@/features/user/LocalSettingsContext";
-import { usePermissions } from "@/features/user/users.hooks";
+import { usePermissions, useUserQuery } from "@/features/user/users.hooks";
+import { useApi } from "@/api/api";
+import { registerForPushNotificationsAsync } from "@/features/notifications/push-notifications";
 import { useEffect } from "react";
 import { TaskStatus } from "@/api/tasks.api";
 
@@ -75,6 +78,23 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
       navigation.navigate("TasksOnboarding");
     }
   }, []);
+
+  // Ask for notification permission here instead of cold at app launch, but not on top of
+  // the onboarding and not when the user turned due-task notifications off
+  const api = useApi();
+  const { user } = useUserQuery();
+  const taskPushNotificationsEnabled = user?.taskPushNotifications === true;
+  useEffect(() => {
+    if (
+      !localSettings.tasksOnboardingCompleted ||
+      !taskPushNotificationsEnabled
+    ) {
+      return;
+    }
+    registerForPushNotificationsAsync(api.users, {
+      requestPermission: true,
+    }).catch((error) => console.error(error));
+  }, [localSettings.tasksOnboardingCompleted, taskPushNotificationsEnabled]);
 
   const now = new Date();
 
@@ -182,16 +202,14 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
                 <Chip
                   small
                   label={new Date(item.dueDate as string).toLocaleDateString()}
-                  bgColor={theme.colors.danger}
-                  textColor={theme.colors.white}
+                  outlineColor={getDueDateColor(item.dueDate as string, theme)}
                 />
               )}
               {assigneeName != null && (
                 <Chip
                   small
                   label={assigneeName}
-                  bgColor={theme.colors.blue}
-                  textColor={theme.colors.white}
+                  outlineColor={theme.colors.blue}
                 />
               )}
               {item.labels.slice(0, 2).map((label) => (

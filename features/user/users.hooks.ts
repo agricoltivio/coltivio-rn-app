@@ -81,6 +81,45 @@ export function useUpdateUserMutation(
   });
 }
 
+export function useUpdateTaskPushNotificationsMutation() {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (taskPushNotifications: boolean) =>
+      api.users.updateUser({ taskPushNotifications }),
+    // Flip the toggle immediately and roll back if the request fails
+    onMutate: async (taskPushNotifications) => {
+      await queryClient.cancelQueries({
+        queryKey: queryKeys.users.me.queryKey,
+      });
+      const previousUser = queryClient.getQueryData<User>(
+        queryKeys.users.me.queryKey,
+      );
+      if (previousUser) {
+        queryClient.setQueryData<User>(queryKeys.users.me.queryKey, {
+          ...previousUser,
+          taskPushNotifications,
+        });
+      }
+      return { previousUser };
+    },
+    onError: (error, _taskPushNotifications, context) => {
+      console.error(error);
+      if (context?.previousUser) {
+        queryClient.setQueryData(
+          queryKeys.users.me.queryKey,
+          context.previousUser,
+        );
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.users.me.queryKey,
+      });
+    },
+  });
+}
+
 export function useDeletionPreviewQuery() {
   const api = useApi();
   const { data, ...rest } = useQuery({

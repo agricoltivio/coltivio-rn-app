@@ -30,6 +30,17 @@ const AuthContext = createContext<{
   // error: null,
 });
 
+// Runs before signing out while the token is still valid (e.g. to unregister the device's
+// push token). Registered from outside because api.ts imports this module, so importing
+// api code here would create a require cycle.
+let beforeSignOutHandler: ((token: string) => Promise<void>) | null = null;
+
+export function setBeforeSignOutHandler(
+  handler: ((token: string) => Promise<void>) | null,
+) {
+  beforeSignOutHandler = handler;
+}
+
 // This hook can be used to access the user info.
 export function useSession() {
   const value = useContext(AuthContext);
@@ -111,6 +122,10 @@ export function SessionProvider({ children }: PropsWithChildren) {
   }
 
   async function clearSession() {
+    if (token && beforeSignOutHandler) {
+      // Sign-out must never be blocked by a failing cleanup
+      await beforeSignOutHandler(token).catch((error) => console.error(error));
+    }
     await supabase.auth.signOut();
     setToken(null);
     setAuthUser(null);

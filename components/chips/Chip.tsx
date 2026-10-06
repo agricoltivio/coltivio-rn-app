@@ -16,6 +16,8 @@ type ChipProps = {
   bgColor?: string;
   /** Override text color */
   textColor?: string;
+  /** Outline variant — white background, border and text in this color */
+  outlineColor?: string;
   /** Reduced padding and font size */
   small?: boolean;
 };
@@ -28,18 +30,20 @@ export function Chip({
   onRemove,
   bgColor: bgColorProp,
   textColor: textColorProp,
+  outlineColor,
   small = false,
 }: ChipProps) {
   const theme = useTheme();
 
-  const bgColor =
-    bgColorProp ?? (active ? theme.colors.primary : theme.colors.white);
-  const borderColor = bgColorProp
-    ? bgColorProp
-    : active || accent
-      ? theme.colors.primary
-      : theme.colors.gray3;
+  const bgColor = outlineColor
+    ? theme.colors.white
+    : (bgColorProp ?? (active ? theme.colors.primary : theme.colors.white));
+  const borderColor =
+    outlineColor ??
+    bgColorProp ??
+    (active || accent ? theme.colors.primary : theme.colors.gray3);
   const textColor =
+    outlineColor ??
     textColorProp ??
     (active
       ? theme.colors.white
@@ -47,6 +51,7 @@ export function Chip({
         ? theme.colors.primary
         : theme.colors.gray1);
   const iconColor =
+    outlineColor ??
     textColorProp ??
     (active
       ? theme.colors.white

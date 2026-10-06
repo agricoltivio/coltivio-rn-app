@@ -329,6 +329,13 @@
       "community": "Vernetzen",
       "wiki": "Wiki",
       "tasks": "Aufgaben"
+    },
+    "upcoming_tasks_settings": {
+      "title": "Anstehende Aufgaben anpassen",
+      "count": "Anzahl Aufgaben",
+      "show_mine": "Meine Aufgaben anzeigen",
+      "show_unassigned": "Nicht zugewiesene Aufgaben anzeigen",
+      "show_others": "Aufgaben anderer anzeigen"
     }
   },
   "farm": {
@@ -1435,6 +1442,15 @@
     },
     "language": {
       "title": "Sprache"
+    },
+    "task_push_notifications": {
+      "label": "Benachrichtigungen für fällige Aufgaben",
+      "permission_denied": "Benachrichtigungen sind in den Systemeinstellungen deaktiviert. Erlaube sie dort, damit du über fällige Aufgaben informiert wirst.",
+      "open_settings": "Systemeinstellungen öffnen"
+    },
+    "notifications": {
+      "title": "Benachrichtigungen",
+      "tasks_due": "Fällige Aufgaben"
     }
   },
   "home_tiles": {
@@ -1459,7 +1475,9 @@
       "step1_body": "Erstelle Aufgaben, setze Fälligkeitsdaten und weise sie Mitarbeitern zu.",
       "step2_heading": "Checklisten generieren",
       "step2_body": "Wähle Tiere oder Schläge aus, um daraus automatisch Checklistenpunkte zu erstellen.",
-      "step2_icon_hint": "Tippe dieses Symbol bei der Checkliste, um Punkte aus Tieren oder Schlägen zu generieren."
+      "step2_icon_hint": "Tippe dieses Symbol bei der Checkliste, um Punkte aus Tieren oder Schlägen zu generieren.",
+      "step3_heading": "Benachrichtigungen",
+      "step3_body": "Erhalte jeden Morgen um 9 Uhr eine Benachrichtigung über Aufgaben, die heute fällig sind. Du kannst das jederzeit in den Einstellungen ändern."
     },
     "new_task": "Neue Aufgabe",
     "edit_task": "Aufgabe bearbeiten",

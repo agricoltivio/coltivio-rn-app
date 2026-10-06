@@ -48,10 +48,12 @@ type ChecklistItemInput = {
   dueDate?: string;
 };
 
+type TaskRecurrenceInput = NonNullable<TaskUpdateInput["recurrence"]>;
+
 type FormValues = {
   name: string;
   description?: string;
-  assigneeId?: string;
+  assigneeId?: string | null;
   dueDate?: Date | null;
   checklistItems: ChecklistItemInput[];
 };
@@ -664,6 +666,14 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
   const [labelDialogInput, setLabelDialogInput] = useState("");
   const [recurrence, setRecurrence] = useState<RecurrenceValue | null>(null);
   const [recurrenceModalVisible, setRecurrenceModalVisible] = useState(false);
+  // Recurrence fields the picker can't edit (e.g. set via the web app). The backend replaces
+  // the whole recurrence on update, so they are sent back unchanged to not lose them.
+  const [loadedRecurrenceExtras, setLoadedRecurrenceExtras] = useState<{
+    frequency: RecurrenceValue["frequency"];
+    byWeekday?: TaskRecurrenceInput["byWeekday"];
+    byMonthDay?: number;
+    count?: number;
+  } | null>(null);
   const [linkPickerVisible, setLinkPickerVisible] = useState(false);
 
   // Track whether we've initialized form from existing task
@@ -721,6 +731,12 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
             ? String(taskDetail.recurrence.until)
             : null,
       });
+      setLoadedRecurrenceExtras({
+        frequency: taskDetail.recurrence.frequency,
+        byWeekday: taskDetail.recurrence.byWeekday ?? undefined,
+        byMonthDay: taskDetail.recurrence.byMonthDay ?? undefined,
+        count: taskDetail.recurrence.count ?? undefined,
+      });
     }
     setInitialized(true);
   }, [task, isEditing, initialized]);
@@ -738,11 +754,27 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
       .filter((item) => item.name.trim().length > 0)
       .map((item) => ({ id: item.id, name: item.name, dueDate: item.dueDate }));
 
-    const recurrencePayload = recurrence
+    // Weekdays / month day only make sense for the frequency they were set with, and count
+    // conflicts with an end date, so they're dropped when the user changed those
+    const keepRecurrenceExtras =
+      recurrence != null &&
+      loadedRecurrenceExtras != null &&
+      loadedRecurrenceExtras.frequency === recurrence.frequency;
+    const recurrencePayload: TaskRecurrenceInput | null = recurrence
       ? {
           frequency: recurrence.frequency,
           interval: recurrence.interval,
           until: recurrence.until ?? undefined,
+          byWeekday: keepRecurrenceExtras
+            ? loadedRecurrenceExtras.byWeekday
+            : undefined,
+          byMonthDay: keepRecurrenceExtras
+            ? loadedRecurrenceExtras.byMonthDay
+            : undefined,
+          count:
+            keepRecurrenceExtras && recurrence.until == null
+              ? loadedRecurrenceExtras.count
+              : undefined,
         }
       : null;
 
@@ -751,8 +783,9 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
         name: values.name,
         description: values.description || undefined,
         labels,
-        assigneeId: values.assigneeId || undefined,
-        dueDate: values.dueDate ? values.dueDate.toISOString() : undefined,
+        // null clears the value on the backend, undefined would leave it unchanged
+        assigneeId: values.assigneeId || null,
+        dueDate: values.dueDate ? values.dueDate.toISOString() : null,
         recurrence: recurrencePayload,
         checklistItems,
       };
@@ -836,6 +869,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
               label={t("tasks.assignee")}
               data={userOptions}
               enableSearch
+              clearable
             />
 
             {/* Due date */}
