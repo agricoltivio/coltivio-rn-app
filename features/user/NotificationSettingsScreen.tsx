@@ -3,10 +3,12 @@ import { Button } from "@/components/buttons/Button";
 import { ContentView } from "@/components/containers/ContentView";
 import { Switch } from "@/components/inputs/Switch";
 import { ScrollView } from "@/components/views/ScrollView";
-import { registerForPushNotificationsAsync } from "@/features/notifications/push-notifications";
+import {
+  getNotificationPermissionAsync,
+  registerPushTokenAsync,
+} from "@/features/notifications/push-notifications";
 import { Body, H2 } from "@/theme/Typography";
 import { useFocusEffect } from "@react-navigation/native";
-import * as Notifications from "expo-notifications";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Linking, View } from "react-native";
@@ -26,25 +28,42 @@ export function NotificationSettingsScreen(
   const { user } = useUserQuery();
   const updateTaskPushNotificationsMutation =
     useUpdateTaskPushNotificationsMutation();
-  const [notificationPermissionDenied, setNotificationPermissionDenied] =
+  const [notificationPermissionBlocked, setNotificationPermissionBlocked] =
     useState(false);
 
   // Re-checked on focus so the note disappears after returning from the system settings
   const refreshNotificationPermission = useCallback(() => {
-    Notifications.getPermissionsAsync()
+    getNotificationPermissionAsync({ requestPermission: false })
       .then((permission) =>
-        setNotificationPermissionDenied(permission.status === "denied"),
+        setNotificationPermissionBlocked(permission?.blocked ?? false),
       )
-      .catch(() => setNotificationPermissionDenied(false));
+      .catch(() => setNotificationPermissionBlocked(false));
   }, []);
   useFocusEffect(refreshNotificationPermission);
 
-  function handleTaskPushNotificationsChange(enabled: boolean) {
-    updateTaskPushNotificationsMutation.mutate(enabled);
-    if (enabled) {
-      registerForPushNotificationsAsync(api.users, { requestPermission: true })
-        .catch((error) => console.error(error))
-        .finally(refreshNotificationPermission);
+  // Enabling asks for permission first and only turns the setting on once it's granted,
+  // so it's never enabled without permission. If the OS won't prompt anymore, the switch
+  // stays off and the note below points to the system settings.
+  async function handleTaskPushNotificationsChange(enabled: boolean) {
+    if (!enabled) {
+      updateTaskPushNotificationsMutation.mutate(false);
+      return;
+    }
+    try {
+      const permission = await getNotificationPermissionAsync({
+        requestPermission: true,
+      });
+      setNotificationPermissionBlocked(permission?.blocked ?? false);
+      // null: simulator/emulator without push support, the setting can still be toggled
+      if (permission != null && !permission.granted) {
+        return;
+      }
+      updateTaskPushNotificationsMutation.mutate(true);
+      if (permission != null) {
+        await registerPushTokenAsync(api.users);
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -73,7 +92,7 @@ export function NotificationSettingsScreen(
               handleTaskPushNotificationsChange(event.nativeEvent.value)
             }
           />
-          {notificationPermissionDenied && user?.taskPushNotifications && (
+          {notificationPermissionBlocked && (
             <>
               <Body style={{ color: theme.colors.gray2 }}>
                 {t("settings.task_push_notifications.permission_denied")}

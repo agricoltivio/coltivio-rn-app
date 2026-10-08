@@ -56,22 +56,22 @@ export function parseTasksDueNotificationData(
   return { type: "tasks_due", farmId: data.farmId, taskIds };
 }
 
-// Gets the Expo push token and registers it with the backend. With requestPermission false
-// it only (re)registers when permission was already granted, so it never prompts.
-// Pass devicePushToken when calling from addPushTokenListener: without it the Expo token
-// lookup fetches the device token itself, which fires the listener again (endless loop).
-export async function registerForPushNotificationsAsync(
-  usersApi: UsersApi,
-  {
-    requestPermission,
-    devicePushToken,
-  }: {
-    requestPermission: boolean;
-    devicePushToken?: Notifications.DevicePushToken;
-  },
-) {
+export type NotificationPermission = {
+  granted: boolean;
+  // Permanently denied: the OS won't show the prompt again, only the system settings help
+  blocked: boolean;
+  // Whether the OS prompt was shown during this call
+  prompted: boolean;
+};
+
+// Returns null on simulators/emulators, where push notifications aren't supported
+export async function getNotificationPermissionAsync({
+  requestPermission,
+}: {
+  requestPermission: boolean;
+}): Promise<NotificationPermission | null> {
   if (!Device.isDevice) {
-    return;
+    return null;
   }
   // Android requires the channel to exist before asking for permission
   if (Platform.OS === "android") {
@@ -82,13 +82,25 @@ export async function registerForPushNotificationsAsync(
   }
 
   let permission = await Notifications.getPermissionsAsync();
+  let prompted = false;
   if (!permission.granted && requestPermission && permission.canAskAgain) {
     permission = await Notifications.requestPermissionsAsync();
+    prompted = true;
   }
-  if (!permission.granted) {
-    return;
-  }
+  return {
+    granted: permission.granted,
+    blocked: !permission.granted && !permission.canAskAgain,
+    prompted,
+  };
+}
 
+// Gets the Expo push token and registers it with the backend.
+// Pass devicePushToken when calling from addPushTokenListener: without it the Expo token
+// lookup fetches the device token itself, which fires the listener again (endless loop).
+export async function registerPushTokenAsync(
+  usersApi: UsersApi,
+  devicePushToken?: Notifications.DevicePushToken,
+) {
   const projectId =
     Constants.expoConfig?.extra?.eas?.projectId ??
     Constants.easConfig?.projectId;

@@ -2,15 +2,20 @@ import { useApi } from "@/api/api";
 import { useSession } from "@/auth/SessionProvider";
 import { useActiveFarm } from "@/features/farms/ActiveFarmContext";
 import { useFarmsQuery } from "@/features/farms/farms.hooks";
-import { useUserQuery } from "@/features/user/users.hooks";
+import {
+  useUpdateTaskPushNotificationsMutation,
+  useUserQuery,
+} from "@/features/user/users.hooks";
 import { RootStackParamList } from "@/navigation/rootStackTypes";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as Notifications from "expo-notifications";
 import { useEffect, useRef } from "react";
+import { AppState } from "react-native";
 import {
+  getNotificationPermissionAsync,
   parseTasksDueNotificationData,
-  registerForPushNotificationsAsync,
+  registerPushTokenAsync,
 } from "./push-notifications";
 
 // Rendered next to RootStack inside the NavigationContainer. Keeps the push token registered
@@ -24,6 +29,8 @@ export function PushNotificationsHandler() {
     useActiveFarm();
   const { farms } = useFarmsQuery(token != null);
   const { user } = useUserQuery(token != null && farmSelectionHydrated);
+  const updateTaskPushNotificationsMutation =
+    useUpdateTaskPushNotificationsMutation();
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
   // The same response is returned on every render, it must only navigate once
   const handledResponseIdRef = useRef<string | null>(null);
@@ -34,19 +41,50 @@ export function PushNotificationsHandler() {
     if (!token) {
       return;
     }
-    registerForPushNotificationsAsync(api.users, {
-      requestPermission: false,
-    }).catch((error) => console.error(error));
+    getNotificationPermissionAsync({ requestPermission: false })
+      .then((permission) => {
+        if (permission?.granted) {
+          return registerPushTokenAsync(api.users);
+        }
+      })
+      .catch((error) => console.error(error));
+    // Only fires when a device token exists, so permission is granted
     const subscription = Notifications.addPushTokenListener(
       (devicePushToken) => {
-        registerForPushNotificationsAsync(api.users, {
-          requestPermission: false,
-          devicePushToken,
-        }).catch((error) => console.error(error));
+        registerPushTokenAsync(api.users, devicePushToken).catch((error) =>
+          console.error(error),
+        );
       },
     );
     return () => subscription.remove();
   }, [token]);
+
+  // The setting must never stay enabled without permission: turn it off when permission
+  // was revoked in the system settings, checked on start and whenever the app returns to
+  // the foreground. Only "blocked" counts, so a never-asked user (e.g. before the tasks
+  // onboarding) keeps the enabled default until they get asked.
+  const taskPushNotificationsEnabled = user?.taskPushNotifications === true;
+  useEffect(() => {
+    if (!taskPushNotificationsEnabled) {
+      return;
+    }
+    function disableIfPermissionBlocked() {
+      getNotificationPermissionAsync({ requestPermission: false })
+        .then((permission) => {
+          if (permission?.blocked) {
+            updateTaskPushNotificationsMutation.mutate(false);
+          }
+        })
+        .catch((error) => console.error(error));
+    }
+    disableIfPermissionBlocked();
+    const subscription = AppState.addEventListener("change", (appState) => {
+      if (appState === "active") {
+        disableIfPermissionBlocked();
+      }
+    });
+    return () => subscription.remove();
+  }, [taskPushNotificationsEnabled]);
 
   useEffect(() => {
     if (!lastNotificationResponse || !token) {

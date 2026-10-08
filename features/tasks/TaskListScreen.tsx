@@ -29,9 +29,16 @@ import Animated, {
 import { useTasksQuery, useSetTaskStatusMutation } from "./tasks.hooks";
 import { TaskListScreenProps } from "./navigation/tasks-routes";
 import { useLocalSettings } from "@/features/user/LocalSettingsContext";
-import { usePermissions, useUserQuery } from "@/features/user/users.hooks";
+import {
+  usePermissions,
+  useUpdateTaskPushNotificationsMutation,
+  useUserQuery,
+} from "@/features/user/users.hooks";
 import { useApi } from "@/api/api";
-import { registerForPushNotificationsAsync } from "@/features/notifications/push-notifications";
+import {
+  getNotificationPermissionAsync,
+  registerPushTokenAsync,
+} from "@/features/notifications/push-notifications";
 import { useEffect } from "react";
 import { TaskStatus } from "@/api/tasks.api";
 
@@ -83,6 +90,8 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
   // the onboarding and not when the user turned due-task notifications off
   const api = useApi();
   const { user } = useUserQuery();
+  const updateTaskPushNotificationsMutation =
+    useUpdateTaskPushNotificationsMutation();
   const taskPushNotificationsEnabled = user?.taskPushNotifications === true;
   useEffect(() => {
     if (
@@ -91,9 +100,19 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
     ) {
       return;
     }
-    registerForPushNotificationsAsync(api.users, {
-      requestPermission: true,
-    }).catch((error) => console.error(error));
+    getNotificationPermissionAsync({ requestPermission: true })
+      .then((permission) => {
+        if (permission == null) {
+          return;
+        }
+        if (permission.granted) {
+          return registerPushTokenAsync(api.users);
+        }
+        // Declined (or blocked in the system settings): the setting must never stay
+        // enabled without permission
+        updateTaskPushNotificationsMutation.mutate(false);
+      })
+      .catch((error) => console.error(error));
   }, [localSettings.tasksOnboardingCompleted, taskPushNotificationsEnabled]);
 
   const now = new Date();
