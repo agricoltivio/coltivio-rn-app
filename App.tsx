@@ -23,6 +23,7 @@ import { ActiveFarmProvider } from "./features/farms/ActiveFarmContext";
 import { OnboardingProvider } from "./features/onboarding/OnboardingContext";
 import i18n from "./locales/i18n";
 import { RootStack } from "./navigation/RootStack";
+import { PushNotificationsHandler } from "./features/notifications/PushNotificationsHandler";
 import "./theme/theme";
 
 import { StatusBar } from "react-native";
@@ -133,6 +134,8 @@ export default Sentry.wrap(function App() {
                                     }
                                   />
                                   <RootStack />
+                                  {/* After RootStack so its navigator is mounted before a notification tap navigates */}
+                                  <PushNotificationsHandler />
                                 </NavigationContainer>
                               </KeyboardProvider>
                             </GestureHandlerRootView>

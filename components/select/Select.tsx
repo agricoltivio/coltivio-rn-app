@@ -2,10 +2,17 @@ import { IonIconButton } from "@/components/buttons/IconButton";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
 import { H2 } from "@/theme/Typography";
+import { Ionicons } from "@expo/vector-icons";
 import Fuse from "fuse.js";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FlatList, Modal, Pressable, View } from "react-native";
+import {
+  FlatList,
+  Modal,
+  Pressable,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Dropdown as RnDropdown } from "react-native-element-dropdown";
 import { DropdownProps } from "react-native-element-dropdown/lib/typescript/components/Dropdown/model";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -17,6 +24,8 @@ export type SelectProps = {
   placeholder?: string;
   disabled?: boolean;
   onChange?: (value: string) => void;
+  // When set, shows a clear button while a value is selected
+  onClear?: () => void;
   onBlur?: () => void;
   onFocus?: () => void;
   data: { label: string; value: string }[];
@@ -29,6 +38,7 @@ export function Select({
   value,
   data,
   onChange,
+  onClear,
   onBlur,
   onFocus,
   disabled,
@@ -85,6 +95,27 @@ export function Select({
     [handleItemSelect, value],
   );
 
+  function renderClearButton(rightOffset: number) {
+    if (!onClear || !selectedLabel || disabled) return null;
+    return (
+      <TouchableOpacity
+        onPress={onClear}
+        style={{
+          position: "absolute",
+          top: 25,
+          right: rightOffset,
+          zIndex: 10,
+        }}
+      >
+        <Ionicons
+          name="close-circle-outline"
+          size={30}
+          color={theme.colors.gray2}
+        />
+      </TouchableOpacity>
+    );
+  }
+
   // When enableSearch is true, render a pressable trigger + modal instead of the dropdown
   if (enableSearch) {
     return (
@@ -110,6 +141,7 @@ export function Select({
             {selectedLabel || placeholder || t("forms.labels.please_select")}
           </TriggerText>
         </SearchTrigger>
+        {renderClearButton(10)}
 
         {error && (
           <View style={{ marginTop: 3, paddingHorizontal: 5 }}>
@@ -229,6 +261,8 @@ export function Select({
           onChange?.(item.value);
         }}
       />
+      {/* Offset leaves room for the dropdown's chevron */}
+      {renderClearButton(36)}
       {error && (
         <View style={{ marginTop: 3, paddingHorizontal: 5 }}>
           <ErrorText>{error}</ErrorText>

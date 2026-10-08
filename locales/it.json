@@ -329,6 +329,13 @@
       "community": "Pastorino",
       "wiki": "Wiki",
       "tasks": "Attività"
+    },
+    "upcoming_tasks_settings": {
+      "title": "Personalizza attività imminenti",
+      "count": "Numero di attività",
+      "show_mine": "Mostra le mie attività",
+      "show_unassigned": "Mostra attività non assegnate",
+      "show_others": "Mostra attività assegnate ad altri"
     }
   },
   "farm": {
@@ -1416,6 +1423,15 @@
     },
     "language": {
       "title": "Lingua"
+    },
+    "task_push_notifications": {
+      "label": "Notifiche per attività in scadenza",
+      "permission_denied": "Le notifiche sono disattivate nelle impostazioni di sistema. Consentile lì per ricevere avvisi sulle attività in scadenza.",
+      "open_settings": "Apri impostazioni di sistema"
+    },
+    "notifications": {
+      "title": "Notifiche",
+      "tasks_due": "Attività in scadenza"
     }
   },
   "home_tiles": {
@@ -1458,7 +1474,9 @@
       "step1_body": "Crea attività, imposta scadenze e assegnale ai collaboratori.",
       "step2_heading": "Genera liste di controllo",
       "step2_body": "Seleziona animali o appezzamenti per creare automaticamente i punti della lista di controllo.",
-      "step2_icon_hint": "Tocca questa icona accanto alla lista di controllo per generare elementi da animali o appezzamenti."
+      "step2_icon_hint": "Tocca questa icona accanto alla lista di controllo per generare elementi da animali o appezzamenti.",
+      "step3_heading": "Notifiche",
+      "step3_body": "Ricevi ogni mattina alle 9 una notifica sulle attività in scadenza oggi. Puoi modificarlo in qualsiasi momento nelle impostazioni."
     },
     "new_task": "Nuova attività",
     "edit_task": "Modifica attività",

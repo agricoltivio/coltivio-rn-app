@@ -8,6 +8,8 @@ export type DeletionPreviewFarm =
 export type DeletionOutcome = DeletionPreviewFarm["outcome"];
 export type DeleteAccountInput =
   components["schemas"]["PostV1MeDeletionRequestBody"];
+export type RegisterPushTokenInput =
+  components["schemas"]["PostV1MePushTokensRequestBody"];
 export type FarmUser =
   components["schemas"]["GetV1UsersPositiveResponse"]["data"]["result"][number];
 
@@ -44,6 +46,21 @@ export function userApi(client: FetchClient) {
       if (error) {
         throw new Error(error.error);
       }
+    },
+
+    async registerPushToken(input: RegisterPushTokenInput) {
+      const { error } = await client.POST("/v1/me/push-tokens", {
+        body: input,
+      });
+      if (error) {
+        throw new Error(error.error);
+      }
+    },
+
+    async deletePushToken(token: string) {
+      await client.DELETE("/v1/me/push-tokens", {
+        params: { query: { token } },
+      });
     },
 
     async getFarmUsers(): Promise<FarmUser[]> {

@@ -329,6 +329,13 @@
       "community": "Communauté",
       "wiki": "Wiki",
       "tasks": "Tâches"
+    },
+    "upcoming_tasks_settings": {
+      "title": "Personnaliser les tâches à venir",
+      "count": "Nombre de tâches",
+      "show_mine": "Afficher mes tâches",
+      "show_unassigned": "Afficher les tâches non attribuées",
+      "show_others": "Afficher les tâches attribuées à d'autres"
     }
   },
   "farm": {
@@ -1416,6 +1423,15 @@
     },
     "language": {
       "title": "Langue"
+    },
+    "task_push_notifications": {
+      "label": "Notifications pour les tâches à échéance",
+      "permission_denied": "Les notifications sont désactivées dans les réglages du système. Autorise-les pour être averti des tâches à échéance.",
+      "open_settings": "Ouvrir les réglages du système"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "tasks_due": "Tâches à échéance"
     }
   },
   "home_tiles": {
@@ -1458,7 +1474,9 @@
       "step1_body": "Créez des tâches, définissez des dates d'échéance et assignez-les à des collaborateurs.",
       "step2_heading": "Générer des listes de contrôle",
       "step2_body": "Sélectionnez des animaux ou des parcelles pour créer automatiquement des éléments de liste de contrôle.",
-      "step2_icon_hint": "Appuyez sur cette icône à côté de la liste de contrôle pour générer des éléments à partir d'animaux ou de parcelles."
+      "step2_icon_hint": "Appuyez sur cette icône à côté de la liste de contrôle pour générer des éléments à partir d'animaux ou de parcelles.",
+      "step3_heading": "Notifications",
+      "step3_body": "Reçois chaque matin à 9 h une notification pour les tâches à échéance ce jour-là. Tu peux modifier cela à tout moment dans les réglages."
     },
     "new_task": "Nouvelle tâche",
     "edit_task": "Modifier la tâche",

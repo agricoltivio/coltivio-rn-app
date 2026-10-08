@@ -1,5 +1,7 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { Chip } from "@/components/chips/Chip";
+import { getDueDateColor } from "@/features/tasks/task-due-date";
+import { useAssigneeColor } from "@/features/tasks/task-assignee-color";
 import { Card } from "@/components/card/Card";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
@@ -85,6 +87,7 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
   const { t } = useTranslation();
   const { canWrite } = usePermissions();
   const theme = useTheme();
+  const getAssigneeColor = useAssigneeColor();
   const { taskId } = route.params;
 
   const { task, isLoading } = useTaskDetailQuery(taskId);
@@ -202,22 +205,19 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
               {task.status === "done" && (
                 <Chip
                   label={t("tasks.status_done")}
-                  bgColor={theme.colors.success}
-                  textColor={theme.colors.white}
+                  outlineColor={theme.colors.success}
                 />
               )}
               {task.dueDate != null && (
                 <Chip
                   label={new Date(task.dueDate as string).toLocaleDateString()}
-                  bgColor={theme.colors.danger}
-                  textColor={theme.colors.white}
+                  outlineColor={getDueDateColor(task.dueDate as string, theme)}
                 />
               )}
               {task.assignee != null && (
                 <Chip
                   label={task.assignee.fullName ?? task.assignee.email}
-                  bgColor={theme.colors.blue}
-                  textColor={theme.colors.white}
+                  outlineColor={getAssigneeColor(task.assignee.id)}
                 />
               )}
               {task.labels.map((label) => (

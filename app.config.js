@@ -94,6 +94,7 @@ export default ({ config }) => {
       ],
       "expo-localization",
       "expo-secure-store",
+      "expo-notifications",
       "expo-font",
       "expo-location",
       "expo-apple-authentication",

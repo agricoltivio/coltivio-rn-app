@@ -1646,6 +1646,82 @@
         }
       }
     },
+    "/v1/me/push-tokens": {
+      "post": {
+        "operationId": "PostV1MePushTokens",
+        "requestBody": {
+          "description": "POST /v1/me/push-tokens Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1MePushTokensRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/me/push-tokens Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1MePushTokensPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/me/push-tokens Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteV1MePushTokens",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "description": "DELETE /v1/me/push-tokens Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "DELETE /v1/me/push-tokens Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteV1MePushTokensPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "DELETE /v1/me/push-tokens Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/plots": {
       "get": {
         "operationId": "GetV1Plots",
@@ -16444,7 +16520,8 @@
                 "type": ["string", "null"],
                 "enum": ["owner", "member"]
               },
-              "isWikiModerator": { "type": "boolean" }
+              "isWikiModerator": { "type": "boolean" },
+              "taskPushNotifications": { "type": "boolean" }
             },
             "required": [
               "id",
@@ -16453,7 +16530,8 @@
               "emailVerified",
               "farmId",
               "farmRole",
-              "isWikiModerator"
+              "isWikiModerator",
+              "taskPushNotifications"
             ],
             "additionalProperties": false
           }
@@ -16465,7 +16543,8 @@
         "type": "object",
         "properties": {
           "fullName": { "type": "string" },
-          "newsletterConsent": { "type": "boolean" }
+          "newsletterConsent": { "type": "boolean" },
+          "taskPushNotifications": { "type": "boolean" }
         }
       },
       "GetV1MePositiveResponse": {
@@ -16501,7 +16580,8 @@
                   "required": ["feature", "access"],
                   "additionalProperties": false
                 }
-              }
+              },
+              "taskPushNotifications": { "type": "boolean" }
             },
             "required": [
               "id",
@@ -16511,7 +16591,8 @@
               "farmId",
               "farmRole",
               "isWikiModerator",
-              "farmPermissions"
+              "farmPermissions",
+              "taskPushNotifications"
             ],
             "additionalProperties": false
           }
@@ -16579,6 +16660,38 @@
         "type": "object",
         "properties": { "email": { "type": "string" } },
         "required": ["email"]
+      },
+      "PostV1MePushTokensPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1MePushTokensRequestBody": {
+        "type": "object",
+        "properties": {
+          "token": { "type": "string" },
+          "platform": { "type": "string", "enum": ["ios", "android"] }
+        },
+        "required": ["token"]
+      },
+      "DeleteV1MePushTokensPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
       },
       "GetV1PlotsPositiveResponse": {
         "type": "object",
@@ -37906,10 +38019,10 @@
           "name": { "type": "string", "minLength": 1 },
           "description": { "type": "string" },
           "labels": { "type": "array", "items": { "type": "string" } },
-          "assigneeId": { "type": "string" },
+          "assigneeId": { "type": ["string", "null"] },
           "dueDate": {
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
-            "type": "string",
+            "type": ["string", "null"],
             "format": "date-time",
             "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
             "externalDocs": {
