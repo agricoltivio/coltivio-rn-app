@@ -20,6 +20,8 @@ type ChipProps = {
   outlineColor?: string;
   /** Reduced padding and font size */
   small?: boolean;
+  /** Fixed width with centered text, so chips with different labels line up */
+  width?: number;
 };
 
 export function Chip({
@@ -32,6 +34,7 @@ export function Chip({
   textColor: textColorProp,
   outlineColor,
   small = false,
+  width,
 }: ChipProps) {
   const theme = useTheme();
 
@@ -69,7 +72,10 @@ export function Chip({
         alignSelf: "flex-start",
         gap: 6,
         paddingVertical: small ? 3 : 8,
-        paddingHorizontal: small ? 8 : 14,
+        // The fixed width already provides the horizontal space
+        paddingHorizontal: width != null ? 0 : small ? 8 : 14,
+        width,
+        justifyContent: "center",
         borderRadius: theme.radii.xxl,
         backgroundColor: bgColor,
         borderWidth: 1,

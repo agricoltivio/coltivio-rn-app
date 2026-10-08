@@ -2,6 +2,7 @@ import { Task } from "@/api/tasks.api";
 import { FAB } from "@/components/buttons/FAB";
 import { Chip } from "@/components/chips/Chip";
 import { getDueDateColor } from "@/features/tasks/task-due-date";
+import { useAssigneeColor } from "@/features/tasks/task-assignee-color";
 import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
@@ -68,6 +69,7 @@ function SwipeCompleteAction({ drag }: { drag: SharedValue<number> }) {
 export function TaskListScreen({ navigation }: TaskListScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const getAssigneeColor = useAssigneeColor();
   const [status, setStatus] = useState<TaskStatus>("todo");
   const [search, setSearch] = useState("");
   const [activeLabels, setActiveLabels] = useState<Set<string>>(new Set());
@@ -224,11 +226,11 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
                   outlineColor={getDueDateColor(item.dueDate as string, theme)}
                 />
               )}
-              {assigneeName != null && (
+              {item.assignee != null && (
                 <Chip
                   small
-                  label={assigneeName}
-                  outlineColor={theme.colors.blue}
+                  label={item.assignee.fullName ?? item.assignee.email}
+                  outlineColor={getAssigneeColor(item.assignee.id)}
                 />
               )}
               {item.labels.slice(0, 2).map((label) => (

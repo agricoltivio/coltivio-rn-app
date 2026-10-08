@@ -1,6 +1,7 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { Chip } from "@/components/chips/Chip";
 import { getDueDateColor } from "@/features/tasks/task-due-date";
+import { useAssigneeColor } from "@/features/tasks/task-assignee-color";
 import { Card } from "@/components/card/Card";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
@@ -86,6 +87,7 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
   const { t } = useTranslation();
   const { canWrite } = usePermissions();
   const theme = useTheme();
+  const getAssigneeColor = useAssigneeColor();
   const { taskId } = route.params;
 
   const { task, isLoading } = useTaskDetailQuery(taskId);
@@ -215,7 +217,7 @@ export function TaskDetailScreen({ route, navigation }: TaskDetailScreenProps) {
               {task.assignee != null && (
                 <Chip
                   label={task.assignee.fullName ?? task.assignee.email}
-                  outlineColor={theme.colors.blue}
+                  outlineColor={getAssigneeColor(task.assignee.id)}
                 />
               )}
               {task.labels.map((label) => (

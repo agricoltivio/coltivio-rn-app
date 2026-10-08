@@ -2,6 +2,7 @@ import { Task } from "@/api/tasks.api";
 import { Card } from "@/components/card/Card";
 import { Chip } from "@/components/chips/Chip";
 import { getDueDateColor } from "@/features/tasks/task-due-date";
+import { useAssigneeColor } from "@/features/tasks/task-assignee-color";
 import { BottomDrawerModal } from "@/components/bottom-drawer/BottomDrawerModal";
 import { Switch } from "@/components/inputs/Switch";
 import { useLocalSettings } from "@/features/user/LocalSettingsContext";
@@ -66,6 +67,47 @@ export function UpcomingTasksTile() {
     localSettings.upcomingTasksShowOthers,
   ]);
 
+  // Built from all loaded tasks, not just the visible rows, so a user's initials don't change
+  // when the tile settings or the shown tasks change
+  const assigneeInitials = useMemo(() => {
+    const assigneeNames = new Map<string, string>();
+    for (const task of tasks) {
+      if (task.assignee) {
+        assigneeNames.set(
+          task.assignee.id,
+          (task.assignee.fullName ?? task.assignee.email).trim(),
+        );
+      }
+    }
+    const firstLetterCounts = new Map<string, number>();
+    for (const name of assigneeNames.values()) {
+      const firstLetter = name.charAt(0).toUpperCase();
+      firstLetterCounts.set(
+        firstLetter,
+        (firstLetterCounts.get(firstLetter) ?? 0) + 1,
+      );
+    }
+    const initialsByAssigneeId = new Map<string, string>();
+    for (const [assigneeId, name] of assigneeNames) {
+      const firstLetter = name.charAt(0).toUpperCase();
+      if (firstLetterCounts.get(firstLetter) === 1) {
+        initialsByAssigneeId.set(assigneeId, firstLetter);
+        continue;
+      }
+      // Another assignee starts with the same letter: first + last name initial ("CB"),
+      // or the first two letters for single-word names ("Cu")
+      const nameParts = name.split(/\s+/);
+      const lastNamePart = nameParts[nameParts.length - 1];
+      initialsByAssigneeId.set(
+        assigneeId,
+        nameParts.length > 1
+          ? firstLetter + lastNamePart.charAt(0).toUpperCase()
+          : firstLetter + name.charAt(1),
+      );
+    }
+    return initialsByAssigneeId;
+  }, [tasks]);
+
   return (
     // Pressing the card background navigates to task list
     <Pressable onPress={() => navigation.navigate("TaskList")}>
@@ -116,6 +158,11 @@ export function UpcomingTasksTile() {
             <TaskRow
               key={task.id}
               task={task}
+              assigneeInitials={
+                task.assignee
+                  ? assigneeInitials.get(task.assignee.id)
+                  : undefined
+              }
               onPress={() =>
                 navigation.navigate("TaskDetail", { taskId: task.id })
               }
@@ -197,9 +244,18 @@ function UpcomingTasksSettingsSheet({
   );
 }
 
-function TaskRow({ task, onPress }: { task: Task; onPress: () => void }) {
+// Compact row for the home screen: assignee as initials, due date without the year
+function TaskRow({
+  task,
+  assigneeInitials,
+  onPress,
+}: {
+  task: Task;
+  assigneeInitials?: string;
+  onPress: () => void;
+}) {
   const theme = useTheme();
-  const assigneeName = task.assignee?.fullName ?? task.assignee?.email;
+  const getAssigneeColor = useAssigneeColor();
 
   return (
     <Pressable
@@ -232,13 +288,22 @@ function TaskRow({ task, onPress }: { task: Task; onPress: () => void }) {
       <View
         style={{ flexDirection: "row", gap: theme.spacing.xxs, flexShrink: 0 }}
       >
-        {assigneeName != null && (
-          <Chip small label={assigneeName} outlineColor={theme.colors.blue} />
+        {assigneeInitials != null && task.assignee != null && (
+          <Chip
+            small
+            label={assigneeInitials}
+            // Same size for every initial, wide enough for "W" / "WM"
+            width={assigneeInitials.length === 1 ? 26 : 34}
+            outlineColor={getAssigneeColor(task.assignee.id)}
+          />
         )}
         {task.dueDate != null && (
           <Chip
             small
-            label={new Date(task.dueDate as string).toLocaleDateString()}
+            label={new Date(task.dueDate as string).toLocaleDateString(
+              undefined,
+              { day: "2-digit", month: "2-digit", year: "2-digit" },
+            )}
             outlineColor={getDueDateColor(task.dueDate as string, theme)}
           />
         )}
