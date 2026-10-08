@@ -3,11 +3,12 @@ import { queryKeys } from "@/cache/query-keys";
 import { components } from "@/api/v1";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-export function useFarmJournalQuery() {
+export function useFarmJournalQuery(enabled: boolean = true) {
   const api = useApi();
   const { data, ...rest } = useQuery({
     queryKey: queryKeys.farmJournal.list.queryKey,
     queryFn: () => api.farmJournal.getJournalEntries(),
+    enabled,
   });
   return { entries: data ?? [], ...rest };
 }
