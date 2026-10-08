@@ -3,6 +3,9 @@ import { EditFarmScreen } from "../EditFarmScreen";
 import { FarmScreen } from "../FarmScreen";
 import { MemberDetailScreen } from "../MemberDetailScreen";
 import { InviteUserScreen } from "../InviteUserScreen";
+import { FarmJournalScreen } from "../FarmJournalScreen";
+import { FarmJournalEntryScreen } from "../FarmJournalEntryScreen";
+import { FarmJournalEntryFormScreen } from "../FarmJournalEntryFormScreen";
 import { SearchFarmLocationModal } from "../SearchFarmLocationModal";
 import { JoinFarmScreen } from "@/features/onboarding/JoinFarmScreen";
 import { SelectFarmNameScreen } from "@/features/onboarding/SelectFarmNameScreen";
@@ -46,6 +49,24 @@ export function renderFarmStack() {
       options={{
         title: "",
       }}
+    />,
+    <Stack.Screen
+      key="farm-journal"
+      name="FarmJournal"
+      component={FarmJournalScreen}
+      options={{ title: "" }}
+    />,
+    <Stack.Screen
+      key="farm-journal-entry"
+      name="FarmJournalEntry"
+      component={FarmJournalEntryScreen}
+      options={{ title: "" }}
+    />,
+    <Stack.Screen
+      key="farm-journal-entry-form"
+      name="FarmJournalEntryForm"
+      component={FarmJournalEntryFormScreen}
+      options={{ title: "" }}
     />,
   ];
 }

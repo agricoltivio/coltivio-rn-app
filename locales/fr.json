@@ -340,6 +340,7 @@
   },
   "farm": {
     "farm": "Ma ferme",
+    "journal_show_all": "Afficher toutes les entrées",
     "edit_farm": "Modifier la ferme",
     "farm_name": "Nom de la ferme",
     "location": "Localisation",

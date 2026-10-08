@@ -340,6 +340,7 @@
   },
   "farm": {
     "farm": "Mein Hof",
+    "journal_show_all": "Alle Einträge anzeigen",
     "edit_farm": "Hof bearbeiten",
     "farm_name": "Hofname",
     "location": "Standort",
