@@ -108,6 +108,18 @@ export function UpcomingTasksTile() {
     return initialsByAssigneeId;
   }, [tasks]);
 
+  // Every row reserves the widest visible initials chip, so the dates line up even when
+  // rows are unassigned or mix one- and two-letter initials
+  const assigneeSlotWidth = Math.max(
+    0,
+    ...upcomingTasks.map((task) => {
+      const initials = task.assignee
+        ? assigneeInitials.get(task.assignee.id)
+        : undefined;
+      return initials != null ? getInitialsChipWidth(initials) : 0;
+    }),
+  );
+
   return (
     // Pressing the card background navigates to task list
     <Pressable onPress={() => navigation.navigate("TaskList")}>
@@ -156,6 +168,7 @@ export function UpcomingTasksTile() {
         ) : (
           upcomingTasks.map((task) => (
             <TaskRow
+              assigneeSlotWidth={assigneeSlotWidth}
               key={task.id}
               task={task}
               assigneeInitials={
@@ -244,14 +257,21 @@ function UpcomingTasksSettingsSheet({
   );
 }
 
+// Same size for every initial, wide enough for "W" / "WM"
+function getInitialsChipWidth(initials: string) {
+  return initials.length === 1 ? 26 : 34;
+}
+
 // Compact row for the home screen: assignee as initials, due date without the year
 function TaskRow({
   task,
   assigneeInitials,
+  assigneeSlotWidth,
   onPress,
 }: {
   task: Task;
   assigneeInitials?: string;
+  assigneeSlotWidth: number;
   onPress: () => void;
 }) {
   const theme = useTheme();
@@ -284,19 +304,10 @@ function TaskRow({
         {task.name}
       </Text>
 
-      {/* Chips right-aligned: assignee first, then due date */}
+      {/* Due date right-aligned */}
       <View
         style={{ flexDirection: "row", gap: theme.spacing.xxs, flexShrink: 0 }}
       >
-        {assigneeInitials != null && task.assignee != null && (
-          <Chip
-            small
-            label={assigneeInitials}
-            // Same size for every initial, wide enough for "W" / "WM"
-            width={assigneeInitials.length === 1 ? 26 : 34}
-            outlineColor={getAssigneeColor(task.assignee.id)}
-          />
-        )}
         {task.dueDate != null && (
           <Chip
             small
@@ -308,6 +319,20 @@ function TaskRow({
           />
         )}
       </View>
+
+      {/* Assignee last; the slot stays when unassigned so the date column lines up */}
+      {assigneeSlotWidth > 0 && (
+        <View style={{ width: assigneeSlotWidth }}>
+          {assigneeInitials != null && task.assignee != null && (
+            <Chip
+              small
+              label={assigneeInitials}
+              width={getInitialsChipWidth(assigneeInitials)}
+              outlineColor={getAssigneeColor(task.assignee.id)}
+            />
+          )}
+        </View>
+      )}
 
       {/* Chevron */}
       <View style={{ width: 30, alignItems: "center" }}>
