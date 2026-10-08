@@ -340,6 +340,7 @@
   },
   "farm": {
     "farm": "Farm",
+    "journal_show_all": "Show all entries",
     "edit_farm": "Edit Farm",
     "farm_name": "Farm Name",
     "location": "Location",

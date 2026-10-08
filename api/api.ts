@@ -35,6 +35,7 @@ import { tasksApi } from "./tasks.api";
 import { membershipApi } from "./membership.api";
 import { animalJournalApi } from "./animal-journal.api";
 import { plotJournalApi } from "./plot-journal.api";
+import { farmJournalApi } from "./farm-journal.api";
 import { donationsApi } from "./donations.api";
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
@@ -178,6 +179,7 @@ export function api(client: FetchClient) {
     membership: membershipApi(client),
     animalJournal: animalJournalApi(client),
     plotJournal: plotJournalApi(client),
+    farmJournal: farmJournalApi(client),
     donations: donationsApi(client),
   };
 }

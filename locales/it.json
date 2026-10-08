@@ -340,6 +340,7 @@
   },
   "farm": {
     "farm": "Azienda Agricola",
+    "journal_show_all": "Mostra tutte le voci",
     "edit_farm": "Modifica Azienda Agricola",
     "farm_name": "Nome Azienda Agricola",
     "location": "Posizione",
