@@ -1571,6 +1571,7 @@
     "update_payment_method": "Mettre à jour le moyen de paiement",
     "payment_history": "Paiements",
     "payment_method_twint": "Twint",
+    "payment_refunded": "Remboursé",
     "subscription_starts_after_trial": "Ton adhésion est active. La cotisation annuelle de CHF 75 sera prélevée à la fin de la période d'essai, le {{date}}.",
     "cancel_dialog": {
       "title": "Déclarer sa démission",
@@ -1610,9 +1611,6 @@
   },
   "donations": {
     "title": "Dons",
-    "intro": "Chaque contribution compte et nous aide à construire une alternative indépendante qui place les intérêts des agricultrices et agriculteurs au premier plan.",
-    "history_heading": "Vos dons",
-    "cta": "Faire un don",
-    "payment_method_twint": "Twint"
+    "history_heading": "Vos dons"
   }
 }

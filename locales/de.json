@@ -1573,6 +1573,7 @@
     "update_payment_method": "Zahlungsmethode aktualisieren",
     "payment_history": "Zahlungen",
     "payment_method_twint": "Twint",
+    "payment_refunded": "Zurückerstattet",
     "subscription_starts_after_trial": "Deine Mitgliedschaft ist aktiv. Der Jahresbeitrag von CHF 75.– wird nach Ablauf der Testphase am {{date}} belastet.",
     "cancel_dialog": {
       "title": "Austritt erklären",
@@ -1612,9 +1613,6 @@
   },
   "donations": {
     "title": "Spenden",
-    "intro": "Jeder Beitrag zählt und hilft uns, eine unabhängige Alternative aufzubauen, bei der die Interessen der Bäuerinnen und Bauern im Vordergrund stehen.",
-    "history_heading": "Deine Spenden",
-    "cta": "Jetzt spenden",
-    "payment_method_twint": "Twint"
+    "history_heading": "Deine Spenden"
   }
 }

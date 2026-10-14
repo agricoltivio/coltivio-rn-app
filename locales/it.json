@@ -1572,6 +1572,7 @@
     "update_payment_method": "Aggiorna metodo di pagamento",
     "payment_history": "Pagamenti",
     "payment_method_twint": "Twint",
+    "payment_refunded": "Rimborsato",
     "subscription_starts_after_trial": "La tua iscrizione è attiva. La quota annuale di CHF 75 verrà addebitata al termine del periodo di prova, il {{date}}.",
     "cancel_dialog": {
       "title": "Dichiara le dimissioni",
@@ -1611,9 +1612,6 @@
   },
   "donations": {
     "title": "Donazioni",
-    "intro": "Ogni contributo conta e ci aiuta a costruire un'alternativa indipendente che mette al primo posto gli interessi delle agricoltrici e degli agricoltori.",
-    "history_heading": "Le tue donazioni",
-    "cta": "Dona ora",
-    "payment_method_twint": "Twint"
+    "history_heading": "Le tue donazioni"
   }
 }

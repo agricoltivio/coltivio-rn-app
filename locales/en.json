@@ -1572,6 +1572,7 @@
     "update_payment_method": "Update payment method",
     "payment_history": "Payments",
     "payment_method_twint": "Twint",
+    "payment_refunded": "Refunded",
     "subscription_starts_after_trial": "Your membership is active. The CHF 75 annual fee will be charged once your trial ends on {{date}}.",
     "cancel_dialog": {
       "title": "Declare resignation",
@@ -1611,9 +1612,6 @@
   },
   "donations": {
     "title": "Donations",
-    "intro": "Every contribution counts and helps us build an independent alternative that puts the interests of farmers first.",
-    "history_heading": "Your donations",
-    "cta": "Donate now",
-    "payment_method_twint": "Twint"
+    "history_heading": "Your donations"
   }
 }

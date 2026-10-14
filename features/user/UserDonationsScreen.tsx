@@ -1,32 +1,27 @@
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
-import { ListItem, ListItemContent } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
-import { Body, H2, H3 } from "@/theme/Typography";
+import { Body, H2 } from "@/theme/Typography";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { ActivityIndicator } from "react-native";
 import { useTheme } from "styled-components/native";
 import { DonationModal } from "@/features/agri-coltivio/DonationModal";
+import { PaymentHistoryList } from "@/features/agri-coltivio/PaymentHistoryList";
 import { useDonationsQuery } from "@/features/agri-coltivio/agri-coltivio.hooks";
-
-function toDateString(value: unknown): string | null {
-  if (typeof value === "string" && value.length > 0) {
-    return new Date(value).toLocaleDateString("de-CH");
-  }
-  return null;
-}
 
 export function UserDonationsScreen() {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { donations } = useDonationsQuery();
+  const { donations, isPending, isError } = useDonationsQuery();
   const [donationModalVisible, setDonationModalVisible] = useState(false);
 
-  // Pending/failed donations never became real support — only show what succeeded.
-  const succeededDonations = (donations ?? []).filter(
-    (donation) => donation.status === "succeeded",
+  // Pending and failed donations are hidden on purpose: they never became real support.
+  // Refunded ones stay visible with a label so the history matches the user's receipts.
+  const visibleDonations = (donations ?? []).filter(
+    (donation) =>
+      donation.status === "succeeded" || donation.status === "refunded",
   );
 
   return (
@@ -35,7 +30,7 @@ export function UserDonationsScreen() {
         <BottomActionContainer>
           <Button
             type="accent"
-            title={t("donations.cta")}
+            title={t("agri_coltivio.donate_cta")}
             onPress={() => setDonationModalVisible(true)}
           />
         </BottomActionContainer>
@@ -44,47 +39,28 @@ export function UserDonationsScreen() {
       <ScrollView showHeaderOnScroll headerTitleOnScroll={t("donations.title")}>
         <H2>{t("donations.title")}</H2>
         <Body style={{ marginTop: theme.spacing.m }}>
-          {t("donations.intro")}
+          {t("agri_coltivio.donate_sub")}
         </Body>
 
-        {succeededDonations.length > 0 && (
-          <>
-            <H3 style={{ marginTop: theme.spacing.xl }}>
-              {t("donations.history_heading")}
-            </H3>
-            <View
-              style={{
-                marginTop: theme.spacing.m,
-                borderRadius: theme.radii.l,
-                overflow: "hidden",
-                backgroundColor: theme.colors.white,
-                marginHorizontal: theme.spacing.xs,
-              }}
-            >
-              {succeededDonations.map((donation, index) => (
-                <ListItem
-                  key={donation.id}
-                  hideBottomDivider={index === succeededDonations.length - 1}
-                >
-                  <ListItemContent>
-                    <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
-                      {toDateString(donation.createdAt) ?? "—"}
-                    </ListItem.Title>
-                    <ListItem.Body style={{ paddingLeft: theme.spacing.m }}>
-                      {donation.cardBrand && donation.cardLast4
-                        ? `${donation.cardBrand.toUpperCase()} •••• ${donation.cardLast4}`
-                        : donation.paymentMethodType === "twint"
-                          ? t("donations.payment_method_twint")
-                          : "—"}
-                    </ListItem.Body>
-                  </ListItemContent>
-                  <ListItem.Body style={{ paddingRight: theme.spacing.m }}>
-                    {`${donation.currency.toUpperCase()} ${(donation.amount / 100).toFixed(2)}`}
-                  </ListItem.Body>
-                </ListItem>
-              ))}
-            </View>
-          </>
+        {isPending ? (
+          <ActivityIndicator
+            style={{ marginTop: theme.spacing.xl }}
+            size="large"
+            color={theme.colors.primary}
+          />
+        ) : isError ? (
+          <Body
+            style={{ marginTop: theme.spacing.xl, color: theme.colors.danger }}
+          >
+            {t("common.unknown_error")}
+          </Body>
+        ) : (
+          visibleDonations.length > 0 && (
+            <PaymentHistoryList
+              title={t("donations.history_heading")}
+              payments={visibleDonations}
+            />
+          )
         )}
       </ScrollView>
 
