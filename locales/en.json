@@ -254,7 +254,7 @@
         "body": "Tap one of your parcels to select your farm registration number."
       },
       "confirmation": "Is {{federalFarmId}} your farm registration number?",
-      "confirmation_without_id": "Continue without a farm registration number? You will then draw your plots yourself.",
+      "confirmation_without_id": "Continue without a farm registration number? You can import your plots later on a PC via the web app from the cantonal system (e.g. Acorda, LAWIS) or draw them yourself.",
       "continue_without_id": "Continue without farm number",
       "select_on_map_hint": "Don't know your farm number? Tap here to select a parcel on the map.",
       "search_min_chars": "Enter at least {{minChars}} characters to search.",
@@ -264,7 +264,7 @@
       "nearby_error": "Farm numbers nearby could not be loaded. Please check your internet connection.",
       "not_found": "We could not find any farm number within {{radiusKm}} km of “{{address}}”.",
       "not_found_hint": "Search for your farm number above or go back and check the address.",
-      "not_found_cantons": "The cantons of Obwalden, Nidwalden, Vaud and Basel-Stadt are not yet supported. There, you draw your plots yourself."
+      "not_found_cantons": "The cantons of Obwalden, Nidwalden, Vaud and Basel-Stadt are not yet supported. There you can import your plots after creating the farm on a PC via the web app from the cantonal system (e.g. Acorda, LAWIS) or draw them on the map yourself."
     },
     "summary": {
       "heading": "All set!",
@@ -705,7 +705,9 @@
       "next_ring_body": "For plots with multiple parts, press the arrow to confirm the current part and move to the next.",
       "abort_body": "Press the X to cancel and discard all changes.",
       "overlap_body": "If the adjusted plot overlaps existing plots, they will be automatically clipped."
-    }
+    },
+    "empty_state_title": "No plots yet",
+    "empty_state_body": "Import your plots on a PC via the web app from the cantonal system (e.g. Acorda, LAWIS), or draw them on the map. Need help? Write to us at <email>support@coltivio.ch</email>."
   },
   "farm_equipment": {
     "farm_equipment": "Farm Equipment",
@@ -1634,7 +1636,7 @@
     "message": "We imported your plots from the cantonal data. Since this data isn't always up to date, please review them.",
     "review_hint": "You can adjust them on the map at any time.",
     "no_plots": "Unfortunately, we couldn't find any plots for your farm.",
-    "no_plots_hint": "You can draw them by hand on the map. Need help? Write to us at <email>support@coltivio.ch</email>.",
+    "no_plots_hint": "Import your plots on a PC via the web app from the cantonal system (e.g. Acorda, LAWIS), or draw them on the map. Need help? Write to us at <email>support@coltivio.ch</email>.",
     "lets_go": "Let's go"
   },
   "donations": {
