@@ -30,9 +30,12 @@ import { useState } from "react";
 import { FarmSwitcherSheet } from "./FarmSwitcherSheet";
 import { DeleteFarmDialog } from "./DeleteFarmDialog";
 import { useActiveFarm } from "./ActiveFarmContext";
+import { useFarmJournalQuery } from "./farm-journal.hooks";
+import { ListItem } from "@/components/list/ListItem";
+import { formatLocalizedDate } from "@/utils/date";
 
 export function FarmScreen({ navigation }: FarmScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const theme = useTheme();
   const { farm, isLoading: farmLoading } = useFarmQuery();
   const { farmStats, isLoading: farmStatsLoading } = useFarmStatsQuery();
@@ -41,6 +44,11 @@ export function FarmScreen({ navigation }: FarmScreenProps) {
   const isLoading =
     farmLoading || farmStatsLoading || usersLoading || currentUserLoading;
   const isOwner = currentUser?.farmRole === "owner";
+  // The farm journal is owner-only on the API
+  const { entries: journalEntries } = useFarmJournalQuery(isOwner);
+  const latestJournalEntries = [...journalEntries]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 3);
   const isOnlyMember = users.length === 1;
   // The API refuses to let the last owner leave
   const isOnlyOwner =
@@ -144,6 +152,69 @@ export function FarmScreen({ navigation }: FarmScreenProps) {
                   value={farmStats.plots.total}
                 />
               </View>
+            )}
+
+            {isOwner && (
+              <Card>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Card.Title>{t("animals.journal")}</Card.Title>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("FarmJournalEntryForm", {})
+                    }
+                    hitSlop={10}
+                  >
+                    <Ionicons
+                      name="add-outline"
+                      size={24}
+                      color={theme.colors.primary}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <Card.Content>
+                  {latestJournalEntries.length === 0 ? (
+                    <Caption1>{t("animals.no_journal_entries")}</Caption1>
+                  ) : (
+                    latestJournalEntries.map((entry) => (
+                      <ListItem
+                        key={entry.id}
+                        style={{ paddingVertical: 5, paddingHorizontal: 0 }}
+                        onPress={() =>
+                          navigation.navigate("FarmJournalEntry", {
+                            entryId: entry.id,
+                          })
+                        }
+                      >
+                        <ListItem.Content>
+                          <ListItem.Title>{entry.title}</ListItem.Title>
+                          <ListItem.Body>
+                            {formatLocalizedDate(
+                              new Date(entry.date),
+                              i18n.language,
+                            )}
+                          </ListItem.Body>
+                        </ListItem.Content>
+                        <ListItem.Chevron />
+                      </ListItem>
+                    ))
+                  )}
+                </Card.Content>
+                {journalEntries.length > 0 && (
+                  <View style={{ marginTop: theme.spacing.m }}>
+                    <Button
+                      type="accent"
+                      title={t("farm.journal_show_all")}
+                      onPress={() => navigation.navigate("FarmJournal")}
+                    />
+                  </View>
+                )}
+              </Card>
             )}
 
             <Card>

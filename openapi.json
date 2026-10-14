@@ -926,6 +926,342 @@
         }
       }
     },
+    "/v1/farm/journal": {
+      "get": {
+        "operationId": "GetV1FarmJournal",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/farm/journal Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1FarmJournalPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/farm/journal Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1FarmJournal",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": { "description": "HEAD /v1/farm/journal Positive response" },
+          "400": { "description": "HEAD /v1/farm/journal Negative response" }
+        }
+      },
+      "post": {
+        "operationId": "PostV1FarmJournal",
+        "requestBody": {
+          "description": "POST /v1/farm/journal Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1FarmJournalRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/farm/journal Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1FarmJournalPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/farm/journal Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/farm/journal/byId/{entryId}": {
+      "get": {
+        "operationId": "GetV1FarmJournalByIdEntryId",
+        "parameters": [
+          {
+            "name": "entryId",
+            "in": "path",
+            "required": true,
+            "description": "GET /v1/farm/journal/byId/:entryId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/farm/journal/byId/:entryId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1FarmJournalByIdEntryIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/farm/journal/byId/:entryId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1FarmJournalByIdEntryId",
+        "parameters": [
+          {
+            "name": "entryId",
+            "in": "path",
+            "required": true,
+            "description": "HEAD /v1/farm/journal/byId/:entryId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/farm/journal/byId/:entryId Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/farm/journal/byId/:entryId Negative response"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "PatchV1FarmJournalByIdEntryId",
+        "parameters": [
+          {
+            "name": "entryId",
+            "in": "path",
+            "required": true,
+            "description": "PATCH /v1/farm/journal/byId/:entryId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PATCH /v1/farm/journal/byId/:entryId Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchV1FarmJournalByIdEntryIdRequestBody"
+              }
+            }
+          }
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "PATCH /v1/farm/journal/byId/:entryId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchV1FarmJournalByIdEntryIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "PATCH /v1/farm/journal/byId/:entryId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteV1FarmJournalByIdEntryId",
+        "parameters": [
+          {
+            "name": "entryId",
+            "in": "path",
+            "required": true,
+            "description": "DELETE /v1/farm/journal/byId/:entryId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "DELETE /v1/farm/journal/byId/:entryId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteV1FarmJournalByIdEntryIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "DELETE /v1/farm/journal/byId/:entryId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/farm/journal/images/signedUrl": {
+      "post": {
+        "operationId": "PostV1FarmJournalImagesSignedUrl",
+        "requestBody": {
+          "description": "POST /v1/farm/journal/images/signedUrl Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1FarmJournalImagesSignedUrlRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/farm/journal/images/signedUrl Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1FarmJournalImagesSignedUrlPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/farm/journal/images/signedUrl Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/farm/journal/images": {
+      "post": {
+        "operationId": "PostV1FarmJournalImages",
+        "requestBody": {
+          "description": "POST /v1/farm/journal/images Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1FarmJournalImagesRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/farm/journal/images Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1FarmJournalImagesPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/farm/journal/images Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/farm/journal/images/byId/{imageId}": {
+      "delete": {
+        "operationId": "DeleteV1FarmJournalImagesByIdImageId",
+        "parameters": [
+          {
+            "name": "imageId",
+            "in": "path",
+            "required": true,
+            "description": "DELETE /v1/farm/journal/images/byId/:imageId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "DELETE /v1/farm/journal/images/byId/:imageId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteV1FarmJournalImagesByIdImageIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "DELETE /v1/farm/journal/images/byId/:imageId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/farm/invites": {
       "get": {
         "operationId": "GetV1FarmInvites",
@@ -1646,6 +1982,82 @@
         }
       }
     },
+    "/v1/me/push-tokens": {
+      "post": {
+        "operationId": "PostV1MePushTokens",
+        "requestBody": {
+          "description": "POST /v1/me/push-tokens Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1MePushTokensRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/me/push-tokens Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1MePushTokensPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/me/push-tokens Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteV1MePushTokens",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "description": "DELETE /v1/me/push-tokens Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "DELETE /v1/me/push-tokens Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteV1MePushTokensPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "DELETE /v1/me/push-tokens Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/plots": {
       "get": {
         "operationId": "GetV1Plots",
@@ -1708,6 +2120,84 @@
           },
           "400": {
             "description": "POST /v1/plots Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/plots/import/preview": {
+      "post": {
+        "operationId": "PostV1PlotsImportPreview",
+        "requestBody": {
+          "description": "POST /v1/plots/import/preview Request body",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1PlotsImportPreviewRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/plots/import/preview Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1PlotsImportPreviewPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/plots/import/preview Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/plots/import/commit": {
+      "post": {
+        "operationId": "PostV1PlotsImportCommit",
+        "requestBody": {
+          "description": "POST /v1/plots/import/commit Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1PlotsImportCommitRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/plots/import/commit Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1PlotsImportCommitPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/plots/import/commit Negative response",
             "content": {
               "application/json": {
                 "schema": {
@@ -15992,6 +16482,375 @@
         "required": ["data"],
         "additionalProperties": false
       },
+      "GetV1FarmJournalPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "entries": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "farmId": { "type": "string" },
+                    "title": { "type": "string" },
+                    "date": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "content": { "type": ["string", "null"] },
+                    "createdBy": { "type": ["string", "null"] },
+                    "createdAt": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "updatedAt": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "farmId",
+                    "title",
+                    "date",
+                    "content",
+                    "createdBy",
+                    "createdAt",
+                    "updatedAt"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["entries"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1FarmJournalPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "title": { "type": "string" },
+              "date": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "content": { "type": ["string", "null"] },
+              "createdBy": { "type": ["string", "null"] },
+              "createdAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "updatedAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "title",
+              "date",
+              "content",
+              "createdBy",
+              "createdAt",
+              "updatedAt"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1FarmJournalRequestBody": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "minLength": 1 },
+          "date": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+            }
+          },
+          "content": { "type": "string" }
+        },
+        "required": ["title", "date"]
+      },
+      "GetV1FarmJournalByIdEntryIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "title": { "type": "string" },
+              "date": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "content": { "type": ["string", "null"] },
+              "createdBy": { "type": ["string", "null"] },
+              "createdAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "updatedAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "images": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "journalEntryId": { "type": "string" },
+                    "storagePath": { "type": "string" },
+                    "createdAt": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "signedUrl": { "type": "string" }
+                  },
+                  "required": [
+                    "id",
+                    "journalEntryId",
+                    "storagePath",
+                    "createdAt",
+                    "signedUrl"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "title",
+              "date",
+              "content",
+              "createdBy",
+              "createdAt",
+              "updatedAt",
+              "images"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1FarmJournalByIdEntryIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "title": { "type": "string" },
+              "date": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "content": { "type": ["string", "null"] },
+              "createdBy": { "type": ["string", "null"] },
+              "createdAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "updatedAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "title",
+              "date",
+              "content",
+              "createdBy",
+              "createdAt",
+              "updatedAt"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1FarmJournalByIdEntryIdRequestBody": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "minLength": 1 },
+          "date": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+            }
+          },
+          "content": { "type": "string" }
+        },
+        "required": []
+      },
+      "DeleteV1FarmJournalByIdEntryIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1FarmJournalImagesSignedUrlPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "signedUrl": { "type": "string" },
+              "path": { "type": "string" }
+            },
+            "required": ["signedUrl", "path"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1FarmJournalImagesSignedUrlRequestBody": {
+        "type": "object",
+        "properties": {
+          "journalEntryId": { "type": "string" },
+          "filename": { "type": "string", "minLength": 1 }
+        },
+        "required": ["journalEntryId", "filename"]
+      },
+      "PostV1FarmJournalImagesPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "journalEntryId": { "type": "string" },
+              "storagePath": { "type": "string" },
+              "createdAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "signedUrl": { "type": "string" }
+            },
+            "required": [
+              "id",
+              "journalEntryId",
+              "storagePath",
+              "createdAt",
+              "signedUrl"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1FarmJournalImagesRequestBody": {
+        "type": "object",
+        "properties": {
+          "journalEntryId": { "type": "string" },
+          "storagePath": { "type": "string", "minLength": 1 }
+        },
+        "required": ["journalEntryId", "storagePath"]
+      },
+      "DeleteV1FarmJournalImagesByIdImageIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
       "GetV1FarmInvitesPositiveResponse": {
         "type": "object",
         "properties": {
@@ -16366,7 +17225,8 @@
                 "type": ["string", "null"],
                 "enum": ["owner", "member"]
               },
-              "isWikiModerator": { "type": "boolean" }
+              "isWikiModerator": { "type": "boolean" },
+              "taskPushNotifications": { "type": "boolean" }
             },
             "required": [
               "id",
@@ -16375,7 +17235,8 @@
               "emailVerified",
               "farmId",
               "farmRole",
-              "isWikiModerator"
+              "isWikiModerator",
+              "taskPushNotifications"
             ],
             "additionalProperties": false
           }
@@ -16387,7 +17248,8 @@
         "type": "object",
         "properties": {
           "fullName": { "type": "string" },
-          "newsletterConsent": { "type": "boolean" }
+          "newsletterConsent": { "type": "boolean" },
+          "taskPushNotifications": { "type": "boolean" }
         }
       },
       "GetV1MePositiveResponse": {
@@ -16423,7 +17285,8 @@
                   "required": ["feature", "access"],
                   "additionalProperties": false
                 }
-              }
+              },
+              "taskPushNotifications": { "type": "boolean" }
             },
             "required": [
               "id",
@@ -16433,7 +17296,8 @@
               "farmId",
               "farmRole",
               "isWikiModerator",
-              "farmPermissions"
+              "farmPermissions",
+              "taskPushNotifications"
             ],
             "additionalProperties": false
           }
@@ -16501,6 +17365,38 @@
         "type": "object",
         "properties": { "email": { "type": "string" } },
         "required": ["email"]
+      },
+      "PostV1MePushTokensPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1MePushTokensRequestBody": {
+        "type": "object",
+        "properties": {
+          "token": { "type": "string" },
+          "platform": { "type": "string", "enum": ["ios", "android"] }
+        },
+        "required": ["token"]
+      },
+      "DeleteV1MePushTokensPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
       },
       "GetV1PlotsPositiveResponse": {
         "type": "object",
@@ -16878,6 +17774,152 @@
           "additionalNotes": { "type": "string" }
         },
         "required": ["name", "geometry", "size"]
+      },
+      "PostV1PlotsImportPreviewPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "completeness": {
+                "type": "string",
+                "enum": ["full", "partial", "geometries_only"]
+              },
+              "rows": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "rowNumber": { "type": "number" },
+                    "externalId": { "type": ["string", "null"] },
+                    "name": { "type": "string" },
+                    "localId": { "type": ["string", "null"] },
+                    "usage": { "type": ["number", "null"] },
+                    "usageName": { "type": ["string", "null"] },
+                    "size": { "type": "number" },
+                    "municipality": { "type": ["string", "null"] },
+                    "geometry": {
+                      "type": ["object", "null"],
+                      "properties": {
+                        "type": { "type": "string", "const": "MultiPolygon" },
+                        "coordinates": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "array",
+                              "items": {
+                                "type": "array",
+                                "items": { "type": "number" }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "required": ["type", "coordinates"],
+                      "additionalProperties": false
+                    },
+                    "overlappingPlotIds": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    },
+                    "parseErrors": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    }
+                  },
+                  "required": [
+                    "rowNumber",
+                    "externalId",
+                    "name",
+                    "localId",
+                    "usage",
+                    "usageName",
+                    "size",
+                    "municipality",
+                    "geometry",
+                    "overlappingPlotIds",
+                    "parseErrors"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["completeness", "rows"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1PlotsImportPreviewRequestBody": {
+        "type": "object",
+        "properties": { "file": { "type": "string", "format": "binary" } },
+        "required": ["file"]
+      },
+      "PostV1PlotsImportCommitPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": { "created": { "type": "number" } },
+            "required": ["created"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1PlotsImportCommitRequestBody": {
+        "type": "object",
+        "properties": {
+          "rows": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "localId": { "type": "string" },
+                "usage": { "type": "number" },
+                "additionalUsages": { "type": "string" },
+                "cuttingDate": {
+                  "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                  "type": ["string", "null"],
+                  "format": "date-time",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+                  "externalDocs": {
+                    "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                  }
+                },
+                "geometry": {
+                  "type": "object",
+                  "properties": {
+                    "type": { "type": "string", "const": "MultiPolygon" },
+                    "coordinates": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": { "type": "number" }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": ["type", "coordinates"]
+                },
+                "size": { "type": "number" },
+                "additionalNotes": { "type": "string" }
+              },
+              "required": ["name", "geometry", "size"]
+            }
+          }
+        },
+        "required": ["rows"]
       },
       "GetV1PlotsByIdPlotIdPositiveResponse": {
         "type": "object",
@@ -18389,34 +19431,6 @@
                       "externalDocs": {
                         "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
                       }
-                    },
-                    "images": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": { "type": "string" },
-                          "journalEntryId": { "type": "string" },
-                          "storagePath": { "type": "string" },
-                          "createdAt": {
-                            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
-                            "type": "string",
-                            "format": "date-time",
-                            "externalDocs": {
-                              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
-                            }
-                          },
-                          "signedUrl": { "type": "string" }
-                        },
-                        "required": [
-                          "id",
-                          "journalEntryId",
-                          "storagePath",
-                          "createdAt",
-                          "signedUrl"
-                        ],
-                        "additionalProperties": false
-                      }
                     }
                   },
                   "required": [
@@ -18428,8 +19442,7 @@
                     "content",
                     "createdBy",
                     "createdAt",
-                    "updatedAt",
-                    "images"
+                    "updatedAt"
                   ],
                   "additionalProperties": false
                 }
@@ -27700,34 +28713,6 @@
                       "externalDocs": {
                         "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
                       }
-                    },
-                    "images": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": { "type": "string" },
-                          "journalEntryId": { "type": "string" },
-                          "storagePath": { "type": "string" },
-                          "createdAt": {
-                            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
-                            "type": "string",
-                            "format": "date-time",
-                            "externalDocs": {
-                              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
-                            }
-                          },
-                          "signedUrl": { "type": "string" }
-                        },
-                        "required": [
-                          "id",
-                          "journalEntryId",
-                          "storagePath",
-                          "createdAt",
-                          "signedUrl"
-                        ],
-                        "additionalProperties": false
-                      }
                     }
                   },
                   "required": [
@@ -27739,8 +28724,7 @@
                     "content",
                     "createdBy",
                     "createdAt",
-                    "updatedAt",
-                    "images"
+                    "updatedAt"
                   ],
                   "additionalProperties": false
                 }
@@ -37682,10 +38666,10 @@
           "name": { "type": "string", "minLength": 1 },
           "description": { "type": "string" },
           "labels": { "type": "array", "items": { "type": "string" } },
-          "assigneeId": { "type": "string" },
+          "assigneeId": { "type": ["string", "null"] },
           "dueDate": {
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
-            "type": "string",
+            "type": ["string", "null"],
             "format": "date-time",
             "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
             "externalDocs": {

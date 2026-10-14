@@ -33,6 +33,7 @@ import {
 } from "../user/users.hooks";
 import { ApiError } from "@/api/api";
 import { AgriColtivioPitch } from "../agri-coltivio/AgriColtivioPitch";
+import { FarmCreatedModal } from "../farms/FarmCreatedModal";
 import { HomeTile } from "./HomeTile";
 import { HOME_TILES } from "./home-tiles-settings";
 import { UpcomingTasksTile } from "./UpcomingTasksTile";
@@ -414,6 +415,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
           </View>
         </SafeAreaView>
       </Modal>
+      <FarmCreatedModal />
     </>
   );
 };

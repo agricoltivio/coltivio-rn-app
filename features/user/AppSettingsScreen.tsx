@@ -73,6 +73,17 @@ export function AppSettingsScreen({ navigation }: AppSettingsScreenProps) {
           </ListItem>
           <ListItem
             style={{ backgroundColor: theme.colors.white }}
+            onPress={() => navigation.navigate("NotificationSettings")}
+          >
+            <ListItem.Content>
+              <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
+                {t("settings.notifications.title")}
+              </ListItem.Title>
+            </ListItem.Content>
+            <ListItem.Chevron />
+          </ListItem>
+          <ListItem
+            style={{ backgroundColor: theme.colors.white }}
             onPress={() => navigation.navigate("LanguageSettings")}
             hideBottomDivider
           >

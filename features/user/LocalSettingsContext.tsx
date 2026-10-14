@@ -46,11 +46,18 @@ type LocalSettingsData = {
   homeTiles: HomeTileConfig[];
   homeTilesLayout: "grid" | "list";
   showUpcomingTasks: boolean;
+  // Home screen upcoming tasks tile: number of rows and which assignees to include
+  upcomingTasksCount: number;
+  upcomingTasksShowMine: boolean;
+  upcomingTasksShowUnassigned: boolean;
+  upcomingTasksShowOthers: boolean;
   wikiOnlyPrivate: boolean;
   wikiOnboardingCompleted: boolean;
   // Maps CR id → last seen status, used to detect unseen activity on submissions
   wikiSeenCrStatuses: Record<string, string>;
   tasksOnboardingCompleted: boolean;
+  // The push notification opt-in is not a tutorial, so onboardingsDisabled doesn't skip it
+  taskPushNotificationsPromptCompleted: boolean;
   // Stores the ISO date string of the expiry date the membership banner was dismissed for.
   // When a new subscription period starts (new date), the banner reappears automatically.
   dismissedMembershipBannerForDate: string | null;
@@ -58,6 +65,9 @@ type LocalSettingsData = {
   firstLaunchDate: string | null;
   // Whether the AgriColtivio membership promo modal has been shown and dismissed.
   agriColtivioPromoShown: boolean;
+  // Ids of newly created farms whose "farm set up" modal hasn't been dismissed yet.
+  // A pending list (not a "seen" list) so existing farms never get the modal.
+  farmCreatedModalPendingFarmIds: string[];
   defaultMapLayer: "satellite" | "map";
   defaultPlotColorMode: "plot" | "crop" | "usage" | "cutting";
   // Manually chosen app language. null = never chosen, so the app follows the
@@ -98,13 +108,19 @@ export const defaultLocalSettings: LocalSettingsData = {
   homeTiles: DEFAULT_HOME_TILES,
   homeTilesLayout: "list",
   showUpcomingTasks: true,
+  upcomingTasksCount: 3,
+  upcomingTasksShowMine: true,
+  upcomingTasksShowUnassigned: true,
+  upcomingTasksShowOthers: true,
   wikiOnlyPrivate: false,
   wikiOnboardingCompleted: false,
   wikiSeenCrStatuses: {},
   tasksOnboardingCompleted: false,
+  taskPushNotificationsPromptCompleted: false,
   dismissedMembershipBannerForDate: null,
   firstLaunchDate: null,
   agriColtivioPromoShown: false,
+  farmCreatedModalPendingFarmIds: [],
   defaultMapLayer: "satellite",
   defaultPlotColorMode: "crop",
   preferredLocale: null,
@@ -237,6 +253,11 @@ export function LocalSettingsProvider({ children }: PropsWithChildren) {
           setLocalSettings({
             ...defaultLocalSettings,
             ...stored,
+            // The tasks onboarding used to include the push notification opt-in, so users
+            // who completed it have already answered the prompt
+            taskPushNotificationsPromptCompleted:
+              stored.taskPushNotificationsPromptCompleted ??
+              stored.tasksOnboardingCompleted === true,
             animalsGroups: mergeGroups(
               stored.animalsGroups ?? [],
               DEFAULT_ANIMALS_GROUPS,
@@ -307,6 +328,8 @@ export function useLocalSettings() {
       herdsOnboardingCompleted: true,
       tvdImportOnboardingCompleted: true,
       speedDialOnboardingCompleted: true,
+      wikiOnboardingCompleted: true,
+      tasksOnboardingCompleted: true,
     };
   }, [localSettings]);
 

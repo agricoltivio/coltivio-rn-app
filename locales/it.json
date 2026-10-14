@@ -269,11 +269,11 @@
     "summary": {
       "heading": "Tutto pronto!",
       "subheading": "La tua azienda con il numero {{federalFarmId}} è pronta.",
+      "subheading_no_federal_farm_id": "La tua azienda è pronta.",
       "plots_info": "Le tue superfici verranno aggiunte come appezzamenti in base al tuo numero azienda.",
       "crops_info": "La coltura attuale viene derivata dal codice utilizzo.",
       "edit_plots_info": "Puoi modificare le tue superfici in qualsiasi momento sotto 'Appezzamenti' o tramite la mappa.",
-      "press_save_to_finish": "Premi Salva per creare la tua azienda agricola.",
-      "no_federal_farm_id": "Purtroppo non siamo riusciti ad aggiungere automaticamente le tue superfici. Puoi aggiungerle manualmente sotto 'Appezzamenti' o tramite la mappa. Stiamo lavorando per supportare tutte le località il prima possibile."
+      "press_save_to_finish": "Premi Salva per creare la tua azienda agricola."
     },
     "preference": {
       "heading": "Un'ultima domanda",
@@ -329,10 +329,18 @@
       "community": "Pastorino",
       "wiki": "Wiki",
       "tasks": "Attività"
+    },
+    "upcoming_tasks_settings": {
+      "title": "Personalizza attività imminenti",
+      "count": "Numero di attività",
+      "show_mine": "Mostra le mie attività",
+      "show_unassigned": "Mostra attività non assegnate",
+      "show_others": "Mostra attività assegnate ad altri"
     }
   },
   "farm": {
     "farm": "Azienda Agricola",
+    "journal_show_all": "Mostra tutte le voci",
     "edit_farm": "Modifica Azienda Agricola",
     "farm_name": "Nome Azienda Agricola",
     "location": "Posizione",
@@ -1416,6 +1424,15 @@
     },
     "language": {
       "title": "Lingua"
+    },
+    "task_push_notifications": {
+      "label": "Notifiche per attività in scadenza",
+      "permission_denied": "Le notifiche sono disattivate nelle impostazioni di sistema. Consentile lì per ricevere avvisi sulle attività in scadenza.",
+      "open_settings": "Apri impostazioni di sistema"
+    },
+    "notifications": {
+      "title": "Notifiche",
+      "tasks_due": "Attività in scadenza"
     }
   },
   "home_tiles": {
@@ -1458,7 +1475,9 @@
       "step1_body": "Crea attività, imposta scadenze e assegnale ai collaboratori.",
       "step2_heading": "Genera liste di controllo",
       "step2_body": "Seleziona animali o appezzamenti per creare automaticamente i punti della lista di controllo.",
-      "step2_icon_hint": "Tocca questa icona accanto alla lista di controllo per generare elementi da animali o appezzamenti."
+      "step2_icon_hint": "Tocca questa icona accanto alla lista di controllo per generare elementi da animali o appezzamenti.",
+      "step3_heading": "Notifiche",
+      "step3_body": "Ricevi ogni mattina alle 9 una notifica sulle attività in scadenza oggi. Puoi modificarlo in qualsiasi momento nelle impostazioni."
     },
     "new_task": "Nuova attività",
     "edit_task": "Modifica attività",
@@ -1609,6 +1628,14 @@
     "trial_expiry_banner": "Il tuo periodo di prova scade in {{days}} giorni.",
     "expired_banner": "Il tuo abbonamento è scaduto.",
     "expired_grace_banner": "Il tuo abbonamento è scaduto. Hai ancora {{days}} giorni per rinnovarlo."
+  },
+  "farm_created_modal": {
+    "title": "La tua azienda è pronta",
+    "message": "Abbiamo ripreso le tue particelle dai dati cantonali. Poiché non sono sempre aggiornati, controllale per favore.",
+    "review_hint": "Puoi modificarle in qualsiasi momento sulla mappa.",
+    "no_plots": "Purtroppo non abbiamo trovato particelle per la tua azienda.",
+    "no_plots_hint": "Puoi disegnarle a mano sulla mappa. Hai bisogno di aiuto? Scrivici a <email>support@coltivio.ch</email>.",
+    "lets_go": "Iniziamo"
   },
   "donations": {
     "title": "Donazioni",

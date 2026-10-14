@@ -7,6 +7,9 @@ export type FarmStackParamList = {
   MemberDetail: { userId: string; memberName: string };
   InviteUser: undefined;
   FarmPicker: undefined;
+  FarmJournal: undefined;
+  FarmJournalEntry: { entryId: string };
+  FarmJournalEntryForm: { entryId?: string };
 };
 
 export type FarmScreenProps = StackScreenProps<"Farm">;
@@ -18,3 +21,7 @@ export type SearchFarmLocationModalProps =
 export type MemberDetailScreenProps = StackScreenProps<"MemberDetail">;
 export type InviteUserScreenProps = StackScreenProps<"InviteUser">;
 export type FarmPickerScreenProps = StackScreenProps<"FarmPicker">;
+export type FarmJournalScreenProps = StackScreenProps<"FarmJournal">;
+export type FarmJournalEntryScreenProps = StackScreenProps<"FarmJournalEntry">;
+export type FarmJournalEntryFormScreenProps =
+  StackScreenProps<"FarmJournalEntryForm">;

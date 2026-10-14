@@ -6,6 +6,7 @@ import { ChangeUserNameScreen } from "../ChangeUserNameScreen";
 import { HomeTilesSettingsScreen } from "../HomeTilesSettingsScreen";
 import { MapSettingsScreen } from "../MapSettingsScreen";
 import { LanguageSettingsScreen } from "../LanguageSettingsScreen";
+import { NotificationSettingsScreen } from "../NotificationSettingsScreen";
 import { SpeedDialSettingsScreen } from "../SpeedDialSettingsScreen";
 import { UserAccountScreen } from "../UserAccountScreen";
 import { OnboardingSettingsScreen } from "../UserSettingsScreen";
@@ -70,6 +71,14 @@ export function renderUserStack() {
       key="language-settings"
       name="LanguageSettings"
       component={LanguageSettingsScreen}
+      options={{
+        title: "",
+      }}
+    />,
+    <Stack.Screen
+      key="notification-settings"
+      name="NotificationSettings"
+      component={NotificationSettingsScreen}
       options={{
         title: "",
       }}

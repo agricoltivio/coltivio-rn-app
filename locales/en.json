@@ -269,11 +269,11 @@
     "summary": {
       "heading": "All set!",
       "subheading": "Your farm with registration number {{federalFarmId}} is ready.",
+      "subheading_no_federal_farm_id": "Your farm is ready.",
       "plots_info": "Your plots will be added based on your farm registration number.",
       "crops_info": "The current crop will be derived from the usage code.",
       "edit_plots_info": "You can edit your plots at any time under 'Plots' or via the map.",
-      "press_save_to_finish": "Tap Save to create your farm.",
-      "no_federal_farm_id": "Unfortunately, we could not add your plots automatically. You can add your plots manually under 'Plots' or via the map. We are working to support all locations as soon as possible."
+      "press_save_to_finish": "Tap Save to create your farm."
     },
     "preference": {
       "heading": "One last question",
@@ -329,10 +329,18 @@
       "community": "Community",
       "wiki": "Wiki",
       "tasks": "Tasks"
+    },
+    "upcoming_tasks_settings": {
+      "title": "Customize upcoming tasks",
+      "count": "Number of tasks",
+      "show_mine": "Show my tasks",
+      "show_unassigned": "Show unassigned tasks",
+      "show_others": "Show tasks assigned to others"
     }
   },
   "farm": {
     "farm": "Farm",
+    "journal_show_all": "Show all entries",
     "edit_farm": "Edit Farm",
     "farm_name": "Farm Name",
     "location": "Location",
@@ -1416,6 +1424,15 @@
     },
     "language": {
       "title": "Language"
+    },
+    "task_push_notifications": {
+      "label": "Notifications for due tasks",
+      "permission_denied": "Notifications are turned off in the system settings. Allow them there to be notified about due tasks.",
+      "open_settings": "Open system settings"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "tasks_due": "Due tasks"
     }
   },
   "home_tiles": {
@@ -1458,7 +1475,9 @@
       "step1_body": "Create tasks, set due dates and assign them to collaborators.",
       "step2_heading": "Generate checklists",
       "step2_body": "Select animals or plots to automatically create checklist items from them.",
-      "step2_icon_hint": "Tap this icon next to the checklist to generate items from animals or plots."
+      "step2_icon_hint": "Tap this icon next to the checklist to generate items from animals or plots.",
+      "step3_heading": "Notifications",
+      "step3_body": "Get a notification every morning at 9 am about tasks due that day. You can change this anytime in the settings."
     },
     "new_task": "New Task",
     "edit_task": "Edit Task",
@@ -1609,6 +1628,14 @@
     "trial_expiry_banner": "Your trial expires in {{days}} days.",
     "expired_banner": "Your membership has expired.",
     "expired_grace_banner": "Your membership has expired. You have {{days}} more days to renew."
+  },
+  "farm_created_modal": {
+    "title": "Your farm is ready",
+    "message": "We imported your plots from the cantonal data. Since this data isn't always up to date, please review them.",
+    "review_hint": "You can adjust them on the map at any time.",
+    "no_plots": "Unfortunately, we couldn't find any plots for your farm.",
+    "no_plots_hint": "You can draw them by hand on the map. Need help? Write to us at <email>support@coltivio.ch</email>.",
+    "lets_go": "Let's go"
   },
   "donations": {
     "title": "Donations",

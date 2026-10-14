@@ -2,7 +2,13 @@ import { Controller, FieldValues, UseControllerProps } from "react-hook-form";
 import { Select, SelectProps } from "./Select";
 
 type RHTextInputProps<T extends FieldValues> = UseControllerProps<T> &
-  Omit<SelectProps, "onChange" | "onBlur" | "value" | "disabled">;
+  Omit<
+    SelectProps,
+    "onChange" | "onClear" | "onBlur" | "value" | "disabled"
+  > & {
+    // Allows resetting the field to null
+    clearable?: boolean;
+  };
 
 export function RHSelect<T extends FieldValues>({
   name,
@@ -11,6 +17,7 @@ export function RHSelect<T extends FieldValues>({
   control,
   defaultValue,
   disabled,
+  clearable,
   ...inputProps
 }: RHTextInputProps<T>) {
   return (
@@ -23,6 +30,7 @@ export function RHSelect<T extends FieldValues>({
         <Select
           onBlur={onBlur}
           onChange={onChange}
+          onClear={clearable ? () => onChange(null) : undefined}
           value={value}
           disabled={disabled}
           {...inputProps}

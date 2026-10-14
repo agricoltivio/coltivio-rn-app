@@ -269,11 +269,11 @@
     "summary": {
       "heading": "Tout est prêt !",
       "subheading": "Votre ferme avec le numéro d'exploitation {{federalFarmId}} est prête.",
+      "subheading_no_federal_farm_id": "Votre ferme est prête.",
       "plots_info": "Vos surfaces seront ajoutées en tant que champs sur la base de votre numéro d'exploitation.",
       "crops_info": "La culture actuelle est dérivée du code d'utilisation.",
       "edit_plots_info": "Vous pouvez modifier vos surfaces à tout moment sous 'Champs' ou via la carte.",
-      "press_save_to_finish": "Appuyez sur Enregistrer pour créer votre ferme.",
-      "no_federal_farm_id": "Malheureusement, nous n'avons pas pu ajouter automatiquement vos surfaces. Vous pouvez les ajouter manuellement sous 'Champs' ou via la carte. Nous travaillons à supporter tous les emplacements dès que possible."
+      "press_save_to_finish": "Appuyez sur Enregistrer pour créer votre ferme."
     },
     "preference": {
       "heading": "Une dernière question",
@@ -329,10 +329,18 @@
       "community": "Communauté",
       "wiki": "Wiki",
       "tasks": "Tâches"
+    },
+    "upcoming_tasks_settings": {
+      "title": "Personnaliser les tâches à venir",
+      "count": "Nombre de tâches",
+      "show_mine": "Afficher mes tâches",
+      "show_unassigned": "Afficher les tâches non attribuées",
+      "show_others": "Afficher les tâches attribuées à d'autres"
     }
   },
   "farm": {
     "farm": "Ma ferme",
+    "journal_show_all": "Afficher toutes les entrées",
     "edit_farm": "Modifier la ferme",
     "farm_name": "Nom de la ferme",
     "location": "Localisation",
@@ -1416,6 +1424,15 @@
     },
     "language": {
       "title": "Langue"
+    },
+    "task_push_notifications": {
+      "label": "Notifications pour les tâches à échéance",
+      "permission_denied": "Les notifications sont désactivées dans les réglages du système. Autorise-les pour être averti des tâches à échéance.",
+      "open_settings": "Ouvrir les réglages du système"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "tasks_due": "Tâches à échéance"
     }
   },
   "home_tiles": {
@@ -1458,7 +1475,9 @@
       "step1_body": "Créez des tâches, définissez des dates d'échéance et assignez-les à des collaborateurs.",
       "step2_heading": "Générer des listes de contrôle",
       "step2_body": "Sélectionnez des animaux ou des parcelles pour créer automatiquement des éléments de liste de contrôle.",
-      "step2_icon_hint": "Appuyez sur cette icône à côté de la liste de contrôle pour générer des éléments à partir d'animaux ou de parcelles."
+      "step2_icon_hint": "Appuyez sur cette icône à côté de la liste de contrôle pour générer des éléments à partir d'animaux ou de parcelles.",
+      "step3_heading": "Notifications",
+      "step3_body": "Reçois chaque matin à 9 h une notification pour les tâches à échéance ce jour-là. Tu peux modifier cela à tout moment dans les réglages."
     },
     "new_task": "Nouvelle tâche",
     "edit_task": "Modifier la tâche",
@@ -1608,6 +1627,14 @@
     "trial_expiry_banner": "Votre période d'essai expire dans {{days}} jours.",
     "expired_banner": "Votre adhésion a expiré.",
     "expired_grace_banner": "Votre adhésion a expiré. Il vous reste {{days}} jours pour la renouveler."
+  },
+  "farm_created_modal": {
+    "title": "Ton exploitation est prête",
+    "message": "Nous avons repris tes parcelles des données cantonales. Comme celles-ci ne sont pas toujours à jour, vérifie-les s'il te plaît.",
+    "review_hint": "Tu peux les adapter à tout moment sur la carte.",
+    "no_plots": "Malheureusement, nous n'avons trouvé aucune parcelle pour ton exploitation.",
+    "no_plots_hint": "Tu peux les dessiner à la main sur la carte. Besoin d'aide ? Écris-nous à <email>support@coltivio.ch</email>.",
+    "lets_go": "C'est parti"
   },
   "donations": {
     "title": "Dons",
