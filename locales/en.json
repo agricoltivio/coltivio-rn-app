@@ -1591,6 +1591,7 @@
     "update_payment_method": "Update payment method",
     "payment_history": "Payments",
     "payment_method_twint": "Twint",
+    "payment_refunded": "Refunded",
     "subscription_starts_after_trial": "Your membership is active. The CHF 75 annual fee will be charged once your trial ends on {{date}}.",
     "cancel_dialog": {
       "title": "Declare resignation",
@@ -1635,5 +1636,9 @@
     "no_plots": "Unfortunately, we couldn't find any plots for your farm.",
     "no_plots_hint": "You can draw them by hand on the map. Need help? Write to us at <email>support@coltivio.ch</email>.",
     "lets_go": "Let's go"
+  },
+  "donations": {
+    "title": "Donations",
+    "history_heading": "Your donations"
   }
 }

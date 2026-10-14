@@ -1592,6 +1592,7 @@
     "update_payment_method": "Zahlungsmethode aktualisieren",
     "payment_history": "Zahlungen",
     "payment_method_twint": "Twint",
+    "payment_refunded": "Zurückerstattet",
     "subscription_starts_after_trial": "Deine Mitgliedschaft ist aktiv. Der Jahresbeitrag von CHF 75.– wird nach Ablauf der Testphase am {{date}} belastet.",
     "cancel_dialog": {
       "title": "Austritt erklären",
@@ -1636,5 +1637,9 @@
     "no_plots": "Leider haben wir für deinen Betrieb keine Parzellen gefunden.",
     "no_plots_hint": "Du kannst sie in der Karte von Hand einzeichnen. Brauchst du Hilfe? Schreib uns an <email>support@coltivio.ch</email>.",
     "lets_go": "Los geht's"
+  },
+  "donations": {
+    "title": "Spenden",
+    "history_heading": "Deine Spenden"
   }
 }

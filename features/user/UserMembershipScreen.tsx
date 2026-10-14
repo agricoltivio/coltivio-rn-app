@@ -3,7 +3,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem, ListItemContent } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
-import { Body, H2, H3 } from "@/theme/Typography";
+import { Body, H2 } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -23,6 +23,7 @@ import {
 import { AgriColtivioPitch } from "@/features/agri-coltivio/AgriColtivioPitch";
 import { MembershipCancelledModal } from "@/features/agri-coltivio/MembershipCancelledModal";
 import { MembershipThankYouModal } from "@/features/agri-coltivio/MembershipThankYouModal";
+import { PaymentHistoryList } from "@/features/agri-coltivio/PaymentHistoryList";
 import { StatutenDialog } from "@/features/agri-coltivio/StatutenDialog";
 import { UserMembershipScreenProps } from "./navigation/user-routes";
 
@@ -368,45 +369,10 @@ export function UserMembershipScreen({ route }: UserMembershipScreenProps) {
             )}
 
             {visiblePayments.length > 0 && (
-              <>
-                <H3 style={{ marginTop: theme.spacing.xl }}>
-                  {t("membership.payment_history")}
-                </H3>
-                <View
-                  style={{
-                    marginTop: theme.spacing.m,
-                    borderRadius: theme.radii.l,
-                    overflow: "hidden",
-                    backgroundColor: theme.colors.white,
-                    marginHorizontal: theme.spacing.xs,
-                  }}
-                >
-                  {visiblePayments.map((payment, index) => (
-                    <ListItem
-                      key={payment.id}
-                      hideBottomDivider={index === visiblePayments.length - 1}
-                    >
-                      <ListItemContent>
-                        <ListItem.Title
-                          style={{ paddingLeft: theme.spacing.m }}
-                        >
-                          {toDateString(payment.createdAt) ?? "—"}
-                        </ListItem.Title>
-                        <ListItem.Body style={{ paddingLeft: theme.spacing.m }}>
-                          {payment.cardBrand && payment.cardLast4
-                            ? `${payment.cardBrand.toUpperCase()} •••• ${payment.cardLast4}`
-                            : payment.paymentMethodType === "twint"
-                              ? t("membership.payment_method_twint")
-                              : "—"}
-                        </ListItem.Body>
-                      </ListItemContent>
-                      <ListItem.Body style={{ paddingRight: theme.spacing.m }}>
-                        {`CHF ${(payment.amount / 100).toFixed(2)}`}
-                      </ListItem.Body>
-                    </ListItem>
-                  ))}
-                </View>
-              </>
+              <PaymentHistoryList
+                title={t("membership.payment_history")}
+                payments={visiblePayments}
+              />
             )}
           </>
         ) : (

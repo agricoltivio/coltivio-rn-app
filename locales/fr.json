@@ -1590,6 +1590,7 @@
     "update_payment_method": "Mettre à jour le moyen de paiement",
     "payment_history": "Paiements",
     "payment_method_twint": "Twint",
+    "payment_refunded": "Remboursé",
     "subscription_starts_after_trial": "Ton adhésion est active. La cotisation annuelle de CHF 75 sera prélevée à la fin de la période d'essai, le {{date}}.",
     "cancel_dialog": {
       "title": "Déclarer sa démission",
@@ -1634,5 +1635,9 @@
     "no_plots": "Malheureusement, nous n'avons trouvé aucune parcelle pour ton exploitation.",
     "no_plots_hint": "Tu peux les dessiner à la main sur la carte. Besoin d'aide ? Écris-nous à <email>support@coltivio.ch</email>.",
     "lets_go": "C'est parti"
+  },
+  "donations": {
+    "title": "Dons",
+    "history_heading": "Vos dons"
   }
 }

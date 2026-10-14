@@ -1,3 +1,4 @@
+import { agriColtivioQueryKeys } from "@/features/agri-coltivio/agri-coltivio.querykeys";
 import { animalsQueryKeys } from "@/features/animals/animals.querykeys";
 import { earTagsQueryKeys } from "@/features/animals/earTags.querykeys";
 import { drugsQueryKeys } from "@/features/animals/drugs.querykeys";
@@ -33,6 +34,7 @@ import { plotJournalQueryKeys } from "@/features/plots/plot-journal.querykeys";
 import { farmJournalQueryKeys } from "@/features/farms/farm-journal.querykeys";
 
 export const queryKeys = mergeQueryKeys(
+  agriColtivioQueryKeys,
   animalsQueryKeys,
   earTagsQueryKeys,
   drugsQueryKeys,

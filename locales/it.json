@@ -1591,6 +1591,7 @@
     "update_payment_method": "Aggiorna metodo di pagamento",
     "payment_history": "Pagamenti",
     "payment_method_twint": "Twint",
+    "payment_refunded": "Rimborsato",
     "subscription_starts_after_trial": "La tua iscrizione è attiva. La quota annuale di CHF 75 verrà addebitata al termine del periodo di prova, il {{date}}.",
     "cancel_dialog": {
       "title": "Dichiara le dimissioni",
@@ -1635,5 +1636,9 @@
     "no_plots": "Purtroppo non abbiamo trovato particelle per la tua azienda.",
     "no_plots_hint": "Puoi disegnarle a mano sulla mappa. Hai bisogno di aiuto? Scrivici a <email>support@coltivio.ch</email>.",
     "lets_go": "Iniziamo"
+  },
+  "donations": {
+    "title": "Donazioni",
+    "history_heading": "Le tue donazioni"
   }
 }
