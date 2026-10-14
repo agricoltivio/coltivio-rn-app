@@ -56,6 +56,8 @@ type LocalSettingsData = {
   // Maps CR id → last seen status, used to detect unseen activity on submissions
   wikiSeenCrStatuses: Record<string, string>;
   tasksOnboardingCompleted: boolean;
+  // The push notification opt-in is not a tutorial, so onboardingsDisabled doesn't skip it
+  taskPushNotificationsPromptCompleted: boolean;
   // Stores the ISO date string of the expiry date the membership banner was dismissed for.
   // When a new subscription period starts (new date), the banner reappears automatically.
   dismissedMembershipBannerForDate: string | null;
@@ -114,6 +116,7 @@ export const defaultLocalSettings: LocalSettingsData = {
   wikiOnboardingCompleted: false,
   wikiSeenCrStatuses: {},
   tasksOnboardingCompleted: false,
+  taskPushNotificationsPromptCompleted: false,
   dismissedMembershipBannerForDate: null,
   firstLaunchDate: null,
   agriColtivioPromoShown: false,
@@ -250,6 +253,11 @@ export function LocalSettingsProvider({ children }: PropsWithChildren) {
           setLocalSettings({
             ...defaultLocalSettings,
             ...stored,
+            // The tasks onboarding used to include the push notification opt-in, so users
+            // who completed it have already answered the prompt
+            taskPushNotificationsPromptCompleted:
+              stored.taskPushNotificationsPromptCompleted ??
+              stored.tasksOnboardingCompleted === true,
             animalsGroups: mergeGroups(
               stored.animalsGroups ?? [],
               DEFAULT_ANIMALS_GROUPS,
@@ -320,6 +328,8 @@ export function useLocalSettings() {
       herdsOnboardingCompleted: true,
       tvdImportOnboardingCompleted: true,
       speedDialOnboardingCompleted: true,
+      wikiOnboardingCompleted: true,
+      tasksOnboardingCompleted: true,
     };
   }, [localSettings]);
 

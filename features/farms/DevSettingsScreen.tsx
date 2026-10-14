@@ -41,6 +41,10 @@ const RESETTABLE_KEYS = [
   { key: "speedDialOnboardingCompleted", label: "Speed Dial Onboarding" },
   { key: "wikiOnboardingCompleted", label: "Wiki Onboarding" },
   { key: "tasksOnboardingCompleted", label: "Tasks Onboarding" },
+  {
+    key: "taskPushNotificationsPromptCompleted",
+    label: "Task Push Notifications Prompt",
+  },
   { key: "onboardingsDisabled", label: "Onboardings Disabled" },
 ] as const;
 
