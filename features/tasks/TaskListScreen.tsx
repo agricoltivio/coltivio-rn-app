@@ -83,7 +83,10 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
   const { tasks, isLoading } = useTasksQuery(status);
 
   useEffect(() => {
-    if (!localSettings.tasksOnboardingCompleted) {
+    if (
+      !localSettings.tasksOnboardingCompleted ||
+      !localSettings.taskPushNotificationsPromptCompleted
+    ) {
       navigation.navigate("TasksOnboarding");
     }
   }, []);
@@ -97,7 +100,7 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
   const taskPushNotificationsEnabled = user?.taskPushNotifications === true;
   useEffect(() => {
     if (
-      !localSettings.tasksOnboardingCompleted ||
+      !localSettings.taskPushNotificationsPromptCompleted ||
       !taskPushNotificationsEnabled
     ) {
       return;
@@ -115,7 +118,10 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
         updateTaskPushNotificationsMutation.mutate(false);
       })
       .catch((error) => console.error(error));
-  }, [localSettings.tasksOnboardingCompleted, taskPushNotificationsEnabled]);
+  }, [
+    localSettings.taskPushNotificationsPromptCompleted,
+    taskPushNotificationsEnabled,
+  ]);
 
   const now = new Date();
 

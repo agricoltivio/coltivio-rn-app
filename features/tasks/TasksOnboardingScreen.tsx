@@ -17,19 +17,20 @@ export function TasksOnboardingScreen({
 }: TasksOnboardingScreenProps) {
   const theme = useTheme();
   const { t } = useTranslation();
-  const { updateLocalSettings } = useLocalSettings();
+  const { localSettings, updateLocalSettings } = useLocalSettings();
   const { user } = useUserQuery();
   const updateTaskPushNotificationsMutation =
     useUpdateTaskPushNotificationsMutation();
 
-  // The task list asks for notification permission once the onboarding is completed,
+  // The task list asks for notification permission once the prompt is completed,
   // and only if this setting is still enabled
   function handleFinish() {
     updateLocalSettings("tasksOnboardingCompleted", true);
+    updateLocalSettings("taskPushNotificationsPromptCompleted", true);
     navigation.replace("TaskList");
   }
 
-  const steps = [
+  const introSteps = [
     <View>
       <H1 style={{ color: theme.colors.primary }}>
         {t("tasks.onboarding.step1_heading")}
@@ -77,6 +78,9 @@ export function TasksOnboardingScreen({
         </Subtitle>
       </View>
     </View>,
+  ];
+
+  const pushNotificationsStep = (
     <View>
       <H1 style={{ color: theme.colors.primary }}>
         {t("tasks.onboarding.step3_heading")}
@@ -94,14 +98,23 @@ export function TasksOnboardingScreen({
       >
         <Switch
           label={t("settings.task_push_notifications.label")}
-          value={user?.taskPushNotifications ?? true}
+          value={user?.taskPushNotifications ?? false}
           disabled={!user}
           onChange={(event) =>
             updateTaskPushNotificationsMutation.mutate(event.nativeEvent.value)
           }
         />
       </View>
-    </View>,
+    </View>
+  );
+
+  // Only show what hasn't been seen yet, e.g. just the push notification opt-in when
+  // tutorials are disabled
+  const steps = [
+    ...(localSettings.tasksOnboardingCompleted ? [] : introSteps),
+    ...(localSettings.taskPushNotificationsPromptCompleted
+      ? []
+      : [pushNotificationsStep]),
   ];
 
   return <OnboardingScreen steps={steps} onFinish={handleFinish} />;
