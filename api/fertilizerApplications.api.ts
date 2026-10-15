@@ -4,8 +4,13 @@ import { components } from "./v1";
 export type FertilizerApplicationBatchCreateInput =
   components["schemas"]["PostV1FertilizerApplicationsRequestBody"];
 
+export type FertilizerApplicationUpdateInput =
+  components["schemas"]["PatchV1FertilizerApplicationsByIdFertilizerApplicationIdRequestBody"];
+
 export type FertilizerApplication =
   components["schemas"]["GetV1FertilizerApplicationsByIdFertilizerApplicationIdPositiveResponse"]["data"];
+
+export type FertilizerApplicationUnit = FertilizerApplication["unit"];
 
 export type FertilizerApplicationMethod = NonNullable<
   FertilizerApplication["method"]
@@ -72,6 +77,23 @@ export function fertilizerApplicationsApi(client: FetchClient) {
         },
       );
       return data!.data.result;
+    },
+    async updateFertilizerApplication(
+      fertilizerApplicationId: string,
+      input: FertilizerApplicationUpdateInput,
+    ) {
+      const { data } = await client.PATCH(
+        "/v1/fertilizerApplications/byId/{fertilizerApplicationId}",
+        {
+          params: {
+            path: {
+              fertilizerApplicationId,
+            },
+          },
+          body: input,
+        },
+      );
+      return data!.data;
     },
     async deleteFertilizerApplication(fertilizerApplicationId: string) {
       await client.DELETE(

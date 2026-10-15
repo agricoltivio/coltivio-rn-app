@@ -7,6 +7,9 @@ export type TillageCreateInput =
 export type TillagesBatchCreateInput =
   components["schemas"]["PostV1TillagesBatchRequestBody"];
 
+export type TillageUpdateInput =
+  components["schemas"]["PatchV1TillagesByIdTillageIdRequestBody"];
+
 export type Tillage =
   components["schemas"]["GetV1TillagesByIdTillageIdPositiveResponse"]["data"];
 
@@ -61,6 +64,20 @@ export function tillagesApi(client: FetchClient) {
         },
       });
       return data!.data.result;
+    },
+    async updateTillage(
+      tillageId: string,
+      input: TillageUpdateInput,
+    ): Promise<Tillage> {
+      const { data } = await client.PATCH("/v1/tillages/byId/{tillageId}", {
+        params: {
+          path: {
+            tillageId,
+          },
+        },
+        body: input,
+      });
+      return data!.data;
     },
     async deleteTillage(tillageId: string) {
       await client.DELETE("/v1/tillages/byId/{tillageId}", {

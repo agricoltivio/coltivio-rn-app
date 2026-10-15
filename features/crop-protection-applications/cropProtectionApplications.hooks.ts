@@ -3,6 +3,7 @@ import {
   CropProtectionApplication,
   CropProtectionApplicationCreateInput,
   CropProtectionApplicationsBatchCreateInput,
+  CropProtectionApplicationUpdateInput,
 } from "@/api/cropProtectionApplications.api";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -98,6 +99,36 @@ export function useCreateCropProtectionApplicationsMutation(
     },
   });
   return createCropProtectionApplicationMutation;
+}
+
+export function useUpdateCropProtectionApplicationMutation(
+  onSuccess?: () => void,
+) {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  const updateCropProtectionApplicationMutation = useMutation({
+    mutationFn: ({
+      cropProtectionApplicationId,
+      input,
+    }: {
+      cropProtectionApplicationId: string;
+      input: CropProtectionApplicationUpdateInput;
+    }) =>
+      api.cropProtectionApplications.updateCropProtectionApplication(
+        cropProtectionApplicationId,
+        input,
+      ),
+    onError: (error) => {
+      console.error(error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.cropProtectionApplications._def,
+      });
+      onSuccess && onSuccess();
+    },
+  });
+  return updateCropProtectionApplicationMutation;
 }
 
 export function useDeleteCropProtectionApplicationMutation(

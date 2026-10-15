@@ -1,5 +1,9 @@
 import { useApi } from "@/api/api";
-import { Tillage, TillagesBatchCreateInput } from "@/api/tillages.api";
+import {
+  Tillage,
+  TillagesBatchCreateInput,
+  TillageUpdateInput,
+} from "@/api/tillages.api";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -72,6 +76,30 @@ export function useCreateTillagesMutation(
     },
   });
   return createTillageMutation;
+}
+
+export function useUpdateTillageMutation(onSuccess?: () => void) {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  const updateTillageMutation = useMutation({
+    mutationFn: ({
+      tillageId,
+      input,
+    }: {
+      tillageId: string;
+      input: TillageUpdateInput;
+    }) => api.tillages.updateTillage(tillageId, input),
+    onError: (error) => {
+      console.error(error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.tillages._def,
+      });
+      onSuccess && onSuccess();
+    },
+  });
+  return updateTillageMutation;
 }
 
 export function useDeleteTillageMutation(

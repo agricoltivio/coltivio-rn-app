@@ -824,7 +824,8 @@
     "total_amount": "Total Amount",
     "amount_per_month": "Amount per Month",
     "chart_total": "Total",
-    "chart_per_month": "Per month"
+    "chart_per_month": "Per month",
+    "edit_harvest": "Edit harvest"
   },
   "fertilizers": {
     "fertilizer": "Fertilizer",
@@ -871,7 +872,8 @@
       "spread": "Spread",
       "spray": "Spray",
       "other": "Other"
-    }
+    },
+    "edit_application": "Edit fertilizer application"
   },
   "tillages": {
     "tillages": "Tillage Operations",
@@ -898,7 +900,8 @@
       "flame_weeding": "Flame Weeding",
       "custom": "Custom",
       "other": "Other"
-    }
+    },
+    "edit_tillage": "Edit tillage"
   },
   "crops": {
     "crop": "Crop",
@@ -963,7 +966,8 @@
       "misting": "Misting",
       "spraying": "Spraying",
       "other": "Other"
-    }
+    },
+    "edit_application": "Edit crop protection application"
   },
   "crop_protection_product": {
     "add_product": "New Crop Protection Product",

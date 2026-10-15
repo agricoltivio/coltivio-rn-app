@@ -824,7 +824,8 @@
     "total_amount": "Quantità totale",
     "amount_per_month": "Quantità per mese",
     "chart_total": "Totale",
-    "chart_per_month": "Al mese"
+    "chart_per_month": "Al mese",
+    "edit_harvest": "Modifica raccolto"
   },
   "fertilizers": {
     "fertilizer": "Fertilizzante",
@@ -871,7 +872,8 @@
       "spread": "Spargimento",
       "spray": "Spruzzatura",
       "other": "Altro"
-    }
+    },
+    "edit_application": "Modifica concimazione"
   },
   "tillages": {
     "tillages": "Lavorazioni del terreno",
@@ -898,7 +900,8 @@
       "flame_weeding": "Diserbo termico",
       "custom": "Personalizzato",
       "other": "Altro"
-    }
+    },
+    "edit_tillage": "Modifica lavorazione del suolo"
   },
   "crops": {
     "crop": "Coltura",
@@ -963,7 +966,8 @@
       "misting": "Nebulizzazione",
       "spraying": "Irrorazione",
       "other": "Altro"
-    }
+    },
+    "edit_application": "Modifica trattamento fitosanitario"
   },
   "crop_protection_product": {
     "add_product": "Nuovo prodotto fitosanitario",

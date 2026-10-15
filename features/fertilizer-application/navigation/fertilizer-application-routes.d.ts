@@ -15,6 +15,7 @@ export type FertilizerApplicationsStackParamList = {
 
   FertilizerApplications: undefined;
   FertilizerApplicationDetails: { fertilizerApplicationId: string };
+  EditFertilizerApplication: { fertilizerApplicationId: string };
 };
 
 export type FertilizerApplicationsScreenProps =
@@ -22,6 +23,9 @@ export type FertilizerApplicationsScreenProps =
 
 export type FertilizerApplicationDetailsScreenProps =
   StackScreenProps<"FertilizerApplicationDetails">;
+
+export type EditFertilizerApplicationScreenProps =
+  StackScreenProps<"EditFertilizerApplication">;
 
 export type SelectFertilizerAndDateScreenProps =
   StackScreenProps<"SelectFertilizerAndDate">;

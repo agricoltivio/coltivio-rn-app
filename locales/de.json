@@ -824,7 +824,8 @@
     "total_amount": "Totale Menge",
     "amount_per_month": "Menge pro Monat",
     "chart_total": "Total",
-    "chart_per_month": "Pro Monat"
+    "chart_per_month": "Pro Monat",
+    "edit_harvest": "Ernte bearbeiten"
   },
   "fertilizers": {
     "fertilizer": "Dünger",
@@ -871,7 +872,8 @@
       "spread": "Streuen",
       "spray": "Sprühen",
       "other": "Anderes"
-    }
+    },
+    "edit_application": "Düngung bearbeiten"
   },
   "tillages": {
     "tillages": "Bodenbearbeitungen",
@@ -898,7 +900,8 @@
       "flame_weeding": "Abflammen",
       "custom": "Benutzerdefiniert",
       "other": "Andere"
-    }
+    },
+    "edit_tillage": "Bodenbearbeitung bearbeiten"
   },
   "crops": {
     "crop": "Kultur",
@@ -963,7 +966,8 @@
       "misting": "Vernebeln",
       "spraying": "Sprühen",
       "other": "Andere"
-    }
+    },
+    "edit_application": "Pflanzenschutz bearbeiten"
   },
   "crop_protection_product": {
     "add_product": "Neues Pflanzenschutzmittel",

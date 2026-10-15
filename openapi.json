@@ -6484,6 +6484,53 @@
             }
           }
         }
+      },
+      "patch": {
+        "operationId": "PatchV1HarvestsByIdHarvestId",
+        "parameters": [
+          {
+            "name": "harvestId",
+            "in": "path",
+            "required": true,
+            "description": "PATCH /v1/harvests/byId/:harvestId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PATCH /v1/harvests/byId/:harvestId Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchV1HarvestsByIdHarvestIdRequestBody"
+              }
+            }
+          }
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "PATCH /v1/harvests/byId/:harvestId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchV1HarvestsByIdHarvestIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "PATCH /v1/harvests/byId/:harvestId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/v1/harvests/summaries": {
@@ -6990,6 +7037,53 @@
           },
           "400": {
             "description": "DELETE /v1/fertilizerApplications/byId/:fertilizerApplicationId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "PatchV1FertilizerApplicationsByIdFertilizerApplicationId",
+        "parameters": [
+          {
+            "name": "fertilizerApplicationId",
+            "in": "path",
+            "required": true,
+            "description": "PATCH /v1/fertilizerApplications/byId/:fertilizerApplicationId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PATCH /v1/fertilizerApplications/byId/:fertilizerApplicationId Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchV1FertilizerApplicationsByIdFertilizerApplicationIdRequestBody"
+              }
+            }
+          }
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "PATCH /v1/fertilizerApplications/byId/:fertilizerApplicationId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchV1FertilizerApplicationsByIdFertilizerApplicationIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "PATCH /v1/fertilizerApplications/byId/:fertilizerApplicationId Negative response",
             "content": {
               "application/json": {
                 "schema": {
@@ -15422,6 +15516,56 @@
         }
       }
     },
+    "/v1/forum/threads/byId/{threadId}/subscription": {
+      "put": {
+        "operationId": "PutV1ForumThreadsByIdThreadIdSubscription",
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "path",
+            "required": true,
+            "description": "PUT /v1/forum/threads/byId/:threadId/subscription Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PUT /v1/forum/threads/byId/:threadId/subscription Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PutV1ForumThreadsByIdThreadIdSubscriptionRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "PUT /v1/forum/threads/byId/:threadId/subscription Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PutV1ForumThreadsByIdThreadIdSubscriptionPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "PUT /v1/forum/threads/byId/:threadId/subscription Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/forum/replies/byId/{replyId}": {
       "patch": {
         "operationId": "PatchV1ForumRepliesByIdReplyId",
@@ -17781,6 +17925,16 @@
           "data": {
             "type": "object",
             "properties": {
+              "format": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "label": { "type": "string" },
+                  "geometryOnly": { "type": "boolean" }
+                },
+                "required": ["name", "label", "geometryOnly"],
+                "additionalProperties": false
+              },
               "completeness": {
                 "type": "string",
                 "enum": ["full", "partial", "geometries_only"]
@@ -17797,6 +17951,14 @@
                     "usage": { "type": ["number", "null"] },
                     "usageName": { "type": ["string", "null"] },
                     "size": { "type": "number" },
+                    "cuttingDate": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": ["string", "null"],
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
                     "municipality": { "type": ["string", "null"] },
                     "geometry": {
                       "type": ["object", "null"],
@@ -17825,7 +17987,15 @@
                     },
                     "parseErrors": {
                       "type": "array",
-                      "items": { "type": "string" }
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "code": { "type": "string" },
+                          "value": { "type": "string" }
+                        },
+                        "required": ["code"],
+                        "additionalProperties": false
+                      }
                     }
                   },
                   "required": [
@@ -17836,6 +18006,7 @@
                     "usage",
                     "usageName",
                     "size",
+                    "cuttingDate",
                     "municipality",
                     "geometry",
                     "overlappingPlotIds",
@@ -17843,9 +18014,58 @@
                   ],
                   "additionalProperties": false
                 }
+              },
+              "overlays": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "externalId": { "type": "string" },
+                    "name": { "type": "string" },
+                    "localId": { "type": ["string", "null"] },
+                    "usage": { "type": "number" },
+                    "usageName": { "type": ["string", "null"] },
+                    "size": { "type": "number" },
+                    "geometry": {
+                      "type": "object",
+                      "properties": {
+                        "type": { "type": "string", "const": "MultiPolygon" },
+                        "coordinates": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "array",
+                              "items": {
+                                "type": "array",
+                                "items": { "type": "number" }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "required": ["type", "coordinates"],
+                      "additionalProperties": false
+                    },
+                    "rowNumber": { "type": "number" },
+                    "alreadyPresent": { "type": "boolean" }
+                  },
+                  "required": [
+                    "externalId",
+                    "name",
+                    "localId",
+                    "usage",
+                    "usageName",
+                    "size",
+                    "geometry",
+                    "rowNumber",
+                    "alreadyPresent"
+                  ],
+                  "additionalProperties": false
+                }
               }
             },
-            "required": ["completeness", "rows"],
+            "required": ["format", "completeness", "rows", "overlays"],
             "additionalProperties": false
           }
         },
@@ -17862,8 +18082,12 @@
         "properties": {
           "data": {
             "type": "object",
-            "properties": { "created": { "type": "number" } },
-            "required": ["created"],
+            "properties": {
+              "created": { "type": "number" },
+              "overlaysCreated": { "type": "number" },
+              "overlaysSkipped": { "type": "number" }
+            },
+            "required": ["created", "overlaysCreated", "overlaysSkipped"],
             "additionalProperties": false
           }
         },
@@ -17873,8 +18097,8 @@
       "PostV1PlotsImportCommitRequestBody": {
         "type": "object",
         "properties": {
+          "format": { "type": "string" },
           "rows": {
-            "minItems": 1,
             "type": "array",
             "items": {
               "type": "object",
@@ -17917,9 +18141,53 @@
               },
               "required": ["name", "geometry", "size"]
             }
+          },
+          "overlays": {
+            "default": [],
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "externalId": { "type": "string" },
+                "name": { "type": "string" },
+                "localId": { "type": ["string", "null"] },
+                "usage": { "type": "number" },
+                "usageName": { "type": ["string", "null"] },
+                "size": { "type": "number" },
+                "geometry": {
+                  "type": "object",
+                  "properties": {
+                    "type": { "type": "string", "const": "MultiPolygon" },
+                    "coordinates": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": { "type": "number" }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": ["type", "coordinates"]
+                }
+              },
+              "required": [
+                "externalId",
+                "name",
+                "localId",
+                "usage",
+                "usageName",
+                "size",
+                "geometry"
+              ]
+            }
           }
         },
-        "required": ["rows"]
+        "required": ["format", "rows"]
       },
       "GetV1PlotsByIdPlotIdPositiveResponse": {
         "type": "object",
@@ -21402,24 +21670,6 @@
             }
           },
           "productId": { "type": "string" },
-          "geometry": {
-            "type": "object",
-            "properties": {
-              "type": { "type": "string", "const": "MultiPolygon" },
-              "coordinates": {
-                "type": "array",
-                "items": {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": { "type": "array", "items": { "type": "number" } }
-                  }
-                }
-              }
-            },
-            "required": ["type", "coordinates"]
-          },
-          "size": { "type": "number" },
           "method": {
             "type": ["string", "null"],
             "enum": [
@@ -21442,7 +21692,7 @@
               "other"
             ]
           },
-          "additionalNotes": { "type": "string" }
+          "additionalNotes": { "type": ["string", "null"] }
         },
         "required": []
       },
@@ -22398,24 +22648,6 @@
       "PatchV1TillagesByIdTillageIdRequestBody": {
         "type": "object",
         "properties": {
-          "geometry": {
-            "type": "object",
-            "properties": {
-              "type": { "type": "string", "const": "MultiPolygon" },
-              "coordinates": {
-                "type": "array",
-                "items": {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": { "type": "array", "items": { "type": "number" } }
-                  }
-                }
-              }
-            },
-            "required": ["type", "coordinates"]
-          },
-          "size": { "type": "number" },
           "action": {
             "type": "string",
             "enum": [
@@ -22440,7 +22672,7 @@
               "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
             }
           },
-          "additionalNotes": { "type": "string" }
+          "additionalNotes": { "type": ["string", "null"] }
         },
         "required": []
       },
@@ -25340,6 +25572,176 @@
         "required": ["data"],
         "additionalProperties": false
       },
+      "PatchV1HarvestsByIdHarvestIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "date": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "farmId": { "type": "string" },
+              "additionalNotes": { "type": ["string", "null"] },
+              "conservationMethod": {
+                "type": ["string", "null"],
+                "enum": ["dried", "silage", "haylage", "other", "none"]
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "load",
+                  "square_bale",
+                  "round_bale",
+                  "crate",
+                  "total_amount",
+                  "other"
+                ]
+              },
+              "kilosPerUnit": { "type": "number" },
+              "numberOfUnits": { "type": "number" },
+              "harvestCount": { "type": ["number", "null"] },
+              "geometry": {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "const": "MultiPolygon" },
+                  "coordinates": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "items": { "type": "number" }
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": ["type", "coordinates"],
+                "additionalProperties": false
+              },
+              "cropId": { "type": "string" },
+              "crop": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "farmId": { "type": "string" },
+                  "name": { "type": "string" },
+                  "category": {
+                    "type": "string",
+                    "enum": ["grass", "grain", "vegetable", "fruit", "other"]
+                  },
+                  "familyId": { "type": ["string", "null"] },
+                  "variety": { "type": ["string", "null"] },
+                  "usageCodes": {
+                    "type": "array",
+                    "items": { "type": "number" }
+                  },
+                  "waitingTimeInYears": { "type": ["number", "null"] },
+                  "additionalNotes": { "type": ["string", "null"] }
+                },
+                "required": [
+                  "id",
+                  "farmId",
+                  "name",
+                  "category",
+                  "familyId",
+                  "variety",
+                  "usageCodes",
+                  "waitingTimeInYears",
+                  "additionalNotes"
+                ],
+                "additionalProperties": false
+              },
+              "plotId": { "type": "string" },
+              "plot": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "name": { "type": "string" }
+                },
+                "required": ["id", "name"],
+                "additionalProperties": false
+              },
+              "size": { "type": "number" },
+              "createdAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "createdBy": { "type": ["string", "null"] }
+            },
+            "required": [
+              "id",
+              "date",
+              "farmId",
+              "additionalNotes",
+              "conservationMethod",
+              "unit",
+              "kilosPerUnit",
+              "numberOfUnits",
+              "harvestCount",
+              "geometry",
+              "cropId",
+              "crop",
+              "plotId",
+              "plot",
+              "size",
+              "createdAt",
+              "createdBy"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1HarvestsByIdHarvestIdRequestBody": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+            }
+          },
+          "cropId": { "type": "string" },
+          "conservationMethod": {
+            "type": ["string", "null"],
+            "enum": ["dried", "silage", "haylage", "other", "none"]
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "load",
+              "square_bale",
+              "round_bale",
+              "crate",
+              "total_amount",
+              "other"
+            ]
+          },
+          "kilosPerUnit": { "type": "number" },
+          "numberOfUnits": { "type": "number" },
+          "harvestCount": { "type": ["number", "null"] },
+          "additionalNotes": { "type": ["string", "null"] }
+        },
+        "required": []
+      },
       "GetV1HarvestsSummariesPositiveResponse": {
         "type": "object",
         "properties": {
@@ -26111,6 +26513,159 @@
         },
         "required": ["data"],
         "additionalProperties": false
+      },
+      "PatchV1FertilizerApplicationsByIdFertilizerApplicationIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "createdAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "createdBy": { "type": ["string", "null"] },
+              "plotId": { "type": "string" },
+              "date": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "load",
+                  "bag",
+                  "total_amount",
+                  "amount_per_hectare",
+                  "other"
+                ]
+              },
+              "method": {
+                "type": ["string", "null"],
+                "enum": ["spray", "spread", "other"]
+              },
+              "amountPerUnit": { "type": "number" },
+              "numberOfUnits": { "type": "number" },
+              "fertilizerId": { "type": "string" },
+              "geometry": {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "const": "MultiPolygon" },
+                  "coordinates": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "items": { "type": "number" }
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": ["type", "coordinates"],
+                "additionalProperties": false
+              },
+              "size": { "type": "number" },
+              "additionalNotes": { "type": ["string", "null"] },
+              "plot": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "name": { "type": "string" }
+                },
+                "required": ["id", "name"],
+                "additionalProperties": false
+              },
+              "fertilizer": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "farmId": { "type": "string" },
+                  "name": { "type": "string" },
+                  "description": { "type": ["string", "null"] },
+                  "type": { "type": "string", "enum": ["mineral", "organic"] },
+                  "unit": { "type": "string", "enum": ["l", "kg", "dt", "t"] }
+                },
+                "required": [
+                  "id",
+                  "farmId",
+                  "name",
+                  "description",
+                  "type",
+                  "unit"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "createdAt",
+              "createdBy",
+              "plotId",
+              "date",
+              "unit",
+              "method",
+              "amountPerUnit",
+              "numberOfUnits",
+              "fertilizerId",
+              "geometry",
+              "size",
+              "additionalNotes",
+              "plot",
+              "fertilizer"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1FertilizerApplicationsByIdFertilizerApplicationIdRequestBody": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+            }
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "load",
+              "bag",
+              "total_amount",
+              "amount_per_hectare",
+              "other"
+            ]
+          },
+          "method": {
+            "type": ["string", "null"],
+            "enum": ["spray", "spread", "other"]
+          },
+          "amountPerUnit": { "type": "number" },
+          "numberOfUnits": { "type": "number" },
+          "fertilizerId": { "type": "string" },
+          "additionalNotes": { "type": ["string", "null"] }
+        },
+        "required": []
       },
       "GetV1FertilizerApplicationsSummariesPositiveResponse": {
         "type": "object",
@@ -39434,7 +39989,8 @@
                       "required": ["id", "fullName"],
                       "additionalProperties": false
                     },
-                    "replyCount": { "type": "number" }
+                    "replyCount": { "type": "number" },
+                    "isSubscribed": { "type": "boolean" }
                   },
                   "required": [
                     "id",
@@ -39487,7 +40043,8 @@
                 "required": ["id", "fullName"],
                 "additionalProperties": false
               },
-              "replyCount": { "type": "number" }
+              "replyCount": { "type": "number" },
+              "isSubscribed": { "type": "boolean" }
             },
             "required": [
               "id",
@@ -39547,7 +40104,8 @@
                 "required": ["id", "fullName"],
                 "additionalProperties": false
               },
-              "replyCount": { "type": "number" }
+              "replyCount": { "type": "number" },
+              "isSubscribed": { "type": "boolean" }
             },
             "required": [
               "id",
@@ -39594,7 +40152,8 @@
                 "required": ["id", "fullName"],
                 "additionalProperties": false
               },
-              "replyCount": { "type": "number" }
+              "replyCount": { "type": "number" },
+              "isSubscribed": { "type": "boolean" }
             },
             "required": [
               "id",
@@ -39759,6 +40318,24 @@
         "type": "object",
         "properties": { "pinned": { "type": "boolean" } },
         "required": ["pinned"]
+      },
+      "PutV1ForumThreadsByIdThreadIdSubscriptionPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": { "subscribed": { "type": "boolean" } },
+            "required": ["subscribed"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PutV1ForumThreadsByIdThreadIdSubscriptionRequestBody": {
+        "type": "object",
+        "properties": { "subscribed": { "type": "boolean" } },
+        "required": ["subscribed"]
       },
       "PatchV1ForumRepliesByIdReplyIdPositiveResponse": {
         "type": "object",

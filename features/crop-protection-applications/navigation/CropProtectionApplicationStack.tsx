@@ -5,6 +5,7 @@ import { SelectCropProtectionApplicationPlotsScreen } from "../add/SelectCropPro
 import { CropProtectionApplicationSummaryScreen } from "../add/CropProtectionApplicationSummaryScreen";
 import { SelectCropProtectionApplicationProductAndDateScreen } from "../add/SelectCropProtectionApplicationProductAndDateScreen";
 import { SetCropProtectionApplicationUnitQuantityScreen } from "../add/SetCropProtectionApplicationUnitQuantityScreen";
+import { EditCropProtectionApplicationScreen } from "../EditCropProtectionApplicationScreen";
 import { CropProtectionApplicationDetailsScreen } from "../CropProtectionApplicationDetails";
 import { CropProtectionApplicationsScreen } from "../CropProtectionApplicationsScreen";
 
@@ -21,6 +22,12 @@ export function renderCropProtectionApplicationStack() {
       name="CropProtectionApplicationDetails"
       options={{ title: "" }}
       component={CropProtectionApplicationDetailsScreen}
+    />,
+    <Stack.Screen
+      key="edit-crop-protection-application"
+      name="EditCropProtectionApplication"
+      options={{ title: "" }}
+      component={EditCropProtectionApplicationScreen}
     />,
     <Stack.Screen
       key="select-crop-protection-application-product-and-date"

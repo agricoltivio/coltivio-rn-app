@@ -3,6 +3,7 @@ import { SelectTillageDateScreen } from "../add/SelectTillageDateScreen";
 import { ConfigureTillageScreen } from "../add/ConfigureTillageScreen";
 import { SelectTillagePlotsScreen } from "../add/SelectTillagePlotsScreen";
 import { TillageSummaryScreen } from "../add/TillageSummaryScreen";
+import { EditTillageScreen } from "../EditTillageScreen";
 import { TillageDetailsScreen } from "../TillageDetails";
 import { TillagesScreen } from "../TillagesScreen";
 
@@ -23,6 +24,14 @@ export function renderTillagesStack() {
         title: "",
       }}
       component={TillageDetailsScreen}
+    />,
+    <Stack.Screen
+      key="edit-tillage"
+      name="EditTillage"
+      options={{
+        title: "",
+      }}
+      component={EditTillageScreen}
     />,
     <Stack.Screen
       key="select-tillage-date"

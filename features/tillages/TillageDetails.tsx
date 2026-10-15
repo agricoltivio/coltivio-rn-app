@@ -1,5 +1,7 @@
 import { Button } from "@/components/buttons/Button";
+import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
+import { View } from "react-native";
 import { TillageDetailsScreenProps } from "./navigation/tillages-routes";
 import { useTheme } from "styled-components/native";
 import { useDeleteTillageMutation, useTillageQuery } from "./tillages.hooks";
@@ -30,7 +32,31 @@ export function TillageDetailsScreen({
     deleteMutation.mutate(tillageId);
   }
   return (
-    <ContentView>
+    <ContentView
+      footerComponent={
+        canWrite("field_calendar") ? (
+          <BottomActionContainer>
+            <View style={{ flexDirection: "row", gap: theme.spacing.s }}>
+              <Button
+                style={{ flexGrow: 1 }}
+                type="danger"
+                title={t("buttons.delete")}
+                onPress={onDelete}
+                disabled={deleteMutation.isPending}
+                loading={deleteMutation.isPending}
+              />
+              <Button
+                style={{ flexGrow: 1 }}
+                title={t("buttons.edit")}
+                onPress={() =>
+                  navigation.navigate("EditTillage", { tillageId })
+                }
+              />
+            </View>
+          </BottomActionContainer>
+        ) : undefined
+      }
+    >
       <TillageSummary
         date={new Date(date)}
         plots={[
@@ -46,14 +72,6 @@ export function TillageDetailsScreen({
         hidePlotList
         additionalNotes={additionalNotes}
       />
-      {canWrite("field_calendar") && (
-        <Button
-          style={{ marginBottom: theme.spacing.m }}
-          type="primary"
-          title={t("buttons.delete")}
-          onPress={onDelete}
-        />
-      )}
     </ContentView>
   );
 }

@@ -5,6 +5,7 @@ import { FertilizerApplicationSummaryScreen } from "../add/FertilizerApplication
 import { ConfigureFertilizerApplicationScreen } from "../add/ConfigureFertilizerApplicationScreen";
 import { SelectFertilizerAndDateScreen } from "../add/SelectFertilizerAndDateScreen";
 import { SetFertilizerApplicationUnitQuantityScreen } from "../add/SetFertilizerApplicationUnitQuantityScreen";
+import { EditFertilizerApplicationScreen } from "../EditFertilizerApplicationScreen";
 import { FertilizerApplicationDetailsScreen } from "../FertilizerApplicationDetails";
 import { FertilizerApplicationsScreen } from "../FertilizerApplicationsScreen";
 
@@ -21,6 +22,12 @@ export function renderFertilizerApplicationStack() {
       name="FertilizerApplicationDetails"
       options={{ title: "" }}
       component={FertilizerApplicationDetailsScreen}
+    />,
+    <Stack.Screen
+      key="edit-fertilizer-application"
+      name="EditFertilizerApplication"
+      options={{ title: "" }}
+      component={EditFertilizerApplicationScreen}
     />,
     <Stack.Screen
       key="select-fertilizer-and-date"

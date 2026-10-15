@@ -3,6 +3,7 @@ import { StackScreenProps } from "@/navigation/rootStackTypes";
 export type TillagesStackParamList = {
   Tillages: undefined;
   TillageDetails: { tillageId: string };
+  EditTillage: { tillageId: string };
   SelectTillageDate:
     | {
         plotId?: string;
@@ -18,6 +19,8 @@ export type TillagesStackParamList = {
 export type TillagesScreenProps = StackScreenProps<"Tillages">;
 
 export type TillageDetailsScreenProps = StackScreenProps<"TillageDetails">;
+
+export type EditTillageScreenProps = StackScreenProps<"EditTillage">;
 
 export type SelectTillageDateScreenProps =
   StackScreenProps<"SelectTillageDate">;

@@ -7,6 +7,9 @@ export type CropProtectionApplicationCreateInput =
 export type CropProtectionApplicationsBatchCreateInput =
   components["schemas"]["PostV1CropProtectionApplicationsBatchRequestBody"];
 
+export type CropProtectionApplicationUpdateInput =
+  components["schemas"]["PatchV1CropProtectionApplicationsByIdCropProtectionApplicationIdRequestBody"];
+
 export type CropProtectionApplication =
   components["schemas"]["GetV1CropProtectionApplicationsByIdCropProtectionApplicationIdPositiveResponse"]["data"];
 
@@ -90,6 +93,23 @@ export function cropProtectionApplicationsApi(client: FetchClient) {
         },
       );
       return data!.data.result;
+    },
+    async updateCropProtectionApplication(
+      cropProtectionApplicationId: string,
+      input: CropProtectionApplicationUpdateInput,
+    ) {
+      const { data } = await client.PATCH(
+        "/v1/cropProtectionApplications/byId/{cropProtectionApplicationId}",
+        {
+          params: {
+            path: {
+              cropProtectionApplicationId,
+            },
+          },
+          body: input,
+        },
+      );
+      return data!.data;
     },
     async deleteCropProtectionApplication(cropProtectionApplicationId: string) {
       await client.DELETE(

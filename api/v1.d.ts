@@ -1393,7 +1393,7 @@ export interface paths {
     delete: operations["DeleteV1HarvestsByIdHarvestId"];
     options?: never;
     head: operations["HeadV1HarvestsByIdHarvestId"];
-    patch?: never;
+    patch: operations["PatchV1HarvestsByIdHarvestId"];
     trace?: never;
   };
   "/v1/harvests/summaries": {
@@ -1489,7 +1489,7 @@ export interface paths {
     delete: operations["DeleteV1FertilizerApplicationsByIdFertilizerApplicationId"];
     options?: never;
     head: operations["HeadV1FertilizerApplicationsByIdFertilizerApplicationId"];
-    patch?: never;
+    patch: operations["PatchV1FertilizerApplicationsByIdFertilizerApplicationId"];
     trace?: never;
   };
   "/v1/fertilizerApplications/summaries": {
@@ -3332,6 +3332,22 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/v1/forum/threads/byId/{threadId}/subscription": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put: operations["PutV1ForumThreadsByIdThreadIdSubscription"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/v1/forum/replies/byId/{replyId}": {
     parameters: {
       query?: never;
@@ -4217,6 +4233,11 @@ export interface components {
     };
     PostV1PlotsImportPreviewPositiveResponse: {
       data: {
+        format: {
+          name: string;
+          label: string;
+          geometryOnly: boolean;
+        };
         /** @enum {string} */
         completeness: "full" | "partial" | "geometries_only";
         rows: {
@@ -4227,6 +4248,11 @@ export interface components {
           usage: number | null;
           usageName: string | null;
           size: number;
+          /**
+           * Format: date-time
+           * @description YYYY-MM-DDTHH:mm:ss.sssZ
+           */
+          cuttingDate: string | null;
           municipality: string | null;
           geometry: {
             /** @constant */
@@ -4234,7 +4260,25 @@ export interface components {
             coordinates: number[][][][];
           } | null;
           overlappingPlotIds: string[];
-          parseErrors: string[];
+          parseErrors: {
+            code: string;
+            value?: string;
+          }[];
+        }[];
+        overlays: {
+          externalId: string;
+          name: string;
+          localId: string | null;
+          usage: number;
+          usageName: string | null;
+          size: number;
+          geometry: {
+            /** @constant */
+            type: "MultiPolygon";
+            coordinates: number[][][][];
+          };
+          rowNumber: number;
+          alreadyPresent: boolean;
         }[];
       };
     };
@@ -4245,9 +4289,12 @@ export interface components {
     PostV1PlotsImportCommitPositiveResponse: {
       data: {
         created: number;
+        overlaysCreated: number;
+        overlaysSkipped: number;
       };
     };
     PostV1PlotsImportCommitRequestBody: {
+      format: string;
       rows: {
         name: string;
         localId?: string;
@@ -4265,6 +4312,20 @@ export interface components {
         };
         size: number;
         additionalNotes?: string;
+      }[];
+      /** @default [] */
+      overlays: {
+        externalId: string;
+        name: string;
+        localId: string | null;
+        usage: number;
+        usageName: string | null;
+        size: number;
+        geometry: {
+          /** @constant */
+          type: "MultiPolygon";
+          coordinates: number[][][][];
+        };
       }[];
     };
     GetV1PlotsByIdPlotIdPositiveResponse: {
@@ -5667,12 +5728,6 @@ export interface components {
        */
       dateTime?: string;
       productId?: string;
-      geometry?: {
-        /** @constant */
-        type: "MultiPolygon";
-        coordinates: number[][][][];
-      };
-      size?: number;
       /** @enum {string|null} */
       method?:
         | "spraying"
@@ -5685,7 +5740,7 @@ export interface components {
       numberOfUnits?: number;
       /** @enum {string} */
       unit?: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
-      additionalNotes?: string;
+      additionalNotes?: string | null;
     };
     GetV1CropProtectionApplicationsSummariesPositiveResponse: {
       data: {
@@ -6096,12 +6151,6 @@ export interface components {
       };
     };
     PatchV1TillagesByIdTillageIdRequestBody: {
-      geometry?: {
-        /** @constant */
-        type: "MultiPolygon";
-        coordinates: number[][][][];
-      };
-      size?: number;
       /** @enum {string} */
       action?:
         | "plowing"
@@ -6119,7 +6168,7 @@ export interface components {
        * @description YYYY-MM-DDTHH:mm:ss.sssZ
        */
       date?: string;
-      additionalNotes?: string;
+      additionalNotes?: string | null;
     };
     GetV1TillagesYearsPositiveResponse: {
       data: {
@@ -7350,6 +7399,95 @@ export interface components {
     DeleteV1HarvestsByIdHarvestIdPositiveResponse: {
       data: Record<string, never>;
     };
+    PatchV1HarvestsByIdHarvestIdPositiveResponse: {
+      data: {
+        id: string;
+        /**
+         * Format: date-time
+         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+         */
+        date: string;
+        farmId: string;
+        additionalNotes: string | null;
+        /** @enum {string|null} */
+        conservationMethod:
+          | "dried"
+          | "silage"
+          | "haylage"
+          | "other"
+          | "none"
+          | null;
+        /** @enum {string} */
+        unit:
+          | "load"
+          | "square_bale"
+          | "round_bale"
+          | "crate"
+          | "total_amount"
+          | "other";
+        kilosPerUnit: number;
+        numberOfUnits: number;
+        harvestCount: number | null;
+        geometry: {
+          /** @constant */
+          type: "MultiPolygon";
+          coordinates: number[][][][];
+        };
+        cropId: string;
+        crop: {
+          id: string;
+          farmId: string;
+          name: string;
+          /** @enum {string} */
+          category: "grass" | "grain" | "vegetable" | "fruit" | "other";
+          familyId: string | null;
+          variety: string | null;
+          usageCodes: number[];
+          waitingTimeInYears: number | null;
+          additionalNotes: string | null;
+        };
+        plotId: string;
+        plot: {
+          id: string;
+          name: string;
+        };
+        size: number;
+        /**
+         * Format: date-time
+         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+         */
+        createdAt: string;
+        createdBy: string | null;
+      };
+    };
+    PatchV1HarvestsByIdHarvestIdRequestBody: {
+      /**
+       * Format: date-time
+       * @description YYYY-MM-DDTHH:mm:ss.sssZ
+       */
+      date?: string;
+      cropId?: string;
+      /** @enum {string|null} */
+      conservationMethod?:
+        | "dried"
+        | "silage"
+        | "haylage"
+        | "other"
+        | "none"
+        | null;
+      /** @enum {string} */
+      unit?:
+        | "load"
+        | "square_bale"
+        | "round_bale"
+        | "crate"
+        | "total_amount"
+        | "other";
+      kilosPerUnit?: number;
+      numberOfUnits?: number;
+      harvestCount?: number | null;
+      additionalNotes?: string | null;
+    };
     GetV1HarvestsSummariesPositiveResponse: {
       data: {
         monthlyHarvests: {
@@ -7696,6 +7834,67 @@ export interface components {
     };
     DeleteV1FertilizerApplicationsByIdFertilizerApplicationIdPositiveResponse: {
       data: Record<string, never>;
+    };
+    PatchV1FertilizerApplicationsByIdFertilizerApplicationIdPositiveResponse: {
+      data: {
+        id: string;
+        farmId: string;
+        /**
+         * Format: date-time
+         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+         */
+        createdAt: string;
+        createdBy: string | null;
+        plotId: string;
+        /**
+         * Format: date-time
+         * @description YYYY-MM-DDTHH:mm:ss.sssZ
+         */
+        date: string;
+        /** @enum {string} */
+        unit: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+        /** @enum {string|null} */
+        method: "spray" | "spread" | "other" | null;
+        amountPerUnit: number;
+        numberOfUnits: number;
+        fertilizerId: string;
+        geometry: {
+          /** @constant */
+          type: "MultiPolygon";
+          coordinates: number[][][][];
+        };
+        size: number;
+        additionalNotes: string | null;
+        plot: {
+          id: string;
+          name: string;
+        };
+        fertilizer: {
+          id: string;
+          farmId: string;
+          name: string;
+          description: string | null;
+          /** @enum {string} */
+          type: "mineral" | "organic";
+          /** @enum {string} */
+          unit: "l" | "kg" | "dt" | "t";
+        };
+      };
+    };
+    PatchV1FertilizerApplicationsByIdFertilizerApplicationIdRequestBody: {
+      /**
+       * Format: date-time
+       * @description YYYY-MM-DDTHH:mm:ss.sssZ
+       */
+      date?: string;
+      /** @enum {string} */
+      unit?: "load" | "bag" | "total_amount" | "amount_per_hectare" | "other";
+      /** @enum {string|null} */
+      method?: "spray" | "spread" | "other" | null;
+      amountPerUnit?: number;
+      numberOfUnits?: number;
+      fertilizerId?: string;
+      additionalNotes?: string | null;
     };
     GetV1FertilizerApplicationsSummariesPositiveResponse: {
       data: {
@@ -13360,6 +13559,7 @@ export interface components {
             fullName: string | null;
           } | null;
           replyCount?: number;
+          isSubscribed?: boolean;
         }[];
         total: number;
       };
@@ -13382,6 +13582,7 @@ export interface components {
           fullName: string | null;
         } | null;
         replyCount?: number;
+        isSubscribed?: boolean;
       };
     };
     PostV1ForumThreadsRequestBody: {
@@ -13412,6 +13613,7 @@ export interface components {
           fullName: string | null;
         } | null;
         replyCount?: number;
+        isSubscribed?: boolean;
       };
     };
     PatchV1ForumThreadsByIdThreadIdPositiveResponse: {
@@ -13432,6 +13634,7 @@ export interface components {
           fullName: string | null;
         } | null;
         replyCount?: number;
+        isSubscribed?: boolean;
       };
     };
     PatchV1ForumThreadsByIdThreadIdRequestBody: {
@@ -13487,6 +13690,14 @@ export interface components {
     };
     PostV1ForumThreadsByIdThreadIdPinRequestBody: {
       pinned: boolean;
+    };
+    PutV1ForumThreadsByIdThreadIdSubscriptionPositiveResponse: {
+      data: {
+        subscribed: boolean;
+      };
+    };
+    PutV1ForumThreadsByIdThreadIdSubscriptionRequestBody: {
+      subscribed: boolean;
     };
     PatchV1ForumRepliesByIdReplyIdPositiveResponse: {
       data: {
@@ -19495,6 +19706,43 @@ export interface operations {
       };
     };
   };
+  PatchV1HarvestsByIdHarvestId: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description PATCH /v1/harvests/byId/:harvestId Parameter */
+        harvestId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+      };
+      cookie?: never;
+    };
+    /** @description PATCH /v1/harvests/byId/:harvestId Request body */
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["PatchV1HarvestsByIdHarvestIdRequestBody"];
+      };
+    };
+    responses: {
+      /** @description PATCH /v1/harvests/byId/:harvestId Positive response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["PatchV1HarvestsByIdHarvestIdPositiveResponse"];
+        };
+      };
+      /** @description PATCH /v1/harvests/byId/:harvestId Negative response */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+        };
+      };
+    };
+  };
   GetV1HarvestsSummaries: {
     parameters: {
       query?: never;
@@ -20007,6 +20255,43 @@ export interface operations {
           [name: string]: unknown;
         };
         content?: never;
+      };
+    };
+  };
+  PatchV1FertilizerApplicationsByIdFertilizerApplicationId: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description PATCH /v1/fertilizerApplications/byId/:fertilizerApplicationId Parameter */
+        fertilizerApplicationId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+      };
+      cookie?: never;
+    };
+    /** @description PATCH /v1/fertilizerApplications/byId/:fertilizerApplicationId Request body */
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["PatchV1FertilizerApplicationsByIdFertilizerApplicationIdRequestBody"];
+      };
+    };
+    responses: {
+      /** @description PATCH /v1/fertilizerApplications/byId/:fertilizerApplicationId Positive response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["PatchV1FertilizerApplicationsByIdFertilizerApplicationIdPositiveResponse"];
+        };
+      };
+      /** @description PATCH /v1/fertilizerApplications/byId/:fertilizerApplicationId Negative response */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+        };
       };
     };
   };
@@ -27655,6 +27940,43 @@ export interface operations {
         };
       };
       /** @description POST /v1/forum/threads/byId/:threadId/pin Negative response */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+        };
+      };
+    };
+  };
+  PutV1ForumThreadsByIdThreadIdSubscription: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description PUT /v1/forum/threads/byId/:threadId/subscription Parameter */
+        threadId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+      };
+      cookie?: never;
+    };
+    /** @description PUT /v1/forum/threads/byId/:threadId/subscription Request body */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PutV1ForumThreadsByIdThreadIdSubscriptionRequestBody"];
+      };
+    };
+    responses: {
+      /** @description PUT /v1/forum/threads/byId/:threadId/subscription Positive response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["PutV1ForumThreadsByIdThreadIdSubscriptionPositiveResponse"];
+        };
+      };
+      /** @description PUT /v1/forum/threads/byId/:threadId/subscription Negative response */
       400: {
         headers: {
           [name: string]: unknown;

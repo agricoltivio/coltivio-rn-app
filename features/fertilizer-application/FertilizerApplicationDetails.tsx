@@ -1,5 +1,7 @@
 import { Button } from "@/components/buttons/Button";
+import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
+import { View } from "react-native";
 import { FertilizerApplicationDetailsScreenProps } from "./navigation/fertilizer-application-routes";
 import { useTheme } from "styled-components/native";
 import {
@@ -35,7 +37,33 @@ export function FertilizerApplicationDetailsScreen({
     deleteMutation.mutate(fertilizerApplicationId);
   }
   return (
-    <ContentView>
+    <ContentView
+      footerComponent={
+        canWrite("field_calendar") ? (
+          <BottomActionContainer>
+            <View style={{ flexDirection: "row", gap: theme.spacing.s }}>
+              <Button
+                style={{ flexGrow: 1 }}
+                type="danger"
+                title={t("buttons.delete")}
+                onPress={onDelete}
+                disabled={deleteMutation.isPending}
+                loading={deleteMutation.isPending}
+              />
+              <Button
+                style={{ flexGrow: 1 }}
+                title={t("buttons.edit")}
+                onPress={() =>
+                  navigation.navigate("EditFertilizerApplication", {
+                    fertilizerApplicationId,
+                  })
+                }
+              />
+            </View>
+          </BottomActionContainer>
+        ) : undefined
+      }
+    >
       <FertilizerApplicationSummary
         date={new Date(date)}
         fertilizerName={fertilizerApplication.fertilizer.name!}
@@ -55,14 +83,6 @@ export function FertilizerApplicationDetailsScreen({
         additionalNotes={additionalNotes}
         productUnit={fertilizerApplication.fertilizer.unit ?? "kg"}
       />
-      {canWrite("field_calendar") && (
-        <Button
-          style={{ marginBottom: theme.spacing.m }}
-          type="primary"
-          title={t("buttons.delete")}
-          onPress={onDelete}
-        />
-      )}
     </ContentView>
   );
 }

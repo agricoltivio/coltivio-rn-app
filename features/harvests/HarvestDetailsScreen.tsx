@@ -7,12 +7,15 @@ import { HarvestSummary } from "./HarvestSummary";
 import { useTranslation } from "react-i18next";
 import { round } from "@/utils/math";
 import { usePermissions } from "@/features/user/users.hooks";
+import { View } from "react-native";
+import { useTheme } from "styled-components/native";
 
 export function HarvestDetailsScreen({
   route,
   navigation,
 }: HarvestDetailsScreenProps) {
   const { t } = useTranslation();
+  const theme = useTheme();
   const { canWrite } = usePermissions();
   const harvestId = route.params.harvestId;
   const { harvest } = useHarvestQuery(harvestId);
@@ -45,11 +48,23 @@ export function HarvestDetailsScreen({
       footerComponent={
         canWrite("field_calendar") ? (
           <BottomActionContainer>
-            <Button
-              type="primary"
-              title={t("buttons.delete")}
-              onPress={onDelete}
-            />
+            <View style={{ flexDirection: "row", gap: theme.spacing.s }}>
+              <Button
+                style={{ flexGrow: 1 }}
+                type="danger"
+                title={t("buttons.delete")}
+                onPress={onDelete}
+                disabled={deleteHarvestMutation.isPending}
+                loading={deleteHarvestMutation.isPending}
+              />
+              <Button
+                style={{ flexGrow: 1 }}
+                title={t("buttons.edit")}
+                onPress={() =>
+                  navigation.navigate("EditHarvest", { harvestId })
+                }
+              />
+            </View>
           </BottomActionContainer>
         ) : undefined
       }
