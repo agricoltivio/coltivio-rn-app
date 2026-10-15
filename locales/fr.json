@@ -822,7 +822,8 @@
     "total_amount": "Quantité totale",
     "amount_per_month": "Quantité par mois",
     "chart_total": "Total",
-    "chart_per_month": "Par mois"
+    "chart_per_month": "Par mois",
+    "edit_harvest": "Modifier la récolte"
   },
   "fertilizers": {
     "fertilizer": "Engrais",
@@ -869,7 +870,8 @@
       "spread": "Épandage",
       "spray": "Pulvérisation",
       "other": "Autre"
-    }
+    },
+    "edit_application": "Modifier la fertilisation"
   },
   "tillages": {
     "tillages": "Travaux du sol",
@@ -896,7 +898,8 @@
       "flame_weeding": "Désherbage thermique",
       "custom": "Personnalisé",
       "other": "Autre"
-    }
+    },
+    "edit_tillage": "Modifier le travail du sol"
   },
   "crops": {
     "crop": "Culture",
@@ -961,7 +964,8 @@
       "misting": "Nébulisation",
       "spraying": "Pulvérisation",
       "other": "Autre"
-    }
+    },
+    "edit_application": "Modifier le traitement phytosanitaire"
   },
   "crop_protection_product": {
     "add_product": "Nouveau produit de protection des cultures",

@@ -1,5 +1,7 @@
 import { Button } from "@/components/buttons/Button";
+import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
+import { View } from "react-native";
 import { CropProtectionApplicationDetailsScreenProps } from "./navigation/crop-protection-application-routes";
 import { useTheme } from "styled-components/native";
 import {
@@ -35,7 +37,33 @@ export function CropProtectionApplicationDetailsScreen({
     deleteMutation.mutate(cropProtectionApplicationId);
   }
   return (
-    <ContentView>
+    <ContentView
+      footerComponent={
+        canWrite("field_calendar") ? (
+          <BottomActionContainer>
+            <View style={{ flexDirection: "row", gap: theme.spacing.s }}>
+              <Button
+                style={{ flexGrow: 1 }}
+                type="danger"
+                title={t("buttons.delete")}
+                onPress={onDelete}
+                disabled={deleteMutation.isPending}
+                loading={deleteMutation.isPending}
+              />
+              <Button
+                style={{ flexGrow: 1 }}
+                title={t("buttons.edit")}
+                onPress={() =>
+                  navigation.navigate("EditCropProtectionApplication", {
+                    cropProtectionApplicationId,
+                  })
+                }
+              />
+            </View>
+          </BottomActionContainer>
+        ) : undefined
+      }
+    >
       <CropProtectionApplicationSummary
         date={dateTime}
         productName={cropProtectionApplication.product.name!}
@@ -56,14 +84,6 @@ export function CropProtectionApplicationDetailsScreen({
         additionalNotes={additionalNotes}
         productUnit={cropProtectionApplication.product.unit ?? "kg"}
       />
-      {canWrite("field_calendar") && (
-        <Button
-          style={{ marginBottom: theme.spacing.m }}
-          type="primary"
-          title={t("buttons.delete")}
-          onPress={onDelete}
-        />
-      )}
     </ContentView>
   );
 }

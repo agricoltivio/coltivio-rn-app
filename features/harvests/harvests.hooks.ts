@@ -1,5 +1,9 @@
 import { useApi } from "@/api/api";
-import { Harvest, HarvestBatchCreateInput } from "@/api/harvests.api";
+import {
+  Harvest,
+  HarvestBatchCreateInput,
+  HarvestUpdateInput,
+} from "@/api/harvests.api";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -83,6 +87,30 @@ export function useCreateHarvestMutation(
     },
   });
   return createHarvestMutation;
+}
+
+export function useUpdateHarvestMutation(onSuccess?: () => void) {
+  const queryClient = useQueryClient();
+  const api = useApi();
+  const updateHarvestMutation = useMutation({
+    mutationFn: ({
+      harvestId,
+      input,
+    }: {
+      harvestId: string;
+      input: HarvestUpdateInput;
+    }) => api.harvests.updateHarvest(harvestId, input),
+    onError: (error) => {
+      console.error(error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.harvests._def,
+      });
+      onSuccess && onSuccess();
+    },
+  });
+  return updateHarvestMutation;
 }
 
 export function useDeleteHarvestMutation(onSuccess?: () => void) {

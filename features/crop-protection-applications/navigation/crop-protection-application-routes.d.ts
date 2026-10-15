@@ -15,6 +15,7 @@ export type CropProtectionApplicationStackParamList = {
 
   CropProtectionApplications: undefined;
   CropProtectionApplicationDetails: { cropProtectionApplicationId: string };
+  EditCropProtectionApplication: { cropProtectionApplicationId: string };
 };
 
 export type CropProtectionApplicationsScreenProps =
@@ -22,6 +23,9 @@ export type CropProtectionApplicationsScreenProps =
 
 export type CropProtectionApplicationDetailsScreenProps =
   StackScreenProps<"CropProtectionApplicationDetails">;
+
+export type EditCropProtectionApplicationScreenProps =
+  StackScreenProps<"EditCropProtectionApplication">;
 
 export type SelectCropProtectionApplicationProductAndDateScreenProps =
   StackScreenProps<"SelectCropProtectionApplicationProductAndDate">;

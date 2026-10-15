@@ -5,6 +5,7 @@ import { HarvestSummaryScreen } from "../add/HarvestSummaryScreen";
 import { SelectHarvestCropAndDateScreen } from "../add/SelectHarvestCropAndDateScreen";
 import { SelectHarvestPlotsScreen } from "../add/SelectHarvestPlotsScreen";
 import { SetHarvestQuantityScreen } from "../add/SetHarvestQuantityScreen";
+import { EditHarvestScreen } from "../EditHarvestScreen";
 import { HarvestDetailsScreen } from "../HarvestDetailsScreen";
 import { HarvestsScreen } from "../HarvestsScreen";
 
@@ -22,6 +23,12 @@ export function renderHarvestStack() {
       key="harvest-details"
       name="HarvestDetails"
       component={HarvestDetailsScreen}
+      options={{ title: "" }}
+    />,
+    <Stack.Screen
+      key="edit-harvest"
+      name="EditHarvest"
+      component={EditHarvestScreen}
       options={{ title: "" }}
     />,
     <Stack.Screen

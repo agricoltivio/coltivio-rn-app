@@ -13,6 +13,9 @@ export type PlotHarvest =
 export type HarvestBatchCreateInput =
   components["schemas"]["PostV1HarvestsBatchRequestBody"];
 
+export type HarvestUpdateInput =
+  components["schemas"]["PatchV1HarvestsByIdHarvestIdRequestBody"];
+
 export type HarvestSummary =
   components["schemas"]["GetV1HarvestsSummariesPositiveResponse"]["data"]["monthlyHarvests"][number];
 
@@ -70,6 +73,17 @@ export function harvestsApi(client: FetchClient) {
         },
       );
       return data!.data.monthlyHarvests ?? [];
+    },
+    async updateHarvest(harvestId: string, input: HarvestUpdateInput) {
+      const { data } = await client.PATCH("/v1/harvests/byId/{harvestId}", {
+        params: {
+          path: {
+            harvestId,
+          },
+        },
+        body: input,
+      });
+      return data!.data;
     },
     async deleteHarvest(harvestId: string) {
       await client.DELETE("/v1/harvests/byId/{harvestId}", {

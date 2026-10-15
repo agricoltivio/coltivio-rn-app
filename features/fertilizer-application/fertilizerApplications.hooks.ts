@@ -2,6 +2,7 @@ import { useApi } from "@/api/api";
 import {
   FertilizerApplication,
   FertilizerApplicationBatchCreateInput,
+  FertilizerApplicationUpdateInput,
 } from "@/api/fertilizerApplications.api";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -118,6 +119,34 @@ export function useCreateFertilizerApplicationsMutation(
     },
   });
   return createFertilizerApplicationMutation;
+}
+
+export function useUpdateFertilizerApplicationMutation(onSuccess?: () => void) {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  const updateFertilizerApplicationMutation = useMutation({
+    mutationFn: ({
+      fertilizerApplicationId,
+      input,
+    }: {
+      fertilizerApplicationId: string;
+      input: FertilizerApplicationUpdateInput;
+    }) =>
+      api.fertilizerApplications.updateFertilizerApplication(
+        fertilizerApplicationId,
+        input,
+      ),
+    onError: (error) => {
+      console.error(error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.fertilizerApplications._def,
+      });
+      onSuccess && onSuccess();
+    },
+  });
+  return updateFertilizerApplicationMutation;
 }
 
 export function useDeleteFertilizerApplicationMutation(
