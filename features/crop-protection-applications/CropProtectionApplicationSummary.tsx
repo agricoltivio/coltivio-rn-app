@@ -110,20 +110,17 @@ export function CropProtectionApplicationSummary({
       </View>
       <Card style={{ marginTop: theme.spacing.m }}>
         <SummaryItem label={t("forms.labels.area")} value={`${size / 100}a`} />
-        <SummaryItem
-          label={
-            unit === "total_amount"
-              ? t("common.total_amount")
-              : unit === "amount_per_hectare"
-                ? t("forms.labels.area_hectares")
+        {/* For amount_per_hectare the number of units equals the area, already shown above */}
+        {unit !== "amount_per_hectare" && (
+          <SummaryItem
+            label={
+              unit === "total_amount"
+                ? t("common.total_amount")
                 : t("forms.labels.amount_of_loads")
-          }
-          value={
-            unit === "amount_per_hectare"
-              ? `${round(totalNumberOfUnits, 2)} ha`
-              : `${totalNumberOfUnits}`
-          }
-        />
+            }
+            value={`${totalNumberOfUnits}`}
+          />
+        )}
         <SummaryItem
           label={
             unit === "amount_per_hectare"
