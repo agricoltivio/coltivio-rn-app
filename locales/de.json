@@ -254,7 +254,7 @@
         "body": "Tippe auf eine deiner Parzellen, um deine Betriebsnummer auszuwählen."
       },
       "confirmation": "Ist {{federalFarmId}} deine Betriebsnummer?",
-      "confirmation_without_id": "Ohne Betriebsnummer fortfahren? Du zeichnest deine Flächen dann selbst ein.",
+      "confirmation_without_id": "Ohne Betriebsnummer fortfahren? Du kannst deine Flächen später am PC über die Web-App aus dem kantonalen System (z.B. Acorda, LAWIS) importieren oder selbst einzeichnen.",
       "continue_without_id": "Ohne Betriebsnummer fortfahren",
       "select_on_map_hint": "Betriebsnummer unbekannt? Hier tippen, um eine Parzelle auf der Karte auszuwählen.",
       "search_min_chars": "Gib mindestens {{minChars}} Zeichen ein, um zu suchen.",
@@ -264,7 +264,7 @@
       "nearby_error": "Betriebsnummern in der Nähe konnten nicht geladen werden. Bitte prüfe deine Internetverbindung.",
       "not_found": "Im Umkreis von {{radiusKm}} km um «{{address}}» haben wir keine Betriebsnummer gefunden.",
       "not_found_hint": "Suche oben nach deiner Betriebsnummer oder gehe zurück und prüfe die Adresse.",
-      "not_found_cantons": "Die Kantone Obwalden, Nidwalden, Waadt und Basel-Stadt werden noch nicht unterstützt. Dort zeichnest du deine Flächen selbst ein."
+      "not_found_cantons": "Die Kantone Obwalden, Nidwalden, Waadt und Basel-Stadt werden noch nicht unterstützt. Dort kannst du deine Flächen nach der Hoferstellung am PC über die Web-App aus dem kantonalen System (z.B. Acorda, LAWIS) importieren oder in der Karte selbst einzeichnen."
     },
     "summary": {
       "heading": "Geschafft!",
@@ -705,7 +705,9 @@
       "next_ring_body": "Bei Schlägen mit mehreren Teilflächen: Drücke den Pfeil, um die aktuelle Teilfläche zu bestätigen und zur nächsten zu wechseln.",
       "abort_body": "Drücke das X, um abzubrechen und alle Änderungen zu verwerfen.",
       "overlap_body": "Wenn der angepasste Schlag bestehende Schläge überschneidet, werden diese automatisch angepasst."
-    }
+    },
+    "empty_state_title": "Noch keine Schläge",
+    "empty_state_body": "Importiere deine Flächen am PC über die Web-App aus dem kantonalen System (z.B. Acorda, LAWIS), oder zeichne sie in der Karte ein. Brauchst du Hilfe? Schreib uns an <email>support@coltivio.ch</email>."
   },
   "farm_equipment": {
     "farm_equipment": "Maschinen",
@@ -1639,7 +1641,7 @@
     "message": "Wir haben deine Parzellen aus den kantonalen Daten übernommen. Da diese nicht immer auf dem neusten Stand sind, überprüfe sie bitte.",
     "review_hint": "Bei Bedarf kannst du sie jederzeit in der Karte anpassen.",
     "no_plots": "Leider haben wir für deinen Betrieb keine Parzellen gefunden.",
-    "no_plots_hint": "Du kannst sie in der Karte von Hand einzeichnen. Brauchst du Hilfe? Schreib uns an <email>support@coltivio.ch</email>.",
+    "no_plots_hint": "Importiere deine Flächen am PC über die Web-App aus dem kantonalen System (z.B. Acorda, LAWIS), oder zeichne sie in der Karte ein. Brauchst du Hilfe? Schreib uns an <email>support@coltivio.ch</email>.",
     "lets_go": "Los geht's"
   },
   "donations": {

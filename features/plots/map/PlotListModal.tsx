@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { FlatList, Modal, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
+import { PlotsEmptyState } from "../PlotsEmptyState";
 
 type PlotListModalProps = {
   visible: boolean;
@@ -134,6 +135,11 @@ export function PlotListModal({
           data={searchResult}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
+          ListEmptyComponent={
+            plots !== undefined && plots.length === 0 ? (
+              <PlotsEmptyState />
+            ) : null
+          }
         />
       </View>
     </Modal>
