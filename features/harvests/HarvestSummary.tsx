@@ -5,6 +5,7 @@ import { StaticMapPreview } from "@/components/map/StaticMapPreview";
 import { ScrollView } from "@/components/views/ScrollView";
 import { Body, H2, H3 } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
+import { round } from "@/utils/math";
 import { type LngLat } from "@maplibre/maplibre-react-native";
 import * as turf from "@turf/turf";
 import React, { useMemo } from "react";
@@ -111,14 +112,19 @@ export function HarvestSummary({
           <SummaryItem label={t("plots.plot")} value={harvestAreas[0]?.name} />
         )}
         <SummaryItem label={t("forms.labels.area")} value={`${size / 100}a`} />
-        <SummaryItem
-          label={t("forms.labels.produced_units")}
-          value={`${numberOfUnits} ${unitLabel}`}
-        />
-        <SummaryItem
-          label={`${t("units.short.kg")}/${t(`harvests.labels.unit.${unit}`)}`}
-          value={`${kilosPerUnit}${t("units.short.kg")}`}
-        />
+        {/* total_amount always has a single unit holding all kilos, so only the total matters */}
+        {unit !== "total_amount" && (
+          <>
+            <SummaryItem
+              label={t("forms.labels.produced_units")}
+              value={`${numberOfUnits} ${unitLabel}`}
+            />
+            <SummaryItem
+              label={`${t("units.short.kg")}/${t(`harvests.labels.unit.${unit}`)}`}
+              value={`${kilosPerUnit}${t("units.short.kg")}`}
+            />
+          </>
+        )}
         <SummaryItem
           label={t("forms.labels.total_unit", { unit: t("units.short.kg") })}
           value={`${producedKilos}${t("units.short.kg")}`}
@@ -163,7 +169,10 @@ export function HarvestSummary({
                     {t("plots.plot_name", { name: plot.name })}
                   </ListItem.Title>
                   <ListItem.Body>
-                    {unitLabel}: {plot.numberOfUnits}
+                    {/* For total_amount numberOfUnits is the plot's share of the total */}
+                    {unit === "total_amount"
+                      ? `${round(plot.numberOfUnits * kilosPerUnit, 2)}${t("units.short.kg")}`
+                      : `${unitLabel}: ${plot.numberOfUnits}`}
                   </ListItem.Body>
                 </ListItem.Content>
               </ListItem>
