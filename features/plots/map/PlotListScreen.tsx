@@ -9,6 +9,7 @@ import { FlatList, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { PlotListScreenProps } from "../navigation/plots-routes";
 import { useFarmPlotsQuery } from "../plots.hooks";
+import { PlotsEmptyState } from "../PlotsEmptyState";
 
 export function PlotListScreen({ navigation }: PlotListScreenProps) {
   const { t } = useTranslation();
@@ -95,6 +96,9 @@ export function PlotListScreen({ navigation }: PlotListScreenProps) {
         data={searchResult}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
+        ListEmptyComponent={
+          plots !== undefined && plots.length === 0 ? <PlotsEmptyState /> : null
+        }
       />
     </View>
   );

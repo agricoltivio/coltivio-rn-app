@@ -254,7 +254,7 @@
         "body": "Appuyez sur l'une de vos parcelles pour sélectionner votre numéro d'exploitation."
       },
       "confirmation": "Est-ce que {{federalFarmId}} est votre numéro d'enregistrement de l'exploitation agricole ?",
-      "confirmation_without_id": "Continuer sans numéro d'exploitation ? Vous dessinerez alors vous-même vos surfaces.",
+      "confirmation_without_id": "Continuer sans numéro d'exploitation ? Tu pourras importer tes surfaces plus tard sur un PC via l'application web depuis le système cantonal (p. ex. Acorda, LAWIS) ou les dessiner toi-même.",
       "continue_without_id": "Continuer sans numéro d'exploitation",
       "select_on_map_hint": "Numéro d'exploitation inconnu ? Appuyez ici pour sélectionner une parcelle sur la carte.",
       "search_min_chars": "Saisissez au moins {{minChars}} caractères pour lancer la recherche.",
@@ -264,7 +264,7 @@
       "nearby_error": "Les numéros d'exploitation à proximité n'ont pas pu être chargés. Veuillez vérifier votre connexion internet.",
       "not_found": "Nous n'avons trouvé aucun numéro d'exploitation dans un rayon de {{radiusKm}} km autour de « {{address}} ».",
       "not_found_hint": "Recherchez votre numéro d'exploitation ci-dessus ou revenez en arrière pour vérifier l'adresse.",
-      "not_found_cantons": "Les cantons d'Obwald, de Nidwald, de Vaud et de Bâle-Ville ne sont pas encore pris en charge. Vous y dessinez vous-même vos surfaces."
+      "not_found_cantons": "Les cantons d'Obwald, de Nidwald, de Vaud et de Bâle-Ville ne sont pas encore pris en charge. Tu peux y importer tes surfaces après la création de l'exploitation sur un PC via l'application web depuis le système cantonal (p. ex. Acorda, LAWIS) ou les dessiner toi-même sur la carte."
     },
     "summary": {
       "heading": "Tout est prêt !",
@@ -705,7 +705,9 @@
       "next_ring_body": "Pour les champs avec plusieurs parties, appuyez sur la flèche pour confirmer la partie actuelle et passer à la suivante.",
       "abort_body": "Appuyez sur le X pour annuler et ignorer toutes les modifications.",
       "overlap_body": "Si le champ modifié chevauche des champs existants, ils seront automatiquement ajustés."
-    }
+    },
+    "empty_state_title": "Pas encore de champs",
+    "empty_state_body": "Importe tes surfaces sur un PC via l'application web depuis le système cantonal (p. ex. Acorda, LAWIS), ou dessine-les sur la carte. Besoin d'aide ? Écris-nous à <email>support@coltivio.ch</email>."
   },
   "farm_equipment": {
     "farm_equipment": "Machines et équipements",
@@ -1633,7 +1635,7 @@
     "message": "Nous avons repris tes parcelles des données cantonales. Comme celles-ci ne sont pas toujours à jour, vérifie-les s'il te plaît.",
     "review_hint": "Tu peux les adapter à tout moment sur la carte.",
     "no_plots": "Malheureusement, nous n'avons trouvé aucune parcelle pour ton exploitation.",
-    "no_plots_hint": "Tu peux les dessiner à la main sur la carte. Besoin d'aide ? Écris-nous à <email>support@coltivio.ch</email>.",
+    "no_plots_hint": "Importe tes surfaces sur un PC via l'application web depuis le système cantonal (p. ex. Acorda, LAWIS), ou dessine-les sur la carte. Besoin d'aide ? Écris-nous à <email>support@coltivio.ch</email>.",
     "lets_go": "C'est parti"
   },
   "donations": {

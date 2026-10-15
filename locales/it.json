@@ -254,7 +254,7 @@
         "body": "Tocca una delle tue particelle per selezionare il tuo codice azienda agricola."
       },
       "confirmation": "{{federalFarmId}} è il tuo codice azienda agricola?",
-      "confirmation_without_id": "Continuare senza codice azienda agricola? Disegnerai tu stesso le tue superfici.",
+      "confirmation_without_id": "Continuare senza codice azienda agricola? Potrai importare le tue superfici più tardi su un PC tramite la web app dal sistema cantonale (ad es. Acorda, LAWIS) o disegnarle tu stesso.",
       "continue_without_id": "Continua senza codice azienda",
       "select_on_map_hint": "Non conosci il tuo numero aziendale? Tocca qui per selezionare una parcella sulla mappa.",
       "search_min_chars": "Inserisci almeno {{minChars}} caratteri per cercare.",
@@ -264,7 +264,7 @@
       "nearby_error": "Non è stato possibile caricare i codici azienda nelle vicinanze. Controlla la tua connessione internet.",
       "not_found": "Non abbiamo trovato alcun codice azienda entro {{radiusKm}} km da «{{address}}».",
       "not_found_hint": "Cerca il tuo codice azienda qui sopra oppure torna indietro e verifica l'indirizzo.",
-      "not_found_cantons": "I cantoni Obvaldo, Nidvaldo, Vaud e Basilea Città non sono ancora supportati. Lì disegni tu stesso le tue superfici."
+      "not_found_cantons": "I cantoni Obvaldo, Nidvaldo, Vaud e Basilea Città non sono ancora supportati. Lì puoi importare le tue superfici dopo la creazione dell'azienda su un PC tramite la web app dal sistema cantonale (ad es. Acorda, LAWIS) o disegnarle tu stesso sulla mappa."
     },
     "summary": {
       "heading": "Tutto pronto!",
@@ -705,7 +705,9 @@
       "next_ring_body": "Per appezzamenti con più parti, premi la freccia per confermare la parte corrente e passare alla successiva.",
       "abort_body": "Premi la X per annullare e scartare tutte le modifiche.",
       "overlap_body": "Se l'appezzamento modificato si sovrappone ad altri, verranno automaticamente ridimensionati."
-    }
+    },
+    "empty_state_title": "Ancora nessun campo",
+    "empty_state_body": "Importa le tue superfici su un PC tramite la web app dal sistema cantonale (ad es. Acorda, LAWIS), oppure disegnale sulla mappa. Hai bisogno di aiuto? Scrivici a <email>support@coltivio.ch</email>."
   },
   "farm_equipment": {
     "farm_equipment": "Macchine e Attrezzature Agricole",
@@ -1634,7 +1636,7 @@
     "message": "Abbiamo ripreso le tue particelle dai dati cantonali. Poiché non sono sempre aggiornati, controllale per favore.",
     "review_hint": "Puoi modificarle in qualsiasi momento sulla mappa.",
     "no_plots": "Purtroppo non abbiamo trovato particelle per la tua azienda.",
-    "no_plots_hint": "Puoi disegnarle a mano sulla mappa. Hai bisogno di aiuto? Scrivici a <email>support@coltivio.ch</email>.",
+    "no_plots_hint": "Importa le tue superfici su un PC tramite la web app dal sistema cantonale (ad es. Acorda, LAWIS), oppure disegnale sulla mappa. Hai bisogno di aiuto? Scrivici a <email>support@coltivio.ch</email>.",
     "lets_go": "Iniziamo"
   },
   "donations": {
