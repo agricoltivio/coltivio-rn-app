@@ -29,6 +29,7 @@ import { treatmentsApi } from "./treatments.api";
 import { cropFamiliesApi } from "./crop-families.api";
 import { herdsApi } from "./herds.api";
 import { outdoorJournalApi } from "./outdoor-journal.api";
+import { meadowsApi } from "./meadows.api";
 import { fieldEventsApi } from "./field-events.api";
 import { wikiApi } from "./wiki.api";
 import { tasksApi } from "./tasks.api";
@@ -173,6 +174,7 @@ export function api(client: FetchClient) {
     reports: reportsApi(client),
     herds: herdsApi(client),
     outdoorJournal: outdoorJournalApi(client),
+    meadows: meadowsApi(client),
     fieldEvents: fieldEventsApi(client),
     wiki: wikiApi(client),
     tasks: tasksApi(client),

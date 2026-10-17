@@ -28,6 +28,10 @@ export type DatePickerProps = {
   onBlur?: () => void;
   date?: Date;
   onConfirm: (date?: Date | null) => void;
+  /** Shows a button to clear the date. Defaults to true. */
+  clearable?: boolean;
+  /** Earliest selectable date */
+  minimumDate?: Date;
 };
 
 export function DatePicker({
@@ -39,6 +43,8 @@ export function DatePicker({
   onBlur,
   mode,
   locale,
+  clearable = true,
+  minimumDate,
 }: DatePickerProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -49,13 +55,17 @@ export function DatePicker({
 
   const openPicker = useCallback(() => {
     Keyboard.dismiss();
-    setTempDate(date ?? new Date());
+    // Start the picker on a selectable date
+    const initialDate = date ?? new Date();
+    setTempDate(
+      minimumDate && initialDate < minimumDate ? minimumDate : initialDate,
+    );
     if (Platform.OS === "ios") {
       bottomSheetModalRef.current?.present();
     } else {
       setOpen(true);
     }
-  }, [date]);
+  }, [date, minimumDate]);
 
   // Not memoized so it always closes over the latest tempDate
   function handleConfirm() {
@@ -110,6 +120,7 @@ export function DatePicker({
             <BottomDrawerModal ref={bottomSheetModalRef}>
               <DateTimePicker
                 value={tempDate}
+                minimumDate={minimumDate}
                 onChange={(_event, selectedDate) => {
                   if (selectedDate) {
                     setTempDate(selectedDate);
@@ -132,7 +143,8 @@ export function DatePicker({
       {/* Android: Conditional render shows native dialog */}
       {Platform.OS === "android" && open && (
         <DateTimePicker
-          value={date || new Date()}
+          value={tempDate}
+          minimumDate={minimumDate}
           onChange={(event, selectedDate) => {
             setOpen(false);
             if (event.type === "set" && selectedDate) {
@@ -144,7 +156,7 @@ export function DatePicker({
         />
       )}
 
-      {date && (
+      {clearable && date && (
         <TouchableOpacity
           onPress={() => onConfirm(null)}
           style={{ position: "absolute", top: 25, right: 10, zIndex: 10 }}

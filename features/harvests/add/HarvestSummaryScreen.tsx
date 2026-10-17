@@ -1,3 +1,4 @@
+import { toLocalDateString } from "@/utils/date";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -57,7 +58,7 @@ export function HarvestSummaryScreen({
       unit,
       additionalNotes,
       cropId,
-      date: date.toISOString(),
+      date: toLocalDateString(date),
       harvestCount: harvest?.harvestCount,
       kilosPerUnit,
       conservationMethod,

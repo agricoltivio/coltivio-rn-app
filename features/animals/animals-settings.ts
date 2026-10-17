@@ -45,6 +45,11 @@ export const ANIMALS_ITEMS: Record<string, AnimalsItemMeta> = {
     route: "Herds",
     feature: "animals",
   },
+  meadows: {
+    translationKey: "animals.meadows.meadows",
+    route: "Meadows",
+    feature: "animals",
+  },
   outdoorJournal: {
     translationKey: "animals.outdoor_journal",
     route: "OutdoorJournal",
@@ -72,6 +77,7 @@ export const DEFAULT_ANIMALS_GROUPS: AnimalsGroupConfig[] = [
       { itemId: "animals", visible: true },
       { itemId: "earTags", visible: true },
       { itemId: "herds", visible: true },
+      { itemId: "meadows", visible: true },
       { itemId: "outdoorJournal", visible: true },
       { itemId: "tvdImport", visible: true },
     ],

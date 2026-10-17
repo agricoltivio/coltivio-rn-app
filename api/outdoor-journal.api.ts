@@ -23,3 +23,7 @@ export function outdoorJournalApi(client: FetchClient) {
     },
   };
 }
+
+export type OutdoorJournalMeadowEntry = NonNullable<
+  OutdoorJournalData["meadowEntries"]
+>[number];

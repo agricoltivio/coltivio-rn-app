@@ -1,3 +1,4 @@
+import { toLocalDateString } from "@/utils/date";
 import { MergePlotsInput } from "@/api/plots.api";
 import { Button } from "@/components/buttons/Button";
 import { IonIconButton } from "@/components/buttons/IconButton";
@@ -117,7 +118,7 @@ export function MergePlotSummaryScreen({
       plotIds,
       ...rest,
       usage: usage ? Number(usage) : undefined,
-      cuttingDate: cuttingDate?.toISOString(),
+      cuttingDate: cuttingDate ? toLocalDateString(cuttingDate) : undefined,
       geometry: mergedGeometry,
     };
 

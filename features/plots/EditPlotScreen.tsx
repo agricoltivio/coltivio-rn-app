@@ -1,3 +1,4 @@
+import { toLocalDateString } from "@/utils/date";
 import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { useForm } from "react-hook-form";
@@ -71,7 +72,9 @@ export function EditPlotScreen({
         ...rest,
         size: Number(size),
         usage: Number(usage),
-        cuttingDate: rest.cuttingDate?.toISOString() ?? null,
+        cuttingDate: rest.cuttingDate
+          ? toLocalDateString(rest.cuttingDate)
+          : null,
       },
     });
   }

@@ -1,6 +1,6 @@
 import { Button } from "@/components/buttons/Button";
 import { ContentView } from "@/components/containers/ContentView";
-import { getYearRange } from "@/utils/date";
+import { getYearRange, toLocalDateString } from "@/utils/date";
 import { useDownloadFieldCalendarReportMutation } from "./field-calendar.hooks";
 import { FieldCalendarExportScreenProps } from "./navigation/field-calendar.routes";
 import { useState } from "react";
@@ -62,8 +62,8 @@ export function FieldCalendarExportScreen({
   function onSubmit(data: FormValues) {
     downloadReportMutation.mutate({
       ...data,
-      fromDate: data.fromDate.toISOString(),
-      toDate: data.toDate.toISOString(),
+      fromDate: toLocalDateString(data.fromDate),
+      toDate: toLocalDateString(data.toDate),
     });
   }
   return (

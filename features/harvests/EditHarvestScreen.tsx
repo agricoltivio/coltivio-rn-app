@@ -1,3 +1,4 @@
+import { toLocalDateString } from "@/utils/date";
 import { ConservationMethod, Harvest, HarvestUnit } from "@/api/harvests.api";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -105,7 +106,7 @@ function EditHarvestForm({
     updateHarvestMutation.mutate({
       harvestId: harvest.id,
       input: {
-        date: values.date.toISOString(),
+        date: toLocalDateString(values.date),
         cropId: values.cropId,
         unit: values.unit,
         conservationMethod: values.conservationMethod ?? null,

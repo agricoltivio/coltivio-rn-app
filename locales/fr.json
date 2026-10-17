@@ -24,7 +24,8 @@
     "forgot_password": "Mot de passe oublié",
     "apply": "Appliquer",
     "clear": "Effacer",
-    "retry": "Réessayer"
+    "retry": "Réessayer",
+    "remove": "Retirer"
   },
   "forms": {
     "labels": {
@@ -426,7 +427,12 @@
     "add": {
       "map": {
         "mode_select": {
-          "message": "Pour créer un nouveau champ, vous pouvez sélectionner une parcelle ou dessiner une nouvelle zone."
+          "message": "Pour créer un nouveau champ, vous pouvez sélectionner une parcelle ou dessiner une nouvelle zone.",
+          "target": "Créer",
+          "target_plot": "Parcelle",
+          "target_meadow": "Pâture",
+          "message_meadow": "Dessine librement la pâture ou sélectionne des parcelles existantes.",
+          "select_plots": "Sélectionner des parcelles"
         },
         "tips": {
           "parcel_select": {
@@ -707,7 +713,12 @@
       "overlap_body": "Si le champ modifié chevauche des champs existants, ils seront automatiquement ajustés."
     },
     "empty_state_title": "Pas encore de champs",
-    "empty_state_body": "Importe tes surfaces sur un PC via l'application web depuis le système cantonal (p. ex. Acorda, LAWIS), ou dessine-les sur la carte. Besoin d'aide ? Écris-nous à <email>support@coltivio.ch</email>."
+    "empty_state_body": "Importe tes surfaces sur un PC via l'application web depuis le système cantonal (p. ex. Acorda, LAWIS), ou dessine-les sur la carte. Besoin d'aide ? Écris-nous à <email>support@coltivio.ch</email>.",
+    "map_layers": {
+      "title": "Calques",
+      "plots": "Parcelles",
+      "meadows": "Pâtures"
+    }
   },
   "farm_equipment": {
     "farm_equipment": "Machines et équipements",
@@ -1339,7 +1350,51 @@
       "delete_n_animals": "{{count}} animaux supprimés",
       "select_action": "Sélectionner l'action"
     },
-    "notes": "Notes"
+    "notes": "Notes",
+    "meadows": {
+      "meadow": "Pâture",
+      "meadows": "Pâtures",
+      "meadow_optional": "Pâture (facultatif)",
+      "no_meadow": "Aucune pâture",
+      "no_meadows": "Aucune pâture enregistrée",
+      "new_meadow": "Nouvelle pâture",
+      "edit_meadow": "Modifier la pâture",
+      "details": "Détails",
+      "usage": "Occupation",
+      "size_value": "{{are}}a ({{squareMeters}}m²)",
+      "delete_confirm": "Supprimer la pâture ? Les périodes en plein air attribuées perdront leur pâture.",
+      "journal_view_categories": "Catégories",
+      "errors": {
+        "overlaps": "La surface chevauche la pâture « {{name}} ».",
+        "self_intersecting": "La surface ne doit pas se croiser elle-même."
+      },
+      "current_animals": "Animaux actuels",
+      "current_herds": "Troupeaux actuels",
+      "last_used": "Dernière occupation",
+      "fence_length": "Longueur de clôture (env.)",
+      "last_used_now": "maintenant",
+      "usage_chart": {
+        "days_title": "Jours occupés par mois",
+        "days_value": "{{count}} jour occupé",
+        "days_value_plural": "{{count}} jours occupés",
+        "average_animals_value": "Ø {{averageAnimals}} animaux"
+      }
+    },
+    "end_date_before_start": "La date de fin ne peut pas précéder la date de début.",
+    "schedule_repeat": {
+      "none": "Aucune",
+      "weekdays": "Jours de la semaine",
+      "weekdays_required": "Sélectionne au moins un jour de la semaine.",
+      "until_optional": "Répéter jusqu'au (facultatif)"
+    },
+    "herd_changes_apply_from": "Les changements s'appliquent dès le",
+    "herd_member_since": "Dans le troupeau depuis",
+    "herd_left_on": "A quitté le troupeau le",
+    "herd_membership_date_too_early": "La date est antérieure à l'entrée d'un animal dans son troupeau actuel. Choisis une date ultérieure.",
+    "herd_changes_summary": "{{added}} ajoutés, {{removed}} retirés. À partir de quelle date ?",
+    "delete_herd_confirm": "Supprimer le troupeau « {{name}} » ?",
+    "delete_herd_confirm_info": "Cette action est irréversible.",
+    "timeline_view_overview": "Aperçu"
   },
   "drugs": {
     "drugs": "Médicaments",

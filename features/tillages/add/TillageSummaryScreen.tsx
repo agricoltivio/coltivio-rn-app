@@ -1,3 +1,4 @@
+import { toLocalDateString } from "@/utils/date";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -40,7 +41,7 @@ export function TillageSummaryScreen({
   function onSave() {
     createTillagesMutation.mutate({
       action,
-      date: date.toISOString(),
+      date: toLocalDateString(date),
       additionalNotes,
       plots: selectedPlots.map((plot) => ({
         plotId: plot.plotId,

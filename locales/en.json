@@ -24,7 +24,8 @@
     "forgot_password": "Forgot Password",
     "apply": "Apply",
     "clear": "Clear",
-    "retry": "Try again"
+    "retry": "Try again",
+    "remove": "Remove"
   },
   "forms": {
     "labels": {
@@ -426,7 +427,12 @@
     "add": {
       "map": {
         "mode_select": {
-          "message": "Select a parcel or draw a new area to create a plot."
+          "message": "Select a parcel or draw a new area to create a plot.",
+          "target": "Create new",
+          "target_plot": "Plot",
+          "target_meadow": "Meadow",
+          "message_meadow": "Draw the meadow freely or select existing plots.",
+          "select_plots": "Select plots"
         },
         "tips": {
           "parcel_select": {
@@ -707,7 +713,12 @@
       "overlap_body": "If the adjusted plot overlaps existing plots, they will be automatically clipped."
     },
     "empty_state_title": "No plots yet",
-    "empty_state_body": "Import your plots on a PC via the web app from the cantonal system (e.g. Acorda, LAWIS), or draw them on the map. Need help? Write to us at <email>support@coltivio.ch</email>."
+    "empty_state_body": "Import your plots on a PC via the web app from the cantonal system (e.g. Acorda, LAWIS), or draw them on the map. Need help? Write to us at <email>support@coltivio.ch</email>.",
+    "map_layers": {
+      "title": "Layers",
+      "plots": "Plots",
+      "meadows": "Meadows"
+    }
   },
   "farm_equipment": {
     "farm_equipment": "Farm Equipment",
@@ -1339,7 +1350,51 @@
       "delete_n_animals": "Delete {{count}} animals",
       "select_action": "Select action"
     },
-    "notes": "Notes"
+    "notes": "Notes",
+    "meadows": {
+      "meadow": "Meadow",
+      "meadows": "Meadows",
+      "meadow_optional": "Meadow (optional)",
+      "no_meadow": "No meadow",
+      "no_meadows": "No meadows yet",
+      "new_meadow": "New meadow",
+      "edit_meadow": "Edit meadow",
+      "details": "Details",
+      "usage": "Usage",
+      "size_value": "{{are}}a ({{squareMeters}}m²)",
+      "delete_confirm": "Delete meadow? Assigned outdoor schedules will lose their meadow.",
+      "journal_view_categories": "Categories",
+      "errors": {
+        "overlaps": "The area overlaps with the meadow \"{{name}}\".",
+        "self_intersecting": "The area must not intersect itself."
+      },
+      "current_animals": "Animals now",
+      "current_herds": "Herds now",
+      "last_used": "Last used",
+      "fence_length": "Fence length (approx.)",
+      "last_used_now": "now",
+      "usage_chart": {
+        "days_title": "Days on the meadow per month",
+        "days_value": "{{count}} day on the meadow",
+        "days_value_plural": "{{count}} days on the meadow",
+        "average_animals_value": "avg {{averageAnimals}} animals"
+      }
+    },
+    "end_date_before_start": "The end date can't be before the start date.",
+    "schedule_repeat": {
+      "none": "None",
+      "weekdays": "Weekdays",
+      "weekdays_required": "Select at least one weekday.",
+      "until_optional": "Repeat until (optional)"
+    },
+    "herd_changes_apply_from": "Changes apply from",
+    "herd_member_since": "In herd since",
+    "herd_left_on": "Left herd on",
+    "herd_membership_date_too_early": "The date is before an animal joined its current herd. Please pick a later date.",
+    "herd_changes_summary": "{{added}} added, {{removed}} removed. From which date does this apply?",
+    "delete_herd_confirm": "Delete herd \"{{name}}\"?",
+    "delete_herd_confirm_info": "This can't be undone.",
+    "timeline_view_overview": "Overview"
   },
   "drugs": {
     "drugs": "Drugs",

@@ -1,10 +1,21 @@
+import { MeadowsLayer } from "@/components/map/MeadowsLayer";
 import { PlotsLayer } from "@/components/map/PlotsLayer";
+import { useMeadowsQuery } from "@/features/animals/meadows.hooks";
 import * as turf from "@turf/turf";
 import { useCallback } from "react";
 import { usePlotsMapContext } from "../plots-map-mode";
 
 export function ViewModeLayers() {
-  const { mode, dispatch, plots, plotColorMode } = usePlotsMapContext();
+  const {
+    mode,
+    dispatch,
+    plots,
+    plotColorMode,
+    visibleLayers,
+    selectedMeadowId,
+    setSelectedMeadowId,
+  } = usePlotsMapContext();
+  const { meadows } = useMeadowsQuery();
 
   const selectedPlotId = mode.type === "view" ? mode.selectedPlotId : null;
   const selectedPlotIds = selectedPlotId ? [selectedPlotId] : [];
@@ -41,24 +52,43 @@ export function ViewModeLayers() {
 
       const plotId = feature?.properties?.id;
       if (typeof plotId === "string") {
+        // Only one plot or meadow is selected at a time
+        setSelectedMeadowId(null);
         dispatch({
           type: "SELECT_PLOT",
           plotId: selectedPlotId === plotId ? null : plotId,
         });
       }
     },
-    [selectedPlotId, dispatch],
+    [selectedPlotId, dispatch, setSelectedMeadowId],
   );
 
   if (mode.type !== "view") return null;
 
+  // Every visible layer is tappable; meadows render above plots so taps inside a meadow hit it
   return (
-    <PlotsLayer
-      plots={plots}
-      selectedPlotIds={selectedPlotIds}
-      onPlotPress={handlePlotPress}
-      showZoomLabels
-      plotColorMode={plotColorMode}
-    />
+    <>
+      {visibleLayers.plots && (
+        <PlotsLayer
+          plots={plots}
+          selectedPlotIds={selectedPlotIds}
+          onPlotPress={handlePlotPress}
+          showZoomLabels
+          plotColorMode={plotColorMode}
+        />
+      )}
+      {visibleLayers.meadows && (
+        <MeadowsLayer
+          meadows={meadows ?? []}
+          selectedMeadowId={selectedMeadowId}
+          onMeadowPress={(meadowId) => {
+            dispatch({ type: "SELECT_PLOT", plotId: null });
+            setSelectedMeadowId(
+              selectedMeadowId === meadowId ? null : meadowId,
+            );
+          }}
+        />
+      )}
+    </>
   );
 }

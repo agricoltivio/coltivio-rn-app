@@ -1,3 +1,4 @@
+import { toLocalDateString } from "@/utils/date";
 import { Tillage, TillageAction } from "@/api/tillages.api";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -77,7 +78,7 @@ function EditTillageForm({
     updateTillageMutation.mutate({
       tillageId: tillage.id,
       input: {
-        date: values.date.toISOString(),
+        date: toLocalDateString(values.date),
         action: values.action,
         customAction: values.action === "custom" ? values.customAction : null,
         additionalNotes: values.additionalNotes,

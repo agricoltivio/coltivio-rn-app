@@ -18,7 +18,7 @@ import {
   useUpdateCropRotationMutation,
 } from "./crop-rotations.hooks";
 import { useTranslation } from "react-i18next";
-import { INFINITE_DATE, isInfiniteDate } from "@/utils/date";
+import { INFINITE_DATE, isInfiniteDate, toLocalDateString } from "@/utils/date";
 
 type FormValues = {
   cropId: string;
@@ -71,9 +71,9 @@ export function EditCropRotationScreen({
     updatePlotCropRotationMutation.mutate({
       rotationId,
       cropId,
-      fromDate: fromDate.toISOString(),
-      toDate: toDate?.toISOString(),
-      sowingDate: sowingDate?.toISOString(),
+      fromDate: toLocalDateString(fromDate),
+      toDate: toDate ? toLocalDateString(toDate) : undefined,
+      sowingDate: sowingDate ? toLocalDateString(sowingDate) : undefined,
     });
   }
 

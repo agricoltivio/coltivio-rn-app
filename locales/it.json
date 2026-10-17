@@ -24,7 +24,8 @@
     "forgot_password": "Password dimenticata",
     "apply": "Applica",
     "clear": "Cancella",
-    "retry": "Riprova"
+    "retry": "Riprova",
+    "remove": "Rimuovi"
   },
   "forms": {
     "labels": {
@@ -426,7 +427,12 @@
     "add": {
       "map": {
         "mode_select": {
-          "message": "Per creare un nuovo campo, puoi selezionare una particella catastale oppure disegnare una nuova area."
+          "message": "Per creare un nuovo campo, puoi selezionare una particella catastale oppure disegnare una nuova area.",
+          "target": "Crea nuovo",
+          "target_plot": "Particella",
+          "target_meadow": "Area di pascolo",
+          "message_meadow": "Disegna liberamente l'area di pascolo o seleziona particelle esistenti.",
+          "select_plots": "Seleziona particelle"
         },
         "tips": {
           "parcel_select": {
@@ -707,7 +713,12 @@
       "overlap_body": "Se l'appezzamento modificato si sovrappone ad altri, verranno automaticamente ridimensionati."
     },
     "empty_state_title": "Ancora nessun campo",
-    "empty_state_body": "Importa le tue superfici su un PC tramite la web app dal sistema cantonale (ad es. Acorda, LAWIS), oppure disegnale sulla mappa. Hai bisogno di aiuto? Scrivici a <email>support@coltivio.ch</email>."
+    "empty_state_body": "Importa le tue superfici su un PC tramite la web app dal sistema cantonale (ad es. Acorda, LAWIS), oppure disegnale sulla mappa. Hai bisogno di aiuto? Scrivici a <email>support@coltivio.ch</email>.",
+    "map_layers": {
+      "title": "Livelli",
+      "plots": "Particelle",
+      "meadows": "Aree di pascolo"
+    }
   },
   "farm_equipment": {
     "farm_equipment": "Macchine e Attrezzature Agricole",
@@ -1339,7 +1350,51 @@
       "delete_n_animals": "Elimina {{count}} animali",
       "select_action": "Seleziona l'azione"
     },
-    "notes": "Note"
+    "notes": "Note",
+    "meadows": {
+      "meadow": "Area di pascolo",
+      "meadows": "Aree di pascolo",
+      "meadow_optional": "Area di pascolo (opzionale)",
+      "no_meadow": "Nessuna area di pascolo",
+      "no_meadows": "Nessuna area di pascolo registrata",
+      "new_meadow": "Nuova area di pascolo",
+      "edit_meadow": "Modifica area di pascolo",
+      "details": "Dettagli",
+      "usage": "Utilizzo",
+      "size_value": "{{are}}a ({{squareMeters}}m²)",
+      "delete_confirm": "Eliminare l'area di pascolo? I periodi all'aperto assegnati perderanno l'area di pascolo.",
+      "journal_view_categories": "Categorie",
+      "errors": {
+        "overlaps": "La superficie si sovrappone all'area di pascolo «{{name}}».",
+        "self_intersecting": "La superficie non deve intersecarsi con se stessa."
+      },
+      "current_animals": "Animali attuali",
+      "current_herds": "Mandrie attuali",
+      "last_used": "Ultimo utilizzo",
+      "fence_length": "Lunghezza recinzione (ca.)",
+      "last_used_now": "ora",
+      "usage_chart": {
+        "days_title": "Giorni occupati al mese",
+        "days_value": "{{count}} giorno occupato",
+        "days_value_plural": "{{count}} giorni occupati",
+        "average_animals_value": "Ø {{averageAnimals}} animali"
+      }
+    },
+    "end_date_before_start": "La data di fine non può precedere la data di inizio.",
+    "schedule_repeat": {
+      "none": "Nessuna",
+      "weekdays": "Giorni della settimana",
+      "weekdays_required": "Seleziona almeno un giorno della settimana.",
+      "until_optional": "Ripeti fino al (opzionale)"
+    },
+    "herd_changes_apply_from": "Le modifiche valgono dal",
+    "herd_member_since": "Nella mandria dal",
+    "herd_left_on": "Ha lasciato la mandria il",
+    "herd_membership_date_too_early": "La data è precedente all'ingresso di un animale nella sua mandria attuale. Scegli una data successiva.",
+    "herd_changes_summary": "{{added}} aggiunti, {{removed}} rimossi. Da quale data vale?",
+    "delete_herd_confirm": "Eliminare la mandria «{{name}}»?",
+    "delete_herd_confirm_info": "Questa azione non può essere annullata.",
+    "timeline_view_overview": "Panoramica"
   },
   "drugs": {
     "drugs": "Medicinali",

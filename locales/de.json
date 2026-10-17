@@ -24,7 +24,8 @@
     "forgot_password": "Passwort vergessen",
     "apply": "Anwenden",
     "clear": "Löschen",
-    "retry": "Erneut versuchen"
+    "retry": "Erneut versuchen",
+    "remove": "Entfernen"
   },
   "forms": {
     "labels": {
@@ -426,7 +427,12 @@
     "add": {
       "map": {
         "mode_select": {
-          "message": "Um einen neuen Schlag zu erstellen, kannst du entweder eine Parzelle auswählen oder eine neue Fläche einzeichnen."
+          "message": "Um einen neuen Schlag zu erstellen, kannst du entweder eine Parzelle auswählen oder eine neue Fläche einzeichnen.",
+          "target": "Neu erstellen",
+          "target_plot": "Schlag",
+          "target_meadow": "Weidefläche",
+          "message_meadow": "Zeichne die Weidefläche frei oder wähle bestehende Schläge aus.",
+          "select_plots": "Schläge auswählen"
         },
         "tips": {
           "parcel_select": {
@@ -707,7 +713,12 @@
       "overlap_body": "Wenn der angepasste Schlag bestehende Schläge überschneidet, werden diese automatisch angepasst."
     },
     "empty_state_title": "Noch keine Schläge",
-    "empty_state_body": "Importiere deine Flächen am PC über die Web-App aus dem kantonalen System (z.B. Acorda, LAWIS), oder zeichne sie in der Karte ein. Brauchst du Hilfe? Schreib uns an <email>support@coltivio.ch</email>."
+    "empty_state_body": "Importiere deine Flächen am PC über die Web-App aus dem kantonalen System (z.B. Acorda, LAWIS), oder zeichne sie in der Karte ein. Brauchst du Hilfe? Schreib uns an <email>support@coltivio.ch</email>.",
+    "map_layers": {
+      "title": "Ebenen",
+      "plots": "Schläge",
+      "meadows": "Weideflächen"
+    }
   },
   "farm_equipment": {
     "farm_equipment": "Maschinen",
@@ -1339,7 +1350,51 @@
       "status_skipped": "Wird übersprungen",
       "status_merge": "Zusammenführen"
     },
-    "notes": "Notizen"
+    "notes": "Notizen",
+    "meadows": {
+      "meadow": "Weidefläche",
+      "meadows": "Weideflächen",
+      "meadow_optional": "Weidefläche (optional)",
+      "no_meadow": "Keine Weidefläche",
+      "no_meadows": "Noch keine Weideflächen erfasst",
+      "new_meadow": "Neue Weidefläche",
+      "edit_meadow": "Weidefläche bearbeiten",
+      "details": "Details",
+      "usage": "Belegung",
+      "size_value": "{{are}}a ({{squareMeters}}m²)",
+      "delete_confirm": "Weidefläche löschen? Zugewiesene Weidezeiten verlieren die Weidefläche.",
+      "journal_view_categories": "Kategorien",
+      "errors": {
+        "overlaps": "Die Fläche überschneidet sich mit der Weidefläche «{{name}}».",
+        "self_intersecting": "Die Fläche darf sich nicht selbst überschneiden."
+      },
+      "current_animals": "Tiere aktuell",
+      "current_herds": "Herden aktuell",
+      "last_used": "Zuletzt belegt",
+      "fence_length": "Zaunlänge (ca.)",
+      "last_used_now": "jetzt",
+      "usage_chart": {
+        "days_title": "Belegte Tage pro Monat",
+        "days_value": "{{count}} Tag belegt",
+        "days_value_plural": "{{count}} Tage belegt",
+        "average_animals_value": "Ø {{averageAnimals}} Tiere"
+      }
+    },
+    "end_date_before_start": "Das Enddatum darf nicht vor dem Startdatum liegen.",
+    "schedule_repeat": {
+      "none": "Keine",
+      "weekdays": "Wochentage",
+      "weekdays_required": "Wähle mindestens einen Wochentag.",
+      "until_optional": "Wiederholen bis (optional)"
+    },
+    "herd_changes_apply_from": "Änderungen gelten ab",
+    "herd_member_since": "In der Herde seit",
+    "herd_left_on": "Herde verlassen am",
+    "herd_membership_date_too_early": "Das Datum liegt vor dem Eintritt eines Tieres in seine aktuelle Herde. Bitte wähle ein späteres Datum.",
+    "herd_changes_summary": "{{added}} hinzugefügt, {{removed}} entfernt. Ab welchem Datum gilt das?",
+    "delete_herd_confirm": "Herde «{{name}}» löschen?",
+    "delete_herd_confirm_info": "Das kann nicht rückgängig gemacht werden.",
+    "timeline_view_overview": "Übersicht"
   },
   "drugs": {
     "drugs": "Medikamente",

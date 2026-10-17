@@ -2,18 +2,11 @@ import { useApi } from "@/api/api";
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/cache/query-keys";
 
-// Same epoch as outdoor timeline: current year +/- 3
+// Up to 10 years back until 3 years ahead (date-only, as the API expects).
+// The timeline itself starts at the year of the earliest returned entry.
 const currentYear = new Date().getFullYear();
-const defaultFromDate = new Date(currentYear - 3, 0, 1).toISOString();
-const defaultToDate = new Date(
-  currentYear + 3,
-  11,
-  31,
-  23,
-  59,
-  59,
-  999,
-).toISOString();
+const defaultFromDate = `${currentYear - 10}-01-01`;
+const defaultToDate = `${currentYear + 3}-12-31`;
 
 export function useOutdoorJournalQuery(
   fromDate: string = defaultFromDate,

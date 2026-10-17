@@ -1,3 +1,4 @@
+import { toLocalDateString } from "@/utils/date";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -86,7 +87,7 @@ export function BatchEditActionScreen({
       batchUpdate.mutate({
         animalIds,
         data: {
-          dateOfDeath: values.dateOfDeath.toISOString(),
+          dateOfDeath: toLocalDateString(values.dateOfDeath),
           deathReason: values.deathReason as "died" | "slaughtered",
         },
       });

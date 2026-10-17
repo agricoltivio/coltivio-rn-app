@@ -14,6 +14,8 @@ export function RHDatePicker<T extends FieldValues>({
   label,
   error,
   mode,
+  clearable,
+  minimumDate,
 }: RHTextInputProps<T>) {
   const { i18n } = useTranslation();
   const locale = i18n.language;
@@ -34,6 +36,8 @@ export function RHDatePicker<T extends FieldValues>({
           onBlur={onBlur}
           locale={locale}
           error={error}
+          clearable={clearable}
+          minimumDate={minimumDate}
         />
       )}
     />

@@ -1,3 +1,4 @@
+import { toLocalDateString } from "@/utils/date";
 import { CompactDatePicker } from "@/components/datepicker/CompactDatePicker";
 import { Select } from "@/components/select/Select";
 import { Ionicons } from "@expo/vector-icons";
@@ -93,7 +94,7 @@ export function RecurrencePicker({
 
   function handleUntilChange(date: Date) {
     setUntilDate(date);
-    if (value) onChange({ ...value, until: date.toISOString() });
+    if (value) onChange({ ...value, until: toLocalDateString(date) });
   }
 
   function handleClearUntil() {

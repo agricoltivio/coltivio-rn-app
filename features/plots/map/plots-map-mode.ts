@@ -6,7 +6,17 @@ import { type MapRef, type CameraRef } from "@maplibre/maplibre-react-native";
 import { NavigationProp } from "@react-navigation/native";
 import { createContext, useContext, Dispatch } from "react";
 
-export type DrawAction = "select" | "edit" | "draw" | "choose" | "parcel";
+// "parcel": pick a cadastral parcel (plots), "plots": tap existing plots to merge (meadows)
+export type DrawAction =
+  | "select"
+  | "edit"
+  | "draw"
+  | "choose"
+  | "parcel"
+  | "plots";
+
+// What the create mode produces
+export type CreateTarget = "plot" | "meadow";
 
 // --- Mode types ---
 
@@ -25,7 +35,10 @@ type MergeMode = {
 type AdjustMode = { type: "adjust"; plotId: string; activeRingIndex: number };
 type CreateMode = {
   type: "create";
+  target: CreateTarget;
   drawingAction: DrawAction;
+  // Plots tapped while creating a meadow from existing plots
+  selectedPlotIds: string[];
   newPolygon: {
     geometry: GeoJSON.MultiPolygon;
     centroid: GeoJSON.Point;
@@ -36,7 +49,16 @@ type CreateMode = {
   } | null;
 };
 
+// Multi-part meadows are edited one part at a time; finished parts are kept in editedParts
+type MeadowAdjustMode = {
+  type: "meadowAdjust";
+  meadowId: string;
+  activePartIndex: number;
+  editedParts: GeoJSON.Position[][][];
+};
+
 export type PlotsMapMode =
+  | MeadowAdjustMode
   | ViewMode
   | SplitMode
   | MergeMode
@@ -61,8 +83,12 @@ export type PlotsMapAction =
   | { type: "TOGGLE_MERGE_PLOT"; plotId: string }
   | { type: "ENTER_ADJUST"; plotId: string }
   | { type: "ADVANCE_ADJUST_RING" }
-  | { type: "ENTER_CREATE" }
+  | { type: "ENTER_CREATE"; target?: CreateTarget }
+  | { type: "SET_CREATE_TARGET"; target: CreateTarget }
   | { type: "SET_CREATE_ACTION"; action: DrawAction }
+  | { type: "TOGGLE_CREATE_PLOT"; plotId: string }
+  | { type: "ENTER_MEADOW_ADJUST"; meadowId: string }
+  | { type: "ADVANCE_MEADOW_PART"; editedPart: GeoJSON.Position[][] }
   | {
       type: "SET_CREATE_POLYGON";
       polygon: CreateMode["newPolygon"];
@@ -133,7 +159,49 @@ export function plotsMapReducer(
       return state;
 
     case "ENTER_CREATE":
-      return { type: "create", drawingAction: "choose", newPolygon: null };
+      return {
+        type: "create",
+        target: action.target ?? "plot",
+        drawingAction: "choose",
+        selectedPlotIds: [],
+        newPolygon: null,
+      };
+
+    case "SET_CREATE_TARGET":
+      if (state.type === "create") {
+        return { ...state, target: action.target };
+      }
+      return state;
+
+    case "TOGGLE_CREATE_PLOT":
+      if (state.type === "create") {
+        const isSelected = state.selectedPlotIds.includes(action.plotId);
+        return {
+          ...state,
+          selectedPlotIds: isSelected
+            ? state.selectedPlotIds.filter((id) => id !== action.plotId)
+            : [...state.selectedPlotIds, action.plotId],
+        };
+      }
+      return state;
+
+    case "ENTER_MEADOW_ADJUST":
+      return {
+        type: "meadowAdjust",
+        meadowId: action.meadowId,
+        activePartIndex: 0,
+        editedParts: [],
+      };
+
+    case "ADVANCE_MEADOW_PART":
+      if (state.type === "meadowAdjust") {
+        return {
+          ...state,
+          activePartIndex: state.activePartIndex + 1,
+          editedParts: [...state.editedParts, action.editedPart],
+        };
+      }
+      return state;
 
     case "SET_CREATE_ACTION":
       if (state.type === "create") {
@@ -167,6 +235,8 @@ export function plotsMapReducer(
 
 // --- Context ---
 
+export type MapVisibleLayers = { plots: boolean; meadows: boolean };
+
 type PlotsMapContextValue = {
   mode: PlotsMapMode;
   dispatch: Dispatch<PlotsMapAction>;
@@ -181,6 +251,14 @@ type PlotsMapContextValue = {
   setBaseLayer: (layer: BaseLayer) => void;
   plotColorMode: PlotColorMode;
   setPlotColorMode: (mode: PlotColorMode) => void;
+  // Visible (and tappable) layers in view mode
+  visibleLayers: MapVisibleLayers;
+  selectedMeadowId: string | null;
+  setSelectedMeadowId: (meadowId: string | null) => void;
+  // Leaves a meadow create/adjust flow: back to view mode, or back to the screen that
+  // opened the map directly in that flow (e.g. the animals section)
+  exitMeadowFlow: () => void;
+  meadowFlowOpenedExternally: boolean;
 };
 
 export const PlotsMapContext = createContext<PlotsMapContextValue | null>(null);
@@ -195,6 +273,30 @@ export function usePlotsMapContext() {
 
 // --- Initial state ---
 
-export function createInitialMode(selectedPlotId?: string): PlotsMapMode {
+export type InitialMeadowAction =
+  | { type: "create" }
+  | { type: "adjust"; meadowId: string };
+
+export function createInitialMode(
+  selectedPlotId?: string,
+  meadowAction?: InitialMeadowAction,
+): PlotsMapMode {
+  if (meadowAction?.type === "create") {
+    return {
+      type: "create",
+      target: "meadow",
+      drawingAction: "choose",
+      selectedPlotIds: [],
+      newPolygon: null,
+    };
+  }
+  if (meadowAction?.type === "adjust") {
+    return {
+      type: "meadowAdjust",
+      meadowId: meadowAction.meadowId,
+      activePartIndex: 0,
+      editedParts: [],
+    };
+  }
   return { type: "view", selectedPlotId: selectedPlotId ?? null };
 }

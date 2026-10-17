@@ -10,6 +10,9 @@ type OutdoorTimelineBarProps = {
   width: number;
   todayLeft: number;
   onPress: (scheduleId: string) => void;
+  // Vertical placement within the row; fills the row (4px inset) when omitted
+  top?: number;
+  height?: number;
 };
 
 const MIN_BAR_WIDTH = 4;
@@ -20,6 +23,8 @@ export const OutdoorTimelineBar = memo(function OutdoorTimelineBar({
   width,
   todayLeft,
   onPress,
+  top = 4,
+  height,
 }: OutdoorTimelineBarProps) {
   const barWidth = Math.max(width, MIN_BAR_WIDTH);
   // Use fixed colors for schedule types (herd screens), fall back to herd name hash (journal)
@@ -52,8 +57,8 @@ export const OutdoorTimelineBar = memo(function OutdoorTimelineBar({
         position: "absolute",
         left,
         width: barWidth,
-        top: 4,
-        bottom: 4,
+        top,
+        ...(height !== undefined ? { height } : { bottom: 4 }),
         justifyContent: "center",
         paddingHorizontal: 4,
       }}

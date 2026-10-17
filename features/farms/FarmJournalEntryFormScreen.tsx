@@ -1,3 +1,4 @@
+import { toLocalDateString } from "@/utils/date";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -174,7 +175,7 @@ export function FarmJournalEntryFormScreen({
   async function onSubmit(values: FormValues) {
     const body = {
       title: values.title,
-      date: values.date.toISOString(),
+      date: toLocalDateString(values.date),
       content: values.content || undefined,
     };
 

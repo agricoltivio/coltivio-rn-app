@@ -1,5 +1,8 @@
 import { DrawingOverlay } from "@/components/map/DrawingOverlay";
+import { MeadowsLayer } from "@/components/map/MeadowsLayer";
 import { PlotsLayer } from "@/components/map/PlotsLayer";
+import { useMeadowsQuery } from "@/features/animals/meadows.hooks";
+import { mergePlotsIntoMeadowGeometry } from "@/features/animals/meadow-geometry";
 import { GeoSpatials } from "@/utils/geo-spatials";
 import { round } from "@/utils/math";
 import { hexToRgba } from "@/theme/theme";
@@ -30,6 +33,7 @@ export const CreateModeLayers = forwardRef<CreateModeLayersHandle>(
   function CreateModeLayers(_props, ref) {
     const theme = useTheme();
     const { mode, dispatch, plots, mapRef, drawingRef } = usePlotsMapContext();
+    const { meadows } = useMeadowsQuery();
 
     useImperativeHandle(ref, () => ({
       handleMapPress(lngLat: LngLat) {
@@ -179,7 +183,60 @@ export const CreateModeLayers = forwardRef<CreateModeLayersHandle>(
       };
     }, [newPolygon, drawingAction]);
 
+    // Selected plots merged the same way they will be saved, so adjacent plots
+    // already show up as one area while selecting
+    const selectedPlotIdsForPreview =
+      mode.type === "create" && drawingAction === "plots"
+        ? mode.selectedPlotIds
+        : null;
+    const mergedSelectionData = useMemo((): GeoJSON.FeatureCollection => {
+      if (
+        !selectedPlotIdsForPreview ||
+        selectedPlotIdsForPreview.length === 0
+      ) {
+        return { type: "FeatureCollection", features: [] };
+      }
+      const geometry = mergePlotsIntoMeadowGeometry(
+        plots.filter((plot) => selectedPlotIdsForPreview.includes(plot.id)),
+      );
+      if (!geometry) return { type: "FeatureCollection", features: [] };
+      return {
+        type: "FeatureCollection",
+        features: [{ type: "Feature", properties: {}, geometry }],
+      };
+    }, [selectedPlotIdsForPreview, plots]);
+
     if (mode.type !== "create") return null;
+    const isMeadow = mode.target === "meadow";
+
+    // Meadow from existing plots: tap toggles a plot. When nested plots overlap,
+    // pick the one whose boundary is nearest to the tap point.
+    function handlePlotPress(event: {
+      stopPropagation(): void;
+      nativeEvent: { features: GeoJSON.Feature[]; lngLat: LngLat };
+    }) {
+      event.stopPropagation();
+      const { features, lngLat } = event.nativeEvent;
+      let feature: GeoJSON.Feature | undefined;
+      if (features.length <= 1) {
+        feature = features[0];
+      } else {
+        const tapPoint = turf.point(lngLat);
+        const distances = features.map((f) => {
+          if (f.geometry.type !== "Polygon") return Infinity;
+          const exteriorRing = turf.lineString(f.geometry.coordinates[0]);
+          return (
+            turf.nearestPointOnLine(exteriorRing, tapPoint).properties.dist ??
+            Infinity
+          );
+        });
+        feature = features[distances.indexOf(Math.min(...distances))];
+      }
+      const plotId = feature?.properties?.id;
+      if (typeof plotId === "string") {
+        dispatch({ type: "TOGGLE_CREATE_PLOT", plotId });
+      }
+    }
 
     function onDrawingComplete(coordinates: LngLat[], closed: boolean) {
       if (!closed || coordinates.length < 3) return;
@@ -213,8 +270,40 @@ export const CreateModeLayers = forwardRef<CreateModeLayersHandle>(
 
     return (
       <>
-        {/* Background: existing plots dimmed */}
-        <PlotsLayer plots={plots} />
+        {/* Background: existing plots; tappable when building a meadow from plots */}
+        <PlotsLayer
+          plots={plots}
+          selectedPlotIds={[]}
+          onPlotPress={drawingAction === "plots" ? handlePlotPress : undefined}
+          showZoomLabels={drawingAction === "plots"}
+        />
+        {/* Existing meadows as context, so a new meadow isn't drawn over them */}
+        {isMeadow && <MeadowsLayer meadows={meadows ?? []} />}
+
+        {/* Merged preview of the selected plots */}
+        {drawingAction === "plots" && (
+          <GeoJSONSource
+            id="create-meadow-selection"
+            data={mergedSelectionData}
+          >
+            <Layer
+              type="fill"
+              id="create-meadow-selection-fill"
+              paint={{
+                "fill-color": hexToRgba(
+                  theme.colors.success,
+                  theme.map.defaultFillAlpha,
+                ),
+                "fill-opacity": 1,
+              }}
+            />
+            <Layer
+              type="line"
+              id="create-meadow-selection-stroke"
+              paint={{ "line-color": theme.colors.warning, "line-width": 3 }}
+            />
+          </GeoJSONSource>
+        )}
 
         {/* Nearby cadastral parcels, tap to pick one */}
         {drawingAction === "parcel" && (

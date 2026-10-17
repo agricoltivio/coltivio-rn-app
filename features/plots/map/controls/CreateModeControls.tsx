@@ -5,19 +5,124 @@ import { useTheme } from "styled-components/native";
 import { usePlotsMapContext } from "../plots-map-mode";
 import { useAddPlotStore } from "../../add-plots.store";
 import { CreateModeChooser } from "./CreateModeChooser";
+import { useMeadowDraftStore } from "@/features/animals/meadow-draft.store";
+import {
+  findMeadowGeometryError,
+  mergePlotsIntoMeadowGeometry,
+} from "@/features/animals/meadow-geometry";
+import { useMeadowsQuery } from "@/features/animals/meadows.hooks";
+import { round } from "@/utils/math";
+import * as turf from "@turf/turf";
+import { useTranslation } from "react-i18next";
+import { Alert } from "react-native";
 
 export function CreateModeControls() {
   const theme = useTheme();
-  const { mode, dispatch, drawingRef, navigation } = usePlotsMapContext();
+  const { t } = useTranslation();
+  const {
+    mode,
+    dispatch,
+    drawingRef,
+    navigation,
+    plots,
+    exitMeadowFlow,
+    meadowFlowOpenedExternally,
+  } = usePlotsMapContext();
   const addPlotStore = useAddPlotStore();
+  const setMeadowDraft = useMeadowDraftStore((state) => state.setData);
+  const { meadows } = useMeadowsQuery();
 
   if (mode.type !== "create") return null;
 
   const { drawingAction, newPolygon } = mode;
 
-  // Initial choice between drawing a new area or picking an existing parcel
+  // Initial choice between plot/meadow and drawing a new area or picking existing ones
   if (drawingAction === "choose") {
     return <CreateModeChooser />;
+  }
+
+  // Validates a meadow geometry and continues to the name drawer
+  function submitMeadowGeometry(geometry: GeoJSON.MultiPolygon) {
+    const error = findMeadowGeometryError(geometry, meadows ?? []);
+    if (error?.kind === "self_intersecting") {
+      Alert.alert(t("animals.meadows.errors.self_intersecting"));
+      return;
+    }
+    if (error?.kind === "overlaps") {
+      Alert.alert(
+        t("animals.meadows.errors.overlaps", { name: error.meadowName }),
+      );
+      return;
+    }
+    setMeadowDraft({ geometry, size: round(turf.area(geometry), 0) });
+    navigation.navigate("MeadowSummary", {
+      returnTo: meadowFlowOpenedExternally ? "previous" : "map",
+    });
+  }
+
+  if (mode.target === "meadow") {
+    // Selecting existing plots: one ✓ merges them and goes straight to the name drawer
+    if (drawingAction === "plots") {
+      const hasSelection = mode.selectedPlotIds.length > 0;
+      return (
+        <MapControls>
+          <MaterialCommunityIconButton
+            type="accent"
+            color="black"
+            iconSize={30}
+            icon="close-circle-outline"
+            onPress={exitMeadowFlow}
+          />
+          <MaterialCommunityIconButton
+            type="accent"
+            color={hasSelection ? "green" : "gray"}
+            iconSize={30}
+            icon="check-circle-outline"
+            disabled={!hasSelection}
+            onPress={() => {
+              const geometry = mergePlotsIntoMeadowGeometry(
+                plots.filter((plot) => mode.selectedPlotIds.includes(plot.id)),
+              );
+              if (geometry) submitMeadowGeometry(geometry);
+            }}
+          />
+        </MapControls>
+      );
+    }
+
+    // Free drawing: draw, adjust vertices, ✓ goes to the name drawer
+    const canConfirm = drawingAction === "edit" && newPolygon !== null;
+    return (
+      <MapControls>
+        <MaterialCommunityIconButton
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="close-circle-outline"
+          onPress={() => {
+            drawingRef.current?.reset();
+            exitMeadowFlow();
+          }}
+        />
+        <MaterialCommunityIconButton
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="undo"
+          onPress={() => drawingRef.current?.undo()}
+        />
+        <MaterialCommunityIconButton
+          type="accent"
+          color={canConfirm ? "green" : "gray"}
+          iconSize={30}
+          icon="check-circle-outline"
+          disabled={!canConfirm}
+          onPress={() => {
+            if (newPolygon) submitMeadowGeometry(newPolygon.geometry);
+          }}
+        />
+      </MapControls>
+    );
   }
 
   // Browsing nearby cadastral parcels — only a cancel (exits create mode) and info control

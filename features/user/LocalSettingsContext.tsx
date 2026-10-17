@@ -69,6 +69,12 @@ type LocalSettingsData = {
   // A pending list (not a "seen" list) so existing farms never get the modal.
   farmCreatedModalPendingFarmIds: string[];
   defaultMapLayer: "satellite" | "map";
+  // Last used settings of the plots map, kept across visits and restarts. Base layer
+  // and color mode fall back to the defaults above until changed on the map; other
+  // maps (home preview, field calendar entries) always use the defaults.
+  mapVisibleLayers: { plots: boolean; meadows: boolean };
+  mapBaseLayer?: "satellite" | "map";
+  mapPlotColorMode?: "plot" | "crop" | "usage" | "cutting";
   defaultPlotColorMode: "plot" | "crop" | "usage" | "cutting";
   // Manually chosen app language. null = never chosen, so the app follows the
   // device language (only the initial state, never shown as a UI option).
@@ -122,6 +128,7 @@ export const defaultLocalSettings: LocalSettingsData = {
   agriColtivioPromoShown: false,
   farmCreatedModalPendingFarmIds: [],
   defaultMapLayer: "satellite",
+  mapVisibleLayers: { plots: true, meadows: false },
   defaultPlotColorMode: "crop",
   preferredLocale: null,
 };

@@ -1,3 +1,5 @@
+import { ApiError } from "@/api/api";
+import { toLocalDateString } from "@/utils/date";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Subtitle } from "@/theme/Typography";
@@ -81,8 +83,14 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
     }
   }, [animal]);
 
-  const updateAnimalMutation = useUpdateAnimalMutation(() =>
-    navigation.goBack(),
+  const updateAnimalMutation = useUpdateAnimalMutation(
+    () => navigation.goBack(),
+    (error) => {
+      // The backend rejects a herd date before the animal joined its current herd
+      if (error instanceof ApiError && error.status === 400) {
+        Alert.alert(t("animals.herd_membership_date_too_early"));
+      }
+    },
   );
   const deleteAnimalMutation = useDeleteAnimalMutation(() =>
     navigation.popTo("Animals"),
@@ -105,10 +113,20 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
     updateAnimalMutation.mutate({
       id: animalId,
       ...data,
-      dateOfBirth: data.dateOfBirth?.toISOString(),
-      dateOfDeath: data.dateOfDeath ? data.dateOfDeath.toISOString() : null,
+      dateOfBirth: data.dateOfBirth
+        ? toLocalDateString(data.dateOfBirth)
+        : undefined,
+      dateOfDeath: data.dateOfDeath
+        ? toLocalDateString(data.dateOfDeath)
+        : null,
       // clear deathReason when death date is removed
       deathReason: data.dateOfDeath ? (data.deathReason ?? null) : null,
+      // Only sent when the herd actually changed
+      herdEffectiveDate:
+        (data.herdId ?? null) !== (animal?.herdId ?? null) &&
+        data.herdEffectiveDate
+          ? toLocalDateString(data.herdEffectiveDate)
+          : null,
     });
   }
 
@@ -173,6 +191,7 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
           setValue={setValue}
           earTagData={earTagData}
           showDeathFields
+          initialHerdId={animal?.herdId ?? null}
           onNavigateToCreateHerd={() =>
             navigation.navigate("CreateHerd", {
               previousScreen: "EditAnimal",

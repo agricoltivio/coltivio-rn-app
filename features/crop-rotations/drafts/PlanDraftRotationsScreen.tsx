@@ -1,3 +1,4 @@
+import { toLocalDateString } from "@/utils/date";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { CommonActions, useNavigation } from "@react-navigation/native";
@@ -133,10 +134,12 @@ export function PlanDraftRotationsScreen({
         .filter((r) => !!r.cropId)
         .map((r) => ({
           cropId: r.cropId!,
-          fromDate: r.fromDate.toISOString(),
-          toDate: r.toDate.toISOString(),
+          fromDate: toLocalDateString(r.fromDate),
+          toDate: toLocalDateString(r.toDate),
           recurrenceInterval: r.recurrence?.interval,
-          recurrenceUntil: r.recurrence?.until?.toISOString(),
+          recurrenceUntil: r.recurrence?.until
+            ? toLocalDateString(r.recurrence.until)
+            : undefined,
         })),
     }));
 

@@ -1,3 +1,4 @@
+import { toLocalDateString } from "@/utils/date";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -51,7 +52,7 @@ export function FertilizerApplicationSummaryScreen({
 
   function onSave() {
     createFertilizerApplicationMutation.mutate({
-      date: date.toISOString(),
+      date: toLocalDateString(date),
       fertilizerId: selectedFertilizer?.id!,
       method,
       unit,

@@ -17,7 +17,8 @@ import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
 import { useCreateHerdMutation } from "./herds.hooks";
 import { CreateHerdScreenProps } from "./navigation/animals-routes";
-import { OutdoorScheduleEditModal } from "./OutdoorScheduleEditModal";
+import { useMeadowsQuery } from "./meadows.hooks";
+import { OutdoorScheduleFormResult } from "./OutdoorScheduleFormScreen";
 import { OutdoorScheduleTimeline } from "./timeline/OutdoorScheduleTimeline";
 import { buildOutdoorTimelineData } from "./timeline/outdoor-timeline-utils";
 import { hasScheduleOverlaps } from "./schedule-overlap-utils";
@@ -61,10 +62,34 @@ export function CreateHerdScreen({ route, navigation }: CreateHerdScreenProps) {
 
   // Local outdoor schedules state
   const [localSchedules, setLocalSchedules] = useState<LocalSchedule[]>([]);
-  const [scheduleModalVisible, setScheduleModalVisible] = useState(false);
-  const [editingSchedule, setEditingSchedule] = useState<LocalSchedule | null>(
-    null,
-  );
+  const { meadows } = useMeadowsQuery();
+
+  // Handle returning from the outdoor schedule form
+  const scheduleResult = route.params?.scheduleResult;
+  const [lastScheduleResult, setLastScheduleResult] = useState<
+    OutdoorScheduleFormResult | undefined
+  >(undefined);
+  if (scheduleResult && scheduleResult !== lastScheduleResult) {
+    setLastScheduleResult(scheduleResult);
+    if (scheduleResult.kind === "delete") {
+      setLocalSchedules((prev) =>
+        prev.filter((s) => s.tempId !== scheduleResult.scheduleId),
+      );
+    } else if (scheduleResult.scheduleId) {
+      const { scheduleId, input } = scheduleResult;
+      setLocalSchedules((prev) =>
+        prev.map((s) =>
+          s.tempId === scheduleId ? { ...input, tempId: s.tempId } : s,
+        ),
+      );
+    } else {
+      const { input } = scheduleResult;
+      setLocalSchedules((prev) => [
+        ...prev,
+        { ...input, tempId: `temp-${Date.now()}` },
+      ]);
+    }
+  }
 
   const {
     control,
@@ -135,22 +160,63 @@ export function CreateHerdScreen({ route, navigation }: CreateHerdScreenProps) {
   function formatScheduleSummary(schedule: LocalSchedule): string {
     const typeLabel = t(`animals.outdoor_types.${schedule.type}` as const);
     const start = formatLocalizedDate(new Date(schedule.startDate), locale);
-    const end = schedule.endDate
-      ? formatLocalizedDate(new Date(schedule.endDate), locale)
-      : "–";
+    const weekdays = schedule.recurrence?.byWeekday;
+    // Weekly stays are single days; show until when the repetition ends instead
+    const isWeekdayStay =
+      schedule.recurrence?.frequency === "weekly" &&
+      weekdays !== null &&
+      weekdays !== undefined &&
+      weekdays.length > 0;
+    const until = schedule.recurrence?.until;
+    const end = isWeekdayStay
+      ? until
+        ? formatLocalizedDate(new Date(until), locale)
+        : "–"
+      : schedule.endDate
+        ? formatLocalizedDate(new Date(schedule.endDate), locale)
+        : "–";
     let summary = `${typeLabel}: ${start} - ${end}`;
+    const meadowName = meadows?.find((m) => m.id === schedule.meadowId)?.name;
+    if (meadowName) summary += ` · ${meadowName}`;
     if (schedule.recurrence) {
       const freq = t(
         `animals.frequency_types.${schedule.recurrence.frequency}` as const,
       );
-      summary += ` (${freq})`;
+      // Weekday codes as short localized names; 2024-01-01 is a Monday
+      const weekdayFormatter = new Intl.DateTimeFormat(locale, {
+        weekday: "short",
+      });
+      const weekdayOrder = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"];
+      const weekdayNames =
+        isWeekdayStay && weekdays && weekdays.length < 7
+          ? weekdays
+              .map((weekday) => weekdayOrder.indexOf(weekday))
+              .sort((a, b) => a - b)
+              .map((index) =>
+                weekdayFormatter.format(new Date(2024, 0, 1 + index)),
+              )
+              .join(", ")
+          : null;
+      summary += weekdayNames ? ` (${freq}: ${weekdayNames})` : ` (${freq})`;
     }
     return summary;
   }
 
   function openScheduleModal(schedule?: LocalSchedule) {
-    setEditingSchedule(schedule ?? null);
-    setScheduleModalVisible(true);
+    navigation.navigate("OutdoorScheduleForm", {
+      previousScreen: "CreateHerd",
+      canDelete: true,
+      schedule: schedule
+        ? {
+            id: schedule.tempId,
+            startDate: schedule.startDate,
+            endDate: schedule.endDate ?? null,
+            type: schedule.type,
+            meadowId: schedule.meadowId,
+            recurrence: schedule.recurrence,
+          }
+        : undefined,
+    });
   }
 
   return (
@@ -309,45 +375,6 @@ export function CreateHerdScreen({ route, navigation }: CreateHerdScreenProps) {
           )}
         </View>
       </ScrollView>
-
-      <OutdoorScheduleEditModal
-        visible={scheduleModalVisible}
-        schedule={
-          editingSchedule
-            ? {
-                id: editingSchedule.tempId,
-                startDate: editingSchedule.startDate,
-                endDate: editingSchedule.endDate ?? null,
-                type: editingSchedule.type,
-                recurrence: editingSchedule.recurrence,
-              }
-            : null
-        }
-        onSave={(input) => {
-          if (editingSchedule) {
-            setLocalSchedules((prev) =>
-              prev.map((s) =>
-                s.tempId === editingSchedule.tempId
-                  ? { ...input, tempId: s.tempId }
-                  : s,
-              ),
-            );
-          } else {
-            setLocalSchedules((prev) => [
-              ...prev,
-              { ...input, tempId: `temp-${Date.now()}` },
-            ]);
-          }
-          setScheduleModalVisible(false);
-        }}
-        onDelete={(scheduleId) => {
-          setLocalSchedules((prev) =>
-            prev.filter((s) => s.tempId !== scheduleId),
-          );
-          setScheduleModalVisible(false);
-        }}
-        onClose={() => setScheduleModalVisible(false)}
-      />
     </ContentView>
   );
 }

@@ -1,13 +1,15 @@
+import { Meadow } from "@/api/meadows.api";
 import { Plot } from "@/api/plots.api";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
-import { H2 } from "@/theme/Typography";
+import { H3 } from "@/theme/Typography";
+import { round } from "@/utils/math";
 import { type CameraRef } from "@maplibre/maplibre-react-native";
 import * as turf from "@turf/turf";
 import Fuse from "fuse.js";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FlatList, Modal, View } from "react-native";
+import { Modal, SectionList, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 import { PlotsEmptyState } from "../PlotsEmptyState";
@@ -18,7 +20,16 @@ type PlotListModalProps = {
   plots: Plot[];
   onSelectPlot: (plot: Plot) => void;
   cameraRef: React.RefObject<CameraRef | null>;
+  // Main map: the list follows the visible layers. Plots show unless showPlots is false;
+  // meadows show when given.
+  showPlots?: boolean;
+  meadows?: Meadow[];
+  onSelectMeadow?: (meadow: Meadow) => void;
 };
+
+type ListEntry =
+  | { kind: "plot"; plot: Plot & { usageName: string } }
+  | { kind: "meadow"; meadow: Meadow };
 
 export function PlotListModal({
   visible,
@@ -26,6 +37,9 @@ export function PlotListModal({
   plots,
   onSelectPlot,
   cameraRef,
+  showPlots = true,
+  meadows,
+  onSelectMeadow,
 }: PlotListModalProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -57,6 +71,54 @@ export function PlotListModal({
     searchResult = fuse.search(searchText).map((result) => result.item);
   }
 
+  const meadowFuse = new Fuse(meadows ?? [], {
+    minMatchCharLength: 1,
+    keys: ["name"],
+  });
+  const meadowResult =
+    searchText.length > 0
+      ? meadowFuse.search(searchText).map((result) => result.item)
+      : (meadows ?? []).slice().sort((a, b) => a.name.localeCompare(b.name));
+
+  const showMeadows = meadows !== undefined;
+  const sections: { title: string; data: ListEntry[] }[] = [
+    ...(showPlots
+      ? [
+          {
+            title: t("plots.plots"),
+            data: searchResult.map(
+              (plot): ListEntry => ({ kind: "plot", plot }),
+            ),
+          },
+        ]
+      : []),
+    ...(showMeadows
+      ? [
+          {
+            title: t("animals.meadows.meadows"),
+            data: meadowResult.map(
+              (meadow): ListEntry => ({ kind: "meadow", meadow }),
+            ),
+          },
+        ]
+      : []),
+  ];
+
+  const handleMeadowSelect = useCallback(
+    (meadow: Meadow) => {
+      onClose();
+      setSearchText("");
+      onSelectMeadow?.(meadow);
+      const [longitude, latitude] = turf.centroid(meadow.geometry).geometry
+        .coordinates;
+      cameraRef.current?.flyTo({
+        center: [longitude, latitude],
+        duration: 500,
+      });
+    },
+    [onSelectMeadow, cameraRef, onClose],
+  );
+
   const handlePlotSelect = useCallback(
     (plot: Plot) => {
       onClose();
@@ -75,8 +137,8 @@ export function PlotListModal({
     [onSelectPlot, cameraRef, onClose],
   );
 
-  const renderItem = useCallback(
-    ({ item: plot }: { item: Plot & { usageName: string } }) => (
+  const renderPlot = useCallback(
+    (plot: Plot & { usageName: string }) => (
       <ListItem key={plot.id} onPress={() => handlePlotSelect(plot)}>
         <ListItem.Content>
           <View style={{ flexDirection: "row" }}>
@@ -101,6 +163,32 @@ export function PlotListModal({
     [handlePlotSelect],
   );
 
+  const renderItem = useCallback(
+    ({ item }: { item: ListEntry }) =>
+      item.kind === "plot" ? (
+        renderPlot(item.plot)
+      ) : (
+        <ListItem
+          key={item.meadow.id}
+          onPress={() => handleMeadowSelect(item.meadow)}
+        >
+          <ListItem.Content>
+            <View style={{ flexDirection: "row" }}>
+              <ListItem.Title numberOfLines={1} style={{ flex: 1 }}>
+                {item.meadow.name}
+              </ListItem.Title>
+              <ListItem.Body>
+                {" "}
+                ({round(item.meadow.size / 100, 1)}a)
+              </ListItem.Body>
+            </View>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+      ),
+    [renderPlot, handleMeadowSelect],
+  );
+
   return (
     <Modal
       visible={visible}
@@ -116,8 +204,7 @@ export function PlotListModal({
           backgroundColor: theme.colors.background,
         }}
       >
-        <H2>{t("plots.plots")}</H2>
-        <View style={{ marginVertical: theme.spacing.m }}>
+        <View style={{ marginBottom: theme.spacing.m }}>
           <TextInput
             hideLabel
             placeholder={t("forms.placeholders.search")}
@@ -125,18 +212,33 @@ export function PlotListModal({
             value={searchText}
           />
         </View>
-        <FlatList
+        <SectionList
           contentContainerStyle={{
             borderTopRightRadius: 10,
             borderTopLeftRadius: 10,
             overflow: "hidden",
             backgroundColor: theme.colors.white,
           }}
-          data={searchResult}
-          keyExtractor={(item) => item.id}
+          sections={sections}
+          keyExtractor={(item) =>
+            item.kind === "plot" ? item.plot.id : item.meadow.id
+          }
           renderItem={renderItem}
+          stickySectionHeadersEnabled={false}
+          renderSectionHeader={({ section }) => (
+            <H3
+              style={{
+                paddingHorizontal: theme.spacing.m,
+                paddingTop: theme.spacing.m,
+                paddingBottom: theme.spacing.xs,
+                backgroundColor: theme.colors.background,
+              }}
+            >
+              {section.title}
+            </H3>
+          )}
           ListEmptyComponent={
-            plots !== undefined && plots.length === 0 ? (
+            showPlots && !showMeadows && plots.length === 0 ? (
               <PlotsEmptyState />
             ) : null
           }

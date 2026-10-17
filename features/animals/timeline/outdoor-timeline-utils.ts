@@ -1,5 +1,12 @@
 import { OutdoorSchedule } from "@/api/herds.api";
-import { addWeeks, addMonths, addYears, setDay, getDay } from "date-fns";
+import {
+  addWeeks,
+  addMonths,
+  addYears,
+  differenceInCalendarDays,
+  setDay,
+  getDay,
+} from "date-fns";
 
 export type OutdoorBar = {
   scheduleId: string;
@@ -13,6 +20,10 @@ export type OutdoorBar = {
   scheduleType?: "pasture" | "exercise_yard";
   // Journal-specific metadata
   animalCount?: number;
+  meadowName?: string;
+  meadowSize?: number;
+  // Sub-line within the row when bars overlap (0 = top); see OutdoorHerdData.laneCount
+  lane?: number;
   startDate?: string;
   endDate?: string;
 };
@@ -21,6 +32,8 @@ export type OutdoorHerdData = {
   herdId: string;
   herdName: string;
   bars: OutdoorBar[];
+  // Number of sub-lines the row is split into; 1 when omitted
+  laneCount?: number;
 };
 
 export type OutdoorTimelineData = {
@@ -62,24 +75,36 @@ type ScheduleInput = {
   } | null;
 };
 
-// Builds timeline data from one or more herds' outdoor schedules.
-// Epoch: current year +/- 3 years (6-year window).
-// Recurring schedules are expanded into individual bars.
-export function buildOutdoorTimelineData(
-  herds: { herdId: string; herdName: string; schedules: ScheduleInput[] }[],
-): OutdoorTimelineData {
+// Timeline range: from 3 years back — or further, to the year of the earliest
+// entry — until 3 years ahead
+export function getTimelineEpoch(entryStartDates: string[]) {
   const currentYear = new Date().getFullYear();
-  const startYear = currentYear - 3;
+  const earliestEntryYear = entryStartDates.reduce(
+    (earliest, startDate) =>
+      Math.min(earliest, new Date(startDate).getFullYear()),
+    Infinity,
+  );
+  const startYear = Math.min(currentYear - 3, earliestEntryYear);
   const endYear = currentYear + 3;
   const years = Array.from(
     { length: endYear - startYear + 1 },
     (_, i) => startYear + i,
   );
-
   const epochStart = new Date(startYear, 0, 1);
   const epochEnd = new Date(endYear, 11, 31, 23, 59, 59, 999);
   const totalDays = daysBetween(epochStart, epochEnd) + 1;
   const todayDay = daysBetween(epochStart, new Date());
+  return { years, epochStart, epochEnd, totalDays, todayDay };
+}
+
+// Builds timeline data from one or more herds' outdoor schedules.
+// Recurring schedules are expanded into individual bars.
+export function buildOutdoorTimelineData(
+  herds: { herdId: string; herdName: string; schedules: ScheduleInput[] }[],
+): OutdoorTimelineData {
+  const { years, epochStart, epochEnd, totalDays, todayDay } = getTimelineEpoch(
+    herds.flatMap((herd) => herd.schedules.map((s) => s.startDate)),
+  );
 
   const herdRows: OutdoorHerdData[] = herds.map(
     ({ herdId, herdName, schedules }) => {
@@ -184,8 +209,13 @@ function expandSchedule(
   const results: OccurrenceResult[] = [];
   let current = new Date(baseStart);
   let occurrenceCount = 0;
+  // Safety stop per week/month/year step, not per occurrence: a weekly stay on
+  // all seven weekdays would otherwise stop after ~70 weeks, well before the
+  // timeline ends. 1000 steps cover the whole range even for weekly schedules.
+  let iterationCount = 0;
 
-  while (current.getTime() <= limit && occurrenceCount < 500) {
+  while (current.getTime() <= limit && iterationCount < 1000) {
+    iterationCount++;
     if (count !== null && occurrenceCount >= count) break;
 
     if (frequency === "weekly" && byWeekday && byWeekday.length > 0) {
@@ -195,14 +225,22 @@ function expandSchedule(
         const occStart = setDay(current, WEEKDAY_INDEX[wd], {
           weekStartsOn: getDay(current) as 0 | 1 | 2 | 3 | 4 | 5 | 6,
         });
-        if (occStart < baseStart) continue;
-        const occEnd = new Date(occStart.getTime() + durationMs);
-        const clampedStart = occStart < epochStart ? epochStart : occStart;
-        const clampedEnd = occEnd > epochEnd ? epochEnd : occEnd;
-        if (clampedEnd >= epochStart && clampedStart <= epochEnd) {
+        if (occStart < baseStart || occStart.getTime() > limit) {
+          occurrenceCount++;
+          continue;
+        }
+        if (occStart >= epochStart && occStart <= epochEnd) {
+          // Each weekday is a whole day on pasture. Calendar days keep consecutive
+          // days adjacent across daylight-saving changes.
+          const startDay = differenceInCalendarDays(occStart, epochStart);
+          const occEndDay =
+            differenceInCalendarDays(
+              new Date(occStart.getTime() + durationMs),
+              epochStart,
+            ) + 1;
           results.push({
-            startDay: daysBetween(epochStart, clampedStart),
-            endDay: daysBetween(epochStart, clampedEnd),
+            startDay,
+            endDay: Math.min(occEndDay, daysBetween(epochStart, epochEnd)),
             isOpenEnded: false,
           });
         }
@@ -242,6 +280,20 @@ function expandSchedule(
         current = addYears(baseStart, occurrenceCount * interval);
         break;
     }
+  }
+
+  // Weekday stays: merge consecutive days into one continuous bar
+  if (frequency === "weekly" && byWeekday && byWeekday.length > 0) {
+    const merged: OccurrenceResult[] = [];
+    for (const occurrence of results.sort((a, b) => a.startDay - b.startDay)) {
+      const previous = merged[merged.length - 1];
+      if (previous && occurrence.startDay <= previous.endDay) {
+        previous.endDay = Math.max(previous.endDay, occurrence.endDay);
+      } else {
+        merged.push({ ...occurrence });
+      }
+    }
+    return merged;
   }
 
   return results;

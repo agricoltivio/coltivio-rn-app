@@ -1,22 +1,16 @@
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Text } from "@/components/text/Text";
-import { runOnJS, useAnimatedReaction } from "react-native-reanimated";
 import { useTheme } from "styled-components/native";
-import type { ChartPressState } from "victory-native";
 import { getYearColor } from "./chartColors";
 import { formatUnitBreakdown, UnitBreakdownEntry } from "./unitBreakdown";
 import { formatSignedDelta, formatYValue } from "./unitScaling";
 
-const CURRENT_MONTH = new Date().getMonth();
-
-// Info panel above the chart: total per selected year for the touched month
-// (defaulting to the current month), plus — when getBreakdown is supplied —
-// the unit composition behind it. Always visible, so dragging/tapping the
-// chart just changes which month it's showing rather than opening/closing it.
+// Tooltip content for the touched month: total per selected year, plus — when
+// getBreakdown is supplied — the unit composition behind it. Positioned and
+// shown by MonthCartesianChart while the chart is touched.
 export function ChartPressTooltip({
-  pressState,
+  activeMonth,
   monthLabels,
   selectedYears,
   availableYears,
@@ -26,7 +20,7 @@ export function ChartPressTooltip({
   perUnitLabel,
   getBreakdown,
 }: {
-  pressState: ChartPressState<{ x: number; y: Record<string, number> }>;
+  activeMonth: number;
   monthLabels: string[];
   selectedYears: number[];
   availableYears: number[];
@@ -40,16 +34,6 @@ export function ChartPressTooltip({
 }) {
   const theme = useTheme();
   const { t } = useTranslation();
-  const [activeMonth, setActiveMonth] = useState(CURRENT_MONTH);
-
-  useAnimatedReaction(
-    () => (pressState.isActive.value ? pressState.matchedIndex.value : -1),
-    (current, previous) => {
-      if (current !== -1 && current !== previous) {
-        runOnJS(setActiveMonth)(current);
-      }
-    },
-  );
 
   const average = monthlyAverages[activeMonth] ?? 0;
 
@@ -84,10 +68,11 @@ export function ChartPressTooltip({
           return (
             <View
               key={year}
+              // No wrapping here: the text wraps next to the dot instead of the
+              // whole text moving below it
               style={{
                 flexDirection: "row",
-                flexWrap: "wrap",
-                alignItems: "center",
+                alignItems: "flex-start",
                 gap: 4,
               }}
             >
@@ -96,10 +81,18 @@ export function ChartPressTooltip({
                   width: 8,
                   height: 8,
                   borderRadius: 4,
+                  // Centered on the first text line (12pt text, ~16pt line)
+                  marginTop: 4,
                   backgroundColor: color,
                 }}
               />
-              <Text style={{ fontSize: 12, color: theme.colors.gray1 }}>
+              <Text
+                style={{
+                  flexShrink: 1,
+                  fontSize: 12,
+                  color: theme.colors.gray1,
+                }}
+              >
                 {year}: {formatYValue(value, unitLabel)}{" "}
                 <Text
                   style={{

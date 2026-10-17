@@ -35,6 +35,8 @@ type DrawingOverlayProps = {
   mode: DrawMode;
   mapRef: React.RefObject<MapRef | null>;
   onCoordinatesChange?: (coordinates: LngLat[], closed: boolean) => void;
+  /** Starts as this closed polygon, ready for editing (read on mount only) */
+  initialCoordinates?: LngLat[];
 };
 
 // --- Helpers ---
@@ -143,11 +145,16 @@ export const LAYER_IDS = {
 export const DrawingOverlay = forwardRef<
   DrawingOverlayRef,
   DrawingOverlayProps
->(function DrawingOverlay({ mode, onCoordinatesChange }, ref) {
+>(function DrawingOverlay(
+  { mode, onCoordinatesChange, initialCoordinates },
+  ref,
+) {
   const theme = useTheme();
   const drawColor = theme.colors.warning;
-  const [coordinates, setCoordinates] = useState<LngLat[]>([]);
-  const [closed, setClosed] = useState(false);
+  const [coordinates, setCoordinates] = useState<LngLat[]>(
+    initialCoordinates ?? [],
+  );
+  const [closed, setClosed] = useState(initialCoordinates !== undefined);
 
   // Undo stack: each entry is a snapshot of { coordinates, closed }
   const undoStackRef = useRef<{ coords: LngLat[]; closed: boolean }[]>([]);

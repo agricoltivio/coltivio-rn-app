@@ -1,3 +1,4 @@
+import { toLocalDateString } from "@/utils/date";
 import { TaskCreateInput, TaskDetail, TaskUpdateInput } from "@/api/tasks.api";
 import { Button } from "@/components/buttons/Button";
 import { IonIconButton } from "@/components/buttons/IconButton";
@@ -785,7 +786,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
         labels,
         // null clears the value on the backend, undefined would leave it unchanged
         assigneeId: values.assigneeId || null,
-        dueDate: values.dueDate ? values.dueDate.toISOString() : null,
+        dueDate: values.dueDate ? toLocalDateString(values.dueDate) : null,
         recurrence: recurrencePayload,
         checklistItems,
       };
@@ -796,7 +797,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
         description: values.description || undefined,
         labels,
         assigneeId: values.assigneeId || undefined,
-        dueDate: values.dueDate ? values.dueDate.toISOString() : undefined,
+        dueDate: values.dueDate ? toLocalDateString(values.dueDate) : undefined,
         recurrence: recurrencePayload ?? undefined,
         links: [],
         checklistItems,

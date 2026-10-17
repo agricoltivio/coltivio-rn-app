@@ -1,3 +1,4 @@
+import { toLocalDateString } from "@/utils/date";
 import {
   FertilizerApplication,
   FertilizerApplicationMethod,
@@ -134,7 +135,7 @@ function EditFertilizerApplicationForm({
     updateMutation.mutate({
       fertilizerApplicationId: fertilizerApplication.id,
       input: {
-        date: values.date.toISOString(),
+        date: toLocalDateString(values.date),
         fertilizerId: values.fertilizerId,
         unit: values.unit,
         method: values.method ?? null,
