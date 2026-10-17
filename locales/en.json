@@ -25,7 +25,9 @@
     "apply": "Apply",
     "clear": "Clear",
     "retry": "Try again",
-    "remove": "Remove"
+    "remove": "Remove",
+    "show_more": "More",
+    "show_less": "Less"
   },
   "forms": {
     "labels": {
@@ -1356,7 +1358,6 @@
       "meadows": "Meadows",
       "meadow_optional": "Meadow (optional)",
       "no_meadow": "No meadow",
-      "no_meadows": "No meadows yet",
       "new_meadow": "New meadow",
       "edit_meadow": "Edit meadow",
       "details": "Details",

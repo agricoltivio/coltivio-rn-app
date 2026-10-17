@@ -16,17 +16,16 @@ import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 import { usePlotsMapContext } from "./plots-map-mode";
+
+// Used until the content has been measured
+const FALLBACK_HEIGHT = 260;
+const SHEET_HANDLE_HEIGHT = 24;
 
 export function MeadowDetailsDrawer() {
   const { t, i18n } = useTranslation();
@@ -41,8 +40,18 @@ export function MeadowDetailsDrawer() {
     selectedMeadowId !== null,
   );
 
-  const [sheetIndex, setSheetIndex] = useState(0);
-  const snapPoints = useMemo(() => [200, "85%"], []);
+  // Opens fully: one snap point that fits the content (measured below), so the
+  // drawer ends right under the buttons. The content is short, so a collapsed
+  // step would only hide the useful part.
+  const insets = useSafeAreaInsets();
+  const [contentHeight, setContentHeight] = useState(0);
+  const snapPoints = useMemo(() => {
+    if (contentHeight === 0) return [FALLBACK_HEIGHT];
+    // Sheet handle + the drawer's bottom padding around the measured content
+    return [
+      contentHeight + SHEET_HANDLE_HEIGHT + insets.bottom + theme.spacing.s,
+    ];
+  }, [contentHeight, insets.bottom, theme.spacing.s]);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const selectedMeadow = selectedMeadowId
@@ -85,16 +94,11 @@ export function MeadowDetailsDrawer() {
     ...new Set(currentStays.map((stay) => stay.herdName)),
   ].join(", ");
 
-  const handleSheetChange = useCallback((index: number) => {
-    if (index >= 0) setSheetIndex(index);
-  }, []);
-
   // RAF defers present() by one frame so a freshly-mounted sheet has time to initialize
   useEffect(() => {
     if (selectedMeadow) {
       const raf = requestAnimationFrame(() => {
         bottomSheetModalRef.current?.present();
-        bottomSheetModalRef.current?.snapToIndex(0);
       });
       return () => cancelAnimationFrame(raf);
     }
@@ -110,112 +114,117 @@ export function MeadowDetailsDrawer() {
         ref={bottomSheetModalRef}
         backdropDisappearsOnIndex={0}
         snapPoints={snapPoints}
-        onChange={handleSheetChange}
       >
-        {/* Header with expand toggle */}
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <View style={{ flex: 1 }}>
-            <H3>{selectedMeadow?.name}</H3>
-          </View>
-          <Pressable
-            onPress={() => {
-              bottomSheetModalRef.current?.snapToIndex(
-                sheetIndex === 1 ? 0 : 1,
-              );
-            }}
-          >
-            <Ionicons
-              name={sheetIndex === 1 ? "chevron-down" : "chevron-up"}
-              size={24}
-              color={theme.colors.gray2}
-            />
-          </Pressable>
-        </View>
-
-        {selectedMeadow && (
-          <>
-            <Card style={{ marginTop: theme.spacing.m }}>
-              <SummaryItem
-                label={t("forms.labels.area")}
-                value={`${round(selectedMeadow.size / 100, 1)}a`}
-              />
-              <SummaryItem
-                label={t("animals.meadows.fence_length")}
-                value={`~${round(fenceLengthMeters, 0)} m`}
-              />
-              <SummaryItem
-                label={t("animals.meadows.current_animals")}
-                value={currentAnimalCount}
-              />
-              {currentHerdNames ? (
-                <SummaryItem
-                  label={t("animals.meadows.current_herds")}
-                  value={currentHerdNames}
-                />
-              ) : null}
-              <SummaryItem
-                label={t("animals.meadows.last_used")}
-                value={
-                  // Occupied right now: "now" instead of the last finished stay
-                  currentStays.length > 0
-                    ? t("animals.meadows.last_used_now")
-                    : lastUsedDate
-                      ? formatLocalizedDate(lastUsedDate, locale, "long", false)
-                      : "–"
-                }
-              />
-              {selectedMeadow.additionalNotes ? (
-                <>
-                  <Label style={{ marginTop: theme.spacing.m }}>
-                    {t("forms.labels.additional_notes")}
-                  </Label>
-                  <Body>{selectedMeadow.additionalNotes}</Body>
-                </>
-              ) : null}
-            </Card>
-
-            <View
-              style={{
-                marginTop: theme.spacing.m,
-                borderRadius: 10,
-                overflow: "hidden",
-                backgroundColor: theme.colors.white,
-              }}
-            >
-              <ListItem
-                style={{ backgroundColor: theme.colors.white }}
-                onPress={() =>
-                  navigation.navigate("MeadowDetails", {
-                    meadowId: selectedMeadow.id,
-                  })
-                }
-                hideBottomDivider
-              >
-                <ListItem.Content>
-                  <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
-                    {t("animals.meadows.usage")}
-                  </ListItem.Title>
-                </ListItem.Content>
-                <ListItem.Chevron />
-              </ListItem>
+        <View
+          onLayout={(event) =>
+            setContentHeight(event.nativeEvent.layout.height)
+          }
+        >
+          {/* Header with close toggle */}
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{ flex: 1 }}>
+              <H3>{selectedMeadow?.name}</H3>
             </View>
+            {/* Closes the drawer; there's no collapsed step */}
+            <Pressable onPress={() => setSelectedMeadowId(null)}>
+              <Ionicons
+                name="chevron-down"
+                size={24}
+                color={theme.colors.gray2}
+              />
+            </Pressable>
+          </View>
 
-            {canWrite("animals") && (
-              <>
-                <Button
-                  style={{ marginTop: theme.spacing.m }}
-                  type="accent"
-                  title={t("buttons.edit")}
+          {selectedMeadow && (
+            <>
+              <Card style={{ marginTop: theme.spacing.m }}>
+                <SummaryItem
+                  label={t("forms.labels.area")}
+                  value={`${round(selectedMeadow.size / 100, 1)}a`}
+                />
+                <SummaryItem
+                  label={t("animals.meadows.fence_length")}
+                  value={`~${round(fenceLengthMeters, 0)} m`}
+                />
+                <SummaryItem
+                  label={t("animals.meadows.current_animals")}
+                  value={currentAnimalCount}
+                />
+                {currentHerdNames ? (
+                  <SummaryItem
+                    label={t("animals.meadows.current_herds")}
+                    value={currentHerdNames}
+                  />
+                ) : null}
+                <SummaryItem
+                  label={t("animals.meadows.last_used")}
+                  value={
+                    // Occupied right now: "now" instead of the last finished stay
+                    currentStays.length > 0
+                      ? t("animals.meadows.last_used_now")
+                      : lastUsedDate
+                        ? formatLocalizedDate(
+                            lastUsedDate,
+                            locale,
+                            "long",
+                            false,
+                          )
+                        : "–"
+                  }
+                />
+                {selectedMeadow.additionalNotes ? (
+                  <>
+                    <Label style={{ marginTop: theme.spacing.m }}>
+                      {t("forms.labels.additional_notes")}
+                    </Label>
+                    <Body>{selectedMeadow.additionalNotes}</Body>
+                  </>
+                ) : null}
+              </Card>
+
+              <View
+                style={{
+                  marginTop: theme.spacing.m,
+                  borderRadius: 10,
+                  overflow: "hidden",
+                  backgroundColor: theme.colors.white,
+                }}
+              >
+                <ListItem
+                  style={{ backgroundColor: theme.colors.white }}
                   onPress={() =>
-                    navigation.navigate("MeadowSummary", {
+                    navigation.navigate("MeadowDetails", {
                       meadowId: selectedMeadow.id,
                     })
                   }
-                />
-              </>
-            )}
-          </>
-        )}
+                  hideBottomDivider
+                >
+                  <ListItem.Content>
+                    <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
+                      {t("animals.meadows.usage")}
+                    </ListItem.Title>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+              </View>
+
+              {canWrite("animals") && (
+                <>
+                  <Button
+                    style={{ marginTop: theme.spacing.m }}
+                    type="accent"
+                    title={t("buttons.edit")}
+                    onPress={() =>
+                      navigation.navigate("MeadowSummary", {
+                        meadowId: selectedMeadow.id,
+                      })
+                    }
+                  />
+                </>
+              )}
+            </>
+          )}
+        </View>
       </BottomDrawerModal>
     </BottomSheetModalProvider>
   );

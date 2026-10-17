@@ -25,7 +25,9 @@
     "apply": "Anwenden",
     "clear": "Löschen",
     "retry": "Erneut versuchen",
-    "remove": "Entfernen"
+    "remove": "Entfernen",
+    "show_more": "Mehr",
+    "show_less": "Weniger"
   },
   "forms": {
     "labels": {
@@ -1356,7 +1358,6 @@
       "meadows": "Weideflächen",
       "meadow_optional": "Weidefläche (optional)",
       "no_meadow": "Keine Weidefläche",
-      "no_meadows": "Noch keine Weideflächen erfasst",
       "new_meadow": "Neue Weidefläche",
       "edit_meadow": "Weidefläche bearbeiten",
       "details": "Details",

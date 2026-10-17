@@ -25,7 +25,9 @@
     "apply": "Appliquer",
     "clear": "Effacer",
     "retry": "Réessayer",
-    "remove": "Retirer"
+    "remove": "Retirer",
+    "show_more": "Plus",
+    "show_less": "Moins"
   },
   "forms": {
     "labels": {
@@ -1356,7 +1358,6 @@
       "meadows": "Pâtures",
       "meadow_optional": "Pâture (facultatif)",
       "no_meadow": "Aucune pâture",
-      "no_meadows": "Aucune pâture enregistrée",
       "new_meadow": "Nouvelle pâture",
       "edit_meadow": "Modifier la pâture",
       "details": "Détails",

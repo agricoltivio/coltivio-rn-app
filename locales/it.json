@@ -25,7 +25,9 @@
     "apply": "Applica",
     "clear": "Cancella",
     "retry": "Riprova",
-    "remove": "Rimuovi"
+    "remove": "Rimuovi",
+    "show_more": "Altro",
+    "show_less": "Meno"
   },
   "forms": {
     "labels": {
@@ -1356,7 +1358,6 @@
       "meadows": "Aree di pascolo",
       "meadow_optional": "Area di pascolo (opzionale)",
       "no_meadow": "Nessuna area di pascolo",
-      "no_meadows": "Nessuna area di pascolo registrata",
       "new_meadow": "Nuova area di pascolo",
       "edit_meadow": "Modifica area di pascolo",
       "details": "Dettagli",

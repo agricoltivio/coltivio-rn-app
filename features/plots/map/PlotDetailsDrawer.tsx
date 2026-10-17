@@ -34,7 +34,7 @@ export function PlotDetailsDrawer() {
 
   const [sheetIndex, setSheetIndex] = useState(0);
   const [newEntryMenuVisible, setNewEntryMenuVisible] = useState(false);
-  const snapPoints = useMemo(() => [200, "85%"], []);
+  const snapPoints = useMemo(() => [260, "85%"], []);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const selectedPlotId = mode.type === "view" ? mode.selectedPlotId : null;
@@ -86,13 +86,20 @@ export function PlotDetailsDrawer() {
           <View style={{ flex: 1 }}>
             <H3>{t("plots.plot_name", { name: selectedPlot?.name })}</H3>
           </View>
+          {/* Labelled so it's clear the drawer can be expanded */}
           <Pressable
             onPress={() => {
               bottomSheetModalRef.current?.snapToIndex(
                 sheetIndex === 1 ? 0 : 1,
               );
             }}
+            style={{ flexDirection: "row", alignItems: "center", gap: 2 }}
           >
+            <Label style={{ color: theme.colors.gray2 }}>
+              {sheetIndex === 1
+                ? t("buttons.show_less")
+                : t("buttons.show_more")}
+            </Label>
             <Ionicons
               name={sheetIndex === 1 ? "chevron-down" : "chevron-up"}
               size={24}
