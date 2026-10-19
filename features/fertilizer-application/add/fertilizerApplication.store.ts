@@ -34,9 +34,13 @@ type CreateFertilizerApplicationStore = {
   // navigates back to: the map or the plot-scoped fertilizer applications list.
   preselectedPlotId?: string;
   setPreselectedPlotId: (plotId: string | undefined) => void;
-  returnTo?: "PlotsMap" | "PlotFertilizerApplications";
+  returnTo?: "PlotsMap" | "PlotDetails" | "PlotFertilizerApplications";
   setReturnTo: (
-    returnTo: "PlotsMap" | "PlotFertilizerApplications" | undefined,
+    returnTo:
+      | "PlotsMap"
+      | "PlotDetails"
+      | "PlotFertilizerApplications"
+      | undefined,
   ) => void;
   reset: () => void;
   resetSelectedPlots: () => void;

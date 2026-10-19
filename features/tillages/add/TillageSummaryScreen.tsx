@@ -24,6 +24,8 @@ export function TillageSummaryScreen({
         plotId: preselectedPlotId,
         name: selectedPlotsById[preselectedPlotId].name,
       });
+    } else if (preselectedPlotId && returnTo === "PlotDetails") {
+      navigation.popTo("PlotDetails", { plotId: preselectedPlotId });
     } else if (preselectedPlotId) {
       navigation.popTo("PlotsMap", { selectedPlotId: preselectedPlotId });
     } else {

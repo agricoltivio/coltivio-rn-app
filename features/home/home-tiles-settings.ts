@@ -7,7 +7,6 @@ export type HomeTileMeta = {
   translationKey: string;
   route: string;
   image: number;
-  routeParams?: Record<string, never>;
 };
 
 export const HOME_TILES = {
@@ -18,9 +17,8 @@ export const HOME_TILES = {
   },
   plots: {
     translationKey: "home.tiles.plots",
-    route: "PlotsMap",
+    route: "PlotList",
     image: require("@/assets/images/ic-plots.png"),
-    routeParams: {} as Record<string, never>,
   },
   animalHusbandry: {
     translationKey: "home.tiles.animal_husbandry",

@@ -410,6 +410,15 @@
     "new_entry_menu": {
       "heading": "What would you like to log?"
     },
+    "list": {
+      "title": "Areas",
+      "filter_all": "All",
+      "filter_usage_count": "Usage ({{count}})",
+      "usage_filter_heading": "Filter by usage",
+      "reset": "Reset",
+      "no_results": "No matching areas found",
+      "open_map": "Open map"
+    },
     "common": {
       "draw_area_overlap_info": "Overlapping an existing plot will automatically reduce the area.",
       "affected_plots_warning": "Warning: Overlapping plots will be reduced."

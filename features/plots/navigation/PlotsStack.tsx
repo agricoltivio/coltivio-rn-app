@@ -19,7 +19,7 @@ import { SplitPlotOnboardingScreen } from "../SplitPlotOnboardingScreen";
 import { MergePlotsOnboardingScreen } from "../MergePlotsOnboardingScreen";
 import { AdjustPlotOnboardingScreen } from "../AdjustPlotOnboardingScreen";
 import { SplitPlotSummaryScreen } from "../SplitPlotSummaryScreen";
-import { PlotListScreen } from "../map/PlotListScreen";
+import { PlotListScreen } from "../PlotListScreen";
 import { PlotJournalScreen } from "../PlotJournalScreen";
 import { PlotJournalEntryScreen } from "../PlotJournalEntryScreen";
 import { PlotJournalEntryFormScreen } from "../PlotJournalEntryFormScreen";
@@ -150,12 +150,7 @@ export function renderPlotsStack(
       key="plot-list"
       name="PlotList"
       component={PlotListScreen}
-      options={{
-        title: "",
-        presentation: "modal",
-        headerShown: true,
-        headerRight,
-      }}
+      options={{ title: "" }}
     />,
     <Stack.Screen
       key="plots-map-onboarding"

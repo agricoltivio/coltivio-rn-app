@@ -29,6 +29,7 @@ import { HerdEditScreen } from "../HerdEditScreen";
 import { OutdoorJournalScreen } from "../OutdoorJournalScreen";
 import { OutdoorJournalExportScreen } from "../OutdoorJournalExportScreen";
 import { MeadowDetailsScreen } from "../MeadowDetailsScreen";
+import { MeadowOverviewScreen } from "../MeadowOverviewScreen";
 import { MeadowSummaryScreen } from "../MeadowSummaryScreen";
 import { OutdoorScheduleFormScreen } from "../OutdoorScheduleFormScreen";
 import { TreatmentsExportScreen } from "../TreatmentsExportScreen";
@@ -280,6 +281,12 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
         },
       }}
       component={OutdoorJournalScreen}
+    />,
+    <Stack.Screen
+      key="meadow-overview"
+      name="MeadowOverview"
+      options={{ title: "" }}
+      component={MeadowOverviewScreen}
     />,
     <Stack.Screen
       key="meadow-details"

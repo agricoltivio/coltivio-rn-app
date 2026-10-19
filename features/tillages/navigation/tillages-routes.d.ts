@@ -8,7 +8,7 @@ export type TillagesStackParamList = {
     | {
         plotId?: string;
         name?: string;
-        returnTo?: "PlotsMap" | "PlotTillages";
+        returnTo?: "PlotsMap" | "PlotDetails" | "PlotTillages";
       }
     | undefined;
   ConfigureTillage: undefined;

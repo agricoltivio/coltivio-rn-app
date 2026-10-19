@@ -24,3 +24,7 @@ export function getUsageCodeSelectData(
     label: `${t(`plots.usage_codes.${code}`)} (${code})`,
   }));
 }
+
+export function isUsageCode(value: number): value is UsageCode {
+  return usageCodes.some((code) => code === value);
+}

@@ -410,6 +410,15 @@
     "new_entry_menu": {
       "heading": "Que souhaitez-vous enregistrer ?"
     },
+    "list": {
+      "title": "Surfaces",
+      "filter_all": "Toutes",
+      "filter_usage_count": "Utilisation ({{count}})",
+      "usage_filter_heading": "Filtrer par utilisation",
+      "reset": "Réinitialiser",
+      "no_results": "Aucune surface trouvée",
+      "open_map": "Ouvrir la carte"
+    },
     "common": {
       "draw_area_overlap_info": "Si la zone chevauche un champ existant, celui-ci sera automatiquement réduit.",
       "affected_plots_warning": "Les champs suivants seront réduits par ce champ."

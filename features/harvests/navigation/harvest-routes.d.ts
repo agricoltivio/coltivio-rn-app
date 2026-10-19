@@ -9,7 +9,7 @@ export type HarvestStackParamList = {
         cropId?: string;
         plotId?: string;
         name?: string;
-        returnTo?: "PlotsMap" | "PlotHarvests";
+        returnTo?: "PlotsMap" | "PlotDetails" | "PlotHarvests";
       }
     | undefined;
   ConfigureHarvest: undefined;

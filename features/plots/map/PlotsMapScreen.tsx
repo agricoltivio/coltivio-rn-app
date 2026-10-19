@@ -410,6 +410,13 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       const centroid = turf.centroid(preselectedPlot.geometry);
       return centroid.geometry.coordinates as LngLat;
     }
+    const preselectedMeadow = meadows?.find(
+      (meadow) => meadow.id === route.params?.selectedMeadowId,
+    );
+    if (preselectedMeadow) {
+      const centroid = turf.centroid(preselectedMeadow.geometry);
+      return centroid.geometry.coordinates as LngLat;
+    }
     return farm.location.coordinates as LngLat;
   })();
 

@@ -5,7 +5,7 @@ export type CropProtectionApplicationStackParamList = {
     productId?: string;
     plotId?: string;
     name?: string;
-    returnTo?: "PlotsMap" | "PlotCropProtectionApplications";
+    returnTo?: "PlotsMap" | "PlotDetails" | "PlotCropProtectionApplications";
   };
   ConfigureCropProtectionApplication: undefined;
   SetCropProtectionApplicationUnitQuantity: undefined;

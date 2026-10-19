@@ -36,9 +36,13 @@ type AddCropProtectionApplication = {
   // navigates back to: the map or the plot-scoped crop protection applications list.
   preselectedPlotId?: string;
   setPreselectedPlotId: (plotId: string | undefined) => void;
-  returnTo?: "PlotsMap" | "PlotCropProtectionApplications";
+  returnTo?: "PlotsMap" | "PlotDetails" | "PlotCropProtectionApplications";
   setReturnTo: (
-    returnTo: "PlotsMap" | "PlotCropProtectionApplications" | undefined,
+    returnTo:
+      | "PlotsMap"
+      | "PlotDetails"
+      | "PlotCropProtectionApplications"
+      | undefined,
   ) => void;
   reset: () => void;
   resetSelectedPlots: () => void;

@@ -70,6 +70,7 @@ export type AnimalsStackParamList = {
   Herds: undefined;
   OutdoorJournal: undefined;
   MeadowDetails: { meadowId: string };
+  MeadowOverview: { meadowId: string };
   // returnTo "previous": the map was opened from another screen, go back there after creating
   MeadowSummary: { meadowId?: string; returnTo?: "map" | "previous" };
   OutdoorJournalExport: undefined;
@@ -133,6 +134,7 @@ export type SelectSingleAnimalScreenProps =
 export type HerdsScreenProps = StackScreenProps<"Herds">;
 export type OutdoorJournalScreenProps = StackScreenProps<"OutdoorJournal">;
 export type MeadowDetailsScreenProps = StackScreenProps<"MeadowDetails">;
+export type MeadowOverviewScreenProps = StackScreenProps<"MeadowOverview">;
 export type MeadowSummaryScreenProps = StackScreenProps<"MeadowSummary">;
 export type OutdoorJournalExportScreenProps =
   StackScreenProps<"OutdoorJournalExport">;
