@@ -1727,6 +1727,8 @@
     "plot_restore_title": "Ripristinare il campo {{name}}?",
     "plot_restore_warning": "Il campo riappare sulla mappa e nelle nuove registrazioni. Se dall'archiviazione sono stati registrati nuovi campi su questa superficie, possono sovrapporsi.",
     "meadow_restore_title": "Ripristinare l'area di pascolo {{name}}?",
-    "meadow_restore_warning": "L'area di pascolo riappare sulla mappa e nei nuovi periodi di pascolo. Se dall'archiviazione sono state registrate nuove aree di pascolo su questa superficie, possono sovrapporsi."
+    "meadow_restore_warning": "L'area di pascolo riappare sulla mappa e nei nuovi periodi di pascolo. Se dall'archiviazione sono state registrate nuove aree di pascolo su questa superficie, possono sovrapporsi.",
+    "meadow_active_schedules_title": "Archiviazione non possibile",
+    "meadow_active_schedules": "L'area di pascolo ha ancora periodi di pascolo in corso o pianificati ({{herds}}). Termina o rimuovi questi periodi prima di archiviare l'area di pascolo."
   }
 }

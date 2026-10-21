@@ -1,6 +1,7 @@
 import { describe, test, expect } from "@jest/globals";
 import type { MeadowUsageEntry } from "@/api/meadows.api";
 import {
+  getHerdsWithActiveSchedules,
   computeMeadowMonthlyUsage,
   getMeadowUsageYears,
 } from "./meadow-usage-utils";
@@ -109,5 +110,67 @@ describe("getMeadowUsageYears", () => {
 
   test("only the current year without stays", () => {
     expect(getMeadowUsageYears([], 2025)).toEqual([2025]);
+  });
+});
+
+describe("getHerdsWithActiveSchedules", () => {
+  const today = "2026-10-21";
+  function herd(
+    name: string,
+    schedule: {
+      meadowId?: string | null;
+      endDate: string | null;
+      until?: string | null;
+    },
+  ) {
+    return {
+      name,
+      outdoorSchedules: [
+        {
+          meadowId: schedule.meadowId === undefined ? "m1" : schedule.meadowId,
+          endDate: schedule.endDate,
+          recurrence:
+            schedule.until === undefined ? null : { until: schedule.until },
+        },
+      ],
+    };
+  }
+
+  test("past single stay is not active", () => {
+    expect(
+      getHerdsWithActiveSchedules(
+        [herd("A", { endDate: "2026-10-20" })],
+        "m1",
+        today,
+      ),
+    ).toEqual([]);
+  });
+
+  test("stay ending today, open-ended stay and other meadows", () => {
+    expect(
+      getHerdsWithActiveSchedules(
+        [
+          herd("A", { endDate: "2026-10-21T00:00:00.000Z" }),
+          herd("B", { endDate: null }),
+          herd("C", { endDate: null, meadowId: "m2" }),
+        ],
+        "m1",
+        today,
+      ),
+    ).toEqual(["A", "B"]);
+  });
+
+  test("repeating schedule ends with its until date, not the first stay", () => {
+    expect(
+      getHerdsWithActiveSchedules(
+        [
+          herd("A", { endDate: "2025-05-01", until: null }),
+          herd("B", { endDate: "2025-05-01", until: "2026-12-31" }),
+          herd("C", { endDate: "2025-05-01", until: "2026-01-01" }),
+        ],
+        "m1",
+        today,
+      ),
+    ).toEqual(["A", "B"]);
   });
 });

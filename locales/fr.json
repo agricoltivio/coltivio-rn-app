@@ -1726,6 +1726,8 @@
     "plot_restore_title": "Restaurer le champ {{name}} ?",
     "plot_restore_warning": "Le champ réapparaît sur la carte et lors des nouvelles saisies. Si de nouveaux champs ont été saisis sur cette surface depuis l'archivage, ils peuvent se chevaucher.",
     "meadow_restore_title": "Restaurer la pâture {{name}} ?",
-    "meadow_restore_warning": "La pâture réapparaît sur la carte et lors des nouvelles périodes de pâture. Si de nouvelles pâtures ont été saisies sur cette surface depuis l'archivage, elles peuvent se chevaucher."
+    "meadow_restore_warning": "La pâture réapparaît sur la carte et lors des nouvelles périodes de pâture. Si de nouvelles pâtures ont été saisies sur cette surface depuis l'archivage, elles peuvent se chevaucher.",
+    "meadow_active_schedules_title": "Archivage impossible",
+    "meadow_active_schedules": "La pâture a encore des périodes de pâture en cours ou prévues ({{herds}}). Termine ou supprime ces périodes avant d'archiver la pâture."
   }
 }

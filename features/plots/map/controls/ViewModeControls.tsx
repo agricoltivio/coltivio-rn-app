@@ -4,7 +4,10 @@ import {
   useMeadowsQuery,
   useUpdateMeadowMutation,
 } from "@/features/animals/meadows.hooks";
+import { useHerdsQuery } from "@/features/animals/herds.hooks";
+import { getHerdsWithActiveSchedules } from "@/features/animals/meadow-usage-utils";
 import { MapControls } from "@/features/map/overlays/MapControls";
+import { toLocalDateString } from "@/utils/date";
 import { usePermissions } from "@/features/user/users.hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -32,6 +35,7 @@ export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
   } = usePlotsMapContext();
   const { canWrite } = usePermissions();
   const { meadows } = useMeadowsQuery();
+  const { herds } = useHerdsQuery();
   // Archived meadows leave the map like deleted ones, but keep their data
   const deleteMeadowMutation = useDeleteMeadowMutation(
     () => setSelectedMeadowId(null),
@@ -88,8 +92,22 @@ export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
                 { text: t("buttons.cancel"), style: "cancel" },
                 {
                   text: t("archive.archive"),
-                  // Same confirmation as archiving from the edit screen
-                  onPress: () =>
+                  // Same checks and confirmation as archiving from the edit screen
+                  onPress: () => {
+                    const herdNames = getHerdsWithActiveSchedules(
+                      herds ?? [],
+                      selectedMeadowId,
+                      toLocalDateString(new Date()),
+                    );
+                    if (herdNames.length > 0) {
+                      Alert.alert(
+                        t("archive.meadow_active_schedules_title"),
+                        t("archive.meadow_active_schedules", {
+                          herds: herdNames.join(", "),
+                        }),
+                      );
+                      return;
+                    }
                     Alert.alert(
                       t("archive.meadow_confirm_title", { name: meadowName }),
                       t("archive.meadow_info"),
@@ -104,7 +122,8 @@ export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
                             }),
                         },
                       ],
-                    ),
+                    );
+                  },
                 },
                 {
                   text: t("buttons.delete"),

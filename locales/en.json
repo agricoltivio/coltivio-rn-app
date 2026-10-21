@@ -1727,6 +1727,8 @@
     "plot_restore_title": "Restore plot {{name}}?",
     "plot_restore_warning": "The plot will show up again on the map and when adding entries. If new plots were added on this area since it was archived, they may overlap with it.",
     "meadow_restore_title": "Restore meadow {{name}}?",
-    "meadow_restore_warning": "The meadow will show up again on the map and when adding grazing periods. If new meadows were added on this area since it was archived, they may overlap with it."
+    "meadow_restore_warning": "The meadow will show up again on the map and when adding grazing periods. If new meadows were added on this area since it was archived, they may overlap with it.",
+    "meadow_active_schedules_title": "Can't archive yet",
+    "meadow_active_schedules": "The meadow still has ongoing or planned grazing periods ({{herds}}). End or remove these grazing periods before archiving the meadow."
   }
 }

@@ -84,3 +84,31 @@ export function getMeadowUsageYears(
     (_, index) => currentYear - index,
   );
 }
+
+type ScheduleEndInfo = {
+  meadowId: string | null;
+  endDate: string | null;
+  recurrence: { until: string | null } | null;
+};
+
+// Names of the herds with a schedule on this meadow that hasn't ended yet (ongoing or
+// upcoming). A repeating schedule ends with its "until" date, a single stay with its
+// end date; without one it's open-ended. today is a "YYYY-MM-DD" local date.
+// Such a meadow can't be archived.
+export function getHerdsWithActiveSchedules(
+  herds: { name: string; outdoorSchedules: ScheduleEndInfo[] }[],
+  meadowId: string,
+  today: string,
+): string[] {
+  return herds
+    .filter((herd) =>
+      herd.outdoorSchedules.some((schedule) => {
+        if (schedule.meadowId !== meadowId) return false;
+        const lastDay = schedule.recurrence
+          ? schedule.recurrence.until
+          : schedule.endDate;
+        return lastDay === null || lastDay.slice(0, 10) >= today;
+      }),
+    )
+    .map((herd) => herd.name);
+}

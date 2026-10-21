@@ -11,7 +11,10 @@ import { useTranslation } from "react-i18next";
 import { Alert, View } from "react-native";
 import { usePermissions } from "@/features/user/users.hooks";
 import { useTheme } from "styled-components/native";
+import { toLocalDateString } from "@/utils/date";
+import { useHerdsQuery } from "./herds.hooks";
 import { useMeadowDraftStore } from "./meadow-draft.store";
+import { getHerdsWithActiveSchedules } from "./meadow-usage-utils";
 import {
   useCreateMeadowMutation,
   useDeleteMeadowMutation,
@@ -81,6 +84,7 @@ export function MeadowSummaryScreen({
     () => Alert.alert(t("common.error"), t("common.unknown_error")),
   );
   const isArchived = meadow?.archivedAt != null;
+  const { herds } = useHerdsQuery();
 
   function archiveMeadow() {
     if (!meadowId) return;
@@ -110,6 +114,19 @@ export function MeadowSummaryScreen({
 
   // Explains what archiving does before archiving; also used from the delete alert
   function confirmArchive() {
+    // Not allowed while a herd is (or will be) on the meadow
+    const herdNames = getHerdsWithActiveSchedules(
+      herds ?? [],
+      meadowId ?? "",
+      toLocalDateString(new Date()),
+    );
+    if (herdNames.length > 0) {
+      Alert.alert(
+        t("archive.meadow_active_schedules_title"),
+        t("archive.meadow_active_schedules", { herds: herdNames.join(", ") }),
+      );
+      return;
+    }
     Alert.alert(
       t("archive.meadow_confirm_title", { name: meadow?.name ?? "" }),
       t("archive.meadow_info"),

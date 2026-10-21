@@ -1728,6 +1728,8 @@
     "plot_restore_title": "Schlag {{name}} wiederherstellen?",
     "plot_restore_warning": "Der Schlag erscheint wieder auf der Karte und bei neuen Einträgen. Wurden seit dem Archivieren neue Schläge auf dieser Fläche erfasst, können sie sich mit ihm überschneiden.",
     "meadow_restore_title": "Weidefläche {{name}} wiederherstellen?",
-    "meadow_restore_warning": "Die Weidefläche erscheint wieder auf der Karte und bei neuen Weidezeiten. Wurden seit dem Archivieren neue Weideflächen auf dieser Fläche erfasst, können sie sich mit ihr überschneiden."
+    "meadow_restore_warning": "Die Weidefläche erscheint wieder auf der Karte und bei neuen Weidezeiten. Wurden seit dem Archivieren neue Weideflächen auf dieser Fläche erfasst, können sie sich mit ihr überschneiden.",
+    "meadow_active_schedules_title": "Archivieren nicht möglich",
+    "meadow_active_schedules": "Die Weidefläche hat noch laufende oder geplante Weidezeiten ({{herds}}). Beende oder entferne diese Weidezeiten, bevor du die Weidefläche archivierst."
   }
 }
