@@ -2,9 +2,9 @@ import { Button } from "@/components/buttons/Button";
 import { H3, Body } from "@/theme/Typography";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Modal, Pressable, View } from "react-native";
+import { Alert, Modal, Pressable, View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { useDeletePlotMutation } from "../plots.hooks";
+import { useDeletePlotMutation, useUpdatePlotMutation } from "../plots.hooks";
 import { usePlotsMapContext } from "./plots-map-mode";
 
 type DeletePlotDialogProps = {
@@ -24,13 +24,17 @@ export function DeletePlotDialog({
   const theme = useTheme();
   const { dispatch } = usePlotsMapContext();
 
-  const deletePlotMutation = useDeletePlotMutation(
-    () => {
-      dispatch({ type: "SELECT_PLOT", plotId: null });
-      onClose();
-    },
-    (error) => console.error(error),
-  );
+  // Archived plots leave the map like deleted ones, but keep their entries
+  function handleRemoved() {
+    dispatch({ type: "SELECT_PLOT", plotId: null });
+    onClose();
+  }
+  const showError = () =>
+    Alert.alert(t("common.error"), t("common.unknown_error"));
+  const deletePlotMutation = useDeletePlotMutation(handleRemoved, showError);
+  const archivePlotMutation = useUpdatePlotMutation(handleRemoved, showError);
+  const isPending =
+    deletePlotMutation.isPending || archivePlotMutation.isPending;
 
   return (
     <Modal
@@ -60,11 +64,40 @@ export function DeletePlotDialog({
           <Body style={{ marginTop: theme.spacing.m }}>
             {t("plots.delete.entries_warning")}
           </Body>
+          <Body style={{ marginTop: theme.spacing.s }}>
+            {t("archive.plot_delete_hint")}
+          </Body>
+          <Button
+            style={{ marginTop: theme.spacing.l }}
+            type="accent"
+            fontSize={15}
+            title={t("archive.archive")}
+            onPress={() =>
+              // Same confirmation as archiving from the edit screen
+              Alert.alert(
+                t("archive.plot_confirm_title", { name: plotName }),
+                t("archive.plot_info"),
+                [
+                  { text: t("buttons.cancel"), style: "cancel" },
+                  {
+                    text: t("archive.archive"),
+                    onPress: () =>
+                      archivePlotMutation.mutate({
+                        plotId,
+                        data: { archived: true },
+                      }),
+                  },
+                ],
+              )
+            }
+            loading={archivePlotMutation.isPending}
+            disabled={isPending}
+          />
           <View
             style={{
               flexDirection: "row",
               gap: theme.spacing.m,
-              marginTop: theme.spacing.l,
+              marginTop: theme.spacing.s,
             }}
           >
             <Button
@@ -81,7 +114,7 @@ export function DeletePlotDialog({
               title={t("buttons.delete")}
               onPress={() => deletePlotMutation.mutate(plotId)}
               loading={deletePlotMutation.isPending}
-              disabled={deletePlotMutation.isPending}
+              disabled={isPending}
             />
           </View>
         </View>

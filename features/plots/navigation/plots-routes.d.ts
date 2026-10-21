@@ -1,7 +1,15 @@
+import type { InitialMeadowAction } from "../map/plots-map-mode";
 import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type PlotsStackParamList = {
-  PlotsMap: { selectedPlotId?: string };
+  PlotsMap: {
+    selectedPlotId?: string;
+    selectedMeadowId?: string;
+    // Opens the map directly in a meadow flow; leaving it returns to the previous screen
+    meadowAction?: InitialMeadowAction;
+    // Shows the archived layer for this visit, without changing the stored choice
+    showArchived?: boolean;
+  };
   AddPlotSummary: {
     cropId?: string;
   };

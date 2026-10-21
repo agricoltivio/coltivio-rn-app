@@ -9,6 +9,7 @@ import {
   Control,
   FieldErrors,
   UseFormSetValue,
+  useFormState,
   useWatch,
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -16,15 +17,22 @@ import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
 import { useAvailableEarTagsQuery } from "./earTags.hooks";
-import { useHerdsQuery } from "./herds.hooks";
+import { toLocalDateString } from "@/utils/date";
+import { useEarliestHerdChangeDateQuery, useHerdsQuery } from "./herds.hooks";
 
 export type AnimalFormValues = Omit<
   AnimalCreateInput,
-  "dateOfBirth" | "dateOfDeath"
+  "dateOfBirth" | "dateOfDeath" | "herdEffectiveDate"
 > & {
   dateOfBirth: Date;
   dateOfDeath?: Date;
+  // Since when the animal is in the selected herd (or out of its previous one)
+  herdEffectiveDate?: Date;
 };
+
+// Animals entered within this many days of birth count as newborns: their herd
+// membership defaults to the birth date instead of today
+const NEWBORN_MAX_AGE_DAYS = 30;
 
 type AnimalFormProps = {
   control: Control<AnimalFormValues>;
@@ -33,6 +41,10 @@ type AnimalFormProps = {
   earTagData?: { label: string; value: string }[];
   showDeathFields?: boolean;
   onNavigateToCreateHerd?: () => void;
+  // Herd the animal was in when the form opened; undefined when creating an animal
+  initialHerdId?: string | null;
+  // The edited animal; its herd history limits the herd date. Undefined when creating.
+  animalId?: string;
 };
 
 export function AnimalForm({
@@ -42,6 +54,8 @@ export function AnimalForm({
   earTagData,
   showDeathFields,
   onNavigateToCreateHerd,
+  initialHerdId,
+  animalId,
 }: AnimalFormProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -51,6 +65,39 @@ export function AnimalForm({
   // Watch dateOfDeath to conditionally show deathReason
   const dateOfDeath = useWatch({ control, name: "dateOfDeath" });
   const animalType = useWatch({ control, name: "type" });
+  const herdId = useWatch({ control, name: "herdId" });
+  const dateOfBirth = useWatch({ control, name: "dateOfBirth" });
+  const { dirtyFields } = useFormState({ control, name: "herdEffectiveDate" });
+  const herdEffectiveDateTouched = dirtyFields.herdEffectiveDate === true;
+
+  // The herd date only matters when the herd membership changes
+  const isCreating = initialHerdId === undefined;
+  const showHerdEffectiveDate = isCreating
+    ? !!herdId
+    : (herdId ?? null) !== initialHerdId;
+
+  // A herd change can't take effect before the animal joined its current herd
+  const { earliestEffectiveDate } = useEarliestHerdChangeDateQuery(
+    animalId ? [animalId] : [],
+    showHerdEffectiveDate,
+  );
+
+  // Default the herd date until the user picks one: birth date for newborns, else today
+  useEffect(() => {
+    if (!showHerdEffectiveDate || herdEffectiveDateTouched) return;
+    const ageInDays = dateOfBirth
+      ? (Date.now() - dateOfBirth.getTime()) / (1000 * 60 * 60 * 24)
+      : Infinity;
+    const isNewborn =
+      isCreating && ageInDays >= 0 && ageInDays <= NEWBORN_MAX_AGE_DAYS;
+    setValue("herdEffectiveDate", isNewborn ? dateOfBirth : new Date());
+  }, [
+    showHerdEffectiveDate,
+    herdEffectiveDateTouched,
+    dateOfBirth,
+    isCreating,
+    setValue,
+  ]);
 
   // Only show parents of the same animal type
   const { animals } = useAnimalsQuery(
@@ -216,6 +263,27 @@ export function AnimalForm({
           />
         )}
       </View>
+      {showHerdEffectiveDate && (
+        <RHDatePicker
+          name="herdEffectiveDate"
+          control={control}
+          mode="date"
+          clearable={false}
+          label={
+            herdId ? t("animals.herd_member_since") : t("animals.herd_left_on")
+          }
+          minimumDate={earliestEffectiveDate ?? undefined}
+          rules={{
+            validate: (value) =>
+              !(value instanceof Date) ||
+              earliestEffectiveDate === null ||
+              toLocalDateString(value) >=
+                toLocalDateString(earliestEffectiveDate) ||
+              t("animals.herd_membership_date_too_early"),
+          }}
+          error={errors.herdEffectiveDate?.message}
+        />
+      )}
       <RHSelect
         name="motherId"
         control={control}

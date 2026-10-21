@@ -1,9 +1,5 @@
 import { BottomDrawerModal } from "@/components/bottom-drawer/BottomDrawerModal";
-import { Button } from "@/components/buttons/Button";
-import { Card } from "@/components/card/Card";
-import { ListItem } from "@/components/list/ListItem";
-import { Body, H3, Label } from "@/theme/Typography";
-import { formatLocalizedDate } from "@/utils/date";
+import { H3, Label } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
 import {
   BottomSheetModal,
@@ -17,29 +13,27 @@ import React, {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import { Modal, Pressable, TouchableOpacity, View } from "react-native";
+import { Pressable, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
-import { usePermissions } from "@/features/user/users.hooks";
+import { PlotDetailsContent } from "../PlotDetailsContent";
 import { usePlotsMapContext } from "./plots-map-mode";
 
 export function PlotDetailsDrawer() {
-  const { t, i18n } = useTranslation();
-  const locale = i18n.language;
+  const { t } = useTranslation();
   const theme = useTheme();
-  const { mode, dispatch, navigation } = usePlotsMapContext();
-  const { canWrite } = usePermissions();
+  const { mode, dispatch, navigation, archivedPlots } = usePlotsMapContext();
   // Use all plots (including size-0) so selecting a plot with no geometry still opens the drawer
   const { plots: allPlots } = useFarmPlotsQuery();
 
   const [sheetIndex, setSheetIndex] = useState(0);
-  const [newEntryMenuVisible, setNewEntryMenuVisible] = useState(false);
-  const snapPoints = useMemo(() => [200, "85%"], []);
+  const snapPoints = useMemo(() => [260, "85%"], []);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const selectedPlotId = mode.type === "view" ? mode.selectedPlotId : null;
   const selectedPlot = selectedPlotId
-    ? allPlots?.find((p) => p.id === selectedPlotId)
+    ? (allPlots?.find((p) => p.id === selectedPlotId) ??
+      archivedPlots.find((p) => p.id === selectedPlotId))
     : undefined;
 
   const handleExpandBottomDrawer = useCallback(() => {
@@ -86,13 +80,20 @@ export function PlotDetailsDrawer() {
           <View style={{ flex: 1 }}>
             <H3>{t("plots.plot_name", { name: selectedPlot?.name })}</H3>
           </View>
+          {/* Labelled so it's clear the drawer can be expanded */}
           <Pressable
             onPress={() => {
               bottomSheetModalRef.current?.snapToIndex(
                 sheetIndex === 1 ? 0 : 1,
               );
             }}
+            style={{ flexDirection: "row", alignItems: "center", gap: 2 }}
           >
+            <Label style={{ color: theme.colors.gray2 }}>
+              {sheetIndex === 1
+                ? t("buttons.show_less")
+                : t("buttons.show_more")}
+            </Label>
             <Ionicons
               name={sheetIndex === 1 ? "chevron-down" : "chevron-up"}
               size={24}
@@ -102,300 +103,13 @@ export function PlotDetailsDrawer() {
         </View>
 
         {selectedPlot && (
-          <>
-            <Card style={{ marginTop: theme.spacing.m }}>
-              {/* Area row (no edit icon) */}
-              <SummaryItem
-                label={t("forms.labels.area")}
-                value={`${(selectedPlot.size ?? 0) / 100}a`}
-              />
-              {selectedPlot.currentCropRotation ? (
-                <SummaryItem
-                  label={t("crops.crop")}
-                  value={selectedPlot.currentCropRotation.crop.name}
-                />
-              ) : null}
-              <SummaryItem
-                label={t("forms.labels.local_id")}
-                value={selectedPlot.localId ?? t("common.unknown")}
-              />
-              {selectedPlot.usage && (
-                <SummaryItem
-                  label={t("forms.labels.usagecode")}
-                  value={selectedPlot.usage}
-                />
-              )}
-              {selectedPlot.cuttingDate ? (
-                <SummaryItem
-                  label={t("forms.labels.cutting_date")}
-                  value={formatLocalizedDate(
-                    new Date(selectedPlot.cuttingDate),
-                    locale,
-                    "long",
-                    false,
-                  )}
-                />
-              ) : null}
-              {selectedPlot.additionalNotes ? (
-                <>
-                  <Label style={{ marginTop: theme.spacing.m }}>
-                    {t("forms.labels.additional_notes")}
-                  </Label>
-                  <Body>{selectedPlot.additionalNotes}</Body>
-                </>
-              ) : null}
-            </Card>
-
-            <View
-              style={{
-                marginTop: theme.spacing.m,
-                borderRadius: 10,
-                overflow: "hidden",
-                backgroundColor: theme.colors.white,
-              }}
-            >
-              <ListItem
-                style={{ backgroundColor: theme.colors.white }}
-                onPress={() =>
-                  navigation.navigate("PlanCropRotations", {
-                    plotIds: [selectedPlot.id],
-                    previousScreen: "PlotDetails",
-                  })
-                }
-              >
-                <ListItem.Content>
-                  <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
-                    {t("crop_rotations.crop_rotation")}
-                  </ListItem.Title>
-                </ListItem.Content>
-                <ListItem.Chevron />
-              </ListItem>
-              <ListItem
-                style={{ backgroundColor: theme.colors.white }}
-                onPress={() =>
-                  navigation.navigate("PlotHarvests", {
-                    plotId: selectedPlot.id,
-                    name: selectedPlot.name,
-                  })
-                }
-              >
-                <ListItem.Content>
-                  <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
-                    {t("harvests.harvest")}
-                  </ListItem.Title>
-                </ListItem.Content>
-                <ListItem.Chevron />
-              </ListItem>
-              <ListItem
-                style={{ backgroundColor: theme.colors.white }}
-                onPress={() =>
-                  navigation.navigate("PlotFertilizerApplications", {
-                    plotId: selectedPlot.id,
-                    name: selectedPlot.name,
-                  })
-                }
-              >
-                <ListItem.Content>
-                  <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
-                    {t("fertilizer_application.fertilizer_application")}
-                  </ListItem.Title>
-                </ListItem.Content>
-                <ListItem.Chevron />
-              </ListItem>
-              <ListItem
-                style={{ backgroundColor: theme.colors.white }}
-                onPress={() =>
-                  navigation.navigate("PlotTillages", {
-                    plotId: selectedPlot.id,
-                    name: selectedPlot.name,
-                  })
-                }
-              >
-                <ListItem.Content>
-                  <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
-                    {t("tillages.tillage")}
-                  </ListItem.Title>
-                </ListItem.Content>
-                <ListItem.Chevron />
-              </ListItem>
-              <ListItem
-                style={{ backgroundColor: theme.colors.white }}
-                onPress={() =>
-                  navigation.navigate("PlotCropProtectionApplications", {
-                    plotId: selectedPlot.id,
-                    name: selectedPlot.name,
-                  })
-                }
-                hideBottomDivider
-              >
-                <ListItem.Content>
-                  <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
-                    {t("crop_protection_applications.crop_protection")}
-                  </ListItem.Title>
-                </ListItem.Content>
-                <ListItem.Chevron />
-              </ListItem>
-            </View>
-
-            {canWrite("field_calendar") && (
-              <Button
-                style={{ marginTop: theme.spacing.m }}
-                title={t("plots.new_entry")}
-                onPress={() => setNewEntryMenuVisible(true)}
-              />
-            )}
-
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("PlotJournal", {
-                  plotId: selectedPlot.id,
-                })
-              }
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: theme.spacing.xs,
-                marginTop: theme.spacing.m,
-                padding: 12,
-                borderRadius: theme.radii.m,
-                borderWidth: 1.5,
-                borderColor: theme.colors.primary,
-                backgroundColor: theme.colors.white,
-              }}
-            >
-              <Ionicons
-                name="book-outline"
-                size={18}
-                color={theme.colors.primary}
-              />
-              <Body
-                style={{
-                  color: theme.colors.primary,
-                  fontWeight: "600",
-                  fontSize: 16,
-                }}
-              >
-                {t("animals.journal")}
-              </Body>
-            </TouchableOpacity>
-
-            <Button
-              style={{ marginTop: theme.spacing.m }}
-              type="accent"
-              title={t("buttons.edit")}
-              onPress={() =>
-                navigation.navigate("EditPlotModal", {
-                  plotId: selectedPlot.id,
-                })
-              }
-            />
-          </>
+          <PlotDetailsContent
+            plot={selectedPlot}
+            navigation={navigation}
+            returnTo="PlotsMap"
+          />
         )}
       </BottomDrawerModal>
-
-      <Modal
-        visible={newEntryMenuVisible}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setNewEntryMenuVisible(false)}
-      >
-        <Pressable
-          style={{
-            flex: 1,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            justifyContent: "flex-end",
-          }}
-          onPress={() => setNewEntryMenuVisible(false)}
-        >
-          <Pressable
-            style={{
-              backgroundColor: theme.colors.white,
-              borderTopLeftRadius: 16,
-              borderTopRightRadius: 16,
-              paddingHorizontal: theme.spacing.l,
-              paddingBottom: theme.spacing.xl,
-            }}
-            onPress={(e) => e.stopPropagation()}
-          >
-            <H3
-              style={{
-                marginTop: theme.spacing.l,
-                marginBottom: theme.spacing.s,
-              }}
-            >
-              {t("plots.new_entry_menu.heading")}
-            </H3>
-            {selectedPlot &&
-              (
-                [
-                  {
-                    label: t("harvests.harvest"),
-                    route: "SelectHarvestCropAndDate" as const,
-                  },
-                  {
-                    label: t("fertilizer_application.fertilizer_application"),
-                    route: "SelectFertilizerAndDate" as const,
-                  },
-                  {
-                    label: t("crop_protection_applications.crop_protection"),
-                    route:
-                      "SelectCropProtectionApplicationProductAndDate" as const,
-                  },
-                  {
-                    label: t("tillages.tillage"),
-                    route: "SelectTillageDate" as const,
-                  },
-                ] as const
-              ).map(({ label, route }, index, actions) => (
-                <ListItem
-                  key={route}
-                  onPress={() => {
-                    setNewEntryMenuVisible(false);
-                    navigation.navigate(route, {
-                      plotId: selectedPlot.id,
-                      name: selectedPlot.name,
-                      returnTo: "PlotsMap",
-                    });
-                  }}
-                  hideBottomDivider={index === actions.length - 1}
-                >
-                  <ListItem.Content>
-                    <ListItem.Title>{label}</ListItem.Title>
-                  </ListItem.Content>
-                  <ListItem.Chevron />
-                </ListItem>
-              ))}
-          </Pressable>
-        </Pressable>
-      </Modal>
     </BottomSheetModalProvider>
-  );
-}
-
-function SummaryItem({
-  label,
-  value,
-}: {
-  label: string;
-  value: string | number;
-}) {
-  const theme = useTheme();
-  return (
-    <View
-      style={{
-        flexDirection: "row",
-        marginBottom: theme.spacing.s,
-        gap: theme.spacing.m,
-        alignItems: "flex-start",
-      }}
-    >
-      <Label numberOfLines={1} style={{ flexShrink: 0 }}>
-        {label}
-      </Label>
-      <Label style={{ flex: 1, fontSize: 18, textAlign: "right" }}>
-        {value}
-      </Label>
-    </View>
   );
 }

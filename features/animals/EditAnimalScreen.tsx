@@ -1,3 +1,4 @@
+import { toLocalDateString } from "@/utils/date";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Subtitle } from "@/theme/Typography";
@@ -10,7 +11,6 @@ import { useTheme } from "styled-components/native";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { Switch } from "@/components/inputs/Switch";
-import { Ionicons } from "@expo/vector-icons";
 import { ListItem } from "@/components/list/ListItem";
 import {
   useAnimalByIdQuery,
@@ -81,8 +81,10 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
     }
   }, [animal]);
 
-  const updateAnimalMutation = useUpdateAnimalMutation(() =>
-    navigation.goBack(),
+  const updateAnimalMutation = useUpdateAnimalMutation(
+    () => navigation.goBack(),
+    // Too early herd dates are prevented in the form, so any failure is unexpected
+    () => Alert.alert(t("common.error"), t("common.unknown_error")),
   );
   const deleteAnimalMutation = useDeleteAnimalMutation(() =>
     navigation.popTo("Animals"),
@@ -105,10 +107,20 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
     updateAnimalMutation.mutate({
       id: animalId,
       ...data,
-      dateOfBirth: data.dateOfBirth?.toISOString(),
-      dateOfDeath: data.dateOfDeath ? data.dateOfDeath.toISOString() : null,
+      dateOfBirth: data.dateOfBirth
+        ? toLocalDateString(data.dateOfBirth)
+        : undefined,
+      dateOfDeath: data.dateOfDeath
+        ? toLocalDateString(data.dateOfDeath)
+        : null,
       // clear deathReason when death date is removed
       deathReason: data.dateOfDeath ? (data.deathReason ?? null) : null,
+      // Only sent when the herd actually changed
+      herdEffectiveDate:
+        (data.herdId ?? null) !== (animal?.herdId ?? null) &&
+        data.herdEffectiveDate
+          ? toLocalDateString(data.herdEffectiveDate)
+          : null,
     });
   }
 
@@ -173,6 +185,8 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
           setValue={setValue}
           earTagData={earTagData}
           showDeathFields
+          initialHerdId={animal?.herdId ?? null}
+          animalId={animalId}
           onNavigateToCreateHerd={() =>
             navigation.navigate("CreateHerd", {
               previousScreen: "EditAnimal",

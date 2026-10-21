@@ -111,13 +111,9 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
   }, [localSettings.homeTiles, isActive, user]);
 
   function navigateToTile(tileId: string) {
-    if (tileId === "plots") {
-      navigation.navigate("PlotsMap", {});
-    } else {
-      navigation.navigate(
-        HOME_TILES[tileId as keyof typeof HOME_TILES].route as never,
-      );
-    }
+    navigation.navigate(
+      HOME_TILES[tileId as keyof typeof HOME_TILES].route as never,
+    );
   }
 
   const isList = localSettings.homeTilesLayout === "list";

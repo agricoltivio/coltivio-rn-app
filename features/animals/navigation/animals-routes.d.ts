@@ -1,3 +1,7 @@
+import type {
+  OutdoorScheduleFormResult,
+  ScheduleEditData,
+} from "../OutdoorScheduleFormScreen";
 import { StackScreenProps } from "@react-navigation/native-stack";
 import { UncategorizedAnimal } from "@/api/outdoor-journal.api";
 import { AnimalType, ParsedImportRow } from "@/api/animals.api";
@@ -65,13 +69,33 @@ export type AnimalsStackParamList = {
   };
   Herds: undefined;
   OutdoorJournal: undefined;
+  MeadowDetails: { meadowId: string };
+  MeadowOverview: { meadowId: string };
+  // returnTo "OutdoorScheduleForm": the map was opened from the schedule form (the only
+  // screen that opens the map in a meadow flow), go back there after creating
+  MeadowSummary: {
+    meadowId?: string;
+    returnTo?: "map" | "OutdoorScheduleForm";
+  };
   OutdoorJournalExport: undefined;
   HerdsOnboarding: undefined;
   CreateHerd: {
     previousScreen?: "CreateAnimal" | "EditAnimal";
     animalIds?: string[];
+    scheduleResult?: OutdoorScheduleFormResult;
   };
-  HerdEdit: { herdId?: string; animalIds?: string[] };
+  HerdEdit: {
+    herdId?: string;
+    animalIds?: string[];
+    scheduleResult?: OutdoorScheduleFormResult;
+  };
+  OutdoorScheduleForm: {
+    previousScreen: "HerdEdit" | "CreateHerd";
+    canDelete: boolean;
+    schedule?: ScheduleEditData;
+    // Set by MeadowSummary when returning from creating a meadow
+    createdMeadowId?: string;
+  };
   BatchSelectAnimals: undefined;
   BatchEditAction: { animalIds: string[] };
   UncategorizedAnimals: { animals: UncategorizedAnimal[] };
@@ -113,12 +137,17 @@ export type SelectSingleAnimalScreenProps =
   StackScreenProps<"SelectSingleAnimal">;
 export type HerdsScreenProps = StackScreenProps<"Herds">;
 export type OutdoorJournalScreenProps = StackScreenProps<"OutdoorJournal">;
+export type MeadowDetailsScreenProps = StackScreenProps<"MeadowDetails">;
+export type MeadowOverviewScreenProps = StackScreenProps<"MeadowOverview">;
+export type MeadowSummaryScreenProps = StackScreenProps<"MeadowSummary">;
 export type OutdoorJournalExportScreenProps =
   StackScreenProps<"OutdoorJournalExport">;
 export type TreatmentsExportScreenProps = StackScreenProps<"TreatmentsExport">;
 export type HerdsOnboardingScreenProps = StackScreenProps<"HerdsOnboarding">;
 export type CreateHerdScreenProps = StackScreenProps<"CreateHerd">;
 export type HerdEditScreenProps = StackScreenProps<"HerdEdit">;
+export type OutdoorScheduleFormScreenProps =
+  StackScreenProps<"OutdoorScheduleForm">;
 export type BatchSelectAnimalsScreenProps =
   StackScreenProps<"BatchSelectAnimals">;
 export type BatchEditActionScreenProps = StackScreenProps<"BatchEditAction">;

@@ -24,7 +24,10 @@
     "forgot_password": "Password dimenticata",
     "apply": "Applica",
     "clear": "Cancella",
-    "retry": "Riprova"
+    "retry": "Riprova",
+    "remove": "Rimuovi",
+    "show_more": "Altro",
+    "show_less": "Meno"
   },
   "forms": {
     "labels": {
@@ -407,6 +410,15 @@
     "new_entry_menu": {
       "heading": "Cosa vuoi registrare?"
     },
+    "list": {
+      "title": "Superfici",
+      "filter_all": "Tutte",
+      "filter_usage_count": "Utilizzo ({{count}})",
+      "usage_filter_heading": "Filtra per utilizzo",
+      "reset": "Reimposta",
+      "no_results": "Nessuna superficie trovata",
+      "open_map": "Apri mappa"
+    },
     "common": {
       "draw_area_overlap_info": "Se l'area si sovrappone a un campo esistente, verrà automaticamente ridotta.",
       "affected_plots_warning": "Attenzione, i seguenti campi verranno ridotti da questo campo."
@@ -426,7 +438,12 @@
     "add": {
       "map": {
         "mode_select": {
-          "message": "Per creare un nuovo campo, puoi selezionare una particella catastale oppure disegnare una nuova area."
+          "message": "Per creare un nuovo campo, puoi selezionare una particella catastale oppure disegnare una nuova area.",
+          "target": "Crea nuovo",
+          "target_plot": "Particella",
+          "target_meadow": "Area di pascolo",
+          "message_meadow": "Disegna liberamente l'area di pascolo o seleziona particelle esistenti.",
+          "select_plots": "Seleziona particelle"
         },
         "tips": {
           "parcel_select": {
@@ -523,17 +540,20 @@
       "abort_body": "Premi la X per annullare e tornare senza unire."
     },
     "map_onboarding": {
-      "browse_heading": "I tuoi appezzamenti",
-      "browse_body": "Tocca un appezzamento sulla mappa o cercalo tramite l'icona lista per vederne i dettagli.",
+      "browse_heading": "Le tue superfici",
+      "browse_body": "Tocca una superficie sulla mappa o cercala tramite l'icona lista per vederne i dettagli.",
       "browse_expand_info": "Espandi il cassetto per vedere ulteriori informazioni.",
       "tools_heading": "Strumenti",
       "tools_body": "Usa la barra degli strumenti per gestire le tue superfici.",
-      "tool_add": "Aggiungi un nuovo appezzamento",
-      "tool_split": "Dividi un appezzamento esistente",
+      "tool_add": "Aggiungi una superficie – appezzamento o area di pascolo",
+      "tool_split": "Dividi un appezzamento",
       "tool_merge": "Unisci appezzamenti",
-      "tool_edit": "Modifica la superficie",
-      "tool_delete": "Elimina appezzamento",
-      "tool_cancel": "Annulla l'azione corrente"
+      "tool_edit": "Modifica la forma di una superficie",
+      "tool_delete": "Elimina una superficie",
+      "tool_cancel": "Annulla l'azione corrente",
+      "layers_heading": "Livelli",
+      "layers_body": "Con l'icona dei livelli scegli cosa mostra la mappa.",
+      "layers_options": "Puoi mostrare o nascondere appezzamenti, aree di pascolo e superfici archiviate."
     },
     "usage_codes": {
       "501": "Orzo primaverile",
@@ -707,7 +727,13 @@
       "overlap_body": "Se l'appezzamento modificato si sovrappone ad altri, verranno automaticamente ridimensionati."
     },
     "empty_state_title": "Ancora nessun campo",
-    "empty_state_body": "Importa le tue superfici su un PC tramite la web app dal sistema cantonale (ad es. Acorda, LAWIS), oppure disegnale sulla mappa. Hai bisogno di aiuto? Scrivici a <email>support@coltivio.ch</email>."
+    "empty_state_body": "Importa le tue superfici su un PC tramite la web app dal sistema cantonale (ad es. Acorda, LAWIS), oppure disegnale sulla mappa. Hai bisogno di aiuto? Scrivici a <email>support@coltivio.ch</email>.",
+    "map_layers": {
+      "title": "Livelli",
+      "plots": "Particelle",
+      "meadows": "Aree di pascolo",
+      "archived": "Archiviati"
+    }
   },
   "farm_equipment": {
     "farm_equipment": "Macchine e Attrezzature Agricole",
@@ -1142,14 +1168,19 @@
     "cancel_heading": "Annulla",
     "cancel_body": "Tocca questo simbolo per annullare e tornare indietro.",
     "overlap_heading": "Sovrapposizioni",
-    "overlap_body": "Se il tuo nuovo campo si sovrappone a campi esistenti, questi verranno adattati automaticamente.",
+    "overlap_body": "Se il tuo nuovo appezzamento si sovrappone a un appezzamento esistente, l'appezzamento esistente viene adattato automaticamente.",
     "crop_rotation_welcome_heading": "Pianifica le tue rotazioni colturali",
     "crop_rotation_welcome_body": "Seleziona i campi per i quali vuoi pianificare le rotazioni colturali.",
     "plots_map_welcome_heading": "I tuoi campi",
     "plots_map_tap_body": "Tocca un campo per vedere i dettagli.",
     "plots_map_add_body": "Premi questo pulsante per aggiungere nuovi campi.",
     "welcome_body_create": "Sei ora in modalità disegno. Tocca la mappa per impostare i punti angolari del tuo nuovo appezzamento.",
-    "actions_heading": "Fine & Annulla"
+    "actions_heading": "Fine & Annulla",
+    "welcome_body_meadow_draw": "Ora sei in modalità disegno. Tocca la mappa per impostare gli angoli della tua nuova area di pascolo.",
+    "welcome_body_meadow_plots": "Stai per creare un'area di pascolo dai tuoi appezzamenti esistenti. Ecco come funziona.",
+    "meadow_plots_heading": "Seleziona appezzamenti",
+    "meadow_plots_body": "Tocca gli appezzamenti che fanno parte dell'area di pascolo. Tocca di nuovo per deselezionarne uno. Gli appezzamenti stessi restano invariati.",
+    "meadow_overlap_body": "Le aree di pascolo sono indipendenti dai tuoi appezzamenti: possono trovarsi sopra uno o più appezzamenti, che restano invariati. Le aree di pascolo però non possono sovrapporsi tra loro."
   },
   "animals": {
     "animals": "Animali",
@@ -1339,7 +1370,49 @@
       "delete_n_animals": "Elimina {{count}} animali",
       "select_action": "Seleziona l'azione"
     },
-    "notes": "Note"
+    "notes": "Note",
+    "meadows": {
+      "meadow": "Area di pascolo",
+      "meadows": "Aree di pascolo",
+      "meadow_optional": "Area di pascolo (opzionale)",
+      "no_meadow": "Nessuna area di pascolo",
+      "new_meadow": "Nuova area di pascolo",
+      "edit_meadow": "Modifica area di pascolo",
+      "details": "Dettagli",
+      "usage": "Utilizzo",
+      "size_value": "{{are}}a ({{squareMeters}}m²)",
+      "journal_view_categories": "Categorie",
+      "errors": {
+        "overlaps": "La superficie si sovrappone all'area di pascolo «{{name}}».",
+        "self_intersecting": "La superficie non deve intersecarsi con se stessa."
+      },
+      "current_animals": "Animali attuali",
+      "current_herds": "Mandrie attuali",
+      "last_used": "Ultimo utilizzo",
+      "fence_length": "Lunghezza recinzione (ca.)",
+      "last_used_now": "ora",
+      "usage_chart": {
+        "days_title": "Giorni occupati al mese",
+        "days_value": "{{count}} giorno occupato",
+        "days_value_plural": "{{count}} giorni occupati",
+        "average_animals_value": "Ø {{averageAnimals}} animali"
+      }
+    },
+    "end_date_before_start": "La data di fine non può precedere la data di inizio.",
+    "schedule_repeat": {
+      "none": "Nessuna",
+      "weekdays": "Giorni della settimana",
+      "weekdays_required": "Seleziona almeno un giorno della settimana.",
+      "until_optional": "Ripeti fino al (opzionale)"
+    },
+    "herd_changes_apply_from": "Le modifiche valgono dal",
+    "herd_member_since": "Nella mandria dal",
+    "herd_left_on": "Ha lasciato la mandria il",
+    "herd_membership_date_too_early": "La data è precedente all'ingresso di un animale nella sua mandria attuale. Scegli una data successiva.",
+    "herd_changes_summary": "{{added}} aggiunti, {{removed}} rimossi. Da quale data vale?",
+    "delete_herd_confirm": "Eliminare la mandria «{{name}}»?",
+    "delete_herd_confirm_info": "Questa azione non può essere annullata.",
+    "timeline_view_overview": "Panoramica"
   },
   "drugs": {
     "drugs": "Medicinali",
@@ -1646,5 +1719,24 @@
   "donations": {
     "title": "Donazioni",
     "history_heading": "Le tue donazioni"
+  },
+  "archive": {
+    "archive": "Archivia",
+    "restore": "Ripristina",
+    "archived": "Archiviati",
+    "archived_since": "In archivio dal {{date}}.",
+    "plot_confirm_title": "Archiviare il campo {{name}}?",
+    "plot_info": "I campi archiviati non vengono più mostrati sulla mappa né per le nuove registrazioni. Tutte le registrazioni esistenti vengono mantenute e puoi ripristinare il campo in qualsiasi momento.",
+    "plot_delete_hint": "Se non coltivi più questo campo, puoi anche semplicemente archiviarlo: così tutte le registrazioni vengono mantenute.",
+    "meadow_confirm_title": "Archiviare l'area di pascolo {{name}}?",
+    "meadow_info": "Le aree di pascolo archiviate non vengono più mostrate sulla mappa né per i nuovi periodi di pascolo. Tutti i dati vengono mantenuti e puoi ripristinare l'area di pascolo in qualsiasi momento.",
+    "meadow_delete_title": "Eliminare davvero l'area di pascolo {{name}}?",
+    "meadow_delete_warning": "Tutti i dati collegati verranno eliminati definitivamente. Se non usi più quest'area di pascolo, puoi anche semplicemente archiviarla: così tutti i dati vengono mantenuti.",
+    "plot_restore_title": "Ripristinare il campo {{name}}?",
+    "plot_restore_warning": "Il campo riappare sulla mappa e nelle nuove registrazioni. Se dall'archiviazione sono stati registrati nuovi campi su questa superficie, possono sovrapporsi.",
+    "meadow_restore_title": "Ripristinare l'area di pascolo {{name}}?",
+    "meadow_restore_warning": "L'area di pascolo riappare sulla mappa e nei nuovi periodi di pascolo. Se dall'archiviazione sono state registrate nuove aree di pascolo su questa superficie, possono sovrapporsi.",
+    "meadow_active_schedules_title": "Archiviazione non possibile",
+    "meadow_active_schedules": "L'area di pascolo ha ancora periodi di pascolo in corso o pianificati ({{herds}}). Termina o rimuovi questi periodi prima di archiviare l'area di pascolo."
   }
 }

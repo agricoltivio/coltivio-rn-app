@@ -6,6 +6,7 @@ import { OutdoorBar } from "./outdoor-timeline-utils";
 
 type OutdoorTimelineHerdRowProps = {
   bars: OutdoorBar[];
+  laneCount: number;
   scale: number;
   visibleStartDay: number;
   visibleEndDay: number;
@@ -14,9 +15,18 @@ type OutdoorTimelineHerdRowProps = {
 };
 
 const ROW_HEIGHT = 46;
+// Height of one sub-line when a row is split into several lanes
+const LANE_HEIGHT = 30;
+const LANE_BAR_INSET = 3;
+
+// Rows with overlapping bars grow by one lane per extra overlap
+function getRowHeight(laneCount: number): number {
+  return laneCount > 1 ? laneCount * LANE_HEIGHT : ROW_HEIGHT;
+}
 
 export const OutdoorTimelineHerdRow = memo(function OutdoorTimelineHerdRow({
   bars,
+  laneCount,
   scale,
   visibleStartDay,
   visibleEndDay,
@@ -48,12 +58,26 @@ export const OutdoorTimelineHerdRow = memo(function OutdoorTimelineHerdRow({
   return (
     <View
       style={{
-        height: ROW_HEIGHT,
+        height: getRowHeight(laneCount),
         position: "relative",
         borderBottomWidth: 1,
         borderBottomColor: theme.colors.gray4,
       }}
     >
+      {/* Faint divider between lanes */}
+      {Array.from({ length: laneCount - 1 }, (_, index) => (
+        <View
+          key={`lane-divider-${index}`}
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: (index + 1) * LANE_HEIGHT,
+            height: 1,
+            backgroundColor: theme.colors.gray5,
+          }}
+        />
+      ))}
       {visibleBars.map((bar, index) => (
         <OutdoorTimelineBar
           key={`${bar.scheduleId}-${index}`}
@@ -62,10 +86,16 @@ export const OutdoorTimelineHerdRow = memo(function OutdoorTimelineHerdRow({
           width={(bar.endDay - bar.startDay) * scale}
           todayLeft={todayLeft}
           onPress={handleBarPress}
+          {...(laneCount > 1
+            ? {
+                top: (bar.lane ?? 0) * LANE_HEIGHT + LANE_BAR_INSET,
+                height: LANE_HEIGHT - LANE_BAR_INSET * 2,
+              }
+            : {})}
         />
       ))}
     </View>
   );
 });
 
-export { ROW_HEIGHT };
+export { ROW_HEIGHT, getRowHeight };

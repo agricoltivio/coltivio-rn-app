@@ -1,23 +1,14 @@
 import { useApi } from "@/api/api";
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/cache/query-keys";
-
-// Same epoch as outdoor timeline: current year +/- 3
-const currentYear = new Date().getFullYear();
-const defaultFromDate = new Date(currentYear - 3, 0, 1).toISOString();
-const defaultToDate = new Date(
-  currentYear + 3,
-  11,
-  31,
-  23,
-  59,
-  59,
-  999,
-).toISOString();
+import {
+  OUTDOOR_HISTORY_FROM_DATE,
+  OUTDOOR_HISTORY_TO_DATE,
+} from "./meadow-usage-utils";
 
 export function useOutdoorJournalQuery(
-  fromDate: string = defaultFromDate,
-  toDate: string = defaultToDate,
+  fromDate: string = OUTDOOR_HISTORY_FROM_DATE,
+  toDate: string = OUTDOOR_HISTORY_TO_DATE,
 ) {
   const api = useApi();
   return useQuery({

@@ -33,6 +33,9 @@ type LocalSettingsData = {
   mapDrawOnboardingCompleted: boolean;
   addPlotDrawOnboardingCompleted: boolean;
   addPlotParcelOnboardingCompleted: boolean;
+  // Creating a meadow by drawing it, or from existing plots
+  addMeadowDrawOnboardingCompleted: boolean;
+  addMeadowPlotsOnboardingCompleted: boolean;
   selectPlotsForPlanOnboardingCompleted: boolean;
   plotsMapOnboardingCompleted: boolean;
   splitPlotOnboardingCompleted: boolean;
@@ -69,6 +72,13 @@ type LocalSettingsData = {
   // A pending list (not a "seen" list) so existing farms never get the modal.
   farmCreatedModalPendingFarmIds: string[];
   defaultMapLayer: "satellite" | "map";
+  // Last used settings of the plots map, kept across visits and restarts. Base layer
+  // and color mode fall back to the defaults above until changed on the map; other
+  // maps (home preview, field calendar entries) always use the defaults.
+  // archived is missing in settings stored before it existed, read as off
+  mapVisibleLayers: { plots: boolean; meadows: boolean; archived?: boolean };
+  mapBaseLayer?: "satellite" | "map";
+  mapPlotColorMode?: "plot" | "crop" | "usage" | "cutting";
   defaultPlotColorMode: "plot" | "crop" | "usage" | "cutting";
   // Manually chosen app language. null = never chosen, so the app follows the
   // device language (only the initial state, never shown as a UI option).
@@ -95,6 +105,8 @@ export const defaultLocalSettings: LocalSettingsData = {
   mapDrawOnboardingCompleted: false,
   addPlotDrawOnboardingCompleted: false,
   addPlotParcelOnboardingCompleted: false,
+  addMeadowDrawOnboardingCompleted: false,
+  addMeadowPlotsOnboardingCompleted: false,
   selectPlotsForPlanOnboardingCompleted: false,
   plotsMapOnboardingCompleted: false,
   splitPlotOnboardingCompleted: false,
@@ -122,6 +134,7 @@ export const defaultLocalSettings: LocalSettingsData = {
   agriColtivioPromoShown: false,
   farmCreatedModalPendingFarmIds: [],
   defaultMapLayer: "satellite",
+  mapVisibleLayers: { plots: true, meadows: false },
   defaultPlotColorMode: "crop",
   preferredLocale: null,
 };
@@ -321,6 +334,8 @@ export function useLocalSettings() {
       mapDrawOnboardingCompleted: true,
       addPlotDrawOnboardingCompleted: true,
       addPlotParcelOnboardingCompleted: true,
+      addMeadowDrawOnboardingCompleted: true,
+      addMeadowPlotsOnboardingCompleted: true,
       selectPlotsForPlanOnboardingCompleted: true,
       plotsMapOnboardingCompleted: true,
       splitPlotOnboardingCompleted: true,

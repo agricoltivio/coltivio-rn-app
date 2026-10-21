@@ -1,3 +1,4 @@
+import { differenceInCalendarDays } from "date-fns";
 import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
 import {
   buildOutdoorTimelineData,
@@ -127,15 +128,18 @@ describe("buildOutdoorTimelineData", () => {
     expect(bar.endDay).toBe(expectedEndDay);
   });
 
-  test("schedule before epoch is excluded", () => {
+  test("schedule older than 3 years extends the timeline back to its year", () => {
     const result = buildOutdoorTimelineData([
       {
         herdId: "h1",
         herdName: "Herd 1",
-        schedules: [makeSchedule("2019-01-01", "2021-12-31")],
+        schedules: [makeSchedule("2019-03-01", "2021-12-31")],
       },
     ]);
-    expect(result.herds[0].bars).toHaveLength(0);
+    expect(result.years[0]).toBe(2019);
+    expect(result.epochStart).toEqual(new Date(2019, 0, 1));
+    expect(result.herds[0].bars).toHaveLength(1);
+    expect(result.herds[0].bars[0].startDay).toBeGreaterThan(0);
   });
 
   test("schedule after epoch is excluded", () => {
@@ -149,14 +153,12 @@ describe("buildOutdoorTimelineData", () => {
     expect(result.herds[0].bars).toHaveLength(0);
   });
 
-  test("schedule partially before epoch is clamped to epochStart", () => {
-    const schedule = makeSchedule("2021-06-01", "2022-06-01");
+  test("recent schedules keep the default 3 years back", () => {
+    const schedule = makeSchedule("2025-06-01", "2025-07-01");
     const result = buildOutdoorTimelineData([
       { herdId: "h1", herdName: "Herd 1", schedules: [schedule] },
     ]);
-    const bar = result.herds[0].bars[0];
-    expect(bar.startDay).toBe(0); // clamped to day 0 (2022-01-01)
-    expect(bar.endDay).toBe(dayOf("2022-06-01"));
+    expect(result.years[0]).toBe(2022);
   });
 
   // --- Bar metadata ---
@@ -289,6 +291,98 @@ describe("buildOutdoorTimelineData", () => {
     expect(result.herds[0].bars[3].startDay).toBe(dayOf("2025-01-15"));
   });
 
+  test("weekly recurrence on all weekdays merges into one continuous bar", () => {
+    // Local midnight, 2025-01-06 is a Monday; three full weeks
+    const start = new Date(2025, 0, 6);
+    const schedule = makeSchedule(start.toISOString(), start.toISOString(), {
+      recurrence: {
+        frequency: "weekly",
+        byWeekday: ["MO", "TU", "WE", "TH", "FR", "SA", "SU"],
+        until: new Date(2025, 0, 26).toISOString(),
+      },
+    });
+    const result = buildOutdoorTimelineData([
+      { herdId: "h1", herdName: "Herd 1", schedules: [schedule] },
+    ]);
+    expect(result.herds[0].bars).toHaveLength(1);
+    const bar = result.herds[0].bars[0];
+    expect(bar.startDay).toBe(differenceInCalendarDays(start, EPOCH_START));
+    expect(bar.endDay - bar.startDay).toBe(21);
+  });
+
+  test("weekly recurrence on Mo–We gives one 3-day bar per week", () => {
+    const start = new Date(2025, 0, 6);
+    const schedule = makeSchedule(start.toISOString(), start.toISOString(), {
+      recurrence: {
+        frequency: "weekly",
+        byWeekday: ["MO", "TU", "WE"],
+        until: new Date(2025, 0, 19).toISOString(),
+      },
+    });
+    const result = buildOutdoorTimelineData([
+      { herdId: "h1", herdName: "Herd 1", schedules: [schedule] },
+    ]);
+    const bars = result.herds[0].bars;
+    expect(bars).toHaveLength(2);
+    expect(bars.map((bar) => bar.endDay - bar.startDay)).toEqual([3, 3]);
+    expect(bars[1].startDay - bars[0].startDay).toBe(7);
+  });
+
+  test("weekday stays stop at the until date, even mid-week", () => {
+    const start = new Date(2025, 0, 6);
+    const schedule = makeSchedule(start.toISOString(), start.toISOString(), {
+      recurrence: {
+        frequency: "weekly",
+        byWeekday: ["MO", "TU", "WE", "TH", "FR", "SA", "SU"],
+        // Wednesday of the second week
+        until: new Date(2025, 0, 15).toISOString(),
+      },
+    });
+    const result = buildOutdoorTimelineData([
+      { herdId: "h1", herdName: "Herd 1", schedules: [schedule] },
+    ]);
+    const bar = result.herds[0].bars[0];
+    // Jan 6 – Jan 15 inclusive
+    expect(bar.endDay - bar.startDay).toBe(10);
+  });
+
+  test("weekday stays stay continuous across a daylight-saving change", () => {
+    // Europe switches to summer time on 2025-03-30
+    const start = new Date(2025, 2, 24);
+    const schedule = makeSchedule(start.toISOString(), start.toISOString(), {
+      recurrence: {
+        frequency: "weekly",
+        byWeekday: ["MO", "TU", "WE", "TH", "FR", "SA", "SU"],
+        until: new Date(2025, 3, 6).toISOString(),
+      },
+    });
+    const result = buildOutdoorTimelineData([
+      { herdId: "h1", herdName: "Herd 1", schedules: [schedule] },
+    ]);
+    expect(result.herds[0].bars).toHaveLength(1);
+    expect(
+      result.herds[0].bars[0].endDay - result.herds[0].bars[0].startDay,
+    ).toBe(14);
+  });
+
+  test("open-ended weekday stays run to the end of the timeline", () => {
+    // Starts at the beginning of the epoch, repeats on all weekdays, no until
+    const start = new Date(2022, 0, 3);
+    const schedule = makeSchedule(start.toISOString(), start.toISOString(), {
+      recurrence: {
+        frequency: "weekly",
+        byWeekday: ["MO", "TU", "WE", "TH", "FR", "SA", "SU"],
+      },
+    });
+    const result = buildOutdoorTimelineData([
+      { herdId: "h1", herdName: "Herd 1", schedules: [schedule] },
+    ]);
+    const bars = result.herds[0].bars;
+    expect(bars).toHaveLength(1);
+    // Within the last week of the epoch
+    expect(bars[0].endDay).toBeGreaterThan(result.totalDays - 8);
+  });
+
   test("weekly recurrence with interval 2 generates every other week", () => {
     const schedule = makeSchedule("2025-01-06", "2025-01-06", {
       recurrence: { frequency: "weekly", interval: 2, until: "2025-02-28" },
@@ -353,6 +447,7 @@ describe("buildSingleHerdTimelineData", () => {
       id: "s1",
       farmId: "farm-1",
       herdId: "h1",
+      meadowId: null,
       startDate: "2025-05-01T00:00:00.000Z",
       endDate: "2025-05-31T00:00:00.000Z",
       notes: "test",
@@ -374,6 +469,7 @@ describe("buildSingleHerdTimelineData", () => {
       id: "s2",
       farmId: "farm-1",
       herdId: "h1",
+      meadowId: null,
       startDate: "2022-06-01T00:00:00.000Z",
       endDate: "2022-08-31T00:00:00.000Z",
       notes: null,

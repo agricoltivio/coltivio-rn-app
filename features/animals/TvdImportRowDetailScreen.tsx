@@ -1,3 +1,4 @@
+import { toLocalDateString } from "@/utils/date";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -79,11 +80,15 @@ export function TvdImportRowDetailScreen({
       earTagNumber: values.earTagNumber || null,
       name: values.name || null,
       sex: values.sex,
-      dateOfBirth: values.dateOfBirth ? values.dateOfBirth.toISOString() : null,
+      dateOfBirth: values.dateOfBirth
+        ? toLocalDateString(values.dateOfBirth)
+        : null,
       usage: values.usage,
       motherEarTagNumber: values.motherEarTagNumber || null,
       fatherEarTagNumber: values.fatherEarTagNumber || null,
-      dateOfDeath: values.dateOfDeath ? values.dateOfDeath.toISOString() : null,
+      dateOfDeath: values.dateOfDeath
+        ? toLocalDateString(values.dateOfDeath)
+        : null,
       deathReason: values.dateOfDeath ? (values.deathReason ?? "died") : null,
       mergeAnimalId,
     };

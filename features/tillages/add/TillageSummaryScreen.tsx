@@ -1,3 +1,4 @@
+import { toLocalDateString } from "@/utils/date";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -23,6 +24,8 @@ export function TillageSummaryScreen({
         plotId: preselectedPlotId,
         name: selectedPlotsById[preselectedPlotId].name,
       });
+    } else if (preselectedPlotId && returnTo === "PlotDetails") {
+      navigation.popTo("PlotDetails", { plotId: preselectedPlotId });
     } else if (preselectedPlotId) {
       navigation.popTo("PlotsMap", { selectedPlotId: preselectedPlotId });
     } else {
@@ -40,7 +43,7 @@ export function TillageSummaryScreen({
   function onSave() {
     createTillagesMutation.mutate({
       action,
-      date: date.toISOString(),
+      date: toLocalDateString(date),
       additionalNotes,
       plots: selectedPlots.map((plot) => ({
         plotId: plot.plotId,

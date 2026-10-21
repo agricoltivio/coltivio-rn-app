@@ -1,3 +1,4 @@
+import { toLocalDateString } from "@/utils/date";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -66,7 +67,7 @@ export function AddPlotSummaryScreen({
       geometry,
       usage: usage ? Number(usage) : undefined,
       size: Number(size),
-      cuttingDate: cuttingDate?.toISOString(),
+      cuttingDate: cuttingDate ? toLocalDateString(cuttingDate) : undefined,
     });
   }
 

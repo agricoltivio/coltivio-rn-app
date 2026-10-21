@@ -13,7 +13,7 @@ import { Modal, Pressable, View } from "react-native";
 import { Text } from "@/components/text/Text";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useTheme } from "styled-components/native";
-import { formatLocalizedDate } from "@/utils/date";
+import { formatLocalizedDate, toLocalDateString } from "@/utils/date";
 import {
   useAnimalByIdQuery,
   useSetCustomOutdoorJournalCategoriesMutation,
@@ -138,9 +138,11 @@ export function ManageAnimalCategoriesScreen({
 
   function handleModalConfirm() {
     const newEntry: CategoryEntry = {
-      startDate: modalStartDate.toISOString(),
+      startDate: toLocalDateString(modalStartDate),
       endDate:
-        modalHasEndDate && modalEndDate ? modalEndDate.toISOString() : null,
+        modalHasEndDate && modalEndDate
+          ? toLocalDateString(modalEndDate)
+          : null,
       category: modalCategory,
     };
     if (editingIndex !== null) {

@@ -24,7 +24,10 @@
     "forgot_password": "Mot de passe oublié",
     "apply": "Appliquer",
     "clear": "Effacer",
-    "retry": "Réessayer"
+    "retry": "Réessayer",
+    "remove": "Retirer",
+    "show_more": "Plus",
+    "show_less": "Moins"
   },
   "forms": {
     "labels": {
@@ -407,6 +410,15 @@
     "new_entry_menu": {
       "heading": "Que souhaitez-vous enregistrer ?"
     },
+    "list": {
+      "title": "Surfaces",
+      "filter_all": "Toutes",
+      "filter_usage_count": "Utilisation ({{count}})",
+      "usage_filter_heading": "Filtrer par utilisation",
+      "reset": "Réinitialiser",
+      "no_results": "Aucune surface trouvée",
+      "open_map": "Ouvrir la carte"
+    },
     "common": {
       "draw_area_overlap_info": "Si la zone chevauche un champ existant, celui-ci sera automatiquement réduit.",
       "affected_plots_warning": "Les champs suivants seront réduits par ce champ."
@@ -426,7 +438,12 @@
     "add": {
       "map": {
         "mode_select": {
-          "message": "Pour créer un nouveau champ, vous pouvez sélectionner une parcelle ou dessiner une nouvelle zone."
+          "message": "Pour créer un nouveau champ, vous pouvez sélectionner une parcelle ou dessiner une nouvelle zone.",
+          "target": "Créer",
+          "target_plot": "Parcelle",
+          "target_meadow": "Pâture",
+          "message_meadow": "Dessine librement la pâture ou sélectionne des parcelles existantes.",
+          "select_plots": "Sélectionner des parcelles"
         },
         "tips": {
           "parcel_select": {
@@ -523,17 +540,20 @@
       "abort_body": "Appuyez sur le X pour annuler et revenir sans fusionner."
     },
     "map_onboarding": {
-      "browse_heading": "Vos champs",
-      "browse_body": "Touchez un champ sur la carte ou recherchez-le via l'icône liste pour afficher les détails.",
+      "browse_heading": "Vos surfaces",
+      "browse_body": "Touchez une surface sur la carte ou recherchez-la via l'icône liste pour afficher les détails.",
       "browse_expand_info": "Développez le tiroir pour voir plus de détails.",
       "tools_heading": "Outils",
       "tools_body": "Utilisez la barre d'outils pour gérer vos surfaces.",
-      "tool_add": "Ajouter un nouveau champ",
-      "tool_split": "Diviser un champ existant",
+      "tool_add": "Ajouter une surface – champ ou pâture",
+      "tool_split": "Diviser un champ",
       "tool_merge": "Fusionner des champs",
-      "tool_edit": "Modifier la surface du champ",
-      "tool_delete": "Supprimer un champ",
-      "tool_cancel": "Annuler l'action en cours"
+      "tool_edit": "Modifier la forme d'une surface",
+      "tool_delete": "Supprimer une surface",
+      "tool_cancel": "Annuler l'action en cours",
+      "layers_heading": "Calques",
+      "layers_body": "L'icône des calques permet de choisir ce que la carte affiche.",
+      "layers_options": "Vous pouvez afficher ou masquer les champs, les pâtures et les surfaces archivées."
     },
     "usage_codes": {
       "501": "Orge de printemps",
@@ -707,7 +727,13 @@
       "overlap_body": "Si le champ modifié chevauche des champs existants, ils seront automatiquement ajustés."
     },
     "empty_state_title": "Pas encore de champs",
-    "empty_state_body": "Importe tes surfaces sur un PC via l'application web depuis le système cantonal (p. ex. Acorda, LAWIS), ou dessine-les sur la carte. Besoin d'aide ? Écris-nous à <email>support@coltivio.ch</email>."
+    "empty_state_body": "Importe tes surfaces sur un PC via l'application web depuis le système cantonal (p. ex. Acorda, LAWIS), ou dessine-les sur la carte. Besoin d'aide ? Écris-nous à <email>support@coltivio.ch</email>.",
+    "map_layers": {
+      "title": "Calques",
+      "plots": "Parcelles",
+      "meadows": "Pâtures",
+      "archived": "Archivés"
+    }
   },
   "farm_equipment": {
     "farm_equipment": "Machines et équipements",
@@ -1142,14 +1168,19 @@
     "cancel_heading": "Annuler",
     "cancel_body": "Appuyez sur ce symbole pour annuler et revenir en arrière.",
     "overlap_heading": "Chevauchements",
-    "overlap_body": "Si votre nouveau champ chevauche des champs existants, ceux-ci seront automatiquement ajustés.",
+    "overlap_body": "Si votre nouveau champ chevauche un champ existant, le champ existant est ajusté automatiquement.",
     "crop_rotation_welcome_heading": "Planifiez vos rotations de cultures",
     "crop_rotation_welcome_body": "Sélectionnez les champs pour lesquels vous souhaitez planifier des rotations de cultures.",
     "plots_map_welcome_heading": "Vos champs",
     "plots_map_tap_body": "Appuyez sur un champ pour voir les détails.",
     "plots_map_add_body": "Appuyez sur ce bouton pour ajouter de nouveaux champs.",
     "welcome_body_create": "Vous êtes maintenant en mode dessin. Appuyez sur la carte pour définir les coins de votre nouveau champ.",
-    "actions_heading": "Terminer & Annuler"
+    "actions_heading": "Terminer & Annuler",
+    "welcome_body_meadow_draw": "Vous êtes maintenant en mode dessin. Appuyez sur la carte pour placer les coins de votre nouvelle pâture.",
+    "welcome_body_meadow_plots": "Vous allez créer une pâture à partir de vos champs existants. Voici comment cela fonctionne.",
+    "meadow_plots_heading": "Sélectionner des champs",
+    "meadow_plots_body": "Appuyez sur les champs qui font partie de la pâture. Appuyez à nouveau pour désélectionner un champ. Les champs eux-mêmes ne sont pas modifiés.",
+    "meadow_overlap_body": "Les pâtures sont indépendantes de vos champs : elles peuvent recouvrir un ou plusieurs champs, qui restent inchangés. Les pâtures ne peuvent toutefois pas se chevaucher entre elles."
   },
   "animals": {
     "animals": "Animaux",
@@ -1339,7 +1370,49 @@
       "delete_n_animals": "{{count}} animaux supprimés",
       "select_action": "Sélectionner l'action"
     },
-    "notes": "Notes"
+    "notes": "Notes",
+    "meadows": {
+      "meadow": "Pâture",
+      "meadows": "Pâtures",
+      "meadow_optional": "Pâture (facultatif)",
+      "no_meadow": "Aucune pâture",
+      "new_meadow": "Nouvelle pâture",
+      "edit_meadow": "Modifier la pâture",
+      "details": "Détails",
+      "usage": "Occupation",
+      "size_value": "{{are}}a ({{squareMeters}}m²)",
+      "journal_view_categories": "Catégories",
+      "errors": {
+        "overlaps": "La surface chevauche la pâture « {{name}} ».",
+        "self_intersecting": "La surface ne doit pas se croiser elle-même."
+      },
+      "current_animals": "Animaux actuels",
+      "current_herds": "Troupeaux actuels",
+      "last_used": "Dernière occupation",
+      "fence_length": "Longueur de clôture (env.)",
+      "last_used_now": "maintenant",
+      "usage_chart": {
+        "days_title": "Jours occupés par mois",
+        "days_value": "{{count}} jour occupé",
+        "days_value_plural": "{{count}} jours occupés",
+        "average_animals_value": "Ø {{averageAnimals}} animaux"
+      }
+    },
+    "end_date_before_start": "La date de fin ne peut pas précéder la date de début.",
+    "schedule_repeat": {
+      "none": "Aucune",
+      "weekdays": "Jours de la semaine",
+      "weekdays_required": "Sélectionne au moins un jour de la semaine.",
+      "until_optional": "Répéter jusqu'au (facultatif)"
+    },
+    "herd_changes_apply_from": "Les changements s'appliquent dès le",
+    "herd_member_since": "Dans le troupeau depuis",
+    "herd_left_on": "A quitté le troupeau le",
+    "herd_membership_date_too_early": "La date est antérieure à l'entrée d'un animal dans son troupeau actuel. Choisis une date ultérieure.",
+    "herd_changes_summary": "{{added}} ajoutés, {{removed}} retirés. À partir de quelle date ?",
+    "delete_herd_confirm": "Supprimer le troupeau « {{name}} » ?",
+    "delete_herd_confirm_info": "Cette action est irréversible.",
+    "timeline_view_overview": "Aperçu"
   },
   "drugs": {
     "drugs": "Médicaments",
@@ -1645,5 +1718,24 @@
   "donations": {
     "title": "Dons",
     "history_heading": "Vos dons"
+  },
+  "archive": {
+    "archive": "Archiver",
+    "restore": "Restaurer",
+    "archived": "Archivés",
+    "archived_since": "Dans les archives depuis le {{date}}.",
+    "plot_confirm_title": "Archiver le champ {{name}} ?",
+    "plot_info": "Les champs archivés ne sont plus affichés sur la carte ni lors de nouvelles saisies. Toutes les saisies existantes sont conservées et vous pouvez restaurer le champ à tout moment.",
+    "plot_delete_hint": "Si vous n'exploitez plus ce champ, vous pouvez aussi simplement l'archiver pour conserver toutes ses saisies.",
+    "meadow_confirm_title": "Archiver la pâture {{name}} ?",
+    "meadow_info": "Les pâtures archivées ne sont plus affichées sur la carte ni lors de nouvelles périodes de pâture. Toutes les données sont conservées et vous pouvez restaurer la pâture à tout moment.",
+    "meadow_delete_title": "Supprimer vraiment la pâture {{name}} ?",
+    "meadow_delete_warning": "Toutes les données associées seront définitivement supprimées. Si vous n'utilisez plus cette pâture, vous pouvez aussi simplement l'archiver pour conserver toutes ses données.",
+    "plot_restore_title": "Restaurer le champ {{name}} ?",
+    "plot_restore_warning": "Le champ réapparaît sur la carte et lors des nouvelles saisies. Si de nouveaux champs ont été saisis sur cette surface depuis l'archivage, ils peuvent se chevaucher.",
+    "meadow_restore_title": "Restaurer la pâture {{name}} ?",
+    "meadow_restore_warning": "La pâture réapparaît sur la carte et lors des nouvelles périodes de pâture. Si de nouvelles pâtures ont été saisies sur cette surface depuis l'archivage, elles peuvent se chevaucher.",
+    "meadow_active_schedules_title": "Archivage impossible",
+    "meadow_active_schedules": "La pâture a encore des périodes de pâture en cours ou prévues ({{herds}}). Terminez ou supprimez ces périodes avant d'archiver la pâture."
   }
 }

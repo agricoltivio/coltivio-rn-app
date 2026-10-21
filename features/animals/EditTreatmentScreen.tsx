@@ -1,3 +1,4 @@
+import { toLocalDateString } from "@/utils/date";
 import { Button } from "@/components/buttons/Button";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -304,13 +305,19 @@ export function EditTreatmentScreen({
       id: treatmentId,
       animalIds: selectedAnimalIds,
       drugId: data.drugId || null,
-      startDate: data.startDate.toISOString(),
-      endDate: data.endDate.toISOString(),
+      startDate: toLocalDateString(data.startDate),
+      endDate: toLocalDateString(data.endDate),
       name: data.name,
       notes: data.notes,
-      milkUsableDate: data.milkUsableDate?.toISOString() ?? null,
-      meatUsableDate: data.meatUsableDate?.toISOString() ?? null,
-      organsUsableDate: data.organsUsableDate?.toISOString() ?? null,
+      milkUsableDate: data.milkUsableDate
+        ? toLocalDateString(data.milkUsableDate)
+        : null,
+      meatUsableDate: data.meatUsableDate
+        ? toLocalDateString(data.meatUsableDate)
+        : null,
+      organsUsableDate: data.organsUsableDate
+        ? toLocalDateString(data.organsUsableDate)
+        : null,
       drugDoseValue: data.drugDoseValue ? parseFloat(data.drugDoseValue) : null,
       drugDoseUnit: data.drugDoseUnit ?? null,
       drugDosePerUnit: data.drugDosePerUnit ?? null,

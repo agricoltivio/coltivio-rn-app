@@ -15,7 +15,12 @@ import { useTheme } from "styled-components/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useMemo, useCallback, useState } from "react";
 import { useOutdoorJournalQuery } from "./outdoor-journal.hooks";
-import { buildJournalTimelineData } from "./timeline/outdoor-journal-timeline-utils";
+import {
+  buildJournalTimelineData,
+  buildMeadowJournalTimelineData,
+} from "./timeline/outdoor-journal-timeline-utils";
+import { ChartViewSwitcher } from "@/components/charts/ChartViewSwitcher";
+import { round } from "@/utils/math";
 import { OutdoorScheduleTimeline } from "./timeline/OutdoorScheduleTimeline";
 import { OutdoorJournalScreenProps } from "./navigation/animals-routes";
 import { OutdoorBar } from "./timeline/outdoor-timeline-utils";
@@ -27,7 +32,11 @@ export function OutdoorJournalScreen({
   const theme = useTheme();
   const locale = i18n.language;
   const { data } = useOutdoorJournalQuery();
-  console.log(data?.uncategorizedAnimals.length);
+
+  // "categories": one row per animal category, "meadows": one row per meadow
+  const [viewMode, setViewMode] = useState<"categories" | "meadows">(
+    "categories",
+  );
 
   const [selectedCategories, setSelectedCategories] = useState<Set<string>>(
     new Set(),
@@ -48,8 +57,11 @@ export function OutdoorJournalScreen({
   }, [data?.entries, selectedCategories]);
 
   const timelineData = useMemo(
-    () => buildJournalTimelineData(filteredEntries),
-    [filteredEntries],
+    () =>
+      viewMode === "meadows"
+        ? buildMeadowJournalTimelineData(data?.meadowEntries ?? [])
+        : buildJournalTimelineData(filteredEntries),
+    [viewMode, filteredEntries, data?.meadowEntries],
   );
 
   // Build a lookup from scheduleId to bar for fast access on press
@@ -91,8 +103,22 @@ export function OutdoorJournalScreen({
       >
         <H2>{t("animals.outdoor_journal")}</H2>
 
+        <View style={{ marginTop: theme.spacing.s }}>
+          <ChartViewSwitcher
+            value={viewMode}
+            onChange={setViewMode}
+            options={[
+              {
+                key: "categories",
+                label: t("animals.meadows.journal_view_categories"),
+              },
+              { key: "meadows", label: t("animals.meadows.meadows") },
+            ]}
+          />
+        </View>
+
         {/* Category filter chips */}
-        {availableCategories.length > 0 && (
+        {viewMode === "categories" && availableCategories.length > 0 && (
           <RNScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -245,10 +271,60 @@ export function OutdoorJournalScreen({
                     marginBottom: theme.spacing.m,
                   }}
                 >
-                  {t("animals.category")} {selectedBar.herdName}
+                  {selectedBar.meadowName
+                    ? selectedBar.herdName
+                    : `${t("animals.category")} ${selectedBar.herdName}`}
                 </Text>
 
                 <View style={{ gap: theme.spacing.s }}>
+                  {/* Meadow and type (meadow view only) */}
+                  {selectedBar.meadowName && (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Text style={{ fontSize: 14, color: theme.colors.gray1 }}>
+                        {t("animals.meadows.meadow")}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          fontWeight: "600",
+                          color: theme.colors.text,
+                        }}
+                      >
+                        {selectedBar.meadowName}
+                        {selectedBar.meadowSize !== undefined
+                          ? ` (${round(selectedBar.meadowSize / 100, 1)}a)`
+                          : ""}
+                      </Text>
+                    </View>
+                  )}
+                  {selectedBar.meadowName && selectedBar.scheduleType && (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Text style={{ fontSize: 14, color: theme.colors.gray1 }}>
+                        {t("animals.outdoor_type")}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          fontWeight: "600",
+                          color: theme.colors.text,
+                        }}
+                      >
+                        {selectedBar.scheduleType === "pasture"
+                          ? t("animals.outdoor_types.pasture")
+                          : t("animals.outdoor_types.exercise_yard")}
+                      </Text>
+                    </View>
+                  )}
                   {/* Animal count */}
                   <View
                     style={{

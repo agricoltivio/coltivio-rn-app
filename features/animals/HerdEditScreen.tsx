@@ -1,4 +1,10 @@
 import { OutdoorScheduleCreateInput } from "@/api/herds.api";
+import { BottomDrawerModal } from "@/components/bottom-drawer/BottomDrawerModal";
+import { DatePicker } from "@/components/datepicker/DatePicker";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
 import { Button } from "@/components/buttons/Button";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -7,21 +13,25 @@ import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Subtitle } from "@/theme/Typography";
-import { formatLocalizedDate } from "@/utils/date";
-import { useMemo, useState } from "react";
+import { toLocalDateString } from "@/utils/date";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { formatOutdoorScheduleSummary } from "./outdoor-schedule-summary";
 import { usePermissions } from "@/features/user/users.hooks";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
 import {
   useDeleteHerdMutation,
+  useEarliestHerdChangeDateQuery,
   useHerdByIdQuery,
   useUpdateHerdMutation,
 } from "./herds.hooks";
 import { HerdEditScreenProps } from "./navigation/animals-routes";
-import { OutdoorScheduleEditModal } from "./OutdoorScheduleEditModal";
+import { useMeadowsQuery } from "./meadows.hooks";
+import { OutdoorScheduleFormResult } from "./OutdoorScheduleFormScreen";
 import { OutdoorScheduleTimeline } from "./timeline/OutdoorScheduleTimeline";
+import { ChartViewSwitcher } from "@/components/charts/ChartViewSwitcher";
 import { buildOutdoorTimelineData } from "./timeline/outdoor-timeline-utils";
 import { hasScheduleOverlaps } from "./schedule-overlap-utils";
 
@@ -53,12 +63,16 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
         startDate: s.startDate,
         endDate: s.endDate ?? null,
         type: s.type,
+        meadowId: s.meadowId ?? null,
         notes: s.notes ?? null,
         recurrence: s.recurrence
           ? {
               frequency: s.recurrence.frequency,
               interval: s.recurrence.interval,
+              byWeekday: s.recurrence.byWeekday ?? null,
+              byMonthDay: s.recurrence.byMonthDay ?? null,
               until: s.recurrence.until ?? null,
+              count: s.recurrence.count ?? null,
             }
           : null,
         tempId: s.id,
@@ -71,13 +85,57 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
   const selectedAnimalIds =
     route.params?.animalIds ?? herd?.animals.map((a) => a.id) ?? [];
 
-  const updateHerdMutation = useUpdateHerdMutation(() => navigation.goBack());
+  // Date from which added/removed animals count as (no longer) in the herd
+  // Asked for on save, so it isn't overlooked
+  const [membershipChangeDate, setMembershipChangeDate] = useState(new Date());
+  const [membershipDateModalVisible, setMembershipDateModalVisible] =
+    useState(false);
+  const membershipDateSheetRef = useRef<BottomSheetModal>(null);
+  const membershipDateSnapPoints = useMemo(() => [320], []);
+  useEffect(() => {
+    if (membershipDateModalVisible) {
+      membershipDateSheetRef.current?.present();
+    } else {
+      membershipDateSheetRef.current?.dismiss();
+    }
+  }, [membershipDateModalVisible]);
+
+  const updateHerdMutation = useUpdateHerdMutation(
+    () => navigation.goBack(),
+    // Too early dates are prevented in the date sheet, so any failure is unexpected
+    () => Alert.alert(t("common.error"), t("common.unknown_error")),
+  );
   const deleteHerdMutation = useDeleteHerdMutation(() => navigation.goBack());
 
-  const [scheduleModalVisible, setScheduleModalVisible] = useState(false);
-  const [editingSchedule, setEditingSchedule] = useState<LocalSchedule | null>(
-    null,
-  );
+  // Archived included: existing schedules may still point to an archived meadow
+  const { meadows } = useMeadowsQuery(true);
+
+  // Handle returning from the outdoor schedule form
+  const scheduleResult = route.params?.scheduleResult;
+  const [lastScheduleResult, setLastScheduleResult] = useState<
+    OutdoorScheduleFormResult | undefined
+  >(undefined);
+  if (scheduleResult && scheduleResult !== lastScheduleResult) {
+    setLastScheduleResult(scheduleResult);
+    if (scheduleResult.kind === "delete") {
+      setLocalSchedules((prev) =>
+        prev.filter((s) => s.tempId !== scheduleResult.scheduleId),
+      );
+    } else if (scheduleResult.scheduleId) {
+      const { scheduleId, input } = scheduleResult;
+      setLocalSchedules((prev) =>
+        prev.map((s) =>
+          s.tempId === scheduleId ? { ...input, tempId: s.tempId } : s,
+        ),
+      );
+    } else {
+      const { input } = scheduleResult;
+      setLocalSchedules((prev) => [
+        ...prev,
+        { ...input, tempId: `temp-${Date.now()}` },
+      ]);
+    }
+  }
 
   // Dirty check: name changed, animals changed, or schedules changed
   const initialAnimalIds = herd?.animals.map((a) => a.id) ?? [];
@@ -92,11 +150,36 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
     return localSchedules.some((ls, i) => {
       const orig = initial[i];
       if (!orig) return true;
+      // Dates by calendar day: edited schedules send date-only strings, saved ones
+      // come back as timestamps
+      const sameDay = (
+        a: string | null | undefined,
+        b: string | null | undefined,
+      ) =>
+        (a ? toLocalDateString(new Date(a)) : null) ===
+        (b ? toLocalDateString(new Date(b)) : null);
+      const normalizeRecurrence = (
+        recurrence: LocalSchedule["recurrence"] | (typeof orig)["recurrence"],
+      ) =>
+        recurrence
+          ? JSON.stringify({
+              frequency: recurrence.frequency,
+              interval: recurrence.interval,
+              byWeekday: recurrence.byWeekday ?? null,
+              byMonthDay: recurrence.byMonthDay ?? null,
+              until: recurrence.until
+                ? toLocalDateString(new Date(recurrence.until))
+                : null,
+              count: recurrence.count ?? null,
+            })
+          : null;
       return (
-        ls.startDate !== orig.startDate ||
-        (ls.endDate ?? null) !== (orig.endDate ?? null) ||
+        !sameDay(ls.startDate, orig.startDate) ||
+        !sameDay(ls.endDate, orig.endDate) ||
         ls.type !== orig.type ||
-        JSON.stringify(ls.recurrence) !== JSON.stringify(orig.recurrence)
+        (ls.meadowId ?? null) !== (orig.meadowId ?? null) ||
+        normalizeRecurrence(ls.recurrence) !==
+          normalizeRecurrence(orig.recurrence)
       );
     });
   }, [localSchedules, herd]);
@@ -110,8 +193,7 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
     [localSchedules],
   );
 
-  function handleSave() {
-    if (hasOverlaps) return;
+  function saveHerd(effectiveDate: Date | null) {
     const outdoorSchedules = localSchedules.map(
       ({ tempId: _, ...rest }) => rest,
     );
@@ -120,11 +202,60 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
       name,
       animalIds: selectedAnimalIds,
       outdoorSchedules,
+      effectiveDate: effectiveDate ? toLocalDateString(effectiveDate) : null,
     });
   }
 
+  function handleSave() {
+    if (hasOverlaps) return;
+    // Added or removed animals: first ask since when the change applies
+    if (animalsChanged) {
+      setMembershipChangeDate(new Date());
+      setMembershipDateModalVisible(true);
+      return;
+    }
+    saveHerd(null);
+  }
+
+  const addedAnimalCount = selectedAnimalIds.filter(
+    (id: string) => !initialAnimalIds.includes(id),
+  ).length;
+  const removedAnimalCount = initialAnimalIds.filter(
+    (id) => !selectedAnimalIds.includes(id),
+  ).length;
+
+  // The change can't take effect before any added or removed animal joined its current
+  // herd, so the date sheet starts at the latest of those days
+  const changedAnimalIds = [
+    ...selectedAnimalIds.filter((id: string) => !initialAnimalIds.includes(id)),
+    ...initialAnimalIds.filter((id) => !selectedAnimalIds.includes(id)),
+  ];
+  const {
+    earliestEffectiveDate,
+    isLoading: earliestEffectiveDateLoading,
+    isError: earliestEffectiveDateFailed,
+  } = useEarliestHerdChangeDateQuery(
+    changedAnimalIds,
+    membershipDateModalVisible,
+  );
+  const membershipChangeDateTooEarly =
+    earliestEffectiveDate !== null &&
+    toLocalDateString(membershipChangeDate) <
+      toLocalDateString(earliestEffectiveDate);
+
   function handleDelete() {
-    deleteHerdMutation.mutate(herdId);
+    Alert.alert(
+      t("animals.delete_herd_confirm", { name: herd?.name ?? "" }),
+      t("animals.delete_herd_confirm_info"),
+      [
+        { text: t("buttons.cancel"), style: "cancel" },
+        {
+          text: t("buttons.delete"),
+          style: "destructive",
+          onPress: () => deleteHerdMutation.mutate(herdId),
+        },
+      ],
+    );
   }
 
   function handleSelectAnimals() {
@@ -135,53 +266,84 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
   }
 
   function openScheduleModal(schedule?: LocalSchedule) {
-    setEditingSchedule(schedule ?? null);
-    setScheduleModalVisible(true);
+    navigation.navigate("OutdoorScheduleForm", {
+      previousScreen: "HerdEdit",
+      canDelete: canWrite("animals"),
+      schedule: schedule
+        ? {
+            id: schedule.tempId,
+            startDate: schedule.startDate,
+            endDate: schedule.endDate ?? null,
+            type: schedule.type,
+            meadowId: schedule.meadowId,
+            notes: schedule.notes ?? null,
+            recurrence: schedule.recurrence,
+          }
+        : undefined,
+    });
   }
 
-  function formatScheduleSummary(schedule: LocalSchedule): string {
-    const typeLabel = t(`animals.outdoor_types.${schedule.type}` as const);
-    const start = formatLocalizedDate(new Date(schedule.startDate), locale);
-    const end = schedule.endDate
-      ? formatLocalizedDate(new Date(schedule.endDate), locale)
-      : "–";
-    let summary = `${typeLabel}: ${start} - ${end}`;
-    if (schedule.recurrence) {
-      const freq = t(
-        `animals.frequency_types.${schedule.recurrence.frequency}` as const,
-      );
-      summary += ` (${freq})`;
-    }
-    return summary;
-  }
+  // "overview": one row with all stays, "meadows": one row per meadow
+  const [timelineView, setTimelineView] = useState<"overview" | "meadows">(
+    "overview",
+  );
 
   // Build timeline data from local schedules
   const timelineData = useMemo(() => {
     if (!herd) return null;
-    return buildOutdoorTimelineData([
-      {
-        herdId: herd.id,
-        herdName: herd.name,
-        schedules: localSchedules.map((s) => ({
-          id: s.tempId,
-          startDate: s.startDate,
-          endDate: s.endDate ?? null,
-          notes: s.notes ?? null,
-          type: s.type,
-          recurrence: s.recurrence
-            ? {
-                frequency: s.recurrence.frequency,
-                interval: s.recurrence.interval,
-                byWeekday: s.recurrence.byWeekday ?? null,
-                byMonthDay: s.recurrence.byMonthDay ?? null,
-                until: s.recurrence.until ?? null,
-                count: s.recurrence.count ?? null,
-              }
-            : null,
-        })),
-      },
-    ]);
-  }, [localSchedules, herd]);
+    const toTimelineSchedule = (s: LocalSchedule) => ({
+      id: s.tempId,
+      startDate: s.startDate,
+      endDate: s.endDate ?? null,
+      notes: s.notes ?? null,
+      type: s.type,
+      recurrence: s.recurrence
+        ? {
+            frequency: s.recurrence.frequency,
+            interval: s.recurrence.interval,
+            byWeekday: s.recurrence.byWeekday ?? null,
+            byMonthDay: s.recurrence.byMonthDay ?? null,
+            until: s.recurrence.until ?? null,
+            count: s.recurrence.count ?? null,
+          }
+        : null,
+    });
+
+    if (timelineView === "overview") {
+      return buildOutdoorTimelineData([
+        {
+          herdId: herd.id,
+          herdName: herd.name,
+          schedules: localSchedules.map(toTimelineSchedule),
+        },
+      ]);
+    }
+
+    // Group stays by meadow; stays without a meadow get their own row
+    const schedulesByMeadow = new Map<string, LocalSchedule[]>();
+    for (const schedule of localSchedules) {
+      const key = schedule.meadowId ?? "_no_meadow";
+      schedulesByMeadow.set(key, [
+        ...(schedulesByMeadow.get(key) ?? []),
+        schedule,
+      ]);
+    }
+    const data = buildOutdoorTimelineData(
+      [...schedulesByMeadow.entries()].map(([meadowId, schedules]) => ({
+        herdId: meadowId,
+        herdName:
+          meadowId === "_no_meadow"
+            ? t("animals.meadows.no_meadow")
+            : (meadows?.find((m) => m.id === meadowId)?.name ?? "–"),
+        schedules: schedules.map(toTimelineSchedule),
+      })),
+    );
+    // Most recently used meadows on top
+    const lastDay = (row: (typeof data.herds)[number]) =>
+      Math.max(-1, ...row.bars.map((bar) => bar.endDay));
+    data.herds.sort((a, b) => lastDay(b) - lastDay(a));
+    return data;
+  }, [localSchedules, herd, timelineView, meadows, t]);
 
   const animalsText = (() => {
     if (selectedAnimalIds.length === 0) return t("common.no_entries");
@@ -314,9 +476,24 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
             />
           </View>
           {/* Outdoor schedule timeline */}
+          {localSchedules.length > 0 && (
+            <View style={{ marginBottom: theme.spacing.s }}>
+              <ChartViewSwitcher
+                value={timelineView}
+                onChange={setTimelineView}
+                options={[
+                  {
+                    key: "overview",
+                    label: t("animals.timeline_view_overview"),
+                  },
+                  { key: "meadows", label: t("animals.meadows.meadows") },
+                ]}
+              />
+            </View>
+          )}
           {timelineData &&
             timelineData.herds.length > 0 &&
-            timelineData.herds[0].bars.length > 0 && (
+            timelineData.herds.some((row) => row.bars.length > 0) && (
               <View style={{ height: 200, marginBottom: theme.spacing.s }}>
                 <OutdoorScheduleTimeline
                   timelineData={timelineData}
@@ -348,7 +525,12 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
                 >
                   <ListItem.Content>
                     <ListItem.Title>
-                      {formatScheduleSummary(schedule)}
+                      {formatOutdoorScheduleSummary(
+                        schedule,
+                        t,
+                        locale,
+                        meadows?.find((m) => m.id === schedule.meadowId)?.name,
+                      )}
                     </ListItem.Title>
                     {schedule.notes && (
                       <ListItem.Body>{schedule.notes}</ListItem.Body>
@@ -362,48 +544,73 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
         </View>
       </ScrollView>
 
-      <OutdoorScheduleEditModal
-        visible={scheduleModalVisible}
-        schedule={
-          editingSchedule
-            ? {
-                id: editingSchedule.tempId,
-                startDate: editingSchedule.startDate,
-                endDate: editingSchedule.endDate ?? null,
-                type: editingSchedule.type,
-                recurrence: editingSchedule.recurrence,
+      {/* Since when do the added/removed animals count? */}
+      <BottomSheetModalProvider>
+        <BottomDrawerModal
+          ref={membershipDateSheetRef}
+          snapPoints={membershipDateSnapPoints}
+          onClose={() => setMembershipDateModalVisible(false)}
+        >
+          <H3>{t("animals.herd_changes_apply_from")}</H3>
+          <Subtitle style={{ marginTop: theme.spacing.xs }}>
+            {t("animals.herd_changes_summary", {
+              added: addedAnimalCount,
+              removed: removedAnimalCount,
+            })}
+          </Subtitle>
+          <View style={{ marginTop: theme.spacing.m }}>
+            <DatePicker
+              mode="date"
+              locale={locale}
+              label={t("animals.herd_changes_apply_from")}
+              date={membershipChangeDate}
+              clearable={false}
+              minimumDate={earliestEffectiveDate ?? undefined}
+              error={
+                membershipChangeDateTooEarly
+                  ? t("animals.herd_membership_date_too_early")
+                  : earliestEffectiveDateFailed
+                    ? t("common.unknown_error")
+                    : undefined
               }
-            : null
-        }
-        onSave={(input) => {
-          if (editingSchedule) {
-            setLocalSchedules((prev) =>
-              prev.map((s) =>
-                s.tempId === editingSchedule.tempId
-                  ? { ...input, tempId: s.tempId }
-                  : s,
-              ),
-            );
-          } else {
-            setLocalSchedules((prev) => [
-              ...prev,
-              { ...input, tempId: `temp-${Date.now()}` },
-            ]);
-          }
-          setScheduleModalVisible(false);
-        }}
-        onDelete={
-          canWrite("animals")
-            ? (scheduleId) => {
-                setLocalSchedules((prev) =>
-                  prev.filter((s) => s.tempId !== scheduleId),
-                );
-                setScheduleModalVisible(false);
+              onConfirm={(date) => {
+                if (date) setMembershipChangeDate(date);
+              }}
+            />
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              gap: theme.spacing.s,
+              marginTop: theme.spacing.l,
+            }}
+          >
+            <Button
+              style={{ flexGrow: 1 }}
+              type="accent"
+              title={t("buttons.cancel")}
+              onPress={() => setMembershipDateModalVisible(false)}
+            />
+            <Button
+              style={{ flexGrow: 1 }}
+              title={t("buttons.save")}
+              disabled={
+                updateHerdMutation.isPending ||
+                earliestEffectiveDateLoading ||
+                earliestEffectiveDateFailed ||
+                membershipChangeDateTooEarly
               }
-            : undefined
-        }
-        onClose={() => setScheduleModalVisible(false)}
-      />
+              loading={
+                updateHerdMutation.isPending || earliestEffectiveDateLoading
+              }
+              onPress={() => {
+                setMembershipDateModalVisible(false);
+                saveHerd(membershipChangeDate);
+              }}
+            />
+          </View>
+        </BottomDrawerModal>
+      </BottomSheetModalProvider>
     </ContentView>
   );
 }

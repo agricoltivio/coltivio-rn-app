@@ -25,8 +25,10 @@ type AddTillage = {
   // or the plot-scoped tillages list.
   preselectedPlotId?: string;
   setPreselectedPlotId: (plotId: string | undefined) => void;
-  returnTo?: "PlotsMap" | "PlotTillages";
-  setReturnTo: (returnTo: "PlotsMap" | "PlotTillages" | undefined) => void;
+  returnTo?: "PlotsMap" | "PlotDetails" | "PlotTillages";
+  setReturnTo: (
+    returnTo: "PlotsMap" | "PlotDetails" | "PlotTillages" | undefined,
+  ) => void;
   reset: () => void;
   resetSelectedPlots: () => void;
 };

@@ -32,8 +32,10 @@ type CreateHarvestStore = {
   // the map or the plot-scoped harvests list.
   preselectedPlotId?: string;
   setPreselectedPlotId: (plotId: string | undefined) => void;
-  returnTo?: "PlotsMap" | "PlotHarvests";
-  setReturnTo: (returnTo: "PlotsMap" | "PlotHarvests" | undefined) => void;
+  returnTo?: "PlotsMap" | "PlotDetails" | "PlotHarvests";
+  setReturnTo: (
+    returnTo: "PlotsMap" | "PlotDetails" | "PlotHarvests" | undefined,
+  ) => void;
   reset: () => void;
   resetSelectedPlots: () => void;
 };

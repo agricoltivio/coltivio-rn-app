@@ -24,7 +24,10 @@
     "forgot_password": "Passwort vergessen",
     "apply": "Anwenden",
     "clear": "Löschen",
-    "retry": "Erneut versuchen"
+    "retry": "Erneut versuchen",
+    "remove": "Entfernen",
+    "show_more": "Mehr",
+    "show_less": "Weniger"
   },
   "forms": {
     "labels": {
@@ -407,6 +410,15 @@
     "new_entry_menu": {
       "heading": "Was möchtest du erfassen?"
     },
+    "list": {
+      "title": "Flächen",
+      "filter_all": "Alle",
+      "filter_usage_count": "Nutzung ({{count}})",
+      "usage_filter_heading": "Nach Nutzung filtern",
+      "reset": "Zurücksetzen",
+      "no_results": "Keine passenden Flächen gefunden",
+      "open_map": "Karte öffnen"
+    },
     "common": {
       "draw_area_overlap_info": "Wenn die Fläche einen existierenden Schlag überlappt, wird dieser automatisch verkleinert.",
       "affected_plots_warning": "Folgende Schläge werden durch diesen Schlag verkleinert."
@@ -426,7 +438,12 @@
     "add": {
       "map": {
         "mode_select": {
-          "message": "Um einen neuen Schlag zu erstellen, kannst du entweder eine Parzelle auswählen oder eine neue Fläche einzeichnen."
+          "message": "Um einen neuen Schlag zu erstellen, kannst du entweder eine Parzelle auswählen oder eine neue Fläche einzeichnen.",
+          "target": "Neu erstellen",
+          "target_plot": "Schlag",
+          "target_meadow": "Weidefläche",
+          "message_meadow": "Zeichne die Weidefläche frei oder wähle bestehende Schläge aus.",
+          "select_plots": "Schläge auswählen"
         },
         "tips": {
           "parcel_select": {
@@ -523,17 +540,20 @@
       "abort_body": "Drücke das X, um abzubrechen und ohne Zusammenführen zurückzukehren."
     },
     "map_onboarding": {
-      "browse_heading": "Deine Schläge",
-      "browse_body": "Tippe auf einen Schlag auf der Karte oder suche ihn über das Listen-Symbol, um Details anzuzeigen.",
+      "browse_heading": "Deine Flächen",
+      "browse_body": "Tippe auf eine Fläche auf der Karte oder suche sie über das Listen-Symbol, um Details anzuzeigen.",
       "browse_expand_info": "Du kannst die Detailsansicht maximieren in dem du sie nach oben ziehst.",
       "tools_heading": "Werkzeuge",
-      "tools_body": "Verwende die Werkzeugleiste, um deine Schlagflächen zu verwalten.",
-      "tool_add": "Neuen Schlag hinzufügen",
-      "tool_split": "Bestehenden Schlag aufteilen",
+      "tools_body": "Verwende die Werkzeugleiste, um deine Flächen zu verwalten.",
+      "tool_add": "Neue Fläche hinzufügen – Schlag oder Weidefläche",
+      "tool_split": "Schlag aufteilen",
       "tool_merge": "Schläge zusammenführen",
-      "tool_edit": "Schlagfläche bearbeiten",
-      "tool_delete": "Schlag löschen",
-      "tool_cancel": "Aktuelle Aktion abbrechen"
+      "tool_edit": "Form einer Fläche bearbeiten",
+      "tool_delete": "Fläche löschen",
+      "tool_cancel": "Aktuelle Aktion abbrechen",
+      "layers_heading": "Ebenen",
+      "layers_body": "Über das Ebenen-Symbol wählst du, was auf der Karte angezeigt wird.",
+      "layers_options": "Du kannst Schläge, Weideflächen und archivierte Flächen ein- und ausblenden."
     },
     "usage_codes": {
       "501": "Sommergerste",
@@ -707,7 +727,13 @@
       "overlap_body": "Wenn der angepasste Schlag bestehende Schläge überschneidet, werden diese automatisch angepasst."
     },
     "empty_state_title": "Noch keine Schläge",
-    "empty_state_body": "Importiere deine Flächen am PC über die Web-App aus dem kantonalen System (z.B. Acorda, LAWIS), oder zeichne sie in der Karte ein. Brauchst du Hilfe? Schreib uns an <email>support@coltivio.ch</email>."
+    "empty_state_body": "Importiere deine Flächen am PC über die Web-App aus dem kantonalen System (z.B. Acorda, LAWIS), oder zeichne sie in der Karte ein. Brauchst du Hilfe? Schreib uns an <email>support@coltivio.ch</email>.",
+    "map_layers": {
+      "title": "Ebenen",
+      "plots": "Schläge",
+      "meadows": "Weideflächen",
+      "archived": "Archivierte"
+    }
   },
   "farm_equipment": {
     "farm_equipment": "Maschinen",
@@ -1141,15 +1167,20 @@
     "edit_intro_body": "Verschiebe die Eckpunkte, um die Form anzupassen. Halte einen Eckpunkt gedrückt und ziehe ihn an die gewünschte Position.",
     "cancel_heading": "Abbrechen",
     "cancel_body": "Tippe auf dieses Symbol, um abzubrechen und zurückzugehen.",
-    "overlap_heading": "Überlappungen",
-    "overlap_body": "Falls dein neuer Schlag bestehende Schläge überlappt, werden diese automatisch angepasst.",
+    "overlap_heading": "Überschneidungen",
+    "overlap_body": "Überschneidet dein neuer Schlag einen bestehenden Schlag, wird der bestehende Schlag automatisch angepasst.",
     "crop_rotation_welcome_heading": "Plane deine Fruchtfolgen",
     "crop_rotation_welcome_body": "Wähle die Schläge aus, für die du Fruchtfolgen planen möchtest.",
     "plots_map_welcome_heading": "Deine Schläge",
     "plots_map_tap_body": "Tippe auf einen Schlag, um Details zu sehen.",
     "plots_map_add_body": "Drücke diesen Button, um neue Schläge hinzuzufügen.",
     "welcome_body_create": "Du befindest dich jetzt im Zeichenmodus. Tippe auf die Karte, um die Eckpunkte deines neuen Schlags zu setzen.",
-    "actions_heading": "Fertig & Abbrechen"
+    "actions_heading": "Fertig & Abbrechen",
+    "welcome_body_meadow_draw": "Du befindest dich jetzt im Zeichenmodus. Tippe auf die Karte, um die Eckpunkte deiner neuen Weidefläche zu setzen.",
+    "welcome_body_meadow_plots": "Du erstellst gleich eine Weidefläche aus deinen bestehenden Schlägen. Hier erklären wir dir kurz, wie das funktioniert.",
+    "meadow_plots_heading": "Schläge auswählen",
+    "meadow_plots_body": "Tippe auf die Schläge, die zur Weidefläche gehören. Tippe nochmals, um einen Schlag abzuwählen. Die Schläge selbst bleiben unverändert.",
+    "meadow_overlap_body": "Weideflächen sind unabhängig von deinen Schlägen: Sie können über einem oder mehreren Schlägen liegen, die Schläge bleiben dabei unverändert. Weideflächen können sich aber nicht gegenseitig überschneiden."
   },
   "animals": {
     "animals": "Tiere",
@@ -1339,7 +1370,49 @@
       "status_skipped": "Wird übersprungen",
       "status_merge": "Zusammenführen"
     },
-    "notes": "Notizen"
+    "notes": "Notizen",
+    "meadows": {
+      "meadow": "Weidefläche",
+      "meadows": "Weideflächen",
+      "meadow_optional": "Weidefläche (optional)",
+      "no_meadow": "Keine Weidefläche",
+      "new_meadow": "Neue Weidefläche",
+      "edit_meadow": "Weidefläche bearbeiten",
+      "details": "Details",
+      "usage": "Belegung",
+      "size_value": "{{are}}a ({{squareMeters}}m²)",
+      "journal_view_categories": "Kategorien",
+      "errors": {
+        "overlaps": "Die Fläche überschneidet sich mit der Weidefläche «{{name}}».",
+        "self_intersecting": "Die Fläche darf sich nicht selbst überschneiden."
+      },
+      "current_animals": "Tiere aktuell",
+      "current_herds": "Herden aktuell",
+      "last_used": "Zuletzt belegt",
+      "fence_length": "Zaunlänge (ca.)",
+      "last_used_now": "jetzt",
+      "usage_chart": {
+        "days_title": "Belegte Tage pro Monat",
+        "days_value": "{{count}} Tag belegt",
+        "days_value_plural": "{{count}} Tage belegt",
+        "average_animals_value": "Ø {{averageAnimals}} Tiere"
+      }
+    },
+    "end_date_before_start": "Das Enddatum darf nicht vor dem Startdatum liegen.",
+    "schedule_repeat": {
+      "none": "Keine",
+      "weekdays": "Wochentage",
+      "weekdays_required": "Wähle mindestens einen Wochentag.",
+      "until_optional": "Wiederholen bis (optional)"
+    },
+    "herd_changes_apply_from": "Änderungen gelten ab",
+    "herd_member_since": "In der Herde seit",
+    "herd_left_on": "Herde verlassen am",
+    "herd_membership_date_too_early": "Das Datum liegt vor dem Eintritt eines Tieres in seine aktuelle Herde. Bitte wähle ein späteres Datum.",
+    "herd_changes_summary": "{{added}} hinzugefügt, {{removed}} entfernt. Ab welchem Datum gilt das?",
+    "delete_herd_confirm": "Herde «{{name}}» löschen?",
+    "delete_herd_confirm_info": "Das kann nicht rückgängig gemacht werden.",
+    "timeline_view_overview": "Übersicht"
   },
   "drugs": {
     "drugs": "Medikamente",
@@ -1647,5 +1720,24 @@
   "donations": {
     "title": "Spenden",
     "history_heading": "Deine Spenden"
+  },
+  "archive": {
+    "archive": "Archivieren",
+    "restore": "Wiederherstellen",
+    "archived": "Archiviert",
+    "archived_since": "Archiviert seit {{date}}.",
+    "plot_confirm_title": "Schlag {{name}} archivieren?",
+    "plot_info": "Archivierte Schläge werden nicht mehr auf der Karte und bei neuen Einträgen angezeigt. Alle bisherigen Einträge bleiben erhalten und du kannst den Schlag jederzeit wiederherstellen.",
+    "plot_delete_hint": "Bewirtschaftest du den Schlag nicht mehr, kannst du ihn auch einfach archivieren – so bleiben alle Einträge erhalten.",
+    "meadow_confirm_title": "Weidefläche {{name}} archivieren?",
+    "meadow_info": "Archivierte Weideflächen werden nicht mehr auf der Karte und bei neuen Weidezeiten angezeigt. Alle Daten bleiben erhalten und du kannst die Weidefläche jederzeit wiederherstellen.",
+    "meadow_delete_title": "Weidefläche {{name}} wirklich löschen?",
+    "meadow_delete_warning": "Alle zugehörigen Daten werden unwiderruflich gelöscht. Nutzt du die Weidefläche nicht mehr, kannst du sie auch einfach archivieren – so bleiben alle Daten erhalten.",
+    "plot_restore_title": "Schlag {{name}} wiederherstellen?",
+    "plot_restore_warning": "Der Schlag erscheint wieder auf der Karte und bei neuen Einträgen. Wurden seit dem Archivieren neue Schläge auf dieser Fläche erfasst, können sie sich mit ihm überschneiden.",
+    "meadow_restore_title": "Weidefläche {{name}} wiederherstellen?",
+    "meadow_restore_warning": "Die Weidefläche erscheint wieder auf der Karte und bei neuen Weidezeiten. Wurden seit dem Archivieren neue Weideflächen auf dieser Fläche erfasst, können sie sich mit ihr überschneiden.",
+    "meadow_active_schedules_title": "Archivieren nicht möglich",
+    "meadow_active_schedules": "Die Weidefläche hat noch laufende oder geplante Weidezeiten ({{herds}}). Beende oder entferne diese Weidezeiten, bevor du die Weidefläche archivierst."
   }
 }

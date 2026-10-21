@@ -2,7 +2,10 @@ import { ContentView } from "@/components/containers/ContentView";
 import { MapLibreMap, BaseLayer } from "@/components/map/MapLibreMap";
 import { HomeMarkerLayer } from "@/components/map/HomeMarkerLayer";
 import { DrawingOverlayRef, LAYER_IDS } from "@/components/map/DrawingOverlay";
-import { IonIconButton } from "@/components/buttons/IconButton";
+import {
+  IonIconButton,
+  MaterialCommunityIconButton,
+} from "@/components/buttons/IconButton";
 import { InsetsProps } from "@/constants/Screen";
 import { MapLayerToggle } from "@/features/map/MapLayerToggle";
 import { MapPlotColorToggle } from "@/features/map/MapPlotColorToggle";
@@ -31,9 +34,11 @@ import styled, { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../../farms/farms.hooks";
 import { useLocalSettings } from "../../user/LocalSettingsContext";
 import { useFarmPlotsQuery } from "../plots.hooks";
+import { useMeadowsQuery } from "@/features/animals/meadows.hooks";
 import { PlotsMapScreenProps } from "../navigation/plots-routes";
 import {
   PlotsMapContext,
+  type MapVisibleLayers,
   createInitialMode,
   plotsMapReducer,
 } from "./plots-map-mode";
@@ -41,6 +46,8 @@ import { type PlotColorMode } from "@/components/map/PlotsLayer";
 import { MapLayers } from "./MapLayers";
 import { MapOverlays } from "./MapOverlays";
 import { PlotDetailsDrawer } from "./PlotDetailsDrawer";
+import { MeadowDetailsDrawer } from "./MeadowDetailsDrawer";
+import { MapLayersDrawer } from "./MapLayersDrawer";
 import { PlotListModal } from "./PlotListModal";
 import { DeletePlotDialog } from "./DeletePlotDialog";
 import { SplitModeLayersHandle } from "./layers/SplitModeLayers";
@@ -55,8 +62,11 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
   // isLoading = first-load only; isFetching would include background refetches which
   // temporarily unmount <Map> via the loading prop and reset the camera to initialViewState.
   const { plots, isLoading: plotsLoading } = useFarmPlotsQuery();
-  const { localSettings } = useLocalSettings();
+  const { meadows } = useMeadowsQuery();
+  const { localSettings, updateLocalSettings } = useLocalSettings();
   const preselectedPlotId = route.params?.selectedPlotId;
+  // Only read on mount: the map was opened directly in a meadow flow
+  const [initialMeadowAction] = useState(route.params?.meadowAction);
 
   const insets = useSafeAreaInsets();
   const [mapVisible, setMapVisible] = useState(false);
@@ -64,13 +74,68 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
   const [plotListVisible, setPlotListVisible] = useState(false);
   const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
   const [controlsExpanded, setControlsExpanded] = useState(false);
-  const [baseLayer, setBaseLayer] = useState<BaseLayer>(
-    localSettings.defaultMapLayer,
+  // Last used base layer and color mode, falling back to the defaults
+  const [baseLayer, setBaseLayerState] = useState<BaseLayer>(
+    localSettings.mapBaseLayer ?? localSettings.defaultMapLayer,
   );
-  const [plotColorMode, setPlotColorMode] = useState<PlotColorMode>(
-    localSettings.defaultPlotColorMode,
+  const [plotColorMode, setPlotColorModeState] = useState<PlotColorMode>(
+    localSettings.mapPlotColorMode ?? localSettings.defaultPlotColorMode,
+  );
+  const setBaseLayer = useCallback(
+    (layer: BaseLayer) => {
+      setBaseLayerState(layer);
+      updateLocalSettings("mapBaseLayer", layer);
+    },
+    [updateLocalSettings],
+  );
+  const setPlotColorMode = useCallback(
+    (mode: PlotColorMode) => {
+      setPlotColorModeState(mode);
+      updateLocalSettings("mapPlotColorMode", mode);
+    },
+    [updateLocalSettings],
   );
   const [dragPanEnabled, setDragPanEnabled] = useState(true);
+  // Restored from local settings; opening the map for a meadow flow shows meadows,
+  // and opening it with showArchived shows the archived layer, for that visit
+  // without changing the stored choice
+  const [visibleLayers, setVisibleLayers] = useState<MapVisibleLayers>(() => ({
+    plots: localSettings.mapVisibleLayers.plots,
+    meadows:
+      initialMeadowAction !== undefined ||
+      localSettings.mapVisibleLayers.meadows,
+    archived:
+      route.params?.showArchived === true ||
+      (localSettings.mapVisibleLayers.archived ?? false),
+  }));
+  // Fetched including archived ones only while the archived layer is visible;
+  // otherwise this is the same (cached) query as the active plots and meadows
+  const { plots: plotsForArchivedLayer, isLoading: archivedPlotsLoading } =
+    useFarmPlotsQuery(visibleLayers.archived);
+  const {
+    meadows: meadowsForArchivedLayer,
+    isLoading: archivedMeadowsLoading,
+  } = useMeadowsQuery(visibleLayers.archived);
+  const archivedPlots = useMemo(
+    () =>
+      visibleLayers.archived
+        ? (plotsForArchivedLayer ?? []).filter(
+            (plot) => plot.archivedAt !== null && plot.size > 0,
+          )
+        : [],
+    [visibleLayers.archived, plotsForArchivedLayer],
+  );
+  const archivedMeadows = useMemo(
+    () =>
+      visibleLayers.archived
+        ? (meadowsForArchivedLayer ?? []).filter(
+            (meadow) => meadow.archivedAt !== null,
+          )
+        : [],
+    [visibleLayers.archived, meadowsForArchivedLayer],
+  );
+  const [layersDrawerVisible, setLayersDrawerVisible] = useState(false);
+  const [selectedMeadowId, setSelectedMeadowId] = useState<string | null>(null);
 
   const mapRef = useRef<MapRef>(null);
   const cameraRef = useRef<CameraRef>(null);
@@ -84,7 +149,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
 
   const [mode, dispatch] = useReducer(
     plotsMapReducer,
-    createInitialMode(preselectedPlotId),
+    createInitialMode(preselectedPlotId, initialMeadowAction),
   );
   // Set when entering any non-view mode so flyTo is suppressed when returning to view.
   // Using an "entry" flag (set on mode enter, not exit) avoids any effect ordering dependency.
@@ -111,6 +176,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
   // re-fires the onboarding effect when the create sub-step changes (e.g. "choose" -> "draw"/"parcel").
   const createDrawingAction =
     mode.type === "create" ? mode.drawingAction : null;
+  const createTarget = mode.type === "create" ? mode.target : null;
 
   // Auto-show the relevant onboarding the first time each tool is used
   useEffect(() => {
@@ -131,6 +197,22 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
         }
         break;
       case "create":
+        if (createTarget === "meadow") {
+          if (
+            createDrawingAction === "draw" &&
+            !localSettings.addMeadowDrawOnboardingCompleted
+          ) {
+            navigation.navigate("MapDrawOnboarding", { variant: "meadowDraw" });
+          } else if (
+            createDrawingAction === "plots" &&
+            !localSettings.addMeadowPlotsOnboardingCompleted
+          ) {
+            navigation.navigate("MapDrawOnboarding", {
+              variant: "meadowPlots",
+            });
+          }
+          break;
+        }
         if (
           createDrawingAction === "draw" &&
           !localSettings.addPlotDrawOnboardingCompleted
@@ -147,12 +229,15 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
   }, [
     mode.type,
     createDrawingAction,
+    createTarget,
     navigation,
     localSettings.splitPlotOnboardingCompleted,
     localSettings.mergePlotsOnboardingCompleted,
     localSettings.editPlotOnboardingCompleted,
     localSettings.addPlotDrawOnboardingCompleted,
     localSettings.addPlotParcelOnboardingCompleted,
+    localSettings.addMeadowDrawOnboardingCompleted,
+    localSettings.addMeadowPlotsOnboardingCompleted,
   ]);
 
   // Extracted to avoid complex expression in the dependency array.
@@ -167,12 +252,15 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       suppressFlyToRef.current = false;
       return;
     }
-    const selectedPlot = plots.find((p) => p.id === flyToPlotId);
+    // Archived plots load separately, so this re-runs once they arrive
+    const selectedPlot =
+      plots.find((p) => p.id === flyToPlotId) ??
+      archivedPlots.find((p) => p.id === flyToPlotId);
     if (!selectedPlot || selectedPlot.geometry.coordinates.length === 0) return;
     const centroid = turf.centroid(selectedPlot.geometry);
     const [longitude, latitude] = centroid.geometry.coordinates;
     cameraRef.current?.flyTo({ center: [longitude, latitude], duration: 500 });
-  }, [flyToPlotId, plots]);
+  }, [flyToPlotId, plots, archivedPlots]);
 
   // Extracted to avoid complex expression in the dependency array.
   // Non-null only when in view mode with a plot selected.
@@ -180,7 +268,9 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
 
   const handleMapPress = useCallback(
     (event: { nativeEvent: { lngLat: LngLat } }) => {
-      if (mode.type === "view" && viewSelectedPlotId) {
+      if (mode.type === "view" && selectedMeadowId) {
+        setSelectedMeadowId(null);
+      } else if (mode.type === "view" && viewSelectedPlotId) {
         dispatch({ type: "SELECT_PLOT", plotId: null });
       } else if (mode.type === "split") {
         splitLayersRef.current?.handleMapPress(event.nativeEvent.lngLat);
@@ -190,8 +280,28 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
         createLayersRef.current?.handleMapPress(event.nativeEvent.lngLat);
       }
     },
-    [mode.type, viewSelectedPlotId],
+    [mode.type, viewSelectedPlotId, selectedMeadowId],
   );
+
+  // Hiding a layer also clears its selection
+  function handleVisibleLayersChange(nextVisibleLayers: MapVisibleLayers) {
+    if (!nextVisibleLayers.plots) {
+      dispatch({ type: "SELECT_PLOT", plotId: null });
+    }
+    if (!nextVisibleLayers.meadows) {
+      setSelectedMeadowId(null);
+    }
+    if (!nextVisibleLayers.archived) {
+      if (archivedPlots.some((plot) => plot.id === viewSelectedPlotId)) {
+        dispatch({ type: "SELECT_PLOT", plotId: null });
+      }
+      if (archivedMeadows.some((meadow) => meadow.id === selectedMeadowId)) {
+        setSelectedMeadowId(null);
+      }
+    }
+    setVisibleLayers(nextVisibleLayers);
+    updateLocalSettings("mapVisibleLayers", nextVisibleLayers);
+  }
 
   // React to selectedPlotId route param changes (e.g. after saving a new plot).
   // mode.type is intentionally excluded: adding it would cause re-dispatch on every mode change
@@ -206,9 +316,30 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
     }
   }, [route.params?.selectedPlotId]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // React to selectedMeadowId route param changes (after saving a new meadow)
+  useEffect(() => {
+    const paramMeadowId = route.params?.selectedMeadowId;
+    if (!paramMeadowId) return;
+    dispatch({ type: "EXIT_MODE" });
+    dispatch({ type: "SELECT_PLOT", plotId: null });
+    setVisibleLayers((previous) => ({ ...previous, meadows: true }));
+    setSelectedMeadowId(paramMeadowId);
+  }, [route.params?.selectedMeadowId]);
+
+  const exitMeadowFlow = useCallback(() => {
+    if (initialMeadowAction) {
+      navigation.goBack();
+      return;
+    }
+    dispatch({ type: "EXIT_MODE" });
+  }, [initialMeadowAction, navigation]);
+
   // Vertex drag gesture — hold 150ms on a vertex to start dragging
   const isDrawingMode =
-    mode.type === "split" || mode.type === "adjust" || mode.type === "create";
+    mode.type === "split" ||
+    mode.type === "adjust" ||
+    mode.type === "create" ||
+    mode.type === "meadowAdjust";
   const panGesture = Gesture.Pan()
     .runOnJS(true)
     .enabled(isDrawingMode)
@@ -310,6 +441,13 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       setBaseLayer,
       plotColorMode,
       setPlotColorMode,
+      visibleLayers,
+      archivedPlots,
+      archivedMeadows,
+      selectedMeadowId,
+      setSelectedMeadowId,
+      exitMeadowFlow,
+      meadowFlowOpenedExternally: initialMeadowAction !== undefined,
     }),
     [
       mode,
@@ -318,16 +456,39 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       navigation,
       controlsExpanded,
       baseLayer,
+      setBaseLayer,
       plotColorMode,
+      setPlotColorMode,
+      visibleLayers,
+      archivedPlots,
+      archivedMeadows,
+      selectedMeadowId,
+      exitMeadowFlow,
+      initialMeadowAction,
     ],
   );
 
-  if (!farm || !plots) return null;
+  // Opened for an archived plot or meadow: wait for them, so the map starts centered
+  // on it (isLoading is only true on the first load, toggling the layer later doesn't
+  // remount the map)
+  const waitForArchivedLayer =
+    route.params?.showArchived === true &&
+    (archivedPlotsLoading || archivedMeadowsLoading);
+  if (!farm || !plots || waitForArchivedLayer) return null;
 
   const initialCenter: LngLat = (() => {
-    const preselectedPlot = plots.find((p) => p.id === preselectedPlotId);
+    const preselectedPlot =
+      plots.find((p) => p.id === preselectedPlotId) ??
+      archivedPlots.find((p) => p.id === preselectedPlotId);
     if (preselectedPlot && preselectedPlot.geometry.coordinates.length > 0) {
       const centroid = turf.centroid(preselectedPlot.geometry);
+      return centroid.geometry.coordinates as LngLat;
+    }
+    const preselectedMeadow = [...(meadows ?? []), ...archivedMeadows].find(
+      (meadow) => meadow.id === route.params?.selectedMeadowId,
+    );
+    if (preselectedMeadow) {
+      const centroid = turf.centroid(preselectedMeadow.geometry);
       return centroid.geometry.coordinates as LngLat;
     }
     return farm.location.coordinates as LngLat;
@@ -371,12 +532,23 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
           onToggle={setBaseLayer}
           topOffset={insets.top + theme.spacing.s + 150}
         />
-        {mode.type === "view" && (
+        {mode.type === "view" && visibleLayers.plots && (
           <MapPlotColorToggle
             plotColorMode={plotColorMode}
             onChange={setPlotColorMode}
             topOffset={insets.top + theme.spacing.s + 200}
           />
+        )}
+        {mode.type === "view" && (
+          <MapLayersButton insets={insets}>
+            <MaterialCommunityIconButton
+              type="accent"
+              color={theme.colors.black}
+              iconSize={30}
+              onPress={() => setLayersDrawerVisible(true)}
+              icon="layers-outline"
+            />
+          </MapLayersButton>
         )}
         <TopLeftBackButton />
 
@@ -404,16 +576,32 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
 
         {/* Bottom drawer for view mode */}
         <PlotDetailsDrawer />
+        <MeadowDetailsDrawer />
+        {mode.type === "view" && (
+          <MapLayersDrawer
+            visible={layersDrawerVisible}
+            onClose={() => setLayersDrawerVisible(false)}
+            visibleLayers={visibleLayers}
+            onChange={handleVisibleLayersChange}
+          />
+        )}
 
         {/* Plot list modal */}
         <PlotListModal
           visible={plotListVisible}
           onClose={() => setPlotListVisible(false)}
           plots={plots ?? []}
-          onSelectPlot={(plot) =>
-            dispatch({ type: "SELECT_PLOT", plotId: plot.id })
-          }
+          onSelectPlot={(plot) => {
+            setSelectedMeadowId(null);
+            dispatch({ type: "SELECT_PLOT", plotId: plot.id });
+          }}
           cameraRef={cameraRef}
+          showPlots={visibleLayers.plots}
+          meadows={visibleLayers.meadows ? (meadows ?? []) : undefined}
+          onSelectMeadow={(meadow) => {
+            dispatch({ type: "SELECT_PLOT", plotId: null });
+            setSelectedMeadowId(meadow.id);
+          }}
         />
 
         {/* Delete confirmation dialog */}
@@ -429,6 +617,13 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
     </PlotsMapContext.Provider>
   );
 }
+
+const MapLayersButton = styled.View<InsetsProps>`
+  position: absolute;
+  left: ${({ theme }) => theme.spacing.m}px;
+  top: ${({ insets, theme }) => insets.top + theme.spacing.s + 250}px;
+  align-items: center;
+`;
 
 const PlotListButton = styled.View<InsetsProps>`
   position: absolute;

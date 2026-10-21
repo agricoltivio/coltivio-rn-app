@@ -1,3 +1,5 @@
+import { toLocalDateString } from "@/utils/date";
+import { Alert } from "react-native";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2 } from "@/theme/Typography";
@@ -44,14 +46,21 @@ export function CreateAnimalScreen({
 
   const createAnimalMutation = useCreateAnimalMutation(
     () => navigation.goBack(),
-    (error) => console.error(error),
+    // A new animal has no herd history to overlap, so any failure is unexpected
+    () => Alert.alert(t("common.error"), t("common.unknown_error")),
   );
 
   function onSubmit(data: AnimalFormValues) {
     createAnimalMutation.mutate({
       ...data,
-      dateOfBirth: data.dateOfBirth?.toISOString(),
-      dateOfDeath: data.dateOfDeath?.toISOString(),
+      dateOfBirth: toLocalDateString(data.dateOfBirth),
+      dateOfDeath: data.dateOfDeath
+        ? toLocalDateString(data.dateOfDeath)
+        : undefined,
+      herdEffectiveDate:
+        data.herdId && data.herdEffectiveDate
+          ? toLocalDateString(data.herdEffectiveDate)
+          : null,
     });
   }
 

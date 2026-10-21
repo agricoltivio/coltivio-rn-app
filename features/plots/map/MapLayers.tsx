@@ -1,6 +1,7 @@
 import React from "react";
 import { usePlotsMapContext } from "./plots-map-mode";
 import { ViewModeLayers } from "./layers/ViewModeLayers";
+import { MeadowAdjustModeLayers } from "./layers/MeadowAdjustModeLayers";
 import {
   SplitModeLayers,
   SplitModeLayersHandle,
@@ -55,9 +56,15 @@ export function MapLayers({
           <AdjustModeLayers ref={adjustLayersRef} />
         </React.Fragment>
       );
+    case "meadowAdjust":
+      return (
+        <React.Fragment key={`meadow-adjust-${mode.meadowId}`}>
+          <MeadowAdjustModeLayers />
+        </React.Fragment>
+      );
     case "create":
       return (
-        <React.Fragment key="create">
+        <React.Fragment key={`create-${mode.target}`}>
           <CreateModeLayers ref={createLayersRef} />
         </React.Fragment>
       );

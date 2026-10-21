@@ -1,3 +1,4 @@
+import { toLocalDateString } from "@/utils/date";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -35,6 +36,8 @@ export function FertilizerApplicationSummaryScreen({
           plotId: preselectedPlotId,
           name: selectedPlotsById[preselectedPlotId].name,
         });
+      } else if (preselectedPlotId && returnTo === "PlotDetails") {
+        navigation.popTo("PlotDetails", { plotId: preselectedPlotId });
       } else if (preselectedPlotId) {
         navigation.popTo("PlotsMap", { selectedPlotId: preselectedPlotId });
       } else {
@@ -51,7 +54,7 @@ export function FertilizerApplicationSummaryScreen({
 
   function onSave() {
     createFertilizerApplicationMutation.mutate({
-      date: date.toISOString(),
+      date: toLocalDateString(date),
       fertilizerId: selectedFertilizer?.id!,
       method,
       unit,

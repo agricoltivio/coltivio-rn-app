@@ -64,3 +64,19 @@ export function combineDateAndTime(date: Date, time: Date): Date {
     0,
   );
 }
+
+// Local calendar date as "YYYY-MM-DD", for date-only API fields. toISOString() would
+// shift dates picked around local midnight onto the previous day in UTC.
+export function toLocalDateString(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+// Local midnight of a date-only API value ("2025-05-16" or "2025-05-16T00:00:00.000Z").
+// new Date() would read it as UTC midnight, the previous day west of UTC.
+export function parseDateOnly(isoDate: string): Date {
+  const [year, month, day] = isoDate.slice(0, 10).split("-").map(Number);
+  return new Date(year, month - 1, day);
+}

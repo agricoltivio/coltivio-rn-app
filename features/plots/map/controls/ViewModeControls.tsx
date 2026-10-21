@@ -1,7 +1,17 @@
 import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
+import {
+  useDeleteMeadowMutation,
+  useMeadowsQuery,
+  useUpdateMeadowMutation,
+} from "@/features/animals/meadows.hooks";
+import { useHerdsQuery } from "@/features/animals/herds.hooks";
+import { getHerdsWithActiveSchedules } from "@/features/animals/meadow-usage-utils";
 import { MapControls } from "@/features/map/overlays/MapControls";
+import { toLocalDateString } from "@/utils/date";
 import { usePermissions } from "@/features/user/users.hooks";
 import React from "react";
+import { useTranslation } from "react-i18next";
+import { Alert } from "react-native";
 import { useTheme } from "styled-components/native";
 import { usePlotsMapContext } from "../plots-map-mode";
 
@@ -10,6 +20,7 @@ type ViewModeControlsProps = {
 };
 
 export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
+  const { t } = useTranslation();
   const theme = useTheme();
   const {
     mode,
@@ -18,10 +29,119 @@ export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
     controlsExpanded,
     setControlsExpanded,
     navigation,
+    selectedMeadowId,
+    setSelectedMeadowId,
+    archivedMeadows,
   } = usePlotsMapContext();
   const { canWrite } = usePermissions();
+  const { meadows } = useMeadowsQuery();
+  const { herds } = useHerdsQuery();
+  // Archived meadows leave the map like deleted ones, but keep their data
+  const deleteMeadowMutation = useDeleteMeadowMutation(
+    () => setSelectedMeadowId(null),
+    () => Alert.alert(t("common.error"), t("common.unknown_error")),
+  );
+  const archiveMeadowMutation = useUpdateMeadowMutation(
+    () => setSelectedMeadowId(null),
+    () => Alert.alert(t("common.error"), t("common.unknown_error")),
+  );
 
   if (mode.type !== "view") return null;
+
+  // A selected meadow switches the tools to meadow editing
+  if (selectedMeadowId) {
+    if (!canWrite("animals")) return null;
+    // Archived meadows are read-only on the map; restore them from the drawer
+    if (archivedMeadows.some((meadow) => meadow.id === selectedMeadowId)) {
+      return null;
+    }
+    return (
+      <MapControls expanded={controlsExpanded} onToggle={setControlsExpanded}>
+        {/* Adjust vertices */}
+        <MaterialCommunityIconButton
+          style={{ backgroundColor: theme.colors.surface }}
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="square-edit-outline"
+          onPress={() =>
+            dispatch({
+              type: "ENTER_MEADOW_ADJUST",
+              meadowId: selectedMeadowId,
+            })
+          }
+        />
+        {/* Delete */}
+        <MaterialCommunityIconButton
+          style={{ backgroundColor: theme.colors.surface }}
+          type="accent"
+          color="red"
+          iconSize={30}
+          icon="delete-outline"
+          disabled={
+            deleteMeadowMutation.isPending || archiveMeadowMutation.isPending
+          }
+          onPress={() => {
+            const meadowName =
+              meadows?.find((meadow) => meadow.id === selectedMeadowId)?.name ??
+              "";
+            Alert.alert(
+              t("archive.meadow_delete_title", { name: meadowName }),
+              t("archive.meadow_delete_warning"),
+              [
+                { text: t("buttons.cancel"), style: "cancel" },
+                {
+                  text: t("archive.archive"),
+                  // Same checks and confirmation as archiving from the edit screen
+                  onPress: () => {
+                    const herdNames = getHerdsWithActiveSchedules(
+                      herds ?? [],
+                      selectedMeadowId,
+                      toLocalDateString(new Date()),
+                    );
+                    if (herdNames.length > 0) {
+                      Alert.alert(
+                        t("archive.meadow_active_schedules_title"),
+                        t("archive.meadow_active_schedules", {
+                          herds: herdNames.join(", "),
+                        }),
+                      );
+                      return;
+                    }
+                    Alert.alert(
+                      t("archive.meadow_confirm_title", { name: meadowName }),
+                      t("archive.meadow_info"),
+                      [
+                        { text: t("buttons.cancel"), style: "cancel" },
+                        {
+                          text: t("archive.archive"),
+                          onPress: () =>
+                            archiveMeadowMutation.mutate({
+                              id: selectedMeadowId,
+                              archived: true,
+                            }),
+                        },
+                      ],
+                    );
+                  },
+                },
+                {
+                  text: t("buttons.delete"),
+                  style: "destructive",
+                  onPress: () => deleteMeadowMutation.mutate(selectedMeadowId),
+                },
+              ],
+            );
+          }}
+        />
+      </MapControls>
+    );
+  }
+
+  const canEditPlots = canWrite("field_calendar");
+  const canEditMeadows = canWrite("animals");
+  // Read-only members see no edit controls on the map
+  if (!canEditPlots && !canEditMeadows) return null;
 
   const selectedPlotId = mode.selectedPlotId;
   const selectedPlot = selectedPlotId
@@ -29,95 +149,75 @@ export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
     : undefined;
   const hasSelection = !!selectedPlot;
 
-  // Read-only members see no edit controls on the map
-  if (!canWrite("field_calendar")) return null;
-
   return (
     <MapControls expanded={controlsExpanded} onToggle={setControlsExpanded}>
-      {/* Create */}
-      <MaterialCommunityIconButton
-        style={{
-          backgroundColor: theme.colors.surface,
-          opacity: hasSelection ? 0.4 : 1,
-        }}
-        type="accent"
-        color="black"
-        iconSize={30}
-        icon="pencil-plus-outline"
-        disabled={hasSelection}
-        onPress={() => dispatch({ type: "ENTER_CREATE" })}
-      />
-      {/* Split */}
-      <MaterialCommunityIconButton
-        style={{
-          backgroundColor: theme.colors.surface,
-          opacity: hasSelection ? 1 : 0.4,
-        }}
-        type="accent"
-        color="black"
-        iconSize={30}
-        icon="scissors-cutting"
-        disabled={!hasSelection}
-        onPress={() => {
-          if (selectedPlot) {
+      {/* Create — the chooser lets the user pick plot or meadow */}
+      {!hasSelection && (
+        <MaterialCommunityIconButton
+          style={{ backgroundColor: theme.colors.surface }}
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="pencil-plus-outline"
+          onPress={() =>
             dispatch({
-              type: "ENTER_SPLIT",
-              plotId: selectedPlot.id,
-              initialGeometry: selectedPlot.geometry,
-            });
+              type: "ENTER_CREATE",
+              target: canEditPlots ? "plot" : "meadow",
+            })
           }
-        }}
-      />
-      {/* Merge */}
-      <MaterialCommunityIconButton
-        style={{
-          backgroundColor: theme.colors.surface,
-          opacity: hasSelection ? 1 : 0.4,
-        }}
-        type="accent"
-        color="black"
-        iconSize={30}
-        icon="table-merge-cells"
-        disabled={!hasSelection}
-        onPress={() => {
-          if (selectedPlot) {
-            dispatch({
-              type: "ENTER_MERGE",
-              primaryPlotId: selectedPlot.id,
-            });
-          }
-        }}
-      />
-      {/* Adjust */}
-      <MaterialCommunityIconButton
-        style={{
-          backgroundColor: theme.colors.surface,
-          opacity: hasSelection ? 1 : 0.4,
-        }}
-        type="accent"
-        color="black"
-        iconSize={30}
-        icon="square-edit-outline"
-        disabled={!hasSelection}
-        onPress={() => {
-          if (selectedPlot) {
-            dispatch({ type: "ENTER_ADJUST", plotId: selectedPlot.id });
-          }
-        }}
-      />
-      {/* Delete */}
-      <MaterialCommunityIconButton
-        style={{
-          backgroundColor: theme.colors.surface,
-          opacity: hasSelection ? 1 : 0.4,
-        }}
-        type="accent"
-        color="red"
-        iconSize={30}
-        icon="delete-outline"
-        disabled={!hasSelection}
-        onPress={onDelete}
-      />
+        />
+      )}
+      {/* Plot tools — only while a plot is selected */}
+      {canEditPlots && selectedPlot && (
+        <>
+          {/* Split */}
+          <MaterialCommunityIconButton
+            style={{ backgroundColor: theme.colors.surface }}
+            type="accent"
+            color="black"
+            iconSize={30}
+            icon="scissors-cutting"
+            onPress={() =>
+              dispatch({
+                type: "ENTER_SPLIT",
+                plotId: selectedPlot.id,
+                initialGeometry: selectedPlot.geometry,
+              })
+            }
+          />
+          {/* Merge */}
+          <MaterialCommunityIconButton
+            style={{ backgroundColor: theme.colors.surface }}
+            type="accent"
+            color="black"
+            iconSize={30}
+            icon="table-merge-cells"
+            onPress={() =>
+              dispatch({ type: "ENTER_MERGE", primaryPlotId: selectedPlot.id })
+            }
+          />
+          {/* Adjust */}
+          <MaterialCommunityIconButton
+            style={{ backgroundColor: theme.colors.surface }}
+            type="accent"
+            color="black"
+            iconSize={30}
+            icon="square-edit-outline"
+            onPress={() =>
+              dispatch({ type: "ENTER_ADJUST", plotId: selectedPlot.id })
+            }
+          />
+          {/* Delete */}
+          <MaterialCommunityIconButton
+            style={{ backgroundColor: theme.colors.surface }}
+            type="accent"
+            color="red"
+            iconSize={30}
+            icon="delete-outline"
+            onPress={onDelete}
+          />
+        </>
+      )}
       {/* Info */}
       <MaterialCommunityIconButton
         style={{ backgroundColor: theme.colors.surface }}

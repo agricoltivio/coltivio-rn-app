@@ -90,11 +90,21 @@ type Step =
   | "parcel"
   | "editIntro"
   | "cropRotationWelcome"
-  | "plotsMapWelcome";
+  | "plotsMapWelcome"
+  | "meadowPlots"
+  | "meadowOverlap";
 
-function getSteps(
-  variant?: "draw" | "create" | "parcel" | "edit" | "cropRotation" | "plotsMap",
-): Step[] {
+type Variant =
+  | "draw"
+  | "create"
+  | "parcel"
+  | "edit"
+  | "cropRotation"
+  | "plotsMap"
+  | "meadowDraw"
+  | "meadowPlots";
+
+function getSteps(variant?: Variant): Step[] {
   switch (variant) {
     case "draw":
       return ["welcome", "draw", "finish", "cancel", "overlap"];
@@ -109,6 +119,12 @@ function getSteps(
       return ["cropRotationWelcome"];
     case "plotsMap":
       return ["plotsMapWelcome"];
+    // Meadows, like the plot variants: drawing starts right in drawing mode, or the
+    // meadow is put together from existing plots (instead of a cadastral parcel)
+    case "meadowDraw":
+      return ["welcome", "finishCancel", "meadowOverlap"];
+    case "meadowPlots":
+      return ["welcome", "meadowPlots", "finishCancel", "meadowOverlap"];
     default:
       return ["welcome", "select", "draw", "finish", "cancel"];
   }
@@ -120,14 +136,7 @@ export function MapDrawOnboardingScreen() {
   const { updateLocalSettings } = useLocalSettings();
   const navigation = useNavigation();
   const route = useRoute<RouteProp<RootStackParamList, "MapDrawOnboarding">>();
-  const variant = route.params?.variant as
-    | "draw"
-    | "create"
-    | "parcel"
-    | "edit"
-    | "cropRotation"
-    | "plotsMap"
-    | undefined;
+  const variant: Variant | undefined = route.params?.variant;
 
   const steps = getSteps(variant);
 
@@ -147,7 +156,11 @@ export function MapDrawOnboardingScreen() {
             ? "selectPlotsForPlanOnboardingCompleted"
             : variant === "plotsMap"
               ? "plotsMapOnboardingCompleted"
-              : "mapDrawOnboardingCompleted";
+              : variant === "meadowDraw"
+                ? "addMeadowDrawOnboardingCompleted"
+                : variant === "meadowPlots"
+                  ? "addMeadowPlotsOnboardingCompleted"
+                  : "mapDrawOnboardingCompleted";
 
   // Mark completed on any dismissal (swipe down, back gesture, finish button)
   useEffect(() => {
@@ -234,7 +247,11 @@ export function MapDrawOnboardingScreen() {
                       ? "map_draw_onboarding.welcome_body_parcel"
                       : variant === "edit"
                         ? "map_draw_onboarding.welcome_body_edit"
-                        : "map_draw_onboarding.welcome_body",
+                        : variant === "meadowDraw"
+                          ? "map_draw_onboarding.welcome_body_meadow_draw"
+                          : variant === "meadowPlots"
+                            ? "map_draw_onboarding.welcome_body_meadow_plots"
+                            : "map_draw_onboarding.welcome_body",
               )}
             </H3>
           </View>
@@ -426,6 +443,35 @@ export function MapDrawOnboardingScreen() {
               }}
             >
               {t("map_draw_onboarding.plots_map_add_body")}
+            </H3>
+          </View>
+        )}
+
+        {currentStep === "meadowPlots" && (
+          <View style={{ alignItems: "center" }}>
+            <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
+              {t("map_draw_onboarding.meadow_plots_heading")}
+            </H1>
+            <IconBadge name="gesture-tap" />
+            <H3 style={{ color: theme.colors.primary, textAlign: "center" }}>
+              {t("map_draw_onboarding.meadow_plots_body")}
+            </H3>
+          </View>
+        )}
+
+        {currentStep === "meadowOverlap" && (
+          <View style={{ alignItems: "center" }}>
+            <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
+              {t("map_draw_onboarding.overlap_heading")}
+            </H1>
+            <H3
+              style={{
+                color: theme.colors.primary,
+                marginTop: theme.spacing.s,
+                textAlign: "center",
+              }}
+            >
+              {t("map_draw_onboarding.meadow_overlap_body")}
             </H3>
           </View>
         )}

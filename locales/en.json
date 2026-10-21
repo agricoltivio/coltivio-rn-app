@@ -24,7 +24,10 @@
     "forgot_password": "Forgot Password",
     "apply": "Apply",
     "clear": "Clear",
-    "retry": "Try again"
+    "retry": "Try again",
+    "remove": "Remove",
+    "show_more": "More",
+    "show_less": "Less"
   },
   "forms": {
     "labels": {
@@ -407,6 +410,15 @@
     "new_entry_menu": {
       "heading": "What would you like to log?"
     },
+    "list": {
+      "title": "Areas",
+      "filter_all": "All",
+      "filter_usage_count": "Usage ({{count}})",
+      "usage_filter_heading": "Filter by usage",
+      "reset": "Reset",
+      "no_results": "No matching areas found",
+      "open_map": "Open map"
+    },
     "common": {
       "draw_area_overlap_info": "Overlapping an existing plot will automatically reduce the area.",
       "affected_plots_warning": "Warning: Overlapping plots will be reduced."
@@ -426,7 +438,12 @@
     "add": {
       "map": {
         "mode_select": {
-          "message": "Select a parcel or draw a new area to create a plot."
+          "message": "Select a parcel or draw a new area to create a plot.",
+          "target": "Create new",
+          "target_plot": "Plot",
+          "target_meadow": "Meadow",
+          "message_meadow": "Draw the meadow freely or select existing plots.",
+          "select_plots": "Select plots"
         },
         "tips": {
           "parcel_select": {
@@ -523,17 +540,20 @@
       "abort_body": "Press the X to cancel and go back without merging."
     },
     "map_onboarding": {
-      "browse_heading": "Your Plots",
-      "browse_body": "Tap a plot on the map or search for it using the list icon to view details.",
+      "browse_heading": "Your areas",
+      "browse_body": "Tap an area on the map or search for it using the list icon to view details.",
       "browse_expand_info": "Expand the drawer to see more details.",
       "tools_heading": "Tools",
-      "tools_body": "Use the toolbox to manage your plot areas.",
-      "tool_add": "Add a new plot",
-      "tool_split": "Split an existing plot",
+      "tools_body": "Use the toolbox to manage your areas.",
+      "tool_add": "Add a new area – plot or meadow",
+      "tool_split": "Split a plot",
       "tool_merge": "Merge plots",
-      "tool_edit": "Edit plot area",
-      "tool_delete": "Delete plot",
-      "tool_cancel": "Cancel current action"
+      "tool_edit": "Edit the shape of an area",
+      "tool_delete": "Delete an area",
+      "tool_cancel": "Cancel current action",
+      "layers_heading": "Layers",
+      "layers_body": "Use the layers icon to choose what the map shows.",
+      "layers_options": "You can show or hide plots, meadows and archived areas."
     },
     "usage_codes": {
       "501": "Spring barley",
@@ -707,7 +727,13 @@
       "overlap_body": "If the adjusted plot overlaps existing plots, they will be automatically clipped."
     },
     "empty_state_title": "No plots yet",
-    "empty_state_body": "Import your plots on a PC via the web app from the cantonal system (e.g. Acorda, LAWIS), or draw them on the map. Need help? Write to us at <email>support@coltivio.ch</email>."
+    "empty_state_body": "Import your plots on a PC via the web app from the cantonal system (e.g. Acorda, LAWIS), or draw them on the map. Need help? Write to us at <email>support@coltivio.ch</email>.",
+    "map_layers": {
+      "title": "Layers",
+      "plots": "Plots",
+      "meadows": "Meadows",
+      "archived": "Archived"
+    }
   },
   "farm_equipment": {
     "farm_equipment": "Farm Equipment",
@@ -1142,14 +1168,19 @@
     "cancel_heading": "Cancel",
     "cancel_body": "Tap this symbol to cancel and go back.",
     "overlap_heading": "Overlaps",
-    "overlap_body": "If your new plot overlaps existing plots, they will be automatically adjusted.",
+    "overlap_body": "If your new plot overlaps an existing plot, the existing plot is adjusted automatically.",
     "crop_rotation_welcome_heading": "Plan Your Crop Rotations",
     "crop_rotation_welcome_body": "Select the plots for which you want to plan crop rotations.",
     "plots_map_welcome_heading": "Your Plots",
     "plots_map_tap_body": "Tap on a plot to see details.",
     "plots_map_add_body": "Press this button to add new plots.",
     "welcome_body_create": "You are now in drawing mode. Tap on the map to set the corner points of your new plot.",
-    "actions_heading": "Done & Cancel"
+    "actions_heading": "Done & Cancel",
+    "welcome_body_meadow_draw": "You're now in drawing mode. Tap the map to set the corners of your new meadow.",
+    "welcome_body_meadow_plots": "You're about to create a meadow from your existing plots. Here's a quick explanation of how it works.",
+    "meadow_plots_heading": "Select plots",
+    "meadow_plots_body": "Tap the plots that belong to the meadow. Tap again to deselect a plot. The plots themselves stay unchanged.",
+    "meadow_overlap_body": "Meadows are independent of your plots: they can lie over one or more plots, and the plots stay unchanged. Meadows can't overlap each other, though."
   },
   "animals": {
     "animals": "Animals",
@@ -1339,7 +1370,49 @@
       "delete_n_animals": "Delete {{count}} animals",
       "select_action": "Select action"
     },
-    "notes": "Notes"
+    "notes": "Notes",
+    "meadows": {
+      "meadow": "Meadow",
+      "meadows": "Meadows",
+      "meadow_optional": "Meadow (optional)",
+      "no_meadow": "No meadow",
+      "new_meadow": "New meadow",
+      "edit_meadow": "Edit meadow",
+      "details": "Details",
+      "usage": "Usage",
+      "size_value": "{{are}}a ({{squareMeters}}m²)",
+      "journal_view_categories": "Categories",
+      "errors": {
+        "overlaps": "The area overlaps with the meadow \"{{name}}\".",
+        "self_intersecting": "The area must not intersect itself."
+      },
+      "current_animals": "Animals now",
+      "current_herds": "Herds now",
+      "last_used": "Last used",
+      "fence_length": "Fence length (approx.)",
+      "last_used_now": "now",
+      "usage_chart": {
+        "days_title": "Days on the meadow per month",
+        "days_value": "{{count}} day on the meadow",
+        "days_value_plural": "{{count}} days on the meadow",
+        "average_animals_value": "avg {{averageAnimals}} animals"
+      }
+    },
+    "end_date_before_start": "The end date can't be before the start date.",
+    "schedule_repeat": {
+      "none": "None",
+      "weekdays": "Weekdays",
+      "weekdays_required": "Select at least one weekday.",
+      "until_optional": "Repeat until (optional)"
+    },
+    "herd_changes_apply_from": "Changes apply from",
+    "herd_member_since": "In herd since",
+    "herd_left_on": "Left herd on",
+    "herd_membership_date_too_early": "The date is before an animal joined its current herd. Please pick a later date.",
+    "herd_changes_summary": "{{added}} added, {{removed}} removed. From which date does this apply?",
+    "delete_herd_confirm": "Delete herd \"{{name}}\"?",
+    "delete_herd_confirm_info": "This can't be undone.",
+    "timeline_view_overview": "Overview"
   },
   "drugs": {
     "drugs": "Drugs",
@@ -1646,5 +1719,24 @@
   "donations": {
     "title": "Donations",
     "history_heading": "Your donations"
+  },
+  "archive": {
+    "archive": "Archive",
+    "restore": "Restore",
+    "archived": "Archived",
+    "archived_since": "Archived since {{date}}.",
+    "plot_confirm_title": "Archive plot {{name}}?",
+    "plot_info": "Archived plots are no longer shown on the map or when adding new entries. All existing entries are kept and you can restore the plot at any time.",
+    "plot_delete_hint": "If you no longer farm this plot, you can also just archive it to keep all its entries.",
+    "meadow_confirm_title": "Archive meadow {{name}}?",
+    "meadow_info": "Archived meadows are no longer shown on the map or when adding new grazing periods. All data is kept and you can restore the meadow at any time.",
+    "meadow_delete_title": "Really delete meadow {{name}}?",
+    "meadow_delete_warning": "All related data will be permanently deleted. If you no longer use this meadow, you can also just archive it to keep all its data.",
+    "plot_restore_title": "Restore plot {{name}}?",
+    "plot_restore_warning": "The plot will show up again on the map and when adding entries. If new plots were added on this area since it was archived, they may overlap with it.",
+    "meadow_restore_title": "Restore meadow {{name}}?",
+    "meadow_restore_warning": "The meadow will show up again on the map and when adding grazing periods. If new meadows were added on this area since it was archived, they may overlap with it.",
+    "meadow_active_schedules_title": "Can't archive yet",
+    "meadow_active_schedules": "The meadow still has ongoing or planned grazing periods ({{herds}}). End or remove these grazing periods before archiving the meadow."
   }
 }

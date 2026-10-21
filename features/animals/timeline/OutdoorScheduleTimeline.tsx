@@ -26,7 +26,7 @@ import {
   getScaleForZoomLevel,
 } from "@/features/crop-rotations/timeline/ZoomLevelToggle";
 import { OutdoorTimelineData, OutdoorHerdData } from "./outdoor-timeline-utils";
-import { OutdoorTimelineHerdRow, ROW_HEIGHT } from "./OutdoorTimelineHerdRow";
+import { OutdoorTimelineHerdRow, getRowHeight } from "./OutdoorTimelineHerdRow";
 import { scheduleOnRN } from "react-native-worklets";
 
 type OutdoorScheduleTimelineProps = {
@@ -235,7 +235,17 @@ export function OutdoorScheduleTimeline({
   const scale =
     viewportWidth > 0 ? getScaleForZoomLevel(zoomLevel, viewportWidth) : 1;
   const contentWidth = totalDays * scale;
-  const contentHeight = herds.length * ROW_HEIGHT;
+  // Row offsets, since rows with overlapping bars are taller
+  const rowOffsets = useMemo(() => {
+    const offsets: number[] = [];
+    let offset = 0;
+    for (const herd of herds) {
+      offsets.push(offset);
+      offset += getRowHeight(herd.laneCount ?? 1);
+    }
+    return { offsets, total: offset };
+  }, [herds]);
+  const contentHeight = rowOffsets.total;
 
   const todayDay = useMemo(() => {
     const today = new Date();
@@ -453,6 +463,7 @@ export function OutdoorScheduleTimeline({
     ({ item }: { item: OutdoorHerdData }) => (
       <OutdoorTimelineHerdRow
         bars={item.bars}
+        laneCount={item.laneCount ?? 1}
         scale={scale}
         visibleStartDay={barVisibleRange.start}
         visibleEndDay={barVisibleRange.end}
@@ -465,11 +476,11 @@ export function OutdoorScheduleTimeline({
 
   const getItemLayout = useCallback(
     (_: unknown, index: number) => ({
-      length: ROW_HEIGHT,
-      offset: ROW_HEIGHT * index,
+      length: getRowHeight(herds[index]?.laneCount ?? 1),
+      offset: rowOffsets.offsets[index] ?? 0,
       index,
     }),
-    [],
+    [herds, rowOffsets],
   );
 
   const keyExtractor = useCallback((item: OutdoorHerdData) => item.herdId, []);
@@ -555,7 +566,8 @@ export function OutdoorScheduleTimeline({
                 <View
                   key={herd.herdId}
                   style={{
-                    height: ROW_HEIGHT,
+                    // Label centered vertically across all lanes of the row
+                    height: getRowHeight(herd.laneCount ?? 1),
                     justifyContent: "center",
                     paddingHorizontal: 6,
                     borderBottomWidth: 1,

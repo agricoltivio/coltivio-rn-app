@@ -7,9 +7,9 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { DeletePlotScreenProps } from "./navigation/plots-routes";
 import { H2, Subtitle } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { useDeletePlotMutation } from "./plots.hooks";
+import { useDeletePlotMutation, useUpdatePlotMutation } from "./plots.hooks";
 import { useTranslation } from "react-i18next";
 
 export function DeletePlotScreen({ navigation, route }: DeletePlotScreenProps) {
@@ -17,10 +17,20 @@ export function DeletePlotScreen({ navigation, route }: DeletePlotScreenProps) {
   const { plotId, name } = route.params;
   const theme = useTheme();
 
-  navigation.getState().routes;
-  const deletePlotMutation = useDeletePlotMutation(
-    () => navigation.pop(3),
-    (error) => console.error(error),
+  // Reached via the edit modal. Opened from the plot's details screen, that screen
+  // is closed too after deleting; from the map, only this screen and the edit modal.
+  function popAfterDelete() {
+    const navigationState = navigation.getState();
+    const routeBeforeEdit = navigationState.routes[navigationState.index - 2];
+    navigation.pop(routeBeforeEdit?.name === "PlotDetails" ? 3 : 2);
+  }
+  const showError = () =>
+    Alert.alert(t("common.error"), t("common.unknown_error"));
+  const deletePlotMutation = useDeletePlotMutation(popAfterDelete, showError);
+  // Archiving instead keeps all entries; back to where editing started
+  const archivePlotMutation = useUpdatePlotMutation(
+    () => navigation.pop(2),
+    showError,
   );
 
   const {
@@ -36,13 +46,45 @@ export function DeletePlotScreen({ navigation, route }: DeletePlotScreenProps) {
     <ContentView
       footerComponent={
         <BottomActionContainer>
-          <Button
-            type="danger"
-            title={t("buttons.delete")}
-            onPress={handleSubmit(onSubmit)}
-            disabled={!isDirty || deletePlotMutation.isPending}
-            loading={deletePlotMutation.isPending}
-          />
+          <View style={{ gap: theme.spacing.xs }}>
+            <Button
+              type="accent"
+              title={t("archive.archive")}
+              onPress={() =>
+                // Same confirmation as archiving from the edit screen
+                Alert.alert(
+                  t("archive.plot_confirm_title", { name: name }),
+                  t("archive.plot_info"),
+                  [
+                    { text: t("buttons.cancel"), style: "cancel" },
+                    {
+                      text: t("archive.archive"),
+                      onPress: () =>
+                        archivePlotMutation.mutate({
+                          plotId,
+                          data: { archived: true },
+                        }),
+                    },
+                  ],
+                )
+              }
+              disabled={
+                deletePlotMutation.isPending || archivePlotMutation.isPending
+              }
+              loading={archivePlotMutation.isPending}
+            />
+            <Button
+              type="danger"
+              title={t("buttons.delete")}
+              onPress={handleSubmit(onSubmit)}
+              disabled={
+                !isDirty ||
+                deletePlotMutation.isPending ||
+                archivePlotMutation.isPending
+              }
+              loading={deletePlotMutation.isPending}
+            />
+          </View>
         </BottomActionContainer>
       }
     >
@@ -63,6 +105,11 @@ export function DeletePlotScreen({ navigation, route }: DeletePlotScreenProps) {
             style={{ color: theme.colors.white, marginTop: theme.spacing.m }}
           >
             {t("plots.delete.entries_warning")}
+          </Subtitle>
+          <Subtitle
+            style={{ color: theme.colors.white, marginTop: theme.spacing.s }}
+          >
+            {t("archive.plot_delete_hint")}
           </Subtitle>
           <Subtitle
             style={{ color: theme.colors.white, marginTop: theme.spacing.s }}

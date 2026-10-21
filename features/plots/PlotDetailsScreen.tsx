@@ -1,79 +1,72 @@
-import { Card } from "@/components/card/Card";
-import { ContentView } from "@/components/containers/ContentView";
-import { ListItem } from "@/components/list/ListItem";
-import { StaticMapPreview } from "@/components/map/StaticMapPreview";
-import { ScrollView } from "@/components/views/ScrollView";
-import { PlotDetailsScreenProps } from "./navigation/plots-routes";
-import { Body, H2, H3, Label } from "@/theme/Typography";
-import { type LngLat } from "@maplibre/maplibre-react-native";
-import * as turf from "@turf/turf";
-import { useTranslation } from "react-i18next";
-import { useMemo } from "react";
-import { View } from "react-native";
-import { useTheme } from "styled-components/native";
-import { usePlotByIdQuery } from "./plots.hooks";
-import { UsageCode } from "./usage-codes";
-import { formatLocalizedDate } from "@/utils/date";
 import { Button } from "@/components/buttons/Button";
+import { IonIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
+import { ContentView } from "@/components/containers/ContentView";
+import { ScrollView } from "@/components/views/ScrollView";
+import { H2 } from "@/theme/Typography";
+import { useLayoutEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { useTheme } from "styled-components/native";
 import { usePermissions } from "@/features/user/users.hooks";
+import { PlotDetailsScreenProps } from "./navigation/plots-routes";
+import { PlotDetailsContent } from "./PlotDetailsContent";
+import { usePlotByIdQuery } from "./plots.hooks";
 
 export function PlotDetailsScreen({
   route,
   navigation,
 }: PlotDetailsScreenProps) {
-  const { t, i18n } = useTranslation();
-  const locale = i18n.language;
-  const { canWrite } = usePermissions();
-  const { plotId } = route.params;
-  const { plot, error } = usePlotByIdQuery(plotId);
+  const { t } = useTranslation();
   const theme = useTheme();
+  const { plotId } = route.params;
+  const { plot } = usePlotByIdQuery(plotId);
+  const { canWrite } = usePermissions();
 
-  const size = plot?.size ?? 0;
+  // Plots without geometry (size 0) can't be shown on the map; archived plots
+  // open it with the archived layer visible
+  const hasGeometry =
+    plot !== undefined && plot.geometry.coordinates.length > 0;
+  const isArchived = plot?.archivedAt != null;
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: hasGeometry
+        ? () => (
+            <IonIconButton
+              icon="globe-outline"
+              type="ghost"
+              iconSize={26}
+              color={theme.colors.primary}
+              onPress={() =>
+                navigation.navigate("PlotsMap", {
+                  selectedPlotId: plotId,
+                  showArchived: isArchived,
+                })
+              }
+            />
+          )
+        : undefined,
+    });
+  }, [navigation, hasGeometry, isArchived, plotId, theme.colors.primary]);
+
   if (!plot) {
     return null;
   }
 
-  const hasGeometry = plot.geometry.coordinates.length > 0;
-  const center = hasGeometry
-    ? (turf.centroid(plot.geometry).geometry.coordinates as LngLat)
-    : undefined;
-
-  const features = useMemo(
-    (): GeoJSON.FeatureCollection => ({
-      type: "FeatureCollection",
-      features: hasGeometry
-        ? [{ type: "Feature", properties: {}, geometry: plot.geometry }]
-        : [],
-    }),
-    [plot.geometry, hasGeometry],
-  );
-
   return (
     <ContentView
       footerComponent={
-        <BottomActionContainer>
-          <View style={{ gap: theme.spacing.s, flexDirection: "row" }}>
-            {canWrite("field_calendar") && (
-              <Button
-                style={{ flexGrow: 1 }}
-                type="danger"
-                title={t("buttons.delete")}
-                onPress={() =>
-                  navigation.navigate("DeletePlot", { plotId, name: plot.name })
-                }
-              />
-            )}
-            {canWrite("field_calendar") && (
-              <Button
-                style={{ flexGrow: 1 }}
-                type="accent"
-                title={t("buttons.edit")}
-                onPress={() => navigation.navigate("EditPlot", { plotId })}
-              />
-            )}
-          </View>
-        </BottomActionContainer>
+        canWrite("field_calendar") ? (
+          <BottomActionContainer>
+            <Button
+              type="accent"
+              title={t("buttons.edit")}
+              onPress={() =>
+                navigation.navigate("EditPlotModal", { plotId: plot.id })
+              }
+            />
+          </BottomActionContainer>
+        ) : undefined
       }
     >
       <ScrollView
@@ -81,172 +74,13 @@ export function PlotDetailsScreen({
         headerTitleOnScroll={t("plots.plot_name", { name: plot.name })}
       >
         <H2>{t("plots.plot_name", { name: plot.name })}</H2>
-        <H3>
-          {plot.usage
-            ? `${t(`plots.usage_codes.${plot.usage as UsageCode}`)}`
-            : ""}
-        </H3>
-        {center && (
-          <View style={{ marginTop: theme.spacing.m }}>
-            <StaticMapPreview
-              center={center}
-              zoom={16}
-              features={features}
-              height={250}
-            />
-          </View>
-        )}
-        <Card style={{ marginTop: theme.spacing.m }}>
-          <SummaryItem
-            label={t("forms.labels.local_id")}
-            value={plot.localId ?? t("common.unknown")}
-          />
-          <SummaryItem
-            label={t("forms.labels.area")}
-            value={`${size / 100}a`}
-          />
-          <SummaryItem
-            label={t("forms.labels.usagecode")}
-            value={plot.usage ? plot.usage : t("common.unknown")}
-          />
-          <SummaryItem
-            label={t("forms.labels.cutting_date")}
-            value={
-              plot.cuttingDate
-                ? formatLocalizedDate(
-                    new Date(plot.cuttingDate),
-                    locale,
-                    "long",
-                    false,
-                  )
-                : ""
-            }
-          />
-          {plot.additionalNotes ? (
-            <>
-              <Label style={{ marginTop: theme.spacing.m }}>
-                {t("forms.labels.additional_notes")}
-              </Label>
-
-              <Label>
-                <Body>{plot.additionalNotes}</Body>
-              </Label>
-            </>
-          ) : null}
-        </Card>
-        <View
-          style={{
-            marginTop: theme.spacing.m,
-            borderRadius: 10,
-            overflow: "hidden",
-            backgroundColor: theme.colors.white,
-          }}
-        >
-          <ListItem
-            style={{ backgroundColor: theme.colors.white }}
-            onPress={() =>
-              navigation.navigate("PlanCropRotations", {
-                plotIds: [plotId],
-                previousScreen: "PlotDetails",
-              })
-            }
-          >
-            <ListItem.Content>
-              <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
-                {t("crop_rotations.crop_rotation")}
-              </ListItem.Title>
-            </ListItem.Content>
-            <ListItem.Chevron />
-          </ListItem>
-          <ListItem
-            style={{ backgroundColor: theme.colors.white }}
-            onPress={() =>
-              navigation.navigate("PlotHarvests", {
-                plotId: plotId,
-                name: plot!.name,
-              })
-            }
-          >
-            <ListItem.Content>
-              <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
-                {t("harvests.harvest")}
-              </ListItem.Title>
-            </ListItem.Content>
-            <ListItem.Chevron />
-          </ListItem>
-          <ListItem
-            style={{ backgroundColor: theme.colors.white }}
-            onPress={() =>
-              navigation.navigate("PlotFertilizerApplications", {
-                plotId: plotId,
-                name: plot!.name,
-              })
-            }
-          >
-            <ListItem.Content>
-              <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
-                {t("fertilizer_application.fertilizer_application")}
-              </ListItem.Title>
-            </ListItem.Content>
-            <ListItem.Chevron />
-          </ListItem>
-          <ListItem
-            style={{ backgroundColor: theme.colors.white }}
-            onPress={() =>
-              navigation.navigate("PlotTillages", {
-                plotId: plotId,
-                name: plot!.name,
-              })
-            }
-          >
-            <ListItem.Content>
-              <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
-                {t("tillages.tillage")}
-              </ListItem.Title>
-            </ListItem.Content>
-            <ListItem.Chevron />
-          </ListItem>
-          <ListItem
-            style={{ backgroundColor: theme.colors.white }}
-            onPress={() =>
-              navigation.navigate("PlotCropProtectionApplications", {
-                plotId: plotId,
-                name: plot!.name,
-              })
-            }
-            hideBottomDivider
-          >
-            <ListItem.Content>
-              <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
-                {t("crop_protection_applications.crop_protection")}
-              </ListItem.Title>
-            </ListItem.Content>
-            <ListItem.Chevron />
-          </ListItem>
-        </View>
+        <PlotDetailsContent
+          plot={plot}
+          navigation={navigation}
+          returnTo="PlotDetails"
+          hideEditButton
+        />
       </ScrollView>
     </ContentView>
-  );
-}
-
-function SummaryItem({
-  label,
-  value,
-}: {
-  label: string;
-  value: string | number;
-}) {
-  const theme = useTheme();
-  return (
-    <View
-      style={{
-        flexDirection: "row",
-        marginBottom: theme.spacing.s,
-        gap: theme.spacing.m,
-      }}
-    >
-      <Label style={{ flex: 1 }}>{label}</Label>
-      <Label style={{ fontSize: 18 }}>{value}</Label>
-    </View>
   );
 }

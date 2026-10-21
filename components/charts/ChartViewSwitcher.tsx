@@ -6,14 +6,14 @@ export type ChartMode = "cumulative" | "monthly";
 
 // Same segmented-toggle style as the dashboard/list switch in HarvestsScreen's
 // ViewToggle: bordered pill, active option filled with the primary color.
-export function ChartViewSwitcher({
+export function ChartViewSwitcher<TMode extends string = ChartMode>({
   value,
   onChange,
   options,
 }: {
-  value: ChartMode;
-  onChange: (mode: ChartMode) => void;
-  options: { key: ChartMode; label: string }[];
+  value: TMode;
+  onChange: (mode: TMode) => void;
+  options: { key: TMode; label: string }[];
 }) {
   const theme = useTheme();
   return (

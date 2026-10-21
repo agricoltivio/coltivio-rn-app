@@ -1,7 +1,8 @@
+import { toLocalDateString } from "@/utils/date";
 import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { useForm } from "react-hook-form";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { usePlotByIdQuery, useUpdatePlotMutation } from "./plots.hooks";
 import { ContentView } from "@/components/containers/ContentView";
@@ -40,6 +41,11 @@ export function EditPlotScreen({
     () => navigation.goBack(),
     (error) => console.error(error),
   );
+  // Archiving keeps all entries, unlike deleting; it's reversible
+  const archivePlotMutation = useUpdatePlotMutation(
+    () => navigation.goBack(),
+    () => Alert.alert(t("common.error"), t("common.unknown_error")),
+  );
 
   const {
     control,
@@ -64,6 +70,39 @@ export function EditPlotScreen({
     return null;
   }
 
+  const isArchived = plot.archivedAt !== null;
+
+  function handleArchiveToggle() {
+    if (isArchived) {
+      // Plots added since archiving may overlap, so restoring asks first
+      Alert.alert(
+        t("archive.plot_restore_title", { name: plot!.name }),
+        t("archive.plot_restore_warning"),
+        [
+          { text: t("buttons.cancel"), style: "cancel" },
+          {
+            text: t("archive.restore"),
+            onPress: () =>
+              archivePlotMutation.mutate({ plotId, data: { archived: false } }),
+          },
+        ],
+      );
+      return;
+    }
+    Alert.alert(
+      t("archive.plot_confirm_title", { name: plot!.name }),
+      t("archive.plot_info"),
+      [
+        { text: t("buttons.cancel"), style: "cancel" },
+        {
+          text: t("archive.archive"),
+          onPress: () =>
+            archivePlotMutation.mutate({ plotId, data: { archived: true } }),
+        },
+      ],
+    );
+  }
+
   function onSubmit({ size, usage, ...rest }: EditPlotFormValues) {
     updatePlotMutation.mutate({
       plotId,
@@ -71,7 +110,9 @@ export function EditPlotScreen({
         ...rest,
         size: Number(size),
         usage: Number(usage),
-        cuttingDate: rest.cuttingDate?.toISOString() ?? null,
+        cuttingDate: rest.cuttingDate
+          ? toLocalDateString(rest.cuttingDate)
+          : null,
       },
     });
   }
@@ -80,18 +121,35 @@ export function EditPlotScreen({
     <ContentView
       footerComponent={
         <BottomActionContainer>
-          <View style={{ flexDirection: "row", gap: theme.spacing.xs }}>
+          <View style={{ gap: theme.spacing.xs }}>
+            {/* Archive next to delete: the safe alternative is offered first */}
+            <View style={{ flexDirection: "row", gap: theme.spacing.xs }}>
+              <Button
+                style={{ flex: 1 }}
+                type="accent"
+                title={isArchived ? t("archive.restore") : t("archive.archive")}
+                onPress={handleArchiveToggle}
+                disabled={
+                  updatePlotMutation.isPending || archivePlotMutation.isPending
+                }
+                loading={archivePlotMutation.isPending}
+              />
+              <Button
+                style={{ flex: 1 }}
+                type="dangerGhost"
+                title={t("buttons.delete")}
+                onPress={() =>
+                  navigation.navigate("DeletePlot", {
+                    plotId,
+                    name: plot!.name,
+                  })
+                }
+                disabled={
+                  updatePlotMutation.isPending || archivePlotMutation.isPending
+                }
+              />
+            </View>
             <Button
-              style={{ flex: 1 }}
-              type="danger"
-              title={t("buttons.delete")}
-              onPress={() =>
-                navigation.navigate("DeletePlot", { plotId, name: plot!.name })
-              }
-              disabled={updatePlotMutation.isPending}
-            />
-            <Button
-              style={{ flex: 1 }}
               type="primary"
               title={t("buttons.save")}
               onPress={handleSubmit(onSubmit)}

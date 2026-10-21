@@ -11,11 +11,14 @@ import {
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-export function useFarmPlotsQuery() {
+// Active plots only, unless includeArchived is set
+export function useFarmPlotsQuery(includeArchived: boolean = false) {
   const api = useApi();
   const { data, ...rest } = useQuery({
-    queryKey: queryKeys.plots.all.queryKey,
-    queryFn: () => api.plots.getPlots(),
+    queryKey: includeArchived
+      ? queryKeys.plots.allIncludingArchived.queryKey
+      : queryKeys.plots.all.queryKey,
+    queryFn: () => api.plots.getPlots(includeArchived),
     staleTime: 5 * 60 * 1000,
   });
   return { plots: data, ...rest };

@@ -7,17 +7,18 @@ import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Subtitle } from "@/theme/Typography";
-import { formatLocalizedDate } from "@/utils/date";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { formatOutdoorScheduleSummary } from "./outdoor-schedule-summary";
 import { FlatList, View } from "react-native";
 import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
 import { useCreateHerdMutation } from "./herds.hooks";
 import { CreateHerdScreenProps } from "./navigation/animals-routes";
-import { OutdoorScheduleEditModal } from "./OutdoorScheduleEditModal";
+import { useMeadowsQuery } from "./meadows.hooks";
+import { OutdoorScheduleFormResult } from "./OutdoorScheduleFormScreen";
 import { OutdoorScheduleTimeline } from "./timeline/OutdoorScheduleTimeline";
 import { buildOutdoorTimelineData } from "./timeline/outdoor-timeline-utils";
 import { hasScheduleOverlaps } from "./schedule-overlap-utils";
@@ -61,10 +62,35 @@ export function CreateHerdScreen({ route, navigation }: CreateHerdScreenProps) {
 
   // Local outdoor schedules state
   const [localSchedules, setLocalSchedules] = useState<LocalSchedule[]>([]);
-  const [scheduleModalVisible, setScheduleModalVisible] = useState(false);
-  const [editingSchedule, setEditingSchedule] = useState<LocalSchedule | null>(
-    null,
-  );
+  // Archived included: existing schedules may still point to an archived meadow
+  const { meadows } = useMeadowsQuery(true);
+
+  // Handle returning from the outdoor schedule form
+  const scheduleResult = route.params?.scheduleResult;
+  const [lastScheduleResult, setLastScheduleResult] = useState<
+    OutdoorScheduleFormResult | undefined
+  >(undefined);
+  if (scheduleResult && scheduleResult !== lastScheduleResult) {
+    setLastScheduleResult(scheduleResult);
+    if (scheduleResult.kind === "delete") {
+      setLocalSchedules((prev) =>
+        prev.filter((s) => s.tempId !== scheduleResult.scheduleId),
+      );
+    } else if (scheduleResult.scheduleId) {
+      const { scheduleId, input } = scheduleResult;
+      setLocalSchedules((prev) =>
+        prev.map((s) =>
+          s.tempId === scheduleId ? { ...input, tempId: s.tempId } : s,
+        ),
+      );
+    } else {
+      const { input } = scheduleResult;
+      setLocalSchedules((prev) => [
+        ...prev,
+        { ...input, tempId: `temp-${Date.now()}` },
+      ]);
+    }
+  }
 
   const {
     control,
@@ -132,25 +158,22 @@ export function CreateHerdScreen({ route, navigation }: CreateHerdScreenProps) {
     });
   }
 
-  function formatScheduleSummary(schedule: LocalSchedule): string {
-    const typeLabel = t(`animals.outdoor_types.${schedule.type}` as const);
-    const start = formatLocalizedDate(new Date(schedule.startDate), locale);
-    const end = schedule.endDate
-      ? formatLocalizedDate(new Date(schedule.endDate), locale)
-      : "–";
-    let summary = `${typeLabel}: ${start} - ${end}`;
-    if (schedule.recurrence) {
-      const freq = t(
-        `animals.frequency_types.${schedule.recurrence.frequency}` as const,
-      );
-      summary += ` (${freq})`;
-    }
-    return summary;
-  }
-
   function openScheduleModal(schedule?: LocalSchedule) {
-    setEditingSchedule(schedule ?? null);
-    setScheduleModalVisible(true);
+    navigation.navigate("OutdoorScheduleForm", {
+      previousScreen: "CreateHerd",
+      canDelete: true,
+      schedule: schedule
+        ? {
+            id: schedule.tempId,
+            startDate: schedule.startDate,
+            endDate: schedule.endDate ?? null,
+            type: schedule.type,
+            meadowId: schedule.meadowId,
+            notes: schedule.notes ?? null,
+            recurrence: schedule.recurrence,
+          }
+        : undefined,
+    });
   }
 
   return (
@@ -298,7 +321,12 @@ export function CreateHerdScreen({ route, navigation }: CreateHerdScreenProps) {
                 >
                   <ListItem.Content>
                     <ListItem.Title>
-                      {formatScheduleSummary(item)}
+                      {formatOutdoorScheduleSummary(
+                        item,
+                        t,
+                        locale,
+                        meadows?.find((m) => m.id === item.meadowId)?.name,
+                      )}
                     </ListItem.Title>
                     {item.notes && <ListItem.Body>{item.notes}</ListItem.Body>}
                   </ListItem.Content>
@@ -309,45 +337,6 @@ export function CreateHerdScreen({ route, navigation }: CreateHerdScreenProps) {
           )}
         </View>
       </ScrollView>
-
-      <OutdoorScheduleEditModal
-        visible={scheduleModalVisible}
-        schedule={
-          editingSchedule
-            ? {
-                id: editingSchedule.tempId,
-                startDate: editingSchedule.startDate,
-                endDate: editingSchedule.endDate ?? null,
-                type: editingSchedule.type,
-                recurrence: editingSchedule.recurrence,
-              }
-            : null
-        }
-        onSave={(input) => {
-          if (editingSchedule) {
-            setLocalSchedules((prev) =>
-              prev.map((s) =>
-                s.tempId === editingSchedule.tempId
-                  ? { ...input, tempId: s.tempId }
-                  : s,
-              ),
-            );
-          } else {
-            setLocalSchedules((prev) => [
-              ...prev,
-              { ...input, tempId: `temp-${Date.now()}` },
-            ]);
-          }
-          setScheduleModalVisible(false);
-        }}
-        onDelete={(scheduleId) => {
-          setLocalSchedules((prev) =>
-            prev.filter((s) => s.tempId !== scheduleId),
-          );
-          setScheduleModalVisible(false);
-        }}
-        onClose={() => setScheduleModalVisible(false)}
-      />
     </ContentView>
   );
 }

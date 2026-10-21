@@ -5,7 +5,7 @@ import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { ScrollView } from "@/components/views/ScrollView";
 import { Card } from "@/components/card/Card";
 import { H2, H3 } from "@/theme/Typography";
-import { getYearRange } from "@/utils/date";
+import { getYearRange, toLocalDateString } from "@/utils/date";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -46,8 +46,8 @@ export function OutdoorJournalExportScreen({
 
   function onSubmit(data: FormValues) {
     downloadMutation.mutate({
-      fromDate: data.fromDate.toISOString(),
-      toDate: data.toDate.toISOString(),
+      fromDate: toLocalDateString(data.fromDate),
+      toDate: toLocalDateString(data.toDate),
     });
   }
 

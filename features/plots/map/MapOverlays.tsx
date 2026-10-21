@@ -5,6 +5,7 @@ import { SplitModeControls } from "./controls/SplitModeControls";
 import { MergeModeControls } from "./controls/MergeModeControls";
 import { AdjustModeControls } from "./controls/AdjustModeControls";
 import { CreateModeControls } from "./controls/CreateModeControls";
+import { MeadowAdjustModeControls } from "./controls/MeadowAdjustModeControls";
 import { SplitModeLayersHandle } from "./layers/SplitModeLayers";
 import { AdjustModeLayersHandle } from "./layers/AdjustModeLayers";
 
@@ -32,5 +33,7 @@ export function MapOverlays({
       return <AdjustModeControls adjustLayersRef={adjustLayersRef} />;
     case "create":
       return <CreateModeControls />;
+    case "meadowAdjust":
+      return <MeadowAdjustModeControls />;
   }
 }

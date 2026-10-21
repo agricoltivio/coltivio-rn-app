@@ -7,7 +7,7 @@ import { RHSwitch } from "@/components/inputs/RHSwitch";
 import { ScrollView } from "@/components/views/ScrollView";
 import { Card } from "@/components/card/Card";
 import { H2, H3 } from "@/theme/Typography";
-import { getYearRange } from "@/utils/date";
+import { getYearRange, toLocalDateString } from "@/utils/date";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -81,8 +81,8 @@ export function TreatmentsExportScreen({
   function onSubmit(data: FormValues) {
     const selectedTypes = ALL_ANIMAL_TYPES.filter((type) => data[type]);
     downloadMutation.mutate({
-      fromDate: data.fromDate.toISOString(),
-      toDate: data.toDate.toISOString(),
+      fromDate: toLocalDateString(data.fromDate),
+      toDate: toLocalDateString(data.toDate),
       animalTypes: selectedTypes.length > 0 ? selectedTypes : undefined,
     });
   }

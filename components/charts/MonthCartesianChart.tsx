@@ -1,9 +1,13 @@
-import { matchFont } from "@shopify/react-native-skia";
-import { useMemo } from "react";
+import { Line as SkiaLine, matchFont, vec } from "@shopify/react-native-skia";
+import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, View } from "react-native";
 import { Gesture } from "react-native-gesture-handler";
-import { useSharedValue } from "react-native-reanimated";
+import {
+  runOnJS,
+  useAnimatedReaction,
+  useSharedValue,
+} from "react-native-reanimated";
 import { useTheme } from "styled-components/native";
 import {
   BarGroup,
@@ -145,10 +149,26 @@ export function MonthCartesianChart({
   // (failing — and releasing to the ScrollView — on vertical movement first).
   const chartLeft = useSharedValue(0);
   const chartRight = useSharedValue(0);
+  // Plain copy for positioning the tooltip during render (shared values
+  // shouldn't be read while rendering)
+  const chartBoundsRef = useRef({ left: 0, right: 0 });
   const handleChartBoundsChange = (bounds: ChartBounds) => {
     chartLeft.value = bounds.left;
     chartRight.value = bounds.right;
+    chartBoundsRef.current = { left: bounds.left, right: bounds.right };
   };
+
+  // Touched month while a finger is on the chart (-1 = not touched); drives the
+  // floating tooltip and the vertical indicator line
+  const [scrubbedMonth, setScrubbedMonth] = useState(-1);
+  useAnimatedReaction(
+    () => (pressState.isActive.value ? pressState.matchedIndex.value : -1),
+    (current, previous) => {
+      if (current !== previous) runOnJS(setScrubbedMonth)(current);
+    },
+  );
+  const [chartWidth, setChartWidth] = useState(0);
+  const [tooltipWidth, setTooltipWidth] = useState(0);
   const scrubGesture = useMemo(() => {
     const updateFromX = (x: number) => {
       "worklet";
@@ -165,15 +185,18 @@ export function MonthCartesianChart({
     };
     // onBegin fires on touch-down, before the gesture has committed to
     // either activating (horizontal drag) or failing (vertical scroll) — so
-    // a plain tap/hold updates the info panel immediately instead of needing
-    // horizontal movement first. The panel is always visible (see
-    // ChartPressTooltip), so a touch that turns out to be a scroll just
-    // leaves it on whatever month it last landed on — nothing to hide.
+    // a plain tap/hold shows the tooltip immediately instead of needing
+    // horizontal movement first. onFinalize hides it again when the finger
+    // lifts or the touch turns out to be a page scroll.
     const panGesture = Gesture.Pan()
       .activeOffsetX([-DIRECTION_THRESHOLD, DIRECTION_THRESHOLD])
       .failOffsetY([-DIRECTION_THRESHOLD, DIRECTION_THRESHOLD])
       .onBegin((e) => updateFromX(e.x))
-      .onUpdate((e) => updateFromX(e.x));
+      .onUpdate((e) => updateFromX(e.x))
+      .onFinalize(() => {
+        "worklet";
+        pressState.isActive.value = false;
+      });
     return Gesture.Race(panGesture);
   }, [chartLeft, chartRight, pressState]);
 
@@ -225,20 +248,22 @@ export function MonthCartesianChart({
 
   if (selectedYears.length === 0) return null;
 
+  // Tooltip centered above the touched month, kept inside the chart
+  const { left: plotLeft, right: plotRight } = chartBoundsRef.current;
+  const scrubbedMonthX =
+    plotLeft +
+    ((plotRight - plotLeft) * Math.max(0, scrubbedMonth)) / LAST_MONTH_INDEX;
+  const tooltipLeft = Math.min(
+    Math.max(0, scrubbedMonthX - tooltipWidth / 2),
+    Math.max(0, chartWidth - tooltipWidth),
+  );
+
   return (
-    <View style={{ gap: 4 }}>
-      <ChartPressTooltip
-        pressState={pressState}
-        monthLabels={monthLabelsFull}
-        selectedYears={selectedYears}
-        availableYears={availableYears}
-        valuesByYear={valuesByYear}
-        monthlyAverages={monthlyAverages}
-        unitLabel={unit.label}
-        perUnitLabel={perUnitLabel}
-        getBreakdown={getBreakdown}
-      />
-      <View style={{ height }}>
+    <View>
+      <View
+        style={{ height }}
+        onLayout={(event) => setChartWidth(event.nativeEvent.layout.width)}
+      >
         <CartesianChart
           data={rows}
           xKey="month"
@@ -264,39 +289,85 @@ export function MonthCartesianChart({
             },
           ]}
         >
-          {({ points, chartBounds }) =>
-            mode === "cumulative" ? (
-              <>
-                {selectedYears.map((year, i) => (
-                  <Line
-                    key={year}
-                    points={points[ALL_Y_KEYS[i]]}
-                    color={getYearColor(theme, availableYears.indexOf(year))}
-                    strokeWidth={2}
-                    curveType="linear"
-                    connectMissingData
-                  />
-                ))}
-              </>
-            ) : (
-              <BarGroup
-                chartBounds={chartBounds}
-                barCount={selectedYears.length}
-                betweenGroupPadding={0.4}
-                withinGroupPadding={0.15}
-                roundedCorners={{ topLeft: 4, topRight: 4 }}
-              >
-                {selectedYears.map((year, i) => (
-                  <BarGroup.Bar
-                    key={year}
-                    points={points[ALL_Y_KEYS[i]]}
-                    color={getYearColor(theme, availableYears.indexOf(year))}
-                  />
-                ))}
-              </BarGroup>
-            )
-          }
+          {({ points, chartBounds }) => (
+            <>
+              {/* Vertical line at the touched month while dragging */}
+              {scrubbedMonth >= 0 && points.y0[scrubbedMonth] !== undefined && (
+                <SkiaLine
+                  p1={vec(points.y0[scrubbedMonth].x, chartBounds.top)}
+                  p2={vec(points.y0[scrubbedMonth].x, chartBounds.bottom)}
+                  color={theme.colors.gray1}
+                  strokeWidth={1}
+                />
+              )}
+              {mode === "cumulative" ? (
+                <>
+                  {selectedYears.map((year, i) => (
+                    <Line
+                      key={year}
+                      points={points[ALL_Y_KEYS[i]]}
+                      color={getYearColor(theme, availableYears.indexOf(year))}
+                      strokeWidth={2}
+                      curveType="linear"
+                      connectMissingData
+                    />
+                  ))}
+                </>
+              ) : (
+                <BarGroup
+                  chartBounds={chartBounds}
+                  barCount={selectedYears.length}
+                  betweenGroupPadding={0.4}
+                  withinGroupPadding={0.15}
+                  roundedCorners={{ topLeft: 4, topRight: 4 }}
+                >
+                  {selectedYears.map((year, i) => (
+                    <BarGroup.Bar
+                      key={year}
+                      points={points[ALL_Y_KEYS[i]]}
+                      color={getYearColor(theme, availableYears.indexOf(year))}
+                    />
+                  ))}
+                </BarGroup>
+              )}
+            </>
+          )}
         </CartesianChart>
+
+        {/* Floating tooltip while the chart is touched; positioned over the
+            chart so its size doesn't move the chart */}
+        {scrubbedMonth >= 0 && (
+          <View
+            pointerEvents="none"
+            onLayout={(event) =>
+              setTooltipWidth(event.nativeEvent.layout.width)
+            }
+            style={{
+              position: "absolute",
+              top: 0,
+              left: tooltipLeft,
+              borderRadius: theme.radii.m,
+              backgroundColor: theme.colors.white,
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.15,
+              shadowRadius: 6,
+              elevation: 4,
+            }}
+          >
+            <ChartPressTooltip
+              activeMonth={scrubbedMonth}
+              monthLabels={monthLabelsFull}
+              selectedYears={selectedYears}
+              availableYears={availableYears}
+              valuesByYear={valuesByYear}
+              monthlyAverages={monthlyAverages}
+              unitLabel={unit.label}
+              perUnitLabel={perUnitLabel}
+              getBreakdown={getBreakdown}
+            />
+          </View>
+        )}
       </View>
     </View>
   );

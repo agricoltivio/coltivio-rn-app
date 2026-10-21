@@ -2058,9 +2058,359 @@
         }
       }
     },
+    "/v1/meadows": {
+      "get": {
+        "operationId": "GetV1Meadows",
+        "parameters": [
+          {
+            "name": "includeArchived",
+            "in": "query",
+            "required": false,
+            "description": "GET /v1/meadows Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsParameterIncludeArchived"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/meadows Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1MeadowsPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/meadows Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1Meadows",
+        "parameters": [
+          {
+            "name": "includeArchived",
+            "in": "query",
+            "required": false,
+            "description": "HEAD /v1/meadows Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsParameterIncludeArchived"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": { "description": "HEAD /v1/meadows Positive response" },
+          "400": { "description": "HEAD /v1/meadows Negative response" }
+        }
+      },
+      "post": {
+        "operationId": "PostV1Meadows",
+        "requestBody": {
+          "description": "POST /v1/meadows Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1MeadowsRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/meadows Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1MeadowsPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/meadows Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/meadows/byId/{meadowId}": {
+      "get": {
+        "operationId": "GetV1MeadowsByIdMeadowId",
+        "parameters": [
+          {
+            "name": "meadowId",
+            "in": "path",
+            "required": true,
+            "description": "GET /v1/meadows/byId/:meadowId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/meadows/byId/:meadowId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/meadows/byId/:meadowId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1MeadowsByIdMeadowId",
+        "parameters": [
+          {
+            "name": "meadowId",
+            "in": "path",
+            "required": true,
+            "description": "HEAD /v1/meadows/byId/:meadowId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/meadows/byId/:meadowId Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/meadows/byId/:meadowId Negative response"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "PatchV1MeadowsByIdMeadowId",
+        "parameters": [
+          {
+            "name": "meadowId",
+            "in": "path",
+            "required": true,
+            "description": "PATCH /v1/meadows/byId/:meadowId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PATCH /v1/meadows/byId/:meadowId Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchV1MeadowsByIdMeadowIdRequestBody"
+              }
+            }
+          }
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "PATCH /v1/meadows/byId/:meadowId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchV1MeadowsByIdMeadowIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "PATCH /v1/meadows/byId/:meadowId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteV1MeadowsByIdMeadowId",
+        "parameters": [
+          {
+            "name": "meadowId",
+            "in": "path",
+            "required": true,
+            "description": "DELETE /v1/meadows/byId/:meadowId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "DELETE /v1/meadows/byId/:meadowId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteV1MeadowsByIdMeadowIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "DELETE /v1/meadows/byId/:meadowId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/meadows/byId/{meadowId}/usage": {
+      "get": {
+        "operationId": "GetV1MeadowsByIdMeadowIdUsage",
+        "parameters": [
+          {
+            "name": "meadowId",
+            "in": "path",
+            "required": true,
+            "description": "GET /v1/meadows/byId/:meadowId/usage Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          },
+          {
+            "name": "fromDate",
+            "in": "query",
+            "required": true,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "required": true,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/meadows/byId/:meadowId/usage Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsagePositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/meadows/byId/:meadowId/usage Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1MeadowsByIdMeadowIdUsage",
+        "parameters": [
+          {
+            "name": "meadowId",
+            "in": "path",
+            "required": true,
+            "description": "HEAD /v1/meadows/byId/:meadowId/usage Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          },
+          {
+            "name": "fromDate",
+            "in": "query",
+            "required": true,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "required": true,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/meadows/byId/:meadowId/usage Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/meadows/byId/:meadowId/usage Negative response"
+          }
+        }
+      }
+    },
     "/v1/plots": {
       "get": {
         "operationId": "GetV1Plots",
+        "parameters": [
+          {
+            "name": "includeArchived",
+            "in": "query",
+            "required": false,
+            "description": "GET /v1/plots Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsParameterIncludeArchived"
+            }
+          }
+        ],
         "security": [{ "APIKEY_1": [] }],
         "responses": {
           "200": {
@@ -2087,6 +2437,17 @@
       },
       "head": {
         "operationId": "HeadV1Plots",
+        "parameters": [
+          {
+            "name": "includeArchived",
+            "in": "query",
+            "required": false,
+            "description": "HEAD /v1/plots Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsParameterIncludeArchived"
+            }
+          }
+        ],
         "security": [{ "APIKEY_1": [] }],
         "responses": {
           "200": { "description": "HEAD /v1/plots Positive response" },
@@ -2374,7 +2735,7 @@
             "required": true,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           },
           {
@@ -2383,7 +2744,7 @@
             "required": true,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           }
         ],
@@ -2429,7 +2790,7 @@
             "required": true,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           },
           {
@@ -2438,7 +2799,7 @@
             "required": true,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           }
         ],
@@ -4281,7 +4642,7 @@
             "required": false,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           },
           {
@@ -4290,7 +4651,7 @@
             "required": false,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           }
         ],
@@ -4327,7 +4688,7 @@
             "required": false,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           },
           {
@@ -4336,7 +4697,7 @@
             "required": false,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           }
         ],
@@ -4886,7 +5247,7 @@
             "required": false,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           },
           {
@@ -4895,7 +5256,7 @@
             "required": false,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           }
         ],
@@ -4932,7 +5293,7 @@
             "required": false,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           },
           {
@@ -4941,7 +5302,7 @@
             "required": false,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           }
         ],
@@ -5406,7 +5767,7 @@
             "required": false,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           },
           {
@@ -5415,7 +5776,7 @@
             "required": false,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           },
           {
@@ -5470,7 +5831,7 @@
             "required": false,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           },
           {
@@ -5479,7 +5840,7 @@
             "required": false,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           },
           {
@@ -5708,7 +6069,7 @@
             "required": true,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           },
           {
@@ -5717,7 +6078,7 @@
             "required": true,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           }
         ],
@@ -5790,7 +6151,7 @@
             "required": true,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           },
           {
@@ -5799,7 +6160,7 @@
             "required": true,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           }
         ],
@@ -6282,7 +6643,7 @@
             "required": false,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           },
           {
@@ -6291,7 +6652,7 @@
             "required": false,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           }
         ],
@@ -6328,7 +6689,7 @@
             "required": false,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           },
           {
@@ -6337,7 +6698,7 @@
             "required": false,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           }
         ],
@@ -6842,7 +7203,7 @@
             "required": false,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           },
           {
@@ -6851,7 +7212,7 @@
             "required": false,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           }
         ],
@@ -6888,7 +7249,7 @@
             "required": false,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           },
           {
@@ -6897,7 +7258,7 @@
             "required": false,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           }
         ],
@@ -8963,7 +9324,7 @@
             "required": true,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           },
           {
@@ -8972,7 +9333,7 @@
             "required": true,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           }
         ],
@@ -9009,7 +9370,7 @@
             "required": true,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           },
           {
@@ -9018,7 +9379,7 @@
             "required": true,
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "schema": {
-              "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdCropRotationsParameterFromDate"
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           }
         ],
@@ -9102,6 +9463,68 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/v1/animals/herds/earliestChangeDates": {
+      "get": {
+        "operationId": "GetV1AnimalsHerdsEarliestChangeDates",
+        "parameters": [
+          {
+            "name": "animalIds",
+            "in": "query",
+            "required": true,
+            "description": "GET /v1/animals/herds/earliestChangeDates Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1AnimalsHerdsEarliestChangeDatesParameterAnimalIds"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/animals/herds/earliestChangeDates Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1AnimalsHerdsEarliestChangeDatesPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/animals/herds/earliestChangeDates Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1AnimalsHerdsEarliestChangeDates",
+        "parameters": [
+          {
+            "name": "animalIds",
+            "in": "query",
+            "required": true,
+            "description": "HEAD /v1/animals/herds/earliestChangeDates Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1AnimalsHerdsEarliestChangeDatesParameterAnimalIds"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/animals/herds/earliestChangeDates Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/animals/herds/earliestChangeDates Negative response"
           }
         }
       }
@@ -17542,6 +17965,430 @@
         "required": ["data"],
         "additionalProperties": false
       },
+      "GetV1MeadowsParameterIncludeArchived": {
+        "type": "string",
+        "enum": ["true", "false"]
+      },
+      "GetV1MeadowsPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "farmId": { "type": "string" },
+                    "name": { "type": "string" },
+                    "geometry": {
+                      "type": "object",
+                      "properties": {
+                        "type": { "type": "string", "const": "MultiPolygon" },
+                        "coordinates": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "array",
+                              "items": {
+                                "type": "array",
+                                "items": { "type": "number" }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "required": ["type", "coordinates"],
+                      "additionalProperties": false
+                    },
+                    "size": { "type": "number" },
+                    "additionalNotes": { "type": ["string", "null"] },
+                    "archivedAt": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": ["string", "null"],
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "createdAt": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "farmId",
+                    "name",
+                    "geometry",
+                    "size",
+                    "additionalNotes",
+                    "archivedAt",
+                    "createdAt"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "count": { "type": "number" }
+            },
+            "required": ["result", "count"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1MeadowsPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "name": { "type": "string" },
+              "geometry": {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "const": "MultiPolygon" },
+                  "coordinates": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "items": { "type": "number" }
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": ["type", "coordinates"],
+                "additionalProperties": false
+              },
+              "size": { "type": "number" },
+              "additionalNotes": { "type": ["string", "null"] },
+              "archivedAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": ["string", "null"],
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "createdAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "name",
+              "geometry",
+              "size",
+              "additionalNotes",
+              "archivedAt",
+              "createdAt"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1MeadowsRequestBody": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "geometry": {
+            "type": "object",
+            "properties": {
+              "type": { "type": "string", "const": "MultiPolygon" },
+              "coordinates": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": { "type": "array", "items": { "type": "number" } }
+                  }
+                }
+              }
+            },
+            "required": ["type", "coordinates"]
+          },
+          "additionalNotes": { "type": ["string", "null"] }
+        },
+        "required": ["name", "geometry"]
+      },
+      "GetV1MeadowsByIdMeadowIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "name": { "type": "string" },
+              "geometry": {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "const": "MultiPolygon" },
+                  "coordinates": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "items": { "type": "number" }
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": ["type", "coordinates"],
+                "additionalProperties": false
+              },
+              "size": { "type": "number" },
+              "additionalNotes": { "type": ["string", "null"] },
+              "archivedAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": ["string", "null"],
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "createdAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "name",
+              "geometry",
+              "size",
+              "additionalNotes",
+              "archivedAt",
+              "createdAt"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1MeadowsByIdMeadowIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "name": { "type": "string" },
+              "geometry": {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "const": "MultiPolygon" },
+                  "coordinates": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "items": { "type": "number" }
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": ["type", "coordinates"],
+                "additionalProperties": false
+              },
+              "size": { "type": "number" },
+              "additionalNotes": { "type": ["string", "null"] },
+              "archivedAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": ["string", "null"],
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "createdAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "name",
+              "geometry",
+              "size",
+              "additionalNotes",
+              "archivedAt",
+              "createdAt"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1MeadowsByIdMeadowIdRequestBody": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "geometry": {
+            "type": "object",
+            "properties": {
+              "type": { "type": "string", "const": "MultiPolygon" },
+              "coordinates": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": { "type": "array", "items": { "type": "number" } }
+                  }
+                }
+              }
+            },
+            "required": ["type", "coordinates"]
+          },
+          "additionalNotes": { "type": ["string", "null"] },
+          "archived": { "type": "boolean" }
+        },
+        "required": []
+      },
+      "DeleteV1MeadowsByIdMeadowIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "GetV1MeadowsByIdMeadowIdUsageParameterFromDate": {
+        "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+        "type": "string",
+        "format": "date-time",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+        "externalDocs": {
+          "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+        }
+      },
+      "GetV1MeadowsByIdMeadowIdUsagePositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "meadowId": { "type": "string" },
+                    "meadowName": { "type": "string" },
+                    "meadowSize": { "type": "number" },
+                    "herdId": { "type": "string" },
+                    "herdName": { "type": "string" },
+                    "type": {
+                      "type": "string",
+                      "enum": ["pasture", "exercise_yard"]
+                    },
+                    "startDate": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "endDate": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "animalCount": { "type": "number" },
+                    "animalCountsByType": {
+                      "type": "object",
+                      "propertyNames": {
+                        "type": "string",
+                        "enum": [
+                          "goat",
+                          "sheep",
+                          "cow",
+                          "horse",
+                          "donkey",
+                          "pig",
+                          "deer"
+                        ]
+                      },
+                      "additionalProperties": { "type": "number" }
+                    }
+                  },
+                  "required": [
+                    "meadowId",
+                    "meadowName",
+                    "meadowSize",
+                    "herdId",
+                    "herdName",
+                    "type",
+                    "startDate",
+                    "endDate",
+                    "animalCount",
+                    "animalCountsByType"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["result"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
       "GetV1PlotsPositiveResponse": {
         "type": "object",
         "properties": {
@@ -17589,6 +18436,14 @@
                     },
                     "size": { "type": "number" },
                     "additionalNotes": { "type": ["string", "null"] },
+                    "archivedAt": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": ["string", "null"],
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
                     "currentCropRotation": {
                       "type": ["object", "null"],
                       "properties": {
@@ -17705,6 +18560,7 @@
                     "geometry",
                     "size",
                     "additionalNotes",
+                    "archivedAt",
                     "currentCropRotation"
                   ],
                   "additionalProperties": false
@@ -17761,6 +18617,14 @@
               },
               "size": { "type": "number" },
               "additionalNotes": { "type": ["string", "null"] },
+              "archivedAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": ["string", "null"],
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
               "currentCropRotation": {
                 "type": ["object", "null"],
                 "properties": {
@@ -17873,6 +18737,7 @@
               "geometry",
               "size",
               "additionalNotes",
+              "archivedAt",
               "currentCropRotation"
             ],
             "additionalProperties": false
@@ -18231,6 +19096,14 @@
               },
               "size": { "type": "number" },
               "additionalNotes": { "type": ["string", "null"] },
+              "archivedAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": ["string", "null"],
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
               "currentCropRotation": {
                 "type": ["object", "null"],
                 "properties": {
@@ -18343,6 +19216,7 @@
               "geometry",
               "size",
               "additionalNotes",
+              "archivedAt",
               "currentCropRotation"
             ],
             "additionalProperties": false
@@ -18405,6 +19279,14 @@
               },
               "size": { "type": "number" },
               "additionalNotes": { "type": ["string", "null"] },
+              "archivedAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": ["string", "null"],
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
               "currentCropRotation": {
                 "type": ["object", "null"],
                 "properties": {
@@ -18517,6 +19399,7 @@
               "geometry",
               "size",
               "additionalNotes",
+              "archivedAt",
               "currentCropRotation"
             ],
             "additionalProperties": false
@@ -18559,18 +19442,10 @@
             "required": ["type", "coordinates"]
           },
           "size": { "type": "number" },
-          "additionalNotes": { "type": "string" }
+          "additionalNotes": { "type": "string" },
+          "archived": { "type": "boolean" }
         },
         "required": []
-      },
-      "GetV1PlotsByIdPlotIdCropRotationsParameterFromDate": {
-        "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
-        "type": "string",
-        "format": "date-time",
-        "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
-        "externalDocs": {
-          "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
-        }
       },
       "GetV1PlotsByIdPlotIdCropRotationsPositiveResponse": {
         "type": "object",
@@ -19424,6 +20299,14 @@
                     },
                     "size": { "type": "number" },
                     "additionalNotes": { "type": ["string", "null"] },
+                    "archivedAt": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": ["string", "null"],
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
                     "currentCropRotation": {
                       "type": ["object", "null"],
                       "properties": {
@@ -19540,6 +20423,7 @@
                     "geometry",
                     "size",
                     "additionalNotes",
+                    "archivedAt",
                     "currentCropRotation"
                   ],
                   "additionalProperties": false
@@ -20078,6 +20962,14 @@
               },
               "size": { "type": "number" },
               "additionalNotes": { "type": ["string", "null"] },
+              "archivedAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": ["string", "null"],
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
               "currentCropRotation": {
                 "type": ["object", "null"],
                 "properties": {
@@ -20190,6 +21082,7 @@
               "geometry",
               "size",
               "additionalNotes",
+              "archivedAt",
               "currentCropRotation"
             ],
             "additionalProperties": false
@@ -27662,7 +28555,16 @@
             "type": ["string", "null"],
             "enum": ["died", "slaughtered"]
           },
-          "herdId": { "type": ["string", "null"] }
+          "herdId": { "type": ["string", "null"] },
+          "herdEffectiveDate": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": ["string", "null"],
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+            }
+          }
         },
         "required": [
           "name",
@@ -28811,7 +29713,16 @@
             "type": ["string", "null"],
             "enum": ["died", "slaughtered"]
           },
-          "herdId": { "type": ["string", "null"] }
+          "herdId": { "type": ["string", "null"] },
+          "herdEffectiveDate": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": ["string", "null"],
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+            }
+          }
         },
         "required": []
       },
@@ -29748,6 +30659,69 @@
                   ],
                   "additionalProperties": false
                 }
+              },
+              "meadowEntries": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "meadowId": { "type": "string" },
+                    "meadowName": { "type": "string" },
+                    "meadowSize": { "type": "number" },
+                    "herdId": { "type": "string" },
+                    "herdName": { "type": "string" },
+                    "type": {
+                      "type": "string",
+                      "enum": ["pasture", "exercise_yard"]
+                    },
+                    "startDate": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "endDate": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "animalCount": { "type": "number" },
+                    "animalCountsByType": {
+                      "type": "object",
+                      "propertyNames": {
+                        "type": "string",
+                        "enum": [
+                          "goat",
+                          "sheep",
+                          "cow",
+                          "horse",
+                          "donkey",
+                          "pig",
+                          "deer"
+                        ]
+                      },
+                      "additionalProperties": { "type": "number" }
+                    }
+                  },
+                  "required": [
+                    "meadowId",
+                    "meadowName",
+                    "meadowSize",
+                    "herdId",
+                    "herdName",
+                    "type",
+                    "startDate",
+                    "endDate",
+                    "animalCount",
+                    "animalCountsByType"
+                  ],
+                  "additionalProperties": false
+                }
               }
             },
             "required": ["entries", "uncategorizedAnimals"],
@@ -29863,6 +30837,17 @@
                           "id": { "type": "string" },
                           "farmId": { "type": "string" },
                           "herdId": { "type": "string" },
+                          "meadowId": { "type": ["string", "null"] },
+                          "meadow": {
+                            "type": ["object", "null"],
+                            "properties": {
+                              "id": { "type": "string" },
+                              "name": { "type": "string" },
+                              "size": { "type": "number" }
+                            },
+                            "required": ["id", "name", "size"],
+                            "additionalProperties": false
+                          },
                           "startDate": {
                             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
                             "type": "string",
@@ -29928,6 +30913,7 @@
                           "id",
                           "farmId",
                           "herdId",
+                          "meadowId",
                           "startDate",
                           "endDate",
                           "type",
@@ -30007,6 +30993,7 @@
                   "enum": ["pasture", "exercise_yard"]
                 },
                 "notes": { "type": ["string", "null"] },
+                "meadowId": { "type": ["string", "null"] },
                 "recurrence": {
                   "type": ["object", "null"],
                   "properties": {
@@ -30031,9 +31018,55 @@
               },
               "required": ["startDate", "type"]
             }
+          },
+          "effectiveDate": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": ["string", "null"],
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+            }
           }
         },
         "required": ["name", "animalIds"]
+      },
+      "GetV1AnimalsHerdsEarliestChangeDatesParameterAnimalIds": {
+        "items": { "type": "string" },
+        "format": "array (preprocessed)"
+      },
+      "GetV1AnimalsHerdsEarliestChangeDatesPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "animalId": { "type": "string" },
+                    "earliestDate": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": ["string", "null"],
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    }
+                  },
+                  "required": ["animalId", "earliestDate"],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["result"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
       },
       "GetV1AnimalsHerdsByIdHerdIdPositiveResponse": {
         "type": "object",
@@ -30130,6 +31163,17 @@
                     "id": { "type": "string" },
                     "farmId": { "type": "string" },
                     "herdId": { "type": "string" },
+                    "meadowId": { "type": ["string", "null"] },
+                    "meadow": {
+                      "type": ["object", "null"],
+                      "properties": {
+                        "id": { "type": "string" },
+                        "name": { "type": "string" },
+                        "size": { "type": "number" }
+                      },
+                      "required": ["id", "name", "size"],
+                      "additionalProperties": false
+                    },
                     "startDate": {
                       "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
                       "type": "string",
@@ -30187,6 +31231,7 @@
                     "id",
                     "farmId",
                     "herdId",
+                    "meadowId",
                     "startDate",
                     "endDate",
                     "type",
@@ -30254,6 +31299,7 @@
                   "enum": ["pasture", "exercise_yard"]
                 },
                 "notes": { "type": ["string", "null"] },
+                "meadowId": { "type": ["string", "null"] },
                 "recurrence": {
                   "type": ["object", "null"],
                   "properties": {
@@ -30277,6 +31323,15 @@
                 }
               },
               "required": ["startDate", "type"]
+            }
+          },
+          "effectiveDate": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": ["string", "null"],
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
             }
           }
         },
@@ -30308,6 +31363,17 @@
                     "id": { "type": "string" },
                     "farmId": { "type": "string" },
                     "herdId": { "type": "string" },
+                    "meadowId": { "type": ["string", "null"] },
+                    "meadow": {
+                      "type": ["object", "null"],
+                      "properties": {
+                        "id": { "type": "string" },
+                        "name": { "type": "string" },
+                        "size": { "type": "number" }
+                      },
+                      "required": ["id", "name", "size"],
+                      "additionalProperties": false
+                    },
                     "startDate": {
                       "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
                       "type": "string",
@@ -30365,6 +31431,7 @@
                     "id",
                     "farmId",
                     "herdId",
+                    "meadowId",
                     "startDate",
                     "endDate",
                     "type",
@@ -30392,6 +31459,17 @@
               "id": { "type": "string" },
               "farmId": { "type": "string" },
               "herdId": { "type": "string" },
+              "meadowId": { "type": ["string", "null"] },
+              "meadow": {
+                "type": ["object", "null"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "name": { "type": "string" },
+                  "size": { "type": "number" }
+                },
+                "required": ["id", "name", "size"],
+                "additionalProperties": false
+              },
               "startDate": {
                 "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
                 "type": "string",
@@ -30449,6 +31527,7 @@
               "id",
               "farmId",
               "herdId",
+              "meadowId",
               "startDate",
               "endDate",
               "type",
@@ -30484,6 +31563,7 @@
           },
           "type": { "type": "string", "enum": ["pasture", "exercise_yard"] },
           "notes": { "type": ["string", "null"] },
+          "meadowId": { "type": ["string", "null"] },
           "recurrence": {
             "type": ["object", "null"],
             "properties": {
@@ -30517,6 +31597,17 @@
               "id": { "type": "string" },
               "farmId": { "type": "string" },
               "herdId": { "type": "string" },
+              "meadowId": { "type": ["string", "null"] },
+              "meadow": {
+                "type": ["object", "null"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "name": { "type": "string" },
+                  "size": { "type": "number" }
+                },
+                "required": ["id", "name", "size"],
+                "additionalProperties": false
+              },
               "startDate": {
                 "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
                 "type": "string",
@@ -30574,6 +31665,7 @@
               "id",
               "farmId",
               "herdId",
+              "meadowId",
               "startDate",
               "endDate",
               "type",
@@ -30595,6 +31687,17 @@
               "id": { "type": "string" },
               "farmId": { "type": "string" },
               "herdId": { "type": "string" },
+              "meadowId": { "type": ["string", "null"] },
+              "meadow": {
+                "type": ["object", "null"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "name": { "type": "string" },
+                  "size": { "type": "number" }
+                },
+                "required": ["id", "name", "size"],
+                "additionalProperties": false
+              },
               "startDate": {
                 "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
                 "type": "string",
@@ -30652,6 +31755,7 @@
               "id",
               "farmId",
               "herdId",
+              "meadowId",
               "startDate",
               "endDate",
               "type",
@@ -30687,6 +31791,7 @@
           },
           "type": { "type": "string", "enum": ["pasture", "exercise_yard"] },
           "notes": { "type": ["string", "null"] },
+          "meadowId": { "type": ["string", "null"] },
           "recurrence": {
             "type": ["object", "null"],
             "properties": {

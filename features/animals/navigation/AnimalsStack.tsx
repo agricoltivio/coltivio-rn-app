@@ -28,6 +28,10 @@ import { CreateHerdScreen } from "../CreateHerdScreen";
 import { HerdEditScreen } from "../HerdEditScreen";
 import { OutdoorJournalScreen } from "../OutdoorJournalScreen";
 import { OutdoorJournalExportScreen } from "../OutdoorJournalExportScreen";
+import { MeadowDetailsScreen } from "../MeadowDetailsScreen";
+import { MeadowOverviewScreen } from "../MeadowOverviewScreen";
+import { MeadowSummaryScreen } from "../MeadowSummaryScreen";
+import { OutdoorScheduleFormScreen } from "../OutdoorScheduleFormScreen";
 import { TreatmentsExportScreen } from "../TreatmentsExportScreen";
 import { HerdsOnboardingScreen } from "../HerdsOnboardingScreen";
 import { BatchSelectAnimalsScreen } from "../BatchSelectAnimalsScreen";
@@ -277,6 +281,43 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
         },
       }}
       component={OutdoorJournalScreen}
+    />,
+    <Stack.Screen
+      key="meadow-overview"
+      name="MeadowOverview"
+      options={{ title: "" }}
+      component={MeadowOverviewScreen}
+    />,
+    <Stack.Screen
+      key="meadow-details"
+      name="MeadowDetails"
+      options={{ title: "" }}
+      component={MeadowDetailsScreen}
+    />,
+    <Stack.Screen
+      key="outdoor-schedule-form"
+      name="OutdoorScheduleForm"
+      options={{ title: "" }}
+      component={OutdoorScheduleFormScreen}
+    />,
+    <Stack.Screen
+      key="meadow-summary"
+      name="MeadowSummary"
+      options={{
+        title: "",
+        presentation: "modal",
+        headerShown: true,
+        headerRight: () => (
+          <IonIconButton
+            icon="close"
+            type="ghost"
+            iconSize={28}
+            color={theme.colors.primary}
+            onPress={() => navigation.goBack()}
+          />
+        ),
+      }}
+      component={MeadowSummaryScreen}
     />,
     <Stack.Screen
       key="outdoor-journal-export"

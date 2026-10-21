@@ -41,6 +41,17 @@ export function herdsApi(client: FetchClient) {
       return data!.data.result;
     },
 
+    // First day a herd change can take effect for each animal (null: no herd history)
+    async getEarliestHerdChangeDates(
+      animalIds: string[],
+    ): Promise<{ animalId: string; earliestDate: string | null }[]> {
+      const { data } = await client.GET(
+        "/v1/animals/herds/earliestChangeDates",
+        { params: { query: { animalIds } } },
+      );
+      return data!.data.result;
+    },
+
     async getHerdById(herdId: string): Promise<HerdDetail> {
       const { data } = await client.GET("/v1/animals/herds/byId/{herdId}", {
         params: { path: { herdId } },
