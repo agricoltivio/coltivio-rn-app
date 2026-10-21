@@ -7,6 +7,7 @@ import { formatLocalizedDate } from "@/utils/date";
 import { round } from "@/utils/math";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { formatOutdoorScheduleSummary } from "./outdoor-schedule-summary";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useHerdsQuery } from "./herds.hooks";
@@ -62,46 +63,6 @@ export function MeadowDetailsScreen({
     [herds, meadowId],
   );
 
-  function formatScheduleSummary(schedule: OutdoorSchedule): string {
-    const typeLabel = t(`animals.outdoor_types.${schedule.type}` as const);
-    const start = formatLocalizedDate(new Date(schedule.startDate), locale);
-    const weekdays = schedule.recurrence?.byWeekday;
-    // Weekday stays are single days; the repetition's until date is the end
-    const isWeekdayStay =
-      schedule.recurrence?.frequency === "weekly" &&
-      weekdays !== null &&
-      weekdays !== undefined &&
-      weekdays.length > 0;
-    const endDate = isWeekdayStay
-      ? schedule.recurrence?.until
-      : schedule.endDate;
-    const end = endDate ? formatLocalizedDate(new Date(endDate), locale) : "–";
-    let summary = `${typeLabel}: ${start} - ${end}`;
-    if (schedule.recurrence) {
-      const frequency = t(
-        `animals.frequency_types.${schedule.recurrence.frequency}` as const,
-      );
-      // Short localized weekday names; 2024-01-01 is a Monday
-      const weekdayFormatter = new Intl.DateTimeFormat(locale, {
-        weekday: "short",
-      });
-      const weekdayNames =
-        isWeekdayStay && weekdays && weekdays.length < 7
-          ? weekdays
-              .map((weekday) => WEEKDAY_ORDER.indexOf(weekday))
-              .sort((a, b) => a - b)
-              .map((index) =>
-                weekdayFormatter.format(new Date(2024, 0, 1 + index)),
-              )
-              .join(", ")
-          : null;
-      summary += weekdayNames
-        ? ` (${frequency}: ${weekdayNames})`
-        : ` (${frequency})`;
-    }
-    return summary;
-  }
-
   if (!meadow) return null;
 
   return (
@@ -154,7 +115,7 @@ export function MeadowDetailsScreen({
                 <ListItem.Content>
                   <ListItem.Title>{herd.name}</ListItem.Title>
                   <ListItem.Body>
-                    {formatScheduleSummary(schedule)}
+                    {formatOutdoorScheduleSummary(schedule, t, locale)}
                   </ListItem.Body>
                 </ListItem.Content>
                 <ListItem.Chevron />

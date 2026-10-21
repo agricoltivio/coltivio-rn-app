@@ -11,6 +11,7 @@ import { formatLocalizedDate } from "@/utils/date";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { formatOutdoorScheduleSummary } from "./outdoor-schedule-summary";
 import { FlatList, View } from "react-native";
 import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
@@ -156,51 +157,6 @@ export function CreateHerdScreen({ route, navigation }: CreateHerdScreenProps) {
       animalIds: selectedAnimalIds,
       outdoorSchedules,
     });
-  }
-
-  function formatScheduleSummary(schedule: LocalSchedule): string {
-    const typeLabel = t(`animals.outdoor_types.${schedule.type}` as const);
-    const start = formatLocalizedDate(new Date(schedule.startDate), locale);
-    const weekdays = schedule.recurrence?.byWeekday;
-    // Weekly stays are single days; show until when the repetition ends instead
-    const isWeekdayStay =
-      schedule.recurrence?.frequency === "weekly" &&
-      weekdays !== null &&
-      weekdays !== undefined &&
-      weekdays.length > 0;
-    const until = schedule.recurrence?.until;
-    const end = isWeekdayStay
-      ? until
-        ? formatLocalizedDate(new Date(until), locale)
-        : "–"
-      : schedule.endDate
-        ? formatLocalizedDate(new Date(schedule.endDate), locale)
-        : "–";
-    let summary = `${typeLabel}: ${start} - ${end}`;
-    const meadowName = meadows?.find((m) => m.id === schedule.meadowId)?.name;
-    if (meadowName) summary += ` · ${meadowName}`;
-    if (schedule.recurrence) {
-      const freq = t(
-        `animals.frequency_types.${schedule.recurrence.frequency}` as const,
-      );
-      // Weekday codes as short localized names; 2024-01-01 is a Monday
-      const weekdayFormatter = new Intl.DateTimeFormat(locale, {
-        weekday: "short",
-      });
-      const weekdayOrder = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"];
-      const weekdayNames =
-        isWeekdayStay && weekdays && weekdays.length < 7
-          ? weekdays
-              .map((weekday) => weekdayOrder.indexOf(weekday))
-              .sort((a, b) => a - b)
-              .map((index) =>
-                weekdayFormatter.format(new Date(2024, 0, 1 + index)),
-              )
-              .join(", ")
-          : null;
-      summary += weekdayNames ? ` (${freq}: ${weekdayNames})` : ` (${freq})`;
-    }
-    return summary;
   }
 
   function openScheduleModal(schedule?: LocalSchedule) {
@@ -366,7 +322,12 @@ export function CreateHerdScreen({ route, navigation }: CreateHerdScreenProps) {
                 >
                   <ListItem.Content>
                     <ListItem.Title>
-                      {formatScheduleSummary(item)}
+                      {formatOutdoorScheduleSummary(
+                        item,
+                        t,
+                        locale,
+                        meadows?.find((m) => m.id === item.meadowId)?.name,
+                      )}
                     </ListItem.Title>
                     {item.notes && <ListItem.Body>{item.notes}</ListItem.Body>}
                   </ListItem.Content>

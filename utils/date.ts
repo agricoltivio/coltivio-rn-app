@@ -73,3 +73,10 @@ export function toLocalDateString(date: Date): string {
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
+
+// Local midnight of a date-only API value ("2025-05-16" or "2025-05-16T00:00:00.000Z").
+// new Date() would read it as UTC midnight, the previous day west of UTC.
+export function parseDateOnly(isoDate: string): Date {
+  const [year, month, day] = isoDate.slice(0, 10).split("-").map(Number);
+  return new Date(year, month - 1, day);
+}

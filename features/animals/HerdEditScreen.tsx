@@ -17,6 +17,7 @@ import { H2, H3, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate, toLocalDateString } from "@/utils/date";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { formatOutdoorScheduleSummary } from "./outdoor-schedule-summary";
 import { usePermissions } from "@/features/user/users.hooks";
 import { Alert, View } from "react-native";
 import { Text } from "@/components/text/Text";
@@ -267,51 +268,6 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
     });
   }
 
-  function formatScheduleSummary(schedule: LocalSchedule): string {
-    const typeLabel = t(`animals.outdoor_types.${schedule.type}` as const);
-    const start = formatLocalizedDate(new Date(schedule.startDate), locale);
-    const weekdays = schedule.recurrence?.byWeekday;
-    // Weekly stays are single days; show until when the repetition ends instead
-    const isWeekdayStay =
-      schedule.recurrence?.frequency === "weekly" &&
-      weekdays !== null &&
-      weekdays !== undefined &&
-      weekdays.length > 0;
-    const until = schedule.recurrence?.until;
-    const end = isWeekdayStay
-      ? until
-        ? formatLocalizedDate(new Date(until), locale)
-        : "–"
-      : schedule.endDate
-        ? formatLocalizedDate(new Date(schedule.endDate), locale)
-        : "–";
-    let summary = `${typeLabel}: ${start} - ${end}`;
-    const meadowName = meadows?.find((m) => m.id === schedule.meadowId)?.name;
-    if (meadowName) summary += ` · ${meadowName}`;
-    if (schedule.recurrence) {
-      const freq = t(
-        `animals.frequency_types.${schedule.recurrence.frequency}` as const,
-      );
-      // Weekday codes as short localized names; 2024-01-01 is a Monday
-      const weekdayFormatter = new Intl.DateTimeFormat(locale, {
-        weekday: "short",
-      });
-      const weekdayOrder = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"];
-      const weekdayNames =
-        isWeekdayStay && weekdays && weekdays.length < 7
-          ? weekdays
-              .map((weekday) => weekdayOrder.indexOf(weekday))
-              .sort((a, b) => a - b)
-              .map((index) =>
-                weekdayFormatter.format(new Date(2024, 0, 1 + index)),
-              )
-              .join(", ")
-          : null;
-      summary += weekdayNames ? ` (${freq}: ${weekdayNames})` : ` (${freq})`;
-    }
-    return summary;
-  }
-
   // "overview": one row with all stays, "meadows": one row per meadow
   const [timelineView, setTimelineView] = useState<"overview" | "meadows">(
     "overview",
@@ -554,7 +510,12 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
                 >
                   <ListItem.Content>
                     <ListItem.Title>
-                      {formatScheduleSummary(schedule)}
+                      {formatOutdoorScheduleSummary(
+                        schedule,
+                        t,
+                        locale,
+                        meadows?.find((m) => m.id === schedule.meadowId)?.name,
+                      )}
                     </ListItem.Title>
                     {schedule.notes && (
                       <ListItem.Body>{schedule.notes}</ListItem.Body>
