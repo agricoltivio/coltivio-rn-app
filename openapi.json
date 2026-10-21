@@ -572,6 +572,40 @@
         }
       }
     },
+    "/v1/app-version": {
+      "get": {
+        "operationId": "GetV1AppVersion",
+        "responses": {
+          "200": {
+            "description": "GET /v1/app-version Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1AppVersionPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/app-version Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1AppVersion",
+        "responses": {
+          "200": { "description": "HEAD /v1/app-version Positive response" },
+          "400": { "description": "HEAD /v1/app-version Negative response" }
+        }
+      }
+    },
     "/v1/farms": {
       "get": {
         "operationId": "GetV1Farms",
@@ -16013,6 +16047,40 @@
         "type": "object",
         "properties": { "token": { "type": "string" } },
         "required": ["token"]
+      },
+      "GetV1AppVersionPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "ios": {
+                "type": ["object", "null"],
+                "properties": {
+                  "version": { "type": "string" },
+                  "minSupportedVersion": { "type": ["string", "null"] },
+                  "releasedAt": {}
+                },
+                "required": ["version", "minSupportedVersion", "releasedAt"],
+                "additionalProperties": false
+              },
+              "android": {
+                "type": ["object", "null"],
+                "properties": {
+                  "version": { "type": "string" },
+                  "minSupportedVersion": { "type": ["string", "null"] },
+                  "releasedAt": {}
+                },
+                "required": ["version", "minSupportedVersion", "releasedAt"],
+                "additionalProperties": false
+              }
+            },
+            "required": ["ios", "android"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
       },
       "GetV1FarmsPositiveResponse": {
         "type": "object",

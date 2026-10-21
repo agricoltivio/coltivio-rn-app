@@ -37,6 +37,7 @@ import { animalJournalApi } from "./animal-journal.api";
 import { plotJournalApi } from "./plot-journal.api";
 import { farmJournalApi } from "./farm-journal.api";
 import { donationsApi } from "./donations.api";
+import { appVersionApi } from "./app-version.api";
 
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 // const baseUrl = "http://localhost:8000/";
@@ -181,5 +182,6 @@ export function api(client: FetchClient) {
     plotJournal: plotJournalApi(client),
     farmJournal: farmJournalApi(client),
     donations: donationsApi(client),
+    appVersion: appVersionApi(client),
   };
 }

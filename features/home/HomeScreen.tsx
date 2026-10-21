@@ -34,6 +34,10 @@ import {
 import { ApiError } from "@/api/api";
 import { AgriColtivioPitch } from "../agri-coltivio/AgriColtivioPitch";
 import { FarmCreatedModal } from "../farms/FarmCreatedModal";
+import { useAppUpdateStatus } from "../app-version/app-version.hooks";
+import { WhatsNewSheet } from "../release-notes/WhatsNewSheet";
+import { usePendingReleaseNotes } from "../release-notes/usePendingReleaseNotes";
+import { openStoreListing } from "@/utils/app-info";
 import { HomeTile } from "./HomeTile";
 import { HOME_TILES } from "./home-tiles-settings";
 import { UpcomingTasksTile } from "./UpcomingTasksTile";
@@ -166,7 +170,17 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
     !canUndoResignation &&
     !localSettings.agriColtivioPromoShown &&
     daysSinceLaunch >= 30;
-  const [promoVisible, setPromoVisible] = useState(shouldShowPromo);
+  // The what's-new sheet wins over the promo; the promo flag stays unset so it
+  // simply shows on the next launch.
+  const { pending: pendingReleaseNotes } = usePendingReleaseNotes();
+  const [promoVisible, setPromoVisible] = useState(
+    shouldShowPromo && pendingReleaseNotes.length === 0,
+  );
+
+  const { latestVersion, updateAvailable } = useAppUpdateStatus();
+  const showUpdateBanner =
+    updateAvailable &&
+    localSettings.dismissedUpdateBannerForVersion !== latestVersion;
 
   function dismissPromo() {
     updateLocalSettings("agriColtivioPromoShown", true);
@@ -274,6 +288,20 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                 }
                 onPress={() => navigation.navigate("UserMembership")}
                 onDismiss={dismissMembershipBanner}
+              />
+            ) : null}
+            {showUpdateBanner && latestVersion ? (
+              <Banner
+                variant="brand"
+                title={t("home.update_banner")}
+                actionLabel={t("home.update_banner_action")}
+                onPress={openStoreListing}
+                onDismiss={() =>
+                  updateLocalSettings(
+                    "dismissedUpdateBannerForVersion",
+                    latestVersion,
+                  )
+                }
               />
             ) : null}
             {getAccess("field_calendar") !== "none" && (
@@ -416,6 +444,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
         </SafeAreaView>
       </Modal>
       <FarmCreatedModal />
+      <WhatsNewSheet />
     </>
   );
 };

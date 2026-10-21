@@ -316,7 +316,14 @@
       "error": "The account could not be deleted. Please try again later."
     }
   },
+  "release_notes": {
+    "title": "What's new",
+    "version_heading": "Version {{version}}",
+    "close": "Got it"
+  },
   "home": {
+    "update_banner": "A new version of Coltivio is available.",
+    "update_banner_action": "Update",
     "welcome_text": "Hello {{displayName}},",
     "upcoming_tasks": "Upcoming Tasks",
     "no_upcoming_tasks": "No upcoming tasks",
@@ -1417,6 +1424,8 @@
     "onboardings": "Tutorials",
     "disable_onboardings_info": "Shows tutorials when opening a feature for the first time.",
     "app_settings": "Settings",
+    "whats_new": "What's new",
+    "version": "Version {{version}}",
     "speed_dial_enabled": "Quick Access",
     "speed_dial_settings": "Configure Quick Access",
     "home_tiles_settings": "Configure Home Screen",

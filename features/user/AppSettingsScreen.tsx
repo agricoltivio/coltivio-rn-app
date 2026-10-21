@@ -1,7 +1,8 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
-import { H2 } from "@/theme/Typography";
+import { Body, H2 } from "@/theme/Typography";
+import { formatAppVersion } from "@/utils/app-info";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -85,7 +86,6 @@ export function AppSettingsScreen({ navigation }: AppSettingsScreenProps) {
           <ListItem
             style={{ backgroundColor: theme.colors.white }}
             onPress={() => navigation.navigate("LanguageSettings")}
-            hideBottomDivider
           >
             <ListItem.Content>
               <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
@@ -94,7 +94,28 @@ export function AppSettingsScreen({ navigation }: AppSettingsScreenProps) {
             </ListItem.Content>
             <ListItem.Chevron />
           </ListItem>
+          <ListItem
+            style={{ backgroundColor: theme.colors.white }}
+            onPress={() => navigation.navigate("ReleaseNotes")}
+            hideBottomDivider
+          >
+            <ListItem.Content>
+              <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
+                {t("settings.whats_new")}
+              </ListItem.Title>
+            </ListItem.Content>
+            <ListItem.Chevron />
+          </ListItem>
         </View>
+        <Body
+          style={{
+            marginTop: theme.spacing.l,
+            textAlign: "center",
+            color: theme.colors.gray1,
+          }}
+        >
+          {t("settings.version", { version: formatAppVersion() })}
+        </Body>
       </ContentView>
     </ScrollView>
   );

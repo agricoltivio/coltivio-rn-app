@@ -15,6 +15,7 @@ yarn typecheck          # tsc --noEmit (also checks scripts/)
 yarn lint               # expo lint
 yarn test               # jest --watchAll
 yarn generate:api-types # regenerate api/v1.d.ts from openapi.json
+yarn release:prepare    # bump version in app.config.js + release notes template (then yarn release:app in the API)
 ```
 
 EAS builds: `yarn eas:build-sim`, `yarn eas:build-dev-ios`, `yarn eas:build-preview-ios`, `yarn eas:build-production`.

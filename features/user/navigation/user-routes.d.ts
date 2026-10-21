@@ -18,6 +18,7 @@ export type UserStackParamList = {
   UserMembership: { autoOpenStatuten?: boolean } | undefined;
   UserDonations: undefined;
   DeleteAccount: undefined;
+  ReleaseNotes: undefined;
 };
 
 export type UserAccountScreenProps = StackScreenProps<"UserAccount">;
@@ -43,3 +44,4 @@ export type DevSettingsScreenProps = StackScreenProps<"DevSettings">;
 export type UserMembershipScreenProps = StackScreenProps<"UserMembership">;
 export type UserDonationsScreenProps = StackScreenProps<"UserDonations">;
 export type DeleteAccountScreenProps = StackScreenProps<"DeleteAccount">;
+export type ReleaseNotesScreenProps = StackScreenProps<"ReleaseNotes">;
