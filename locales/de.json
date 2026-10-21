@@ -540,17 +540,20 @@
       "abort_body": "Drücke das X, um abzubrechen und ohne Zusammenführen zurückzukehren."
     },
     "map_onboarding": {
-      "browse_heading": "Deine Schläge",
-      "browse_body": "Tippe auf einen Schlag auf der Karte oder suche ihn über das Listen-Symbol, um Details anzuzeigen.",
+      "browse_heading": "Deine Flächen",
+      "browse_body": "Tippe auf eine Fläche auf der Karte oder suche sie über das Listen-Symbol, um Details anzuzeigen.",
       "browse_expand_info": "Du kannst die Detailsansicht maximieren in dem du sie nach oben ziehst.",
       "tools_heading": "Werkzeuge",
-      "tools_body": "Verwende die Werkzeugleiste, um deine Schlagflächen zu verwalten.",
-      "tool_add": "Neuen Schlag hinzufügen",
-      "tool_split": "Bestehenden Schlag aufteilen",
+      "tools_body": "Verwende die Werkzeugleiste, um deine Flächen zu verwalten.",
+      "tool_add": "Neue Fläche hinzufügen – Schlag oder Weidefläche",
+      "tool_split": "Schlag aufteilen",
       "tool_merge": "Schläge zusammenführen",
-      "tool_edit": "Schlagfläche bearbeiten",
-      "tool_delete": "Schlag löschen",
-      "tool_cancel": "Aktuelle Aktion abbrechen"
+      "tool_edit": "Form einer Fläche bearbeiten",
+      "tool_delete": "Fläche löschen",
+      "tool_cancel": "Aktuelle Aktion abbrechen",
+      "layers_heading": "Ebenen",
+      "layers_body": "Über das Ebenen-Symbol wählst du, was auf der Karte angezeigt wird.",
+      "layers_options": "Du kannst Schläge, Weideflächen und archivierte Flächen ein- und ausblenden."
     },
     "usage_codes": {
       "501": "Sommergerste",
@@ -1164,15 +1167,20 @@
     "edit_intro_body": "Verschiebe die Eckpunkte, um die Form anzupassen. Halte einen Eckpunkt gedrückt und ziehe ihn an die gewünschte Position.",
     "cancel_heading": "Abbrechen",
     "cancel_body": "Tippe auf dieses Symbol, um abzubrechen und zurückzugehen.",
-    "overlap_heading": "Überlappungen",
-    "overlap_body": "Falls dein neuer Schlag bestehende Schläge überlappt, werden diese automatisch angepasst.",
+    "overlap_heading": "Überschneidungen",
+    "overlap_body": "Überschneidet dein neuer Schlag einen bestehenden Schlag, wird der bestehende Schlag automatisch angepasst.",
     "crop_rotation_welcome_heading": "Plane deine Fruchtfolgen",
     "crop_rotation_welcome_body": "Wähle die Schläge aus, für die du Fruchtfolgen planen möchtest.",
     "plots_map_welcome_heading": "Deine Schläge",
     "plots_map_tap_body": "Tippe auf einen Schlag, um Details zu sehen.",
     "plots_map_add_body": "Drücke diesen Button, um neue Schläge hinzuzufügen.",
     "welcome_body_create": "Du befindest dich jetzt im Zeichenmodus. Tippe auf die Karte, um die Eckpunkte deines neuen Schlags zu setzen.",
-    "actions_heading": "Fertig & Abbrechen"
+    "actions_heading": "Fertig & Abbrechen",
+    "welcome_body_meadow_draw": "Du befindest dich jetzt im Zeichenmodus. Tippe auf die Karte, um die Eckpunkte deiner neuen Weidefläche zu setzen.",
+    "welcome_body_meadow_plots": "Du erstellst gleich eine Weidefläche aus deinen bestehenden Schlägen. Hier erklären wir dir kurz, wie das funktioniert.",
+    "meadow_plots_heading": "Schläge auswählen",
+    "meadow_plots_body": "Tippe auf die Schläge, die zur Weidefläche gehören. Tippe nochmals, um einen Schlag abzuwählen. Die Schläge selbst bleiben unverändert.",
+    "meadow_overlap_body": "Weideflächen sind unabhängig von deinen Schlägen: Sie können über einem oder mehreren Schlägen liegen, die Schläge bleiben dabei unverändert. Weideflächen können sich aber nicht gegenseitig überschneiden."
   },
   "animals": {
     "animals": "Tiere",

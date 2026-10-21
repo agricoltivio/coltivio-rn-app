@@ -103,7 +103,27 @@ export function PlotsMapOnboardingScreen() {
       </H3>
     </View>,
 
-    // Screen 2: Toolbox
+    // Screen 2: Layers
+    <View key="layers" style={{ alignItems: "center" }}>
+      <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
+        {t("plots.map_onboarding.layers_heading")}
+      </H1>
+      <H3
+        style={{
+          color: theme.colors.primary,
+          marginTop: theme.spacing.s,
+          textAlign: "center",
+        }}
+      >
+        {t("plots.map_onboarding.layers_body")}
+      </H3>
+      <IconBadge name="layers-outline" />
+      <H3 style={{ color: theme.colors.primary, textAlign: "center" }}>
+        {t("plots.map_onboarding.layers_options")}
+      </H3>
+    </View>,
+
+    // Screen 3: Toolbox
     <View key="tools" style={{ alignItems: "center", width: "100%" }}>
       <H1 style={{ color: theme.colors.primary, textAlign: "center" }}>
         {t("plots.map_onboarding.tools_heading")}

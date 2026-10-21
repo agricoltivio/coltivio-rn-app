@@ -540,17 +540,20 @@
       "abort_body": "Premi la X per annullare e tornare senza unire."
     },
     "map_onboarding": {
-      "browse_heading": "I tuoi appezzamenti",
-      "browse_body": "Tocca un appezzamento sulla mappa o cercalo tramite l'icona lista per vederne i dettagli.",
+      "browse_heading": "Le tue superfici",
+      "browse_body": "Tocca una superficie sulla mappa o cercala tramite l'icona lista per vederne i dettagli.",
       "browse_expand_info": "Espandi il cassetto per vedere ulteriori informazioni.",
       "tools_heading": "Strumenti",
       "tools_body": "Usa la barra degli strumenti per gestire le tue superfici.",
-      "tool_add": "Aggiungi un nuovo appezzamento",
-      "tool_split": "Dividi un appezzamento esistente",
+      "tool_add": "Aggiungi una superficie – appezzamento o area di pascolo",
+      "tool_split": "Dividi un appezzamento",
       "tool_merge": "Unisci appezzamenti",
-      "tool_edit": "Modifica la superficie",
-      "tool_delete": "Elimina appezzamento",
-      "tool_cancel": "Annulla l'azione corrente"
+      "tool_edit": "Modifica la forma di una superficie",
+      "tool_delete": "Elimina una superficie",
+      "tool_cancel": "Annulla l'azione corrente",
+      "layers_heading": "Livelli",
+      "layers_body": "Con l'icona dei livelli scegli cosa mostra la mappa.",
+      "layers_options": "Puoi mostrare o nascondere appezzamenti, aree di pascolo e superfici archiviate."
     },
     "usage_codes": {
       "501": "Orzo primaverile",
@@ -1165,14 +1168,19 @@
     "cancel_heading": "Annulla",
     "cancel_body": "Tocca questo simbolo per annullare e tornare indietro.",
     "overlap_heading": "Sovrapposizioni",
-    "overlap_body": "Se il tuo nuovo campo si sovrappone a campi esistenti, questi verranno adattati automaticamente.",
+    "overlap_body": "Se il tuo nuovo appezzamento si sovrappone a un appezzamento esistente, l'appezzamento esistente viene adattato automaticamente.",
     "crop_rotation_welcome_heading": "Pianifica le tue rotazioni colturali",
     "crop_rotation_welcome_body": "Seleziona i campi per i quali vuoi pianificare le rotazioni colturali.",
     "plots_map_welcome_heading": "I tuoi campi",
     "plots_map_tap_body": "Tocca un campo per vedere i dettagli.",
     "plots_map_add_body": "Premi questo pulsante per aggiungere nuovi campi.",
     "welcome_body_create": "Sei ora in modalità disegno. Tocca la mappa per impostare i punti angolari del tuo nuovo appezzamento.",
-    "actions_heading": "Fine & Annulla"
+    "actions_heading": "Fine & Annulla",
+    "welcome_body_meadow_draw": "Ora sei in modalità disegno. Tocca la mappa per impostare gli angoli della tua nuova area di pascolo.",
+    "welcome_body_meadow_plots": "Stai per creare un'area di pascolo dai tuoi appezzamenti esistenti. Ecco come funziona.",
+    "meadow_plots_heading": "Seleziona appezzamenti",
+    "meadow_plots_body": "Tocca gli appezzamenti che fanno parte dell'area di pascolo. Tocca di nuovo per deselezionarne uno. Gli appezzamenti stessi restano invariati.",
+    "meadow_overlap_body": "Le aree di pascolo sono indipendenti dai tuoi appezzamenti: possono trovarsi sopra uno o più appezzamenti, che restano invariati. Le aree di pascolo però non possono sovrapporsi tra loro."
   },
   "animals": {
     "animals": "Animali",

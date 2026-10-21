@@ -1,10 +1,13 @@
+import { Button } from "@/components/buttons/Button";
 import { IonIconButton } from "@/components/buttons/IconButton";
+import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2 } from "@/theme/Typography";
 import { useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "styled-components/native";
+import { usePermissions } from "@/features/user/users.hooks";
 import { PlotDetailsScreenProps } from "./navigation/plots-routes";
 import { PlotDetailsContent } from "./PlotDetailsContent";
 import { usePlotByIdQuery } from "./plots.hooks";
@@ -17,6 +20,7 @@ export function PlotDetailsScreen({
   const theme = useTheme();
   const { plotId } = route.params;
   const { plot } = usePlotByIdQuery(plotId);
+  const { canWrite } = usePermissions();
 
   // Plots without geometry (size 0) can't be shown on the map; archived plots
   // open it with the archived layer visible
@@ -50,7 +54,21 @@ export function PlotDetailsScreen({
   }
 
   return (
-    <ContentView>
+    <ContentView
+      footerComponent={
+        canWrite("field_calendar") ? (
+          <BottomActionContainer>
+            <Button
+              type="accent"
+              title={t("buttons.edit")}
+              onPress={() =>
+                navigation.navigate("EditPlotModal", { plotId: plot.id })
+              }
+            />
+          </BottomActionContainer>
+        ) : undefined
+      }
+    >
       <ScrollView
         showHeaderOnScroll
         headerTitleOnScroll={t("plots.plot_name", { name: plot.name })}
@@ -60,6 +78,7 @@ export function PlotDetailsScreen({
           plot={plot}
           navigation={navigation}
           returnTo="PlotDetails"
+          hideEditButton
         />
       </ScrollView>
     </ContentView>

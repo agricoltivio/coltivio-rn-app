@@ -52,7 +52,9 @@ export type RootStackParamList = AuthStackParamList &
             | "parcel"
             | "edit"
             | "cropRotation"
-            | "plotsMap";
+            | "plotsMap"
+            | "meadowDraw"
+            | "meadowPlots";
         }
       | undefined;
     SelectPlotsOnboarding: undefined;

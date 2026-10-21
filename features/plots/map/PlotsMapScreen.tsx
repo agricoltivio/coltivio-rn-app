@@ -176,6 +176,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
   // re-fires the onboarding effect when the create sub-step changes (e.g. "choose" -> "draw"/"parcel").
   const createDrawingAction =
     mode.type === "create" ? mode.drawingAction : null;
+  const createTarget = mode.type === "create" ? mode.target : null;
 
   // Auto-show the relevant onboarding the first time each tool is used
   useEffect(() => {
@@ -196,6 +197,22 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
         }
         break;
       case "create":
+        if (createTarget === "meadow") {
+          if (
+            createDrawingAction === "draw" &&
+            !localSettings.addMeadowDrawOnboardingCompleted
+          ) {
+            navigation.navigate("MapDrawOnboarding", { variant: "meadowDraw" });
+          } else if (
+            createDrawingAction === "plots" &&
+            !localSettings.addMeadowPlotsOnboardingCompleted
+          ) {
+            navigation.navigate("MapDrawOnboarding", {
+              variant: "meadowPlots",
+            });
+          }
+          break;
+        }
         if (
           createDrawingAction === "draw" &&
           !localSettings.addPlotDrawOnboardingCompleted
@@ -212,12 +229,15 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
   }, [
     mode.type,
     createDrawingAction,
+    createTarget,
     navigation,
     localSettings.splitPlotOnboardingCompleted,
     localSettings.mergePlotsOnboardingCompleted,
     localSettings.editPlotOnboardingCompleted,
     localSettings.addPlotDrawOnboardingCompleted,
     localSettings.addPlotParcelOnboardingCompleted,
+    localSettings.addMeadowDrawOnboardingCompleted,
+    localSettings.addMeadowPlotsOnboardingCompleted,
   ]);
 
   // Extracted to avoid complex expression in the dependency array.

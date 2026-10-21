@@ -540,17 +540,20 @@
       "abort_body": "Press the X to cancel and go back without merging."
     },
     "map_onboarding": {
-      "browse_heading": "Your Plots",
-      "browse_body": "Tap a plot on the map or search for it using the list icon to view details.",
+      "browse_heading": "Your areas",
+      "browse_body": "Tap an area on the map or search for it using the list icon to view details.",
       "browse_expand_info": "Expand the drawer to see more details.",
       "tools_heading": "Tools",
-      "tools_body": "Use the toolbox to manage your plot areas.",
-      "tool_add": "Add a new plot",
-      "tool_split": "Split an existing plot",
+      "tools_body": "Use the toolbox to manage your areas.",
+      "tool_add": "Add a new area – plot or meadow",
+      "tool_split": "Split a plot",
       "tool_merge": "Merge plots",
-      "tool_edit": "Edit plot area",
-      "tool_delete": "Delete plot",
-      "tool_cancel": "Cancel current action"
+      "tool_edit": "Edit the shape of an area",
+      "tool_delete": "Delete an area",
+      "tool_cancel": "Cancel current action",
+      "layers_heading": "Layers",
+      "layers_body": "Use the layers icon to choose what the map shows.",
+      "layers_options": "You can show or hide plots, meadows and archived areas."
     },
     "usage_codes": {
       "501": "Spring barley",
@@ -1165,14 +1168,19 @@
     "cancel_heading": "Cancel",
     "cancel_body": "Tap this symbol to cancel and go back.",
     "overlap_heading": "Overlaps",
-    "overlap_body": "If your new plot overlaps existing plots, they will be automatically adjusted.",
+    "overlap_body": "If your new plot overlaps an existing plot, the existing plot is adjusted automatically.",
     "crop_rotation_welcome_heading": "Plan Your Crop Rotations",
     "crop_rotation_welcome_body": "Select the plots for which you want to plan crop rotations.",
     "plots_map_welcome_heading": "Your Plots",
     "plots_map_tap_body": "Tap on a plot to see details.",
     "plots_map_add_body": "Press this button to add new plots.",
     "welcome_body_create": "You are now in drawing mode. Tap on the map to set the corner points of your new plot.",
-    "actions_heading": "Done & Cancel"
+    "actions_heading": "Done & Cancel",
+    "welcome_body_meadow_draw": "You're now in drawing mode. Tap the map to set the corners of your new meadow.",
+    "welcome_body_meadow_plots": "You're about to create a meadow from your existing plots. Here's a quick explanation of how it works.",
+    "meadow_plots_heading": "Select plots",
+    "meadow_plots_body": "Tap the plots that belong to the meadow. Tap again to deselect a plot. The plots themselves stay unchanged.",
+    "meadow_overlap_body": "Meadows are independent of your plots: they can lie over one or more plots, and the plots stay unchanged. Meadows can't overlap each other, though."
   },
   "animals": {
     "animals": "Animals",

@@ -20,6 +20,8 @@ type PlotDetailsContentProps = {
   navigation: NavigationProp<ReactNavigation.RootParamList>;
   // Screen the new-entry flows navigate back to after saving
   returnTo: "PlotsMap" | "PlotDetails";
+  // The details screen shows the edit button in its footer instead
+  hideEditButton?: boolean;
 };
 
 // Plot summary, links to its records and actions. Shared by the map drawer and the details screen.
@@ -27,6 +29,7 @@ export function PlotDetailsContent({
   plot,
   navigation,
   returnTo,
+  hideEditButton = false,
 }: PlotDetailsContentProps) {
   const { t, i18n } = useTranslation();
   const locale = i18n.language;
@@ -251,7 +254,7 @@ export function PlotDetailsContent({
         </Body>
       </TouchableOpacity>
 
-      {canWrite("field_calendar") && (
+      {canWrite("field_calendar") && !hideEditButton && (
         <Button
           style={{ marginTop: theme.spacing.m }}
           type="accent"

@@ -7,65 +7,88 @@ import { H2 } from "@/theme/Typography";
 import { useState } from "react";
 import { Alert } from "react-native";
 import { useTheme } from "styled-components/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   defaultLocalSettings,
   useLocalSettings,
 } from "../user/LocalSettingsContext";
 
-// All resettable local settings keys with human-readable labels
-const RESETTABLE_KEYS = [
+// Resettable local settings, grouped by topic: resetting a group resets every
+// tutorial flag of that topic (e.g. all map tutorials, including the meadow ones)
+const RESET_GROUPS = [
   {
-    key: "fieldCalendarOnboardingCompleted",
-    label: "Field Calendar Onboarding",
+    id: "map",
+    label: "Map & plots tutorials",
+    keys: [
+      "plotsMapOnboardingCompleted",
+      "mapDrawOnboardingCompleted",
+      "addPlotDrawOnboardingCompleted",
+      "addPlotParcelOnboardingCompleted",
+      "addMeadowDrawOnboardingCompleted",
+      "addMeadowPlotsOnboardingCompleted",
+      "editPlotOnboardingCompleted",
+      "splitPlotOnboardingCompleted",
+      "mergePlotsOnboardingCompleted",
+    ],
   },
-  { key: "fieldCalendarGroups", label: "Field Calendar Groups" },
-  { key: "animalsOnboardingCompleted", label: "Animals Onboarding" },
-  { key: "animalsGroups", label: "Animals Groups" },
-  { key: "herdsOnboardingCompleted", label: "Herds Onboarding" },
-  { key: "tvdImportOnboardingCompleted", label: "TVD Import Onboarding" },
-  { key: "mapDrawOnboardingCompleted", label: "Map Draw Onboarding" },
-  { key: "plotsMapOnboardingCompleted", label: "Plots Map Onboarding" },
-  { key: "addPlotDrawOnboardingCompleted", label: "Add Plot Draw Onboarding" },
   {
-    key: "addPlotParcelOnboardingCompleted",
-    label: "Add Plot Parcel Onboarding",
+    id: "fieldCalendar",
+    label: "Field calendar tutorials",
+    keys: [
+      "fieldCalendarOnboardingCompleted",
+      "selectPlotsForPlanOnboardingCompleted",
+    ],
   },
-  { key: "editPlotOnboardingCompleted", label: "Edit Plot Onboarding" },
-  { key: "splitPlotOnboardingCompleted", label: "Split Plot Onboarding" },
-  { key: "mergePlotsOnboardingCompleted", label: "Merge Plots Onboarding" },
   {
-    key: "selectPlotsForPlanOnboardingCompleted",
-    label: "Crop Rotation Plot Selection Onboarding",
+    id: "animals",
+    label: "Animals tutorials",
+    keys: [
+      "animalsOnboardingCompleted",
+      "herdsOnboardingCompleted",
+      "tvdImportOnboardingCompleted",
+    ],
   },
-  { key: "speedDialOnboardingCompleted", label: "Speed Dial Onboarding" },
-  { key: "wikiOnboardingCompleted", label: "Wiki Onboarding" },
-  { key: "tasksOnboardingCompleted", label: "Tasks Onboarding" },
   {
-    key: "taskPushNotificationsPromptCompleted",
-    label: "Task Push Notifications Prompt",
+    id: "tasks",
+    label: "Tasks tutorial & push prompt",
+    keys: ["tasksOnboardingCompleted", "taskPushNotificationsPromptCompleted"],
   },
-  { key: "onboardingsDisabled", label: "Onboardings Disabled" },
+  {
+    id: "home",
+    label: "Home tutorials",
+    keys: ["speedDialOnboardingCompleted"],
+  },
+  { id: "wiki", label: "Wiki tutorial", keys: ["wikiOnboardingCompleted"] },
+  // Not tutorials: the section tile layouts and the "skip all tutorials" switch
+  {
+    id: "sectionLayouts",
+    label: "Field calendar & animals layouts",
+    keys: ["fieldCalendarGroups", "animalsGroups"],
+  },
+  {
+    id: "onboardingsDisabled",
+    label: "Onboardings disabled",
+    keys: ["onboardingsDisabled"],
+  },
 ] as const;
 
-type ResettableKey = (typeof RESETTABLE_KEYS)[number]["key"];
+type ResetGroupId = (typeof RESET_GROUPS)[number]["id"];
 
 export function DevSettingsScreen() {
   const theme = useTheme();
-  const { localSettings, updateLocalSettings } = useLocalSettings();
-  const [selected, setSelected] = useState<Set<ResettableKey>>(new Set());
+  const { updateLocalSettings } = useLocalSettings();
+  const [selected, setSelected] = useState<Set<ResetGroupId>>(new Set());
 
-  function toggle(key: ResettableKey) {
+  function toggle(groupId: ResetGroupId) {
     setSelected((prev) => {
       const next = new Set(prev);
-      if (next.has(key)) next.delete(key);
-      else next.add(key);
+      if (next.has(groupId)) next.delete(groupId);
+      else next.add(groupId);
       return next;
     });
   }
 
   function selectAll() {
-    setSelected(new Set(RESETTABLE_KEYS.map((k) => k.key)));
+    setSelected(new Set(RESET_GROUPS.map((group) => group.id)));
   }
 
   function resetSelected() {
@@ -73,17 +96,20 @@ export function DevSettingsScreen() {
 
     Alert.alert(
       "Reset Settings",
-      `Reset ${selected.size} selected setting(s) to defaults?`,
+      `Reset ${selected.size} selected group(s) to defaults?`,
       [
         { text: "Cancel", style: "cancel" },
         {
           text: "Reset",
           style: "destructive",
           onPress: async () => {
-            // Reset each selected key to its default value in-memory
-            // This also persists each change to AsyncStorage
-            for (const key of selected) {
-              updateLocalSettings(key, defaultLocalSettings[key]);
+            // Reset every key of the selected groups to its default value;
+            // this also persists each change to AsyncStorage
+            for (const group of RESET_GROUPS) {
+              if (!selected.has(group.id)) continue;
+              for (const key of group.keys) {
+                updateLocalSettings(key, defaultLocalSettings[key]);
+              }
             }
 
             setSelected(new Set());
@@ -100,7 +126,7 @@ export function DevSettingsScreen() {
         <BottomActionContainer>
           <Button
             type="danger"
-            title={`Reset ${selected.size} setting(s)`}
+            title={`Reset ${selected.size} group(s)`}
             onPress={resetSelected}
             disabled={selected.size === 0}
           />
@@ -117,12 +143,12 @@ export function DevSettingsScreen() {
           style={{ marginTop: theme.spacing.m }}
         />
 
-        {RESETTABLE_KEYS.map(({ key, label }) => (
+        {RESET_GROUPS.map(({ id, label }) => (
           <Switch
-            key={key}
+            key={id}
             label={label}
-            value={selected.has(key)}
-            onChange={() => toggle(key)}
+            value={selected.has(id)}
+            onChange={() => toggle(id)}
             style={{ paddingVertical: theme.spacing.s }}
           />
         ))}

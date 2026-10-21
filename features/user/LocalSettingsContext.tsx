@@ -33,6 +33,9 @@ type LocalSettingsData = {
   mapDrawOnboardingCompleted: boolean;
   addPlotDrawOnboardingCompleted: boolean;
   addPlotParcelOnboardingCompleted: boolean;
+  // Creating a meadow by drawing it, or from existing plots
+  addMeadowDrawOnboardingCompleted: boolean;
+  addMeadowPlotsOnboardingCompleted: boolean;
   selectPlotsForPlanOnboardingCompleted: boolean;
   plotsMapOnboardingCompleted: boolean;
   splitPlotOnboardingCompleted: boolean;
@@ -102,6 +105,8 @@ export const defaultLocalSettings: LocalSettingsData = {
   mapDrawOnboardingCompleted: false,
   addPlotDrawOnboardingCompleted: false,
   addPlotParcelOnboardingCompleted: false,
+  addMeadowDrawOnboardingCompleted: false,
+  addMeadowPlotsOnboardingCompleted: false,
   selectPlotsForPlanOnboardingCompleted: false,
   plotsMapOnboardingCompleted: false,
   splitPlotOnboardingCompleted: false,
@@ -329,6 +334,8 @@ export function useLocalSettings() {
       mapDrawOnboardingCompleted: true,
       addPlotDrawOnboardingCompleted: true,
       addPlotParcelOnboardingCompleted: true,
+      addMeadowDrawOnboardingCompleted: true,
+      addMeadowPlotsOnboardingCompleted: true,
       selectPlotsForPlanOnboardingCompleted: true,
       plotsMapOnboardingCompleted: true,
       splitPlotOnboardingCompleted: true,

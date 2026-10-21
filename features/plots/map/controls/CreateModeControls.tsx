@@ -86,6 +86,18 @@ export function CreateModeControls() {
               if (geometry) submitMeadowGeometry(geometry);
             }}
           />
+          <MaterialCommunityIconButton
+            style={{ backgroundColor: theme.colors.surface }}
+            type="accent"
+            color="black"
+            iconSize={30}
+            icon="information-outline"
+            onPress={() =>
+              navigation.navigate("MapDrawOnboarding", {
+                variant: "meadowPlots",
+              })
+            }
+          />
         </MapControls>
       );
     }
@@ -120,6 +132,16 @@ export function CreateModeControls() {
           onPress={() => {
             if (newPolygon) submitMeadowGeometry(newPolygon.geometry);
           }}
+        />
+        <MaterialCommunityIconButton
+          style={{ backgroundColor: theme.colors.surface }}
+          type="accent"
+          color="black"
+          iconSize={30}
+          icon="information-outline"
+          onPress={() =>
+            navigation.navigate("MapDrawOnboarding", { variant: "meadowDraw" })
+          }
         />
       </MapControls>
     );
