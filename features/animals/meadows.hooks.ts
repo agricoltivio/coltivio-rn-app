@@ -13,11 +13,14 @@ const currentYear = new Date().getFullYear();
 const defaultUsageFromDate = `${currentYear - 10}-01-01`;
 const defaultUsageToDate = `${currentYear + 3}-12-31`;
 
-export function useMeadowsQuery() {
+// Active meadows only, unless includeArchived is set
+export function useMeadowsQuery(includeArchived: boolean = false) {
   const api = useApi();
   const { data, ...rest } = useQuery({
-    queryKey: queryKeys.meadows.all.queryKey,
-    queryFn: () => api.meadows.getMeadows(),
+    queryKey: includeArchived
+      ? queryKeys.meadows.allIncludingArchived.queryKey
+      : queryKeys.meadows.all.queryKey,
+    queryFn: () => api.meadows.getMeadows(includeArchived),
   });
   return { meadows: data, ...rest };
 }
@@ -51,9 +54,10 @@ export function useMeadowUsageQuery(meadowId: string, enabled: boolean = true) {
   return { usage: data, ...rest };
 }
 
-// Meadow name/size is embedded in herd schedules and the outdoor journal,
-// so those caches are invalidated on every meadow change too
-function useInvalidateMeadowRelatedQueries() {
+// Meadow name/size is embedded in herd schedules and the outdoor journal, and
+// meadow usage and the journal are derived from herd schedules, so any meadow,
+// herd or schedule change invalidates all three
+export function useInvalidateOutdoorQueries() {
   const queryClient = useQueryClient();
   return () => {
     queryClient.invalidateQueries({ queryKey: queryKeys.meadows._def });
@@ -67,7 +71,7 @@ export function useCreateMeadowMutation(
   onError?: (error: Error) => void,
 ) {
   const api = useApi();
-  const invalidate = useInvalidateMeadowRelatedQueries();
+  const invalidate = useInvalidateOutdoorQueries();
   return useMutation({
     mutationFn: (input: MeadowCreateInput) => api.meadows.createMeadow(input),
     onSuccess: (meadow) => {
@@ -83,7 +87,7 @@ export function useUpdateMeadowMutation(
   onError?: (error: Error) => void,
 ) {
   const api = useApi();
-  const invalidate = useInvalidateMeadowRelatedQueries();
+  const invalidate = useInvalidateOutdoorQueries();
   return useMutation({
     mutationFn: ({ id, ...input }: MeadowUpdateInput & { id: string }) =>
       api.meadows.updateMeadow(id, input),
@@ -101,7 +105,7 @@ export function useDeleteMeadowMutation(
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
-  const invalidate = useInvalidateMeadowRelatedQueries();
+  const invalidate = useInvalidateOutdoorQueries();
   return useMutation({
     mutationFn: async (meadowId: string) => {
       await api.meadows.deleteMeadow(meadowId);

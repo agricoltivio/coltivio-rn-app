@@ -16,6 +16,9 @@ export function MeadowOverviewScreen({
   const { meadowId } = route.params;
   const { meadow } = useMeadowByIdQuery(meadowId);
 
+  // Archived meadows open the map with the archived layer visible
+  const isArchived = meadow?.archivedAt != null;
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -25,12 +28,15 @@ export function MeadowOverviewScreen({
           iconSize={26}
           color={theme.colors.primary}
           onPress={() =>
-            navigation.navigate("PlotsMap", { selectedMeadowId: meadowId })
+            navigation.navigate("PlotsMap", {
+              selectedMeadowId: meadowId,
+              showArchived: isArchived,
+            })
           }
         />
       ),
     });
-  }, [navigation, meadowId, theme.colors.primary]);
+  }, [navigation, isArchived, meadowId, theme.colors.primary]);
 
   if (!meadow) {
     return null;

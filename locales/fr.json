@@ -728,7 +728,8 @@
     "map_layers": {
       "title": "Calques",
       "plots": "Parcelles",
-      "meadows": "Pâtures"
+      "meadows": "Pâtures",
+      "archived": "Archivés"
     }
   },
   "farm_equipment": {
@@ -1372,7 +1373,6 @@
       "details": "Détails",
       "usage": "Occupation",
       "size_value": "{{are}}a ({{squareMeters}}m²)",
-      "delete_confirm": "Supprimer la pâture ? Les périodes en plein air attribuées perdront leur pâture.",
       "journal_view_categories": "Catégories",
       "errors": {
         "overlaps": "La surface chevauche la pâture « {{name}} ».",
@@ -1710,5 +1710,22 @@
   "donations": {
     "title": "Dons",
     "history_heading": "Vos dons"
+  },
+  "archive": {
+    "archive": "Archiver",
+    "restore": "Restaurer",
+    "archived": "Archivés",
+    "archived_since": "Dans les archives depuis le {{date}}.",
+    "plot_confirm_title": "Archiver le champ {{name}} ?",
+    "plot_info": "Les champs archivés ne sont plus affichés sur la carte ni lors de nouvelles saisies. Toutes les saisies existantes sont conservées et tu peux restaurer le champ à tout moment.",
+    "plot_delete_hint": "Si tu n'exploites plus ce champ, tu peux aussi simplement l'archiver pour conserver toutes ses saisies.",
+    "meadow_confirm_title": "Archiver la pâture {{name}} ?",
+    "meadow_info": "Les pâtures archivées ne sont plus affichées sur la carte ni lors de nouvelles périodes de pâture. Toutes les données sont conservées et tu peux restaurer la pâture à tout moment.",
+    "meadow_delete_title": "Supprimer vraiment la pâture {{name}} ?",
+    "meadow_delete_warning": "Toutes les données associées seront définitivement supprimées. Si tu n'utilises plus cette pâture, tu peux aussi simplement l'archiver pour conserver toutes ses données.",
+    "plot_restore_title": "Restaurer le champ {{name}} ?",
+    "plot_restore_warning": "Le champ réapparaît sur la carte et lors des nouvelles saisies. Si de nouveaux champs ont été saisis sur cette surface depuis l'archivage, ils peuvent se chevaucher.",
+    "meadow_restore_title": "Restaurer la pâture {{name}} ?",
+    "meadow_restore_warning": "La pâture réapparaît sur la carte et lors des nouvelles périodes de pâture. Si de nouvelles pâtures ont été saisies sur cette surface depuis l'archivage, elles peuvent se chevaucher."
   }
 }

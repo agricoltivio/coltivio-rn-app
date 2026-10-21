@@ -728,7 +728,8 @@
     "map_layers": {
       "title": "Layers",
       "plots": "Plots",
-      "meadows": "Meadows"
+      "meadows": "Meadows",
+      "archived": "Archived"
     }
   },
   "farm_equipment": {
@@ -1372,7 +1373,6 @@
       "details": "Details",
       "usage": "Usage",
       "size_value": "{{are}}a ({{squareMeters}}m²)",
-      "delete_confirm": "Delete meadow? Assigned outdoor schedules will lose their meadow.",
       "journal_view_categories": "Categories",
       "errors": {
         "overlaps": "The area overlaps with the meadow \"{{name}}\".",
@@ -1711,5 +1711,22 @@
   "donations": {
     "title": "Donations",
     "history_heading": "Your donations"
+  },
+  "archive": {
+    "archive": "Archive",
+    "restore": "Restore",
+    "archived": "Archived",
+    "archived_since": "Archived since {{date}}.",
+    "plot_confirm_title": "Archive plot {{name}}?",
+    "plot_info": "Archived plots are no longer shown on the map or when adding new entries. All existing entries are kept and you can restore the plot at any time.",
+    "plot_delete_hint": "If you no longer farm this plot, you can also just archive it to keep all its entries.",
+    "meadow_confirm_title": "Archive meadow {{name}}?",
+    "meadow_info": "Archived meadows are no longer shown on the map or when adding new grazing periods. All data is kept and you can restore the meadow at any time.",
+    "meadow_delete_title": "Really delete meadow {{name}}?",
+    "meadow_delete_warning": "All related data will be permanently deleted. If you no longer use this meadow, you can also just archive it to keep all its data.",
+    "plot_restore_title": "Restore plot {{name}}?",
+    "plot_restore_warning": "The plot will show up again on the map and when adding entries. If new plots were added on this area since it was archived, they may overlap with it.",
+    "meadow_restore_title": "Restore meadow {{name}}?",
+    "meadow_restore_warning": "The meadow will show up again on the map and when adding grazing periods. If new meadows were added on this area since it was archived, they may overlap with it."
   }
 }

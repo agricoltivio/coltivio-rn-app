@@ -1,4 +1,5 @@
 import { Plot } from "@/api/plots.api";
+import { Banner } from "@/components/banners/Banner";
 import { Button } from "@/components/buttons/Button";
 import { Card } from "@/components/card/Card";
 import { ListItem } from "@/components/list/ListItem";
@@ -9,8 +10,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Modal, Pressable, TouchableOpacity, View } from "react-native";
+import { Alert, Modal, Pressable, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
+import { useUpdatePlotMutation } from "./plots.hooks";
 import { isUsageCode } from "./usage-codes";
 
 type PlotDetailsContentProps = {
@@ -38,8 +40,45 @@ export function PlotDetailsContent({
       ? t(`plots.usage_codes.${plot.usage}`)
       : null;
 
+  const restorePlotMutation = useUpdatePlotMutation(undefined, () =>
+    Alert.alert(t("common.error"), t("common.unknown_error")),
+  );
+  const canEdit = canWrite("field_calendar");
+
   return (
     <>
+      {plot.archivedAt ? (
+        <Banner
+          style={{ marginTop: theme.spacing.m }}
+          variant="warning"
+          title={t("archive.archived_since", {
+            date: formatLocalizedDate(new Date(plot.archivedAt), locale),
+          })}
+          actionLabel={canEdit ? t("archive.restore") : undefined}
+          loading={restorePlotMutation.isPending}
+          onPress={
+            canEdit
+              ? () =>
+                  // Plots added since archiving may overlap, so restoring asks first
+                  Alert.alert(
+                    t("archive.plot_restore_title", { name: plot.name }),
+                    t("archive.plot_restore_warning"),
+                    [
+                      { text: t("buttons.cancel"), style: "cancel" },
+                      {
+                        text: t("archive.restore"),
+                        onPress: () =>
+                          restorePlotMutation.mutate({
+                            plotId: plot.id,
+                            data: { archived: false },
+                          }),
+                      },
+                    ],
+                  )
+              : undefined
+          }
+        />
+      ) : null}
       <Card style={{ marginTop: theme.spacing.m }}>
         <SummaryItem
           label={t("forms.labels.area")}
@@ -176,7 +215,8 @@ export function PlotDetailsContent({
         </ListItem>
       </View>
 
-      {canWrite("field_calendar") && (
+      {/* No new entries for an archived plot; restore it first */}
+      {canEdit && !plot.archivedAt && (
         <Button
           style={{ marginTop: theme.spacing.m }}
           title={t("plots.new_entry")}
@@ -358,18 +398,29 @@ function SummaryItem({
       <Label numberOfLines={1} style={{ flexShrink: 0 }}>
         {label}
       </Label>
-      <Label style={{ flex: 1, fontSize: 18, textAlign: "right" }}>
-        {value}
-      </Label>
-      {onInfoPress ? (
-        <Pressable onPress={onInfoPress} hitSlop={8}>
-          <Ionicons
-            name="information-circle-outline"
-            size={22}
-            color={theme.colors.primary}
-          />
-        </Pressable>
-      ) : null}
+      {/* Value and info icon sit together on the right */}
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          gap: theme.spacing.xxs,
+        }}
+      >
+        <Label style={{ flexShrink: 1, fontSize: 18, textAlign: "right" }}>
+          {value}
+        </Label>
+        {onInfoPress ? (
+          <Pressable onPress={onInfoPress} hitSlop={8}>
+            <Ionicons
+              name="information-circle-outline"
+              size={20}
+              color={theme.colors.primary}
+            />
+          </Pressable>
+        ) : null}
+      </View>
     </View>
   );
 }

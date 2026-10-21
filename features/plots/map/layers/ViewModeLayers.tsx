@@ -1,3 +1,4 @@
+import { ArchivedAreasLayer } from "@/components/map/ArchivedAreasLayer";
 import { MeadowsLayer } from "@/components/map/MeadowsLayer";
 import { PlotsLayer } from "@/components/map/PlotsLayer";
 import { useMeadowsQuery } from "@/features/animals/meadows.hooks";
@@ -12,6 +13,8 @@ export function ViewModeLayers() {
     plots,
     plotColorMode,
     visibleLayers,
+    archivedPlots,
+    archivedMeadows,
     selectedMeadowId,
     setSelectedMeadowId,
   } = usePlotsMapContext();
@@ -65,9 +68,29 @@ export function ViewModeLayers() {
 
   if (mode.type !== "view") return null;
 
-  // Every visible layer is tappable; meadows render above plots so taps inside a meadow hit it
+  // Every visible layer is tappable; meadows render above plots so taps inside a meadow hit it.
+  // Archived areas render below both, and only for the visible kinds.
   return (
     <>
+      {visibleLayers.archived && (
+        <ArchivedAreasLayer
+          plots={visibleLayers.plots ? archivedPlots : []}
+          meadows={visibleLayers.meadows ? archivedMeadows : []}
+          selectedId={selectedPlotId ?? selectedMeadowId}
+          onPress={(area) => {
+            if (area.kind === "plot") {
+              setSelectedMeadowId(null);
+              dispatch({
+                type: "SELECT_PLOT",
+                plotId: selectedPlotId === area.id ? null : area.id,
+              });
+              return;
+            }
+            dispatch({ type: "SELECT_PLOT", plotId: null });
+            setSelectedMeadowId(selectedMeadowId === area.id ? null : area.id);
+          }}
+        />
+      )}
       {visibleLayers.plots && (
         <PlotsLayer
           plots={plots}

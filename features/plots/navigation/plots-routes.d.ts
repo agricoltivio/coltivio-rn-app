@@ -7,6 +7,8 @@ export type PlotsStackParamList = {
     selectedMeadowId?: string;
     // Opens the map directly in a meadow flow; leaving it returns to the previous screen
     meadowAction?: InitialMeadowAction;
+    // Shows the archived layer for this visit, without changing the stored choice
+    showArchived?: boolean;
   };
   AddPlotSummary: {
     cropId?: string;

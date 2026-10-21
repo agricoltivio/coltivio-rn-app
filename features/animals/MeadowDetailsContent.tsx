@@ -1,18 +1,19 @@
 import { Meadow } from "@/api/meadows.api";
+import { Banner } from "@/components/banners/Banner";
 import { Button } from "@/components/buttons/Button";
 import { Card } from "@/components/card/Card";
 import { ListItem } from "@/components/list/ListItem";
 import { usePermissions } from "@/features/user/users.hooks";
 import { Body, Label } from "@/theme/Typography";
-import { formatLocalizedDate } from "@/utils/date";
+import { formatLocalizedDate, toLocalDateString } from "@/utils/date";
 import { round } from "@/utils/math";
 import { NavigationProp } from "@react-navigation/native";
 import * as turf from "@turf/turf";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { useMeadowUsageQuery } from "./meadows.hooks";
+import { useMeadowUsageQuery, useUpdateMeadowMutation } from "./meadows.hooks";
 
 type MeadowDetailsContentProps = {
   meadow: Meadow;
@@ -31,22 +32,28 @@ export function MeadowDetailsContent({
   const { usage } = useMeadowUsageQuery(meadow.id);
 
   // Herds on the meadow right now, and the end of the most recent past stay
+  // Compared as whole calendar days ("YYYY-MM-DD" strings sort chronologically):
+  // the dates are midnight UTC, so comparing timestamps would end a stay early
+  // on its last day
   const { currentStays, lastUsedDate } = useMemo(() => {
-    const now = Date.now();
+    const today = toLocalDateString(new Date());
     const stays = usage ?? [];
     const current = stays.filter(
       (stay) =>
-        new Date(stay.startDate).getTime() <= now &&
-        new Date(stay.endDate).getTime() >= now,
+        stay.startDate.slice(0, 10) <= today &&
+        stay.endDate.slice(0, 10) >= today,
     );
-    const pastEndTimes = stays
-      .map((stay) => new Date(stay.endDate).getTime())
-      .filter((endTime) => endTime < now);
-    return {
-      currentStays: current,
-      lastUsedDate:
-        pastEndTimes.length > 0 ? new Date(Math.max(...pastEndTimes)) : null,
-    };
+    const pastEndDays = stays
+      .map((stay) => stay.endDate.slice(0, 10))
+      .filter((endDay) => endDay < today)
+      .sort();
+    const lastEndDay = pastEndDays[pastEndDays.length - 1];
+    let lastUsed: Date | null = null;
+    if (lastEndDay) {
+      const [year, month, day] = lastEndDay.split("-").map(Number);
+      lastUsed = new Date(year, month - 1, day);
+    }
+    return { currentStays: current, lastUsedDate: lastUsed };
   }, [usage]);
   // Approximate fence length: outer boundary of every part (holes aren't fenced)
   const fenceLengthMeters = useMemo(
@@ -67,8 +74,45 @@ export function MeadowDetailsContent({
     ...new Set(currentStays.map((stay) => stay.herdName)),
   ].join(", ");
 
+  const restoreMeadowMutation = useUpdateMeadowMutation(undefined, () =>
+    Alert.alert(t("common.error"), t("common.unknown_error")),
+  );
+  const canEdit = canWrite("animals");
+
   return (
     <>
+      {meadow.archivedAt ? (
+        <Banner
+          style={{ marginTop: theme.spacing.m }}
+          variant="warning"
+          title={t("archive.archived_since", {
+            date: formatLocalizedDate(new Date(meadow.archivedAt), locale),
+          })}
+          actionLabel={canEdit ? t("archive.restore") : undefined}
+          loading={restoreMeadowMutation.isPending}
+          onPress={
+            canEdit
+              ? () =>
+                  // Meadows added since archiving may overlap, so restoring asks first
+                  Alert.alert(
+                    t("archive.meadow_restore_title", { name: meadow.name }),
+                    t("archive.meadow_restore_warning"),
+                    [
+                      { text: t("buttons.cancel"), style: "cancel" },
+                      {
+                        text: t("archive.restore"),
+                        onPress: () =>
+                          restoreMeadowMutation.mutate({
+                            id: meadow.id,
+                            archived: false,
+                          }),
+                      },
+                    ],
+                  )
+              : undefined
+          }
+        />
+      ) : null}
       <Card style={{ marginTop: theme.spacing.m }}>
         <SummaryItem
           label={t("forms.labels.area")}
@@ -133,7 +177,7 @@ export function MeadowDetailsContent({
         </ListItem>
       </View>
 
-      {canWrite("animals") && (
+      {canEdit && (
         <Button
           style={{ marginTop: theme.spacing.m }}
           type="accent"

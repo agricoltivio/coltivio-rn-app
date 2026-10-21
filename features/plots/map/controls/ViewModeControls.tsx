@@ -1,5 +1,9 @@
 import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
-import { useDeleteMeadowMutation } from "@/features/animals/meadows.hooks";
+import {
+  useDeleteMeadowMutation,
+  useMeadowsQuery,
+  useUpdateMeadowMutation,
+} from "@/features/animals/meadows.hooks";
 import { MapControls } from "@/features/map/overlays/MapControls";
 import { usePermissions } from "@/features/user/users.hooks";
 import React from "react";
@@ -24,10 +28,18 @@ export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
     navigation,
     selectedMeadowId,
     setSelectedMeadowId,
+    archivedMeadows,
   } = usePlotsMapContext();
   const { canWrite } = usePermissions();
-  const deleteMeadowMutation = useDeleteMeadowMutation(() =>
-    setSelectedMeadowId(null),
+  const { meadows } = useMeadowsQuery();
+  // Archived meadows leave the map like deleted ones, but keep their data
+  const deleteMeadowMutation = useDeleteMeadowMutation(
+    () => setSelectedMeadowId(null),
+    () => Alert.alert(t("common.error"), t("common.unknown_error")),
+  );
+  const archiveMeadowMutation = useUpdateMeadowMutation(
+    () => setSelectedMeadowId(null),
+    () => Alert.alert(t("common.error"), t("common.unknown_error")),
   );
 
   if (mode.type !== "view") return null;
@@ -35,6 +47,10 @@ export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
   // A selected meadow switches the tools to meadow editing
   if (selectedMeadowId) {
     if (!canWrite("animals")) return null;
+    // Archived meadows are read-only on the map; restore them from the drawer
+    if (archivedMeadows.some((meadow) => meadow.id === selectedMeadowId)) {
+      return null;
+    }
     return (
       <MapControls expanded={controlsExpanded} onToggle={setControlsExpanded}>
         {/* Adjust vertices */}
@@ -58,17 +74,46 @@ export function ViewModeControls({ onDelete }: ViewModeControlsProps) {
           color="red"
           iconSize={30}
           icon="delete-outline"
-          disabled={deleteMeadowMutation.isPending}
-          onPress={() =>
-            Alert.alert(t("animals.meadows.delete_confirm"), undefined, [
-              { text: t("buttons.cancel"), style: "cancel" },
-              {
-                text: t("buttons.delete"),
-                style: "destructive",
-                onPress: () => deleteMeadowMutation.mutate(selectedMeadowId),
-              },
-            ])
+          disabled={
+            deleteMeadowMutation.isPending || archiveMeadowMutation.isPending
           }
+          onPress={() => {
+            const meadowName =
+              meadows?.find((meadow) => meadow.id === selectedMeadowId)?.name ??
+              "";
+            Alert.alert(
+              t("archive.meadow_delete_title", { name: meadowName }),
+              t("archive.meadow_delete_warning"),
+              [
+                { text: t("buttons.cancel"), style: "cancel" },
+                {
+                  text: t("archive.archive"),
+                  // Same confirmation as archiving from the edit screen
+                  onPress: () =>
+                    Alert.alert(
+                      t("archive.meadow_confirm_title", { name: meadowName }),
+                      t("archive.meadow_info"),
+                      [
+                        { text: t("buttons.cancel"), style: "cancel" },
+                        {
+                          text: t("archive.archive"),
+                          onPress: () =>
+                            archiveMeadowMutation.mutate({
+                              id: selectedMeadowId,
+                              archived: true,
+                            }),
+                        },
+                      ],
+                    ),
+                },
+                {
+                  text: t("buttons.delete"),
+                  style: "destructive",
+                  onPress: () => deleteMeadowMutation.mutate(selectedMeadowId),
+                },
+              ],
+            );
+          }}
         />
       </MapControls>
     );

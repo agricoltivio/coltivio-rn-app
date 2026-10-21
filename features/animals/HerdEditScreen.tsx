@@ -110,7 +110,8 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
   );
   const deleteHerdMutation = useDeleteHerdMutation(() => navigation.goBack());
 
-  const { meadows } = useMeadowsQuery();
+  // Archived included: existing schedules may still point to an archived meadow
+  const { meadows } = useMeadowsQuery(true);
 
   // Handle returning from the outdoor schedule form
   const scheduleResult = route.params?.scheduleResult;
@@ -259,6 +260,7 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
             endDate: schedule.endDate ?? null,
             type: schedule.type,
             meadowId: schedule.meadowId,
+            notes: schedule.notes ?? null,
             recurrence: schedule.recurrence,
           }
         : undefined,

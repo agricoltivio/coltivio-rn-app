@@ -96,12 +96,43 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
     [updateLocalSettings],
   );
   const [dragPanEnabled, setDragPanEnabled] = useState(true);
-  // Restored from local settings; opening the map for a meadow flow shows meadows
-  // for that visit without changing the stored choice
-  const [visibleLayers, setVisibleLayers] = useState<MapVisibleLayers>(
-    initialMeadowAction !== undefined
-      ? { ...localSettings.mapVisibleLayers, meadows: true }
-      : localSettings.mapVisibleLayers,
+  // Restored from local settings; opening the map for a meadow flow shows meadows,
+  // and opening it with showArchived shows the archived layer, for that visit
+  // without changing the stored choice
+  const [visibleLayers, setVisibleLayers] = useState<MapVisibleLayers>(() => ({
+    plots: localSettings.mapVisibleLayers.plots,
+    meadows:
+      initialMeadowAction !== undefined ||
+      localSettings.mapVisibleLayers.meadows,
+    archived:
+      route.params?.showArchived === true ||
+      (localSettings.mapVisibleLayers.archived ?? false),
+  }));
+  // Fetched including archived ones only while the archived layer is visible;
+  // otherwise this is the same (cached) query as the active plots and meadows
+  const { plots: plotsForArchivedLayer, isLoading: archivedPlotsLoading } =
+    useFarmPlotsQuery(visibleLayers.archived);
+  const {
+    meadows: meadowsForArchivedLayer,
+    isLoading: archivedMeadowsLoading,
+  } = useMeadowsQuery(visibleLayers.archived);
+  const archivedPlots = useMemo(
+    () =>
+      visibleLayers.archived
+        ? (plotsForArchivedLayer ?? []).filter(
+            (plot) => plot.archivedAt !== null && plot.size > 0,
+          )
+        : [],
+    [visibleLayers.archived, plotsForArchivedLayer],
+  );
+  const archivedMeadows = useMemo(
+    () =>
+      visibleLayers.archived
+        ? (meadowsForArchivedLayer ?? []).filter(
+            (meadow) => meadow.archivedAt !== null,
+          )
+        : [],
+    [visibleLayers.archived, meadowsForArchivedLayer],
   );
   const [layersDrawerVisible, setLayersDrawerVisible] = useState(false);
   const [selectedMeadowId, setSelectedMeadowId] = useState<string | null>(null);
@@ -201,12 +232,15 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       suppressFlyToRef.current = false;
       return;
     }
-    const selectedPlot = plots.find((p) => p.id === flyToPlotId);
+    // Archived plots load separately, so this re-runs once they arrive
+    const selectedPlot =
+      plots.find((p) => p.id === flyToPlotId) ??
+      archivedPlots.find((p) => p.id === flyToPlotId);
     if (!selectedPlot || selectedPlot.geometry.coordinates.length === 0) return;
     const centroid = turf.centroid(selectedPlot.geometry);
     const [longitude, latitude] = centroid.geometry.coordinates;
     cameraRef.current?.flyTo({ center: [longitude, latitude], duration: 500 });
-  }, [flyToPlotId, plots]);
+  }, [flyToPlotId, plots, archivedPlots]);
 
   // Extracted to avoid complex expression in the dependency array.
   // Non-null only when in view mode with a plot selected.
@@ -236,6 +270,14 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
     }
     if (!nextVisibleLayers.meadows) {
       setSelectedMeadowId(null);
+    }
+    if (!nextVisibleLayers.archived) {
+      if (archivedPlots.some((plot) => plot.id === viewSelectedPlotId)) {
+        dispatch({ type: "SELECT_PLOT", plotId: null });
+      }
+      if (archivedMeadows.some((meadow) => meadow.id === selectedMeadowId)) {
+        setSelectedMeadowId(null);
+      }
     }
     setVisibleLayers(nextVisibleLayers);
     updateLocalSettings("mapVisibleLayers", nextVisibleLayers);
@@ -380,6 +422,8 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       plotColorMode,
       setPlotColorMode,
       visibleLayers,
+      archivedPlots,
+      archivedMeadows,
       selectedMeadowId,
       setSelectedMeadowId,
       exitMeadowFlow,
@@ -396,21 +440,31 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       plotColorMode,
       setPlotColorMode,
       visibleLayers,
+      archivedPlots,
+      archivedMeadows,
       selectedMeadowId,
       exitMeadowFlow,
       initialMeadowAction,
     ],
   );
 
-  if (!farm || !plots) return null;
+  // Opened for an archived plot or meadow: wait for them, so the map starts centered
+  // on it (isLoading is only true on the first load, toggling the layer later doesn't
+  // remount the map)
+  const waitForArchivedLayer =
+    route.params?.showArchived === true &&
+    (archivedPlotsLoading || archivedMeadowsLoading);
+  if (!farm || !plots || waitForArchivedLayer) return null;
 
   const initialCenter: LngLat = (() => {
-    const preselectedPlot = plots.find((p) => p.id === preselectedPlotId);
+    const preselectedPlot =
+      plots.find((p) => p.id === preselectedPlotId) ??
+      archivedPlots.find((p) => p.id === preselectedPlotId);
     if (preselectedPlot && preselectedPlot.geometry.coordinates.length > 0) {
       const centroid = turf.centroid(preselectedPlot.geometry);
       return centroid.geometry.coordinates as LngLat;
     }
-    const preselectedMeadow = meadows?.find(
+    const preselectedMeadow = [...(meadows ?? []), ...archivedMeadows].find(
       (meadow) => meadow.id === route.params?.selectedMeadowId,
     );
     if (preselectedMeadow) {

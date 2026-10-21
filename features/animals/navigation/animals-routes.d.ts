@@ -71,8 +71,12 @@ export type AnimalsStackParamList = {
   OutdoorJournal: undefined;
   MeadowDetails: { meadowId: string };
   MeadowOverview: { meadowId: string };
-  // returnTo "previous": the map was opened from another screen, go back there after creating
-  MeadowSummary: { meadowId?: string; returnTo?: "map" | "previous" };
+  // returnTo "OutdoorScheduleForm": the map was opened from the schedule form (the only
+  // screen that opens the map in a meadow flow), go back there after creating
+  MeadowSummary: {
+    meadowId?: string;
+    returnTo?: "map" | "OutdoorScheduleForm";
+  };
   OutdoorJournalExport: undefined;
   HerdsOnboarding: undefined;
   CreateHerd: {

@@ -728,7 +728,8 @@
     "map_layers": {
       "title": "Livelli",
       "plots": "Particelle",
-      "meadows": "Aree di pascolo"
+      "meadows": "Aree di pascolo",
+      "archived": "Archiviati"
     }
   },
   "farm_equipment": {
@@ -1372,7 +1373,6 @@
       "details": "Dettagli",
       "usage": "Utilizzo",
       "size_value": "{{are}}a ({{squareMeters}}m²)",
-      "delete_confirm": "Eliminare l'area di pascolo? I periodi all'aperto assegnati perderanno l'area di pascolo.",
       "journal_view_categories": "Categorie",
       "errors": {
         "overlaps": "La superficie si sovrappone all'area di pascolo «{{name}}».",
@@ -1711,5 +1711,22 @@
   "donations": {
     "title": "Donazioni",
     "history_heading": "Le tue donazioni"
+  },
+  "archive": {
+    "archive": "Archivia",
+    "restore": "Ripristina",
+    "archived": "Archiviati",
+    "archived_since": "In archivio dal {{date}}.",
+    "plot_confirm_title": "Archiviare il campo {{name}}?",
+    "plot_info": "I campi archiviati non vengono più mostrati sulla mappa né per le nuove registrazioni. Tutte le registrazioni esistenti vengono mantenute e puoi ripristinare il campo in qualsiasi momento.",
+    "plot_delete_hint": "Se non coltivi più questo campo, puoi anche semplicemente archiviarlo: così tutte le registrazioni vengono mantenute.",
+    "meadow_confirm_title": "Archiviare l'area di pascolo {{name}}?",
+    "meadow_info": "Le aree di pascolo archiviate non vengono più mostrate sulla mappa né per i nuovi periodi di pascolo. Tutti i dati vengono mantenuti e puoi ripristinare l'area di pascolo in qualsiasi momento.",
+    "meadow_delete_title": "Eliminare davvero l'area di pascolo {{name}}?",
+    "meadow_delete_warning": "Tutti i dati collegati verranno eliminati definitivamente. Se non usi più quest'area di pascolo, puoi anche semplicemente archiviarla: così tutti i dati vengono mantenuti.",
+    "plot_restore_title": "Ripristinare il campo {{name}}?",
+    "plot_restore_warning": "Il campo riappare sulla mappa e nelle nuove registrazioni. Se dall'archiviazione sono stati registrati nuovi campi su questa superficie, possono sovrapporsi.",
+    "meadow_restore_title": "Ripristinare l'area di pascolo {{name}}?",
+    "meadow_restore_warning": "L'area di pascolo riappare sulla mappa e nei nuovi periodi di pascolo. Se dall'archiviazione sono state registrate nuove aree di pascolo su questa superficie, possono sovrapporsi."
   }
 }

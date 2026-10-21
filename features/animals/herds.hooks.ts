@@ -10,6 +10,7 @@ import {
   OutdoorScheduleUpdateResponse,
 } from "@/api/herds.api";
 import { queryKeys } from "@/cache/query-keys";
+import { useInvalidateOutdoorQueries } from "./meadows.hooks";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useHerdsQuery() {
@@ -35,12 +36,12 @@ export function useCreateHerdMutation(
   onSuccess?: (herd: HerdCreateResponse) => void,
   onError?: (error: Error) => void,
 ) {
-  const queryClient = useQueryClient();
+  const invalidateOutdoorQueries = useInvalidateOutdoorQueries();
   const api = useApi();
   return useMutation({
     mutationFn: (input: HerdCreateInput) => api.herds.createHerd(input),
     onSuccess: (herd) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.herds._def });
+      invalidateOutdoorQueries();
       onSuccess && onSuccess(herd);
     },
     onError,
@@ -51,13 +52,13 @@ export function useUpdateHerdMutation(
   onSuccess?: (herd: HerdUpdateResponse) => void,
   onError?: (error: Error) => void,
 ) {
-  const queryClient = useQueryClient();
+  const invalidateOutdoorQueries = useInvalidateOutdoorQueries();
   const api = useApi();
   return useMutation({
     mutationFn: ({ id, ...input }: HerdUpdateInput & { id: string }) =>
       api.herds.updateHerd(id, input),
     onSuccess: (herd) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.herds._def });
+      invalidateOutdoorQueries();
       onSuccess && onSuccess(herd);
     },
     onError,
@@ -69,6 +70,7 @@ export function useDeleteHerdMutation(
   onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
+  const invalidateOutdoorQueries = useInvalidateOutdoorQueries();
   const api = useApi();
   return useMutation({
     mutationFn: async (herdId: string) => {
@@ -76,7 +78,7 @@ export function useDeleteHerdMutation(
       return herdId;
     },
     onSuccess: (id) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.herds._def });
+      invalidateOutdoorQueries();
       queryClient.removeQueries({
         queryKey: queryKeys.herds.byId(id).queryKey,
       });
@@ -104,13 +106,13 @@ export function useCreateOutdoorScheduleMutation(
   onSuccess?: (schedule: OutdoorScheduleCreateResponse) => void,
   onError?: (error: Error) => void,
 ) {
-  const queryClient = useQueryClient();
+  const invalidateOutdoorQueries = useInvalidateOutdoorQueries();
   const api = useApi();
   return useMutation({
     mutationFn: (input: OutdoorScheduleCreateInput) =>
       api.herds.createOutdoorSchedule(herdId, input),
     onSuccess: (schedule) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.herds._def });
+      invalidateOutdoorQueries();
       onSuccess && onSuccess(schedule);
     },
     onError,
@@ -121,7 +123,7 @@ export function useUpdateOutdoorScheduleMutation(
   onSuccess?: (schedule: OutdoorScheduleUpdateResponse) => void,
   onError?: (error: Error) => void,
 ) {
-  const queryClient = useQueryClient();
+  const invalidateOutdoorQueries = useInvalidateOutdoorQueries();
   const api = useApi();
   return useMutation({
     mutationFn: ({
@@ -130,7 +132,7 @@ export function useUpdateOutdoorScheduleMutation(
     }: OutdoorScheduleUpdateInput & { id: string }) =>
       api.herds.updateOutdoorSchedule(id, input),
     onSuccess: (schedule) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.herds._def });
+      invalidateOutdoorQueries();
       onSuccess && onSuccess(schedule);
     },
     onError,
@@ -141,7 +143,7 @@ export function useDeleteOutdoorScheduleMutation(
   onSuccess?: () => void,
   onError?: (error: Error) => void,
 ) {
-  const queryClient = useQueryClient();
+  const invalidateOutdoorQueries = useInvalidateOutdoorQueries();
   const api = useApi();
   return useMutation({
     mutationFn: async (outdoorScheduleId: string) => {
@@ -149,7 +151,7 @@ export function useDeleteOutdoorScheduleMutation(
       return outdoorScheduleId;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.herds._def });
+      invalidateOutdoorQueries();
       onSuccess && onSuccess();
     },
     onError,

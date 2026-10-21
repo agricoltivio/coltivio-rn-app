@@ -72,7 +72,8 @@ type LocalSettingsData = {
   // Last used settings of the plots map, kept across visits and restarts. Base layer
   // and color mode fall back to the defaults above until changed on the map; other
   // maps (home preview, field calendar entries) always use the defaults.
-  mapVisibleLayers: { plots: boolean; meadows: boolean };
+  // archived is missing in settings stored before it existed, read as off
+  mapVisibleLayers: { plots: boolean; meadows: boolean; archived?: boolean };
   mapBaseLayer?: "satellite" | "map";
   mapPlotColorMode?: "plot" | "crop" | "usage" | "cutting";
   defaultPlotColorMode: "plot" | "crop" | "usage" | "cutting";

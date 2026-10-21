@@ -56,7 +56,7 @@ export function CreateModeControls() {
     }
     setMeadowDraft({ geometry, size: round(turf.area(geometry), 0) });
     navigation.navigate("MeadowSummary", {
-      returnTo: meadowFlowOpenedExternally ? "previous" : "map",
+      returnTo: meadowFlowOpenedExternally ? "OutdoorScheduleForm" : "map",
     });
   }
 

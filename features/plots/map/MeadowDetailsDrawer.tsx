@@ -19,8 +19,13 @@ const SHEET_HANDLE_HEIGHT = 24;
 
 export function MeadowDetailsDrawer() {
   const theme = useTheme();
-  const { mode, navigation, selectedMeadowId, setSelectedMeadowId } =
-    usePlotsMapContext();
+  const {
+    mode,
+    navigation,
+    selectedMeadowId,
+    setSelectedMeadowId,
+    archivedMeadows,
+  } = usePlotsMapContext();
   const { meadows } = useMeadowsQuery();
 
   // Opens fully: one snap point that fits the content (measured below), so the
@@ -38,7 +43,8 @@ export function MeadowDetailsDrawer() {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const selectedMeadow = selectedMeadowId
-    ? meadows?.find((meadow) => meadow.id === selectedMeadowId)
+    ? (meadows?.find((meadow) => meadow.id === selectedMeadowId) ??
+      archivedMeadows.find((meadow) => meadow.id === selectedMeadowId))
     : undefined;
 
   // RAF defers present() by one frame so a freshly-mounted sheet has time to initialize

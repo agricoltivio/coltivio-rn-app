@@ -1,3 +1,4 @@
+import { Meadow } from "@/api/meadows.api";
 import { Plot } from "@/api/plots.api";
 import { type DrawingOverlayRef } from "@/components/map/DrawingOverlay";
 import { type BaseLayer } from "@/components/map/MapLibreMap";
@@ -235,7 +236,12 @@ export function plotsMapReducer(
 
 // --- Context ---
 
-export type MapVisibleLayers = { plots: boolean; meadows: boolean };
+// archived: archived plots and meadows, drawn greyed out and read-only
+export type MapVisibleLayers = {
+  plots: boolean;
+  meadows: boolean;
+  archived: boolean;
+};
 
 type PlotsMapContextValue = {
   mode: PlotsMapMode;
@@ -253,6 +259,9 @@ type PlotsMapContextValue = {
   setPlotColorMode: (mode: PlotColorMode) => void;
   // Visible (and tappable) layers in view mode
   visibleLayers: MapVisibleLayers;
+  // Empty unless the archived layer is visible
+  archivedPlots: Plot[];
+  archivedMeadows: Meadow[];
   selectedMeadowId: string | null;
   setSelectedMeadowId: (meadowId: string | null) => void;
   // Leaves a meadow create/adjust flow: back to view mode, or back to the screen that

@@ -6,7 +6,6 @@ import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
 import { round } from "@/utils/math";
-import { CommonActions } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Alert, View } from "react-native";
@@ -41,46 +40,105 @@ export function MeadowSummaryScreen({
   const createMeadowMutation = useCreateMeadowMutation(
     (meadow) => {
       meadowDraftStore.reset();
-      if (route.params?.returnTo === "previous") {
-        // Close this drawer and the map, back to wherever creation started,
-        // telling that screen which meadow was created so it can select it
-        const navigationState = navigation.getState();
-        const startRoute = navigationState.routes[navigationState.index - 2];
-        if (startRoute) {
-          navigation.dispatch({
-            ...CommonActions.setParams({ createdMeadowId: meadow.id }),
-            source: startRoute.key,
-          });
-        }
-        navigation.pop(2);
+      if (route.params?.returnTo === "OutdoorScheduleForm") {
+        // Close this drawer and the map, back to the schedule form that started
+        // the creation, which selects the new meadow
+        navigation.popTo(
+          "OutdoorScheduleForm",
+          { createdMeadowId: meadow.id },
+          { merge: true },
+        );
         return;
       }
       navigation.popTo("PlotsMap", { selectedMeadowId: meadow.id });
     },
-    (error) => console.log(error),
+    () => Alert.alert(t("common.error"), t("common.unknown_error")),
   );
   const { canWrite } = usePermissions();
-  // Back to the map; the meadow drawer closes since the meadow is gone
-  const deleteMeadowMutation = useDeleteMeadowMutation(() =>
-    navigation.goBack(),
+  // Back to where editing started. Coming from the meadow's overview screen,
+  // that screen is closed too since the meadow is gone; on the map the drawer
+  // closes by itself.
+  const deleteMeadowMutation = useDeleteMeadowMutation(
+    () => {
+      const navigationState = navigation.getState();
+      const previousRoute = navigationState.routes[navigationState.index - 1];
+      if (previousRoute?.name === "MeadowOverview") {
+        navigation.pop(2);
+        return;
+      }
+      navigation.goBack();
+    },
+    () => Alert.alert(t("common.error"), t("common.unknown_error")),
   );
-
-  function handleDelete() {
-    if (!meadowId) return;
-    Alert.alert(t("animals.meadows.delete_confirm"), undefined, [
-      { text: t("buttons.cancel"), style: "cancel" },
-      {
-        text: t("buttons.delete"),
-        style: "destructive",
-        onPress: () => deleteMeadowMutation.mutate(meadowId),
-      },
-    ]);
-  }
 
   const updateMeadowMutation = useUpdateMeadowMutation(
     () => navigation.goBack(),
-    (error) => console.log(error),
+    () => Alert.alert(t("common.error"), t("common.unknown_error")),
   );
+  // Archiving keeps all data, unlike deleting; it's reversible
+  const archiveMeadowMutation = useUpdateMeadowMutation(
+    () => navigation.goBack(),
+    () => Alert.alert(t("common.error"), t("common.unknown_error")),
+  );
+  const isArchived = meadow?.archivedAt != null;
+
+  function archiveMeadow() {
+    if (!meadowId) return;
+    archiveMeadowMutation.mutate({ id: meadowId, archived: true });
+  }
+
+  function handleArchiveToggle() {
+    if (!meadowId) return;
+    if (isArchived) {
+      // Meadows added since archiving may overlap, so restoring asks first
+      Alert.alert(
+        t("archive.meadow_restore_title", { name: meadow?.name ?? "" }),
+        t("archive.meadow_restore_warning"),
+        [
+          { text: t("buttons.cancel"), style: "cancel" },
+          {
+            text: t("archive.restore"),
+            onPress: () =>
+              archiveMeadowMutation.mutate({ id: meadowId, archived: false }),
+          },
+        ],
+      );
+      return;
+    }
+    confirmArchive();
+  }
+
+  // Explains what archiving does before archiving; also used from the delete alert
+  function confirmArchive() {
+    Alert.alert(
+      t("archive.meadow_confirm_title", { name: meadow?.name ?? "" }),
+      t("archive.meadow_info"),
+      [
+        { text: t("buttons.cancel"), style: "cancel" },
+        { text: t("archive.archive"), onPress: archiveMeadow },
+      ],
+    );
+  }
+
+  // Deleting removes all related data, so archiving is offered as the alternative
+  function handleDelete() {
+    if (!meadowId) return;
+    Alert.alert(
+      t("archive.meadow_delete_title", { name: meadow?.name ?? "" }),
+      t("archive.meadow_delete_warning"),
+      [
+        { text: t("buttons.cancel"), style: "cancel" },
+        ...(isArchived
+          ? []
+          : [{ text: t("archive.archive"), onPress: confirmArchive }]),
+        {
+          text: t("buttons.delete"),
+          style: "destructive",
+          onPress: () => deleteMeadowMutation.mutate(meadowId),
+        },
+      ],
+    );
+  }
 
   const {
     control,
@@ -95,6 +153,10 @@ export function MeadowSummaryScreen({
   const size = isEditing ? meadow?.size : meadowDraftStore.data?.size;
   const isPending =
     createMeadowMutation.isPending || updateMeadowMutation.isPending;
+  const isBusy =
+    isPending ||
+    deleteMeadowMutation.isPending ||
+    archiveMeadowMutation.isPending;
 
   function onSubmit({ name, additionalNotes }: MeadowFormValues) {
     const notes = additionalNotes?.trim() ? additionalNotes.trim() : null;
@@ -119,24 +181,35 @@ export function MeadowSummaryScreen({
     <ContentView
       footerComponent={
         <BottomActionContainer>
-          <View style={{ flexDirection: "row", gap: theme.spacing.s }}>
-            {/* Editing: delete next to save, as in the plot edit modal */}
+          <View style={{ gap: theme.spacing.xs }}>
+            {/* Editing: archive and delete above save, as in the plot edit modal */}
             {meadowId && canWrite("animals") && (
-              <Button
-                style={{ flexGrow: 1 }}
-                type="danger"
-                title={t("buttons.delete")}
-                onPress={handleDelete}
-                disabled={isPending || deleteMeadowMutation.isPending}
-                loading={deleteMeadowMutation.isPending}
-              />
+              <View style={{ flexDirection: "row", gap: theme.spacing.xs }}>
+                <Button
+                  style={{ flex: 1 }}
+                  type="accent"
+                  title={
+                    isArchived ? t("archive.restore") : t("archive.archive")
+                  }
+                  onPress={handleArchiveToggle}
+                  disabled={isBusy}
+                  loading={archiveMeadowMutation.isPending}
+                />
+                <Button
+                  style={{ flex: 1 }}
+                  type="dangerGhost"
+                  title={t("buttons.delete")}
+                  onPress={handleDelete}
+                  disabled={isBusy}
+                  loading={deleteMeadowMutation.isPending}
+                />
+              </View>
             )}
             <Button
-              style={{ flexGrow: 1 }}
               type="primary"
               title={t("buttons.save")}
               onPress={handleSubmit(onSubmit)}
-              disabled={isPending || deleteMeadowMutation.isPending}
+              disabled={isBusy}
               loading={isPending}
             />
           </View>

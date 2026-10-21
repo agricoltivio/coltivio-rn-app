@@ -22,7 +22,7 @@ import { usePlotsMapContext } from "./plots-map-mode";
 export function PlotDetailsDrawer() {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { mode, dispatch, navigation } = usePlotsMapContext();
+  const { mode, dispatch, navigation, archivedPlots } = usePlotsMapContext();
   // Use all plots (including size-0) so selecting a plot with no geometry still opens the drawer
   const { plots: allPlots } = useFarmPlotsQuery();
 
@@ -32,7 +32,8 @@ export function PlotDetailsDrawer() {
 
   const selectedPlotId = mode.type === "view" ? mode.selectedPlotId : null;
   const selectedPlot = selectedPlotId
-    ? allPlots?.find((p) => p.id === selectedPlotId)
+    ? (allPlots?.find((p) => p.id === selectedPlotId) ??
+      archivedPlots.find((p) => p.id === selectedPlotId))
     : undefined;
 
   const handleExpandBottomDrawer = useCallback(() => {

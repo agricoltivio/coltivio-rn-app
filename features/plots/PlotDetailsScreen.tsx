@@ -18,9 +18,11 @@ export function PlotDetailsScreen({
   const { plotId } = route.params;
   const { plot } = usePlotByIdQuery(plotId);
 
-  // Plots without geometry (size 0) can't be shown on the map
+  // Plots without geometry (size 0) can't be shown on the map; archived plots
+  // open it with the archived layer visible
   const hasGeometry =
     plot !== undefined && plot.geometry.coordinates.length > 0;
+  const isArchived = plot?.archivedAt != null;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -32,13 +34,16 @@ export function PlotDetailsScreen({
               iconSize={26}
               color={theme.colors.primary}
               onPress={() =>
-                navigation.navigate("PlotsMap", { selectedPlotId: plotId })
+                navigation.navigate("PlotsMap", {
+                  selectedPlotId: plotId,
+                  showArchived: isArchived,
+                })
               }
             />
           )
         : undefined,
     });
-  }, [navigation, hasGeometry, plotId, theme.colors.primary]);
+  }, [navigation, hasGeometry, isArchived, plotId, theme.colors.primary]);
 
   if (!plot) {
     return null;

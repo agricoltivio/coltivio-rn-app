@@ -22,7 +22,7 @@ export function MeadowAdjustModeControls() {
   const { meadows } = useMeadowsQuery();
   const updateMeadowMutation = useUpdateMeadowMutation(
     () => exitMeadowFlow(),
-    (error) => console.log(error),
+    () => Alert.alert(t("common.error"), t("common.unknown_error")),
   );
 
   if (mode.type !== "meadowAdjust") return null;

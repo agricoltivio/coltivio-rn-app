@@ -35,10 +35,12 @@ export function PlotListScreen({ navigation }: PlotListScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const { canRead } = usePermissions();
-  const { plots } = useFarmPlotsQuery();
+  // Archived ones included, they're split off into their own section below
+  const { plots } = useFarmPlotsQuery(true);
   // Meadows belong to the animals feature, only listed with access to it
   const showMeadowsAllowed = canRead("animals");
-  const { meadows } = useMeadowsQuery();
+  const { meadows } = useMeadowsQuery(true);
+  const [showArchived, setShowArchived] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [areaTypeFilter, setAreaTypeFilter] = useState<AreaTypeFilter>("all");
   const [selectedUsageCodes, setSelectedUsageCodes] = useState<Set<number>>(
@@ -119,20 +121,45 @@ export function PlotListScreen({ navigation }: PlotListScreenProps) {
     areaTypeFilter !== "plots" &&
     !usageFilterActive;
 
+  const activePlots = filteredPlots.filter((plot) => plot.archivedAt === null);
+  const activeMeadows = filteredMeadows.filter(
+    (meadow) => meadow.archivedAt === null,
+  );
+  const archivedEntries: ListEntry[] = [
+    ...(showPlotsSection
+      ? filteredPlots
+          .filter((plot) => plot.archivedAt !== null)
+          .map((plot): ListEntry => ({ kind: "plot", plot }))
+      : []),
+    ...(showMeadowsSection
+      ? filteredMeadows
+          .filter((meadow) => meadow.archivedAt !== null)
+          .map((meadow): ListEntry => ({ kind: "meadow", meadow }))
+      : []),
+  ];
+  // The toggle is only offered when there is something archived at all
+  const hasArchivedAreas =
+    (plots ?? []).some((plot) => plot.archivedAt !== null) ||
+    (showMeadowsAllowed &&
+      (meadows ?? []).some((meadow) => meadow.archivedAt !== null));
+
   const sections: { title: string; data: ListEntry[] }[] = [];
-  if (showPlotsSection && filteredPlots.length > 0) {
+  if (showPlotsSection && activePlots.length > 0) {
     sections.push({
       title: t("plots.plots"),
-      data: filteredPlots.map((plot): ListEntry => ({ kind: "plot", plot })),
+      data: activePlots.map((plot): ListEntry => ({ kind: "plot", plot })),
     });
   }
-  if (showMeadowsSection && filteredMeadows.length > 0) {
+  if (showMeadowsSection && activeMeadows.length > 0) {
     sections.push({
       title: t("animals.meadows.meadows"),
-      data: filteredMeadows.map(
+      data: activeMeadows.map(
         (meadow): ListEntry => ({ kind: "meadow", meadow }),
       ),
     });
+  }
+  if (showArchived && archivedEntries.length > 0) {
+    sections.push({ title: t("archive.archived"), data: archivedEntries });
   }
 
   const hasNoAreas =
@@ -164,11 +191,17 @@ export function PlotListScreen({ navigation }: PlotListScreenProps) {
     }) => {
       // Each section is drawn as one rounded card
       const isLastInSection = index === section.data.length - 1;
+      const isArchived =
+        item.kind === "plot"
+          ? item.plot.archivedAt !== null
+          : item.meadow.archivedAt !== null;
       const cardCornerStyle = {
         borderTopLeftRadius: index === 0 ? 10 : 0,
         borderTopRightRadius: index === 0 ? 10 : 0,
         borderBottomLeftRadius: isLastInSection ? 10 : 0,
         borderBottomRightRadius: isLastInSection ? 10 : 0,
+        // Archived entries are dimmed
+        opacity: isArchived ? 0.6 : 1,
       };
       if (item.kind === "plot") {
         const plot = item.plot;
@@ -222,6 +255,10 @@ export function PlotListScreen({ navigation }: PlotListScreenProps) {
               </ListItem.Title>
               <ListItem.Body> ({round(meadow.size / 100, 1)}a)</ListItem.Body>
             </View>
+            {/* The archived section mixes plots and meadows */}
+            {isArchived ? (
+              <ListItem.Body>{t("animals.meadows.meadow")}</ListItem.Body>
+            ) : null}
           </ListItem.Content>
           <ListItem.Chevron />
         </ListItem>
@@ -236,7 +273,10 @@ export function PlotListScreen({ navigation }: PlotListScreenProps) {
         <BottomActionContainer>
           <Button
             title={t("plots.list.open_map")}
-            onPress={() => navigation.navigate("PlotsMap", {})}
+            // With archived ones listed, the map shows them too (for this visit)
+            onPress={() =>
+              navigation.navigate("PlotsMap", { showArchived: showArchived })
+            }
           />
         </BottomActionContainer>
       }
@@ -295,6 +335,13 @@ export function PlotListScreen({ navigation }: PlotListScreenProps) {
                   ? () => setSelectedUsageCodes(new Set())
                   : undefined
               }
+            />
+          ) : null}
+          {hasArchivedAreas ? (
+            <Chip
+              label={t("archive.archived")}
+              active={showArchived}
+              onPress={() => setShowArchived((previous) => !previous)}
             />
           ) : null}
         </ScrollView>

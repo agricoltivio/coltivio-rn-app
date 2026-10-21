@@ -30,6 +30,8 @@ export type ScheduleEditData = {
   endDate: string | null;
   type: OutdoorScheduleType;
   meadowId: string | null | undefined;
+  // Not editable in the form, carried through so saving keeps it
+  notes: string | null;
   recurrence: ScheduleRecurrence;
 };
 
@@ -75,7 +77,8 @@ export function OutdoorScheduleFormScreen({
   const { t, i18n } = useTranslation();
   const locale = i18n.language;
   const theme = useTheme();
-  const { meadows } = useMeadowsQuery();
+  // Archived included so an existing schedule on an archived meadow keeps it selectable
+  const { meadows } = useMeadowsQuery(true);
   const { schedule, canDelete, previousScreen } = route.params;
   const initialRecurrence = schedule?.recurrence ?? null;
 
@@ -177,7 +180,7 @@ export function OutdoorScheduleFormScreen({
         endDate,
         type: values.type,
         meadowId: values.meadowId,
-        notes: null,
+        notes: schedule?.notes ?? null,
         recurrence,
       },
     });
@@ -255,7 +258,12 @@ export function OutdoorScheduleFormScreen({
                 label={t("animals.meadows.meadow_optional")}
                 placeholder={t("animals.meadows.no_meadow")}
                 data={(meadows ?? [])
-                  .slice()
+                  // Archived meadows only when this schedule already uses one
+                  .filter(
+                    (meadow) =>
+                      meadow.archivedAt === null ||
+                      meadow.id === schedule?.meadowId,
+                  )
                   .sort((a, b) => a.name.localeCompare(b.name))
                   .map((meadow) => ({ label: meadow.name, value: meadow.id }))}
               />
@@ -395,8 +403,11 @@ export function OutdoorScheduleFormScreen({
                   if (!value) {
                     return repeat === "none" || t("forms.validation.required");
                   }
+                  // Whole days: startDate carries the time of day it was picked
                   return (
-                    value >= startDate || t("animals.end_date_before_start")
+                    !(value instanceof Date) ||
+                    toLocalDateString(value) >= toLocalDateString(startDate) ||
+                    t("animals.end_date_before_start")
                   );
                 },
               }}
@@ -414,8 +425,8 @@ export function OutdoorScheduleFormScreen({
               minimumDate={startDate}
               rules={{
                 validate: (value) =>
-                  !value ||
-                  value >= startDate ||
+                  !(value instanceof Date) ||
+                  toLocalDateString(value) >= toLocalDateString(startDate) ||
                   t("animals.end_date_before_start"),
               }}
               error={errors.untilDate?.message}

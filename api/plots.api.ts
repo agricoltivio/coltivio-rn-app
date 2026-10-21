@@ -47,8 +47,13 @@ export type MergePlotsInput =
 
 export function plotsApi(client: FetchClient) {
   return {
-    async getPlots(): Promise<Plot[]> {
-      const { data } = await client.GET("/v1/plots");
+    // Archived plots are left out unless includeArchived is set
+    async getPlots(includeArchived: boolean = false): Promise<Plot[]> {
+      const { data } = await client.GET("/v1/plots", {
+        params: {
+          query: { includeArchived: includeArchived ? "true" : "false" },
+        },
+      });
       return data!.data.result;
     },
     async getPlotById(plotId: string): Promise<Plot> {

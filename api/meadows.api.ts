@@ -15,8 +15,13 @@ export type MeadowUsageEntry =
 
 export function meadowsApi(client: FetchClient) {
   return {
-    async getMeadows(): Promise<Meadow[]> {
-      const { data } = await client.GET("/v1/meadows");
+    // Archived meadows are left out unless includeArchived is set
+    async getMeadows(includeArchived: boolean = false): Promise<Meadow[]> {
+      const { data } = await client.GET("/v1/meadows", {
+        params: {
+          query: { includeArchived: includeArchived ? "true" : "false" },
+        },
+      });
       return data!.data.result;
     },
 

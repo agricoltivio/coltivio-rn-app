@@ -62,7 +62,8 @@ export function CreateHerdScreen({ route, navigation }: CreateHerdScreenProps) {
 
   // Local outdoor schedules state
   const [localSchedules, setLocalSchedules] = useState<LocalSchedule[]>([]);
-  const { meadows } = useMeadowsQuery();
+  // Archived included: existing schedules may still point to an archived meadow
+  const { meadows } = useMeadowsQuery(true);
 
   // Handle returning from the outdoor schedule form
   const scheduleResult = route.params?.scheduleResult;
@@ -213,6 +214,7 @@ export function CreateHerdScreen({ route, navigation }: CreateHerdScreenProps) {
             endDate: schedule.endDate ?? null,
             type: schedule.type,
             meadowId: schedule.meadowId,
+            notes: schedule.notes ?? null,
             recurrence: schedule.recurrence,
           }
         : undefined,
