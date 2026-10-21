@@ -7,7 +7,6 @@ import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Subtitle } from "@/theme/Typography";
-import { formatLocalizedDate } from "@/utils/date";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";

@@ -17,7 +17,8 @@ import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
 import { useAvailableEarTagsQuery } from "./earTags.hooks";
-import { useHerdsQuery } from "./herds.hooks";
+import { toLocalDateString } from "@/utils/date";
+import { useEarliestHerdChangeDateQuery, useHerdsQuery } from "./herds.hooks";
 
 export type AnimalFormValues = Omit<
   AnimalCreateInput,
@@ -42,6 +43,8 @@ type AnimalFormProps = {
   onNavigateToCreateHerd?: () => void;
   // Herd the animal was in when the form opened; undefined when creating an animal
   initialHerdId?: string | null;
+  // The edited animal; its herd history limits the herd date. Undefined when creating.
+  animalId?: string;
 };
 
 export function AnimalForm({
@@ -52,6 +55,7 @@ export function AnimalForm({
   showDeathFields,
   onNavigateToCreateHerd,
   initialHerdId,
+  animalId,
 }: AnimalFormProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -71,6 +75,12 @@ export function AnimalForm({
   const showHerdEffectiveDate = isCreating
     ? !!herdId
     : (herdId ?? null) !== initialHerdId;
+
+  // A herd change can't take effect before the animal joined its current herd
+  const { earliestEffectiveDate } = useEarliestHerdChangeDateQuery(
+    animalId ? [animalId] : [],
+    showHerdEffectiveDate,
+  );
 
   // Default the herd date until the user picks one: birth date for newborns, else today
   useEffect(() => {
@@ -262,6 +272,16 @@ export function AnimalForm({
           label={
             herdId ? t("animals.herd_member_since") : t("animals.herd_left_on")
           }
+          minimumDate={earliestEffectiveDate ?? undefined}
+          rules={{
+            validate: (value) =>
+              !(value instanceof Date) ||
+              earliestEffectiveDate === null ||
+              toLocalDateString(value) >=
+                toLocalDateString(earliestEffectiveDate) ||
+              t("animals.herd_membership_date_too_early"),
+          }}
+          error={errors.herdEffectiveDate?.message}
         />
       )}
       <RHSelect

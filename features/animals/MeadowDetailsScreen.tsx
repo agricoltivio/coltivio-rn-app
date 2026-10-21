@@ -1,9 +1,7 @@
-import { OutdoorSchedule } from "@/api/herds.api";
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Subtitle } from "@/theme/Typography";
-import { formatLocalizedDate } from "@/utils/date";
 import { round } from "@/utils/math";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -18,8 +16,6 @@ import {
 import { MeadowUsageCharts } from "./MeadowUsageCharts";
 import { useMeadowByIdQuery, useMeadowUsageQuery } from "./meadows.hooks";
 import { MeadowDetailsScreenProps } from "./navigation/animals-routes";
-
-const WEEKDAY_ORDER = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"];
 
 // Usage of a meadow: charts per month for a selected year, and the outdoor
 // schedules assigned to it (one entry per schedule, not per repetition)

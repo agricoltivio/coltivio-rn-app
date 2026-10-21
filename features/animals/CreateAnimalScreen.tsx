@@ -1,4 +1,3 @@
-import { ApiError } from "@/api/api";
 import { toLocalDateString } from "@/utils/date";
 import { Alert } from "react-native";
 import { ContentView } from "@/components/containers/ContentView";
@@ -47,14 +46,8 @@ export function CreateAnimalScreen({
 
   const createAnimalMutation = useCreateAnimalMutation(
     () => navigation.goBack(),
-    (error) => {
-      // The backend rejects a herd date that would overlap the animal's history
-      if (error instanceof ApiError && error.status === 400) {
-        Alert.alert(t("animals.herd_membership_date_too_early"));
-        return;
-      }
-      console.error(error);
-    },
+    // A new animal has no herd history to overlap, so any failure is unexpected
+    () => Alert.alert(t("common.error"), t("common.unknown_error")),
   );
 
   function onSubmit(data: AnimalFormValues) {

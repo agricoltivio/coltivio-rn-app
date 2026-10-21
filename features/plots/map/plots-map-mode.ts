@@ -282,9 +282,7 @@ export function usePlotsMapContext() {
 
 // --- Initial state ---
 
-export type InitialMeadowAction =
-  | { type: "create" }
-  | { type: "adjust"; meadowId: string };
+export type InitialMeadowAction = { type: "create" };
 
 export function createInitialMode(
   selectedPlotId?: string,
@@ -297,14 +295,6 @@ export function createInitialMode(
       drawingAction: "choose",
       selectedPlotIds: [],
       newPolygon: null,
-    };
-  }
-  if (meadowAction?.type === "adjust") {
-    return {
-      type: "meadowAdjust",
-      meadowId: meadowAction.meadowId,
-      activePartIndex: 0,
-      editedParts: [],
     };
   }
   return { type: "view", selectedPlotId: selectedPlotId ?? null };

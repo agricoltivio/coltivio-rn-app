@@ -35,9 +35,7 @@ export function formatOutdoorScheduleSummary(
     weekdays !== null &&
     weekdays !== undefined &&
     weekdays.length > 0;
-  const endDate = isWeekdayStay
-    ? schedule.recurrence?.until
-    : schedule.endDate;
+  const endDate = isWeekdayStay ? schedule.recurrence?.until : schedule.endDate;
   const end = endDate
     ? formatLocalizedDate(parseDateOnly(endDate), locale)
     : "–";

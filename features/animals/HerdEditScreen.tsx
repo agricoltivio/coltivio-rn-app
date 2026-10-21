@@ -1,4 +1,3 @@
-import { ApiError } from "@/api/api";
 import { OutdoorScheduleCreateInput } from "@/api/herds.api";
 import { BottomDrawerModal } from "@/components/bottom-drawer/BottomDrawerModal";
 import { DatePicker } from "@/components/datepicker/DatePicker";
@@ -14,7 +13,7 @@ import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Subtitle } from "@/theme/Typography";
-import { formatLocalizedDate, toLocalDateString } from "@/utils/date";
+import { toLocalDateString } from "@/utils/date";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { formatOutdoorScheduleSummary } from "./outdoor-schedule-summary";
@@ -24,6 +23,7 @@ import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
 import {
   useDeleteHerdMutation,
+  useEarliestHerdChangeDateQuery,
   useHerdByIdQuery,
   useUpdateHerdMutation,
 } from "./herds.hooks";
@@ -102,12 +102,8 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
 
   const updateHerdMutation = useUpdateHerdMutation(
     () => navigation.goBack(),
-    (error) => {
-      // The backend rejects a date before an animal joined its current herd
-      if (error instanceof ApiError && error.status === 400) {
-        Alert.alert(t("animals.herd_membership_date_too_early"));
-      }
-    },
+    // Too early dates are prevented in the date sheet, so any failure is unexpected
+    () => Alert.alert(t("common.error"), t("common.unknown_error")),
   );
   const deleteHerdMutation = useDeleteHerdMutation(() => navigation.goBack());
 
@@ -227,6 +223,25 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
   const removedAnimalCount = initialAnimalIds.filter(
     (id) => !selectedAnimalIds.includes(id),
   ).length;
+
+  // The change can't take effect before any added or removed animal joined its current
+  // herd, so the date sheet starts at the latest of those days
+  const changedAnimalIds = [
+    ...selectedAnimalIds.filter((id: string) => !initialAnimalIds.includes(id)),
+    ...initialAnimalIds.filter((id) => !selectedAnimalIds.includes(id)),
+  ];
+  const {
+    earliestEffectiveDate,
+    isLoading: earliestEffectiveDateLoading,
+    isError: earliestEffectiveDateFailed,
+  } = useEarliestHerdChangeDateQuery(
+    changedAnimalIds,
+    membershipDateModalVisible,
+  );
+  const membershipChangeDateTooEarly =
+    earliestEffectiveDate !== null &&
+    toLocalDateString(membershipChangeDate) <
+      toLocalDateString(earliestEffectiveDate);
 
   function handleDelete() {
     Alert.alert(
@@ -550,6 +565,14 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
               label={t("animals.herd_changes_apply_from")}
               date={membershipChangeDate}
               clearable={false}
+              minimumDate={earliestEffectiveDate ?? undefined}
+              error={
+                membershipChangeDateTooEarly
+                  ? t("animals.herd_membership_date_too_early")
+                  : earliestEffectiveDateFailed
+                    ? t("common.unknown_error")
+                    : undefined
+              }
               onConfirm={(date) => {
                 if (date) setMembershipChangeDate(date);
               }}
@@ -571,8 +594,15 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
             <Button
               style={{ flexGrow: 1 }}
               title={t("buttons.save")}
-              disabled={updateHerdMutation.isPending}
-              loading={updateHerdMutation.isPending}
+              disabled={
+                updateHerdMutation.isPending ||
+                earliestEffectiveDateLoading ||
+                earliestEffectiveDateFailed ||
+                membershipChangeDateTooEarly
+              }
+              loading={
+                updateHerdMutation.isPending || earliestEffectiveDateLoading
+              }
               onPress={() => {
                 setMembershipDateModalVisible(false);
                 saveHerd(membershipChangeDate);

@@ -10,6 +10,7 @@ import {
   OutdoorScheduleUpdateResponse,
 } from "@/api/herds.api";
 import { queryKeys } from "@/cache/query-keys";
+import { parseDateOnly } from "@/utils/date";
 import { useInvalidateOutdoorQueries } from "./meadows.hooks";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -156,4 +157,29 @@ export function useDeleteOutdoorScheduleMutation(
     },
     onError,
   });
+}
+
+// First day a herd change can take effect for all these animals together: the latest of
+// their days (each animal's current membership start). Earlier effective dates are
+// rejected by the API. null: no limit, or nothing to check.
+export function useEarliestHerdChangeDateQuery(
+  animalIds: string[],
+  enabled: boolean = true,
+) {
+  const api = useApi();
+  const sortedAnimalIds = [...animalIds].sort();
+  const { data, ...rest } = useQuery({
+    queryKey: queryKeys.herds.earliestChangeDates(sortedAnimalIds).queryKey,
+    queryFn: () => api.herds.getEarliestHerdChangeDates(sortedAnimalIds),
+    enabled: enabled && sortedAnimalIds.length > 0,
+  });
+  const latestDay = (data ?? [])
+    .map((entry) => entry.earliestDate?.slice(0, 10) ?? null)
+    .filter((day): day is string => day !== null)
+    .sort()
+    .at(-1);
+  return {
+    earliestEffectiveDate: latestDay ? parseDateOnly(latestDay) : null,
+    ...rest,
+  };
 }

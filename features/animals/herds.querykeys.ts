@@ -4,4 +4,5 @@ export const herdsQueryKeys = createQueryKeys("herds", {
   all: null,
   byId: (herdId: string) => [herdId],
   outdoorSchedules: (herdId: string) => [herdId],
+  earliestChangeDates: (sortedAnimalIds: string[]) => [sortedAnimalIds],
 });

@@ -5,13 +5,11 @@ import {
   MeadowUpdateInput,
 } from "@/api/meadows.api";
 import { queryKeys } from "@/cache/query-keys";
+import {
+  OUTDOOR_HISTORY_FROM_DATE,
+  OUTDOOR_HISTORY_TO_DATE,
+} from "./meadow-usage-utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-
-// Up to 10 years back until 3 years ahead (date-only, as the API expects).
-// The timeline itself starts at the year of the earliest returned entry.
-const currentYear = new Date().getFullYear();
-const defaultUsageFromDate = `${currentYear - 10}-01-01`;
-const defaultUsageToDate = `${currentYear + 3}-12-31`;
 
 // Active meadows only, unless includeArchived is set
 export function useMeadowsQuery(includeArchived: boolean = false) {
@@ -40,14 +38,14 @@ export function useMeadowUsageQuery(meadowId: string, enabled: boolean = true) {
   const { data, ...rest } = useQuery({
     queryKey: queryKeys.meadows.usage(
       meadowId,
-      defaultUsageFromDate,
-      defaultUsageToDate,
+      OUTDOOR_HISTORY_FROM_DATE,
+      OUTDOOR_HISTORY_TO_DATE,
     ).queryKey,
     queryFn: () =>
       api.meadows.getMeadowUsage(
         meadowId,
-        defaultUsageFromDate,
-        defaultUsageToDate,
+        OUTDOOR_HISTORY_FROM_DATE,
+        OUTDOOR_HISTORY_TO_DATE,
       ),
     enabled,
   });

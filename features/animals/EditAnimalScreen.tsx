@@ -1,4 +1,3 @@
-import { ApiError } from "@/api/api";
 import { toLocalDateString } from "@/utils/date";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
@@ -12,7 +11,6 @@ import { useTheme } from "styled-components/native";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { Switch } from "@/components/inputs/Switch";
-import { Ionicons } from "@expo/vector-icons";
 import { ListItem } from "@/components/list/ListItem";
 import {
   useAnimalByIdQuery,
@@ -85,12 +83,8 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
 
   const updateAnimalMutation = useUpdateAnimalMutation(
     () => navigation.goBack(),
-    (error) => {
-      // The backend rejects a herd date before the animal joined its current herd
-      if (error instanceof ApiError && error.status === 400) {
-        Alert.alert(t("animals.herd_membership_date_too_early"));
-      }
-    },
+    // Too early herd dates are prevented in the form, so any failure is unexpected
+    () => Alert.alert(t("common.error"), t("common.unknown_error")),
   );
   const deleteAnimalMutation = useDeleteAnimalMutation(() =>
     navigation.popTo("Animals"),
@@ -192,6 +186,7 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
           earTagData={earTagData}
           showDeathFields
           initialHerdId={animal?.herdId ?? null}
+          animalId={animalId}
           onNavigateToCreateHerd={() =>
             navigation.navigate("CreateHerd", {
               previousScreen: "EditAnimal",

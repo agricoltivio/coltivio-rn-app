@@ -2,6 +2,13 @@ import { MeadowUsageEntry } from "@/api/meadows.api";
 
 const MS_PER_DAY = 86_400_000;
 
+// Default range for meadow usage and the outdoor journal: up to 10 years back until
+// 3 years ahead (date-only, as the API expects). Timelines start at the year of the
+// earliest returned entry.
+const currentYear = new Date().getFullYear();
+export const OUTDOOR_HISTORY_FROM_DATE = `${currentYear - 10}-01-01`;
+export const OUTDOOR_HISTORY_TO_DATE = `${currentYear + 3}-12-31`;
+
 export type MeadowMonthlyUsage = {
   // Distinct days with any herd on the meadow, per month (index 0 = January)
   occupiedDays: number[];
