@@ -3,13 +3,14 @@ import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { Body, H2 } from "@/theme/Typography";
 import { formatAppVersion } from "@/utils/app-info";
+import { releasesUrl } from "@/utils/links";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { Linking, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { AppSettingsScreenProps } from "./navigation/user-routes";
 
 export function AppSettingsScreen({ navigation }: AppSettingsScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const theme = useTheme();
 
   return (
@@ -96,7 +97,7 @@ export function AppSettingsScreen({ navigation }: AppSettingsScreenProps) {
           </ListItem>
           <ListItem
             style={{ backgroundColor: theme.colors.white }}
-            onPress={() => navigation.navigate("ReleaseNotes")}
+            onPress={() => Linking.openURL(releasesUrl(i18n.language))}
             hideBottomDivider
           >
             <ListItem.Content>

@@ -316,14 +316,11 @@
       "error": "Le compte n'a pas pu être supprimé. Réessaie plus tard."
     }
   },
-  "release_notes": {
-    "title": "Nouveautés",
-    "version_heading": "Version {{version}}",
-    "close": "Compris"
-  },
   "home": {
     "update_banner": "Une nouvelle version de Coltivio est disponible.",
     "update_banner_action": "Mettre à jour",
+    "updated_banner": "Coltivio a été mis à jour vers la version {{version}}.",
+    "updated_banner_action": "Nouveautés",
     "welcome_text": "Salut {{displayName}},",
     "upcoming_tasks": "Tâches à venir",
     "no_upcoming_tasks": "Aucune tâche à venir",

@@ -35,8 +35,7 @@ import { ApiError } from "@/api/api";
 import { AgriColtivioPitch } from "../agri-coltivio/AgriColtivioPitch";
 import { FarmCreatedModal } from "../farms/FarmCreatedModal";
 import { useAppUpdateStatus } from "../app-version/app-version.hooks";
-import { WhatsNewSheet } from "../release-notes/WhatsNewSheet";
-import { usePendingReleaseNotes } from "../release-notes/usePendingReleaseNotes";
+import { useAppUpdatedNotice } from "../app-version/useAppUpdatedNotice";
 import { openStoreListing } from "@/utils/app-info";
 import { HomeTile } from "./HomeTile";
 import { HOME_TILES } from "./home-tiles-settings";
@@ -170,13 +169,9 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
     !canUndoResignation &&
     !localSettings.agriColtivioPromoShown &&
     daysSinceLaunch >= 30;
-  // The what's-new sheet wins over the promo; the promo flag stays unset so it
-  // simply shows on the next launch.
-  const { pending: pendingReleaseNotes } = usePendingReleaseNotes();
-  const [promoVisible, setPromoVisible] = useState(
-    shouldShowPromo && pendingReleaseNotes.length === 0,
-  );
+  const [promoVisible, setPromoVisible] = useState(shouldShowPromo);
 
+  const updatedNotice = useAppUpdatedNotice();
   const { latestVersion, updateAvailable } = useAppUpdateStatus();
   const showUpdateBanner =
     updateAvailable &&
@@ -288,6 +283,17 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                 }
                 onPress={() => navigation.navigate("UserMembership")}
                 onDismiss={dismissMembershipBanner}
+              />
+            ) : null}
+            {updatedNotice.visible ? (
+              <Banner
+                variant="brand"
+                title={t("home.updated_banner", {
+                  version: updatedNotice.currentVersion,
+                })}
+                actionLabel={t("home.updated_banner_action")}
+                onPress={updatedNotice.openReleaseNotes}
+                onDismiss={updatedNotice.markSeen}
               />
             ) : null}
             {showUpdateBanner && latestVersion ? (
@@ -444,7 +450,6 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
         </SafeAreaView>
       </Modal>
       <FarmCreatedModal />
-      <WhatsNewSheet />
     </>
   );
 };

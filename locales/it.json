@@ -316,14 +316,11 @@
       "error": "Non è stato possibile eliminare l'account. Riprova più tardi."
     }
   },
-  "release_notes": {
-    "title": "Novità",
-    "version_heading": "Versione {{version}}",
-    "close": "Ho capito"
-  },
   "home": {
     "update_banner": "È disponibile una nuova versione di Coltivio.",
     "update_banner_action": "Aggiorna",
+    "updated_banner": "Coltivio è stata aggiornata alla versione {{version}}.",
+    "updated_banner_action": "Novità",
     "welcome_text": "Ciao {{displayName}},",
     "upcoming_tasks": "Attività in scadenza",
     "no_upcoming_tasks": "Nessuna attività in scadenza",

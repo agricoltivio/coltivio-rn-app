@@ -116,22 +116,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/v1/app-version": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get: operations["GetV1AppVersion"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head: operations["HeadV1AppVersion"];
-    patch?: never;
-    trace?: never;
-  };
   "/v1/farms": {
     parameters: {
       query?: never;
@@ -3509,20 +3493,6 @@ export interface components {
     };
     PostV1CaptchaVerifyRequestBody: {
       token: string;
-    };
-    GetV1AppVersionPositiveResponse: {
-      data: {
-        ios: {
-          version: string;
-          minSupportedVersion: string | null;
-          releasedAt: unknown;
-        } | null;
-        android: {
-          version: string;
-          minSupportedVersion: string | null;
-          releasedAt: unknown;
-        } | null;
-      };
     };
     GetV1FarmsPositiveResponse: {
       data: {
@@ -14185,60 +14155,6 @@ export interface operations {
         content: {
           "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
         };
-      };
-    };
-  };
-  GetV1AppVersion: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description GET /v1/app-version Positive response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetV1AppVersionPositiveResponse"];
-        };
-      };
-      /** @description GET /v1/app-version Negative response */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
-        };
-      };
-    };
-  };
-  HeadV1AppVersion: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description HEAD /v1/app-version Positive response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      /** @description HEAD /v1/app-version Negative response */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
       };
     };
   };

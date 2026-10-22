@@ -16,7 +16,6 @@ import { ChangeEmailPendingScreen } from "../ChangeEmailPendingScreen";
 import { UserMembershipScreen } from "../UserMembershipScreen";
 import { UserDonationsScreen } from "../UserDonationsScreen";
 import { DeleteAccountScreen } from "../DeleteAccountScreen";
-import { ReleaseNotesScreen } from "../../release-notes/ReleaseNotesScreen";
 
 export function renderUserStack() {
   return [
@@ -40,14 +39,6 @@ export function renderUserStack() {
       key="app-settings"
       name="AppSettings"
       component={AppSettingsScreen}
-      options={{
-        title: "",
-      }}
-    />,
-    <Stack.Screen
-      key="release-notes"
-      name="ReleaseNotes"
-      component={ReleaseNotesScreen}
       options={{
         title: "",
       }}

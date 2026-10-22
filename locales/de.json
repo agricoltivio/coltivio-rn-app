@@ -316,14 +316,11 @@
       "error": "Das Konto konnte nicht gelöscht werden. Bitte versuche es später erneut."
     }
   },
-  "release_notes": {
-    "title": "Was ist neu",
-    "version_heading": "Version {{version}}",
-    "close": "Alles klar"
-  },
   "home": {
     "update_banner": "Eine neue Version von Coltivio ist verfügbar.",
     "update_banner_action": "Aktualisieren",
+    "updated_banner": "Coltivio wurde auf Version {{version}} aktualisiert.",
+    "updated_banner_action": "Was ist neu",
     "welcome_text": "Hallo {{displayName}},",
     "upcoming_tasks": "Anstehende Aufgaben",
     "no_upcoming_tasks": "Keine anstehenden Aufgaben",

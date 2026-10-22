@@ -19,3 +19,12 @@ export function privacyPolicyUrl(language: string): string {
 export function dataSourcesUrl(language: string): string {
   return landingUrl("data-sources", language);
 }
+
+// Release notes of the app, one entry per store version
+export function releasesUrl(language: string): string {
+  return landingUrl("releases", language);
+}
+
+// Machine-readable release list behind the update banner, see
+// coltivio-landing/src/pages/app-version.json.ts
+export const APP_VERSION_JSON_URL = `${LANDING_URL}/app-version.json`;

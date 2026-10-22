@@ -65,9 +65,9 @@ type LocalSettingsData = {
   // Latest store version the update banner was dismissed for, so the banner
   // comes back with the next release.
   dismissedUpdateBannerForVersion: string | null;
-  // Version whose release notes were last shown. Seeded with the installed
-  // version on a fresh install so only real updates open the sheet.
-  lastSeenReleaseNotesVersion: string | null;
+  // Installed version the "app updated" notice was last shown for. Seeded with
+  // the installed version on a fresh install so only real updates show it.
+  lastSeenAppVersion: string | null;
   // ISO date string of the very first time the app was opened (set once, never updated).
   firstLaunchDate: string | null;
   // Whether the AgriColtivio membership promo modal has been shown and dismissed.
@@ -126,7 +126,7 @@ export const defaultLocalSettings: LocalSettingsData = {
   taskPushNotificationsPromptCompleted: false,
   dismissedMembershipBannerForDate: null,
   dismissedUpdateBannerForVersion: null,
-  lastSeenReleaseNotesVersion: null,
+  lastSeenAppVersion: null,
   firstLaunchDate: null,
   agriColtivioPromoShown: false,
   farmCreatedModalPendingFarmIds: [],
@@ -288,7 +288,7 @@ export function LocalSettingsProvider({ children }: PropsWithChildren) {
         } else {
           const seeded = {
             ...defaultLocalSettings,
-            lastSeenReleaseNotesVersion: getAppVersion(),
+            lastSeenAppVersion: getAppVersion(),
           };
           setLocalSettings(seeded);
           AsyncStorage.setItem(localSettingsStorageKey, JSON.stringify(seeded));

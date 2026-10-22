@@ -1,5 +1,6 @@
-// Prepares the next store release: bumps the version in app.config.js and adds
-// a release notes template to features/release-notes/release-notes.ts.
+// Prepares the next store release: bumps the version in app.config.js.
+// Release notes and the update banner data live in coltivio-landing
+// (`pnpm release <version>` there), the app only links to the website.
 //
 //   yarn release:prepare          # patch bump, e.g. 1.0.7 -> 1.0.8
 //   yarn release:prepare 1.1.0    # explicit version
@@ -7,15 +8,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const root = path.resolve(__dirname, "..");
-const appConfigPath = path.join(root, "app.config.js");
-const releaseNotesPath = path.join(
-  root,
-  "features",
-  "release-notes",
-  "release-notes.ts",
-);
-const MARKER = "// release:prepare inserts new entries below this line";
+const appConfigPath = path.resolve(__dirname, "..", "app.config.js");
 const SEMVER = /^\d+\.\d+\.\d+$/;
 
 function fail(message) {
@@ -50,26 +43,6 @@ if (requested) {
   nextVersion = `${major}.${minor}.${patch + 1}`;
 }
 
-const releaseNotes = fs.readFileSync(releaseNotesPath, "utf-8");
-if (!releaseNotes.includes(MARKER)) {
-  fail(`Marker line missing in release-notes.ts: ${MARKER}`);
-}
-if (releaseNotes.includes(`version: "${nextVersion}"`)) {
-  fail(`release-notes.ts already has an entry for ${nextVersion}`);
-}
-
-const entry = [
-  "  {",
-  `    version: "${nextVersion}",`,
-  "    notes: {",
-  "      de: `TODO`,",
-  "      fr: `TODO`,",
-  "      it: `TODO`,",
-  "      en: `TODO`,",
-  "    },",
-  "  },",
-].join("\n");
-
 fs.writeFileSync(
   appConfigPath,
   appConfig.replace(
@@ -77,19 +50,11 @@ fs.writeFileSync(
     `${versionMatch[1]}${nextVersion}${versionMatch[3]}`,
   ),
 );
-fs.writeFileSync(
-  releaseNotesPath,
-  releaseNotes.replace(MARKER, `${MARKER}\n${entry}`),
-);
 
-console.log(`Version ${currentVersion} -> ${nextVersion}`);
-console.log(`  app.config.js updated`);
-console.log(
-  `  template entry added to features/release-notes/release-notes.ts`,
-);
+console.log(`Version ${currentVersion} -> ${nextVersion} in app.config.js`);
 console.log("");
 console.log("Next steps:");
-console.log("  1. Replace the TODO notes in all four languages (markdown).");
-console.log("  2. yarn test:ci --testPathPattern=release-notes");
-console.log("  3. Build and submit with EAS.");
-console.log(`  4. In coltivio-api: yarn release:app ${nextVersion}`);
+console.log("  1. Build and submit with EAS.");
+console.log(
+  `  2. In coltivio-landing: pnpm release ${nextVersion}, fill in the notes, merge once the store rollout is live.`,
+);
