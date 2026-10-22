@@ -46,7 +46,7 @@ export function latestReleaseFor(
     );
 }
 
-export function useAppReleasesQuery() {
+export function useLatestAppVersionQuery() {
   return useQuery({
     queryKey: queryKeys.appVersion.latest.queryKey,
     queryFn: fetchAppReleases,
@@ -58,7 +58,7 @@ export function useAppReleasesQuery() {
 }
 
 export function useAppUpdateStatus() {
-  const { data: releases } = useAppReleasesQuery();
+  const { data: releases } = useLatestAppVersionQuery();
   const release = releases
     ? latestReleaseFor(releases, Platform.OS === "ios" ? "ios" : "android")
     : null;
