@@ -24,6 +24,7 @@ import {
   SpeedDialActionConfig,
 } from "../home/speed-dial-settings";
 import { AppLocale, applyAppLocale } from "@/locales/i18n";
+import { getAppVersion } from "@/utils/app-info";
 type LocalSettingsData = {
   editPlotOnboardingCompleted: boolean;
   fieldCalendarGroups: FieldCalendarGroupConfig[];
@@ -64,6 +65,12 @@ type LocalSettingsData = {
   // Stores the ISO date string of the expiry date the membership banner was dismissed for.
   // When a new subscription period starts (new date), the banner reappears automatically.
   dismissedMembershipBannerForDate: string | null;
+  // Latest store version the update banner was dismissed for, so the banner
+  // comes back with the next release.
+  dismissedUpdateBannerForVersion: string | null;
+  // Installed version the "app updated" notice was last shown for. Seeded with
+  // the installed version on a fresh install so only real updates show it.
+  lastSeenAppVersion: string | null;
   // ISO date string of the very first time the app was opened (set once, never updated).
   firstLaunchDate: string | null;
   // Whether the AgriColtivio membership promo modal has been shown and dismissed.
@@ -130,6 +137,8 @@ export const defaultLocalSettings: LocalSettingsData = {
   tasksOnboardingCompleted: false,
   taskPushNotificationsPromptCompleted: false,
   dismissedMembershipBannerForDate: null,
+  dismissedUpdateBannerForVersion: null,
+  lastSeenAppVersion: null,
   firstLaunchDate: null,
   agriColtivioPromoShown: false,
   farmCreatedModalPendingFarmIds: [],
@@ -289,6 +298,13 @@ export function LocalSettingsProvider({ children }: PropsWithChildren) {
             ),
           });
           applyAppLocale(stored.preferredLocale);
+        } else {
+          const seeded = {
+            ...defaultLocalSettings,
+            lastSeenAppVersion: getAppVersion(),
+          };
+          setLocalSettings(seeded);
+          AsyncStorage.setItem(localSettingsStorageKey, JSON.stringify(seeded));
         }
       }
     });

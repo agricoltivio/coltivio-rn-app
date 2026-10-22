@@ -33,9 +33,11 @@ import { tasksQueryKeys } from "@/features/tasks/tasks.querykeys";
 import { animalJournalQueryKeys } from "@/features/animals/animal-journal.querykeys";
 import { plotJournalQueryKeys } from "@/features/plots/plot-journal.querykeys";
 import { farmJournalQueryKeys } from "@/features/farms/farm-journal.querykeys";
+import { appVersionQueryKeys } from "@/features/app-version/app-version.querykeys";
 
 export const queryKeys = mergeQueryKeys(
   agriColtivioQueryKeys,
+  appVersionQueryKeys,
   animalsQueryKeys,
   earTagsQueryKeys,
   drugsQueryKeys,

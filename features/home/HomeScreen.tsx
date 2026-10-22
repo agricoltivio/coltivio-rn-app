@@ -34,6 +34,9 @@ import {
 import { ApiError } from "@/api/api";
 import { AgriColtivioPitch } from "../agri-coltivio/AgriColtivioPitch";
 import { FarmCreatedModal } from "../farms/FarmCreatedModal";
+import { useAppUpdateStatus } from "../app-version/app-version.hooks";
+import { useAppUpdatedNotice } from "../app-version/useAppUpdatedNotice";
+import { openStoreListing } from "@/utils/app-info";
 import { HomeTile } from "./HomeTile";
 import { HOME_TILES } from "./home-tiles-settings";
 import { UpcomingTasksTile } from "./UpcomingTasksTile";
@@ -164,6 +167,12 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
     daysSinceLaunch >= 30;
   const [promoVisible, setPromoVisible] = useState(shouldShowPromo);
 
+  const updatedNotice = useAppUpdatedNotice();
+  const { latestVersion, updateAvailable } = useAppUpdateStatus();
+  const showUpdateBanner =
+    updateAvailable &&
+    localSettings.dismissedUpdateBannerForVersion !== latestVersion;
+
   function dismissPromo() {
     updateLocalSettings("agriColtivioPromoShown", true);
     setPromoVisible(false);
@@ -270,6 +279,31 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
                 }
                 onPress={() => navigation.navigate("UserMembership")}
                 onDismiss={dismissMembershipBanner}
+              />
+            ) : null}
+            {updatedNotice.visible ? (
+              <Banner
+                variant="brand"
+                title={t("home.updated_banner", {
+                  version: updatedNotice.currentVersion,
+                })}
+                actionLabel={t("home.updated_banner_action")}
+                onPress={updatedNotice.openReleaseNotes}
+                onDismiss={updatedNotice.markSeen}
+              />
+            ) : null}
+            {showUpdateBanner && latestVersion ? (
+              <Banner
+                variant="brand"
+                title={t("home.update_banner")}
+                actionLabel={t("home.update_banner_action")}
+                onPress={openStoreListing}
+                onDismiss={() =>
+                  updateLocalSettings(
+                    "dismissedUpdateBannerForVersion",
+                    latestVersion,
+                  )
+                }
               />
             ) : null}
             {getAccess("field_calendar") !== "none" && (

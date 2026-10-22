@@ -320,6 +320,10 @@
     }
   },
   "home": {
+    "update_banner": "A new version of Coltivio is available.",
+    "update_banner_action": "Update",
+    "updated_banner": "Coltivio was updated to version {{version}}.",
+    "updated_banner_action": "What's new",
     "welcome_text": "Hello {{displayName}},",
     "upcoming_tasks": "Upcoming Tasks",
     "no_upcoming_tasks": "No upcoming tasks",
@@ -1490,6 +1494,8 @@
     "onboardings": "Tutorials",
     "disable_onboardings_info": "Shows tutorials when opening a feature for the first time.",
     "app_settings": "Settings",
+    "whats_new": "What's new",
+    "version": "Version {{version}}",
     "speed_dial_enabled": "Quick Access",
     "speed_dial_settings": "Configure Quick Access",
     "home_tiles_settings": "Configure Home Screen",
