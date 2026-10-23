@@ -95,8 +95,8 @@ export function MarkdownEditor({
         animationType="slide"
         onRequestClose={() => setIsOpen(false)}
       >
-        {/* RN Modal is its own window on Android, so the parent's insets are 0 there and the header
-            would sit under the status bar; the native SafeAreaView measures the modal window itself */}
+        {/* On Android the modal window draws under the status bar; padding from the parent's insets
+            did not move the header out from under it, the native SafeAreaView measures the modal itself */}
         <SafeAreaView style={styles.fullScreen} edges={["top", "bottom"]}>
           {isOpen && (
             <EditorContent
