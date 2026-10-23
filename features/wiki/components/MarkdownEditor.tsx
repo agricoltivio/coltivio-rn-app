@@ -25,7 +25,7 @@ import {
   View,
 } from "react-native";
 import { WikiMarkdown } from "@/features/wiki/components/WikiMarkdown";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components/native";
 
 const nhm = new NodeHtmlMarkdown();
@@ -60,7 +60,6 @@ export function MarkdownEditor({
 }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
 
   if (readOnly) {
     return (
@@ -91,8 +90,14 @@ export function MarkdownEditor({
         <Ionicons name="pencil-outline" size={18} color="#666" />
       </TouchableOpacity>
 
-      <Modal visible={isOpen} animationType="slide">
-        <View style={[styles.fullScreen, { paddingTop: insets.top }]}>
+      <Modal
+        visible={isOpen}
+        animationType="slide"
+        onRequestClose={() => setIsOpen(false)}
+      >
+        {/* RN Modal is its own window on Android, so the parent's insets are 0 there and the header
+            would sit under the status bar; the native SafeAreaView measures the modal window itself */}
+        <SafeAreaView style={styles.fullScreen} edges={["top", "bottom"]}>
           {isOpen && (
             <EditorContent
               value={value}
@@ -103,7 +108,7 @@ export function MarkdownEditor({
               showImageUpload={true}
             />
           )}
-        </View>
+        </SafeAreaView>
       </Modal>
     </View>
   );
