@@ -26,6 +26,7 @@ import i18n from "@/locales/i18n";
 import { reportsApi } from "./reports.api";
 import { drugsApi } from "./drugs.api";
 import { treatmentsApi } from "./treatments.api";
+import { parasiteChecksApi } from "./parasite-checks.api";
 import { cropFamiliesApi } from "./crop-families.api";
 import { herdsApi } from "./herds.api";
 import { outdoorJournalApi } from "./outdoor-journal.api";
@@ -152,6 +153,7 @@ export function api(client: FetchClient) {
     earTags: earTagsApi(client),
     drugs: drugsApi(client),
     treatments: treatmentsApi(client),
+    parasiteChecks: parasiteChecksApi(client),
     layers: layersApi(client),
     farms: farmApi(client),
     users: userApi(client),

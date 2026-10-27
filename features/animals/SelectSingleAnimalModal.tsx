@@ -1,3 +1,4 @@
+import { popToWithMerge } from "@/navigation/pop-to-with-merge";
 import { AnimalWithWaitingTimeFlag } from "@/api/animals.api";
 import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
@@ -59,11 +60,9 @@ export function SelectSingleAnimalModal({
       : filteredAnimals;
 
   function handleSelect(animal: AnimalWithWaitingTimeFlag) {
-    navigation.popTo(
-      previousScreen,
-      { mergeSelection: { rowIndex, animalId: animal.id } },
-      { merge: true },
-    );
+    popToWithMerge(navigation, previousScreen, {
+      mergeSelection: { rowIndex, animalId: animal.id },
+    });
   }
 
   const renderItem = useCallback(

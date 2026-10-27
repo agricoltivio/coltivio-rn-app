@@ -32,6 +32,8 @@ export type SelectProps = {
   style?: any;
   error?: string;
   enableSearch?: boolean;
+  // Truncate the selected value to one line instead of wrapping
+  singleLine?: boolean;
 };
 export function Select({
   label,
@@ -46,6 +48,7 @@ export function Select({
   placeholder,
   style,
   error,
+  singleLine,
 }: SelectProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -129,6 +132,7 @@ export function Select({
           error={!!error}
         >
           <TriggerText
+            numberOfLines={singleLine ? 1 : undefined}
             style={{
               color: selectedLabel
                 ? disabled
@@ -241,6 +245,7 @@ export function Select({
           color: disabled ? theme.colors.gray2 : theme.colors.gray0,
           paddingTop: 32,
         }}
+        selectedTextProps={singleLine ? { numberOfLines: 1 } : undefined}
         data={data}
         labelField="label"
         valueField="value"

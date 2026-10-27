@@ -35,6 +35,11 @@ export const ANIMALS_ITEMS: Record<string, AnimalsItemMeta> = {
     route: "Treatments",
     feature: "animals",
   },
+  parasiteChecks: {
+    translationKey: "parasite_checks.parasite_control",
+    route: "ParasiteChecks",
+    feature: "animals",
+  },
   tvdImport: {
     translationKey: "animals.tvd_import.title",
     route: "TvdImport",
@@ -82,6 +87,7 @@ export const DEFAULT_ANIMALS_GROUPS: AnimalsGroupConfig[] = [
     items: [
       { itemId: "drugs", visible: true },
       { itemId: "treatments", visible: true },
+      { itemId: "parasiteChecks", visible: true },
     ],
   },
   {

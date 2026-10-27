@@ -1,3 +1,4 @@
+import { popToWithMerge } from "@/navigation/pop-to-with-merge";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -46,11 +47,9 @@ export function MeadowSummaryScreen({
       if (route.params?.returnTo === "OutdoorScheduleForm") {
         // Close this drawer and the map, back to the schedule form that started
         // the creation, which selects the new meadow
-        navigation.popTo(
-          "OutdoorScheduleForm",
-          { createdMeadowId: meadow.id },
-          { merge: true },
-        );
+        popToWithMerge(navigation, "OutdoorScheduleForm", {
+          createdMeadowId: meadow.id,
+        });
         return;
       }
       navigation.popTo("PlotsMap", { selectedMeadowId: meadow.id });

@@ -18,7 +18,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { formatOutdoorScheduleSummary } from "./outdoor-schedule-summary";
 import { usePermissions } from "@/features/user/users.hooks";
-import { Alert, View } from "react-native";
+import { Alert, TouchableOpacity, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
 import {
@@ -456,6 +457,35 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
             </ListItem>
           </View>
         </View>
+
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("HerdParasiteOverview", { herdId })
+          }
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: theme.spacing.xs,
+            padding: 12,
+            marginTop: theme.spacing.m,
+            borderRadius: theme.radii.m,
+            borderWidth: 1.5,
+            borderColor: theme.colors.primary,
+            backgroundColor: theme.colors.white,
+          }}
+        >
+          <Ionicons name="bug-outline" size={18} color={theme.colors.primary} />
+          <Subtitle
+            style={{
+              color: theme.colors.primary,
+              fontWeight: "600",
+              fontSize: 16,
+            }}
+          >
+            {t("parasite_checks.parasite_control")}
+          </Subtitle>
+        </TouchableOpacity>
 
         {/* Outdoor schedules section */}
         <View style={{ marginTop: theme.spacing.l }}>

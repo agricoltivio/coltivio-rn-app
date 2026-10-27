@@ -23,7 +23,7 @@ export function HerdsScreen({ navigation }: HerdsScreenProps) {
   // Redirect to onboarding on first visit
   useEffect(() => {
     if (!localSettings.herdsOnboardingCompleted) {
-      navigation.replace("HerdsOnboarding" as never);
+      navigation.replace("HerdsOnboarding");
     }
   }, []);
   const herds = unsortedHerds
