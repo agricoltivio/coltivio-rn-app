@@ -89,14 +89,14 @@ export const useParasiteSampleDraftStore = create<ParasiteSampleDraftState>(
   }),
 );
 
-// Rows with an entered value only
+// Rows with a valid entered value only (e.g. "." is not a number)
 export function filledResults(results: ParasiteResultDraft[] | undefined) {
-  return (results ?? [])
-    .filter((result) => result.countPerGram !== "")
-    .map((result) => ({
-      parasiteType: result.parasiteType,
-      countPerGram: parseFloat(result.countPerGram),
-    }));
+  return (results ?? []).flatMap((result) => {
+    const countPerGram = parseFloat(result.countPerGram);
+    return Number.isFinite(countPerGram)
+      ? [{ parasiteType: result.parasiteType, countPerGram }]
+      : [];
+  });
 }
 
 export function hasDuplicateParasiteType(

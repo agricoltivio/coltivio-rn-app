@@ -1816,8 +1816,9 @@
     "recheck_of": "Re-check of {{date}}",
     "no_rechecks": "No re-checks yet",
     "n_rechecks": "{{count}} re-checks",
-    "recheck_locked_info": "Method, herd and animals are taken from the base check. Animals that died are left out.",
+    "recheck_locked_info": "Method, herd and animals are taken from the base check. Animals that died or are no longer in the herd are left out.",
     "summary": "Summary",
-    "last_n_values": "Last {{count}} values"
+    "last_n_values": "Last {{count}} values",
+    "delete_check_with_rechecks_confirm": "Delete this check and its {{count}} re-checks?"
   }
 }

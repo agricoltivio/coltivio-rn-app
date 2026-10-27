@@ -46,6 +46,10 @@ export function useUpdateTaskMutation(taskId: string, onSuccess?: () => void) {
     mutationFn: (body: TaskUpdateInput) => api.tasks.updateTask(taskId, body),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.tasks._def });
+      // Parasite checks show their follow-up task
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.parasiteChecks._def,
+      });
       onSuccess?.();
     },
   });
@@ -61,6 +65,10 @@ export function useDeleteTaskMutation(onSuccess?: () => void) {
         queryKey: queryKeys.tasks.byId(taskId).queryKey,
       });
       queryClient.invalidateQueries({ queryKey: queryKeys.tasks._def });
+      // Parasite checks show their follow-up task
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.parasiteChecks._def,
+      });
       onSuccess?.();
     },
   });
@@ -93,6 +101,10 @@ export function useSetTaskStatusMutation(taskId: string) {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.tasks._def });
+      // Parasite checks show their follow-up task
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.parasiteChecks._def,
+      });
     },
   });
 }

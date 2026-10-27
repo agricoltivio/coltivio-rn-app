@@ -1815,8 +1815,9 @@
     "recheck_of": "Recontrôle du {{date}}",
     "no_rechecks": "Aucun recontrôle",
     "n_rechecks": "{{count}} recontrôles",
-    "recheck_locked_info": "La méthode, le troupeau et les animaux sont repris du contrôle initial. Les animaux morts sont exclus.",
+    "recheck_locked_info": "La méthode, le troupeau et les animaux sont repris du contrôle initial. Les animaux morts ou qui ne sont plus dans le troupeau sont exclus.",
     "summary": "Résumé",
-    "last_n_values": "{{count}} dernières valeurs"
+    "last_n_values": "{{count}} dernières valeurs",
+    "delete_check_with_rechecks_confirm": "Supprimer ce contrôle et ses {{count}} recontrôles ?"
   }
 }

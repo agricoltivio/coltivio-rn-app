@@ -54,14 +54,23 @@ export function ParasiteCheckDetailScreen({
   const title = `${t(`parasite_checks.methods.${check.method}`)} · ${formatLocalizedDate(checkDate, locale)}`;
 
   function handleDelete() {
-    Alert.alert(t("parasite_checks.delete_check_confirm"), undefined, [
-      { text: t("buttons.cancel"), style: "cancel" },
-      {
-        text: t("buttons.delete"),
-        style: "destructive",
-        onPress: () => deleteMutation.mutate(checkId),
-      },
-    ]);
+    // Re-checks are deleted together with their base check
+    Alert.alert(
+      check && check.rechecks.length > 0
+        ? t("parasite_checks.delete_check_with_rechecks_confirm", {
+            count: check.rechecks.length,
+          })
+        : t("parasite_checks.delete_check_confirm"),
+      undefined,
+      [
+        { text: t("buttons.cancel"), style: "cancel" },
+        {
+          text: t("buttons.delete"),
+          style: "destructive",
+          onPress: () => deleteMutation.mutate(checkId),
+        },
+      ],
+    );
   }
 
   function addRecheck() {
@@ -69,7 +78,6 @@ export function ParasiteCheckDetailScreen({
     navigation.navigate("ParasiteCheckForm", {
       method: check.method,
       herdId: check.herdId ?? undefined,
-      animalIds: check.animals.map((checkAnimal) => checkAnimal.animalId),
       previousCheckId: check.id,
     });
   }

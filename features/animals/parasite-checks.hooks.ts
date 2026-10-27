@@ -89,12 +89,16 @@ export function useUpdateParasiteCheckMutation(
 }
 
 export function useDeleteParasiteCheckMutation(onSuccess?: () => void) {
+  const queryClient = useQueryClient();
   const api = useApi();
   const invalidate = useInvalidateParasiteQueries();
   return useMutation({
     mutationFn: (checkId: string) =>
       api.parasiteChecks.deleteParasiteCheck(checkId),
-    onSuccess: () => {
+    onSuccess: (_, checkId) => {
+      queryClient.removeQueries({
+        queryKey: queryKeys.parasiteChecks.byId(checkId).queryKey,
+      });
       invalidate();
       onSuccess?.();
     },

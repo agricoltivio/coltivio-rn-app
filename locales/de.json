@@ -1817,8 +1817,9 @@
     "recheck_of": "Nachkontrolle vom {{date}}",
     "no_rechecks": "Noch keine Nachkontrollen",
     "n_rechecks": "{{count}} Nachkontrollen",
-    "recheck_locked_info": "Methode, Herde und Tiere werden von der Ausgangskontrolle übernommen. Verstorbene Tiere werden ausgelassen.",
+    "recheck_locked_info": "Methode, Herde und Tiere werden von der Ausgangskontrolle übernommen. Verstorbene Tiere und Tiere, die nicht mehr in der Herde sind, werden ausgelassen.",
     "summary": "Zusammenfassung",
-    "last_n_values": "Letzte {{count}} Werte"
+    "last_n_values": "Letzte {{count}} Werte",
+    "delete_check_with_rechecks_confirm": "Kontrolle und ihre {{count}} Nachkontrollen löschen?"
   }
 }

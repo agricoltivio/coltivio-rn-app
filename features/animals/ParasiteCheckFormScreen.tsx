@@ -130,21 +130,49 @@ export function ParasiteCheckFormScreen({
     ? allChecks.find((otherCheck) => otherCheck.id === previousCheckId)
     : undefined;
   useEffect(() => {
+    // Editing keeps the stored animals; only base checks that fit are offered there
+    if (isEditing) return;
     // Wait for the animals, otherwise every animal would count as unavailable
     if (!baseCheck || !animals) return;
     setMethod(baseCheck.method);
     setHerdId(baseCheck.herdId ?? "");
+    // Left out: animals that died before the re-check date or left the herd
     const availableAnimalIds = baseCheck.animals
       .map((baseAnimal) => baseAnimal.animalId)
       .filter((animalId) => {
         const animal = animals.find((farmAnimal) => farmAnimal.id === animalId);
         return (
           animal !== undefined &&
-          (!animal.dateOfDeath || parseDateOnly(animal.dateOfDeath) > date)
+          (!animal.dateOfDeath || parseDateOnly(animal.dateOfDeath) > date) &&
+          (!baseCheck.herdId || animal.herdId === baseCheck.herdId)
         );
       });
     setAnimalRows((rows) => mergeAnimalRows(rows, availableAnimalIds));
-  }, [baseCheck, animals, date]);
+  }, [isEditing, baseCheck, animals, date]);
+
+  // A base check with re-checks keeps its herd and animals (method is fixed when editing anyway)
+  const isLockedBaseCheck = (existingCheck?.rechecks.length ?? 0) > 0;
+
+  // Started for a herd (e.g. from the herd overview): prefill its living animals once loaded
+  const prefilledFromHerd = useRef(false);
+  useEffect(() => {
+    if (isEditing || prefilledFromHerd.current) return;
+    if (!params.herdId || params.previousCheckId || params.animalIds) return;
+    if (!animals) return;
+    prefilledFromHerd.current = true;
+    const herdAnimalIds = animals
+      .filter(
+        (animal) => animal.herdId === params.herdId && !animal.dateOfDeath,
+      )
+      .map((animal) => animal.id);
+    setAnimalRows((rows) => mergeAnimalRows(rows, herdAnimalIds));
+  }, [
+    isEditing,
+    params.herdId,
+    params.previousCheckId,
+    params.animalIds,
+    animals,
+  ]);
 
   // Animals picked in the SelectAnimals modal (or passed in for a re-check)
   const animalIdsParam = params.animalIds;
@@ -223,7 +251,17 @@ export function ParasiteCheckFormScreen({
           (otherCheck) =>
             otherCheck.id !== checkId &&
             otherCheck.previousCheckId === null &&
-            parseDateOnly(otherCheck.date) <= date,
+            parseDateOnly(otherCheck.date) <= date &&
+            // When editing, only base checks the stored check already fits, so
+            // nothing gets overwritten or dropped
+            (!isEditing ||
+              (otherCheck.method === method &&
+                (otherCheck.herdId ?? "") === herdId &&
+                animalRows.every((row) =>
+                  otherCheck.animals.some(
+                    (baseAnimal) => baseAnimal.animalId === row.animalId,
+                  ),
+                ))),
         )
         .map((otherCheck) => ({
           label: [
@@ -236,7 +274,17 @@ export function ParasiteCheckFormScreen({
           value: otherCheck.id,
         })),
     ],
-    [allChecks, checkId, date, t, locale],
+    [
+      allChecks,
+      checkId,
+      date,
+      isEditing,
+      method,
+      herdId,
+      animalRows,
+      t,
+      locale,
+    ],
   );
 
   function showError(error: Error) {
@@ -422,7 +470,7 @@ export function ParasiteCheckFormScreen({
           />
           <Select
             label={t("parasite_checks.herd_optional")}
-            disabled={!!baseCheck}
+            disabled={!!baseCheck || isLockedBaseCheck}
             value={herdId}
             data={herdOptions}
             onChange={handleHerdChange}
@@ -430,7 +478,7 @@ export function ParasiteCheckFormScreen({
         </View>
 
         {/* Animals (fixed for re-checks) */}
-        {baseCheck ? (
+        {baseCheck || isLockedBaseCheck ? (
           <Subtitle style={{ marginTop: theme.spacing.m }}>
             {t("treatments.n_animals_selected", { count: animalRows.length })}
           </Subtitle>

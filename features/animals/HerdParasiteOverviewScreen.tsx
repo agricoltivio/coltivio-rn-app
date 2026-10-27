@@ -11,7 +11,6 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { useAnimalsQuery } from "./animals.hooks";
 import { useHerdByIdQuery } from "./herds.hooks";
 import { HerdParasiteOverviewScreenProps } from "./navigation/animals-routes";
 import {
@@ -33,7 +32,6 @@ export function HerdParasiteOverviewScreen({
   const { canWrite } = usePermissions();
   const { herdId } = route.params;
   const { herd } = useHerdByIdQuery(herdId);
-  const { animals } = useAnimalsQuery();
   const { checks, isLoading } = useHerdParasiteOverviewQuery(herdId);
 
   const famachaChartChecks = checks
@@ -77,14 +75,9 @@ export function HerdParasiteOverviewScreen({
     [checks],
   );
 
+  // The form prefills the herd's living animals once they are loaded
   function startCheck() {
-    const herdAnimalIds = (animals ?? [])
-      .filter((animal) => animal.herdId === herdId && !animal.dateOfDeath)
-      .map((animal) => animal.id);
-    navigation.navigate("ParasiteCheckForm", {
-      herdId,
-      animalIds: herdAnimalIds,
-    });
+    navigation.navigate("ParasiteCheckForm", { herdId });
   }
 
   const title = t("parasite_checks.parasite_control");

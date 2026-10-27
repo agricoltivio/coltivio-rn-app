@@ -1816,8 +1816,9 @@
     "recheck_of": "Ricontrollo del {{date}}",
     "no_rechecks": "Nessun ricontrollo",
     "n_rechecks": "{{count}} ricontrolli",
-    "recheck_locked_info": "Metodo, mandria e animali sono ripresi dal controllo iniziale. Gli animali morti sono esclusi.",
+    "recheck_locked_info": "Metodo, mandria e animali sono ripresi dal controllo iniziale. Gli animali morti o non più nella mandria sono esclusi.",
     "summary": "Riepilogo",
-    "last_n_values": "Ultimi {{count}} valori"
+    "last_n_values": "Ultimi {{count}} valori",
+    "delete_check_with_rechecks_confirm": "Eliminare questo controllo e i suoi {{count}} ricontrolli?"
   }
 }
