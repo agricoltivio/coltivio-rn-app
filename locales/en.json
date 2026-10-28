@@ -1748,13 +1748,10 @@
   "parasite_checks": {
     "parasite_control": "Parasite control",
     "parasite_history": "Parasite history",
-    "all_checks": "All",
     "checks": "Checks",
     "new_check": "New check",
     "edit_check": "Edit check",
     "no_checks": "No checks recorded yet",
-    "show_herd_overview": "Show herd overview",
-    "herd_optional": "Herd (optional)",
     "famacha_scores": "FAMACHA scores",
     "famacha_scores_info": "1 = red (healthy) to 5 = white (severely anaemic). Tap again to clear.",
     "famacha_score": "FAMACHA score",
@@ -1775,10 +1772,8 @@
     "create_follow_up_task": "Create task for re-check",
     "follow_up_date": "Re-check on",
     "follow_up_task": "Re-check",
-    "reduction_info": "Egg count reduction: 95% or more is effective, below suggests resistance.",
     "delete_check_confirm": "Delete check?",
     "timeline": "Timeline",
-    "herd_average": "Herd average",
     "methods": {
       "famacha": "FAMACHA",
       "fecal_egg_count": "Fecal egg count"
@@ -1819,6 +1814,11 @@
     "recheck_locked_info": "Method, herd and animals are taken from the base check. Animals that died or are no longer in the herd are left out.",
     "summary": "Summary",
     "last_n_values": "Last {{count}} values",
-    "delete_check_with_rechecks_confirm": "Delete this check and its {{count}} re-checks?"
+    "delete_check_with_rechecks_confirm": "Delete this check and its {{count}} re-checks?",
+    "name_optional": "Name (optional)",
+    "select_from_herd": "Take animals from herd (optional)",
+    "mixed_animal_types": "A check can only contain animals of one animal type.",
+    "average_per_check": "Ø per check",
+    "chart_counts_info": "Numbers in the charts = number of animals checked"
   }
 }

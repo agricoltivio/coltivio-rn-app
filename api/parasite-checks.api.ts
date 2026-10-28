@@ -21,7 +21,6 @@ export type AnimalParasiteHistory =
   components["schemas"]["GetV1AnimalsByIdAnimalIdParasiteHistoryPositiveResponse"]["data"];
 
 export type ParasiteCheckFilters = {
-  herdId?: string;
   animalId?: string;
 };
 
@@ -77,14 +76,6 @@ export function parasiteChecksApi(client: FetchClient) {
         { params: { path: { animalId } } },
       );
       return data!.data;
-    },
-
-    async getHerdParasiteOverview(herdId: string): Promise<ParasiteCheck[]> {
-      const { data } = await client.GET(
-        "/v1/animals/herds/byId/{herdId}/parasiteOverview",
-        { params: { path: { herdId } } },
-      );
-      return data!.data.result;
     },
   };
 }

@@ -160,42 +160,7 @@ export function AnimalParasiteHistoryScreen({
         {(fecChartPages.length > 0 || famachaPoints.length > 0) && (
           <ChartPager
             pages={[
-              ...fecChartPages.map(({ parasiteType, points }) => ({
-                key: parasiteType,
-                content: (
-                  <View>
-                    <Subtitle
-                      style={{
-                        fontWeight: "600",
-                        marginBottom: theme.spacing.s,
-                      }}
-                    >
-                      {t(`parasite_checks.parasite_types.${parasiteType}`)} (
-                      {t(parasiteCountUnitKey(parasiteType))})
-                    </Subtitle>
-                    <TimelineChart
-                      points={points}
-                      markers={treatmentDates}
-                      minValue={0}
-                      color={theme.colors.primary}
-                    />
-                    <ChartLegend
-                      items={[
-                        {
-                          color: theme.colors.primary,
-                          label: t(
-                            `parasite_checks.parasite_types.${parasiteType}`,
-                          ),
-                        },
-                        {
-                          color: theme.colors.warning,
-                          label: t("parasite_checks.treatment"),
-                        },
-                      ]}
-                    />
-                  </View>
-                ),
-              })),
+              // FAMACHA first, then one page per parasite
               ...(famachaPoints.length > 0
                 ? [
                     {
@@ -235,6 +200,42 @@ export function AnimalParasiteHistoryScreen({
                     },
                   ]
                 : []),
+              ...fecChartPages.map(({ parasiteType, points }) => ({
+                key: parasiteType,
+                content: (
+                  <View>
+                    <Subtitle
+                      style={{
+                        fontWeight: "600",
+                        marginBottom: theme.spacing.s,
+                      }}
+                    >
+                      {t(`parasite_checks.parasite_types.${parasiteType}`)} (
+                      {t(parasiteCountUnitKey(parasiteType))})
+                    </Subtitle>
+                    <TimelineChart
+                      points={points}
+                      markers={treatmentDates}
+                      minValue={0}
+                      color={theme.colors.primary}
+                    />
+                    <ChartLegend
+                      items={[
+                        {
+                          color: theme.colors.primary,
+                          label: t(
+                            `parasite_checks.parasite_types.${parasiteType}`,
+                          ),
+                        },
+                        {
+                          color: theme.colors.warning,
+                          label: t("parasite_checks.treatment"),
+                        },
+                      ]}
+                    />
+                  </View>
+                ),
+              })),
             ]}
           />
         )}

@@ -7,11 +7,11 @@ import {
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-export function useParasiteChecksQuery(herdId?: string) {
+export function useParasiteChecksQuery() {
   const api = useApi();
   const { data, ...rest } = useQuery({
-    queryKey: queryKeys.parasiteChecks.list(herdId).queryKey,
-    queryFn: () => api.parasiteChecks.getParasiteChecks({ herdId }),
+    queryKey: queryKeys.parasiteChecks.list.queryKey,
+    queryFn: () => api.parasiteChecks.getParasiteChecks(),
   });
   return { checks: data ?? [], ...rest };
 }
@@ -35,16 +35,7 @@ export function useAnimalParasiteHistoryQuery(animalId: string) {
   return { history: data, ...rest };
 }
 
-export function useHerdParasiteOverviewQuery(herdId: string) {
-  const api = useApi();
-  const { data, ...rest } = useQuery({
-    queryKey: queryKeys.parasiteChecks.herdOverview(herdId).queryKey,
-    queryFn: () => api.parasiteChecks.getHerdParasiteOverview(herdId),
-  });
-  return { checks: data ?? [], ...rest };
-}
-
-// Checks show up in lists, histories, overviews and (via follow-up) tasks
+// Checks show up in lists, histories and (via follow-up) tasks
 function useInvalidateParasiteQueries() {
   const queryClient = useQueryClient();
   return () => {

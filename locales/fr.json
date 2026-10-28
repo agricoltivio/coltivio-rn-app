@@ -1747,13 +1747,10 @@
   "parasite_checks": {
     "parasite_control": "Contrôle des parasites",
     "parasite_history": "Historique parasitaire",
-    "all_checks": "Tous",
     "checks": "Contrôles",
     "new_check": "Nouveau contrôle",
     "edit_check": "Modifier le contrôle",
     "no_checks": "Aucun contrôle enregistré",
-    "show_herd_overview": "Afficher l'aperçu du troupeau",
-    "herd_optional": "Troupeau (facultatif)",
     "famacha_scores": "Scores FAMACHA",
     "famacha_scores_info": "1 = rouge (sain) à 5 = blanc (fortement anémié). Toucher à nouveau pour effacer.",
     "famacha_score": "Score FAMACHA",
@@ -1774,10 +1771,8 @@
     "create_follow_up_task": "Créer une tâche de recontrôle",
     "follow_up_date": "Recontrôle le",
     "follow_up_task": "Recontrôle",
-    "reduction_info": "Réduction du nombre d'œufs : efficace à partir de 95 %, en dessous résistance suspectée.",
     "delete_check_confirm": "Supprimer le contrôle ?",
     "timeline": "Historique",
-    "herd_average": "Moyenne du troupeau",
     "methods": {
       "famacha": "FAMACHA",
       "fecal_egg_count": "Coprologie"
@@ -1818,6 +1813,11 @@
     "recheck_locked_info": "La méthode, le troupeau et les animaux sont repris du contrôle initial. Les animaux morts ou qui ne sont plus dans le troupeau sont exclus.",
     "summary": "Résumé",
     "last_n_values": "{{count}} dernières valeurs",
-    "delete_check_with_rechecks_confirm": "Supprimer ce contrôle et ses {{count}} recontrôles ?"
+    "delete_check_with_rechecks_confirm": "Supprimer ce contrôle et ses {{count}} recontrôles ?",
+    "name_optional": "Nom (facultatif)",
+    "select_from_herd": "Reprendre les animaux d'un troupeau (facultatif)",
+    "mixed_animal_types": "Un contrôle ne peut contenir que des animaux d'une seule espèce.",
+    "average_per_check": "Ø par contrôle",
+    "chart_counts_info": "Chiffres des graphiques = nombre d'animaux contrôlés"
   }
 }

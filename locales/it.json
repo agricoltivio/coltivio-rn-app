@@ -1748,13 +1748,10 @@
   "parasite_checks": {
     "parasite_control": "Controllo parassiti",
     "parasite_history": "Storico parassiti",
-    "all_checks": "Tutti",
     "checks": "Controlli",
     "new_check": "Nuovo controllo",
     "edit_check": "Modifica controllo",
     "no_checks": "Nessun controllo registrato",
-    "show_herd_overview": "Mostra panoramica mandria",
-    "herd_optional": "Mandria (facoltativo)",
     "famacha_scores": "Punteggi FAMACHA",
     "famacha_scores_info": "1 = rosso (sano) fino a 5 = bianco (gravemente anemico). Tocca di nuovo per cancellare.",
     "famacha_score": "Punteggio FAMACHA",
@@ -1775,10 +1772,8 @@
     "create_follow_up_task": "Crea compito per ricontrollo",
     "follow_up_date": "Ricontrollo il",
     "follow_up_task": "Ricontrollo",
-    "reduction_info": "Riduzione delle uova: efficace dal 95 %, sotto si sospetta resistenza.",
     "delete_check_confirm": "Eliminare il controllo?",
     "timeline": "Cronologia",
-    "herd_average": "Media della mandria",
     "methods": {
       "famacha": "FAMACHA",
       "fecal_egg_count": "Esame coprologico"
@@ -1819,6 +1814,11 @@
     "recheck_locked_info": "Metodo, mandria e animali sono ripresi dal controllo iniziale. Gli animali morti o non più nella mandria sono esclusi.",
     "summary": "Riepilogo",
     "last_n_values": "Ultimi {{count}} valori",
-    "delete_check_with_rechecks_confirm": "Eliminare questo controllo e i suoi {{count}} ricontrolli?"
+    "delete_check_with_rechecks_confirm": "Eliminare questo controllo e i suoi {{count}} ricontrolli?",
+    "name_optional": "Nome (facoltativo)",
+    "select_from_herd": "Riprendi gli animali da una mandria (facoltativo)",
+    "mixed_animal_types": "Un controllo può contenere solo animali di una specie.",
+    "average_per_check": "Ø per controllo",
+    "chart_counts_info": "Numeri nei grafici = numero di animali controllati"
   }
 }

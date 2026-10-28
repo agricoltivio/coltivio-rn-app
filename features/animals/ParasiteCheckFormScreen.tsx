@@ -78,9 +78,11 @@ export function ParasiteCheckFormScreen({
     params.method ?? "fecal_egg_count",
   );
   const [date, setDate] = useState<Date>(new Date());
-  const [herdId, setHerdId] = useState<string>(params.herdId ?? "");
+  // Only used to preselect a herd's animals, not stored with the check
+  const [herdId, setHerdId] = useState<string>("");
   const [animalRows, setAnimalRows] = useState<AnimalRow[]>([]);
   const sampleDraft = useParasiteSampleDraftStore();
+  const [name, setName] = useState("");
   const [notes, setNotes] = useState("");
   const [treatmentId, setTreatmentId] = useState("");
   const [previousCheckId, setPreviousCheckId] = useState(
@@ -111,7 +113,6 @@ export function ParasiteCheckFormScreen({
     initializedFromCheck.current = true;
     setMethod(existingCheck.method);
     setDate(parseDateOnly(existingCheck.date));
-    setHerdId(existingCheck.herdId ?? "");
     setAnimalRows(
       existingCheck.animals.map((checkAnimal) => ({
         animalId: checkAnimal.animalId,
@@ -119,13 +120,14 @@ export function ParasiteCheckFormScreen({
       })),
     );
     useParasiteSampleDraftStore.getState().initFromCheck(existingCheck);
+    setName(existingCheck.name ?? "");
     setNotes(existingCheck.notes ?? "");
     setTreatmentId(existingCheck.treatmentId ?? "");
     setPreviousCheckId(existingCheck.previousCheckId ?? "");
   }, [existingCheck]);
 
-  // A re-check repeats its base check: method, herd and animals are taken over
-  // and fixed. Animals that died before the re-check date are left out.
+  // A re-check repeats its base check: method and animals are taken over and
+  // fixed. Animals that died before the re-check date are left out.
   const baseCheck = previousCheckId
     ? allChecks.find((otherCheck) => otherCheck.id === previousCheckId)
     : undefined;
@@ -135,44 +137,34 @@ export function ParasiteCheckFormScreen({
     // Wait for the animals, otherwise every animal would count as unavailable
     if (!baseCheck || !animals) return;
     setMethod(baseCheck.method);
-    setHerdId(baseCheck.herdId ?? "");
-    // Left out: animals that died before the re-check date or left the herd
+    // A re-check cannot be dated before its base check
+    const baseDate = parseDateOnly(baseCheck.date);
+    if (date < baseDate) setDate(baseDate);
     const availableAnimalIds = baseCheck.animals
       .map((baseAnimal) => baseAnimal.animalId)
       .filter((animalId) => {
         const animal = animals.find((farmAnimal) => farmAnimal.id === animalId);
         return (
           animal !== undefined &&
-          (!animal.dateOfDeath || parseDateOnly(animal.dateOfDeath) > date) &&
-          (!baseCheck.herdId || animal.herdId === baseCheck.herdId)
+          (!animal.dateOfDeath || parseDateOnly(animal.dateOfDeath) > date)
         );
       });
     setAnimalRows((rows) => mergeAnimalRows(rows, availableAnimalIds));
   }, [isEditing, baseCheck, animals, date]);
 
-  // A base check with re-checks keeps its herd and animals (method is fixed when editing anyway)
-  const isLockedBaseCheck = (existingCheck?.rechecks.length ?? 0) > 0;
-
-  // Started for a herd (e.g. from the herd overview): prefill its living animals once loaded
-  const prefilledFromHerd = useRef(false);
-  useEffect(() => {
-    if (isEditing || prefilledFromHerd.current) return;
-    if (!params.herdId || params.previousCheckId || params.animalIds) return;
-    if (!animals) return;
-    prefilledFromHerd.current = true;
-    const herdAnimalIds = animals
-      .filter(
-        (animal) => animal.herdId === params.herdId && !animal.dateOfDeath,
+  // A base check with re-checks cannot be dated after its first re-check
+  const earliestRecheckDate = existingCheck?.rechecks.length
+    ? new Date(
+        Math.min(
+          ...existingCheck.rechecks.map((recheck) =>
+            parseDateOnly(recheck.date).getTime(),
+          ),
+        ),
       )
-      .map((animal) => animal.id);
-    setAnimalRows((rows) => mergeAnimalRows(rows, herdAnimalIds));
-  }, [
-    isEditing,
-    params.herdId,
-    params.previousCheckId,
-    params.animalIds,
-    animals,
-  ]);
+    : undefined;
+
+  // A base check with re-checks keeps its animals (method is fixed when editing anyway)
+  const isLockedBaseCheck = (existingCheck?.rechecks.length ?? 0) > 0;
 
   // Animals picked in the SelectAnimals modal (or passed in for a re-check)
   const animalIdsParam = params.animalIds;
@@ -206,6 +198,7 @@ export function ParasiteCheckFormScreen({
     navigation.navigate("SelectAnimals", {
       initialSelectedIds: animalRows.map((row) => row.animalId),
       previousScreen: "ParasiteCheckForm",
+      singleAnimalType: true,
     });
   }
 
@@ -251,12 +244,10 @@ export function ParasiteCheckFormScreen({
           (otherCheck) =>
             otherCheck.id !== checkId &&
             otherCheck.previousCheckId === null &&
-            parseDateOnly(otherCheck.date) <= date &&
             // When editing, only base checks the stored check already fits, so
             // nothing gets overwritten or dropped
             (!isEditing ||
               (otherCheck.method === method &&
-                (otherCheck.herdId ?? "") === herdId &&
                 animalRows.every((row) =>
                   otherCheck.animals.some(
                     (baseAnimal) => baseAnimal.animalId === row.animalId,
@@ -267,24 +258,14 @@ export function ParasiteCheckFormScreen({
           label: [
             t(`parasite_checks.methods.${otherCheck.method}`),
             formatLocalizedDate(parseDateOnly(otherCheck.date), locale),
-            otherCheck.herd?.name,
+            otherCheck.name,
           ]
             .filter(Boolean)
             .join(" · "),
           value: otherCheck.id,
         })),
     ],
-    [
-      allChecks,
-      checkId,
-      date,
-      isEditing,
-      method,
-      herdId,
-      animalRows,
-      t,
-      locale,
-    ],
+    [allChecks, checkId, isEditing, method, animalRows, t, locale],
   );
 
   function showError(error: Error) {
@@ -294,9 +275,27 @@ export function ParasiteCheckFormScreen({
     );
   }
 
-  const createMutation = useCreateParasiteCheckMutation((createdCheck) =>
-    navigation.replace("ParasiteCheckDetail", { checkId: createdCheck.id }),
-  );
+  // After saving, a base check returns to where it was started, a re-check to
+  // its base check
+  const createMutation = useCreateParasiteCheckMutation((createdCheck) => {
+    const baseCheckId = createdCheck.previousCheckId;
+    if (!baseCheckId) {
+      navigation.goBack();
+      return;
+    }
+    const routes = navigation.getState().routes;
+    const previousRoute = routes[routes.length - 2];
+    const startedFromBaseCheck =
+      previousRoute?.name === "ParasiteCheckDetail" &&
+      previousRoute.params !== undefined &&
+      "checkId" in previousRoute.params &&
+      previousRoute.params.checkId === baseCheckId;
+    if (startedFromBaseCheck) {
+      navigation.goBack();
+    } else {
+      navigation.replace("ParasiteCheckDetail", { checkId: baseCheckId });
+    }
+  });
   const updateMutation = useUpdateParasiteCheckMutation(() =>
     navigation.goBack(),
   );
@@ -330,8 +329,6 @@ export function ParasiteCheckFormScreen({
     const body: Omit<ParasiteCheckCreateInput, "followUp"> = {
       date: toLocalDateString(date),
       method,
-      herdId: herdId || null,
-      // Always sent explicitly so the user's selection wins over herd resolution
       animals: animalRows.map((row) => ({
         animalId: row.animalId,
         famachaScore: method === "famacha" ? row.famachaScore : null,
@@ -339,6 +336,7 @@ export function ParasiteCheckFormScreen({
       fecSamples,
       labName:
         method === "fecal_egg_count" ? sampleDraft.labName || null : null,
+      name: name.trim() || null,
       notes: notes || null,
       treatmentId: treatmentId || null,
       previousCheckId: previousCheckId || null,
@@ -385,7 +383,15 @@ export function ParasiteCheckFormScreen({
           })
         : t("parasite_checks.results_status_none");
 
-  const canSave = animalRows.length > 0 && !hasInvalidResults && !isSaving;
+  // A check only contains one animal type (the API rejects mixed checks)
+  const hasMixedAnimalTypes =
+    new Set(animalRows.map((row) => animalsById.get(row.animalId)?.type)).size >
+    1;
+  const canSave =
+    animalRows.length > 0 &&
+    !hasInvalidResults &&
+    !hasMixedAnimalTypes &&
+    !isSaving;
 
   const title = isEditing
     ? t("parasite_checks.edit_check")
@@ -460,21 +466,31 @@ export function ParasiteCheckFormScreen({
         )}
 
         <View style={{ marginTop: theme.spacing.m, gap: theme.spacing.xs }}>
+          <TextInput
+            label={t("parasite_checks.name_optional")}
+            value={name}
+            onChangeText={setName}
+          />
           <DatePicker
             mode="date"
             locale={locale}
             label={t("forms.labels.date")}
             date={date}
+            // A re-check comes after its base check, a base check before its re-checks
+            minimumDate={baseCheck ? parseDateOnly(baseCheck.date) : undefined}
+            maximumDate={earliestRecheckDate}
             clearable={false}
             onConfirm={(pickedDate) => pickedDate && setDate(pickedDate)}
           />
-          <Select
-            label={t("parasite_checks.herd_optional")}
-            disabled={!!baseCheck || isLockedBaseCheck}
-            value={herdId}
-            data={herdOptions}
-            onChange={handleHerdChange}
-          />
+          {/* Preselects the herd's living animals; only for new selections */}
+          {!baseCheck && !isLockedBaseCheck && (
+            <Select
+              label={t("parasite_checks.select_from_herd")}
+              value={herdId}
+              data={herdOptions}
+              onChange={handleHerdChange}
+            />
+          )}
         </View>
 
         {/* Animals (fixed for re-checks) */}
@@ -521,6 +537,14 @@ export function ParasiteCheckFormScreen({
               <ListItem.Chevron />
             </ListItem>
           </View>
+        )}
+
+        {hasMixedAnimalTypes && (
+          <Subtitle
+            style={{ color: theme.colors.danger, marginTop: theme.spacing.s }}
+          >
+            {t("parasite_checks.mixed_animal_types")}
+          </Subtitle>
         )}
 
         {/* FAMACHA scores per animal */}

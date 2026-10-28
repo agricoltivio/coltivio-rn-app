@@ -50,7 +50,6 @@ import { ParasiteCheckFormScreen } from "../ParasiteCheckFormScreen";
 import { ParasiteSamplesScreen } from "../ParasiteSamplesScreen";
 import { ParasiteAnimalSampleScreen } from "../ParasiteAnimalSampleScreen";
 import { AnimalParasiteHistoryScreen } from "../AnimalParasiteHistoryScreen";
-import { HerdParasiteOverviewScreen } from "../HerdParasiteOverviewScreen";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import { DefaultTheme } from "styled-components/native";
@@ -398,7 +397,7 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
       options={{ title: "" }}
       component={AnimalsExportScreen}
     />,
-      <Stack.Screen
+    <Stack.Screen
       key="parasite-checks"
       name="ParasiteChecks"
       options={{ title: "" }}
@@ -433,12 +432,6 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
       name="AnimalParasiteHistory"
       options={{ title: "" }}
       component={AnimalParasiteHistoryScreen}
-    />,
-    <Stack.Screen
-      key="herd-parasite-overview"
-      name="HerdParasiteOverview"
-      options={{ title: "" }}
-      component={HerdParasiteOverviewScreen}
     />,
   ];
 }

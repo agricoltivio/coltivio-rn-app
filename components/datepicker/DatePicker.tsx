@@ -32,6 +32,8 @@ export type DatePickerProps = {
   clearable?: boolean;
   /** Earliest selectable date */
   minimumDate?: Date;
+  /** Latest selectable date */
+  maximumDate?: Date;
 };
 
 export function DatePicker({
@@ -45,6 +47,7 @@ export function DatePicker({
   locale,
   clearable = true,
   minimumDate,
+  maximumDate,
 }: DatePickerProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -58,14 +61,18 @@ export function DatePicker({
     // Start the picker on a selectable date
     const initialDate = date ?? new Date();
     setTempDate(
-      minimumDate && initialDate < minimumDate ? minimumDate : initialDate,
+      minimumDate && initialDate < minimumDate
+        ? minimumDate
+        : maximumDate && initialDate > maximumDate
+          ? maximumDate
+          : initialDate,
     );
     if (Platform.OS === "ios") {
       bottomSheetModalRef.current?.present();
     } else {
       setOpen(true);
     }
-  }, [date, minimumDate]);
+  }, [date, minimumDate, maximumDate]);
 
   // Not memoized so it always closes over the latest tempDate
   function handleConfirm() {
@@ -121,6 +128,7 @@ export function DatePicker({
               <DateTimePicker
                 value={tempDate}
                 minimumDate={minimumDate}
+                maximumDate={maximumDate}
                 onChange={(_event, selectedDate) => {
                   if (selectedDate) {
                     setTempDate(selectedDate);
@@ -145,6 +153,7 @@ export function DatePicker({
         <DateTimePicker
           value={tempDate}
           minimumDate={minimumDate}
+          maximumDate={maximumDate}
           onChange={(event, selectedDate) => {
             setOpen(false);
             if (event.type === "set" && selectedDate) {

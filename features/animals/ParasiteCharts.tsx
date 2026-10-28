@@ -127,7 +127,8 @@ export function FamachaBadge({ score }: { score: number }) {
   );
 }
 
-export type TimelinePoint = { date: Date; value: number };
+// label: small text above the point, e.g. how many animals the value is based on
+export type TimelinePoint = { date: Date; value: number; label?: string };
 
 // Line chart over time with optional vertical markers (e.g. treatments)
 // Only the latest points are shown so long histories don't get cramped
@@ -172,7 +173,8 @@ export function TimelineChart({
 
   const paddingLeft = 32;
   const paddingRight = 12;
-  const paddingTop = 10;
+  // Room for the labels above the points
+  const paddingTop = 18;
   const paddingBottom = 22;
   const plotWidth = width - paddingLeft - paddingRight;
   const plotHeight = height - paddingTop - paddingBottom;
@@ -270,13 +272,25 @@ export function TimelineChart({
             />
           )}
           {sortedPoints.map((point, index) => (
-            <Circle
-              key={index}
-              cx={xFor(point.date)}
-              cy={yFor(point.value)}
-              r={4}
-              fill={color}
-            />
+            <G key={index}>
+              <Circle
+                cx={xFor(point.date)}
+                cy={yFor(point.value)}
+                r={4}
+                fill={color}
+              />
+              {point.label && (
+                <SvgText
+                  x={xFor(point.date)}
+                  y={yFor(point.value) - 7}
+                  fontSize={9}
+                  fill={theme.colors.gray2}
+                  textAnchor="middle"
+                >
+                  {point.label}
+                </SvgText>
+              )}
+            </G>
           ))}
           <SvgText
             x={paddingLeft}
@@ -408,6 +422,17 @@ export function FamachaDistributionRows({
                   </View>
                 ))}
             </View>
+            {/* Number of scored animals */}
+            <Subtitle
+              style={{
+                width: 28,
+                fontSize: 11,
+                color: theme.colors.gray2,
+                textAlign: "right",
+              }}
+            >
+              {counts.reduce((sum, entry) => sum + entry.count, 0)}
+            </Subtitle>
           </View>
         );
       })}
@@ -428,4 +453,12 @@ export function animalDisplayName(
   earTagNumber: string | null | undefined,
 ): string {
   return name.trim() || earTagNumber || "–";
+}
+
+// The API returns the reduction (1 - after / before); shown as the change instead,
+// so an increase from 5 to 20 reads "+300%" and a drop from 1000 to 50 "-95%"
+export function formatCountChange(reductionPercent: number | null): string {
+  if (reductionPercent === null) return "–";
+  const changePercent = Math.round(-reductionPercent);
+  return `${changePercent > 0 ? "+" : ""}${changePercent}%`;
 }

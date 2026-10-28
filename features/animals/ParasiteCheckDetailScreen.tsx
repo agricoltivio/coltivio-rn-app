@@ -17,6 +17,7 @@ import { ParasiteCheckDetailScreenProps } from "./navigation/animals-routes";
 import {
   animalDisplayName,
   FAMACHA_COLORS,
+  formatCountChange,
   FamachaBadge,
   FamachaDistributionRows,
   PARASITE_TYPES,
@@ -27,10 +28,6 @@ import {
   useDeleteParasiteCheckMutation,
   useParasiteCheckByIdQuery,
 } from "./parasite-checks.hooks";
-
-// Fecal egg count reduction thresholds commonly used to judge dewormer efficacy
-const FECRT_EFFECTIVE_PERCENT = 95;
-const FECRT_SUSPECTED_PERCENT = 90;
 
 export function ParasiteCheckDetailScreen({
   route,
@@ -49,9 +46,11 @@ export function ParasiteCheckDetailScreen({
   if (!check) return null;
 
   const checkDate = parseDateOnly(check.date);
-  const { herd, treatment, comparisonToPrevious } = check;
+  const { treatment, comparisonToPrevious } = check;
   const isRecheck = comparisonToPrevious !== null;
-  const title = `${t(`parasite_checks.methods.${check.method}`)} · ${formatLocalizedDate(checkDate, locale)}`;
+  const methodAndDate = `${t(`parasite_checks.methods.${check.method}`)} · ${formatLocalizedDate(checkDate, locale)}`;
+  // An own name replaces method and date as title, which then move below it
+  const title = check.name || methodAndDate;
 
   function handleDelete() {
     // Re-checks are deleted together with their base check
@@ -77,18 +76,15 @@ export function ParasiteCheckDetailScreen({
     if (!check) return;
     navigation.navigate("ParasiteCheckForm", {
       method: check.method,
-      herdId: check.herdId ?? undefined,
       previousCheckId: check.id,
     });
   }
 
+  // Only the direction: count went down (green) or up (red), no efficacy judgement
   function reductionColor(reductionPercent: number | null) {
-    if (reductionPercent === null) return theme.colors.gray2;
-    if (reductionPercent >= FECRT_EFFECTIVE_PERCENT)
-      return theme.colors.success;
-    if (reductionPercent >= FECRT_SUSPECTED_PERCENT)
-      return theme.colors.warning;
-    return theme.colors.danger;
+    if (reductionPercent === null || reductionPercent === 0)
+      return theme.colors.gray2;
+    return reductionPercent > 0 ? theme.colors.success : theme.colors.danger;
   }
 
   // Chart of the base check and its re-checks. Re-check values are derived from
@@ -188,6 +184,11 @@ export function ParasiteCheckDetailScreen({
     >
       <ScrollView showHeaderOnScroll headerTitleOnScroll={title}>
         <H2>{title}</H2>
+        {check.name && (
+          <Subtitle style={{ color: theme.colors.gray2, marginTop: 4 }}>
+            {methodAndDate}
+          </Subtitle>
+        )}
         {comparisonToPrevious && (
           <TouchableOpacity
             style={{ marginTop: 4 }}
@@ -209,10 +210,7 @@ export function ParasiteCheckDetailScreen({
         )}
 
         {/* Context */}
-        {(herd ||
-          treatment ||
-          check.labName ||
-          check.followUpTasks.length > 0) && (
+        {(treatment || check.labName || check.followUpTasks.length > 0) && (
           <View
             style={{
               marginTop: theme.spacing.m,
@@ -221,21 +219,6 @@ export function ParasiteCheckDetailScreen({
               backgroundColor: theme.colors.white,
             }}
           >
-            {herd && (
-              <ListItem
-                onPress={() =>
-                  navigation.navigate("HerdParasiteOverview", {
-                    herdId: herd.id,
-                  })
-                }
-              >
-                <ListItem.Content>
-                  <ListItem.Body>{t("animals.herd")}</ListItem.Body>
-                  <ListItem.Title>{herd.name}</ListItem.Title>
-                </ListItem.Content>
-                <ListItem.Chevron />
-              </ListItem>
-            )}
             {treatment && (
               <ListItem
                 onPress={() =>
@@ -322,7 +305,7 @@ export function ParasiteCheckDetailScreen({
                         items={[
                           {
                             color: theme.colors.primary,
-                            label: t("parasite_checks.herd_average"),
+                            label: t("parasite_checks.average_per_check"),
                           },
                           {
                             color: theme.colors.warning,
@@ -473,6 +456,7 @@ export function ParasiteCheckDetailScreen({
                             parseDateOnly(recheck.date),
                             locale,
                           )}
+                          {recheck.name ? ` · ${recheck.name}` : ""}
                         </ListItem.Title>
                         {recheck.treatment && (
                           <ListItem.Body>
@@ -546,9 +530,7 @@ export function ParasiteCheckDetailScreen({
                                 color: reductionColor(entry.reductionPercent),
                               }}
                             >
-                              {entry.reductionPercent === null
-                                ? "–"
-                                : `${Math.round(entry.reductionPercent)}%`}
+                              {formatCountChange(entry.reductionPercent)}
                             </Subtitle>
                           </View>
                         ))}
@@ -558,18 +540,6 @@ export function ParasiteCheckDetailScreen({
                   ))}
                 </View>
               )}
-              {check.rechecks.length > 0 &&
-                check.method === "fecal_egg_count" && (
-                  <Subtitle
-                    style={{
-                      fontSize: 12,
-                      color: theme.colors.gray2,
-                      marginTop: theme.spacing.xs,
-                    }}
-                  >
-                    {t("parasite_checks.reduction_info")}
-                  </Subtitle>
-                )}
               {check.rechecks.length === 0 && (
                 <Subtitle
                   style={{

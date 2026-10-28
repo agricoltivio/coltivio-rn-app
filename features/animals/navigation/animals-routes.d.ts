@@ -35,6 +35,8 @@ export type AnimalsStackParamList = {
       | "HerdEdit"
       | "CreateHerd"
       | "ParasiteCheckForm";
+    // Only animals of one type: after the first pick, other types are hidden
+    singleAnimalType?: boolean;
   };
   Drugs: undefined;
   CreateDrug: { previousScreen?: "CreateTreatment" | "EditTreatment" };
@@ -112,14 +114,12 @@ export type AnimalsStackParamList = {
   ParasiteCheckForm: {
     checkId?: string;
     method?: "famacha" | "fecal_egg_count";
-    herdId?: string;
     animalIds?: string[];
     previousCheckId?: string;
   };
   ParasiteSamples: { animalIds: string[] };
   ParasiteAnimalSample: { animalId: string };
   AnimalParasiteHistory: { animalId: string };
-  HerdParasiteOverview: { herdId: string };
 };
 
 export type AnimalsHubScreenProps = StackScreenProps<"AnimalsHub">;
@@ -184,8 +184,6 @@ export type ParasiteCheckFormScreenProps =
   StackScreenProps<"ParasiteCheckForm">;
 export type AnimalParasiteHistoryScreenProps =
   StackScreenProps<"AnimalParasiteHistory">;
-export type HerdParasiteOverviewScreenProps =
-  StackScreenProps<"HerdParasiteOverview">;
 export type ParasiteSamplesScreenProps = StackScreenProps<"ParasiteSamples">;
 export type ParasiteAnimalSampleScreenProps =
   StackScreenProps<"ParasiteAnimalSample">;

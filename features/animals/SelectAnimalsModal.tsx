@@ -28,7 +28,7 @@ export function SelectAnimalsModal({
   const { t, i18n } = useTranslation();
   const theme = useTheme();
   const locale = i18n.language;
-  const { initialSelectedIds, previousScreen } = route.params;
+  const { initialSelectedIds, previousScreen, singleAnimalType } = route.params;
   const { animals, isLoading } = useAnimalsQuery();
 
   const minMaxDateOfBirth = getMinMaxIso(
@@ -58,6 +58,12 @@ export function SelectAnimalsModal({
 
     // Exclude dead animals
     result = result.filter((a) => !a.dateOfDeath);
+
+    // Single type: once an animal is selected, only its type stays selectable
+    if (singleAnimalType && selectedIds.size > 0) {
+      const selectedType = animals?.find((a) => selectedIds.has(a.id))?.type;
+      if (selectedType) result = result.filter((a) => a.type === selectedType);
+    }
 
     // Filter by type
     if (selectedTypes.size > 0) {
@@ -94,6 +100,7 @@ export function SelectAnimalsModal({
   }, [
     animals,
     selectedTypes,
+    singleAnimalType,
     showSelectedOnly,
     selectedIds,
     birthdayFrom,
@@ -138,7 +145,11 @@ export function SelectAnimalsModal({
   }
 
   function handleSelectAll() {
-    const visibleIds = searchResult.map((a) => a.id);
+    // Single type with nothing selected yet: select the first visible type only
+    const firstVisibleType = searchResult[0]?.type;
+    const visibleIds = searchResult
+      .filter((a) => !singleAnimalType || a.type === firstVisibleType)
+      .map((a) => a.id);
     setSelectedIds(new Set(visibleIds));
   }
 

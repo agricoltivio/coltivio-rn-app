@@ -2068,22 +2068,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/v1/animals/herds/byId/{herdId}/parasiteOverview": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get: operations["GetV1AnimalsHerdsByIdHerdIdParasiteOverview"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head: operations["HeadV1AnimalsHerdsByIdHerdIdParasiteOverview"];
-    patch?: never;
-    trace?: never;
-  };
   "/v1/animals/herds/outdoorSchedules/byId/{outdoorScheduleId}": {
     parameters: {
       query?: never;
@@ -10052,189 +10036,6 @@ export interface components {
         count?: number | null;
       } | null;
     };
-    GetV1AnimalsHerdsByIdHerdIdParasiteOverviewPositiveResponse: {
-      data: {
-        result: {
-          id: string;
-          farmId: string;
-          /**
-           * Format: date-time
-           * @description YYYY-MM-DDTHH:mm:ss.sssZ
-           */
-          date: string;
-          /** @enum {string} */
-          method: "famacha" | "fecal_egg_count";
-          herdId: string | null;
-          labName: string | null;
-          notes: string | null;
-          previousCheckId: string | null;
-          treatmentId: string | null;
-          createdBy: string | null;
-          /**
-           * Format: date-time
-           * @description YYYY-MM-DDTHH:mm:ss.sssZ
-           */
-          createdAt: string;
-          /**
-           * Format: date-time
-           * @description YYYY-MM-DDTHH:mm:ss.sssZ
-           */
-          updatedAt: string;
-          herd: {
-            id: string;
-            name: string;
-          } | null;
-          treatment: {
-            id: string;
-            name: string;
-            /**
-             * Format: date-time
-             * @description YYYY-MM-DDTHH:mm:ss.sssZ
-             */
-            startDate: string;
-          } | null;
-          animals: {
-            animalId: string;
-            name: string;
-            earTagNumber: string | null;
-            famachaScore: number | null;
-          }[];
-          fecSamples: {
-            id: string;
-            label: string | null;
-            pooled: boolean;
-            animalIds: string[];
-            results: {
-              /** @enum {string} */
-              parasiteType:
-                | "strongyles"
-                | "haemonchus"
-                | "nematodirus"
-                | "trichuris"
-                | "strongyloides"
-                | "moniezia"
-                | "coccidia"
-                | "liver_fluke"
-                | "small_liver_fluke"
-                | "lungworm"
-                | "other";
-              countPerGram: number;
-            }[];
-          }[];
-          followUpTasks: {
-            id: string;
-            name: string;
-            /**
-             * Format: date-time
-             * @description YYYY-MM-DDTHH:mm:ss.sssZ
-             */
-            dueDate: string | null;
-            /** @enum {string} */
-            status: "todo" | "done";
-          }[];
-          summary: {
-            animalCount: number;
-            famachaAverage: number | null;
-            famachaDistribution: {
-              score: number;
-              count: number;
-            }[];
-            fecByParasite: {
-              /** @enum {string} */
-              parasiteType:
-                | "strongyles"
-                | "haemonchus"
-                | "nematodirus"
-                | "trichuris"
-                | "strongyloides"
-                | "moniezia"
-                | "coccidia"
-                | "liver_fluke"
-                | "small_liver_fluke"
-                | "lungworm"
-                | "other";
-              sampleCount: number;
-              minCountPerGram: number;
-              avgCountPerGram: number;
-              maxCountPerGram: number;
-            }[];
-          };
-          comparisonToPrevious: {
-            previousCheckId: string;
-            /**
-             * Format: date-time
-             * @description YYYY-MM-DDTHH:mm:ss.sssZ
-             */
-            previousDate: string;
-            famachaAverageChange: number | null;
-            fecReduction: {
-              /** @enum {string} */
-              parasiteType:
-                | "strongyles"
-                | "haemonchus"
-                | "nematodirus"
-                | "trichuris"
-                | "strongyloides"
-                | "moniezia"
-                | "coccidia"
-                | "liver_fluke"
-                | "small_liver_fluke"
-                | "lungworm"
-                | "other";
-              beforeAvgCountPerGram: number;
-              afterAvgCountPerGram: number;
-              afterSampleCount: number;
-              reductionPercent: number | null;
-            }[];
-          } | null;
-          rechecks: {
-            id: string;
-            /**
-             * Format: date-time
-             * @description YYYY-MM-DDTHH:mm:ss.sssZ
-             */
-            date: string;
-            /** @enum {string} */
-            method: "famacha" | "fecal_egg_count";
-            treatment: {
-              id: string;
-              name: string;
-              /**
-               * Format: date-time
-               * @description YYYY-MM-DDTHH:mm:ss.sssZ
-               */
-              startDate: string;
-            } | null;
-            animals: {
-              animalId: string;
-              famachaScore: number | null;
-            }[];
-            famachaAverage: number | null;
-            famachaAverageChange: number | null;
-            fecReduction: {
-              /** @enum {string} */
-              parasiteType:
-                | "strongyles"
-                | "haemonchus"
-                | "nematodirus"
-                | "trichuris"
-                | "strongyloides"
-                | "moniezia"
-                | "coccidia"
-                | "liver_fluke"
-                | "small_liver_fluke"
-                | "lungworm"
-                | "other";
-              beforeAvgCountPerGram: number;
-              afterAvgCountPerGram: number;
-              afterSampleCount: number;
-              reductionPercent: number | null;
-            }[];
-          }[];
-        }[];
-        count: number;
-      };
-    };
     GetV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleIdPositiveResponse: {
       data: {
         id: string;
@@ -10671,9 +10472,9 @@ export interface components {
            * @description YYYY-MM-DDTHH:mm:ss.sssZ
            */
           date: string;
+          name: string | null;
           /** @enum {string} */
           method: "famacha" | "fecal_egg_count";
-          herdId: string | null;
           labName: string | null;
           notes: string | null;
           previousCheckId: string | null;
@@ -10689,10 +10490,16 @@ export interface components {
            * @description YYYY-MM-DDTHH:mm:ss.sssZ
            */
           updatedAt: string;
-          herd: {
-            id: string;
-            name: string;
-          } | null;
+          /** @enum {string|null} */
+          animalType:
+            | "goat"
+            | "sheep"
+            | "cow"
+            | "horse"
+            | "donkey"
+            | "pig"
+            | "deer"
+            | null;
           treatment: {
             id: string;
             name: string;
@@ -10803,6 +10610,7 @@ export interface components {
              * @description YYYY-MM-DDTHH:mm:ss.sssZ
              */
             date: string;
+            name: string | null;
             /** @enum {string} */
             method: "famacha" | "fecal_egg_count";
             treatment: {
@@ -10853,9 +10661,9 @@ export interface components {
          * @description YYYY-MM-DDTHH:mm:ss.sssZ
          */
         date: string;
+        name: string | null;
         /** @enum {string} */
         method: "famacha" | "fecal_egg_count";
-        herdId: string | null;
         labName: string | null;
         notes: string | null;
         previousCheckId: string | null;
@@ -10871,10 +10679,16 @@ export interface components {
          * @description YYYY-MM-DDTHH:mm:ss.sssZ
          */
         updatedAt: string;
-        herd: {
-          id: string;
-          name: string;
-        } | null;
+        /** @enum {string|null} */
+        animalType:
+          | "goat"
+          | "sheep"
+          | "cow"
+          | "horse"
+          | "donkey"
+          | "pig"
+          | "deer"
+          | null;
         treatment: {
           id: string;
           name: string;
@@ -10985,6 +10799,7 @@ export interface components {
            * @description YYYY-MM-DDTHH:mm:ss.sssZ
            */
           date: string;
+          name: string | null;
           /** @enum {string} */
           method: "famacha" | "fecal_egg_count";
           treatment: {
@@ -11030,10 +10845,10 @@ export interface components {
        * @description YYYY-MM-DDTHH:mm:ss.sssZ
        */
       date: string;
+      name?: string | null;
       /** @enum {string} */
       method: "famacha" | "fecal_egg_count";
-      herdId?: string | null;
-      animals?: {
+      animals: {
         animalId: string;
         famachaScore?: number | null;
       }[];
@@ -11080,9 +10895,9 @@ export interface components {
          * @description YYYY-MM-DDTHH:mm:ss.sssZ
          */
         date: string;
+        name: string | null;
         /** @enum {string} */
         method: "famacha" | "fecal_egg_count";
-        herdId: string | null;
         labName: string | null;
         notes: string | null;
         previousCheckId: string | null;
@@ -11098,10 +10913,16 @@ export interface components {
          * @description YYYY-MM-DDTHH:mm:ss.sssZ
          */
         updatedAt: string;
-        herd: {
-          id: string;
-          name: string;
-        } | null;
+        /** @enum {string|null} */
+        animalType:
+          | "goat"
+          | "sheep"
+          | "cow"
+          | "horse"
+          | "donkey"
+          | "pig"
+          | "deer"
+          | null;
         treatment: {
           id: string;
           name: string;
@@ -11212,6 +11033,7 @@ export interface components {
            * @description YYYY-MM-DDTHH:mm:ss.sssZ
            */
           date: string;
+          name: string | null;
           /** @enum {string} */
           method: "famacha" | "fecal_egg_count";
           treatment: {
@@ -11260,9 +11082,9 @@ export interface components {
          * @description YYYY-MM-DDTHH:mm:ss.sssZ
          */
         date: string;
+        name: string | null;
         /** @enum {string} */
         method: "famacha" | "fecal_egg_count";
-        herdId: string | null;
         labName: string | null;
         notes: string | null;
         previousCheckId: string | null;
@@ -11278,10 +11100,16 @@ export interface components {
          * @description YYYY-MM-DDTHH:mm:ss.sssZ
          */
         updatedAt: string;
-        herd: {
-          id: string;
-          name: string;
-        } | null;
+        /** @enum {string|null} */
+        animalType:
+          | "goat"
+          | "sheep"
+          | "cow"
+          | "horse"
+          | "donkey"
+          | "pig"
+          | "deer"
+          | null;
         treatment: {
           id: string;
           name: string;
@@ -11392,6 +11220,7 @@ export interface components {
            * @description YYYY-MM-DDTHH:mm:ss.sssZ
            */
           date: string;
+          name: string | null;
           /** @enum {string} */
           method: "famacha" | "fecal_egg_count";
           treatment: {
@@ -11437,9 +11266,9 @@ export interface components {
        * @description YYYY-MM-DDTHH:mm:ss.sssZ
        */
       date?: string;
+      name?: string | null;
       /** @enum {string} */
       method?: "famacha" | "fecal_egg_count";
-      herdId?: string | null;
       animals?: {
         animalId: string;
         famachaScore?: number | null;
@@ -24285,76 +24114,6 @@ export interface operations {
       };
     };
   };
-  GetV1AnimalsHerdsByIdHerdIdParasiteOverview: {
-    parameters: {
-      query?: {
-        /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
-        from?: components["schemas"]["GetV1MeadowsByIdMeadowIdUsageParameterFromDate"];
-        /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
-        to?: components["schemas"]["GetV1MeadowsByIdMeadowIdUsageParameterFromDate"];
-      };
-      header?: never;
-      path: {
-        /** @description GET /v1/animals/herds/byId/:herdId/parasiteOverview Parameter */
-        herdId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description GET /v1/animals/herds/byId/:herdId/parasiteOverview Positive response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetV1AnimalsHerdsByIdHerdIdParasiteOverviewPositiveResponse"];
-        };
-      };
-      /** @description GET /v1/animals/herds/byId/:herdId/parasiteOverview Negative response */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
-        };
-      };
-    };
-  };
-  HeadV1AnimalsHerdsByIdHerdIdParasiteOverview: {
-    parameters: {
-      query?: {
-        /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
-        from?: components["schemas"]["GetV1MeadowsByIdMeadowIdUsageParameterFromDate"];
-        /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
-        to?: components["schemas"]["GetV1MeadowsByIdMeadowIdUsageParameterFromDate"];
-      };
-      header?: never;
-      path: {
-        /** @description HEAD /v1/animals/herds/byId/:herdId/parasiteOverview Parameter */
-        herdId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description HEAD /v1/animals/herds/byId/:herdId/parasiteOverview Positive response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      /** @description HEAD /v1/animals/herds/byId/:herdId/parasiteOverview Negative response */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-    };
-  };
   GetV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleId: {
     parameters: {
       query?: never;
@@ -24945,8 +24704,6 @@ export interface operations {
         /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
         to?: components["schemas"]["GetV1MeadowsByIdMeadowIdUsageParameterFromDate"];
         /** @description GET /v1/parasiteChecks Parameter */
-        herdId?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
-        /** @description GET /v1/parasiteChecks Parameter */
         animalId?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
       };
       header?: never;
@@ -25016,8 +24773,6 @@ export interface operations {
         from?: components["schemas"]["GetV1MeadowsByIdMeadowIdUsageParameterFromDate"];
         /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
         to?: components["schemas"]["GetV1MeadowsByIdMeadowIdUsageParameterFromDate"];
-        /** @description HEAD /v1/parasiteChecks Parameter */
-        herdId?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
         /** @description HEAD /v1/parasiteChecks Parameter */
         animalId?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
       };

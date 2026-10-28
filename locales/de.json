@@ -1749,13 +1749,10 @@
   "parasite_checks": {
     "parasite_control": "Parasitenkontrolle",
     "parasite_history": "Parasitenverlauf",
-    "all_checks": "Alle",
     "checks": "Kontrollen",
     "new_check": "Neue Kontrolle",
     "edit_check": "Kontrolle bearbeiten",
     "no_checks": "Noch keine Kontrollen erfasst",
-    "show_herd_overview": "Herdenübersicht anzeigen",
-    "herd_optional": "Herde (optional)",
     "famacha_scores": "FAMACHA-Werte",
     "famacha_scores_info": "1 = rot (gesund) bis 5 = weiss (stark blutarm). Nochmals tippen zum Entfernen.",
     "famacha_score": "FAMACHA-Wert",
@@ -1776,10 +1773,8 @@
     "create_follow_up_task": "Aufgabe für Nachkontrolle erstellen",
     "follow_up_date": "Nachkontrolle am",
     "follow_up_task": "Nachkontrolle",
-    "reduction_info": "Eizahlreduktion: ab 95 % wirksam, darunter Verdacht auf Resistenz.",
     "delete_check_confirm": "Kontrolle löschen?",
     "timeline": "Verlauf",
-    "herd_average": "Herdendurchschnitt",
     "methods": {
       "famacha": "FAMACHA",
       "fecal_egg_count": "Kotprobe"
@@ -1820,6 +1815,11 @@
     "recheck_locked_info": "Methode, Herde und Tiere werden von der Ausgangskontrolle übernommen. Verstorbene Tiere und Tiere, die nicht mehr in der Herde sind, werden ausgelassen.",
     "summary": "Zusammenfassung",
     "last_n_values": "Letzte {{count}} Werte",
-    "delete_check_with_rechecks_confirm": "Kontrolle und ihre {{count}} Nachkontrollen löschen?"
+    "delete_check_with_rechecks_confirm": "Kontrolle und ihre {{count}} Nachkontrollen löschen?",
+    "name_optional": "Name (optional)",
+    "select_from_herd": "Tiere aus Herde übernehmen (optional)",
+    "mixed_animal_types": "Eine Kontrolle kann nur Tiere einer Tierart enthalten.",
+    "average_per_check": "Ø pro Kontrolle",
+    "chart_counts_info": "Zahlen in den Diagrammen = Anzahl geprüfter Tiere"
   }
 }
