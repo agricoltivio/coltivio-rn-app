@@ -3497,7 +3497,6 @@ export interface components {
         count: number;
       };
     };
-    GetV1LayersPlotsFarmsFederalFarmIdBboxParameterBuffer: number;
     GetV1LayersPlotsFarmsFederalFarmIdBboxPositiveResponse: {
       data: {
         result: {
@@ -3996,6 +3995,7 @@ export interface components {
         /** @enum {string|null} */
         farmRole: "owner" | "member" | null;
         isWikiModerator: boolean;
+        isForumModerator: boolean;
       };
     };
     PostV1FarmInvitesAcceptRequestBody: {
@@ -4020,6 +4020,7 @@ export interface components {
         /** @enum {string|null} */
         farmRole: "owner" | "member" | null;
         isWikiModerator: boolean;
+        isForumModerator: boolean;
       };
     };
     PatchV1FarmMembersByIdUserIdRoleRequestBody: {
@@ -4066,6 +4067,7 @@ export interface components {
           /** @enum {string|null} */
           farmRole: "owner" | "member" | null;
           isWikiModerator: boolean;
+          isForumModerator: boolean;
         }[];
         count: number;
       };
@@ -4080,6 +4082,7 @@ export interface components {
         /** @enum {string|null} */
         farmRole: "owner" | "member" | null;
         isWikiModerator: boolean;
+        isForumModerator: boolean;
       };
     };
     PatchV1MePositiveResponse: {
@@ -4092,6 +4095,7 @@ export interface components {
         /** @enum {string|null} */
         farmRole: "owner" | "member" | null;
         isWikiModerator: boolean;
+        isForumModerator: boolean;
         taskPushNotifications: boolean;
       };
     };
@@ -4110,6 +4114,7 @@ export interface components {
         /** @enum {string|null} */
         farmRole: "owner" | "member" | null;
         isWikiModerator: boolean;
+        isForumModerator: boolean;
         farmPermissions: {
           /** @enum {string} */
           feature: "animals" | "field_calendar" | "commerce" | "tasks";
@@ -8711,6 +8716,7 @@ export interface components {
           earTagId: string | null;
           earTagAssigned: boolean;
           assignedToAnimalId: string | null;
+          assignedToAnimalName: string | null;
           name: string | null;
           /** @enum {string|null} */
           sex: "male" | "female" | null;
@@ -14260,7 +14266,7 @@ export interface operations {
     parameters: {
       query?: {
         /** @description GET /v1/layers/plots/farms/:federalFarmId/bbox Parameter */
-        buffer?: components["schemas"]["GetV1LayersPlotsFarmsFederalFarmIdBboxParameterBuffer"];
+        buffer?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
       };
       header?: never;
       path: {
@@ -14295,7 +14301,7 @@ export interface operations {
     parameters: {
       query?: {
         /** @description HEAD /v1/layers/plots/farms/:federalFarmId/bbox Parameter */
-        buffer?: components["schemas"]["GetV1LayersPlotsFarmsFederalFarmIdBboxParameterBuffer"];
+        buffer?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
       };
       header?: never;
       path: {

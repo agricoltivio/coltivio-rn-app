@@ -122,10 +122,6 @@ export function TvdImportScreen({ navigation }: TvdImportScreenProps) {
       >
         <H2>{t("animals.tvd_import.title")}</H2>
 
-        <H3 style={{ color: theme.colors.gray1, marginTop: theme.spacing.s }}>
-          {t("animals.tvd_import.experimental")}
-        </H3>
-
         <H3 style={{ color: theme.colors.primary, marginTop: theme.spacing.l }}>
           {t("animals.tvd_import.instructions")}
         </H3>
@@ -141,7 +137,7 @@ export function TvdImportScreen({ navigation }: TvdImportScreenProps) {
 
         <View style={{ marginTop: theme.spacing.l }}>
           <Button
-            type="primary"
+            type="accent"
             title={
               selectedFile
                 ? selectedFile.name
