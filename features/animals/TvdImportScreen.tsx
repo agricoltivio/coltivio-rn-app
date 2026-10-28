@@ -1,5 +1,5 @@
 import { AnimalType } from "@/api/animals.api";
-import { useApi } from "@/api/api";
+import { ApiError, useApi } from "@/api/api";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -67,16 +67,21 @@ export function TvdImportScreen({ navigation }: TvdImportScreenProps) {
         type: animalType,
       });
       setSelectedFile(null);
-    } catch {
+    } catch (error) {
       const fileForSharing = selectedFile;
       const sharingAvailable =
         fileForSharing !== null && (await Sharing.isAvailableAsync());
+      // A 400 carries a localized explanation, e.g. which TVD columns are missing.
+      const message =
+        error instanceof ApiError && error.status === 400 && error.serverMessage
+          ? error.serverMessage
+          : t("common.unknown_error");
 
       Alert.alert(
         t("common.error"),
         sharingAvailable
-          ? `${t("common.unknown_error")}\n\n${t("animals.tvd_import.error_report_prompt")}`
-          : t("common.unknown_error"),
+          ? `${message}\n\n${t("animals.tvd_import.error_report_prompt")}`
+          : message,
         sharingAvailable
           ? [
               {
