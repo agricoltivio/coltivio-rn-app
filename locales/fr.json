@@ -1759,6 +1759,7 @@
     "famacha_distribution": "Répartition FAMACHA",
     "samples": "Échantillons de fèces",
     "lab_name": "Laboratoire",
+    "lab_name_optional": "Laboratoire (facultatif)",
     "sample_label": "Désignation (facultatif)",
     "pooled_sample": "Échantillon groupé ({{count}} animaux)",
     "individual_sample": "Échantillon individuel",
@@ -1782,6 +1783,7 @@
       "haemonchus": "Ver rouge",
       "nematodirus": "Nematodirus",
       "trichuris": "Trichures",
+      "capillaria": "Capillaire",
       "strongyloides": "Strongyloïdes",
       "moniezia": "Ténias",
       "coccidia": "Coccidies",
@@ -1818,9 +1820,24 @@
     "select_from_herd": "Reprendre les animaux d'un troupeau (facultatif)",
     "mixed_animal_types": "Un contrôle ne peut contenir que des animaux d'une seule espèce.",
     "average_per_check": "Ø par contrôle",
+    "average_grade_per_check": "Ø degré par contrôle",
     "chart_counts_info": "Chiffres des graphiques = nombre d'animaux contrôlés",
     "change_percent": "variation (%)",
     "change_to_base": "Variation par rapport au contrôle initial",
-    "all_base_animals_dead": "Tous les animaux du contrôle initial sont morts ou n'existent plus."
+    "all_base_animals_dead": "Tous les animaux du contrôle initial sont morts ou n'existent plus.",
+    "grade": "Degré",
+    "grades": {
+      "negative": "–",
+      "low": "+ faible",
+      "medium": "++ moyen",
+      "high": "+++ fort"
+    },
+    "grades_short": {
+      "negative": "–",
+      "low": "+",
+      "medium": "++",
+      "high": "+++"
+    },
+    "result_value": "Valeur"
   }
 }

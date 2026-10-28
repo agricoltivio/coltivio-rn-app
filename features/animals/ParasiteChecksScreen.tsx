@@ -21,6 +21,7 @@ import { ParasiteChecksScreenProps } from "./navigation/animals-routes";
 import {
   FAMACHA_COLORS,
   FamachaDistributionRows,
+  PARASITE_RESULT_GRADES,
   PARASITE_TYPES,
   parasiteCountUnitKey,
   TimelineChart,
@@ -36,6 +37,24 @@ function fecCoverage(check: ParasiteCheck, parasiteType: ParasiteType) {
     .reduce((sum, sample) => sum + sample.animalIds.length, 0);
 }
 
+// Average grade (index in PARASITE_RESULT_GRADES) over the graded samples of a
+// check, each sample weighted by the number of animals it covers. Lies between
+// the steps, e.g. 1.5 = between + and ++.
+function averageGradeIndex(check: ParasiteCheck, parasiteType: ParasiteType) {
+  let weightedSum = 0;
+  let animalCount = 0;
+  for (const sample of check.fecSamples) {
+    const result = sample.results.find(
+      (entry) => entry.parasiteType === parasiteType,
+    );
+    if (!result?.grade) continue;
+    weightedSum +=
+      PARASITE_RESULT_GRADES.indexOf(result.grade) * sample.animalIds.length;
+    animalCount += sample.animalIds.length;
+  }
+  return animalCount > 0 ? weightedSum / animalCount : null;
+}
+
 export function ParasiteChecksScreen({
   navigation,
 }: ParasiteChecksScreenProps) {
@@ -46,24 +65,22 @@ export function ParasiteChecksScreen({
   const { checks: allChecks, isLoading } = useParasiteChecksQuery();
 
   // A check only contains one animal type; offer the types that have checks,
-  // the most common one first
+  // sorted alphabetically so the tabs don't move when checks are added
   const animalTypes = useMemo(() => {
-    const countsByType = new Map<AnimalType, number>();
+    const types = new Set<AnimalType>();
     for (const check of allChecks) {
-      if (check.animalType) {
-        countsByType.set(
-          check.animalType,
-          (countsByType.get(check.animalType) ?? 0) + 1,
-        );
-      }
+      if (check.animalType) types.add(check.animalType);
     }
-    return [...countsByType.entries()]
-      .sort((a, b) => b[1] - a[1])
-      .map(([animalType]) => animalType);
-  }, [allChecks]);
+    return [...types].sort((a, b) =>
+      t(`animals.animal_types.${a}`).localeCompare(
+        t(`animals.animal_types.${b}`),
+      ),
+    );
+  }, [allChecks, t]);
   const [selectedAnimalType, setSelectedAnimalType] = useState<
     AnimalType | undefined
   >();
+  // Without a selection, the first tab is shown
   const animalType =
     selectedAnimalType && animalTypes.includes(selectedAnimalType)
       ? selectedAnimalType
@@ -78,8 +95,10 @@ export function ParasiteChecksScreen({
   const treatmentDates = typeChecks.flatMap((check) =>
     check.treatment ? [parseDateOnly(check.treatment.startDate)] : [],
   );
+  // Counts and grades can't share an axis: a parasite with any counts gets the
+  // average count chart, one with only grades the average grade per check
   const fecChartPages = PARASITE_TYPES.flatMap((parasiteType) => {
-    const points = typeChecks.flatMap((check) => {
+    const countPoints = typeChecks.flatMap((check) => {
       const entry = check.summary.fecByParasite.find(
         (fecEntry) => fecEntry.parasiteType === parasiteType,
       );
@@ -93,7 +112,23 @@ export function ParasiteChecksScreen({
           ]
         : [];
     });
-    return points.length > 0 ? [{ parasiteType, points }] : [];
+    if (countPoints.length > 0)
+      return [{ parasiteType, points: countPoints, graded: false }];
+    const gradePoints = typeChecks.flatMap((check) => {
+      const averageGrade = averageGradeIndex(check, parasiteType);
+      return averageGrade !== null
+        ? [
+            {
+              date: parseDateOnly(check.date),
+              value: averageGrade,
+              label: String(fecCoverage(check, parasiteType)),
+            },
+          ]
+        : [];
+    });
+    return gradePoints.length > 0
+      ? [{ parasiteType, points: gradePoints, graded: true }]
+      : [];
   });
   const famachaChartChecks = typeChecks
     .filter((check) => check.method === "famacha")
@@ -141,7 +176,8 @@ export function ParasiteChecksScreen({
         )}
 
         {/* Charts and list are always for one animal type */}
-        {animalTypes.length > 0 && (
+        {/* Hidden when there is nothing to choose */}
+        {animalTypes.length > 1 && (
           <RNScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -195,7 +231,7 @@ export function ParasiteChecksScreen({
                       },
                     ]
                   : []),
-                ...fecChartPages.map(({ parasiteType, points }) => ({
+                ...fecChartPages.map(({ parasiteType, points, graded }) => ({
                   key: parasiteType,
                   content: (
                     <View>
@@ -205,20 +241,31 @@ export function ParasiteChecksScreen({
                           marginBottom: theme.spacing.s,
                         }}
                       >
-                        {t(`parasite_checks.parasite_types.${parasiteType}`)} Ø
-                        ({t(parasiteCountUnitKey(parasiteType))})
+                        {t(`parasite_checks.parasite_types.${parasiteType}`)}
+                        {graded
+                          ? ` (${t("parasite_checks.grade")})`
+                          : ` Ø (${t(parasiteCountUnitKey(parasiteType))})`}
                       </Subtitle>
                       <TimelineChart
                         points={points}
                         markers={treatmentDates}
                         minValue={0}
+                        gradeScale={graded}
+                        averageValues
+                        unitLabel={
+                          graded
+                            ? undefined
+                            : t(parasiteCountUnitKey(parasiteType))
+                        }
                         color={theme.colors.primary}
                       />
                       <ChartLegend
                         items={[
                           {
                             color: theme.colors.primary,
-                            label: t("parasite_checks.average_per_check"),
+                            label: graded
+                              ? t("parasite_checks.average_grade_per_check")
+                              : t("parasite_checks.average_per_check"),
                           },
                           {
                             color: theme.colors.warning,

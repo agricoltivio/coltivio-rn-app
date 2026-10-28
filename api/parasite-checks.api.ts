@@ -9,6 +9,11 @@ export type ParasiteCheckMethod = ParasiteCheck["method"];
 export type ParasiteType =
   ParasiteCheck["fecSamples"][number]["results"][number]["parasiteType"];
 
+export type ParasiteResult =
+  ParasiteCheck["fecSamples"][number]["results"][number];
+
+export type ParasiteResultGrade = NonNullable<ParasiteResult["grade"]>;
+
 export type ParasiteCheckCreateInput =
   components["schemas"]["PostV1ParasiteChecksRequestBody"];
 

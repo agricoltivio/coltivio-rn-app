@@ -30717,6 +30717,7 @@
                               "haemonchus",
                               "nematodirus",
                               "trichuris",
+                              "capillaria",
                               "strongyloides",
                               "moniezia",
                               "coccidia",
@@ -30726,9 +30727,13 @@
                               "other"
                             ]
                           },
-                          "countPerGram": { "type": "number", "minimum": 0 }
+                          "countPerGram": { "type": ["number", "null"] },
+                          "grade": {
+                            "type": ["string", "null"],
+                            "enum": ["negative", "low", "medium", "high"]
+                          }
                         },
-                        "required": ["parasiteType", "countPerGram"],
+                        "required": ["parasiteType", "countPerGram", "grade"],
                         "additionalProperties": false
                       }
                     }
@@ -33236,6 +33241,7 @@
                                     "haemonchus",
                                     "nematodirus",
                                     "trichuris",
+                                    "capillaria",
                                     "strongyloides",
                                     "moniezia",
                                     "coccidia",
@@ -33245,12 +33251,17 @@
                                     "other"
                                   ]
                                 },
-                                "countPerGram": {
-                                  "type": "number",
-                                  "minimum": 0
+                                "countPerGram": { "type": ["number", "null"] },
+                                "grade": {
+                                  "type": ["string", "null"],
+                                  "enum": ["negative", "low", "medium", "high"]
                                 }
                               },
-                              "required": ["parasiteType", "countPerGram"],
+                              "required": [
+                                "parasiteType",
+                                "countPerGram",
+                                "grade"
+                              ],
                               "additionalProperties": false
                             }
                           }
@@ -33318,6 +33329,7 @@
                                   "haemonchus",
                                   "nematodirus",
                                   "trichuris",
+                                  "capillaria",
                                   "strongyloides",
                                   "moniezia",
                                   "coccidia",
@@ -33341,13 +33353,50 @@
                             ],
                             "additionalProperties": false
                           }
+                        },
+                        "gradesByParasite": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "parasiteType": {
+                                "type": "string",
+                                "enum": [
+                                  "strongyles",
+                                  "haemonchus",
+                                  "nematodirus",
+                                  "trichuris",
+                                  "capillaria",
+                                  "strongyloides",
+                                  "moniezia",
+                                  "coccidia",
+                                  "liver_fluke",
+                                  "small_liver_fluke",
+                                  "lungworm",
+                                  "other"
+                                ]
+                              },
+                              "sampleCount": { "type": "number" },
+                              "highestGrade": {
+                                "type": ["string", "null"],
+                                "enum": ["negative", "low", "medium", "high"]
+                              }
+                            },
+                            "required": [
+                              "parasiteType",
+                              "sampleCount",
+                              "highestGrade"
+                            ],
+                            "additionalProperties": false
+                          }
                         }
                       },
                       "required": [
                         "animalCount",
                         "famachaAverage",
                         "famachaDistribution",
-                        "fecByParasite"
+                        "fecByParasite",
+                        "gradesByParasite"
                       ],
                       "additionalProperties": false
                     },
@@ -33378,6 +33427,7 @@
                                   "haemonchus",
                                   "nematodirus",
                                   "trichuris",
+                                  "capillaria",
                                   "strongyloides",
                                   "moniezia",
                                   "coccidia",
@@ -33481,6 +33531,7 @@
                                     "haemonchus",
                                     "nematodirus",
                                     "trichuris",
+                                    "capillaria",
                                     "strongyloides",
                                     "moniezia",
                                     "coccidia",
@@ -33673,6 +33724,7 @@
                               "haemonchus",
                               "nematodirus",
                               "trichuris",
+                              "capillaria",
                               "strongyloides",
                               "moniezia",
                               "coccidia",
@@ -33682,9 +33734,13 @@
                               "other"
                             ]
                           },
-                          "countPerGram": { "type": "number", "minimum": 0 }
+                          "countPerGram": { "type": ["number", "null"] },
+                          "grade": {
+                            "type": ["string", "null"],
+                            "enum": ["negative", "low", "medium", "high"]
+                          }
                         },
-                        "required": ["parasiteType", "countPerGram"],
+                        "required": ["parasiteType", "countPerGram", "grade"],
                         "additionalProperties": false
                       }
                     }
@@ -33743,6 +33799,7 @@
                             "haemonchus",
                             "nematodirus",
                             "trichuris",
+                            "capillaria",
                             "strongyloides",
                             "moniezia",
                             "coccidia",
@@ -33766,13 +33823,50 @@
                       ],
                       "additionalProperties": false
                     }
+                  },
+                  "gradesByParasite": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "parasiteType": {
+                          "type": "string",
+                          "enum": [
+                            "strongyles",
+                            "haemonchus",
+                            "nematodirus",
+                            "trichuris",
+                            "capillaria",
+                            "strongyloides",
+                            "moniezia",
+                            "coccidia",
+                            "liver_fluke",
+                            "small_liver_fluke",
+                            "lungworm",
+                            "other"
+                          ]
+                        },
+                        "sampleCount": { "type": "number" },
+                        "highestGrade": {
+                          "type": ["string", "null"],
+                          "enum": ["negative", "low", "medium", "high"]
+                        }
+                      },
+                      "required": [
+                        "parasiteType",
+                        "sampleCount",
+                        "highestGrade"
+                      ],
+                      "additionalProperties": false
+                    }
                   }
                 },
                 "required": [
                   "animalCount",
                   "famachaAverage",
                   "famachaDistribution",
-                  "fecByParasite"
+                  "fecByParasite",
+                  "gradesByParasite"
                 ],
                 "additionalProperties": false
               },
@@ -33803,6 +33897,7 @@
                             "haemonchus",
                             "nematodirus",
                             "trichuris",
+                            "capillaria",
                             "strongyloides",
                             "moniezia",
                             "coccidia",
@@ -33902,6 +33997,7 @@
                               "haemonchus",
                               "nematodirus",
                               "trichuris",
+                              "capillaria",
                               "strongyloides",
                               "moniezia",
                               "coccidia",
@@ -34028,6 +34124,7 @@
                           "haemonchus",
                           "nematodirus",
                           "trichuris",
+                          "capillaria",
                           "strongyloides",
                           "moniezia",
                           "coccidia",
@@ -34037,9 +34134,16 @@
                           "other"
                         ]
                       },
-                      "countPerGram": { "type": "number", "minimum": 0 }
+                      "countPerGram": {
+                        "type": ["number", "null"],
+                        "minimum": 0
+                      },
+                      "grade": {
+                        "type": ["string", "null"],
+                        "enum": ["negative", "low", "medium", "high"]
+                      }
                     },
-                    "required": ["parasiteType", "countPerGram"]
+                    "required": ["parasiteType"]
                   }
                 }
               },
@@ -34184,6 +34288,7 @@
                               "haemonchus",
                               "nematodirus",
                               "trichuris",
+                              "capillaria",
                               "strongyloides",
                               "moniezia",
                               "coccidia",
@@ -34193,9 +34298,13 @@
                               "other"
                             ]
                           },
-                          "countPerGram": { "type": "number", "minimum": 0 }
+                          "countPerGram": { "type": ["number", "null"] },
+                          "grade": {
+                            "type": ["string", "null"],
+                            "enum": ["negative", "low", "medium", "high"]
+                          }
                         },
-                        "required": ["parasiteType", "countPerGram"],
+                        "required": ["parasiteType", "countPerGram", "grade"],
                         "additionalProperties": false
                       }
                     }
@@ -34254,6 +34363,7 @@
                             "haemonchus",
                             "nematodirus",
                             "trichuris",
+                            "capillaria",
                             "strongyloides",
                             "moniezia",
                             "coccidia",
@@ -34277,13 +34387,50 @@
                       ],
                       "additionalProperties": false
                     }
+                  },
+                  "gradesByParasite": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "parasiteType": {
+                          "type": "string",
+                          "enum": [
+                            "strongyles",
+                            "haemonchus",
+                            "nematodirus",
+                            "trichuris",
+                            "capillaria",
+                            "strongyloides",
+                            "moniezia",
+                            "coccidia",
+                            "liver_fluke",
+                            "small_liver_fluke",
+                            "lungworm",
+                            "other"
+                          ]
+                        },
+                        "sampleCount": { "type": "number" },
+                        "highestGrade": {
+                          "type": ["string", "null"],
+                          "enum": ["negative", "low", "medium", "high"]
+                        }
+                      },
+                      "required": [
+                        "parasiteType",
+                        "sampleCount",
+                        "highestGrade"
+                      ],
+                      "additionalProperties": false
+                    }
                   }
                 },
                 "required": [
                   "animalCount",
                   "famachaAverage",
                   "famachaDistribution",
-                  "fecByParasite"
+                  "fecByParasite",
+                  "gradesByParasite"
                 ],
                 "additionalProperties": false
               },
@@ -34314,6 +34461,7 @@
                             "haemonchus",
                             "nematodirus",
                             "trichuris",
+                            "capillaria",
                             "strongyloides",
                             "moniezia",
                             "coccidia",
@@ -34413,6 +34561,7 @@
                               "haemonchus",
                               "nematodirus",
                               "trichuris",
+                              "capillaria",
                               "strongyloides",
                               "moniezia",
                               "coccidia",
@@ -34597,6 +34746,7 @@
                               "haemonchus",
                               "nematodirus",
                               "trichuris",
+                              "capillaria",
                               "strongyloides",
                               "moniezia",
                               "coccidia",
@@ -34606,9 +34756,13 @@
                               "other"
                             ]
                           },
-                          "countPerGram": { "type": "number", "minimum": 0 }
+                          "countPerGram": { "type": ["number", "null"] },
+                          "grade": {
+                            "type": ["string", "null"],
+                            "enum": ["negative", "low", "medium", "high"]
+                          }
                         },
-                        "required": ["parasiteType", "countPerGram"],
+                        "required": ["parasiteType", "countPerGram", "grade"],
                         "additionalProperties": false
                       }
                     }
@@ -34667,6 +34821,7 @@
                             "haemonchus",
                             "nematodirus",
                             "trichuris",
+                            "capillaria",
                             "strongyloides",
                             "moniezia",
                             "coccidia",
@@ -34690,13 +34845,50 @@
                       ],
                       "additionalProperties": false
                     }
+                  },
+                  "gradesByParasite": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "parasiteType": {
+                          "type": "string",
+                          "enum": [
+                            "strongyles",
+                            "haemonchus",
+                            "nematodirus",
+                            "trichuris",
+                            "capillaria",
+                            "strongyloides",
+                            "moniezia",
+                            "coccidia",
+                            "liver_fluke",
+                            "small_liver_fluke",
+                            "lungworm",
+                            "other"
+                          ]
+                        },
+                        "sampleCount": { "type": "number" },
+                        "highestGrade": {
+                          "type": ["string", "null"],
+                          "enum": ["negative", "low", "medium", "high"]
+                        }
+                      },
+                      "required": [
+                        "parasiteType",
+                        "sampleCount",
+                        "highestGrade"
+                      ],
+                      "additionalProperties": false
+                    }
                   }
                 },
                 "required": [
                   "animalCount",
                   "famachaAverage",
                   "famachaDistribution",
-                  "fecByParasite"
+                  "fecByParasite",
+                  "gradesByParasite"
                 ],
                 "additionalProperties": false
               },
@@ -34727,6 +34919,7 @@
                             "haemonchus",
                             "nematodirus",
                             "trichuris",
+                            "capillaria",
                             "strongyloides",
                             "moniezia",
                             "coccidia",
@@ -34826,6 +35019,7 @@
                               "haemonchus",
                               "nematodirus",
                               "trichuris",
+                              "capillaria",
                               "strongyloides",
                               "moniezia",
                               "coccidia",
@@ -34952,6 +35146,7 @@
                           "haemonchus",
                           "nematodirus",
                           "trichuris",
+                          "capillaria",
                           "strongyloides",
                           "moniezia",
                           "coccidia",
@@ -34961,9 +35156,16 @@
                           "other"
                         ]
                       },
-                      "countPerGram": { "type": "number", "minimum": 0 }
+                      "countPerGram": {
+                        "type": ["number", "null"],
+                        "minimum": 0
+                      },
+                      "grade": {
+                        "type": ["string", "null"],
+                        "enum": ["negative", "low", "medium", "high"]
+                      }
                     },
-                    "required": ["parasiteType", "countPerGram"]
+                    "required": ["parasiteType"]
                   }
                 }
               },

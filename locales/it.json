@@ -1760,6 +1760,7 @@
     "famacha_distribution": "Distribuzione FAMACHA",
     "samples": "Campioni di feci",
     "lab_name": "Laboratorio",
+    "lab_name_optional": "Laboratorio (facoltativo)",
     "sample_label": "Denominazione (facoltativo)",
     "pooled_sample": "Campione collettivo ({{count}} animali)",
     "individual_sample": "Campione individuale",
@@ -1783,6 +1784,7 @@
       "haemonchus": "Verme rosso",
       "nematodirus": "Nematodirus",
       "trichuris": "Tricocefali",
+      "capillaria": "Capillaria",
       "strongyloides": "Strongiloidi",
       "moniezia": "Tenie",
       "coccidia": "Coccidi",
@@ -1819,9 +1821,24 @@
     "select_from_herd": "Riprendi gli animali da una mandria (facoltativo)",
     "mixed_animal_types": "Un controllo può contenere solo animali di una specie.",
     "average_per_check": "Ø per controllo",
+    "average_grade_per_check": "Ø grado per controllo",
     "chart_counts_info": "Numeri nei grafici = numero di animali controllati",
     "change_percent": "variazione (%)",
     "change_to_base": "Variazione rispetto al controllo iniziale",
-    "all_base_animals_dead": "Tutti gli animali del controllo iniziale sono morti o non esistono più."
+    "all_base_animals_dead": "Tutti gli animali del controllo iniziale sono morti o non esistono più.",
+    "grade": "Grado",
+    "grades": {
+      "negative": "–",
+      "low": "+ basso",
+      "medium": "++ medio",
+      "high": "+++ alto"
+    },
+    "grades_short": {
+      "negative": "–",
+      "low": "+",
+      "medium": "++",
+      "high": "+++"
+    },
+    "result_value": "Valore"
   }
 }

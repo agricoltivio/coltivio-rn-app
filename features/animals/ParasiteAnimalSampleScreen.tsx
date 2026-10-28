@@ -12,7 +12,7 @@ import { ParasiteAnimalSampleScreenProps } from "./navigation/animals-routes";
 import { animalDisplayName } from "./ParasiteCharts";
 import { ParasiteResultsEditor } from "./ParasiteResultsEditor";
 import {
-  nextResultKey,
+  newResultDraft,
   useParasiteSampleDraftStore,
 } from "./parasite-sample-draft.store";
 
@@ -32,10 +32,8 @@ export function ParasiteAnimalSampleScreen({
   );
 
   // Start with one empty strongyles row for a new animal (stable key until first edit)
-  const [emptyRowKey] = useState(() => nextResultKey());
-  const results = animalResults ?? [
-    { key: emptyRowKey, parasiteType: "strongyles", countPerGram: "" },
-  ];
+  const [emptyRows] = useState(() => [newResultDraft("strongyles")]);
+  const results = animalResults ?? [...emptyRows];
 
   const title = animal
     ? animalDisplayName(animal.name, animal.earTag?.number)

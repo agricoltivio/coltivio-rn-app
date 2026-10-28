@@ -19,6 +19,7 @@ import {
 import { getYearColor } from "./chartColors";
 import { ChartMode } from "./ChartViewSwitcher";
 import { ChartPressTooltip } from "./ChartPressTooltip";
+import { ChartTooltipCard } from "./ChartTooltipCard";
 import { UnitBreakdownEntry } from "./unitBreakdown";
 import { formatYValue, UnitScale } from "./unitScaling";
 
@@ -168,7 +169,6 @@ export function MonthCartesianChart({
     },
   );
   const [chartWidth, setChartWidth] = useState(0);
-  const [tooltipWidth, setTooltipWidth] = useState(0);
   const scrubGesture = useMemo(() => {
     const updateFromX = (x: number) => {
       "worklet";
@@ -248,15 +248,11 @@ export function MonthCartesianChart({
 
   if (selectedYears.length === 0) return null;
 
-  // Tooltip centered above the touched month, kept inside the chart
+  // Tooltip centered above the touched month
   const { left: plotLeft, right: plotRight } = chartBoundsRef.current;
   const scrubbedMonthX =
     plotLeft +
     ((plotRight - plotLeft) * Math.max(0, scrubbedMonth)) / LAST_MONTH_INDEX;
-  const tooltipLeft = Math.min(
-    Math.max(0, scrubbedMonthX - tooltipWidth / 2),
-    Math.max(0, chartWidth - tooltipWidth),
-  );
 
   return (
     <View>
@@ -334,27 +330,9 @@ export function MonthCartesianChart({
           )}
         </CartesianChart>
 
-        {/* Floating tooltip while the chart is touched; positioned over the
-            chart so its size doesn't move the chart */}
+        {/* Floating tooltip while the chart is touched */}
         {scrubbedMonth >= 0 && (
-          <View
-            pointerEvents="none"
-            onLayout={(event) =>
-              setTooltipWidth(event.nativeEvent.layout.width)
-            }
-            style={{
-              position: "absolute",
-              top: 0,
-              left: tooltipLeft,
-              borderRadius: theme.radii.m,
-              backgroundColor: theme.colors.white,
-              shadowColor: "#000",
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.15,
-              shadowRadius: 6,
-              elevation: 4,
-            }}
-          >
+          <ChartTooltipCard anchorX={scrubbedMonthX} chartWidth={chartWidth}>
             <ChartPressTooltip
               activeMonth={scrubbedMonth}
               monthLabels={monthLabelsFull}
@@ -366,7 +344,7 @@ export function MonthCartesianChart({
               perUnitLabel={perUnitLabel}
               getBreakdown={getBreakdown}
             />
-          </View>
+          </ChartTooltipCard>
         )}
       </View>
     </View>

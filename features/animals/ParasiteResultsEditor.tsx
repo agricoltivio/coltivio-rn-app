@@ -6,14 +6,18 @@ import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { PARASITE_TYPES, parasiteCountUnitKey } from "./ParasiteCharts";
+import {
+  PARASITE_RESULT_GRADES,
+  PARASITE_TYPES,
+  parasiteCountUnitKey,
+} from "./ParasiteCharts";
 import {
   hasDuplicateParasiteType,
-  nextResultKey,
+  newResultDraft,
   ParasiteResultDraft,
 } from "./parasite-sample-draft.store";
 
-const EGGS_INPUT_WIDTH = 72;
+const EGGS_INPUT_WIDTH = 80;
 
 // Editable list of parasite / eggs-per-gram rows of one sample
 export function ParasiteResultsEditor({
@@ -29,6 +33,10 @@ export function ParasiteResultsEditor({
   const parasiteTypeOptions = PARASITE_TYPES.map((parasiteType) => ({
     label: t(`parasite_checks.parasite_types.${parasiteType}`),
     value: parasiteType,
+  }));
+  const gradeOptions = PARASITE_RESULT_GRADES.map((grade) => ({
+    label: t(`parasite_checks.grades.${grade}`),
+    value: grade,
   }));
 
   function updateResult(
@@ -47,10 +55,7 @@ export function ParasiteResultsEditor({
     const usedTypes = new Set(results.map((result) => result.parasiteType));
     const nextType =
       PARASITE_TYPES.find((type) => !usedTypes.has(type)) ?? "other";
-    onChange([
-      ...results,
-      { key: nextResultKey(), parasiteType: nextType, countPerGram: "" },
-    ]);
+    onChange([...results, newResultDraft(nextType)]);
   }
 
   return (
@@ -85,22 +90,77 @@ export function ParasiteResultsEditor({
                   const matchingType = PARASITE_TYPES.find(
                     (type) => type === parasiteType,
                   );
-                  if (matchingType) {
-                    updateResult(result.key, { parasiteType: matchingType });
-                  }
+                  if (!matchingType) return;
+                  // An empty row switches to the usual result kind of the parasite
+                  const isEmpty =
+                    result.countPerGram === "" &&
+                    (result.grade === null || result.grade === "negative");
+                  updateResult(result.key, {
+                    parasiteType: matchingType,
+                    ...(isEmpty
+                      ? { useGrade: newResultDraft(matchingType).useGrade }
+                      : {}),
+                  });
                 }}
               />
             </View>
             <View style={{ width: EGGS_INPUT_WIDTH }}>
-              <NumberInput
-                float
-                label={t(parasiteCountUnitKey(result.parasiteType))}
-                value={result.countPerGram}
-                onChangeText={(countPerGram) =>
-                  updateResult(result.key, { countPerGram })
-                }
-              />
+              {result.useGrade ? (
+                <Select
+                  singleLine
+                  label={t("parasite_checks.result_value")}
+                  value={result.grade ?? "negative"}
+                  data={gradeOptions}
+                  onChange={(grade) =>
+                    updateResult(result.key, {
+                      grade:
+                        PARASITE_RESULT_GRADES.find(
+                          (option) => option === grade,
+                        ) ?? "negative",
+                    })
+                  }
+                />
+              ) : (
+                <NumberInput
+                  float
+                  label={t("parasite_checks.result_value")}
+                  value={result.countPerGram}
+                  onChangeText={(countPerGram) =>
+                    updateResult(result.key, { countPerGram })
+                  }
+                />
+              )}
             </View>
+            {/* The unit decides whether the value is a count (EpG/OpG/LpG) or a
+                grade (+/++/+++); tapping it switches */}
+            <TouchableOpacity
+              onPress={() =>
+                updateResult(result.key, {
+                  useGrade: !result.useGrade,
+                  grade: result.grade ?? "negative",
+                })
+              }
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 2,
+                paddingHorizontal: 8,
+                paddingVertical: 6,
+                borderRadius: 14,
+                backgroundColor: theme.colors.gray4,
+              }}
+            >
+              <Subtitle style={{ fontSize: 12, color: theme.colors.gray1 }}>
+                {result.useGrade
+                  ? t("parasite_checks.grade")
+                  : t(parasiteCountUnitKey(result.parasiteType))}
+              </Subtitle>
+              <Ionicons
+                name="swap-vertical"
+                size={12}
+                color={theme.colors.gray2}
+              />
+            </TouchableOpacity>
             <IonIconButton
               icon="trash-outline"
               type="ghost"

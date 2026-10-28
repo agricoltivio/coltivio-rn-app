@@ -18,6 +18,7 @@ import {
   animalDisplayName,
   FAMACHA_COLORS,
   formatCountChange,
+  formatResultValue,
   FamachaBadge,
   FamachaDistributionRows,
   PARASITE_TYPES,
@@ -299,6 +300,7 @@ export function ParasiteCheckDetailScreen({
                         markers={treatmentDates}
                         // A count can drop by at most 100%
                         minValue={-100}
+                        unitLabel="%"
                         color={theme.colors.primary}
                       />
                       <ChartLegend
@@ -399,6 +401,24 @@ export function ParasiteCheckDetailScreen({
                       ? `Ø ${Math.round(entry.avgCountPerGram)} (${Math.round(entry.minCountPerGram)}–${Math.round(entry.maxCountPerGram)})`
                       : Math.round(entry.avgCountPerGram)}{" "}
                     {t(parasiteCountUnitKey(entry.parasiteType))}
+                  </Subtitle>
+                </View>
+              ))}
+              {/* Graded results (+/++/+++), highest grade per parasite */}
+              {check.summary.gradesByParasite.map((entry) => (
+                <View
+                  key={entry.parasiteType}
+                  style={{
+                    flexDirection: "row",
+                    gap: theme.spacing.s,
+                    paddingVertical: 2,
+                  }}
+                >
+                  <Subtitle numberOfLines={1} style={{ flex: 1 }}>
+                    {t(`parasite_checks.parasite_types.${entry.parasiteType}`)}
+                  </Subtitle>
+                  <Subtitle style={{ flexShrink: 0, fontWeight: "600" }}>
+                    {t(`parasite_checks.grades_short.${entry.highestGrade}`)}
                   </Subtitle>
                 </View>
               ))}
@@ -596,8 +616,7 @@ export function ParasiteCheckDetailScreen({
                         {t(
                           `parasite_checks.parasite_types.${result.parasiteType}`,
                         )}{" "}
-                        ({Math.round(result.countPerGram)}{" "}
-                        {t(parasiteCountUnitKey(result.parasiteType))})
+                        ({formatResultValue(result, t)})
                       </Subtitle>
                     ))}
                 </ListItem.Content>

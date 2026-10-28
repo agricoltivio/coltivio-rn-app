@@ -1,4 +1,10 @@
-import { ParasiteType } from "@/api/parasite-checks.api";
+import {
+  ParasiteResult,
+  ParasiteResultGrade,
+  ParasiteType,
+} from "@/api/parasite-checks.api";
+import { ChartTooltipCard } from "@/components/charts/ChartTooltipCard";
+import { Text } from "@/components/text/Text";
 import { Subtitle } from "@/theme/Typography";
 import { parseDateOnly } from "@/utils/date";
 import { useState } from "react";
@@ -9,6 +15,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import {
   Circle,
   G,
@@ -36,11 +43,20 @@ export const FAMACHA_TEXT_COLORS: Record<number, string> = {
   5: "#5D4037",
 };
 
+// Ordered from none to most; the index is the value on a grade chart axis
+export const PARASITE_RESULT_GRADES: ParasiteResultGrade[] = [
+  "negative",
+  "low",
+  "medium",
+  "high",
+];
+
 export const PARASITE_TYPES: ParasiteType[] = [
   "strongyles",
   "haemonchus",
   "nematodirus",
   "trichuris",
+  "capillaria",
   "strongyloides",
   "moniezia",
   "coccidia",
@@ -142,6 +158,9 @@ export function TimelineChart({
   minValue,
   maxValue: fixedMaxValue,
   invertY = false,
+  gradeScale = false,
+  averageValues = false,
+  unitLabel,
   color,
   height = 140,
 }: {
@@ -152,12 +171,20 @@ export function TimelineChart({
   maxValue?: number;
   // FAMACHA: 1 (good) at the top
   invertY?: boolean;
+  // Grades: fixed 0–3 axis (index in PARASITE_RESULT_GRADES) labelled – / + / ++ / +++
+  gradeScale?: boolean;
+  // Values are averages per check: the tooltip shows "Ø"
+  averageValues?: boolean;
+  // Shown after the value in the tooltip, e.g. "EpG" or "%"
+  unitLabel?: string;
   color: string;
   height?: number;
 }) {
   const theme = useTheme();
   const { t, i18n } = useTranslation();
   const [width, setWidth] = useState(0);
+  // Index of the touched point in the visible points; null = no tooltip
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   function onLayout(event: LayoutChangeEvent) {
     setWidth(event.nativeEvent.layout.width);
@@ -167,9 +194,10 @@ export function TimelineChart({
     .sort((a, b) => a.date.getTime() - b.date.getTime())
     .slice(-MAX_TIMELINE_POINTS);
   const isTruncated = allPoints.length > points.length;
-  const maxValue =
-    fixedMaxValue ??
-    Math.max(MIN_AUTO_MAX_VALUE, ...points.map((point) => point.value));
+  const maxValue = gradeScale
+    ? PARASITE_RESULT_GRADES.length - 1
+    : (fixedMaxValue ??
+      Math.max(MIN_AUTO_MAX_VALUE, ...points.map((point) => point.value)));
 
   const paddingLeft = 32;
   const paddingRight = 12;
@@ -205,10 +233,70 @@ export function TimelineChart({
   }
 
   const sortedPoints = points;
-  const yTicks = [minValue, (minValue + maxValue) / 2, maxValue];
+  const yTicks = gradeScale
+    ? PARASITE_RESULT_GRADES.map((_grade, index) => index)
+    : [minValue, (minValue + maxValue) / 2, maxValue];
+  function tickLabel(tick: number) {
+    if (gradeScale) {
+      const grade = PARASITE_RESULT_GRADES[tick];
+      return grade ? t(`parasite_checks.grades_short.${grade}`) : "";
+    }
+    return String(Number.isInteger(tick) ? tick : Math.round(tick));
+  }
   const dateFormatter = new Intl.DateTimeFormat(i18n.language, {
     month: "short",
     year: "2-digit",
+  });
+
+  function nearestPointIndex(touchX: number) {
+    let nearestIndex = 0;
+    points.forEach((point, index) => {
+      if (
+        Math.abs(xFor(point.date) - touchX) <
+        Math.abs(xFor(points[nearestIndex].date) - touchX)
+      )
+        nearestIndex = index;
+    });
+    return nearestIndex;
+  }
+
+  // Tap shows the nearest point's value (tap it again to hide); hold and drag
+  // scrubs through the points. A plain horizontal swipe stays with the
+  // surrounding chart pager.
+  const tapGesture = Gesture.Tap()
+    .runOnJS(true)
+    .onEnd((event) => {
+      const touchedIndex = nearestPointIndex(event.x);
+      setActiveIndex((current) =>
+        current === touchedIndex ? null : touchedIndex,
+      );
+    });
+  const scrubGesture = Gesture.Pan()
+    .runOnJS(true)
+    .activateAfterLongPress(200)
+    .onStart((event) => setActiveIndex(nearestPointIndex(event.x)))
+    .onUpdate((event) => setActiveIndex(nearestPointIndex(event.x)));
+  const chartGesture = Gesture.Exclusive(scrubGesture, tapGesture);
+
+  // Like the web: "150 EpG", "++ mittel"; averages "Ø 150 EpG",
+  // "Ø ++ mittel (1.6)" (nearest step and the exact value)
+  function formatTooltipValue(value: number) {
+    const rounded = Math.round(value * 10) / 10;
+    const averagePrefix = averageValues ? "Ø " : "";
+    if (gradeScale) {
+      const grade = PARASITE_RESULT_GRADES[Math.round(value)];
+      if (!grade) return "";
+      const gradeLabel = t(`parasite_checks.grades.${grade}`);
+      return Number.isInteger(value)
+        ? `${averagePrefix}${gradeLabel}`
+        : `${averagePrefix}${gradeLabel} (${rounded})`;
+    }
+    return `${averagePrefix}${rounded}${unitLabel ? ` ${unitLabel}` : ""}`;
+  }
+  // Data can reload with fewer points while a tooltip is open
+  const activePoint = activeIndex !== null ? points[activeIndex] : undefined;
+  const tooltipDateFormatter = new Intl.DateTimeFormat(i18n.language, {
+    dateStyle: "medium",
   });
 
   return (
@@ -227,92 +315,134 @@ export function TimelineChart({
         </Subtitle>
       )}
       {width > 0 && points.length > 0 ? (
-        <Svg width={width} height={height}>
-          {yTicks.map((tick) => (
-            <G key={tick}>
-              <Line
-                x1={paddingLeft}
-                y1={yFor(tick)}
-                x2={paddingLeft + plotWidth}
-                y2={yFor(tick)}
-                stroke={theme.colors.gray4}
-                strokeWidth={1}
-              />
+        <GestureDetector gesture={chartGesture}>
+          <View>
+            <Svg width={width} height={height}>
+              {yTicks.map((tick) => (
+                <G key={tick}>
+                  <Line
+                    x1={paddingLeft}
+                    y1={yFor(tick)}
+                    x2={paddingLeft + plotWidth}
+                    y2={yFor(tick)}
+                    stroke={theme.colors.gray4}
+                    strokeWidth={1}
+                  />
+                  <SvgText
+                    x={paddingLeft - 6}
+                    y={yFor(tick) + 3}
+                    fontSize={9}
+                    fill={theme.colors.gray2}
+                    textAnchor="end"
+                  >
+                    {tickLabel(tick)}
+                  </SvgText>
+                </G>
+              ))}
+              {visibleMarkers.map((marker, index) => (
+                <Line
+                  key={`marker-${index}`}
+                  x1={xFor(marker)}
+                  y1={paddingTop}
+                  x2={xFor(marker)}
+                  y2={paddingTop + plotHeight}
+                  stroke={theme.colors.warning}
+                  strokeWidth={1.5}
+                  strokeDasharray="4,3"
+                />
+              ))}
+              {/* Vertical line at the touched point */}
+              {activePoint && (
+                <Line
+                  x1={xFor(activePoint.date)}
+                  y1={paddingTop}
+                  x2={xFor(activePoint.date)}
+                  y2={paddingTop + plotHeight}
+                  stroke={theme.colors.gray1}
+                  strokeWidth={1}
+                />
+              )}
+              {sortedPoints.length > 1 && (
+                <Polyline
+                  points={sortedPoints
+                    .map((point) => `${xFor(point.date)},${yFor(point.value)}`)
+                    .join(" ")}
+                  fill="none"
+                  stroke={color}
+                  strokeWidth={2}
+                />
+              )}
+              {sortedPoints.map((point, index) => (
+                <G key={index}>
+                  <Circle
+                    cx={xFor(point.date)}
+                    cy={yFor(point.value)}
+                    r={index === activeIndex ? 6 : 4}
+                    fill={color}
+                  />
+                  {point.label && (
+                    <SvgText
+                      x={xFor(point.date)}
+                      y={yFor(point.value) - 7}
+                      fontSize={9}
+                      fill={theme.colors.gray2}
+                      textAnchor="middle"
+                    >
+                      {point.label}
+                    </SvgText>
+                  )}
+                </G>
+              ))}
               <SvgText
-                x={paddingLeft - 6}
-                y={yFor(tick) + 3}
+                x={paddingLeft}
+                y={height - 6}
                 fontSize={9}
                 fill={theme.colors.gray2}
-                textAnchor="end"
+                textAnchor="start"
               >
-                {Number.isInteger(tick) ? tick : Math.round(tick)}
+                {dateFormatter.format(new Date(minTime))}
               </SvgText>
-            </G>
-          ))}
-          {visibleMarkers.map((marker, index) => (
-            <Line
-              key={`marker-${index}`}
-              x1={xFor(marker)}
-              y1={paddingTop}
-              x2={xFor(marker)}
-              y2={paddingTop + plotHeight}
-              stroke={theme.colors.warning}
-              strokeWidth={1.5}
-              strokeDasharray="4,3"
-            />
-          ))}
-          {sortedPoints.length > 1 && (
-            <Polyline
-              points={sortedPoints
-                .map((point) => `${xFor(point.date)},${yFor(point.value)}`)
-                .join(" ")}
-              fill="none"
-              stroke={color}
-              strokeWidth={2}
-            />
-          )}
-          {sortedPoints.map((point, index) => (
-            <G key={index}>
-              <Circle
-                cx={xFor(point.date)}
-                cy={yFor(point.value)}
-                r={4}
-                fill={color}
-              />
-              {point.label && (
+              {maxTime !== minTime && (
                 <SvgText
-                  x={xFor(point.date)}
-                  y={yFor(point.value) - 7}
+                  x={paddingLeft + plotWidth}
+                  y={height - 6}
                   fontSize={9}
                   fill={theme.colors.gray2}
-                  textAnchor="middle"
+                  textAnchor="end"
                 >
-                  {point.label}
+                  {dateFormatter.format(new Date(maxTime))}
                 </SvgText>
               )}
-            </G>
-          ))}
-          <SvgText
-            x={paddingLeft}
-            y={height - 6}
-            fontSize={9}
-            fill={theme.colors.gray2}
-            textAnchor="start"
-          >
-            {dateFormatter.format(new Date(minTime))}
-          </SvgText>
-          {maxTime !== minTime && (
-            <SvgText
-              x={paddingLeft + plotWidth}
-              y={height - 6}
-              fontSize={9}
-              fill={theme.colors.gray2}
-              textAnchor="end"
-            >
-              {dateFormatter.format(new Date(maxTime))}
-            </SvgText>
-          )}
-        </Svg>
+            </Svg>
+            {activePoint && (
+              <ChartTooltipCard
+                anchorX={xFor(activePoint.date)}
+                chartWidth={width}
+              >
+                <View
+                  style={{
+                    paddingHorizontal: theme.spacing.s,
+                    paddingVertical: theme.spacing.xs,
+                    alignItems: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontWeight: "600",
+                      color: theme.colors.gray1,
+                    }}
+                  >
+                    {tooltipDateFormatter.format(activePoint.date)}
+                  </Text>
+                  <Text style={{ fontSize: 12, color: theme.colors.gray1 }}>
+                    {formatTooltipValue(activePoint.value)}
+                  </Text>
+                </View>
+              </ChartTooltipCard>
+            )}
+          </View>
+        </GestureDetector>
       ) : (
         <View style={{ height }} />
       )}
@@ -461,4 +591,14 @@ export function formatCountChange(reductionPercent: number | null): string {
   if (reductionPercent === null) return "–";
   const changePercent = Math.round(-reductionPercent);
   return `${changePercent > 0 ? "+" : ""}${changePercent}%`;
+}
+
+// "150 EpG" for a count, "++" for a grade
+export function formatResultValue(
+  result: ParasiteResult,
+  t: (key: string) => string,
+): string {
+  if (result.grade !== null)
+    return t(`parasite_checks.grades_short.${result.grade}`);
+  return `${Math.round(result.countPerGram ?? 0)} ${t(parasiteCountUnitKey(result.parasiteType))}`;
 }

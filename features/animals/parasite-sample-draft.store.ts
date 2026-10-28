@@ -1,11 +1,34 @@
-import { ParasiteCheck, ParasiteType } from "@/api/parasite-checks.api";
+import {
+  ParasiteCheck,
+  ParasiteResultGrade,
+  ParasiteType,
+} from "@/api/parasite-checks.api";
 import { create } from "zustand";
 
+// A result is entered either as a count or as a grade (+/++/+++)
 export type ParasiteResultDraft = {
   key: string;
   parasiteType: ParasiteType;
+  useGrade: boolean;
   countPerGram: string;
+  grade: ParasiteResultGrade | null;
 };
+
+// Labs usually report these only as + / ++ / +++ (or tapeworm eggs detected)
+const GRADED_BY_DEFAULT: ParasiteType[] = ["coccidia", "lungworm", "moniezia"];
+
+export function newResultDraft(
+  parasiteType: ParasiteType,
+): ParasiteResultDraft {
+  return {
+    key: nextResultKey(),
+    parasiteType,
+    useGrade: GRADED_BY_DEFAULT.includes(parasiteType),
+    countPerGram: "",
+    // A graded row always has a value; "–" (negative) until something is found
+    grade: "negative",
+  };
+}
 
 // A check holds either one pooled sample for all animals or one sample per animal
 export type ParasiteSampleMode = "pooled" | "individual";
@@ -62,7 +85,10 @@ export const useParasiteSampleDraftStore = create<ParasiteSampleDraftState>(
         results.map((result) => ({
           key: nextResultKey(),
           parasiteType: result.parasiteType,
-          countPerGram: String(result.countPerGram),
+          useGrade: result.grade !== null,
+          countPerGram:
+            result.countPerGram !== null ? String(result.countPerGram) : "",
+          grade: result.grade,
         }));
       const pooledSample = check.fecSamples.find((sample) => sample.pooled);
       if (pooledSample) {
@@ -89,9 +115,22 @@ export const useParasiteSampleDraftStore = create<ParasiteSampleDraftState>(
   }),
 );
 
-// Rows with a valid entered value only (e.g. "." is not a number)
-export function filledResults(results: ParasiteResultDraft[] | undefined) {
-  return (results ?? []).flatMap((result) => {
+// Rows with a valid entered value only (a grade, or a count; "." is not a number)
+type FilledResult = {
+  parasiteType: ParasiteType;
+  countPerGram?: number;
+  grade?: ParasiteResultGrade;
+};
+
+export function filledResults(
+  results: ParasiteResultDraft[] | undefined,
+): FilledResult[] {
+  return (results ?? []).flatMap((result): FilledResult[] => {
+    if (result.useGrade) {
+      return result.grade
+        ? [{ parasiteType: result.parasiteType, grade: result.grade }]
+        : [];
+    }
     const countPerGram = parseFloat(result.countPerGram);
     return Number.isFinite(countPerGram)
       ? [{ parasiteType: result.parasiteType, countPerGram }]

@@ -15,6 +15,8 @@ import {
   animalDisplayName,
   FAMACHA_COLORS,
   FamachaBadge,
+  formatResultValue,
+  PARASITE_RESULT_GRADES,
   PARASITE_TYPES,
   parasiteCountUnitKey,
   TimelineChart,
@@ -69,24 +71,35 @@ export function AnimalParasiteHistoryScreen({
     [history],
   );
 
-  // One chart page per parasite type this animal has results for
+  // One chart page per parasite type this animal has results for.
+  // Counts and grades can't share an axis: a parasite with any counts gets a
+  // count chart, one with only grades a grade chart (– / + / ++ / +++).
   const fecChartPages = useMemo(
     () =>
       PARASITE_TYPES.flatMap((parasiteType) => {
-        const points = (history?.fecResults ?? []).flatMap((fecResult) => {
+        const results = (history?.fecResults ?? []).flatMap((fecResult) => {
           const result = fecResult.results.find(
             (entry) => entry.parasiteType === parasiteType,
           );
           return result
-            ? [
-                {
-                  date: parseDateOnly(fecResult.date),
-                  value: result.countPerGram,
-                },
-              ]
+            ? [{ date: parseDateOnly(fecResult.date), result }]
             : [];
         });
-        return points.length > 0 ? [{ parasiteType, points }] : [];
+        const countPoints = results.flatMap(({ date, result }) =>
+          result.countPerGram !== null
+            ? [{ date, value: result.countPerGram }]
+            : [],
+        );
+        if (countPoints.length > 0)
+          return [{ parasiteType, points: countPoints, graded: false }];
+        const gradePoints = results.flatMap(({ date, result }) =>
+          result.grade !== null
+            ? [{ date, value: PARASITE_RESULT_GRADES.indexOf(result.grade) }]
+            : [],
+        );
+        return gradePoints.length > 0
+          ? [{ parasiteType, points: gradePoints, graded: true }]
+          : [];
       }),
     [history],
   );
@@ -118,7 +131,7 @@ export function AnimalParasiteHistoryScreen({
           text: fecResult.results
             .map(
               (result) =>
-                `${t(`parasite_checks.parasite_types.${result.parasiteType}`)} ${Math.round(result.countPerGram)} ${t(parasiteCountUnitKey(result.parasiteType))}`,
+                `${t(`parasite_checks.parasite_types.${result.parasiteType}`)} ${formatResultValue(result, t)}`,
             )
             .join(" · "),
         }),
@@ -200,7 +213,7 @@ export function AnimalParasiteHistoryScreen({
                     },
                   ]
                 : []),
-              ...fecChartPages.map(({ parasiteType, points }) => ({
+              ...fecChartPages.map(({ parasiteType, points, graded }) => ({
                 key: parasiteType,
                 content: (
                   <View>
@@ -211,12 +224,21 @@ export function AnimalParasiteHistoryScreen({
                       }}
                     >
                       {t(`parasite_checks.parasite_types.${parasiteType}`)} (
-                      {t(parasiteCountUnitKey(parasiteType))})
+                      {graded
+                        ? t("parasite_checks.grade")
+                        : t(parasiteCountUnitKey(parasiteType))}
+                      )
                     </Subtitle>
                     <TimelineChart
                       points={points}
                       markers={treatmentDates}
                       minValue={0}
+                      gradeScale={graded}
+                      unitLabel={
+                        graded
+                          ? undefined
+                          : t(parasiteCountUnitKey(parasiteType))
+                      }
                       color={theme.colors.primary}
                     />
                     <ChartLegend

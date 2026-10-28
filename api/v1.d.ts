@@ -9445,6 +9445,7 @@ export interface components {
               | "haemonchus"
               | "nematodirus"
               | "trichuris"
+              | "capillaria"
               | "strongyloides"
               | "moniezia"
               | "coccidia"
@@ -9452,7 +9453,9 @@ export interface components {
               | "small_liver_fluke"
               | "lungworm"
               | "other";
-            countPerGram: number;
+            countPerGram: number | null;
+            /** @enum {string|null} */
+            grade: "negative" | "low" | "medium" | "high" | null;
           }[];
         }[];
         treatments: {
@@ -10527,6 +10530,7 @@ export interface components {
                 | "haemonchus"
                 | "nematodirus"
                 | "trichuris"
+                | "capillaria"
                 | "strongyloides"
                 | "moniezia"
                 | "coccidia"
@@ -10534,7 +10538,9 @@ export interface components {
                 | "small_liver_fluke"
                 | "lungworm"
                 | "other";
-              countPerGram: number;
+              countPerGram: number | null;
+              /** @enum {string|null} */
+              grade: "negative" | "low" | "medium" | "high" | null;
             }[];
           }[];
           followUpTasks: {
@@ -10562,6 +10568,7 @@ export interface components {
                 | "haemonchus"
                 | "nematodirus"
                 | "trichuris"
+                | "capillaria"
                 | "strongyloides"
                 | "moniezia"
                 | "coccidia"
@@ -10573,6 +10580,25 @@ export interface components {
               minCountPerGram: number;
               avgCountPerGram: number;
               maxCountPerGram: number;
+            }[];
+            gradesByParasite: {
+              /** @enum {string} */
+              parasiteType:
+                | "strongyles"
+                | "haemonchus"
+                | "nematodirus"
+                | "trichuris"
+                | "capillaria"
+                | "strongyloides"
+                | "moniezia"
+                | "coccidia"
+                | "liver_fluke"
+                | "small_liver_fluke"
+                | "lungworm"
+                | "other";
+              sampleCount: number;
+              /** @enum {string|null} */
+              highestGrade: "negative" | "low" | "medium" | "high" | null;
             }[];
           };
           comparisonToPrevious: {
@@ -10592,6 +10618,7 @@ export interface components {
                 | "haemonchus"
                 | "nematodirus"
                 | "trichuris"
+                | "capillaria"
                 | "strongyloides"
                 | "moniezia"
                 | "coccidia"
@@ -10639,6 +10666,7 @@ export interface components {
                 | "haemonchus"
                 | "nematodirus"
                 | "trichuris"
+                | "capillaria"
                 | "strongyloides"
                 | "moniezia"
                 | "coccidia"
@@ -10720,6 +10748,7 @@ export interface components {
               | "haemonchus"
               | "nematodirus"
               | "trichuris"
+              | "capillaria"
               | "strongyloides"
               | "moniezia"
               | "coccidia"
@@ -10727,7 +10756,9 @@ export interface components {
               | "small_liver_fluke"
               | "lungworm"
               | "other";
-            countPerGram: number;
+            countPerGram: number | null;
+            /** @enum {string|null} */
+            grade: "negative" | "low" | "medium" | "high" | null;
           }[];
         }[];
         followUpTasks: {
@@ -10755,6 +10786,7 @@ export interface components {
               | "haemonchus"
               | "nematodirus"
               | "trichuris"
+              | "capillaria"
               | "strongyloides"
               | "moniezia"
               | "coccidia"
@@ -10766,6 +10798,25 @@ export interface components {
             minCountPerGram: number;
             avgCountPerGram: number;
             maxCountPerGram: number;
+          }[];
+          gradesByParasite: {
+            /** @enum {string} */
+            parasiteType:
+              | "strongyles"
+              | "haemonchus"
+              | "nematodirus"
+              | "trichuris"
+              | "capillaria"
+              | "strongyloides"
+              | "moniezia"
+              | "coccidia"
+              | "liver_fluke"
+              | "small_liver_fluke"
+              | "lungworm"
+              | "other";
+            sampleCount: number;
+            /** @enum {string|null} */
+            highestGrade: "negative" | "low" | "medium" | "high" | null;
           }[];
         };
         comparisonToPrevious: {
@@ -10785,6 +10836,7 @@ export interface components {
               | "haemonchus"
               | "nematodirus"
               | "trichuris"
+              | "capillaria"
               | "strongyloides"
               | "moniezia"
               | "coccidia"
@@ -10832,6 +10884,7 @@ export interface components {
               | "haemonchus"
               | "nematodirus"
               | "trichuris"
+              | "capillaria"
               | "strongyloides"
               | "moniezia"
               | "coccidia"
@@ -10870,6 +10923,7 @@ export interface components {
             | "haemonchus"
             | "nematodirus"
             | "trichuris"
+            | "capillaria"
             | "strongyloides"
             | "moniezia"
             | "coccidia"
@@ -10877,7 +10931,9 @@ export interface components {
             | "small_liver_fluke"
             | "lungworm"
             | "other";
-          countPerGram: number;
+          countPerGram?: number | null;
+          /** @enum {string|null} */
+          grade?: "negative" | "low" | "medium" | "high" | null;
         }[];
       }[];
       labName?: string | null;
@@ -10958,6 +11014,7 @@ export interface components {
               | "haemonchus"
               | "nematodirus"
               | "trichuris"
+              | "capillaria"
               | "strongyloides"
               | "moniezia"
               | "coccidia"
@@ -10965,7 +11022,9 @@ export interface components {
               | "small_liver_fluke"
               | "lungworm"
               | "other";
-            countPerGram: number;
+            countPerGram: number | null;
+            /** @enum {string|null} */
+            grade: "negative" | "low" | "medium" | "high" | null;
           }[];
         }[];
         followUpTasks: {
@@ -10993,6 +11052,7 @@ export interface components {
               | "haemonchus"
               | "nematodirus"
               | "trichuris"
+              | "capillaria"
               | "strongyloides"
               | "moniezia"
               | "coccidia"
@@ -11004,6 +11064,25 @@ export interface components {
             minCountPerGram: number;
             avgCountPerGram: number;
             maxCountPerGram: number;
+          }[];
+          gradesByParasite: {
+            /** @enum {string} */
+            parasiteType:
+              | "strongyles"
+              | "haemonchus"
+              | "nematodirus"
+              | "trichuris"
+              | "capillaria"
+              | "strongyloides"
+              | "moniezia"
+              | "coccidia"
+              | "liver_fluke"
+              | "small_liver_fluke"
+              | "lungworm"
+              | "other";
+            sampleCount: number;
+            /** @enum {string|null} */
+            highestGrade: "negative" | "low" | "medium" | "high" | null;
           }[];
         };
         comparisonToPrevious: {
@@ -11023,6 +11102,7 @@ export interface components {
               | "haemonchus"
               | "nematodirus"
               | "trichuris"
+              | "capillaria"
               | "strongyloides"
               | "moniezia"
               | "coccidia"
@@ -11070,6 +11150,7 @@ export interface components {
               | "haemonchus"
               | "nematodirus"
               | "trichuris"
+              | "capillaria"
               | "strongyloides"
               | "moniezia"
               | "coccidia"
@@ -11149,6 +11230,7 @@ export interface components {
               | "haemonchus"
               | "nematodirus"
               | "trichuris"
+              | "capillaria"
               | "strongyloides"
               | "moniezia"
               | "coccidia"
@@ -11156,7 +11238,9 @@ export interface components {
               | "small_liver_fluke"
               | "lungworm"
               | "other";
-            countPerGram: number;
+            countPerGram: number | null;
+            /** @enum {string|null} */
+            grade: "negative" | "low" | "medium" | "high" | null;
           }[];
         }[];
         followUpTasks: {
@@ -11184,6 +11268,7 @@ export interface components {
               | "haemonchus"
               | "nematodirus"
               | "trichuris"
+              | "capillaria"
               | "strongyloides"
               | "moniezia"
               | "coccidia"
@@ -11195,6 +11280,25 @@ export interface components {
             minCountPerGram: number;
             avgCountPerGram: number;
             maxCountPerGram: number;
+          }[];
+          gradesByParasite: {
+            /** @enum {string} */
+            parasiteType:
+              | "strongyles"
+              | "haemonchus"
+              | "nematodirus"
+              | "trichuris"
+              | "capillaria"
+              | "strongyloides"
+              | "moniezia"
+              | "coccidia"
+              | "liver_fluke"
+              | "small_liver_fluke"
+              | "lungworm"
+              | "other";
+            sampleCount: number;
+            /** @enum {string|null} */
+            highestGrade: "negative" | "low" | "medium" | "high" | null;
           }[];
         };
         comparisonToPrevious: {
@@ -11214,6 +11318,7 @@ export interface components {
               | "haemonchus"
               | "nematodirus"
               | "trichuris"
+              | "capillaria"
               | "strongyloides"
               | "moniezia"
               | "coccidia"
@@ -11261,6 +11366,7 @@ export interface components {
               | "haemonchus"
               | "nematodirus"
               | "trichuris"
+              | "capillaria"
               | "strongyloides"
               | "moniezia"
               | "coccidia"
@@ -11299,6 +11405,7 @@ export interface components {
             | "haemonchus"
             | "nematodirus"
             | "trichuris"
+            | "capillaria"
             | "strongyloides"
             | "moniezia"
             | "coccidia"
@@ -11306,7 +11413,9 @@ export interface components {
             | "small_liver_fluke"
             | "lungworm"
             | "other";
-          countPerGram: number;
+          countPerGram?: number | null;
+          /** @enum {string|null} */
+          grade?: "negative" | "low" | "medium" | "high" | null;
         }[];
       }[];
       labName?: string | null;

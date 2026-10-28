@@ -1760,6 +1760,7 @@
     "famacha_distribution": "FAMACHA distribution",
     "samples": "Fecal samples",
     "lab_name": "Lab",
+    "lab_name_optional": "Lab (optional)",
     "sample_label": "Sample label (optional)",
     "pooled_sample": "Pooled sample ({{count}} animals)",
     "individual_sample": "Individual sample",
@@ -1783,6 +1784,7 @@
       "haemonchus": "Barber's pole worm",
       "nematodirus": "Nematodirus",
       "trichuris": "Whipworms",
+      "capillaria": "Hairworm",
       "strongyloides": "Threadworms",
       "moniezia": "Tapeworms",
       "coccidia": "Coccidia",
@@ -1819,9 +1821,24 @@
     "select_from_herd": "Take animals from herd (optional)",
     "mixed_animal_types": "A check can only contain animals of one animal type.",
     "average_per_check": "Ø per check",
+    "average_grade_per_check": "Ø grade per check",
     "chart_counts_info": "Numbers in the charts = number of animals checked",
     "change_percent": "change (%)",
     "change_to_base": "Change to base check",
-    "all_base_animals_dead": "All animals of the base check have died or no longer exist."
+    "all_base_animals_dead": "All animals of the base check have died or no longer exist.",
+    "grade": "Grade",
+    "grades": {
+      "negative": "–",
+      "low": "+ low",
+      "medium": "++ medium",
+      "high": "+++ high"
+    },
+    "grades_short": {
+      "negative": "–",
+      "low": "+",
+      "medium": "++",
+      "high": "+++"
+    },
+    "result_value": "Value"
   }
 }

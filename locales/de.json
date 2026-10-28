@@ -1761,6 +1761,7 @@
     "famacha_distribution": "FAMACHA-Verteilung",
     "samples": "Kotproben",
     "lab_name": "Labor",
+    "lab_name_optional": "Labor (optional)",
     "sample_label": "Probenbezeichnung (optional)",
     "pooled_sample": "Sammelprobe ({{count}} Tiere)",
     "individual_sample": "Einzelprobe",
@@ -1784,6 +1785,7 @@
       "haemonchus": "Roter Magenwurm",
       "nematodirus": "Nematodirus",
       "trichuris": "Peitschenwurm",
+      "capillaria": "Haarwurm",
       "strongyloides": "Zwergfadenwurm",
       "moniezia": "Bandwurm",
       "coccidia": "Kokzidien",
@@ -1820,9 +1822,24 @@
     "select_from_herd": "Tiere aus Herde übernehmen (optional)",
     "mixed_animal_types": "Eine Kontrolle kann nur Tiere einer Tierart enthalten.",
     "average_per_check": "Ø pro Kontrolle",
+    "average_grade_per_check": "Ø Stufe pro Kontrolle",
     "chart_counts_info": "Zahlen in den Diagrammen = Anzahl geprüfter Tiere",
     "change_percent": "Veränderung (%)",
     "change_to_base": "Veränderung zur Ausgangskontrolle",
-    "all_base_animals_dead": "Alle Tiere der Ausgangskontrolle sind verstorben oder nicht mehr vorhanden."
+    "all_base_animals_dead": "Alle Tiere der Ausgangskontrolle sind verstorben oder nicht mehr vorhanden.",
+    "grade": "Stufe",
+    "grades": {
+      "negative": "–",
+      "low": "+ gering",
+      "medium": "++ mittel",
+      "high": "+++ stark"
+    },
+    "grades_short": {
+      "negative": "–",
+      "low": "+",
+      "medium": "++",
+      "high": "+++"
+    },
+    "result_value": "Wert"
   }
 }
