@@ -82,9 +82,11 @@ export function ParasiteCheckDetailScreen({
 
   // Only the direction: count went down (green) or up (red), no efficacy judgement
   function reductionColor(reductionPercent: number | null) {
-    if (reductionPercent === null || reductionPercent === 0)
-      return theme.colors.gray2;
-    return reductionPercent > 0 ? theme.colors.success : theme.colors.danger;
+    // Same rounding as the shown value, so "0%" is never colored
+    const roundedReduction =
+      reductionPercent === null ? 0 : Math.round(reductionPercent);
+    if (roundedReduction === 0) return theme.colors.gray2;
+    return roundedReduction > 0 ? theme.colors.success : theme.colors.danger;
   }
 
   // Chart of the base check and its re-checks. Re-check values are derived from
@@ -97,20 +99,20 @@ export function ParasiteCheckDetailScreen({
   }
 
   // One chart page per parasite type found in both the base check and a re-check
+  // Change in % against the base check (0%), the same values as in the re-check
+  // rows. Each re-check is compared on its own matching samples, so absolute
+  // averages wouldn't be comparable; re-checks without a percent are left out.
   const fecChartPages = PARASITE_TYPES.flatMap((parasiteType) => {
-    const baseEntry = check.summary.fecByParasite.find(
-      (entry) => entry.parasiteType === parasiteType,
-    );
-    if (!baseEntry) return [];
     const recheckPoints = check.rechecks.flatMap((recheck) => {
       const reduction = recheck.fecReduction.find(
         (entry) => entry.parasiteType === parasiteType,
       );
-      return reduction
+      return reduction && reduction.reductionPercent !== null
         ? [
             {
               date: parseDateOnly(recheck.date),
-              value: reduction.afterAvgCountPerGram,
+              value: -reduction.reductionPercent,
+              label: String(reduction.afterSampleCount),
             },
           ]
         : [];
@@ -119,10 +121,7 @@ export function ParasiteCheckDetailScreen({
     return [
       {
         parasiteType,
-        points: [
-          { date: checkDate, value: baseEntry.avgCountPerGram },
-          ...recheckPoints,
-        ],
+        points: [{ date: checkDate, value: 0 }, ...recheckPoints],
       },
     ];
   });
@@ -292,20 +291,21 @@ export function ParasiteCheckDetailScreen({
                           marginBottom: theme.spacing.s,
                         }}
                       >
-                        {t(`parasite_checks.parasite_types.${parasiteType}`)} Ø
-                        ({t(parasiteCountUnitKey(parasiteType))})
+                        {t(`parasite_checks.parasite_types.${parasiteType}`)}:{" "}
+                        {t("parasite_checks.change_percent")}
                       </Subtitle>
                       <TimelineChart
                         points={points}
                         markers={treatmentDates}
-                        minValue={0}
+                        // A count can drop by at most 100%
+                        minValue={-100}
                         color={theme.colors.primary}
                       />
                       <ChartLegend
                         items={[
                           {
                             color: theme.colors.primary,
-                            label: t("parasite_checks.average_per_check"),
+                            label: t("parasite_checks.change_to_base"),
                           },
                           {
                             color: theme.colors.warning,
@@ -465,7 +465,8 @@ export function ParasiteCheckDetailScreen({
                           </ListItem.Body>
                         )}
                         {/* Same row layout as the fecal egg count reduction */}
-                        {recheck.famachaAverage !== null &&
+                        {recheck.famachaBeforeAverage !== null &&
+                          recheck.famachaAfterAverage !== null &&
                           recheck.famachaAverageChange !== null && (
                             <View
                               style={{
@@ -482,7 +483,8 @@ export function ParasiteCheckDetailScreen({
                                 }}
                               >
                                 {t("parasite_checks.famacha_score")} (Ø{" "}
-                                {recheck.famachaAverage.toFixed(1)})
+                                {recheck.famachaBeforeAverage.toFixed(1)} →{" "}
+                                {recheck.famachaAfterAverage.toFixed(1)})
                               </Subtitle>
                               <Subtitle
                                 style={{

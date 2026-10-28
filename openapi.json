@@ -33363,6 +33363,8 @@
                             "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
                           }
                         },
+                        "famachaBeforeAverage": { "type": ["number", "null"] },
+                        "famachaAfterAverage": { "type": ["number", "null"] },
                         "famachaAverageChange": { "type": ["number", "null"] },
                         "fecReduction": {
                           "type": "array",
@@ -33404,6 +33406,8 @@
                       "required": [
                         "previousCheckId",
                         "previousDate",
+                        "famachaBeforeAverage",
+                        "famachaAfterAverage",
                         "famachaAverageChange",
                         "fecReduction"
                       ],
@@ -33458,6 +33462,10 @@
                             }
                           },
                           "famachaAverage": { "type": ["number", "null"] },
+                          "famachaBeforeAverage": {
+                            "type": ["number", "null"]
+                          },
+                          "famachaAfterAverage": { "type": ["number", "null"] },
                           "famachaAverageChange": {
                             "type": ["number", "null"]
                           },
@@ -33508,6 +33516,8 @@
                           "treatment",
                           "animals",
                           "famachaAverage",
+                          "famachaBeforeAverage",
+                          "famachaAfterAverage",
                           "famachaAverageChange",
                           "fecReduction"
                         ],
@@ -33778,6 +33788,8 @@
                       "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
                     }
                   },
+                  "famachaBeforeAverage": { "type": ["number", "null"] },
+                  "famachaAfterAverage": { "type": ["number", "null"] },
                   "famachaAverageChange": { "type": ["number", "null"] },
                   "fecReduction": {
                     "type": "array",
@@ -33819,6 +33831,8 @@
                 "required": [
                   "previousCheckId",
                   "previousDate",
+                  "famachaBeforeAverage",
+                  "famachaAfterAverage",
                   "famachaAverageChange",
                   "fecReduction"
                 ],
@@ -33873,6 +33887,8 @@
                       }
                     },
                     "famachaAverage": { "type": ["number", "null"] },
+                    "famachaBeforeAverage": { "type": ["number", "null"] },
+                    "famachaAfterAverage": { "type": ["number", "null"] },
                     "famachaAverageChange": { "type": ["number", "null"] },
                     "fecReduction": {
                       "type": "array",
@@ -33919,6 +33935,8 @@
                     "treatment",
                     "animals",
                     "famachaAverage",
+                    "famachaBeforeAverage",
+                    "famachaAfterAverage",
                     "famachaAverageChange",
                     "fecReduction"
                   ],
@@ -34281,6 +34299,8 @@
                       "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
                     }
                   },
+                  "famachaBeforeAverage": { "type": ["number", "null"] },
+                  "famachaAfterAverage": { "type": ["number", "null"] },
                   "famachaAverageChange": { "type": ["number", "null"] },
                   "fecReduction": {
                     "type": "array",
@@ -34322,6 +34342,8 @@
                 "required": [
                   "previousCheckId",
                   "previousDate",
+                  "famachaBeforeAverage",
+                  "famachaAfterAverage",
                   "famachaAverageChange",
                   "fecReduction"
                 ],
@@ -34376,6 +34398,8 @@
                       }
                     },
                     "famachaAverage": { "type": ["number", "null"] },
+                    "famachaBeforeAverage": { "type": ["number", "null"] },
+                    "famachaAfterAverage": { "type": ["number", "null"] },
                     "famachaAverageChange": { "type": ["number", "null"] },
                     "fecReduction": {
                       "type": "array",
@@ -34422,6 +34446,8 @@
                     "treatment",
                     "animals",
                     "famachaAverage",
+                    "famachaBeforeAverage",
+                    "famachaAfterAverage",
                     "famachaAverageChange",
                     "fecReduction"
                   ],
@@ -34686,6 +34712,8 @@
                       "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
                     }
                   },
+                  "famachaBeforeAverage": { "type": ["number", "null"] },
+                  "famachaAfterAverage": { "type": ["number", "null"] },
                   "famachaAverageChange": { "type": ["number", "null"] },
                   "fecReduction": {
                     "type": "array",
@@ -34727,6 +34755,8 @@
                 "required": [
                   "previousCheckId",
                   "previousDate",
+                  "famachaBeforeAverage",
+                  "famachaAfterAverage",
                   "famachaAverageChange",
                   "fecReduction"
                 ],
@@ -34781,6 +34811,8 @@
                       }
                     },
                     "famachaAverage": { "type": ["number", "null"] },
+                    "famachaBeforeAverage": { "type": ["number", "null"] },
+                    "famachaAfterAverage": { "type": ["number", "null"] },
                     "famachaAverageChange": { "type": ["number", "null"] },
                     "fecReduction": {
                       "type": "array",
@@ -34827,6 +34859,8 @@
                     "treatment",
                     "animals",
                     "famachaAverage",
+                    "famachaBeforeAverage",
+                    "famachaAfterAverage",
                     "famachaAverageChange",
                     "fecReduction"
                   ],

@@ -1811,7 +1811,7 @@
     "recheck_of": "Re-check of {{date}}",
     "no_rechecks": "No re-checks yet",
     "n_rechecks": "{{count}} re-checks",
-    "recheck_locked_info": "Method, herd and animals are taken from the base check. Animals that died or are no longer in the herd are left out.",
+    "recheck_locked_info": "Method and animals are taken from the base check. Animals that died are left out.",
     "summary": "Summary",
     "last_n_values": "Last {{count}} values",
     "delete_check_with_rechecks_confirm": "Delete this check and its {{count}} re-checks?",
@@ -1819,6 +1819,9 @@
     "select_from_herd": "Take animals from herd (optional)",
     "mixed_animal_types": "A check can only contain animals of one animal type.",
     "average_per_check": "Ø per check",
-    "chart_counts_info": "Numbers in the charts = number of animals checked"
+    "chart_counts_info": "Numbers in the charts = number of animals checked",
+    "change_percent": "change (%)",
+    "change_to_base": "Change to base check",
+    "all_base_animals_dead": "All animals of the base check have died or no longer exist."
   }
 }

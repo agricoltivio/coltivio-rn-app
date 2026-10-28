@@ -247,7 +247,9 @@ export function ParasiteCheckFormScreen({
             // When editing, only base checks the stored check already fits, so
             // nothing gets overwritten or dropped
             (!isEditing ||
-              (otherCheck.method === method &&
+              // ... and not dated after the check, which the API rejects
+              (parseDateOnly(otherCheck.date) <= date &&
+                otherCheck.method === method &&
                 animalRows.every((row) =>
                   otherCheck.animals.some(
                     (baseAnimal) => baseAnimal.animalId === row.animalId,
@@ -265,7 +267,7 @@ export function ParasiteCheckFormScreen({
           value: otherCheck.id,
         })),
     ],
-    [allChecks, checkId, isEditing, method, animalRows, t, locale],
+    [allChecks, checkId, isEditing, date, method, animalRows, t, locale],
   );
 
   function showError(error: Error) {
@@ -537,6 +539,15 @@ export function ParasiteCheckFormScreen({
               <ListItem.Chevron />
             </ListItem>
           </View>
+        )}
+
+        {/* All animals of the base check died: nothing to re-check */}
+        {baseCheck && animals && animalRows.length === 0 && (
+          <Subtitle
+            style={{ color: theme.colors.danger, marginTop: theme.spacing.s }}
+          >
+            {t("parasite_checks.all_base_animals_dead")}
+          </Subtitle>
         )}
 
         {hasMixedAnimalTypes && (

@@ -1810,7 +1810,7 @@
     "recheck_of": "Recontrôle du {{date}}",
     "no_rechecks": "Aucun recontrôle",
     "n_rechecks": "{{count}} recontrôles",
-    "recheck_locked_info": "La méthode, le troupeau et les animaux sont repris du contrôle initial. Les animaux morts ou qui ne sont plus dans le troupeau sont exclus.",
+    "recheck_locked_info": "La méthode et les animaux sont repris du contrôle initial. Les animaux morts sont exclus.",
     "summary": "Résumé",
     "last_n_values": "{{count}} dernières valeurs",
     "delete_check_with_rechecks_confirm": "Supprimer ce contrôle et ses {{count}} recontrôles ?",
@@ -1818,6 +1818,9 @@
     "select_from_herd": "Reprendre les animaux d'un troupeau (facultatif)",
     "mixed_animal_types": "Un contrôle ne peut contenir que des animaux d'une seule espèce.",
     "average_per_check": "Ø par contrôle",
-    "chart_counts_info": "Chiffres des graphiques = nombre d'animaux contrôlés"
+    "chart_counts_info": "Chiffres des graphiques = nombre d'animaux contrôlés",
+    "change_percent": "variation (%)",
+    "change_to_base": "Variation par rapport au contrôle initial",
+    "all_base_animals_dead": "Tous les animaux du contrôle initial sont morts ou n'existent plus."
   }
 }

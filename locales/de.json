@@ -1812,7 +1812,7 @@
     "recheck_of": "Nachkontrolle vom {{date}}",
     "no_rechecks": "Noch keine Nachkontrollen",
     "n_rechecks": "{{count}} Nachkontrollen",
-    "recheck_locked_info": "Methode, Herde und Tiere werden von der Ausgangskontrolle übernommen. Verstorbene Tiere und Tiere, die nicht mehr in der Herde sind, werden ausgelassen.",
+    "recheck_locked_info": "Methode und Tiere werden von der Ausgangskontrolle übernommen. Verstorbene Tiere werden ausgelassen.",
     "summary": "Zusammenfassung",
     "last_n_values": "Letzte {{count}} Werte",
     "delete_check_with_rechecks_confirm": "Kontrolle und ihre {{count}} Nachkontrollen löschen?",
@@ -1820,6 +1820,9 @@
     "select_from_herd": "Tiere aus Herde übernehmen (optional)",
     "mixed_animal_types": "Eine Kontrolle kann nur Tiere einer Tierart enthalten.",
     "average_per_check": "Ø pro Kontrolle",
-    "chart_counts_info": "Zahlen in den Diagrammen = Anzahl geprüfter Tiere"
+    "chart_counts_info": "Zahlen in den Diagrammen = Anzahl geprüfter Tiere",
+    "change_percent": "Veränderung (%)",
+    "change_to_base": "Veränderung zur Ausgangskontrolle",
+    "all_base_animals_dead": "Alle Tiere der Ausgangskontrolle sind verstorben oder nicht mehr vorhanden."
   }
 }

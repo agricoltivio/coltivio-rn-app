@@ -1811,7 +1811,7 @@
     "recheck_of": "Ricontrollo del {{date}}",
     "no_rechecks": "Nessun ricontrollo",
     "n_rechecks": "{{count}} ricontrolli",
-    "recheck_locked_info": "Metodo, mandria e animali sono ripresi dal controllo iniziale. Gli animali morti o non più nella mandria sono esclusi.",
+    "recheck_locked_info": "Metodo e animali sono ripresi dal controllo iniziale. Gli animali morti sono esclusi.",
     "summary": "Riepilogo",
     "last_n_values": "Ultimi {{count}} valori",
     "delete_check_with_rechecks_confirm": "Eliminare questo controllo e i suoi {{count}} ricontrolli?",
@@ -1819,6 +1819,9 @@
     "select_from_herd": "Riprendi gli animali da una mandria (facoltativo)",
     "mixed_animal_types": "Un controllo può contenere solo animali di una specie.",
     "average_per_check": "Ø per controllo",
-    "chart_counts_info": "Numeri nei grafici = numero di animali controllati"
+    "chart_counts_info": "Numeri nei grafici = numero di animali controllati",
+    "change_percent": "variazione (%)",
+    "change_to_base": "Variazione rispetto al controllo iniziale",
+    "all_base_animals_dead": "Tutti gli animali del controllo iniziale sono morti o non esistono più."
   }
 }

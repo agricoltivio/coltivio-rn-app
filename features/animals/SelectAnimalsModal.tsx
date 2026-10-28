@@ -62,7 +62,12 @@ export function SelectAnimalsModal({
     // Single type: once an animal is selected, only its type stays selectable
     if (singleAnimalType && selectedIds.size > 0) {
       const selectedType = animals?.find((a) => selectedIds.has(a.id))?.type;
-      if (selectedType) result = result.filter((a) => a.type === selectedType);
+      // Already selected animals stay visible, so a mixed selection (e.g. from a
+      // herd) can still be corrected
+      if (selectedType)
+        result = result.filter(
+          (a) => a.type === selectedType || selectedIds.has(a.id),
+        );
     }
 
     // Filter by type
