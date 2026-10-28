@@ -24,7 +24,6 @@ import { useTranslation } from "react-i18next";
 import { Alert, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
-import { useHerdsQuery } from "./herds.hooks";
 import { ParasiteCheckFormScreenProps } from "./navigation/animals-routes";
 import { animalDisplayName, FamachaScorePicker } from "./ParasiteCharts";
 import {
@@ -70,7 +69,6 @@ export function ParasiteCheckFormScreen({
     isEditing,
   );
   const { animals } = useAnimalsQuery();
-  const { herds } = useHerdsQuery();
   const { treatments } = useTreatmentsQuery();
   const { checks: allChecks } = useParasiteChecksQuery();
 
@@ -78,8 +76,6 @@ export function ParasiteCheckFormScreen({
     params.method ?? "fecal_egg_count",
   );
   const [date, setDate] = useState<Date>(new Date());
-  // Only used to preselect a herd's animals, not stored with the check
-  const [herdId, setHerdId] = useState<string>("");
   const [animalRows, setAnimalRows] = useState<AnimalRow[]>([]);
   const sampleDraft = useParasiteSampleDraftStore();
   const [name, setName] = useState("");
@@ -184,16 +180,6 @@ export function ParasiteCheckFormScreen({
     return animalDisplayName(animal.name, animal.earTag?.number);
   }
 
-  function handleHerdChange(newHerdId: string) {
-    setHerdId(newHerdId);
-    if (!newHerdId) return;
-    // Prefill with the herd's living animals, can be adjusted afterwards
-    const herdAnimalIds = (animals ?? [])
-      .filter((animal) => animal.herdId === newHerdId && !animal.dateOfDeath)
-      .map((animal) => animal.id);
-    setAnimalRows((rows) => mergeAnimalRows(rows, herdAnimalIds));
-  }
-
   function openSelectAnimals() {
     navigation.navigate("SelectAnimals", {
       initialSelectedIds: animalRows.map((row) => row.animalId),
@@ -209,14 +195,6 @@ export function ParasiteCheckFormScreen({
       ),
     );
   }
-
-  const herdOptions = useMemo(
-    () => [
-      { label: t("forms.labels.none"), value: "" },
-      ...(herds ?? []).map((herd) => ({ label: herd.name, value: herd.id })),
-    ],
-    [herds, t],
-  );
 
   const treatmentOptions = useMemo(
     () => [
@@ -484,15 +462,6 @@ export function ParasiteCheckFormScreen({
             clearable={false}
             onConfirm={(pickedDate) => pickedDate && setDate(pickedDate)}
           />
-          {/* Preselects the herd's living animals; only for new selections */}
-          {!baseCheck && !isLockedBaseCheck && (
-            <Select
-              label={t("parasite_checks.select_from_herd")}
-              value={herdId}
-              data={herdOptions}
-              onChange={handleHerdChange}
-            />
-          )}
         </View>
 
         {/* Animals (fixed for re-checks) */}

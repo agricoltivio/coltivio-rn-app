@@ -1755,7 +1755,7 @@
     "famacha_scores_info": "1 = rouge (sain) à 5 = blanc (fortement anémié). Toucher à nouveau pour effacer.",
     "famacha_score": "Score FAMACHA",
     "famacha_summary": "{{count}} animaux · moy. {{average}}",
-    "n_animals": "{{count}} animaux",
+    "n_animals": "{{count}} animal",
     "famacha_distribution": "Répartition FAMACHA",
     "samples": "Échantillons de fèces",
     "lab_name": "Laboratoire",
@@ -1817,7 +1817,6 @@
     "last_n_values": "{{count}} dernières valeurs",
     "delete_check_with_rechecks_confirm": "Supprimer ce contrôle et ses {{count}} recontrôles ?",
     "name_optional": "Nom (facultatif)",
-    "select_from_herd": "Reprendre les animaux d'un troupeau (facultatif)",
     "mixed_animal_types": "Un contrôle ne peut contenir que des animaux d'une seule espèce.",
     "average_per_check": "Ø par contrôle",
     "average_grade_per_check": "Ø degré par contrôle",
@@ -1838,6 +1837,10 @@
       "medium": "++",
       "high": "+++"
     },
-    "result_value": "Valeur"
+    "result_value": "Valeur",
+    "max": "max",
+    "n_samples": "{{count}} échantillon",
+    "n_animals_plural": "{{count}} animaux",
+    "n_samples_plural": "{{count}} échantillons"
   }
 }

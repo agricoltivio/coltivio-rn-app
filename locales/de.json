@@ -1757,7 +1757,7 @@
     "famacha_scores_info": "1 = rot (gesund) bis 5 = weiss (stark blutarm). Nochmals tippen zum Entfernen.",
     "famacha_score": "FAMACHA-Wert",
     "famacha_summary": "{{count}} Tiere · Ø {{average}}",
-    "n_animals": "{{count}} Tiere",
+    "n_animals": "{{count}} Tier",
     "famacha_distribution": "FAMACHA-Verteilung",
     "samples": "Kotproben",
     "lab_name": "Labor",
@@ -1819,7 +1819,6 @@
     "last_n_values": "Letzte {{count}} Werte",
     "delete_check_with_rechecks_confirm": "Kontrolle und ihre {{count}} Nachkontrollen löschen?",
     "name_optional": "Name (optional)",
-    "select_from_herd": "Tiere aus Herde übernehmen (optional)",
     "mixed_animal_types": "Eine Kontrolle kann nur Tiere einer Tierart enthalten.",
     "average_per_check": "Ø pro Kontrolle",
     "average_grade_per_check": "Ø Stufe pro Kontrolle",
@@ -1840,6 +1839,10 @@
       "medium": "++",
       "high": "+++"
     },
-    "result_value": "Wert"
+    "result_value": "Wert",
+    "max": "max",
+    "n_samples": "{{count}} Probe",
+    "n_animals_plural": "{{count}} Tiere",
+    "n_samples_plural": "{{count}} Proben"
   }
 }

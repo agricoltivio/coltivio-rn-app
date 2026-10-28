@@ -1756,7 +1756,7 @@
     "famacha_scores_info": "1 = red (healthy) to 5 = white (severely anaemic). Tap again to clear.",
     "famacha_score": "FAMACHA score",
     "famacha_summary": "{{count}} animals · avg {{average}}",
-    "n_animals": "{{count}} animals",
+    "n_animals": "{{count}} animal",
     "famacha_distribution": "FAMACHA distribution",
     "samples": "Fecal samples",
     "lab_name": "Lab",
@@ -1818,7 +1818,6 @@
     "last_n_values": "Last {{count}} values",
     "delete_check_with_rechecks_confirm": "Delete this check and its {{count}} re-checks?",
     "name_optional": "Name (optional)",
-    "select_from_herd": "Take animals from herd (optional)",
     "mixed_animal_types": "A check can only contain animals of one animal type.",
     "average_per_check": "Ø per check",
     "average_grade_per_check": "Ø grade per check",
@@ -1839,6 +1838,10 @@
       "medium": "++",
       "high": "+++"
     },
-    "result_value": "Value"
+    "result_value": "Value",
+    "max": "max",
+    "n_samples": "{{count}} sample",
+    "n_animals_plural": "{{count}} animals",
+    "n_samples_plural": "{{count}} samples"
   }
 }

@@ -10597,8 +10597,9 @@ export interface components {
                 | "lungworm"
                 | "other";
               sampleCount: number;
-              /** @enum {string|null} */
-              highestGrade: "negative" | "low" | "medium" | "high" | null;
+              /** @enum {string} */
+              highestGrade: "negative" | "low" | "medium" | "high";
+              averageGrade: number;
             }[];
           };
           comparisonToPrevious: {
@@ -10815,8 +10816,9 @@ export interface components {
               | "lungworm"
               | "other";
             sampleCount: number;
-            /** @enum {string|null} */
-            highestGrade: "negative" | "low" | "medium" | "high" | null;
+            /** @enum {string} */
+            highestGrade: "negative" | "low" | "medium" | "high";
+            averageGrade: number;
           }[];
         };
         comparisonToPrevious: {
@@ -11081,8 +11083,9 @@ export interface components {
               | "lungworm"
               | "other";
             sampleCount: number;
-            /** @enum {string|null} */
-            highestGrade: "negative" | "low" | "medium" | "high" | null;
+            /** @enum {string} */
+            highestGrade: "negative" | "low" | "medium" | "high";
+            averageGrade: number;
           }[];
         };
         comparisonToPrevious: {
@@ -11297,8 +11300,9 @@ export interface components {
               | "lungworm"
               | "other";
             sampleCount: number;
-            /** @enum {string|null} */
-            highestGrade: "negative" | "low" | "medium" | "high" | null;
+            /** @enum {string} */
+            highestGrade: "negative" | "low" | "medium" | "high";
+            averageGrade: number;
           }[];
         };
         comparisonToPrevious: {

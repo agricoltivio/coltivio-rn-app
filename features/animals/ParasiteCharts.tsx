@@ -143,8 +143,9 @@ export function FamachaBadge({ score }: { score: number }) {
   );
 }
 
-// label: small text above the point, e.g. how many animals the value is based on
-export type TimelinePoint = { date: Date; value: number; label?: string };
+// coverage: how many animals (or samples) the value is based on, shown above the
+// point and in the tooltip
+export type TimelinePoint = { date: Date; value: number; coverage?: number };
 
 // Line chart over time with optional vertical markers (e.g. treatments)
 // Only the latest points are shown so long histories don't get cramped
@@ -160,6 +161,7 @@ export function TimelineChart({
   invertY = false,
   gradeScale = false,
   averageValues = false,
+  coverageKind = "animals",
   unitLabel,
   color,
   height = 140,
@@ -175,6 +177,8 @@ export function TimelineChart({
   gradeScale?: boolean;
   // Values are averages per check: the tooltip shows "Ø"
   averageValues?: boolean;
+  // What a point's coverage counts, shown in the tooltip ("12 Tiere" / "3 Proben")
+  coverageKind?: "animals" | "samples";
   // Shown after the value in the tooltip, e.g. "EpG" or "%"
   unitLabel?: string;
   color: string;
@@ -199,7 +203,8 @@ export function TimelineChart({
     : (fixedMaxValue ??
       Math.max(MIN_AUTO_MAX_VALUE, ...points.map((point) => point.value)));
 
-  const paddingLeft = 32;
+  // Room for the y labels (e.g. "-100", "+++") plus a gap to the plot
+  const paddingLeft = 42;
   const paddingRight = 12;
   // Room for the labels above the points
   const paddingTop = 18;
@@ -329,7 +334,7 @@ export function TimelineChart({
                     strokeWidth={1}
                   />
                   <SvgText
-                    x={paddingLeft - 6}
+                    x={paddingLeft - 10}
                     y={yFor(tick) + 3}
                     fontSize={9}
                     fill={theme.colors.gray2}
@@ -380,7 +385,7 @@ export function TimelineChart({
                     r={index === activeIndex ? 6 : 4}
                     fill={color}
                   />
-                  {point.label && (
+                  {point.coverage !== undefined && (
                     <SvgText
                       x={xFor(point.date)}
                       y={yFor(point.value) - 7}
@@ -388,7 +393,7 @@ export function TimelineChart({
                       fill={theme.colors.gray2}
                       textAnchor="middle"
                     >
-                      {point.label}
+                      {point.coverage}
                     </SvgText>
                   )}
                 </G>
@@ -438,6 +443,16 @@ export function TimelineChart({
                   <Text style={{ fontSize: 12, color: theme.colors.gray1 }}>
                     {formatTooltipValue(activePoint.value)}
                   </Text>
+                  {activePoint.coverage !== undefined && (
+                    <Text style={{ fontSize: 12, color: theme.colors.gray2 }}>
+                      {t(
+                        coverageKind === "samples"
+                          ? "parasite_checks.n_samples"
+                          : "parasite_checks.n_animals",
+                        { count: activePoint.coverage },
+                      )}
+                    </Text>
+                  )}
                 </View>
               </ChartTooltipCard>
             )}

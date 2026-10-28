@@ -21,6 +21,7 @@ import {
   formatResultValue,
   FamachaBadge,
   FamachaDistributionRows,
+  PARASITE_RESULT_GRADES,
   PARASITE_TYPES,
   parasiteCountUnitKey,
   TimelineChart,
@@ -35,6 +36,12 @@ export function ParasiteCheckDetailScreen({
   navigation,
 }: ParasiteCheckDetailScreenProps) {
   const { t, i18n } = useTranslation();
+
+  // Average grade (0–3) shown as its nearest step, e.g. 1.6 → "++"
+  function gradeShortLabel(averageGrade: number) {
+    const grade = PARASITE_RESULT_GRADES[Math.round(averageGrade)];
+    return grade ? t(`parasite_checks.grades_short.${grade}`) : "";
+  }
   const locale = i18n.language;
   const theme = useTheme();
   const { canWrite } = usePermissions();
@@ -113,7 +120,7 @@ export function ParasiteCheckDetailScreen({
             {
               date: parseDateOnly(recheck.date),
               value: -reduction.reductionPercent,
-              label: String(reduction.afterSampleCount),
+              coverage: reduction.afterSampleCount,
             },
           ]
         : [];
@@ -301,6 +308,7 @@ export function ParasiteCheckDetailScreen({
                         // A count can drop by at most 100%
                         minValue={-100}
                         unitLabel="%"
+                        coverageKind="samples"
                         color={theme.colors.primary}
                       />
                       <ChartLegend
@@ -404,7 +412,7 @@ export function ParasiteCheckDetailScreen({
                   </Subtitle>
                 </View>
               ))}
-              {/* Graded results (+/++/+++), highest grade per parasite */}
+              {/* Graded results (+/++/+++): average and highest grade */}
               {check.summary.gradesByParasite.map((entry) => (
                 <View
                   key={entry.parasiteType}
@@ -418,7 +426,9 @@ export function ParasiteCheckDetailScreen({
                     {t(`parasite_checks.parasite_types.${entry.parasiteType}`)}
                   </Subtitle>
                   <Subtitle style={{ flexShrink: 0, fontWeight: "600" }}>
-                    {t(`parasite_checks.grades_short.${entry.highestGrade}`)}
+                    {entry.sampleCount > 1
+                      ? `Ø ${gradeShortLabel(entry.averageGrade)} (${t("parasite_checks.max")} ${t(`parasite_checks.grades_short.${entry.highestGrade}`)})`
+                      : t(`parasite_checks.grades_short.${entry.highestGrade}`)}
                   </Subtitle>
                 </View>
               ))}

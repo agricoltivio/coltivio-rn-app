@@ -1,6 +1,6 @@
 import { AnimalType } from "@/api/animals.api";
 import { ParasiteCheck, ParasiteType } from "@/api/parasite-checks.api";
-import { IonIconButton } from "@/components/buttons/IconButton";
+import { FAB } from "@/components/buttons/FAB";
 import { ChartLegend } from "@/components/charts/ChartLegend";
 import { ChartPager } from "@/components/charts/ChartPager";
 import { ContentView } from "@/components/containers/ContentView";
@@ -21,7 +21,6 @@ import { ParasiteChecksScreenProps } from "./navigation/animals-routes";
 import {
   FAMACHA_COLORS,
   FamachaDistributionRows,
-  PARASITE_RESULT_GRADES,
   PARASITE_TYPES,
   parasiteCountUnitKey,
   TimelineChart,
@@ -35,24 +34,6 @@ function fecCoverage(check: ParasiteCheck, parasiteType: ParasiteType) {
       sample.results.some((result) => result.parasiteType === parasiteType),
     )
     .reduce((sum, sample) => sum + sample.animalIds.length, 0);
-}
-
-// Average grade (index in PARASITE_RESULT_GRADES) over the graded samples of a
-// check, each sample weighted by the number of animals it covers. Lies between
-// the steps, e.g. 1.5 = between + and ++.
-function averageGradeIndex(check: ParasiteCheck, parasiteType: ParasiteType) {
-  let weightedSum = 0;
-  let animalCount = 0;
-  for (const sample of check.fecSamples) {
-    const result = sample.results.find(
-      (entry) => entry.parasiteType === parasiteType,
-    );
-    if (!result?.grade) continue;
-    weightedSum +=
-      PARASITE_RESULT_GRADES.indexOf(result.grade) * sample.animalIds.length;
-    animalCount += sample.animalIds.length;
-  }
-  return animalCount > 0 ? weightedSum / animalCount : null;
 }
 
 export function ParasiteChecksScreen({
@@ -107,7 +88,7 @@ export function ParasiteChecksScreen({
             {
               date: parseDateOnly(check.date),
               value: entry.avgCountPerGram,
-              label: String(fecCoverage(check, parasiteType)),
+              coverage: fecCoverage(check, parasiteType),
             },
           ]
         : [];
@@ -115,13 +96,15 @@ export function ParasiteChecksScreen({
     if (countPoints.length > 0)
       return [{ parasiteType, points: countPoints, graded: false }];
     const gradePoints = typeChecks.flatMap((check) => {
-      const averageGrade = averageGradeIndex(check, parasiteType);
-      return averageGrade !== null
+      const entry = check.summary.gradesByParasite.find(
+        (gradeEntry) => gradeEntry.parasiteType === parasiteType,
+      );
+      return entry
         ? [
             {
               date: parseDateOnly(check.date),
-              value: averageGrade,
-              label: String(fecCoverage(check, parasiteType)),
+              value: entry.averageGrade,
+              coverage: fecCoverage(check, parasiteType),
             },
           ]
         : [];
@@ -149,25 +132,13 @@ export function ParasiteChecksScreen({
 
   return (
     <ContentView headerVisible>
-      <ScrollView showHeaderOnScroll headerTitleOnScroll={title}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <H2>{title}</H2>
-          {canWrite("animals") && (
-            <IonIconButton
-              icon="add-outline"
-              type="accent"
-              iconSize={22}
-              color={theme.colors.primary}
-              onPress={() => navigation.navigate("ParasiteCheckForm", {})}
-            />
-          )}
-        </View>
+      <ScrollView
+        showHeaderOnScroll
+        headerTitleOnScroll={title}
+        // Room for the FAB below the last check
+        contentContainerStyle={{ paddingBottom: 120 }}
+      >
+        <H2>{title}</H2>
 
         {!isLoading && allChecks.length === 0 && (
           <Subtitle style={{ marginTop: theme.spacing.m }}>
@@ -349,6 +320,13 @@ export function ParasiteChecksScreen({
         )}
         <View style={{ height: theme.spacing.l }} />
       </ScrollView>
+
+      {canWrite("animals") && (
+        <FAB
+          icon={{ name: "add", color: "white" }}
+          onPress={() => navigation.navigate("ParasiteCheckForm", {})}
+        />
+      )}
     </ContentView>
   );
 }

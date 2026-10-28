@@ -8,7 +8,7 @@ import { ListItem } from "@/components/list/ListItem";
 import { H2, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate, getMinMaxIso } from "@/utils/date";
 import Fuse from "fuse.js";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   FlatList,
@@ -18,6 +18,7 @@ import {
 } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
+import { useHerdsQuery } from "./herds.hooks";
 import { SelectAnimalsScreenProps } from "./navigation/animals-routes";
 import { DateRangeFilterModal } from "@/components/filters/DateRangeFilterModal";
 
@@ -30,6 +31,7 @@ export function SelectAnimalsModal({
   const locale = i18n.language;
   const { initialSelectedIds, previousScreen, singleAnimalType } = route.params;
   const { animals, isLoading } = useAnimalsQuery();
+  const { herds } = useHerdsQuery();
 
   const minMaxDateOfBirth = getMinMaxIso(
     animals?.map((a) => a.dateOfBirth) ?? [],
@@ -42,6 +44,9 @@ export function SelectAnimalsModal({
   const [sortField, setSortField] = useState<"name" | "earTag" | "age">("name");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
   const [selectedTypes, setSelectedTypes] = useState<Set<string>>(new Set());
+  const [selectedHerdIds, setSelectedHerdIds] = useState<Set<string>>(
+    new Set(),
+  );
   const [showSelectedOnly, setShowSelectedOnly] = useState(false);
   const [birthdayFrom, setBirthdayFrom] = useState<Date | null>(null);
   const [birthdayTo, setBirthdayTo] = useState<Date | null>(null);
@@ -52,6 +57,23 @@ export function SelectAnimalsModal({
     return [...new Set(animals?.map((animal) => animal.type))];
   }, [animals]);
 
+  // Only herds with living animals are offered as filter
+  const herdOptions = useMemo(
+    () =>
+      (herds ?? []).filter((herd) =>
+        (animals ?? []).some(
+          (animal) => animal.herdId === herd.id && !animal.dateOfDeath,
+        ),
+      ),
+    [herds, animals],
+  );
+
+  // Single type: once an animal is selected, only its type stays selectable
+  const lockedAnimalType =
+    singleAnimalType && selectedIds.size > 0
+      ? animals?.find((a) => selectedIds.has(a.id))?.type
+      : undefined;
+
   // Filter animals: exclude dead, apply type and birthday filters
   const filteredAnimals = useMemo(() => {
     let result = animals ?? [];
@@ -59,19 +81,23 @@ export function SelectAnimalsModal({
     // Exclude dead animals
     result = result.filter((a) => !a.dateOfDeath);
 
-    // Single type: once an animal is selected, only its type stays selectable
-    if (singleAnimalType && selectedIds.size > 0) {
-      const selectedType = animals?.find((a) => selectedIds.has(a.id))?.type;
-      // Already selected animals stay visible, so a mixed selection (e.g. from a
-      // herd) can still be corrected
-      if (selectedType)
-        result = result.filter(
-          (a) => a.type === selectedType || selectedIds.has(a.id),
-        );
+    // Already selected animals stay visible, so a mixed selection (e.g. from a
+    // herd) can still be corrected
+    if (lockedAnimalType) {
+      result = result.filter(
+        (a) => a.type === lockedAnimalType || selectedIds.has(a.id),
+      );
     }
 
-    // Filter by type
-    if (selectedTypes.size > 0) {
+    // Filter by herd
+    if (selectedHerdIds.size > 0) {
+      result = result.filter(
+        (a) => !!a.herdId && selectedHerdIds.has(a.herdId),
+      );
+    }
+
+    // Filter by type; the type chips are hidden while the type is locked
+    if (selectedTypes.size > 0 && !lockedAnimalType) {
       result = result.filter((a) => selectedTypes.has(a.type));
     }
 
@@ -105,7 +131,8 @@ export function SelectAnimalsModal({
   }, [
     animals,
     selectedTypes,
-    singleAnimalType,
+    selectedHerdIds,
+    lockedAnimalType,
     showSelectedOnly,
     selectedIds,
     birthdayFrom,
@@ -137,6 +164,18 @@ export function SelectAnimalsModal({
     });
   }
 
+  function toggleHerd(herdId: string) {
+    setSelectedHerdIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(herdId)) {
+        next.delete(herdId);
+      } else {
+        next.add(herdId);
+      }
+      return next;
+    });
+  }
+
   function toggleSelection(animalId: string) {
     setSelectedIds((prev) => {
       const next = new Set(prev);
@@ -153,9 +192,15 @@ export function SelectAnimalsModal({
     // Single type with nothing selected yet: select the first visible type only
     const firstVisibleType = searchResult[0]?.type;
     const visibleIds = searchResult
-      .filter((a) => !singleAnimalType || a.type === firstVisibleType)
+      .filter(
+        (a) =>
+          !singleAnimalType ||
+          lockedAnimalType !== undefined ||
+          a.type === firstVisibleType,
+      )
       .map((a) => a.id);
-    setSelectedIds(new Set(visibleIds));
+    // Added to the selection, so e.g. two herds can be selected one after another
+    setSelectedIds((prev) => new Set([...prev, ...visibleIds]));
   }
 
   function handleClearAll() {
@@ -250,12 +295,23 @@ export function SelectAnimalsModal({
           onPress={() => setShowDateRangeModal(true)}
           theme={theme}
         />
-        {animalTypes.map((animalType) => (
+        {animalTypes.length > 1 &&
+          !lockedAnimalType &&
+          animalTypes.map((animalType) => (
+            <FilterChip
+              key={animalType}
+              label={t(`animals.animal_types.${animalType}`)}
+              active={selectedTypes.has(animalType)}
+              onPress={() => toggleType(animalType)}
+              theme={theme}
+            />
+          ))}
+        {herdOptions.map((herd) => (
           <FilterChip
-            key={animalType}
-            label={t(`animals.animal_types.${animalType}`)}
-            active={selectedTypes.has(animalType)}
-            onPress={() => toggleType(animalType)}
+            key={herd.id}
+            label={herd.name}
+            active={selectedHerdIds.has(herd.id)}
+            onPress={() => toggleHerd(herd.id)}
             theme={theme}
           />
         ))}

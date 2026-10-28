@@ -1756,7 +1756,7 @@
     "famacha_scores_info": "1 = rosso (sano) fino a 5 = bianco (gravemente anemico). Tocca di nuovo per cancellare.",
     "famacha_score": "Punteggio FAMACHA",
     "famacha_summary": "{{count}} animali · media {{average}}",
-    "n_animals": "{{count}} animali",
+    "n_animals": "{{count}} animale",
     "famacha_distribution": "Distribuzione FAMACHA",
     "samples": "Campioni di feci",
     "lab_name": "Laboratorio",
@@ -1818,7 +1818,6 @@
     "last_n_values": "Ultimi {{count}} valori",
     "delete_check_with_rechecks_confirm": "Eliminare questo controllo e i suoi {{count}} ricontrolli?",
     "name_optional": "Nome (facoltativo)",
-    "select_from_herd": "Riprendi gli animali da una mandria (facoltativo)",
     "mixed_animal_types": "Un controllo può contenere solo animali di una specie.",
     "average_per_check": "Ø per controllo",
     "average_grade_per_check": "Ø grado per controllo",
@@ -1839,6 +1838,10 @@
       "medium": "++",
       "high": "+++"
     },
-    "result_value": "Valore"
+    "result_value": "Valore",
+    "max": "max",
+    "n_samples": "{{count}} campione",
+    "n_animals_plural": "{{count}} animali",
+    "n_samples_plural": "{{count}} campioni"
   }
 }

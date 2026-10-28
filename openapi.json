@@ -33378,14 +33378,16 @@
                               },
                               "sampleCount": { "type": "number" },
                               "highestGrade": {
-                                "type": ["string", "null"],
+                                "type": "string",
                                 "enum": ["negative", "low", "medium", "high"]
-                              }
+                              },
+                              "averageGrade": { "type": "number" }
                             },
                             "required": [
                               "parasiteType",
                               "sampleCount",
-                              "highestGrade"
+                              "highestGrade",
+                              "averageGrade"
                             ],
                             "additionalProperties": false
                           }
@@ -33848,14 +33850,16 @@
                         },
                         "sampleCount": { "type": "number" },
                         "highestGrade": {
-                          "type": ["string", "null"],
+                          "type": "string",
                           "enum": ["negative", "low", "medium", "high"]
-                        }
+                        },
+                        "averageGrade": { "type": "number" }
                       },
                       "required": [
                         "parasiteType",
                         "sampleCount",
-                        "highestGrade"
+                        "highestGrade",
+                        "averageGrade"
                       ],
                       "additionalProperties": false
                     }
@@ -34412,14 +34416,16 @@
                         },
                         "sampleCount": { "type": "number" },
                         "highestGrade": {
-                          "type": ["string", "null"],
+                          "type": "string",
                           "enum": ["negative", "low", "medium", "high"]
-                        }
+                        },
+                        "averageGrade": { "type": "number" }
                       },
                       "required": [
                         "parasiteType",
                         "sampleCount",
-                        "highestGrade"
+                        "highestGrade",
+                        "averageGrade"
                       ],
                       "additionalProperties": false
                     }
@@ -34870,14 +34876,16 @@
                         },
                         "sampleCount": { "type": "number" },
                         "highestGrade": {
-                          "type": ["string", "null"],
+                          "type": "string",
                           "enum": ["negative", "low", "medium", "high"]
-                        }
+                        },
+                        "averageGrade": { "type": "number" }
                       },
                       "required": [
                         "parasiteType",
                         "sampleCount",
-                        "highestGrade"
+                        "highestGrade",
+                        "averageGrade"
                       ],
                       "additionalProperties": false
                     }
