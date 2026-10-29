@@ -737,7 +737,8 @@
       "title": "Ebenen",
       "plots": "Schläge",
       "meadows": "Weideflächen",
-      "archived": "Archivierte"
+      "archived": "Archivierte",
+      "parcels": "Parzellen"
     },
     "errors": {
       "self_intersecting": "Die Kanten des Schlags dürfen sich nicht kreuzen.",

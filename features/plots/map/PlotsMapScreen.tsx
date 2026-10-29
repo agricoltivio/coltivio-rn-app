@@ -1,6 +1,7 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { MapLibreMap, BaseLayer } from "@/components/map/MapLibreMap";
 import { HomeMarkerLayer } from "@/components/map/HomeMarkerLayer";
+import { ParcelsLayer } from "@/components/map/ParcelsLayer";
 import { DrawingOverlayRef, LAYER_IDS } from "@/components/map/DrawingOverlay";
 import {
   IonIconButton,
@@ -109,6 +110,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
     archived:
       route.params?.showArchived === true ||
       (localSettings.mapVisibleLayers.archived ?? false),
+    parcels: localSettings.mapVisibleLayers.parcels ?? false,
   }));
   // Fetched including archived ones only while the archived layer is visible;
   // otherwise this is the same (cached) query as the active plots and meadows
@@ -529,6 +531,8 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
                 adjustLayersRef={adjustLayersRef}
                 createLayersRef={createLayersRef}
               />
+              {/* Above the plots, so the borders inside merged plots stay visible */}
+              {visibleLayers.parcels && <ParcelsLayer baseLayer={baseLayer} />}
               <HomeMarkerLayer center={farm.location.coordinates as LngLat} />
             </MapLibreMap>
           </View>

@@ -26,7 +26,7 @@ export function MapLayersDrawer({
 }: MapLayersDrawerProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const snapPoints = useMemo(() => [270], []);
+  const snapPoints = useMemo(() => [320], []);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // RAF defers present() by one frame so a freshly-mounted sheet has time to initialize
@@ -69,6 +69,13 @@ export function MapLayersDrawer({
             value={visibleLayers.archived}
             onChange={() =>
               onChange({ ...visibleLayers, archived: !visibleLayers.archived })
+            }
+          />
+          <Switch
+            label={t("plots.map_layers.parcels")}
+            value={visibleLayers.parcels}
+            onChange={() =>
+              onChange({ ...visibleLayers, parcels: !visibleLayers.parcels })
             }
           />
         </View>

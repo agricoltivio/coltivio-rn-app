@@ -241,6 +241,8 @@ export type MapVisibleLayers = {
   plots: boolean;
   meadows: boolean;
   archived: boolean;
+  // Cadastral parcel borders, not interactive
+  parcels: boolean;
 };
 
 // A tap that hits several active areas (e.g. a meadow over plots) lets the user pick one

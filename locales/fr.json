@@ -737,7 +737,8 @@
       "title": "Calques",
       "plots": "Parcelles",
       "meadows": "Pâtures",
-      "archived": "Archivés"
+      "archived": "Archivés",
+      "parcels": "Parcelles"
     },
     "errors": {
       "self_intersecting": "Les bords du champ ne doivent pas se croiser.",

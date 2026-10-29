@@ -737,7 +737,8 @@
       "title": "Layers",
       "plots": "Plots",
       "meadows": "Meadows",
-      "archived": "Archived"
+      "archived": "Archived",
+      "parcels": "Parcels"
     },
     "errors": {
       "self_intersecting": "The edges of the plot must not cross.",

@@ -737,7 +737,8 @@
       "title": "Livelli",
       "plots": "Particelle",
       "meadows": "Aree di pascolo",
-      "archived": "Archiviati"
+      "archived": "Archiviati",
+      "parcels": "Particelle"
     },
     "errors": {
       "self_intersecting": "I bordi del campo non devono incrociarsi.",
