@@ -25,10 +25,12 @@ export function ViewModeLayers() {
   const selectedPlotId = mode.type === "view" ? mode.selectedPlotId : null;
   const selectedPlotIds = selectedPlotId ? [selectedPlotId] : [];
 
-  // Several active areas under the tap: ask which one instead of guessing.
-  // Returns true when the choice drawer was opened and the tap is handled.
-  const openAreaChoiceIfOverlapping = useCallback(
-    (lngLat: LngLat) => {
+  // Resolves a tap on a plot or meadow. The native hit test has a few pixels of tolerance,
+  // so near a border it can report a neighbouring area; the areas that actually contain
+  // the tap point decide. Several of them (e.g. a meadow over plots): ask which one.
+  // None of them (tap just outside the border): fall back to the native hit.
+  const handleAreaTap = useCallback(
+    (lngLat: LngLat, nativeHit: { kind: "plot" | "meadow"; id: string }) => {
       const tapPoint = turf.point(lngLat);
       const options: AreaChoiceOption[] = [];
       if (visibleLayers.meadows) {
@@ -55,17 +57,36 @@ export function ViewModeLayers() {
           }
         }
       }
-      if (options.length <= 1) return false;
-      setSelectedMeadowId(null);
-      dispatch({ type: "SELECT_PLOT", plotId: null });
-      setAreaChoiceOptions(options);
-      return true;
+
+      if (options.length > 1) {
+        setSelectedMeadowId(null);
+        dispatch({ type: "SELECT_PLOT", plotId: null });
+        setAreaChoiceOptions(options);
+        return;
+      }
+
+      // Only one plot or meadow is selected at a time; tapping the selected one deselects it
+      const tappedArea = options[0] ?? nativeHit;
+      if (tappedArea.kind === "meadow") {
+        dispatch({ type: "SELECT_PLOT", plotId: null });
+        setSelectedMeadowId(
+          selectedMeadowId === tappedArea.id ? null : tappedArea.id,
+        );
+      } else {
+        setSelectedMeadowId(null);
+        dispatch({
+          type: "SELECT_PLOT",
+          plotId: selectedPlotId === tappedArea.id ? null : tappedArea.id,
+        });
+      }
     },
     [
       visibleLayers.meadows,
       visibleLayers.plots,
       meadows,
       plots,
+      selectedPlotId,
+      selectedMeadowId,
       dispatch,
       setSelectedMeadowId,
       setAreaChoiceOptions,
@@ -79,24 +100,12 @@ export function ViewModeLayers() {
     }) => {
       event.stopPropagation();
       const { features, lngLat } = event.nativeEvent;
-      if (openAreaChoiceIfOverlapping(lngLat)) return;
-
       const plotId = features[0]?.properties?.id;
       if (typeof plotId === "string") {
-        // Only one plot or meadow is selected at a time
-        setSelectedMeadowId(null);
-        dispatch({
-          type: "SELECT_PLOT",
-          plotId: selectedPlotId === plotId ? null : plotId,
-        });
+        handleAreaTap(lngLat, { kind: "plot", id: plotId });
       }
     },
-    [
-      selectedPlotId,
-      dispatch,
-      setSelectedMeadowId,
-      openAreaChoiceIfOverlapping,
-    ],
+    [handleAreaTap],
   );
 
   if (mode.type !== "view") return null;
@@ -137,13 +146,9 @@ export function ViewModeLayers() {
         <MeadowsLayer
           meadows={meadows ?? []}
           selectedMeadowId={selectedMeadowId}
-          onMeadowPress={(meadowId, lngLat) => {
-            if (openAreaChoiceIfOverlapping(lngLat)) return;
-            dispatch({ type: "SELECT_PLOT", plotId: null });
-            setSelectedMeadowId(
-              selectedMeadowId === meadowId ? null : meadowId,
-            );
-          }}
+          onMeadowPress={(meadowId, lngLat) =>
+            handleAreaTap(lngLat, { kind: "meadow", id: meadowId })
+          }
         />
       )}
     </>
