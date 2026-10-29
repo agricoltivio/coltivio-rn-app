@@ -10,7 +10,7 @@ import Fuse from "fuse.js";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, SectionList, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 import { PlotsEmptyState } from "../PlotsEmptyState";
 
@@ -43,6 +43,7 @@ export function PlotListModal({
 }: PlotListModalProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
   const [searchText, setSearchText] = useState("");
 
   const sanitizedPlots: Array<Plot & { usageName: string }> =
@@ -195,11 +196,10 @@ export function PlotListModal({
       presentationStyle="pageSheet"
       onRequestClose={onClose}
     >
-      <SafeAreaView
-        edges={["top", "bottom"]}
+      <View
         style={{
           flex: 1,
-          paddingTop: theme.spacing.m,
+          paddingTop: insets.top + theme.spacing.m,
           paddingHorizontal: theme.spacing.m,
           backgroundColor: theme.colors.background,
         }}
@@ -243,7 +243,7 @@ export function PlotListModal({
             ) : null
           }
         />
-      </SafeAreaView>
+      </View>
     </Modal>
   );
 }
