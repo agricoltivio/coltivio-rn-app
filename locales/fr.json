@@ -428,6 +428,7 @@
       "affected_plots_warning": "Les champs suivants seront réduits par ce champ."
     },
     "map": {
+      "choose_area": "Quelle surface ?",
       "selected_plot": {
         "size": "{{size}}a",
         "crop": "Culture : {{crop}}"

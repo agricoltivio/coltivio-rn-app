@@ -428,6 +428,7 @@
       "affected_plots_warning": "Warning: Overlapping plots will be reduced."
     },
     "map": {
+      "choose_area": "Which area?",
       "selected_plot": {
         "size": "{{size}}a",
         "crop": "Crop: {{crop}}"

@@ -2,9 +2,10 @@ import { ArchivedAreasLayer } from "@/components/map/ArchivedAreasLayer";
 import { MeadowsLayer } from "@/components/map/MeadowsLayer";
 import { PlotsLayer } from "@/components/map/PlotsLayer";
 import { useMeadowsQuery } from "@/features/animals/meadows.hooks";
+import { type LngLat } from "@maplibre/maplibre-react-native";
 import * as turf from "@turf/turf";
 import { useCallback } from "react";
-import { usePlotsMapContext } from "../plots-map-mode";
+import { type AreaChoiceOption, usePlotsMapContext } from "../plots-map-mode";
 
 export function ViewModeLayers() {
   const {
@@ -17,53 +18,94 @@ export function ViewModeLayers() {
     archivedMeadows,
     selectedMeadowId,
     setSelectedMeadowId,
+    setAreaChoiceOptions,
   } = usePlotsMapContext();
   const { meadows } = useMeadowsQuery();
 
   const selectedPlotId = mode.type === "view" ? mode.selectedPlotId : null;
   const selectedPlotIds = selectedPlotId ? [selectedPlotId] : [];
 
-  const handlePlotPress = useCallback(
-    (event: {
-      stopPropagation(): void;
-      nativeEvent: { features: GeoJSON.Feature[]; lngLat: [number, number] };
-    }) => {
-      event.stopPropagation();
-      const { features, lngLat } = event.nativeEvent;
-
-      // When multiple overlapping polygons are hit (e.g. nested plots), pick the one
-      // whose boundary is nearest to the tap point — this selects the innermost plot.
-      let feature: GeoJSON.Feature | undefined;
-      if (features.length <= 1) {
-        feature = features[0];
-      } else {
-        const tapPoint = turf.point(lngLat);
-        // Precompute distance from tap to each polygon's outer ring boundary
-        const distances = features.map((f) => {
-          if (f.geometry.type !== "Polygon") return Infinity;
-          // Use only the exterior ring (coordinates[0]) to avoid polygonToLine's
-          // FeatureCollection return type when the polygon has holes.
-          const exteriorRing = turf.lineString(f.geometry.coordinates[0]);
-          return (
-            turf.nearestPointOnLine(exteriorRing, tapPoint).properties.dist ??
-            Infinity
-          );
-        });
-        const minIndex = distances.indexOf(Math.min(...distances));
-        feature = features[minIndex];
+  // Resolves a tap on a plot or meadow. The native hit test has a few pixels of tolerance,
+  // so near a border it can report a neighbouring area; the areas that actually contain
+  // the tap point decide. Several of them (e.g. a meadow over plots): ask which one.
+  // None of them (tap just outside the border): fall back to the native hit.
+  const handleAreaTap = useCallback(
+    (lngLat: LngLat, nativeHit: { kind: "plot" | "meadow"; id: string }) => {
+      const tapPoint = turf.point(lngLat);
+      const options: AreaChoiceOption[] = [];
+      if (visibleLayers.meadows) {
+        for (const meadow of meadows ?? []) {
+          if (turf.booleanPointInPolygon(tapPoint, meadow.geometry)) {
+            options.push({
+              kind: "meadow",
+              id: meadow.id,
+              name: meadow.name,
+              size: meadow.size,
+            });
+          }
+        }
+      }
+      if (visibleLayers.plots) {
+        for (const plot of plots) {
+          if (turf.booleanPointInPolygon(tapPoint, plot.geometry)) {
+            options.push({
+              kind: "plot",
+              id: plot.id,
+              name: plot.name,
+              size: plot.size,
+            });
+          }
+        }
       }
 
-      const plotId = feature?.properties?.id;
-      if (typeof plotId === "string") {
-        // Only one plot or meadow is selected at a time
+      if (options.length > 1) {
+        setSelectedMeadowId(null);
+        dispatch({ type: "SELECT_PLOT", plotId: null });
+        setAreaChoiceOptions(options);
+        return;
+      }
+
+      // Only one plot or meadow is selected at a time; tapping the selected one deselects it
+      const tappedArea = options[0] ?? nativeHit;
+      if (tappedArea.kind === "meadow") {
+        dispatch({ type: "SELECT_PLOT", plotId: null });
+        setSelectedMeadowId(
+          selectedMeadowId === tappedArea.id ? null : tappedArea.id,
+        );
+      } else {
         setSelectedMeadowId(null);
         dispatch({
           type: "SELECT_PLOT",
-          plotId: selectedPlotId === plotId ? null : plotId,
+          plotId: selectedPlotId === tappedArea.id ? null : tappedArea.id,
         });
       }
     },
-    [selectedPlotId, dispatch, setSelectedMeadowId],
+    [
+      visibleLayers.meadows,
+      visibleLayers.plots,
+      meadows,
+      plots,
+      selectedPlotId,
+      selectedMeadowId,
+      dispatch,
+      setSelectedMeadowId,
+      setAreaChoiceOptions,
+    ],
+  );
+
+  const handlePlotPress = useCallback(
+    (event: {
+      stopPropagation(): void;
+      nativeEvent: { features: GeoJSON.Feature[]; lngLat: LngLat };
+    }) => {
+      event.stopPropagation();
+      const { features, lngLat } = event.nativeEvent;
+      const plotId = features[0]?.properties?.id;
+      if (typeof plotId === "string") {
+        handleAreaTap(lngLat, { kind: "plot", id: plotId });
+      }
+    },
+    [handleAreaTap],
   );
 
   if (mode.type !== "view") return null;
@@ -104,12 +146,9 @@ export function ViewModeLayers() {
         <MeadowsLayer
           meadows={meadows ?? []}
           selectedMeadowId={selectedMeadowId}
-          onMeadowPress={(meadowId) => {
-            dispatch({ type: "SELECT_PLOT", plotId: null });
-            setSelectedMeadowId(
-              selectedMeadowId === meadowId ? null : meadowId,
-            );
-          }}
+          onMeadowPress={(meadowId, lngLat) =>
+            handleAreaTap(lngLat, { kind: "meadow", id: meadowId })
+          }
         />
       )}
     </>
