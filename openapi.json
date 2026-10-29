@@ -16566,10 +16566,7 @@
         "type": "object",
         "properties": {
           "error": { "type": "string" },
-          "code": {
-            "type": "string",
-            "enum": ["invalid_geometry", "geometry_processing_failed"]
-          }
+          "code": { "type": "string", "enum": ["invalid_geometry"] }
         },
         "required": ["error"],
         "additionalProperties": false

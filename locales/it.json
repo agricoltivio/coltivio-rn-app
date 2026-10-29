@@ -741,7 +741,6 @@
     "errors": {
       "self_intersecting": "I bordi del campo non devono incrociarsi.",
       "invalid_geometry": "Il campo non ha superficie. Disegna almeno tre punti distinti.",
-      "geometry_processing_failed": "Non è stato possibile ritagliare il campo dai campi vicini. Modifica la forma o contatta il supporto.",
       "save_failed": "Non è stato possibile salvare il campo."
     }
   },

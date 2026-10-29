@@ -3522,7 +3522,7 @@ export interface components {
     GetV1LayersPlotsBboxNegativeResponse: {
       error: string;
       /** @enum {string} */
-      code?: "invalid_geometry" | "geometry_processing_failed";
+      code?: "invalid_geometry";
     };
     GetV1LayersPlotsFarmsFederalFarmIdOnlyPositiveResponse: {
       data: {
