@@ -11,11 +11,12 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { H2 } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import styled, { useTheme } from "styled-components/native";
 import { useAddPlotStore } from "./add-plots.store";
 import { AddPlotSummaryScreenProps } from "./navigation/plots-routes";
+import { plotSaveErrorMessage } from "./plot-geometry";
 import { useCreatePlotMutation } from "./plots.hooks";
 import { getUsageCodeSelectData } from "./usage-codes";
 import type { Plot } from "@/api/plots.api";
@@ -58,7 +59,7 @@ export function AddPlotSummaryScreen({
       addPlotStore.reset();
       navigation.popTo("PlotsMap", { selectedPlotId: plot.id });
     },
-    (error) => console.log(error),
+    (error) => Alert.alert(t("common.error"), plotSaveErrorMessage(error, t)),
   );
 
   function onSubmit({ size, usage, cuttingDate, ...rest }: AddPlotFormValues) {

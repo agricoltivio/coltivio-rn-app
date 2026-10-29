@@ -4,6 +4,7 @@ import React from "react";
 import { useTheme } from "styled-components/native";
 import { usePlotsMapContext } from "../plots-map-mode";
 import { useAddPlotStore } from "../../add-plots.store";
+import { isSelfIntersecting } from "../../plot-geometry";
 import { CreateModeChooser } from "./CreateModeChooser";
 import { useMeadowDraftStore } from "@/features/animals/meadow-draft.store";
 import {
@@ -205,6 +206,10 @@ export function CreateModeControls() {
           disabled={!(drawingAction === "edit" && newPolygon)}
           onPress={() => {
             if (newPolygon) {
+              if (isSelfIntersecting(newPolygon.geometry)) {
+                Alert.alert(t("plots.errors.self_intersecting"));
+                return;
+              }
               addPlotStore.setData(newPolygon);
               navigation.navigate("AddPlotSummary", {});
             }

@@ -18,6 +18,9 @@ import React, {
 } from "react";
 import { usePlotsMapContext } from "../plots-map-mode";
 import { useUpdatePlotMutation } from "../../plots.hooks";
+import { isSelfIntersecting, plotSaveErrorMessage } from "../../plot-geometry";
+import { useTranslation } from "react-i18next";
+import { Alert } from "react-native";
 
 export type AdjustModeLayersHandle = {
   handleMapPress: (lngLat: LngLat) => void;
@@ -31,6 +34,7 @@ type RingData = {
 export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
   function AdjustModeLayers(_props, ref) {
     const { mode, dispatch, plots, mapRef, drawingRef } = usePlotsMapContext();
+    const { t } = useTranslation();
     const [rings, setRings] = useState<RingData[]>([]);
 
     const ringsRef = useRef(rings);
@@ -44,7 +48,7 @@ export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
 
     const updatePlotMutation = useUpdatePlotMutation(
       () => dispatch({ type: "EXIT_MODE" }),
-      (error) => console.error(error),
+      (error) => Alert.alert(t("common.error"), plotSaveErrorMessage(error, t)),
     );
 
     const plot =
@@ -118,6 +122,10 @@ export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
           // Last ring confirmed — build the full multipolygon and save
           const finalRings = currentRings.map((r) => r.coordinates);
           const polygon = GeoSpatials.lngLatToMultiPolygon(finalRings);
+          if (isSelfIntersecting(polygon)) {
+            Alert.alert(t("plots.errors.self_intersecting"));
+            return;
+          }
           const area = turf.area(polygon);
           updatePlotMutation.mutate({
             plotId: plot.id,

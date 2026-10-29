@@ -738,6 +738,12 @@
       "plots": "Parcelles",
       "meadows": "Pâtures",
       "archived": "Archivés"
+    },
+    "errors": {
+      "self_intersecting": "Les bords du champ ne doivent pas se croiser.",
+      "invalid_geometry": "Le champ n'a pas de surface. Dessine au moins trois points distincts.",
+      "geometry_processing_failed": "Le champ n'a pas pu être découpé des champs voisins. Ajuste la forme ou contacte le support.",
+      "save_failed": "Le champ n'a pas pu être enregistré."
     }
   },
   "farm_equipment": {

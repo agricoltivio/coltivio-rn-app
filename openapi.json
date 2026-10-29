@@ -16564,7 +16564,13 @@
       },
       "GetV1LayersPlotsBboxNegativeResponse": {
         "type": "object",
-        "properties": { "error": { "type": "string" } },
+        "properties": {
+          "error": { "type": "string" },
+          "code": {
+            "type": "string",
+            "enum": ["invalid_geometry", "geometry_processing_failed"]
+          }
+        },
         "required": ["error"],
         "additionalProperties": false
       },
