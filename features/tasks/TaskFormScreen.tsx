@@ -29,7 +29,7 @@ import {
   View,
 } from "react-native";
 import { useTheme } from "styled-components/native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   useCreateTaskMutation,
   useFarmUsersQuery,
@@ -79,6 +79,7 @@ function ChecklistGenerationModal({
 }: ChecklistGenerationModalProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
   const { canRead } = usePermissions();
 
   const availableEntityTypes = ENTITY_TYPES.filter((type) =>
@@ -263,7 +264,12 @@ function ChecklistGenerationModal({
 
   // Fake navigation header matching the stack navigator's header height
   const navHeader = (button: React.ReactNode) => (
-    <View style={{ backgroundColor: theme.colors.background }}>
+    <View
+      style={{
+        paddingTop: insets.top,
+        backgroundColor: theme.colors.background,
+      }}
+    >
       <View
         style={{
           height: 44,
@@ -284,295 +290,276 @@ function ChecklistGenerationModal({
       presentationStyle="pageSheet"
       onRequestClose={handleClose}
     >
-      <SafeAreaView
-        edges={["top", "bottom"]}
-        style={{ flex: 1, backgroundColor: theme.colors.background }}
-      >
-        {/* Step 1 — entity type selection */}
-        {step === "type_select" && (
-          <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
-            {navHeader(
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <Pressable
-                  onPress={handleClose}
-                  style={{ paddingHorizontal: 8, paddingVertical: 4 }}
-                >
-                  <Ionicons
-                    name="close"
-                    size={28}
-                    color={theme.colors.primary}
-                  />
-                </Pressable>
-              </View>,
-            )}
+      {/* Step 1 — entity type selection */}
+      {step === "type_select" && (
+        <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+          {navHeader(
             <View
               style={{
                 flex: 1,
-                paddingHorizontal: theme.spacing.m,
-                paddingTop: theme.spacing.s,
+                flexDirection: "row",
+                justifyContent: "flex-end",
               }}
             >
-              <H2>{t("tasks.generate_checklist_items")}</H2>
-              <Subtitle style={{ color: theme.colors.gray2 }}>
-                {t("tasks.generate_checklist_items_hint")}
-              </Subtitle>
-              <View
-                style={{ marginTop: theme.spacing.m, gap: theme.spacing.s }}
-              >
-                {availableEntityTypes.map((type) => (
-                  <Pressable
-                    key={type}
-                    onPress={() => handleEntityTypeSelect(type)}
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      gap: theme.spacing.m,
-                      backgroundColor: theme.colors.gray5,
-                      borderRadius: theme.radii.m,
-                      padding: theme.spacing.m,
-                    }}
-                  >
-                    <Ionicons
-                      name={entityTypeIcons[type]}
-                      size={24}
-                      color={theme.colors.primary}
-                    />
-                    <Subtitle style={{ fontSize: 16 }}>
-                      {entityTypePluralLabels[type]}
-                    </Subtitle>
-                    <Ionicons
-                      name="chevron-forward"
-                      size={18}
-                      color={theme.colors.gray2}
-                      style={{ marginLeft: "auto" }}
-                    />
-                  </Pressable>
-                ))}
-              </View>
-            </View>
-          </View>
-        )}
-
-        {/* Step 2 — entity list (multi-select), mirrors SelectAnimalsModal layout */}
-        {step === "entity_list" && entityType != null && (
-          <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
-            {navHeader(
               <Pressable
-                onPress={handleBack}
+                onPress={handleClose}
                 style={{ paddingHorizontal: 8, paddingVertical: 4 }}
               >
-                <Ionicons
-                  name="chevron-back"
-                  size={28}
-                  color={theme.colors.primary}
-                />
-              </Pressable>,
-            )}
-            <View
-              style={{
-                flex: 1,
-                paddingHorizontal: theme.spacing.m,
-                paddingTop: theme.spacing.s,
+                <Ionicons name="close" size={28} color={theme.colors.primary} />
+              </Pressable>
+            </View>,
+          )}
+          <View
+            style={{
+              flex: 1,
+              paddingHorizontal: theme.spacing.m,
+              paddingTop: theme.spacing.s,
+            }}
+          >
+            <H2>{t("tasks.generate_checklist_items")}</H2>
+            <Subtitle style={{ color: theme.colors.gray2 }}>
+              {t("tasks.generate_checklist_items_hint")}
+            </Subtitle>
+            <View style={{ marginTop: theme.spacing.m, gap: theme.spacing.s }}>
+              {availableEntityTypes.map((type) => (
+                <Pressable
+                  key={type}
+                  onPress={() => handleEntityTypeSelect(type)}
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: theme.spacing.m,
+                    backgroundColor: theme.colors.gray5,
+                    borderRadius: theme.radii.m,
+                    padding: theme.spacing.m,
+                  }}
+                >
+                  <Ionicons
+                    name={entityTypeIcons[type]}
+                    size={24}
+                    color={theme.colors.primary}
+                  />
+                  <Subtitle style={{ fontSize: 16 }}>
+                    {entityTypePluralLabels[type]}
+                  </Subtitle>
+                  <Ionicons
+                    name="chevron-forward"
+                    size={18}
+                    color={theme.colors.gray2}
+                    style={{ marginLeft: "auto" }}
+                  />
+                </Pressable>
+              ))}
+            </View>
+          </View>
+        </View>
+      )}
+
+      {/* Step 2 — entity list (multi-select), mirrors SelectAnimalsModal layout */}
+      {step === "entity_list" && entityType != null && (
+        <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+          {navHeader(
+            <Pressable
+              onPress={handleBack}
+              style={{ paddingHorizontal: 8, paddingVertical: 4 }}
+            >
+              <Ionicons
+                name="chevron-back"
+                size={28}
+                color={theme.colors.primary}
+              />
+            </Pressable>,
+          )}
+          <View
+            style={{
+              flex: 1,
+              paddingHorizontal: theme.spacing.m,
+              paddingTop: theme.spacing.s,
+            }}
+          >
+            <H2>{entityTypePluralLabels[entityType]}</H2>
+            <Subtitle style={{ color: theme.colors.gray2 }}>
+              {t("tasks.generate_checklist_items_hint")}
+            </Subtitle>
+
+            {/* Search */}
+            <View style={{ marginTop: theme.spacing.m }}>
+              <TextInput
+                hideLabel
+                placeholder={t("forms.placeholders.search")}
+                onChangeText={setSearch}
+                value={search}
+              />
+            </View>
+
+            {/* Filter chips: sub-view toggle + animal type chips in one scroll row */}
+            <RNScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={{ marginTop: theme.spacing.s, flexGrow: 0 }}
+              contentContainerStyle={{
+                gap: theme.spacing.xs,
+                paddingVertical: theme.spacing.xs,
               }}
             >
-              <H2>{entityTypePluralLabels[entityType]}</H2>
-              <Subtitle style={{ color: theme.colors.gray2 }}>
-                {t("tasks.generate_checklist_items_hint")}
-              </Subtitle>
-
-              {/* Search */}
-              <View style={{ marginTop: theme.spacing.m }}>
-                <TextInput
-                  hideLabel
-                  placeholder={t("forms.placeholders.search")}
-                  onChangeText={setSearch}
-                  value={search}
-                />
-              </View>
-
-              {/* Filter chips: sub-view toggle + animal type chips in one scroll row */}
-              <RNScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={{ marginTop: theme.spacing.s, flexGrow: 0 }}
-                contentContainerStyle={{
-                  gap: theme.spacing.xs,
-                  paddingVertical: theme.spacing.xs,
-                }}
-              >
-                {entityType === "animal" &&
-                  (["animals", "herds"] as AnimalSubView[]).map((view) => (
-                    <Chip
-                      key={view}
-                      label={
-                        view === "animals"
-                          ? t("tasks.link_types.animal")
-                          : t("tasks.link_types.herd")
-                      }
-                      active={animalSubView === view}
-                      onPress={() => {
-                        setAnimalSubView(view);
-                        setSearch("");
-                        setSelectedAnimalTypes(new Set());
-                      }}
-                    />
-                  ))}
-                {entityType === "animal" &&
-                  animalSubView === "animals" &&
-                  availableAnimalTypes.map((animalType) => (
-                    <Chip
-                      key={animalType}
-                      label={ANIMAL_TYPE_LABELS[animalType]}
-                      active={selectedAnimalTypes.has(animalType)}
-                      onPress={() => toggleAnimalType(animalType)}
-                    />
-                  ))}
-              </RNScrollView>
-
-              {/* Select all / Clear */}
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  marginTop: theme.spacing.m,
-                }}
-              >
-                <TouchableOpacity onPress={handleSelectAll}>
-                  <Subtitle style={{ color: theme.colors.primary }}>
-                    {t("treatments.select_all", { count: currentItems.length })}
-                  </Subtitle>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handleClearAll}>
-                  <Subtitle style={{ color: theme.colors.gray1 }}>
-                    {t("treatments.clear_selection")}
-                  </Subtitle>
-                </TouchableOpacity>
-              </View>
-
-              {/* Entity list */}
-              <View style={{ marginTop: theme.spacing.s, flex: 1 }}>
-                {entityType === "animal" && animalSubView === "animals" && (
-                  <FlatList
-                    data={filteredAnimals}
-                    keyExtractor={(item) => item.id}
-                    contentContainerStyle={{
-                      borderTopRightRadius: 10,
-                      borderTopLeftRadius: 10,
-                      overflow: "hidden",
-                      backgroundColor:
-                        filteredAnimals.length > 0
-                          ? theme.colors.white
-                          : undefined,
+              {entityType === "animal" &&
+                (["animals", "herds"] as AnimalSubView[]).map((view) => (
+                  <Chip
+                    key={view}
+                    label={
+                      view === "animals"
+                        ? t("tasks.link_types.animal")
+                        : t("tasks.link_types.herd")
+                    }
+                    active={animalSubView === view}
+                    onPress={() => {
+                      setAnimalSubView(view);
+                      setSearch("");
+                      setSelectedAnimalTypes(new Set());
                     }}
-                    renderItem={({ item }) => (
-                      <ListItem
-                        style={{ paddingVertical: 5 }}
-                        onPress={() =>
-                          toggleItem(
-                            item.id,
-                            item.earTag?.number
-                              ? `${item.earTag.number} — ${item.name}`
-                              : item.name,
-                          )
-                        }
-                      >
-                        <ListItem.Checkbox
-                          checked={pendingSelection.has(item.id)}
-                        />
-                        <ListItem.Content>
-                          <ListItem.Title>
-                            {item.earTag?.number
-                              ? `${item.earTag.number} — `
-                              : ""}
-                            {item.name}
-                          </ListItem.Title>
-                          <ListItem.Body>
-                            {ANIMAL_TYPE_LABELS[item.type]}
-                          </ListItem.Body>
-                        </ListItem.Content>
-                      </ListItem>
-                    )}
                   />
-                )}
-                {entityType === "animal" && animalSubView === "herds" && (
-                  <FlatList
-                    data={filteredHerds}
-                    keyExtractor={(item) => item.id}
-                    contentContainerStyle={{
-                      borderTopRightRadius: 10,
-                      borderTopLeftRadius: 10,
-                      overflow: "hidden",
-                      backgroundColor:
-                        filteredHerds.length > 0
-                          ? theme.colors.white
-                          : undefined,
-                    }}
-                    renderItem={({ item }) => (
-                      <ListItem
-                        style={{ paddingVertical: 5 }}
-                        onPress={() => toggleItem(item.id, item.name)}
-                      >
-                        <ListItem.Checkbox
-                          checked={pendingSelection.has(item.id)}
-                        />
-                        <ListItem.Content>
-                          <ListItem.Title>{item.name}</ListItem.Title>
-                        </ListItem.Content>
-                      </ListItem>
-                    )}
+                ))}
+              {entityType === "animal" &&
+                animalSubView === "animals" &&
+                availableAnimalTypes.map((animalType) => (
+                  <Chip
+                    key={animalType}
+                    label={ANIMAL_TYPE_LABELS[animalType]}
+                    active={selectedAnimalTypes.has(animalType)}
+                    onPress={() => toggleAnimalType(animalType)}
                   />
-                )}
-                {entityType === "plot" && (
-                  <FlatList
-                    data={filteredPlots}
-                    keyExtractor={(item) => item.id}
-                    contentContainerStyle={{
-                      borderTopRightRadius: 10,
-                      borderTopLeftRadius: 10,
-                      overflow: "hidden",
-                      backgroundColor:
-                        filteredPlots.length > 0
-                          ? theme.colors.white
-                          : undefined,
-                    }}
-                    renderItem={({ item }) => (
-                      <ListItem
-                        style={{ paddingVertical: 5 }}
-                        onPress={() =>
-                          toggleItem(item.id, item.name ?? item.id)
-                        }
-                      >
-                        <ListItem.Checkbox
-                          checked={pendingSelection.has(item.id)}
-                        />
-                        <ListItem.Content>
-                          <ListItem.Title>
-                            {item.name ?? item.id}
-                          </ListItem.Title>
-                        </ListItem.Content>
-                      </ListItem>
-                    )}
-                  />
-                )}
-              </View>
+                ))}
+            </RNScrollView>
+
+            {/* Select all / Clear */}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginTop: theme.spacing.m,
+              }}
+            >
+              <TouchableOpacity onPress={handleSelectAll}>
+                <Subtitle style={{ color: theme.colors.primary }}>
+                  {t("treatments.select_all", { count: currentItems.length })}
+                </Subtitle>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleClearAll}>
+                <Subtitle style={{ color: theme.colors.gray1 }}>
+                  {t("treatments.clear_selection")}
+                </Subtitle>
+              </TouchableOpacity>
             </View>
-            <BottomActionContainer>
-              <Button
-                title={t("treatments.confirm_selection", {
-                  count: selectedCount,
-                })}
-                onPress={handleConfirm}
-              />
-            </BottomActionContainer>
+
+            {/* Entity list */}
+            <View style={{ marginTop: theme.spacing.s, flex: 1 }}>
+              {entityType === "animal" && animalSubView === "animals" && (
+                <FlatList
+                  data={filteredAnimals}
+                  keyExtractor={(item) => item.id}
+                  contentContainerStyle={{
+                    borderTopRightRadius: 10,
+                    borderTopLeftRadius: 10,
+                    overflow: "hidden",
+                    backgroundColor:
+                      filteredAnimals.length > 0
+                        ? theme.colors.white
+                        : undefined,
+                  }}
+                  renderItem={({ item }) => (
+                    <ListItem
+                      style={{ paddingVertical: 5 }}
+                      onPress={() =>
+                        toggleItem(
+                          item.id,
+                          item.earTag?.number
+                            ? `${item.earTag.number} — ${item.name}`
+                            : item.name,
+                        )
+                      }
+                    >
+                      <ListItem.Checkbox
+                        checked={pendingSelection.has(item.id)}
+                      />
+                      <ListItem.Content>
+                        <ListItem.Title>
+                          {item.earTag?.number
+                            ? `${item.earTag.number} — `
+                            : ""}
+                          {item.name}
+                        </ListItem.Title>
+                        <ListItem.Body>
+                          {ANIMAL_TYPE_LABELS[item.type]}
+                        </ListItem.Body>
+                      </ListItem.Content>
+                    </ListItem>
+                  )}
+                />
+              )}
+              {entityType === "animal" && animalSubView === "herds" && (
+                <FlatList
+                  data={filteredHerds}
+                  keyExtractor={(item) => item.id}
+                  contentContainerStyle={{
+                    borderTopRightRadius: 10,
+                    borderTopLeftRadius: 10,
+                    overflow: "hidden",
+                    backgroundColor:
+                      filteredHerds.length > 0 ? theme.colors.white : undefined,
+                  }}
+                  renderItem={({ item }) => (
+                    <ListItem
+                      style={{ paddingVertical: 5 }}
+                      onPress={() => toggleItem(item.id, item.name)}
+                    >
+                      <ListItem.Checkbox
+                        checked={pendingSelection.has(item.id)}
+                      />
+                      <ListItem.Content>
+                        <ListItem.Title>{item.name}</ListItem.Title>
+                      </ListItem.Content>
+                    </ListItem>
+                  )}
+                />
+              )}
+              {entityType === "plot" && (
+                <FlatList
+                  data={filteredPlots}
+                  keyExtractor={(item) => item.id}
+                  contentContainerStyle={{
+                    borderTopRightRadius: 10,
+                    borderTopLeftRadius: 10,
+                    overflow: "hidden",
+                    backgroundColor:
+                      filteredPlots.length > 0 ? theme.colors.white : undefined,
+                  }}
+                  renderItem={({ item }) => (
+                    <ListItem
+                      style={{ paddingVertical: 5 }}
+                      onPress={() => toggleItem(item.id, item.name ?? item.id)}
+                    >
+                      <ListItem.Checkbox
+                        checked={pendingSelection.has(item.id)}
+                      />
+                      <ListItem.Content>
+                        <ListItem.Title>{item.name ?? item.id}</ListItem.Title>
+                      </ListItem.Content>
+                    </ListItem>
+                  )}
+                />
+              )}
+            </View>
           </View>
-        )}
-      </SafeAreaView>
+          <BottomActionContainer>
+            <Button
+              title={t("treatments.confirm_selection", {
+                count: selectedCount,
+              })}
+              onPress={handleConfirm}
+            />
+          </BottomActionContainer>
+        </View>
+      )}
     </Modal>
   );
 }

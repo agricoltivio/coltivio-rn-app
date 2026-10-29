@@ -16,7 +16,7 @@ import Fuse from "fuse.js";
 import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList, Modal, ScrollView, SectionList, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 import { PlotListScreenProps } from "./navigation/plots-routes";
 import { useFarmPlotsQuery } from "./plots.hooks";
@@ -406,6 +406,7 @@ function UsageCodeFilterModal({
 }) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
 
   return (
     <Modal
@@ -414,11 +415,10 @@ function UsageCodeFilterModal({
       presentationStyle="pageSheet"
       onRequestClose={onClose}
     >
-      <SafeAreaView
-        edges={["top", "bottom"]}
+      <View
         style={{
           flex: 1,
-          paddingTop: theme.spacing.m,
+          paddingTop: insets.top + theme.spacing.m,
           paddingHorizontal: theme.spacing.m,
           backgroundColor: theme.colors.background,
         }}
@@ -471,7 +471,7 @@ function UsageCodeFilterModal({
             flexDirection: "row",
             gap: theme.spacing.s,
             paddingVertical: theme.spacing.m,
-            paddingBottom: theme.spacing.s,
+            paddingBottom: insets.bottom + theme.spacing.s,
           }}
         >
           <Button
@@ -486,7 +486,7 @@ function UsageCodeFilterModal({
             onPress={onClose}
           />
         </View>
-      </SafeAreaView>
+      </View>
     </Modal>
   );
 }
