@@ -241,7 +241,7 @@
             "required": false,
             "description": "GET /v1/layers/plots/farms/:federalFarmId/bbox Parameter",
             "schema": {
-              "$ref": "#/components/schemas/GetV1LayersPlotsFarmsFederalFarmIdBboxParameterBuffer"
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
             }
           }
         ],
@@ -287,7 +287,7 @@
             "required": false,
             "description": "HEAD /v1/layers/plots/farms/:federalFarmId/bbox Parameter",
             "schema": {
-              "$ref": "#/components/schemas/GetV1LayersPlotsFarmsFederalFarmIdBboxParameterBuffer"
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
             }
           }
         ],
@@ -16262,9 +16262,6 @@
         "required": ["data"],
         "additionalProperties": false
       },
-      "GetV1LayersPlotsFarmsFederalFarmIdBboxParameterBuffer": {
-        "type": "number"
-      },
       "GetV1LayersPlotsFarmsFederalFarmIdBboxPositiveResponse": {
         "type": "object",
         "properties": {
@@ -17535,7 +17532,8 @@
                 "type": ["string", "null"],
                 "enum": ["owner", "member"]
               },
-              "isWikiModerator": { "type": "boolean" }
+              "isWikiModerator": { "type": "boolean" },
+              "isForumModerator": { "type": "boolean" }
             },
             "required": [
               "id",
@@ -17544,7 +17542,8 @@
               "emailVerified",
               "farmId",
               "farmRole",
-              "isWikiModerator"
+              "isWikiModerator",
+              "isForumModerator"
             ],
             "additionalProperties": false
           }
@@ -17608,7 +17607,8 @@
                 "type": ["string", "null"],
                 "enum": ["owner", "member"]
               },
-              "isWikiModerator": { "type": "boolean" }
+              "isWikiModerator": { "type": "boolean" },
+              "isForumModerator": { "type": "boolean" }
             },
             "required": [
               "id",
@@ -17617,7 +17617,8 @@
               "emailVerified",
               "farmId",
               "farmRole",
-              "isWikiModerator"
+              "isWikiModerator",
+              "isForumModerator"
             ],
             "additionalProperties": false
           }
@@ -17722,7 +17723,8 @@
                       "type": ["string", "null"],
                       "enum": ["owner", "member"]
                     },
-                    "isWikiModerator": { "type": "boolean" }
+                    "isWikiModerator": { "type": "boolean" },
+                    "isForumModerator": { "type": "boolean" }
                   },
                   "required": [
                     "id",
@@ -17731,7 +17733,8 @@
                     "emailVerified",
                     "farmId",
                     "farmRole",
-                    "isWikiModerator"
+                    "isWikiModerator",
+                    "isForumModerator"
                   ],
                   "additionalProperties": false
                 }
@@ -17760,7 +17763,8 @@
                 "type": ["string", "null"],
                 "enum": ["owner", "member"]
               },
-              "isWikiModerator": { "type": "boolean" }
+              "isWikiModerator": { "type": "boolean" },
+              "isForumModerator": { "type": "boolean" }
             },
             "required": [
               "id",
@@ -17769,7 +17773,8 @@
               "emailVerified",
               "farmId",
               "farmRole",
-              "isWikiModerator"
+              "isWikiModerator",
+              "isForumModerator"
             ],
             "additionalProperties": false
           }
@@ -17793,6 +17798,7 @@
                 "enum": ["owner", "member"]
               },
               "isWikiModerator": { "type": "boolean" },
+              "isForumModerator": { "type": "boolean" },
               "taskPushNotifications": { "type": "boolean" }
             },
             "required": [
@@ -17803,6 +17809,7 @@
               "farmId",
               "farmRole",
               "isWikiModerator",
+              "isForumModerator",
               "taskPushNotifications"
             ],
             "additionalProperties": false
@@ -17835,6 +17842,7 @@
                 "enum": ["owner", "member"]
               },
               "isWikiModerator": { "type": "boolean" },
+              "isForumModerator": { "type": "boolean" },
               "farmPermissions": {
                 "type": "array",
                 "items": {
@@ -17863,6 +17871,7 @@
               "farmId",
               "farmRole",
               "isWikiModerator",
+              "isForumModerator",
               "farmPermissions",
               "taskPushNotifications"
             ],
@@ -28862,6 +28871,7 @@
                     "earTagId": { "type": ["string", "null"] },
                     "earTagAssigned": { "type": "boolean" },
                     "assignedToAnimalId": { "type": ["string", "null"] },
+                    "assignedToAnimalName": { "type": ["string", "null"] },
                     "name": { "type": ["string", "null"] },
                     "sex": {
                       "type": ["string", "null"],
@@ -28904,6 +28914,7 @@
                     "earTagId",
                     "earTagAssigned",
                     "assignedToAnimalId",
+                    "assignedToAnimalName",
                     "name",
                     "sex",
                     "dateOfBirth",
