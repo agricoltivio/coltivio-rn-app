@@ -52,6 +52,7 @@ export class ApiError extends Error {
   constructor(
     public readonly status: number,
     message: string,
+    public readonly serverMessage?: string,
   ) {
     super(message);
     this.name = "ApiError";
@@ -86,6 +87,7 @@ const middleware: Middleware = {
       throw new ApiError(
         response.status,
         `${response.url}: ${response.status} - ${content.error}`,
+        content.error,
       );
     }
   },

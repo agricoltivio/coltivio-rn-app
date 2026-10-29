@@ -29246,6 +29246,7 @@
                     "earTagId": { "type": ["string", "null"] },
                     "earTagAssigned": { "type": "boolean" },
                     "assignedToAnimalId": { "type": ["string", "null"] },
+                    "assignedToAnimalName": { "type": ["string", "null"] },
                     "name": { "type": ["string", "null"] },
                     "sex": {
                       "type": ["string", "null"],
@@ -29288,6 +29289,7 @@
                     "earTagId",
                     "earTagAssigned",
                     "assignedToAnimalId",
+                    "assignedToAnimalName",
                     "name",
                     "sex",
                     "dateOfBirth",

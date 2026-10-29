@@ -63,12 +63,6 @@ export type AnimalsStackParamList = {
     rowIndex: number;
     row: EditablePreviewRow;
     type: AnimalType;
-    mergeSelection?: { rowIndex: number; animalId: string };
-  };
-  SelectSingleAnimal: {
-    animalType: AnimalType;
-    previousScreen: "TvdImportRowDetail";
-    rowIndex: number;
   };
   Herds: undefined;
   OutdoorJournal: undefined;
@@ -147,8 +141,6 @@ export type TvdImportOnboardingScreenProps =
 export type TvdImportPreviewScreenProps = StackScreenProps<"TvdImportPreview">;
 export type TvdImportRowDetailScreenProps =
   StackScreenProps<"TvdImportRowDetail">;
-export type SelectSingleAnimalScreenProps =
-  StackScreenProps<"SelectSingleAnimal">;
 export type HerdsScreenProps = StackScreenProps<"Herds">;
 export type OutdoorJournalScreenProps = StackScreenProps<"OutdoorJournal">;
 export type MeadowDetailsScreenProps = StackScreenProps<"MeadowDetails">;

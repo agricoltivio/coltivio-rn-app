@@ -127,8 +127,11 @@ export default Sentry.wrap(function App() {
                                     },
                                   }}
                                 >
+                                  {/* translucent: keyboard-controller replaces the StatusBar module on Android and
+                                      otherwise pushes the whole app down by the status bar height on some starts */}
                                   <StatusBar
                                     barStyle="dark-content"
+                                    translucent
                                     backgroundColor={
                                       coltivioTheme.colors.background
                                     }

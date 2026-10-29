@@ -9,6 +9,10 @@
   "license": "SEE LICENSE IN LICENSE",
   "author": "Coltivio",
   "homepage": "https://github.com/agricoltivio/coltivio-rn-app",
+  "resolutions": {
+    "markdown-it": "^14.3.3",
+    "prosemirror-view": "^1.42.3"
+  },
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
@@ -39,7 +43,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@10play/tentap-editor": "^1.0.1",
+    "@10play/tentap-editor": "^1.1.0",
     "@dagrejs/dagre": "^3.0.0",
     "@expo-google-fonts/inter": "^0.4.2",
     "@expo/vector-icons": "^15.0.3",

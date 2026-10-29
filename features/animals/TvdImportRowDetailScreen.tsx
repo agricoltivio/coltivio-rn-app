@@ -5,22 +5,21 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
+import { TextInput } from "@/components/inputs/TextInput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { useAnimalsQuery } from "./animals.hooks";
 import {
   EditablePreviewRow,
   TvdImportRowDetailScreenProps,
 } from "./navigation/animals-routes";
 
 type RowFormValues = {
-  earTagNumber: string;
   name: string;
   sex: "male" | "female";
   dateOfBirth: Date;
@@ -37,24 +36,11 @@ export function TvdImportRowDetailScreen({
 }: TvdImportRowDetailScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { rowIndex, row, type } = route.params;
-  const { animals } = useAnimalsQuery();
+  const { rowIndex, row } = route.params;
 
   const [mergeAnimalId, setMergeAnimalId] = useState<string | null>(
     row.mergeAnimalId,
   );
-
-  // Handle merge animal selection coming back from SelectSingleAnimalModal
-  useEffect(() => {
-    const sel = route.params.mergeSelection;
-    if (sel && sel.rowIndex === rowIndex) {
-      setMergeAnimalId(sel.animalId);
-    }
-  }, [route.params.mergeSelection, rowIndex]);
-
-  const mergeAnimal = mergeAnimalId
-    ? animals?.find((a) => a.id === mergeAnimalId)
-    : null;
 
   const {
     control,
@@ -62,7 +48,6 @@ export function TvdImportRowDetailScreen({
     formState: { errors },
   } = useForm<RowFormValues>({
     defaultValues: {
-      earTagNumber: row.earTagNumber ?? "",
       name: row.name ?? "",
       sex: row.sex ?? undefined,
       dateOfBirth: row.dateOfBirth ? new Date(row.dateOfBirth) : undefined,
@@ -78,7 +63,6 @@ export function TvdImportRowDetailScreen({
   function onSave(values: RowFormValues) {
     const updatedRow: EditablePreviewRow = {
       ...row,
-      earTagNumber: values.earTagNumber || null,
       name: values.name || null,
       sex: values.sex,
       dateOfBirth: values.dateOfBirth
@@ -123,6 +107,58 @@ export function TvdImportRowDetailScreen({
         <H2>{title}</H2>
 
         <View style={{ gap: theme.spacing.xs, marginTop: theme.spacing.m }}>
+          {/* The ear tag identifies the existing animal, so a conflict can only be merged into its current holder. */}
+          {row.earTagAssigned && row.assignedToAnimalId && (
+            <View
+              style={{
+                backgroundColor: theme.colors.white,
+                borderRadius: 10,
+                padding: theme.spacing.m,
+                borderLeftWidth: 4,
+                borderLeftColor: theme.colors.warning,
+              }}
+            >
+              <Subtitle
+                style={{
+                  color: theme.colors.primary,
+                  marginBottom: theme.spacing.s,
+                }}
+              >
+                {t("animals.tvd_import.ear_tag_assigned_warning")}
+              </Subtitle>
+
+              {mergeAnimalId ? (
+                <View>
+                  <Subtitle>
+                    {t("animals.tvd_import.merge_animal_set", {
+                      name: row.assignedToAnimalName,
+                    })}
+                  </Subtitle>
+                  <TouchableOpacity
+                    onPress={() => setMergeAnimalId(null)}
+                    style={{ marginTop: theme.spacing.xs }}
+                  >
+                    <Subtitle
+                      style={{
+                        color: theme.colors.primary,
+                        textDecorationLine: "underline",
+                      }}
+                    >
+                      {t("animals.tvd_import.clear_merge")}
+                    </Subtitle>
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <Button
+                  type="accent"
+                  title={t("animals.tvd_import.merge_with", {
+                    name: row.assignedToAnimalName,
+                  })}
+                  onPress={() => setMergeAnimalId(row.assignedToAnimalId)}
+                />
+              )}
+            </View>
+          )}
           {/* Parse errors from backend */}
           {row.parseErrors.length > 0 && (
             <View
@@ -155,10 +191,11 @@ export function TvdImportRowDetailScreen({
             error={errors.name?.message}
           />
 
-          <RHTextInput
-            name="earTagNumber"
-            control={control}
+          {/* Read-only: ear tag conflicts are resolved by the server on upload, an edited number would not be re-checked. */}
+          <TextInput
             label={t("ear_tags.ear_tag")}
+            value={row.earTagNumber ?? ""}
+            disabled
           />
 
           <RHSelect
@@ -234,64 +271,6 @@ export function TvdImportRowDetailScreen({
               },
             ]}
           />
-
-          {/* Merge section — always visible */}
-          <View
-            style={{
-              backgroundColor: theme.colors.white,
-              borderRadius: 10,
-              padding: theme.spacing.m,
-              borderLeftWidth: row.earTagAssigned ? 4 : 0,
-              borderLeftColor: theme.colors.warning,
-              marginTop: theme.spacing.s,
-            }}
-          >
-            {row.earTagAssigned && (
-              <Subtitle
-                style={{
-                  color: theme.colors.warning,
-                  marginBottom: theme.spacing.s,
-                }}
-              >
-                {t("animals.tvd_import.ear_tag_assigned_warning")}
-              </Subtitle>
-            )}
-
-            {mergeAnimal ? (
-              <View>
-                <Subtitle>
-                  {t("animals.tvd_import.merge_animal_set", {
-                    name: mergeAnimal.name,
-                  })}
-                </Subtitle>
-                <TouchableOpacity
-                  onPress={() => setMergeAnimalId(null)}
-                  style={{ marginTop: theme.spacing.xs }}
-                >
-                  <Subtitle
-                    style={{
-                      color: theme.colors.primary,
-                      textDecorationLine: "underline",
-                    }}
-                  >
-                    {t("animals.tvd_import.clear_merge")}
-                  </Subtitle>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <Button
-                type="primary"
-                title={t("animals.tvd_import.assign_merge_animal")}
-                onPress={() =>
-                  navigation.navigate("SelectSingleAnimal", {
-                    animalType: type,
-                    previousScreen: "TvdImportRowDetail",
-                    rowIndex,
-                  })
-                }
-              />
-            )}
-          </View>
         </View>
       </ScrollView>
     </ContentView>

@@ -7,7 +7,8 @@ import { H2, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, FlatList, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { Alert, FlatList, TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import {
   EditablePreviewRow,
@@ -42,14 +43,46 @@ export function TvdImportPreviewScreen({
     );
   }, [route.params.rowEdit]);
 
+  function mergeAllConflicts() {
+    setRows((prev) =>
+      prev.map((r) =>
+        r.earTagAssigned && !r.mergeAnimalId
+          ? { ...r, mergeAnimalId: r.assignedToAnimalId }
+          : r,
+      ),
+    );
+  }
+
+  // Quick action on the list item, the ear tag already identifies the animal to merge with.
+  function toggleMerge(index: number) {
+    setRows((prev) =>
+      prev.map((r, i) =>
+        i === index
+          ? {
+              ...r,
+              mergeAnimalId: r.mergeAnimalId ? null : r.assignedToAnimalId,
+            }
+          : r,
+      ),
+    );
+  }
+
   const autoSkipCount = useMemo(
     () => rows.filter((r) => r.earTagAssigned && !r.mergeAnimalId).length,
     [rows],
   );
 
-  // Rows that will actually be sent to the server (earTagAssigned without merge are still sent but server skips them)
+  // Rows that will actually be imported, conflicts that weren't merged are skipped (same as web)
   const rowsToCommit = useMemo(
-    () => rows.filter((r) => r.name && r.sex && r.dateOfBirth && r.usage),
+    () =>
+      rows.filter(
+        (r) =>
+          r.name &&
+          r.sex &&
+          r.dateOfBirth &&
+          r.usage &&
+          !(r.earTagAssigned && !r.mergeAnimalId),
+      ),
     [rows],
   );
 
@@ -114,9 +147,6 @@ export function TvdImportPreviewScreen({
       if (hasError) {
         statusColor = theme.colors.danger;
         statusLabel = t("animals.tvd_import.status_error");
-      } else if (willSkip) {
-        statusColor = theme.colors.warning;
-        statusLabel = t("animals.tvd_import.status_skipped");
       } else if (willMerge) {
         statusColor = theme.colors.blue ?? theme.colors.primary;
         statusLabel = t("animals.tvd_import.status_merge");
@@ -152,20 +182,47 @@ export function TvdImportPreviewScreen({
                   {err}
                 </Subtitle>
               ))}
+            {/* Unmerged conflicts get no chip, the empty checkmark on the right already shows they're not imported */}
+            {!(willSkip && !hasError) && (
+              <View
+                style={{
+                  backgroundColor: statusColor,
+                  borderRadius: 10,
+                  paddingHorizontal: 8,
+                  paddingVertical: 3,
+                  alignSelf: "flex-start",
+                  marginTop: 4,
+                }}
+              >
+                <Subtitle style={{ color: "#fff", fontSize: 11 }}>
+                  {statusLabel}
+                </Subtitle>
+              </View>
+            )}
           </ListItem.Content>
-          <View
-            style={{
-              backgroundColor: statusColor,
-              borderRadius: 10,
-              paddingHorizontal: 8,
-              paddingVertical: 3,
-              alignSelf: "center",
-            }}
-          >
-            <Subtitle style={{ color: "#fff", fontSize: 11 }}>
-              {statusLabel}
-            </Subtitle>
-          </View>
+          {item.earTagAssigned && item.assignedToAnimalId && (
+            <TouchableOpacity
+              onPress={() => toggleMerge(index)}
+              hitSlop={12}
+              style={{
+                alignSelf: "center",
+                paddingHorizontal: theme.spacing.s,
+              }}
+              accessibilityRole="checkbox"
+              accessibilityState={{ checked: willMerge }}
+              accessibilityLabel={t("animals.tvd_import.merge_with", {
+                name: item.assignedToAnimalName,
+              })}
+            >
+              <Ionicons
+                name={
+                  willMerge ? "checkmark-circle" : "checkmark-circle-outline"
+                }
+                size={30}
+                color={willMerge ? theme.colors.primary : theme.colors.gray3}
+              />
+            </TouchableOpacity>
+          )}
           <ListItem.Chevron />
         </ListItem>
       );
@@ -207,6 +264,12 @@ export function TvdImportPreviewScreen({
               count: autoSkipCount,
             })}
           </Subtitle>
+          <Button
+            type="primary"
+            style={{ marginTop: theme.spacing.s }}
+            title={t("animals.tvd_import.merge_all")}
+            onPress={mergeAllConflicts}
+          />
         </View>
       )}
 
