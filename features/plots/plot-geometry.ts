@@ -2,10 +2,11 @@ import { ApiError } from "@/api/api";
 import * as turf from "@turf/turf";
 import { TFunction } from "i18next";
 
-// Crossing edges are rejected before saving; the API would repair them into unexpected shapes
+// Crossing edges are rejected before saving; the API would repair them into unexpected shapes.
+// Checked per part: parts of a merged plot share edges, which kinks() reports on the whole MultiPolygon.
 export function isSelfIntersecting(geometry: GeoJSON.MultiPolygon) {
-  return (
-    turf.kinks(turf.multiPolygon(geometry.coordinates)).features.length > 0
+  return geometry.coordinates.some(
+    (part) => turf.kinks(turf.polygon(part)).features.length > 0,
   );
 }
 
