@@ -121,7 +121,15 @@ export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
         } else {
           // Last ring confirmed — build the full multipolygon and save
           const finalRings = currentRings.map((r) => r.coordinates);
-          const polygon = GeoSpatials.lngLatToMultiPolygon(finalRings);
+          const outerRingsOnly = GeoSpatials.lngLatToMultiPolygon(finalRings);
+          // Holes (e.g. a stream or pond cut out of the plot) can't be adjusted; keep them from the saved plot
+          const polygon: GeoJSON.MultiPolygon = {
+            type: "MultiPolygon",
+            coordinates: outerRingsOnly.coordinates.map((part, partIndex) => [
+              ...part,
+              ...(plot.geometry.coordinates[partIndex]?.slice(1) ?? []),
+            ]),
+          };
           if (isSelfIntersecting(polygon)) {
             Alert.alert(t("plots.errors.self_intersecting"));
             return;
