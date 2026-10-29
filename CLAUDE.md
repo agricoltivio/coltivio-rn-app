@@ -9,29 +9,29 @@ Coltivio is an open-source farm management React Native app built with Expo SDK 
 ## Commands
 
 ```bash
-yarn start              # Expo dev server
-yarn ios / yarn android # Run on simulator/device
-yarn typecheck          # tsc --noEmit (also checks scripts/)
-yarn lint               # expo lint
-yarn test               # jest --watchAll
-yarn generate:api-types # regenerate api/v1.d.ts from openapi.json
-yarn release:prepare    # bump version in app.config.js (release notes: pnpm release in coltivio-landing)
+pnpm start              # Expo dev server
+pnpm ios / pnpm android # Run on simulator/device
+pnpm typecheck          # tsc --noEmit (also checks scripts/)
+pnpm lint               # expo lint
+pnpm test               # jest --watchAll
+pnpm generate:api-types # regenerate api/v1.d.ts from openapi.json
+pnpm release:prepare    # bump version in app.config.js (release notes: pnpm release in coltivio-landing)
 ```
 
-EAS builds: `yarn eas:build-sim`, `yarn eas:build-dev-ios`, `yarn eas:build-preview-ios`, `yarn eas:build-production`.
+EAS builds: `pnpm eas:build-sim`, `pnpm eas:build-dev-ios`, `pnpm eas:build-preview-ios`, `pnpm eas:build-production`.
 
 ## After Writing Code
 
 Always run the following after making changes:
 
 ```bash
-yarn lint        # fix lint errors
-yarn typecheck   # ensure no type errors
+pnpm lint        # fix lint errors
+pnpm typecheck   # ensure no type errors
 ```
 
-If the changes touch files with related tests, run `yarn test` and make sure affected tests still pass.
+If the changes touch files with related tests, run `pnpm test` and make sure affected tests still pass.
 
-Never launch or interact with the iOS/Android simulator yourself (no `yarn ios`/`yarn android`, no simctl/adb driving). If manual UI verification is needed, ask the user to do it.
+Never launch or interact with the iOS/Android simulator yourself (no `pnpm ios`/`pnpm android`, no simctl/adb driving). If manual UI verification is needed, ask the user to do it.
 
 ## Architecture
 
