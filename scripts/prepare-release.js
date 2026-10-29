@@ -2,8 +2,8 @@
 // Release notes and the update banner data live in coltivio-landing
 // (`pnpm release <version>` there), the app only links to the website.
 //
-//   yarn release:prepare          # patch bump, e.g. 1.0.7 -> 1.0.8
-//   yarn release:prepare 1.1.0    # explicit version
+//   pnpm release:prepare          # patch bump, e.g. 1.0.7 -> 1.0.8
+//   pnpm release:prepare 1.1.0    # explicit version
 
 const fs = require("fs");
 const path = require("path");

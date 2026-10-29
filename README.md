@@ -29,15 +29,15 @@ Coltivio is an open-source farm management app built with React Native and Expo.
 
 ### Prerequisites
 
-- Node.js 18+
-- Yarn
+- Node.js 22.22+
+- pnpm 11 (`npm i -g pnpm@11`)
 - Xcode (for iOS) / Android Studio (for Android)
 - An [Expo](https://expo.dev) account for EAS builds
 
 ### Setup
 
 ```bash
-yarn install
+pnpm install
 ```
 
 Create a `.env` file with your Supabase and Google Maps keys (see `app.config.js` for required variables).
@@ -45,17 +45,17 @@ Create a `.env` file with your Supabase and Google Maps keys (see `app.config.js
 ### Run
 
 ```bash
-yarn ios          # iOS simulator
-yarn android      # Android emulator
-yarn start        # Expo dev server
+pnpm ios          # iOS simulator
+pnpm android      # Android emulator
+pnpm start        # Expo dev server
 ```
 
 ### Other commands
 
 ```bash
-yarn typecheck    # TypeScript type checking
-yarn lint         # ESLint
-yarn test         # Jest tests
+pnpm typecheck    # TypeScript type checking
+pnpm lint         # ESLint
+pnpm test         # Jest tests
 ```
 
 ## Project Structure
