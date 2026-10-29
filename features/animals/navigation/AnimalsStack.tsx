@@ -43,6 +43,12 @@ import { AnimalJournalEntryFormScreen } from "../AnimalJournalEntryFormScreen";
 import { AnimalChartsScreen } from "../AnimalChartsScreen";
 import { FamilyTreeScreen } from "../FamilyTreeScreen";
 import { AnimalsExportScreen } from "../AnimalsExportScreen";
+import { ParasiteChecksScreen } from "../ParasiteChecksScreen";
+import { ParasiteCheckDetailScreen } from "../ParasiteCheckDetailScreen";
+import { ParasiteCheckFormScreen } from "../ParasiteCheckFormScreen";
+import { ParasiteSamplesScreen } from "../ParasiteSamplesScreen";
+import { ParasiteAnimalSampleScreen } from "../ParasiteAnimalSampleScreen";
+import { AnimalParasiteHistoryScreen } from "../AnimalParasiteHistoryScreen";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import { DefaultTheme } from "styled-components/native";
@@ -383,6 +389,42 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
       name="AnimalsExport"
       options={{ title: "" }}
       component={AnimalsExportScreen}
+    />,
+    <Stack.Screen
+      key="parasite-checks"
+      name="ParasiteChecks"
+      options={{ title: "" }}
+      component={ParasiteChecksScreen}
+    />,
+    <Stack.Screen
+      key="parasite-check-detail"
+      name="ParasiteCheckDetail"
+      options={{ title: "" }}
+      component={ParasiteCheckDetailScreen}
+    />,
+    <Stack.Screen
+      key="parasite-check-form"
+      name="ParasiteCheckForm"
+      options={{ title: "" }}
+      component={ParasiteCheckFormScreen}
+    />,
+    <Stack.Screen
+      key="parasite-samples"
+      name="ParasiteSamples"
+      options={{ title: "" }}
+      component={ParasiteSamplesScreen}
+    />,
+    <Stack.Screen
+      key="parasite-animal-sample"
+      name="ParasiteAnimalSample"
+      options={{ title: "" }}
+      component={ParasiteAnimalSampleScreen}
+    />,
+    <Stack.Screen
+      key="animal-parasite-history"
+      name="AnimalParasiteHistory"
+      options={{ title: "" }}
+      component={AnimalParasiteHistoryScreen}
     />,
   ];
 }

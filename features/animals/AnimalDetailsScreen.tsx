@@ -352,6 +352,38 @@ export function AnimalDetailsScreen({
               {t("animals.journal")}
             </Subtitle>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("AnimalParasiteHistory", { animalId })
+            }
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: theme.spacing.xs,
+              padding: 12,
+              marginTop: theme.spacing.s,
+              borderRadius: theme.radii.m,
+              borderWidth: 1.5,
+              borderColor: theme.colors.primary,
+              backgroundColor: theme.colors.white,
+            }}
+          >
+            <Ionicons
+              name="bug-outline"
+              size={18}
+              color={theme.colors.primary}
+            />
+            <Subtitle
+              style={{
+                color: theme.colors.primary,
+                fontWeight: "600",
+                fontSize: 16,
+              }}
+            >
+              {t("parasite_checks.parasite_history")}
+            </Subtitle>
+          </TouchableOpacity>
         </View>
 
         {/* Children */}

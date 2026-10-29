@@ -1,3 +1,4 @@
+import { popToWithMerge } from "@/navigation/pop-to-with-merge";
 import { toLocalDateString } from "@/utils/date";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -76,11 +77,9 @@ export function TvdImportRowDetailScreen({
       deathReason: values.dateOfDeath ? (values.deathReason ?? "died") : null,
       mergeAnimalId,
     };
-    navigation.popTo(
-      "TvdImportPreview",
-      { rowEdit: { rowIndex, updatedRow } },
-      { merge: true },
-    );
+    popToWithMerge(navigation, "TvdImportPreview", {
+      rowEdit: { rowIndex, updatedRow },
+    });
   }
 
   const sexData = [

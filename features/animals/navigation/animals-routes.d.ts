@@ -2,7 +2,7 @@ import type {
   OutdoorScheduleFormResult,
   ScheduleEditData,
 } from "../OutdoorScheduleFormScreen";
-import { StackScreenProps } from "@react-navigation/native-stack";
+import { StackScreenProps } from "@/navigation/rootStackTypes";
 import { UncategorizedAnimal } from "@/api/outdoor-journal.api";
 import { AnimalType, ParsedImportRow } from "@/api/animals.api";
 
@@ -33,7 +33,10 @@ export type AnimalsStackParamList = {
       | "CreateTreatment"
       | "EditTreatment"
       | "HerdEdit"
-      | "CreateHerd";
+      | "CreateHerd"
+      | "ParasiteCheckForm";
+    // Only animals of one type: after the first pick, other types are hidden
+    singleAnimalType?: boolean;
   };
   Drugs: undefined;
   CreateDrug: { previousScreen?: "CreateTreatment" | "EditTreatment" };
@@ -100,6 +103,17 @@ export type AnimalsStackParamList = {
   AnimalCharts: undefined;
   FamilyTree: { animalType?: AnimalType; focusedAnimalId?: string };
   AnimalsExport: undefined;
+  ParasiteChecks: undefined;
+  ParasiteCheckDetail: { checkId: string };
+  ParasiteCheckForm: {
+    checkId?: string;
+    method?: "famacha" | "fecal_egg_count";
+    animalIds?: string[];
+    previousCheckId?: string;
+  };
+  ParasiteSamples: { animalIds: string[] };
+  ParasiteAnimalSample: { animalId: string };
+  AnimalParasiteHistory: { animalId: string };
 };
 
 export type AnimalsHubScreenProps = StackScreenProps<"AnimalsHub">;
@@ -155,3 +169,13 @@ export type AnimalJournalEntryFormScreenProps =
 export type AnimalChartsScreenProps = StackScreenProps<"AnimalCharts">;
 export type FamilyTreeScreenProps = StackScreenProps<"FamilyTree">;
 export type AnimalsExportScreenProps = StackScreenProps<"AnimalsExport">;
+export type ParasiteChecksScreenProps = StackScreenProps<"ParasiteChecks">;
+export type ParasiteCheckDetailScreenProps =
+  StackScreenProps<"ParasiteCheckDetail">;
+export type ParasiteCheckFormScreenProps =
+  StackScreenProps<"ParasiteCheckForm">;
+export type AnimalParasiteHistoryScreenProps =
+  StackScreenProps<"AnimalParasiteHistory">;
+export type ParasiteSamplesScreenProps = StackScreenProps<"ParasiteSamples">;
+export type ParasiteAnimalSampleScreenProps =
+  StackScreenProps<"ParasiteAnimalSample">;

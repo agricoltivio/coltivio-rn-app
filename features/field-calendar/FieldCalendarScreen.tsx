@@ -25,7 +25,7 @@ export function FieldCalendarScreen({ navigation }: FieldCalendarScreenProps) {
   // Redirect to onboarding if not completed
   useEffect(() => {
     if (!localSettings.fieldCalendarOnboardingCompleted) {
-      navigation.replace("FieldCalendarOnboarding" as never);
+      navigation.replace("FieldCalendarOnboarding");
     }
   }, []);
 

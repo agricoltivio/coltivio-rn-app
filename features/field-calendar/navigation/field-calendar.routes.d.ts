@@ -1,4 +1,4 @@
-import { StackScreenProps } from "@react-navigation/native-stack";
+import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type FieldCalendarStackParamList = {
   FieldCalendar: undefined;

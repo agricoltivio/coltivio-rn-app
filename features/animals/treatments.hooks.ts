@@ -68,6 +68,10 @@ export function useUpdateTreatmentMutation(
       return api.treatments.updateTreatment(id, treatment);
     },
     onSuccess: (treatment) => {
+      // Parasite checks show their linked treatment
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.parasiteChecks._def,
+      });
       queryClient.invalidateQueries({
         queryKey: queryKeys.treatments._def,
       });
@@ -91,6 +95,10 @@ export function useDeleteTreatmentMutation(
       return api.treatments.deleteTreatment(treatmentId);
     },
     onSuccess: () => {
+      // Parasite checks show their linked treatment
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.parasiteChecks._def,
+      });
       queryClient.invalidateQueries({
         queryKey: queryKeys.treatments._def,
       });

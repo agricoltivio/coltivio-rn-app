@@ -9051,6 +9051,104 @@
         }
       }
     },
+    "/v1/animals/byId/{animalId}/parasiteHistory": {
+      "get": {
+        "operationId": "GetV1AnimalsByIdAnimalIdParasiteHistory",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          },
+          {
+            "name": "animalId",
+            "in": "path",
+            "required": true,
+            "description": "GET /v1/animals/byId/:animalId/parasiteHistory Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/animals/byId/:animalId/parasiteHistory Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1AnimalsByIdAnimalIdParasiteHistoryPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/animals/byId/:animalId/parasiteHistory Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1AnimalsByIdAnimalIdParasiteHistory",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          },
+          {
+            "name": "animalId",
+            "in": "path",
+            "required": true,
+            "description": "HEAD /v1/animals/byId/:animalId/parasiteHistory Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/animals/byId/:animalId/parasiteHistory Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/animals/byId/:animalId/parasiteHistory Negative response"
+          }
+        }
+      }
+    },
     "/v1/animals/journal/byId/{entryId}": {
       "get": {
         "operationId": "GetV1AnimalsJournalByIdEntryId",
@@ -10369,6 +10467,283 @@
           },
           "400": {
             "description": "HEAD /v1/drugs/byId/:drugId/inUse Negative response"
+          }
+        }
+      }
+    },
+    "/v1/parasiteChecks": {
+      "get": {
+        "operationId": "GetV1ParasiteChecks",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          },
+          {
+            "name": "animalId",
+            "in": "query",
+            "required": false,
+            "description": "GET /v1/parasiteChecks Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/parasiteChecks Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1ParasiteChecksPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/parasiteChecks Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1ParasiteChecks",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          },
+          {
+            "name": "animalId",
+            "in": "query",
+            "required": false,
+            "description": "HEAD /v1/parasiteChecks Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": { "description": "HEAD /v1/parasiteChecks Positive response" },
+          "400": { "description": "HEAD /v1/parasiteChecks Negative response" }
+        }
+      },
+      "post": {
+        "operationId": "PostV1ParasiteChecks",
+        "requestBody": {
+          "description": "POST /v1/parasiteChecks Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1ParasiteChecksRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/parasiteChecks Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1ParasiteChecksPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/parasiteChecks Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/parasiteChecks/byId/{checkId}": {
+      "get": {
+        "operationId": "GetV1ParasiteChecksByIdCheckId",
+        "parameters": [
+          {
+            "name": "checkId",
+            "in": "path",
+            "required": true,
+            "description": "GET /v1/parasiteChecks/byId/:checkId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/parasiteChecks/byId/:checkId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1ParasiteChecksByIdCheckIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/parasiteChecks/byId/:checkId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1ParasiteChecksByIdCheckId",
+        "parameters": [
+          {
+            "name": "checkId",
+            "in": "path",
+            "required": true,
+            "description": "HEAD /v1/parasiteChecks/byId/:checkId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/parasiteChecks/byId/:checkId Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/parasiteChecks/byId/:checkId Negative response"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "PatchV1ParasiteChecksByIdCheckId",
+        "parameters": [
+          {
+            "name": "checkId",
+            "in": "path",
+            "required": true,
+            "description": "PATCH /v1/parasiteChecks/byId/:checkId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PATCH /v1/parasiteChecks/byId/:checkId Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchV1ParasiteChecksByIdCheckIdRequestBody"
+              }
+            }
+          }
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "PATCH /v1/parasiteChecks/byId/:checkId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchV1ParasiteChecksByIdCheckIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "PATCH /v1/parasiteChecks/byId/:checkId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteV1ParasiteChecksByIdCheckId",
+        "parameters": [
+          {
+            "name": "checkId",
+            "in": "path",
+            "required": true,
+            "description": "DELETE /v1/parasiteChecks/byId/:checkId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "DELETE /v1/parasiteChecks/byId/:checkId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteV1ParasiteChecksByIdCheckIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "DELETE /v1/parasiteChecks/byId/:checkId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -30285,6 +30660,140 @@
         },
         "required": ["title", "date"]
       },
+      "GetV1AnimalsByIdAnimalIdParasiteHistoryPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "checks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "checkId": { "type": "string" },
+                    "date": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "method": {
+                      "type": "string",
+                      "enum": ["famacha", "fecal_egg_count"]
+                    },
+                    "famachaScore": { "type": ["number", "null"] }
+                  },
+                  "required": ["checkId", "date", "method", "famachaScore"],
+                  "additionalProperties": false
+                }
+              },
+              "fecResults": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "checkId": { "type": "string" },
+                    "sampleId": { "type": "string" },
+                    "date": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "pooled": { "type": "boolean" },
+                    "poolSize": { "type": "number" },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "parasiteType": {
+                            "type": "string",
+                            "enum": [
+                              "strongyles",
+                              "haemonchus",
+                              "nematodirus",
+                              "trichuris",
+                              "capillaria",
+                              "strongyloides",
+                              "moniezia",
+                              "coccidia",
+                              "liver_fluke",
+                              "small_liver_fluke",
+                              "lungworm",
+                              "other"
+                            ]
+                          },
+                          "countPerGram": { "type": ["number", "null"] },
+                          "grade": {
+                            "type": ["string", "null"],
+                            "enum": ["negative", "low", "medium", "high"]
+                          }
+                        },
+                        "required": ["parasiteType", "countPerGram", "grade"],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "checkId",
+                    "sampleId",
+                    "date",
+                    "pooled",
+                    "poolSize",
+                    "results"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "treatments": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "name": { "type": "string" },
+                    "startDate": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "endDate": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "drugName": { "type": ["string", "null"] }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "startDate",
+                    "endDate",
+                    "drugName"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["checks", "fecResults", "treatments"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
       "GetV1AnimalsJournalByIdEntryIdPositiveResponse": {
         "type": "object",
         "properties": {
@@ -32609,6 +33118,2083 @@
             "type": "object",
             "properties": { "inUse": { "type": "boolean" } },
             "required": ["inUse"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "GetV1ParasiteChecksPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "farmId": { "type": "string" },
+                    "date": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "name": { "type": ["string", "null"] },
+                    "method": {
+                      "type": "string",
+                      "enum": ["famacha", "fecal_egg_count"]
+                    },
+                    "labName": { "type": ["string", "null"] },
+                    "notes": { "type": ["string", "null"] },
+                    "previousCheckId": { "type": ["string", "null"] },
+                    "treatmentId": { "type": ["string", "null"] },
+                    "createdBy": { "type": ["string", "null"] },
+                    "createdAt": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "updatedAt": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "animalType": {
+                      "type": ["string", "null"],
+                      "enum": [
+                        "goat",
+                        "sheep",
+                        "cow",
+                        "horse",
+                        "donkey",
+                        "pig",
+                        "deer"
+                      ]
+                    },
+                    "treatment": {
+                      "type": ["object", "null"],
+                      "properties": {
+                        "id": { "type": "string" },
+                        "name": { "type": "string" },
+                        "startDate": {
+                          "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                          "type": "string",
+                          "format": "date-time",
+                          "externalDocs": {
+                            "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                          }
+                        }
+                      },
+                      "required": ["id", "name", "startDate"],
+                      "additionalProperties": false
+                    },
+                    "animals": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "animalId": { "type": "string" },
+                          "name": { "type": "string" },
+                          "earTagNumber": { "type": ["string", "null"] },
+                          "famachaScore": { "type": ["number", "null"] }
+                        },
+                        "required": [
+                          "animalId",
+                          "name",
+                          "earTagNumber",
+                          "famachaScore"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "fecSamples": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string" },
+                          "label": { "type": ["string", "null"] },
+                          "pooled": { "type": "boolean" },
+                          "animalIds": {
+                            "type": "array",
+                            "items": { "type": "string" }
+                          },
+                          "results": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "parasiteType": {
+                                  "type": "string",
+                                  "enum": [
+                                    "strongyles",
+                                    "haemonchus",
+                                    "nematodirus",
+                                    "trichuris",
+                                    "capillaria",
+                                    "strongyloides",
+                                    "moniezia",
+                                    "coccidia",
+                                    "liver_fluke",
+                                    "small_liver_fluke",
+                                    "lungworm",
+                                    "other"
+                                  ]
+                                },
+                                "countPerGram": { "type": ["number", "null"] },
+                                "grade": {
+                                  "type": ["string", "null"],
+                                  "enum": ["negative", "low", "medium", "high"]
+                                }
+                              },
+                              "required": [
+                                "parasiteType",
+                                "countPerGram",
+                                "grade"
+                              ],
+                              "additionalProperties": false
+                            }
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "label",
+                          "pooled",
+                          "animalIds",
+                          "results"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "followUpTasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string" },
+                          "name": { "type": "string" },
+                          "dueDate": {
+                            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                            "type": ["string", "null"],
+                            "format": "date-time",
+                            "externalDocs": {
+                              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                            }
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": ["todo", "done"]
+                          }
+                        },
+                        "required": ["id", "name", "dueDate", "status"],
+                        "additionalProperties": false
+                      }
+                    },
+                    "summary": {
+                      "type": "object",
+                      "properties": {
+                        "animalCount": { "type": "number" },
+                        "famachaAverage": { "type": ["number", "null"] },
+                        "famachaDistribution": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "score": { "type": "number" },
+                              "count": { "type": "number" }
+                            },
+                            "required": ["score", "count"],
+                            "additionalProperties": false
+                          }
+                        },
+                        "fecByParasite": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "parasiteType": {
+                                "type": "string",
+                                "enum": [
+                                  "strongyles",
+                                  "haemonchus",
+                                  "nematodirus",
+                                  "trichuris",
+                                  "capillaria",
+                                  "strongyloides",
+                                  "moniezia",
+                                  "coccidia",
+                                  "liver_fluke",
+                                  "small_liver_fluke",
+                                  "lungworm",
+                                  "other"
+                                ]
+                              },
+                              "sampleCount": { "type": "number" },
+                              "minCountPerGram": { "type": "number" },
+                              "avgCountPerGram": { "type": "number" },
+                              "maxCountPerGram": { "type": "number" }
+                            },
+                            "required": [
+                              "parasiteType",
+                              "sampleCount",
+                              "minCountPerGram",
+                              "avgCountPerGram",
+                              "maxCountPerGram"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "gradesByParasite": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "parasiteType": {
+                                "type": "string",
+                                "enum": [
+                                  "strongyles",
+                                  "haemonchus",
+                                  "nematodirus",
+                                  "trichuris",
+                                  "capillaria",
+                                  "strongyloides",
+                                  "moniezia",
+                                  "coccidia",
+                                  "liver_fluke",
+                                  "small_liver_fluke",
+                                  "lungworm",
+                                  "other"
+                                ]
+                              },
+                              "sampleCount": { "type": "number" },
+                              "highestGrade": {
+                                "type": "string",
+                                "enum": ["negative", "low", "medium", "high"]
+                              },
+                              "averageGrade": { "type": "number" }
+                            },
+                            "required": [
+                              "parasiteType",
+                              "sampleCount",
+                              "highestGrade",
+                              "averageGrade"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "animalCount",
+                        "famachaAverage",
+                        "famachaDistribution",
+                        "fecByParasite",
+                        "gradesByParasite"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "comparisonToPrevious": {
+                      "type": ["object", "null"],
+                      "properties": {
+                        "previousCheckId": { "type": "string" },
+                        "previousDate": {
+                          "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                          "type": "string",
+                          "format": "date-time",
+                          "externalDocs": {
+                            "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                          }
+                        },
+                        "famachaBeforeAverage": { "type": ["number", "null"] },
+                        "famachaAfterAverage": { "type": ["number", "null"] },
+                        "famachaAverageChange": { "type": ["number", "null"] },
+                        "fecReduction": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "parasiteType": {
+                                "type": "string",
+                                "enum": [
+                                  "strongyles",
+                                  "haemonchus",
+                                  "nematodirus",
+                                  "trichuris",
+                                  "capillaria",
+                                  "strongyloides",
+                                  "moniezia",
+                                  "coccidia",
+                                  "liver_fluke",
+                                  "small_liver_fluke",
+                                  "lungworm",
+                                  "other"
+                                ]
+                              },
+                              "beforeAvgCountPerGram": { "type": "number" },
+                              "afterAvgCountPerGram": { "type": "number" },
+                              "afterSampleCount": { "type": "number" },
+                              "reductionPercent": { "type": ["number", "null"] }
+                            },
+                            "required": [
+                              "parasiteType",
+                              "beforeAvgCountPerGram",
+                              "afterAvgCountPerGram",
+                              "afterSampleCount",
+                              "reductionPercent"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "previousCheckId",
+                        "previousDate",
+                        "famachaBeforeAverage",
+                        "famachaAfterAverage",
+                        "famachaAverageChange",
+                        "fecReduction"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "rechecks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string" },
+                          "date": {
+                            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                            "type": "string",
+                            "format": "date-time",
+                            "externalDocs": {
+                              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                            }
+                          },
+                          "name": { "type": ["string", "null"] },
+                          "method": {
+                            "type": "string",
+                            "enum": ["famacha", "fecal_egg_count"]
+                          },
+                          "treatment": {
+                            "type": ["object", "null"],
+                            "properties": {
+                              "id": { "type": "string" },
+                              "name": { "type": "string" },
+                              "startDate": {
+                                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                                "type": "string",
+                                "format": "date-time",
+                                "externalDocs": {
+                                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                                }
+                              }
+                            },
+                            "required": ["id", "name", "startDate"],
+                            "additionalProperties": false
+                          },
+                          "animals": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "animalId": { "type": "string" },
+                                "famachaScore": { "type": ["number", "null"] }
+                              },
+                              "required": ["animalId", "famachaScore"],
+                              "additionalProperties": false
+                            }
+                          },
+                          "famachaAverage": { "type": ["number", "null"] },
+                          "famachaBeforeAverage": {
+                            "type": ["number", "null"]
+                          },
+                          "famachaAfterAverage": { "type": ["number", "null"] },
+                          "famachaAverageChange": {
+                            "type": ["number", "null"]
+                          },
+                          "fecReduction": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "parasiteType": {
+                                  "type": "string",
+                                  "enum": [
+                                    "strongyles",
+                                    "haemonchus",
+                                    "nematodirus",
+                                    "trichuris",
+                                    "capillaria",
+                                    "strongyloides",
+                                    "moniezia",
+                                    "coccidia",
+                                    "liver_fluke",
+                                    "small_liver_fluke",
+                                    "lungworm",
+                                    "other"
+                                  ]
+                                },
+                                "beforeAvgCountPerGram": { "type": "number" },
+                                "afterAvgCountPerGram": { "type": "number" },
+                                "afterSampleCount": { "type": "number" },
+                                "reductionPercent": {
+                                  "type": ["number", "null"]
+                                }
+                              },
+                              "required": [
+                                "parasiteType",
+                                "beforeAvgCountPerGram",
+                                "afterAvgCountPerGram",
+                                "afterSampleCount",
+                                "reductionPercent"
+                              ],
+                              "additionalProperties": false
+                            }
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "date",
+                          "name",
+                          "method",
+                          "treatment",
+                          "animals",
+                          "famachaAverage",
+                          "famachaBeforeAverage",
+                          "famachaAfterAverage",
+                          "famachaAverageChange",
+                          "fecReduction"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "farmId",
+                    "date",
+                    "name",
+                    "method",
+                    "labName",
+                    "notes",
+                    "previousCheckId",
+                    "treatmentId",
+                    "createdBy",
+                    "createdAt",
+                    "updatedAt",
+                    "animalType",
+                    "treatment",
+                    "animals",
+                    "fecSamples",
+                    "followUpTasks",
+                    "summary",
+                    "comparisonToPrevious",
+                    "rechecks"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "count": { "type": "number" }
+            },
+            "required": ["result", "count"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1ParasiteChecksPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "date": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "name": { "type": ["string", "null"] },
+              "method": {
+                "type": "string",
+                "enum": ["famacha", "fecal_egg_count"]
+              },
+              "labName": { "type": ["string", "null"] },
+              "notes": { "type": ["string", "null"] },
+              "previousCheckId": { "type": ["string", "null"] },
+              "treatmentId": { "type": ["string", "null"] },
+              "createdBy": { "type": ["string", "null"] },
+              "createdAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "updatedAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "animalType": {
+                "type": ["string", "null"],
+                "enum": [
+                  "goat",
+                  "sheep",
+                  "cow",
+                  "horse",
+                  "donkey",
+                  "pig",
+                  "deer"
+                ]
+              },
+              "treatment": {
+                "type": ["object", "null"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "name": { "type": "string" },
+                  "startDate": {
+                    "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                    "type": "string",
+                    "format": "date-time",
+                    "externalDocs": {
+                      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                    }
+                  }
+                },
+                "required": ["id", "name", "startDate"],
+                "additionalProperties": false
+              },
+              "animals": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "animalId": { "type": "string" },
+                    "name": { "type": "string" },
+                    "earTagNumber": { "type": ["string", "null"] },
+                    "famachaScore": { "type": ["number", "null"] }
+                  },
+                  "required": [
+                    "animalId",
+                    "name",
+                    "earTagNumber",
+                    "famachaScore"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "fecSamples": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "label": { "type": ["string", "null"] },
+                    "pooled": { "type": "boolean" },
+                    "animalIds": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "parasiteType": {
+                            "type": "string",
+                            "enum": [
+                              "strongyles",
+                              "haemonchus",
+                              "nematodirus",
+                              "trichuris",
+                              "capillaria",
+                              "strongyloides",
+                              "moniezia",
+                              "coccidia",
+                              "liver_fluke",
+                              "small_liver_fluke",
+                              "lungworm",
+                              "other"
+                            ]
+                          },
+                          "countPerGram": { "type": ["number", "null"] },
+                          "grade": {
+                            "type": ["string", "null"],
+                            "enum": ["negative", "low", "medium", "high"]
+                          }
+                        },
+                        "required": ["parasiteType", "countPerGram", "grade"],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": ["id", "label", "pooled", "animalIds", "results"],
+                  "additionalProperties": false
+                }
+              },
+              "followUpTasks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "name": { "type": "string" },
+                    "dueDate": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": ["string", "null"],
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "status": { "type": "string", "enum": ["todo", "done"] }
+                  },
+                  "required": ["id", "name", "dueDate", "status"],
+                  "additionalProperties": false
+                }
+              },
+              "summary": {
+                "type": "object",
+                "properties": {
+                  "animalCount": { "type": "number" },
+                  "famachaAverage": { "type": ["number", "null"] },
+                  "famachaDistribution": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "score": { "type": "number" },
+                        "count": { "type": "number" }
+                      },
+                      "required": ["score", "count"],
+                      "additionalProperties": false
+                    }
+                  },
+                  "fecByParasite": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "parasiteType": {
+                          "type": "string",
+                          "enum": [
+                            "strongyles",
+                            "haemonchus",
+                            "nematodirus",
+                            "trichuris",
+                            "capillaria",
+                            "strongyloides",
+                            "moniezia",
+                            "coccidia",
+                            "liver_fluke",
+                            "small_liver_fluke",
+                            "lungworm",
+                            "other"
+                          ]
+                        },
+                        "sampleCount": { "type": "number" },
+                        "minCountPerGram": { "type": "number" },
+                        "avgCountPerGram": { "type": "number" },
+                        "maxCountPerGram": { "type": "number" }
+                      },
+                      "required": [
+                        "parasiteType",
+                        "sampleCount",
+                        "minCountPerGram",
+                        "avgCountPerGram",
+                        "maxCountPerGram"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "gradesByParasite": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "parasiteType": {
+                          "type": "string",
+                          "enum": [
+                            "strongyles",
+                            "haemonchus",
+                            "nematodirus",
+                            "trichuris",
+                            "capillaria",
+                            "strongyloides",
+                            "moniezia",
+                            "coccidia",
+                            "liver_fluke",
+                            "small_liver_fluke",
+                            "lungworm",
+                            "other"
+                          ]
+                        },
+                        "sampleCount": { "type": "number" },
+                        "highestGrade": {
+                          "type": "string",
+                          "enum": ["negative", "low", "medium", "high"]
+                        },
+                        "averageGrade": { "type": "number" }
+                      },
+                      "required": [
+                        "parasiteType",
+                        "sampleCount",
+                        "highestGrade",
+                        "averageGrade"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "animalCount",
+                  "famachaAverage",
+                  "famachaDistribution",
+                  "fecByParasite",
+                  "gradesByParasite"
+                ],
+                "additionalProperties": false
+              },
+              "comparisonToPrevious": {
+                "type": ["object", "null"],
+                "properties": {
+                  "previousCheckId": { "type": "string" },
+                  "previousDate": {
+                    "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                    "type": "string",
+                    "format": "date-time",
+                    "externalDocs": {
+                      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                    }
+                  },
+                  "famachaBeforeAverage": { "type": ["number", "null"] },
+                  "famachaAfterAverage": { "type": ["number", "null"] },
+                  "famachaAverageChange": { "type": ["number", "null"] },
+                  "fecReduction": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "parasiteType": {
+                          "type": "string",
+                          "enum": [
+                            "strongyles",
+                            "haemonchus",
+                            "nematodirus",
+                            "trichuris",
+                            "capillaria",
+                            "strongyloides",
+                            "moniezia",
+                            "coccidia",
+                            "liver_fluke",
+                            "small_liver_fluke",
+                            "lungworm",
+                            "other"
+                          ]
+                        },
+                        "beforeAvgCountPerGram": { "type": "number" },
+                        "afterAvgCountPerGram": { "type": "number" },
+                        "afterSampleCount": { "type": "number" },
+                        "reductionPercent": { "type": ["number", "null"] }
+                      },
+                      "required": [
+                        "parasiteType",
+                        "beforeAvgCountPerGram",
+                        "afterAvgCountPerGram",
+                        "afterSampleCount",
+                        "reductionPercent"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "previousCheckId",
+                  "previousDate",
+                  "famachaBeforeAverage",
+                  "famachaAfterAverage",
+                  "famachaAverageChange",
+                  "fecReduction"
+                ],
+                "additionalProperties": false
+              },
+              "rechecks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "date": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "name": { "type": ["string", "null"] },
+                    "method": {
+                      "type": "string",
+                      "enum": ["famacha", "fecal_egg_count"]
+                    },
+                    "treatment": {
+                      "type": ["object", "null"],
+                      "properties": {
+                        "id": { "type": "string" },
+                        "name": { "type": "string" },
+                        "startDate": {
+                          "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                          "type": "string",
+                          "format": "date-time",
+                          "externalDocs": {
+                            "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                          }
+                        }
+                      },
+                      "required": ["id", "name", "startDate"],
+                      "additionalProperties": false
+                    },
+                    "animals": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "animalId": { "type": "string" },
+                          "famachaScore": { "type": ["number", "null"] }
+                        },
+                        "required": ["animalId", "famachaScore"],
+                        "additionalProperties": false
+                      }
+                    },
+                    "famachaAverage": { "type": ["number", "null"] },
+                    "famachaBeforeAverage": { "type": ["number", "null"] },
+                    "famachaAfterAverage": { "type": ["number", "null"] },
+                    "famachaAverageChange": { "type": ["number", "null"] },
+                    "fecReduction": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "parasiteType": {
+                            "type": "string",
+                            "enum": [
+                              "strongyles",
+                              "haemonchus",
+                              "nematodirus",
+                              "trichuris",
+                              "capillaria",
+                              "strongyloides",
+                              "moniezia",
+                              "coccidia",
+                              "liver_fluke",
+                              "small_liver_fluke",
+                              "lungworm",
+                              "other"
+                            ]
+                          },
+                          "beforeAvgCountPerGram": { "type": "number" },
+                          "afterAvgCountPerGram": { "type": "number" },
+                          "afterSampleCount": { "type": "number" },
+                          "reductionPercent": { "type": ["number", "null"] }
+                        },
+                        "required": [
+                          "parasiteType",
+                          "beforeAvgCountPerGram",
+                          "afterAvgCountPerGram",
+                          "afterSampleCount",
+                          "reductionPercent"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "date",
+                    "name",
+                    "method",
+                    "treatment",
+                    "animals",
+                    "famachaAverage",
+                    "famachaBeforeAverage",
+                    "famachaAfterAverage",
+                    "famachaAverageChange",
+                    "fecReduction"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "date",
+              "name",
+              "method",
+              "labName",
+              "notes",
+              "previousCheckId",
+              "treatmentId",
+              "createdBy",
+              "createdAt",
+              "updatedAt",
+              "animalType",
+              "treatment",
+              "animals",
+              "fecSamples",
+              "followUpTasks",
+              "summary",
+              "comparisonToPrevious",
+              "rechecks"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1ParasiteChecksRequestBody": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+            }
+          },
+          "name": { "type": ["string", "null"] },
+          "method": {
+            "type": "string",
+            "enum": ["famacha", "fecal_egg_count"]
+          },
+          "animals": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "animalId": { "type": "string" },
+                "famachaScore": {
+                  "type": ["integer", "null"],
+                  "minimum": 1,
+                  "maximum": 5
+                }
+              },
+              "required": ["animalId"]
+            }
+          },
+          "fecSamples": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": { "type": ["string", "null"] },
+                "animalIds": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "parasiteType": {
+                        "type": "string",
+                        "enum": [
+                          "strongyles",
+                          "haemonchus",
+                          "nematodirus",
+                          "trichuris",
+                          "capillaria",
+                          "strongyloides",
+                          "moniezia",
+                          "coccidia",
+                          "liver_fluke",
+                          "small_liver_fluke",
+                          "lungworm",
+                          "other"
+                        ]
+                      },
+                      "countPerGram": {
+                        "type": ["number", "null"],
+                        "minimum": 0
+                      },
+                      "grade": {
+                        "type": ["string", "null"],
+                        "enum": ["negative", "low", "medium", "high"]
+                      }
+                    },
+                    "required": ["parasiteType"]
+                  }
+                }
+              },
+              "required": ["animalIds", "results"]
+            }
+          },
+          "labName": { "type": ["string", "null"] },
+          "notes": { "type": ["string", "null"] },
+          "previousCheckId": { "type": ["string", "null"] },
+          "treatmentId": { "type": ["string", "null"] },
+          "followUp": {
+            "type": "object",
+            "properties": {
+              "dueDate": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "name": { "type": "string", "minLength": 1 },
+              "assigneeId": { "type": "string" }
+            },
+            "required": ["dueDate"]
+          }
+        },
+        "required": ["date", "method", "animals"]
+      },
+      "GetV1ParasiteChecksByIdCheckIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "date": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "name": { "type": ["string", "null"] },
+              "method": {
+                "type": "string",
+                "enum": ["famacha", "fecal_egg_count"]
+              },
+              "labName": { "type": ["string", "null"] },
+              "notes": { "type": ["string", "null"] },
+              "previousCheckId": { "type": ["string", "null"] },
+              "treatmentId": { "type": ["string", "null"] },
+              "createdBy": { "type": ["string", "null"] },
+              "createdAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "updatedAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "animalType": {
+                "type": ["string", "null"],
+                "enum": [
+                  "goat",
+                  "sheep",
+                  "cow",
+                  "horse",
+                  "donkey",
+                  "pig",
+                  "deer"
+                ]
+              },
+              "treatment": {
+                "type": ["object", "null"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "name": { "type": "string" },
+                  "startDate": {
+                    "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                    "type": "string",
+                    "format": "date-time",
+                    "externalDocs": {
+                      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                    }
+                  }
+                },
+                "required": ["id", "name", "startDate"],
+                "additionalProperties": false
+              },
+              "animals": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "animalId": { "type": "string" },
+                    "name": { "type": "string" },
+                    "earTagNumber": { "type": ["string", "null"] },
+                    "famachaScore": { "type": ["number", "null"] }
+                  },
+                  "required": [
+                    "animalId",
+                    "name",
+                    "earTagNumber",
+                    "famachaScore"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "fecSamples": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "label": { "type": ["string", "null"] },
+                    "pooled": { "type": "boolean" },
+                    "animalIds": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "parasiteType": {
+                            "type": "string",
+                            "enum": [
+                              "strongyles",
+                              "haemonchus",
+                              "nematodirus",
+                              "trichuris",
+                              "capillaria",
+                              "strongyloides",
+                              "moniezia",
+                              "coccidia",
+                              "liver_fluke",
+                              "small_liver_fluke",
+                              "lungworm",
+                              "other"
+                            ]
+                          },
+                          "countPerGram": { "type": ["number", "null"] },
+                          "grade": {
+                            "type": ["string", "null"],
+                            "enum": ["negative", "low", "medium", "high"]
+                          }
+                        },
+                        "required": ["parasiteType", "countPerGram", "grade"],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": ["id", "label", "pooled", "animalIds", "results"],
+                  "additionalProperties": false
+                }
+              },
+              "followUpTasks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "name": { "type": "string" },
+                    "dueDate": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": ["string", "null"],
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "status": { "type": "string", "enum": ["todo", "done"] }
+                  },
+                  "required": ["id", "name", "dueDate", "status"],
+                  "additionalProperties": false
+                }
+              },
+              "summary": {
+                "type": "object",
+                "properties": {
+                  "animalCount": { "type": "number" },
+                  "famachaAverage": { "type": ["number", "null"] },
+                  "famachaDistribution": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "score": { "type": "number" },
+                        "count": { "type": "number" }
+                      },
+                      "required": ["score", "count"],
+                      "additionalProperties": false
+                    }
+                  },
+                  "fecByParasite": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "parasiteType": {
+                          "type": "string",
+                          "enum": [
+                            "strongyles",
+                            "haemonchus",
+                            "nematodirus",
+                            "trichuris",
+                            "capillaria",
+                            "strongyloides",
+                            "moniezia",
+                            "coccidia",
+                            "liver_fluke",
+                            "small_liver_fluke",
+                            "lungworm",
+                            "other"
+                          ]
+                        },
+                        "sampleCount": { "type": "number" },
+                        "minCountPerGram": { "type": "number" },
+                        "avgCountPerGram": { "type": "number" },
+                        "maxCountPerGram": { "type": "number" }
+                      },
+                      "required": [
+                        "parasiteType",
+                        "sampleCount",
+                        "minCountPerGram",
+                        "avgCountPerGram",
+                        "maxCountPerGram"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "gradesByParasite": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "parasiteType": {
+                          "type": "string",
+                          "enum": [
+                            "strongyles",
+                            "haemonchus",
+                            "nematodirus",
+                            "trichuris",
+                            "capillaria",
+                            "strongyloides",
+                            "moniezia",
+                            "coccidia",
+                            "liver_fluke",
+                            "small_liver_fluke",
+                            "lungworm",
+                            "other"
+                          ]
+                        },
+                        "sampleCount": { "type": "number" },
+                        "highestGrade": {
+                          "type": "string",
+                          "enum": ["negative", "low", "medium", "high"]
+                        },
+                        "averageGrade": { "type": "number" }
+                      },
+                      "required": [
+                        "parasiteType",
+                        "sampleCount",
+                        "highestGrade",
+                        "averageGrade"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "animalCount",
+                  "famachaAverage",
+                  "famachaDistribution",
+                  "fecByParasite",
+                  "gradesByParasite"
+                ],
+                "additionalProperties": false
+              },
+              "comparisonToPrevious": {
+                "type": ["object", "null"],
+                "properties": {
+                  "previousCheckId": { "type": "string" },
+                  "previousDate": {
+                    "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                    "type": "string",
+                    "format": "date-time",
+                    "externalDocs": {
+                      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                    }
+                  },
+                  "famachaBeforeAverage": { "type": ["number", "null"] },
+                  "famachaAfterAverage": { "type": ["number", "null"] },
+                  "famachaAverageChange": { "type": ["number", "null"] },
+                  "fecReduction": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "parasiteType": {
+                          "type": "string",
+                          "enum": [
+                            "strongyles",
+                            "haemonchus",
+                            "nematodirus",
+                            "trichuris",
+                            "capillaria",
+                            "strongyloides",
+                            "moniezia",
+                            "coccidia",
+                            "liver_fluke",
+                            "small_liver_fluke",
+                            "lungworm",
+                            "other"
+                          ]
+                        },
+                        "beforeAvgCountPerGram": { "type": "number" },
+                        "afterAvgCountPerGram": { "type": "number" },
+                        "afterSampleCount": { "type": "number" },
+                        "reductionPercent": { "type": ["number", "null"] }
+                      },
+                      "required": [
+                        "parasiteType",
+                        "beforeAvgCountPerGram",
+                        "afterAvgCountPerGram",
+                        "afterSampleCount",
+                        "reductionPercent"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "previousCheckId",
+                  "previousDate",
+                  "famachaBeforeAverage",
+                  "famachaAfterAverage",
+                  "famachaAverageChange",
+                  "fecReduction"
+                ],
+                "additionalProperties": false
+              },
+              "rechecks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "date": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "name": { "type": ["string", "null"] },
+                    "method": {
+                      "type": "string",
+                      "enum": ["famacha", "fecal_egg_count"]
+                    },
+                    "treatment": {
+                      "type": ["object", "null"],
+                      "properties": {
+                        "id": { "type": "string" },
+                        "name": { "type": "string" },
+                        "startDate": {
+                          "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                          "type": "string",
+                          "format": "date-time",
+                          "externalDocs": {
+                            "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                          }
+                        }
+                      },
+                      "required": ["id", "name", "startDate"],
+                      "additionalProperties": false
+                    },
+                    "animals": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "animalId": { "type": "string" },
+                          "famachaScore": { "type": ["number", "null"] }
+                        },
+                        "required": ["animalId", "famachaScore"],
+                        "additionalProperties": false
+                      }
+                    },
+                    "famachaAverage": { "type": ["number", "null"] },
+                    "famachaBeforeAverage": { "type": ["number", "null"] },
+                    "famachaAfterAverage": { "type": ["number", "null"] },
+                    "famachaAverageChange": { "type": ["number", "null"] },
+                    "fecReduction": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "parasiteType": {
+                            "type": "string",
+                            "enum": [
+                              "strongyles",
+                              "haemonchus",
+                              "nematodirus",
+                              "trichuris",
+                              "capillaria",
+                              "strongyloides",
+                              "moniezia",
+                              "coccidia",
+                              "liver_fluke",
+                              "small_liver_fluke",
+                              "lungworm",
+                              "other"
+                            ]
+                          },
+                          "beforeAvgCountPerGram": { "type": "number" },
+                          "afterAvgCountPerGram": { "type": "number" },
+                          "afterSampleCount": { "type": "number" },
+                          "reductionPercent": { "type": ["number", "null"] }
+                        },
+                        "required": [
+                          "parasiteType",
+                          "beforeAvgCountPerGram",
+                          "afterAvgCountPerGram",
+                          "afterSampleCount",
+                          "reductionPercent"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "date",
+                    "name",
+                    "method",
+                    "treatment",
+                    "animals",
+                    "famachaAverage",
+                    "famachaBeforeAverage",
+                    "famachaAfterAverage",
+                    "famachaAverageChange",
+                    "fecReduction"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "date",
+              "name",
+              "method",
+              "labName",
+              "notes",
+              "previousCheckId",
+              "treatmentId",
+              "createdBy",
+              "createdAt",
+              "updatedAt",
+              "animalType",
+              "treatment",
+              "animals",
+              "fecSamples",
+              "followUpTasks",
+              "summary",
+              "comparisonToPrevious",
+              "rechecks"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1ParasiteChecksByIdCheckIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "date": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "name": { "type": ["string", "null"] },
+              "method": {
+                "type": "string",
+                "enum": ["famacha", "fecal_egg_count"]
+              },
+              "labName": { "type": ["string", "null"] },
+              "notes": { "type": ["string", "null"] },
+              "previousCheckId": { "type": ["string", "null"] },
+              "treatmentId": { "type": ["string", "null"] },
+              "createdBy": { "type": ["string", "null"] },
+              "createdAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "updatedAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "animalType": {
+                "type": ["string", "null"],
+                "enum": [
+                  "goat",
+                  "sheep",
+                  "cow",
+                  "horse",
+                  "donkey",
+                  "pig",
+                  "deer"
+                ]
+              },
+              "treatment": {
+                "type": ["object", "null"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "name": { "type": "string" },
+                  "startDate": {
+                    "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                    "type": "string",
+                    "format": "date-time",
+                    "externalDocs": {
+                      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                    }
+                  }
+                },
+                "required": ["id", "name", "startDate"],
+                "additionalProperties": false
+              },
+              "animals": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "animalId": { "type": "string" },
+                    "name": { "type": "string" },
+                    "earTagNumber": { "type": ["string", "null"] },
+                    "famachaScore": { "type": ["number", "null"] }
+                  },
+                  "required": [
+                    "animalId",
+                    "name",
+                    "earTagNumber",
+                    "famachaScore"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "fecSamples": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "label": { "type": ["string", "null"] },
+                    "pooled": { "type": "boolean" },
+                    "animalIds": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "parasiteType": {
+                            "type": "string",
+                            "enum": [
+                              "strongyles",
+                              "haemonchus",
+                              "nematodirus",
+                              "trichuris",
+                              "capillaria",
+                              "strongyloides",
+                              "moniezia",
+                              "coccidia",
+                              "liver_fluke",
+                              "small_liver_fluke",
+                              "lungworm",
+                              "other"
+                            ]
+                          },
+                          "countPerGram": { "type": ["number", "null"] },
+                          "grade": {
+                            "type": ["string", "null"],
+                            "enum": ["negative", "low", "medium", "high"]
+                          }
+                        },
+                        "required": ["parasiteType", "countPerGram", "grade"],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": ["id", "label", "pooled", "animalIds", "results"],
+                  "additionalProperties": false
+                }
+              },
+              "followUpTasks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "name": { "type": "string" },
+                    "dueDate": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": ["string", "null"],
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "status": { "type": "string", "enum": ["todo", "done"] }
+                  },
+                  "required": ["id", "name", "dueDate", "status"],
+                  "additionalProperties": false
+                }
+              },
+              "summary": {
+                "type": "object",
+                "properties": {
+                  "animalCount": { "type": "number" },
+                  "famachaAverage": { "type": ["number", "null"] },
+                  "famachaDistribution": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "score": { "type": "number" },
+                        "count": { "type": "number" }
+                      },
+                      "required": ["score", "count"],
+                      "additionalProperties": false
+                    }
+                  },
+                  "fecByParasite": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "parasiteType": {
+                          "type": "string",
+                          "enum": [
+                            "strongyles",
+                            "haemonchus",
+                            "nematodirus",
+                            "trichuris",
+                            "capillaria",
+                            "strongyloides",
+                            "moniezia",
+                            "coccidia",
+                            "liver_fluke",
+                            "small_liver_fluke",
+                            "lungworm",
+                            "other"
+                          ]
+                        },
+                        "sampleCount": { "type": "number" },
+                        "minCountPerGram": { "type": "number" },
+                        "avgCountPerGram": { "type": "number" },
+                        "maxCountPerGram": { "type": "number" }
+                      },
+                      "required": [
+                        "parasiteType",
+                        "sampleCount",
+                        "minCountPerGram",
+                        "avgCountPerGram",
+                        "maxCountPerGram"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "gradesByParasite": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "parasiteType": {
+                          "type": "string",
+                          "enum": [
+                            "strongyles",
+                            "haemonchus",
+                            "nematodirus",
+                            "trichuris",
+                            "capillaria",
+                            "strongyloides",
+                            "moniezia",
+                            "coccidia",
+                            "liver_fluke",
+                            "small_liver_fluke",
+                            "lungworm",
+                            "other"
+                          ]
+                        },
+                        "sampleCount": { "type": "number" },
+                        "highestGrade": {
+                          "type": "string",
+                          "enum": ["negative", "low", "medium", "high"]
+                        },
+                        "averageGrade": { "type": "number" }
+                      },
+                      "required": [
+                        "parasiteType",
+                        "sampleCount",
+                        "highestGrade",
+                        "averageGrade"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "animalCount",
+                  "famachaAverage",
+                  "famachaDistribution",
+                  "fecByParasite",
+                  "gradesByParasite"
+                ],
+                "additionalProperties": false
+              },
+              "comparisonToPrevious": {
+                "type": ["object", "null"],
+                "properties": {
+                  "previousCheckId": { "type": "string" },
+                  "previousDate": {
+                    "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                    "type": "string",
+                    "format": "date-time",
+                    "externalDocs": {
+                      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                    }
+                  },
+                  "famachaBeforeAverage": { "type": ["number", "null"] },
+                  "famachaAfterAverage": { "type": ["number", "null"] },
+                  "famachaAverageChange": { "type": ["number", "null"] },
+                  "fecReduction": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "parasiteType": {
+                          "type": "string",
+                          "enum": [
+                            "strongyles",
+                            "haemonchus",
+                            "nematodirus",
+                            "trichuris",
+                            "capillaria",
+                            "strongyloides",
+                            "moniezia",
+                            "coccidia",
+                            "liver_fluke",
+                            "small_liver_fluke",
+                            "lungworm",
+                            "other"
+                          ]
+                        },
+                        "beforeAvgCountPerGram": { "type": "number" },
+                        "afterAvgCountPerGram": { "type": "number" },
+                        "afterSampleCount": { "type": "number" },
+                        "reductionPercent": { "type": ["number", "null"] }
+                      },
+                      "required": [
+                        "parasiteType",
+                        "beforeAvgCountPerGram",
+                        "afterAvgCountPerGram",
+                        "afterSampleCount",
+                        "reductionPercent"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "previousCheckId",
+                  "previousDate",
+                  "famachaBeforeAverage",
+                  "famachaAfterAverage",
+                  "famachaAverageChange",
+                  "fecReduction"
+                ],
+                "additionalProperties": false
+              },
+              "rechecks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "date": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "name": { "type": ["string", "null"] },
+                    "method": {
+                      "type": "string",
+                      "enum": ["famacha", "fecal_egg_count"]
+                    },
+                    "treatment": {
+                      "type": ["object", "null"],
+                      "properties": {
+                        "id": { "type": "string" },
+                        "name": { "type": "string" },
+                        "startDate": {
+                          "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                          "type": "string",
+                          "format": "date-time",
+                          "externalDocs": {
+                            "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                          }
+                        }
+                      },
+                      "required": ["id", "name", "startDate"],
+                      "additionalProperties": false
+                    },
+                    "animals": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "animalId": { "type": "string" },
+                          "famachaScore": { "type": ["number", "null"] }
+                        },
+                        "required": ["animalId", "famachaScore"],
+                        "additionalProperties": false
+                      }
+                    },
+                    "famachaAverage": { "type": ["number", "null"] },
+                    "famachaBeforeAverage": { "type": ["number", "null"] },
+                    "famachaAfterAverage": { "type": ["number", "null"] },
+                    "famachaAverageChange": { "type": ["number", "null"] },
+                    "fecReduction": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "parasiteType": {
+                            "type": "string",
+                            "enum": [
+                              "strongyles",
+                              "haemonchus",
+                              "nematodirus",
+                              "trichuris",
+                              "capillaria",
+                              "strongyloides",
+                              "moniezia",
+                              "coccidia",
+                              "liver_fluke",
+                              "small_liver_fluke",
+                              "lungworm",
+                              "other"
+                            ]
+                          },
+                          "beforeAvgCountPerGram": { "type": "number" },
+                          "afterAvgCountPerGram": { "type": "number" },
+                          "afterSampleCount": { "type": "number" },
+                          "reductionPercent": { "type": ["number", "null"] }
+                        },
+                        "required": [
+                          "parasiteType",
+                          "beforeAvgCountPerGram",
+                          "afterAvgCountPerGram",
+                          "afterSampleCount",
+                          "reductionPercent"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "date",
+                    "name",
+                    "method",
+                    "treatment",
+                    "animals",
+                    "famachaAverage",
+                    "famachaBeforeAverage",
+                    "famachaAfterAverage",
+                    "famachaAverageChange",
+                    "fecReduction"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "date",
+              "name",
+              "method",
+              "labName",
+              "notes",
+              "previousCheckId",
+              "treatmentId",
+              "createdBy",
+              "createdAt",
+              "updatedAt",
+              "animalType",
+              "treatment",
+              "animals",
+              "fecSamples",
+              "followUpTasks",
+              "summary",
+              "comparisonToPrevious",
+              "rechecks"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1ParasiteChecksByIdCheckIdRequestBody": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+            }
+          },
+          "name": { "type": ["string", "null"] },
+          "method": {
+            "type": "string",
+            "enum": ["famacha", "fecal_egg_count"]
+          },
+          "animals": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "animalId": { "type": "string" },
+                "famachaScore": {
+                  "type": ["integer", "null"],
+                  "minimum": 1,
+                  "maximum": 5
+                }
+              },
+              "required": ["animalId"]
+            }
+          },
+          "fecSamples": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": { "type": ["string", "null"] },
+                "animalIds": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "parasiteType": {
+                        "type": "string",
+                        "enum": [
+                          "strongyles",
+                          "haemonchus",
+                          "nematodirus",
+                          "trichuris",
+                          "capillaria",
+                          "strongyloides",
+                          "moniezia",
+                          "coccidia",
+                          "liver_fluke",
+                          "small_liver_fluke",
+                          "lungworm",
+                          "other"
+                        ]
+                      },
+                      "countPerGram": {
+                        "type": ["number", "null"],
+                        "minimum": 0
+                      },
+                      "grade": {
+                        "type": ["string", "null"],
+                        "enum": ["negative", "low", "medium", "high"]
+                      }
+                    },
+                    "required": ["parasiteType"]
+                  }
+                }
+              },
+              "required": ["animalIds", "results"]
+            }
+          },
+          "labName": { "type": ["string", "null"] },
+          "notes": { "type": ["string", "null"] },
+          "previousCheckId": { "type": ["string", "null"] },
+          "treatmentId": { "type": ["string", "null"] }
+        },
+        "required": []
+      },
+      "DeleteV1ParasiteChecksByIdCheckIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
             "additionalProperties": false
           }
         },
@@ -39900,7 +42486,8 @@
                         "order",
                         "wiki_entry",
                         "treatment",
-                        "herd"
+                        "herd",
+                        "parasite_check"
                       ]
                     },
                     "linkedId": { "type": "string" },
@@ -40017,7 +42604,8 @@
                     "order",
                     "wiki_entry",
                     "treatment",
-                    "herd"
+                    "herd",
+                    "parasite_check"
                   ]
                 },
                 "linkedId": { "type": "string" }
@@ -40150,7 +42738,8 @@
                         "order",
                         "wiki_entry",
                         "treatment",
-                        "herd"
+                        "herd",
+                        "parasite_check"
                       ]
                     },
                     "linkedId": { "type": "string" },
@@ -40291,7 +42880,8 @@
                         "order",
                         "wiki_entry",
                         "treatment",
-                        "herd"
+                        "herd",
+                        "parasite_check"
                       ]
                     },
                     "linkedId": { "type": "string" },
@@ -40404,7 +42994,8 @@
                     "order",
                     "wiki_entry",
                     "treatment",
-                    "herd"
+                    "herd",
+                    "parasite_check"
                   ]
                 },
                 "linkedId": { "type": "string" }

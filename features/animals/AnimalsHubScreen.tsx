@@ -22,7 +22,7 @@ export function AnimalsHubScreen({ navigation }: AnimalsHubScreenProps) {
   // Redirect to onboarding if not completed
   useEffect(() => {
     if (!localSettings.animalsOnboardingCompleted) {
-      navigation.replace("AnimalsOnboarding" as never);
+      navigation.replace("AnimalsOnboarding");
     }
   }, []);
 
