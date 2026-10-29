@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import { Dropdown as RnDropdown } from "react-native-element-dropdown";
 import { DropdownProps } from "react-native-element-dropdown/lib/typescript/components/Dropdown/model";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 import styled, { useTheme } from "styled-components/native";
 
 export type SelectProps = {
@@ -52,7 +52,6 @@ export function Select({
 }: SelectProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
 
   const [focus, setFocus] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -162,10 +161,11 @@ export function Select({
             setSearchText("");
           }}
         >
-          <View
+          <SafeAreaView
+            edges={["top", "bottom"]}
             style={{
               flex: 1,
-              paddingTop: insets.top + theme.spacing.m,
+              paddingTop: theme.spacing.m,
               paddingHorizontal: theme.spacing.m,
               backgroundColor: theme.colors.background,
             }}
@@ -215,7 +215,7 @@ export function Select({
               renderItem={renderItem}
               keyboardShouldPersistTaps="handled"
             />
-          </View>
+          </SafeAreaView>
         </Modal>
       </View>
     );
