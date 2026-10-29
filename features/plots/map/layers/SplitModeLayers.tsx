@@ -6,7 +6,6 @@ import { hexToRgba, indexToDistinctColor } from "@/theme/theme";
 import {
   GeoSpatials,
   cutPolygonFromMultiPolygonLngLat,
-  extractSubPolygonByPoint,
   splitMultiPolygonByLine,
 } from "@/utils/geo-spatials";
 import { round } from "@/utils/math";
@@ -127,23 +126,6 @@ export const SplitModeLayers = forwardRef<SplitModeLayersHandle>(
           currentMode.activeToolMode === "polygon-edit"
         ) {
           drawingRef.current?.handleMapTap(lngLat);
-        } else if (currentMode.activeToolMode === "extract") {
-          const point = { longitude: lngLat[0], latitude: lngLat[1] };
-          const newPolygons: GeoJSON.MultiPolygon[] = [];
-          let didExtract = false;
-          for (const polygon of currentMode.currentPolygons) {
-            const result = extractSubPolygonByPoint(polygon, point);
-            if (result) {
-              newPolygons.push(result.remaining, result.extracted);
-              didExtract = true;
-            } else {
-              newPolygons.push(polygon);
-            }
-          }
-          if (didExtract) {
-            dispatch({ type: "SET_SPLIT_POLYGONS", polygons: newPolygons });
-            dispatch({ type: "SET_SPLIT_TOOL", tool: "none" });
-          }
         }
       },
       handlePolylineCut() {

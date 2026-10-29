@@ -126,21 +126,6 @@ export function SplitModeControls({ splitLayersRef }: SplitModeControlsProps) {
     );
   }
 
-  // Extract mode — just cancel
-  if (activeToolMode === "extract") {
-    return (
-      <MapControls>
-        <MaterialCommunityIconButton
-          type="accent"
-          color="black"
-          iconSize={30}
-          icon="close-circle-outline"
-          onPress={() => dispatch({ type: "SET_SPLIT_TOOL", tool: "none" })}
-        />
-      </MapControls>
-    );
-  }
-
   // Tool selection mode (no active tool)
   return (
     <MapControls>
@@ -173,17 +158,6 @@ export function SplitModeControls({ splitLayersRef }: SplitModeControlsProps) {
         icon="vector-polygon"
         onPress={() => dispatch({ type: "SET_SPLIT_TOOL", tool: "polygon" })}
       />
-      {/* Extract sub-polygon — only for MultiPolygons with >1 ring */}
-      {currentPolygons.some((p) => p.coordinates.length > 1) && (
-        <MaterialCommunityIconButton
-          style={{ backgroundColor: theme.colors.surface }}
-          type="accent"
-          color="black"
-          iconSize={30}
-          icon="vector-difference-ba"
-          onPress={() => dispatch({ type: "SET_SPLIT_TOOL", tool: "extract" })}
-        />
-      )}
       {/* Confirm — navigate to summary when there are multiple polygons */}
       <MaterialCommunityIconButton
         type="accent"

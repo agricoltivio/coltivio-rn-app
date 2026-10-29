@@ -2,7 +2,6 @@ import { describe, test, expect } from "@jest/globals";
 import {
   GeoSpatials,
   splitMultiPolygonByLine,
-  extractSubPolygonByPoint,
   cutPolygonFromMultiPolygon,
 } from "./geo-spatials";
 import * as turf from "@turf/turf";
@@ -147,42 +146,6 @@ describe("GeoSpatials.thinOutCoordinates", () => {
       latitude: 10.00001,
       longitude: 0,
     });
-  });
-});
-
-// ---------------------------------------------------------------------------
-// extractSubPolygonByPoint
-// ---------------------------------------------------------------------------
-
-describe("extractSubPolygonByPoint", () => {
-  test("single ring MultiPolygon → null (length <= 1)", () => {
-    expect(
-      extractSubPolygonByPoint(UNIT_SQUARE, { latitude: 0.5, longitude: 0.5 }),
-    ).toBeNull();
-  });
-
-  test("two-ring MultiPolygon, point inside ring 0 → extracted=ring0, remaining=ring1", () => {
-    // Point inside unit square (ring 0)
-    const result = extractSubPolygonByPoint(TWO_SQUARE_MULTI, {
-      latitude: 0.5,
-      longitude: 0.5,
-    });
-    expect(result).not.toBeNull();
-    expect(result!.extracted.coordinates).toHaveLength(1);
-    expect(result!.remaining.coordinates).toHaveLength(1);
-    // Extracted should be the unit square ring
-    expect(result!.extracted.coordinates[0]).toEqual(UNIT_SQUARE_COORDS);
-    // Remaining should be the second square
-    expect(result!.remaining.coordinates[0]).toEqual(SECOND_SQUARE_COORDS);
-  });
-
-  test("two-ring MultiPolygon, point outside both → null", () => {
-    // Point at (5, 5) is outside both squares
-    const result = extractSubPolygonByPoint(TWO_SQUARE_MULTI, {
-      latitude: 5,
-      longitude: 5,
-    });
-    expect(result).toBeNull();
   });
 });
 

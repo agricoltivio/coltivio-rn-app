@@ -495,8 +495,6 @@
       "line_body": "Zeichne eine Linie quer über den Schlag, um ihn in zwei Teile zu teilen. Tippe auf die Karte, um Punkte zu setzen, und bestätige mit dem Schneiden-Symbol.",
       "area_heading": "Fläche ausschneiden",
       "area_body": "Zeichne ein Polygon innerhalb des Schlags, um eine neue Fläche auszuschneiden. Dies ist nützlich, wenn du einen bestimmten Bereich abtrennen möchtest.",
-      "extract_heading": "Schlag herauslösen",
-      "extract_body": "Wenn eine Fläche aus mehreren Schlägen besteht, kannst du einen einzelnen Schlag auswählen und herauslösen.",
       "actions_heading": "Fertig & Abbrechen",
       "confirm_body": "Drücke das Häkchen, wenn du mit der Aufteilung zufrieden bist, um fortzufahren.",
       "abort_body": "Drücke das X, um abzubrechen und die Aufteilung zu verwerfen."

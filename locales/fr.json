@@ -497,9 +497,7 @@
       "area_body": "Dessinez un polygone à l'intérieur du champ pour découper une nouvelle surface. Cela est utile lorsque vous souhaitez séparer une zone spécifique.",
       "actions_heading": "Terminer & Annuler",
       "confirm_body": "Appuyez sur la coche lorsque vous êtes satisfait de la division pour continuer.",
-      "abort_body": "Appuyez sur le X pour annuler et ignorer la division.",
-      "extract_heading": "Extraire un champ",
-      "extract_body": "Si une surface est composée de plusieurs polygones, vous pouvez en sélectionner un et l'extraire."
+      "abort_body": "Appuyez sur le X pour annuler et ignorer la division."
     },
     "split": {
       "heading": "Diviser le champ",

@@ -25,7 +25,7 @@ type ViewMode = { type: "view"; selectedPlotId: string | null };
 type SplitMode = {
   type: "split";
   plotId: string;
-  activeToolMode: "polyline" | "polygon" | "polygon-edit" | "extract" | "none";
+  activeToolMode: "polyline" | "polygon" | "polygon-edit" | "none";
   currentPolygons: GeoJSON.MultiPolygon[];
 };
 type MergeMode = {
@@ -77,7 +77,7 @@ export type PlotsMapAction =
     }
   | {
       type: "SET_SPLIT_TOOL";
-      tool: "polyline" | "polygon" | "polygon-edit" | "extract" | "none";
+      tool: "polyline" | "polygon" | "polygon-edit" | "none";
     }
   | { type: "SET_SPLIT_POLYGONS"; polygons: GeoJSON.MultiPolygon[] }
   | { type: "ENTER_MERGE"; primaryPlotId: string }

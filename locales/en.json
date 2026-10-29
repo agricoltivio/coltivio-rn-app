@@ -497,9 +497,7 @@
       "area_body": "Draw a polygon within the plot to cut out a new area. This is useful when you want to separate a specific section.",
       "actions_heading": "Done & Cancel",
       "confirm_body": "Press the checkmark once you're happy with the split to continue.",
-      "abort_body": "Press the X to cancel and discard the split.",
-      "extract_heading": "Extract Plot",
-      "extract_body": "If an area consists of multiple polygons, you can select and extract a single one."
+      "abort_body": "Press the X to cancel and discard the split."
     },
     "split": {
       "heading": "Split Plot",

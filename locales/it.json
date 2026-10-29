@@ -497,9 +497,7 @@
       "area_body": "Disegna un poligono all'interno del campo per ritagliare una nuova area. Questo è utile se vuoi separare una zona specifica.",
       "actions_heading": "Fine & Annulla",
       "confirm_body": "Premi il segno di spunta quando sei soddisfatto della divisione per continuare.",
-      "abort_body": "Premi la X per annullare e scartare la divisione.",
-      "extract_heading": "Estrai appezzamento",
-      "extract_body": "Se un'area è composta da più poligoni, puoi selezionarne uno ed estrarlo."
+      "abort_body": "Premi la X per annullare e scartare la divisione."
     },
     "split": {
       "heading": "Dividi il campo",
