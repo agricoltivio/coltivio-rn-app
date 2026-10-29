@@ -243,6 +243,14 @@ export type MapVisibleLayers = {
   archived: boolean;
 };
 
+// A tap that hits several active areas (e.g. a meadow over plots) lets the user pick one
+export type AreaChoiceOption = {
+  kind: "plot" | "meadow";
+  id: string;
+  name: string;
+  size: number;
+};
+
 type PlotsMapContextValue = {
   mode: PlotsMapMode;
   dispatch: Dispatch<PlotsMapAction>;
@@ -264,6 +272,9 @@ type PlotsMapContextValue = {
   archivedMeadows: Meadow[];
   selectedMeadowId: string | null;
   setSelectedMeadowId: (meadowId: string | null) => void;
+  // Non-null while the user is asked which of several overlapping areas they meant
+  areaChoiceOptions: AreaChoiceOption[] | null;
+  setAreaChoiceOptions: (options: AreaChoiceOption[] | null) => void;
   // Leaves a meadow create/adjust flow: back to view mode, or back to the screen that
   // opened the map directly in that flow (e.g. the animals section)
   exitMeadowFlow: () => void;

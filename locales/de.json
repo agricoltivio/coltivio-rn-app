@@ -428,6 +428,7 @@
       "affected_plots_warning": "Folgende Schläge werden durch diesen Schlag verkleinert."
     },
     "map": {
+      "choose_area": "Welche Fläche?",
       "selected_plot": {
         "size": "{{size}}a",
         "crop": "Kultur: {{crop}}"

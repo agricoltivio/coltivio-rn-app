@@ -38,6 +38,7 @@ import { useMeadowsQuery } from "@/features/animals/meadows.hooks";
 import { PlotsMapScreenProps } from "../navigation/plots-routes";
 import {
   PlotsMapContext,
+  type AreaChoiceOption,
   type MapVisibleLayers,
   createInitialMode,
   plotsMapReducer,
@@ -47,6 +48,7 @@ import { MapLayers } from "./MapLayers";
 import { MapOverlays } from "./MapOverlays";
 import { PlotDetailsDrawer } from "./PlotDetailsDrawer";
 import { MeadowDetailsDrawer } from "./MeadowDetailsDrawer";
+import { AreaChoiceDrawer } from "./AreaChoiceDrawer";
 import { MapLayersDrawer } from "./MapLayersDrawer";
 import { PlotListModal } from "./PlotListModal";
 import { DeletePlotDialog } from "./DeletePlotDialog";
@@ -136,6 +138,9 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
   );
   const [layersDrawerVisible, setLayersDrawerVisible] = useState(false);
   const [selectedMeadowId, setSelectedMeadowId] = useState<string | null>(null);
+  const [areaChoiceOptions, setAreaChoiceOptions] = useState<
+    AreaChoiceOption[] | null
+  >(null);
 
   const mapRef = useRef<MapRef>(null);
   const cameraRef = useRef<CameraRef>(null);
@@ -446,6 +451,8 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       archivedMeadows,
       selectedMeadowId,
       setSelectedMeadowId,
+      areaChoiceOptions,
+      setAreaChoiceOptions,
       exitMeadowFlow,
       meadowFlowOpenedExternally: initialMeadowAction !== undefined,
     }),
@@ -463,6 +470,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       archivedPlots,
       archivedMeadows,
       selectedMeadowId,
+      areaChoiceOptions,
       exitMeadowFlow,
       initialMeadowAction,
     ],
@@ -577,6 +585,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
         {/* Bottom drawer for view mode */}
         <PlotDetailsDrawer />
         <MeadowDetailsDrawer />
+        <AreaChoiceDrawer />
         {mode.type === "view" && (
           <MapLayersDrawer
             visible={layersDrawerVisible}

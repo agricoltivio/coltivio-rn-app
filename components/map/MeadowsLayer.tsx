@@ -17,7 +17,7 @@ type MeadowsLayerProps = {
   selectedMeadowId?: string | null;
   /** Hidden from the layer, e.g. the meadow currently being edited */
   excludeMeadowId?: string;
-  onMeadowPress?: (meadowId: string) => void;
+  onMeadowPress?: (meadowId: string, lngLat: LngLat) => void;
 };
 
 export function MeadowsLayer({
@@ -70,7 +70,9 @@ export function MeadowsLayer({
     event.stopPropagation();
     // Meadows never overlap, so the first hit is the tapped meadow
     const meadowId = event.nativeEvent.features[0]?.properties?.id;
-    if (typeof meadowId === "string") onMeadowPress(meadowId);
+    if (typeof meadowId === "string") {
+      onMeadowPress(meadowId, event.nativeEvent.lngLat);
+    }
   }
 
   return (

@@ -2,9 +2,10 @@ import { ArchivedAreasLayer } from "@/components/map/ArchivedAreasLayer";
 import { MeadowsLayer } from "@/components/map/MeadowsLayer";
 import { PlotsLayer } from "@/components/map/PlotsLayer";
 import { useMeadowsQuery } from "@/features/animals/meadows.hooks";
+import { type LngLat } from "@maplibre/maplibre-react-native";
 import * as turf from "@turf/turf";
 import { useCallback } from "react";
-import { usePlotsMapContext } from "../plots-map-mode";
+import { type AreaChoiceOption, usePlotsMapContext } from "../plots-map-mode";
 
 export function ViewModeLayers() {
   const {
@@ -17,43 +18,70 @@ export function ViewModeLayers() {
     archivedMeadows,
     selectedMeadowId,
     setSelectedMeadowId,
+    setAreaChoiceOptions,
   } = usePlotsMapContext();
   const { meadows } = useMeadowsQuery();
 
   const selectedPlotId = mode.type === "view" ? mode.selectedPlotId : null;
   const selectedPlotIds = selectedPlotId ? [selectedPlotId] : [];
 
+  // Several active areas under the tap: ask which one instead of guessing.
+  // Returns true when the choice drawer was opened and the tap is handled.
+  const openAreaChoiceIfOverlapping = useCallback(
+    (lngLat: LngLat) => {
+      const tapPoint = turf.point(lngLat);
+      const options: AreaChoiceOption[] = [];
+      if (visibleLayers.meadows) {
+        for (const meadow of meadows ?? []) {
+          if (turf.booleanPointInPolygon(tapPoint, meadow.geometry)) {
+            options.push({
+              kind: "meadow",
+              id: meadow.id,
+              name: meadow.name,
+              size: meadow.size,
+            });
+          }
+        }
+      }
+      if (visibleLayers.plots) {
+        for (const plot of plots) {
+          if (turf.booleanPointInPolygon(tapPoint, plot.geometry)) {
+            options.push({
+              kind: "plot",
+              id: plot.id,
+              name: plot.name,
+              size: plot.size,
+            });
+          }
+        }
+      }
+      if (options.length <= 1) return false;
+      setSelectedMeadowId(null);
+      dispatch({ type: "SELECT_PLOT", plotId: null });
+      setAreaChoiceOptions(options);
+      return true;
+    },
+    [
+      visibleLayers.meadows,
+      visibleLayers.plots,
+      meadows,
+      plots,
+      dispatch,
+      setSelectedMeadowId,
+      setAreaChoiceOptions,
+    ],
+  );
+
   const handlePlotPress = useCallback(
     (event: {
       stopPropagation(): void;
-      nativeEvent: { features: GeoJSON.Feature[]; lngLat: [number, number] };
+      nativeEvent: { features: GeoJSON.Feature[]; lngLat: LngLat };
     }) => {
       event.stopPropagation();
       const { features, lngLat } = event.nativeEvent;
+      if (openAreaChoiceIfOverlapping(lngLat)) return;
 
-      // When multiple overlapping polygons are hit (e.g. nested plots), pick the one
-      // whose boundary is nearest to the tap point — this selects the innermost plot.
-      let feature: GeoJSON.Feature | undefined;
-      if (features.length <= 1) {
-        feature = features[0];
-      } else {
-        const tapPoint = turf.point(lngLat);
-        // Precompute distance from tap to each polygon's outer ring boundary
-        const distances = features.map((f) => {
-          if (f.geometry.type !== "Polygon") return Infinity;
-          // Use only the exterior ring (coordinates[0]) to avoid polygonToLine's
-          // FeatureCollection return type when the polygon has holes.
-          const exteriorRing = turf.lineString(f.geometry.coordinates[0]);
-          return (
-            turf.nearestPointOnLine(exteriorRing, tapPoint).properties.dist ??
-            Infinity
-          );
-        });
-        const minIndex = distances.indexOf(Math.min(...distances));
-        feature = features[minIndex];
-      }
-
-      const plotId = feature?.properties?.id;
+      const plotId = features[0]?.properties?.id;
       if (typeof plotId === "string") {
         // Only one plot or meadow is selected at a time
         setSelectedMeadowId(null);
@@ -63,7 +91,12 @@ export function ViewModeLayers() {
         });
       }
     },
-    [selectedPlotId, dispatch, setSelectedMeadowId],
+    [
+      selectedPlotId,
+      dispatch,
+      setSelectedMeadowId,
+      openAreaChoiceIfOverlapping,
+    ],
   );
 
   if (mode.type !== "view") return null;
@@ -104,7 +137,8 @@ export function ViewModeLayers() {
         <MeadowsLayer
           meadows={meadows ?? []}
           selectedMeadowId={selectedMeadowId}
-          onMeadowPress={(meadowId) => {
+          onMeadowPress={(meadowId, lngLat) => {
+            if (openAreaChoiceIfOverlapping(lngLat)) return;
             dispatch({ type: "SELECT_PLOT", plotId: null });
             setSelectedMeadowId(
               selectedMeadowId === meadowId ? null : meadowId,
