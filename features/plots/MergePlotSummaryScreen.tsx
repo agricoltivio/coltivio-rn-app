@@ -1,27 +1,26 @@
 import { toLocalDateString } from "@/utils/date";
 import { MergePlotsInput } from "@/api/plots.api";
 import { Button } from "@/components/buttons/Button";
-import { IonIconButton } from "@/components/buttons/IconButton";
 import { Card } from "@/components/card/Card";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
+import { RHSwitch } from "@/components/inputs/RHSwitch";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
-import { InsetsProps } from "@/constants/Screen";
 import { Body, H2 } from "@/theme/Typography";
 import { round } from "@/utils/math";
 import * as turf from "@turf/turf";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import styled, { useTheme } from "styled-components/native";
+import { Alert, View } from "react-native";
+import { useTheme } from "styled-components/native";
 import { MergePlotSummaryScreenProps } from "./navigation/plots-routes";
+import { plotSaveErrorMessage } from "./plot-geometry";
 import { useFarmPlotsQuery, useMergePlotsMutation } from "./plots.hooks";
 import { getUsageCodeSelectData } from "./usage-codes";
 
@@ -35,6 +34,7 @@ type MergeFormValues = {
   size: string;
   additionalNotes?: string;
   strategy: Strategy;
+  archiveReference: boolean;
 };
 
 export function MergePlotSummaryScreen({
@@ -43,7 +43,6 @@ export function MergePlotSummaryScreen({
 }: MergePlotSummaryScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
   const { plotIds, primaryPlotId } = route.params;
   const { plots } = useFarmPlotsQuery();
 
@@ -91,6 +90,7 @@ export function MergePlotSummaryScreen({
       localId: mergedLocalIds,
       size: mergedSize.toString(),
       strategy: "keep_reference",
+      archiveReference: false,
       usage: primaryPlot?.usage?.toString(),
       cuttingDate: primaryPlot?.cuttingDate
         ? new Date(primaryPlot.cuttingDate)
@@ -104,7 +104,7 @@ export function MergePlotSummaryScreen({
     (plot) => {
       navigation.popTo("PlotsMap", { selectedPlotId: plot.id });
     },
-    (error) => console.error(error),
+    (error) => Alert.alert(t("common.error"), plotSaveErrorMessage(error, t)),
   );
 
   function onSubmit({
@@ -112,6 +112,7 @@ export function MergePlotSummaryScreen({
     usage,
     cuttingDate,
     strategy,
+    archiveReference,
     ...rest
   }: MergeFormValues) {
     const base = {
@@ -125,7 +126,7 @@ export function MergePlotSummaryScreen({
     const data: MergePlotsInput =
       strategy === "delete_and_migrate"
         ? { ...base, strategy: "delete_and_migrate" }
-        : { ...base, strategy: "keep_reference" };
+        : { ...base, strategy: "keep_reference", archiveReference };
 
     mergeMutation.mutate(data);
   }
@@ -182,6 +183,13 @@ export function MergePlotSummaryScreen({
               </Body>
             )}
           </Card>
+          {strategy === "keep_reference" && (
+            <RHSwitch
+              name="archiveReference"
+              control={control}
+              label={t("plots.merge.summary.archive_reference")}
+            />
+          )}
         </View>
 
         {/* Form fields */}

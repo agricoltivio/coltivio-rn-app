@@ -16564,7 +16564,10 @@
       },
       "GetV1LayersPlotsBboxNegativeResponse": {
         "type": "object",
-        "properties": { "error": { "type": "string" } },
+        "properties": {
+          "error": { "type": "string" },
+          "code": { "type": "string", "enum": ["invalid_geometry"] }
+        },
         "required": ["error"],
         "additionalProperties": false
       },
@@ -20834,6 +20837,7 @@
                 "properties": {
                   "strategy": { "type": "string", "const": "keep_reference" },
                   "originalPlotName": { "type": "string" },
+                  "archiveReference": { "type": "boolean" },
                   "subPlots": {
                     "minItems": 1,
                     "type": "array",
@@ -21487,6 +21491,7 @@
                 "type": "object",
                 "properties": {
                   "strategy": { "type": "string", "const": "keep_reference" },
+                  "archiveReference": { "type": "boolean" },
                   "plotIds": {
                     "minItems": 2,
                     "type": "array",

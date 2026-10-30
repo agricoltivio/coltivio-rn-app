@@ -48,11 +48,18 @@ const baseUrl = apiUrl ?? localUrl;
 
 export type FetchClient = typeof client;
 
+// Machine-readable codes the API returns next to the error message (see src/errors.ts in the API).
+// Every endpoint shares the same negative response, so any endpoint works to derive the type.
+export type ApiErrorCode = NonNullable<
+  paths["/v1/plots"]["post"]["responses"]["400"]["content"]["application/json"]["code"]
+>;
+
 export class ApiError extends Error {
   constructor(
     public readonly status: number,
     message: string,
     public readonly serverMessage?: string,
+    public readonly code?: ApiErrorCode,
   ) {
     super(message);
     this.name = "ApiError";
@@ -88,6 +95,7 @@ const middleware: Middleware = {
         response.status,
         `${response.url}: ${response.status} - ${content.error}`,
         content.error,
+        content.code,
       );
     }
   },

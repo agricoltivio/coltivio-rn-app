@@ -3521,6 +3521,8 @@ export interface components {
     };
     GetV1LayersPlotsBboxNegativeResponse: {
       error: string;
+      /** @enum {string} */
+      code?: "invalid_geometry";
     };
     GetV1LayersPlotsFarmsFederalFarmIdOnlyPositiveResponse: {
       data: {
@@ -5157,6 +5159,7 @@ export interface components {
             /** @constant */
             strategy: "keep_reference";
             originalPlotName?: string;
+            archiveReference?: boolean;
             subPlots: {
               geometry: {
                 /** @constant */
@@ -5423,6 +5426,7 @@ export interface components {
         | {
             /** @constant */
             strategy: "keep_reference";
+            archiveReference?: boolean;
             plotIds: string[];
             name: string;
             localId?: string;

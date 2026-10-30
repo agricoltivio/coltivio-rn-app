@@ -495,8 +495,6 @@
       "line_body": "Zeichne eine Linie quer über den Schlag, um ihn in zwei Teile zu teilen. Tippe auf die Karte, um Punkte zu setzen, und bestätige mit dem Schneiden-Symbol.",
       "area_heading": "Fläche ausschneiden",
       "area_body": "Zeichne ein Polygon innerhalb des Schlags, um eine neue Fläche auszuschneiden. Dies ist nützlich, wenn du einen bestimmten Bereich abtrennen möchtest.",
-      "extract_heading": "Schlag herauslösen",
-      "extract_body": "Wenn eine Fläche aus mehreren Schlägen besteht, kannst du einen einzelnen Schlag auswählen und herauslösen.",
       "actions_heading": "Fertig & Abbrechen",
       "confirm_body": "Drücke das Häkchen, wenn du mit der Aufteilung zufrieden bist, um fortzufahren.",
       "abort_body": "Drücke das X, um abzubrechen und die Aufteilung zu verwerfen."
@@ -515,6 +513,7 @@
         "strategy_label": "Strategie",
         "strategy_keep_reference": "Referenz behalten",
         "strategy_keep_reference_info": "Der ursprüngliche Schlag wird als Referenz behalten. Alle bestehenden Einträge (Fruchtfolgen, Ernten, etc.) bleiben dem Referenzschlag zugeordnet.",
+        "archive_reference": "Schlag archivieren",
         "strategy_delete_and_migrate": "Referenz löschen",
         "strategy_delete_and_migrate_info": "Der ursprüngliche Schlag wird gelöscht. Alle bestehenden Einträge werden auf den gewählten Teilschlag übertragen.",
         "original_plot_name": "Name des Referenzschlags",
@@ -530,6 +529,7 @@
         "strategy_label": "Strategie",
         "strategy_keep_reference": "Referenz behalten",
         "strategy_keep_reference_info": "Die ursprünglichen Schläge werden als Referenz behalten. Alle bestehenden Einträge bleiben den Referenzschlägen zugeordnet.",
+        "archive_reference": "Schlag archivieren",
         "strategy_delete_and_migrate": "Referenz löschen",
         "strategy_delete_and_migrate_info": "Die ursprünglichen Schläge werden gelöscht. Alle bestehenden Einträge werden auf den neuen Schlag übertragen.",
         "strategy_delete_crop_rotation_warning": "Fruchtfolgen werden nicht übertragen und gehen verloren."
@@ -735,9 +735,17 @@
     "empty_state_body": "Importiere deine Flächen am PC über die Web-App aus dem kantonalen System (z.B. Acorda, LAWIS), oder zeichne sie in der Karte ein. Brauchst du Hilfe? Schreib uns an <email>support@coltivio.ch</email>.",
     "map_layers": {
       "title": "Ebenen",
+      "satellite": "Satellit",
+      "map": "Karte",
       "plots": "Schläge",
       "meadows": "Weideflächen",
-      "archived": "Archivierte"
+      "archived": "Archivierte",
+      "parcels": "Parzellen"
+    },
+    "errors": {
+      "self_intersecting": "Die Kanten des Schlags dürfen sich nicht kreuzen.",
+      "invalid_geometry": "Der Schlag hat keine Fläche. Zeichne mindestens drei unterschiedliche Punkte.",
+      "save_failed": "Der Schlag konnte nicht gespeichert werden."
     }
   },
   "farm_equipment": {

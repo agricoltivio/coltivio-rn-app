@@ -1,23 +1,22 @@
 import { SplitPlotInput } from "@/api/plots.api";
 import * as turf from "@turf/turf";
 import { Button } from "@/components/buttons/Button";
-import { IonIconButton } from "@/components/buttons/IconButton";
 import { Card } from "@/components/card/Card";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
+import { RHSwitch } from "@/components/inputs/RHSwitch";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
-import { InsetsProps } from "@/constants/Screen";
 import { indexToDistinctColor } from "@/theme/theme";
 import { Body, H2, H3, Subtitle } from "@/theme/Typography";
 import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { TouchableOpacity, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import styled, { useTheme } from "styled-components/native";
+import { Alert, TouchableOpacity, View } from "react-native";
+import { useTheme } from "styled-components/native";
 import { SplitPlotSummaryScreenProps } from "./navigation/plots-routes";
+import { plotSaveErrorMessage } from "./plot-geometry";
 import { useSplitPlotMutation } from "./plots.hooks";
 import { useSplitPlotStore } from "./split-plot.store";
 
@@ -28,6 +27,7 @@ type Strategy = "keep_reference" | "delete_and_migrate";
 type SplitFormValues = {
   originalPlotName: string;
   strategy: Strategy;
+  archiveReference: boolean;
   subPlots: { name: string }[];
 };
 
@@ -37,7 +37,6 @@ export function SplitPlotSummaryScreen({
 }: SplitPlotSummaryScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
   const { plotId } = route.params;
   const {
     subPlots,
@@ -56,6 +55,7 @@ export function SplitPlotSummaryScreen({
     defaultValues: {
       originalPlotName,
       strategy: "keep_reference",
+      archiveReference: false,
       subPlots: subPlots.map((_, i) => ({
         name: `${originalPlotName} ${LETTERS[i] ?? i + 1}`,
       })),
@@ -71,7 +71,7 @@ export function SplitPlotSummaryScreen({
       resetSplitStore();
       navigation.popTo("PlotsMap", { selectedPlotId: plots[0]?.id });
     },
-    (error) => console.error(error),
+    (error) => Alert.alert(t("common.error"), plotSaveErrorMessage(error, t)),
   );
 
   function onSubmit(values: SplitFormValues) {
@@ -97,6 +97,7 @@ export function SplitPlotSummaryScreen({
       data = {
         strategy: "keep_reference",
         originalPlotName: values.originalPlotName,
+        archiveReference: values.archiveReference,
         subPlots: subPlotsPayload,
       };
     }
@@ -154,11 +155,18 @@ export function SplitPlotSummaryScreen({
 
           {/* Original plot name — only for keep_reference */}
           {strategy === "keep_reference" && (
-            <RHTextInput
-              name="originalPlotName"
-              control={control}
-              label={t("plots.split.summary.original_plot_name")}
-            />
+            <>
+              <RHTextInput
+                name="originalPlotName"
+                control={control}
+                label={t("plots.split.summary.original_plot_name")}
+              />
+              <RHSwitch
+                name="archiveReference"
+                control={control}
+                label={t("plots.split.summary.archive_reference")}
+              />
+            </>
           )}
         </View>
 

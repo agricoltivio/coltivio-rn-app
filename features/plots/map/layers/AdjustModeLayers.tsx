@@ -18,6 +18,13 @@ import React, {
 } from "react";
 import { usePlotsMapContext } from "../plots-map-mode";
 import { useUpdatePlotMutation } from "../../plots.hooks";
+import {
+  isSelfIntersecting,
+  plotSaveErrorMessage,
+  withSavedHoles,
+} from "../../plot-geometry";
+import { useTranslation } from "react-i18next";
+import { Alert } from "react-native";
 
 export type AdjustModeLayersHandle = {
   handleMapPress: (lngLat: LngLat) => void;
@@ -31,6 +38,7 @@ type RingData = {
 export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
   function AdjustModeLayers(_props, ref) {
     const { mode, dispatch, plots, mapRef, drawingRef } = usePlotsMapContext();
+    const { t } = useTranslation();
     const [rings, setRings] = useState<RingData[]>([]);
 
     const ringsRef = useRef(rings);
@@ -44,7 +52,7 @@ export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
 
     const updatePlotMutation = useUpdatePlotMutation(
       () => dispatch({ type: "EXIT_MODE" }),
-      (error) => console.error(error),
+      (error) => Alert.alert(t("common.error"), plotSaveErrorMessage(error, t)),
     );
 
     const plot =
@@ -104,6 +112,25 @@ export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
         setRings(currentRings);
         ringsRef.current = currentRings;
 
+        const finalRings = currentRings.map((r) => r.coordinates);
+        const outerRingsOnly = GeoSpatials.lngLatToMultiPolygon(finalRings);
+        const polygon = withSavedHoles(
+          outerRingsOnly.coordinates.map((part) => part[0]),
+          plot.geometry,
+        );
+        // Checked before advancing: earlier rings can't be edited again once confirmed
+        const activePart = polygon.coordinates[activeRingRef.current];
+        if (
+          activePart &&
+          isSelfIntersecting({
+            type: "MultiPolygon",
+            coordinates: [activePart],
+          })
+        ) {
+          Alert.alert(t("plots.errors.self_intersecting"));
+          return;
+        }
+
         const nextIndex = activeRingRef.current + 1;
         if (nextIndex < currentRings.length) {
           // More rings remain — advance to the next one
@@ -115,13 +142,17 @@ export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
             drawingRef.current?.loadCoordinates(nextRing.coordinates);
           }
         } else {
-          // Last ring confirmed — build the full multipolygon and save
-          const finalRings = currentRings.map((r) => r.coordinates);
-          const polygon = GeoSpatials.lngLatToMultiPolygon(finalRings);
-          const area = turf.area(polygon);
+          // Last ring confirmed — save the full multipolygon, without parts that have no outline
+          const geometry: GeoJSON.MultiPolygon = {
+            type: "MultiPolygon",
+            coordinates: polygon.coordinates.filter(
+              (part) => part[0].length >= 4,
+            ),
+          };
+          const area = turf.area(geometry);
           updatePlotMutation.mutate({
             plotId: plot.id,
-            data: { size: round(area, 0), geometry: polygon },
+            data: { size: round(area, 0), geometry },
           });
         }
       },

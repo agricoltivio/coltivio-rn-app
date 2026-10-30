@@ -497,9 +497,7 @@
       "area_body": "Dessinez un polygone à l'intérieur du champ pour découper une nouvelle surface. Cela est utile lorsque vous souhaitez séparer une zone spécifique.",
       "actions_heading": "Terminer & Annuler",
       "confirm_body": "Appuyez sur la coche lorsque vous êtes satisfait de la division pour continuer.",
-      "abort_body": "Appuyez sur le X pour annuler et ignorer la division.",
-      "extract_heading": "Extraire un champ",
-      "extract_body": "Si une surface est composée de plusieurs polygones, vous pouvez en sélectionner un et l'extraire."
+      "abort_body": "Appuyez sur le X pour annuler et ignorer la division."
     },
     "split": {
       "heading": "Diviser le champ",
@@ -515,6 +513,7 @@
         "strategy_label": "Stratégie",
         "strategy_keep_reference": "Conserver la référence",
         "strategy_keep_reference_info": "Le champ d'origine sera conservé comme référence. Toutes les entrées existantes (rotations, récoltes, etc.) resteront associées au champ de référence.",
+        "archive_reference": "Archiver le champ",
         "strategy_delete_and_migrate": "Supprimer la référence",
         "strategy_delete_and_migrate_info": "Le champ d'origine sera supprimé. Toutes les entrées existantes seront transférées au sous-champ choisi.",
         "original_plot_name": "Nom du champ de référence",
@@ -530,6 +529,7 @@
         "strategy_label": "Stratégie",
         "strategy_keep_reference": "Conserver la référence",
         "strategy_keep_reference_info": "Les champs d'origine seront conservés comme référence. Toutes les entrées existantes resteront associées aux champs de référence.",
+        "archive_reference": "Archiver le champ",
         "strategy_delete_and_migrate": "Supprimer la référence",
         "strategy_delete_and_migrate_info": "Les champs d'origine seront supprimés. Toutes les entrées existantes seront transférées au nouveau champ.",
         "strategy_delete_crop_rotation_warning": "Les rotations de cultures ne seront pas transférées et seront perdues."
@@ -735,9 +735,17 @@
     "empty_state_body": "Importe tes surfaces sur un PC via l'application web depuis le système cantonal (p. ex. Acorda, LAWIS), ou dessine-les sur la carte. Besoin d'aide ? Écris-nous à <email>support@coltivio.ch</email>.",
     "map_layers": {
       "title": "Calques",
+      "satellite": "Satellite",
+      "map": "Carte",
       "plots": "Parcelles",
       "meadows": "Pâtures",
-      "archived": "Archivés"
+      "archived": "Archivés",
+      "parcels": "Parcelles cadastrales"
+    },
+    "errors": {
+      "self_intersecting": "Les bords du champ ne doivent pas se croiser.",
+      "invalid_geometry": "Le champ n'a pas de surface. Dessine au moins trois points distincts.",
+      "save_failed": "Le champ n'a pas pu être enregistré."
     }
   },
   "farm_equipment": {
