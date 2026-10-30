@@ -18,7 +18,8 @@ import * as turf from "@turf/turf";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { plotSaveErrorMessage } from "./plot-geometry";
+import { Alert, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import styled, { useTheme } from "styled-components/native";
 import { MergePlotSummaryScreenProps } from "./navigation/plots-routes";
@@ -104,7 +105,7 @@ export function MergePlotSummaryScreen({
     (plot) => {
       navigation.popTo("PlotsMap", { selectedPlotId: plot.id });
     },
-    (error) => console.error(error),
+    (error) => Alert.alert(t("common.error"), plotSaveErrorMessage(error, t)),
   );
 
   function onSubmit({

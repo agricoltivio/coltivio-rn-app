@@ -18,7 +18,11 @@ import React, {
 } from "react";
 import { usePlotsMapContext } from "../plots-map-mode";
 import { useUpdatePlotMutation } from "../../plots.hooks";
-import { isSelfIntersecting, plotSaveErrorMessage } from "../../plot-geometry";
+import {
+  isSelfIntersecting,
+  plotSaveErrorMessage,
+  withSavedHoles,
+} from "../../plot-geometry";
 import { useTranslation } from "react-i18next";
 import { Alert } from "react-native";
 
@@ -122,14 +126,10 @@ export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
           // Last ring confirmed — build the full multipolygon and save
           const finalRings = currentRings.map((r) => r.coordinates);
           const outerRingsOnly = GeoSpatials.lngLatToMultiPolygon(finalRings);
-          // Holes (e.g. a stream or pond cut out of the plot) can't be adjusted; keep them from the saved plot
-          const polygon: GeoJSON.MultiPolygon = {
-            type: "MultiPolygon",
-            coordinates: outerRingsOnly.coordinates.map((part, partIndex) => [
-              ...part,
-              ...(plot.geometry.coordinates[partIndex]?.slice(1) ?? []),
-            ]),
-          };
+          const polygon = withSavedHoles(
+            outerRingsOnly.coordinates.map((part) => part[0]),
+            plot.geometry,
+          );
           if (isSelfIntersecting(polygon)) {
             Alert.alert(t("plots.errors.self_intersecting"));
             return;

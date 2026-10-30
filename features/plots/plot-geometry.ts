@@ -18,6 +18,29 @@ export function isSelfIntersecting(geometry: GeoJSON.MultiPolygon) {
   });
 }
 
+// Adds the holes of the saved plot (e.g. a stream or pond cut out of it) to the adjusted outer rings, which can't
+// edit holes. A hole the adjusted outline no longer touches is dropped, it would cut nothing out; a hole that
+// crosses the outline is kept, so isSelfIntersecting rejects it.
+export function withSavedHoles(
+  outerRings: GeoJSON.Position[][],
+  savedGeometry: GeoJSON.MultiPolygon,
+): GeoJSON.MultiPolygon {
+  return {
+    type: "MultiPolygon",
+    coordinates: outerRings.map((outerRing, partIndex) => {
+      const savedHoles = savedGeometry.coordinates[partIndex]?.slice(1) ?? [];
+      if (outerRing.length < 4) return [outerRing, ...savedHoles];
+      const outerPolygon = turf.polygon([outerRing]);
+      return [
+        outerRing,
+        ...savedHoles.filter((hole) =>
+          turf.booleanIntersects(turf.polygon([hole]), outerPolygon),
+        ),
+      ];
+    }),
+  };
+}
+
 // Message for a failed plot save, specific when the API returned an error code.
 // Falls back to the generic message for codes this app version doesn't know yet.
 export function plotSaveErrorMessage(error: Error, t: TFunction) {

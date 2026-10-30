@@ -24,6 +24,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert } from "react-native";
+import { isSelfIntersecting } from "../../plot-geometry";
 import { useTheme } from "styled-components/native";
 import { usePlotsMapContext } from "../plots-map-mode";
 
@@ -167,6 +168,16 @@ export const SplitModeLayers = forwardRef<SplitModeLayersHandle>(
         const coords = drawingRef.current?.getCoordinates();
         if (!coords || coords.length < 3) {
           Alert.alert(t("plots.split.split_failed"));
+          return;
+        }
+        // A crossing cut area would be repaired by the API into unexpected sub-plots
+        if (
+          isSelfIntersecting({
+            type: "MultiPolygon",
+            coordinates: [[[...coords, coords[0]]]],
+          })
+        ) {
+          Alert.alert(t("plots.errors.self_intersecting"));
           return;
         }
         const newPolygons: GeoJSON.MultiPolygon[] = [];

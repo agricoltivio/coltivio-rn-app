@@ -14,7 +14,8 @@ import { Body, H2, H3, Subtitle } from "@/theme/Typography";
 import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { TouchableOpacity, View } from "react-native";
+import { plotSaveErrorMessage } from "./plot-geometry";
+import { Alert, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import styled, { useTheme } from "styled-components/native";
 import { SplitPlotSummaryScreenProps } from "./navigation/plots-routes";
@@ -71,7 +72,7 @@ export function SplitPlotSummaryScreen({
       resetSplitStore();
       navigation.popTo("PlotsMap", { selectedPlotId: plots[0]?.id });
     },
-    (error) => console.error(error),
+    (error) => Alert.alert(t("common.error"), plotSaveErrorMessage(error, t)),
   );
 
   function onSubmit(values: SplitFormValues) {
