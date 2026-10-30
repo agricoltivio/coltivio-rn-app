@@ -736,7 +736,7 @@
       "plots": "Parcelles",
       "meadows": "Pâtures",
       "archived": "Archivés",
-      "parcels": "Parcelles"
+      "parcels": "Parcelles cadastrales"
     },
     "errors": {
       "self_intersecting": "Les bords du champ ne doivent pas se croiser.",

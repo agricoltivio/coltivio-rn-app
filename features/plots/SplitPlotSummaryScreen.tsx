@@ -14,11 +14,11 @@ import { Body, H2, H3, Subtitle } from "@/theme/Typography";
 import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { plotSaveErrorMessage } from "./plot-geometry";
 import { Alert, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import styled, { useTheme } from "styled-components/native";
 import { SplitPlotSummaryScreenProps } from "./navigation/plots-routes";
+import { plotSaveErrorMessage } from "./plot-geometry";
 import { useSplitPlotMutation } from "./plots.hooks";
 import { useSplitPlotStore } from "./split-plot.store";
 

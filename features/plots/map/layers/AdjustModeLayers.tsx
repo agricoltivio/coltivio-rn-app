@@ -112,6 +112,25 @@ export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
         setRings(currentRings);
         ringsRef.current = currentRings;
 
+        const finalRings = currentRings.map((r) => r.coordinates);
+        const outerRingsOnly = GeoSpatials.lngLatToMultiPolygon(finalRings);
+        const polygon = withSavedHoles(
+          outerRingsOnly.coordinates.map((part) => part[0]),
+          plot.geometry,
+        );
+        // Checked before advancing: earlier rings can't be edited again once confirmed
+        const activePart = polygon.coordinates[activeRingRef.current];
+        if (
+          activePart &&
+          isSelfIntersecting({
+            type: "MultiPolygon",
+            coordinates: [activePart],
+          })
+        ) {
+          Alert.alert(t("plots.errors.self_intersecting"));
+          return;
+        }
+
         const nextIndex = activeRingRef.current + 1;
         if (nextIndex < currentRings.length) {
           // More rings remain — advance to the next one
@@ -123,21 +142,17 @@ export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
             drawingRef.current?.loadCoordinates(nextRing.coordinates);
           }
         } else {
-          // Last ring confirmed — build the full multipolygon and save
-          const finalRings = currentRings.map((r) => r.coordinates);
-          const outerRingsOnly = GeoSpatials.lngLatToMultiPolygon(finalRings);
-          const polygon = withSavedHoles(
-            outerRingsOnly.coordinates.map((part) => part[0]),
-            plot.geometry,
-          );
-          if (isSelfIntersecting(polygon)) {
-            Alert.alert(t("plots.errors.self_intersecting"));
-            return;
-          }
-          const area = turf.area(polygon);
+          // Last ring confirmed — save the full multipolygon, without parts that have no outline
+          const geometry: GeoJSON.MultiPolygon = {
+            type: "MultiPolygon",
+            coordinates: polygon.coordinates.filter(
+              (part) => part[0].length >= 4,
+            ),
+          };
+          const area = turf.area(geometry);
           updatePlotMutation.mutate({
             plotId: plot.id,
-            data: { size: round(area, 0), geometry: polygon },
+            data: { size: round(area, 0), geometry },
           });
         }
       },

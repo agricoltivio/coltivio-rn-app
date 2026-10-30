@@ -736,7 +736,7 @@
       "plots": "Particelle",
       "meadows": "Aree di pascolo",
       "archived": "Archiviati",
-      "parcels": "Particelle"
+      "parcels": "Particelle catastali"
     },
     "errors": {
       "self_intersecting": "I bordi del campo non devono incrociarsi.",

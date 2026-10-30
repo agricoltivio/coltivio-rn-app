@@ -18,11 +18,11 @@ import * as turf from "@turf/turf";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { plotSaveErrorMessage } from "./plot-geometry";
 import { Alert, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import styled, { useTheme } from "styled-components/native";
 import { MergePlotSummaryScreenProps } from "./navigation/plots-routes";
+import { plotSaveErrorMessage } from "./plot-geometry";
 import { useFarmPlotsQuery, useMergePlotsMutation } from "./plots.hooks";
 import { getUsageCodeSelectData } from "./usage-codes";
 
