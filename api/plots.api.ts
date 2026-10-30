@@ -24,6 +24,8 @@ export type SplitPlotInput =
   | {
       strategy: "keep_reference";
       originalPlotName?: string;
+      // archive the kept original plot, which has no area left
+      archiveReference?: boolean;
       subPlots: SplitPlotSubPlot[];
     }
   | {
@@ -42,7 +44,10 @@ type MergePlotsBase = {
 };
 
 export type MergePlotsInput =
-  | (MergePlotsBase & { strategy: "keep_reference" })
+  | (MergePlotsBase & {
+      strategy: "keep_reference";
+      archiveReference?: boolean;
+    })
   | (MergePlotsBase & { strategy: "delete_and_migrate" });
 
 export function plotsApi(client: FetchClient) {

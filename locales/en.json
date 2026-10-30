@@ -513,6 +513,7 @@
         "strategy_label": "Strategy",
         "strategy_keep_reference": "Keep Reference",
         "strategy_keep_reference_info": "The original plot will be kept as a reference. All existing entries (crop rotations, harvests, etc.) remain assigned to the reference plot.",
+        "archive_reference": "Archive plot",
         "strategy_delete_and_migrate": "Delete Reference",
         "strategy_delete_and_migrate_info": "The original plot will be deleted. All existing entries will be transferred to the selected sub-plot.",
         "original_plot_name": "Reference plot name",
@@ -528,6 +529,7 @@
         "strategy_label": "Strategy",
         "strategy_keep_reference": "Keep Reference",
         "strategy_keep_reference_info": "The original plots will be kept as a reference. All existing entries remain assigned to the reference plots.",
+        "archive_reference": "Archive plot",
         "strategy_delete_and_migrate": "Delete Reference",
         "strategy_delete_and_migrate_info": "The original plots will be deleted. All existing entries will be transferred to the new plot.",
         "strategy_delete_crop_rotation_warning": "Crop rotations will not be transferred and will be lost."
@@ -733,6 +735,8 @@
     "empty_state_body": "Import your plots on a PC via the web app from the cantonal system (e.g. Acorda, LAWIS), or draw them on the map. Need help? Write to us at <email>support@coltivio.ch</email>.",
     "map_layers": {
       "title": "Layers",
+      "satellite": "Satellite",
+      "map": "Map",
       "plots": "Plots",
       "meadows": "Meadows",
       "archived": "Archived",

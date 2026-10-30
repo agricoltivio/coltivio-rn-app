@@ -513,6 +513,7 @@
         "strategy_label": "Strategia",
         "strategy_keep_reference": "Mantieni riferimento",
         "strategy_keep_reference_info": "Il campo originale viene mantenuto come riferimento. Tutte le registrazioni esistenti (rotazioni colturali, raccolti, ecc.) restano associate al campo di riferimento.",
+        "archive_reference": "Archivia il campo",
         "strategy_delete_and_migrate": "Elimina riferimento",
         "strategy_delete_and_migrate_info": "Il campo originale viene eliminato. Tutte le registrazioni esistenti vengono trasferite al sottocampo selezionato.",
         "original_plot_name": "Nome del campo di riferimento",
@@ -528,6 +529,7 @@
         "strategy_label": "Strategia",
         "strategy_keep_reference": "Mantieni riferimento",
         "strategy_keep_reference_info": "I campi originali vengono mantenuti come riferimento. Tutte le registrazioni esistenti restano associate ai campi di riferimento.",
+        "archive_reference": "Archivia il campo",
         "strategy_delete_and_migrate": "Elimina riferimento",
         "strategy_delete_and_migrate_info": "I campi originali vengono eliminati. Tutte le registrazioni esistenti vengono trasferite al nuovo campo.",
         "strategy_delete_crop_rotation_warning": "Le rotazioni colturali non vengono trasferite e andranno perse."
@@ -733,6 +735,8 @@
     "empty_state_body": "Importa le tue superfici su un PC tramite la web app dal sistema cantonale (ad es. Acorda, LAWIS), oppure disegnale sulla mappa. Hai bisogno di aiuto? Scrivici a <email>support@coltivio.ch</email>.",
     "map_layers": {
       "title": "Livelli",
+      "satellite": "Satellite",
+      "map": "Carta",
       "plots": "Particelle",
       "meadows": "Aree di pascolo",
       "archived": "Archiviati",

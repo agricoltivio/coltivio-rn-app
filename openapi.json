@@ -20837,6 +20837,7 @@
                 "properties": {
                   "strategy": { "type": "string", "const": "keep_reference" },
                   "originalPlotName": { "type": "string" },
+                  "archiveReference": { "type": "boolean" },
                   "subPlots": {
                     "minItems": 1,
                     "type": "array",
@@ -21490,6 +21491,7 @@
                 "type": "object",
                 "properties": {
                   "strategy": { "type": "string", "const": "keep_reference" },
+                  "archiveReference": { "type": "boolean" },
                   "plotIds": {
                     "minItems": 2,
                     "type": "array",

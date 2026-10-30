@@ -8,6 +8,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
+import { RHSwitch } from "@/components/inputs/RHSwitch";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
@@ -36,6 +37,7 @@ type MergeFormValues = {
   size: string;
   additionalNotes?: string;
   strategy: Strategy;
+  archiveReference: boolean;
 };
 
 export function MergePlotSummaryScreen({
@@ -92,6 +94,7 @@ export function MergePlotSummaryScreen({
       localId: mergedLocalIds,
       size: mergedSize.toString(),
       strategy: "keep_reference",
+      archiveReference: false,
       usage: primaryPlot?.usage?.toString(),
       cuttingDate: primaryPlot?.cuttingDate
         ? new Date(primaryPlot.cuttingDate)
@@ -113,6 +116,7 @@ export function MergePlotSummaryScreen({
     usage,
     cuttingDate,
     strategy,
+    archiveReference,
     ...rest
   }: MergeFormValues) {
     const base = {
@@ -126,7 +130,7 @@ export function MergePlotSummaryScreen({
     const data: MergePlotsInput =
       strategy === "delete_and_migrate"
         ? { ...base, strategy: "delete_and_migrate" }
-        : { ...base, strategy: "keep_reference" };
+        : { ...base, strategy: "keep_reference", archiveReference };
 
     mergeMutation.mutate(data);
   }
@@ -183,6 +187,13 @@ export function MergePlotSummaryScreen({
               </Body>
             )}
           </Card>
+          {strategy === "keep_reference" && (
+            <RHSwitch
+              name="archiveReference"
+              control={control}
+              label={t("plots.merge.summary.archive_reference")}
+            />
+          )}
         </View>
 
         {/* Form fields */}

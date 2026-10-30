@@ -5159,6 +5159,7 @@ export interface components {
             /** @constant */
             strategy: "keep_reference";
             originalPlotName?: string;
+            archiveReference?: boolean;
             subPlots: {
               geometry: {
                 /** @constant */
@@ -5425,6 +5426,7 @@ export interface components {
         | {
             /** @constant */
             strategy: "keep_reference";
+            archiveReference?: boolean;
             plotIds: string[];
             name: string;
             localId?: string;

@@ -8,7 +8,6 @@ import {
   MaterialCommunityIconButton,
 } from "@/components/buttons/IconButton";
 import { InsetsProps } from "@/constants/Screen";
-import { MapLayerToggle } from "@/features/map/MapLayerToggle";
 import { MapPlotColorToggle } from "@/features/map/MapPlotColorToggle";
 import { MapShowLocationToggle } from "@/features/map/MapShowLocationToggle";
 import { TopLeftBackButton } from "@/features/map/TopLeftBackButton";
@@ -539,16 +538,11 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
         </GestureDetector>
 
         <MapShowLocationToggle onShowLocationChange={setShowsUserLocation} />
-        <MapLayerToggle
-          baseLayer={baseLayer}
-          onToggle={setBaseLayer}
-          topOffset={insets.top + theme.spacing.s + 150}
-        />
         {mode.type === "view" && visibleLayers.plots && (
           <MapPlotColorToggle
             plotColorMode={plotColorMode}
             onChange={setPlotColorMode}
-            topOffset={insets.top + theme.spacing.s + 200}
+            topOffset={insets.top + theme.spacing.s + 150}
           />
         )}
         {mode.type === "view" && (
@@ -596,6 +590,8 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
             onClose={() => setLayersDrawerVisible(false)}
             visibleLayers={visibleLayers}
             onChange={handleVisibleLayersChange}
+            baseLayer={baseLayer}
+            onBaseLayerChange={setBaseLayer}
           />
         )}
 
@@ -634,7 +630,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
 const MapLayersButton = styled.View<InsetsProps>`
   position: absolute;
   left: ${({ theme }) => theme.spacing.m}px;
-  top: ${({ insets, theme }) => insets.top + theme.spacing.s + 250}px;
+  top: ${({ insets, theme }) => insets.top + theme.spacing.s + 200}px;
   align-items: center;
 `;
 

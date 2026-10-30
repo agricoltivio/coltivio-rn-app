@@ -5,6 +5,7 @@ import { IonIconButton } from "@/components/buttons/IconButton";
 import { Card } from "@/components/card/Card";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
+import { RHSwitch } from "@/components/inputs/RHSwitch";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
@@ -29,6 +30,7 @@ type Strategy = "keep_reference" | "delete_and_migrate";
 type SplitFormValues = {
   originalPlotName: string;
   strategy: Strategy;
+  archiveReference: boolean;
   subPlots: { name: string }[];
 };
 
@@ -57,6 +59,7 @@ export function SplitPlotSummaryScreen({
     defaultValues: {
       originalPlotName,
       strategy: "keep_reference",
+      archiveReference: false,
       subPlots: subPlots.map((_, i) => ({
         name: `${originalPlotName} ${LETTERS[i] ?? i + 1}`,
       })),
@@ -98,6 +101,7 @@ export function SplitPlotSummaryScreen({
       data = {
         strategy: "keep_reference",
         originalPlotName: values.originalPlotName,
+        archiveReference: values.archiveReference,
         subPlots: subPlotsPayload,
       };
     }
@@ -155,11 +159,18 @@ export function SplitPlotSummaryScreen({
 
           {/* Original plot name — only for keep_reference */}
           {strategy === "keep_reference" && (
-            <RHTextInput
-              name="originalPlotName"
-              control={control}
-              label={t("plots.split.summary.original_plot_name")}
-            />
+            <>
+              <RHTextInput
+                name="originalPlotName"
+                control={control}
+                label={t("plots.split.summary.original_plot_name")}
+              />
+              <RHSwitch
+                name="archiveReference"
+                control={control}
+                label={t("plots.split.summary.archive_reference")}
+              />
+            </>
           )}
         </View>
 
