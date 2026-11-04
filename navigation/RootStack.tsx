@@ -23,6 +23,8 @@ import { renderFertilizerApplicationStack } from "@/features/fertilizer-applicat
 import { renderFertilizerStack } from "@/features/fertilizers/navigation/FertilizerStack";
 import { renderFieldCalendarStack } from "@/features/field-calendar/navigation/FieldCalendarStack";
 import { renderHarvestStack } from "@/features/harvests/navigation/HarvestStack";
+import { renderSeedStack } from "@/features/seeds/navigation/SeedStack";
+import { renderSowingStack } from "@/features/sowings/navigation/SowingStack";
 import { renderHomeStack } from "@/features/home/navigation/HomeStack";
 import { renderPlotsStack } from "@/features/plots/navigation/PlotsStack";
 import { renderTillagesStack } from "@/features/tillages/navigation/TillagesStack";
@@ -171,6 +173,8 @@ export function RootStack() {
           {renderCropFamiliesStack()}
           {renderHarvestStack()}
           {renderFertilizerStack()}
+          {renderSeedStack()}
+          {renderSowingStack()}
           {renderFertilizerApplicationStack()}
           {renderCropProtectionApplicationStack()}
           {renderCropProtectionProductStack()}

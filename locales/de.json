@@ -167,7 +167,8 @@
     "delete_confirm_title": "Vorlage löschen",
     "delete_confirm_message": "Möchtest du \"{{name}}\" wirklich löschen?",
     "no_presets": "Keine Vorlagen vorhanden",
-    "no_preset": "Keine Vorlage"
+    "no_preset": "Keine Vorlage",
+    "manage_sowing_presets": "Saat-Vorlagen verwalten"
   },
   "errors": {
     "unexpected_retry": "Ups, etwas ist schief gelaufen. Bitte versuche es erneut.",
@@ -781,7 +782,8 @@
       "harvest": "Ernte",
       "fertilizerApplication": "Düngung",
       "cropProtectionApplication": "Pflanzenschutz",
-      "tillage": "Bodenbearbeitung"
+      "tillage": "Bodenbearbeitung",
+      "sowing": "Saat"
     },
     "crop_families": "Pflanzenfamilien",
     "crops": "Kulturen",
@@ -807,7 +809,9 @@
       "configure_heading": "Passe deinen Feldkalender an",
       "done_heading": "Geschafft!",
       "done_body": "Du kannst die Einstellungen jederzeit über das Zahnrad-Symbol ändern."
-    }
+    },
+    "sowings": "Saat",
+    "seeds": "Saatgut"
   },
   "harvests": {
     "harvest": "Ernte",
@@ -873,6 +877,52 @@
     "warning_unit_not_editable": "Die Einheit definiert, in welcher Einheit der Dünger ausgebracht wird.",
     "unit_info": "Wähle in welcher Einheit (z.B Liter) der Dünger ausgebracht wird.",
     "default_machine_info": "Um die Erfassung zu erleichtern kann eine Maschine definiert werden, mit welcher dieser Dünger ausgebracht wird."
+  },
+  "seeds": {
+    "seeds": "Saatgut",
+    "new_seed": "Neues Saatgut",
+    "quantity_kind": "Mengenangabe",
+    "quantity_kinds": {
+      "weight": "nach Gewicht (kg, g)",
+      "count": "nach Stückzahl (Körner, Pflanzen)"
+    },
+    "quantity_kind_hint": "Gewicht für Saatgut in kg/g, Stückzahl für Körner oder Setzlinge.",
+    "quantity_kind_permanent": "Kann später nicht geändert werden.",
+    "quantity_kind_locked_hint": "Die Mengenangabe kann nicht geändert werden, damit Mengen summierbar bleiben. Erstelle dafür ein neues Saatgut.",
+    "default_values_optional": "Standardwerte (optional)",
+    "default_values_description": "Werden beim Erfassen einer neuen Saat mit diesem Saatgut vorausgefüllt und können dort angepasst werden.",
+    "default_amount": "Standardmenge",
+    "default_unit": "Standardeinheit",
+    "seed_in_use_warning": "Dieses Saatgut wird verwendet und kann deshalb nicht gelöscht werden."
+  },
+  "sowings": {
+    "sowing": "Saat",
+    "add_sowing": "Saat hinzufügen",
+    "edit_sowing": "Saat bearbeiten",
+    "sowing_date": "Saat vom {{date}}",
+    "sowing_configuration": "Saat konfigurieren",
+    "seed": "Saatgut",
+    "seed_optional": "Saatgut (optional)",
+    "crop_from_seed": "Die Kultur ergibt sich aus dem Saatgut.",
+    "amount": "Menge",
+    "rate": "Saatstärke",
+    "total": "Total",
+    "pieces": "Stk.",
+    "computed_total": "Entspricht {{amount}} {{unit}} auf {{area}}",
+    "computed_rate": "Entspricht {{amount}} {{unit}} auf {{area}}",
+    "divide_on_plots": "Auf Schläge aufteilen",
+    "units": {
+      "kg_per_ha": "kg/ha",
+      "g_per_m2": "g/m²",
+      "seeds_per_ha": "Körner/ha",
+      "seeds_per_m2": "Körner/m²",
+      "plants_per_ha": "Pflanzen/ha",
+      "plants_per_m2": "Pflanzen/m²",
+      "kg": "kg",
+      "g": "g",
+      "seeds": "Körner",
+      "plants": "Pflanzen"
+    }
   },
   "fertilizer_application": {
     "fertilizer_application": "Düngeraustrag",
@@ -1516,7 +1566,8 @@
       "welcome_body": "Mit dem Schnellzugriff kannst du bis zu 4 Aktionen direkt von der Startseite aus starten.",
       "settings_hint": "Du kannst die Aktionen jederzeit in den Einstellungen anpassen oder ganz deaktivieren.",
       "configure_heading": "Aktionen konfigurieren"
-    }
+    },
+    "sowing": "Saat hinzufügen"
   },
   "settings": {
     "settings": "Einstellungen",

@@ -30,6 +30,7 @@ const EVENT_COLORS: Record<FieldEvent["type"], string> = {
   fertilizerApplication: "#3b82f6",
   cropProtectionApplication: "#f97316",
   tillage: "#8b5cf6",
+  sowing: "#eab308",
 };
 
 // Label floats up and fades out over this duration (ms), matching the web app
