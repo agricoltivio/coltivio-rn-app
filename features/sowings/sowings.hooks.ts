@@ -65,7 +65,10 @@ export function useSowingUnitsQuery() {
   return { sowingUnits: data, ...rest };
 }
 
-export function useCreateSowingsMutation(onSuccess?: () => void) {
+export function useCreateSowingsMutation(
+  onSuccess?: () => void,
+  onError?: (error: Error) => void,
+) {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
@@ -77,6 +80,7 @@ export function useCreateSowingsMutation(onSuccess?: () => void) {
       queryClient.invalidateQueries({ queryKey: queryKeys.seeds._def });
       onSuccess?.();
     },
+    onError,
   });
 }
 

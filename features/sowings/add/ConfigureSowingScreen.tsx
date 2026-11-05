@@ -202,10 +202,10 @@ export function ConfigureSowingScreen({
             control={control}
             label={t("forms.labels.unit")}
             rules={{
-              required: {
-                value: true,
-                message: t("forms.validation.required"),
-              },
+              // a unit left over from a seed of another kind isn't selectable
+              validate: (value) =>
+                availableUnits.some((unitInfo) => unitInfo.unit === value) ||
+                t("forms.validation.required"),
             }}
             error={errors.unit?.message}
             data={availableUnits.map((unitInfo) => ({
@@ -229,6 +229,9 @@ export function ConfigureSowingScreen({
                   value: true,
                   message: t("forms.validation.required"),
                 },
+                // "." or "0" would end up as NaN or an empty sowing
+                validate: (value) =>
+                  Number(value) > 0 || t("forms.validation.greater_than_zero"),
               }}
               error={errors.amount?.message}
             />

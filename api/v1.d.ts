@@ -5370,6 +5370,8 @@ export interface components {
             seedName: string | null;
             /** @enum {string} */
             quantityKind: "weight" | "count";
+            /** @enum {string|null} */
+            countUnit: "seeds" | "plants" | null;
             totalBaseAmount: number;
             totalSize: number;
           }[];
@@ -9311,6 +9313,8 @@ export interface components {
             seedName: string | null;
             /** @enum {string} */
             quantityKind: "weight" | "count";
+            /** @enum {string|null} */
+            countUnit: "seeds" | "plants" | null;
             totalBaseAmount: number;
             totalSize: number;
           }[];
@@ -9340,6 +9344,8 @@ export interface components {
             | "plants";
           /** @enum {string} */
           quantityKind: "weight" | "count";
+          /** @enum {string|null} */
+          countUnit: "seeds" | "plants" | null;
           perArea: boolean;
         }[];
         count: number;

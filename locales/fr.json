@@ -117,7 +117,8 @@
       "divided_amount_too_big": "La quantité distribuée est supérieure à la quantité disponible",
       "not_all_divided": "Vous n'avez pas encore distribué la totalité de la quantité",
       "required": "Ce champ ne peut pas être vide",
-      "min": "Minimum {{min}}"
+      "min": "Minimum {{min}}",
+      "greater_than_zero": "Doit être supérieur à 0"
     }
   },
   "common": {
@@ -891,7 +892,6 @@
     "quantity_kind_locked_hint": "Le mode de mesure ne peut pas être modifié afin que les quantités restent additionnables. Crée une nouvelle semence.",
     "default_values_optional": "Valeurs par défaut (optionnel)",
     "default_values_description": "Pré-remplies lors de la saisie d'un nouveau semis avec cette semence et modifiables à ce moment-là.",
-    "default_amount": "Quantité par défaut",
     "default_amount_optional": "Quantité par défaut (optionnel)",
     "default_unit": "Unité par défaut",
     "seed_in_use_warning": "Cette semence est utilisée et ne peut donc pas être supprimée."
@@ -908,7 +908,6 @@
     "amount": "Quantité",
     "rate": "Densité de semis",
     "total": "Total",
-    "pieces": "pce",
     "computed_total": "Correspond à {{amount}} {{unit}} sur {{area}}",
     "computed_rate": "Correspond à {{amount}} {{unit}} sur {{area}}",
     "divide_on_plots": "Répartir sur les parcelles",

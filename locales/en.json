@@ -117,7 +117,8 @@
       "divided_amount_too_big": "The distributed quantity exceeds the available amount",
       "not_all_divided": "You have not distributed the entire amount",
       "required": "This field is required",
-      "min": "Minimum {{min}}"
+      "min": "Minimum {{min}}",
+      "greater_than_zero": "Must be greater than 0"
     }
   },
   "common": {
@@ -891,7 +892,6 @@
     "quantity_kind_locked_hint": "How the amount is measured can't be changed so amounts stay summable. Create a new seed instead.",
     "default_values_optional": "Default values (optional)",
     "default_values_description": "Prefilled when recording a new sowing with this seed and can be adjusted there.",
-    "default_amount": "Default amount",
     "default_amount_optional": "Default amount (optional)",
     "default_unit": "Default unit",
     "seed_in_use_warning": "This seed is in use and therefore can't be deleted."
@@ -908,7 +908,6 @@
     "amount": "Amount",
     "rate": "Seed rate",
     "total": "Total",
-    "pieces": "pcs",
     "computed_total": "Equals {{amount}} {{unit}} on {{area}}",
     "computed_rate": "Equals {{amount}} {{unit}} on {{area}}",
     "divide_on_plots": "Divide on plots",

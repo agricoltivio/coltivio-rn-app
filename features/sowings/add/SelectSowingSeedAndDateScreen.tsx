@@ -105,10 +105,14 @@ export function SelectSowingSeedAndDateScreen({
     if (!crop) return;
     const seed = seeds?.find((s) => s.id === values.seedId);
     setSelection(crop, seed);
+    // another seed brings its own default unit / amount, and a unit of the
+    // previous seed may not fit its quantity kind
+    const seedChanged = sowing !== undefined && sowing.seedId !== seed?.id;
     setSowing({
       date: values.date,
       cropId: crop.id,
       seedId: seed?.id,
+      ...(seedChanged ? { unit: undefined, amount: undefined } : {}),
     });
     navigation.navigate("ConfigureSowing");
   }

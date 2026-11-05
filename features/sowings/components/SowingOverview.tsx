@@ -1,4 +1,3 @@
-import { SeedQuantityKind } from "@/api/seeds.api";
 import { PlotSowing, Sowing, SowingSummary } from "@/api/sowings.api";
 import { CategoryFilter } from "@/components/charts/CategoryFilter";
 import { ChartPager } from "@/components/charts/ChartPager";
@@ -29,8 +28,9 @@ type SowingSeries = {
   key: string;
   cropName: string;
   title: string;
-  quantityKind: SeedQuantityKind;
-  // year -> 12 monthly values, kg for weight, pieces for count
+  // seeds or plants, null for weight
+  countUnit: "seeds" | "plants" | null;
+  // year -> 12 monthly values, kg for weight, pieces for seeds / plants
   monthly: Record<number, number[]>;
 };
 
@@ -80,16 +80,21 @@ export function SowingOverview({
     for (const summary of summaries) {
       for (const sownSeed of summary.sownSeeds) {
         if (!visibleCrops.includes(sownSeed.cropName)) continue;
-        const key = `${sownSeed.cropId}-${sownSeed.seedId ?? "none"}-${sownSeed.quantityKind}`;
+        const key = `${sownSeed.cropId}-${sownSeed.seedId ?? "none"}-${sownSeed.countUnit ?? "weight"}`;
         let entry = seriesByKey.get(key);
         if (!entry) {
           entry = {
             key,
             cropName: sownSeed.cropName,
-            title: sownSeed.seedName
-              ? `${sownSeed.cropName} – ${sownSeed.seedName}`
-              : sownSeed.cropName,
-            quantityKind: sownSeed.quantityKind,
+            // the same seed can be counted as seeds and as plants, both get a chart
+            title:
+              (sownSeed.seedName
+                ? `${sownSeed.cropName} – ${sownSeed.seedName}`
+                : sownSeed.cropName) +
+              (sownSeed.countUnit
+                ? ` (${t(`sowings.units.${sownSeed.countUnit}`)})`
+                : ""),
+            countUnit: sownSeed.countUnit,
             monthly: {},
           };
           seriesByKey.set(key, entry);
@@ -98,24 +103,21 @@ export function SowingOverview({
           entry.monthly[summary.year] = Array.from({ length: 12 }, () => 0);
         }
         // base amounts are grams for weight, the chart works in kg
-        entry.monthly[summary.year][summary.month] +=
-          sownSeed.quantityKind === "weight"
-            ? sownSeed.totalBaseAmount / 1000
-            : sownSeed.totalBaseAmount;
+        entry.monthly[summary.year][summary.month] += sownSeed.countUnit
+          ? sownSeed.totalBaseAmount
+          : sownSeed.totalBaseAmount / 1000;
       }
     }
     return [...seriesByKey.values()].sort((a, b) =>
       a.title.localeCompare(b.title),
     );
-  }, [summaries, visibleCrops]);
+  }, [summaries, visibleCrops, t]);
 
   const listSections = useMemo(() => {
     const items = sowings
       .filter((sowing) => visibleCrops.includes(sowing.crop.name))
       .map((sowing) => {
-        const quantityKind = sowingUnits?.find(
-          (unitInfo) => unitInfo.unit === sowing.unit,
-        )?.quantityKind;
+        const unitInfo = sowingUnits?.find((info) => info.unit === sowing.unit);
         return {
           id: sowing.id,
           rawDate: sowing.date,
@@ -129,8 +131,8 @@ export function SowingOverview({
           cropName: sowing.crop.name,
           seedName: sowing.seed?.name,
           amount: `${sowing.amount} ${t(`sowings.units.${sowing.unit}`)}`,
-          total: quantityKind
-            ? formatBaseAmount(sowing.totalBaseAmount, quantityKind, t)
+          total: unitInfo
+            ? formatBaseAmount(sowing.totalBaseAmount, unitInfo, t)
             : undefined,
         };
       });
@@ -278,10 +280,9 @@ function SowingChartPage({
   const yearTotals = selectedYears.map((year) =>
     (series.monthly[year] ?? []).reduce((sum, value) => sum + value, 0),
   );
-  const unit: UnitScale =
-    series.quantityKind === "weight"
-      ? scaleUnit("kg", Math.max(0, ...yearTotals))
-      : { label: t("sowings.pieces"), divisor: 1 };
+  const unit: UnitScale = series.countUnit
+    ? { label: t(`sowings.units.${series.countUnit}`), divisor: 1 }
+    : scaleUnit("kg", Math.max(0, ...yearTotals));
 
   return (
     <View style={{ gap: theme.spacing.s }}>

@@ -92,12 +92,20 @@ function EditSowingForm({
     selectedSeed?.quantityKind,
   );
 
-  // the crop comes from the seed, a unit that doesn't fit the seed is dropped
+  // The crop comes from the seed. A seed of another kind brings its own default
+  // unit and amount, the old number would mean something else in the new unit.
   useEffect(() => {
     if (!selectedSeed) return;
     setValue("cropId", selectedSeed.cropId);
     if (!availableUnits.some((unitInfo) => unitInfo.unit === unitValue)) {
-      setValue("unit", availableUnits[0]?.unit ?? "");
+      setValue(
+        "unit",
+        selectedSeed.defaultUnit ?? availableUnits[0]?.unit ?? "",
+        { shouldDirty: true },
+      );
+      setValue("amount", selectedSeed.defaultAmount?.toString() ?? "", {
+        shouldDirty: true,
+      });
     }
   }, [selectedSeed]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -206,10 +214,10 @@ function EditSowingForm({
             control={control}
             label={t("forms.labels.unit")}
             rules={{
-              required: {
-                value: true,
-                message: t("forms.validation.required"),
-              },
+              // a unit left over from a seed of another kind isn't selectable
+              validate: (value) =>
+                availableUnits.some((unitInfo) => unitInfo.unit === value) ||
+                t("forms.validation.required"),
             }}
             error={errors.unit?.message}
             data={availableUnits.map((unitInfo) => ({
@@ -233,6 +241,9 @@ function EditSowingForm({
                   value: true,
                   message: t("forms.validation.required"),
                 },
+                // "." or "0" would end up as NaN or an empty sowing
+                validate: (value) =>
+                  Number(value) > 0 || t("forms.validation.greater_than_zero"),
               }}
               error={errors.amount?.message}
             />

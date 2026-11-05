@@ -117,7 +117,8 @@
       "divided_amount_too_big": "Die verteilte Menge ist größer als die verfügbare Menge",
       "not_all_divided": "Du hast noch nicht die gesamte Menge verteilt",
       "required": "Feld darf nicht leer sein",
-      "min": "Mindestens {{min}}"
+      "min": "Mindestens {{min}}",
+      "greater_than_zero": "Muss grösser als 0 sein"
     }
   },
   "common": {
@@ -891,7 +892,6 @@
     "quantity_kind_locked_hint": "Die Mengenangabe kann nicht geändert werden, damit Mengen summierbar bleiben. Erstelle dafür ein neues Saatgut.",
     "default_values_optional": "Standardwerte (optional)",
     "default_values_description": "Werden beim Erfassen einer neuen Saat mit diesem Saatgut vorausgefüllt und können dort angepasst werden.",
-    "default_amount": "Standardmenge",
     "default_amount_optional": "Standardmenge (optional)",
     "default_unit": "Standardeinheit",
     "seed_in_use_warning": "Dieses Saatgut wird verwendet und kann deshalb nicht gelöscht werden."
@@ -908,7 +908,6 @@
     "amount": "Menge",
     "rate": "Saatstärke",
     "total": "Total",
-    "pieces": "Stk.",
     "computed_total": "Entspricht {{amount}} {{unit}} auf {{area}}",
     "computed_rate": "Entspricht {{amount}} {{unit}} auf {{area}}",
     "divide_on_plots": "Auf Schläge aufteilen",

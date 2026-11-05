@@ -50,7 +50,12 @@ export function DivideSowingOnPlotsScreen({
       const amount =
         index === plots.length - 1
           ? round(totalAmount - divided, precision)
-          : round(totalAmount * (plot.size / totalSize), precision);
+          : round(
+              // tiny drawn slivers can round to 0 m², split equally then
+              totalAmount *
+                (totalSize > 0 ? plot.size / totalSize : 1 / plots.length),
+              precision,
+            );
       divided += amount;
       next[plot.plotId] = amount.toString();
     });
@@ -85,6 +90,11 @@ export function DivideSowingOnPlotsScreen({
       return;
     } else if (remaining > 0) {
       setError(t("forms.validation.not_all_divided"));
+      return;
+    }
+    // at least one plot has to get something, otherwise nothing would be saved
+    if (!plots.some((plot) => Number(amountByPlotId[plot.plotId]) > 0)) {
+      setError(t("forms.validation.greater_than_zero"));
       return;
     }
     for (const plot of plots) {

@@ -21875,6 +21875,10 @@
                             "type": "string",
                             "enum": ["weight", "count"]
                           },
+                          "countUnit": {
+                            "type": ["string", "null"],
+                            "enum": ["seeds", "plants"]
+                          },
                           "totalBaseAmount": { "type": "number" },
                           "totalSize": { "type": "number" }
                         },
@@ -21884,6 +21888,7 @@
                           "seedId",
                           "seedName",
                           "quantityKind",
+                          "countUnit",
                           "totalBaseAmount",
                           "totalSize"
                         ],
@@ -29928,7 +29933,7 @@
           "description": { "type": "string" },
           "cropId": { "type": "string" },
           "quantityKind": { "type": "string", "enum": ["weight", "count"] },
-          "defaultAmount": { "type": "number" },
+          "defaultAmount": { "type": "number", "minimum": 0 },
           "defaultUnit": {
             "type": "string",
             "enum": [
@@ -30109,7 +30114,7 @@
           "name": { "type": "string" },
           "description": { "type": ["string", "null"] },
           "cropId": { "type": "string" },
-          "defaultAmount": { "type": ["number", "null"] },
+          "defaultAmount": { "type": ["number", "null"], "minimum": 0 },
           "defaultUnit": {
             "type": ["string", "null"],
             "enum": [
@@ -30601,7 +30606,7 @@
                   },
                   "required": ["type", "coordinates"]
                 },
-                "size": { "type": "number" }
+                "size": { "type": "number", "exclusiveMinimum": 0 }
               },
               "required": ["plotId", "amount", "geometry", "size"]
             }
@@ -31037,6 +31042,10 @@
                             "type": "string",
                             "enum": ["weight", "count"]
                           },
+                          "countUnit": {
+                            "type": ["string", "null"],
+                            "enum": ["seeds", "plants"]
+                          },
                           "totalBaseAmount": { "type": "number" },
                           "totalSize": { "type": "number" }
                         },
@@ -31046,6 +31055,7 @@
                           "seedId",
                           "seedName",
                           "quantityKind",
+                          "countUnit",
                           "totalBaseAmount",
                           "totalSize"
                         ],
@@ -31111,9 +31121,13 @@
                       "type": "string",
                       "enum": ["weight", "count"]
                     },
+                    "countUnit": {
+                      "type": ["string", "null"],
+                      "enum": ["seeds", "plants"]
+                    },
                     "perArea": { "type": "boolean" }
                   },
-                  "required": ["unit", "quantityKind", "perArea"],
+                  "required": ["unit", "quantityKind", "countUnit", "perArea"],
                   "additionalProperties": false
                 }
               },
