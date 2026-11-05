@@ -113,11 +113,9 @@ function EditSowingForm({
     (unitInfo) => unitInfo.unit === unitValue,
   )?.unit;
   const amount = Number(amountValue) || 0;
-  const perArea = unit ? isPerAreaUnit(units, unit) : false;
+  const perArea = unit ? isPerAreaUnit(unit) : false;
   const counterpart =
-    unit && amount > 0
-      ? computeCounterpart(units, amount, unit, sowing.size)
-      : null;
+    unit && amount > 0 ? computeCounterpart(amount, unit, sowing.size) : null;
 
   function onSubmit(values: FormValues) {
     if (!unit) return;

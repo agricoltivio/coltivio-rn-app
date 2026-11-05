@@ -8,7 +8,6 @@ import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocalSettings } from "../../user/LocalSettingsContext";
 import { SelectSowingPlotsScreenProps } from "../navigation/sowing-routes";
-import { useSowingUnitsQuery } from "../sowings.hooks";
 import { isPerAreaUnit } from "../sowingUnits";
 import { useCreateSowingStore } from "./sowing.store";
 
@@ -17,16 +16,13 @@ export function SelectSowingPlotsScreen({
 }: SelectSowingPlotsScreenProps) {
   const { t } = useTranslation();
   const { localSettings } = useLocalSettings();
-  const { sowingUnits } = useSowingUnitsQuery();
   const { sowing, putSowingPlot, removeSowingPlot, selectedPlotsById } =
     useCreateSowingStore();
 
   function onNext() {
     const plots = Object.values(selectedPlotsById);
     const amount = sowing?.amount ?? 0;
-    const perArea =
-      sowing?.unit !== undefined &&
-      isPerAreaUnit(sowingUnits ?? [], sowing.unit);
+    const perArea = sowing?.unit !== undefined && isPerAreaUnit(sowing.unit);
     // a total on several plots has to be split, otherwise every plot gets the amount
     if (!perArea && plots.length > 1) {
       navigation.navigate("DivideSowingOnPlots");

@@ -130,7 +130,7 @@ export function SowingOverview({
           plotName: "plot" in sowing ? sowing.plot.name : undefined,
           cropName: sowing.crop.name,
           seedName: sowing.seed?.name,
-          amount: `${sowing.amount} ${t(`sowings.units.${sowing.unit}`)}`,
+          amount: `${sowing.amount.toLocaleString()} ${t(`sowings.units.${sowing.unit}`)}`,
           total: unitInfo
             ? formatBaseAmount(sowing.totalBaseAmount, unitInfo, t)
             : undefined,

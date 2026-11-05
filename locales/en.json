@@ -894,7 +894,9 @@
     "default_values_description": "Prefilled when recording a new sowing with this seed and can be adjusted there.",
     "default_amount_optional": "Default amount (optional)",
     "default_unit": "Default unit",
-    "seed_in_use_warning": "This seed is in use and therefore can't be deleted."
+    "seed_in_use_warning": "This seed is in use and therefore can't be deleted.",
+    "delete_confirm_title": "Delete seed?",
+    "delete_confirm_message": "Presets with this seed are deleted as well."
   },
   "sowings": {
     "sowing": "Sowing",
@@ -922,7 +924,8 @@
       "g": "g",
       "seeds": "seeds",
       "plants": "plants"
-    }
+    },
+    "delete_confirm_title": "Delete sowing?"
   },
   "fertilizer_application": {
     "fertilizer_application": "Fertilizer Application",

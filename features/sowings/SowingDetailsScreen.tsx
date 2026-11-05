@@ -3,7 +3,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { usePermissions } from "@/features/user/users.hooks";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { SowingDetailsScreenProps } from "./navigation/sowing-routes";
 import { useDeleteSowingMutation, useSowingQuery } from "./sowings.hooks";
@@ -36,7 +36,16 @@ export function SowingDetailsScreen({
                 style={{ flexGrow: 1 }}
                 type="danger"
                 title={t("buttons.delete")}
-                onPress={() => deleteSowingMutation.mutate(sowingId)}
+                onPress={() =>
+                  Alert.alert(t("sowings.delete_confirm_title"), undefined, [
+                    { text: t("buttons.cancel"), style: "cancel" },
+                    {
+                      text: t("buttons.delete"),
+                      style: "destructive",
+                      onPress: () => deleteSowingMutation.mutate(sowingId),
+                    },
+                  ])
+                }
                 disabled={deleteSowingMutation.isPending}
                 loading={deleteSowingMutation.isPending}
               />

@@ -894,7 +894,9 @@
     "default_values_description": "Precompilati quando si registra una nuova semina con questa semente e modificabili in quel momento.",
     "default_amount_optional": "Quantità predefinita (opzionale)",
     "default_unit": "Unità predefinita",
-    "seed_in_use_warning": "Questa semente è in uso e quindi non può essere eliminata."
+    "seed_in_use_warning": "Questa semente è in uso e quindi non può essere eliminata.",
+    "delete_confirm_title": "Eliminare la semente?",
+    "delete_confirm_message": "Anche i modelli con questa semente verranno eliminati."
   },
   "sowings": {
     "sowing": "Semina",
@@ -922,7 +924,8 @@
       "g": "g",
       "seeds": "semi",
       "plants": "piante"
-    }
+    },
+    "delete_confirm_title": "Eliminare la semina?"
   },
   "fertilizer_application": {
     "fertilizer_application": "Fertilizzazione",

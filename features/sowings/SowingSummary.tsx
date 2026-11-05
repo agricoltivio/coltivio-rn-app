@@ -12,7 +12,6 @@ import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { useSowingUnitsQuery } from "./sowings.hooks";
 import { computeCounterpart, formatArea, isPerAreaUnit } from "./sowingUnits";
 
 function SummaryItem({ label, value }: { label: string; value: string }) {
@@ -59,17 +58,15 @@ export function SowingSummary({
 }: SowingSummaryProps) {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
-  const { sowingUnits } = useSowingUnitsQuery();
-  const units = sowingUnits ?? [];
 
   const size = sowingAreas.reduce((sum, area) => sum + area.size, 0);
-  const perArea = isPerAreaUnit(units, unit);
+  const perArea = isPerAreaUnit(unit);
   const unitLabel = t(`sowings.units.${unit}`);
   // per-area: one rate for all plots, total: the plots' shares add up
   const enteredAmount = perArea
     ? (sowingAreas[0]?.amount ?? 0)
     : sowingAreas.reduce((sum, area) => sum + area.amount, 0);
-  const counterpart = computeCounterpart(units, enteredAmount, unit, size);
+  const counterpart = computeCounterpart(enteredAmount, unit, size);
 
   const [centerLng, centerLat] = turf.centroid(sowingAreas[0].geometry).geometry
     .coordinates;
@@ -144,7 +141,7 @@ export function SowingSummary({
             {sowingAreas.map((area) => {
               // per-area: show what this plot got in total, total: its share
               const plotTotal = perArea
-                ? computeCounterpart(units, area.amount, unit, area.size)
+                ? computeCounterpart(area.amount, unit, area.size)
                 : { amount: area.amount, unit };
               return (
                 <ListItem key={area.plotId}>

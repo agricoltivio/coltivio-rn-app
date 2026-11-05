@@ -6,6 +6,7 @@ import { NumberInput } from "@/components/inputs/NumberInput";
 import { ScrollView } from "@/components/views/ScrollView";
 import { Body, H2, Subtitle, Title } from "@/theme/Typography";
 import { round } from "@/utils/math";
+import { splitByArea } from "@/utils/splitByArea";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Switch, View } from "react-native";
@@ -42,22 +43,14 @@ export function DivideSowingOnPlotsScreen({
 
   useEffect(() => {
     if (!divideByArea) return;
-    const totalSize = plots.reduce((sum, plot) => sum + plot.size, 0);
-    let divided = 0;
+    const amounts = splitByArea(
+      plots.map((plot) => plot.size),
+      totalAmount,
+      precision,
+    );
     const next: Record<string, string> = {};
     plots.forEach((plot, index) => {
-      // the rest goes to the last plot so the amounts always sum up exactly
-      const amount =
-        index === plots.length - 1
-          ? round(totalAmount - divided, precision)
-          : round(
-              // tiny drawn slivers can round to 0 m², split equally then
-              totalAmount *
-                (totalSize > 0 ? plot.size / totalSize : 1 / plots.length),
-              precision,
-            );
-      divided += amount;
-      next[plot.plotId] = amount.toString();
+      next[plot.plotId] = amounts[index].toString();
     });
     setAmountByPlotId(next);
   }, [divideByArea, selectedPlotsById, precision]); // eslint-disable-line react-hooks/exhaustive-deps

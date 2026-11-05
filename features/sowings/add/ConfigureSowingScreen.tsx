@@ -116,11 +116,9 @@ export function ConfigureSowingScreen({
   const amount = Number(amountValue) || 0;
   const plots = Object.values(selectedPlotsById);
   const totalSize = plots.reduce((sum, plot) => sum + plot.size, 0);
-  const perArea = unit ? isPerAreaUnit(units, unit) : false;
+  const perArea = unit ? isPerAreaUnit(unit) : false;
   const counterpart =
-    unit && amount > 0
-      ? computeCounterpart(units, amount, unit, totalSize)
-      : null;
+    unit && amount > 0 ? computeCounterpart(amount, unit, totalSize) : null;
 
   const handleSaveAsPreset = (name: string) => {
     if (!unit || !sowing?.cropId) return;

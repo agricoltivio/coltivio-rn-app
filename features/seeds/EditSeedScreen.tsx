@@ -8,7 +8,7 @@ import { usePermissions } from "@/features/user/users.hooks";
 import { H2, H3 } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useSowingUnitsQuery } from "../sowings/sowings.hooks";
 import { EditSeedScreenProps } from "./navigation/seed-routes";
@@ -24,9 +24,10 @@ import {
 export function EditSeedScreen({ route, navigation }: EditSeedScreenProps) {
   const seedId = route.params.seedId;
   const { seed } = useSeedByIdQuery(seedId);
-  const { inUse, isFetching: isFetchingInUse } = useIsSeedInUseQuery(seedId);
+  // isLoading, not isFetching: a background refetch must not unmount the form
+  const { inUse, isLoading: isLoadingInUse } = useIsSeedInUseQuery(seedId);
 
-  if (!seed || isFetchingInUse) {
+  if (!seed || isLoadingInUse) {
     return null;
   }
 
@@ -93,7 +94,20 @@ function EditSeedForm({
                 style={{ flexGrow: 1 }}
                 type="danger"
                 title={t("buttons.delete")}
-                onPress={() => deleteSeedMutation.mutate(seed.id)}
+                onPress={() =>
+                  Alert.alert(
+                    t("seeds.delete_confirm_title"),
+                    t("seeds.delete_confirm_message"),
+                    [
+                      { text: t("buttons.cancel"), style: "cancel" },
+                      {
+                        text: t("buttons.delete"),
+                        style: "destructive",
+                        onPress: () => deleteSeedMutation.mutate(seed.id),
+                      },
+                    ],
+                  )
+                }
                 disabled={
                   deleteSeedMutation.isPending ||
                   updateSeedMutation.isPending ||

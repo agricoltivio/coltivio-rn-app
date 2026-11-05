@@ -27,7 +27,7 @@ export function EditFertilizerScreen({
   const { canWrite } = usePermissions();
   const fertilizerId = route.params.fertilizerId;
   const { fertilizer } = useFertilizerByIdQuery(fertilizerId);
-  const { inUse, isFetching: isFetchingInUse } =
+  const { inUse, isLoading: isLoadingInUse } =
     useIsFertilizerInUseQuery(fertilizerId);
   const {
     control,
@@ -62,7 +62,7 @@ export function EditFertilizerScreen({
     deleteFertilizerMutation.mutate(fertilizerId);
   }
 
-  if (!fertilizer || isFetchingInUse) {
+  if (!fertilizer || isLoadingInUse) {
     return null;
   }
 

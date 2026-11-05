@@ -894,7 +894,9 @@
     "default_values_description": "Werden beim Erfassen einer neuen Saat mit diesem Saatgut vorausgefüllt und können dort angepasst werden.",
     "default_amount_optional": "Standardmenge (optional)",
     "default_unit": "Standardeinheit",
-    "seed_in_use_warning": "Dieses Saatgut wird verwendet und kann deshalb nicht gelöscht werden."
+    "seed_in_use_warning": "Dieses Saatgut wird verwendet und kann deshalb nicht gelöscht werden.",
+    "delete_confirm_title": "Saatgut löschen?",
+    "delete_confirm_message": "Die Vorlagen mit diesem Saatgut werden ebenfalls gelöscht."
   },
   "sowings": {
     "sowing": "Saat",
@@ -922,7 +924,8 @@
       "g": "g",
       "seeds": "Körner",
       "plants": "Pflanzen"
-    }
+    },
+    "delete_confirm_title": "Saat löschen?"
   },
   "fertilizer_application": {
     "fertilizer_application": "Düngeraustrag",
