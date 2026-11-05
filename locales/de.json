@@ -892,6 +892,7 @@
     "default_values_optional": "Standardwerte (optional)",
     "default_values_description": "Werden beim Erfassen einer neuen Saat mit diesem Saatgut vorausgefüllt und können dort angepasst werden.",
     "default_amount": "Standardmenge",
+    "default_amount_optional": "Standardmenge (optional)",
     "default_unit": "Standardeinheit",
     "seed_in_use_warning": "Dieses Saatgut wird verwendet und kann deshalb nicht gelöscht werden."
   },

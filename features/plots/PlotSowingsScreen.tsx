@@ -1,12 +1,15 @@
 import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
+import { ScrollView } from "@/components/views/ScrollView";
 import { usePermissions } from "@/features/user/users.hooks";
 import { H2 } from "@/theme/Typography";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, View } from "react-native";
-import { useTheme } from "styled-components/native";
-import { SowingList } from "../sowings/components/SowingList";
-import { useSowingsOfPlotQuery } from "../sowings/sowings.hooks";
+import { ActivityIndicator } from "react-native";
+import { SowingOverview } from "../sowings/components/SowingOverview";
+import {
+  useSowingsOfPlotQuery,
+  useSowingSummariesOfPlotQuery,
+} from "../sowings/sowings.hooks";
 import { PlotSowingsScreenProps } from "./navigation/plots-routes";
 
 export function PlotSowingsScreen({
@@ -14,26 +17,33 @@ export function PlotSowingsScreen({
   route,
 }: PlotSowingsScreenProps) {
   const { t } = useTranslation();
-  const theme = useTheme();
   const { canWrite } = usePermissions();
   const { plotId, name } = route.params;
-  const { sowings, isLoading } = useSowingsOfPlotQuery(plotId);
+  const { sowings } = useSowingsOfPlotQuery(plotId);
+  const { sowingSummaries } = useSowingSummariesOfPlotQuery(plotId);
+  const title = t("sowings.sowing");
 
   return (
     <ContentView headerVisible>
-      <View style={{ paddingBottom: theme.spacing.s }}>
-        <H2>{t("sowings.sowing")}</H2>
-      </View>
-      {isLoading || !sowings ? (
-        <ActivityIndicator style={{ marginTop: 40 }} size="large" />
-      ) : (
-        <SowingList
-          sowings={sowings}
-          onPressSowing={(sowingId) =>
-            navigation.navigate("SowingDetails", { sowingId })
-          }
-        />
-      )}
+      <ScrollView
+        showHeaderOnScroll
+        headerTitleOnScroll={title}
+        contentContainerStyle={{ paddingBottom: 120 }}
+        keyboardAware
+      >
+        <H2>{title}</H2>
+        {!sowings || !sowingSummaries ? (
+          <ActivityIndicator style={{ marginTop: 40 }} size="large" />
+        ) : (
+          <SowingOverview
+            summaries={sowingSummaries}
+            sowings={sowings}
+            onPressSowing={(sowingId) =>
+              navigation.navigate("SowingDetails", { sowingId })
+            }
+          />
+        )}
+      </ScrollView>
       {canWrite("field_calendar") && (
         <FAB
           icon={{ name: "add", color: "white" }}

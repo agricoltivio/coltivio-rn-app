@@ -45,8 +45,8 @@ export function SeedsScreen({ navigation }: SeedsScreenProps) {
                     <ListItem.Title>{seed.name}</ListItem.Title>
                     <ListItem.Body>
                       {seed.crop.name}
-                      {seed.defaultAmount != null && seed.defaultUnit
-                        ? `, ${seed.defaultAmount} ${t(`sowings.units.${seed.defaultUnit}`)}`
+                      {seed.defaultUnit
+                        ? `, ${[seed.defaultAmount, t(`sowings.units.${seed.defaultUnit}`)].filter((part) => part != null).join(" ")}`
                         : ""}
                     </ListItem.Body>
                   </ListItem.Content>

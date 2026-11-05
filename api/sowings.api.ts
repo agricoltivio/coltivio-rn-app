@@ -56,6 +56,13 @@ export function sowingsApi(client: FetchClient) {
       const { data } = await client.GET("/v1/sowings/summaries");
       return data!.data.monthlySowings;
     },
+    async getPlotSowingSummaries(plotId: string): Promise<SowingSummary[]> {
+      const { data } = await client.GET(
+        "/v1/plots/byId/{plotId}/sowingSummary",
+        { params: { path: { plotId } } },
+      );
+      return data!.data.monthlySowings;
+    },
     async updateSowing(sowingId: string, input: SowingUpdateInput) {
       const { data } = await client.PATCH("/v1/sowings/byId/{sowingId}", {
         params: { path: { sowingId } },

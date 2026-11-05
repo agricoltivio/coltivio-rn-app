@@ -892,6 +892,7 @@
     "default_values_optional": "Default values (optional)",
     "default_values_description": "Prefilled when recording a new sowing with this seed and can be adjusted there.",
     "default_amount": "Default amount",
+    "default_amount_optional": "Default amount (optional)",
     "default_unit": "Default unit",
     "seed_in_use_warning": "This seed is in use and therefore can't be deleted."
   },

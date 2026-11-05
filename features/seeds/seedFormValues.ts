@@ -8,7 +8,10 @@ export function parseQuantityKind(value: string): SeedQuantityKind | undefined {
   return SEED_QUANTITY_KINDS.find((kind) => kind === value);
 }
 
-/** Both default values or none: a lone amount or unit can't be prefilled. */
+/**
+ * A unit can be saved on its own (it's preselected in a sowing), an amount only
+ * together with a unit.
+ */
 export function seedDefaultRateFromForm(
   values: SeedFormValues,
   sowingUnits: SowingUnitInfo[],
@@ -20,8 +23,11 @@ export function seedDefaultRateFromForm(
     values.defaultAmount != null && values.defaultAmount !== ""
       ? Number(values.defaultAmount)
       : NaN;
-  if (!defaultUnit || Number.isNaN(defaultAmount)) {
+  if (!defaultUnit) {
     return { defaultAmount: null, defaultUnit: null };
   }
-  return { defaultAmount, defaultUnit };
+  return {
+    defaultAmount: Number.isNaN(defaultAmount) ? null : defaultAmount,
+    defaultUnit,
+  };
 }

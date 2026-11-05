@@ -37,6 +37,24 @@ export function useSowingsOfPlotQuery(plotId: string) {
   return { sowings: data, ...rest };
 }
 
+export function useSowingSummariesQuery() {
+  const api = useApi();
+  const { data, ...rest } = useQuery({
+    queryKey: queryKeys.sowings.summaries.queryKey,
+    queryFn: () => api.sowings.getSowingSummaries(),
+  });
+  return { sowingSummaries: data, ...rest };
+}
+
+export function useSowingSummariesOfPlotQuery(plotId: string) {
+  const api = useApi();
+  const { data, ...rest } = useQuery({
+    queryKey: queryKeys.sowings.summariesByPlotId(plotId).queryKey,
+    queryFn: () => api.sowings.getPlotSowingSummaries(plotId),
+  });
+  return { sowingSummaries: data, ...rest };
+}
+
 export function useSowingUnitsQuery() {
   const api = useApi();
   const { data, ...rest } = useQuery({

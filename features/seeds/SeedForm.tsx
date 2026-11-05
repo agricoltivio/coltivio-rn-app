@@ -56,6 +56,11 @@ export function SeedForm({
     matchingQuantityKind,
   );
 
+  // an amount without a unit means nothing
+  useEffect(() => {
+    if (!defaultUnit) setValue("defaultAmount", undefined);
+  }, [defaultUnit, setValue]);
+
   // drop a default unit that doesn't fit a newly chosen quantity kind
   useEffect(() => {
     if (
@@ -124,13 +129,6 @@ export function SeedForm({
         <Body style={{ color: theme.colors.gray2 }}>
           {t("seeds.default_values_description")}
         </Body>
-        <RHNumberInput
-          name="defaultAmount"
-          control={control}
-          float
-          label={t("seeds.default_amount")}
-          error={errors.defaultAmount?.message}
-        />
         <RHSelect
           name="defaultUnit"
           control={control}
@@ -141,6 +139,15 @@ export function SeedForm({
             value: unitInfo.unit,
           }))}
           error={errors.defaultUnit?.message}
+        />
+        {/* an amount only means something together with a unit */}
+        <RHNumberInput
+          name="defaultAmount"
+          control={control}
+          float
+          disabled={!defaultUnit}
+          label={t("seeds.default_amount_optional")}
+          error={errors.defaultAmount?.message}
         />
       </Card>
 

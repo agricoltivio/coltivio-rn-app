@@ -892,6 +892,7 @@
     "default_values_optional": "Valori predefiniti (opzionale)",
     "default_values_description": "Precompilati quando si registra una nuova semina con questa semente e modificabili in quel momento.",
     "default_amount": "Quantità predefinita",
+    "default_amount_optional": "Quantità predefinita (opzionale)",
     "default_unit": "Unità predefinita",
     "seed_in_use_warning": "Questa semente è in uso e quindi non può essere eliminata."
   },

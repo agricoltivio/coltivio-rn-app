@@ -892,6 +892,7 @@
     "default_values_optional": "Valeurs par défaut (optionnel)",
     "default_values_description": "Pré-remplies lors de la saisie d'un nouveau semis avec cette semence et modifiables à ce moment-là.",
     "default_amount": "Quantité par défaut",
+    "default_amount_optional": "Quantité par défaut (optionnel)",
     "default_unit": "Unité par défaut",
     "seed_in_use_warning": "Cette semence est utilisée et ne peut donc pas être supprimée."
   },
