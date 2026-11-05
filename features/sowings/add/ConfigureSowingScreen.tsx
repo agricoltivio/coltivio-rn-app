@@ -250,7 +250,8 @@ export function ConfigureSowingScreen({
           <Button
             title={t("presets.save_as_preset")}
             type="accent"
-            disabled={!unit || amountValue === undefined || amountValue === ""}
+            // same rule as the amount field: "." or "0" would save an empty preset
+            disabled={!unit || !(Number(amountValue) > 0)}
             onPress={() => savePresetRef.current?.open()}
           />
 

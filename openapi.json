@@ -8762,42 +8762,6 @@
         }
       }
     },
-    "/v1/sowings/years": {
-      "get": {
-        "operationId": "GetV1SowingsYears",
-        "security": [{ "APIKEY_1": [] }],
-        "responses": {
-          "200": {
-            "description": "GET /v1/sowings/years Positive response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetV1SowingsYearsPositiveResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "GET /v1/sowings/years Negative response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "head": {
-        "operationId": "HeadV1SowingsYears",
-        "security": [{ "APIKEY_1": [] }],
-        "responses": {
-          "200": { "description": "HEAD /v1/sowings/years Positive response" },
-          "400": { "description": "HEAD /v1/sowings/years Negative response" }
-        }
-      }
-    },
     "/v1/sowings/units": {
       "get": {
         "operationId": "GetV1SowingsUnits",
@@ -17590,7 +17554,8 @@
               "sowing_crop_mismatch",
               "sowing_crop_required",
               "crop_not_found",
-              "plot_not_found"
+              "plot_not_found",
+              "seed_default_amount_without_unit"
             ]
           }
         },
@@ -29931,7 +29896,7 @@
       "PostV1SeedsRequestBody": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
+          "name": { "type": "string", "minLength": 1 },
           "description": { "type": "string" },
           "cropId": { "type": "string" },
           "quantityKind": { "type": "string", "enum": ["weight", "count"] },
@@ -30113,7 +30078,7 @@
       "PatchV1SeedsByIdSeedIdRequestBody": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
+          "name": { "type": "string", "minLength": 1 },
           "description": { "type": ["string", "null"] },
           "cropId": { "type": "string" },
           "defaultAmount": { "type": ["number", "null"], "minimum": 0 },
@@ -30587,7 +30552,7 @@
               "type": "object",
               "properties": {
                 "plotId": { "type": "string" },
-                "amount": { "type": "number", "minimum": 0 },
+                "amount": { "type": "number", "exclusiveMinimum": 0 },
                 "geometry": {
                   "type": "object",
                   "properties": {
@@ -31013,7 +30978,7 @@
               "plants"
             ]
           },
-          "amount": { "type": "number", "minimum": 0 },
+          "amount": { "type": "number", "exclusiveMinimum": 0 },
           "additionalNotes": { "type": ["string", "null"] }
         },
         "required": []
@@ -31071,22 +31036,6 @@
               }
             },
             "required": ["monthlySowings"],
-            "additionalProperties": false
-          }
-        },
-        "required": ["data"],
-        "additionalProperties": false
-      },
-      "GetV1SowingsYearsPositiveResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "result": { "type": "array", "items": { "type": "string" } },
-              "count": { "type": "number" }
-            },
-            "required": ["result", "count"],
             "additionalProperties": false
           }
         },
@@ -31398,7 +31347,7 @@
       "PostV1SowingsPresetsRequestBody": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
+          "name": { "type": "string", "minLength": 1 },
           "cropId": { "type": "string" },
           "seedId": { "type": "string" },
           "unit": {
@@ -31416,7 +31365,7 @@
               "plants"
             ]
           },
-          "amount": { "type": "number", "minimum": 0 }
+          "amount": { "type": "number", "exclusiveMinimum": 0 }
         },
         "required": ["name", "unit", "amount"]
       },
@@ -31659,7 +31608,7 @@
       "PatchV1SowingsPresetsByIdPresetIdRequestBody": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
+          "name": { "type": "string", "minLength": 1 },
           "cropId": { "type": "string" },
           "seedId": { "type": ["string", "null"] },
           "unit": {
@@ -31677,7 +31626,7 @@
               "plants"
             ]
           },
-          "amount": { "type": "number", "minimum": 0 }
+          "amount": { "type": "number", "exclusiveMinimum": 0 }
         },
         "required": []
       },

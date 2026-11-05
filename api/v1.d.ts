@@ -1780,22 +1780,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/v1/sowings/years": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get: operations["GetV1SowingsYears"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head: operations["HeadV1SowingsYears"];
-    patch?: never;
-    trace?: never;
-  };
   "/v1/sowings/units": {
     parameters: {
       query?: never;
@@ -3721,7 +3705,8 @@ export interface components {
         | "sowing_crop_mismatch"
         | "sowing_crop_required"
         | "crop_not_found"
-        | "plot_not_found";
+        | "plot_not_found"
+        | "seed_default_amount_without_unit";
     };
     GetV1LayersPlotsFarmsFederalFarmIdOnlyPositiveResponse: {
       data: {
@@ -9321,12 +9306,6 @@ export interface components {
             totalSize: number;
           }[];
         }[];
-      };
-    };
-    GetV1SowingsYearsPositiveResponse: {
-      data: {
-        result: string[];
-        count: number;
       };
     };
     GetV1SowingsUnitsPositiveResponse: {
@@ -24510,60 +24489,6 @@ export interface operations {
         content?: never;
       };
       /** @description HEAD /v1/sowings/summaries Negative response */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-    };
-  };
-  GetV1SowingsYears: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description GET /v1/sowings/years Positive response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetV1SowingsYearsPositiveResponse"];
-        };
-      };
-      /** @description GET /v1/sowings/years Negative response */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
-        };
-      };
-    };
-  };
-  HeadV1SowingsYears: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description HEAD /v1/sowings/years Positive response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      /** @description HEAD /v1/sowings/years Negative response */
       400: {
         headers: {
           [name: string]: unknown;

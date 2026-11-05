@@ -26,7 +26,7 @@ export function CreateSeedScreen({ navigation }: CreateSeedScreenProps) {
 
   const createSeedMutation = useCreateSeedMutation((seed) => {
     // opened from the sowing wizard: hand the new seed back to it
-    if (previousRoute.name === "SelectSowingSeedAndDate") {
+    if (previousRoute?.name === "SelectSowingSeedAndDate") {
       navigation.popTo("SelectSowingSeedAndDate", { seedId: seed.id });
     } else {
       navigation.goBack();
