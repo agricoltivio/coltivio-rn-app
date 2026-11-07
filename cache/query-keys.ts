@@ -19,6 +19,8 @@ import { cropsQueryKeys } from "@/features/crops/crops.querykeys";
 import { cropFamiliesQueryKeys } from "@/features/crop-families/cropFamilies.querykeys";
 import { plotsQueryKeys } from "@/features/plots/plots.querykeys";
 import { harvestPresetsQueryKeys } from "@/features/harvests/harvestPresets.querykeys";
+import { seedsQueryKeys } from "@/features/seeds/seeds.querykeys";
+import { sowingsQueryKeys } from "@/features/sowings/sowings.querykeys";
 import { cropRotationsQueryKeys } from "@/features/crop-rotations/crop-rotations.querykeys";
 import { tillagesQueryKeys } from "@/features/tillages/tillages.querykeys";
 import { tillagePresetsQueryKeys } from "@/features/tillages/tillagePresets.querykeys";
@@ -58,6 +60,8 @@ export const queryKeys = mergeQueryKeys(
   fertilizerApplicationsQueryKeys,
   fertilizerApplicationPresetsQueryKeys,
   fertilizersQueryKeys,
+  seedsQueryKeys,
+  sowingsQueryKeys,
   cropRotationsQueryKeys,
   tillagesQueryKeys,
   tillagePresetsQueryKeys,

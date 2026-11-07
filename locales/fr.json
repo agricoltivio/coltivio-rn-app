@@ -117,7 +117,8 @@
       "divided_amount_too_big": "La quantité distribuée est supérieure à la quantité disponible",
       "not_all_divided": "Vous n'avez pas encore distribué la totalité de la quantité",
       "required": "Ce champ ne peut pas être vide",
-      "min": "Minimum {{min}}"
+      "min": "Minimum {{min}}",
+      "greater_than_zero": "Doit être supérieur à 0"
     }
   },
   "common": {
@@ -167,7 +168,8 @@
     "delete_confirm_title": "Supprimer le modèle",
     "delete_confirm_message": "Voulez-vous vraiment supprimer « {{name}} » ?",
     "no_presets": "Aucun modèle disponible",
-    "no_preset": "Aucun modèle"
+    "no_preset": "Aucun modèle",
+    "manage_sowing_presets": "Gérer les modèles de semis"
   },
   "errors": {
     "unexpected_retry": "Oups, une erreur s'est produite. Veuillez réessayer.",
@@ -781,7 +783,8 @@
       "harvest": "Récolte",
       "fertilizerApplication": "Fertilisation",
       "cropProtectionApplication": "Protection des cultures",
-      "tillage": "Travail du sol"
+      "tillage": "Travail du sol",
+      "sowing": "Semis"
     },
     "crop_families": "Familles de cultures",
     "crops": "Cultures",
@@ -807,7 +810,9 @@
       "configure_heading": "Personnalisez votre calendrier cultural",
       "done_heading": "Terminé !",
       "done_body": "Vous pouvez modifier les paramètres à tout moment via l'icône en forme de roue dentée."
-    }
+    },
+    "sowings": "Semis",
+    "seeds": "Semences"
   },
   "harvests": {
     "harvest": "Récolte",
@@ -873,6 +878,54 @@
     "warning_unit_not_editable": "L'unité définit dans quelle unité l'engrais est appliqué.",
     "unit_info": "Sélectionnez l'unité dans laquelle l'engrais est appliqué (ex. litres).",
     "default_machine_info": "Pour faciliter l'enregistrement, une machine peut être définie pour appliquer cet engrais."
+  },
+  "seeds": {
+    "seeds": "Semences",
+    "new_seed": "Nouvelle semence",
+    "quantity_kind": "Mesuré par",
+    "quantity_kinds": {
+      "weight": "poids (kg, g)",
+      "count": "nombre (graines, plants)"
+    },
+    "quantity_kind_hint": "Poids pour les semences en kg/g, nombre pour les graines ou plants.",
+    "quantity_kind_permanent": "Ne peut pas être modifié par la suite.",
+    "quantity_kind_locked_hint": "Le mode de mesure ne peut pas être modifié afin que les quantités restent additionnables. Crée une nouvelle semence.",
+    "default_values_optional": "Valeurs par défaut (optionnel)",
+    "default_values_description": "Pré-remplies lors de la saisie d'un nouveau semis avec cette semence et modifiables à ce moment-là.",
+    "default_amount_optional": "Quantité par défaut (optionnel)",
+    "default_unit": "Unité par défaut",
+    "seed_in_use_warning": "Cette semence est utilisée et ne peut donc pas être supprimée.",
+    "delete_confirm_title": "Supprimer la semence ?",
+    "delete_confirm_message": "Les modèles avec cette semence seront également supprimés."
+  },
+  "sowings": {
+    "sowing": "Semis",
+    "add_sowing": "Ajouter un semis",
+    "edit_sowing": "Modifier le semis",
+    "sowing_date": "Semis du {{date}}",
+    "sowing_configuration": "Configurer le semis",
+    "seed": "Semence",
+    "seed_optional": "Semence (optionnel)",
+    "crop_from_seed": "La culture est reprise de la semence.",
+    "amount": "Quantité",
+    "rate": "Densité de semis",
+    "total": "Total",
+    "computed_total": "Correspond à {{amount}} {{unit}} sur {{area}}",
+    "computed_rate": "Correspond à {{amount}} {{unit}} sur {{area}}",
+    "divide_on_plots": "Répartir sur les parcelles",
+    "units": {
+      "kg_per_ha": "kg/ha",
+      "g_per_m2": "g/m²",
+      "seeds_per_ha": "graines/ha",
+      "seeds_per_m2": "graines/m²",
+      "plants_per_ha": "plants/ha",
+      "plants_per_m2": "plants/m²",
+      "kg": "kg",
+      "g": "g",
+      "seeds": "graines",
+      "plants": "plants"
+    },
+    "delete_confirm_title": "Supprimer le semis ?"
   },
   "fertilizer_application": {
     "fertilizer_application": "Fertilisation",
@@ -1561,7 +1614,8 @@
       "welcome_body": "Avec l'accès rapide, vous pouvez lancer jusqu'à 4 actions directement depuis l'écran d'accueil.",
       "settings_hint": "Vous pouvez ajuster les actions ou désactiver l'accès rapide à tout moment dans les paramètres.",
       "configure_heading": "Configurer les actions"
-    }
+    },
+    "sowing": "Ajouter un semis"
   },
   "tasks": {
     "tasks": "Tâches",

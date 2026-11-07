@@ -117,7 +117,8 @@
       "divided_amount_too_big": "The distributed quantity exceeds the available amount",
       "not_all_divided": "You have not distributed the entire amount",
       "required": "This field is required",
-      "min": "Minimum {{min}}"
+      "min": "Minimum {{min}}",
+      "greater_than_zero": "Must be greater than 0"
     }
   },
   "common": {
@@ -167,7 +168,8 @@
     "delete_confirm_title": "Delete Preset",
     "delete_confirm_message": "Are you sure you want to delete \"{{name}}\"?",
     "no_presets": "No presets available",
-    "no_preset": "No preset"
+    "no_preset": "No preset",
+    "manage_sowing_presets": "Manage sowing presets"
   },
   "errors": {
     "unexpected_retry": "Oops, something went wrong. Please try again.",
@@ -781,7 +783,8 @@
       "harvest": "Harvest",
       "fertilizerApplication": "Fertilization",
       "cropProtectionApplication": "Crop Protection",
-      "tillage": "Tillage"
+      "tillage": "Tillage",
+      "sowing": "Sowing"
     },
     "crop_families": "Crop Families",
     "crops": "Crops",
@@ -807,7 +810,9 @@
       "configure_heading": "Customize your Field Calendar",
       "done_heading": "Done!",
       "done_body": "You can change the settings at any time via the gear icon."
-    }
+    },
+    "sowings": "Sowing",
+    "seeds": "Seeds"
   },
   "harvests": {
     "harvest": "Harvest",
@@ -873,6 +878,54 @@
     "warning_unit_not_editable": "The unit defines in which unit the fertilizer is applied.",
     "unit_info": "Select in which unit (e.g. liter) the fertilizer is applied.",
     "default_machine_info": "To simplify recording, a machine can be defined with which this fertilizer is applied."
+  },
+  "seeds": {
+    "seeds": "Seeds",
+    "new_seed": "New seed",
+    "quantity_kind": "Measured by",
+    "quantity_kinds": {
+      "weight": "weight (kg, g)",
+      "count": "count (seeds, plants)"
+    },
+    "quantity_kind_hint": "Weight for seed in kg/g, count for seeds or seedlings.",
+    "quantity_kind_permanent": "Can't be changed later.",
+    "quantity_kind_locked_hint": "How the amount is measured can't be changed so amounts stay summable. Create a new seed instead.",
+    "default_values_optional": "Default values (optional)",
+    "default_values_description": "Prefilled when recording a new sowing with this seed and can be adjusted there.",
+    "default_amount_optional": "Default amount (optional)",
+    "default_unit": "Default unit",
+    "seed_in_use_warning": "This seed is in use and therefore can't be deleted.",
+    "delete_confirm_title": "Delete seed?",
+    "delete_confirm_message": "Presets with this seed are deleted as well."
+  },
+  "sowings": {
+    "sowing": "Sowing",
+    "add_sowing": "Add sowing",
+    "edit_sowing": "Edit sowing",
+    "sowing_date": "Sowing on {{date}}",
+    "sowing_configuration": "Configure sowing",
+    "seed": "Seed",
+    "seed_optional": "Seed (optional)",
+    "crop_from_seed": "The crop is taken from the seed.",
+    "amount": "Amount",
+    "rate": "Seed rate",
+    "total": "Total",
+    "computed_total": "Equals {{amount}} {{unit}} on {{area}}",
+    "computed_rate": "Equals {{amount}} {{unit}} on {{area}}",
+    "divide_on_plots": "Divide on plots",
+    "units": {
+      "kg_per_ha": "kg/ha",
+      "g_per_m2": "g/m²",
+      "seeds_per_ha": "seeds/ha",
+      "seeds_per_m2": "seeds/m²",
+      "plants_per_ha": "plants/ha",
+      "plants_per_m2": "plants/m²",
+      "kg": "kg",
+      "g": "g",
+      "seeds": "seeds",
+      "plants": "plants"
+    },
+    "delete_confirm_title": "Delete sowing?"
   },
   "fertilizer_application": {
     "fertilizer_application": "Fertilizer Application",
@@ -1561,7 +1614,8 @@
       "welcome_body": "With quick access you can launch up to 4 actions directly from the home screen.",
       "settings_hint": "You can adjust the actions or disable quick access at any time in settings.",
       "configure_heading": "Configure actions"
-    }
+    },
+    "sowing": "Add sowing"
   },
   "tasks": {
     "tasks": "Tasks",

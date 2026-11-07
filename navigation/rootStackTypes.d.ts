@@ -16,6 +16,8 @@ import { FertilizerApplicationsStackParamList } from "@/features/fertilizer-appl
 import { FertilizerStackParamList } from "@/features/fertilizers/navigation/fertilizer-routes";
 import { FieldCalendarStackParamList } from "@/features/field-calendar/navigation/field-calendar.routes";
 import { HarvestStackParamList } from "@/features/harvests/navigation/harvest-routes";
+import { SeedStackParamList } from "@/features/seeds/navigation/seed-routes";
+import { SowingStackParamList } from "@/features/sowings/navigation/sowing-routes";
 import { HomeStackParamList } from "@/features/home/navigation/home-routes";
 import { OnboardingStackParamList } from "@/features/onboarding/navigation/onboarding-routes";
 import { PlotsStackParamList } from "@/features/plots/navigation/plots-routes";
@@ -37,6 +39,8 @@ export type RootStackParamList = AuthStackParamList &
   HarvestStackParamList &
   FertilizerApplicationsStackParamList &
   FertilizerStackParamList &
+  SeedStackParamList &
+  SowingStackParamList &
   CropProtectionProductsStackParamList &
   CropProtectionApplicationStackParamList &
   FieldCalendarStackParamList &
