@@ -6,6 +6,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { usePermissions } from "@/features/user/users.hooks";
 import { H2, H3 } from "@/theme/Typography";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Alert, View } from "react-native";
@@ -70,10 +71,13 @@ function EditSeedForm({
     },
   });
 
-  const updateSeedMutation = useUpdateSeedMutation(onDone);
-  const deleteSeedMutation = useDeleteSeedMutation(onDone);
+  const [error, setError] = useState<string | null>(null);
+  const showError = () => setError(t("errors.unexpected_retry"));
+  const updateSeedMutation = useUpdateSeedMutation(onDone, showError);
+  const deleteSeedMutation = useDeleteSeedMutation(onDone, showError);
 
   function onSubmit(values: SeedFormValues) {
+    setError(null);
     updateSeedMutation.mutate({
       id: seed.id,
       name: values.name,
@@ -89,6 +93,16 @@ function EditSeedForm({
       footerComponent={
         canWrite("field_calendar") ? (
           <BottomActionContainer>
+            {error && (
+              <Card
+                style={{
+                  backgroundColor: theme.colors.danger,
+                  marginBottom: theme.spacing.s,
+                }}
+              >
+                <H3 style={{ color: theme.colors.white }}>{error}</H3>
+              </Card>
+            )}
             <View style={{ flexDirection: "row", gap: theme.spacing.s }}>
               <Button
                 style={{ flexGrow: 1 }}

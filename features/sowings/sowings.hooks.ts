@@ -136,6 +136,7 @@ export function useSowingPresetsQuery() {
 
 export function useCreateSowingPresetMutation(
   onSuccess?: (preset: SowingPreset) => void,
+  onError?: (error: Error) => void,
 ) {
   const queryClient = useQueryClient();
   const api = useApi();
@@ -148,6 +149,7 @@ export function useCreateSowingPresetMutation(
       });
       onSuccess?.(preset);
     },
+    onError,
   });
 }
 

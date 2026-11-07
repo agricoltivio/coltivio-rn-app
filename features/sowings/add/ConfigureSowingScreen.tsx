@@ -52,11 +52,11 @@ export function ConfigureSowingScreen({
 
   const { sowingUnits } = useSowingUnitsQuery();
   const { sowingPresets, isFetched: presetsLoaded } = useSowingPresetsQuery();
+  const showPresetError = () => Alert.alert(t("errors.unexpected_retry"));
   const createPresetMutation = useCreateSowingPresetMutation((preset) => {
     savePresetRef.current?.close();
     setValue("presetId", preset.id);
-  });
-  const showPresetError = () => Alert.alert(t("errors.unexpected_retry"));
+  }, showPresetError);
   const updatePresetMutation = useUpdateSowingPresetMutation(showPresetError);
   const deletePresetMutation = useDeleteSowingPresetMutation(showPresetError);
 
