@@ -84,7 +84,10 @@ export function useCreateSowingsMutation(
   });
 }
 
-export function useUpdateSowingMutation(onSuccess?: () => void) {
+export function useUpdateSowingMutation(
+  onSuccess?: () => void,
+  onError?: (error: Error) => void,
+) {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
@@ -100,10 +103,14 @@ export function useUpdateSowingMutation(onSuccess?: () => void) {
       queryClient.invalidateQueries({ queryKey: queryKeys.fieldEvents._def });
       onSuccess?.();
     },
+    onError,
   });
 }
 
-export function useDeleteSowingMutation(onSuccess?: () => void) {
+export function useDeleteSowingMutation(
+  onSuccess?: () => void,
+  onError?: (error: Error) => void,
+) {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
@@ -114,6 +121,7 @@ export function useDeleteSowingMutation(onSuccess?: () => void) {
       queryClient.invalidateQueries({ queryKey: queryKeys.seeds._def });
       onSuccess?.();
     },
+    onError,
   });
 }
 
@@ -143,7 +151,9 @@ export function useCreateSowingPresetMutation(
   });
 }
 
-export function useUpdateSowingPresetMutation() {
+export function useUpdateSowingPresetMutation(
+  onError?: (error: Error) => void,
+) {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
@@ -154,10 +164,13 @@ export function useUpdateSowingPresetMutation() {
         queryKey: queryKeys.sowings.presets.queryKey,
       });
     },
+    onError,
   });
 }
 
-export function useDeleteSowingPresetMutation() {
+export function useDeleteSowingPresetMutation(
+  onError?: (error: Error) => void,
+) {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
@@ -167,5 +180,6 @@ export function useDeleteSowingPresetMutation() {
         queryKey: queryKeys.sowings.presets.queryKey,
       });
     },
+    onError,
   });
 }

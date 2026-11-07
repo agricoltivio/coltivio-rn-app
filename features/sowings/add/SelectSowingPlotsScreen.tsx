@@ -67,6 +67,8 @@ export function SelectSowingPlotsScreen({
       }[],
     ) => {
       for (const { plot, geometry, size } of intersections) {
+        // a sliver rounds to 0 m², the API refuses a sowing without area
+        if (round(size, 0) < 1) continue;
         putSowingPlot({
           plotId: plot.id,
           name: plot.name,

@@ -7,9 +7,10 @@ import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
-import { Body, H2 } from "@/theme/Typography";
-import { toLocalDateString } from "@/utils/date";
-import { useEffect } from "react";
+import { Body, H2, H3 } from "@/theme/Typography";
+import { Card } from "@/components/card/Card";
+import { parseDateOnly, toLocalDateString } from "@/utils/date";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -64,7 +65,10 @@ function EditSowingForm({
   const { seeds } = useSeedsQuery();
   const { sowingUnits } = useSowingUnitsQuery();
   const units = sowingUnits ?? [];
-  const updateSowingMutation = useUpdateSowingMutation(onSaved);
+  const [error, setError] = useState<string | null>(null);
+  const updateSowingMutation = useUpdateSowingMutation(onSaved, () =>
+    setError(t("errors.unexpected_retry")),
+  );
 
   const {
     control,
@@ -74,7 +78,8 @@ function EditSowingForm({
     formState: { errors, isDirty },
   } = useForm<FormValues>({
     defaultValues: {
-      date: new Date(sowing.date),
+      // calendar day, new Date() would shift it west of UTC and save the day before
+      date: parseDateOnly(sowing.date),
       seedId: sowing.seedId,
       cropId: sowing.cropId,
       unit: sowing.unit,
@@ -119,6 +124,7 @@ function EditSowingForm({
 
   function onSubmit(values: FormValues) {
     if (!unit) return;
+    setError(null);
     updateSowingMutation.mutate({
       sowingId: sowing.id,
       input: {
@@ -138,6 +144,16 @@ function EditSowingForm({
       headerVisible
       footerComponent={
         <BottomActionContainer>
+          {error && (
+            <Card
+              style={{
+                backgroundColor: theme.colors.danger,
+                marginBottom: theme.spacing.s,
+              }}
+            >
+              <H3 style={{ color: theme.colors.white }}>{error}</H3>
+            </Card>
+          )}
           <Button
             title={t("buttons.save")}
             onPress={handleSubmit(onSubmit)}

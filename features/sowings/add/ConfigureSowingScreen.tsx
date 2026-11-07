@@ -15,10 +15,10 @@ import {
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { Body, H2 } from "@/theme/Typography";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { ConfigureSowingScreenProps } from "../navigation/sowing-routes";
 import {
@@ -56,8 +56,9 @@ export function ConfigureSowingScreen({
     savePresetRef.current?.close();
     setValue("presetId", preset.id);
   });
-  const updatePresetMutation = useUpdateSowingPresetMutation();
-  const deletePresetMutation = useDeleteSowingPresetMutation();
+  const showPresetError = () => Alert.alert(t("errors.unexpected_retry"));
+  const updatePresetMutation = useUpdateSowingPresetMutation(showPresetError);
+  const deletePresetMutation = useDeleteSowingPresetMutation(showPresetError);
 
   const {
     sowing,
@@ -102,13 +103,16 @@ export function ConfigureSowingScreen({
   const unitValue = watch("unit");
   const amountValue = watch("amount");
 
-  useEffect(() => {
-    const preset = sowingPresets?.find((p) => p.id === presetId);
+  // Applied only when a preset is picked, not on a refetch of the presets (e.g.
+  // after a rename), which would overwrite the amount the user edited since
+  function selectPreset(selectedPresetId: string | undefined) {
+    setValue("presetId", selectedPresetId);
+    const preset = sowingPresets?.find((p) => p.id === selectedPresetId);
     if (preset) {
       setValue("unit", preset.unit);
       setValue("amount", preset.amount.toString());
     }
-  }, [presetId, sowingPresets, setValue]);
+  }
 
   const unit = availableUnits.find(
     (unitInfo) => unitInfo.unit === unitValue,
@@ -182,12 +186,12 @@ export function ConfigureSowingScreen({
           <Controller
             control={control}
             name="presetId"
-            render={({ field: { value, onChange } }) => (
+            render={({ field: { value } }) => (
               <PresetSelect
                 label={t("presets.preset")}
                 value={value}
                 presets={matchingPresets}
-                onChange={onChange}
+                onChange={selectPreset}
                 onManagePress={() => managePresetsRef.current?.open()}
                 placeholder={t("presets.select_preset")}
                 noneLabel={t("presets.no_preset")}

@@ -11,7 +11,7 @@ import { YearMultiSelect } from "@/components/charts/YearMultiSelect";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
 import { H3, Headline, Subtitle } from "@/theme/Typography";
-import { formatLocalizedDate } from "@/utils/date";
+import { formatLocalizedDate, parseDateOnly } from "@/utils/date";
 import Fuse from "fuse.js";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -122,7 +122,7 @@ export function SowingOverview({
           id: sowing.id,
           rawDate: sowing.date,
           date: formatLocalizedDate(
-            new Date(sowing.date),
+            parseDateOnly(sowing.date),
             i18n.language,
             "long",
             false,
@@ -149,7 +149,7 @@ export function SowingOverview({
     // grouped by year, newest first
     const byYear: Record<number, typeof filtered> = {};
     for (const item of filtered) {
-      const year = new Date(item.rawDate).getFullYear();
+      const year = parseDateOnly(item.rawDate).getFullYear();
       if (!byYear[year]) byYear[year] = [];
       byYear[year].push(item);
     }

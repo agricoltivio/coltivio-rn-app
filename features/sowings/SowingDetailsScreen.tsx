@@ -2,6 +2,7 @@ import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { usePermissions } from "@/features/user/users.hooks";
+import { parseDateOnly } from "@/utils/date";
 import { useTranslation } from "react-i18next";
 import { Alert, View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -18,8 +19,9 @@ export function SowingDetailsScreen({
   const { canWrite } = usePermissions();
   const sowingId = route.params.sowingId;
   const { sowing } = useSowingQuery(sowingId);
-  const deleteSowingMutation = useDeleteSowingMutation(() =>
-    navigation.goBack(),
+  const deleteSowingMutation = useDeleteSowingMutation(
+    () => navigation.goBack(),
+    () => Alert.alert(t("errors.unexpected_retry")),
   );
 
   if (!sowing) {
@@ -70,7 +72,7 @@ export function SowingDetailsScreen({
           },
         ]}
         unit={sowing.unit}
-        date={new Date(sowing.date)}
+        date={parseDateOnly(sowing.date)}
         cropName={sowing.crop.name}
         seedName={sowing.seed?.name}
         additionalNotes={sowing.additionalNotes}
