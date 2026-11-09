@@ -190,7 +190,7 @@ export function AnimalHeatFormScreen({
               <RHSelect
                 name="sireId"
                 control={control}
-                label={t("breeding.sire")}
+                label={t("breeding.sire_optional")}
                 data={sireSelectData}
                 enableSearch
                 clearable
@@ -198,7 +198,7 @@ export function AnimalHeatFormScreen({
               <RHTextInput
                 name="sireName"
                 control={control}
-                label={t("breeding.sire_external")}
+                label={t("breeding.sire_external_optional")}
               />
               {expectedBirthDate && (
                 <View
@@ -222,7 +222,7 @@ export function AnimalHeatFormScreen({
           <RHTextAreaInput
             name="notes"
             control={control}
-            label={t("common.notes")}
+            label={t("breeding.notes_optional")}
           />
         </View>
       </ScrollView>

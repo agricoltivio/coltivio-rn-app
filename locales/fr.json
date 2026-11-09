@@ -1440,7 +1440,9 @@
     "herd_changes_summary": "{{added}} ajoutés, {{removed}} retirés. À partir de quelle date ?",
     "delete_herd_confirm": "Supprimer le troupeau « {{name}} » ?",
     "delete_herd_confirm_info": "Cette action est irréversible.",
-    "timeline_view_overview": "Aperçu"
+    "timeline_view_overview": "Aperçu",
+    "color_optional": "Couleur (facultative)",
+    "notes_optional": "Notes (facultatives)"
   },
   "drugs": {
     "drugs": "Médicaments",
@@ -1914,6 +1916,10 @@
       "pig": "En chaleur",
       "deer": "En chaleur"
     },
-    "amount": "Quantité"
+    "amount": "Quantité",
+    "conception_failed": "Non fécondée",
+    "sire_optional": "Père (facultatif)",
+    "sire_external_optional": "Père externe (facultatif)",
+    "notes_optional": "Notes (facultatives)"
   }
 }

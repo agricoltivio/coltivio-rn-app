@@ -28,12 +28,7 @@ import { usePermissions } from "@/features/user/users.hooks";
 import { AnimalDetailsScreenProps } from "./navigation/animals-routes";
 import { formatLocalizedDate, parseDateOnly } from "@/utils/date";
 import { Switch } from "@/components/inputs/Switch";
-import { addDays } from "date-fns";
-import {
-  useAnimalHeatsQuery,
-  useAnimalWeightsQuery,
-  useGestationSettingsQuery,
-} from "./breeding.hooks";
+import { useAnimalHeatsQuery, useAnimalWeightsQuery } from "./breeding.hooks";
 import { AnimalWeightChartDrawer } from "./AnimalWeightField";
 
 export function AnimalDetailsScreen({
@@ -49,7 +44,6 @@ export function AnimalDetailsScreen({
   const { weights } = useAnimalWeightsQuery(animalId);
   const isFemale = animal?.sex === "female";
   const { heats } = useAnimalHeatsQuery(animalId, isFemale);
-  const { gestationSettings } = useGestationSettingsQuery();
 
   const deleteAnimalMutation = useDeleteAnimalMutation(() =>
     navigation.goBack(),
@@ -496,13 +490,10 @@ export function AnimalDetailsScreen({
                 }}
               >
                 {heats.map((heat) => {
-                  const gestationDays = gestationSettings?.find(
-                    (setting) => setting.animalType === animal.type,
-                  )?.gestationDays;
-                  const expectedBirthDate =
-                    heat.mated && gestationDays
-                      ? addDays(parseDateOnly(heat.date), gestationDays)
-                      : null;
+                  // Computed on the server, also knows when a later heat showed the mating didn't work
+                  const expectedBirthDate = heat.expectedBirthDate
+                    ? parseDateOnly(heat.expectedBirthDate)
+                    : null;
                   return (
                     <ListItem
                       key={heat.id}
@@ -523,12 +514,18 @@ export function AnimalDetailsScreen({
                             parseDateOnly(heat.date),
                             locale,
                           )}
+                          {` · ${t(`breeding.heat_by_type.${animal.type}`)}`}
                           {heat.mated ? ` · ${t("breeding.mated")}` : ""}
                         </ListItem.Title>
                         {expectedBirthDate && (
                           <ListItem.Body>
                             {t("breeding.expected_birth")}:{" "}
                             {formatLocalizedDate(expectedBirthDate, locale)}
+                          </ListItem.Body>
+                        )}
+                        {heat.conceptionFailed && (
+                          <ListItem.Body>
+                            {t("breeding.conception_failed")}
                           </ListItem.Body>
                         )}
                       </ListItem.Content>

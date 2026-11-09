@@ -1440,7 +1440,9 @@
     "herd_changes_summary": "{{added}} hinzugefügt, {{removed}} entfernt. Ab welchem Datum gilt das?",
     "delete_herd_confirm": "Herde «{{name}}» löschen?",
     "delete_herd_confirm_info": "Das kann nicht rückgängig gemacht werden.",
-    "timeline_view_overview": "Übersicht"
+    "timeline_view_overview": "Übersicht",
+    "color_optional": "Farbe (optional)",
+    "notes_optional": "Notizen (optional)"
   },
   "drugs": {
     "drugs": "Medikamente",
@@ -1916,6 +1918,10 @@
       "pig": "Rauschig",
       "deer": "Brunftig"
     },
-    "amount": "Menge"
+    "amount": "Menge",
+    "conception_failed": "Nicht trächtig geworden",
+    "sire_optional": "Vatertier (optional)",
+    "sire_external_optional": "Externes Vatertier (optional)",
+    "notes_optional": "Notizen (optional)"
   }
 }

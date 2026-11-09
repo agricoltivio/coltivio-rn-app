@@ -31594,7 +31594,16 @@
                         "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
                       }
                     },
-                    "createdBy": { "type": ["string", "null"] }
+                    "createdBy": { "type": ["string", "null"] },
+                    "expectedBirthDate": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": ["string", "null"],
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "conceptionFailed": { "type": "boolean" }
                   },
                   "required": [
                     "id",
@@ -31884,6 +31893,7 @@
                         "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
                       }
                     },
+                    "conceptionFailed": { "type": "boolean" },
                     "animal": {
                       "type": "object",
                       "properties": {
@@ -31928,6 +31938,7 @@
                     "createdAt",
                     "createdBy",
                     "expectedBirthDate",
+                    "conceptionFailed",
                     "animal",
                     "sire"
                   ],

@@ -22,6 +22,7 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
+import { usePermissions } from "@/features/user/users.hooks";
 import { useBreedingCalendarQuery } from "./breeding.hooks";
 import { BreedingCalendarScreenProps } from "./navigation/animals-routes";
 
@@ -40,6 +41,7 @@ export function BreedingCalendarScreen({
   const { t, i18n } = useTranslation();
   const locale = i18n.language;
   const theme = useTheme();
+  const { canWrite } = usePermissions();
   const [visibleMonth, setVisibleMonth] = useState(() =>
     startOfMonth(new Date()),
   );
@@ -80,14 +82,29 @@ export function BreedingCalendarScreen({
     return events.sort((a, b) => a.date.getTime() - b.date.getTime());
   }, [entries, visibleMonth]);
 
-  // Legend uses the species words of this month's heats ("Bockig / Stierig"), hidden without any
+  // Distinct colors: heat orange, mated heat teal, expected birth green
+  function eventColor(event: CalendarEvent) {
+    if (event.kind === "birth") return theme.colors.success;
+    return event.entry.mated ? theme.colors.primary : theme.colors.amber;
+  }
+
+  // Legend only lists what this month contains; heats use the species words ("Bockig / Stierig")
   const heatLegendLabel = [
     ...new Set(
       monthEvents
-        .filter((event) => event.kind === "heat")
+        .filter((event) => event.kind === "heat" && !event.entry.mated)
         .map((event) => t(`breeding.heat_by_type.${event.entry.animal.type}`)),
     ),
   ].join(" / ");
+  const legendItems = [
+    ...(heatLegendLabel
+      ? [{ color: theme.colors.amber, label: heatLegendLabel }]
+      : []),
+    ...(monthEvents.some((event) => event.kind === "heat" && event.entry.mated)
+      ? [{ color: theme.colors.primary, label: t("breeding.mated") }]
+      : []),
+    { color: theme.colors.success, label: t("breeding.expected_birth") },
+  ];
 
   const shownEvents = selectedDay
     ? monthEvents.filter((event) => isSameDay(event.date, selectedDay))
@@ -187,10 +204,7 @@ export function BreedingCalendarScreen({
               const dayEvents = monthEvents.filter((event) =>
                 isSameDay(event.date, day),
               );
-              const hasBirth = dayEvents.some(
-                (event) => event.kind === "birth",
-              );
-              const hasHeat = dayEvents.some((event) => event.kind === "heat");
+              const dayColors = [...new Set(dayEvents.map(eventColor))];
               const isSelected =
                 selectedDay != null && isSameDay(day, selectedDay);
               const isToday = isSameDay(day, today);
@@ -230,26 +244,17 @@ export function BreedingCalendarScreen({
                     </Body>
                   </View>
                   <View style={{ flexDirection: "row", gap: 2, height: 6 }}>
-                    {hasBirth && (
+                    {dayColors.map((dotColor) => (
                       <View
+                        key={dotColor}
                         style={{
                           width: 6,
                           height: 6,
                           borderRadius: 3,
-                          backgroundColor: theme.colors.primary,
+                          backgroundColor: dotColor,
                         }}
                       />
-                    )}
-                    {hasHeat && (
-                      <View
-                        style={{
-                          width: 6,
-                          height: 6,
-                          borderRadius: 3,
-                          backgroundColor: theme.colors.gray2,
-                        }}
-                      />
-                    )}
+                    ))}
                   </View>
                 </TouchableOpacity>
               );
@@ -258,27 +263,15 @@ export function BreedingCalendarScreen({
           <View
             style={{
               flexDirection: "row",
-              gap: theme.spacing.m,
+              flexWrap: "wrap",
+              columnGap: theme.spacing.m,
+              rowGap: theme.spacing.xxs,
               marginTop: theme.spacing.s,
             }}
           >
-            <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
-            >
+            {legendItems.map((legendItem) => (
               <View
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: 4,
-                  backgroundColor: theme.colors.primary,
-                }}
-              />
-              <Body style={{ fontSize: 12 }}>
-                {t("breeding.expected_birth")}
-              </Body>
-            </View>
-            {heatLegendLabel && (
-              <View
+                key={legendItem.label}
                 style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
               >
                 <View
@@ -286,12 +279,12 @@ export function BreedingCalendarScreen({
                     width: 8,
                     height: 8,
                     borderRadius: 4,
-                    backgroundColor: theme.colors.gray2,
+                    backgroundColor: legendItem.color,
                   }}
                 />
-                <Body style={{ fontSize: 12 }}>{heatLegendLabel}</Body>
+                <Body style={{ fontSize: 12 }}>{legendItem.label}</Body>
               </View>
-            )}
+            ))}
           </View>
         </View>
 
@@ -316,35 +309,50 @@ export function BreedingCalendarScreen({
                   <ListItem
                     key={event.key}
                     style={{ paddingVertical: 5 }}
+                    // Births and heats both belong to the heat entry, open it to edit (else the animal)
                     onPress={() =>
-                      navigation.navigate("AnimalDetails", {
-                        animalId: event.entry.animal.id,
-                      })
+                      canWrite("animals")
+                        ? navigation.navigate("AnimalHeatForm", {
+                            animalId: event.entry.animal.id,
+                            heatId: event.entry.id,
+                          })
+                        : navigation.navigate("AnimalDetails", {
+                            animalId: event.entry.animal.id,
+                          })
                     }
                   >
-                    <Ionicons
-                      name={
-                        event.kind === "birth" ? "heart" : "calendar-outline"
-                      }
-                      size={20}
-                      color={
-                        event.kind === "birth"
-                          ? theme.colors.primary
-                          : theme.colors.gray2
-                      }
-                      style={{ marginRight: theme.spacing.s }}
-                    />
+                    {/* ListItem stretches its children to the row height, center the icon in its own box */}
+                    <View
+                      style={{
+                        justifyContent: "center",
+                        paddingLeft: theme.spacing.m,
+                      }}
+                    >
+                      <Ionicons
+                        name={
+                          event.kind === "birth" ? "heart" : "calendar-outline"
+                        }
+                        size={20}
+                        color={eventColor(event)}
+                      />
+                    </View>
                     <ListItem.Content>
                       <ListItem.Title>{animalLabel}</ListItem.Title>
                       <ListItem.Body>
                         {formatLocalizedDate(event.date, locale)} ·{" "}
                         {event.kind === "birth"
                           ? t("breeding.expected_birth")
-                          : event.entry.mated
-                            ? `${t(`breeding.heat_by_type.${event.entry.animal.type}`)} · ${t("breeding.mated")}`
-                            : t(
+                          : [
+                              t(
                                 `breeding.heat_by_type.${event.entry.animal.type}`,
-                              )}
+                              ),
+                              ...(event.entry.mated
+                                ? [t("breeding.mated")]
+                                : []),
+                              ...(event.entry.conceptionFailed
+                                ? [t("breeding.conception_failed")]
+                                : []),
+                            ].join(" · ")}
                         {sireLabel ? ` · ${sireLabel}` : ""}
                       </ListItem.Body>
                     </ListItem.Content>

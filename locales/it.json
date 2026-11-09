@@ -1440,7 +1440,9 @@
     "herd_changes_summary": "{{added}} aggiunti, {{removed}} rimossi. Da quale data vale?",
     "delete_herd_confirm": "Eliminare la mandria «{{name}}»?",
     "delete_herd_confirm_info": "Questa azione non può essere annullata.",
-    "timeline_view_overview": "Panoramica"
+    "timeline_view_overview": "Panoramica",
+    "color_optional": "Colore (facoltativo)",
+    "notes_optional": "Note (facoltative)"
   },
   "drugs": {
     "drugs": "Medicinali",
@@ -1915,6 +1917,10 @@
       "pig": "In calore",
       "deer": "In calore"
     },
-    "amount": "Quantità"
+    "amount": "Quantità",
+    "conception_failed": "Non rimasta gravida",
+    "sire_optional": "Padre (facoltativo)",
+    "sire_external_optional": "Padre esterno (facoltativo)",
+    "notes_optional": "Note (facoltative)"
   }
 }

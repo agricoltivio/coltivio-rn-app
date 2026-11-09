@@ -1440,7 +1440,9 @@
     "herd_changes_summary": "{{added}} added, {{removed}} removed. From which date does this apply?",
     "delete_herd_confirm": "Delete herd \"{{name}}\"?",
     "delete_herd_confirm_info": "This can't be undone.",
-    "timeline_view_overview": "Overview"
+    "timeline_view_overview": "Overview",
+    "color_optional": "Color (optional)",
+    "notes_optional": "Notes (optional)"
   },
   "drugs": {
     "drugs": "Drugs",
@@ -1915,6 +1917,10 @@
       "pig": "In heat",
       "deer": "In heat"
     },
-    "amount": "Amount"
+    "amount": "Amount",
+    "conception_failed": "Did not conceive",
+    "sire_optional": "Sire (optional)",
+    "sire_external_optional": "External sire (optional)",
+    "notes_optional": "Notes (optional)"
   }
 }

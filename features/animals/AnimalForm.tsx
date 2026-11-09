@@ -252,7 +252,7 @@ export function AnimalForm({
       <RHTextInput
         name="color"
         control={control}
-        label={t("animals.color")}
+        label={t("animals.color_optional")}
         error={errors.color?.message}
       />
       {/* Herd select with + button */}
@@ -342,7 +342,7 @@ export function AnimalForm({
       <RHTextAreaInput
         name="notes"
         control={control}
-        label={t("animals.notes")}
+        label={t("animals.notes_optional")}
         error={errors.notes?.message}
       />
     </View>

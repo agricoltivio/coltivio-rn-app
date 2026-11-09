@@ -9696,6 +9696,12 @@ export interface components {
            */
           createdAt: string;
           createdBy: string | null;
+          /**
+           * Format: date-time
+           * @description YYYY-MM-DDTHH:mm:ss.sssZ
+           */
+          expectedBirthDate?: string | null;
+          conceptionFailed?: boolean;
         }[];
       };
     };
@@ -9826,6 +9832,7 @@ export interface components {
            * @description YYYY-MM-DDTHH:mm:ss.sssZ
            */
           expectedBirthDate: string | null;
+          conceptionFailed: boolean;
           animal: {
             id: string;
             name: string;
