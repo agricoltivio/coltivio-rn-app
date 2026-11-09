@@ -17,7 +17,7 @@ import {
 import { Portal } from "@gorhom/portal";
 import { RefObject, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Keyboard, Platform, Pressable, View } from "react-native";
+import { Alert, Keyboard, Platform, Pressable, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import {
   useCreateAnimalWeightMutation,
@@ -97,10 +97,16 @@ export function AnimalWeightDrawer({
       return;
     }
     const input = { date: toLocalDateString(entryDate), weightKg };
+    // The drawer stays open on failure, tell the user instead of doing nothing
+    const showError = () =>
+      Alert.alert(t("common.error"), t("common.unknown_error"));
     if (step === "edit" && currentWeight?.id) {
-      updateWeightMutation.mutate({ weightId: currentWeight.id, input });
+      updateWeightMutation.mutate(
+        { weightId: currentWeight.id, input },
+        { onError: showError },
+      );
     } else {
-      createWeightMutation.mutate({ animalId, input });
+      createWeightMutation.mutate({ animalId, input }, { onError: showError });
     }
   }
 
@@ -151,6 +157,8 @@ export function AnimalWeightDrawer({
                     value={entryDate}
                     mode="date"
                     display="inline"
+                    // A weighing can't be in the future
+                    maximumDate={new Date()}
                     locale={i18n.language}
                     themeVariant="light"
                     onChange={(_event, selectedDate) => {
@@ -165,6 +173,8 @@ export function AnimalWeightDrawer({
                     value={entryDate}
                     mode="date"
                     display="calendar"
+                    // A weighing can't be in the future
+                    maximumDate={new Date()}
                     onChange={(event, selectedDate) => {
                       setDatePickerOpen(false);
                       if (event.type === "set" && selectedDate) {

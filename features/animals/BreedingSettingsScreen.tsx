@@ -63,13 +63,15 @@ export function BreedingSettingsScreen(_props: BreedingSettingsScreenProps) {
           gestationInputs[setting.animalType] ?? "",
           10,
         );
+        const isValidValue =
+          Number.isFinite(gestationDays) && gestationDays > 0;
+        // An empty field resets the type to its default. An unchanged default stays a default, so
+        // later changes of the default still apply and it keeps its "default" label.
+        const keepsDefault =
+          setting.isDefault && gestationDays === setting.gestationDays;
         return {
           animalType: setting.animalType,
-          // An empty field resets the type to its default
-          gestationDays:
-            Number.isFinite(gestationDays) && gestationDays > 0
-              ? gestationDays
-              : null,
+          gestationDays: isValidValue && !keepsDefault ? gestationDays : null,
         };
       }),
     });

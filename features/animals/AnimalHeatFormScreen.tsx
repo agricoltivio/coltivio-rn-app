@@ -46,7 +46,8 @@ export function AnimalHeatFormScreen({
   const { animalId, heatId } = route.params;
   const isEditMode = !!heatId;
   const { animal } = useAnimalByIdQuery(animalId);
-  const { animals } = useAnimalsQuery(true);
+  // All animals, so a sire that died since the mating can still be shown
+  const { animals } = useAnimalsQuery(false);
   const { heats } = useAnimalHeatsQuery(animalId, isEditMode);
   const { gestationSettings } = useGestationSettingsQuery();
   const existingHeat = heats?.find((heat) => heat.id === heatId);
@@ -70,21 +71,26 @@ export function AnimalHeatFormScreen({
   const heatDate = useWatch({ control, name: "date" });
   const mated = useWatch({ control, name: "mated" });
 
-  // Living males of the same type are offered as sire
+  // Living males of the same type are offered as sire, plus the saved sire if it died since
   const sireSelectData = useMemo(
     () =>
       (animals ?? [])
         .filter(
           (candidate) =>
-            candidate.sex === "male" && candidate.type === animal?.type,
+            candidate.sex === "male" &&
+            candidate.type === animal?.type &&
+            (candidate.dateOfDeath == null ||
+              candidate.id === existingHeat?.sireId),
         )
         .map((candidate) => ({
-          label: candidate.earTag?.number
-            ? `${candidate.earTag.number} - ${candidate.name}`
-            : candidate.name,
+          label: `${
+            candidate.earTag?.number
+              ? `${candidate.earTag.number} - ${candidate.name}`
+              : candidate.name
+          }${candidate.dateOfDeath ? " †" : ""}`,
           value: candidate.id,
         })),
-    [animals, animal?.type],
+    [animals, animal?.type, existingHeat?.sireId],
   );
 
   const gestationDays = gestationSettings?.find(
@@ -99,6 +105,11 @@ export function AnimalHeatFormScreen({
   const updateMutation = useUpdateAnimalHeatMutation(() => navigation.goBack());
   const deleteMutation = useDeleteAnimalHeatMutation(() => navigation.goBack());
 
+  // The screen stays open on failure, tell the user instead of doing nothing
+  function showError() {
+    Alert.alert(t("common.error"), t("common.unknown_error"));
+  }
+
   function onSubmit(values: HeatFormValues) {
     const input = {
       date: toLocalDateString(values.date),
@@ -108,9 +119,9 @@ export function AnimalHeatFormScreen({
       notes: values.notes || null,
     };
     if (heatId) {
-      updateMutation.mutate({ heatId, input });
+      updateMutation.mutate({ heatId, input }, { onError: showError });
     } else {
-      createMutation.mutate({ animalId, input });
+      createMutation.mutate({ animalId, input }, { onError: showError });
     }
   }
 

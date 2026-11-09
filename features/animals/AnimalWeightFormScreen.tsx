@@ -61,6 +61,11 @@ export function AnimalWeightFormScreen({
     navigation.goBack(),
   );
 
+  // The screen stays open on failure, tell the user instead of doing nothing
+  function showError() {
+    Alert.alert(t("common.error"), t("common.unknown_error"));
+  }
+
   function onSubmit(values: WeightFormValues) {
     const input = {
       date: toLocalDateString(values.date),
@@ -68,9 +73,9 @@ export function AnimalWeightFormScreen({
       notes: values.notes || null,
     };
     if (weightId) {
-      updateMutation.mutate({ weightId, input });
+      updateMutation.mutate({ weightId, input }, { onError: showError });
     } else {
-      createMutation.mutate({ animalId, input });
+      createMutation.mutate({ animalId, input }, { onError: showError });
     }
   }
 
