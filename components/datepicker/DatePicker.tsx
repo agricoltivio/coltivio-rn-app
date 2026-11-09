@@ -1,6 +1,6 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { TextInput } from "../inputs/TextInput";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useId, useRef, useState } from "react";
 import {
   Keyboard,
   Platform,
@@ -53,6 +53,9 @@ export function DatePicker({
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  // PortalHost renders portals as an unkeyed list; a unique key stops React from handing
+  // this sheet's state to another portal when portals are added or removed
+  const portalKey = useId();
   // Temporary date while user is selecting in iOS modal before confirming
   const [tempDate, setTempDate] = useState<Date>(date ?? new Date());
 
@@ -123,7 +126,7 @@ export function DatePicker({
       {/* iOS: DateTimePicker inside BottomSheetModal with confirm button */}
       {Platform.OS === "ios" && (
         <Portal>
-          <BottomSheetModalProvider>
+          <BottomSheetModalProvider key={portalKey}>
             <BottomDrawerModal ref={bottomSheetModalRef}>
               <DateTimePicker
                 value={tempDate}

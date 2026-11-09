@@ -30,11 +30,15 @@ export function useAnimalsQuery(
   return { animals: data, ...rest };
 }
 
-export function useFamilyTreeQuery(animalType: AnimalType) {
+export function useFamilyTreeQuery(
+  animalType: AnimalType,
+  enabled: boolean = true,
+) {
   const api = useApi();
   const { data, ...rest } = useQuery<FamilyTreeData>({
     queryKey: queryKeys.animals.familyTree(animalType).queryKey,
     queryFn: () => api.animals.getFamilyTree(animalType),
+    enabled,
   });
   return { familyTree: data, ...rest };
 }

@@ -3522,7 +3522,7 @@ export interface components {
     GetV1LayersPlotsBboxNegativeResponse: {
       error: string;
       /** @enum {string} */
-      code?: "invalid_geometry";
+      code?: "invalid_geometry" | "ear_tag_range_conflict";
     };
     GetV1LayersPlotsFarmsFederalFarmIdOnlyPositiveResponse: {
       data: {
@@ -8570,6 +8570,8 @@ export interface components {
           /** @enum {string|null} */
           deathReason: "died" | "slaughtered" | null;
           herdId: string | null;
+          color: string | null;
+          notes: string | null;
           milkAndMeatUsable: boolean;
         }[];
         count: number;
@@ -8608,6 +8610,8 @@ export interface components {
         /** @enum {string|null} */
         deathReason: "died" | "slaughtered" | null;
         herdId: string | null;
+        color: string | null;
+        notes: string | null;
       };
     };
     PostV1AnimalsRequestBody: {
@@ -8635,6 +8639,8 @@ export interface components {
       /** @enum {string|null} */
       deathReason?: "died" | "slaughtered" | null;
       herdId?: string | null;
+      color?: string | null;
+      notes?: string | null;
       /**
        * Format: date-time
        * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -8679,6 +8685,8 @@ export interface components {
           /** @enum {string|null} */
           deathReason: "died" | "slaughtered" | null;
           herdId: string | null;
+          color: string | null;
+          notes: string | null;
         }[];
         count: number;
       };
@@ -8698,8 +8706,8 @@ export interface components {
         dateOfDeath?: string;
         /** @enum {string} */
         deathReason?: "died" | "slaughtered";
-        motherId?: string;
-        fatherId?: string;
+        motherId?: string | null;
+        fatherId?: string | null;
       };
     };
     /** @enum {string} */
@@ -8868,6 +8876,8 @@ export interface components {
         /** @enum {string|null} */
         deathReason: "died" | "slaughtered" | null;
         herdId: string | null;
+        color: string | null;
+        notes: string | null;
         mother: {
           id: string;
           farmId: string;
@@ -8900,6 +8910,8 @@ export interface components {
           /** @enum {string|null} */
           deathReason: "died" | "slaughtered" | null;
           herdId: string | null;
+          color: string | null;
+          notes: string | null;
         } | null;
         father: {
           id: string;
@@ -8933,6 +8945,8 @@ export interface components {
           /** @enum {string|null} */
           deathReason: "died" | "slaughtered" | null;
           herdId: string | null;
+          color: string | null;
+          notes: string | null;
         } | null;
         childrenAsMother: {
           id: string;
@@ -8966,6 +8980,8 @@ export interface components {
           /** @enum {string|null} */
           deathReason: "died" | "slaughtered" | null;
           herdId: string | null;
+          color: string | null;
+          notes: string | null;
         }[];
         childrenAsFather: {
           id: string;
@@ -8999,6 +9015,8 @@ export interface components {
           /** @enum {string|null} */
           deathReason: "died" | "slaughtered" | null;
           herdId: string | null;
+          color: string | null;
+          notes: string | null;
         }[];
         treatments: {
           id: string;
@@ -9137,6 +9155,8 @@ export interface components {
         /** @enum {string|null} */
         deathReason: "died" | "slaughtered" | null;
         herdId: string | null;
+        color: string | null;
+        notes: string | null;
       };
     };
     PatchV1AnimalsByIdAnimalIdRequestBody: {
@@ -9164,6 +9184,8 @@ export interface components {
       /** @enum {string|null} */
       deathReason?: "died" | "slaughtered" | null;
       herdId?: string | null;
+      color?: string | null;
+      notes?: string | null;
       /**
        * Format: date-time
        * @description YYYY-MM-DDTHH:mm:ss.sssZ
@@ -9207,6 +9229,8 @@ export interface components {
           /** @enum {string|null} */
           deathReason: "died" | "slaughtered" | null;
           herdId: string | null;
+          color: string | null;
+          notes: string | null;
         }[];
         count: number;
       };
@@ -9655,6 +9679,8 @@ export interface components {
           /** @enum {string|null} */
           deathReason: "died" | "slaughtered" | null;
           herdId: string | null;
+          color: string | null;
+          notes: string | null;
         }[];
         meadowEntries?: {
           meadowId: string;
@@ -9726,6 +9752,8 @@ export interface components {
             /** @enum {string|null} */
             deathReason: "died" | "slaughtered" | null;
             herdId: string | null;
+            color: string | null;
+            notes: string | null;
           }[];
           outdoorSchedules: {
             id: string;
@@ -9859,6 +9887,8 @@ export interface components {
           /** @enum {string|null} */
           deathReason: "died" | "slaughtered" | null;
           herdId: string | null;
+          color: string | null;
+          notes: string | null;
         }[];
         outdoorSchedules: {
           id: string;
@@ -10189,6 +10219,8 @@ export interface components {
             /** @enum {string|null} */
             deathReason: "died" | "slaughtered" | null;
             herdId: string | null;
+            color: string | null;
+            notes: string | null;
           } | null;
         }[];
         count: number;
@@ -11532,6 +11564,8 @@ export interface components {
             /** @enum {string|null} */
             deathReason: "died" | "slaughtered" | null;
             herdId: string | null;
+            color: string | null;
+            notes: string | null;
           }[];
           drug: {
             id: string;
@@ -11776,6 +11810,8 @@ export interface components {
           /** @enum {string|null} */
           deathReason: "died" | "slaughtered" | null;
           herdId: string | null;
+          color: string | null;
+          notes: string | null;
         }[];
         drug: {
           id: string;
@@ -12064,6 +12100,8 @@ export interface components {
             /** @enum {string|null} */
             deathReason: "died" | "slaughtered" | null;
             herdId: string | null;
+            color: string | null;
+            notes: string | null;
           };
           sponsorshipProgram: {
             id: string;
@@ -12180,6 +12218,8 @@ export interface components {
             /** @enum {string|null} */
             deathReason: "died" | "slaughtered" | null;
             herdId: string | null;
+            color: string | null;
+            notes: string | null;
           };
           payments: {
             id: string;
@@ -13083,6 +13123,8 @@ export interface components {
             /** @enum {string|null} */
             deathReason: "died" | "slaughtered" | null;
             herdId: string | null;
+            color: string | null;
+            notes: string | null;
           };
           payments: {
             id: string;
@@ -13214,6 +13256,8 @@ export interface components {
           /** @enum {string|null} */
           deathReason: "died" | "slaughtered" | null;
           herdId: string | null;
+          color: string | null;
+          notes: string | null;
         };
         payments: {
           id: string;

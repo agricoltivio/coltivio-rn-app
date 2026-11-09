@@ -55,6 +55,8 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
             ? new Date(animal.dateOfDeath)
             : undefined,
           deathReason: animal.deathReason ?? undefined,
+          color: animal.color ?? undefined,
+          notes: animal.notes ?? undefined,
         }
       : undefined,
   });
@@ -115,6 +117,9 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
         : null,
       // clear deathReason when death date is removed
       deathReason: data.dateOfDeath ? (data.deathReason ?? null) : null,
+      // An emptied field clears the value
+      color: data.color?.trim() || null,
+      notes: data.notes?.trim() || null,
       // Only sent when the herd actually changed
       herdEffectiveDate:
         (data.herdId ?? null) !== (animal?.herdId ?? null) &&

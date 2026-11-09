@@ -23,6 +23,8 @@ export type AnimalsStackParamList = {
         motherId?: string;
         fatherId?: string;
         herdId?: string;
+        // Preselects the type, e.g. the parent's type when adding offspring
+        animalType?: AnimalType;
       }
     | undefined;
   EditAnimal: { animalId?: string; herdId?: string };

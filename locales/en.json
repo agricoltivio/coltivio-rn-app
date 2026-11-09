@@ -1157,10 +1157,20 @@
     "ear_tags": "Ear Tags",
     "ear_tag": "Ear Tag",
     "new_ear_tag_range": "New Ear Tags",
-    "from_number": "From Number",
-    "to_number": "To Number",
+    "invalid_number": "Enter a number, optionally with a letter prefix (e.g. CH001)",
+    "invalid_amount": "Enter at least 1",
+    "confirm_create_title": "Create ear tags?",
+    "confirm_create_message": "From {{from}} to {{to}}\nTotal: {{total}} ear tags",
+    "range_conflict": "These ear tags already exist: {{numbers}}. Change the first number or the number of ear tags.",
+    "range_conflict_more": "These ear tags already exist: {{numbers}} and {{remaining}} more. Change the first number or the number of ear tags.",
+    "range_conflict_server": "Some of these ear tags already exist. No ear tags were created.",
     "no_ear_tag": "No Ear Tag",
-    "no_animal_assigned": "No Animal Assigned"
+    "no_animal_assigned": "No Animal Assigned",
+    "first_number": "First number",
+    "amount": "Number of ear tags",
+    "range_preview_title": "Will be created",
+    "range_preview_range": "{{from}} – {{to}}",
+    "range_preview_total": "{{total}} ear tags"
   },
   "map_draw_onboarding": {
     "welcome_heading": "Plots & Areas",
@@ -1220,6 +1230,7 @@
       "died": "Died",
       "slaughtered": "Slaughtered"
     },
+    "color": "Color",
     "mother": "Mother",
     "mother_ear_tag_number": "Mother Ear Tag",
     "father": "Father",
@@ -1237,6 +1248,9 @@
     "only_unregistered": "Unregistered only",
     "only_with_waiting_period": "With waiting period only",
     "select_children": "Select Offspring",
+    "add_offspring": "Add offspring",
+    "create_new_offspring": "Create new animal",
+    "select_existing_offspring": "Select existing animals",
     "settings": "Animal Husbandry Settings",
     "export": "Export",
     "groups": {

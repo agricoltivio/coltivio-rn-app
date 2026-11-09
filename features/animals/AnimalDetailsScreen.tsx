@@ -9,7 +9,13 @@ import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Subtitle } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
-import { useMemo } from "react";
+import { useId, useMemo, useRef } from "react";
+import { BottomDrawerModal } from "@/components/bottom-drawer/BottomDrawerModal";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
+import { Portal } from "@gorhom/portal";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -39,6 +45,14 @@ export function AnimalDetailsScreen({
   );
 
   const removeChildMutation = useUpdateAnimalMutation();
+
+  // Drawer to choose between creating a new offspring and selecting existing animals.
+  // Rendered through a Portal at the app root (like DatePicker) so it covers the whole
+  // window: a sheet provider inside the screen measures the screen's container, which
+  // went stale after another screen was pushed on top.
+  const addOffspringSheetRef = useRef<BottomSheetModal>(null);
+  // Unique per screen instance: the same animal can be open twice in the stack
+  const addOffspringPortalKey = useId();
   const updateRegisteredMutation = useUpdateAnimalMutation();
 
   // Combine children from both mother and father relationships
@@ -188,6 +202,22 @@ export function AnimalDetailsScreen({
               </ListItem.Body>
             </ListItem.Content>
           </ListItem>
+          {animal.color && (
+            <ListItem style={{ paddingVertical: 5 }}>
+              <ListItem.Content>
+                <ListItem.Title>{t("animals.color")}</ListItem.Title>
+                <ListItem.Body>{animal.color}</ListItem.Body>
+              </ListItem.Content>
+            </ListItem>
+          )}
+          {animal.notes && (
+            <ListItem style={{ paddingVertical: 5 }}>
+              <ListItem.Content>
+                <ListItem.Title>{t("animals.notes")}</ListItem.Title>
+                <ListItem.Body>{animal.notes}</ListItem.Body>
+              </ListItem.Content>
+            </ListItem>
+          )}
           {animal.customOutdoorJournalCategories.length > 0 && (
             <ListItem
               style={{ paddingVertical: 5 }}
@@ -402,12 +432,7 @@ export function AnimalDetailsScreen({
                 color="black"
                 iconSize={25}
                 type="accent"
-                onPress={() =>
-                  navigation.navigate("SelectChildren", {
-                    animalId,
-                    sex: animal.sex,
-                  })
-                }
+                onPress={() => addOffspringSheetRef.current?.present()}
               />
             )}
           </View>
@@ -522,6 +547,56 @@ export function AnimalDetailsScreen({
           )}
         </View>
       </ScrollView>
+
+      {/* Add offspring: create a new animal with this parent preset, or link existing ones */}
+      <Portal>
+        {/* PortalHost renders portals as an unkeyed list, so without a key React can hand
+            this sheet's state to another portal (e.g. a DatePicker) when portals are
+            added or removed */}
+        <BottomSheetModalProvider key={addOffspringPortalKey}>
+          <BottomDrawerModal ref={addOffspringSheetRef}>
+            <View style={{ gap: theme.spacing.s }}>
+              <H3>{t("animals.add_offspring")}</H3>
+              <View>
+                <ListItem
+                  onPress={() => {
+                    addOffspringSheetRef.current?.dismiss();
+                    navigation.navigate("CreateAnimal", {
+                      animalType: animal.type,
+                      ...(animal.sex === "female"
+                        ? { motherId: animal.id }
+                        : { fatherId: animal.id }),
+                    });
+                  }}
+                >
+                  <ListItem.Content>
+                    <ListItem.Title>
+                      {t("animals.create_new_offspring")}
+                    </ListItem.Title>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+                <ListItem
+                  onPress={() => {
+                    addOffspringSheetRef.current?.dismiss();
+                    navigation.navigate("SelectChildren", {
+                      animalId,
+                      sex: animal.sex,
+                    });
+                  }}
+                >
+                  <ListItem.Content>
+                    <ListItem.Title>
+                      {t("animals.select_existing_offspring")}
+                    </ListItem.Title>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+              </View>
+            </View>
+          </BottomDrawerModal>
+        </BottomSheetModalProvider>
+      </Portal>
     </ContentView>
   );
 }

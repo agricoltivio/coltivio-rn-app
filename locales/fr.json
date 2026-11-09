@@ -1157,10 +1157,20 @@
     "ear_tags": "Marques auriculaires",
     "ear_tag": "Marque auriculaire",
     "new_ear_tag_range": "Nouvelles marques auriculaires",
-    "from_number": "Du numéro",
-    "to_number": "Au numéro",
+    "invalid_number": "Saisis un numéro, éventuellement précédé de lettres (p. ex. CH001)",
+    "invalid_amount": "Au moins 1",
+    "confirm_create_title": "Créer des marques auriculaires ?",
+    "confirm_create_message": "De {{from}} à {{to}}\nTotal : {{total}} marques auriculaires",
+    "range_conflict": "Ces marques auriculaires existent déjà : {{numbers}}. Modifie le premier numéro ou le nombre.",
+    "range_conflict_more": "Ces marques auriculaires existent déjà : {{numbers}} et {{remaining}} autres. Modifie le premier numéro ou le nombre.",
+    "range_conflict_server": "Certaines de ces marques auriculaires existent déjà. Aucune marque auriculaire n'a été créée.",
     "no_ear_tag": "Pas de marque auriculaire",
-    "no_animal_assigned": "Aucun animal attribué"
+    "no_animal_assigned": "Aucun animal attribué",
+    "first_number": "Premier numéro",
+    "amount": "Nombre de marques auriculaires",
+    "range_preview_title": "Seront créées",
+    "range_preview_range": "{{from}} – {{to}}",
+    "range_preview_total": "{{total}} marques auriculaires"
   },
   "map_draw_onboarding": {
     "welcome_heading": "Champs & Surfaces",
@@ -1220,6 +1230,7 @@
       "died": "Décédé",
       "slaughtered": "Abattu"
     },
+    "color": "Couleur",
     "mother": "Mère",
     "mother_ear_tag_number": "Marque auriculaire mère",
     "father": "Père",
@@ -1237,6 +1248,9 @@
     "only_unregistered": "Non enregistrés uniquement",
     "only_with_waiting_period": "Avec délai d'attente uniquement",
     "select_children": "Sélectionner les descendants",
+    "add_offspring": "Ajouter des descendants",
+    "create_new_offspring": "Créer un nouvel animal",
+    "select_existing_offspring": "Sélectionner des animaux existants",
     "settings": "Paramètres de l'élevage",
     "export": "Export",
     "groups": {

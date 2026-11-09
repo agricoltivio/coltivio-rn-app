@@ -1157,10 +1157,20 @@
     "ear_tags": "Marche auricolari",
     "ear_tag": "Marca auricolare",
     "new_ear_tag_range": "Nuove marche auricolari",
-    "from_number": "Dal numero",
-    "to_number": "Al numero",
+    "invalid_number": "Inserisci un numero, eventualmente con lettere davanti (es. CH001)",
+    "invalid_amount": "Almeno 1",
+    "confirm_create_title": "Creare marche auricolari?",
+    "confirm_create_message": "Da {{from}} a {{to}}\nTotale: {{total}} marche auricolari",
+    "range_conflict": "Queste marche auricolari esistono già: {{numbers}}. Modifica il primo numero o la quantità.",
+    "range_conflict_more": "Queste marche auricolari esistono già: {{numbers}} e altre {{remaining}}. Modifica il primo numero o la quantità.",
+    "range_conflict_server": "Alcune di queste marche auricolari esistono già. Non è stata creata nessuna marca auricolare.",
     "no_ear_tag": "Nessuna marca auricolare",
-    "no_animal_assigned": "Nessun animale assegnato"
+    "no_animal_assigned": "Nessun animale assegnato",
+    "first_number": "Primo numero",
+    "amount": "Numero di marche auricolari",
+    "range_preview_title": "Verranno create",
+    "range_preview_range": "{{from}} – {{to}}",
+    "range_preview_total": "{{total}} marche auricolari"
   },
   "map_draw_onboarding": {
     "welcome_heading": "Campi e superfici",
@@ -1220,6 +1230,7 @@
       "died": "Deceduto",
       "slaughtered": "Macellato"
     },
+    "color": "Colore",
     "mother": "Madre",
     "mother_ear_tag_number": "Marchio madre",
     "father": "Padre",
@@ -1237,6 +1248,9 @@
     "only_unregistered": "Solo non registrati",
     "only_with_waiting_period": "Solo con periodo di attesa",
     "select_children": "Seleziona discendenti",
+    "add_offspring": "Aggiungi discendenti",
+    "create_new_offspring": "Crea nuovo animale",
+    "select_existing_offspring": "Seleziona animali esistenti",
     "settings": "Impostazioni allevamento",
     "export": "Esportazione",
     "groups": {

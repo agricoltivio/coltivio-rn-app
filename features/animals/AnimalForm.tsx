@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { RHSwitch } from "@/components/inputs/RHSwitch";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
+import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import {
@@ -156,21 +157,21 @@ export function AnimalForm({
     })) ??
     [];
 
-  const femaleAnimals =
-    animals
-      ?.filter((animal) => animal.sex === "female")
-      .map((animal) => ({
-        label: animal.name,
-        value: animal.id,
-      })) ?? [];
-
-  const maleAnimals =
-    animals
-      ?.filter((animal) => animal.sex === "male")
-      .map((animal) => ({
-        label: animal.name,
-        value: animal.id,
-      })) ?? [];
+  // Parent options: name as main line, ear tag number as searchable secondary line.
+  // The edited animal can't be its own parent.
+  const parentCandidates =
+    animals?.filter((animal) => animal.id !== animalId) ?? [];
+  const toParentOption = (animal: (typeof parentCandidates)[number]) => ({
+    label: animal.name,
+    value: animal.id,
+    description: animal.earTag?.number,
+  });
+  const femaleAnimals = parentCandidates
+    .filter((animal) => animal.sex === "female")
+    .map(toParentOption);
+  const maleAnimals = parentCandidates
+    .filter((animal) => animal.sex === "male")
+    .map(toParentOption);
 
   return (
     <View
@@ -235,6 +236,12 @@ export function AnimalForm({
         }}
         error={errors.usage?.message}
         data={usageData}
+      />
+      <RHTextInput
+        name="color"
+        control={control}
+        label={t("animals.color")}
+        error={errors.color?.message}
       />
       {/* Herd select with + button */}
       <View
@@ -320,6 +327,12 @@ export function AnimalForm({
           )}
         </>
       )}
+      <RHTextAreaInput
+        name="notes"
+        control={control}
+        label={t("animals.notes")}
+        error={errors.notes?.message}
+      />
     </View>
   );
 }

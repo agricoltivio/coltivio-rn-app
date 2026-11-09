@@ -1157,10 +1157,20 @@
     "ear_tags": "Ohrmarken",
     "ear_tag": "Ohrmarke",
     "new_ear_tag_range": "Neue Ohrmarken",
-    "from_number": "Von Nummer",
-    "to_number": "Bis Nummer",
+    "invalid_number": "Gib eine Nummer ein, optional mit Buchstaben davor (z. B. CH001)",
+    "invalid_amount": "Mindestens 1",
+    "confirm_create_title": "Ohrmarken erstellen?",
+    "confirm_create_message": "Von {{from}} bis {{to}}\nTotal: {{total}} Ohrmarken",
+    "range_conflict": "Diese Ohrmarken gibt es bereits: {{numbers}}. Passe die erste Nummer oder die Anzahl an.",
+    "range_conflict_more": "Diese Ohrmarken gibt es bereits: {{numbers}} und {{remaining}} weitere. Passe die erste Nummer oder die Anzahl an.",
+    "range_conflict_server": "Einige dieser Ohrmarken gibt es bereits. Es wurden keine Ohrmarken erstellt.",
     "no_ear_tag": "Keine Ohrmarke",
-    "no_animal_assigned": "Kein Tier zugewiesen"
+    "no_animal_assigned": "Kein Tier zugewiesen",
+    "first_number": "Erste Nummer",
+    "amount": "Anzahl Ohrmarken",
+    "range_preview_title": "Wird erstellt",
+    "range_preview_range": "{{from}} – {{to}}",
+    "range_preview_total": "{{total}} Ohrmarken"
   },
   "map_draw_onboarding": {
     "welcome_heading": "Schläge & Flächen",
@@ -1220,6 +1230,7 @@
       "died": "Gestorben",
       "slaughtered": "Geschlachtet"
     },
+    "color": "Farbe",
     "mother": "Mutter",
     "mother_ear_tag_number": "Ohrmarke Mutter",
     "father": "Vater",
@@ -1237,6 +1248,9 @@
     "only_unregistered": "nicht registrierte",
     "only_with_waiting_period": "Absetzfrist",
     "select_children": "Nachkommen auswählen",
+    "add_offspring": "Nachkommen hinzufügen",
+    "create_new_offspring": "Neues Tier erfassen",
+    "select_existing_offspring": "Bestehende Tiere auswählen",
     "settings": "Tierhaltung Einstellungen",
     "export": "Export",
     "groups": {

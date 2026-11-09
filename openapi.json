@@ -16566,7 +16566,10 @@
         "type": "object",
         "properties": {
           "error": { "type": "string" },
-          "code": { "type": "string", "enum": ["invalid_geometry"] }
+          "code": {
+            "type": "string",
+            "enum": ["invalid_geometry", "ear_tag_range_conflict"]
+          }
         },
         "required": ["error"],
         "additionalProperties": false
@@ -28794,6 +28797,8 @@
                       "enum": ["died", "slaughtered"]
                     },
                     "herdId": { "type": ["string", "null"] },
+                    "color": { "type": ["string", "null"] },
+                    "notes": { "type": ["string", "null"] },
                     "milkAndMeatUsable": { "type": "boolean" }
                   },
                   "required": [
@@ -28812,6 +28817,8 @@
                     "dateOfDeath",
                     "deathReason",
                     "herdId",
+                    "color",
+                    "notes",
                     "milkAndMeatUsable"
                   ],
                   "additionalProperties": false
@@ -28883,7 +28890,9 @@
                 "type": ["string", "null"],
                 "enum": ["died", "slaughtered"]
               },
-              "herdId": { "type": ["string", "null"] }
+              "herdId": { "type": ["string", "null"] },
+              "color": { "type": ["string", "null"] },
+              "notes": { "type": ["string", "null"] }
             },
             "required": [
               "id",
@@ -28900,7 +28909,9 @@
               "fatherId",
               "dateOfDeath",
               "deathReason",
-              "herdId"
+              "herdId",
+              "color",
+              "notes"
             ],
             "additionalProperties": false
           }
@@ -28945,6 +28956,8 @@
             "enum": ["died", "slaughtered"]
           },
           "herdId": { "type": ["string", "null"] },
+          "color": { "type": ["string", "null"] },
+          "notes": { "type": ["string", "null"] },
           "herdEffectiveDate": {
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "type": ["string", "null"],
@@ -29042,7 +29055,9 @@
                       "type": ["string", "null"],
                       "enum": ["died", "slaughtered"]
                     },
-                    "herdId": { "type": ["string", "null"] }
+                    "herdId": { "type": ["string", "null"] },
+                    "color": { "type": ["string", "null"] },
+                    "notes": { "type": ["string", "null"] }
                   },
                   "required": [
                     "id",
@@ -29059,7 +29074,9 @@
                     "fatherId",
                     "dateOfDeath",
                     "deathReason",
-                    "herdId"
+                    "herdId",
+                    "color",
+                    "notes"
                   ],
                   "additionalProperties": false
                 }
@@ -29107,8 +29124,8 @@
                 "type": "string",
                 "enum": ["died", "slaughtered"]
               },
-              "motherId": { "type": "string" },
-              "fatherId": { "type": "string" }
+              "motherId": { "type": ["string", "null"] },
+              "fatherId": { "type": ["string", "null"] }
             }
           }
         },
@@ -29459,6 +29476,8 @@
                 "enum": ["died", "slaughtered"]
               },
               "herdId": { "type": ["string", "null"] },
+              "color": { "type": ["string", "null"] },
+              "notes": { "type": ["string", "null"] },
               "mother": {
                 "anyOf": [
                   {
@@ -29515,7 +29534,9 @@
                         "type": ["string", "null"],
                         "enum": ["died", "slaughtered"]
                       },
-                      "herdId": { "type": ["string", "null"] }
+                      "herdId": { "type": ["string", "null"] },
+                      "color": { "type": ["string", "null"] },
+                      "notes": { "type": ["string", "null"] }
                     },
                     "required": [
                       "id",
@@ -29532,7 +29553,9 @@
                       "fatherId",
                       "dateOfDeath",
                       "deathReason",
-                      "herdId"
+                      "herdId",
+                      "color",
+                      "notes"
                     ],
                     "additionalProperties": false
                   },
@@ -29595,7 +29618,9 @@
                         "type": ["string", "null"],
                         "enum": ["died", "slaughtered"]
                       },
-                      "herdId": { "type": ["string", "null"] }
+                      "herdId": { "type": ["string", "null"] },
+                      "color": { "type": ["string", "null"] },
+                      "notes": { "type": ["string", "null"] }
                     },
                     "required": [
                       "id",
@@ -29612,7 +29637,9 @@
                       "fatherId",
                       "dateOfDeath",
                       "deathReason",
-                      "herdId"
+                      "herdId",
+                      "color",
+                      "notes"
                     ],
                     "additionalProperties": false
                   },
@@ -29675,7 +29702,9 @@
                       "type": ["string", "null"],
                       "enum": ["died", "slaughtered"]
                     },
-                    "herdId": { "type": ["string", "null"] }
+                    "herdId": { "type": ["string", "null"] },
+                    "color": { "type": ["string", "null"] },
+                    "notes": { "type": ["string", "null"] }
                   },
                   "required": [
                     "id",
@@ -29692,7 +29721,9 @@
                     "fatherId",
                     "dateOfDeath",
                     "deathReason",
-                    "herdId"
+                    "herdId",
+                    "color",
+                    "notes"
                   ],
                   "additionalProperties": false
                 }
@@ -29753,7 +29784,9 @@
                       "type": ["string", "null"],
                       "enum": ["died", "slaughtered"]
                     },
-                    "herdId": { "type": ["string", "null"] }
+                    "herdId": { "type": ["string", "null"] },
+                    "color": { "type": ["string", "null"] },
+                    "notes": { "type": ["string", "null"] }
                   },
                   "required": [
                     "id",
@@ -29770,7 +29803,9 @@
                     "fatherId",
                     "dateOfDeath",
                     "deathReason",
-                    "herdId"
+                    "herdId",
+                    "color",
+                    "notes"
                   ],
                   "additionalProperties": false
                 }
@@ -29973,6 +30008,8 @@
               "dateOfDeath",
               "deathReason",
               "herdId",
+              "color",
+              "notes",
               "mother",
               "father",
               "childrenAsMother",
@@ -30043,7 +30080,9 @@
                 "type": ["string", "null"],
                 "enum": ["died", "slaughtered"]
               },
-              "herdId": { "type": ["string", "null"] }
+              "herdId": { "type": ["string", "null"] },
+              "color": { "type": ["string", "null"] },
+              "notes": { "type": ["string", "null"] }
             },
             "required": [
               "id",
@@ -30060,7 +30099,9 @@
               "fatherId",
               "dateOfDeath",
               "deathReason",
-              "herdId"
+              "herdId",
+              "color",
+              "notes"
             ],
             "additionalProperties": false
           }
@@ -30105,6 +30146,8 @@
             "enum": ["died", "slaughtered"]
           },
           "herdId": { "type": ["string", "null"] },
+          "color": { "type": ["string", "null"] },
+          "notes": { "type": ["string", "null"] },
           "herdEffectiveDate": {
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "type": ["string", "null"],
@@ -30191,7 +30234,9 @@
                       "type": ["string", "null"],
                       "enum": ["died", "slaughtered"]
                     },
-                    "herdId": { "type": ["string", "null"] }
+                    "herdId": { "type": ["string", "null"] },
+                    "color": { "type": ["string", "null"] },
+                    "notes": { "type": ["string", "null"] }
                   },
                   "required": [
                     "id",
@@ -30208,7 +30253,9 @@
                     "fatherId",
                     "dateOfDeath",
                     "deathReason",
-                    "herdId"
+                    "herdId",
+                    "color",
+                    "notes"
                   ],
                   "additionalProperties": false
                 }
@@ -31163,7 +31210,9 @@
                       "type": ["string", "null"],
                       "enum": ["died", "slaughtered"]
                     },
-                    "herdId": { "type": ["string", "null"] }
+                    "herdId": { "type": ["string", "null"] },
+                    "color": { "type": ["string", "null"] },
+                    "notes": { "type": ["string", "null"] }
                   },
                   "required": [
                     "id",
@@ -31180,7 +31229,9 @@
                     "fatherId",
                     "dateOfDeath",
                     "deathReason",
-                    "herdId"
+                    "herdId",
+                    "color",
+                    "notes"
                   ],
                   "additionalProperties": false
                 }
@@ -31332,7 +31383,9 @@
                             "type": ["string", "null"],
                             "enum": ["died", "slaughtered"]
                           },
-                          "herdId": { "type": ["string", "null"] }
+                          "herdId": { "type": ["string", "null"] },
+                          "color": { "type": ["string", "null"] },
+                          "notes": { "type": ["string", "null"] }
                         },
                         "required": [
                           "id",
@@ -31349,7 +31402,9 @@
                           "fatherId",
                           "dateOfDeath",
                           "deathReason",
-                          "herdId"
+                          "herdId",
+                          "color",
+                          "notes"
                         ],
                         "additionalProperties": false
                       }
@@ -31658,7 +31713,9 @@
                       "type": ["string", "null"],
                       "enum": ["died", "slaughtered"]
                     },
-                    "herdId": { "type": ["string", "null"] }
+                    "herdId": { "type": ["string", "null"] },
+                    "color": { "type": ["string", "null"] },
+                    "notes": { "type": ["string", "null"] }
                   },
                   "required": [
                     "id",
@@ -31675,7 +31732,9 @@
                     "fatherId",
                     "dateOfDeath",
                     "deathReason",
-                    "herdId"
+                    "herdId",
+                    "color",
+                    "notes"
                   ],
                   "additionalProperties": false
                 }
@@ -32424,7 +32483,9 @@
                           "type": ["string", "null"],
                           "enum": ["died", "slaughtered"]
                         },
-                        "herdId": { "type": ["string", "null"] }
+                        "herdId": { "type": ["string", "null"] },
+                        "color": { "type": ["string", "null"] },
+                        "notes": { "type": ["string", "null"] }
                       },
                       "required": [
                         "id",
@@ -32441,7 +32502,9 @@
                         "fatherId",
                         "dateOfDeath",
                         "deathReason",
-                        "herdId"
+                        "herdId",
+                        "color",
+                        "notes"
                       ],
                       "additionalProperties": false
                     }
@@ -35356,7 +35419,9 @@
                             "type": ["string", "null"],
                             "enum": ["died", "slaughtered"]
                           },
-                          "herdId": { "type": ["string", "null"] }
+                          "herdId": { "type": ["string", "null"] },
+                          "color": { "type": ["string", "null"] },
+                          "notes": { "type": ["string", "null"] }
                         },
                         "required": [
                           "id",
@@ -35373,7 +35438,9 @@
                           "fatherId",
                           "dateOfDeath",
                           "deathReason",
-                          "herdId"
+                          "herdId",
+                          "color",
+                          "notes"
                         ],
                         "additionalProperties": false
                       }
@@ -35847,7 +35914,9 @@
                       "type": ["string", "null"],
                       "enum": ["died", "slaughtered"]
                     },
-                    "herdId": { "type": ["string", "null"] }
+                    "herdId": { "type": ["string", "null"] },
+                    "color": { "type": ["string", "null"] },
+                    "notes": { "type": ["string", "null"] }
                   },
                   "required": [
                     "id",
@@ -35864,7 +35933,9 @@
                     "fatherId",
                     "dateOfDeath",
                     "deathReason",
-                    "herdId"
+                    "herdId",
+                    "color",
+                    "notes"
                   ],
                   "additionalProperties": false
                 }
@@ -36456,7 +36527,9 @@
                           "type": ["string", "null"],
                           "enum": ["died", "slaughtered"]
                         },
-                        "herdId": { "type": ["string", "null"] }
+                        "herdId": { "type": ["string", "null"] },
+                        "color": { "type": ["string", "null"] },
+                        "notes": { "type": ["string", "null"] }
                       },
                       "required": [
                         "id",
@@ -36472,7 +36545,9 @@
                         "fatherId",
                         "dateOfDeath",
                         "deathReason",
-                        "herdId"
+                        "herdId",
+                        "color",
+                        "notes"
                       ],
                       "additionalProperties": false
                     },
@@ -36734,7 +36809,9 @@
                           "type": ["string", "null"],
                           "enum": ["died", "slaughtered"]
                         },
-                        "herdId": { "type": ["string", "null"] }
+                        "herdId": { "type": ["string", "null"] },
+                        "color": { "type": ["string", "null"] },
+                        "notes": { "type": ["string", "null"] }
                       },
                       "required": [
                         "id",
@@ -36750,7 +36827,9 @@
                         "fatherId",
                         "dateOfDeath",
                         "deathReason",
-                        "herdId"
+                        "herdId",
+                        "color",
+                        "notes"
                       ],
                       "additionalProperties": false
                     },
@@ -38924,7 +39003,9 @@
                           "type": ["string", "null"],
                           "enum": ["died", "slaughtered"]
                         },
-                        "herdId": { "type": ["string", "null"] }
+                        "herdId": { "type": ["string", "null"] },
+                        "color": { "type": ["string", "null"] },
+                        "notes": { "type": ["string", "null"] }
                       },
                       "required": [
                         "id",
@@ -38940,7 +39021,9 @@
                         "fatherId",
                         "dateOfDeath",
                         "deathReason",
-                        "herdId"
+                        "herdId",
+                        "color",
+                        "notes"
                       ],
                       "additionalProperties": false
                     },
@@ -39235,7 +39318,9 @@
                     "type": ["string", "null"],
                     "enum": ["died", "slaughtered"]
                   },
-                  "herdId": { "type": ["string", "null"] }
+                  "herdId": { "type": ["string", "null"] },
+                  "color": { "type": ["string", "null"] },
+                  "notes": { "type": ["string", "null"] }
                 },
                 "required": [
                   "id",
@@ -39251,7 +39336,9 @@
                   "fatherId",
                   "dateOfDeath",
                   "deathReason",
-                  "herdId"
+                  "herdId",
+                  "color",
+                  "notes"
                 ],
                 "additionalProperties": false
               },

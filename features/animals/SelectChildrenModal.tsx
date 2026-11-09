@@ -14,6 +14,7 @@ import {
   useAnimalByIdQuery,
   useAnimalsQuery,
   useBatchUpdateAnimalsMutation,
+  useFamilyTreeQuery,
 } from "./animals.hooks";
 import { SelectChildrenScreenProps } from "./navigation/animals-routes";
 
@@ -28,6 +29,11 @@ export function SelectChildrenModal({
   const { animals: livingAnimals } = useAnimalsQuery(
     true,
     animal ? [animal?.type] : undefined,
+    !!animal,
+  );
+  // Includes dead animals, so ancestor chains through dead animals are followed too
+  const { familyTree } = useFamilyTreeQuery(
+    animal?.type ?? "cow",
     !!animal,
   );
   const [searchText, setSearchText] = useState("");
@@ -50,18 +56,45 @@ export function SelectChildrenModal({
     return ids;
   }, [animal]);
 
-  // Filter out the animal itself, dead animals, and already-assigned children
+  // Walk parent edges upwards: an ancestor can't become its own descendant's offspring
+  const ancestorIds = useMemo(() => {
+    const ids = new Set<string>();
+    if (!familyTree) return ids;
+    const parentIdsByChildId = new Map<string, string[]>();
+    for (const edge of familyTree.edges) {
+      const parentIds = parentIdsByChildId.get(edge.childId) ?? [];
+      parentIds.push(edge.parentId);
+      parentIdsByChildId.set(edge.childId, parentIds);
+    }
+    const toVisit = [animalId];
+    while (toVisit.length > 0) {
+      const currentId = toVisit.pop()!;
+      for (const parentId of parentIdsByChildId.get(currentId) ?? []) {
+        if (ids.has(parentId)) continue;
+        ids.add(parentId);
+        toVisit.push(parentId);
+      }
+    }
+    return ids;
+  }, [familyTree, animalId]);
+
+  // Filter out the animal itself, its ancestors, dead animals, and already-assigned children
   const availableAnimals = useMemo(() => {
-    if (!livingAnimals) return [];
+    if (!livingAnimals || !familyTree) return [];
     return livingAnimals
-      .filter((a) => a.id !== animalId && !existingChildIds.has(a.id))
+      .filter(
+        (a) =>
+          a.id !== animalId &&
+          !existingChildIds.has(a.id) &&
+          !ancestorIds.has(a.id),
+      )
       .sort((a, b) => a.name.localeCompare(b.name));
-  }, [livingAnimals, animalId, existingChildIds]);
+  }, [livingAnimals, familyTree, animalId, existingChildIds, ancestorIds]);
 
   // Fuse.js search
   const fuse = new Fuse(availableAnimals, {
     minMatchCharLength: 1,
-    keys: ["name", "type", "earTag.number"],
+    keys: ["name", "earTag.number"],
   });
 
   let searchResult = availableAnimals;
@@ -101,14 +134,11 @@ export function SelectChildrenModal({
         <ListItem.Checkbox checked={selectedIds.has(item.id)} />
         <ListItem.Content>
           <ListItem.Title>{item.name}</ListItem.Title>
-          <ListItem.Body>
-            {t(`animals.animal_types.${item.type}` as const)}
-            {item.earTag ? ` - ${item.earTag.number}` : ""}
-          </ListItem.Body>
+          {item.earTag && <ListItem.Body>{item.earTag.number}</ListItem.Body>}
         </ListItem.Content>
       </ListItem>
     ),
-    [selectedIds, t],
+    [selectedIds],
   );
 
   return (

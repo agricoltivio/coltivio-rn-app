@@ -20,6 +20,7 @@ export function CreateAnimalScreen({
   const motherId = route.params?.motherId;
   const fatherId = route.params?.fatherId;
   const herdId = route.params?.herdId;
+  const animalType = route.params?.animalType;
 
   const {
     control,
@@ -31,6 +32,7 @@ export function CreateAnimalScreen({
       dateOfBirth: new Date(),
       registered: false,
       usage: "other",
+      type: animalType,
       motherId: motherId ?? undefined,
       fatherId: fatherId ?? undefined,
       herdId: herdId ?? undefined,
@@ -57,6 +59,8 @@ export function CreateAnimalScreen({
       dateOfDeath: data.dateOfDeath
         ? toLocalDateString(data.dateOfDeath)
         : undefined,
+      color: data.color?.trim() || null,
+      notes: data.notes?.trim() || null,
       herdEffectiveDate:
         data.herdId && data.herdEffectiveDate
           ? toLocalDateString(data.herdEffectiveDate)
