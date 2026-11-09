@@ -20,6 +20,8 @@ import { useAnimalsQuery } from "./animals.hooks";
 import { useAvailableEarTagsQuery } from "./earTags.hooks";
 import { toLocalDateString } from "@/utils/date";
 import { useEarliestHerdChangeDateQuery, useHerdsQuery } from "./herds.hooks";
+import { DrawerWeight } from "./AnimalWeightDrawer";
+import { AnimalWeightField } from "./AnimalWeightField";
 
 export type AnimalFormValues = Omit<
   AnimalCreateInput,
@@ -46,6 +48,9 @@ type AnimalFormProps = {
   initialHerdId?: string | null;
   // The edited animal; its herd history limits the herd date. Undefined when creating.
   animalId?: string;
+  // Latest weight entry, or the weight entered for a new animal (saved after creating it)
+  currentWeight?: DrawerWeight | null;
+  onPendingWeightChange?: (weight: DrawerWeight) => void;
 };
 
 export function AnimalForm({
@@ -57,6 +62,8 @@ export function AnimalForm({
   onNavigateToCreateHerd,
   initialHerdId,
   animalId,
+  currentWeight,
+  onPendingWeightChange,
 }: AnimalFormProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -220,6 +227,11 @@ export function AnimalForm({
         label={t("animals.date_of_birth")}
         mode="date"
         error={errors.dateOfBirth?.message}
+      />
+      <AnimalWeightField
+        animalId={animalId}
+        currentWeight={currentWeight ?? null}
+        onPendingWeightChange={onPendingWeightChange}
       />
       <RHSwitch
         style={{ marginTop: theme.spacing.m, marginBottom: theme.spacing.m }}

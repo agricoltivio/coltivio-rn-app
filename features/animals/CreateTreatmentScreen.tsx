@@ -13,7 +13,7 @@ import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
 import { addDays } from "date-fns";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -22,6 +22,12 @@ import { useAnimalsQuery } from "./animals.hooks";
 import { useDrugsQuery } from "./drugs.hooks";
 import { CreateTreatmentScreenProps } from "./navigation/animals-routes";
 import { useCreateTreatmentMutation } from "./treatments.hooks";
+import {
+  TreatmentAnimalDoses,
+  TreatmentDoseAnimal,
+  TreatmentEffectiveDoseInputs,
+  treatmentEffectiveDoseOverrides,
+} from "./TreatmentAnimalDoses";
 
 type DoseUnit =
   | "tablet"
@@ -97,6 +103,9 @@ export function CreateTreatmentScreen({
   const selectedDrugId = watch("drugId");
   const treatmentDate = watch("startDate");
   const endDate = watch("endDate");
+  const drugDoseValue = watch("drugDoseValue");
+  const drugDoseUnit = watch("drugDoseUnit");
+  const drugDosePerUnit = watch("drugDosePerUnit");
 
   // shouldDirty: true ensures drug-sync effect fires when returning from CreateDrug.
   useEffect(() => {
@@ -244,6 +253,16 @@ export function CreateTreatmentScreen({
     (error) => console.error(error),
   );
 
+  const [effectiveDoseInputs, setEffectiveDoseInputs] =
+    useState<TreatmentEffectiveDoseInputs>({});
+  const doseAnimals: TreatmentDoseAnimal[] = selectedAnimals.map((animal) => ({
+    id: animal.id,
+    name: animal.name,
+    earTagNumber: animal.earTag?.number ?? null,
+    weightKg: animal.latestWeight?.weightKg ?? null,
+    manualEffectiveDoseValue: null,
+  }));
+
   function onSubmit(data: TreatmentFormValues) {
     createTreatmentMutation.mutate({
       animalIds: selectedAnimalIds,
@@ -268,6 +287,10 @@ export function CreateTreatmentScreen({
       isAntibiotic: data.isAntibiotic,
       criticalAntibiotic: data.criticalAntibiotic,
       antibiogramAvailable: data.antibiogramAvailable,
+      effectiveDoseOverrides:
+        data.drugDosePerUnit === "kg"
+          ? treatmentEffectiveDoseOverrides(doseAnimals, effectiveDoseInputs)
+          : undefined,
     });
   }
 
@@ -496,6 +519,18 @@ export function CreateTreatmentScreen({
                 />
               </View>
             </View>
+          )}
+
+          {selectedDrug && drugValidation.valid && drugDosePerUnit === "kg" && (
+            <TreatmentAnimalDoses
+              animals={doseAnimals}
+              doseValue={drugDoseValue}
+              doseUnitLabel={
+                drugDoseUnit ? t(`drugs.dose_units.${drugDoseUnit}`) : ""
+              }
+              effectiveDoseInputs={effectiveDoseInputs}
+              onEffectiveDoseInputsChange={setEffectiveDoseInputs}
+            />
           )}
 
           <RHTextInput

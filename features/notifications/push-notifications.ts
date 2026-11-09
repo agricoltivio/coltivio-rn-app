@@ -56,6 +56,24 @@ export function parseTasksDueNotificationData(
   return { type: "tasks_due", farmId: data.farmId, taskIds };
 }
 
+export type BreedingDueNotificationData = {
+  type: "breeding_due";
+  farmId: string;
+};
+
+export function parseBreedingDueNotificationData(
+  data: Record<string, unknown> | undefined,
+): BreedingDueNotificationData | null {
+  if (
+    !data ||
+    data.type !== "breeding_due" ||
+    typeof data.farmId !== "string"
+  ) {
+    return null;
+  }
+  return { type: "breeding_due", farmId: data.farmId };
+}
+
 export type NotificationPermission = {
   granted: boolean;
   // Permanently denied: the OS won't show the prompt again, only the system settings help

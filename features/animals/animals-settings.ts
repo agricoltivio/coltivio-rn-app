@@ -45,6 +45,11 @@ export const ANIMALS_ITEMS: Record<string, AnimalsItemMeta> = {
     route: "TvdImport",
     feature: "animals",
   },
+  breedingCalendar: {
+    translationKey: "breeding.calendar_title",
+    route: "BreedingCalendar",
+    feature: "animals",
+  },
   herds: {
     translationKey: "animals.herds",
     route: "Herds",
@@ -78,6 +83,7 @@ export const DEFAULT_ANIMALS_GROUPS: AnimalsGroupConfig[] = [
       { itemId: "earTags", visible: true },
       { itemId: "herds", visible: true },
       { itemId: "outdoorJournal", visible: true },
+      { itemId: "breedingCalendar", visible: true },
       { itemId: "tvdImport", visible: true },
     ],
   },

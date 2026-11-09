@@ -255,8 +255,20 @@ function mergeGroups(
     const def = defaultMap.get(saved.groupId);
     if (!def) return saved;
     const savedItemIds = new Set(saved.items.map((i) => i.itemId));
-    const newItems = def.items.filter((i) => !savedItemIds.has(i.itemId));
-    return { ...saved, items: [...saved.items, ...newItems] };
+    // New items go in after the item that precedes them in the defaults, so they show up
+    // where they belong instead of at the end; the user's order of saved items is kept
+    const items = [...saved.items];
+    def.items.forEach((defaultItem, defaultIndex) => {
+      if (savedItemIds.has(defaultItem.itemId)) return;
+      const precedingItemIds = def.items
+        .slice(0, defaultIndex)
+        .map((item) => item.itemId);
+      const insertAfterIndex = items.findLastIndex((item) =>
+        precedingItemIds.includes(item.itemId),
+      );
+      items.splice(insertAfterIndex + 1, 0, defaultItem);
+    });
+    return { ...saved, items };
   });
   // Append any entirely new groups not yet in storage
   const storedIds = new Set(stored.map((g) => g.groupId));

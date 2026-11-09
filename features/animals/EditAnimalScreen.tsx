@@ -20,6 +20,7 @@ import {
 } from "./animals.hooks";
 import { useAvailableEarTagsQuery } from "./earTags.hooks";
 import { AnimalForm, AnimalFormValues } from "./AnimalForm";
+import { toDrawerWeight } from "./AnimalWeightDrawer";
 import { EditAnimalScreenProps } from "./navigation/animals-routes";
 
 export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
@@ -192,6 +193,7 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
           showDeathFields
           initialHerdId={animal?.herdId ?? null}
           animalId={animalId}
+          currentWeight={toDrawerWeight(animal.latestWeight)}
           onNavigateToCreateHerd={() =>
             navigation.navigate("CreateHerd", {
               previousScreen: "EditAnimal",

@@ -116,6 +116,10 @@ export type AnimalsStackParamList = {
   ParasiteSamples: { animalIds: string[] };
   ParasiteAnimalSample: { animalId: string };
   AnimalParasiteHistory: { animalId: string };
+  AnimalWeightForm: { animalId: string; weightId?: string };
+  AnimalHeatForm: { animalId: string; heatId?: string };
+  BreedingCalendar: undefined;
+  BreedingSettings: undefined;
 };
 
 export type AnimalsHubScreenProps = StackScreenProps<"AnimalsHub">;
@@ -181,3 +185,7 @@ export type AnimalParasiteHistoryScreenProps =
 export type ParasiteSamplesScreenProps = StackScreenProps<"ParasiteSamples">;
 export type ParasiteAnimalSampleScreenProps =
   StackScreenProps<"ParasiteAnimalSample">;
+export type AnimalWeightFormScreenProps = StackScreenProps<"AnimalWeightForm">;
+export type AnimalHeatFormScreenProps = StackScreenProps<"AnimalHeatForm">;
+export type BreedingCalendarScreenProps = StackScreenProps<"BreedingCalendar">;
+export type BreedingSettingsScreenProps = StackScreenProps<"BreedingSettings">;

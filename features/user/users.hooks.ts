@@ -120,6 +120,25 @@ export function useUpdateTaskPushNotificationsMutation() {
   });
 }
 
+export type BreedingReminderSettings = {
+  breedingReminderDaysBefore1?: number | null;
+  breedingReminderDaysBefore2?: number | null;
+};
+
+export function useUpdateBreedingRemindersMutation() {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (settings: BreedingReminderSettings) =>
+      api.users.updateUser(settings),
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.users.me.queryKey,
+      });
+    },
+  });
+}
+
 export function useDeletionPreviewQuery() {
   const api = useApi();
   const { data, ...rest } = useQuery({

@@ -26,8 +26,15 @@ import {
 } from "./animals.hooks";
 import { usePermissions } from "@/features/user/users.hooks";
 import { AnimalDetailsScreenProps } from "./navigation/animals-routes";
-import { formatLocalizedDate } from "@/utils/date";
+import { formatLocalizedDate, parseDateOnly } from "@/utils/date";
 import { Switch } from "@/components/inputs/Switch";
+import { addDays } from "date-fns";
+import {
+  useAnimalHeatsQuery,
+  useAnimalWeightsQuery,
+  useGestationSettingsQuery,
+} from "./breeding.hooks";
+import { AnimalWeightChartDrawer } from "./AnimalWeightField";
 
 export function AnimalDetailsScreen({
   route,
@@ -39,6 +46,10 @@ export function AnimalDetailsScreen({
   const { canWrite } = usePermissions();
   const animalId = route.params.animalId;
   const { animal } = useAnimalByIdQuery(animalId);
+  const { weights } = useAnimalWeightsQuery(animalId);
+  const isFemale = animal?.sex === "female";
+  const { heats } = useAnimalHeatsQuery(animalId, isFemale);
+  const { gestationSettings } = useGestationSettingsQuery();
 
   const deleteAnimalMutation = useDeleteAnimalMutation(() =>
     navigation.goBack(),
@@ -53,6 +64,8 @@ export function AnimalDetailsScreen({
   const addOffspringSheetRef = useRef<BottomSheetModal>(null);
   // Unique per screen instance: the same animal can be open twice in the stack
   const addOffspringPortalKey = useId();
+  // Drawer with the weight timeline chart
+  const weightChartSheetRef = useRef<BottomSheetModal>(null);
   const updateRegisteredMutation = useUpdateAnimalMutation();
 
   // Combine children from both mother and father relationships
@@ -201,6 +214,36 @@ export function AnimalDetailsScreen({
                 {t(`animals.usage_types.${animal.usage}`)}
               </ListItem.Body>
             </ListItem.Content>
+          </ListItem>
+          <ListItem style={{ paddingVertical: 5 }}>
+            <ListItem.Content>
+              <ListItem.Title>{t("breeding.weight")}</ListItem.Title>
+              <ListItem.Body>
+                {animal.latestWeight
+                  ? `${animal.latestWeight.weightKg} kg (${formatLocalizedDate(
+                      parseDateOnly(animal.latestWeight.date),
+                      locale,
+                    )})`
+                  : t("breeding.no_weight")}
+              </ListItem.Body>
+            </ListItem.Content>
+            {(weights?.length ?? 0) >= 2 && (
+              // ListItem stretches its children to the row height, centering keeps the button square
+              <View
+                style={{
+                  justifyContent: "center",
+                  paddingRight: theme.spacing.m,
+                }}
+              >
+                <MaterialCommunityIconButton
+                  type="accent"
+                  icon="chart-line"
+                  iconSize={20}
+                  color={theme.colors.primary}
+                  onPress={() => weightChartSheetRef.current?.present()}
+                />
+              </View>
+            )}
           </ListItem>
           {animal.color && (
             <ListItem style={{ paddingVertical: 5 }}>
@@ -416,6 +459,95 @@ export function AnimalDetailsScreen({
           </TouchableOpacity>
         </View>
 
+        {/* Heats and matings, the basis of the breeding calendar */}
+        {isFemale && (
+          <View style={{ marginTop: theme.spacing.l }}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <H3>{t("breeding.heats")}</H3>
+              {canWrite("animals") && (
+                <IonIconButton
+                  icon="add"
+                  color="black"
+                  iconSize={25}
+                  type="accent"
+                  onPress={() =>
+                    navigation.navigate("AnimalHeatForm", { animalId })
+                  }
+                />
+              )}
+            </View>
+            {!heats || heats.length === 0 ? (
+              <Subtitle style={{ marginTop: theme.spacing.s }}>
+                {t("breeding.no_heats")}
+              </Subtitle>
+            ) : (
+              <View
+                style={{
+                  marginTop: theme.spacing.s,
+                  borderRadius: 10,
+                  overflow: "hidden",
+                  backgroundColor: theme.colors.white,
+                }}
+              >
+                {heats.map((heat) => {
+                  const gestationDays = gestationSettings?.find(
+                    (setting) => setting.animalType === animal.type,
+                  )?.gestationDays;
+                  const expectedBirthDate =
+                    heat.mated && gestationDays
+                      ? addDays(parseDateOnly(heat.date), gestationDays)
+                      : null;
+                  return (
+                    <ListItem
+                      key={heat.id}
+                      style={{ paddingVertical: 5 }}
+                      onPress={
+                        canWrite("animals")
+                          ? () =>
+                              navigation.navigate("AnimalHeatForm", {
+                                animalId,
+                                heatId: heat.id,
+                              })
+                          : undefined
+                      }
+                    >
+                      <ListItem.Content>
+                        <ListItem.Title>
+                          {formatLocalizedDate(
+                            parseDateOnly(heat.date),
+                            locale,
+                          )}
+                          {heat.mated ? ` · ${t("breeding.mated")}` : ""}
+                        </ListItem.Title>
+                        {expectedBirthDate && (
+                          <ListItem.Body>
+                            {t("breeding.expected_birth")}:{" "}
+                            {formatLocalizedDate(expectedBirthDate, locale)}
+                          </ListItem.Body>
+                        )}
+                      </ListItem.Content>
+                      {heat.mated && (
+                        <Ionicons
+                          name="checkmark-circle"
+                          size={20}
+                          color={theme.colors.primary}
+                        />
+                      )}
+                      {canWrite("animals") && <ListItem.Chevron />}
+                    </ListItem>
+                  );
+                })}
+              </View>
+            )}
+          </View>
+        )}
+
         {/* Children */}
         <View style={{ marginTop: theme.spacing.l }}>
           <View
@@ -597,6 +729,13 @@ export function AnimalDetailsScreen({
           </BottomDrawerModal>
         </BottomSheetModalProvider>
       </Portal>
+
+      <AnimalWeightChartDrawer
+        sheetRef={weightChartSheetRef}
+        animalId={animalId}
+        // View only, weights are edited in the edit form like the other fields
+        canEdit={false}
+      />
     </ContentView>
   );
 }

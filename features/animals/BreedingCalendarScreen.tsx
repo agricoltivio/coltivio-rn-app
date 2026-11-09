@@ -1,0 +1,361 @@
+import { BreedingCalendarEntry } from "@/api/breeding.api";
+import { IonIconButton } from "@/components/buttons/IconButton";
+import { ContentView } from "@/components/containers/ContentView";
+import { ListItem } from "@/components/list/ListItem";
+import { ScrollView } from "@/components/views/ScrollView";
+import { Body, H2, H3, Subtitle } from "@/theme/Typography";
+import {
+  formatLocalizedDate,
+  parseDateOnly,
+  toLocalDateString,
+} from "@/utils/date";
+import { Ionicons } from "@expo/vector-icons";
+import {
+  addMonths,
+  endOfMonth,
+  getDay,
+  getDaysInMonth,
+  isSameDay,
+  startOfMonth,
+} from "date-fns";
+import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { TouchableOpacity, View } from "react-native";
+import { useTheme } from "styled-components/native";
+import { useBreedingCalendarQuery } from "./breeding.hooks";
+import { BreedingCalendarScreenProps } from "./navigation/animals-routes";
+
+type CalendarEvent = {
+  key: string;
+  kind: "birth" | "heat";
+  date: Date;
+  entry: BreedingCalendarEntry;
+};
+
+const WEEKDAY_COUNT = 7;
+
+export function BreedingCalendarScreen({
+  navigation,
+}: BreedingCalendarScreenProps) {
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
+  const theme = useTheme();
+  const [visibleMonth, setVisibleMonth] = useState(() =>
+    startOfMonth(new Date()),
+  );
+  const [selectedDay, setSelectedDay] = useState<Date | null>(null);
+
+  const { entries } = useBreedingCalendarQuery(
+    toLocalDateString(visibleMonth),
+    toLocalDateString(endOfMonth(visibleMonth)),
+  );
+
+  // Every entry can produce a heat event and (when mated) a birth event, keep those in the visible month
+  const monthEvents = useMemo(() => {
+    const events: CalendarEvent[] = [];
+    const monthEnd = endOfMonth(visibleMonth);
+    const isInMonth = (date: Date) => date >= visibleMonth && date <= monthEnd;
+    for (const entry of entries ?? []) {
+      const heatDate = parseDateOnly(entry.date);
+      if (isInMonth(heatDate)) {
+        events.push({
+          key: `${entry.id}-heat`,
+          kind: "heat",
+          date: heatDate,
+          entry,
+        });
+      }
+      if (entry.expectedBirthDate) {
+        const birthDate = parseDateOnly(entry.expectedBirthDate);
+        if (isInMonth(birthDate)) {
+          events.push({
+            key: `${entry.id}-birth`,
+            kind: "birth",
+            date: birthDate,
+            entry,
+          });
+        }
+      }
+    }
+    return events.sort((a, b) => a.date.getTime() - b.date.getTime());
+  }, [entries, visibleMonth]);
+
+  // Legend uses the species words of this month's heats ("Bockig / Stierig"), hidden without any
+  const heatLegendLabel = [
+    ...new Set(
+      monthEvents
+        .filter((event) => event.kind === "heat")
+        .map((event) => t(`breeding.heat_by_type.${event.entry.animal.type}`)),
+    ),
+  ].join(" / ");
+
+  const shownEvents = selectedDay
+    ? monthEvents.filter((event) => isSameDay(event.date, selectedDay))
+    : monthEvents;
+
+  // Monday-first grid: leading blanks before the 1st, then the days of the month
+  const leadingBlankDays = (getDay(visibleMonth) + 6) % WEEKDAY_COUNT;
+  const dayCells: (Date | null)[] = [
+    ...Array.from({ length: leadingBlankDays }, () => null),
+    ...Array.from(
+      { length: getDaysInMonth(visibleMonth) },
+      (_, dayIndex) =>
+        new Date(
+          visibleMonth.getFullYear(),
+          visibleMonth.getMonth(),
+          dayIndex + 1,
+        ),
+    ),
+  ];
+  const weekdayLabels = Array.from({ length: WEEKDAY_COUNT }, (_, dayIndex) =>
+    new Intl.DateTimeFormat(locale, { weekday: "narrow" }).format(
+      // 2024-01-01 was a Monday
+      new Date(2024, 0, 1 + dayIndex),
+    ),
+  );
+  const today = new Date();
+
+  function changeMonth(monthDelta: number) {
+    setVisibleMonth((month) => addMonths(month, monthDelta));
+    setSelectedDay(null);
+  }
+
+  return (
+    <ContentView headerVisible>
+      <ScrollView
+        showHeaderOnScroll
+        headerTitleOnScroll={t("breeding.calendar_title")}
+      >
+        <H2>{t("breeding.calendar_title")}</H2>
+
+        <View
+          style={{
+            marginTop: theme.spacing.m,
+            padding: theme.spacing.m,
+            borderRadius: 10,
+            backgroundColor: theme.colors.white,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <IonIconButton
+              icon="chevron-back"
+              type="ghost"
+              iconSize={22}
+              color={theme.colors.primary}
+              onPress={() => changeMonth(-1)}
+            />
+            <H3>
+              {new Intl.DateTimeFormat(locale, {
+                month: "long",
+                year: "numeric",
+              }).format(visibleMonth)}
+            </H3>
+            <IonIconButton
+              icon="chevron-forward"
+              type="ghost"
+              iconSize={22}
+              color={theme.colors.primary}
+              onPress={() => changeMonth(1)}
+            />
+          </View>
+
+          <View style={{ flexDirection: "row", marginTop: theme.spacing.s }}>
+            {weekdayLabels.map((label, labelIndex) => (
+              <View key={labelIndex} style={{ flex: 1, alignItems: "center" }}>
+                <Body style={{ color: theme.colors.gray2, fontSize: 12 }}>
+                  {label}
+                </Body>
+              </View>
+            ))}
+          </View>
+          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+            {dayCells.map((day, cellIndex) => {
+              if (!day) {
+                return (
+                  <View
+                    key={`blank-${cellIndex}`}
+                    style={{ width: "14.2857%", height: 44 }}
+                  />
+                );
+              }
+              const dayEvents = monthEvents.filter((event) =>
+                isSameDay(event.date, day),
+              );
+              const hasBirth = dayEvents.some(
+                (event) => event.kind === "birth",
+              );
+              const hasHeat = dayEvents.some((event) => event.kind === "heat");
+              const isSelected =
+                selectedDay != null && isSameDay(day, selectedDay);
+              const isToday = isSameDay(day, today);
+              return (
+                <TouchableOpacity
+                  key={day.toISOString()}
+                  style={{
+                    width: "14.2857%",
+                    height: 44,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  onPress={() => setSelectedDay(isSelected ? null : day)}
+                >
+                  <View
+                    style={{
+                      width: 32,
+                      height: 32,
+                      borderRadius: 16,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: isSelected
+                        ? theme.colors.primary
+                        : "transparent",
+                      borderWidth: isToday && !isSelected ? 1 : 0,
+                      borderColor: theme.colors.primary,
+                    }}
+                  >
+                    <Body
+                      style={{
+                        color: isSelected
+                          ? theme.colors.white
+                          : theme.colors.black,
+                      }}
+                    >
+                      {day.getDate()}
+                    </Body>
+                  </View>
+                  <View style={{ flexDirection: "row", gap: 2, height: 6 }}>
+                    {hasBirth && (
+                      <View
+                        style={{
+                          width: 6,
+                          height: 6,
+                          borderRadius: 3,
+                          backgroundColor: theme.colors.primary,
+                        }}
+                      />
+                    )}
+                    {hasHeat && (
+                      <View
+                        style={{
+                          width: 6,
+                          height: 6,
+                          borderRadius: 3,
+                          backgroundColor: theme.colors.gray2,
+                        }}
+                      />
+                    )}
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              gap: theme.spacing.m,
+              marginTop: theme.spacing.s,
+            }}
+          >
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+            >
+              <View
+                style={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: 4,
+                  backgroundColor: theme.colors.primary,
+                }}
+              />
+              <Body style={{ fontSize: 12 }}>
+                {t("breeding.expected_birth")}
+              </Body>
+            </View>
+            {heatLegendLabel && (
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+              >
+                <View
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: 4,
+                    backgroundColor: theme.colors.gray2,
+                  }}
+                />
+                <Body style={{ fontSize: 12 }}>{heatLegendLabel}</Body>
+              </View>
+            )}
+          </View>
+        </View>
+
+        <View style={{ marginTop: theme.spacing.l }}>
+          {shownEvents.length === 0 ? (
+            <Subtitle>{t("breeding.no_entries_month")}</Subtitle>
+          ) : (
+            <View
+              style={{
+                borderRadius: 10,
+                overflow: "hidden",
+                backgroundColor: theme.colors.white,
+              }}
+            >
+              {shownEvents.map((event) => {
+                const animalLabel = event.entry.animal.earTagNumber
+                  ? `${event.entry.animal.earTagNumber} - ${event.entry.animal.name}`
+                  : event.entry.animal.name;
+                const sireLabel =
+                  event.entry.sire?.name ?? event.entry.sireName;
+                return (
+                  <ListItem
+                    key={event.key}
+                    style={{ paddingVertical: 5 }}
+                    onPress={() =>
+                      navigation.navigate("AnimalDetails", {
+                        animalId: event.entry.animal.id,
+                      })
+                    }
+                  >
+                    <Ionicons
+                      name={
+                        event.kind === "birth" ? "heart" : "calendar-outline"
+                      }
+                      size={20}
+                      color={
+                        event.kind === "birth"
+                          ? theme.colors.primary
+                          : theme.colors.gray2
+                      }
+                      style={{ marginRight: theme.spacing.s }}
+                    />
+                    <ListItem.Content>
+                      <ListItem.Title>{animalLabel}</ListItem.Title>
+                      <ListItem.Body>
+                        {formatLocalizedDate(event.date, locale)} ·{" "}
+                        {event.kind === "birth"
+                          ? t("breeding.expected_birth")
+                          : event.entry.mated
+                            ? `${t(`breeding.heat_by_type.${event.entry.animal.type}`)} · ${t("breeding.mated")}`
+                            : t(
+                                `breeding.heat_by_type.${event.entry.animal.type}`,
+                              )}
+                        {sireLabel ? ` · ${sireLabel}` : ""}
+                      </ListItem.Body>
+                    </ListItem.Content>
+                    <ListItem.Chevron />
+                  </ListItem>
+                );
+              })}
+            </View>
+          )}
+        </View>
+      </ScrollView>
+    </ContentView>
+  );
+}
