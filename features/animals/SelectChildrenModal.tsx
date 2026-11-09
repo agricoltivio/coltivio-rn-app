@@ -32,10 +32,7 @@ export function SelectChildrenModal({
     !!animal,
   );
   // Includes dead animals, so ancestor chains through dead animals are followed too
-  const { familyTree } = useFamilyTreeQuery(
-    animal?.type ?? "cow",
-    !!animal,
-  );
+  const { familyTree } = useFamilyTreeQuery(animal?.type ?? "cow", !!animal);
   const [searchText, setSearchText] = useState("");
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
