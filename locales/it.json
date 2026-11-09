@@ -118,7 +118,8 @@
       "not_all_divided": "Non hai ancora distribuito l'intera quantità",
       "required": "Campo obbligatorio",
       "min": "Minimo {{min}}",
-      "greater_than_zero": "Deve essere maggiore di 0"
+      "greater_than_zero": "Deve essere maggiore di 0",
+      "invalid_number": "Inserisci un numero valido"
     }
   },
   "common": {

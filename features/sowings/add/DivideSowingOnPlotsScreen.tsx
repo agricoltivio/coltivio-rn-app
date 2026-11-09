@@ -5,8 +5,7 @@ import { ContentView } from "@/components/containers/ContentView";
 import { NumberInput } from "@/components/inputs/NumberInput";
 import { ScrollView } from "@/components/views/ScrollView";
 import { Body, H2, Subtitle, Title } from "@/theme/Typography";
-import { round } from "@/utils/math";
-import { splitByArea } from "@/utils/splitByArea";
+import { splitByArea, validateDivision } from "@/utils/splitByArea";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Switch, View } from "react-native";
@@ -55,18 +54,16 @@ export function DivideSowingOnPlotsScreen({
     setAmountByPlotId(next);
   }, [divideByArea, selectedPlotsById, precision]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const totalDivided = round(
-    Object.values(amountByPlotId).reduce(
-      (total, value) => total + Number(value),
-      0,
-    ),
-    2,
+  const division = validateDivision(
+    plots.map((plot) => amountByPlotId[plot.plotId]),
+    totalAmount,
   );
-  const remaining = round(totalAmount - totalDivided, 2);
+  const { remaining } = division;
 
+  // Hide the error once the entries are valid again
   useEffect(() => {
-    if (error && remaining === 0) setError(null);
-  }, [remaining]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (error && division.error === null) setError(null);
+  }, [division.error]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleRemove(plotId: string) {
     removeSowingPlot(plotId);
@@ -78,16 +75,8 @@ export function DivideSowingOnPlotsScreen({
   }
 
   function handleOnConfirm() {
-    if (remaining < 0) {
-      setError(t("forms.validation.divided_amount_too_big"));
-      return;
-    } else if (remaining > 0) {
-      setError(t("forms.validation.not_all_divided"));
-      return;
-    }
-    // at least one plot has to get something, otherwise nothing would be saved
-    if (!plots.some((plot) => Number(amountByPlotId[plot.plotId]) > 0)) {
-      setError(t("forms.validation.greater_than_zero"));
+    if (division.error) {
+      setError(t(`forms.validation.${division.error}`));
       return;
     }
     for (const plot of plots) {
@@ -176,7 +165,8 @@ export function DivideSowingOnPlotsScreen({
                     }));
                   }}
                   hideLabel
-                  float
+                  // seeds and plants are whole pieces
+                  float={!isCount}
                 />
                 <IonIconButton
                   type="danger"

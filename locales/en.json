@@ -118,7 +118,8 @@
       "not_all_divided": "You have not distributed the entire amount",
       "required": "This field is required",
       "min": "Minimum {{min}}",
-      "greater_than_zero": "Must be greater than 0"
+      "greater_than_zero": "Must be greater than 0",
+      "invalid_number": "Enter a valid number"
     }
   },
   "common": {

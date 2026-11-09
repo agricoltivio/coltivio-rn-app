@@ -65,8 +65,9 @@ function round2(value: number): number {
   return Math.round((value + Number.EPSILON) * 100) / 100;
 }
 
+// Units unknown to this app version (e.g. added in a newer API) count as totals
 export function isPerAreaUnit(unit: SowingUnit): boolean {
-  return AREA_COUNTERPARTS[unit].perArea;
+  return AREA_COUNTERPARTS[unit]?.perArea ?? false;
 }
 
 export function unitsForQuantityKind(
@@ -97,8 +98,10 @@ export function computeCounterpart(
   unit: SowingUnit,
   sizeInSquareMeters: number,
 ): { amount: number; unit: SowingUnit; area: string } | null {
-  if (sizeInSquareMeters <= 0) return null;
-  const { counterpartUnit, squareMetersPerAreaUnit } = AREA_COUNTERPARTS[unit];
+  const counterpart = AREA_COUNTERPARTS[unit];
+  // No hint for units unknown to this app version
+  if (sizeInSquareMeters <= 0 || !counterpart) return null;
+  const { counterpartUnit, squareMetersPerAreaUnit } = counterpart;
   const areaUnits = sizeInSquareMeters / squareMetersPerAreaUnit;
   const area = formatArea(sizeInSquareMeters);
   if (!isPerAreaUnit(unit)) {

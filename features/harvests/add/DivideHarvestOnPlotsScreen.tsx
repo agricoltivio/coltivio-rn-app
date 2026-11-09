@@ -6,6 +6,7 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { DivideHarvestOnPlotsScreenProps } from "../navigation/harvest-routes";
 import { Body, H2, Subtitle, Title } from "@/theme/Typography";
 import { round } from "@/utils/math";
+import { validateDivision } from "@/utils/splitByArea";
 import React, { useEffect, useState } from "react";
 import { Switch, View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -98,15 +99,15 @@ export function DivideHarvestOnPlotsScreen({
     }
   }, [divideByArea, selectedHarvestPlotsById, divisionPrecision]);
 
-  const totalDivided = +Object.values(quantityByPlotId)
-    .reduce((total, val) => total + Number(val), 0)
-    .toFixed(2);
+  const division = validateDivision(
+    harvestAreas.map((harvestArea) => quantityByPlotId[harvestArea.plotId]),
+    totalProducedUnits,
+  );
 
+  // Hide the error once the entries are valid again
   useEffect(() => {
-    if (error && totalDivided >= 0 && totalDivided <= totalProducedUnits) {
-      setError(null);
-    }
-  }, [totalDivided]);
+    if (error && division.error === null) setError(null);
+  }, [division.error]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleRemove(plotId: string) {
     removeHarvestPlot(plotId);
@@ -118,12 +119,8 @@ export function DivideHarvestOnPlotsScreen({
   }
 
   function handleOnConfirm() {
-    const remaining = round(totalProducedUnits - totalDivided, 2);
-    if (remaining < 0) {
-      setError(t("forms.validation.divided_amount_too_big"));
-      return;
-    } else if (remaining > 0) {
-      setError(t("forms.validation.not_all_divided"));
+    if (division.error) {
+      setError(t(`forms.validation.${division.error}`));
       return;
     }
     for (const harvestArea of harvestAreas) {
@@ -164,7 +161,7 @@ export function DivideHarvestOnPlotsScreen({
             }}
           >
             {t("common.remaining_quantity", {
-              quantity: round(totalProducedUnits - totalDivided, 2),
+              quantity: division.remaining,
               quantityLabel,
             })}
           </Title>
