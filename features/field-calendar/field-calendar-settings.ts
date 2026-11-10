@@ -119,9 +119,9 @@ export const DEFAULT_FIELD_CALENDAR_GROUPS: FieldCalendarGroupConfig[] = [
     groupId: "resources",
     visible: true,
     items: [
+      { itemId: "seeds", visible: true },
       { itemId: "fertilizers", visible: true },
       { itemId: "cropProtectionProducts", visible: true },
-      { itemId: "seeds", visible: true },
     ],
   },
   {
