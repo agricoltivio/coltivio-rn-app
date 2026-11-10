@@ -73,10 +73,27 @@ export function ChartPager({
     setActivePageIndex(pageIndex);
   }
 
+  // Pending swap from a loop copy to the real card after a button press
+  const pendingCopySwapRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  function cancelPendingCopySwap() {
+    if (pendingCopySwapRef.current === null) return false;
+    clearTimeout(pendingCopySwapRef.current);
+    pendingCopySwapRef.current = null;
+    return true;
+  }
+
   // Previous/next button. Past either end it animates onto the loop copy (so it
   // looks like a normal step) and then swaps to the real card without animation.
   function goToPage(step: -1 | 1) {
     if (!loops || pageWidth === 0) return;
+    // Pressed again while still on a copy: move to the real card first, otherwise
+    // the next step would start from the copy and the old swap would land elsewhere
+    if (cancelPendingCopySwap()) {
+      scrollViewRef.current?.scrollTo({
+        x: (currentPageIndex + 1) * pageWidth,
+        animated: false,
+      });
+    }
     const targetRenderedIndex = currentPageIndex + 1 + step;
     scrollViewRef.current?.scrollTo({
       x: targetRenderedIndex * pageWidth,
@@ -88,7 +105,8 @@ export function ChartPager({
     const landsOnCopy =
       targetRenderedIndex === 0 || targetRenderedIndex === pages.length + 1;
     if (landsOnCopy) {
-      setTimeout(() => {
+      pendingCopySwapRef.current = setTimeout(() => {
+        pendingCopySwapRef.current = null;
         scrollViewRef.current?.scrollTo({
           x: (targetPageIndex + 1) * pageWidth,
           animated: false,
@@ -106,6 +124,8 @@ export function ChartPager({
           pagingEnabled
           showsHorizontalScrollIndicator={false}
           onMomentumScrollEnd={onScrollEnd}
+          // A swipe takes over from a button press, the swipe's own scroll end handles copies
+          onScrollBeginDrag={() => cancelPendingCopySwap()}
           onContentSizeChange={onContentSizeChange}
           // Pages stretch to the tallest one
           contentContainerStyle={{ alignItems: "stretch" }}
