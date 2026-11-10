@@ -1881,7 +1881,7 @@
     "delete_weight_entry": "Gewichtseintrag löschen?",
     "weight_positive": "Das Gewicht muss grösser als 0 sein",
     "date": "Datum",
-    "weight_per_animal": "Gewicht und effektive Menge pro Tier",
+    "weight_per_animal": "Effektive Menge pro Tier",
     "effective_amount": "Effektive Menge",
     "heats": "Trächtigkeit",
     "heat": "Paarungsbereit",

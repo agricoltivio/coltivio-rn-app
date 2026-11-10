@@ -1879,7 +1879,7 @@
     "delete_weight_entry": "Supprimer la pesée ?",
     "weight_positive": "Le poids doit être supérieur à 0",
     "date": "Date",
-    "weight_per_animal": "Poids et quantité effective par animal",
+    "weight_per_animal": "Quantité effective par animal",
     "effective_amount": "Quantité effective",
     "heats": "Gestation",
     "heat": "En chaleur",

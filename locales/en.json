@@ -1880,7 +1880,7 @@
     "delete_weight_entry": "Delete weight entry?",
     "weight_positive": "Weight must be greater than 0",
     "date": "Date",
-    "weight_per_animal": "Weight and effective amount per animal",
+    "weight_per_animal": "Effective amount per animal",
     "effective_amount": "Effective amount",
     "heats": "Pregnancy",
     "heat": "In heat",
