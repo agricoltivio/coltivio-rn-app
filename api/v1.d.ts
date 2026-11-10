@@ -2404,6 +2404,22 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/v1/earTags/byId/{earTagId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete: operations["DeleteV1EarTagsByIdEarTagId"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/v1/drugs": {
     parameters: {
       query?: never;
@@ -3803,7 +3819,9 @@ export interface components {
         | "crop_not_found"
         | "plot_not_found"
         | "seed_default_amount_without_unit"
-        | "ear_tag_range_conflict";
+        | "ear_tag_range_conflict"
+        | "invalid_ear_tag_range"
+        | "ear_tag_assigned";
     };
     GetV1LayersPlotsFarmsFederalFarmIdOnlyPositiveResponse: {
       data: {
@@ -11844,6 +11862,9 @@ export interface components {
         deletedCount: number;
         skippedAssigned: string[];
       };
+    };
+    DeleteV1EarTagsByIdEarTagIdPositiveResponse: {
+      data: Record<string, never>;
     };
     GetV1DrugsPositiveResponse: {
       data: {
@@ -27637,6 +27658,38 @@ export interface operations {
         };
       };
       /** @description DELETE /v1/earTags/range Negative response */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+        };
+      };
+    };
+  };
+  DeleteV1EarTagsByIdEarTagId: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description DELETE /v1/earTags/byId/:earTagId Parameter */
+        earTagId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description DELETE /v1/earTags/byId/:earTagId Positive response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["DeleteV1EarTagsByIdEarTagIdPositiveResponse"];
+        };
+      };
+      /** @description DELETE /v1/earTags/byId/:earTagId Negative response */
       400: {
         headers: {
           [name: string]: unknown;

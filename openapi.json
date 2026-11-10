@@ -11718,6 +11718,45 @@
         }
       }
     },
+    "/v1/earTags/byId/{earTagId}": {
+      "delete": {
+        "operationId": "DeleteV1EarTagsByIdEarTagId",
+        "parameters": [
+          {
+            "name": "earTagId",
+            "in": "path",
+            "required": true,
+            "description": "DELETE /v1/earTags/byId/:earTagId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "DELETE /v1/earTags/byId/:earTagId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteV1EarTagsByIdEarTagIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "DELETE /v1/earTags/byId/:earTagId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/drugs": {
       "get": {
         "operationId": "GetV1Drugs",
@@ -18105,7 +18144,9 @@
               "crop_not_found",
               "plot_not_found",
               "seed_default_amount_without_unit",
-              "ear_tag_range_conflict"
+              "ear_tag_range_conflict",
+              "invalid_ear_tag_range",
+              "ear_tag_assigned"
             ]
           }
         },
@@ -36982,6 +37023,18 @@
               }
             },
             "required": ["deletedCount", "skippedAssigned"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "DeleteV1EarTagsByIdEarTagIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
             "additionalProperties": false
           }
         },

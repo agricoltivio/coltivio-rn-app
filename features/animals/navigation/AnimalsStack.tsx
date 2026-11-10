@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { AnimalsHubScreen } from "../AnimalsHubScreen";
 import { EarTagsScreen } from "../EarTagsScreen";
 import { CreateEarTagRangeScreen } from "../CreateEarTagRangeScreen";
+import { DeleteEarTagRangeScreen } from "../DeleteEarTagRangeScreen";
 import { AnimalsScreen } from "../AnimalsScreen";
 import { AnimalDetailsScreen } from "../AnimalDetailsScreen";
 import { CreateAnimalScreen } from "../CreateAnimalScreen";
@@ -98,6 +99,12 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
       name="CreateEarTagRange"
       options={{ title: "" }}
       component={CreateEarTagRangeScreen}
+    />,
+    <Stack.Screen
+      key="delete-ear-tag-range"
+      name="DeleteEarTagRange"
+      options={{ title: "" }}
+      component={DeleteEarTagRangeScreen}
     />,
     <Stack.Screen
       key="animals"

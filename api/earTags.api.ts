@@ -29,6 +29,13 @@ export function earTagsApi(client: FetchClient) {
       return data!.data;
     },
 
+    // Single tag by id, works for any number format (also imported ones)
+    async deleteEarTag(earTagId: string) {
+      await client.DELETE("/v1/earTags/byId/{earTagId}", {
+        params: { path: { earTagId } },
+      });
+    },
+
     async deleteEarTagRange(fromNumber: string, toNumber: string) {
       const { data } = await client.DELETE("/v1/earTags/range", {
         params: {

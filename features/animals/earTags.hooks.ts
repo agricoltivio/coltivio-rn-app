@@ -68,3 +68,17 @@ export function useDeleteEarTagRangeMutation(
     onError,
   });
 }
+
+export function useDeleteEarTagMutation(onError?: (error: Error) => void) {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (earTagId: string) => api.earTags.deleteEarTag(earTagId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.earTags._def,
+      });
+    },
+    onError,
+  });
+}

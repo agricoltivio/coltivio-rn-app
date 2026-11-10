@@ -19,12 +19,12 @@ type EarTagRangeFormValues = {
 };
 
 // Same format the API expects: optional letter prefix + number, e.g. "CH001" or "201231"
-const EAR_TAG_NUMBER_PATTERN = /^([A-Za-z]*)(\d+)$/;
+export const EAR_TAG_NUMBER_PATTERN = /^([A-Za-z]*)(\d+)$/;
 
 // Conflicting numbers listed in the preview; the rest is summarized as a count
 const MAX_LISTED_CONFLICTS = 10;
-// Largest range the API creates at once
-const MAX_EAR_TAG_RANGE_SIZE = 1000;
+// Largest range the API creates or deletes at once
+export const MAX_EAR_TAG_RANGE_SIZE = 1000;
 
 type EarTagRangePreview = {
   fromNumber: string;
