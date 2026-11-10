@@ -9,6 +9,8 @@ import { fertilizerApplicationsApi } from "./fertilizerApplications.api";
 import { fertilizerApplicationPresetsApi } from "./fertilizerApplicationPresets.api";
 import { fertilizersApi } from "./fertilizers.api";
 import { harvestsApi } from "./harvests.api";
+import { seedsApi } from "./seeds.api";
+import { sowingsApi } from "./sowings.api";
 import { geoAdminApi } from "./geo-admin";
 import { harvestPresetsApi } from "./harvestPresets.api";
 import { layersApi } from "./layers.api";
@@ -178,6 +180,8 @@ export function api(client: FetchClient) {
     fertilizerApplications: fertilizerApplicationsApi(client),
     fertilizerApplicationPresets: fertilizerApplicationPresetsApi(client),
     fertilizers: fertilizersApi(client),
+    seeds: seedsApi(client),
+    sowings: sowingsApi(client),
     tillages: tillagesApi(client),
     tillagePresets: tillagePresetsApi(client),
     cropProtectionProducts: cropProtectionProductsApi(client),

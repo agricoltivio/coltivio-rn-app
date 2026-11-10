@@ -34,6 +34,16 @@ export const FIELD_CALENDAR_ITEMS: Record<string, FieldCalendarItemMeta> = {
     route: "CropRotations",
     feature: "field_calendar",
   },
+  sowings: {
+    translationKey: "field_calendar.sowings",
+    route: "Sowings",
+    feature: "field_calendar",
+  },
+  seeds: {
+    translationKey: "field_calendar.seeds",
+    route: "Seeds",
+    feature: "field_calendar",
+  },
   tillages: {
     translationKey: "field_calendar.tillages",
     route: "Tillages",
@@ -99,6 +109,7 @@ export const DEFAULT_FIELD_CALENDAR_GROUPS: FieldCalendarGroupConfig[] = [
     visible: true,
     items: [
       { itemId: "tillages", visible: true },
+      { itemId: "sowings", visible: true },
       { itemId: "fertilizerApplications", visible: true },
       { itemId: "cropProtectionApplications", visible: true },
       { itemId: "harvests", visible: true },
@@ -108,6 +119,7 @@ export const DEFAULT_FIELD_CALENDAR_GROUPS: FieldCalendarGroupConfig[] = [
     groupId: "resources",
     visible: true,
     items: [
+      { itemId: "seeds", visible: true },
       { itemId: "fertilizers", visible: true },
       { itemId: "cropProtectionProducts", visible: true },
     ],

@@ -45,6 +45,7 @@ export function FieldCalendarExportScreen({
       generateFertilizerApplications: false,
       generateCropProtectionApplications: false,
       generateHarvests: false,
+      generateSowings: false,
     },
   });
   const [error, setError] = useState<string | null>(null);
@@ -139,6 +140,11 @@ export function FieldCalendarExportScreen({
             control={control}
             name="generateHarvests"
             label={t("harvests.harvest")}
+          />
+          <RHSwitch
+            control={control}
+            name="generateSowings"
+            label={t("sowings.sowing")}
           />
         </View>
         {error ? (

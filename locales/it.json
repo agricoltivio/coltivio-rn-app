@@ -117,7 +117,9 @@
       "divided_amount_too_big": "La quantità distribuita è maggiore di quella disponibile",
       "not_all_divided": "Non hai ancora distribuito l'intera quantità",
       "required": "Campo obbligatorio",
-      "min": "Minimo {{min}}"
+      "min": "Minimo {{min}}",
+      "greater_than_zero": "Deve essere maggiore di 0",
+      "invalid_number": "Inserisci un numero valido"
     }
   },
   "common": {
@@ -167,7 +169,8 @@
     "delete_confirm_title": "Elimina modello",
     "delete_confirm_message": "Vuoi davvero eliminare \"{{name}}\"?",
     "no_presets": "Nessun modello disponibile",
-    "no_preset": "Nessun modello"
+    "no_preset": "Nessun modello",
+    "manage_sowing_presets": "Gestisci modelli di semina"
   },
   "errors": {
     "unexpected_retry": "Oops, qualcosa è andato storto. Riprova.",
@@ -781,7 +784,8 @@
       "harvest": "Raccolta",
       "fertilizerApplication": "Fertilizzazione",
       "cropProtectionApplication": "Protezione colture",
-      "tillage": "Lavorazione del terreno"
+      "tillage": "Lavorazione del terreno",
+      "sowing": "Semina"
     },
     "crop_families": "Famiglie di colture",
     "crops": "Colture",
@@ -807,7 +811,9 @@
       "configure_heading": "Personalizza il tuo calendario dei campi",
       "done_heading": "Tutto pronto!",
       "done_body": "Puoi modificare le impostazioni in qualsiasi momento tramite il simbolo dell'ingranaggio."
-    }
+    },
+    "sowings": "Semina",
+    "seeds": "Sementi"
   },
   "harvests": {
     "harvest": "Raccolto",
@@ -873,6 +879,54 @@
     "warning_unit_not_editable": "Attenzione, l'unità non può essere modificata! Dovrebbe corrispondere all'unità in cui viene applicato il fertilizzante.",
     "unit_info": "Seleziona in quale unità (ad es. litri) viene applicato il fertilizzante.",
     "default_machine_info": "Per semplificare la registrazione può essere definita una macchina con cui viene applicato questo fertilizzante."
+  },
+  "seeds": {
+    "seeds": "Sementi",
+    "new_seed": "Nuova semente",
+    "quantity_kind": "Misurato per",
+    "quantity_kinds": {
+      "weight": "peso (kg, g)",
+      "count": "numero (semi, piante)"
+    },
+    "quantity_kind_hint": "Peso per sementi in kg/g, numero per semi o piantine.",
+    "quantity_kind_permanent": "Non può essere modificato in seguito.",
+    "quantity_kind_locked_hint": "Il modo di misurazione non può essere modificato affinché le quantità restino sommabili. Crea una nuova semente.",
+    "default_values_optional": "Valori predefiniti (opzionale)",
+    "default_values_description": "Precompilati quando si registra una nuova semina con questa semente e modificabili in quel momento.",
+    "default_amount_optional": "Quantità predefinita (opzionale)",
+    "default_unit": "Unità predefinita",
+    "seed_in_use_warning": "Questa semente è in uso e quindi non può essere eliminata.",
+    "delete_confirm_title": "Eliminare la semente?",
+    "delete_confirm_message": "Anche i modelli con questa semente verranno eliminati."
+  },
+  "sowings": {
+    "sowing": "Semina",
+    "add_sowing": "Aggiungi semina",
+    "edit_sowing": "Modifica semina",
+    "sowing_date": "Semina del {{date}}",
+    "sowing_configuration": "Configura semina",
+    "seed": "Semente",
+    "seed_optional": "Semente (opzionale)",
+    "crop_from_seed": "La coltura è presa dalla semente.",
+    "amount": "Quantità",
+    "rate": "Densità di semina",
+    "total": "Totale",
+    "computed_total": "Corrisponde a {{amount}} {{unit}} su {{area}}",
+    "computed_rate": "Corrisponde a {{amount}} {{unit}} su {{area}}",
+    "divide_on_plots": "Suddividi sugli appezzamenti",
+    "units": {
+      "kg_per_ha": "kg/ha",
+      "g_per_m2": "g/m²",
+      "seeds_per_ha": "semi/ha",
+      "seeds_per_m2": "semi/m²",
+      "plants_per_ha": "piante/ha",
+      "plants_per_m2": "piante/m²",
+      "kg": "kg",
+      "g": "g",
+      "seeds": "semi",
+      "plants": "piante"
+    },
+    "delete_confirm_title": "Eliminare la semina?"
   },
   "fertilizer_application": {
     "fertilizer_application": "Fertilizzazione",
@@ -1577,7 +1631,8 @@
       "welcome_body": "Con l'accesso rapido puoi avviare fino a 4 azioni direttamente dalla schermata principale.",
       "settings_hint": "Puoi regolare le azioni o disattivare l'accesso rapido in qualsiasi momento nelle impostazioni.",
       "configure_heading": "Configura le azioni"
-    }
+    },
+    "sowing": "Aggiungi semina"
   },
   "tasks": {
     "tasks": "Attività",
