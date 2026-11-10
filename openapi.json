@@ -831,6 +831,15 @@
             "schema": {
               "$ref": "#/components/schemas/GetV1FarmFieldEventsParameterFromDate"
             }
+          },
+          {
+            "name": "types",
+            "in": "query",
+            "required": false,
+            "description": "GET /v1/farm/fieldEvents Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
           }
         ],
         "security": [{ "APIKEY_1": [] }],
@@ -876,6 +885,15 @@
             "description": "HEAD /v1/farm/fieldEvents Parameter",
             "schema": {
               "$ref": "#/components/schemas/GetV1FarmFieldEventsParameterFromDate"
+            }
+          },
+          {
+            "name": "types",
+            "in": "query",
+            "required": false,
+            "description": "HEAD /v1/farm/fieldEvents Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
             }
           }
         ],
@@ -3244,6 +3262,130 @@
           },
           "400": {
             "description": "HEAD /v1/plots/byId/:plotId/harvestSummary Negative response"
+          }
+        }
+      }
+    },
+    "/v1/plots/byId/{plotId}/sowings": {
+      "get": {
+        "operationId": "GetV1PlotsByIdPlotIdSowings",
+        "parameters": [
+          {
+            "name": "plotId",
+            "in": "path",
+            "required": true,
+            "description": "GET /v1/plots/byId/:plotId/sowings Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/plots/byId/:plotId/sowings Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdSowingsPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/plots/byId/:plotId/sowings Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1PlotsByIdPlotIdSowings",
+        "parameters": [
+          {
+            "name": "plotId",
+            "in": "path",
+            "required": true,
+            "description": "HEAD /v1/plots/byId/:plotId/sowings Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/plots/byId/:plotId/sowings Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/plots/byId/:plotId/sowings Negative response"
+          }
+        }
+      }
+    },
+    "/v1/plots/byId/{plotId}/sowingSummary": {
+      "get": {
+        "operationId": "GetV1PlotsByIdPlotIdSowingSummary",
+        "parameters": [
+          {
+            "name": "plotId",
+            "in": "path",
+            "required": true,
+            "description": "GET /v1/plots/byId/:plotId/sowingSummary Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/plots/byId/:plotId/sowingSummary Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1PlotsByIdPlotIdSowingSummaryPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/plots/byId/:plotId/sowingSummary Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1PlotsByIdPlotIdSowingSummary",
+        "parameters": [
+          {
+            "name": "plotId",
+            "in": "path",
+            "required": true,
+            "description": "HEAD /v1/plots/byId/:plotId/sowingSummary Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/plots/byId/:plotId/sowingSummary Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/plots/byId/:plotId/sowingSummary Negative response"
           }
         }
       }
@@ -8036,6 +8178,843 @@
           },
           "400": {
             "description": "HEAD /v1/fertilizers/byId/:fertilizerId/inUse Negative response"
+          }
+        }
+      }
+    },
+    "/v1/seeds": {
+      "get": {
+        "operationId": "GetV1Seeds",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/seeds Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1SeedsPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/seeds Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1Seeds",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": { "description": "HEAD /v1/seeds Positive response" },
+          "400": { "description": "HEAD /v1/seeds Negative response" }
+        }
+      },
+      "post": {
+        "operationId": "PostV1Seeds",
+        "requestBody": {
+          "description": "POST /v1/seeds Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1SeedsRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/seeds Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1SeedsPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/seeds Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/seeds/byId/{seedId}": {
+      "get": {
+        "operationId": "GetV1SeedsByIdSeedId",
+        "parameters": [
+          {
+            "name": "seedId",
+            "in": "path",
+            "required": true,
+            "description": "GET /v1/seeds/byId/:seedId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/seeds/byId/:seedId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1SeedsByIdSeedIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/seeds/byId/:seedId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1SeedsByIdSeedId",
+        "parameters": [
+          {
+            "name": "seedId",
+            "in": "path",
+            "required": true,
+            "description": "HEAD /v1/seeds/byId/:seedId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/seeds/byId/:seedId Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/seeds/byId/:seedId Negative response"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "PatchV1SeedsByIdSeedId",
+        "parameters": [
+          {
+            "name": "seedId",
+            "in": "path",
+            "required": true,
+            "description": "PATCH /v1/seeds/byId/:seedId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PATCH /v1/seeds/byId/:seedId Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchV1SeedsByIdSeedIdRequestBody"
+              }
+            }
+          }
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "PATCH /v1/seeds/byId/:seedId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchV1SeedsByIdSeedIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "PATCH /v1/seeds/byId/:seedId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteV1SeedsByIdSeedId",
+        "parameters": [
+          {
+            "name": "seedId",
+            "in": "path",
+            "required": true,
+            "description": "DELETE /v1/seeds/byId/:seedId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "DELETE /v1/seeds/byId/:seedId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteV1SeedsByIdSeedIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "DELETE /v1/seeds/byId/:seedId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/seeds/byId/{seedId}/inUse": {
+      "get": {
+        "operationId": "GetV1SeedsByIdSeedIdInUse",
+        "parameters": [
+          {
+            "name": "seedId",
+            "in": "path",
+            "required": true,
+            "description": "GET /v1/seeds/byId/:seedId/inUse Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/seeds/byId/:seedId/inUse Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1SeedsByIdSeedIdInUsePositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/seeds/byId/:seedId/inUse Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1SeedsByIdSeedIdInUse",
+        "parameters": [
+          {
+            "name": "seedId",
+            "in": "path",
+            "required": true,
+            "description": "HEAD /v1/seeds/byId/:seedId/inUse Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/seeds/byId/:seedId/inUse Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/seeds/byId/:seedId/inUse Negative response"
+          }
+        }
+      }
+    },
+    "/v1/sowings": {
+      "get": {
+        "operationId": "GetV1Sowings",
+        "parameters": [
+          {
+            "name": "fromDate",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/sowings Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1SowingsPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/sowings Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1Sowings",
+        "parameters": [
+          {
+            "name": "fromDate",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": { "description": "HEAD /v1/sowings Positive response" },
+          "400": { "description": "HEAD /v1/sowings Negative response" }
+        }
+      },
+      "post": {
+        "operationId": "PostV1Sowings",
+        "requestBody": {
+          "description": "POST /v1/sowings Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1SowingsRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/sowings Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1SowingsPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/sowings Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sowings/byId/{sowingId}": {
+      "get": {
+        "operationId": "GetV1SowingsByIdSowingId",
+        "parameters": [
+          {
+            "name": "sowingId",
+            "in": "path",
+            "required": true,
+            "description": "GET /v1/sowings/byId/:sowingId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/sowings/byId/:sowingId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1SowingsByIdSowingIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/sowings/byId/:sowingId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1SowingsByIdSowingId",
+        "parameters": [
+          {
+            "name": "sowingId",
+            "in": "path",
+            "required": true,
+            "description": "HEAD /v1/sowings/byId/:sowingId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/sowings/byId/:sowingId Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/sowings/byId/:sowingId Negative response"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteV1SowingsByIdSowingId",
+        "parameters": [
+          {
+            "name": "sowingId",
+            "in": "path",
+            "required": true,
+            "description": "DELETE /v1/sowings/byId/:sowingId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "DELETE /v1/sowings/byId/:sowingId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteV1SowingsByIdSowingIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "DELETE /v1/sowings/byId/:sowingId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "PatchV1SowingsByIdSowingId",
+        "parameters": [
+          {
+            "name": "sowingId",
+            "in": "path",
+            "required": true,
+            "description": "PATCH /v1/sowings/byId/:sowingId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PATCH /v1/sowings/byId/:sowingId Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchV1SowingsByIdSowingIdRequestBody"
+              }
+            }
+          }
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "PATCH /v1/sowings/byId/:sowingId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchV1SowingsByIdSowingIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "PATCH /v1/sowings/byId/:sowingId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sowings/summaries": {
+      "get": {
+        "operationId": "GetV1SowingsSummaries",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/sowings/summaries Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1SowingsSummariesPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/sowings/summaries Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1SowingsSummaries",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/sowings/summaries Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/sowings/summaries Negative response"
+          }
+        }
+      }
+    },
+    "/v1/sowings/units": {
+      "get": {
+        "operationId": "GetV1SowingsUnits",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/sowings/units Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1SowingsUnitsPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/sowings/units Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1SowingsUnits",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": { "description": "HEAD /v1/sowings/units Positive response" },
+          "400": { "description": "HEAD /v1/sowings/units Negative response" }
+        }
+      }
+    },
+    "/v1/sowings/presets": {
+      "get": {
+        "operationId": "GetV1SowingsPresets",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/sowings/presets Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1SowingsPresetsPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/sowings/presets Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1SowingsPresets",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/sowings/presets Positive response"
+          },
+          "400": { "description": "HEAD /v1/sowings/presets Negative response" }
+        }
+      },
+      "post": {
+        "operationId": "PostV1SowingsPresets",
+        "requestBody": {
+          "description": "POST /v1/sowings/presets Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1SowingsPresetsRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/sowings/presets Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1SowingsPresetsPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/sowings/presets Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sowings/presets/byId/{presetId}": {
+      "get": {
+        "operationId": "GetV1SowingsPresetsByIdPresetId",
+        "parameters": [
+          {
+            "name": "presetId",
+            "in": "path",
+            "required": true,
+            "description": "GET /v1/sowings/presets/byId/:presetId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/sowings/presets/byId/:presetId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1SowingsPresetsByIdPresetIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/sowings/presets/byId/:presetId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1SowingsPresetsByIdPresetId",
+        "parameters": [
+          {
+            "name": "presetId",
+            "in": "path",
+            "required": true,
+            "description": "HEAD /v1/sowings/presets/byId/:presetId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/sowings/presets/byId/:presetId Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/sowings/presets/byId/:presetId Negative response"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "PatchV1SowingsPresetsByIdPresetId",
+        "parameters": [
+          {
+            "name": "presetId",
+            "in": "path",
+            "required": true,
+            "description": "PATCH /v1/sowings/presets/byId/:presetId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PATCH /v1/sowings/presets/byId/:presetId Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchV1SowingsPresetsByIdPresetIdRequestBody"
+              }
+            }
+          }
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "PATCH /v1/sowings/presets/byId/:presetId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchV1SowingsPresetsByIdPresetIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "PATCH /v1/sowings/presets/byId/:presetId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteV1SowingsPresetsByIdPresetId",
+        "parameters": [
+          {
+            "name": "presetId",
+            "in": "path",
+            "required": true,
+            "description": "DELETE /v1/sowings/presets/byId/:presetId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "DELETE /v1/sowings/presets/byId/:presetId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteV1SowingsPresetsByIdPresetIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "DELETE /v1/sowings/presets/byId/:presetId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -16566,7 +17545,19 @@
         "type": "object",
         "properties": {
           "error": { "type": "string" },
-          "code": { "type": "string", "enum": ["invalid_geometry"] }
+          "code": {
+            "type": "string",
+            "enum": [
+              "invalid_geometry",
+              "sowing_unit_mismatch",
+              "seed_not_found",
+              "sowing_crop_mismatch",
+              "sowing_crop_required",
+              "crop_not_found",
+              "plot_not_found",
+              "seed_default_amount_without_unit"
+            ]
+          }
         },
         "required": ["error"],
         "additionalProperties": false
@@ -17319,7 +18310,8 @@
                         "harvest",
                         "fertilizerApplication",
                         "cropProtectionApplication",
-                        "tillage"
+                        "tillage",
+                        "sowing"
                       ]
                     },
                     "action": { "type": "string" }
@@ -20633,6 +21625,250 @@
               }
             },
             "required": ["monthlyHarvests"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "GetV1PlotsByIdPlotIdSowingsPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "farmId": { "type": "string" },
+                    "createdAt": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "createdBy": { "type": ["string", "null"] },
+                    "plotId": { "type": "string" },
+                    "date": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "cropId": { "type": "string" },
+                    "crop": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "string" },
+                        "farmId": { "type": "string" },
+                        "name": { "type": "string" },
+                        "category": {
+                          "type": "string",
+                          "enum": [
+                            "grass",
+                            "grain",
+                            "vegetable",
+                            "fruit",
+                            "other"
+                          ]
+                        },
+                        "familyId": { "type": ["string", "null"] },
+                        "variety": { "type": ["string", "null"] },
+                        "usageCodes": {
+                          "type": "array",
+                          "items": { "type": "number" }
+                        },
+                        "waitingTimeInYears": { "type": ["number", "null"] },
+                        "additionalNotes": { "type": ["string", "null"] }
+                      },
+                      "required": [
+                        "id",
+                        "farmId",
+                        "name",
+                        "category",
+                        "familyId",
+                        "variety",
+                        "usageCodes",
+                        "waitingTimeInYears",
+                        "additionalNotes"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "seedId": { "type": ["string", "null"] },
+                    "seed": {
+                      "type": ["object", "null"],
+                      "properties": {
+                        "id": { "type": "string" },
+                        "farmId": { "type": "string" },
+                        "name": { "type": "string" },
+                        "description": { "type": ["string", "null"] },
+                        "cropId": { "type": "string" },
+                        "quantityKind": {
+                          "type": "string",
+                          "enum": ["weight", "count"]
+                        },
+                        "defaultAmount": { "type": ["number", "null"] },
+                        "defaultUnit": {
+                          "type": ["string", "null"],
+                          "enum": [
+                            "kg_per_ha",
+                            "g_per_m2",
+                            "seeds_per_ha",
+                            "seeds_per_m2",
+                            "plants_per_ha",
+                            "plants_per_m2",
+                            "kg",
+                            "g",
+                            "seeds",
+                            "plants"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "farmId",
+                        "name",
+                        "description",
+                        "cropId",
+                        "quantityKind",
+                        "defaultAmount",
+                        "defaultUnit"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "kg_per_ha",
+                        "g_per_m2",
+                        "seeds_per_ha",
+                        "seeds_per_m2",
+                        "plants_per_ha",
+                        "plants_per_m2",
+                        "kg",
+                        "g",
+                        "seeds",
+                        "plants"
+                      ]
+                    },
+                    "amount": { "type": "number" },
+                    "totalBaseAmount": { "type": "number" },
+                    "baseAmountPerHectare": { "type": "number" },
+                    "geometry": {
+                      "type": "object",
+                      "properties": {
+                        "type": { "type": "string", "const": "MultiPolygon" },
+                        "coordinates": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "array",
+                              "items": {
+                                "type": "array",
+                                "items": { "type": "number" }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "required": ["type", "coordinates"],
+                      "additionalProperties": false
+                    },
+                    "size": { "type": "number" },
+                    "additionalNotes": { "type": ["string", "null"] }
+                  },
+                  "required": [
+                    "id",
+                    "farmId",
+                    "createdAt",
+                    "createdBy",
+                    "plotId",
+                    "date",
+                    "cropId",
+                    "crop",
+                    "seedId",
+                    "seed",
+                    "unit",
+                    "amount",
+                    "totalBaseAmount",
+                    "baseAmountPerHectare",
+                    "geometry",
+                    "size",
+                    "additionalNotes"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "count": { "type": "number" }
+            },
+            "required": ["result", "count"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "GetV1PlotsByIdPlotIdSowingSummaryPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "monthlySowings": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "year": { "type": "number" },
+                    "month": { "type": "number" },
+                    "sownSeeds": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "cropId": { "type": "string" },
+                          "cropName": { "type": "string" },
+                          "seedId": { "type": ["string", "null"] },
+                          "seedName": { "type": ["string", "null"] },
+                          "quantityKind": {
+                            "type": "string",
+                            "enum": ["weight", "count"]
+                          },
+                          "countUnit": {
+                            "type": ["string", "null"],
+                            "enum": ["seeds", "plants"]
+                          },
+                          "totalBaseAmount": { "type": "number" },
+                          "totalSize": { "type": "number" }
+                        },
+                        "required": [
+                          "cropId",
+                          "cropName",
+                          "seedId",
+                          "seedName",
+                          "quantityKind",
+                          "countUnit",
+                          "totalBaseAmount",
+                          "totalSize"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": ["year", "month", "sownSeeds"],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["monthlySowings"],
             "additionalProperties": false
           }
         },
@@ -28481,6 +29717,1934 @@
         "required": ["data"],
         "additionalProperties": false
       },
+      "GetV1SeedsPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "farmId": { "type": "string" },
+                    "name": { "type": "string" },
+                    "description": { "type": ["string", "null"] },
+                    "cropId": { "type": "string" },
+                    "crop": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "string" },
+                        "farmId": { "type": "string" },
+                        "name": { "type": "string" },
+                        "category": {
+                          "type": "string",
+                          "enum": [
+                            "grass",
+                            "grain",
+                            "vegetable",
+                            "fruit",
+                            "other"
+                          ]
+                        },
+                        "familyId": { "type": ["string", "null"] },
+                        "variety": { "type": ["string", "null"] },
+                        "usageCodes": {
+                          "type": "array",
+                          "items": { "type": "number" }
+                        },
+                        "waitingTimeInYears": { "type": ["number", "null"] },
+                        "additionalNotes": { "type": ["string", "null"] }
+                      },
+                      "required": [
+                        "id",
+                        "farmId",
+                        "name",
+                        "category",
+                        "familyId",
+                        "variety",
+                        "usageCodes",
+                        "waitingTimeInYears",
+                        "additionalNotes"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "quantityKind": {
+                      "type": "string",
+                      "enum": ["weight", "count"]
+                    },
+                    "defaultAmount": { "type": ["number", "null"] },
+                    "defaultUnit": {
+                      "type": ["string", "null"],
+                      "enum": [
+                        "kg_per_ha",
+                        "g_per_m2",
+                        "seeds_per_ha",
+                        "seeds_per_m2",
+                        "plants_per_ha",
+                        "plants_per_m2",
+                        "kg",
+                        "g",
+                        "seeds",
+                        "plants"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "farmId",
+                    "name",
+                    "description",
+                    "cropId",
+                    "crop",
+                    "quantityKind",
+                    "defaultAmount",
+                    "defaultUnit"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "count": { "type": "number" }
+            },
+            "required": ["result", "count"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1SeedsPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "name": { "type": "string" },
+              "description": { "type": ["string", "null"] },
+              "cropId": { "type": "string" },
+              "crop": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "farmId": { "type": "string" },
+                  "name": { "type": "string" },
+                  "category": {
+                    "type": "string",
+                    "enum": ["grass", "grain", "vegetable", "fruit", "other"]
+                  },
+                  "familyId": { "type": ["string", "null"] },
+                  "variety": { "type": ["string", "null"] },
+                  "usageCodes": {
+                    "type": "array",
+                    "items": { "type": "number" }
+                  },
+                  "waitingTimeInYears": { "type": ["number", "null"] },
+                  "additionalNotes": { "type": ["string", "null"] }
+                },
+                "required": [
+                  "id",
+                  "farmId",
+                  "name",
+                  "category",
+                  "familyId",
+                  "variety",
+                  "usageCodes",
+                  "waitingTimeInYears",
+                  "additionalNotes"
+                ],
+                "additionalProperties": false
+              },
+              "quantityKind": { "type": "string", "enum": ["weight", "count"] },
+              "defaultAmount": { "type": ["number", "null"] },
+              "defaultUnit": {
+                "type": ["string", "null"],
+                "enum": [
+                  "kg_per_ha",
+                  "g_per_m2",
+                  "seeds_per_ha",
+                  "seeds_per_m2",
+                  "plants_per_ha",
+                  "plants_per_m2",
+                  "kg",
+                  "g",
+                  "seeds",
+                  "plants"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "name",
+              "description",
+              "cropId",
+              "crop",
+              "quantityKind",
+              "defaultAmount",
+              "defaultUnit"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1SeedsRequestBody": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "description": { "type": "string" },
+          "cropId": { "type": "string" },
+          "quantityKind": { "type": "string", "enum": ["weight", "count"] },
+          "defaultAmount": { "type": "number", "exclusiveMinimum": 0 },
+          "defaultUnit": {
+            "type": "string",
+            "enum": [
+              "kg_per_ha",
+              "g_per_m2",
+              "seeds_per_ha",
+              "seeds_per_m2",
+              "plants_per_ha",
+              "plants_per_m2",
+              "kg",
+              "g",
+              "seeds",
+              "plants"
+            ]
+          }
+        },
+        "required": ["name", "cropId", "quantityKind"]
+      },
+      "GetV1SeedsByIdSeedIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "name": { "type": "string" },
+              "description": { "type": ["string", "null"] },
+              "cropId": { "type": "string" },
+              "crop": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "farmId": { "type": "string" },
+                  "name": { "type": "string" },
+                  "category": {
+                    "type": "string",
+                    "enum": ["grass", "grain", "vegetable", "fruit", "other"]
+                  },
+                  "familyId": { "type": ["string", "null"] },
+                  "variety": { "type": ["string", "null"] },
+                  "usageCodes": {
+                    "type": "array",
+                    "items": { "type": "number" }
+                  },
+                  "waitingTimeInYears": { "type": ["number", "null"] },
+                  "additionalNotes": { "type": ["string", "null"] }
+                },
+                "required": [
+                  "id",
+                  "farmId",
+                  "name",
+                  "category",
+                  "familyId",
+                  "variety",
+                  "usageCodes",
+                  "waitingTimeInYears",
+                  "additionalNotes"
+                ],
+                "additionalProperties": false
+              },
+              "quantityKind": { "type": "string", "enum": ["weight", "count"] },
+              "defaultAmount": { "type": ["number", "null"] },
+              "defaultUnit": {
+                "type": ["string", "null"],
+                "enum": [
+                  "kg_per_ha",
+                  "g_per_m2",
+                  "seeds_per_ha",
+                  "seeds_per_m2",
+                  "plants_per_ha",
+                  "plants_per_m2",
+                  "kg",
+                  "g",
+                  "seeds",
+                  "plants"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "name",
+              "description",
+              "cropId",
+              "crop",
+              "quantityKind",
+              "defaultAmount",
+              "defaultUnit"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1SeedsByIdSeedIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "name": { "type": "string" },
+              "description": { "type": ["string", "null"] },
+              "cropId": { "type": "string" },
+              "crop": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "farmId": { "type": "string" },
+                  "name": { "type": "string" },
+                  "category": {
+                    "type": "string",
+                    "enum": ["grass", "grain", "vegetable", "fruit", "other"]
+                  },
+                  "familyId": { "type": ["string", "null"] },
+                  "variety": { "type": ["string", "null"] },
+                  "usageCodes": {
+                    "type": "array",
+                    "items": { "type": "number" }
+                  },
+                  "waitingTimeInYears": { "type": ["number", "null"] },
+                  "additionalNotes": { "type": ["string", "null"] }
+                },
+                "required": [
+                  "id",
+                  "farmId",
+                  "name",
+                  "category",
+                  "familyId",
+                  "variety",
+                  "usageCodes",
+                  "waitingTimeInYears",
+                  "additionalNotes"
+                ],
+                "additionalProperties": false
+              },
+              "quantityKind": { "type": "string", "enum": ["weight", "count"] },
+              "defaultAmount": { "type": ["number", "null"] },
+              "defaultUnit": {
+                "type": ["string", "null"],
+                "enum": [
+                  "kg_per_ha",
+                  "g_per_m2",
+                  "seeds_per_ha",
+                  "seeds_per_m2",
+                  "plants_per_ha",
+                  "plants_per_m2",
+                  "kg",
+                  "g",
+                  "seeds",
+                  "plants"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "name",
+              "description",
+              "cropId",
+              "crop",
+              "quantityKind",
+              "defaultAmount",
+              "defaultUnit"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1SeedsByIdSeedIdRequestBody": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "description": { "type": ["string", "null"] },
+          "cropId": { "type": "string" },
+          "defaultAmount": {
+            "type": ["number", "null"],
+            "exclusiveMinimum": 0
+          },
+          "defaultUnit": {
+            "type": ["string", "null"],
+            "enum": [
+              "kg_per_ha",
+              "g_per_m2",
+              "seeds_per_ha",
+              "seeds_per_m2",
+              "plants_per_ha",
+              "plants_per_m2",
+              "kg",
+              "g",
+              "seeds",
+              "plants"
+            ]
+          }
+        },
+        "required": []
+      },
+      "DeleteV1SeedsByIdSeedIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "GetV1SeedsByIdSeedIdInUsePositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": { "inUse": { "type": "boolean" } },
+            "required": ["inUse"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "GetV1SowingsPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "farmId": { "type": "string" },
+                    "createdAt": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "createdBy": { "type": ["string", "null"] },
+                    "plotId": { "type": "string" },
+                    "date": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "cropId": { "type": "string" },
+                    "crop": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "string" },
+                        "farmId": { "type": "string" },
+                        "name": { "type": "string" },
+                        "category": {
+                          "type": "string",
+                          "enum": [
+                            "grass",
+                            "grain",
+                            "vegetable",
+                            "fruit",
+                            "other"
+                          ]
+                        },
+                        "familyId": { "type": ["string", "null"] },
+                        "variety": { "type": ["string", "null"] },
+                        "usageCodes": {
+                          "type": "array",
+                          "items": { "type": "number" }
+                        },
+                        "waitingTimeInYears": { "type": ["number", "null"] },
+                        "additionalNotes": { "type": ["string", "null"] }
+                      },
+                      "required": [
+                        "id",
+                        "farmId",
+                        "name",
+                        "category",
+                        "familyId",
+                        "variety",
+                        "usageCodes",
+                        "waitingTimeInYears",
+                        "additionalNotes"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "seedId": { "type": ["string", "null"] },
+                    "seed": {
+                      "type": ["object", "null"],
+                      "properties": {
+                        "id": { "type": "string" },
+                        "farmId": { "type": "string" },
+                        "name": { "type": "string" },
+                        "description": { "type": ["string", "null"] },
+                        "cropId": { "type": "string" },
+                        "quantityKind": {
+                          "type": "string",
+                          "enum": ["weight", "count"]
+                        },
+                        "defaultAmount": { "type": ["number", "null"] },
+                        "defaultUnit": {
+                          "type": ["string", "null"],
+                          "enum": [
+                            "kg_per_ha",
+                            "g_per_m2",
+                            "seeds_per_ha",
+                            "seeds_per_m2",
+                            "plants_per_ha",
+                            "plants_per_m2",
+                            "kg",
+                            "g",
+                            "seeds",
+                            "plants"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "farmId",
+                        "name",
+                        "description",
+                        "cropId",
+                        "quantityKind",
+                        "defaultAmount",
+                        "defaultUnit"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "kg_per_ha",
+                        "g_per_m2",
+                        "seeds_per_ha",
+                        "seeds_per_m2",
+                        "plants_per_ha",
+                        "plants_per_m2",
+                        "kg",
+                        "g",
+                        "seeds",
+                        "plants"
+                      ]
+                    },
+                    "amount": { "type": "number" },
+                    "totalBaseAmount": { "type": "number" },
+                    "baseAmountPerHectare": { "type": "number" },
+                    "geometry": {
+                      "type": "object",
+                      "properties": {
+                        "type": { "type": "string", "const": "MultiPolygon" },
+                        "coordinates": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "array",
+                              "items": {
+                                "type": "array",
+                                "items": { "type": "number" }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "required": ["type", "coordinates"],
+                      "additionalProperties": false
+                    },
+                    "size": { "type": "number" },
+                    "additionalNotes": { "type": ["string", "null"] },
+                    "plot": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "string" },
+                        "name": { "type": "string" }
+                      },
+                      "required": ["id", "name"],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "farmId",
+                    "createdAt",
+                    "createdBy",
+                    "plotId",
+                    "date",
+                    "cropId",
+                    "crop",
+                    "seedId",
+                    "seed",
+                    "unit",
+                    "amount",
+                    "totalBaseAmount",
+                    "baseAmountPerHectare",
+                    "geometry",
+                    "size",
+                    "additionalNotes",
+                    "plot"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "count": { "type": "number" }
+            },
+            "required": ["result", "count"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1SowingsPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "farmId": { "type": "string" },
+                    "createdAt": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "createdBy": { "type": ["string", "null"] },
+                    "plotId": { "type": "string" },
+                    "date": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "cropId": { "type": "string" },
+                    "crop": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "string" },
+                        "farmId": { "type": "string" },
+                        "name": { "type": "string" },
+                        "category": {
+                          "type": "string",
+                          "enum": [
+                            "grass",
+                            "grain",
+                            "vegetable",
+                            "fruit",
+                            "other"
+                          ]
+                        },
+                        "familyId": { "type": ["string", "null"] },
+                        "variety": { "type": ["string", "null"] },
+                        "usageCodes": {
+                          "type": "array",
+                          "items": { "type": "number" }
+                        },
+                        "waitingTimeInYears": { "type": ["number", "null"] },
+                        "additionalNotes": { "type": ["string", "null"] }
+                      },
+                      "required": [
+                        "id",
+                        "farmId",
+                        "name",
+                        "category",
+                        "familyId",
+                        "variety",
+                        "usageCodes",
+                        "waitingTimeInYears",
+                        "additionalNotes"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "seedId": { "type": ["string", "null"] },
+                    "seed": {
+                      "type": ["object", "null"],
+                      "properties": {
+                        "id": { "type": "string" },
+                        "farmId": { "type": "string" },
+                        "name": { "type": "string" },
+                        "description": { "type": ["string", "null"] },
+                        "cropId": { "type": "string" },
+                        "quantityKind": {
+                          "type": "string",
+                          "enum": ["weight", "count"]
+                        },
+                        "defaultAmount": { "type": ["number", "null"] },
+                        "defaultUnit": {
+                          "type": ["string", "null"],
+                          "enum": [
+                            "kg_per_ha",
+                            "g_per_m2",
+                            "seeds_per_ha",
+                            "seeds_per_m2",
+                            "plants_per_ha",
+                            "plants_per_m2",
+                            "kg",
+                            "g",
+                            "seeds",
+                            "plants"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "farmId",
+                        "name",
+                        "description",
+                        "cropId",
+                        "quantityKind",
+                        "defaultAmount",
+                        "defaultUnit"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "kg_per_ha",
+                        "g_per_m2",
+                        "seeds_per_ha",
+                        "seeds_per_m2",
+                        "plants_per_ha",
+                        "plants_per_m2",
+                        "kg",
+                        "g",
+                        "seeds",
+                        "plants"
+                      ]
+                    },
+                    "amount": { "type": "number" },
+                    "totalBaseAmount": { "type": "number" },
+                    "baseAmountPerHectare": { "type": "number" },
+                    "geometry": {
+                      "type": "object",
+                      "properties": {
+                        "type": { "type": "string", "const": "MultiPolygon" },
+                        "coordinates": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "array",
+                              "items": {
+                                "type": "array",
+                                "items": { "type": "number" }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "required": ["type", "coordinates"],
+                      "additionalProperties": false
+                    },
+                    "size": { "type": "number" },
+                    "additionalNotes": { "type": ["string", "null"] },
+                    "plot": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "string" },
+                        "name": { "type": "string" }
+                      },
+                      "required": ["id", "name"],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "farmId",
+                    "createdAt",
+                    "createdBy",
+                    "plotId",
+                    "date",
+                    "cropId",
+                    "crop",
+                    "seedId",
+                    "seed",
+                    "unit",
+                    "amount",
+                    "totalBaseAmount",
+                    "baseAmountPerHectare",
+                    "geometry",
+                    "size",
+                    "additionalNotes",
+                    "plot"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "count": { "type": "number" }
+            },
+            "required": ["result", "count"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1SowingsRequestBody": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+            }
+          },
+          "cropId": { "type": "string" },
+          "seedId": { "type": "string" },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "kg_per_ha",
+              "g_per_m2",
+              "seeds_per_ha",
+              "seeds_per_m2",
+              "plants_per_ha",
+              "plants_per_m2",
+              "kg",
+              "g",
+              "seeds",
+              "plants"
+            ]
+          },
+          "additionalNotes": { "type": "string" },
+          "plots": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "plotId": { "type": "string" },
+                "amount": { "type": "number", "exclusiveMinimum": 0 },
+                "geometry": {
+                  "type": "object",
+                  "properties": {
+                    "type": { "type": "string", "const": "MultiPolygon" },
+                    "coordinates": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": { "type": "number" }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": ["type", "coordinates"]
+                },
+                "size": { "type": "number", "exclusiveMinimum": 0 }
+              },
+              "required": ["plotId", "amount", "geometry", "size"]
+            }
+          }
+        },
+        "required": ["date", "unit", "plots"]
+      },
+      "GetV1SowingsByIdSowingIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "createdAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "createdBy": { "type": ["string", "null"] },
+              "plotId": { "type": "string" },
+              "date": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "cropId": { "type": "string" },
+              "crop": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "farmId": { "type": "string" },
+                  "name": { "type": "string" },
+                  "category": {
+                    "type": "string",
+                    "enum": ["grass", "grain", "vegetable", "fruit", "other"]
+                  },
+                  "familyId": { "type": ["string", "null"] },
+                  "variety": { "type": ["string", "null"] },
+                  "usageCodes": {
+                    "type": "array",
+                    "items": { "type": "number" }
+                  },
+                  "waitingTimeInYears": { "type": ["number", "null"] },
+                  "additionalNotes": { "type": ["string", "null"] }
+                },
+                "required": [
+                  "id",
+                  "farmId",
+                  "name",
+                  "category",
+                  "familyId",
+                  "variety",
+                  "usageCodes",
+                  "waitingTimeInYears",
+                  "additionalNotes"
+                ],
+                "additionalProperties": false
+              },
+              "seedId": { "type": ["string", "null"] },
+              "seed": {
+                "type": ["object", "null"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "farmId": { "type": "string" },
+                  "name": { "type": "string" },
+                  "description": { "type": ["string", "null"] },
+                  "cropId": { "type": "string" },
+                  "quantityKind": {
+                    "type": "string",
+                    "enum": ["weight", "count"]
+                  },
+                  "defaultAmount": { "type": ["number", "null"] },
+                  "defaultUnit": {
+                    "type": ["string", "null"],
+                    "enum": [
+                      "kg_per_ha",
+                      "g_per_m2",
+                      "seeds_per_ha",
+                      "seeds_per_m2",
+                      "plants_per_ha",
+                      "plants_per_m2",
+                      "kg",
+                      "g",
+                      "seeds",
+                      "plants"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "farmId",
+                  "name",
+                  "description",
+                  "cropId",
+                  "quantityKind",
+                  "defaultAmount",
+                  "defaultUnit"
+                ],
+                "additionalProperties": false
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "kg_per_ha",
+                  "g_per_m2",
+                  "seeds_per_ha",
+                  "seeds_per_m2",
+                  "plants_per_ha",
+                  "plants_per_m2",
+                  "kg",
+                  "g",
+                  "seeds",
+                  "plants"
+                ]
+              },
+              "amount": { "type": "number" },
+              "totalBaseAmount": { "type": "number" },
+              "baseAmountPerHectare": { "type": "number" },
+              "geometry": {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "const": "MultiPolygon" },
+                  "coordinates": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "items": { "type": "number" }
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": ["type", "coordinates"],
+                "additionalProperties": false
+              },
+              "size": { "type": "number" },
+              "additionalNotes": { "type": ["string", "null"] },
+              "plot": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "name": { "type": "string" }
+                },
+                "required": ["id", "name"],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "createdAt",
+              "createdBy",
+              "plotId",
+              "date",
+              "cropId",
+              "crop",
+              "seedId",
+              "seed",
+              "unit",
+              "amount",
+              "totalBaseAmount",
+              "baseAmountPerHectare",
+              "geometry",
+              "size",
+              "additionalNotes",
+              "plot"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "DeleteV1SowingsByIdSowingIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1SowingsByIdSowingIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "createdAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "createdBy": { "type": ["string", "null"] },
+              "plotId": { "type": "string" },
+              "date": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "cropId": { "type": "string" },
+              "crop": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "farmId": { "type": "string" },
+                  "name": { "type": "string" },
+                  "category": {
+                    "type": "string",
+                    "enum": ["grass", "grain", "vegetable", "fruit", "other"]
+                  },
+                  "familyId": { "type": ["string", "null"] },
+                  "variety": { "type": ["string", "null"] },
+                  "usageCodes": {
+                    "type": "array",
+                    "items": { "type": "number" }
+                  },
+                  "waitingTimeInYears": { "type": ["number", "null"] },
+                  "additionalNotes": { "type": ["string", "null"] }
+                },
+                "required": [
+                  "id",
+                  "farmId",
+                  "name",
+                  "category",
+                  "familyId",
+                  "variety",
+                  "usageCodes",
+                  "waitingTimeInYears",
+                  "additionalNotes"
+                ],
+                "additionalProperties": false
+              },
+              "seedId": { "type": ["string", "null"] },
+              "seed": {
+                "type": ["object", "null"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "farmId": { "type": "string" },
+                  "name": { "type": "string" },
+                  "description": { "type": ["string", "null"] },
+                  "cropId": { "type": "string" },
+                  "quantityKind": {
+                    "type": "string",
+                    "enum": ["weight", "count"]
+                  },
+                  "defaultAmount": { "type": ["number", "null"] },
+                  "defaultUnit": {
+                    "type": ["string", "null"],
+                    "enum": [
+                      "kg_per_ha",
+                      "g_per_m2",
+                      "seeds_per_ha",
+                      "seeds_per_m2",
+                      "plants_per_ha",
+                      "plants_per_m2",
+                      "kg",
+                      "g",
+                      "seeds",
+                      "plants"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "farmId",
+                  "name",
+                  "description",
+                  "cropId",
+                  "quantityKind",
+                  "defaultAmount",
+                  "defaultUnit"
+                ],
+                "additionalProperties": false
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "kg_per_ha",
+                  "g_per_m2",
+                  "seeds_per_ha",
+                  "seeds_per_m2",
+                  "plants_per_ha",
+                  "plants_per_m2",
+                  "kg",
+                  "g",
+                  "seeds",
+                  "plants"
+                ]
+              },
+              "amount": { "type": "number" },
+              "totalBaseAmount": { "type": "number" },
+              "baseAmountPerHectare": { "type": "number" },
+              "geometry": {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "const": "MultiPolygon" },
+                  "coordinates": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "items": { "type": "number" }
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": ["type", "coordinates"],
+                "additionalProperties": false
+              },
+              "size": { "type": "number" },
+              "additionalNotes": { "type": ["string", "null"] },
+              "plot": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "name": { "type": "string" }
+                },
+                "required": ["id", "name"],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "createdAt",
+              "createdBy",
+              "plotId",
+              "date",
+              "cropId",
+              "crop",
+              "seedId",
+              "seed",
+              "unit",
+              "amount",
+              "totalBaseAmount",
+              "baseAmountPerHectare",
+              "geometry",
+              "size",
+              "additionalNotes",
+              "plot"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1SowingsByIdSowingIdRequestBody": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+            }
+          },
+          "cropId": { "type": "string" },
+          "seedId": { "type": ["string", "null"] },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "kg_per_ha",
+              "g_per_m2",
+              "seeds_per_ha",
+              "seeds_per_m2",
+              "plants_per_ha",
+              "plants_per_m2",
+              "kg",
+              "g",
+              "seeds",
+              "plants"
+            ]
+          },
+          "amount": { "type": "number", "exclusiveMinimum": 0 },
+          "additionalNotes": { "type": ["string", "null"] }
+        },
+        "required": []
+      },
+      "GetV1SowingsSummariesPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "monthlySowings": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "year": { "type": "number" },
+                    "month": { "type": "number" },
+                    "sownSeeds": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "cropId": { "type": "string" },
+                          "cropName": { "type": "string" },
+                          "seedId": { "type": ["string", "null"] },
+                          "seedName": { "type": ["string", "null"] },
+                          "quantityKind": {
+                            "type": "string",
+                            "enum": ["weight", "count"]
+                          },
+                          "countUnit": {
+                            "type": ["string", "null"],
+                            "enum": ["seeds", "plants"]
+                          },
+                          "totalBaseAmount": { "type": "number" },
+                          "totalSize": { "type": "number" }
+                        },
+                        "required": [
+                          "cropId",
+                          "cropName",
+                          "seedId",
+                          "seedName",
+                          "quantityKind",
+                          "countUnit",
+                          "totalBaseAmount",
+                          "totalSize"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": ["year", "month", "sownSeeds"],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["monthlySowings"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "GetV1SowingsUnitsPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "kg_per_ha",
+                        "g_per_m2",
+                        "seeds_per_ha",
+                        "seeds_per_m2",
+                        "plants_per_ha",
+                        "plants_per_m2",
+                        "kg",
+                        "g",
+                        "seeds",
+                        "plants"
+                      ]
+                    },
+                    "quantityKind": {
+                      "type": "string",
+                      "enum": ["weight", "count"]
+                    },
+                    "countUnit": {
+                      "type": ["string", "null"],
+                      "enum": ["seeds", "plants"]
+                    },
+                    "perArea": { "type": "boolean" }
+                  },
+                  "required": ["unit", "quantityKind", "countUnit", "perArea"],
+                  "additionalProperties": false
+                }
+              },
+              "count": { "type": "number" }
+            },
+            "required": ["result", "count"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "GetV1SowingsPresetsPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "farmId": { "type": "string" },
+                    "name": { "type": "string" },
+                    "cropId": { "type": "string" },
+                    "crop": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "string" },
+                        "farmId": { "type": "string" },
+                        "name": { "type": "string" },
+                        "category": {
+                          "type": "string",
+                          "enum": [
+                            "grass",
+                            "grain",
+                            "vegetable",
+                            "fruit",
+                            "other"
+                          ]
+                        },
+                        "familyId": { "type": ["string", "null"] },
+                        "variety": { "type": ["string", "null"] },
+                        "usageCodes": {
+                          "type": "array",
+                          "items": { "type": "number" }
+                        },
+                        "waitingTimeInYears": { "type": ["number", "null"] },
+                        "additionalNotes": { "type": ["string", "null"] }
+                      },
+                      "required": [
+                        "id",
+                        "farmId",
+                        "name",
+                        "category",
+                        "familyId",
+                        "variety",
+                        "usageCodes",
+                        "waitingTimeInYears",
+                        "additionalNotes"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "seedId": { "type": ["string", "null"] },
+                    "seed": {
+                      "type": ["object", "null"],
+                      "properties": {
+                        "id": { "type": "string" },
+                        "farmId": { "type": "string" },
+                        "name": { "type": "string" },
+                        "description": { "type": ["string", "null"] },
+                        "cropId": { "type": "string" },
+                        "quantityKind": {
+                          "type": "string",
+                          "enum": ["weight", "count"]
+                        },
+                        "defaultAmount": { "type": ["number", "null"] },
+                        "defaultUnit": {
+                          "type": ["string", "null"],
+                          "enum": [
+                            "kg_per_ha",
+                            "g_per_m2",
+                            "seeds_per_ha",
+                            "seeds_per_m2",
+                            "plants_per_ha",
+                            "plants_per_m2",
+                            "kg",
+                            "g",
+                            "seeds",
+                            "plants"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "farmId",
+                        "name",
+                        "description",
+                        "cropId",
+                        "quantityKind",
+                        "defaultAmount",
+                        "defaultUnit"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "kg_per_ha",
+                        "g_per_m2",
+                        "seeds_per_ha",
+                        "seeds_per_m2",
+                        "plants_per_ha",
+                        "plants_per_m2",
+                        "kg",
+                        "g",
+                        "seeds",
+                        "plants"
+                      ]
+                    },
+                    "amount": { "type": "number" }
+                  },
+                  "required": [
+                    "id",
+                    "farmId",
+                    "name",
+                    "cropId",
+                    "crop",
+                    "seedId",
+                    "seed",
+                    "unit",
+                    "amount"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "count": { "type": "number" }
+            },
+            "required": ["result", "count"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1SowingsPresetsPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "name": { "type": "string" },
+              "cropId": { "type": "string" },
+              "crop": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "farmId": { "type": "string" },
+                  "name": { "type": "string" },
+                  "category": {
+                    "type": "string",
+                    "enum": ["grass", "grain", "vegetable", "fruit", "other"]
+                  },
+                  "familyId": { "type": ["string", "null"] },
+                  "variety": { "type": ["string", "null"] },
+                  "usageCodes": {
+                    "type": "array",
+                    "items": { "type": "number" }
+                  },
+                  "waitingTimeInYears": { "type": ["number", "null"] },
+                  "additionalNotes": { "type": ["string", "null"] }
+                },
+                "required": [
+                  "id",
+                  "farmId",
+                  "name",
+                  "category",
+                  "familyId",
+                  "variety",
+                  "usageCodes",
+                  "waitingTimeInYears",
+                  "additionalNotes"
+                ],
+                "additionalProperties": false
+              },
+              "seedId": { "type": ["string", "null"] },
+              "seed": {
+                "type": ["object", "null"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "farmId": { "type": "string" },
+                  "name": { "type": "string" },
+                  "description": { "type": ["string", "null"] },
+                  "cropId": { "type": "string" },
+                  "quantityKind": {
+                    "type": "string",
+                    "enum": ["weight", "count"]
+                  },
+                  "defaultAmount": { "type": ["number", "null"] },
+                  "defaultUnit": {
+                    "type": ["string", "null"],
+                    "enum": [
+                      "kg_per_ha",
+                      "g_per_m2",
+                      "seeds_per_ha",
+                      "seeds_per_m2",
+                      "plants_per_ha",
+                      "plants_per_m2",
+                      "kg",
+                      "g",
+                      "seeds",
+                      "plants"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "farmId",
+                  "name",
+                  "description",
+                  "cropId",
+                  "quantityKind",
+                  "defaultAmount",
+                  "defaultUnit"
+                ],
+                "additionalProperties": false
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "kg_per_ha",
+                  "g_per_m2",
+                  "seeds_per_ha",
+                  "seeds_per_m2",
+                  "plants_per_ha",
+                  "plants_per_m2",
+                  "kg",
+                  "g",
+                  "seeds",
+                  "plants"
+                ]
+              },
+              "amount": { "type": "number" }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "name",
+              "cropId",
+              "crop",
+              "seedId",
+              "seed",
+              "unit",
+              "amount"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1SowingsPresetsRequestBody": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "cropId": { "type": "string" },
+          "seedId": { "type": "string" },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "kg_per_ha",
+              "g_per_m2",
+              "seeds_per_ha",
+              "seeds_per_m2",
+              "plants_per_ha",
+              "plants_per_m2",
+              "kg",
+              "g",
+              "seeds",
+              "plants"
+            ]
+          },
+          "amount": { "type": "number", "exclusiveMinimum": 0 }
+        },
+        "required": ["name", "unit", "amount"]
+      },
+      "GetV1SowingsPresetsByIdPresetIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "name": { "type": "string" },
+              "cropId": { "type": "string" },
+              "crop": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "farmId": { "type": "string" },
+                  "name": { "type": "string" },
+                  "category": {
+                    "type": "string",
+                    "enum": ["grass", "grain", "vegetable", "fruit", "other"]
+                  },
+                  "familyId": { "type": ["string", "null"] },
+                  "variety": { "type": ["string", "null"] },
+                  "usageCodes": {
+                    "type": "array",
+                    "items": { "type": "number" }
+                  },
+                  "waitingTimeInYears": { "type": ["number", "null"] },
+                  "additionalNotes": { "type": ["string", "null"] }
+                },
+                "required": [
+                  "id",
+                  "farmId",
+                  "name",
+                  "category",
+                  "familyId",
+                  "variety",
+                  "usageCodes",
+                  "waitingTimeInYears",
+                  "additionalNotes"
+                ],
+                "additionalProperties": false
+              },
+              "seedId": { "type": ["string", "null"] },
+              "seed": {
+                "type": ["object", "null"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "farmId": { "type": "string" },
+                  "name": { "type": "string" },
+                  "description": { "type": ["string", "null"] },
+                  "cropId": { "type": "string" },
+                  "quantityKind": {
+                    "type": "string",
+                    "enum": ["weight", "count"]
+                  },
+                  "defaultAmount": { "type": ["number", "null"] },
+                  "defaultUnit": {
+                    "type": ["string", "null"],
+                    "enum": [
+                      "kg_per_ha",
+                      "g_per_m2",
+                      "seeds_per_ha",
+                      "seeds_per_m2",
+                      "plants_per_ha",
+                      "plants_per_m2",
+                      "kg",
+                      "g",
+                      "seeds",
+                      "plants"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "farmId",
+                  "name",
+                  "description",
+                  "cropId",
+                  "quantityKind",
+                  "defaultAmount",
+                  "defaultUnit"
+                ],
+                "additionalProperties": false
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "kg_per_ha",
+                  "g_per_m2",
+                  "seeds_per_ha",
+                  "seeds_per_m2",
+                  "plants_per_ha",
+                  "plants_per_m2",
+                  "kg",
+                  "g",
+                  "seeds",
+                  "plants"
+                ]
+              },
+              "amount": { "type": "number" }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "name",
+              "cropId",
+              "crop",
+              "seedId",
+              "seed",
+              "unit",
+              "amount"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1SowingsPresetsByIdPresetIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "name": { "type": "string" },
+              "cropId": { "type": "string" },
+              "crop": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "farmId": { "type": "string" },
+                  "name": { "type": "string" },
+                  "category": {
+                    "type": "string",
+                    "enum": ["grass", "grain", "vegetable", "fruit", "other"]
+                  },
+                  "familyId": { "type": ["string", "null"] },
+                  "variety": { "type": ["string", "null"] },
+                  "usageCodes": {
+                    "type": "array",
+                    "items": { "type": "number" }
+                  },
+                  "waitingTimeInYears": { "type": ["number", "null"] },
+                  "additionalNotes": { "type": ["string", "null"] }
+                },
+                "required": [
+                  "id",
+                  "farmId",
+                  "name",
+                  "category",
+                  "familyId",
+                  "variety",
+                  "usageCodes",
+                  "waitingTimeInYears",
+                  "additionalNotes"
+                ],
+                "additionalProperties": false
+              },
+              "seedId": { "type": ["string", "null"] },
+              "seed": {
+                "type": ["object", "null"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "farmId": { "type": "string" },
+                  "name": { "type": "string" },
+                  "description": { "type": ["string", "null"] },
+                  "cropId": { "type": "string" },
+                  "quantityKind": {
+                    "type": "string",
+                    "enum": ["weight", "count"]
+                  },
+                  "defaultAmount": { "type": ["number", "null"] },
+                  "defaultUnit": {
+                    "type": ["string", "null"],
+                    "enum": [
+                      "kg_per_ha",
+                      "g_per_m2",
+                      "seeds_per_ha",
+                      "seeds_per_m2",
+                      "plants_per_ha",
+                      "plants_per_m2",
+                      "kg",
+                      "g",
+                      "seeds",
+                      "plants"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "farmId",
+                  "name",
+                  "description",
+                  "cropId",
+                  "quantityKind",
+                  "defaultAmount",
+                  "defaultUnit"
+                ],
+                "additionalProperties": false
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "kg_per_ha",
+                  "g_per_m2",
+                  "seeds_per_ha",
+                  "seeds_per_m2",
+                  "plants_per_ha",
+                  "plants_per_m2",
+                  "kg",
+                  "g",
+                  "seeds",
+                  "plants"
+                ]
+              },
+              "amount": { "type": "number" }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "name",
+              "cropId",
+              "crop",
+              "seedId",
+              "seed",
+              "unit",
+              "amount"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1SowingsPresetsByIdPresetIdRequestBody": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "cropId": { "type": "string" },
+          "seedId": { "type": ["string", "null"] },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "kg_per_ha",
+              "g_per_m2",
+              "seeds_per_ha",
+              "seeds_per_m2",
+              "plants_per_ha",
+              "plants_per_m2",
+              "kg",
+              "g",
+              "seeds",
+              "plants"
+            ]
+          },
+          "amount": { "type": "number", "exclusiveMinimum": 0 }
+        },
+        "required": []
+      },
+      "DeleteV1SowingsPresetsByIdPresetIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
       "PostV1ReportsFieldcalendarEmailPositiveResponse": {
         "type": "object",
         "properties": {
@@ -28518,7 +31682,8 @@
           "generateTillages": { "type": "boolean" },
           "generateFertilizerApplications": { "type": "boolean" },
           "generateCropProtectionApplications": { "type": "boolean" },
-          "generateHarvests": { "type": "boolean" }
+          "generateHarvests": { "type": "boolean" },
+          "generateSowings": { "default": false, "type": "boolean" }
         },
         "required": [
           "fromDate",
@@ -28571,7 +31736,8 @@
           "generateTillages": { "type": "boolean" },
           "generateFertilizerApplications": { "type": "boolean" },
           "generateCropProtectionApplications": { "type": "boolean" },
-          "generateHarvests": { "type": "boolean" }
+          "generateHarvests": { "type": "boolean" },
+          "generateSowings": { "default": false, "type": "boolean" }
         },
         "required": [
           "fromDate",

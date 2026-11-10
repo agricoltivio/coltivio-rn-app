@@ -12,6 +12,7 @@ import { PlotCropProtectionApplicationsScreen } from "../PlotCropProtectionAplli
 import { PlotDetailsScreen } from "../PlotDetailsScreen";
 import { PlotFertilizerApplicationsScreen } from "../PlotFertilizerApllicationsScreen";
 import { PlotHarvestsScreen } from "../PlotHarvestsScreen";
+import { PlotSowingsScreen } from "../PlotSowingsScreen";
 import { PlotsMapScreen } from "../map/PlotsMapScreen";
 import { PlotTillagesScreen } from "../PlotTillagesScreen";
 import { PlotsMapOnboardingScreen } from "../PlotsMapOnboardingScreen";
@@ -105,6 +106,12 @@ export function renderPlotsStack(
       name="PlotHarvests"
       options={{ title: "" }}
       component={PlotHarvestsScreen}
+    />,
+    <Stack.Screen
+      key="plot-sowings"
+      name="PlotSowings"
+      options={{ title: "" }}
+      component={PlotSowingsScreen}
     />,
     <Stack.Screen
       key="plot-fertilizer-applications"

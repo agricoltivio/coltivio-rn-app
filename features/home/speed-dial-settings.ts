@@ -10,6 +10,12 @@ export const SPEED_DIAL_ACTIONS = {
     route: "SelectHarvestCropAndDate",
     accessFeature: "field_calendar" as const,
   },
+  sowing: {
+    translationKey: "speed_dial.sowing",
+    icon: "seed-outline",
+    route: "SelectSowingSeedAndDate",
+    accessFeature: "field_calendar" as const,
+  },
   tillage: {
     translationKey: "speed_dial.tillage",
     icon: "shovel",
@@ -63,4 +69,5 @@ export const DEFAULT_SPEED_DIAL_ITEMS: SpeedDialActionConfig[] = [
   { id: "cropProtection", active: false },
   { id: "cropRotation", active: false },
   { id: "newTask", active: false },
+  { id: "sowing", active: false },
 ];

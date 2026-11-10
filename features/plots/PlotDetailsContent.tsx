@@ -154,6 +154,22 @@ export function PlotDetailsContent({
         <ListItem
           style={{ backgroundColor: theme.colors.white }}
           onPress={() =>
+            navigation.navigate("PlotSowings", {
+              plotId: plot.id,
+              name: plot.name,
+            })
+          }
+        >
+          <ListItem.Content>
+            <ListItem.Title style={{ paddingLeft: theme.spacing.m }}>
+              {t("sowings.sowing")}
+            </ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+        <ListItem
+          style={{ backgroundColor: theme.colors.white }}
+          onPress={() =>
             navigation.navigate("PlotHarvests", {
               plotId: plot.id,
               name: plot.name,
@@ -335,6 +351,10 @@ export function PlotDetailsContent({
             </H3>
             {(
               [
+                {
+                  label: t("sowings.sowing"),
+                  route: "SelectSowingSeedAndDate",
+                },
                 {
                   label: t("harvests.harvest"),
                   route: "SelectHarvestCropAndDate",

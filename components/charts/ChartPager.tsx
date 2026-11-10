@@ -7,8 +7,13 @@ import {
   View,
 } from "react-native";
 import { useTheme } from "styled-components/native";
+import { IonIconButton } from "../buttons/IconButton";
 
-// Horizontally swipeable chart cards with dots below showing the current card.
+// Length of ScrollView's animated scrollTo, after which a loop copy is swapped for the real card
+const SCROLL_ANIMATION_MS = 350;
+
+// Horizontally swipeable chart cards with dots below showing the current card, and
+// previous/next buttons next to the dots for people who don't think of swiping.
 // All cards get the height of the tallest one. With more than one card it loops:
 // a copy of the last card sits before the first and a copy of the first after
 // the last; landing on a copy jumps (unanimated) to the real card.
@@ -68,6 +73,48 @@ export function ChartPager({
     setActivePageIndex(pageIndex);
   }
 
+  // Pending swap from a loop copy to the real card after a button press
+  const pendingCopySwapRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  function cancelPendingCopySwap() {
+    if (pendingCopySwapRef.current === null) return false;
+    clearTimeout(pendingCopySwapRef.current);
+    pendingCopySwapRef.current = null;
+    return true;
+  }
+
+  // Previous/next button. Past either end it animates onto the loop copy (so it
+  // looks like a normal step) and then swaps to the real card without animation.
+  function goToPage(step: -1 | 1) {
+    if (!loops || pageWidth === 0) return;
+    // Pressed again while still on a copy: move to the real card first, otherwise
+    // the next step would start from the copy and the old swap would land elsewhere
+    if (cancelPendingCopySwap()) {
+      scrollViewRef.current?.scrollTo({
+        x: (currentPageIndex + 1) * pageWidth,
+        animated: false,
+      });
+    }
+    const targetRenderedIndex = currentPageIndex + 1 + step;
+    scrollViewRef.current?.scrollTo({
+      x: targetRenderedIndex * pageWidth,
+      animated: true,
+    });
+    const targetPageIndex =
+      (currentPageIndex + step + pages.length) % pages.length;
+    setActivePageIndex(targetPageIndex);
+    const landsOnCopy =
+      targetRenderedIndex === 0 || targetRenderedIndex === pages.length + 1;
+    if (landsOnCopy) {
+      pendingCopySwapRef.current = setTimeout(() => {
+        pendingCopySwapRef.current = null;
+        scrollViewRef.current?.scrollTo({
+          x: (targetPageIndex + 1) * pageWidth,
+          animated: false,
+        });
+      }, SCROLL_ANIMATION_MS);
+    }
+  }
+
   return (
     <View onLayout={onLayout} style={{ marginTop: theme.spacing.m }}>
       {pageWidth > 0 && (
@@ -77,6 +124,8 @@ export function ChartPager({
           pagingEnabled
           showsHorizontalScrollIndicator={false}
           onMomentumScrollEnd={onScrollEnd}
+          // A swipe takes over from a button press, the swipe's own scroll end handles copies
+          onScrollBeginDrag={() => cancelPendingCopySwap()}
           onContentSizeChange={onContentSizeChange}
           // Pages stretch to the tallest one
           contentContainerStyle={{ alignItems: "stretch" }}
@@ -101,24 +150,41 @@ export function ChartPager({
           style={{
             flexDirection: "row",
             justifyContent: "center",
-            gap: 6,
+            alignItems: "center",
+            gap: theme.spacing.s,
             marginTop: theme.spacing.s,
           }}
         >
-          {pages.map((page, index) => (
-            <View
-              key={page.key}
-              style={{
-                width: 7,
-                height: 7,
-                borderRadius: 3.5,
-                backgroundColor:
-                  index === currentPageIndex
-                    ? theme.colors.primary
-                    : theme.colors.gray3,
-              }}
-            />
-          ))}
+          <IonIconButton
+            icon="chevron-back"
+            type="ghost"
+            iconSize={22}
+            color={theme.colors.primary}
+            onPress={() => goToPage(-1)}
+          />
+          <View style={{ flexDirection: "row", gap: 6 }}>
+            {pages.map((page, index) => (
+              <View
+                key={page.key}
+                style={{
+                  width: 7,
+                  height: 7,
+                  borderRadius: 3.5,
+                  backgroundColor:
+                    index === currentPageIndex
+                      ? theme.colors.primary
+                      : theme.colors.gray3,
+                }}
+              />
+            ))}
+          </View>
+          <IonIconButton
+            icon="chevron-forward"
+            type="ghost"
+            iconSize={22}
+            color={theme.colors.primary}
+            onPress={() => goToPage(1)}
+          />
         </View>
       )}
     </View>

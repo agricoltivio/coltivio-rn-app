@@ -18,6 +18,7 @@ export type PlotsStackParamList = {
   DeletePlot: { plotId: string; name: string };
   PlotDetails: { plotId: string };
   PlotHarvests: { plotId: string; name: string };
+  PlotSowings: { plotId: string; name: string };
   PlotFertilizerApplications: {
     plotId: string;
     name: string;
@@ -58,6 +59,8 @@ export type PlotCropProtectionApplicationsScreenProps =
   StackScreenProps<"PlotCropProtectionApplications">;
 
 export type PlotHarvestsScreenProps = StackScreenProps<"PlotHarvests">;
+
+export type PlotSowingsScreenProps = StackScreenProps<"PlotSowings">;
 
 export type PlotTillagesScreenProps = StackScreenProps<"PlotTillages">;
 

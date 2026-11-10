@@ -19,6 +19,9 @@ export function fieldEventsApi(client: FetchClient) {
           query: {
             fromDate: toDateString(fromDate),
             toDate: toDateString(toDate),
+            // without types the API only returns the legacy event types
+            types:
+              "harvest,fertilizerApplication,cropProtectionApplication,tillage,sowing",
           },
         },
       });

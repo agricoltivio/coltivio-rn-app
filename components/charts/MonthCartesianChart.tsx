@@ -24,9 +24,9 @@ import { UnitBreakdownEntry } from "./unitBreakdown";
 import { formatYValue, UnitScale } from "./unitScaling";
 
 const LAST_MONTH_INDEX = 11;
-// How far a touch must move horizontally/vertically before we decide it's a
-// chart scrub vs. a page scroll. Below this, direction is ambiguous either way.
-const DIRECTION_THRESHOLD = 10;
+// Hold this long before the chart takes the touch and shows values, the same delay as the
+// parasite charts. Shorter touches (swipes, scrolls) stay with the pager and the page.
+const SCRUB_HOLD_MS = 200;
 
 type Row = {
   month: number;
@@ -144,10 +144,11 @@ export function MonthCartesianChart({
   });
 
   // victory-native's own chartPressState gesture has no way to defer to a
-  // surrounding ScrollView, so a finger landing on the chart blocks page
-  // scrolling entirely. We drive pressState ourselves instead, via a gesture
-  // that only activates once a touch has clearly moved horizontally
-  // (failing — and releasing to the ScrollView — on vertical movement first).
+  // surrounding ScrollView or chart pager, so a finger landing on the chart would
+  // block page scrolling and swiping between charts. We drive pressState ourselves
+  // instead, via a gesture that only activates after a short hold (like the
+  // parasite charts): a quick swipe or scroll moves the finger before that and
+  // fails the gesture, so it goes to the pager or the page.
   const chartLeft = useSharedValue(0);
   const chartRight = useSharedValue(0);
   // Plain copy for positioning the tooltip during render (shared values
@@ -170,34 +171,52 @@ export function MonthCartesianChart({
   );
   const [chartWidth, setChartWidth] = useState(0);
   const scrubGesture = useMemo(() => {
-    const updateFromX = (x: number) => {
+    // Month under the finger, null while the chart bounds aren't known yet
+    const monthIndexAt = (x: number) => {
       "worklet";
       const left = chartLeft.value;
       const right = chartRight.value;
-      if (right <= left) return;
+      if (right <= left) return null;
       const ratio = (x - left) / (right - left);
-      const index = Math.round(ratio * LAST_MONTH_INDEX);
-      pressState.matchedIndex.value = Math.min(
+      return Math.min(
         LAST_MONTH_INDEX,
-        Math.max(0, index),
+        Math.max(0, Math.round(ratio * LAST_MONTH_INDEX)),
       );
+    };
+    const showMonthAt = (x: number) => {
+      "worklet";
+      const index = monthIndexAt(x);
+      if (index === null) return;
+      pressState.matchedIndex.value = index;
       pressState.isActive.value = true;
     };
-    // onBegin fires on touch-down, before the gesture has committed to
-    // either activating (horizontal drag) or failing (vertical scroll) — so
-    // a plain tap/hold shows the tooltip immediately instead of needing
-    // horizontal movement first. onFinalize hides it again when the finger
-    // lifts or the touch turns out to be a page scroll.
+    // Tap shows the tapped month's values and keeps them (tap the same month
+    // again to hide). It only fires once the hold below has failed, i.e. the
+    // finger lifted before SCRUB_HOLD_MS.
+    const tapGesture = Gesture.Tap().onEnd((e) => {
+      const index = monthIndexAt(e.x);
+      if (index === null) return;
+      const isSameMonth =
+        pressState.isActive.value && pressState.matchedIndex.value === index;
+      if (isSameMonth) {
+        pressState.isActive.value = false;
+        return;
+      }
+      pressState.matchedIndex.value = index;
+      pressState.isActive.value = true;
+    });
+    // Hold, then drag: scrubs along the months. A quick swipe or scroll moves
+    // the finger before the hold is over and fails this, so it goes to the
+    // pager or the page. onEnd (not onFinalize) hides the values again, so a
+    // failed hold before a tap doesn't hide what the tap shows.
     const panGesture = Gesture.Pan()
-      .activeOffsetX([-DIRECTION_THRESHOLD, DIRECTION_THRESHOLD])
-      .failOffsetY([-DIRECTION_THRESHOLD, DIRECTION_THRESHOLD])
-      .onBegin((e) => updateFromX(e.x))
-      .onUpdate((e) => updateFromX(e.x))
-      .onFinalize(() => {
-        "worklet";
+      .activateAfterLongPress(SCRUB_HOLD_MS)
+      .onStart((e) => showMonthAt(e.x))
+      .onUpdate((e) => showMonthAt(e.x))
+      .onEnd(() => {
         pressState.isActive.value = false;
       });
-    return Gesture.Race(panGesture);
+    return Gesture.Exclusive(panGesture, tapGesture);
   }, [chartLeft, chartRight, pressState]);
 
   // Per-year, per-month values in display units, for the selected years

@@ -28,6 +28,8 @@ import { getAppVersion } from "@/utils/app-info";
 type LocalSettingsData = {
   editPlotOnboardingCompleted: boolean;
   fieldCalendarGroups: FieldCalendarGroupConfig[];
+  // One-time move of Aussaat/Saatgut to their default spots, see placeSowingItems
+  sowingHubPlacementMigrated: boolean;
   fieldCalendarOnboardingCompleted: boolean;
   animalsGroups: AnimalsGroupConfig[];
   animalsOnboardingCompleted: boolean;
@@ -111,6 +113,8 @@ type LocalSettings = {
 export const defaultLocalSettings: LocalSettingsData = {
   editPlotOnboardingCompleted: false,
   fieldCalendarGroups: DEFAULT_FIELD_CALENDAR_GROUPS,
+  // Fresh installs start with the defaults, which already have the right order
+  sowingHubPlacementMigrated: true,
   fieldCalendarOnboardingCompleted: false,
   animalsGroups: DEFAULT_ANIMALS_GROUPS,
   animalsOnboardingCompleted: false,
@@ -255,13 +259,67 @@ function mergeGroups(
     const def = defaultMap.get(saved.groupId);
     if (!def) return saved;
     const savedItemIds = new Set(saved.items.map((i) => i.itemId));
-    const newItems = def.items.filter((i) => !savedItemIds.has(i.itemId));
-    return { ...saved, items: [...saved.items, ...newItems] };
+    // New items go in after the item that precedes them in the defaults, so they show up
+    // where they belong instead of at the end; the user's order of saved items is kept
+    const items = [...saved.items];
+    def.items.forEach((defaultItem, defaultIndex) => {
+      if (savedItemIds.has(defaultItem.itemId)) return;
+      const precedingItemIds = def.items
+        .slice(0, defaultIndex)
+        .map((item) => item.itemId);
+      const insertAfterIndex = items.findLastIndex((item) =>
+        precedingItemIds.includes(item.itemId),
+      );
+      items.splice(insertAfterIndex + 1, 0, defaultItem);
+    });
+    return { ...saved, items };
   });
   // Append any entirely new groups not yet in storage
   const storedIds = new Set(stored.map((g) => g.groupId));
   const newGroups = defaults.filter((g) => !storedIds.has(g.groupId));
   return [...merged, ...newGroups];
+}
+
+// One-time fix for test installs: builds before new hub items were inserted at their
+// default position appended Aussaat and Saatgut at the end and saved that. Puts Aussaat
+// after Bodenbearbeitung and Saatgut first in Betriebsmittel once; later reorders stay.
+function placeSowingItems(
+  groups: FieldCalendarGroupConfig[],
+): FieldCalendarGroupConfig[] {
+  return groups.map((group) => {
+    if (group.groupId === "measures") {
+      const sowings = group.items.find((item) => item.itemId === "sowings");
+      const tillagesIndex = group.items.findIndex(
+        (item) => item.itemId === "tillages",
+      );
+      if (!sowings || tillagesIndex === -1) return group;
+      const otherItems = group.items.filter(
+        (item) => item.itemId !== "sowings",
+      );
+      const insertIndex =
+        otherItems.findIndex((item) => item.itemId === "tillages") + 1;
+      return {
+        ...group,
+        items: [
+          ...otherItems.slice(0, insertIndex),
+          sowings,
+          ...otherItems.slice(insertIndex),
+        ],
+      };
+    }
+    if (group.groupId === "resources") {
+      const seeds = group.items.find((item) => item.itemId === "seeds");
+      if (!seeds) return group;
+      return {
+        ...group,
+        items: [
+          seeds,
+          ...group.items.filter((item) => item.itemId !== "seeds"),
+        ],
+      };
+    }
+    return group;
+  });
 }
 
 export function LocalSettingsProvider({ children }: PropsWithChildren) {
@@ -277,7 +335,13 @@ export function LocalSettingsProvider({ children }: PropsWithChildren) {
         setLoading(false);
         if (value) {
           const stored = JSON.parse(value);
-          setLocalSettings({
+          const mergedFieldCalendarGroups = mergeGroups(
+            migrateFieldCalendarGroups(stored.fieldCalendarGroups ?? []),
+            DEFAULT_FIELD_CALENDAR_GROUPS,
+          );
+          const needsSowingPlacement =
+            stored.sowingHubPlacementMigrated !== true;
+          const loadedSettings: LocalSettingsData = {
             ...defaultLocalSettings,
             ...stored,
             // The tasks onboarding used to include the push notification opt-in, so users
@@ -289,10 +353,10 @@ export function LocalSettingsProvider({ children }: PropsWithChildren) {
               stored.animalsGroups ?? [],
               DEFAULT_ANIMALS_GROUPS,
             ),
-            fieldCalendarGroups: mergeGroups(
-              migrateFieldCalendarGroups(stored.fieldCalendarGroups ?? []),
-              DEFAULT_FIELD_CALENDAR_GROUPS,
-            ),
+            fieldCalendarGroups: needsSowingPlacement
+              ? placeSowingItems(mergedFieldCalendarGroups)
+              : mergedFieldCalendarGroups,
+            sowingHubPlacementMigrated: true,
             speedDialItems: mergeSpeedDialItems(
               stored.speedDialItems ?? [],
               DEFAULT_SPEED_DIAL_ITEMS,
@@ -301,7 +365,15 @@ export function LocalSettingsProvider({ children }: PropsWithChildren) {
               stored.homeTiles ?? [],
               DEFAULT_HOME_TILES,
             ),
-          });
+          };
+          setLocalSettings(loadedSettings);
+          // Persist right away, so the one-time placement doesn't run again
+          if (needsSowingPlacement) {
+            AsyncStorage.setItem(
+              localSettingsStorageKey,
+              JSON.stringify(loadedSettings),
+            );
+          }
           applyAppLocale(stored.preferredLocale);
         } else {
           const seeded = {
