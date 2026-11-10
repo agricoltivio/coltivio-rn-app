@@ -206,6 +206,8 @@ export function AnimalForm({
       <RHSelect
         name="earTagId"
         control={control}
+        // Clearing sends null, which removes it on save
+        clearable
         label={t("ear_tags.ear_tag")}
         data={earTagSelectData}
         enableSearch
@@ -306,6 +308,8 @@ export function AnimalForm({
       <RHSelect
         name="motherId"
         control={control}
+        // Clearing sends null, which removes it on save
+        clearable
         label={t("animals.mother")}
         data={femaleAnimals}
         enableSearch
@@ -314,6 +318,8 @@ export function AnimalForm({
       <RHSelect
         name="fatherId"
         control={control}
+        // Clearing sends null, which removes it on save
+        clearable
         label={t("animals.father")}
         data={maleAnimals}
         enableSearch

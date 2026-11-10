@@ -1,6 +1,6 @@
 import { OutdoorScheduleCreateInput } from "@/api/herds.api";
 import { BottomDrawerModal } from "@/components/bottom-drawer/BottomDrawerModal";
-import { DatePicker } from "@/components/datepicker/DatePicker";
+import { InlineDatePicker } from "@/components/datepicker/InlineDatePicker";
 import { Portal } from "@gorhom/portal";
 import {
   BottomSheetModal,
@@ -94,7 +94,6 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
   const membershipDateSheetRef = useRef<BottomSheetModal>(null);
   // Unique per screen instance: the same herd can be open twice in the stack
   const membershipDatePortalKey = useId();
-  const membershipDateSnapPoints = useMemo(() => [320], []);
   useEffect(() => {
     if (membershipDateModalVisible) {
       membershipDateSheetRef.current?.present();
@@ -554,7 +553,7 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
         <BottomSheetModalProvider key={membershipDatePortalKey}>
           <BottomDrawerModal
             ref={membershipDateSheetRef}
-            snapPoints={membershipDateSnapPoints}
+            // Fits the content, so it grows when the inline calendar opens
             onClose={() => setMembershipDateModalVisible(false)}
           >
             <H3>{t("animals.herd_changes_apply_from")}</H3>
@@ -565,12 +564,10 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
               })}
             </Subtitle>
             <View style={{ marginTop: theme.spacing.m }}>
-              <DatePicker
-                mode="date"
-                locale={locale}
+              {/* Inline: the regular DatePicker opens its own drawer, which can't stack on this one */}
+              <InlineDatePicker
                 label={t("animals.herd_changes_apply_from")}
                 date={membershipChangeDate}
-                clearable={false}
                 minimumDate={earliestEffectiveDate ?? undefined}
                 error={
                   membershipChangeDateTooEarly
@@ -579,9 +576,7 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
                       ? t("common.unknown_error")
                       : undefined
                 }
-                onConfirm={(date) => {
-                  if (date) setMembershipChangeDate(date);
-                }}
+                onChange={setMembershipChangeDate}
               />
             </View>
             <View

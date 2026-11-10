@@ -23,6 +23,8 @@ const EAR_TAG_NUMBER_PATTERN = /^([A-Za-z]*)(\d+)$/;
 
 // Conflicting numbers listed in the preview; the rest is summarized as a count
 const MAX_LISTED_CONFLICTS = 10;
+// Largest range the API creates at once
+const MAX_EAR_TAG_RANGE_SIZE = 1000;
 
 type EarTagRangePreview = {
   fromNumber: string;
@@ -198,8 +200,17 @@ export function CreateEarTagRangeScreen({
                 value: true,
                 message: t("forms.validation.required"),
               },
-              validate: (value) =>
-                parseInt(value, 10) >= 1 || t("ear_tags.invalid_amount"),
+              validate: (value) => {
+                const amount = parseInt(value, 10);
+                if (!(amount >= 1)) return t("ear_tags.invalid_amount");
+                // The API creates at most this many tags at once
+                if (amount > MAX_EAR_TAG_RANGE_SIZE) {
+                  return t("ear_tags.range_too_large", {
+                    max: MAX_EAR_TAG_RANGE_SIZE,
+                  });
+                }
+                return true;
+              },
             }}
             error={errors.amount?.message}
           />

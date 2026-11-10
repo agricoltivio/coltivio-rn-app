@@ -1224,7 +1224,8 @@
     "amount": "Anzahl Ohrmarken",
     "range_preview_title": "Wird erstellt",
     "range_preview_range": "{{from}} – {{to}}",
-    "range_preview_total": "{{total}} Ohrmarken"
+    "range_preview_total": "{{total}} Ohrmarken",
+    "range_too_large": "Höchstens {{max}} Ohrmarken auf einmal"
   },
   "map_draw_onboarding": {
     "welcome_heading": "Schläge & Flächen",

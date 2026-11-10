@@ -1,14 +1,9 @@
 import { Button } from "@/components/buttons/Button";
 import { BottomDrawerModal } from "@/components/bottom-drawer/BottomDrawerModal";
-import { TextInput } from "@/components/inputs/TextInput";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import { InlineDatePicker } from "@/components/datepicker/InlineDatePicker";
 import { ListItem } from "@/components/list/ListItem";
 import { H3, Label } from "@/theme/Typography";
-import {
-  formatLocalizedDate,
-  parseDateOnly,
-  toLocalDateString,
-} from "@/utils/date";
+import { parseDateOnly, toLocalDateString } from "@/utils/date";
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
@@ -17,7 +12,7 @@ import {
 import { Portal } from "@gorhom/portal";
 import { RefObject, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, Keyboard, Platform, Pressable, View } from "react-native";
+import { Alert, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import {
   useCreateAnimalWeightMutation,
@@ -43,7 +38,7 @@ export function AnimalWeightDrawer({
   currentWeight: DrawerWeight | null;
   onPendingWeightChange?: (weight: DrawerWeight) => void;
 }) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   // PortalHost renders portals as an unkeyed list, a unique key keeps this sheet's state apart
   const portalKey = useId();
@@ -52,9 +47,6 @@ export function AnimalWeightDrawer({
   const [entryDate, setEntryDate] = useState(new Date());
   const [weightInput, setWeightInput] = useState("");
   const [weightInputKey, setWeightInputKey] = useState(0);
-  // The shared DatePicker opens its own drawer, which can't stack on this one. The calendar is
-  // shown inline here instead (iOS), Android uses its native dialog which is no drawer.
-  const [datePickerOpen, setDatePickerOpen] = useState(false);
   const step: DrawerStep = selectedStep ?? (currentWeight ? "choose" : "new");
 
   const createWeightMutation = useCreateAnimalWeightMutation(() =>
@@ -79,7 +71,6 @@ export function AnimalWeightDrawer({
   function resetDrawer() {
     setSelectedStep(null);
     setWeightInputKey((key) => key + 1);
-    setDatePickerOpen(false);
     setEntryDate(new Date());
     setWeightInput("");
   }
@@ -135,54 +126,13 @@ export function AnimalWeightDrawer({
               </View>
             ) : (
               <View style={{ gap: theme.spacing.s }}>
-                <Pressable
-                  onPress={() => {
-                    Keyboard.dismiss();
-                    setDatePickerOpen((open) => !open);
-                  }}
-                >
-                  <View pointerEvents="none">
-                    <TextInput
-                      label={t("breeding.date")}
-                      value={formatLocalizedDate(
-                        entryDate,
-                        i18n.language,
-                        "long",
-                      )}
-                    />
-                  </View>
-                </Pressable>
-                {datePickerOpen && Platform.OS === "ios" && (
-                  <DateTimePicker
-                    value={entryDate}
-                    mode="date"
-                    display="inline"
-                    // A weighing can't be in the future
-                    maximumDate={new Date()}
-                    locale={i18n.language}
-                    themeVariant="light"
-                    onChange={(_event, selectedDate) => {
-                      if (!selectedDate) return;
-                      setEntryDate(selectedDate);
-                      setDatePickerOpen(false);
-                    }}
-                  />
-                )}
-                {datePickerOpen && Platform.OS === "android" && (
-                  <DateTimePicker
-                    value={entryDate}
-                    mode="date"
-                    display="calendar"
-                    // A weighing can't be in the future
-                    maximumDate={new Date()}
-                    onChange={(event, selectedDate) => {
-                      setDatePickerOpen(false);
-                      if (event.type === "set" && selectedDate) {
-                        setEntryDate(selectedDate);
-                      }
-                    }}
-                  />
-                )}
+                <InlineDatePicker
+                  label={t("breeding.date")}
+                  date={entryDate}
+                  onChange={setEntryDate}
+                  // A weighing can't be in the future
+                  maximumDate={new Date()}
+                />
                 <View>
                   <Label style={{ marginBottom: theme.spacing.xxs }}>
                     {t("breeding.weight_kg")}

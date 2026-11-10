@@ -1224,7 +1224,8 @@
     "amount": "Numero di marche auricolari",
     "range_preview_title": "Verranno create",
     "range_preview_range": "{{from}} – {{to}}",
-    "range_preview_total": "{{total}} marche auricolari"
+    "range_preview_total": "{{total}} marche auricolari",
+    "range_too_large": "Al massimo {{max}} marche auricolari alla volta"
   },
   "map_draw_onboarding": {
     "welcome_heading": "Campi e superfici",

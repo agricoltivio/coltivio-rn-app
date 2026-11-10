@@ -1224,7 +1224,8 @@
     "amount": "Number of ear tags",
     "range_preview_title": "Will be created",
     "range_preview_range": "{{from}} – {{to}}",
-    "range_preview_total": "{{total}} ear tags"
+    "range_preview_total": "{{total}} ear tags",
+    "range_too_large": "At most {{max}} ear tags at once"
   },
   "map_draw_onboarding": {
     "welcome_heading": "Plots & Areas",

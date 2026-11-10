@@ -1224,7 +1224,8 @@
     "amount": "Nombre de marques auriculaires",
     "range_preview_title": "Seront créées",
     "range_preview_range": "{{from}} – {{to}}",
-    "range_preview_total": "{{total}} marques auriculaires"
+    "range_preview_total": "{{total}} marques auriculaires",
+    "range_too_large": "Au maximum {{max}} boucles d'oreille à la fois"
   },
   "map_draw_onboarding": {
     "welcome_heading": "Champs & Surfaces",
