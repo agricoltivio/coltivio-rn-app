@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { RHSwitch } from "@/components/inputs/RHSwitch";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
+import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import {
@@ -19,6 +20,8 @@ import { useAnimalsQuery } from "./animals.hooks";
 import { useAvailableEarTagsQuery } from "./earTags.hooks";
 import { toLocalDateString } from "@/utils/date";
 import { useEarliestHerdChangeDateQuery, useHerdsQuery } from "./herds.hooks";
+import { DrawerWeight } from "./AnimalWeightDrawer";
+import { AnimalWeightField } from "./AnimalWeightField";
 
 export type AnimalFormValues = Omit<
   AnimalCreateInput,
@@ -45,6 +48,9 @@ type AnimalFormProps = {
   initialHerdId?: string | null;
   // The edited animal; its herd history limits the herd date. Undefined when creating.
   animalId?: string;
+  // Latest weight entry, or the weight entered for a new animal (saved after creating it)
+  currentWeight?: DrawerWeight | null;
+  onPendingWeightChange?: (weight: DrawerWeight) => void;
 };
 
 export function AnimalForm({
@@ -56,6 +62,8 @@ export function AnimalForm({
   onNavigateToCreateHerd,
   initialHerdId,
   animalId,
+  currentWeight,
+  onPendingWeightChange,
 }: AnimalFormProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -156,21 +164,21 @@ export function AnimalForm({
     })) ??
     [];
 
-  const femaleAnimals =
-    animals
-      ?.filter((animal) => animal.sex === "female")
-      .map((animal) => ({
-        label: animal.name,
-        value: animal.id,
-      })) ?? [];
-
-  const maleAnimals =
-    animals
-      ?.filter((animal) => animal.sex === "male")
-      .map((animal) => ({
-        label: animal.name,
-        value: animal.id,
-      })) ?? [];
+  // Parent options: name as main line, ear tag number as searchable secondary line.
+  // The edited animal can't be its own parent.
+  const parentCandidates =
+    animals?.filter((animal) => animal.id !== animalId) ?? [];
+  const toParentOption = (animal: (typeof parentCandidates)[number]) => ({
+    label: animal.name,
+    value: animal.id,
+    description: animal.earTag?.number,
+  });
+  const femaleAnimals = parentCandidates
+    .filter((animal) => animal.sex === "female")
+    .map(toParentOption);
+  const maleAnimals = parentCandidates
+    .filter((animal) => animal.sex === "male")
+    .map(toParentOption);
 
   return (
     <View
@@ -198,6 +206,8 @@ export function AnimalForm({
       <RHSelect
         name="earTagId"
         control={control}
+        // Clearing sends null, which removes it on save
+        clearable
         label={t("ear_tags.ear_tag")}
         data={earTagSelectData}
         enableSearch
@@ -220,6 +230,11 @@ export function AnimalForm({
         mode="date"
         error={errors.dateOfBirth?.message}
       />
+      <AnimalWeightField
+        animalId={animalId}
+        currentWeight={currentWeight ?? null}
+        onPendingWeightChange={onPendingWeightChange}
+      />
       <RHSwitch
         style={{ marginTop: theme.spacing.m, marginBottom: theme.spacing.m }}
         name="registered"
@@ -235,6 +250,12 @@ export function AnimalForm({
         }}
         error={errors.usage?.message}
         data={usageData}
+      />
+      <RHTextInput
+        name="color"
+        control={control}
+        label={t("animals.color_optional")}
+        error={errors.color?.message}
       />
       {/* Herd select with + button */}
       <View
@@ -287,6 +308,8 @@ export function AnimalForm({
       <RHSelect
         name="motherId"
         control={control}
+        // Clearing sends null, which removes it on save
+        clearable
         label={t("animals.mother")}
         data={femaleAnimals}
         enableSearch
@@ -295,6 +318,8 @@ export function AnimalForm({
       <RHSelect
         name="fatherId"
         control={control}
+        // Clearing sends null, which removes it on save
+        clearable
         label={t("animals.father")}
         data={maleAnimals}
         enableSearch
@@ -320,6 +345,12 @@ export function AnimalForm({
           )}
         </>
       )}
+      <RHTextAreaInput
+        name="notes"
+        control={control}
+        label={t("animals.notes_optional")}
+        error={errors.notes?.message}
+      />
     </View>
   );
 }

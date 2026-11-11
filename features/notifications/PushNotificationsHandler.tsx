@@ -3,6 +3,7 @@ import { useSession } from "@/auth/SessionProvider";
 import { useActiveFarm } from "@/features/farms/ActiveFarmContext";
 import { useFarmsQuery } from "@/features/farms/farms.hooks";
 import {
+  useUpdateBreedingRemindersMutation,
   useUpdateTaskPushNotificationsMutation,
   useUserQuery,
 } from "@/features/user/users.hooks";
@@ -14,12 +15,13 @@ import { useEffect, useRef } from "react";
 import { AppState } from "react-native";
 import {
   getNotificationPermissionAsync,
+  parseBreedingDueNotificationData,
   parseTasksDueNotificationData,
   registerPushTokenAsync,
 } from "./push-notifications";
 
 // Rendered next to RootStack inside the NavigationContainer. Keeps the push token registered
-// and routes taps on "tasks due" notifications (including cold starts) to the tasks.
+// and routes taps on "tasks due" / "breeding due" notifications (including cold starts).
 export function PushNotificationsHandler() {
   const { token } = useSession();
   const api = useApi();
@@ -31,6 +33,7 @@ export function PushNotificationsHandler() {
   const { user } = useUserQuery(token != null && farmSelectionHydrated);
   const updateTaskPushNotificationsMutation =
     useUpdateTaskPushNotificationsMutation();
+  const updateBreedingRemindersMutation = useUpdateBreedingRemindersMutation();
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
   // The same response is returned on every render, it must only navigate once
   const handledResponseIdRef = useRef<string | null>(null);
@@ -63,16 +66,27 @@ export function PushNotificationsHandler() {
   // was revoked in the system settings, checked on start and whenever the app returns to
   // the foreground. Only "blocked" counts, so a never-asked user (e.g. before the tasks
   // onboarding) keeps the enabled default until they get asked.
+  // Breeding reminders are push notifications too and get turned off the same way.
   const taskPushNotificationsEnabled = user?.taskPushNotifications === true;
+  const breedingRemindersEnabled =
+    user?.breedingReminderDaysBefore1 != null ||
+    user?.breedingReminderDaysBefore2 != null;
   useEffect(() => {
-    if (!taskPushNotificationsEnabled) {
+    if (!taskPushNotificationsEnabled && !breedingRemindersEnabled) {
       return;
     }
     function disableIfPermissionBlocked() {
       getNotificationPermissionAsync({ requestPermission: false })
         .then((permission) => {
-          if (permission?.blocked) {
+          if (!permission?.blocked) return;
+          if (taskPushNotificationsEnabled) {
             updateTaskPushNotificationsMutation.mutate(false);
+          }
+          if (breedingRemindersEnabled) {
+            updateBreedingRemindersMutation.mutate({
+              breedingReminderDaysBefore1: null,
+              breedingReminderDaysBefore2: null,
+            });
           }
         })
         .catch((error) => console.error(error));
@@ -84,7 +98,7 @@ export function PushNotificationsHandler() {
       }
     });
     return () => subscription.remove();
-  }, [taskPushNotificationsEnabled]);
+  }, [taskPushNotificationsEnabled, breedingRemindersEnabled]);
 
   useEffect(() => {
     if (!lastNotificationResponse || !token) {
@@ -94,9 +108,11 @@ export function PushNotificationsHandler() {
     if (handledResponseIdRef.current === responseId) {
       return;
     }
-    const notificationData = parseTasksDueNotificationData(
-      lastNotificationResponse.notification.request.content.data,
-    );
+    const notificationContentData =
+      lastNotificationResponse.notification.request.content.data;
+    const notificationData =
+      parseTasksDueNotificationData(notificationContentData) ??
+      parseBreedingDueNotificationData(notificationContentData);
     if (!notificationData) {
       handledResponseIdRef.current = responseId;
       return;
@@ -121,7 +137,9 @@ export function PushNotificationsHandler() {
     // Otherwise the same response is returned again on the next cold start
     Notifications.clearLastNotificationResponseAsync().catch(() => {});
 
-    if (isMemberOfFarm && notificationData.taskIds.length === 1) {
+    if (notificationData.type === "breeding_due") {
+      navigation.navigate("BreedingCalendar");
+    } else if (isMemberOfFarm && notificationData.taskIds.length === 1) {
       navigation.navigate("TaskDetail", {
         taskId: notificationData.taskIds[0],
       });

@@ -10128,6 +10128,555 @@
         }
       }
     },
+    "/v1/animals/byId/{animalId}/weights": {
+      "get": {
+        "operationId": "GetV1AnimalsByIdAnimalIdWeights",
+        "parameters": [
+          {
+            "name": "animalId",
+            "in": "path",
+            "required": true,
+            "description": "GET /v1/animals/byId/:animalId/weights Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/animals/byId/:animalId/weights Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1AnimalsByIdAnimalIdWeightsPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/animals/byId/:animalId/weights Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1AnimalsByIdAnimalIdWeights",
+        "parameters": [
+          {
+            "name": "animalId",
+            "in": "path",
+            "required": true,
+            "description": "HEAD /v1/animals/byId/:animalId/weights Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/animals/byId/:animalId/weights Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/animals/byId/:animalId/weights Negative response"
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostV1AnimalsByIdAnimalIdWeights",
+        "parameters": [
+          {
+            "name": "animalId",
+            "in": "path",
+            "required": true,
+            "description": "POST /v1/animals/byId/:animalId/weights Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "POST /v1/animals/byId/:animalId/weights Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1AnimalsByIdAnimalIdWeightsRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/animals/byId/:animalId/weights Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1AnimalsByIdAnimalIdWeightsPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/animals/byId/:animalId/weights Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/animals/byId/{animalId}/heats": {
+      "get": {
+        "operationId": "GetV1AnimalsByIdAnimalIdHeats",
+        "parameters": [
+          {
+            "name": "animalId",
+            "in": "path",
+            "required": true,
+            "description": "GET /v1/animals/byId/:animalId/heats Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/animals/byId/:animalId/heats Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1AnimalsByIdAnimalIdHeatsPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/animals/byId/:animalId/heats Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1AnimalsByIdAnimalIdHeats",
+        "parameters": [
+          {
+            "name": "animalId",
+            "in": "path",
+            "required": true,
+            "description": "HEAD /v1/animals/byId/:animalId/heats Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/animals/byId/:animalId/heats Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/animals/byId/:animalId/heats Negative response"
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostV1AnimalsByIdAnimalIdHeats",
+        "parameters": [
+          {
+            "name": "animalId",
+            "in": "path",
+            "required": true,
+            "description": "POST /v1/animals/byId/:animalId/heats Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "POST /v1/animals/byId/:animalId/heats Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1AnimalsByIdAnimalIdHeatsRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/animals/byId/:animalId/heats Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1AnimalsByIdAnimalIdHeatsPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/animals/byId/:animalId/heats Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/animals/weights/byId/{weightId}": {
+      "patch": {
+        "operationId": "PatchV1AnimalsWeightsByIdWeightId",
+        "parameters": [
+          {
+            "name": "weightId",
+            "in": "path",
+            "required": true,
+            "description": "PATCH /v1/animals/weights/byId/:weightId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PATCH /v1/animals/weights/byId/:weightId Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchV1AnimalsWeightsByIdWeightIdRequestBody"
+              }
+            }
+          }
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "PATCH /v1/animals/weights/byId/:weightId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchV1AnimalsWeightsByIdWeightIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "PATCH /v1/animals/weights/byId/:weightId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteV1AnimalsWeightsByIdWeightId",
+        "parameters": [
+          {
+            "name": "weightId",
+            "in": "path",
+            "required": true,
+            "description": "DELETE /v1/animals/weights/byId/:weightId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "DELETE /v1/animals/weights/byId/:weightId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteV1AnimalsWeightsByIdWeightIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "DELETE /v1/animals/weights/byId/:weightId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/animals/heats/byId/{heatId}": {
+      "patch": {
+        "operationId": "PatchV1AnimalsHeatsByIdHeatId",
+        "parameters": [
+          {
+            "name": "heatId",
+            "in": "path",
+            "required": true,
+            "description": "PATCH /v1/animals/heats/byId/:heatId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PATCH /v1/animals/heats/byId/:heatId Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchV1AnimalsHeatsByIdHeatIdRequestBody"
+              }
+            }
+          }
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "PATCH /v1/animals/heats/byId/:heatId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchV1AnimalsHeatsByIdHeatIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "PATCH /v1/animals/heats/byId/:heatId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteV1AnimalsHeatsByIdHeatId",
+        "parameters": [
+          {
+            "name": "heatId",
+            "in": "path",
+            "required": true,
+            "description": "DELETE /v1/animals/heats/byId/:heatId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "DELETE /v1/animals/heats/byId/:heatId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteV1AnimalsHeatsByIdHeatIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "DELETE /v1/animals/heats/byId/:heatId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/animals/breedingCalendar": {
+      "get": {
+        "operationId": "GetV1AnimalsBreedingCalendar",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/animals/breedingCalendar Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1AnimalsBreedingCalendarPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/animals/breedingCalendar Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1AnimalsBreedingCalendar",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/animals/breedingCalendar Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/animals/breedingCalendar Negative response"
+          }
+        }
+      }
+    },
+    "/v1/animals/breedingCalendar/gestationSettings": {
+      "get": {
+        "operationId": "GetV1AnimalsBreedingCalendarGestationSettings",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/animals/breedingCalendar/gestationSettings Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1AnimalsBreedingCalendarGestationSettingsPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/animals/breedingCalendar/gestationSettings Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1AnimalsBreedingCalendarGestationSettings",
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/animals/breedingCalendar/gestationSettings Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/animals/breedingCalendar/gestationSettings Negative response"
+          }
+        }
+      },
+      "put": {
+        "operationId": "PutV1AnimalsBreedingCalendarGestationSettings",
+        "requestBody": {
+          "description": "PUT /v1/animals/breedingCalendar/gestationSettings Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PutV1AnimalsBreedingCalendarGestationSettingsRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "PUT /v1/animals/breedingCalendar/gestationSettings Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PutV1AnimalsBreedingCalendarGestationSettingsPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "PUT /v1/animals/breedingCalendar/gestationSettings Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/animals/journal/byId/{entryId}": {
       "get": {
         "operationId": "GetV1AnimalsJournalByIdEntryId",
@@ -11158,6 +11707,45 @@
           },
           "400": {
             "description": "DELETE /v1/earTags/range Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/earTags/byId/{earTagId}": {
+      "delete": {
+        "operationId": "DeleteV1EarTagsByIdEarTagId",
+        "parameters": [
+          {
+            "name": "earTagId",
+            "in": "path",
+            "required": true,
+            "description": "DELETE /v1/earTags/byId/:earTagId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "DELETE /v1/earTags/byId/:earTagId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteV1EarTagsByIdEarTagIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "DELETE /v1/earTags/byId/:earTagId Negative response",
             "content": {
               "application/json": {
                 "schema": {
@@ -17555,7 +18143,10 @@
               "sowing_crop_required",
               "crop_not_found",
               "plot_not_found",
-              "seed_default_amount_without_unit"
+              "seed_default_amount_without_unit",
+              "ear_tag_range_conflict",
+              "invalid_ear_tag_range",
+              "ear_tag_assigned"
             ]
           }
         },
@@ -19169,7 +19760,9 @@
               },
               "isWikiModerator": { "type": "boolean" },
               "isForumModerator": { "type": "boolean" },
-              "taskPushNotifications": { "type": "boolean" }
+              "taskPushNotifications": { "type": "boolean" },
+              "breedingReminderDaysBefore1": { "type": ["number", "null"] },
+              "breedingReminderDaysBefore2": { "type": ["number", "null"] }
             },
             "required": [
               "id",
@@ -19193,7 +19786,17 @@
         "properties": {
           "fullName": { "type": "string" },
           "newsletterConsent": { "type": "boolean" },
-          "taskPushNotifications": { "type": "boolean" }
+          "taskPushNotifications": { "type": "boolean" },
+          "breedingReminderDaysBefore1": {
+            "type": ["integer", "null"],
+            "minimum": 0,
+            "maximum": 60
+          },
+          "breedingReminderDaysBefore2": {
+            "type": ["integer", "null"],
+            "minimum": 0,
+            "maximum": 60
+          }
         }
       },
       "GetV1MePositiveResponse": {
@@ -19231,7 +19834,9 @@
                   "additionalProperties": false
                 }
               },
-              "taskPushNotifications": { "type": "boolean" }
+              "taskPushNotifications": { "type": "boolean" },
+              "breedingReminderDaysBefore1": { "type": ["number", "null"] },
+              "breedingReminderDaysBefore2": { "type": ["number", "null"] }
             },
             "required": [
               "id",
@@ -31960,7 +32565,26 @@
                       "enum": ["died", "slaughtered"]
                     },
                     "herdId": { "type": ["string", "null"] },
-                    "milkAndMeatUsable": { "type": "boolean" }
+                    "color": { "type": ["string", "null"] },
+                    "notes": { "type": ["string", "null"] },
+                    "milkAndMeatUsable": { "type": "boolean" },
+                    "latestWeight": {
+                      "type": ["object", "null"],
+                      "properties": {
+                        "id": { "type": "string" },
+                        "date": {
+                          "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                          "type": "string",
+                          "format": "date-time",
+                          "externalDocs": {
+                            "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                          }
+                        },
+                        "weightKg": { "type": "number" }
+                      },
+                      "required": ["id", "date", "weightKg"],
+                      "additionalProperties": false
+                    }
                   },
                   "required": [
                     "id",
@@ -31978,6 +32602,8 @@
                     "dateOfDeath",
                     "deathReason",
                     "herdId",
+                    "color",
+                    "notes",
                     "milkAndMeatUsable"
                   ],
                   "additionalProperties": false
@@ -32049,7 +32675,9 @@
                 "type": ["string", "null"],
                 "enum": ["died", "slaughtered"]
               },
-              "herdId": { "type": ["string", "null"] }
+              "herdId": { "type": ["string", "null"] },
+              "color": { "type": ["string", "null"] },
+              "notes": { "type": ["string", "null"] }
             },
             "required": [
               "id",
@@ -32066,7 +32694,9 @@
               "fatherId",
               "dateOfDeath",
               "deathReason",
-              "herdId"
+              "herdId",
+              "color",
+              "notes"
             ],
             "additionalProperties": false
           }
@@ -32111,6 +32741,8 @@
             "enum": ["died", "slaughtered"]
           },
           "herdId": { "type": ["string", "null"] },
+          "color": { "type": ["string", "null"] },
+          "notes": { "type": ["string", "null"] },
           "herdEffectiveDate": {
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "type": ["string", "null"],
@@ -32208,7 +32840,9 @@
                       "type": ["string", "null"],
                       "enum": ["died", "slaughtered"]
                     },
-                    "herdId": { "type": ["string", "null"] }
+                    "herdId": { "type": ["string", "null"] },
+                    "color": { "type": ["string", "null"] },
+                    "notes": { "type": ["string", "null"] }
                   },
                   "required": [
                     "id",
@@ -32225,7 +32859,9 @@
                     "fatherId",
                     "dateOfDeath",
                     "deathReason",
-                    "herdId"
+                    "herdId",
+                    "color",
+                    "notes"
                   ],
                   "additionalProperties": false
                 }
@@ -32273,8 +32909,8 @@
                 "type": "string",
                 "enum": ["died", "slaughtered"]
               },
-              "motherId": { "type": "string" },
-              "fatherId": { "type": "string" }
+              "motherId": { "type": ["string", "null"] },
+              "fatherId": { "type": ["string", "null"] }
             }
           }
         },
@@ -32625,6 +33261,25 @@
                 "enum": ["died", "slaughtered"]
               },
               "herdId": { "type": ["string", "null"] },
+              "color": { "type": ["string", "null"] },
+              "notes": { "type": ["string", "null"] },
+              "latestWeight": {
+                "type": ["object", "null"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "date": {
+                    "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                    "type": "string",
+                    "format": "date-time",
+                    "externalDocs": {
+                      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                    }
+                  },
+                  "weightKg": { "type": "number" }
+                },
+                "required": ["id", "date", "weightKg"],
+                "additionalProperties": false
+              },
               "mother": {
                 "anyOf": [
                   {
@@ -32681,7 +33336,9 @@
                         "type": ["string", "null"],
                         "enum": ["died", "slaughtered"]
                       },
-                      "herdId": { "type": ["string", "null"] }
+                      "herdId": { "type": ["string", "null"] },
+                      "color": { "type": ["string", "null"] },
+                      "notes": { "type": ["string", "null"] }
                     },
                     "required": [
                       "id",
@@ -32698,7 +33355,9 @@
                       "fatherId",
                       "dateOfDeath",
                       "deathReason",
-                      "herdId"
+                      "herdId",
+                      "color",
+                      "notes"
                     ],
                     "additionalProperties": false
                   },
@@ -32761,7 +33420,9 @@
                         "type": ["string", "null"],
                         "enum": ["died", "slaughtered"]
                       },
-                      "herdId": { "type": ["string", "null"] }
+                      "herdId": { "type": ["string", "null"] },
+                      "color": { "type": ["string", "null"] },
+                      "notes": { "type": ["string", "null"] }
                     },
                     "required": [
                       "id",
@@ -32778,7 +33439,9 @@
                       "fatherId",
                       "dateOfDeath",
                       "deathReason",
-                      "herdId"
+                      "herdId",
+                      "color",
+                      "notes"
                     ],
                     "additionalProperties": false
                   },
@@ -32841,7 +33504,9 @@
                       "type": ["string", "null"],
                       "enum": ["died", "slaughtered"]
                     },
-                    "herdId": { "type": ["string", "null"] }
+                    "herdId": { "type": ["string", "null"] },
+                    "color": { "type": ["string", "null"] },
+                    "notes": { "type": ["string", "null"] }
                   },
                   "required": [
                     "id",
@@ -32858,7 +33523,9 @@
                     "fatherId",
                     "dateOfDeath",
                     "deathReason",
-                    "herdId"
+                    "herdId",
+                    "color",
+                    "notes"
                   ],
                   "additionalProperties": false
                 }
@@ -32919,7 +33586,9 @@
                       "type": ["string", "null"],
                       "enum": ["died", "slaughtered"]
                     },
-                    "herdId": { "type": ["string", "null"] }
+                    "herdId": { "type": ["string", "null"] },
+                    "color": { "type": ["string", "null"] },
+                    "notes": { "type": ["string", "null"] }
                   },
                   "required": [
                     "id",
@@ -32936,7 +33605,9 @@
                     "fatherId",
                     "dateOfDeath",
                     "deathReason",
-                    "herdId"
+                    "herdId",
+                    "color",
+                    "notes"
                   ],
                   "additionalProperties": false
                 }
@@ -33139,6 +33810,8 @@
               "dateOfDeath",
               "deathReason",
               "herdId",
+              "color",
+              "notes",
               "mother",
               "father",
               "childrenAsMother",
@@ -33209,7 +33882,9 @@
                 "type": ["string", "null"],
                 "enum": ["died", "slaughtered"]
               },
-              "herdId": { "type": ["string", "null"] }
+              "herdId": { "type": ["string", "null"] },
+              "color": { "type": ["string", "null"] },
+              "notes": { "type": ["string", "null"] }
             },
             "required": [
               "id",
@@ -33226,7 +33901,9 @@
               "fatherId",
               "dateOfDeath",
               "deathReason",
-              "herdId"
+              "herdId",
+              "color",
+              "notes"
             ],
             "additionalProperties": false
           }
@@ -33271,6 +33948,8 @@
             "enum": ["died", "slaughtered"]
           },
           "herdId": { "type": ["string", "null"] },
+          "color": { "type": ["string", "null"] },
+          "notes": { "type": ["string", "null"] },
           "herdEffectiveDate": {
             "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
             "type": ["string", "null"],
@@ -33357,7 +34036,9 @@
                       "type": ["string", "null"],
                       "enum": ["died", "slaughtered"]
                     },
-                    "herdId": { "type": ["string", "null"] }
+                    "herdId": { "type": ["string", "null"] },
+                    "color": { "type": ["string", "null"] },
+                    "notes": { "type": ["string", "null"] }
                   },
                   "required": [
                     "id",
@@ -33374,7 +34055,9 @@
                     "fatherId",
                     "dateOfDeath",
                     "deathReason",
-                    "herdId"
+                    "herdId",
+                    "color",
+                    "notes"
                   ],
                   "additionalProperties": false
                 }
@@ -33965,6 +34648,624 @@
         "required": ["data"],
         "additionalProperties": false
       },
+      "GetV1AnimalsByIdAnimalIdWeightsPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "farmId": { "type": "string" },
+                    "animalId": { "type": "string" },
+                    "date": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "weightKg": { "type": "number" },
+                    "notes": { "type": ["string", "null"] },
+                    "createdAt": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "createdBy": { "type": ["string", "null"] }
+                  },
+                  "required": [
+                    "id",
+                    "farmId",
+                    "animalId",
+                    "date",
+                    "weightKg",
+                    "notes",
+                    "createdAt",
+                    "createdBy"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["result"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1AnimalsByIdAnimalIdWeightsPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "animalId": { "type": "string" },
+              "date": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "weightKg": { "type": "number" },
+              "notes": { "type": ["string", "null"] },
+              "createdAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "createdBy": { "type": ["string", "null"] }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "animalId",
+              "date",
+              "weightKg",
+              "notes",
+              "createdAt",
+              "createdBy"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1AnimalsByIdAnimalIdWeightsRequestBody": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+            }
+          },
+          "weightKg": { "type": "number", "exclusiveMinimum": 0 },
+          "notes": { "type": ["string", "null"] }
+        },
+        "required": ["date", "weightKg"]
+      },
+      "GetV1AnimalsByIdAnimalIdHeatsPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "farmId": { "type": "string" },
+                    "animalId": { "type": "string" },
+                    "date": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "mated": { "type": "boolean" },
+                    "sireId": { "type": ["string", "null"] },
+                    "sireName": { "type": ["string", "null"] },
+                    "notes": { "type": ["string", "null"] },
+                    "createdAt": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "createdBy": { "type": ["string", "null"] },
+                    "expectedBirthDate": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": ["string", "null"],
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "conceptionFailed": { "type": "boolean" }
+                  },
+                  "required": [
+                    "id",
+                    "farmId",
+                    "animalId",
+                    "date",
+                    "mated",
+                    "sireId",
+                    "sireName",
+                    "notes",
+                    "createdAt",
+                    "createdBy"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["result"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1AnimalsByIdAnimalIdHeatsPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "animalId": { "type": "string" },
+              "date": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "mated": { "type": "boolean" },
+              "sireId": { "type": ["string", "null"] },
+              "sireName": { "type": ["string", "null"] },
+              "notes": { "type": ["string", "null"] },
+              "createdAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "createdBy": { "type": ["string", "null"] }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "animalId",
+              "date",
+              "mated",
+              "sireId",
+              "sireName",
+              "notes",
+              "createdAt",
+              "createdBy"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1AnimalsByIdAnimalIdHeatsRequestBody": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+            }
+          },
+          "mated": { "type": "boolean" },
+          "sireId": { "type": ["string", "null"] },
+          "sireName": { "type": ["string", "null"] },
+          "notes": { "type": ["string", "null"] }
+        },
+        "required": ["date"]
+      },
+      "PatchV1AnimalsWeightsByIdWeightIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "animalId": { "type": "string" },
+              "date": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "weightKg": { "type": "number" },
+              "notes": { "type": ["string", "null"] },
+              "createdAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "createdBy": { "type": ["string", "null"] }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "animalId",
+              "date",
+              "weightKg",
+              "notes",
+              "createdAt",
+              "createdBy"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1AnimalsWeightsByIdWeightIdRequestBody": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+            }
+          },
+          "weightKg": { "type": "number", "exclusiveMinimum": 0 },
+          "notes": { "type": ["string", "null"] }
+        },
+        "required": []
+      },
+      "DeleteV1AnimalsWeightsByIdWeightIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1AnimalsHeatsByIdHeatIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "animalId": { "type": "string" },
+              "date": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "mated": { "type": "boolean" },
+              "sireId": { "type": ["string", "null"] },
+              "sireName": { "type": ["string", "null"] },
+              "notes": { "type": ["string", "null"] },
+              "createdAt": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "createdBy": { "type": ["string", "null"] }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "animalId",
+              "date",
+              "mated",
+              "sireId",
+              "sireName",
+              "notes",
+              "createdAt",
+              "createdBy"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1AnimalsHeatsByIdHeatIdRequestBody": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+            }
+          },
+          "mated": { "type": "boolean" },
+          "sireId": { "type": ["string", "null"] },
+          "sireName": { "type": ["string", "null"] },
+          "notes": { "type": ["string", "null"] }
+        },
+        "required": []
+      },
+      "DeleteV1AnimalsHeatsByIdHeatIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "GetV1AnimalsBreedingCalendarPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "farmId": { "type": "string" },
+                    "animalId": { "type": "string" },
+                    "date": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "mated": { "type": "boolean" },
+                    "sireId": { "type": ["string", "null"] },
+                    "sireName": { "type": ["string", "null"] },
+                    "notes": { "type": ["string", "null"] },
+                    "createdAt": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "createdBy": { "type": ["string", "null"] },
+                    "expectedBirthDate": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": ["string", "null"],
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "conceptionFailed": { "type": "boolean" },
+                    "animal": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "string" },
+                        "name": { "type": "string" },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "goat",
+                            "sheep",
+                            "cow",
+                            "horse",
+                            "donkey",
+                            "pig",
+                            "deer"
+                          ]
+                        },
+                        "earTagNumber": { "type": ["string", "null"] }
+                      },
+                      "required": ["id", "name", "type", "earTagNumber"],
+                      "additionalProperties": false
+                    },
+                    "sire": {
+                      "type": ["object", "null"],
+                      "properties": {
+                        "id": { "type": "string" },
+                        "name": { "type": "string" }
+                      },
+                      "required": ["id", "name"],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "farmId",
+                    "animalId",
+                    "date",
+                    "mated",
+                    "sireId",
+                    "sireName",
+                    "notes",
+                    "createdAt",
+                    "createdBy",
+                    "expectedBirthDate",
+                    "conceptionFailed",
+                    "animal",
+                    "sire"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["result"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "GetV1AnimalsBreedingCalendarGestationSettingsPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "animalType": {
+                      "type": "string",
+                      "enum": [
+                        "goat",
+                        "sheep",
+                        "cow",
+                        "horse",
+                        "donkey",
+                        "pig",
+                        "deer"
+                      ]
+                    },
+                    "gestationDays": { "type": "number" },
+                    "isDefault": { "type": "boolean" }
+                  },
+                  "required": ["animalType", "gestationDays", "isDefault"],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["result"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PutV1AnimalsBreedingCalendarGestationSettingsPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "animalType": {
+                      "type": "string",
+                      "enum": [
+                        "goat",
+                        "sheep",
+                        "cow",
+                        "horse",
+                        "donkey",
+                        "pig",
+                        "deer"
+                      ]
+                    },
+                    "gestationDays": { "type": "number" },
+                    "isDefault": { "type": "boolean" }
+                  },
+                  "required": ["animalType", "gestationDays", "isDefault"],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["result"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PutV1AnimalsBreedingCalendarGestationSettingsRequestBody": {
+        "type": "object",
+        "properties": {
+          "settings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "animalType": {
+                  "type": "string",
+                  "enum": [
+                    "goat",
+                    "sheep",
+                    "cow",
+                    "horse",
+                    "donkey",
+                    "pig",
+                    "deer"
+                  ]
+                },
+                "gestationDays": {
+                  "type": ["integer", "null"],
+                  "minimum": 1,
+                  "maximum": 500
+                }
+              },
+              "required": ["animalType", "gestationDays"]
+            }
+          }
+        },
+        "required": ["settings"]
+      },
       "GetV1AnimalsJournalByIdEntryIdPositiveResponse": {
         "type": "object",
         "properties": {
@@ -34329,7 +35630,9 @@
                       "type": ["string", "null"],
                       "enum": ["died", "slaughtered"]
                     },
-                    "herdId": { "type": ["string", "null"] }
+                    "herdId": { "type": ["string", "null"] },
+                    "color": { "type": ["string", "null"] },
+                    "notes": { "type": ["string", "null"] }
                   },
                   "required": [
                     "id",
@@ -34346,7 +35649,9 @@
                     "fatherId",
                     "dateOfDeath",
                     "deathReason",
-                    "herdId"
+                    "herdId",
+                    "color",
+                    "notes"
                   ],
                   "additionalProperties": false
                 }
@@ -34498,7 +35803,9 @@
                             "type": ["string", "null"],
                             "enum": ["died", "slaughtered"]
                           },
-                          "herdId": { "type": ["string", "null"] }
+                          "herdId": { "type": ["string", "null"] },
+                          "color": { "type": ["string", "null"] },
+                          "notes": { "type": ["string", "null"] }
                         },
                         "required": [
                           "id",
@@ -34515,7 +35822,9 @@
                           "fatherId",
                           "dateOfDeath",
                           "deathReason",
-                          "herdId"
+                          "herdId",
+                          "color",
+                          "notes"
                         ],
                         "additionalProperties": false
                       }
@@ -34824,7 +36133,9 @@
                       "type": ["string", "null"],
                       "enum": ["died", "slaughtered"]
                     },
-                    "herdId": { "type": ["string", "null"] }
+                    "herdId": { "type": ["string", "null"] },
+                    "color": { "type": ["string", "null"] },
+                    "notes": { "type": ["string", "null"] }
                   },
                   "required": [
                     "id",
@@ -34841,7 +36152,9 @@
                     "fatherId",
                     "dateOfDeath",
                     "deathReason",
-                    "herdId"
+                    "herdId",
+                    "color",
+                    "notes"
                   ],
                   "additionalProperties": false
                 }
@@ -35590,7 +36903,9 @@
                           "type": ["string", "null"],
                           "enum": ["died", "slaughtered"]
                         },
-                        "herdId": { "type": ["string", "null"] }
+                        "herdId": { "type": ["string", "null"] },
+                        "color": { "type": ["string", "null"] },
+                        "notes": { "type": ["string", "null"] }
                       },
                       "required": [
                         "id",
@@ -35607,7 +36922,9 @@
                         "fatherId",
                         "dateOfDeath",
                         "deathReason",
-                        "herdId"
+                        "herdId",
+                        "color",
+                        "notes"
                       ],
                       "additionalProperties": false
                     }
@@ -35706,6 +37023,18 @@
               }
             },
             "required": ["deletedCount", "skippedAssigned"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "DeleteV1EarTagsByIdEarTagIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
             "additionalProperties": false
           }
         },
@@ -38460,6 +39789,23 @@
                       }
                     },
                     "createdBy": { "type": ["string", "null"] },
+                    "animalDoses": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "animalId": { "type": "string" },
+                          "animalWeightKg": { "type": ["number", "null"] },
+                          "effectiveDoseValue": { "type": ["number", "null"] }
+                        },
+                        "required": [
+                          "animalId",
+                          "animalWeightKg",
+                          "effectiveDoseValue"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
                     "animals": {
                       "type": "array",
                       "items": {
@@ -38522,7 +39868,9 @@
                             "type": ["string", "null"],
                             "enum": ["died", "slaughtered"]
                           },
-                          "herdId": { "type": ["string", "null"] }
+                          "herdId": { "type": ["string", "null"] },
+                          "color": { "type": ["string", "null"] },
+                          "notes": { "type": ["string", "null"] }
                         },
                         "required": [
                           "id",
@@ -38539,7 +39887,9 @@
                           "fatherId",
                           "dateOfDeath",
                           "deathReason",
-                          "herdId"
+                          "herdId",
+                          "color",
+                          "notes"
                         ],
                         "additionalProperties": false
                       }
@@ -38863,7 +40213,35 @@
           "drugReceivedFrom": { "type": ["string", "null"] },
           "isAntibiotic": { "default": false, "type": "boolean" },
           "criticalAntibiotic": { "type": "boolean" },
-          "antibiogramAvailable": { "type": "boolean" }
+          "antibiogramAvailable": { "type": "boolean" },
+          "animalWeights": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "animalId": { "type": "string" },
+                "weightKg": {
+                  "type": ["number", "null"],
+                  "exclusiveMinimum": 0
+                }
+              },
+              "required": ["animalId", "weightKg"]
+            }
+          },
+          "effectiveDoseOverrides": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "animalId": { "type": "string" },
+                "effectiveDoseValue": {
+                  "type": ["number", "null"],
+                  "minimum": 0
+                }
+              },
+              "required": ["animalId", "effectiveDoseValue"]
+            }
+          }
         },
         "required": [
           "animalIds",
@@ -38957,6 +40335,23 @@
                 }
               },
               "createdBy": { "type": ["string", "null"] },
+              "animalDoses": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "animalId": { "type": "string" },
+                    "animalWeightKg": { "type": ["number", "null"] },
+                    "effectiveDoseValue": { "type": ["number", "null"] }
+                  },
+                  "required": [
+                    "animalId",
+                    "animalWeightKg",
+                    "effectiveDoseValue"
+                  ],
+                  "additionalProperties": false
+                }
+              },
               "animals": {
                 "type": "array",
                 "items": {
@@ -39013,7 +40408,9 @@
                       "type": ["string", "null"],
                       "enum": ["died", "slaughtered"]
                     },
-                    "herdId": { "type": ["string", "null"] }
+                    "herdId": { "type": ["string", "null"] },
+                    "color": { "type": ["string", "null"] },
+                    "notes": { "type": ["string", "null"] }
                   },
                   "required": [
                     "id",
@@ -39030,7 +40427,9 @@
                     "fatherId",
                     "dateOfDeath",
                     "deathReason",
-                    "herdId"
+                    "herdId",
+                    "color",
+                    "notes"
                   ],
                   "additionalProperties": false
                 }
@@ -39346,9 +40745,37 @@
           },
           "drugDoseValue": { "type": ["number", "null"] },
           "drugReceivedFrom": { "type": ["string", "null"] },
-          "isAntibiotic": { "default": false, "type": "boolean" },
+          "isAntibiotic": { "type": "boolean" },
           "criticalAntibiotic": { "type": "boolean" },
-          "antibiogramAvailable": { "type": "boolean" }
+          "antibiogramAvailable": { "type": "boolean" },
+          "animalWeights": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "animalId": { "type": "string" },
+                "weightKg": {
+                  "type": ["number", "null"],
+                  "exclusiveMinimum": 0
+                }
+              },
+              "required": ["animalId", "weightKg"]
+            }
+          },
+          "effectiveDoseOverrides": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "animalId": { "type": "string" },
+                "effectiveDoseValue": {
+                  "type": ["number", "null"],
+                  "minimum": 0
+                }
+              },
+              "required": ["animalId", "effectiveDoseValue"]
+            }
+          }
         },
         "required": []
       },
@@ -39622,7 +41049,9 @@
                           "type": ["string", "null"],
                           "enum": ["died", "slaughtered"]
                         },
-                        "herdId": { "type": ["string", "null"] }
+                        "herdId": { "type": ["string", "null"] },
+                        "color": { "type": ["string", "null"] },
+                        "notes": { "type": ["string", "null"] }
                       },
                       "required": [
                         "id",
@@ -39638,7 +41067,9 @@
                         "fatherId",
                         "dateOfDeath",
                         "deathReason",
-                        "herdId"
+                        "herdId",
+                        "color",
+                        "notes"
                       ],
                       "additionalProperties": false
                     },
@@ -39900,7 +41331,9 @@
                           "type": ["string", "null"],
                           "enum": ["died", "slaughtered"]
                         },
-                        "herdId": { "type": ["string", "null"] }
+                        "herdId": { "type": ["string", "null"] },
+                        "color": { "type": ["string", "null"] },
+                        "notes": { "type": ["string", "null"] }
                       },
                       "required": [
                         "id",
@@ -39916,7 +41349,9 @@
                         "fatherId",
                         "dateOfDeath",
                         "deathReason",
-                        "herdId"
+                        "herdId",
+                        "color",
+                        "notes"
                       ],
                       "additionalProperties": false
                     },
@@ -42090,7 +43525,9 @@
                           "type": ["string", "null"],
                           "enum": ["died", "slaughtered"]
                         },
-                        "herdId": { "type": ["string", "null"] }
+                        "herdId": { "type": ["string", "null"] },
+                        "color": { "type": ["string", "null"] },
+                        "notes": { "type": ["string", "null"] }
                       },
                       "required": [
                         "id",
@@ -42106,7 +43543,9 @@
                         "fatherId",
                         "dateOfDeath",
                         "deathReason",
-                        "herdId"
+                        "herdId",
+                        "color",
+                        "notes"
                       ],
                       "additionalProperties": false
                     },
@@ -42401,7 +43840,9 @@
                     "type": ["string", "null"],
                     "enum": ["died", "slaughtered"]
                   },
-                  "herdId": { "type": ["string", "null"] }
+                  "herdId": { "type": ["string", "null"] },
+                  "color": { "type": ["string", "null"] },
+                  "notes": { "type": ["string", "null"] }
                 },
                 "required": [
                   "id",
@@ -42417,7 +43858,9 @@
                   "fatherId",
                   "dateOfDeath",
                   "deathReason",
-                  "herdId"
+                  "herdId",
+                  "color",
+                  "notes"
                 ],
                 "additionalProperties": false
               },

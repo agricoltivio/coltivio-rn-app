@@ -15,6 +15,8 @@ type BottomDrawerModalProps = {
   containerStyle?: ViewStyle;
   children: React.ReactNode;
   snapPoints?: (string | number)[];
+  // Fits the content like the default drawer, but scrolls once the content is taller than this (px)
+  maxContentHeight?: number;
   onChange?: (index: number) => void;
 };
 
@@ -28,6 +30,7 @@ export const BottomDrawerModal = forwardRef<
       containerStyle,
       backdropDisappearsOnIndex = -1,
       snapPoints,
+      maxContentHeight,
       onChange,
       children,
     },
@@ -49,6 +52,9 @@ export const BottomDrawerModal = forwardRef<
         onDismiss={onClose}
         onChange={onChange}
         {...(snapPoints ? { snapPoints, enableDynamicSizing: false } : {})}
+        {...(maxContentHeight
+          ? { maxDynamicContentSize: maxContentHeight }
+          : {})}
         backdropComponent={(props) => (
           <BottomSheetBackdrop
             disappearsOnIndex={backdropDisappearsOnIndex}
@@ -56,7 +62,7 @@ export const BottomDrawerModal = forwardRef<
           />
         )}
       >
-        {snapPoints ? (
+        {snapPoints || maxContentHeight ? (
           <BottomSheetScrollView contentContainerStyle={contentStyle}>
             {children}
           </BottomSheetScrollView>

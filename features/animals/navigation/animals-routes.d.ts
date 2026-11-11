@@ -16,6 +16,7 @@ export type AnimalsStackParamList = {
   AnimalsSettings: undefined;
   EarTags: undefined;
   CreateEarTagRange: undefined;
+  DeleteEarTagRange: undefined;
   Animals: undefined;
   AnimalDetails: { animalId: string };
   CreateAnimal:
@@ -23,6 +24,8 @@ export type AnimalsStackParamList = {
         motherId?: string;
         fatherId?: string;
         herdId?: string;
+        // Preselects the type, e.g. the parent's type when adding offspring
+        animalType?: AnimalType;
       }
     | undefined;
   EditAnimal: { animalId?: string; herdId?: string };
@@ -114,12 +117,18 @@ export type AnimalsStackParamList = {
   ParasiteSamples: { animalIds: string[] };
   ParasiteAnimalSample: { animalId: string };
   AnimalParasiteHistory: { animalId: string };
+  AnimalWeightForm: { animalId: string; weightId?: string };
+  AnimalHeatForm: { animalId: string; heatId?: string };
+  BreedingCalendar: undefined;
+  BreedingSettings: undefined;
 };
 
 export type AnimalsHubScreenProps = StackScreenProps<"AnimalsHub">;
 export type EarTagsScreenProps = StackScreenProps<"EarTags">;
 export type CreateEarTagRangeScreenProps =
   StackScreenProps<"CreateEarTagRange">;
+export type DeleteEarTagRangeScreenProps =
+  StackScreenProps<"DeleteEarTagRange">;
 export type AnimalsScreenProps = StackScreenProps<"Animals">;
 export type AnimalDetailsScreenProps = StackScreenProps<"AnimalDetails">;
 export type CreateAnimalScreenProps = StackScreenProps<"CreateAnimal">;
@@ -179,3 +188,7 @@ export type AnimalParasiteHistoryScreenProps =
 export type ParasiteSamplesScreenProps = StackScreenProps<"ParasiteSamples">;
 export type ParasiteAnimalSampleScreenProps =
   StackScreenProps<"ParasiteAnimalSample">;
+export type AnimalWeightFormScreenProps = StackScreenProps<"AnimalWeightForm">;
+export type AnimalHeatFormScreenProps = StackScreenProps<"AnimalHeatForm">;
+export type BreedingCalendarScreenProps = StackScreenProps<"BreedingCalendar">;
+export type BreedingSettingsScreenProps = StackScreenProps<"BreedingSettings">;

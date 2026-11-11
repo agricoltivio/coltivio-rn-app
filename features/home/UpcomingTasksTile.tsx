@@ -199,9 +199,10 @@ function UpcomingTasksSettingsSheet({
   const { localSettings, updateLocalSettings } = useLocalSettings();
 
   return (
-    // Portal so the sheet isn't clipped by the home screen card it's declared in
+    // Portal so the sheet isn't clipped by the home screen card it's declared in.
+    // The key stops PortalHost (unkeyed list) from handing its state to another portal.
     <Portal>
-      <BottomSheetModalProvider>
+      <BottomSheetModalProvider key="upcoming-tasks-settings">
         <BottomDrawerModal ref={ref}>
           <H2>{t("home.upcoming_tasks_settings.title")}</H2>
           <View style={{ marginTop: theme.spacing.m, gap: theme.spacing.m }}>

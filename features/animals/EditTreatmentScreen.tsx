@@ -13,7 +13,7 @@ import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
 import { addDays } from "date-fns";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/features/user/users.hooks";
@@ -21,6 +21,13 @@ import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
 import { useDrugsQuery } from "./drugs.hooks";
+import {
+  computeEffectiveDoseValue,
+  TreatmentAnimalDoses,
+  TreatmentDoseAnimal,
+  TreatmentEffectiveDoseInputs,
+  treatmentEffectiveDoseOverrides,
+} from "./TreatmentAnimalDoses";
 import { EditTreatmentScreenProps } from "./navigation/animals-routes";
 import {
   useDeleteTreatmentMutation,
@@ -135,6 +142,11 @@ export function EditTreatmentScreen({
 
   const selectedDrugId = useWatch({ control, name: "drugId" });
   const endDate = useWatch({ control, name: "endDate" });
+  const drugDoseValue = useWatch({ control, name: "drugDoseValue" });
+  const drugDoseUnit = useWatch({ control, name: "drugDoseUnit" });
+  const drugDosePerUnit = useWatch({ control, name: "drugDosePerUnit" });
+  const [effectiveDoseInputs, setEffectiveDoseInputs] =
+    useState<TreatmentEffectiveDoseInputs>({});
 
   const selectedAnimals = useMemo(() => {
     return animals?.filter((a) => selectedAnimalIds.includes(a.id)) ?? [];
@@ -300,6 +312,31 @@ export function EditTreatmentScreen({
     return null;
   }
 
+  // Weight stored at treatment time (else the latest weight entry); an amount that differs from
+  // stored dose × weight was entered by hand and stays until it is changed
+  const doseAnimals: TreatmentDoseAnimal[] = selectedAnimals.map((animal) => {
+    const storedDose = treatment?.animalDoses?.find(
+      (animalDose) => animalDose.animalId === animal.id,
+    );
+    const weightKg =
+      storedDose?.animalWeightKg ?? animal.latestWeight?.weightKg ?? null;
+    const storedEffectiveDoseValue = storedDose?.effectiveDoseValue ?? null;
+    const isManual =
+      storedEffectiveDoseValue != null &&
+      storedEffectiveDoseValue !==
+        computeEffectiveDoseValue(
+          storedDose?.animalWeightKg ?? null,
+          treatment?.drugDoseValue,
+        );
+    return {
+      id: animal.id,
+      name: animal.name,
+      earTagNumber: animal.earTag?.number ?? null,
+      weightKg,
+      manualEffectiveDoseValue: isManual ? storedEffectiveDoseValue : null,
+    };
+  });
+
   function onSubmit(data: TreatmentFormValues) {
     updateTreatmentMutation.mutate({
       id: treatmentId,
@@ -325,6 +362,10 @@ export function EditTreatmentScreen({
       isAntibiotic: data.isAntibiotic,
       criticalAntibiotic: data.criticalAntibiotic,
       antibiogramAvailable: data.antibiogramAvailable,
+      effectiveDoseOverrides:
+        data.drugDosePerUnit === "kg"
+          ? treatmentEffectiveDoseOverrides(doseAnimals, effectiveDoseInputs)
+          : undefined,
     });
   }
 
@@ -363,7 +404,7 @@ export function EditTreatmentScreen({
   const canSave =
     selectedAnimalIds.length > 0 &&
     drugValidation.valid &&
-    (isDirty || animalsChanged);
+    (isDirty || animalsChanged || Object.keys(effectiveDoseInputs).length > 0);
 
   return (
     <ContentView
@@ -584,6 +625,18 @@ export function EditTreatmentScreen({
                 />
               </View>
             </View>
+          )}
+
+          {selectedDrug && drugValidation.valid && drugDosePerUnit === "kg" && (
+            <TreatmentAnimalDoses
+              animals={doseAnimals}
+              doseValue={drugDoseValue}
+              doseUnitLabel={
+                drugDoseUnit ? t(`drugs.dose_units.${drugDoseUnit}`) : ""
+              }
+              effectiveDoseInputs={effectiveDoseInputs}
+              onEffectiveDoseInputsChange={setEffectiveDoseInputs}
+            />
           )}
 
           <RHTextInput

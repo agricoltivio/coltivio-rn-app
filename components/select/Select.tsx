@@ -18,6 +18,8 @@ import { DropdownProps } from "react-native-element-dropdown/lib/typescript/comp
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import styled, { useTheme } from "styled-components/native";
 
+export type SelectItem = { label: string; value: string; description?: string };
+
 export type SelectProps = {
   label?: string;
   value?: string;
@@ -28,7 +30,8 @@ export type SelectProps = {
   onClear?: () => void;
   onBlur?: () => void;
   onFocus?: () => void;
-  data: { label: string; value: string }[];
+  // description is an optional secondary line, shown and searchable in the search modal
+  data: SelectItem[];
   style?: any;
   error?: string;
   enableSearch?: boolean;
@@ -61,7 +64,11 @@ export function Select({
   const selectedLabel = data.find((item) => item.value === value)?.label;
 
   const fuse = useMemo(
-    () => new Fuse(data, { minMatchCharLength: 1, keys: ["label"] }),
+    () =>
+      new Fuse(data, {
+        minMatchCharLength: 1,
+        keys: ["label", "description"],
+      }),
     [data],
   );
 
@@ -80,7 +87,7 @@ export function Select({
   );
 
   const renderItem = useCallback(
-    ({ item }: { item: { label: string; value: string } }) => (
+    ({ item }: { item: SelectItem }) => (
       <ListItem onPress={() => handleItemSelect(item.value)}>
         <ListItem.Content>
           <ListItem.Title
@@ -91,6 +98,9 @@ export function Select({
           >
             {item.label}
           </ListItem.Title>
+          {item.description && (
+            <ListItem.Body>{item.description}</ListItem.Body>
+          )}
         </ListItem.Content>
         <ListItem.Chevron />
       </ListItem>

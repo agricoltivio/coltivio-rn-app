@@ -9,7 +9,13 @@ import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Subtitle } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
-import { useMemo } from "react";
+import { useId, useMemo, useRef } from "react";
+import { BottomDrawerModal } from "@/components/bottom-drawer/BottomDrawerModal";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
+import { Portal } from "@gorhom/portal";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -20,8 +26,10 @@ import {
 } from "./animals.hooks";
 import { usePermissions } from "@/features/user/users.hooks";
 import { AnimalDetailsScreenProps } from "./navigation/animals-routes";
-import { formatLocalizedDate } from "@/utils/date";
+import { formatLocalizedDate, parseDateOnly } from "@/utils/date";
 import { Switch } from "@/components/inputs/Switch";
+import { useAnimalHeatsQuery, useAnimalWeightsQuery } from "./breeding.hooks";
+import { AnimalWeightChartDrawer } from "./AnimalWeightField";
 
 export function AnimalDetailsScreen({
   route,
@@ -33,12 +41,25 @@ export function AnimalDetailsScreen({
   const { canWrite } = usePermissions();
   const animalId = route.params.animalId;
   const { animal } = useAnimalByIdQuery(animalId);
+  const { weights } = useAnimalWeightsQuery(animalId);
+  const isFemale = animal?.sex === "female";
+  const { heats } = useAnimalHeatsQuery(animalId, isFemale);
 
   const deleteAnimalMutation = useDeleteAnimalMutation(() =>
     navigation.goBack(),
   );
 
   const removeChildMutation = useUpdateAnimalMutation();
+
+  // Drawer to choose between creating a new offspring and selecting existing animals.
+  // Rendered through a Portal at the app root (like DatePicker) so it covers the whole
+  // window: a sheet provider inside the screen measures the screen's container, which
+  // went stale after another screen was pushed on top.
+  const addOffspringSheetRef = useRef<BottomSheetModal>(null);
+  // Unique per screen instance: the same animal can be open twice in the stack
+  const addOffspringPortalKey = useId();
+  // Drawer with the weight timeline chart
+  const weightChartSheetRef = useRef<BottomSheetModal>(null);
   const updateRegisteredMutation = useUpdateAnimalMutation();
 
   // Combine children from both mother and father relationships
@@ -188,6 +209,52 @@ export function AnimalDetailsScreen({
               </ListItem.Body>
             </ListItem.Content>
           </ListItem>
+          <ListItem style={{ paddingVertical: 5 }}>
+            <ListItem.Content>
+              <ListItem.Title>{t("breeding.weight")}</ListItem.Title>
+              <ListItem.Body>
+                {animal.latestWeight
+                  ? `${animal.latestWeight.weightKg} kg (${formatLocalizedDate(
+                      parseDateOnly(animal.latestWeight.date),
+                      locale,
+                    )})`
+                  : t("breeding.no_weight")}
+              </ListItem.Body>
+            </ListItem.Content>
+            {(weights?.length ?? 0) >= 2 && (
+              // ListItem stretches its children to the row height, centering keeps the button square
+              <View
+                style={{
+                  justifyContent: "center",
+                  paddingRight: theme.spacing.m,
+                }}
+              >
+                <MaterialCommunityIconButton
+                  type="accent"
+                  icon="chart-line"
+                  iconSize={20}
+                  color={theme.colors.primary}
+                  onPress={() => weightChartSheetRef.current?.present()}
+                />
+              </View>
+            )}
+          </ListItem>
+          {animal.color && (
+            <ListItem style={{ paddingVertical: 5 }}>
+              <ListItem.Content>
+                <ListItem.Title>{t("animals.color")}</ListItem.Title>
+                <ListItem.Body>{animal.color}</ListItem.Body>
+              </ListItem.Content>
+            </ListItem>
+          )}
+          {animal.notes && (
+            <ListItem style={{ paddingVertical: 5 }}>
+              <ListItem.Content>
+                <ListItem.Title>{t("animals.notes")}</ListItem.Title>
+                <ListItem.Body>{animal.notes}</ListItem.Body>
+              </ListItem.Content>
+            </ListItem>
+          )}
           {animal.customOutdoorJournalCategories.length > 0 && (
             <ListItem
               style={{ paddingVertical: 5 }}
@@ -386,6 +453,98 @@ export function AnimalDetailsScreen({
           </TouchableOpacity>
         </View>
 
+        {/* Heats and matings, the basis of the breeding calendar */}
+        {isFemale && (
+          <View style={{ marginTop: theme.spacing.l }}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <H3>{t("breeding.heats")}</H3>
+              {canWrite("animals") && (
+                <IonIconButton
+                  icon="add"
+                  color="black"
+                  iconSize={25}
+                  type="accent"
+                  onPress={() =>
+                    navigation.navigate("AnimalHeatForm", { animalId })
+                  }
+                />
+              )}
+            </View>
+            {!heats || heats.length === 0 ? (
+              <Subtitle style={{ marginTop: theme.spacing.s }}>
+                {t("breeding.no_heats")}
+              </Subtitle>
+            ) : (
+              <View
+                style={{
+                  marginTop: theme.spacing.s,
+                  borderRadius: 10,
+                  overflow: "hidden",
+                  backgroundColor: theme.colors.white,
+                }}
+              >
+                {heats.map((heat) => {
+                  // Computed on the server, also knows when a later heat showed the mating didn't work
+                  const expectedBirthDate = heat.expectedBirthDate
+                    ? parseDateOnly(heat.expectedBirthDate)
+                    : null;
+                  return (
+                    <ListItem
+                      key={heat.id}
+                      style={{ paddingVertical: 5 }}
+                      onPress={
+                        canWrite("animals")
+                          ? () =>
+                              navigation.navigate("AnimalHeatForm", {
+                                animalId,
+                                heatId: heat.id,
+                              })
+                          : undefined
+                      }
+                    >
+                      <ListItem.Content>
+                        <ListItem.Title>
+                          {formatLocalizedDate(
+                            parseDateOnly(heat.date),
+                            locale,
+                          )}
+                          {` · ${t(`breeding.heat_by_type.${animal.type}`)}`}
+                          {heat.mated ? ` · ${t("breeding.mated")}` : ""}
+                        </ListItem.Title>
+                        {expectedBirthDate && (
+                          <ListItem.Body>
+                            {t("breeding.expected_birth")}:{" "}
+                            {formatLocalizedDate(expectedBirthDate, locale)}
+                          </ListItem.Body>
+                        )}
+                        {heat.conceptionFailed && (
+                          <ListItem.Body>
+                            {t("breeding.conception_failed")}
+                          </ListItem.Body>
+                        )}
+                      </ListItem.Content>
+                      {heat.mated && (
+                        <Ionicons
+                          name="checkmark-circle"
+                          size={20}
+                          color={theme.colors.primary}
+                        />
+                      )}
+                      {canWrite("animals") && <ListItem.Chevron />}
+                    </ListItem>
+                  );
+                })}
+              </View>
+            )}
+          </View>
+        )}
+
         {/* Children */}
         <View style={{ marginTop: theme.spacing.l }}>
           <View
@@ -402,12 +561,7 @@ export function AnimalDetailsScreen({
                 color="black"
                 iconSize={25}
                 type="accent"
-                onPress={() =>
-                  navigation.navigate("SelectChildren", {
-                    animalId,
-                    sex: animal.sex,
-                  })
-                }
+                onPress={() => addOffspringSheetRef.current?.present()}
               />
             )}
           </View>
@@ -522,6 +676,63 @@ export function AnimalDetailsScreen({
           )}
         </View>
       </ScrollView>
+
+      {/* Add offspring: create a new animal with this parent preset, or link existing ones */}
+      <Portal>
+        {/* PortalHost renders portals as an unkeyed list, so without a key React can hand
+            this sheet's state to another portal (e.g. a DatePicker) when portals are
+            added or removed */}
+        <BottomSheetModalProvider key={addOffspringPortalKey}>
+          <BottomDrawerModal ref={addOffspringSheetRef}>
+            <View style={{ gap: theme.spacing.s }}>
+              <H3>{t("animals.add_offspring")}</H3>
+              <View>
+                <ListItem
+                  onPress={() => {
+                    addOffspringSheetRef.current?.dismiss();
+                    navigation.navigate("CreateAnimal", {
+                      animalType: animal.type,
+                      ...(animal.sex === "female"
+                        ? { motherId: animal.id }
+                        : { fatherId: animal.id }),
+                    });
+                  }}
+                >
+                  <ListItem.Content>
+                    <ListItem.Title>
+                      {t("animals.create_new_offspring")}
+                    </ListItem.Title>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+                <ListItem
+                  onPress={() => {
+                    addOffspringSheetRef.current?.dismiss();
+                    navigation.navigate("SelectChildren", {
+                      animalId,
+                      sex: animal.sex,
+                    });
+                  }}
+                >
+                  <ListItem.Content>
+                    <ListItem.Title>
+                      {t("animals.select_existing_offspring")}
+                    </ListItem.Title>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+              </View>
+            </View>
+          </BottomDrawerModal>
+        </BottomSheetModalProvider>
+      </Portal>
+
+      <AnimalWeightChartDrawer
+        sheetRef={weightChartSheetRef}
+        animalId={animalId}
+        // View only, weights are edited in the edit form like the other fields
+        canEdit={false}
+      />
     </ContentView>
   );
 }

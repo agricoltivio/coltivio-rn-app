@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { AnimalsHubScreen } from "../AnimalsHubScreen";
 import { EarTagsScreen } from "../EarTagsScreen";
 import { CreateEarTagRangeScreen } from "../CreateEarTagRangeScreen";
+import { DeleteEarTagRangeScreen } from "../DeleteEarTagRangeScreen";
 import { AnimalsScreen } from "../AnimalsScreen";
 import { AnimalDetailsScreen } from "../AnimalDetailsScreen";
 import { CreateAnimalScreen } from "../CreateAnimalScreen";
@@ -49,6 +50,10 @@ import { ParasiteCheckFormScreen } from "../ParasiteCheckFormScreen";
 import { ParasiteSamplesScreen } from "../ParasiteSamplesScreen";
 import { ParasiteAnimalSampleScreen } from "../ParasiteAnimalSampleScreen";
 import { AnimalParasiteHistoryScreen } from "../AnimalParasiteHistoryScreen";
+import { AnimalWeightFormScreen } from "../AnimalWeightFormScreen";
+import { AnimalHeatFormScreen } from "../AnimalHeatFormScreen";
+import { BreedingCalendarScreen } from "../BreedingCalendarScreen";
+import { BreedingSettingsScreen } from "../BreedingSettingsScreen";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import { DefaultTheme } from "styled-components/native";
@@ -94,6 +99,12 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
       name="CreateEarTagRange"
       options={{ title: "" }}
       component={CreateEarTagRangeScreen}
+    />,
+    <Stack.Screen
+      key="delete-ear-tag-range"
+      name="DeleteEarTagRange"
+      options={{ title: "" }}
+      component={DeleteEarTagRangeScreen}
     />,
     <Stack.Screen
       key="animals"
@@ -425,6 +436,43 @@ export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
       name="AnimalParasiteHistory"
       options={{ title: "" }}
       component={AnimalParasiteHistoryScreen}
+    />,
+    <Stack.Screen
+      key="animal-weight-form"
+      name="AnimalWeightForm"
+      options={{ title: "" }}
+      component={AnimalWeightFormScreen}
+    />,
+    <Stack.Screen
+      key="animal-heat-form"
+      name="AnimalHeatForm"
+      options={{ title: "" }}
+      component={AnimalHeatFormScreen}
+    />,
+    <Stack.Screen
+      key="breeding-calendar"
+      name="BreedingCalendar"
+      options={{
+        title: "",
+        headerRight() {
+          return (
+            <IonIconButton
+              icon="settings-outline"
+              type="ghost"
+              iconSize={26}
+              color={theme.colors.primary}
+              onPress={() => navigation.navigate("BreedingSettings")}
+            />
+          );
+        },
+      }}
+      component={BreedingCalendarScreen}
+    />,
+    <Stack.Screen
+      key="breeding-settings"
+      name="BreedingSettings"
+      options={{ title: "" }}
+      component={BreedingSettingsScreen}
     />,
   ];
 }

@@ -1,6 +1,7 @@
 import { OutdoorScheduleCreateInput } from "@/api/herds.api";
 import { BottomDrawerModal } from "@/components/bottom-drawer/BottomDrawerModal";
-import { DatePicker } from "@/components/datepicker/DatePicker";
+import { InlineDatePicker } from "@/components/datepicker/InlineDatePicker";
+import { Portal } from "@gorhom/portal";
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
@@ -14,7 +15,7 @@ import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Subtitle } from "@/theme/Typography";
 import { toLocalDateString } from "@/utils/date";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { formatOutdoorScheduleSummary } from "./outdoor-schedule-summary";
 import { usePermissions } from "@/features/user/users.hooks";
@@ -91,7 +92,8 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
   const [membershipDateModalVisible, setMembershipDateModalVisible] =
     useState(false);
   const membershipDateSheetRef = useRef<BottomSheetModal>(null);
-  const membershipDateSnapPoints = useMemo(() => [320], []);
+  // Unique per screen instance: the same herd can be open twice in the stack
+  const membershipDatePortalKey = useId();
   useEffect(() => {
     if (membershipDateModalVisible) {
       membershipDateSheetRef.current?.present();
@@ -544,73 +546,73 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
         </View>
       </ScrollView>
 
-      {/* Since when do the added/removed animals count? */}
-      <BottomSheetModalProvider>
-        <BottomDrawerModal
-          ref={membershipDateSheetRef}
-          snapPoints={membershipDateSnapPoints}
-          onClose={() => setMembershipDateModalVisible(false)}
-        >
-          <H3>{t("animals.herd_changes_apply_from")}</H3>
-          <Subtitle style={{ marginTop: theme.spacing.xs }}>
-            {t("animals.herd_changes_summary", {
-              added: addedAnimalCount,
-              removed: removedAnimalCount,
-            })}
-          </Subtitle>
-          <View style={{ marginTop: theme.spacing.m }}>
-            <DatePicker
-              mode="date"
-              locale={locale}
-              label={t("animals.herd_changes_apply_from")}
-              date={membershipChangeDate}
-              clearable={false}
-              minimumDate={earliestEffectiveDate ?? undefined}
-              error={
-                membershipChangeDateTooEarly
-                  ? t("animals.herd_membership_date_too_early")
-                  : earliestEffectiveDateFailed
-                    ? t("common.unknown_error")
-                    : undefined
-              }
-              onConfirm={(date) => {
-                if (date) setMembershipChangeDate(date);
-              }}
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              gap: theme.spacing.s,
-              marginTop: theme.spacing.l,
-            }}
+      {/* Since when do the added/removed animals count? Rendered through a Portal at the
+            app root so it covers the whole window, including the bottom action container.
+            The key stops PortalHost (unkeyed list) from handing its state to another portal. */}
+      <Portal>
+        <BottomSheetModalProvider key={membershipDatePortalKey}>
+          <BottomDrawerModal
+            ref={membershipDateSheetRef}
+            // Fits the content, so it grows when the inline calendar opens
+            onClose={() => setMembershipDateModalVisible(false)}
           >
-            <Button
-              style={{ flexGrow: 1 }}
-              type="accent"
-              title={t("buttons.cancel")}
-              onPress={() => setMembershipDateModalVisible(false)}
-            />
-            <Button
-              style={{ flexGrow: 1 }}
-              title={t("buttons.save")}
-              disabled={
-                updateHerdMutation.isPending ||
-                earliestEffectiveDateLoading ||
-                earliestEffectiveDateFailed ||
-                membershipChangeDateTooEarly
-              }
-              loading={
-                updateHerdMutation.isPending || earliestEffectiveDateLoading
-              }
-              onPress={() => {
-                setMembershipDateModalVisible(false);
-                saveHerd(membershipChangeDate);
+            <H3>{t("animals.herd_changes_apply_from")}</H3>
+            <Subtitle style={{ marginTop: theme.spacing.xs }}>
+              {t("animals.herd_changes_summary", {
+                added: addedAnimalCount,
+                removed: removedAnimalCount,
+              })}
+            </Subtitle>
+            <View style={{ marginTop: theme.spacing.m }}>
+              {/* Inline: the regular DatePicker opens its own drawer, which can't stack on this one */}
+              <InlineDatePicker
+                label={t("animals.herd_changes_apply_from")}
+                date={membershipChangeDate}
+                minimumDate={earliestEffectiveDate ?? undefined}
+                error={
+                  membershipChangeDateTooEarly
+                    ? t("animals.herd_membership_date_too_early")
+                    : earliestEffectiveDateFailed
+                      ? t("common.unknown_error")
+                      : undefined
+                }
+                onChange={setMembershipChangeDate}
+              />
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                gap: theme.spacing.s,
+                marginTop: theme.spacing.l,
               }}
-            />
-          </View>
-        </BottomDrawerModal>
-      </BottomSheetModalProvider>
+            >
+              <Button
+                style={{ flexGrow: 1 }}
+                type="accent"
+                title={t("buttons.cancel")}
+                onPress={() => setMembershipDateModalVisible(false)}
+              />
+              <Button
+                style={{ flexGrow: 1 }}
+                title={t("buttons.save")}
+                disabled={
+                  updateHerdMutation.isPending ||
+                  earliestEffectiveDateLoading ||
+                  earliestEffectiveDateFailed ||
+                  membershipChangeDateTooEarly
+                }
+                loading={
+                  updateHerdMutation.isPending || earliestEffectiveDateLoading
+                }
+                onPress={() => {
+                  setMembershipDateModalVisible(false);
+                  saveHerd(membershipChangeDate);
+                }}
+              />
+            </View>
+          </BottomDrawerModal>
+        </BottomSheetModalProvider>
+      </Portal>
     </ContentView>
   );
 }

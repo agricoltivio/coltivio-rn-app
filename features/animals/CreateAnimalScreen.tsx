@@ -3,13 +3,15 @@ import { Alert } from "react-native";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2 } from "@/theme/Typography";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { useCreateAnimalMutation } from "./animals.hooks";
 import { AnimalForm, AnimalFormValues } from "./AnimalForm";
+import { DrawerWeight } from "./AnimalWeightDrawer";
+import { useCreateAnimalWeightMutation } from "./breeding.hooks";
 import { CreateAnimalScreenProps } from "./navigation/animals-routes";
 
 export function CreateAnimalScreen({
@@ -20,6 +22,7 @@ export function CreateAnimalScreen({
   const motherId = route.params?.motherId;
   const fatherId = route.params?.fatherId;
   const herdId = route.params?.herdId;
+  const animalType = route.params?.animalType;
 
   const {
     control,
@@ -31,6 +34,7 @@ export function CreateAnimalScreen({
       dateOfBirth: new Date(),
       registered: false,
       usage: "other",
+      type: animalType,
       motherId: motherId ?? undefined,
       fatherId: fatherId ?? undefined,
       herdId: herdId ?? undefined,
@@ -44,8 +48,28 @@ export function CreateAnimalScreen({
     }
   }, [herdId, setValue]);
 
+  // Weight entered before the animal exists, saved as its first weight entry after creating it
+  const [pendingWeight, setPendingWeight] = useState<DrawerWeight | null>(null);
+  const createWeightMutation = useCreateAnimalWeightMutation();
+
   const createAnimalMutation = useCreateAnimalMutation(
-    () => navigation.goBack(),
+    (animal) => {
+      if (!pendingWeight) {
+        navigation.goBack();
+        return;
+      }
+      createWeightMutation.mutate(
+        {
+          animalId: animal.id,
+          input: {
+            date: toLocalDateString(pendingWeight.date),
+            weightKg: pendingWeight.weightKg,
+          },
+        },
+        // The animal exists either way, a failed weight can be added again on the animal
+        { onSettled: () => navigation.goBack() },
+      );
+    },
     // A new animal has no herd history to overlap, so any failure is unexpected
     () => Alert.alert(t("common.error"), t("common.unknown_error")),
   );
@@ -57,6 +81,8 @@ export function CreateAnimalScreen({
       dateOfDeath: data.dateOfDeath
         ? toLocalDateString(data.dateOfDeath)
         : undefined,
+      color: data.color?.trim() || null,
+      notes: data.notes?.trim() || null,
       herdEffectiveDate:
         data.herdId && data.herdEffectiveDate
           ? toLocalDateString(data.herdEffectiveDate)
@@ -72,8 +98,14 @@ export function CreateAnimalScreen({
           <Button
             title={t("buttons.save")}
             onPress={handleSubmit(onSubmit)}
-            disabled={!isDirty || createAnimalMutation.isPending}
-            loading={createAnimalMutation.isPending}
+            disabled={
+              !isDirty ||
+              createAnimalMutation.isPending ||
+              createWeightMutation.isPending
+            }
+            loading={
+              createAnimalMutation.isPending || createWeightMutation.isPending
+            }
           />
         </BottomActionContainer>
       }
@@ -88,6 +120,8 @@ export function CreateAnimalScreen({
           control={control}
           errors={errors}
           setValue={setValue}
+          currentWeight={pendingWeight}
+          onPendingWeightChange={setPendingWeight}
           onNavigateToCreateHerd={() =>
             navigation.navigate("CreateHerd", {
               previousScreen: "CreateAnimal",
