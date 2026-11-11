@@ -1,5 +1,6 @@
 import { NumberInput } from "@/components/inputs/NumberInput";
 import { Body, Subtitle } from "@/theme/Typography";
+import { formatLocalizedDate, parseDateOnly } from "@/utils/date";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -8,8 +9,13 @@ export type TreatmentDoseAnimal = {
   id: string;
   name: string;
   earTagNumber: string | null;
-  // Taken from the animal (stored treatment weight or latest weight entry), not editable here
+  // Stored treatment weight, else the latest weight entry on or before the start date (as on the server).
+  // Not editable here.
   weightKg: number | null;
+  // Date of the weight entry, null for a weight stored on the treatment
+  weightDate: string | null;
+  // The weight history is still loading, or failed to load
+  weightStatus: "ready" | "loading" | "error";
   // Amount entered by hand earlier, shown instead of the computed one until changed
   manualEffectiveDoseValue: number | null;
 };
@@ -28,13 +34,26 @@ export function computeEffectiveDoseValue(
 }
 
 // Overrides sent to the API: typed amounts and amounts entered by hand earlier.
-// Animals without either get the amount computed from dose and weight on the server.
+// Animals without either get the amount computed from dose and weight on the server. A cleared input
+// falls back to dose × weight: it is sent as that value, otherwise the server would keep a stored amount.
 export function treatmentEffectiveDoseOverrides(
   animals: TreatmentDoseAnimal[],
   effectiveDoseInputs: TreatmentEffectiveDoseInputs,
+  doseValue: number | string | null | undefined,
 ) {
   return animals.flatMap((animal) => {
     const typedInput = effectiveDoseInputs[animal.id];
+    if (typedInput !== undefined && typedInput.trim() === "") {
+      return [
+        {
+          animalId: animal.id,
+          effectiveDoseValue: computeEffectiveDoseValue(
+            animal.weightKg,
+            doseValue,
+          ),
+        },
+      ];
+    }
     if (typedInput !== undefined) {
       const effectiveDoseValue = parseFloat(typedInput);
       return [
@@ -73,7 +92,7 @@ export function TreatmentAnimalDoses({
   effectiveDoseInputs: TreatmentEffectiveDoseInputs;
   onEffectiveDoseInputsChange: (inputs: TreatmentEffectiveDoseInputs) => void;
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const theme = useTheme();
 
   if (animals.length === 0) return null;
@@ -90,9 +109,12 @@ export function TreatmentAnimalDoses({
     >
       <Subtitle>{t("breeding.weight_per_animal")}</Subtitle>
       {animals.map((animal) => {
+        const computedEffectiveDoseValue = computeEffectiveDoseValue(
+          animal.weightKg,
+          doseValue,
+        );
         const shownEffectiveDoseValue =
-          animal.manualEffectiveDoseValue ??
-          computeEffectiveDoseValue(animal.weightKg, doseValue);
+          animal.manualEffectiveDoseValue ?? computedEffectiveDoseValue;
         const effectiveDoseInput =
           effectiveDoseInputs[animal.id] ??
           (shownEffectiveDoseValue != null
@@ -114,9 +136,15 @@ export function TreatmentAnimalDoses({
             >
               <View style={{ flex: 1 }}>
                 <Body style={{ color: theme.colors.gray2 }}>
-                  {animal.weightKg != null
-                    ? `${animal.weightKg} kg`
-                    : t("breeding.no_weight")}
+                  {animal.weightStatus === "loading"
+                    ? "…"
+                    : animal.weightStatus === "error"
+                      ? t("breeding.weight_load_failed")
+                      : animal.weightKg == null
+                        ? t("breeding.no_weight")
+                        : animal.weightDate
+                          ? `${animal.weightKg} kg · ${formatLocalizedDate(parseDateOnly(animal.weightDate), i18n.language)}`
+                          : `${animal.weightKg} kg`}
                 </Body>
               </View>
               <View style={{ width: 140 }}>
@@ -125,7 +153,12 @@ export function TreatmentAnimalDoses({
                   label={`${t("breeding.amount")}${
                     doseUnitLabel ? ` (${doseUnitLabel})` : ""
                   }`}
-                  placeholder="0.0"
+                  // A cleared input falls back to dose × weight
+                  placeholder={
+                    computedEffectiveDoseValue != null
+                      ? String(computedEffectiveDoseValue)
+                      : "0.0"
+                  }
                   value={effectiveDoseInput}
                   onChangeText={(value) =>
                     onEffectiveDoseInputsChange({

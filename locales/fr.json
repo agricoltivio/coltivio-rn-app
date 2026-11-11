@@ -1241,7 +1241,8 @@
     "delete_range_preview_count_plural": "{{count}} boucles d'oreille seront supprimées",
     "delete_range_preview_none": "Aucune boucle d'oreille libre dans cette plage",
     "delete_range_kept": "Attribuées, conservées : {{numbers}}",
-    "delete_range_kept_more": "Attribuées, conservées : {{numbers}} et {{remaining}} autres"
+    "delete_range_kept_more": "Attribuées, conservées : {{numbers}} et {{remaining}} autres",
+    "delete_assigned_server": "La marque auriculaire a été attribuée à un animal entre-temps et ne peut pas être supprimée."
   },
   "map_draw_onboarding": {
     "welcome_heading": "Champs & Surfaces",
@@ -1968,7 +1969,7 @@
     "settings_title": "Réglages gestation",
     "no_entries_month": "Aucune entrée ce mois-ci",
     "reminders": "Rappels push",
-    "reminders_description": "Recevoir des rappels avant les mises bas prévues sur cet appareil.",
+    "reminders_description": "Rappels push avant les mises bas prévues. S'applique à ton compte sur tous les appareils ; si les notifications sont bloquées sur un appareil, les rappels sont désactivés.",
     "reminder_1": "Premier rappel",
     "reminder_2": "Deuxième rappel",
     "reminder_off": "Désactivé",
@@ -1977,7 +1978,7 @@
     "reminder_days_before_plural": "{{count}} jours avant",
     "gestation_days": "Durée de gestation (jours)",
     "gestation_description": "S'applique à toute l'exploitation. Un champ vide rétablit la valeur par défaut.",
-    "only_owner_can_edit": "Seuls les propriétaires de l'exploitation peuvent modifier la durée de gestation.",
+    "only_owner_can_edit": "Seule la direction de l'exploitation peut modifier la durée de gestation.",
     "default": "par défaut",
     "heat_by_type": {
       "goat": "En chaleur",
@@ -1992,6 +1993,10 @@
     "conception_failed": "Non fécondée",
     "sire_optional": "Père (facultatif)",
     "sire_external_optional": "Père externe (facultatif)",
-    "notes_optional": "Notes (facultatives)"
+    "notes_optional": "Notes (facultatives)",
+    "gestation_days_invalid": "Entre 1 et 500 jours",
+    "gestation_saved": "Durée de gestation enregistrée",
+    "permission_denied": "Les notifications sont désactivées dans les réglages du système. Autorise-les pour recevoir des rappels avant les mises bas.",
+    "weight_load_failed": "Le poids n'a pas pu être chargé"
   }
 }

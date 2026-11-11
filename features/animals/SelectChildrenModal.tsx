@@ -4,7 +4,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
-import { H2 } from "@/theme/Typography";
+import { Body, H2 } from "@/theme/Typography";
 import Fuse from "fuse.js";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -32,7 +32,10 @@ export function SelectChildrenModal({
     !!animal,
   );
   // Includes dead animals, so ancestor chains through dead animals are followed too
-  const { familyTree } = useFamilyTreeQuery(animal?.type ?? "cow", !!animal);
+  const { familyTree, isError: familyTreeFailed } = useFamilyTreeQuery(
+    animal?.type ?? "cow",
+    !!animal,
+  );
   const [searchText, setSearchText] = useState("");
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
@@ -171,6 +174,14 @@ export function SelectChildrenModal({
         data={searchResult}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
+        // Candidates are filtered with the family tree, without it the list stays empty
+        ListEmptyComponent={
+          familyTreeFailed ? (
+            <Body style={{ padding: theme.spacing.m }}>
+              {t("common.unknown_error")}
+            </Body>
+          ) : null
+        }
       />
     </ContentView>
   );

@@ -20,6 +20,7 @@ import { usePermissions } from "@/features/user/users.hooks";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
+import { useAnimalWeightsOnDay } from "./breeding.hooks";
 import { useDrugsQuery } from "./drugs.hooks";
 import {
   computeEffectiveDoseValue,
@@ -145,6 +146,7 @@ export function EditTreatmentScreen({
   const drugDoseValue = useWatch({ control, name: "drugDoseValue" });
   const drugDoseUnit = useWatch({ control, name: "drugDoseUnit" });
   const drugDosePerUnit = useWatch({ control, name: "drugDosePerUnit" });
+  const startDate = useWatch({ control, name: "startDate" });
   const [effectiveDoseInputs, setEffectiveDoseInputs] =
     useState<TreatmentEffectiveDoseInputs>({});
 
@@ -308,18 +310,41 @@ export function EditTreatmentScreen({
     return [{ label: t("forms.labels.none"), value: "" }, ...options];
   }, [drugs, t]);
 
+  // Weights the server would look up for animals without a stored weight (or all, if the start date changes)
+  const startDay = startDate ? toLocalDateString(startDate) : "";
+  const { weightOnDayByAnimalId, isError: weightsFailed } =
+    useAnimalWeightsOnDay(
+      selectedAnimalIds,
+      startDay,
+      drugDosePerUnit === "kg",
+    );
+
   if (!treatment) {
     return null;
   }
 
-  // Weight stored at treatment time (else the latest weight entry); an amount that differs from
-  // stored dose × weight was entered by hand and stays until it is changed
+  // Same rule as the server: the weight stored at treatment time as long as the start date is unchanged,
+  // else the latest weight entry on or before the start date. An amount that differs from stored
+  // dose × weight was entered by hand and stays until it is changed.
+  const startDateChanged = startDay !== treatment.startDate.slice(0, 10);
   const doseAnimals: TreatmentDoseAnimal[] = selectedAnimals.map((animal) => {
     const storedDose = treatment?.animalDoses?.find(
       (animalDose) => animalDose.animalId === animal.id,
     );
-    const weightKg =
-      storedDose?.animalWeightKg ?? animal.latestWeight?.weightKg ?? null;
+    const storedWeightKg = startDateChanged
+      ? null
+      : (storedDose?.animalWeightKg ?? null);
+    const weightOnDay = weightOnDayByAnimalId.get(animal.id) ?? null;
+    const weightKg = storedWeightKg ?? weightOnDay?.weightKg ?? null;
+    const weightDate =
+      storedWeightKg != null ? null : (weightOnDay?.date ?? null);
+    // A stored weight needs no lookup
+    const weightStatus: TreatmentDoseAnimal["weightStatus"] =
+      storedWeightKg != null || weightOnDayByAnimalId.has(animal.id)
+        ? "ready"
+        : weightsFailed
+          ? "error"
+          : "loading";
     const storedEffectiveDoseValue = storedDose?.effectiveDoseValue ?? null;
     const isManual =
       storedEffectiveDoseValue != null &&
@@ -333,6 +358,8 @@ export function EditTreatmentScreen({
       name: animal.name,
       earTagNumber: animal.earTag?.number ?? null,
       weightKg,
+      weightDate,
+      weightStatus,
       manualEffectiveDoseValue: isManual ? storedEffectiveDoseValue : null,
     };
   });
@@ -364,7 +391,11 @@ export function EditTreatmentScreen({
       antibiogramAvailable: data.antibiogramAvailable,
       effectiveDoseOverrides:
         data.drugDosePerUnit === "kg"
-          ? treatmentEffectiveDoseOverrides(doseAnimals, effectiveDoseInputs)
+          ? treatmentEffectiveDoseOverrides(
+              doseAnimals,
+              effectiveDoseInputs,
+              data.drugDoseValue,
+            )
           : undefined,
     });
   }

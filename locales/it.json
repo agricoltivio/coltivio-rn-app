@@ -1241,7 +1241,8 @@
     "delete_range_preview_count_plural": "{{count}} marche auricolari verranno eliminate",
     "delete_range_preview_none": "Nessuna marca auricolare libera in questo intervallo",
     "delete_range_kept": "Assegnate, restano: {{numbers}}",
-    "delete_range_kept_more": "Assegnate, restano: {{numbers}} e altre {{remaining}}"
+    "delete_range_kept_more": "Assegnate, restano: {{numbers}} e altre {{remaining}}",
+    "delete_assigned_server": "La marca auricolare è stata nel frattempo assegnata a un animale e non può essere eliminata."
   },
   "map_draw_onboarding": {
     "welcome_heading": "Campi e superfici",
@@ -1969,7 +1970,7 @@
     "settings_title": "Impostazioni gravidanza",
     "no_entries_month": "Nessuna voce in questo mese",
     "reminders": "Promemoria push",
-    "reminders_description": "Ricevi promemoria prima dei parti previsti su questo dispositivo.",
+    "reminders_description": "Promemoria push prima dei parti previsti. Vale per il tuo account su tutti i dispositivi; se le notifiche sono bloccate su un dispositivo, i promemoria vengono disattivati.",
     "reminder_1": "Primo promemoria",
     "reminder_2": "Secondo promemoria",
     "reminder_off": "Disattivato",
@@ -1978,7 +1979,7 @@
     "reminder_days_before_plural": "{{count}} giorni prima",
     "gestation_days": "Durata della gravidanza (giorni)",
     "gestation_description": "Vale per tutta l'azienda. Un campo vuoto ripristina il valore predefinito.",
-    "only_owner_can_edit": "Solo i titolari dell'azienda possono modificare la durata della gravidanza.",
+    "only_owner_can_edit": "Solo la direzione dell'azienda può modificare la durata della gravidanza.",
     "default": "predefinito",
     "heat_by_type": {
       "goat": "In calore",
@@ -1993,6 +1994,10 @@
     "conception_failed": "Non rimasta gravida",
     "sire_optional": "Padre (facoltativo)",
     "sire_external_optional": "Padre esterno (facoltativo)",
-    "notes_optional": "Note (facoltative)"
+    "notes_optional": "Note (facoltative)",
+    "gestation_days_invalid": "Tra 1 e 500 giorni",
+    "gestation_saved": "Durata della gravidanza salvata",
+    "permission_denied": "Le notifiche sono disattivate nelle impostazioni di sistema. Consentile lì per ricevere promemoria prima dei parti.",
+    "weight_load_failed": "Non è stato possibile caricare il peso"
   }
 }

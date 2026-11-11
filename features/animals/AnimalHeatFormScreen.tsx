@@ -2,6 +2,7 @@ import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
+import { resolveHeatOutcomes } from "./heat-outcomes";
 import { RHSwitch } from "@/components/inputs/RHSwitch";
 import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
@@ -13,7 +14,6 @@ import {
   parseDateOnly,
   toLocalDateString,
 } from "@/utils/date";
-import { addDays } from "date-fns";
 import { useMemo } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -96,10 +96,38 @@ export function AnimalHeatFormScreen({
   const gestationDays = gestationSettings?.find(
     (setting) => setting.animalType === animal?.type,
   )?.gestationDays;
-  const expectedBirthDate =
-    mated && heatDate && gestationDays
-      ? addDays(heatDate, gestationDays)
+  // Unchanged existing heats show the server's outcome, edited or new ones are previewed with the server's
+  // rule (heat-outcomes.ts) against the animal's other heats
+  const heatUnchanged =
+    existingHeat != null &&
+    heatDate != null &&
+    existingHeat.date.slice(0, 10) === toLocalDateString(heatDate) &&
+    existingHeat.mated === mated;
+  let expectedBirthDate: Date | null = null;
+  let conceptionFailed = false;
+  if (heatUnchanged) {
+    expectedBirthDate = existingHeat.expectedBirthDate
+      ? parseDateOnly(existingHeat.expectedBirthDate)
       : null;
+    conceptionFailed = existingHeat.conceptionFailed ?? false;
+  } else if (mated && heatDate && gestationDays) {
+    const previewHeatId = heatId ?? "preview";
+    const previewOutcome = resolveHeatOutcomes(
+      [
+        ...(heats ?? [])
+          .filter((heat) => heat.id !== heatId)
+          .map((heat) => ({
+            id: heat.id,
+            date: parseDateOnly(heat.date),
+            mated: heat.mated,
+          })),
+        { id: previewHeatId, date: heatDate, mated },
+      ],
+      gestationDays,
+    ).get(previewHeatId);
+    expectedBirthDate = previewOutcome?.expectedBirthDate ?? null;
+    conceptionFailed = previewOutcome?.conceptionFailed ?? false;
+  }
 
   const createMutation = useCreateAnimalHeatMutation(() => navigation.goBack());
   const updateMutation = useUpdateAnimalHeatMutation(() => navigation.goBack());
@@ -211,6 +239,16 @@ export function AnimalHeatFormScreen({
                 control={control}
                 label={t("breeding.sire_external_optional")}
               />
+              {conceptionFailed && (
+                <Body
+                  style={{
+                    marginTop: theme.spacing.s,
+                    color: theme.colors.gray2,
+                  }}
+                >
+                  {t("breeding.conception_failed")}
+                </Body>
+              )}
               {expectedBirthDate && (
                 <View
                   style={{

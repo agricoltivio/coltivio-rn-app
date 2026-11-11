@@ -134,6 +134,8 @@ export function AnimalWeightFormScreen({
             label={t("breeding.date")}
             mode="date"
             clearable={false}
+            // A weighing can't be in the future; it would become the latest weight and the dose prefill
+            maximumDate={new Date()}
             rules={{
               required: {
                 value: true,
