@@ -2,12 +2,18 @@ import { useApi } from "@/api/api";
 import {
   AnimalHeatCreateInput,
   AnimalHeatUpdateInput,
+  AnimalWeight,
   AnimalWeightCreateInput,
   AnimalWeightUpdateInput,
   GestationSettingsUpdateInput,
 } from "@/api/breeding.api";
 import { queryKeys } from "@/cache/query-keys";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueries,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 export function useAnimalWeightsQuery(animalId: string, enabled = true) {
   const api = useApi();
@@ -17,6 +23,36 @@ export function useAnimalWeightsQuery(animalId: string, enabled = true) {
     enabled,
   });
   return { weights: data, ...rest };
+}
+
+// Latest weight entry on or before the given day ("YYYY-MM-DD") per animal, the rule the server uses for
+// per-kg treatment doses. Animals whose weights are still loading are missing from the map, animals without
+// a weight on or before the day map to null.
+export function useAnimalWeightsOnDay(animalIds: string[], day: string) {
+  const api = useApi();
+  const weightQueries = useQueries({
+    queries: animalIds.map((animalId) => ({
+      queryKey: queryKeys.breeding.weights(animalId).queryKey,
+      queryFn: () => api.breeding.getWeights(animalId),
+    })),
+  });
+  const weightOnDayByAnimalId = new Map<string, AnimalWeight | null>();
+  animalIds.forEach((animalId, index) => {
+    const weights = weightQueries[index]?.data;
+    if (!weights) return;
+    // Sorted oldest first by date and creation, like the server's lookup in reverse
+    const weightsOnOrBefore = weights.filter(
+      (weight) => weight.date.slice(0, 10) <= day,
+    );
+    weightOnDayByAnimalId.set(
+      animalId,
+      weightsOnOrBefore[weightsOnOrBefore.length - 1] ?? null,
+    );
+  });
+  return {
+    weightOnDayByAnimalId,
+    isLoading: weightQueries.some((query) => query.isLoading),
+  };
 }
 
 // Weight changes affect the latest weight shown on animals and the treatment dose prefill

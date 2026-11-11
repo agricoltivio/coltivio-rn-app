@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
+import { useAnimalWeightsOnDay } from "./breeding.hooks";
 import { useDrugsQuery } from "./drugs.hooks";
 import { CreateTreatmentScreenProps } from "./navigation/animals-routes";
 import { useCreateTreatmentMutation } from "./treatments.hooks";
@@ -255,13 +256,22 @@ export function CreateTreatmentScreen({
 
   const [effectiveDoseInputs, setEffectiveDoseInputs] =
     useState<TreatmentEffectiveDoseInputs>({});
-  const doseAnimals: TreatmentDoseAnimal[] = selectedAnimals.map((animal) => ({
-    id: animal.id,
-    name: animal.name,
-    earTagNumber: animal.earTag?.number ?? null,
-    weightKg: animal.latestWeight?.weightKg ?? null,
-    manualEffectiveDoseValue: null,
-  }));
+  // Same weight the server uses: the latest entry on or before the start date, not the newest overall
+  const { weightOnDayByAnimalId } = useAnimalWeightsOnDay(
+    selectedAnimalIds,
+    toLocalDateString(treatmentDate),
+  );
+  const doseAnimals: TreatmentDoseAnimal[] = selectedAnimals.map((animal) => {
+    const weightOnDay = weightOnDayByAnimalId.get(animal.id) ?? null;
+    return {
+      id: animal.id,
+      name: animal.name,
+      earTagNumber: animal.earTag?.number ?? null,
+      weightKg: weightOnDay?.weightKg ?? null,
+      weightDate: weightOnDay?.date ?? null,
+      manualEffectiveDoseValue: null,
+    };
+  });
 
   function onSubmit(data: TreatmentFormValues) {
     createTreatmentMutation.mutate({
@@ -289,7 +299,11 @@ export function CreateTreatmentScreen({
       antibiogramAvailable: data.antibiogramAvailable,
       effectiveDoseOverrides:
         data.drugDosePerUnit === "kg"
-          ? treatmentEffectiveDoseOverrides(doseAnimals, effectiveDoseInputs)
+          ? treatmentEffectiveDoseOverrides(
+              doseAnimals,
+              effectiveDoseInputs,
+              data.drugDoseValue,
+            )
           : undefined,
     });
   }

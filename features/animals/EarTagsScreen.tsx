@@ -1,3 +1,4 @@
+import { ApiError } from "@/api/api";
 import { EarTag } from "@/api/earTags.api";
 import { Button } from "@/components/buttons/Button";
 import { FAB } from "@/components/buttons/FAB";
@@ -18,8 +19,14 @@ export function EarTagsScreen({ navigation }: EarTagsScreenProps) {
   const theme = useTheme();
   const { canWrite } = usePermissions();
   const { earTags } = useEarTagsQuery();
-  const deleteEarTagMutation = useDeleteEarTagMutation(() =>
-    Alert.alert(t("common.error"), t("common.unknown_error")),
+  // ear_tag_assigned: the tag was assigned to an animal in the meantime, e.g. on another device
+  const deleteEarTagMutation = useDeleteEarTagMutation((error) =>
+    Alert.alert(
+      t("common.error"),
+      error instanceof ApiError && error.code === "ear_tag_assigned"
+        ? t("ear_tags.delete_assigned_server")
+        : t("common.unknown_error"),
+    ),
   );
 
   // Only unassigned tags can be deleted, by id so any number format works

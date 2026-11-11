@@ -37,6 +37,9 @@ type HeatFormValues = {
   notes?: string;
 };
 
+// Heats and matings less than this many days apart belong to the same heat (as on the server)
+const SAME_HEAT_DAYS = 14;
+
 export function AnimalHeatFormScreen({
   route,
   navigation,
@@ -96,10 +99,40 @@ export function AnimalHeatFormScreen({
   const gestationDays = gestationSettings?.find(
     (setting) => setting.animalType === animal?.type,
   )?.gestationDays;
-  const expectedBirthDate =
-    mated && heatDate && gestationDays
-      ? addDays(heatDate, gestationDays)
+  // Same rule as the server (breeding.ts): a later mating less than SAME_HEAT_DAYS after this one carries the
+  // birth instead, any heat at least SAME_HEAT_DAYS later and before the birth means the mating failed.
+  // Unchanged existing heats show the server's outcome.
+  const heatUnchanged =
+    existingHeat != null &&
+    heatDate != null &&
+    existingHeat.date.slice(0, 10) === toLocalDateString(heatDate) &&
+    existingHeat.mated === mated;
+  let expectedBirthDate: Date | null = null;
+  let conceptionFailed = false;
+  if (heatUnchanged) {
+    expectedBirthDate = existingHeat.expectedBirthDate
+      ? parseDateOnly(existingHeat.expectedBirthDate)
       : null;
+    conceptionFailed = existingHeat.conceptionFailed ?? false;
+  } else if (mated && heatDate && gestationDays) {
+    const birthDate = addDays(heatDate, gestationDays);
+    const sameHeatEnd = addDays(heatDate, SAME_HEAT_DAYS);
+    const otherHeatDates = (heats ?? [])
+      .filter((heat) => heat.id !== heatId)
+      .map((heat) => ({ date: parseDateOnly(heat.date), mated: heat.mated }));
+    conceptionFailed = otherHeatDates.some(
+      (otherHeat) =>
+        otherHeat.date >= sameHeatEnd && otherHeat.date < birthDate,
+    );
+    const laterMatingInSameHeat = otherHeatDates.some(
+      (otherHeat) =>
+        otherHeat.mated &&
+        otherHeat.date > heatDate &&
+        otherHeat.date < sameHeatEnd,
+    );
+    expectedBirthDate =
+      conceptionFailed || laterMatingInSameHeat ? null : birthDate;
+  }
 
   const createMutation = useCreateAnimalHeatMutation(() => navigation.goBack());
   const updateMutation = useUpdateAnimalHeatMutation(() => navigation.goBack());
@@ -211,6 +244,16 @@ export function AnimalHeatFormScreen({
                 control={control}
                 label={t("breeding.sire_external_optional")}
               />
+              {conceptionFailed && (
+                <Body
+                  style={{
+                    marginTop: theme.spacing.s,
+                    color: theme.colors.gray2,
+                  }}
+                >
+                  {t("breeding.conception_failed")}
+                </Body>
+              )}
               {expectedBirthDate && (
                 <View
                   style={{

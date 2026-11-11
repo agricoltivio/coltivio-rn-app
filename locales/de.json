@@ -1241,7 +1241,8 @@
     "delete_range_preview_count_plural": "{{count}} Ohrmarken werden gelöscht",
     "delete_range_preview_none": "Keine freien Ohrmarken in diesem Bereich",
     "delete_range_kept": "Zugewiesen, bleiben bestehen: {{numbers}}",
-    "delete_range_kept_more": "Zugewiesen, bleiben bestehen: {{numbers}} und {{remaining}} weitere"
+    "delete_range_kept_more": "Zugewiesen, bleiben bestehen: {{numbers}} und {{remaining}} weitere",
+    "delete_assigned_server": "Die Ohrmarke wurde inzwischen einem Tier zugewiesen und kann nicht gelöscht werden."
   },
   "map_draw_onboarding": {
     "welcome_heading": "Schläge & Flächen",
@@ -1970,7 +1971,7 @@
     "settings_title": "Einstellungen Trächtigkeit",
     "no_entries_month": "Keine Einträge in diesem Monat",
     "reminders": "Push-Erinnerungen",
-    "reminders_description": "Erinnerungen vor erwarteten Geburten auf diesem Gerät erhalten.",
+    "reminders_description": "Erinnerungen vor erwarteten Geburten als Push-Mitteilung. Gilt für dein Konto auf allen Geräten; sind Mitteilungen auf einem Gerät blockiert, werden die Erinnerungen ausgeschaltet.",
     "reminder_1": "Erste Erinnerung",
     "reminder_2": "Zweite Erinnerung",
     "reminder_off": "Aus",
@@ -1979,7 +1980,7 @@
     "reminder_days_before_plural": "{{count}} Tage vorher",
     "gestation_days": "Trächtigkeitsdauer (Tage)",
     "gestation_description": "Gilt für den ganzen Betrieb. Leeres Feld setzt den Standardwert.",
-    "only_owner_can_edit": "Nur Betriebsinhaber können die Trächtigkeitsdauer ändern.",
+    "only_owner_can_edit": "Nur die Betriebsleitung kann die Trächtigkeitsdauer ändern.",
     "default": "Standard",
     "heat_by_type": {
       "goat": "Bockig",
@@ -1994,6 +1995,9 @@
     "conception_failed": "Nicht trächtig geworden",
     "sire_optional": "Vatertier (optional)",
     "sire_external_optional": "Externes Vatertier (optional)",
-    "notes_optional": "Notizen (optional)"
+    "notes_optional": "Notizen (optional)",
+    "gestation_days_invalid": "Zwischen 1 und 500 Tagen",
+    "gestation_saved": "Trächtigkeitsdauer gespeichert",
+    "permission_denied": "Mitteilungen sind in den Systemeinstellungen deaktiviert. Erlaube sie dort, damit du Erinnerungen vor Geburten erhältst."
   }
 }
