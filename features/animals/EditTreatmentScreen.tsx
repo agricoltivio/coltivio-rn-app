@@ -312,10 +312,12 @@ export function EditTreatmentScreen({
 
   // Weights the server would look up for animals without a stored weight (or all, if the start date changes)
   const startDay = startDate ? toLocalDateString(startDate) : "";
-  const { weightOnDayByAnimalId } = useAnimalWeightsOnDay(
-    selectedAnimalIds,
-    startDay,
-  );
+  const { weightOnDayByAnimalId, isError: weightsFailed } =
+    useAnimalWeightsOnDay(
+      selectedAnimalIds,
+      startDay,
+      drugDosePerUnit === "kg",
+    );
 
   if (!treatment) {
     return null;
@@ -336,6 +338,13 @@ export function EditTreatmentScreen({
     const weightKg = storedWeightKg ?? weightOnDay?.weightKg ?? null;
     const weightDate =
       storedWeightKg != null ? null : (weightOnDay?.date ?? null);
+    // A stored weight needs no lookup
+    const weightStatus: TreatmentDoseAnimal["weightStatus"] =
+      storedWeightKg != null || weightOnDayByAnimalId.has(animal.id)
+        ? "ready"
+        : weightsFailed
+          ? "error"
+          : "loading";
     const storedEffectiveDoseValue = storedDose?.effectiveDoseValue ?? null;
     const isManual =
       storedEffectiveDoseValue != null &&
@@ -350,6 +359,7 @@ export function EditTreatmentScreen({
       earTagNumber: animal.earTag?.number ?? null,
       weightKg,
       weightDate,
+      weightStatus,
       manualEffectiveDoseValue: isManual ? storedEffectiveDoseValue : null,
     };
   });

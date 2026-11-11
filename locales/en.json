@@ -1997,6 +1997,7 @@
     "notes_optional": "Notes (optional)",
     "gestation_days_invalid": "Between 1 and 500 days",
     "gestation_saved": "Gestation length saved",
-    "permission_denied": "Notifications are turned off in the system settings. Allow them there to get reminders before births."
+    "permission_denied": "Notifications are turned off in the system settings. Allow them there to get reminders before births.",
+    "weight_load_failed": "Weight couldn't be loaded"
   }
 }

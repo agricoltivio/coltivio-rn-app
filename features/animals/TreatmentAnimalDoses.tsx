@@ -14,6 +14,8 @@ export type TreatmentDoseAnimal = {
   weightKg: number | null;
   // Date of the weight entry, null for a weight stored on the treatment
   weightDate: string | null;
+  // The weight history is still loading, or failed to load
+  weightStatus: "ready" | "loading" | "error";
   // Amount entered by hand earlier, shown instead of the computed one until changed
   manualEffectiveDoseValue: number | null;
 };
@@ -134,11 +136,15 @@ export function TreatmentAnimalDoses({
             >
               <View style={{ flex: 1 }}>
                 <Body style={{ color: theme.colors.gray2 }}>
-                  {animal.weightKg == null
-                    ? t("breeding.no_weight")
-                    : animal.weightDate
-                      ? `${animal.weightKg} kg · ${formatLocalizedDate(parseDateOnly(animal.weightDate), i18n.language)}`
-                      : `${animal.weightKg} kg`}
+                  {animal.weightStatus === "loading"
+                    ? "…"
+                    : animal.weightStatus === "error"
+                      ? t("breeding.weight_load_failed")
+                      : animal.weightKg == null
+                        ? t("breeding.no_weight")
+                        : animal.weightDate
+                          ? `${animal.weightKg} kg · ${formatLocalizedDate(parseDateOnly(animal.weightDate), i18n.language)}`
+                          : `${animal.weightKg} kg`}
                 </Body>
               </View>
               <View style={{ width: 140 }}>

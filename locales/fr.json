@@ -1996,6 +1996,7 @@
     "notes_optional": "Notes (facultatives)",
     "gestation_days_invalid": "Entre 1 et 500 jours",
     "gestation_saved": "Durée de gestation enregistrée",
-    "permission_denied": "Les notifications sont désactivées dans les réglages du système. Autorise-les pour recevoir des rappels avant les mises bas."
+    "permission_denied": "Les notifications sont désactivées dans les réglages du système. Autorise-les pour recevoir des rappels avant les mises bas.",
+    "weight_load_failed": "Le poids n'a pas pu être chargé"
   }
 }

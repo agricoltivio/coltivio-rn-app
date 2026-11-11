@@ -1998,6 +1998,7 @@
     "notes_optional": "Notizen (optional)",
     "gestation_days_invalid": "Zwischen 1 und 500 Tagen",
     "gestation_saved": "Trächtigkeitsdauer gespeichert",
-    "permission_denied": "Mitteilungen sind in den Systemeinstellungen deaktiviert. Erlaube sie dort, damit du Erinnerungen vor Geburten erhältst."
+    "permission_denied": "Mitteilungen sind in den Systemeinstellungen deaktiviert. Erlaube sie dort, damit du Erinnerungen vor Geburten erhältst.",
+    "weight_load_failed": "Gewicht konnte nicht geladen werden"
   }
 }

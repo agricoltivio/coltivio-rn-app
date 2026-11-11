@@ -1997,6 +1997,7 @@
     "notes_optional": "Note (facoltative)",
     "gestation_days_invalid": "Tra 1 e 500 giorni",
     "gestation_saved": "Durata della gravidanza salvata",
-    "permission_denied": "Le notifiche sono disattivate nelle impostazioni di sistema. Consentile lì per ricevere promemoria prima dei parti."
+    "permission_denied": "Le notifiche sono disattivate nelle impostazioni di sistema. Consentile lì per ricevere promemoria prima dei parti.",
+    "weight_load_failed": "Non è stato possibile caricare il peso"
   }
 }

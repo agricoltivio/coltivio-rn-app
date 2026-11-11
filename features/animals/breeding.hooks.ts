@@ -27,13 +27,18 @@ export function useAnimalWeightsQuery(animalId: string, enabled = true) {
 
 // Latest weight entry on or before the given day ("YYYY-MM-DD") per animal, the rule the server uses for
 // per-kg treatment doses. Animals whose weights are still loading are missing from the map, animals without
-// a weight on or before the day map to null.
-export function useAnimalWeightsOnDay(animalIds: string[], day: string) {
+// a weight on or before the day map to null. One request per animal, so only enable it for per-kg doses.
+export function useAnimalWeightsOnDay(
+  animalIds: string[],
+  day: string,
+  enabled: boolean,
+) {
   const api = useApi();
   const weightQueries = useQueries({
     queries: animalIds.map((animalId) => ({
       queryKey: queryKeys.breeding.weights(animalId).queryKey,
       queryFn: () => api.breeding.getWeights(animalId),
+      enabled,
     })),
   });
   const weightOnDayByAnimalId = new Map<string, AnimalWeight | null>();
@@ -52,6 +57,7 @@ export function useAnimalWeightsOnDay(animalIds: string[], day: string) {
   return {
     weightOnDayByAnimalId,
     isLoading: weightQueries.some((query) => query.isLoading),
+    isError: weightQueries.some((query) => query.isError),
   };
 }
 

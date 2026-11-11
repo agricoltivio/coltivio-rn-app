@@ -257,18 +257,26 @@ export function CreateTreatmentScreen({
   const [effectiveDoseInputs, setEffectiveDoseInputs] =
     useState<TreatmentEffectiveDoseInputs>({});
   // Same weight the server uses: the latest entry on or before the start date, not the newest overall
-  const { weightOnDayByAnimalId } = useAnimalWeightsOnDay(
-    selectedAnimalIds,
-    toLocalDateString(treatmentDate),
-  );
+  const { weightOnDayByAnimalId, isError: weightsFailed } =
+    useAnimalWeightsOnDay(
+      selectedAnimalIds,
+      toLocalDateString(treatmentDate),
+      drugDosePerUnit === "kg",
+    );
   const doseAnimals: TreatmentDoseAnimal[] = selectedAnimals.map((animal) => {
     const weightOnDay = weightOnDayByAnimalId.get(animal.id) ?? null;
+    const weightLoaded = weightOnDayByAnimalId.has(animal.id);
     return {
       id: animal.id,
       name: animal.name,
       earTagNumber: animal.earTag?.number ?? null,
       weightKg: weightOnDay?.weightKg ?? null,
       weightDate: weightOnDay?.date ?? null,
+      weightStatus: weightLoaded
+        ? "ready"
+        : weightsFailed
+          ? "error"
+          : "loading",
       manualEffectiveDoseValue: null,
     };
   });

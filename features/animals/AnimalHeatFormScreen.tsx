@@ -2,6 +2,7 @@ import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { RHDatePicker } from "@/components/inputs/RHDatePicker";
+import { resolveHeatOutcomes } from "./heat-outcomes";
 import { RHSwitch } from "@/components/inputs/RHSwitch";
 import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
@@ -13,7 +14,6 @@ import {
   parseDateOnly,
   toLocalDateString,
 } from "@/utils/date";
-import { addDays } from "date-fns";
 import { useMemo } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -36,9 +36,6 @@ type HeatFormValues = {
   sireName?: string;
   notes?: string;
 };
-
-// Heats and matings less than this many days apart belong to the same heat (as on the server)
-const SAME_HEAT_DAYS = 14;
 
 export function AnimalHeatFormScreen({
   route,
@@ -99,9 +96,8 @@ export function AnimalHeatFormScreen({
   const gestationDays = gestationSettings?.find(
     (setting) => setting.animalType === animal?.type,
   )?.gestationDays;
-  // Same rule as the server (breeding.ts): a later mating less than SAME_HEAT_DAYS after this one carries the
-  // birth instead, any heat at least SAME_HEAT_DAYS later and before the birth means the mating failed.
-  // Unchanged existing heats show the server's outcome.
+  // Unchanged existing heats show the server's outcome, edited or new ones are previewed with the server's
+  // rule (heat-outcomes.ts) against the animal's other heats
   const heatUnchanged =
     existingHeat != null &&
     heatDate != null &&
@@ -115,23 +111,22 @@ export function AnimalHeatFormScreen({
       : null;
     conceptionFailed = existingHeat.conceptionFailed ?? false;
   } else if (mated && heatDate && gestationDays) {
-    const birthDate = addDays(heatDate, gestationDays);
-    const sameHeatEnd = addDays(heatDate, SAME_HEAT_DAYS);
-    const otherHeatDates = (heats ?? [])
-      .filter((heat) => heat.id !== heatId)
-      .map((heat) => ({ date: parseDateOnly(heat.date), mated: heat.mated }));
-    conceptionFailed = otherHeatDates.some(
-      (otherHeat) =>
-        otherHeat.date >= sameHeatEnd && otherHeat.date < birthDate,
-    );
-    const laterMatingInSameHeat = otherHeatDates.some(
-      (otherHeat) =>
-        otherHeat.mated &&
-        otherHeat.date > heatDate &&
-        otherHeat.date < sameHeatEnd,
-    );
-    expectedBirthDate =
-      conceptionFailed || laterMatingInSameHeat ? null : birthDate;
+    const previewHeatId = heatId ?? "preview";
+    const previewOutcome = resolveHeatOutcomes(
+      [
+        ...(heats ?? [])
+          .filter((heat) => heat.id !== heatId)
+          .map((heat) => ({
+            id: heat.id,
+            date: parseDateOnly(heat.date),
+            mated: heat.mated,
+          })),
+        { id: previewHeatId, date: heatDate, mated },
+      ],
+      gestationDays,
+    ).get(previewHeatId);
+    expectedBirthDate = previewOutcome?.expectedBirthDate ?? null;
+    conceptionFailed = previewOutcome?.conceptionFailed ?? false;
   }
 
   const createMutation = useCreateAnimalHeatMutation(() => navigation.goBack());
