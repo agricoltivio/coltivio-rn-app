@@ -270,7 +270,7 @@
       "nearby_error": "Farm numbers nearby could not be loaded. Please check your internet connection.",
       "not_found": "We could not find any farm number within {{radiusKm}} km of “{{address}}”.",
       "not_found_hint": "Search for your farm number above or go back and check the address.",
-      "not_found_cantons": "The cantons of Obwalden, Nidwalden and Basel-Stadt are not yet supported. There you can import your plots after creating the farm on a PC via the web app from the cantonal system (e.g. Acorda, LAWIS) or draw them on the map yourself."
+      "not_found_cantons": "The cantons of Obwalden and Nidwalden are not yet supported. There you can import your plots after creating the farm on a PC via the web app from the cantonal system (e.g. Acorda, LAWIS) or draw them on the map yourself."
     },
     "summary": {
       "heading": "All set!",

@@ -270,7 +270,7 @@
       "nearby_error": "Betriebsnummern in der Nähe konnten nicht geladen werden. Bitte prüfe deine Internetverbindung.",
       "not_found": "Im Umkreis von {{radiusKm}} km um «{{address}}» haben wir keine Betriebsnummer gefunden.",
       "not_found_hint": "Suche oben nach deiner Betriebsnummer oder gehe zurück und prüfe die Adresse.",
-      "not_found_cantons": "Die Kantone Obwalden, Nidwalden und Basel-Stadt werden noch nicht unterstützt. Dort kannst du deine Flächen nach der Hoferstellung am PC über die Web-App aus dem kantonalen System (z.B. Acorda, LAWIS) importieren oder in der Karte selbst einzeichnen."
+      "not_found_cantons": "Die Kantone Obwalden und Nidwalden werden noch nicht unterstützt. Dort kannst du deine Flächen nach der Hoferstellung am PC über die Web-App aus dem kantonalen System (z.B. Acorda, LAWIS) importieren oder in der Karte selbst einzeichnen."
     },
     "summary": {
       "heading": "Geschafft!",

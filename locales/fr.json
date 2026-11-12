@@ -270,7 +270,7 @@
       "nearby_error": "Les numéros d'exploitation à proximité n'ont pas pu être chargés. Veuillez vérifier votre connexion internet.",
       "not_found": "Nous n'avons trouvé aucun numéro d'exploitation dans un rayon de {{radiusKm}} km autour de « {{address}} ».",
       "not_found_hint": "Recherchez votre numéro d'exploitation ci-dessus ou revenez en arrière pour vérifier l'adresse.",
-      "not_found_cantons": "Les cantons d'Obwald, de Nidwald et de Bâle-Ville ne sont pas encore pris en charge. Tu peux y importer tes surfaces après la création de l'exploitation sur un PC via l'application web depuis le système cantonal (p. ex. Acorda, LAWIS) ou les dessiner toi-même sur la carte."
+      "not_found_cantons": "Les cantons d'Obwald et de Nidwald ne sont pas encore pris en charge. Tu peux y importer tes surfaces après la création de l'exploitation sur un PC via l'application web depuis le système cantonal (p. ex. Acorda, LAWIS) ou les dessiner toi-même sur la carte."
     },
     "summary": {
       "heading": "Tout est prêt !",
