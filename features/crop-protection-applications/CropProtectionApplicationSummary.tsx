@@ -8,8 +8,6 @@ import { StaticMapPreview } from "@/components/map/StaticMapPreview";
 import { ScrollView } from "@/components/views/ScrollView";
 import { Body, H2, H3 } from "@/theme/Typography";
 import { formatLocalizedDateTime } from "@/utils/date";
-import { type LngLat } from "@maplibre/maplibre-react-native";
-import * as turf from "@turf/turf";
 import React, { useMemo } from "react";
 import { View } from "react-native";
 import { Text } from "@/components/text/Text";
@@ -76,9 +74,6 @@ export function CropProtectionApplicationSummary({
   const theme = useTheme();
   const size = plots.reduce((acc, plot) => acc + plot.size, 0);
 
-  const centroid = turf.centroid(plots[0].geometry);
-  const center = centroid.geometry.coordinates as LngLat;
-
   const features = useMemo(
     (): GeoJSON.FeatureCollection => ({
       type: "FeatureCollection",
@@ -101,12 +96,7 @@ export function CropProtectionApplicationSummary({
       <H2>{t("crop_protection_applications.crop_protection")}</H2>
       <H3>{formattedDate}</H3>
       <View style={{ marginTop: theme.spacing.m }}>
-        <StaticMapPreview
-          center={center}
-          zoom={17}
-          features={features}
-          height={250}
-        />
+        <StaticMapPreview features={features} height={250} />
       </View>
       <Card style={{ marginTop: theme.spacing.m }}>
         <SummaryItem label={t("forms.labels.area")} value={`${size / 100}a`} />

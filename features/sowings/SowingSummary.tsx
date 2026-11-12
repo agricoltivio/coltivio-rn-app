@@ -6,8 +6,6 @@ import { Text } from "@/components/text/Text";
 import { ScrollView } from "@/components/views/ScrollView";
 import { Body, H2, H3 } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
-import { type LngLat } from "@maplibre/maplibre-react-native";
-import * as turf from "@turf/turf";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -68,9 +66,6 @@ export function SowingSummary({
     : sowingAreas.reduce((sum, area) => sum + area.amount, 0);
   const counterpart = computeCounterpart(enteredAmount, unit, size);
 
-  const [centerLng, centerLat] = turf.centroid(sowingAreas[0].geometry).geometry
-    .coordinates;
-  const center: LngLat = [centerLng, centerLat];
   const features = useMemo(
     (): GeoJSON.FeatureCollection => ({
       type: "FeatureCollection",
@@ -92,12 +87,7 @@ export function SowingSummary({
       <H2>{t("sowings.sowing")}</H2>
       <H3>{formattedDate}</H3>
       <View style={{ marginTop: theme.spacing.m }}>
-        <StaticMapPreview
-          center={center}
-          zoom={17}
-          features={features}
-          height={250}
-        />
+        <StaticMapPreview features={features} height={250} />
       </View>
       <Card style={{ marginTop: theme.spacing.m }}>
         {hidePlotList && (
