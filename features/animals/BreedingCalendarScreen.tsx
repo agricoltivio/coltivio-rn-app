@@ -217,6 +217,8 @@ export function BreedingCalendarScreen({
                     height: 44,
                     alignItems: "center",
                     justifyContent: "center",
+                    // Keeps the dots off the today/selected circle: 32 + 3 + 6 fits the 44 px cell
+                    gap: 3,
                   }}
                   onPress={() => setSelectedDay(isSelected ? null : day)}
                 >
