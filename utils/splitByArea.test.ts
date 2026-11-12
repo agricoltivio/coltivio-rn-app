@@ -14,6 +14,20 @@ describe("splitByArea", () => {
   it("splits equally when all sizes are 0", () => {
     expect(splitByArea([0, 0], 10, 2)).toEqual([5, 5]);
   });
+
+  it("splits each part relative to the total with three or more parts", () => {
+    // reported case: 5 loads on 99.5 a, 27.1 a and 27.5 a
+    expect(splitByArea([9950, 2710, 2750], 5, 2)).toEqual([3.23, 0.88, 0.89]);
+  });
+
+  it("never leaves a negative rest for the last part", () => {
+    const parts = splitByArea([1, 1, 1, 1, 1, 1], 3, 0);
+    expect(parts).toEqual([1, 1, 1, 0, 0, 0]);
+  });
+
+  it("gives the last part the decimal rest of a total with lower precision", () => {
+    expect(splitByArea([1, 1], 5.5, 0)).toEqual([3, 2.5]);
+  });
 });
 
 describe("validateDivision", () => {
