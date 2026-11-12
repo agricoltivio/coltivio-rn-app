@@ -52,8 +52,11 @@ const RING_WIDTH = 2;
 const DAY_CELL_HEIGHT = 44;
 // Opacity of the primary color filling a selected day
 const SELECTED_TINT_ALPHA = 0.2;
-// Horizontal movement before the month swipe takes over, and the distance that changes the month
-const MONTH_SWIPE_ACTIVATION = 20;
+// Horizontal movement before the month swipe takes over, the vertical movement that leaves the gesture to
+// the page scroll instead (larger, so a slightly diagonal swipe still changes the month), and the distance
+// that changes the month
+const MONTH_SWIPE_ACTIVATION = 12;
+const MONTH_SWIPE_VERTICAL_TOLERANCE = 40;
 const MONTH_SWIPE_DISTANCE = 50;
 // Duration of the slide out of the old month and of the slide in of the new one
 const MONTH_SLIDE_DURATION_MS = 180;
@@ -191,7 +194,10 @@ export function BreedingCalendarScreen({
   // horizontal movements activate it, so taps on days and the vertical scrolling of the screen keep working.
   const monthSwipeGesture = Gesture.Pan()
     .activeOffsetX([-MONTH_SWIPE_ACTIVATION, MONTH_SWIPE_ACTIVATION])
-    .failOffsetY([-MONTH_SWIPE_ACTIVATION, MONTH_SWIPE_ACTIVATION])
+    .failOffsetY([
+      -MONTH_SWIPE_VERTICAL_TOLERANCE,
+      MONTH_SWIPE_VERTICAL_TOLERANCE,
+    ])
     .onStart(() => {
       swipeStartOffset.value = rowOffset.value;
     })
