@@ -270,7 +270,7 @@
       "nearby_error": "Non è stato possibile caricare i codici azienda nelle vicinanze. Controlla la tua connessione internet.",
       "not_found": "Non abbiamo trovato alcun codice azienda entro {{radiusKm}} km da «{{address}}».",
       "not_found_hint": "Cerca il tuo codice azienda qui sopra oppure torna indietro e verifica l'indirizzo.",
-      "not_found_cantons": "I cantoni Obvaldo, Nidvaldo, Vaud e Basilea Città non sono ancora supportati. Lì puoi importare le tue superfici dopo la creazione dell'azienda su un PC tramite la web app dal sistema cantonale (ad es. Acorda, LAWIS) o disegnarle tu stesso sulla mappa."
+      "not_found_cantons": "I cantoni Obvaldo, Nidvaldo e Basilea Città non sono ancora supportati. Lì puoi importare le tue superfici dopo la creazione dell'azienda su un PC tramite la web app dal sistema cantonale (ad es. Acorda, LAWIS) o disegnarle tu stesso sulla mappa."
     },
     "summary": {
       "heading": "Tutto pronto!",
