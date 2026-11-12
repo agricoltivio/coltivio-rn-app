@@ -4,6 +4,7 @@ import { IonIconButton } from "@/components/buttons/IconButton";
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
+import { hexToRgba } from "@/theme/theme";
 import { Body, H2, H3, Subtitle } from "@/theme/Typography";
 import {
   formatLocalizedDate,
@@ -39,6 +40,8 @@ const WEEKDAY_COUNT = 7;
 // Day circle in the month grid and the width of each event color ring around the number
 const DAY_CIRCLE_SIZE = 36;
 const RING_WIDTH = 2;
+// Opacity of the primary color filling a selected day
+const SELECTED_TINT_ALPHA = 0.2;
 
 export function BreedingCalendarScreen({
   navigation,
@@ -225,7 +228,7 @@ export function BreedingCalendarScreen({
                   onPress={() => setSelectedDay(isSelected ? null : day)}
                 >
                   {/* One ring per event color around the day number, the first color outermost. Selected days
-                      are filled with the primary color inside the rings. Today gets a thin primary ring
+                      get a light primary tint inside the rings. Today gets a thin primary ring
                       without events, otherwise a bold primary number. */}
                   {dayColors.reduceRight<ReactNode>(
                     (inner, ringColor, ringIndex) => (
@@ -253,8 +256,9 @@ export function BreedingCalendarScreen({
                         borderRadius: DAY_CIRCLE_SIZE / 2,
                         alignItems: "center",
                         justifyContent: "center",
+                        // Light tint, so the colored rings stay readable around it
                         backgroundColor: isSelected
-                          ? theme.colors.primary
+                          ? hexToRgba(theme.colors.primary, SELECTED_TINT_ALPHA)
                           : "transparent",
                         borderWidth:
                           isToday && !isSelected && dayColors.length === 0
@@ -265,13 +269,16 @@ export function BreedingCalendarScreen({
                     >
                       <Body
                         style={{
-                          color: isSelected
-                            ? theme.colors.white
-                            : isToday && dayColors.length > 0
+                          // Selected: dark and bold on the tint. Today with events: bold primary, the rings
+                          // take the place of today's ring.
+                          color:
+                            isToday && dayColors.length > 0 && !isSelected
                               ? theme.colors.primary
                               : theme.colors.black,
                           fontWeight:
-                            isToday && dayColors.length > 0 ? "700" : undefined,
+                            isSelected || (isToday && dayColors.length > 0)
+                              ? "700"
+                              : undefined,
                         }}
                       >
                         {day.getDate()}
