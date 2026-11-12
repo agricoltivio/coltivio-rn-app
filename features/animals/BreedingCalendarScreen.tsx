@@ -23,6 +23,7 @@ import {
 import { type ReactNode, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { useTheme } from "styled-components/native";
 import { usePermissions } from "@/features/user/users.hooks";
 import { useBreedingCalendarQuery } from "./breeding.hooks";
@@ -42,6 +43,9 @@ const DAY_CIRCLE_SIZE = 36;
 const RING_WIDTH = 2;
 // Opacity of the primary color filling a selected day
 const SELECTED_TINT_ALPHA = 0.2;
+// Horizontal movement before the month swipe takes over, and the distance that changes the month
+const MONTH_SWIPE_ACTIVATION = 20;
+const MONTH_SWIPE_DISTANCE = 50;
 
 export function BreedingCalendarScreen({
   navigation,
@@ -145,6 +149,17 @@ export function BreedingCalendarScreen({
     setSelectedDay(null);
   }
 
+  // Swipe left for the next month, right for the previous one. Only clearly horizontal movements activate
+  // it, so taps on days and the vertical scrolling of the screen keep working.
+  const monthSwipeGesture = Gesture.Pan()
+    .runOnJS(true)
+    .activeOffsetX([-MONTH_SWIPE_ACTIVATION, MONTH_SWIPE_ACTIVATION])
+    .failOffsetY([-MONTH_SWIPE_ACTIVATION, MONTH_SWIPE_ACTIVATION])
+    .onEnd((event) => {
+      if (event.translationX <= -MONTH_SWIPE_DISTANCE) changeMonth(1);
+      else if (event.translationX >= MONTH_SWIPE_DISTANCE) changeMonth(-1);
+    });
+
   return (
     <ContentView headerVisible>
       <ScrollView
@@ -190,105 +205,121 @@ export function BreedingCalendarScreen({
             />
           </View>
 
-          <View style={{ flexDirection: "row", marginTop: theme.spacing.s }}>
-            {weekdayLabels.map((label, labelIndex) => (
-              <View key={labelIndex} style={{ flex: 1, alignItems: "center" }}>
-                <Body style={{ color: theme.colors.gray2, fontSize: 12 }}>
-                  {label}
-                </Body>
-              </View>
-            ))}
-          </View>
-          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-            {dayCells.map((day, cellIndex) => {
-              if (!day) {
-                return (
+          <GestureDetector gesture={monthSwipeGesture}>
+            <View>
+              <View
+                style={{ flexDirection: "row", marginTop: theme.spacing.s }}
+              >
+                {weekdayLabels.map((label, labelIndex) => (
                   <View
-                    key={`blank-${cellIndex}`}
-                    style={{ width: "14.2857%", height: 44 }}
-                  />
-                );
-              }
-              const dayEvents = monthEvents.filter((event) =>
-                isSameDay(event.date, day),
-              );
-              const dayColors = [...new Set(dayEvents.map(eventColor))];
-              const isSelected =
-                selectedDay != null && isSameDay(day, selectedDay);
-              const isToday = isSameDay(day, today);
-              return (
-                <TouchableOpacity
-                  key={day.toISOString()}
-                  style={{
-                    width: "14.2857%",
-                    height: 44,
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                  onPress={() => setSelectedDay(isSelected ? null : day)}
-                >
-                  {/* One ring per event color around the day number, the first color outermost. Selected days
-                      get a light primary tint inside the rings. Today gets a thin primary ring
-                      without events, otherwise a bold primary number. */}
-                  {dayColors.reduceRight<ReactNode>(
-                    (inner, ringColor, ringIndex) => (
+                    key={labelIndex}
+                    style={{ flex: 1, alignItems: "center" }}
+                  >
+                    <Body style={{ color: theme.colors.gray2, fontSize: 12 }}>
+                      {label}
+                    </Body>
+                  </View>
+                ))}
+              </View>
+              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                {dayCells.map((day, cellIndex) => {
+                  if (!day) {
+                    return (
                       <View
-                        key={ringColor}
-                        style={{
-                          width: DAY_CIRCLE_SIZE - 2 * RING_WIDTH * ringIndex,
-                          height: DAY_CIRCLE_SIZE - 2 * RING_WIDTH * ringIndex,
-                          borderRadius: DAY_CIRCLE_SIZE / 2,
-                          borderWidth: RING_WIDTH,
-                          borderColor: ringColor,
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        {inner}
-                      </View>
-                    ),
-                    <View
+                        key={`blank-${cellIndex}`}
+                        style={{ width: "14.2857%", height: 44 }}
+                      />
+                    );
+                  }
+                  const dayEvents = monthEvents.filter((event) =>
+                    isSameDay(event.date, day),
+                  );
+                  const dayColors = [...new Set(dayEvents.map(eventColor))];
+                  const isSelected =
+                    selectedDay != null && isSameDay(day, selectedDay);
+                  const isToday = isSameDay(day, today);
+                  return (
+                    <TouchableOpacity
+                      key={day.toISOString()}
                       style={{
-                        width:
-                          DAY_CIRCLE_SIZE - 2 * RING_WIDTH * dayColors.length,
-                        height:
-                          DAY_CIRCLE_SIZE - 2 * RING_WIDTH * dayColors.length,
-                        borderRadius: DAY_CIRCLE_SIZE / 2,
+                        width: "14.2857%",
+                        height: 44,
                         alignItems: "center",
                         justifyContent: "center",
-                        // Light tint, so the colored rings stay readable around it
-                        backgroundColor: isSelected
-                          ? hexToRgba(theme.colors.primary, SELECTED_TINT_ALPHA)
-                          : "transparent",
-                        borderWidth:
-                          isToday && !isSelected && dayColors.length === 0
-                            ? 1
-                            : 0,
-                        borderColor: theme.colors.primary,
                       }}
+                      onPress={() => setSelectedDay(isSelected ? null : day)}
                     >
-                      <Body
-                        style={{
-                          // Selected: dark and bold on the tint. Today with events: bold primary, the rings
-                          // take the place of today's ring.
-                          color:
-                            isToday && dayColors.length > 0 && !isSelected
-                              ? theme.colors.primary
-                              : theme.colors.black,
-                          fontWeight:
-                            isSelected || (isToday && dayColors.length > 0)
-                              ? "700"
-                              : undefined,
-                        }}
-                      >
-                        {day.getDate()}
-                      </Body>
-                    </View>,
-                  )}
-                </TouchableOpacity>
-              );
-            })}
-          </View>
+                      {/* One ring per event color around the day number, the first color outermost. Selected days
+                      get a light primary tint inside the rings. Today gets a thin primary ring
+                      without events, otherwise a bold primary number. */}
+                      {dayColors.reduceRight<ReactNode>(
+                        (inner, ringColor, ringIndex) => (
+                          <View
+                            key={ringColor}
+                            style={{
+                              width:
+                                DAY_CIRCLE_SIZE - 2 * RING_WIDTH * ringIndex,
+                              height:
+                                DAY_CIRCLE_SIZE - 2 * RING_WIDTH * ringIndex,
+                              borderRadius: DAY_CIRCLE_SIZE / 2,
+                              borderWidth: RING_WIDTH,
+                              borderColor: ringColor,
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            {inner}
+                          </View>
+                        ),
+                        <View
+                          style={{
+                            width:
+                              DAY_CIRCLE_SIZE -
+                              2 * RING_WIDTH * dayColors.length,
+                            height:
+                              DAY_CIRCLE_SIZE -
+                              2 * RING_WIDTH * dayColors.length,
+                            borderRadius: DAY_CIRCLE_SIZE / 2,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            // Light tint, so the colored rings stay readable around it
+                            backgroundColor: isSelected
+                              ? hexToRgba(
+                                  theme.colors.primary,
+                                  SELECTED_TINT_ALPHA,
+                                )
+                              : "transparent",
+                            borderWidth:
+                              isToday && !isSelected && dayColors.length === 0
+                                ? 1
+                                : 0,
+                            borderColor: theme.colors.primary,
+                          }}
+                        >
+                          <Body
+                            style={{
+                              // Selected: dark and bold on the tint. Today with events: bold primary, the rings
+                              // take the place of today's ring.
+                              color:
+                                isToday && dayColors.length > 0 && !isSelected
+                                  ? theme.colors.primary
+                                  : theme.colors.black,
+                              fontWeight:
+                                isSelected || (isToday && dayColors.length > 0)
+                                  ? "700"
+                                  : undefined,
+                            }}
+                          >
+                            {day.getDate()}
+                          </Body>
+                        </View>,
+                      )}
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </View>
+          </GestureDetector>
           <View
             style={{
               flexDirection: "row",
