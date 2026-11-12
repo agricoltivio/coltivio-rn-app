@@ -14,13 +14,14 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import {
   addMonths,
+  differenceInCalendarMonths,
   endOfMonth,
   getDay,
   getDaysInMonth,
   isSameDay,
   startOfMonth,
 } from "date-fns";
-import { type ReactNode, useLayoutEffect, useRef, useState } from "react";
+import { type ReactNode, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -47,6 +48,8 @@ const WEEKDAY_COUNT = 7;
 // Day circle in the month grid and the width of each event color ring around the number
 const DAY_CIRCLE_SIZE = 36;
 const RING_WIDTH = 2;
+// Height of a week row in the month grid
+const DAY_CELL_HEIGHT = 44;
 // Opacity of the primary color filling a selected day
 const SELECTED_TINT_ALPHA = 0.2;
 // Horizontal movement before the month swipe takes over, and the distance that changes the month
@@ -152,33 +155,31 @@ export function BreedingCalendarScreen({
   );
   const today = new Date();
 
-  // Carousel of the previous, visible and next month: the row is offset by one page so the visible month
-  // is in the middle, swiping moves the row and the neighbouring month comes in with it. After a change
-  // the row jumps back to the middle, which then shows the new month, so nothing visibly moves.
+  // Carousel of the previous, visible and next month. Every month has a fixed place in the row, counted from
+  // the month the screen opened with, and the row slides to the visible month's place. After a change the
+  // rendered months keep their places (keyed by month), only the new neighbour is added and the far one
+  // removed, so nothing has to jump back and nothing flickers.
+  const anchorMonth = useRef(visibleMonth).current;
+  const monthPlace = (month: Date) =>
+    differenceInCalendarMonths(month, anchorMonth);
   const [pageWidth, setPageWidth] = useState(0);
   const pageWidthValue = useSharedValue(0);
-  const swipeOffset = useSharedValue(0);
-  const resetSwipeOffset = useRef(false);
+  // Horizontal position of the row: -place × width of the visible month, plus the finger while swiping
+  const rowOffset = useSharedValue(0);
+  const swipeStartOffset = useSharedValue(0);
   const rowAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: -pageWidthValue.value + swipeOffset.value }],
+    transform: [{ translateX: rowOffset.value }],
   }));
 
   function commitMonthChange(monthDelta: number) {
-    resetSwipeOffset.current = true;
     setVisibleMonth((month) => addMonths(month, monthDelta));
     setSelectedDay(null);
   }
 
-  // Before the new months are painted, so the row doesn't show the month after the new one for a frame
-  useLayoutEffect(() => {
-    if (!resetSwipeOffset.current) return;
-    resetSwipeOffset.current = false;
-    swipeOffset.value = 0;
-  }, [visibleMonth, swipeOffset]);
-
   function changeMonth(monthDelta: number) {
-    swipeOffset.value = withTiming(
-      -monthDelta * pageWidthValue.value,
+    const targetPlace = monthPlace(visibleMonth) + monthDelta;
+    rowOffset.value = withTiming(
+      -targetPlace * pageWidthValue.value,
       { duration: MONTH_SLIDE_DURATION_MS },
       (finished) => {
         if (finished) scheduleOnRN(commitMonthChange, monthDelta);
@@ -191,8 +192,11 @@ export function BreedingCalendarScreen({
   const monthSwipeGesture = Gesture.Pan()
     .activeOffsetX([-MONTH_SWIPE_ACTIVATION, MONTH_SWIPE_ACTIVATION])
     .failOffsetY([-MONTH_SWIPE_ACTIVATION, MONTH_SWIPE_ACTIVATION])
+    .onStart(() => {
+      swipeStartOffset.value = rowOffset.value;
+    })
     .onUpdate((event) => {
-      swipeOffset.value = event.translationX;
+      rowOffset.value = swipeStartOffset.value + event.translationX;
     })
     .onEnd((event) => {
       const monthDelta =
@@ -201,8 +205,12 @@ export function BreedingCalendarScreen({
           : event.translationX >= MONTH_SWIPE_DISTANCE
             ? -1
             : 0;
-      swipeOffset.value = withTiming(
-        -monthDelta * pageWidthValue.value,
+      const startPlace =
+        pageWidthValue.value > 0
+          ? Math.round(-swipeStartOffset.value / pageWidthValue.value)
+          : 0;
+      rowOffset.value = withTiming(
+        -(startPlace + monthDelta) * pageWidthValue.value,
         { duration: MONTH_SLIDE_DURATION_MS },
         (finished) => {
           if (finished && monthDelta !== 0) {
@@ -211,6 +219,17 @@ export function BreedingCalendarScreen({
         },
       );
     });
+
+  // The months are positioned absolutely, so the row gets the height of the tallest of the three
+  const carouselMonths = [-1, 0, 1].map((monthDelta) =>
+    addMonths(visibleMonth, monthDelta),
+  );
+  const carouselHeight =
+    Math.max(
+      ...carouselMonths.map((month) =>
+        Math.ceil(monthDayCells(month).length / WEEKDAY_COUNT),
+      ),
+    ) * DAY_CELL_HEIGHT;
 
   // Day grid of one month; only the visible month shows the selection
   function renderMonthGrid(month: Date, isVisibleMonth: boolean) {
@@ -222,6 +241,13 @@ export function BreedingCalendarScreen({
           flexDirection: "row",
           flexWrap: "wrap",
           width: pageWidth > 0 ? pageWidth : "100%",
+          ...(pageWidth > 0
+            ? {
+                position: "absolute",
+                top: 0,
+                left: monthPlace(month) * pageWidth,
+              }
+            : {}),
         }}
       >
         {monthDayCells(month).map((day, cellIndex) => {
@@ -229,7 +255,7 @@ export function BreedingCalendarScreen({
             return (
               <View
                 key={`blank-${cellIndex}`}
-                style={{ width: "14.2857%", height: 44 }}
+                style={{ width: "14.2857%", height: DAY_CELL_HEIGHT }}
               />
             );
           }
@@ -247,7 +273,7 @@ export function BreedingCalendarScreen({
               key={day.toISOString()}
               style={{
                 width: "14.2857%",
-                height: 44,
+                height: DAY_CELL_HEIGHT,
                 alignItems: "center",
                 justifyContent: "center",
               }}
@@ -375,18 +401,16 @@ export function BreedingCalendarScreen({
                 const width = event.nativeEvent.layout.width;
                 setPageWidth(width);
                 pageWidthValue.value = width;
+                rowOffset.value = -monthPlace(visibleMonth) * width;
               }}
             >
               {pageWidth > 0 ? (
                 <Animated.View
-                  style={[
-                    { flexDirection: "row", width: pageWidth * 3 },
-                    rowAnimatedStyle,
-                  ]}
+                  style={[{ height: carouselHeight }, rowAnimatedStyle]}
                 >
-                  {renderMonthGrid(addMonths(visibleMonth, -1), false)}
-                  {renderMonthGrid(visibleMonth, true)}
-                  {renderMonthGrid(addMonths(visibleMonth, 1), false)}
+                  {carouselMonths.map((month) =>
+                    renderMonthGrid(month, isSameDay(month, visibleMonth)),
+                  )}
                 </Animated.View>
               ) : (
                 renderMonthGrid(visibleMonth, true)
