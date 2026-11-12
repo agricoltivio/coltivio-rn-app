@@ -100,12 +100,10 @@ export const MapLibreMap = forwardRef<MapRef, MapLibreMapProps>(
               }}
             />
 
-            {/* Both base map layers always mounted, visibility toggled. layerIndex 0 keeps them below the
-                plots and meadows: their sources live in the style, so they can be added after other layers. */}
+            {/* Both base map layers always mounted, visibility toggled */}
             <Layer
               type="raster"
               id="satellite-layer"
-              layerIndex={0}
               source="swisstopo-satellite"
               layout={{
                 visibility: baseLayer === "satellite" ? "visible" : "none",
@@ -114,7 +112,6 @@ export const MapLibreMap = forwardRef<MapRef, MapLibreMapProps>(
             <Layer
               type="raster"
               id="map-layer"
-              layerIndex={0}
               source="swisstopo-map"
               layout={{
                 visibility: baseLayer === "map" ? "visible" : "none",
@@ -123,7 +120,10 @@ export const MapLibreMap = forwardRef<MapRef, MapLibreMapProps>(
 
             {showUserLocation && <UserLocation />}
 
-            {children}
+            {/* The base layers' sources live in the style, so they are only added once it is loaded. Content
+                mounted earlier could end up below them (plots hidden behind the base map), so it waits until
+                the map has loaded; the loading overlay covers the map until then. */}
+            {mapReady && children}
           </Map>
         )}
 

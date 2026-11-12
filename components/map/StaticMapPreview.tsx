@@ -60,6 +60,8 @@ export function StaticMapPreview({
 }: StaticMapPreviewProps) {
   const theme = useTheme();
   const [baseLayer] = useState<BaseLayer>("satellite");
+  // Features only after the map loaded, so they end up above the base layers (see MapLibreMap)
+  const [mapReady, setMapReady] = useState(false);
 
   const fillColor = hexToRgba(
     theme.map.defaultFillColor,
@@ -74,6 +76,7 @@ export function StaticMapPreview({
         dragPan={false}
         attribution={false}
         logo={false}
+        onDidFinishLoadingMap={() => setMapReady(true)}
       >
         <Camera
           initialViewState={{
@@ -85,7 +88,6 @@ export function StaticMapPreview({
         <Layer
           type="raster"
           id="satellite-preview-layer"
-          layerIndex={0}
           source="swisstopo-satellite-preview"
           layout={{
             visibility: baseLayer === "satellite" ? "visible" : "none",
@@ -94,31 +96,32 @@ export function StaticMapPreview({
         <Layer
           type="raster"
           id="map-preview-layer"
-          layerIndex={0}
           source="swisstopo-map-preview"
           layout={{
             visibility: baseLayer === "map" ? "visible" : "none",
           }}
         />
 
-        <GeoJSONSource id="preview-features" data={features}>
-          <Layer
-            type="fill"
-            id="preview-fill"
-            paint={{
-              "fill-color": ["coalesce", ["get", "color"], fillColor],
-              "fill-opacity": 1,
-            }}
-          />
-          <Layer
-            type="line"
-            id="preview-stroke"
-            paint={{
-              "line-color": "white",
-              "line-width": theme.map.defaultStrokeWidth,
-            }}
-          />
-        </GeoJSONSource>
+        {mapReady && (
+          <GeoJSONSource id="preview-features" data={features}>
+            <Layer
+              type="fill"
+              id="preview-fill"
+              paint={{
+                "fill-color": ["coalesce", ["get", "color"], fillColor],
+                "fill-opacity": 1,
+              }}
+            />
+            <Layer
+              type="line"
+              id="preview-stroke"
+              paint={{
+                "line-color": "white",
+                "line-width": theme.map.defaultStrokeWidth,
+              }}
+            />
+          </GeoJSONSource>
+        )}
       </Map>
 
       <MapAttribution />
