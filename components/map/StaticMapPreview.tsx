@@ -85,6 +85,7 @@ export function StaticMapPreview({
         <Layer
           type="raster"
           id="satellite-preview-layer"
+          layerIndex={0}
           source="swisstopo-satellite-preview"
           layout={{
             visibility: baseLayer === "satellite" ? "visible" : "none",
@@ -93,6 +94,7 @@ export function StaticMapPreview({
         <Layer
           type="raster"
           id="map-preview-layer"
+          layerIndex={0}
           source="swisstopo-map-preview"
           layout={{
             visibility: baseLayer === "map" ? "visible" : "none",
