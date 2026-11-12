@@ -48,6 +48,8 @@ const WEEKDAY_COUNT = 7;
 // Day circle in the month grid and the width of each event color ring around the number
 const DAY_CIRCLE_SIZE = 36;
 const RING_WIDTH = 2;
+// Space below the entry list so the FAB doesn't cover the last entry
+const FAB_CLEARANCE = 72;
 // Height of a week row in the month grid
 const DAY_CELL_HEIGHT = 44;
 // Opacity of the primary color filling a selected day
@@ -526,6 +528,8 @@ export function BreedingCalendarScreen({
             </View>
           )}
         </View>
+        {/* Keeps the last entry clear of the FAB */}
+        {canWrite("animals") && <View style={{ height: FAB_CLEARANCE }} />}
       </ScrollView>
       {/* New heat for one or several animals, picked in the form, on the selected day if there is one */}
       {canWrite("animals") && (

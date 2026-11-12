@@ -54,9 +54,10 @@ export function AnimalHeatFormScreen({
   const isEditMode = !!heatId;
   // Opened from the breeding calendar: the animals are picked here, the heat is created for all of them
   const picksAnimals = !fixedAnimalId;
-  const selectedAnimalIds = fixedAnimalId
-    ? [fixedAnimalId]
-    : (pickedAnimalIds ?? []);
+  const selectedAnimalIds = useMemo(
+    () => (fixedAnimalId ? [fixedAnimalId] : (pickedAnimalIds ?? [])),
+    [fixedAnimalId, pickedAnimalIds],
+  );
   // Outcome preview and heat history only for a single animal
   const singleAnimalId =
     selectedAnimalIds.length === 1 ? selectedAnimalIds[0] : undefined;
@@ -169,7 +170,12 @@ export function AnimalHeatFormScreen({
     const input = {
       date: toLocalDateString(values.date),
       mated: values.mated,
-      sireId: values.mated ? (values.sireId ?? null) : null,
+      // Only a sire that is still offered: changing the animals (e.g. to another type) can leave a stale one
+      sireId:
+        values.mated &&
+        sireSelectData.some((option) => option.value === values.sireId)
+          ? (values.sireId ?? null)
+          : null,
       sireName: values.mated ? values.sireName || null : null,
       notes: values.notes || null,
     };
