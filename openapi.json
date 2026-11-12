@@ -10434,6 +10434,45 @@
         }
       }
     },
+    "/v1/animals/heats/batch": {
+      "post": {
+        "operationId": "PostV1AnimalsHeatsBatch",
+        "requestBody": {
+          "description": "POST /v1/animals/heats/batch Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1AnimalsHeatsBatchRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/animals/heats/batch Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1AnimalsHeatsBatchPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/animals/heats/batch Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/animals/heats/byId/{heatId}": {
       "patch": {
         "operationId": "PatchV1AnimalsHeatsByIdHeatId",
@@ -18146,7 +18185,8 @@
               "seed_default_amount_without_unit",
               "ear_tag_range_conflict",
               "invalid_ear_tag_range",
-              "ear_tag_assigned"
+              "ear_tag_assigned",
+              "invalid_sire"
             ]
           }
         },
@@ -34974,6 +35014,90 @@
         },
         "required": ["data"],
         "additionalProperties": false
+      },
+      "PostV1AnimalsHeatsBatchPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "farmId": { "type": "string" },
+                    "animalId": { "type": "string" },
+                    "date": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "mated": { "type": "boolean" },
+                    "sireId": { "type": ["string", "null"] },
+                    "sireName": { "type": ["string", "null"] },
+                    "notes": { "type": ["string", "null"] },
+                    "createdAt": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "createdBy": { "type": ["string", "null"] }
+                  },
+                  "required": [
+                    "id",
+                    "farmId",
+                    "animalId",
+                    "date",
+                    "mated",
+                    "sireId",
+                    "sireName",
+                    "notes",
+                    "createdAt",
+                    "createdBy"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["result"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1AnimalsHeatsBatchRequestBody": {
+        "type": "object",
+        "properties": {
+          "animalIds": {
+            "minItems": 1,
+            "maxItems": 500,
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "date": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+            }
+          },
+          "mated": { "type": "boolean" },
+          "sireId": { "type": ["string", "null"] },
+          "sireName": { "type": ["string", "null"] },
+          "notes": { "type": ["string", "null"] }
+        },
+        "required": ["animalIds", "date"]
       },
       "PatchV1AnimalsHeatsByIdHeatIdPositiveResponse": {
         "type": "object",

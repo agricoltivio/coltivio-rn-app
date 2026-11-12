@@ -1,6 +1,7 @@
 import { useApi } from "@/api/api";
 import {
   AnimalHeatCreateInput,
+  AnimalHeatsBatchCreateInput,
   AnimalHeatUpdateInput,
   AnimalWeight,
   AnimalWeightCreateInput,
@@ -139,6 +140,19 @@ export function useCreateAnimalHeatMutation(onSuccess?: () => void) {
       animalId: string;
       input: AnimalHeatCreateInput;
     }) => api.breeding.createHeat(animalId, input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.breeding._def });
+      onSuccess?.();
+    },
+  });
+}
+
+export function useCreateAnimalHeatsBatchMutation(onSuccess?: () => void) {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: AnimalHeatsBatchCreateInput) =>
+      api.breeding.createHeatsBatch(input),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.breeding._def });
       onSuccess?.();

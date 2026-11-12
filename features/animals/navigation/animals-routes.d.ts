@@ -37,9 +37,12 @@ export type AnimalsStackParamList = {
       | "EditTreatment"
       | "HerdEdit"
       | "CreateHerd"
-      | "ParasiteCheckForm";
+      | "ParasiteCheckForm"
+      | "AnimalHeatForm";
     // Only animals of one type: after the first pick, other types are hidden
     singleAnimalType?: boolean;
+    // Only female animals, e.g. for heats
+    onlyFemale?: boolean;
   };
   Drugs: undefined;
   CreateDrug: { previousScreen?: "CreateTreatment" | "EditTreatment" };
@@ -118,7 +121,9 @@ export type AnimalsStackParamList = {
   ParasiteAnimalSample: { animalId: string };
   AnimalParasiteHistory: { animalId: string };
   AnimalWeightForm: { animalId: string; weightId?: string };
-  AnimalHeatForm: { animalId: string; heatId?: string };
+  // Without animalId (new heat from the breeding calendar) the animals are picked in the form;
+  // animalIds is set by the SelectAnimals modal
+  AnimalHeatForm: { animalId?: string; heatId?: string; animalIds?: string[] };
   BreedingCalendar: undefined;
   BreedingSettings: undefined;
 };

@@ -12,6 +12,8 @@ export type AnimalHeat =
   components["schemas"]["GetV1AnimalsByIdAnimalIdHeatsPositiveResponse"]["data"]["result"][number];
 export type AnimalHeatCreateInput =
   components["schemas"]["PostV1AnimalsByIdAnimalIdHeatsRequestBody"];
+export type AnimalHeatsBatchCreateInput =
+  components["schemas"]["PostV1AnimalsHeatsBatchRequestBody"];
 export type AnimalHeatUpdateInput =
   components["schemas"]["PatchV1AnimalsHeatsByIdHeatIdRequestBody"];
 
@@ -75,6 +77,14 @@ export function breedingApi(client: FetchClient) {
         body,
       });
       return data!.data;
+    },
+
+    // The same heat for several animals, all or nothing
+    async createHeatsBatch(
+      body: AnimalHeatsBatchCreateInput,
+    ): Promise<AnimalHeat[]> {
+      const { data } = await client.POST("/v1/animals/heats/batch", { body });
+      return data!.data.result;
     },
 
     async updateHeat(

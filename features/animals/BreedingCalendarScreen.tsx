@@ -1,4 +1,5 @@
 import { BreedingCalendarEntry } from "@/api/breeding.api";
+import { FAB } from "@/components/buttons/FAB";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
@@ -364,6 +365,13 @@ export function BreedingCalendarScreen({
           )}
         </View>
       </ScrollView>
+      {/* New heat for one or several animals, picked in the form */}
+      {canWrite("animals") && (
+        <FAB
+          icon={{ name: "add", color: "white" }}
+          onPress={() => navigation.navigate("AnimalHeatForm", {})}
+        />
+      )}
     </ContentView>
   );
 }
