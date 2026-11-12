@@ -20,10 +20,16 @@ import {
   isSameDay,
   startOfMonth,
 } from "date-fns";
-import { type ReactNode, useMemo, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
 import { useTheme } from "styled-components/native";
 import { usePermissions } from "@/features/user/users.hooks";
 import { useBreedingCalendarQuery } from "./breeding.hooks";
@@ -46,6 +52,8 @@ const SELECTED_TINT_ALPHA = 0.2;
 // Horizontal movement before the month swipe takes over, and the distance that changes the month
 const MONTH_SWIPE_ACTIVATION = 20;
 const MONTH_SWIPE_DISTANCE = 50;
+// Duration of the slide out of the old month and of the slide in of the new one
+const MONTH_SLIDE_DURATION_MS = 180;
 
 export function BreedingCalendarScreen({
   navigation,
@@ -144,20 +152,68 @@ export function BreedingCalendarScreen({
   );
   const today = new Date();
 
-  function changeMonth(monthDelta: number) {
+  // Month change with a slide: the old month slides out to one side, the new one renders off-screen and
+  // slides in from the other side once it's there (see the effect below). The grid clips its overflow, so
+  // the switch itself isn't visible.
+  const gridTranslateX = useSharedValue(0);
+  const gridWidth = useSharedValue(0);
+  const pendingSlideDirection = useRef<number | null>(null);
+  const gridAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: gridTranslateX.value }],
+  }));
+
+  function commitMonthChange(monthDelta: number) {
+    pendingSlideDirection.current = monthDelta;
     setVisibleMonth((month) => addMonths(month, monthDelta));
     setSelectedDay(null);
   }
 
-  // Swipe left for the next month, right for the previous one. Only clearly horizontal movements activate
-  // it, so taps on days and the vertical scrolling of the screen keep working.
+  useEffect(() => {
+    const slideDirection = pendingSlideDirection.current;
+    if (slideDirection === null) return;
+    pendingSlideDirection.current = null;
+    gridTranslateX.value = slideDirection * gridWidth.value;
+    gridTranslateX.value = withTiming(0, { duration: MONTH_SLIDE_DURATION_MS });
+  }, [visibleMonth, gridTranslateX, gridWidth]);
+
+  function changeMonth(monthDelta: number) {
+    gridTranslateX.value = withTiming(
+      -monthDelta * gridWidth.value,
+      { duration: MONTH_SLIDE_DURATION_MS },
+      (finished) => {
+        if (finished) scheduleOnRN(commitMonthChange, monthDelta);
+      },
+    );
+  }
+
+  // Swipe left for the next month, right for the previous one; the grid follows the finger. Only clearly
+  // horizontal movements activate it, so taps on days and the vertical scrolling of the screen keep working.
   const monthSwipeGesture = Gesture.Pan()
-    .runOnJS(true)
     .activeOffsetX([-MONTH_SWIPE_ACTIVATION, MONTH_SWIPE_ACTIVATION])
     .failOffsetY([-MONTH_SWIPE_ACTIVATION, MONTH_SWIPE_ACTIVATION])
+    .onUpdate((event) => {
+      gridTranslateX.value = event.translationX;
+    })
     .onEnd((event) => {
-      if (event.translationX <= -MONTH_SWIPE_DISTANCE) changeMonth(1);
-      else if (event.translationX >= MONTH_SWIPE_DISTANCE) changeMonth(-1);
+      const monthDelta =
+        event.translationX <= -MONTH_SWIPE_DISTANCE
+          ? 1
+          : event.translationX >= MONTH_SWIPE_DISTANCE
+            ? -1
+            : 0;
+      if (monthDelta === 0) {
+        gridTranslateX.value = withTiming(0, {
+          duration: MONTH_SLIDE_DURATION_MS,
+        });
+        return;
+      }
+      gridTranslateX.value = withTiming(
+        -monthDelta * gridWidth.value,
+        { duration: MONTH_SLIDE_DURATION_MS },
+        (finished) => {
+          if (finished) scheduleOnRN(commitMonthChange, monthDelta);
+        },
+      );
     });
 
   return (
@@ -206,118 +262,126 @@ export function BreedingCalendarScreen({
           </View>
 
           <GestureDetector gesture={monthSwipeGesture}>
-            <View>
-              <View
-                style={{ flexDirection: "row", marginTop: theme.spacing.s }}
-              >
-                {weekdayLabels.map((label, labelIndex) => (
-                  <View
-                    key={labelIndex}
-                    style={{ flex: 1, alignItems: "center" }}
-                  >
-                    <Body style={{ color: theme.colors.gray2, fontSize: 12 }}>
-                      {label}
-                    </Body>
-                  </View>
-                ))}
-              </View>
-              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                {dayCells.map((day, cellIndex) => {
-                  if (!day) {
-                    return (
-                      <View
-                        key={`blank-${cellIndex}`}
-                        style={{ width: "14.2857%", height: 44 }}
-                      />
-                    );
-                  }
-                  const dayEvents = monthEvents.filter((event) =>
-                    isSameDay(event.date, day),
-                  );
-                  const dayColors = [...new Set(dayEvents.map(eventColor))];
-                  const isSelected =
-                    selectedDay != null && isSameDay(day, selectedDay);
-                  const isToday = isSameDay(day, today);
-                  return (
-                    <TouchableOpacity
-                      key={day.toISOString()}
-                      style={{
-                        width: "14.2857%",
-                        height: 44,
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                      onPress={() => setSelectedDay(isSelected ? null : day)}
+            <View
+              style={{ overflow: "hidden" }}
+              onLayout={(event) => {
+                gridWidth.value = event.nativeEvent.layout.width;
+              }}
+            >
+              <Animated.View style={gridAnimatedStyle}>
+                <View
+                  style={{ flexDirection: "row", marginTop: theme.spacing.s }}
+                >
+                  {weekdayLabels.map((label, labelIndex) => (
+                    <View
+                      key={labelIndex}
+                      style={{ flex: 1, alignItems: "center" }}
                     >
-                      {/* One ring per event color around the day number, the first color outermost. Selected days
+                      <Body style={{ color: theme.colors.gray2, fontSize: 12 }}>
+                        {label}
+                      </Body>
+                    </View>
+                  ))}
+                </View>
+                <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                  {dayCells.map((day, cellIndex) => {
+                    if (!day) {
+                      return (
+                        <View
+                          key={`blank-${cellIndex}`}
+                          style={{ width: "14.2857%", height: 44 }}
+                        />
+                      );
+                    }
+                    const dayEvents = monthEvents.filter((event) =>
+                      isSameDay(event.date, day),
+                    );
+                    const dayColors = [...new Set(dayEvents.map(eventColor))];
+                    const isSelected =
+                      selectedDay != null && isSameDay(day, selectedDay);
+                    const isToday = isSameDay(day, today);
+                    return (
+                      <TouchableOpacity
+                        key={day.toISOString()}
+                        style={{
+                          width: "14.2857%",
+                          height: 44,
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                        onPress={() => setSelectedDay(isSelected ? null : day)}
+                      >
+                        {/* One ring per event color around the day number, the first color outermost. Selected days
                       get a light primary tint inside the rings. Today gets a thin primary ring
                       without events, otherwise a bold primary number. */}
-                      {dayColors.reduceRight<ReactNode>(
-                        (inner, ringColor, ringIndex) => (
+                        {dayColors.reduceRight<ReactNode>(
+                          (inner, ringColor, ringIndex) => (
+                            <View
+                              key={ringColor}
+                              style={{
+                                width:
+                                  DAY_CIRCLE_SIZE - 2 * RING_WIDTH * ringIndex,
+                                height:
+                                  DAY_CIRCLE_SIZE - 2 * RING_WIDTH * ringIndex,
+                                borderRadius: DAY_CIRCLE_SIZE / 2,
+                                borderWidth: RING_WIDTH,
+                                borderColor: ringColor,
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              {inner}
+                            </View>
+                          ),
                           <View
-                            key={ringColor}
                             style={{
                               width:
-                                DAY_CIRCLE_SIZE - 2 * RING_WIDTH * ringIndex,
+                                DAY_CIRCLE_SIZE -
+                                2 * RING_WIDTH * dayColors.length,
                               height:
-                                DAY_CIRCLE_SIZE - 2 * RING_WIDTH * ringIndex,
+                                DAY_CIRCLE_SIZE -
+                                2 * RING_WIDTH * dayColors.length,
                               borderRadius: DAY_CIRCLE_SIZE / 2,
-                              borderWidth: RING_WIDTH,
-                              borderColor: ringColor,
                               alignItems: "center",
                               justifyContent: "center",
+                              // Light tint, so the colored rings stay readable around it
+                              backgroundColor: isSelected
+                                ? hexToRgba(
+                                    theme.colors.primary,
+                                    SELECTED_TINT_ALPHA,
+                                  )
+                                : "transparent",
+                              borderWidth:
+                                isToday && !isSelected && dayColors.length === 0
+                                  ? 1
+                                  : 0,
+                              borderColor: theme.colors.primary,
                             }}
                           >
-                            {inner}
-                          </View>
-                        ),
-                        <View
-                          style={{
-                            width:
-                              DAY_CIRCLE_SIZE -
-                              2 * RING_WIDTH * dayColors.length,
-                            height:
-                              DAY_CIRCLE_SIZE -
-                              2 * RING_WIDTH * dayColors.length,
-                            borderRadius: DAY_CIRCLE_SIZE / 2,
-                            alignItems: "center",
-                            justifyContent: "center",
-                            // Light tint, so the colored rings stay readable around it
-                            backgroundColor: isSelected
-                              ? hexToRgba(
-                                  theme.colors.primary,
-                                  SELECTED_TINT_ALPHA,
-                                )
-                              : "transparent",
-                            borderWidth:
-                              isToday && !isSelected && dayColors.length === 0
-                                ? 1
-                                : 0,
-                            borderColor: theme.colors.primary,
-                          }}
-                        >
-                          <Body
-                            style={{
-                              // Selected: dark and bold on the tint. Today with events: bold primary, the rings
-                              // take the place of today's ring.
-                              color:
-                                isToday && dayColors.length > 0 && !isSelected
-                                  ? theme.colors.primary
-                                  : theme.colors.black,
-                              fontWeight:
-                                isSelected || (isToday && dayColors.length > 0)
-                                  ? "700"
-                                  : undefined,
-                            }}
-                          >
-                            {day.getDate()}
-                          </Body>
-                        </View>,
-                      )}
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
+                            <Body
+                              style={{
+                                // Selected: dark and bold on the tint. Today with events: bold primary, the rings
+                                // take the place of today's ring.
+                                color:
+                                  isToday && dayColors.length > 0 && !isSelected
+                                    ? theme.colors.primary
+                                    : theme.colors.black,
+                                fontWeight:
+                                  isSelected ||
+                                  (isToday && dayColors.length > 0)
+                                    ? "700"
+                                    : undefined,
+                              }}
+                            >
+                              {day.getDate()}
+                            </Body>
+                          </View>,
+                        )}
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+              </Animated.View>
             </View>
           </GestureDetector>
           <View
