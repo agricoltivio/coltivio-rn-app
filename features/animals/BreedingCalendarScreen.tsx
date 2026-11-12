@@ -365,11 +365,16 @@ export function BreedingCalendarScreen({
           )}
         </View>
       </ScrollView>
-      {/* New heat for one or several animals, picked in the form */}
+      {/* New heat for one or several animals, picked in the form, on the selected day if there is one */}
       {canWrite("animals") && (
         <FAB
           icon={{ name: "add", color: "white" }}
-          onPress={() => navigation.navigate("AnimalHeatForm", {})}
+          onPress={() =>
+            navigation.navigate(
+              "AnimalHeatForm",
+              selectedDay ? { date: toLocalDateString(selectedDay) } : {},
+            )
+          }
         />
       )}
     </ContentView>

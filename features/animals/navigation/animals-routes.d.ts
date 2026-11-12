@@ -122,8 +122,14 @@ export type AnimalsStackParamList = {
   AnimalParasiteHistory: { animalId: string };
   AnimalWeightForm: { animalId: string; weightId?: string };
   // Without animalId (new heat from the breeding calendar) the animals are picked in the form;
-  // animalIds is set by the SelectAnimals modal
-  AnimalHeatForm: { animalId?: string; heatId?: string; animalIds?: string[] };
+  // animalIds is set by the SelectAnimals modal. date ("YYYY-MM-DD") presets a new heat's date, e.g. the
+  // day selected in the calendar.
+  AnimalHeatForm: {
+    animalId?: string;
+    heatId?: string;
+    animalIds?: string[];
+    date?: string;
+  };
   BreedingCalendar: undefined;
   BreedingSettings: undefined;
 };

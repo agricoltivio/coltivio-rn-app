@@ -49,6 +49,7 @@ export function AnimalHeatFormScreen({
     animalId: fixedAnimalId,
     heatId,
     animalIds: pickedAnimalIds,
+    date: presetDate,
   } = route.params;
   const isEditMode = !!heatId;
   // Opened from the breeding calendar: the animals are picked here, the heat is created for all of them
@@ -76,7 +77,10 @@ export function AnimalHeatFormScreen({
     handleSubmit,
     formState: { errors },
   } = useForm<HeatFormValues>({
-    defaultValues: { date: new Date(), mated: false },
+    defaultValues: {
+      date: presetDate ? parseDateOnly(presetDate) : new Date(),
+      mated: false,
+    },
     values: existingHeat
       ? {
           date: parseDateOnly(existingHeat.date),
