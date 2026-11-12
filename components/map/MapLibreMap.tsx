@@ -5,6 +5,7 @@ import {
   type MapRef,
   type LngLat,
   type StyleSpecification,
+  RasterSource,
   Layer,
   UserLocation,
 } from "@maplibre/maplibre-react-native";
@@ -12,7 +13,6 @@ import React, { forwardRef, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { MapAttribution } from "./MapAttribution";
-import { SWISSTOPO_TILE_BOUNDS } from "./swisstopo";
 
 export type BaseLayer = "satellite" | "map";
 
@@ -30,35 +30,18 @@ type MapLibreMapProps = {
   children?: React.ReactNode;
 };
 
+const EMPTY_STYLE: StyleSpecification = {
+  version: 8,
+  glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
+  sources: {},
+  layers: [],
+};
+
 const TILE_URLS = {
   satellite:
     "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/3857/{z}/{x}/{y}.jpeg",
   map: "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg",
 } as const;
-
-// Both base map sources live in the style so they can be limited to the swisstopo coverage (see swisstopo.ts);
-// their layers are added below and only toggled
-const BASE_STYLE: StyleSpecification = {
-  version: 8,
-  glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
-  sources: {
-    "swisstopo-satellite": {
-      type: "raster",
-      tiles: [TILE_URLS.satellite],
-      tileSize: 256,
-      maxzoom: 20,
-      bounds: SWISSTOPO_TILE_BOUNDS,
-    },
-    "swisstopo-map": {
-      type: "raster",
-      tiles: [TILE_URLS.map],
-      tileSize: 256,
-      maxzoom: 18,
-      bounds: SWISSTOPO_TILE_BOUNDS,
-    },
-  },
-  layers: [],
-};
 
 export const MapLibreMap = forwardRef<MapRef, MapLibreMapProps>(
   function MapLibreMap(
@@ -85,7 +68,7 @@ export const MapLibreMap = forwardRef<MapRef, MapLibreMapProps>(
           <Map
             ref={ref}
             style={styles.map}
-            mapStyle={BASE_STYLE}
+            mapStyle={EMPTY_STYLE}
             dragPan={dragPan}
             onPress={onPress}
             onDidFinishLoadingMap={() => setMapReady(true)}
@@ -100,23 +83,35 @@ export const MapLibreMap = forwardRef<MapRef, MapLibreMapProps>(
               }}
             />
 
-            {/* Both base map layers always mounted, visibility toggled */}
-            <Layer
-              type="raster"
-              id="satellite-layer"
-              source="swisstopo-satellite"
-              layout={{
-                visibility: baseLayer === "satellite" ? "visible" : "none",
-              }}
-            />
-            <Layer
-              type="raster"
-              id="map-layer"
-              source="swisstopo-map"
-              layout={{
-                visibility: baseLayer === "map" ? "visible" : "none",
-              }}
-            />
+            {/* Both raster sources always mounted, visibility toggled */}
+            <RasterSource
+              id="swisstopo-satellite"
+              tiles={[TILE_URLS.satellite]}
+              tileSize={256}
+              maxzoom={20}
+            >
+              <Layer
+                type="raster"
+                id="satellite-layer"
+                layout={{
+                  visibility: baseLayer === "satellite" ? "visible" : "none",
+                }}
+              />
+            </RasterSource>
+            <RasterSource
+              id="swisstopo-map"
+              tiles={[TILE_URLS.map]}
+              tileSize={256}
+              maxzoom={18}
+            >
+              <Layer
+                type="raster"
+                id="map-layer"
+                layout={{
+                  visibility: baseLayer === "map" ? "visible" : "none",
+                }}
+              />
+            </RasterSource>
 
             {showUserLocation && <UserLocation />}
 
