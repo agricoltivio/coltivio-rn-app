@@ -19,7 +19,7 @@ import {
   isSameDay,
   startOfMonth,
 } from "date-fns";
-import { useMemo, useState } from "react";
+import { type ReactNode, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -35,6 +35,10 @@ type CalendarEvent = {
 };
 
 const WEEKDAY_COUNT = 7;
+
+// Day circle in the month grid and the width of each event color ring around the number
+const DAY_CIRCLE_SIZE = 36;
+const RING_WIDTH = 2;
 
 export function BreedingCalendarScreen({
   navigation,
@@ -217,48 +221,63 @@ export function BreedingCalendarScreen({
                     height: 44,
                     alignItems: "center",
                     justifyContent: "center",
-                    // Keeps the dots off the today/selected circle: 32 + 3 + 6 fits the 44 px cell
-                    gap: 3,
                   }}
                   onPress={() => setSelectedDay(isSelected ? null : day)}
                 >
-                  <View
-                    style={{
-                      width: 32,
-                      height: 32,
-                      borderRadius: 16,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      backgroundColor: isSelected
-                        ? theme.colors.primary
-                        : "transparent",
-                      borderWidth: isToday && !isSelected ? 1 : 0,
-                      borderColor: theme.colors.primary,
-                    }}
-                  >
-                    <Body
+                  {/* One ring per event color around the day number, the first color outermost. Selected days
+                      are filled with the primary color inside the rings. Today gets a thin primary ring
+                      without events, otherwise a bold primary number. */}
+                  {dayColors.reduceRight<ReactNode>(
+                    (inner, ringColor, ringIndex) => (
+                      <View
+                        key={ringColor}
+                        style={{
+                          width: DAY_CIRCLE_SIZE - 2 * RING_WIDTH * ringIndex,
+                          height: DAY_CIRCLE_SIZE - 2 * RING_WIDTH * ringIndex,
+                          borderRadius: DAY_CIRCLE_SIZE / 2,
+                          borderWidth: RING_WIDTH,
+                          borderColor: ringColor,
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {inner}
+                      </View>
+                    ),
+                    <View
                       style={{
-                        color: isSelected
-                          ? theme.colors.white
-                          : theme.colors.black,
+                        width:
+                          DAY_CIRCLE_SIZE - 2 * RING_WIDTH * dayColors.length,
+                        height:
+                          DAY_CIRCLE_SIZE - 2 * RING_WIDTH * dayColors.length,
+                        borderRadius: DAY_CIRCLE_SIZE / 2,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: isSelected
+                          ? theme.colors.primary
+                          : "transparent",
+                        borderWidth:
+                          isToday && !isSelected && dayColors.length === 0
+                            ? 1
+                            : 0,
+                        borderColor: theme.colors.primary,
                       }}
                     >
-                      {day.getDate()}
-                    </Body>
-                  </View>
-                  <View style={{ flexDirection: "row", gap: 2, height: 6 }}>
-                    {dayColors.map((dotColor) => (
-                      <View
-                        key={dotColor}
+                      <Body
                         style={{
-                          width: 6,
-                          height: 6,
-                          borderRadius: 3,
-                          backgroundColor: dotColor,
+                          color: isSelected
+                            ? theme.colors.white
+                            : isToday && dayColors.length > 0
+                              ? theme.colors.primary
+                              : theme.colors.black,
+                          fontWeight:
+                            isToday && dayColors.length > 0 ? "700" : undefined,
                         }}
-                      />
-                    ))}
-                  </View>
+                      >
+                        {day.getDate()}
+                      </Body>
+                    </View>,
+                  )}
                 </TouchableOpacity>
               );
             })}
