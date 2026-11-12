@@ -29,7 +29,8 @@ export function SelectAnimalsModal({
   const { t, i18n } = useTranslation();
   const theme = useTheme();
   const locale = i18n.language;
-  const { initialSelectedIds, previousScreen, singleAnimalType } = route.params;
+  const { initialSelectedIds, previousScreen, singleAnimalType, onlyFemale } =
+    route.params;
   const { animals, isLoading } = useAnimalsQuery();
   const { herds } = useHerdsQuery();
 
@@ -80,6 +81,9 @@ export function SelectAnimalsModal({
 
     // Exclude dead animals
     result = result.filter((a) => !a.dateOfDeath);
+    if (onlyFemale) {
+      result = result.filter((a) => a.sex === "female");
+    }
 
     // Already selected animals stay visible, so a mixed selection (e.g. from a
     // herd) can still be corrected
@@ -130,6 +134,7 @@ export function SelectAnimalsModal({
     });
   }, [
     animals,
+    onlyFemale,
     selectedTypes,
     selectedHerdIds,
     lockedAnimalType,

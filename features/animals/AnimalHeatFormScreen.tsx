@@ -8,7 +8,8 @@ import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
-import { Body, H2 } from "@/theme/Typography";
+import { ListItem } from "@/components/list/ListItem";
+import { Body, H2, Subtitle } from "@/theme/Typography";
 import {
   formatLocalizedDate,
   parseDateOnly,
@@ -23,6 +24,7 @@ import { useAnimalByIdQuery, useAnimalsQuery } from "./animals.hooks";
 import {
   useAnimalHeatsQuery,
   useCreateAnimalHeatMutation,
+  useCreateAnimalHeatsBatchMutation,
   useDeleteAnimalHeatMutation,
   useGestationSettingsQuery,
   useUpdateAnimalHeatMutation,
@@ -43,12 +45,31 @@ export function AnimalHeatFormScreen({
 }: AnimalHeatFormScreenProps) {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
-  const { animalId, heatId } = route.params;
+  const {
+    animalId: fixedAnimalId,
+    heatId,
+    animalIds: pickedAnimalIds,
+    date: presetDate,
+  } = route.params;
   const isEditMode = !!heatId;
-  const { animal } = useAnimalByIdQuery(animalId);
+  // Opened from the breeding calendar: the animals are picked here, the heat is created for all of them
+  const picksAnimals = !fixedAnimalId;
+  const selectedAnimalIds = useMemo(
+    () => (fixedAnimalId ? [fixedAnimalId] : (pickedAnimalIds ?? [])),
+    [fixedAnimalId, pickedAnimalIds],
+  );
+  // Outcome preview and heat history only for a single animal
+  const singleAnimalId =
+    selectedAnimalIds.length === 1 ? selectedAnimalIds[0] : undefined;
+  const { animal } = useAnimalByIdQuery(singleAnimalId ?? "", !!singleAnimalId);
   // All animals, so a sire that died since the mating can still be shown
   const { animals } = useAnimalsQuery(false);
-  const { heats } = useAnimalHeatsQuery(animalId, isEditMode);
+  const selectedAnimals = (animals ?? []).filter((candidate) =>
+    selectedAnimalIds.includes(candidate.id),
+  );
+  // The picker only allows one type, so the first animal's type is the type of all
+  const animalType = animal?.type ?? selectedAnimals[0]?.type;
+  const { heats } = useAnimalHeatsQuery(singleAnimalId ?? "", !!singleAnimalId);
   const { gestationSettings } = useGestationSettingsQuery();
   const existingHeat = heats?.find((heat) => heat.id === heatId);
 
@@ -57,7 +78,10 @@ export function AnimalHeatFormScreen({
     handleSubmit,
     formState: { errors },
   } = useForm<HeatFormValues>({
-    defaultValues: { date: new Date(), mated: false },
+    defaultValues: {
+      date: presetDate ? parseDateOnly(presetDate) : new Date(),
+      mated: false,
+    },
     values: existingHeat
       ? {
           date: parseDateOnly(existingHeat.date),
@@ -78,7 +102,8 @@ export function AnimalHeatFormScreen({
         .filter(
           (candidate) =>
             candidate.sex === "male" &&
-            candidate.type === animal?.type &&
+            candidate.type === animalType &&
+            !selectedAnimalIds.includes(candidate.id) &&
             (candidate.dateOfDeath == null ||
               candidate.id === existingHeat?.sireId),
         )
@@ -90,11 +115,11 @@ export function AnimalHeatFormScreen({
           }${candidate.dateOfDeath ? " †" : ""}`,
           value: candidate.id,
         })),
-    [animals, animal?.type, existingHeat?.sireId],
+    [animals, animalType, selectedAnimalIds, existingHeat?.sireId],
   );
 
   const gestationDays = gestationSettings?.find(
-    (setting) => setting.animalType === animal?.type,
+    (setting) => setting.animalType === animalType,
   )?.gestationDays;
   // Unchanged existing heats show the server's outcome, edited or new ones are previewed with the server's
   // rule (heat-outcomes.ts) against the animal's other heats
@@ -110,7 +135,7 @@ export function AnimalHeatFormScreen({
       ? parseDateOnly(existingHeat.expectedBirthDate)
       : null;
     conceptionFailed = existingHeat.conceptionFailed ?? false;
-  } else if (mated && heatDate && gestationDays) {
+  } else if (mated && heatDate && gestationDays && singleAnimalId) {
     const previewHeatId = heatId ?? "preview";
     const previewOutcome = resolveHeatOutcomes(
       [
@@ -130,6 +155,9 @@ export function AnimalHeatFormScreen({
   }
 
   const createMutation = useCreateAnimalHeatMutation(() => navigation.goBack());
+  const createBatchMutation = useCreateAnimalHeatsBatchMutation(() =>
+    navigation.goBack(),
+  );
   const updateMutation = useUpdateAnimalHeatMutation(() => navigation.goBack());
   const deleteMutation = useDeleteAnimalHeatMutation(() => navigation.goBack());
 
@@ -142,14 +170,31 @@ export function AnimalHeatFormScreen({
     const input = {
       date: toLocalDateString(values.date),
       mated: values.mated,
-      sireId: values.mated ? (values.sireId ?? null) : null,
+      // Only a sire that is still offered: changing the animals (e.g. to another type) can leave a stale one
+      sireId:
+        values.mated &&
+        sireSelectData.some((option) => option.value === values.sireId)
+          ? (values.sireId ?? null)
+          : null,
       sireName: values.mated ? values.sireName || null : null,
       notes: values.notes || null,
     };
     if (heatId) {
       updateMutation.mutate({ heatId, input }, { onError: showError });
-    } else {
-      createMutation.mutate({ animalId, input }, { onError: showError });
+    } else if (picksAnimals) {
+      if (selectedAnimalIds.length === 0) {
+        Alert.alert(t("treatments.no_animals_selected"));
+        return;
+      }
+      createBatchMutation.mutate(
+        { animalIds: selectedAnimalIds, ...input },
+        { onError: showError },
+      );
+    } else if (fixedAnimalId) {
+      createMutation.mutate(
+        { animalId: fixedAnimalId, input },
+        { onError: showError },
+      );
     }
   }
 
@@ -165,8 +210,27 @@ export function AnimalHeatFormScreen({
     ]);
   }
 
+  function openSelectAnimals() {
+    navigation.navigate("SelectAnimals", {
+      initialSelectedIds: selectedAnimalIds,
+      previousScreen: "AnimalHeatForm",
+      singleAnimalType: true,
+      onlyFemale: true,
+    });
+  }
+
+  const selectedAnimalsText =
+    selectedAnimals.length === 0
+      ? t("treatments.no_animals_selected")
+      : selectedAnimals.length === 1
+        ? selectedAnimals[0].earTag?.number
+          ? `${selectedAnimals[0].earTag.number} - ${selectedAnimals[0].name}`
+          : selectedAnimals[0].name
+        : t("treatments.n_animals_selected", { count: selectedAnimals.length });
+
   const isBusy =
     createMutation.isPending ||
+    createBatchMutation.isPending ||
     updateMutation.isPending ||
     deleteMutation.isPending;
   const title = isEditMode ? t("breeding.edit_heat") : t("breeding.add_heat");
@@ -191,7 +255,11 @@ export function AnimalHeatFormScreen({
               title={t("buttons.save")}
               onPress={handleSubmit(onSubmit)}
               disabled={isBusy}
-              loading={createMutation.isPending || updateMutation.isPending}
+              loading={
+                createMutation.isPending ||
+                createBatchMutation.isPending ||
+                updateMutation.isPending
+              }
             />
           </View>
         </BottomActionContainer>
@@ -199,13 +267,42 @@ export function AnimalHeatFormScreen({
     >
       <ScrollView showHeaderOnScroll headerTitleOnScroll={title} keyboardAware>
         <H2>{title}</H2>
+        {picksAnimals && (
+          <View style={{ marginTop: theme.spacing.m }}>
+            <Subtitle style={{ marginBottom: theme.spacing.xs }}>
+              {t("treatments.select_animals")}
+            </Subtitle>
+            <ListItem
+              style={{
+                backgroundColor: theme.colors.white,
+                borderRadius: 8,
+                paddingVertical: 12,
+              }}
+              onPress={openSelectAnimals}
+            >
+              <ListItem.Content>
+                <ListItem.Title
+                  style={{
+                    color:
+                      selectedAnimals.length === 0
+                        ? theme.colors.gray2
+                        : undefined,
+                  }}
+                >
+                  {selectedAnimalsText}
+                </ListItem.Title>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
+          </View>
+        )}
         <View style={{ marginTop: theme.spacing.m, gap: theme.spacing.xs }}>
           <RHDatePicker
             name="date"
             control={control}
             label={t("breeding.heat_date", {
-              heat: animal
-                ? t(`breeding.heat_by_type.${animal.type}`)
+              heat: animalType
+                ? t(`breeding.heat_by_type.${animalType}`)
                 : t("breeding.heat"),
             })}
             mode="date"

@@ -1,8 +1,10 @@
 import { BreedingCalendarEntry } from "@/api/breeding.api";
+import { FAB } from "@/components/buttons/FAB";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
+import { hexToRgba } from "@/theme/theme";
 import { Body, H2, H3, Subtitle } from "@/theme/Typography";
 import {
   formatLocalizedDate,
@@ -12,15 +14,23 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import {
   addMonths,
+  differenceInCalendarMonths,
   endOfMonth,
   getDay,
   getDaysInMonth,
   isSameDay,
   startOfMonth,
 } from "date-fns";
-import { useMemo, useState } from "react";
+import { type ReactNode, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
 import { useTheme } from "styled-components/native";
 import { usePermissions } from "@/features/user/users.hooks";
 import { useBreedingCalendarQuery } from "./breeding.hooks";
@@ -35,6 +45,24 @@ type CalendarEvent = {
 
 const WEEKDAY_COUNT = 7;
 
+// Day circle in the month grid and the width of each event color ring around the number
+const DAY_CIRCLE_SIZE = 36;
+const RING_WIDTH = 2;
+// Space below the entry list so the FAB doesn't cover the last entry
+const FAB_CLEARANCE = 72;
+// Height of a week row in the month grid
+const DAY_CELL_HEIGHT = 44;
+// Opacity of the primary color filling a selected day
+const SELECTED_TINT_ALPHA = 0.2;
+// Horizontal movement before the month swipe takes over, the vertical movement that leaves the gesture to
+// the page scroll instead (larger, so a slightly diagonal swipe still changes the month), and the distance
+// that changes the month
+const MONTH_SWIPE_ACTIVATION = 12;
+const MONTH_SWIPE_VERTICAL_TOLERANCE = 40;
+const MONTH_SWIPE_DISTANCE = 50;
+// Duration of the slide out of the old month and of the slide in of the new one
+const MONTH_SLIDE_DURATION_MS = 180;
+
 export function BreedingCalendarScreen({
   navigation,
 }: BreedingCalendarScreenProps) {
@@ -47,16 +75,17 @@ export function BreedingCalendarScreen({
   );
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
 
+  // The neighbouring months too, they are visible while swiping
   const { entries } = useBreedingCalendarQuery(
-    toLocalDateString(visibleMonth),
-    toLocalDateString(endOfMonth(visibleMonth)),
+    toLocalDateString(addMonths(visibleMonth, -1)),
+    toLocalDateString(endOfMonth(addMonths(visibleMonth, 1))),
   );
 
-  // Every entry can produce a heat event and (when mated) a birth event, keep those in the visible month
-  const monthEvents = useMemo(() => {
+  // Every entry can produce a heat event and (when mated) a birth event, keep those in the given month
+  function eventsInMonth(month: Date) {
     const events: CalendarEvent[] = [];
-    const monthEnd = endOfMonth(visibleMonth);
-    const isInMonth = (date: Date) => date >= visibleMonth && date <= monthEnd;
+    const monthEnd = endOfMonth(month);
+    const isInMonth = (date: Date) => date >= month && date <= monthEnd;
     for (const entry of entries ?? []) {
       const heatDate = parseDateOnly(entry.date);
       if (isInMonth(heatDate)) {
@@ -80,7 +109,8 @@ export function BreedingCalendarScreen({
       }
     }
     return events.sort((a, b) => a.date.getTime() - b.date.getTime());
-  }, [entries, visibleMonth]);
+  }
+  const monthEvents = eventsInMonth(visibleMonth);
 
   // Distinct colors: heat orange, mated heat teal, expected birth green
   function eventColor(event: CalendarEvent) {
@@ -111,19 +141,17 @@ export function BreedingCalendarScreen({
     : monthEvents;
 
   // Monday-first grid: leading blanks before the 1st, then the days of the month
-  const leadingBlankDays = (getDay(visibleMonth) + 6) % WEEKDAY_COUNT;
-  const dayCells: (Date | null)[] = [
-    ...Array.from({ length: leadingBlankDays }, () => null),
-    ...Array.from(
-      { length: getDaysInMonth(visibleMonth) },
-      (_, dayIndex) =>
-        new Date(
-          visibleMonth.getFullYear(),
-          visibleMonth.getMonth(),
-          dayIndex + 1,
-        ),
-    ),
-  ];
+  function monthDayCells(month: Date): (Date | null)[] {
+    const leadingBlankDays = (getDay(month) + 6) % WEEKDAY_COUNT;
+    return [
+      ...Array.from({ length: leadingBlankDays }, () => null),
+      ...Array.from(
+        { length: getDaysInMonth(month) },
+        (_, dayIndex) =>
+          new Date(month.getFullYear(), month.getMonth(), dayIndex + 1),
+      ),
+    ];
+  }
   const weekdayLabels = Array.from({ length: WEEKDAY_COUNT }, (_, dayIndex) =>
     new Intl.DateTimeFormat(locale, { weekday: "narrow" }).format(
       // 2024-01-01 was a Monday
@@ -132,9 +160,192 @@ export function BreedingCalendarScreen({
   );
   const today = new Date();
 
-  function changeMonth(monthDelta: number) {
+  // Carousel of the previous, visible and next month. Every month has a fixed place in the row, counted from
+  // the month the screen opened with, and the row slides to the visible month's place. After a change the
+  // rendered months keep their places (keyed by month), only the new neighbour is added and the far one
+  // removed, so nothing has to jump back and nothing flickers.
+  const anchorMonth = useRef(visibleMonth).current;
+  const monthPlace = (month: Date) =>
+    differenceInCalendarMonths(month, anchorMonth);
+  const [pageWidth, setPageWidth] = useState(0);
+  const pageWidthValue = useSharedValue(0);
+  // Horizontal position of the row: -place × width of the visible month, plus the finger while swiping
+  const rowOffset = useSharedValue(0);
+  const swipeStartOffset = useSharedValue(0);
+  const rowAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: rowOffset.value }],
+  }));
+
+  function commitMonthChange(monthDelta: number) {
     setVisibleMonth((month) => addMonths(month, monthDelta));
     setSelectedDay(null);
+  }
+
+  function changeMonth(monthDelta: number) {
+    const targetPlace = monthPlace(visibleMonth) + monthDelta;
+    rowOffset.value = withTiming(
+      -targetPlace * pageWidthValue.value,
+      { duration: MONTH_SLIDE_DURATION_MS },
+      (finished) => {
+        if (finished) scheduleOnRN(commitMonthChange, monthDelta);
+      },
+    );
+  }
+
+  // Swipe left for the next month, right for the previous one; the row follows the finger. Only clearly
+  // horizontal movements activate it, so taps on days and the vertical scrolling of the screen keep working.
+  const monthSwipeGesture = Gesture.Pan()
+    .activeOffsetX([-MONTH_SWIPE_ACTIVATION, MONTH_SWIPE_ACTIVATION])
+    .failOffsetY([
+      -MONTH_SWIPE_VERTICAL_TOLERANCE,
+      MONTH_SWIPE_VERTICAL_TOLERANCE,
+    ])
+    .onStart(() => {
+      swipeStartOffset.value = rowOffset.value;
+    })
+    .onUpdate((event) => {
+      rowOffset.value = swipeStartOffset.value + event.translationX;
+    })
+    .onEnd((event) => {
+      const monthDelta =
+        event.translationX <= -MONTH_SWIPE_DISTANCE
+          ? 1
+          : event.translationX >= MONTH_SWIPE_DISTANCE
+            ? -1
+            : 0;
+      const startPlace =
+        pageWidthValue.value > 0
+          ? Math.round(-swipeStartOffset.value / pageWidthValue.value)
+          : 0;
+      rowOffset.value = withTiming(
+        -(startPlace + monthDelta) * pageWidthValue.value,
+        { duration: MONTH_SLIDE_DURATION_MS },
+        (finished) => {
+          if (finished && monthDelta !== 0) {
+            scheduleOnRN(commitMonthChange, monthDelta);
+          }
+        },
+      );
+    });
+
+  // The months are positioned absolutely, so the row gets the height of the tallest of the three
+  const carouselMonths = [-1, 0, 1].map((monthDelta) =>
+    addMonths(visibleMonth, monthDelta),
+  );
+  const carouselHeight =
+    Math.max(
+      ...carouselMonths.map((month) =>
+        Math.ceil(monthDayCells(month).length / WEEKDAY_COUNT),
+      ),
+    ) * DAY_CELL_HEIGHT;
+
+  // Day grid of one month; only the visible month shows the selection
+  function renderMonthGrid(month: Date, isVisibleMonth: boolean) {
+    const gridEvents = eventsInMonth(month);
+    return (
+      <View
+        key={toLocalDateString(month)}
+        style={{
+          flexDirection: "row",
+          flexWrap: "wrap",
+          width: pageWidth > 0 ? pageWidth : "100%",
+          ...(pageWidth > 0
+            ? {
+                position: "absolute",
+                top: 0,
+                left: monthPlace(month) * pageWidth,
+              }
+            : {}),
+        }}
+      >
+        {monthDayCells(month).map((day, cellIndex) => {
+          if (!day) {
+            return (
+              <View
+                key={`blank-${cellIndex}`}
+                style={{ width: "14.2857%", height: DAY_CELL_HEIGHT }}
+              />
+            );
+          }
+          const dayEvents = gridEvents.filter((event) =>
+            isSameDay(event.date, day),
+          );
+          const dayColors = [...new Set(dayEvents.map(eventColor))];
+          const isSelected =
+            isVisibleMonth &&
+            selectedDay != null &&
+            isSameDay(day, selectedDay);
+          const isToday = isSameDay(day, today);
+          return (
+            <TouchableOpacity
+              key={day.toISOString()}
+              style={{
+                width: "14.2857%",
+                height: DAY_CELL_HEIGHT,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onPress={() => setSelectedDay(isSelected ? null : day)}
+            >
+              {/* One ring per event color around the day number, the first color outermost. Selected days
+                      get a light primary tint inside the rings. Today gets a thin primary ring
+                      without events, otherwise a bold primary number. */}
+              {dayColors.reduceRight<ReactNode>(
+                (inner, ringColor, ringIndex) => (
+                  <View
+                    key={ringColor}
+                    style={{
+                      width: DAY_CIRCLE_SIZE - 2 * RING_WIDTH * ringIndex,
+                      height: DAY_CIRCLE_SIZE - 2 * RING_WIDTH * ringIndex,
+                      borderRadius: DAY_CIRCLE_SIZE / 2,
+                      borderWidth: RING_WIDTH,
+                      borderColor: ringColor,
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {inner}
+                  </View>
+                ),
+                <View
+                  style={{
+                    width: DAY_CIRCLE_SIZE - 2 * RING_WIDTH * dayColors.length,
+                    height: DAY_CIRCLE_SIZE - 2 * RING_WIDTH * dayColors.length,
+                    borderRadius: DAY_CIRCLE_SIZE / 2,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    // Light tint, so the colored rings stay readable around it
+                    backgroundColor: isSelected
+                      ? hexToRgba(theme.colors.primary, SELECTED_TINT_ALPHA)
+                      : "transparent",
+                    borderWidth:
+                      isToday && !isSelected && dayColors.length === 0 ? 1 : 0,
+                    borderColor: theme.colors.primary,
+                  }}
+                >
+                  <Body
+                    style={{
+                      // Selected: dark and bold on the tint. Today with events: bold primary, the rings
+                      // take the place of today's ring.
+                      color:
+                        isToday && dayColors.length > 0 && !isSelected
+                          ? theme.colors.primary
+                          : theme.colors.black,
+                      fontWeight:
+                        isSelected || (isToday && dayColors.length > 0)
+                          ? "700"
+                          : undefined,
+                    }}
+                  >
+                    {day.getDate()}
+                  </Body>
+                </View>,
+              )}
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+    );
   }
 
   return (
@@ -191,75 +402,29 @@ export function BreedingCalendarScreen({
               </View>
             ))}
           </View>
-          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-            {dayCells.map((day, cellIndex) => {
-              if (!day) {
-                return (
-                  <View
-                    key={`blank-${cellIndex}`}
-                    style={{ width: "14.2857%", height: 44 }}
-                  />
-                );
-              }
-              const dayEvents = monthEvents.filter((event) =>
-                isSameDay(event.date, day),
-              );
-              const dayColors = [...new Set(dayEvents.map(eventColor))];
-              const isSelected =
-                selectedDay != null && isSameDay(day, selectedDay);
-              const isToday = isSameDay(day, today);
-              return (
-                <TouchableOpacity
-                  key={day.toISOString()}
-                  style={{
-                    width: "14.2857%",
-                    height: 44,
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                  onPress={() => setSelectedDay(isSelected ? null : day)}
+          <GestureDetector gesture={monthSwipeGesture}>
+            <View
+              style={{ overflow: "hidden" }}
+              onLayout={(event) => {
+                const width = event.nativeEvent.layout.width;
+                setPageWidth(width);
+                pageWidthValue.value = width;
+                rowOffset.value = -monthPlace(visibleMonth) * width;
+              }}
+            >
+              {pageWidth > 0 ? (
+                <Animated.View
+                  style={[{ height: carouselHeight }, rowAnimatedStyle]}
                 >
-                  <View
-                    style={{
-                      width: 32,
-                      height: 32,
-                      borderRadius: 16,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      backgroundColor: isSelected
-                        ? theme.colors.primary
-                        : "transparent",
-                      borderWidth: isToday && !isSelected ? 1 : 0,
-                      borderColor: theme.colors.primary,
-                    }}
-                  >
-                    <Body
-                      style={{
-                        color: isSelected
-                          ? theme.colors.white
-                          : theme.colors.black,
-                      }}
-                    >
-                      {day.getDate()}
-                    </Body>
-                  </View>
-                  <View style={{ flexDirection: "row", gap: 2, height: 6 }}>
-                    {dayColors.map((dotColor) => (
-                      <View
-                        key={dotColor}
-                        style={{
-                          width: 6,
-                          height: 6,
-                          borderRadius: 3,
-                          backgroundColor: dotColor,
-                        }}
-                      />
-                    ))}
-                  </View>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
+                  {carouselMonths.map((month) =>
+                    renderMonthGrid(month, isSameDay(month, visibleMonth)),
+                  )}
+                </Animated.View>
+              ) : (
+                renderMonthGrid(visibleMonth, true)
+              )}
+            </View>
+          </GestureDetector>
           <View
             style={{
               flexDirection: "row",
@@ -363,7 +528,21 @@ export function BreedingCalendarScreen({
             </View>
           )}
         </View>
+        {/* Keeps the last entry clear of the FAB */}
+        {canWrite("animals") && <View style={{ height: FAB_CLEARANCE }} />}
       </ScrollView>
+      {/* New heat for one or several animals, picked in the form, on the selected day if there is one */}
+      {canWrite("animals") && (
+        <FAB
+          icon={{ name: "add", color: "white" }}
+          onPress={() =>
+            navigation.navigate(
+              "AnimalHeatForm",
+              selectedDay ? { date: toLocalDateString(selectedDay) } : {},
+            )
+          }
+        />
+      )}
     </ContentView>
   );
 }
