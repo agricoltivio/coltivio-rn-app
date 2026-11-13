@@ -1563,6 +1563,7 @@
     "treatment_name": "Treatment Reason",
     "select_animal": "Select Animal",
     "select_drug": "Select Drug (optional)",
+    "drug_optional_hint": "A treatment can also be recorded without a drug, for example hoof trimming.",
     "treatment_date": "Treatment Date",
     "treatment_end_date": "End Date",
     "reason": "Reason",

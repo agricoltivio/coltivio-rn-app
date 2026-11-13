@@ -1563,6 +1563,7 @@
     "treatment_name": "Motivo del trattamento",
     "select_animal": "Seleziona animale",
     "select_drug": "Seleziona medicinale (facoltativo)",
+    "drug_optional_hint": "Un trattamento può essere registrato anche senza medicinale, ad esempio il pareggio degli unghioni.",
     "treatment_date": "Data del trattamento",
     "treatment_end_date": "Data di fine",
     "reason": "Motivo",
