@@ -4,6 +4,7 @@ import {
   addMonths,
   addYears,
   differenceInCalendarDays,
+  getDaysInMonth,
   setDay,
   getDay,
 } from "date-fns";
@@ -250,7 +251,9 @@ function expandSchedule(
       let occStart = current;
       if (frequency === "monthly" && byMonthDay !== null) {
         occStart = new Date(occStart);
-        occStart.setDate(byMonthDay);
+        // Months without that day (31 in April) fall back to their last day
+        // instead of spilling into the next month.
+        occStart.setDate(Math.min(byMonthDay, getDaysInMonth(occStart)));
       }
       const occEnd = new Date(occStart.getTime() + durationMs);
       const clampedStart = occStart < epochStart ? epochStart : occStart;
