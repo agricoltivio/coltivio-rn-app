@@ -1563,6 +1563,7 @@
     "treatment_name": "Behandlungsgrund",
     "select_animal": "Tier auswählen",
     "select_drug": "Medikament auswählen (optional)",
+    "drug_optional_hint": "Eine Behandlung lässt sich auch ohne Medikament erfassen, zum Beispiel die Klauenpflege.",
     "treatment_date": "Behandlungsdatum",
     "treatment_end_date": "Enddatum",
     "reason": "Grund",

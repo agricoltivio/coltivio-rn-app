@@ -1563,6 +1563,7 @@
     "treatment_name": "Motif du traitement",
     "select_animal": "Sélectionner un animal",
     "select_drug": "Sélectionner un médicament (facultatif)",
+    "drug_optional_hint": "Un traitement peut aussi être saisi sans médicament, par exemple le parage des onglons.",
     "treatment_date": "Date du traitement",
     "treatment_end_date": "Date de fin",
     "reason": "Motif",

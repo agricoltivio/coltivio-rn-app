@@ -11,7 +11,7 @@ import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
-import { H2, Subtitle } from "@/theme/Typography";
+import { Body, H2, Subtitle } from "@/theme/Typography";
 import { addDays } from "date-fns";
 import { useEffect, useMemo, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
@@ -581,6 +581,11 @@ export function EditTreatmentScreen({
               />
             )}
           </View>
+          {!selectedDrugId && (
+            <Body style={{ color: theme.colors.gray2 }}>
+              {t("treatments.drug_optional_hint")}
+            </Body>
+          )}
 
           {/* Drug validation warning */}
           {!drugValidation.valid && drugValidation.error && (
