@@ -62,6 +62,9 @@ yarn-debug.log*
 yarn-error.log*
 .env.local
 coltivio-797c630e24ef.json
+# Firebase config for Android push. Provided on EAS by the GOOGLE_SERVICES_JSON file
+# variable, kept out of the public repo
+/google-services.json
 
 
 *.tar.gz
