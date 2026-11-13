@@ -242,6 +242,24 @@ describe("buildOutdoorTimelineData", () => {
     expect(result.herds[0].bars[2].startDay).toBe(dayOf("2025-03-01"));
   });
 
+  test("monthly recurrence with byMonthDay 31 falls back to the last day of shorter months", () => {
+    // 2024 is a leap year, so February ends on the 29th
+    const schedule = makeSchedule("2024-01-31", "2024-01-31", {
+      recurrence: { frequency: "monthly", byMonthDay: 31, until: "2024-06-30" },
+    });
+    const result = buildOutdoorTimelineData([
+      { herdId: "h1", herdName: "Herd 1", schedules: [schedule] },
+    ]);
+    expect(result.herds[0].bars.map((b) => b.startDay)).toEqual([
+      dayOf("2024-01-31"),
+      dayOf("2024-02-29"),
+      dayOf("2024-03-31"),
+      dayOf("2024-04-30"),
+      dayOf("2024-05-31"),
+      dayOf("2024-06-30"),
+    ]);
+  });
+
   test("monthly recurrence with interval 2 generates every other month", () => {
     const schedule = makeSchedule("2025-01-10", "2025-01-10", {
       recurrence: { frequency: "monthly", interval: 2, until: "2025-06-30" },
