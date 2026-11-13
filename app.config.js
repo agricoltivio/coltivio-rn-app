@@ -1,3 +1,5 @@
+import { existsSync } from "fs";
+
 // Each variant installs side by side with its own id, name and icon background:
 // test is the standalone release build, dev is the debug build that loads from Metro.
 const VARIANTS = {
@@ -17,6 +19,22 @@ const VARIANTS = {
     iconBackground: "#9fd3e6",
   },
 };
+
+// Firebase config for Android push (FCM), without it no push token can be registered.
+// One file covers all variants as long as the Firebase project has an Android app for each
+// package id above. On EAS the GOOGLE_SERVICES_JSON file variable provides the path, locally
+// the gitignored file sits in the repo root. Prebuild fails if the path doesn't exist, which
+// is what we want on EAS; local builds without the file skip it with a warning instead.
+function resolveGoogleServicesFile() {
+  const path = process.env.GOOGLE_SERVICES_JSON ?? "./google-services.json";
+  if (process.env.EAS_BUILD || existsSync(path)) {
+    return path;
+  }
+  console.warn(
+    `${path} not found: building Android without Firebase, push notifications won't work`,
+  );
+  return undefined;
+}
 
 export default ({ config }) => {
   const variant =
@@ -65,6 +83,7 @@ export default ({ config }) => {
         backgroundColor: variant.iconBackground,
       },
       package: variant.id,
+      googleServicesFile: resolveGoogleServicesFile(),
       permissions: [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",

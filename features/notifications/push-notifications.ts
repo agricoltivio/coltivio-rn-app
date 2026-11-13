@@ -1,6 +1,7 @@
 import { createAuthClient } from "@/api/api";
 import { userApi } from "@/api/user.api";
 import { setBeforeSignOutHandler } from "@/auth/SessionProvider";
+import * as Sentry from "@sentry/react-native";
 import Constants from "expo-constants";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
@@ -115,20 +116,27 @@ export async function getNotificationPermissionAsync({
 // Gets the Expo push token and registers it with the backend.
 // Pass devicePushToken when calling from addPushTokenListener: without it the Expo token
 // lookup fetches the device token itself, which fires the listener again (endless loop).
+// Only called once permission is granted, so every failure is a real one (e.g. Firebase not
+// configured on Android) and goes to Sentry: callers only log it, nobody sees the console.
 export async function registerPushTokenAsync(
   usersApi: UsersApi,
   devicePushToken?: Notifications.DevicePushToken,
 ) {
-  const projectId =
-    Constants.expoConfig?.extra?.eas?.projectId ??
-    Constants.easConfig?.projectId;
-  const { data: pushToken } = await Notifications.getExpoPushTokenAsync({
-    projectId,
-    devicePushToken,
-  });
-  await usersApi.registerPushToken({
-    token: pushToken,
-    platform: Platform.OS === "ios" ? "ios" : "android",
-  });
-  await SecureStore.setItemAsync(PUSH_TOKEN_STORAGE_KEY, pushToken);
+  try {
+    const projectId =
+      Constants.expoConfig?.extra?.eas?.projectId ??
+      Constants.easConfig?.projectId;
+    const { data: pushToken } = await Notifications.getExpoPushTokenAsync({
+      projectId,
+      devicePushToken,
+    });
+    await usersApi.registerPushToken({
+      token: pushToken,
+      platform: Platform.OS === "ios" ? "ios" : "android",
+    });
+    await SecureStore.setItemAsync(PUSH_TOKEN_STORAGE_KEY, pushToken);
+  } catch (error) {
+    Sentry.captureException(error);
+    throw error;
+  }
 }
