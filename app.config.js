@@ -88,9 +88,6 @@ export default ({ config }) => {
         "android.permission.ACCESS_FINE_LOCATION",
       ],
     },
-    experiments: {
-      typedRoutes: true,
-    },
     plugins: [
       // The native splash can only centre one image on a solid colour, so it
       // just holds the brand ground and the mark. SplashView takes over from
