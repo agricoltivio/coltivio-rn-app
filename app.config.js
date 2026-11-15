@@ -52,7 +52,6 @@ export default ({ config }) => {
     // e.g. Stripe checkout — iOS can't unambiguously route the callback).
     scheme: variant.id,
     userInterfaceStyle: "automatic",
-    newArchEnabled: true,
     ios: {
       ...config.ios,
       supportsTablet: false,
@@ -127,6 +126,9 @@ export default ({ config }) => {
       "expo-font",
       "expo-location",
       "expo-apple-authentication",
+      "expo-image",
+      "expo-sharing",
+      "expo-status-bar",
       "@react-native-community/datetimepicker",
       [
         "@stripe/stripe-react-native",
