@@ -277,8 +277,7 @@ export function CompactDatePicker({
                   minimumDate={minimumDate}
                   maximumDate={maximumDate}
                   themeVariant="dark"
-                  onChange={(_event, selectedDate) => {
-                    if (!selectedDate) return;
+                  onValueChange={(_event, selectedDate) => {
                     // Defer so the native UIDatePicker finishes its delegate
                     // callback before React re-renders
                     safeTimeout(() => onDateChange(selectedDate), 0);
@@ -305,12 +304,11 @@ export function CompactDatePicker({
           display="calendar"
           minimumDate={minimumDate}
           maximumDate={maximumDate}
-          onChange={(event, selectedDate) => {
+          onValueChange={(_event, selectedDate) => {
             setAndroidOpen(false);
-            if (event.type === "set" && selectedDate) {
-              onDateChange(selectedDate);
-            }
+            onDateChange(selectedDate);
           }}
+          onDismiss={() => setAndroidOpen(false)}
         />
       )}
     </View>

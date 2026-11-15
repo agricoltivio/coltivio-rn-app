@@ -8,11 +8,11 @@ import { useTranslation } from "react-i18next";
 import {
   Modal,
   Pressable,
-  SafeAreaView,
   ScrollView,
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 import { useDonationCheckoutMutation } from "./agri-coltivio.hooks";
 
