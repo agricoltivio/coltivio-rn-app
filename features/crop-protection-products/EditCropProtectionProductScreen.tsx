@@ -37,7 +37,6 @@ export function EditCropProtectionProductScreen({
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors, isDirty },
   } = useForm<CropProtectionProductFormValues>({
     values: cropProtectionProduct
