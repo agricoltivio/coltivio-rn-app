@@ -6,6 +6,7 @@ import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
+import { Portal } from "@gorhom/portal";
 import React, { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -39,50 +40,52 @@ export function AreaChoiceDrawer() {
   if (mode.type !== "view") return null;
 
   return (
-    <BottomSheetModalProvider>
-      <BottomDrawerModal
-        onClose={() => setAreaChoiceOptions(null)}
-        ref={bottomSheetModalRef}
-      >
-        <View style={{ gap: theme.spacing.s }}>
-          <H3>{t("plots.map.choose_area")}</H3>
-          <View>
-            {(areaChoiceOptions ?? []).map((option) => (
-              <ListItem
-                key={option.id}
-                onPress={() => {
-                  setAreaChoiceOptions(null);
-                  if (option.kind === "meadow") {
-                    dispatch({ type: "SELECT_PLOT", plotId: null });
-                    setSelectedMeadowId(option.id);
-                  } else {
-                    setSelectedMeadowId(null);
-                    dispatch({ type: "SELECT_PLOT", plotId: option.id });
-                  }
-                }}
-              >
-                <ListItem.Content>
-                  <View style={{ flexDirection: "row" }}>
-                    <ListItem.Title numberOfLines={1} style={{ flex: 1 }}>
-                      {option.name}
-                    </ListItem.Title>
+    <Portal>
+      <BottomSheetModalProvider key="area-choice-drawer">
+        <BottomDrawerModal
+          onClose={() => setAreaChoiceOptions(null)}
+          ref={bottomSheetModalRef}
+        >
+          <View style={{ gap: theme.spacing.s }}>
+            <H3>{t("plots.map.choose_area")}</H3>
+            <View>
+              {(areaChoiceOptions ?? []).map((option) => (
+                <ListItem
+                  key={option.id}
+                  onPress={() => {
+                    setAreaChoiceOptions(null);
+                    if (option.kind === "meadow") {
+                      dispatch({ type: "SELECT_PLOT", plotId: null });
+                      setSelectedMeadowId(option.id);
+                    } else {
+                      setSelectedMeadowId(null);
+                      dispatch({ type: "SELECT_PLOT", plotId: option.id });
+                    }
+                  }}
+                >
+                  <ListItem.Content>
+                    <View style={{ flexDirection: "row" }}>
+                      <ListItem.Title numberOfLines={1} style={{ flex: 1 }}>
+                        {option.name}
+                      </ListItem.Title>
+                      <ListItem.Body>
+                        {" "}
+                        ({round(option.size / 100, 1)}a)
+                      </ListItem.Body>
+                    </View>
                     <ListItem.Body>
-                      {" "}
-                      ({round(option.size / 100, 1)}a)
+                      {option.kind === "meadow"
+                        ? t("animals.meadows.meadow")
+                        : t("plots.plot")}
                     </ListItem.Body>
-                  </View>
-                  <ListItem.Body>
-                    {option.kind === "meadow"
-                      ? t("animals.meadows.meadow")
-                      : t("plots.plot")}
-                  </ListItem.Body>
-                </ListItem.Content>
-                <ListItem.Chevron />
-              </ListItem>
-            ))}
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+              ))}
+            </View>
           </View>
-        </View>
-      </BottomDrawerModal>
-    </BottomSheetModalProvider>
+        </BottomDrawerModal>
+      </BottomSheetModalProvider>
+    </Portal>
   );
 }
