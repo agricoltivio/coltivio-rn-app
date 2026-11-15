@@ -33,6 +33,10 @@ If the changes touch files with related tests, run `yarn test` and make sure aff
 
 Never launch or interact with the iOS/Android simulator yourself (no `yarn ios`/`yarn android`, no simctl/adb driving). If manual UI verification is needed, ask the user to do it.
 
+## Form Fields
+
+Mark optional fields with "(optional)" in the label, in all four languages (`… (optional)`, `… (facultatif/facultative)`, `… (facoltativo/facoltativa)`, `… (optional)`), and leave required fields unmarked. Never mark required fields with `*`. See issue #127 for moving the marking into the input components.
+
 ## Architecture
 
 ### Navigation
