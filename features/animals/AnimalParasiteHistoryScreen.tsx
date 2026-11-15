@@ -308,8 +308,11 @@ export function AnimalParasiteHistoryScreen({
                         }`}
                     </ListItem.Body>
                   </ListItem.Content>
+                  {/* The row stretches its children; centered like the chevron next to it */}
                   {entry.kind === "famacha" && (
-                    <FamachaBadge score={entry.score} />
+                    <View style={{ justifyContent: "center" }}>
+                      <FamachaBadge score={entry.score} />
+                    </View>
                   )}
                   <ListItem.Chevron />
                 </ListItem>
