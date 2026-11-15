@@ -44,6 +44,8 @@ export function EditCropProtectionProductScreen({
       ? {
           ...cropProtectionProduct,
           description: cropProtectionProduct?.description ?? undefined,
+          registrationNumber:
+            cropProtectionProduct?.registrationNumber ?? undefined,
         }
       : undefined,
   });
@@ -57,6 +59,8 @@ export function EditCropProtectionProductScreen({
     updateCropProtectionProductMutation.mutate({
       id: cropProtectionProductId,
       ...data,
+      // An emptied field clears the number
+      registrationNumber: data.registrationNumber?.trim() || null,
     });
   }
 

@@ -101,7 +101,8 @@
       "permanent": "A tempo indeterminato",
       "sex": "Sesso",
       "date_range": "Periodo",
-      "duration": "Durata"
+      "duration": "Durata",
+      "registration_number_optional": "Numero di omologazione (facoltativo)"
     },
     "placeholders": {
       "location_search": "es. Via, Numero Civico, Città",

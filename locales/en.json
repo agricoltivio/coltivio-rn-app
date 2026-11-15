@@ -101,7 +101,8 @@
       "permanent": "Permanent",
       "sex": "Sex",
       "date_range": "Date Range",
-      "duration": "Duration"
+      "duration": "Duration",
+      "registration_number_optional": "Registration number (optional)"
     },
     "placeholders": {
       "location_search": "e.g., Street, House Number, City",

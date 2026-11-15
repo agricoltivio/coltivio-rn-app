@@ -42,7 +42,10 @@ export function CreateCropProtectionProductScreen({
   function onSubmitCropProtectionProduct(
     data: CropProtectionProductFormValues,
   ) {
-    createCropProtectionProductMutation.mutate(data);
+    createCropProtectionProductMutation.mutate({
+      ...data,
+      registrationNumber: data.registrationNumber?.trim() || null,
+    });
   }
 
   return (

@@ -5236,6 +5236,7 @@ export interface components {
             /** @enum {string} */
             unit: "ml" | "l" | "g" | "kg";
             description: string | null;
+            registrationNumber: string | null;
           };
           plot: {
             id: string;
@@ -5305,6 +5306,7 @@ export interface components {
             type: "mineral" | "organic";
             /** @enum {string} */
             unit: "l" | "kg" | "dt" | "t";
+            registrationNumber: string | null;
           };
         }[];
         count: number;
@@ -6068,6 +6070,7 @@ export interface components {
           /** @enum {string} */
           unit: "ml" | "l" | "g" | "kg";
           description: string | null;
+          registrationNumber: string | null;
         }[];
         count: number;
       };
@@ -6080,6 +6083,7 @@ export interface components {
         /** @enum {string} */
         unit: "ml" | "l" | "g" | "kg";
         description: string | null;
+        registrationNumber: string | null;
       };
     };
     PostV1CropProtectionProductsRequestBody: {
@@ -6087,6 +6091,7 @@ export interface components {
       /** @enum {string} */
       unit: "ml" | "l" | "g" | "kg";
       description?: string;
+      registrationNumber?: string | null;
       defaultEquipmentId?: string;
     };
     GetV1CropProtectionProductsByIdCropProtectionProductIdPositiveResponse: {
@@ -6097,6 +6102,7 @@ export interface components {
         /** @enum {string} */
         unit: "ml" | "l" | "g" | "kg";
         description: string | null;
+        registrationNumber: string | null;
       };
     };
     PatchV1CropProtectionProductsByIdCropProtectionProductIdPositiveResponse: {
@@ -6107,6 +6113,7 @@ export interface components {
         /** @enum {string} */
         unit: "ml" | "l" | "g" | "kg";
         description: string | null;
+        registrationNumber: string | null;
       };
     };
     PatchV1CropProtectionProductsByIdCropProtectionProductIdRequestBody: {
@@ -6114,6 +6121,7 @@ export interface components {
       /** @enum {string} */
       unit?: "ml" | "l" | "g" | "kg";
       description?: string;
+      registrationNumber?: string | null;
       defaultEquipmentId?: string;
     };
     DeleteV1CropProtectionProductsByIdCropProtectionProductIdPositiveResponse: {
@@ -6167,6 +6175,7 @@ export interface components {
           /** @enum {string} */
           unit: "ml" | "l" | "g" | "kg";
           description: string | null;
+          registrationNumber: string | null;
         };
         plot: {
           id: string;
@@ -6251,6 +6260,7 @@ export interface components {
             /** @enum {string} */
             unit: "ml" | "l" | "g" | "kg";
             description: string | null;
+            registrationNumber: string | null;
           };
           plot: {
             id: string;
@@ -6309,6 +6319,7 @@ export interface components {
             /** @enum {string} */
             unit: "ml" | "l" | "g" | "kg";
             description: string | null;
+            registrationNumber: string | null;
           };
           plot: {
             id: string;
@@ -6386,6 +6397,7 @@ export interface components {
           /** @enum {string} */
           unit: "ml" | "l" | "g" | "kg";
           description: string | null;
+          registrationNumber: string | null;
         };
         plot: {
           id: string;
@@ -6439,6 +6451,7 @@ export interface components {
           /** @enum {string} */
           unit: "ml" | "l" | "g" | "kg";
           description: string | null;
+          registrationNumber: string | null;
         };
         plot: {
           id: string;
@@ -8428,6 +8441,7 @@ export interface components {
             type: "mineral" | "organic";
             /** @enum {string} */
             unit: "l" | "kg" | "dt" | "t";
+            registrationNumber: string | null;
           };
         }[];
         count: number;
@@ -8482,6 +8496,7 @@ export interface components {
             type: "mineral" | "organic";
             /** @enum {string} */
             unit: "l" | "kg" | "dt" | "t";
+            registrationNumber: string | null;
           };
         }[];
         count: number;
@@ -8554,6 +8569,7 @@ export interface components {
           type: "mineral" | "organic";
           /** @enum {string} */
           unit: "l" | "kg" | "dt" | "t";
+          registrationNumber: string | null;
         };
       };
     };
@@ -8603,6 +8619,7 @@ export interface components {
           type: "mineral" | "organic";
           /** @enum {string} */
           unit: "l" | "kg" | "dt" | "t";
+          registrationNumber: string | null;
         };
       };
     };
@@ -8668,6 +8685,7 @@ export interface components {
             type: "mineral" | "organic";
             /** @enum {string} */
             unit: "l" | "kg" | "dt" | "t";
+            registrationNumber: string | null;
           };
         }[];
         count: number;
@@ -8693,6 +8711,7 @@ export interface components {
           type: "mineral" | "organic";
           /** @enum {string} */
           unit: "l" | "kg" | "dt" | "t";
+          registrationNumber: string | null;
         };
       };
     };
@@ -8725,6 +8744,7 @@ export interface components {
           type: "mineral" | "organic";
           /** @enum {string} */
           unit: "l" | "kg" | "dt" | "t";
+          registrationNumber: string | null;
         };
       };
     };
@@ -8748,6 +8768,7 @@ export interface components {
           type: "mineral" | "organic";
           /** @enum {string} */
           unit: "l" | "kg" | "dt" | "t";
+          registrationNumber: string | null;
         };
       };
     };
@@ -8774,6 +8795,7 @@ export interface components {
           type: "mineral" | "organic";
           /** @enum {string} */
           unit: "l" | "kg" | "dt" | "t";
+          registrationNumber: string | null;
         }[];
         count: number;
       };
@@ -8788,6 +8810,7 @@ export interface components {
         type: "mineral" | "organic";
         /** @enum {string} */
         unit: "l" | "kg" | "dt" | "t";
+        registrationNumber: string | null;
       };
     };
     PostV1FertilizersRequestBody: {
@@ -8797,6 +8820,7 @@ export interface components {
       type: "mineral" | "organic";
       /** @enum {string} */
       unit: "l" | "kg" | "dt" | "t";
+      registrationNumber?: string | null;
       defaultSpreaderId?: string;
     };
     GetV1FertilizersByIdFertilizerIdPositiveResponse: {
@@ -8809,6 +8833,7 @@ export interface components {
         type: "mineral" | "organic";
         /** @enum {string} */
         unit: "l" | "kg" | "dt" | "t";
+        registrationNumber: string | null;
       };
     };
     PatchV1FertilizersByIdFertilizerIdPositiveResponse: {
@@ -8821,6 +8846,7 @@ export interface components {
         type: "mineral" | "organic";
         /** @enum {string} */
         unit: "l" | "kg" | "dt" | "t";
+        registrationNumber: string | null;
       };
     };
     PatchV1FertilizersByIdFertilizerIdRequestBody: {
@@ -8830,6 +8856,7 @@ export interface components {
       type?: "mineral" | "organic";
       /** @enum {string} */
       unit?: "l" | "kg" | "dt" | "t";
+      registrationNumber?: string | null;
       defaultSpreaderId?: string;
     };
     DeleteV1FertilizersByIdFertilizerIdPositiveResponse: {
