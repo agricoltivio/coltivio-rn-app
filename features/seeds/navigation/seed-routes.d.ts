@@ -2,7 +2,8 @@ import { StackScreenProps } from "@/navigation/rootStackTypes";
 
 export type SeedStackParamList = {
   Seeds: undefined;
-  CreateSeed: undefined;
+  // cropId: a crop just created from the seed form, preselected there
+  CreateSeed: { cropId?: string } | undefined;
   EditSeed: { seedId: string };
 };
 

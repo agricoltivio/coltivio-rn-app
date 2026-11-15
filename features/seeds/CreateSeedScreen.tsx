@@ -4,7 +4,7 @@ import { BottomActionContainer } from "@/components/containers/BottomActionConta
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3 } from "@/theme/Typography";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "styled-components/native";
@@ -14,7 +14,7 @@ import { SeedForm, SeedFormValues } from "./SeedForm";
 import { parseQuantityKind, seedDefaultRateFromForm } from "./seedFormValues";
 import { useCreateSeedMutation } from "./seeds.hooks";
 
-export function CreateSeedScreen({ navigation }: CreateSeedScreenProps) {
+export function CreateSeedScreen({ navigation, route }: CreateSeedScreenProps) {
   const { t } = useTranslation();
   const { sowingUnits } = useSowingUnitsQuery();
   const {
@@ -26,6 +26,14 @@ export function CreateSeedScreen({ navigation }: CreateSeedScreenProps) {
 
   const previousRoute =
     navigation.getState().routes[navigation.getState().index - 1];
+
+  // Set when a crop was just created from this form (CreateCrop hands it back)
+  const createdCropId = route.params?.cropId;
+  useEffect(() => {
+    if (createdCropId) {
+      setValue("cropId", createdCropId, { shouldValidate: true });
+    }
+  }, [createdCropId, setValue]);
 
   const theme = useTheme();
   const [error, setError] = useState<string | null>(null);
@@ -89,7 +97,12 @@ export function CreateSeedScreen({ navigation }: CreateSeedScreenProps) {
         keyboardAware
       >
         <H2>{t("seeds.new_seed")}</H2>
-        <SeedForm control={control} errors={errors} setValue={setValue} />
+        <SeedForm
+          control={control}
+          errors={errors}
+          setValue={setValue}
+          onCreateCrop={() => navigation.navigate("CreateCrop")}
+        />
       </ScrollView>
     </ContentView>
   );
