@@ -358,16 +358,18 @@ export function CreateTreatmentScreen({
     });
   }, [selectedAnimals, t]);
 
-  // Weights still loading would be stored as missing, the API no longer looks them up
-  const weightsLoading =
+  // Weights still loading or failed to load would be stored as missing, the API no longer looks them up.
+  // The same goes for selected animals not known yet (animal list still loading).
+  const weightsMissing =
     withDrug &&
     drugDosePerUnit === "kg" &&
-    doseAnimals.some((animal) => animal.weightStatus === "loading");
+    (doseAnimals.length !== selectedAnimalIds.length ||
+      doseAnimals.some((animal) => animal.weightStatus !== "ready"));
   // One treatment covers one animal type, so the drug's dose and waiting times apply to all of them
   const mixedAnimalTypes =
     new Set(selectedAnimals.map((animal) => animal.type)).size > 1;
   const canSave =
-    selectedAnimalIds.length > 0 && !mixedAnimalTypes && !weightsLoading;
+    selectedAnimalIds.length > 0 && !mixedAnimalTypes && !weightsMissing;
 
   return (
     <ContentView
@@ -528,17 +530,15 @@ export function CreateTreatmentScreen({
                 {drugNotDefinedForType && (
                   <View
                     style={{
-                      backgroundColor: theme.colors.white,
-                      borderRadius: 10,
-                      padding: theme.spacing.m,
+                      paddingLeft: theme.spacing.s,
                       borderLeftWidth: 4,
                       borderLeftColor: theme.colors.warning,
                     }}
                   >
                     <Subtitle style={{ color: theme.colors.gray1 }}>
-                      {t("treatments.drug_not_defined_for_types", {
+                      {t("treatments.drug_not_defined_for_type", {
                         // Plural names are capitalized labels; only German keeps that mid-sentence
-                        types: i18n.language.startsWith("de")
+                        type: i18n.language.startsWith("de")
                           ? t(
                               `animals.animal_types_plural.${drugNotDefinedForType}`,
                             )

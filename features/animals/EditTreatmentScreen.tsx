@@ -138,9 +138,10 @@ export function EditTreatmentScreen({
           organsUsableDate: treatment.organsUsableDate
             ? new Date(treatment.organsUsableDate)
             : undefined,
-          drugDoseValue: treatment.drugDoseValue
-            ? String(treatment.drugDoseValue)
-            : undefined,
+          drugDoseValue:
+            treatment.drugDoseValue != null
+              ? String(treatment.drugDoseValue)
+              : undefined,
           drugDoseUnit: treatment.drugDoseUnit ?? undefined,
           drugDosePerUnit: treatment.drugDosePerUnit ?? undefined,
           drugReceivedFrom: treatment.drugReceivedFrom ?? undefined,
@@ -174,9 +175,18 @@ export function EditTreatmentScreen({
     setEffectiveDoseInputs({});
   }, [drugDosePerUnit, selectedDrugId]);
 
-  const selectedAnimals = useMemo(() => {
-    return animals?.filter((a) => selectedAnimalIds.includes(a.id)) ?? [];
-  }, [animals, selectedAnimalIds]);
+  // Animals of the treatment are known before the animal list loads, so every selected animal is covered.
+  // Weights and amounts are sent for exactly these animals, a missing one would be stored without
+  const selectedAnimals = useMemo(
+    () =>
+      selectedAnimalIds.flatMap((animalId) => {
+        const animal =
+          animals?.find((candidate) => candidate.id === animalId) ??
+          treatment?.animals.find((candidate) => candidate.id === animalId);
+        return animal ? [animal] : [];
+      }),
+    [animals, treatment, selectedAnimalIds],
+  );
 
   const selectedDrug = useMemo(() => {
     return drugs?.find((d) => d.id === selectedDrugId);
@@ -458,11 +468,13 @@ export function EditTreatmentScreen({
     selectedAnimalIds.length !== initialAnimalIds.length ||
     selectedAnimalIds.some((id: string) => !initialAnimalIds.includes(id));
 
-  // Weights still loading would be stored as missing, the API no longer looks them up
-  const weightsLoading =
+  // Weights still loading or failed to load would be stored as missing, the API no longer looks them up.
+  // The same goes for selected animals not known yet (newly added ones before the animal list loaded).
+  const weightsMissing =
     withDrug &&
     drugDosePerUnit === "kg" &&
-    doseAnimals.some((animal) => animal.weightStatus === "loading");
+    (doseAnimals.length !== selectedAnimalIds.length ||
+      doseAnimals.some((animal) => animal.weightStatus !== "ready"));
   // One treatment covers one animal type. Older treatments with mixed types stay editable as long as
   // their animals are unchanged, so the journal entry isn't altered
   const mixedAnimalTypes =
@@ -471,7 +483,7 @@ export function EditTreatmentScreen({
   const canSave =
     selectedAnimalIds.length > 0 &&
     !mixedAnimalTypes &&
-    !weightsLoading &&
+    !weightsMissing &&
     (isDirty || animalsChanged || Object.keys(effectiveDoseInputs).length > 0);
 
   return (
@@ -667,17 +679,15 @@ export function EditTreatmentScreen({
                 {drugNotDefinedForType && (
                   <View
                     style={{
-                      backgroundColor: theme.colors.white,
-                      borderRadius: 10,
-                      padding: theme.spacing.m,
+                      paddingLeft: theme.spacing.s,
                       borderLeftWidth: 4,
                       borderLeftColor: theme.colors.warning,
                     }}
                   >
                     <Subtitle style={{ color: theme.colors.gray1 }}>
-                      {t("treatments.drug_not_defined_for_types", {
+                      {t("treatments.drug_not_defined_for_type", {
                         // Plural names are capitalized labels; only German keeps that mid-sentence
-                        types: i18n.language.startsWith("de")
+                        type: i18n.language.startsWith("de")
                           ? t(
                               `animals.animal_types_plural.${drugNotDefinedForType}`,
                             )

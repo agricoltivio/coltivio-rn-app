@@ -1593,7 +1593,7 @@
     "filter_by_birthday": "Filter by Birthday",
     "birthday_from": "From",
     "birthday_to": "To",
-    "drug_not_defined_for_types": "This drug has no dose and waiting times for {{types}}. Please enter them manually.",
+    "drug_not_defined_for_type": "This drug has no dose and waiting times for {{type}}. Please enter them manually.",
     "mixed_animal_types": "A treatment can only contain animals of one type."
   },
   "settings": {

@@ -1593,7 +1593,7 @@
     "filter_by_birthday": "Nach Geburtstag filtern",
     "birthday_from": "Von",
     "birthday_to": "Bis",
-    "drug_not_defined_for_types": "Für {{types}} sind bei diesem Medikament keine Dosierung und Absetzfristen hinterlegt. Bitte manuell erfassen.",
+    "drug_not_defined_for_type": "Für {{type}} sind bei diesem Medikament keine Dosierung und Absetzfristen hinterlegt. Bitte manuell erfassen.",
     "mixed_animal_types": "Eine Behandlung kann nur Tiere einer Tierart enthalten."
   },
   "speed_dial": {
