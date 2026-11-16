@@ -260,6 +260,41 @@ describe("buildOutdoorTimelineData", () => {
     ]);
   });
 
+  test("monthly recurrence with byMonthDay after the start day ends on the occurrence, not the month cursor", () => {
+    // Cursor Jun 15 is before until, but the occurrence on Jun 30 is after it (as on the server)
+    const schedule = makeSchedule("2024-01-15", "2024-01-15", {
+      recurrence: { frequency: "monthly", byMonthDay: 31, until: "2024-06-20" },
+    });
+    const result = buildOutdoorTimelineData([
+      { herdId: "h1", herdName: "Herd 1", schedules: [schedule] },
+    ]);
+    expect(result.herds[0].bars.map((b) => b.startDay)).toEqual([
+      dayOf("2024-01-31"),
+      dayOf("2024-02-29"),
+      dayOf("2024-03-31"),
+      dayOf("2024-04-30"),
+      dayOf("2024-05-31"),
+    ]);
+  });
+
+  test("monthly recurrence with byMonthDay before the start day keeps the last occurrence before until", () => {
+    // Cursor Jun 20 is already after until, but the occurrence on Jun 5 is before it (as on the server)
+    const schedule = makeSchedule("2024-01-20", "2024-01-20", {
+      recurrence: { frequency: "monthly", byMonthDay: 5, until: "2024-06-10" },
+    });
+    const result = buildOutdoorTimelineData([
+      { herdId: "h1", herdName: "Herd 1", schedules: [schedule] },
+    ]);
+    expect(result.herds[0].bars.map((b) => b.startDay)).toEqual([
+      dayOf("2024-01-05"),
+      dayOf("2024-02-05"),
+      dayOf("2024-03-05"),
+      dayOf("2024-04-05"),
+      dayOf("2024-05-05"),
+      dayOf("2024-06-05"),
+    ]);
+  });
+
   test("monthly recurrence with interval 2 generates every other month", () => {
     const schedule = makeSchedule("2025-01-10", "2025-01-10", {
       recurrence: { frequency: "monthly", interval: 2, until: "2025-06-30" },
