@@ -6,6 +6,7 @@ import { NumberInput } from "@/components/inputs/NumberInput";
 import { ScrollView } from "@/components/views/ScrollView";
 import { Body, H2, Subtitle, Title } from "@/theme/Typography";
 import { round } from "@/utils/math";
+import { splitByArea } from "@/utils/splitByArea";
 import React, { useEffect, useState } from "react";
 import { Switch, View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -48,44 +49,20 @@ export function DivideFertilizerApplicationOnPlotsScreen({
 
   useEffect(() => {
     if (divideByArea) {
-      const totalArea = selectedPlots.reduce((acc, plot) => {
-        return acc + plot.size;
-      }, 0);
-      let totalDivided = 0;
+      const quantities = splitByArea(
+        selectedPlots.map((plot) => plot.size),
+        totalNumberOfApplications,
+        divisionPrecision,
+      );
+      const next: Record<string, string> = {};
       selectedPlots.forEach((plot, index) => {
-        if (round(plot.size, divisionPrecision) === 0) {
-          setQuantityByPlotId((prev) => ({
-            ...prev,
-            [plot.plotId]: "0",
-          }));
-        } else {
-          const fraction = plot.size / totalArea;
-          let quantity = 0;
-          // we give the rest to the last item, rounded to the precision of the
-          // entered total so the distributed amounts always sum back exactly
-          if (index === selectedPlots.length - 1) {
-            quantity = round(totalNumberOfApplications - totalDivided, 2);
-          } else {
-            quantity = round(
-              (totalNumberOfApplications - totalDivided) * fraction,
-              divisionPrecision,
-            );
-          }
-          if (quantity === 0 && divisionPrecision < 2) {
-            setDivisionPrecision((prev) => Math.min(prev + 1, 2));
-          }
-          totalDivided += quantity;
-          setQuantityByPlotId((prev) => ({
-            ...prev,
-            [plot.plotId]: quantity.toString(),
-          }));
+        const quantity = quantities[index];
+        if (quantity === 0 && plot.size > 0 && divisionPrecision < 2) {
+          setDivisionPrecision((prev) => Math.min(prev + 1, 2));
         }
-        // putFertilizerApplicationPlot({
-        //   ...area,
-        //   producedUnits: quantity,
-        //   amountInKilos: quantity * fertilizerApplication!.kilosPerUnit,
-        // });
+        next[plot.plotId] = quantity.toString();
       });
+      setQuantityByPlotId(next);
     }
   }, [divideByArea, selectedPlotsById, divisionPrecision]);
 

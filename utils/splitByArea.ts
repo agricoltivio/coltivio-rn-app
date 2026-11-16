@@ -13,12 +13,19 @@ export function splitByArea(
   const totalSize = sizes.reduce((sum, size) => sum + size, 0);
   let divided = 0;
   return sizes.map((size, index) => {
+    // the entered total has up to 2 decimals, so the rest is rounded to 2 as
+    // well, otherwise it wouldn't sum back to the total with a lower precision
+    const rest = round(total - divided, 2);
     const amount =
       index === sizes.length - 1
-        ? round(total - divided, precision)
-        : round(
-            total * (totalSize > 0 ? size / totalSize : 1 / sizes.length),
-            precision,
+        ? rest
+        : // capped so rounding up many small parts can't leave a negative rest
+          Math.min(
+            round(
+              total * (totalSize > 0 ? size / totalSize : 1 / sizes.length),
+              precision,
+            ),
+            rest,
           );
     divided += amount;
     return amount;
