@@ -1594,6 +1594,8 @@
     "birthday_from": "De",
     "birthday_to": "Jusqu'au",
     "drug_not_defined_for_type": "Ce médicament n'a pas de dosage ni de délais d'attente pour les {{type}}. Veuillez les saisir manuellement.",
+    "delete_confirm_title": "Supprimer le traitement ?",
+    "delete_confirm_message": "Le traitement est retiré du journal des traitements. Cette action est irréversible.",
     "mixed_animal_types": "Un traitement ne peut contenir que des animaux d'une seule espèce."
   },
   "settings": {

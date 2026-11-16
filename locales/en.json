@@ -1594,6 +1594,8 @@
     "birthday_from": "From",
     "birthday_to": "To",
     "drug_not_defined_for_type": "This drug has no dose and waiting times for {{type}}. Please enter them manually.",
+    "delete_confirm_title": "Delete treatment?",
+    "delete_confirm_message": "The treatment is removed from the treatment journal. This cannot be undone.",
     "mixed_animal_types": "A treatment can only contain animals of one type."
   },
   "settings": {

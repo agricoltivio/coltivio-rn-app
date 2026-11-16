@@ -434,8 +434,20 @@ export function EditTreatmentScreen({
     });
   }
 
+  // A deleted treatment is gone from the treatment journal, so ask first
   function onDelete() {
-    deleteTreatmentMutation.mutate(treatmentId);
+    Alert.alert(
+      t("treatments.delete_confirm_title"),
+      t("treatments.delete_confirm_message"),
+      [
+        { text: t("buttons.cancel"), style: "cancel" },
+        {
+          text: t("buttons.delete"),
+          style: "destructive",
+          onPress: () => deleteTreatmentMutation.mutate(treatmentId),
+        },
+      ],
+    );
   }
 
   function openSelectAnimalsModal() {

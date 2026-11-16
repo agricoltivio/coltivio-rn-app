@@ -1594,6 +1594,8 @@
     "birthday_from": "Von",
     "birthday_to": "Bis",
     "drug_not_defined_for_type": "Für {{type}} sind bei diesem Medikament keine Dosierung und Absetzfristen hinterlegt. Bitte manuell erfassen.",
+    "delete_confirm_title": "Behandlung löschen?",
+    "delete_confirm_message": "Die Behandlung wird aus dem Behandlungsjournal entfernt. Dies kann nicht rückgängig gemacht werden.",
     "mixed_animal_types": "Eine Behandlung kann nur Tiere einer Tierart enthalten."
   },
   "speed_dial": {

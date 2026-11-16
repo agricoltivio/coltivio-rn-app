@@ -1594,6 +1594,8 @@
     "birthday_from": "Da",
     "birthday_to": "A",
     "drug_not_defined_for_type": "Per questa specie ({{type}}) il medicinale non ha dosaggio né tempi di attesa. Inseriscili manualmente.",
+    "delete_confirm_title": "Eliminare il trattamento?",
+    "delete_confirm_message": "Il trattamento viene rimosso dal registro dei trattamenti. L'operazione non può essere annullata.",
     "mixed_animal_types": "Un trattamento può contenere solo animali di una sola specie."
   },
   "settings": {
