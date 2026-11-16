@@ -197,7 +197,7 @@ export function ConfigureFertilizerApplicationScreen({
   if (!presetsLoaded) return null;
 
   const unitLabel = unitOptions.find((o) => o.value === unit)?.label ?? "";
-  const fertilizerUnit = selectedFertilizer?.unit ?? "kg";
+  const fertilizerUnit = t(`units.short.${selectedFertilizer?.unit ?? "kg"}`);
 
   return (
     <ContentView

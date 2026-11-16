@@ -29,7 +29,7 @@ export function DivideFertilizerApplicationOnPlotsScreen({
   } = useCreateFertilizerApplicationStore();
 
   const unit = fertilizerApplication?.unit;
-  const fertilizerUnit = selectedFertilizer?.unit ?? "kg";
+  const fertilizerUnit = t(`units.short.${selectedFertilizer?.unit ?? "kg"}`);
 
   const [quantityByPlotId, setQuantityByPlotId] = useState<
     Record<string, string>

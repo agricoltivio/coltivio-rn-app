@@ -65,6 +65,10 @@ export function FertilizerApplicationSummary({
 }: FertilizerApplicationSummaryProps) {
   const { t, i18n } = useTranslation();
   const locale = i18n.language;
+  // "m³" for cubic metres, the other units read the same as stored
+  const productUnitLabel = t(`units.short.${productUnit}`, {
+    defaultValue: productUnit,
+  });
   const theme = useTheme();
   const size = plots.reduce((acc, plot) => acc + plot.size, 0);
 
@@ -115,12 +119,12 @@ export function FertilizerApplicationSummary({
                 ? t("forms.labels.total")
                 : t("forms.labels.amount_per_load")
           }
-          value={`${amountPerUnit} ${productUnit}`}
+          value={`${amountPerUnit} ${productUnitLabel}`}
         />
         {unit !== "total_amount" && (
           <SummaryItem
             label={t("forms.labels.total")}
-            value={`${round(amountPerUnit * totalNumberOfUnits, 2)} ${productUnit}`}
+            value={`${round(amountPerUnit * totalNumberOfUnits, 2)} ${productUnitLabel}`}
           />
         )}
         <SummaryItem
@@ -159,8 +163,8 @@ export function FertilizerApplicationSummary({
                   </ListItem.Title>
                   <ListItem.Body>
                     {unit === "amount_per_hectare"
-                      ? `${round(plot.numberOfUnits, 2)} ha → ${round(plot.numberOfUnits * amountPerUnit, 2)} ${productUnit}`
-                      : `${round(plot.numberOfUnits * amountPerUnit, 2)} ${productUnit}`}
+                      ? `${round(plot.numberOfUnits, 2)} ha → ${round(plot.numberOfUnits * amountPerUnit, 2)} ${productUnitLabel}`
+                      : `${round(plot.numberOfUnits * amountPerUnit, 2)} ${productUnitLabel}`}
                   </ListItem.Body>
                 </ListItem.Content>
               </ListItem>

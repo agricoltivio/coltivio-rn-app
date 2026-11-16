@@ -5304,7 +5304,7 @@ export interface components {
             /** @enum {string} */
             type: "mineral" | "organic";
             /** @enum {string} */
-            unit: "l" | "kg" | "dt" | "t";
+            unit: "l" | "kg" | "dt" | "t" | "m3";
           };
         }[];
         count: number;
@@ -5320,7 +5320,7 @@ export interface components {
             totalProducedUnits: number;
             fertilizerName: string;
             /** @enum {string} */
-            unit: "l" | "kg" | "dt" | "t";
+            unit: "l" | "kg" | "dt" | "t" | "m3";
           }[];
         }[];
       };
@@ -8427,7 +8427,7 @@ export interface components {
             /** @enum {string} */
             type: "mineral" | "organic";
             /** @enum {string} */
-            unit: "l" | "kg" | "dt" | "t";
+            unit: "l" | "kg" | "dt" | "t" | "m3";
           };
         }[];
         count: number;
@@ -8481,7 +8481,7 @@ export interface components {
             /** @enum {string} */
             type: "mineral" | "organic";
             /** @enum {string} */
-            unit: "l" | "kg" | "dt" | "t";
+            unit: "l" | "kg" | "dt" | "t" | "m3";
           };
         }[];
         count: number;
@@ -8553,7 +8553,7 @@ export interface components {
           /** @enum {string} */
           type: "mineral" | "organic";
           /** @enum {string} */
-          unit: "l" | "kg" | "dt" | "t";
+          unit: "l" | "kg" | "dt" | "t" | "m3";
         };
       };
     };
@@ -8602,7 +8602,7 @@ export interface components {
           /** @enum {string} */
           type: "mineral" | "organic";
           /** @enum {string} */
-          unit: "l" | "kg" | "dt" | "t";
+          unit: "l" | "kg" | "dt" | "t" | "m3";
         };
       };
     };
@@ -8631,7 +8631,7 @@ export interface components {
             totalProducedUnits: number;
             fertilizerName: string;
             /** @enum {string} */
-            unit: "l" | "kg" | "dt" | "t";
+            unit: "l" | "kg" | "dt" | "t" | "m3";
           }[];
         }[];
       };
@@ -8667,7 +8667,7 @@ export interface components {
             /** @enum {string} */
             type: "mineral" | "organic";
             /** @enum {string} */
-            unit: "l" | "kg" | "dt" | "t";
+            unit: "l" | "kg" | "dt" | "t" | "m3";
           };
         }[];
         count: number;
@@ -8692,7 +8692,7 @@ export interface components {
           /** @enum {string} */
           type: "mineral" | "organic";
           /** @enum {string} */
-          unit: "l" | "kg" | "dt" | "t";
+          unit: "l" | "kg" | "dt" | "t" | "m3";
         };
       };
     };
@@ -8724,7 +8724,7 @@ export interface components {
           /** @enum {string} */
           type: "mineral" | "organic";
           /** @enum {string} */
-          unit: "l" | "kg" | "dt" | "t";
+          unit: "l" | "kg" | "dt" | "t" | "m3";
         };
       };
     };
@@ -8747,7 +8747,7 @@ export interface components {
           /** @enum {string} */
           type: "mineral" | "organic";
           /** @enum {string} */
-          unit: "l" | "kg" | "dt" | "t";
+          unit: "l" | "kg" | "dt" | "t" | "m3";
         };
       };
     };
@@ -8773,7 +8773,7 @@ export interface components {
           /** @enum {string} */
           type: "mineral" | "organic";
           /** @enum {string} */
-          unit: "l" | "kg" | "dt" | "t";
+          unit: "l" | "kg" | "dt" | "t" | "m3";
         }[];
         count: number;
       };
@@ -8787,7 +8787,7 @@ export interface components {
         /** @enum {string} */
         type: "mineral" | "organic";
         /** @enum {string} */
-        unit: "l" | "kg" | "dt" | "t";
+        unit: "l" | "kg" | "dt" | "t" | "m3";
       };
     };
     PostV1FertilizersRequestBody: {
@@ -8796,7 +8796,7 @@ export interface components {
       /** @enum {string} */
       type: "mineral" | "organic";
       /** @enum {string} */
-      unit: "l" | "kg" | "dt" | "t";
+      unit: "l" | "kg" | "dt" | "t" | "m3";
       defaultSpreaderId?: string;
     };
     GetV1FertilizersByIdFertilizerIdPositiveResponse: {
@@ -8808,7 +8808,7 @@ export interface components {
         /** @enum {string} */
         type: "mineral" | "organic";
         /** @enum {string} */
-        unit: "l" | "kg" | "dt" | "t";
+        unit: "l" | "kg" | "dt" | "t" | "m3";
       };
     };
     PatchV1FertilizersByIdFertilizerIdPositiveResponse: {
@@ -8820,7 +8820,7 @@ export interface components {
         /** @enum {string} */
         type: "mineral" | "organic";
         /** @enum {string} */
-        unit: "l" | "kg" | "dt" | "t";
+        unit: "l" | "kg" | "dt" | "t" | "m3";
       };
     };
     PatchV1FertilizersByIdFertilizerIdRequestBody: {
@@ -8829,7 +8829,7 @@ export interface components {
       /** @enum {string} */
       type?: "mineral" | "organic";
       /** @enum {string} */
-      unit?: "l" | "kg" | "dt" | "t";
+      unit?: "l" | "kg" | "dt" | "t" | "m3";
       defaultSpreaderId?: string;
     };
     DeleteV1FertilizersByIdFertilizerIdPositiveResponse: {

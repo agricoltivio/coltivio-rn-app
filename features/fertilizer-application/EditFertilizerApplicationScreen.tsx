@@ -117,9 +117,9 @@ function EditFertilizerApplicationForm({
     }));
 
   const unitLabel = unitOptions.find((o) => o.value === unit)?.label ?? "";
-  const fertilizerUnit =
-    fertilizerOptions.find((option) => option.value === fertilizerId)?.unit ??
-    "kg";
+  const fertilizerUnit = t(
+    `units.short.${fertilizerOptions.find((option) => option.value === fertilizerId)?.unit ?? "kg"}`,
+  );
 
   // total_amount and amount_per_hectare derive the number of units, as in the add flow
   const hasDerivedNumberOfUnits =
