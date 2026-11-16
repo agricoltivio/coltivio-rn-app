@@ -6,8 +6,6 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { Body, H2, H3 } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
 import { round } from "@/utils/math";
-import { type LngLat } from "@maplibre/maplibre-react-native";
-import * as turf from "@turf/turf";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -74,9 +72,6 @@ export function HarvestSummary({
   const size = harvestAreas.reduce((acc, plot) => acc + plot.harvestSize, 0);
   const unitLabel = t(`harvests.labels.unit.${unit}`);
 
-  const harvestCentroid = turf.centroid(harvestAreas[0].geometry);
-  const center = harvestCentroid.geometry.coordinates as LngLat;
-
   const features = useMemo(
     (): GeoJSON.FeatureCollection => ({
       type: "FeatureCollection",
@@ -97,12 +92,7 @@ export function HarvestSummary({
       <H2>{t("harvests.harvest")}</H2>
       <H3>{formattedDate}</H3>
       <View style={{ marginTop: theme.spacing.m }}>
-        <StaticMapPreview
-          center={center}
-          zoom={17}
-          features={features}
-          height={250}
-        />
+        <StaticMapPreview features={features} height={250} />
       </View>
       {/* <View>
         <H2 style={{ marginTop: theme.spacing.xl }}>Infos</H2>
