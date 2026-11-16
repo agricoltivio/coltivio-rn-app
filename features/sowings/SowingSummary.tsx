@@ -22,8 +22,21 @@ function SummaryItem({ label, value }: { label: string; value: string }) {
         gap: theme.spacing.m,
       }}
     >
-      <Text style={{ flex: 1, fontWeight: 600, fontSize: 18 }}>{label}</Text>
-      <Text style={{ fontSize: 18 }}>{value}</Text>
+      {/* The label keeps its width, a long value (e.g. plot name) is cut off with an ellipsis instead of
+          squeezing the label to one letter per line */}
+      <Text
+        numberOfLines={1}
+        style={{ flexShrink: 0, fontWeight: 600, fontSize: 18 }}
+      >
+        {label}
+      </Text>
+      <Text
+        numberOfLines={1}
+        ellipsizeMode="tail"
+        style={{ flex: 1, fontSize: 18, textAlign: "right" }}
+      >
+        {value}
+      </Text>
     </View>
   );
 }
