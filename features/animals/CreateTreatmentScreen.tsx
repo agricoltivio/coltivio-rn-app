@@ -1,5 +1,5 @@
 import { ApiError } from "@/api/api";
-import { toLocalDateString } from "@/utils/date";
+import { parseDateOnly, toLocalDateString } from "@/utils/date";
 import { Button } from "@/components/buttons/Button";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -13,7 +13,6 @@ import { ListItem } from "@/components/list/ListItem";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
-import { addDays } from "date-fns";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -30,6 +29,7 @@ import {
   TreatmentEffectiveDoseInputs,
   treatmentAnimalDosePayload,
 } from "./TreatmentAnimalDoses";
+import { DrugProposalInputs, proposeDrugValues } from "./treatmentDrugProposal";
 
 type DoseUnit =
   | "tablet"
@@ -98,6 +98,7 @@ export function CreateTreatmentScreen({
     formState: { errors, dirtyFields },
     watch,
     setValue,
+    getValues,
   } = useForm<TreatmentFormValues>({
     defaultValues: {
       withDrug: true,
@@ -151,78 +152,53 @@ export function CreateTreatmentScreen({
       ? animalType
       : undefined;
 
-  // Proposes the drug's values when the user picks a drug or animals of another type, and shifts the
-  // proposed dates when the end date changes. Runs only on these changes, so values entered by hand
-  // (e.g. for a drug without values for the animal type) survive other edits.
+  // Proposes the drug's values when the drug or the animal type changes and moves the proposed dates
+  // along with the end date; the rules are in proposeDrugValues
   const endDay = endDate ? toLocalDateString(endDate) : undefined;
-  const previousProposalInputs = useRef<{
-    drugId: string | undefined;
-    animalType: string | undefined;
-    endDay: string | undefined;
-  } | null>(null);
+  const previousProposalInputs = useRef<DrugProposalInputs | null>(null);
   useEffect(() => {
     const drugId = selectedDrugId || undefined;
     // Drug list still loading (e.g. right after creating a drug), propose once it's there
     if (drugId && !selectedDrug) return;
+    const current = { drugId, animalType, endDay };
     const previous = previousProposalInputs.current;
-    previousProposalInputs.current = { drugId, animalType, endDay };
-    if (!previous) return;
-    const drugChanged = previous.drugId !== drugId;
-    // Animals finishing loading is no change, picking animals after the drug is
-    const animalTypeChanged =
-      previous.animalType !== animalType &&
-      (previous.animalType !== undefined || !!dirtyFields.drugId);
-    const endDayChanged = previous.endDay !== endDay;
-    if (!drugChanged && !animalTypeChanged && !endDayChanged) return;
-
-    if (!selectedDrug) {
-      if (!drugChanged) return;
-      // Drug removed: no antibiotic flags, dose or withdrawal period
-      setValue("isAntibiotic", false);
-      setValue("criticalAntibiotic", false);
-      setValue("drugReceivedFrom", undefined);
-      setValue("milkUsableDate", undefined);
-      setValue("meatUsableDate", undefined);
-      setValue("organsUsableDate", undefined);
-      setValue("drugDoseValue", undefined);
-      setValue("drugDoseUnit", undefined);
-      setValue("drugDosePerUnit", undefined);
-      return;
+    previousProposalInputs.current = current;
+    const toDay = (date: Date | undefined) =>
+      date ? toLocalDateString(date) : undefined;
+    const proposal = proposeDrugValues({
+      previous,
+      current,
+      drug: selectedDrug,
+      drugTreatment: drugTreatmentForType,
+      drugPickedByUser: !!dirtyFields.drugId,
+      usableDays: {
+        milk: toDay(getValues("milkUsableDate")),
+        meat: toDay(getValues("meatUsableDate")),
+        organs: toDay(getValues("organsUsableDate")),
+      },
+    });
+    if (proposal.flags) {
+      setValue("isAntibiotic", proposal.flags.isAntibiotic);
+      setValue("criticalAntibiotic", proposal.flags.criticalAntibiotic);
+      setValue("drugReceivedFrom", proposal.flags.receivedFrom);
     }
-    if (drugChanged) {
-      setValue("isAntibiotic", selectedDrug.isAntibiotic);
-      setValue("criticalAntibiotic", selectedDrug.criticalAntibiotic);
-      setValue("drugReceivedFrom", selectedDrug.receivedFrom);
+    // null clears the dose
+    if (proposal.dose !== undefined) {
+      setValue("drugDoseValue", proposal.dose?.value);
+      setValue("drugDoseUnit", proposal.dose?.unit);
+      setValue("drugDosePerUnit", proposal.dose?.perUnit);
     }
-    if (drugTreatmentForType) {
-      // The dose only on a new drug or animal type, an end date change keeps a dose changed by hand
-      if (drugChanged || animalTypeChanged) {
-        setValue("drugDoseValue", String(drugTreatmentForType.doseValue));
-        setValue("drugDoseUnit", drugTreatmentForType.doseUnit);
-        setValue("drugDosePerUnit", drugTreatmentForType.dosePerUnit);
-      }
-      if (endDate) {
-        setValue(
-          "milkUsableDate",
-          addDays(endDate, drugTreatmentForType.milkWaitingDays),
-        );
-        setValue(
-          "meatUsableDate",
-          addDays(endDate, drugTreatmentForType.meatWaitingDays),
-        );
-        setValue(
-          "organsUsableDate",
-          addDays(endDate, drugTreatmentForType.organsWaitingDays),
-        );
-      }
-    } else if (animalType && (drugChanged || animalTypeChanged)) {
-      // Nothing to propose, don't keep the values of a previously selected drug or animal type
-      setValue("milkUsableDate", undefined);
-      setValue("meatUsableDate", undefined);
-      setValue("organsUsableDate", undefined);
-      setValue("drugDoseValue", undefined);
-      setValue("drugDoseUnit", undefined);
-      setValue("drugDosePerUnit", undefined);
+    // Per date: absent keeps it, null clears it
+    const usableDays = proposal.usableDays;
+    if (usableDays) {
+      const toDate = (day: string | null) =>
+        day ? parseDateOnly(day) : undefined;
+      if (usableDays.milk !== undefined)
+        setValue("milkUsableDate", toDate(usableDays.milk));
+      if (usableDays.meat !== undefined)
+        setValue("meatUsableDate", toDate(usableDays.meat));
+      if (usableDays.organs !== undefined)
+        setValue("organsUsableDate", toDate(usableDays.organs));
     }
   }, [
     selectedDrugId,
@@ -230,8 +206,8 @@ export function CreateTreatmentScreen({
     drugTreatmentForType,
     animalType,
     endDay,
-    endDate,
     dirtyFields.drugId,
+    getValues,
     setValue,
   ]);
 
@@ -255,12 +231,15 @@ export function CreateTreatmentScreen({
     setEffectiveDoseInputs({});
   }, [drugDosePerUnit, selectedDrugId]);
   // Same weight the server uses: the latest entry on or before the start date, not the newest overall
-  const { weightOnDayByAnimalId, isError: weightsFailed } =
-    useAnimalWeightsOnDay(
-      selectedAnimalIds,
-      toLocalDateString(treatmentDate),
-      drugDosePerUnit === "kg",
-    );
+  const {
+    weightOnDayByAnimalId,
+    isError: weightsFailed,
+    retry: retryWeights,
+  } = useAnimalWeightsOnDay(
+    selectedAnimalIds,
+    toLocalDateString(treatmentDate),
+    drugDosePerUnit === "kg",
+  );
   const doseAnimals: TreatmentDoseAnimal[] = selectedAnimals.map((animal) => {
     const weightOnDay = weightOnDayByAnimalId.get(animal.id) ?? null;
     const weightLoaded = weightOnDayByAnimalId.has(animal.id);
@@ -615,6 +594,7 @@ export function CreateTreatmentScreen({
                     }
                     effectiveDoseInputs={effectiveDoseInputs}
                     onEffectiveDoseInputsChange={setEffectiveDoseInputs}
+                    onRetryWeights={retryWeights}
                   />
                 )}
 

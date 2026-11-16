@@ -1,3 +1,4 @@
+import { Button } from "@/components/buttons/Button";
 import { NumberInput } from "@/components/inputs/NumberInput";
 import { Body, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate, parseDateOnly } from "@/utils/date";
@@ -82,12 +83,15 @@ export function TreatmentAnimalDoses({
   doseUnitLabel,
   effectiveDoseInputs,
   onEffectiveDoseInputsChange,
+  onRetryWeights,
 }: {
   animals: TreatmentDoseAnimal[];
   doseValue: string | undefined;
   doseUnitLabel: string;
   effectiveDoseInputs: TreatmentEffectiveDoseInputs;
   onEffectiveDoseInputsChange: (inputs: TreatmentEffectiveDoseInputs) => void;
+  // Saving waits for all weights, so a failed load needs a way to try again without leaving the form
+  onRetryWeights: () => void;
 }) {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
@@ -169,6 +173,13 @@ export function TreatmentAnimalDoses({
           </View>
         );
       })}
+      {animals.some((animal) => animal.weightStatus === "error") && (
+        <Button
+          type="secondary"
+          title={t("buttons.retry")}
+          onPress={onRetryWeights}
+        />
+      )}
     </View>
   );
 }
