@@ -32,21 +32,19 @@ function SummaryItem({
         gap: theme.spacing.m,
       }}
     >
-      {/* The label keeps its width, a long value (e.g. plot name) is cut off with an ellipsis instead of
-          squeezing the label to one letter per line */}
+      {/* The label keeps its width (up to 60% of the row) so it isn't squeezed to one letter per line,
+          a long value (e.g. plot name) wraps onto further lines */}
       <Text
-        numberOfLines={1}
-        style={{ flexShrink: 0, fontWeight: 600, fontSize: 18 }}
+        style={{
+          flexShrink: 0,
+          maxWidth: "60%",
+          fontWeight: 600,
+          fontSize: 18,
+        }}
       >
         {label}
       </Text>
-      <Text
-        numberOfLines={1}
-        ellipsizeMode="tail"
-        style={{ flex: 1, fontSize: 18, textAlign: "right" }}
-      >
-        {value}
-      </Text>
+      <Text style={{ flex: 1, fontSize: 18, textAlign: "right" }}>{value}</Text>
     </View>
   );
 }
