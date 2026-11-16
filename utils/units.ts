@@ -80,13 +80,17 @@ export function formatApplicationAmount(
   t: TranslateFn,
 ): string {
   const { unit, numberOfUnits, amountPerUnit, productUnit } = params;
+  // Symbol of the product's unit, e.g. "m³" for m3; the other units read the same as stored
+  const productUnitSymbol = t(`units.short.${productUnit}`, {
+    defaultValue: productUnit,
+  });
 
   if (unit === "total_amount") {
-    return `${round(numberOfUnits * amountPerUnit, 2)}${productUnit}`;
+    return `${round(numberOfUnits * amountPerUnit, 2)}${productUnitSymbol}`;
   }
 
   if (unit === "amount_per_hectare") {
-    return `${round(amountPerUnit, 2)}${productUnit}/${t("units.short.ha")}`;
+    return `${round(amountPerUnit, 2)}${productUnitSymbol}/${t("units.short.ha")}`;
   }
 
   const unitLabel = t(`fertilizer_application.units.${unit}`, {
