@@ -1,3 +1,4 @@
+import { productUnitLabel } from "@/utils/units";
 import { toLocalDateString } from "@/utils/date";
 import {
   FertilizerApplication,
@@ -117,8 +118,10 @@ function EditFertilizerApplicationForm({
     }));
 
   const unitLabel = unitOptions.find((o) => o.value === unit)?.label ?? "";
-  const fertilizerUnit = t(
-    `units.short.${fertilizerOptions.find((option) => option.value === fertilizerId)?.unit ?? "kg"}`,
+  const fertilizerUnit = productUnitLabel(
+    fertilizerOptions.find((option) => option.value === fertilizerId)?.unit ??
+      "kg",
+    t,
   );
 
   // total_amount and amount_per_hectare derive the number of units, as in the add flow
