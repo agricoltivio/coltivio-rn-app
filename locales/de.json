@@ -79,8 +79,8 @@
       "fertiliser": "Dünger",
       "reason": "Grund",
       "action": "Aktion",
-      "conservation": "Konservierungsmethode",
-      "conservation_optional": "Konservierungsmethode (optional)",
+      "conservation": "Konservierung",
+      "conservation_optional": "Konservierung (optional)",
       "processing_type": "Verarbeitungsart",
       "weight_kg_per_harvest_unit": "Gewicht pro Ernteeinheit (kg)",
       "machine": "Maschine",
@@ -1012,13 +1012,13 @@
     "no_variety": "Keine Sorte",
     "crop_in_use_warning": "Diese Kultur wird verwendet und kann deshalb nicht gelöscht werden.",
     "family_optional": "Familie (optional)",
-    "waiting_time_in_years_optional": "Wartezeit in Jahren (optional)"
+    "waiting_time_in_years_optional": "Wartezeit (Jahre, optional)"
   },
   "crop_families": {
     "crop_families": "Pflanzenfamilien",
     "crop_family": "Pflanzenfamilie",
     "new_crop_family": "Neue Pflanzenfamilie",
-    "waiting_time_in_years": "Wartezeit in Jahren",
+    "waiting_time_in_years": "Wartezeit (Jahre)",
     "waiting_time_years": "{{count}} Jahr Wartezeit",
     "waiting_time_years_plural": "{{count}} Jahre Wartezeit",
     "family_in_use_warning": "Diese Pflanzenfamilie wird verwendet und kann deshalb nicht gelöscht werden."
@@ -1548,9 +1548,9 @@
       "day": "Tag",
       "total_amount": "Gesamtmenge"
     },
-    "milk_waiting_days": "Wartetage Milch",
-    "meat_waiting_days": "Wartetage Fleisch",
-    "organs_waiting_days": "Wartetage Organe",
+    "milk_waiting_days": "Absetzfrist Milch (Tage)",
+    "meat_waiting_days": "Absetzfrist Fleisch (Tage)",
+    "organs_waiting_days": "Absetzfrist Organe (Tage)",
     "drug_in_use": "Medikament in Verwendung",
     "drug_in_use_warning": "Dieses Medikament wird verwendet und kann nicht gelöscht werden.",
     "no_drugs": "Noch keine Medikamente erfasst"
@@ -1585,7 +1585,7 @@
     "birthday_from": "Von",
     "birthday_to": "Bis",
     "drug_not_defined_for_all_types": "Das Medikament ist nicht für alle ausgewählten Tierarten definiert",
-    "different_waiting_times_for_types": "Die Wartezeiten unterscheiden sich zwischen den Tierarten"
+    "different_waiting_times_for_types": "Die Absetzfristen unterscheiden sich zwischen den Tierarten"
   },
   "speed_dial": {
     "harvest": "Ernte hinzufügen",
