@@ -1635,7 +1635,8 @@
     },
     "notifications": {
       "title": "Benachrichtigungen",
-      "tasks_due": "Fällige Aufgaben"
+      "tasks_due": "Fällige Aufgaben",
+      "android_channel_name": "Erinnerungen"
     }
   },
   "home_tiles": {

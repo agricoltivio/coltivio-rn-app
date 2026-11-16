@@ -1615,7 +1615,8 @@
     },
     "notifications": {
       "title": "Notifications",
-      "tasks_due": "Tâches à échéance"
+      "tasks_due": "Tâches à échéance",
+      "android_channel_name": "Rappels"
     }
   },
   "home_tiles": {
