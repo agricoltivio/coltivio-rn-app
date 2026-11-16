@@ -1594,7 +1594,7 @@
     "birthday_from": "From",
     "birthday_to": "To",
     "drug_not_defined_for_types": "This drug has no dose and waiting times for {{types}}. Please enter them manually.",
-    "different_waiting_times_for_types": "Waiting times differ between animal types"
+    "mixed_animal_types": "A treatment can only contain animals of one type."
   },
   "settings": {
     "settings": "Settings",

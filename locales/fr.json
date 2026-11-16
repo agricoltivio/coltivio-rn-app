@@ -1594,7 +1594,7 @@
     "birthday_from": "De",
     "birthday_to": "Jusqu'au",
     "drug_not_defined_for_types": "Ce médicament n'a pas de dosage ni de délais d'attente pour les {{types}}. Veuillez les saisir manuellement.",
-    "different_waiting_times_for_types": "Les délais d'attente diffèrent entre les types d'animaux"
+    "mixed_animal_types": "Un traitement ne peut contenir que des animaux d'une seule espèce."
   },
   "settings": {
     "settings": "Paramètres",

@@ -1593,8 +1593,8 @@
     "filter_by_birthday": "Filtra per data di nascita",
     "birthday_from": "Da",
     "birthday_to": "A",
-    "drug_not_defined_for_types": "Questo medicinale non ha dosaggio né tempi di attesa per {{types}}. Inseriscili manualmente.",
-    "different_waiting_times_for_types": "I tempi di attesa differiscono tra i tipi di animali"
+    "drug_not_defined_for_types": "Per questa specie ({{types}}) il medicinale non ha dosaggio né tempi di attesa. Inseriscili manualmente.",
+    "mixed_animal_types": "Un trattamento può contenere solo animali di una sola specie."
   },
   "settings": {
     "settings": "Impostazioni",
