@@ -1290,6 +1290,15 @@
       "pig": "Maiale",
       "deer": "Cervo"
     },
+    "animal_types_plural": {
+      "goat": "Capre",
+      "sheep": "Pecore",
+      "cow": "Mucche",
+      "horse": "Cavalli",
+      "donkey": "Asini",
+      "pig": "Maiali",
+      "deer": "Cervi"
+    },
     "sex": {
       "male": "Maschio",
       "female": "Femmina"
@@ -1562,8 +1571,7 @@
     "edit_treatment": "Modifica trattamento",
     "treatment_name": "Motivo del trattamento",
     "select_animal": "Seleziona animale",
-    "select_drug": "Seleziona medicinale (facoltativo)",
-    "drug_optional_hint": "Un trattamento può essere registrato anche senza medicinale, ad esempio il pareggio degli unghioni.",
+    "select_drug": "Seleziona medicinale",
     "treatment_date": "Data del trattamento",
     "treatment_end_date": "Data di fine",
     "reason": "Motivo",
@@ -1585,7 +1593,7 @@
     "filter_by_birthday": "Filtra per data di nascita",
     "birthday_from": "Da",
     "birthday_to": "A",
-    "drug_not_defined_for_all_types": "Il medicinale non è definito per tutti i tipi di animali selezionati",
+    "drug_not_defined_for_types": "Questo medicinale non ha dosaggio né tempi di attesa per {{types}}. Inseriscili manualmente.",
     "different_waiting_times_for_types": "I tempi di attesa differiscono tra i tipi di animali"
   },
   "settings": {

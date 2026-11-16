@@ -11,7 +11,7 @@ import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { ListItem } from "@/components/list/ListItem";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
-import { Body, H2, Subtitle } from "@/theme/Typography";
+import { H2, Subtitle } from "@/theme/Typography";
 import { addDays } from "date-fns";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -27,7 +27,7 @@ import {
   TreatmentAnimalDoses,
   TreatmentDoseAnimal,
   TreatmentEffectiveDoseInputs,
-  treatmentEffectiveDoseOverrides,
+  treatmentAnimalDosePayload,
 } from "./TreatmentAnimalDoses";
 
 type DoseUnit =
@@ -57,6 +57,7 @@ const DOSE_UNITS: DoseUnit[] = [
 const DOSE_PER_UNITS: DosePerUnit[] = ["animal", "kg", "day", "total_amount"];
 
 interface TreatmentFormValues {
+  withDrug: boolean;
   drugId?: string;
   startDate: Date;
   endDate: Date;
@@ -78,7 +79,7 @@ export function CreateTreatmentScreen({
   route,
   navigation,
 }: CreateTreatmentScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const theme = useTheme();
   const selectedAnimalIds = route.params?.animalIds ?? [];
   const preselectedDrugId = route.params?.drugId;
@@ -93,6 +94,7 @@ export function CreateTreatmentScreen({
     setValue,
   } = useForm<TreatmentFormValues>({
     defaultValues: {
+      withDrug: true,
       startDate: new Date(),
       endDate: new Date(),
       isAntibiotic: false,
@@ -101,6 +103,7 @@ export function CreateTreatmentScreen({
     },
   });
 
+  const withDrug = watch("withDrug");
   const selectedDrugId = watch("drugId");
   const treatmentDate = watch("startDate");
   const endDate = watch("endDate");
@@ -154,12 +157,13 @@ export function CreateTreatmentScreen({
         : null;
     });
 
-    // Check if any type has no definition
-    if (drugDefs.some((d) => d === null)) {
-      return {
-        valid: false,
-        error: t("treatments.drug_not_defined_for_all_types"),
-      };
+    // Animal types the drug has no dose and waiting times for: nothing to propose,
+    // the user enters them by hand
+    const missingTypes = animalTypes.filter(
+      (_, index) => drugDefs[index] === null,
+    );
+    if (missingTypes.length > 0) {
+      return { valid: true, missingTypes };
     }
 
     // Check if all waiting times are the same
@@ -211,6 +215,14 @@ export function CreateTreatmentScreen({
         setValue("drugDoseValue", String(drugValidation.doseValue));
         setValue("drugDoseUnit", drugValidation.doseUnit);
         setValue("drugDosePerUnit", drugValidation.dosePerUnit);
+      } else if ("missingTypes" in drugValidation) {
+        // Nothing to propose, don't keep the values of a previously selected drug
+        setValue("milkUsableDate", undefined);
+        setValue("meatUsableDate", undefined);
+        setValue("organsUsableDate", undefined);
+        setValue("drugDoseValue", undefined);
+        setValue("drugDoseUnit", undefined);
+        setValue("drugDosePerUnit", undefined);
       }
     } else {
       setValue("isAntibiotic", false);
@@ -256,6 +268,11 @@ export function CreateTreatmentScreen({
 
   const [effectiveDoseInputs, setEffectiveDoseInputs] =
     useState<TreatmentEffectiveDoseInputs>({});
+  // Typed amounts belong to the drug and per-kg dose they were entered for. Without this they'd come back
+  // and be sent after switching to "per animal" and back, or to another drug
+  useEffect(() => {
+    setEffectiveDoseInputs({});
+  }, [drugDosePerUnit, selectedDrugId]);
   // Same weight the server uses: the latest entry on or before the start date, not the newest overall
   const { weightOnDayByAnimalId, isError: weightsFailed } =
     useAnimalWeightsOnDay(
@@ -284,35 +301,42 @@ export function CreateTreatmentScreen({
   function onSubmit(data: TreatmentFormValues) {
     createTreatmentMutation.mutate({
       animalIds: selectedAnimalIds,
-      drugId: data.drugId || null,
+      drugId: data.withDrug ? data.drugId || null : null,
       startDate: toLocalDateString(data.startDate),
       endDate: toLocalDateString(data.endDate),
       name: data.name,
       notes: data.notes,
-      milkUsableDate: data.milkUsableDate
-        ? toLocalDateString(data.milkUsableDate)
-        : null,
-      meatUsableDate: data.meatUsableDate
-        ? toLocalDateString(data.meatUsableDate)
-        : null,
-      organsUsableDate: data.organsUsableDate
-        ? toLocalDateString(data.organsUsableDate)
-        : null,
-      drugDoseValue: data.drugDoseValue ? parseFloat(data.drugDoseValue) : null,
-      drugDoseUnit: data.drugDoseUnit ?? null,
-      drugDosePerUnit: data.drugDosePerUnit ?? null,
-      drugReceivedFrom: data.drugReceivedFrom || null,
-      isAntibiotic: data.isAntibiotic,
-      criticalAntibiotic: data.criticalAntibiotic,
-      antibiogramAvailable: data.antibiogramAvailable,
-      effectiveDoseOverrides:
-        data.drugDosePerUnit === "kg"
-          ? treatmentEffectiveDoseOverrides(
-              doseAnimals,
-              effectiveDoseInputs,
-              data.drugDoseValue,
-            )
-          : undefined,
+      // Without a drug there is no withdrawal period and no dose
+      milkUsableDate:
+        data.withDrug && data.milkUsableDate
+          ? toLocalDateString(data.milkUsableDate)
+          : null,
+      meatUsableDate:
+        data.withDrug && data.meatUsableDate
+          ? toLocalDateString(data.meatUsableDate)
+          : null,
+      organsUsableDate:
+        data.withDrug && data.organsUsableDate
+          ? toLocalDateString(data.organsUsableDate)
+          : null,
+      drugDoseValue:
+        data.withDrug && data.drugDoseValue
+          ? parseFloat(data.drugDoseValue)
+          : null,
+      drugDoseUnit: data.withDrug ? (data.drugDoseUnit ?? null) : null,
+      drugDosePerUnit: data.withDrug ? (data.drugDosePerUnit ?? null) : null,
+      drugReceivedFrom: data.withDrug ? data.drugReceivedFrom || null : null,
+      isAntibiotic: data.withDrug && data.isAntibiotic,
+      criticalAntibiotic: data.withDrug && data.criticalAntibiotic,
+      antibiogramAvailable: data.withDrug && data.antibiogramAvailable,
+      // Weight and amount per animal only for per-kg doses, the API stores them as sent
+      ...(data.withDrug && data.drugDosePerUnit === "kg"
+        ? treatmentAnimalDosePayload(
+            doseAnimals,
+            effectiveDoseInputs,
+            data.drugDoseValue,
+          )
+        : { animalWeights: [], effectiveDoseOverrides: [] }),
     });
   }
 
@@ -329,6 +353,8 @@ export function CreateTreatmentScreen({
     navigation.navigate("SelectAnimals", {
       initialSelectedIds: selectedAnimalIds,
       previousScreen: "CreateTreatment",
+      // One treatment covers one animal type, so the drug's dose and waiting times apply to all of them
+      singleAnimalType: true,
     });
   }
 
@@ -351,7 +377,15 @@ export function CreateTreatmentScreen({
     });
   }, [selectedAnimals, t]);
 
-  const canSave = selectedAnimalIds.length > 0 && drugValidation.valid;
+  // Weights still loading would be stored as missing, the API no longer looks them up
+  const weightsLoading =
+    withDrug &&
+    drugDosePerUnit === "kg" &&
+    doseAnimals.some((animal) => animal.weightStatus === "loading");
+  const canSave =
+    selectedAnimalIds.length > 0 &&
+    (!withDrug || drugValidation.valid) &&
+    !weightsLoading;
 
   return (
     <ContentView
@@ -413,6 +447,18 @@ export function CreateTreatmentScreen({
           </View>
 
           <View style={{ marginTop: theme.spacing.m, gap: theme.spacing.xs }}>
+            <RHTextInput
+              name="name"
+              control={control}
+              label={t("treatments.treatment_name")}
+              rules={{
+                required: {
+                  value: true,
+                  message: t("forms.validation.required"),
+                },
+              }}
+              error={errors.name?.message}
+            />
             <RHDatePicker
               name="startDate"
               control={control}
@@ -440,183 +486,218 @@ export function CreateTreatmentScreen({
               error={errors.endDate?.message}
             />
           </View>
+          {/* Everything that belongs to the drug, grouped like the animal card above */}
           <View
             style={{
-              flexDirection: "row",
-              alignItems: "center",
-              gap: theme.spacing.xs,
+              backgroundColor: theme.colors.white,
+              borderRadius: 10,
+              padding: theme.spacing.m,
+              marginTop: theme.spacing.s,
+              borderLeftWidth: 4,
+              borderLeftColor: theme.colors.primary,
             }}
           >
-            <View style={{ flex: 1 }}>
-              <RHSelect
-                name="drugId"
-                control={control}
-                label={t("treatments.select_drug")}
-                data={drugSelectData}
-                enableSearch
-                error={errors.drugId?.message}
-              />
-            </View>
-            <IonIconButton
-              icon="add"
-              iconSize={24}
-              color="black"
-              type="accent"
-              onPress={openCreateDrug}
+            <RHSwitch
+              label={t("drugs.drug")}
+              control={control}
+              name="withDrug"
             />
-          </View>
-          {!selectedDrugId && (
-            <Body style={{ color: theme.colors.gray2 }}>
-              {t("treatments.drug_optional_hint")}
-            </Body>
-          )}
 
-          {/* Drug validation warning */}
-          {!drugValidation.valid && drugValidation.error && (
-            <View
-              style={{
-                backgroundColor: theme.colors.white,
-                borderRadius: 10,
-                padding: theme.spacing.m,
-                borderLeftWidth: 4,
-                borderLeftColor: theme.colors.warning,
-              }}
-            >
-              <Subtitle style={{ color: theme.colors.gray1 }}>
-                {drugValidation.error}
-              </Subtitle>
-            </View>
-          )}
-
-          {/* Dose settings card - only shown when drug is selected */}
-          {selectedDrug && drugValidation.valid && (
-            <View
-              style={{
-                backgroundColor: theme.colors.white,
-                borderRadius: 10,
-                padding: theme.spacing.m,
-                marginTop: theme.spacing.s,
-                marginBottom: theme.spacing.m,
-              }}
-            >
-              <Subtitle style={{ marginBottom: theme.spacing.s }}>
-                {t("treatments.drug_configuration")}
-              </Subtitle>
-              <View style={{ gap: theme.spacing.xs }}>
-                <RHTextInput
-                  name="drugReceivedFrom"
-                  control={control}
-                  label={t("drugs.received_from")}
-                />
+            {withDrug && (
+              <View
+                style={{ marginTop: theme.spacing.s, gap: theme.spacing.xs }}
+              >
                 <View
                   style={{
                     flexDirection: "row",
+                    alignItems: "center",
                     gap: theme.spacing.xs,
                   }}
                 >
                   <View style={{ flex: 1 }}>
-                    <RHNumberInput
-                      name="drugDoseValue"
-                      control={control}
-                      label={t("drugs.dose_value")}
-                      placeholder="0.0"
-                      float
-                    />
-                  </View>
-                  <View style={{ flex: 1 }}>
                     <RHSelect
-                      name="drugDoseUnit"
+                      name="drugId"
                       control={control}
-                      label={t("drugs.dose_unit")}
-                      data={DOSE_UNITS.map((u) => ({
-                        label: t(`drugs.dose_units.${u}`),
-                        value: u,
-                      }))}
+                      label={t("treatments.select_drug")}
+                      data={drugSelectData}
+                      enableSearch
+                      error={errors.drugId?.message}
                     />
                   </View>
+                  <IonIconButton
+                    icon="add"
+                    iconSize={24}
+                    color="black"
+                    type="accent"
+                    onPress={openCreateDrug}
+                  />
                 </View>
-                <RHSelect
-                  name="drugDosePerUnit"
+
+                {/* Drug validation warning */}
+                {!drugValidation.valid && drugValidation.error && (
+                  <View
+                    style={{
+                      backgroundColor: theme.colors.white,
+                      borderRadius: 10,
+                      padding: theme.spacing.m,
+                      borderLeftWidth: 4,
+                      borderLeftColor: theme.colors.warning,
+                    }}
+                  >
+                    <Subtitle style={{ color: theme.colors.gray1 }}>
+                      {drugValidation.error}
+                    </Subtitle>
+                  </View>
+                )}
+
+                {/* Dose settings card - only shown when drug is selected */}
+                {"missingTypes" in drugValidation &&
+                  drugValidation.missingTypes && (
+                    <View
+                      style={{
+                        backgroundColor: theme.colors.white,
+                        borderRadius: 10,
+                        padding: theme.spacing.m,
+                        borderLeftWidth: 4,
+                        borderLeftColor: theme.colors.warning,
+                      }}
+                    >
+                      <Subtitle style={{ color: theme.colors.gray1 }}>
+                        {t("treatments.drug_not_defined_for_types", {
+                          types: drugValidation.missingTypes
+                            .map((type) => {
+                              // Plural names are capitalized labels; only German keeps that mid-sentence
+                              const typeName = t(
+                                `animals.animal_types_plural.${type}`,
+                              );
+                              return i18n.language.startsWith("de")
+                                ? typeName
+                                : typeName.toLocaleLowerCase(i18n.language);
+                            })
+                            .join(", "),
+                        })}
+                      </Subtitle>
+                    </View>
+                  )}
+
+                {selectedDrug && drugValidation.valid && (
+                  <View
+                    style={{
+                      marginVertical: theme.spacing.s,
+                    }}
+                  >
+                    <Subtitle style={{ marginBottom: theme.spacing.s }}>
+                      {t("treatments.drug_configuration")}
+                    </Subtitle>
+                    <View style={{ gap: theme.spacing.xs }}>
+                      <RHTextInput
+                        name="drugReceivedFrom"
+                        control={control}
+                        label={t("drugs.received_from")}
+                      />
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          gap: theme.spacing.xs,
+                        }}
+                      >
+                        <View style={{ flex: 1 }}>
+                          <RHNumberInput
+                            name="drugDoseValue"
+                            control={control}
+                            label={t("drugs.dose_value")}
+                            placeholder="0.0"
+                            float
+                          />
+                        </View>
+                        <View style={{ flex: 1 }}>
+                          <RHSelect
+                            name="drugDoseUnit"
+                            control={control}
+                            label={t("drugs.dose_unit")}
+                            data={DOSE_UNITS.map((u) => ({
+                              label: t(`drugs.dose_units.${u}`),
+                              value: u,
+                            }))}
+                          />
+                        </View>
+                      </View>
+                      <RHSelect
+                        name="drugDosePerUnit"
+                        control={control}
+                        label={t("drugs.dose_per_unit")}
+                        data={DOSE_PER_UNITS.map((u) => ({
+                          label: t(`drugs.dose_per_units.${u}`),
+                          value: u,
+                        }))}
+                      />
+                    </View>
+                  </View>
+                )}
+
+                {selectedDrug &&
+                  drugValidation.valid &&
+                  drugDosePerUnit === "kg" && (
+                    <TreatmentAnimalDoses
+                      animals={doseAnimals}
+                      doseValue={drugDoseValue}
+                      doseUnitLabel={
+                        drugDoseUnit
+                          ? t(`drugs.dose_units.${drugDoseUnit}`)
+                          : ""
+                      }
+                      effectiveDoseInputs={effectiveDoseInputs}
+                      onEffectiveDoseInputsChange={setEffectiveDoseInputs}
+                    />
+                  )}
+
+                <RHDatePicker
+                  name="milkUsableDate"
                   control={control}
-                  label={t("drugs.dose_per_unit")}
-                  data={DOSE_PER_UNITS.map((u) => ({
-                    label: t(`drugs.dose_per_units.${u}`),
-                    value: u,
-                  }))}
+                  label={t("treatments.milk_usable_date")}
+                  mode="date"
+                  error={errors.milkUsableDate?.message}
+                />
+
+                <RHDatePicker
+                  name="meatUsableDate"
+                  control={control}
+                  label={t("treatments.meat_usable_date")}
+                  mode="date"
+                  error={errors.meatUsableDate?.message}
+                />
+
+                <RHDatePicker
+                  name="organsUsableDate"
+                  control={control}
+                  label={t("treatments.organs_usable_date")}
+                  mode="date"
+                  error={errors.organsUsableDate?.message}
+                />
+
+                <RHSwitch
+                  style={{ marginVertical: theme.spacing.s }}
+                  label={t("drugs.is_antibiotic")}
+                  control={control}
+                  name="isAntibiotic"
+                />
+
+                <RHSwitch
+                  style={{ marginVertical: theme.spacing.s }}
+                  label={t("drugs.critical_antibiotic")}
+                  control={control}
+                  name="criticalAntibiotic"
+                />
+
+                <RHSwitch
+                  style={{ marginVertical: theme.spacing.s }}
+                  label={t("treatments.antibiogram_available")}
+                  control={control}
+                  name="antibiogramAvailable"
                 />
               </View>
-            </View>
-          )}
-
-          {selectedDrug && drugValidation.valid && drugDosePerUnit === "kg" && (
-            <TreatmentAnimalDoses
-              animals={doseAnimals}
-              doseValue={drugDoseValue}
-              doseUnitLabel={
-                drugDoseUnit ? t(`drugs.dose_units.${drugDoseUnit}`) : ""
-              }
-              effectiveDoseInputs={effectiveDoseInputs}
-              onEffectiveDoseInputsChange={setEffectiveDoseInputs}
-            />
-          )}
-
-          <RHTextInput
-            name="name"
-            control={control}
-            label={t("treatments.treatment_name")}
-            rules={{
-              required: {
-                value: true,
-                message: t("forms.validation.required"),
-              },
-            }}
-            error={errors.name?.message}
-          />
-
-          <RHDatePicker
-            name="milkUsableDate"
-            control={control}
-            label={t("treatments.milk_usable_date")}
-            mode="date"
-            error={errors.milkUsableDate?.message}
-          />
-
-          <RHDatePicker
-            name="meatUsableDate"
-            control={control}
-            label={t("treatments.meat_usable_date")}
-            mode="date"
-            error={errors.meatUsableDate?.message}
-          />
-
-          <RHDatePicker
-            name="organsUsableDate"
-            control={control}
-            label={t("treatments.organs_usable_date")}
-            mode="date"
-            error={errors.organsUsableDate?.message}
-          />
-
-          <RHSwitch
-            style={{ marginVertical: theme.spacing.m }}
-            label={t("drugs.is_antibiotic")}
-            control={control}
-            name="isAntibiotic"
-          />
-
-          <RHSwitch
-            style={{ marginVertical: theme.spacing.m }}
-            label={t("drugs.critical_antibiotic")}
-            control={control}
-            name="criticalAntibiotic"
-          />
-
-          <RHSwitch
-            style={{ marginBottom: theme.spacing.m }}
-            label={t("treatments.antibiogram_available")}
-            control={control}
-            name="antibiogramAvailable"
-          />
+            )}
+          </View>
 
           <RHTextAreaInput
             name="notes"

@@ -1290,6 +1290,15 @@
       "pig": "Cochon",
       "deer": "Cerf"
     },
+    "animal_types_plural": {
+      "goat": "Chèvres",
+      "sheep": "Moutons",
+      "cow": "Vaches",
+      "horse": "Chevaux",
+      "donkey": "Ânes",
+      "pig": "Cochons",
+      "deer": "Cerfs"
+    },
     "sex": {
       "male": "Mâle",
       "female": "Femelle"
@@ -1562,8 +1571,7 @@
     "edit_treatment": "Modifier le traitement",
     "treatment_name": "Motif du traitement",
     "select_animal": "Sélectionner un animal",
-    "select_drug": "Sélectionner un médicament (facultatif)",
-    "drug_optional_hint": "Un traitement peut aussi être saisi sans médicament, par exemple le parage des onglons.",
+    "select_drug": "Sélectionner un médicament",
     "treatment_date": "Date du traitement",
     "treatment_end_date": "Date de fin",
     "reason": "Motif",
@@ -1585,7 +1593,7 @@
     "filter_by_birthday": "Filtrer par date de naissance",
     "birthday_from": "De",
     "birthday_to": "Jusqu'au",
-    "drug_not_defined_for_all_types": "Le médicament n'est pas défini pour tous les types d'animaux sélectionnés",
+    "drug_not_defined_for_types": "Ce médicament n'a pas de dosage ni de délais d'attente pour les {{types}}. Veuillez les saisir manuellement.",
     "different_waiting_times_for_types": "Les délais d'attente diffèrent entre les types d'animaux"
   },
   "settings": {

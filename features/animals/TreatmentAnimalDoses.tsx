@@ -33,49 +33,46 @@ export function computeEffectiveDoseValue(
   return Math.round(weightKg * parsedDoseValue * 1000) / 1000;
 }
 
-// Overrides sent to the API: typed amounts and amounts entered by hand earlier.
-// Animals without either get the amount computed from dose and weight on the server. A cleared input
-// falls back to dose × weight: it is sent as that value, otherwise the server would keep a stored amount.
-export function treatmentEffectiveDoseOverrides(
+// Weight and amount of every animal for a per-kg dose, stored by the API exactly as sent (it derives nothing).
+// The amount is the typed one, else one entered by hand earlier, else dose × weight; a cleared input falls
+// back to dose × weight. Amounts that aren't a number of at least 0 are sent as none.
+export function treatmentAnimalDosePayload(
   animals: TreatmentDoseAnimal[],
   effectiveDoseInputs: TreatmentEffectiveDoseInputs,
   doseValue: number | string | null | undefined,
 ) {
-  return animals.flatMap((animal) => {
-    const typedInput = effectiveDoseInputs[animal.id];
-    if (typedInput !== undefined && typedInput.trim() === "") {
-      return [
-        {
-          animalId: animal.id,
-          effectiveDoseValue: computeEffectiveDoseValue(
-            animal.weightKg,
-            doseValue,
-          ),
-        },
-      ];
-    }
-    if (typedInput !== undefined) {
-      const effectiveDoseValue = parseFloat(typedInput);
-      return [
-        {
+  return {
+    animalWeights: animals.map((animal) => ({
+      animalId: animal.id,
+      weightKg: animal.weightKg,
+    })),
+    effectiveDoseOverrides: animals.map((animal) => {
+      const typedInput = effectiveDoseInputs[animal.id];
+      if (typedInput !== undefined && typedInput.trim() !== "") {
+        const effectiveDoseValue = parseFloat(typedInput);
+        return {
           animalId: animal.id,
           effectiveDoseValue:
             Number.isFinite(effectiveDoseValue) && effectiveDoseValue >= 0
               ? effectiveDoseValue
               : null,
-        },
-      ];
-    }
-    if (animal.manualEffectiveDoseValue != null) {
-      return [
-        {
+        };
+      }
+      if (typedInput === undefined && animal.manualEffectiveDoseValue != null) {
+        return {
           animalId: animal.id,
           effectiveDoseValue: animal.manualEffectiveDoseValue,
-        },
-      ];
-    }
-    return [];
-  });
+        };
+      }
+      return {
+        animalId: animal.id,
+        effectiveDoseValue: computeEffectiveDoseValue(
+          animal.weightKg,
+          doseValue,
+        ),
+      };
+    }),
+  };
 }
 
 // Per-animal weight (from the animal) and editable effective amount for doses given per kg body weight

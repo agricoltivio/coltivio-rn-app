@@ -1290,6 +1290,15 @@
       "pig": "Pig",
       "deer": "Deer"
     },
+    "animal_types_plural": {
+      "goat": "Goats",
+      "sheep": "Sheep",
+      "cow": "Cows",
+      "horse": "Horses",
+      "donkey": "Donkeys",
+      "pig": "Pigs",
+      "deer": "Deer"
+    },
     "sex": {
       "male": "Male",
       "female": "Female"
@@ -1562,8 +1571,7 @@
     "edit_treatment": "Edit Treatment",
     "treatment_name": "Treatment Reason",
     "select_animal": "Select Animal",
-    "select_drug": "Select Drug (optional)",
-    "drug_optional_hint": "A treatment can also be recorded without a drug, for example hoof trimming.",
+    "select_drug": "Select Drug",
     "treatment_date": "Treatment Date",
     "treatment_end_date": "End Date",
     "reason": "Reason",
@@ -1585,7 +1593,7 @@
     "filter_by_birthday": "Filter by Birthday",
     "birthday_from": "From",
     "birthday_to": "To",
-    "drug_not_defined_for_all_types": "The drug is not defined for all selected animal types",
+    "drug_not_defined_for_types": "This drug has no dose and waiting times for {{types}}. Please enter them manually.",
     "different_waiting_times_for_types": "Waiting times differ between animal types"
   },
   "settings": {

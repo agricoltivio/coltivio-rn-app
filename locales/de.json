@@ -1290,6 +1290,15 @@
       "pig": "Schwein",
       "deer": "Hirsch"
     },
+    "animal_types_plural": {
+      "goat": "Ziegen",
+      "sheep": "Schafe",
+      "cow": "Kühe",
+      "horse": "Pferde",
+      "donkey": "Esel",
+      "pig": "Schweine",
+      "deer": "Hirsche"
+    },
     "sex": {
       "male": "Männlich",
       "female": "Weiblich"
@@ -1562,8 +1571,7 @@
     "edit_treatment": "Behandlung bearbeiten",
     "treatment_name": "Behandlungsgrund",
     "select_animal": "Tier auswählen",
-    "select_drug": "Medikament auswählen (optional)",
-    "drug_optional_hint": "Eine Behandlung lässt sich auch ohne Medikament erfassen, zum Beispiel die Klauenpflege.",
+    "select_drug": "Medikament auswählen",
     "treatment_date": "Behandlungsdatum",
     "treatment_end_date": "Enddatum",
     "reason": "Grund",
@@ -1585,7 +1593,7 @@
     "filter_by_birthday": "Nach Geburtstag filtern",
     "birthday_from": "Von",
     "birthday_to": "Bis",
-    "drug_not_defined_for_all_types": "Das Medikament ist nicht für alle ausgewählten Tierarten definiert",
+    "drug_not_defined_for_types": "Für {{types}} sind bei diesem Medikament keine Dosierung und Absetzfristen hinterlegt. Bitte manuell erfassen.",
     "different_waiting_times_for_types": "Die Wartezeiten unterscheiden sich zwischen den Tierarten"
   },
   "speed_dial": {
