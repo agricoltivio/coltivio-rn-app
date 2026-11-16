@@ -113,7 +113,17 @@ export default ({ config }) => {
       ],
       "expo-localization",
       "expo-secure-store",
-      "expo-notifications",
+      // Android draws the small icon from its alpha channel only, so it needs its own white
+      // mark on transparent: the launcher icon would turn into a white blob. defaultChannel is
+      // where Firebase puts pushes without a channelId, created in push-notifications.ts.
+      [
+        "expo-notifications",
+        {
+          icon: "./assets/images/notification-icon.png",
+          color: "#2a5159",
+          defaultChannel: "reminders",
+        },
+      ],
       "expo-font",
       "expo-location",
       "expo-apple-authentication",

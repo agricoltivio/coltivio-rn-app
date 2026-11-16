@@ -1,6 +1,7 @@
 import { createAuthClient } from "@/api/api";
 import { userApi } from "@/api/user.api";
 import { setBeforeSignOutHandler } from "@/auth/SessionProvider";
+import i18n from "@/locales/i18n";
 import * as Sentry from "@sentry/react-native";
 import Constants from "expo-constants";
 import * as Device from "expo-device";
@@ -75,6 +76,27 @@ export function parseBreedingDueNotificationData(
   return { type: "breeding_due", farmId: data.farmId };
 }
 
+// Must match defaultChannel of the expo-notifications plugin in app.config.js and the channelId
+// the API sends (coltivio-api src/push/expo-client.ts).
+const ANDROID_NOTIFICATION_CHANNEL_ID = "reminders";
+
+// Creates the channel, or renames it after a language change. HIGH makes reminders pop up as
+// a banner. Android ignores a raised importance on an existing channel, which is why this is
+// a new id instead of the old "default" channel (created with DEFAULT importance).
+export async function setUpAndroidNotificationChannelAsync() {
+  if (Platform.OS !== "android") {
+    return;
+  }
+  await Notifications.setNotificationChannelAsync(
+    ANDROID_NOTIFICATION_CHANNEL_ID,
+    {
+      name: i18n.t("settings.notifications.android_channel_name"),
+      importance: Notifications.AndroidImportance.HIGH,
+    },
+  );
+  await Notifications.deleteNotificationChannelAsync("default");
+}
+
 export type NotificationPermission = {
   granted: boolean;
   // Permanently denied: the OS won't show the prompt again, only the system settings help
@@ -93,12 +115,7 @@ export async function getNotificationPermissionAsync({
     return null;
   }
   // Android requires the channel to exist before asking for permission
-  if (Platform.OS === "android") {
-    await Notifications.setNotificationChannelAsync("default", {
-      name: "default",
-      importance: Notifications.AndroidImportance.DEFAULT,
-    });
-  }
+  await setUpAndroidNotificationChannelAsync();
 
   let permission = await Notifications.getPermissionsAsync();
   let prompted = false;

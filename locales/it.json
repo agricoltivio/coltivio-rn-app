@@ -1615,7 +1615,8 @@
     },
     "notifications": {
       "title": "Notifiche",
-      "tasks_due": "Attività in scadenza"
+      "tasks_due": "Attività in scadenza",
+      "android_channel_name": "Promemoria"
     }
   },
   "home_tiles": {

@@ -1615,7 +1615,8 @@
     },
     "notifications": {
       "title": "Notifications",
-      "tasks_due": "Due tasks"
+      "tasks_due": "Due tasks",
+      "android_channel_name": "Reminders"
     }
   },
   "home_tiles": {
