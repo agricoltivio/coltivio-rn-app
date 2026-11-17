@@ -26,6 +26,9 @@ export function CreateCropScreen({ navigation }: CreateCropScreenProps) {
         navigation.popTo("AddPlotSummary", { cropId: crop.id });
       } else if (previousScreen.name === "SelectHarvestCropAndDate") {
         navigation.popTo("SelectHarvestCropAndDate", { cropId: crop.id });
+      } else if (previousScreen.name === "CreateSeed") {
+        // Back to the new seed with the crop preselected
+        navigation.popTo("CreateSeed", { cropId: crop.id });
       } else {
         navigation.goBack();
       }
