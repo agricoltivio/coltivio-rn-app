@@ -5,8 +5,7 @@ import { NumberInput } from "@/components/inputs/NumberInput";
 import { ScrollView } from "@/components/views/ScrollView";
 import { DivideHarvestOnPlotsScreenProps } from "../navigation/harvest-routes";
 import { Body, H2, Subtitle, Title } from "@/theme/Typography";
-import { round } from "@/utils/math";
-import { validateDivision } from "@/utils/splitByArea";
+import { splitByArea, validateDivision } from "@/utils/splitByArea";
 import React, { useEffect, useState } from "react";
 import { Switch, View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -58,44 +57,20 @@ export function DivideHarvestOnPlotsScreen({
 
   useEffect(() => {
     if (divideByArea) {
-      const totalArea = harvestAreas.reduce((acc, harvestPlot) => {
-        return acc + harvestPlot.harvestSize;
-      }, 0);
-      let totalDivided = 0;
+      const quantities = splitByArea(
+        harvestAreas.map((area) => area.harvestSize),
+        totalProducedUnits,
+        divisionPrecision,
+      );
+      const next: Record<string, string> = {};
       harvestAreas.forEach((area, index) => {
-        if (round(area.harvestSize, divisionPrecision) === 0) {
-          setQuantityByPlotId((prev) => ({
-            ...prev,
-            [area.plotId]: "0",
-          }));
-        } else {
-          const fraction = area.harvestSize / totalArea;
-          let quantity = 0;
-          // we give the rest to the last item, rounded to the precision of the
-          // entered total so the distributed amounts always sum back exactly
-          if (index === harvestAreas.length - 1) {
-            quantity = round(totalProducedUnits - totalDivided, 2);
-          } else {
-            quantity = round(
-              (totalProducedUnits - totalDivided) * fraction,
-              divisionPrecision,
-            );
-          }
-          if (quantity === 0 && divisionPrecision < 2) {
-            setDivisionPrecision((prev) => Math.min(prev + 1, 2));
-          }
-          totalDivided += quantity;
-          setQuantityByPlotId((prev) => ({
-            ...prev,
-            [area.plotId]: quantity.toString(),
-          }));
+        const quantity = quantities[index];
+        if (quantity === 0 && area.harvestSize > 0 && divisionPrecision < 2) {
+          setDivisionPrecision((prev) => Math.min(prev + 1, 2));
         }
-        // putHarvestPlot({
-        //   ...area,
-        //   producedUnits: quantity,
-        //   amountInKilos: quantity * harvest!.kilosPerUnit,
-        // });
+        next[area.plotId] = quantity.toString();
       });
+      setQuantityByPlotId(next);
     }
   }, [divideByArea, selectedHarvestPlotsById, divisionPrecision]);
 

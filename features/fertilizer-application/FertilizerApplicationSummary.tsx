@@ -1,3 +1,4 @@
+import { productUnitLabel } from "@/utils/units";
 import { FertilizerApplication } from "@/api/fertilizerApplications.api";
 import { Card } from "@/components/card/Card";
 import { ListItem } from "@/components/list/ListItem";
@@ -6,8 +7,6 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { Body, H2, H3 } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
 import { round } from "@/utils/math";
-import { type LngLat } from "@maplibre/maplibre-react-native";
-import * as turf from "@turf/turf";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -30,8 +29,19 @@ function SummaryItem({
         gap: theme.spacing.m,
       }}
     >
-      <Text style={{ flex: 1, fontWeight: 600, fontSize: 18 }}>{label}</Text>
-      <Text style={{ fontSize: 18 }}>{value}</Text>
+      {/* The label keeps its width (up to 60% of the row) so it isn't squeezed to one letter per line,
+          a long value (e.g. plot name) wraps onto further lines */}
+      <Text
+        style={{
+          flexShrink: 0,
+          maxWidth: "60%",
+          fontWeight: 600,
+          fontSize: 18,
+        }}
+      >
+        {label}
+      </Text>
+      <Text style={{ flex: 1, fontSize: 18, textAlign: "right" }}>{value}</Text>
     </View>
   );
 }
@@ -67,11 +77,9 @@ export function FertilizerApplicationSummary({
 }: FertilizerApplicationSummaryProps) {
   const { t, i18n } = useTranslation();
   const locale = i18n.language;
+  const productUnitSymbol = productUnitLabel(productUnit, t);
   const theme = useTheme();
   const size = plots.reduce((acc, plot) => acc + plot.size, 0);
-
-  const centroid = turf.centroid(plots[0].geometry);
-  const center = centroid.geometry.coordinates as LngLat;
 
   const features = useMemo(
     (): GeoJSON.FeatureCollection => ({
@@ -98,12 +106,7 @@ export function FertilizerApplicationSummary({
       <H2>{t("fertilizer_application.fertilizer_application")}</H2>
       <H3>{formattedDate}</H3>
       <View style={{ marginTop: theme.spacing.m }}>
-        <StaticMapPreview
-          center={center}
-          zoom={17}
-          features={features}
-          height={250}
-        />
+        <StaticMapPreview features={features} height={250} />
       </View>
       <Card style={{ marginTop: theme.spacing.m }}>
         {hidePlotList && (
@@ -125,12 +128,12 @@ export function FertilizerApplicationSummary({
                 ? t("forms.labels.total")
                 : t("forms.labels.amount_per_load")
           }
-          value={`${amountPerUnit} ${productUnit}`}
+          value={`${amountPerUnit} ${productUnitSymbol}`}
         />
         {unit !== "total_amount" && (
           <SummaryItem
             label={t("forms.labels.total")}
-            value={`${round(amountPerUnit * totalNumberOfUnits, 2)} ${productUnit}`}
+            value={`${round(amountPerUnit * totalNumberOfUnits, 2)} ${productUnitSymbol}`}
           />
         )}
         <SummaryItem
@@ -169,8 +172,8 @@ export function FertilizerApplicationSummary({
                   </ListItem.Title>
                   <ListItem.Body>
                     {unit === "amount_per_hectare"
-                      ? `${round(plot.numberOfUnits, 2)} ha → ${round(plot.numberOfUnits * amountPerUnit, 2)} ${productUnit}`
-                      : `${round(plot.numberOfUnits * amountPerUnit, 2)} ${productUnit}`}
+                      ? `${round(plot.numberOfUnits, 2)} ha → ${round(plot.numberOfUnits * amountPerUnit, 2)} ${productUnitSymbol}`
+                      : `${round(plot.numberOfUnits * amountPerUnit, 2)} ${productUnitSymbol}`}
                   </ListItem.Body>
                 </ListItem.Content>
               </ListItem>

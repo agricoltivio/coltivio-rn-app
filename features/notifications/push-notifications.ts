@@ -1,6 +1,8 @@
 import { createAuthClient } from "@/api/api";
 import { userApi } from "@/api/user.api";
 import { setBeforeSignOutHandler } from "@/auth/SessionProvider";
+import i18n from "@/locales/i18n";
+import * as Sentry from "@sentry/react-native";
 import Constants from "expo-constants";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
@@ -74,6 +76,27 @@ export function parseBreedingDueNotificationData(
   return { type: "breeding_due", farmId: data.farmId };
 }
 
+// Must match defaultChannel of the expo-notifications plugin in app.config.js and the channelId
+// the API sends (coltivio-api src/push/expo-client.ts).
+const ANDROID_NOTIFICATION_CHANNEL_ID = "reminders";
+
+// Creates the channel, or renames it after a language change. HIGH makes reminders pop up as
+// a banner. Android ignores a raised importance on an existing channel, which is why this is
+// a new id instead of the old "default" channel (created with DEFAULT importance).
+export async function setUpAndroidNotificationChannelAsync() {
+  if (Platform.OS !== "android") {
+    return;
+  }
+  await Notifications.setNotificationChannelAsync(
+    ANDROID_NOTIFICATION_CHANNEL_ID,
+    {
+      name: i18n.t("settings.notifications.android_channel_name"),
+      importance: Notifications.AndroidImportance.HIGH,
+    },
+  );
+  await Notifications.deleteNotificationChannelAsync("default");
+}
+
 export type NotificationPermission = {
   granted: boolean;
   // Permanently denied: the OS won't show the prompt again, only the system settings help
@@ -92,12 +115,7 @@ export async function getNotificationPermissionAsync({
     return null;
   }
   // Android requires the channel to exist before asking for permission
-  if (Platform.OS === "android") {
-    await Notifications.setNotificationChannelAsync("default", {
-      name: "default",
-      importance: Notifications.AndroidImportance.DEFAULT,
-    });
-  }
+  await setUpAndroidNotificationChannelAsync();
 
   let permission = await Notifications.getPermissionsAsync();
   let prompted = false;
@@ -115,20 +133,27 @@ export async function getNotificationPermissionAsync({
 // Gets the Expo push token and registers it with the backend.
 // Pass devicePushToken when calling from addPushTokenListener: without it the Expo token
 // lookup fetches the device token itself, which fires the listener again (endless loop).
+// Only called once permission is granted, so every failure is a real one (e.g. Firebase not
+// configured on Android) and goes to Sentry: callers only log it, nobody sees the console.
 export async function registerPushTokenAsync(
   usersApi: UsersApi,
   devicePushToken?: Notifications.DevicePushToken,
 ) {
-  const projectId =
-    Constants.expoConfig?.extra?.eas?.projectId ??
-    Constants.easConfig?.projectId;
-  const { data: pushToken } = await Notifications.getExpoPushTokenAsync({
-    projectId,
-    devicePushToken,
-  });
-  await usersApi.registerPushToken({
-    token: pushToken,
-    platform: Platform.OS === "ios" ? "ios" : "android",
-  });
-  await SecureStore.setItemAsync(PUSH_TOKEN_STORAGE_KEY, pushToken);
+  try {
+    const projectId =
+      Constants.expoConfig?.extra?.eas?.projectId ??
+      Constants.easConfig?.projectId;
+    const { data: pushToken } = await Notifications.getExpoPushTokenAsync({
+      projectId,
+      devicePushToken,
+    });
+    await usersApi.registerPushToken({
+      token: pushToken,
+      platform: Platform.OS === "ios" ? "ios" : "android",
+    });
+    await SecureStore.setItemAsync(PUSH_TOKEN_STORAGE_KEY, pushToken);
+  } catch (error) {
+    Sentry.captureException(error);
+    throw error;
+  }
 }

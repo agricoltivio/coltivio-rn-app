@@ -3216,6 +3216,24 @@
             "schema": {
               "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
             }
+          },
+          {
+            "name": "fromDate",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
           }
         ],
         "security": [{ "APIKEY_1": [] }],
@@ -3252,6 +3270,24 @@
             "description": "HEAD /v1/plots/byId/:plotId/harvestSummary Parameter",
             "schema": {
               "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          },
+          {
+            "name": "fromDate",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
             }
           }
         ],
@@ -7039,6 +7075,26 @@
     "/v1/harvests/summaries": {
       "get": {
         "operationId": "GetV1HarvestsSummaries",
+        "parameters": [
+          {
+            "name": "fromDate",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          }
+        ],
         "security": [{ "APIKEY_1": [] }],
         "responses": {
           "200": {
@@ -7065,6 +7121,26 @@
       },
       "head": {
         "operationId": "HeadV1HarvestsSummaries",
+        "parameters": [
+          {
+            "name": "fromDate",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "required": false,
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1MeadowsByIdMeadowIdUsageParameterFromDate"
+            }
+          }
+        ],
         "security": [{ "APIKEY_1": [] }],
         "responses": {
           "200": {
@@ -21800,14 +21876,16 @@
                           "type": "string",
                           "enum": ["ml", "l", "g", "kg"]
                         },
-                        "description": { "type": ["string", "null"] }
+                        "description": { "type": ["string", "null"] },
+                        "registrationNumber": { "type": ["string", "null"] }
                       },
                       "required": [
                         "id",
                         "farmId",
                         "name",
                         "unit",
-                        "description"
+                        "description",
+                        "registrationNumber"
                       ],
                       "additionalProperties": false
                     },
@@ -21983,8 +22061,9 @@
                         },
                         "unit": {
                           "type": "string",
-                          "enum": ["l", "kg", "dt", "t"]
-                        }
+                          "enum": ["l", "kg", "dt", "t", "m3"]
+                        },
+                        "registrationNumber": { "type": ["string", "null"] }
                       },
                       "required": [
                         "id",
@@ -21992,7 +22071,8 @@
                         "name",
                         "description",
                         "type",
-                        "unit"
+                        "unit",
+                        "registrationNumber"
                       ],
                       "additionalProperties": false
                     }
@@ -22049,7 +22129,7 @@
                           "fertilizerName": { "type": "string" },
                           "unit": {
                             "type": "string",
-                            "enum": ["l", "kg", "dt", "t"]
+                            "enum": ["l", "kg", "dt", "t", "m3"]
                           }
                         },
                         "required": [
@@ -23916,9 +23996,17 @@
                       "type": "string",
                       "enum": ["ml", "l", "g", "kg"]
                     },
-                    "description": { "type": ["string", "null"] }
+                    "description": { "type": ["string", "null"] },
+                    "registrationNumber": { "type": ["string", "null"] }
                   },
-                  "required": ["id", "farmId", "name", "unit", "description"],
+                  "required": [
+                    "id",
+                    "farmId",
+                    "name",
+                    "unit",
+                    "description",
+                    "registrationNumber"
+                  ],
                   "additionalProperties": false
                 }
               },
@@ -23941,9 +24029,17 @@
               "farmId": { "type": "string" },
               "name": { "type": "string" },
               "unit": { "type": "string", "enum": ["ml", "l", "g", "kg"] },
-              "description": { "type": ["string", "null"] }
+              "description": { "type": ["string", "null"] },
+              "registrationNumber": { "type": ["string", "null"] }
             },
-            "required": ["id", "farmId", "name", "unit", "description"],
+            "required": [
+              "id",
+              "farmId",
+              "name",
+              "unit",
+              "description",
+              "registrationNumber"
+            ],
             "additionalProperties": false
           }
         },
@@ -23956,6 +24052,7 @@
           "name": { "type": "string" },
           "unit": { "type": "string", "enum": ["ml", "l", "g", "kg"] },
           "description": { "type": "string" },
+          "registrationNumber": { "type": ["string", "null"] },
           "defaultEquipmentId": { "type": "string" }
         },
         "required": ["name", "unit"]
@@ -23970,9 +24067,17 @@
               "farmId": { "type": "string" },
               "name": { "type": "string" },
               "unit": { "type": "string", "enum": ["ml", "l", "g", "kg"] },
-              "description": { "type": ["string", "null"] }
+              "description": { "type": ["string", "null"] },
+              "registrationNumber": { "type": ["string", "null"] }
             },
-            "required": ["id", "farmId", "name", "unit", "description"],
+            "required": [
+              "id",
+              "farmId",
+              "name",
+              "unit",
+              "description",
+              "registrationNumber"
+            ],
             "additionalProperties": false
           }
         },
@@ -23989,9 +24094,17 @@
               "farmId": { "type": "string" },
               "name": { "type": "string" },
               "unit": { "type": "string", "enum": ["ml", "l", "g", "kg"] },
-              "description": { "type": ["string", "null"] }
+              "description": { "type": ["string", "null"] },
+              "registrationNumber": { "type": ["string", "null"] }
             },
-            "required": ["id", "farmId", "name", "unit", "description"],
+            "required": [
+              "id",
+              "farmId",
+              "name",
+              "unit",
+              "description",
+              "registrationNumber"
+            ],
             "additionalProperties": false
           }
         },
@@ -24004,6 +24117,7 @@
           "name": { "type": "string" },
           "unit": { "type": "string", "enum": ["ml", "l", "g", "kg"] },
           "description": { "type": "string" },
+          "registrationNumber": { "type": ["string", "null"] },
           "defaultEquipmentId": { "type": "string" }
         },
         "required": []
@@ -24112,9 +24226,17 @@
                   "farmId": { "type": "string" },
                   "name": { "type": "string" },
                   "unit": { "type": "string", "enum": ["ml", "l", "g", "kg"] },
-                  "description": { "type": ["string", "null"] }
+                  "description": { "type": ["string", "null"] },
+                  "registrationNumber": { "type": ["string", "null"] }
                 },
-                "required": ["id", "farmId", "name", "unit", "description"],
+                "required": [
+                  "id",
+                  "farmId",
+                  "name",
+                  "unit",
+                  "description",
+                  "registrationNumber"
+                ],
                 "additionalProperties": false
               },
               "plot": {
@@ -24305,14 +24427,16 @@
                           "type": "string",
                           "enum": ["ml", "l", "g", "kg"]
                         },
-                        "description": { "type": ["string", "null"] }
+                        "description": { "type": ["string", "null"] },
+                        "registrationNumber": { "type": ["string", "null"] }
                       },
                       "required": [
                         "id",
                         "farmId",
                         "name",
                         "unit",
-                        "description"
+                        "description",
+                        "registrationNumber"
                       ],
                       "additionalProperties": false
                     },
@@ -24443,14 +24567,16 @@
                           "type": "string",
                           "enum": ["ml", "l", "g", "kg"]
                         },
-                        "description": { "type": ["string", "null"] }
+                        "description": { "type": ["string", "null"] },
+                        "registrationNumber": { "type": ["string", "null"] }
                       },
                       "required": [
                         "id",
                         "farmId",
                         "name",
                         "unit",
-                        "description"
+                        "description",
+                        "registrationNumber"
                       ],
                       "additionalProperties": false
                     },
@@ -24651,9 +24777,17 @@
                   "farmId": { "type": "string" },
                   "name": { "type": "string" },
                   "unit": { "type": "string", "enum": ["ml", "l", "g", "kg"] },
-                  "description": { "type": ["string", "null"] }
+                  "description": { "type": ["string", "null"] },
+                  "registrationNumber": { "type": ["string", "null"] }
                 },
-                "required": ["id", "farmId", "name", "unit", "description"],
+                "required": [
+                  "id",
+                  "farmId",
+                  "name",
+                  "unit",
+                  "description",
+                  "registrationNumber"
+                ],
                 "additionalProperties": false
               },
               "plot": {
@@ -24781,9 +24915,17 @@
                   "farmId": { "type": "string" },
                   "name": { "type": "string" },
                   "unit": { "type": "string", "enum": ["ml", "l", "g", "kg"] },
-                  "description": { "type": ["string", "null"] }
+                  "description": { "type": ["string", "null"] },
+                  "registrationNumber": { "type": ["string", "null"] }
                 },
-                "required": ["id", "farmId", "name", "unit", "description"],
+                "required": [
+                  "id",
+                  "farmId",
+                  "name",
+                  "unit",
+                  "description",
+                  "registrationNumber"
+                ],
                 "additionalProperties": false
               },
               "plot": {
@@ -29303,8 +29445,9 @@
                         },
                         "unit": {
                           "type": "string",
-                          "enum": ["l", "kg", "dt", "t"]
-                        }
+                          "enum": ["l", "kg", "dt", "t", "m3"]
+                        },
+                        "registrationNumber": { "type": ["string", "null"] }
                       },
                       "required": [
                         "id",
@@ -29312,7 +29455,8 @@
                         "name",
                         "description",
                         "type",
-                        "unit"
+                        "unit",
+                        "registrationNumber"
                       ],
                       "additionalProperties": false
                     }
@@ -29440,8 +29584,9 @@
                         },
                         "unit": {
                           "type": "string",
-                          "enum": ["l", "kg", "dt", "t"]
-                        }
+                          "enum": ["l", "kg", "dt", "t", "m3"]
+                        },
+                        "registrationNumber": { "type": ["string", "null"] }
                       },
                       "required": [
                         "id",
@@ -29449,7 +29594,8 @@
                         "name",
                         "description",
                         "type",
-                        "unit"
+                        "unit",
+                        "registrationNumber"
                       ],
                       "additionalProperties": false
                     }
@@ -29628,7 +29774,11 @@
                   "name": { "type": "string" },
                   "description": { "type": ["string", "null"] },
                   "type": { "type": "string", "enum": ["mineral", "organic"] },
-                  "unit": { "type": "string", "enum": ["l", "kg", "dt", "t"] }
+                  "unit": {
+                    "type": "string",
+                    "enum": ["l", "kg", "dt", "t", "m3"]
+                  },
+                  "registrationNumber": { "type": ["string", "null"] }
                 },
                 "required": [
                   "id",
@@ -29636,7 +29786,8 @@
                   "name",
                   "description",
                   "type",
-                  "unit"
+                  "unit",
+                  "registrationNumber"
                 ],
                 "additionalProperties": false
               }
@@ -29760,7 +29911,11 @@
                   "name": { "type": "string" },
                   "description": { "type": ["string", "null"] },
                   "type": { "type": "string", "enum": ["mineral", "organic"] },
-                  "unit": { "type": "string", "enum": ["l", "kg", "dt", "t"] }
+                  "unit": {
+                    "type": "string",
+                    "enum": ["l", "kg", "dt", "t", "m3"]
+                  },
+                  "registrationNumber": { "type": ["string", "null"] }
                 },
                 "required": [
                   "id",
@@ -29768,7 +29923,8 @@
                   "name",
                   "description",
                   "type",
-                  "unit"
+                  "unit",
+                  "registrationNumber"
                 ],
                 "additionalProperties": false
               }
@@ -29853,7 +30009,7 @@
                           "fertilizerName": { "type": "string" },
                           "unit": {
                             "type": "string",
-                            "enum": ["l", "kg", "dt", "t"]
+                            "enum": ["l", "kg", "dt", "t", "m3"]
                           }
                         },
                         "required": [
@@ -29937,8 +30093,9 @@
                         },
                         "unit": {
                           "type": "string",
-                          "enum": ["l", "kg", "dt", "t"]
-                        }
+                          "enum": ["l", "kg", "dt", "t", "m3"]
+                        },
+                        "registrationNumber": { "type": ["string", "null"] }
                       },
                       "required": [
                         "id",
@@ -29946,7 +30103,8 @@
                         "name",
                         "description",
                         "type",
-                        "unit"
+                        "unit",
+                        "registrationNumber"
                       ],
                       "additionalProperties": false
                     }
@@ -30006,7 +30164,11 @@
                   "name": { "type": "string" },
                   "description": { "type": ["string", "null"] },
                   "type": { "type": "string", "enum": ["mineral", "organic"] },
-                  "unit": { "type": "string", "enum": ["l", "kg", "dt", "t"] }
+                  "unit": {
+                    "type": "string",
+                    "enum": ["l", "kg", "dt", "t", "m3"]
+                  },
+                  "registrationNumber": { "type": ["string", "null"] }
                 },
                 "required": [
                   "id",
@@ -30014,7 +30176,8 @@
                   "name",
                   "description",
                   "type",
-                  "unit"
+                  "unit",
+                  "registrationNumber"
                 ],
                 "additionalProperties": false
               }
@@ -30088,7 +30251,11 @@
                   "name": { "type": "string" },
                   "description": { "type": ["string", "null"] },
                   "type": { "type": "string", "enum": ["mineral", "organic"] },
-                  "unit": { "type": "string", "enum": ["l", "kg", "dt", "t"] }
+                  "unit": {
+                    "type": "string",
+                    "enum": ["l", "kg", "dt", "t", "m3"]
+                  },
+                  "registrationNumber": { "type": ["string", "null"] }
                 },
                 "required": [
                   "id",
@@ -30096,7 +30263,8 @@
                   "name",
                   "description",
                   "type",
-                  "unit"
+                  "unit",
+                  "registrationNumber"
                 ],
                 "additionalProperties": false
               }
@@ -30150,7 +30318,11 @@
                   "name": { "type": "string" },
                   "description": { "type": ["string", "null"] },
                   "type": { "type": "string", "enum": ["mineral", "organic"] },
-                  "unit": { "type": "string", "enum": ["l", "kg", "dt", "t"] }
+                  "unit": {
+                    "type": "string",
+                    "enum": ["l", "kg", "dt", "t", "m3"]
+                  },
+                  "registrationNumber": { "type": ["string", "null"] }
                 },
                 "required": [
                   "id",
@@ -30158,7 +30330,8 @@
                   "name",
                   "description",
                   "type",
-                  "unit"
+                  "unit",
+                  "registrationNumber"
                 ],
                 "additionalProperties": false
               }
@@ -30233,7 +30406,11 @@
                       "type": "string",
                       "enum": ["mineral", "organic"]
                     },
-                    "unit": { "type": "string", "enum": ["l", "kg", "dt", "t"] }
+                    "unit": {
+                      "type": "string",
+                      "enum": ["l", "kg", "dt", "t", "m3"]
+                    },
+                    "registrationNumber": { "type": ["string", "null"] }
                   },
                   "required": [
                     "id",
@@ -30241,7 +30418,8 @@
                     "name",
                     "description",
                     "type",
-                    "unit"
+                    "unit",
+                    "registrationNumber"
                   ],
                   "additionalProperties": false
                 }
@@ -30266,9 +30444,21 @@
               "name": { "type": "string" },
               "description": { "type": ["string", "null"] },
               "type": { "type": "string", "enum": ["mineral", "organic"] },
-              "unit": { "type": "string", "enum": ["l", "kg", "dt", "t"] }
+              "unit": {
+                "type": "string",
+                "enum": ["l", "kg", "dt", "t", "m3"]
+              },
+              "registrationNumber": { "type": ["string", "null"] }
             },
-            "required": ["id", "farmId", "name", "description", "type", "unit"],
+            "required": [
+              "id",
+              "farmId",
+              "name",
+              "description",
+              "type",
+              "unit",
+              "registrationNumber"
+            ],
             "additionalProperties": false
           }
         },
@@ -30281,7 +30471,8 @@
           "name": { "type": "string" },
           "description": { "type": "string" },
           "type": { "type": "string", "enum": ["mineral", "organic"] },
-          "unit": { "type": "string", "enum": ["l", "kg", "dt", "t"] },
+          "unit": { "type": "string", "enum": ["l", "kg", "dt", "t", "m3"] },
+          "registrationNumber": { "type": ["string", "null"] },
           "defaultSpreaderId": { "type": "string" }
         },
         "required": ["name", "type", "unit"]
@@ -30297,9 +30488,21 @@
               "name": { "type": "string" },
               "description": { "type": ["string", "null"] },
               "type": { "type": "string", "enum": ["mineral", "organic"] },
-              "unit": { "type": "string", "enum": ["l", "kg", "dt", "t"] }
+              "unit": {
+                "type": "string",
+                "enum": ["l", "kg", "dt", "t", "m3"]
+              },
+              "registrationNumber": { "type": ["string", "null"] }
             },
-            "required": ["id", "farmId", "name", "description", "type", "unit"],
+            "required": [
+              "id",
+              "farmId",
+              "name",
+              "description",
+              "type",
+              "unit",
+              "registrationNumber"
+            ],
             "additionalProperties": false
           }
         },
@@ -30317,9 +30520,21 @@
               "name": { "type": "string" },
               "description": { "type": ["string", "null"] },
               "type": { "type": "string", "enum": ["mineral", "organic"] },
-              "unit": { "type": "string", "enum": ["l", "kg", "dt", "t"] }
+              "unit": {
+                "type": "string",
+                "enum": ["l", "kg", "dt", "t", "m3"]
+              },
+              "registrationNumber": { "type": ["string", "null"] }
             },
-            "required": ["id", "farmId", "name", "description", "type", "unit"],
+            "required": [
+              "id",
+              "farmId",
+              "name",
+              "description",
+              "type",
+              "unit",
+              "registrationNumber"
+            ],
             "additionalProperties": false
           }
         },
@@ -30332,7 +30547,8 @@
           "name": { "type": "string" },
           "description": { "type": "string" },
           "type": { "type": "string", "enum": ["mineral", "organic"] },
-          "unit": { "type": "string", "enum": ["l", "kg", "dt", "t"] },
+          "unit": { "type": "string", "enum": ["l", "kg", "dt", "t", "m3"] },
+          "registrationNumber": { "type": ["string", "null"] },
           "defaultSpreaderId": { "type": "string" }
         },
         "required": []

@@ -6,8 +6,6 @@ import { Text } from "@/components/text/Text";
 import { ScrollView } from "@/components/views/ScrollView";
 import { Body, H2, H3 } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
-import { type LngLat } from "@maplibre/maplibre-react-native";
-import * as turf from "@turf/turf";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -24,8 +22,19 @@ function SummaryItem({ label, value }: { label: string; value: string }) {
         gap: theme.spacing.m,
       }}
     >
-      <Text style={{ flex: 1, fontWeight: 600, fontSize: 18 }}>{label}</Text>
-      <Text style={{ fontSize: 18 }}>{value}</Text>
+      {/* The label keeps its width (up to 60% of the row) so it isn't squeezed to one letter per line,
+          a long value (e.g. plot name) wraps onto further lines */}
+      <Text
+        style={{
+          flexShrink: 0,
+          maxWidth: "60%",
+          fontWeight: 600,
+          fontSize: 18,
+        }}
+      >
+        {label}
+      </Text>
+      <Text style={{ flex: 1, fontSize: 18, textAlign: "right" }}>{value}</Text>
     </View>
   );
 }
@@ -68,9 +77,6 @@ export function SowingSummary({
     : sowingAreas.reduce((sum, area) => sum + area.amount, 0);
   const counterpart = computeCounterpart(enteredAmount, unit, size);
 
-  const [centerLng, centerLat] = turf.centroid(sowingAreas[0].geometry).geometry
-    .coordinates;
-  const center: LngLat = [centerLng, centerLat];
   const features = useMemo(
     (): GeoJSON.FeatureCollection => ({
       type: "FeatureCollection",
@@ -92,12 +98,7 @@ export function SowingSummary({
       <H2>{t("sowings.sowing")}</H2>
       <H3>{formattedDate}</H3>
       <View style={{ marginTop: theme.spacing.m }}>
-        <StaticMapPreview
-          center={center}
-          zoom={17}
-          features={features}
-          height={250}
-        />
+        <StaticMapPreview features={features} height={250} />
       </View>
       <Card style={{ marginTop: theme.spacing.m }}>
         {hidePlotList && (

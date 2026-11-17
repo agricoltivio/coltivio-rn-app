@@ -4,11 +4,14 @@ import {
   Layer,
   Map,
   RasterSource,
+  type InitialViewState,
   type LngLat,
+  type LngLatBounds,
   type StyleSpecification,
 } from "@maplibre/maplibre-react-native";
 import { hexToRgba } from "@/theme/theme";
-import React, { useState } from "react";
+import * as turf from "@turf/turf";
+import React, { useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { MapAttribution } from "./MapAttribution";
@@ -16,7 +19,8 @@ import { MapAttribution } from "./MapAttribution";
 type BaseLayer = "satellite" | "map";
 
 type StaticMapPreviewProps = {
-  center: LngLat;
+  /** Without a center, the camera fits the bounds of all features. */
+  center?: LngLat;
   zoom?: number;
   features: GeoJSON.FeatureCollection;
   height?: number;
@@ -35,6 +39,9 @@ const TILE_URLS = {
   map: "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg",
 } as const;
 
+const FIT_PADDING = 24;
+const FIT_MAX_ZOOM = 19;
+
 export function StaticMapPreview({
   center,
   zoom = 16,
@@ -49,6 +56,21 @@ export function StaticMapPreview({
     theme.map.defaultFillAlpha,
   );
 
+  const initialViewState = useMemo((): InitialViewState => {
+    if (center || features.features.length === 0) {
+      return { center, zoom };
+    }
+    return {
+      bounds: turf.bbox(features) as LngLatBounds,
+      padding: {
+        top: FIT_PADDING,
+        right: FIT_PADDING,
+        bottom: FIT_PADDING,
+        left: FIT_PADDING,
+      },
+    };
+  }, [center, zoom, features]);
+
   return (
     <View pointerEvents="box-none" style={[styles.container, { height }]}>
       <Map
@@ -59,10 +81,8 @@ export function StaticMapPreview({
         logo={false}
       >
         <Camera
-          initialViewState={{
-            center,
-            zoom,
-          }}
+          initialViewState={initialViewState}
+          maxZoom={center ? undefined : FIT_MAX_ZOOM}
         />
 
         <RasterSource

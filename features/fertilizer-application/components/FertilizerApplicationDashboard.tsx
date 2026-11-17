@@ -1,3 +1,4 @@
+import { productUnitLabel } from "@/utils/units";
 import { FertilizerApplicationSummary } from "@/api/fertilizerApplications.api";
 import { Card } from "@/components/card/Card";
 import { CategoryFilter } from "@/components/charts/CategoryFilter";
@@ -158,7 +159,7 @@ function FertilizerCard({
     }
   }
   const displayUnit = scaleUnit(unit, maxAmount);
-  const perUnitLabel = t(`units.short.${unit}`, { defaultValue: unit });
+  const perUnitLabel = productUnitLabel(unit, t);
 
   const breakdownByYearMonth = useMemo(
     () => aggregateAppliedFertilizersByYearMonth(summaries, fertilizerName),

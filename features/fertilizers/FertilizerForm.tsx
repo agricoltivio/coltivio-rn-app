@@ -1,8 +1,6 @@
 import { FertilizerCreateInput } from "@/api/fertilizers.api";
-import { Card } from "@/components/card/Card";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHSelect } from "@/components/select/RHSelect";
-import { H4 } from "@/theme/Typography";
 import React from "react";
 import { Control, FieldErrors } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -44,6 +42,13 @@ export function FertilizerForm({
           label={t("forms.labels.description_optional")}
           error={errors.description?.message}
         />
+        {/* BLW registration or authorization number; freely tradable fertilizers have none */}
+        <RHTextInput
+          name="registrationNumber"
+          control={control}
+          label={t("forms.labels.registration_number_optional")}
+          error={errors.registrationNumber?.message}
+        />
         <RHSelect
           name="type"
           control={control}
@@ -70,6 +75,8 @@ export function FertilizerForm({
             { label: t("units.long.kg"), value: "kg" },
             { label: t("units.long.dt"), value: "dt" },
             { label: t("units.long.t"), value: "t" },
+            // e.g. slurry
+            { label: t("units.long.m3"), value: "m3" },
           ]}
           rules={{
             required: {
