@@ -46,10 +46,10 @@
       "location_search": "Standort suchen",
       "federal_farm_number": "Betriebsnummer",
       "crop": "Kultur",
-      "size_m2": "Größe (m²)",
+      "size_m2": "Grösse (m²)",
       "area": "Fläche",
       "area_hectares": "Fläche (ha)",
-      "divide_by_plot_size": "Aufteilung nach Schlaggröße",
+      "divide_by_plot_size": "Aufteilung nach Schlaggrösse",
       "plot_w_size": "Schlag {{name}} ({{size}}a)",
       "device": "Gerät",
       "none": "Keine",
@@ -104,7 +104,7 @@
       "duration": "Dauer"
     },
     "placeholders": {
-      "location_search": "z.B. Straße, Hausnummer, Ort",
+      "location_search": "z.B. Strasse, Hausnummer, Ort",
       "federal_farm_number": "z.B. BEB113945 oder LU3862",
       "search": "Suche...",
       "weight_kg_per_harvest_unit": "z.B. 20kg pro Quaderballen",
@@ -114,7 +114,7 @@
       "name_mismatch": "Name stimmt nicht überein",
       "password_min_length": "Passwort muss mindestens 6 Zeichen lang sein",
       "password_repeat_invalid": "Passwörter stimmen nicht überein",
-      "divided_amount_too_big": "Die verteilte Menge ist größer als die verfügbare Menge",
+      "divided_amount_too_big": "Die verteilte Menge ist grösser als die verfügbare Menge",
       "not_all_divided": "Du hast noch nicht die gesamte Menge verteilt",
       "required": "Feld darf nicht leer sein",
       "min": "Mindestens {{min}}",
@@ -206,7 +206,7 @@
     "select_or_draw_area": {
       "select_area": "Wähle deine Fläche",
       "chose_select_or_draw": "Wähle entweder ganze Schläge aus oder zeichne eine eigene Fläche.",
-      "draw_tip": "Benutze diese Symbole, um mit dem Zeichnen zu beginnen und abzuschließen. Tippe auf die Karte um Eckpunkte zu setzen. Drücke und halte die Eckpunkte um sie zu verschieben."
+      "draw_tip": "Benutze diese Symbole, um mit dem Zeichnen zu beginnen und abzuschliessen. Tippe auf die Karte um Eckpunkte zu setzen. Drücke und halte die Eckpunkte um sie zu verschieben."
     },
     "select_plots": {
       "heading": "Wähle die verwendeten Schläge",
@@ -247,7 +247,7 @@
       "invalid_code": "Ungültiger oder abgelaufener Code."
     },
     "farm_name": {
-      "heading": "Wie heißt dein Hof?",
+      "heading": "Wie heisst dein Hof?",
       "subheading": "Gib einen Namen für deinen Hof an"
     },
     "location": {
@@ -800,7 +800,7 @@
     "settings": "Feldkalender Einstellungen",
     "groups": {
       "crops": "Kulturen",
-      "measures": "Maßnahmen",
+      "measures": "Massnahmen",
       "resources": "Betriebsmittel",
       "export": "Export",
       "tools": "Tools"
@@ -1026,12 +1026,12 @@
   "crop_protection_applications": {
     "crop_protection": "Pflanzenschutz",
     "application_configuration": "Pflanzenschutz konfigurieren",
-    "add_application": "Neue Pflanzenschutzmaßnahme",
+    "add_application": "Neue Pflanzenschutzmassnahme",
     "crop_protection_year": "Pflanzenschutz {{year}}",
     "crop_protection_plot_name": "Pflanzenschutz - {{name}}",
     "crop_protection_date": "Pflanzenschutz - {{date}}",
     "select_date": {
-      "heading": "Wann wurde die Maßnahme angewendet?"
+      "heading": "Wann wurde die Massnahme angewendet?"
     },
     "select_product": {
       "heading": "Welches Pflanzenschutzmittel wurde verwendet?",

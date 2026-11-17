@@ -92,7 +92,7 @@ export function DivideFertilizerApplicationOnPlotsScreen({
   function handleOnConfirm() {
     const remaining = round(totalNumberOfApplications - totalDivided, 2);
     if (remaining < 0) {
-      setError("Die verteilte Menge ist größer als die verfügbare Menge");
+      setError("Die verteilte Menge ist grösser als die verfügbare Menge");
       return;
     } else if (remaining > 0) {
       setError("Du hast noch nicht die gesamte Menge verteilt");
