@@ -157,9 +157,11 @@ export default ({ config }) => {
             extraProguardRules:
               "-dontwarn com.stripe.android.pushProvisioning.**",
           },
-          // ios: {
-          //   deploymentTarget: "15.1",
-          // },
+          ios: {
+            // stripe-react-native 0.81 pulls the Stripe iOS SDK in via Swift Package Manager, which needs dynamic
+            // frameworks (pod install fails with static linkage)
+            useFrameworks: "dynamic",
+          },
         },
       ],
       "@maplibre/maplibre-react-native",

@@ -72,3 +72,7 @@ coltivio-797c630e24ef.json
 # defaults; committing a config with a different printWidth reformats
 # every file. Keep personal settings out of the tree.
 .prettierrc
+# @generated expo skills start
+.claude/skills/dotenv
+.claude/skills/dotenvx
+# @generated expo skills end
