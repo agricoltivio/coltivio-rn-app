@@ -29,8 +29,19 @@ function SummaryItem({
         gap: theme.spacing.m,
       }}
     >
-      <Text style={{ flex: 1, fontWeight: 600, fontSize: 18 }}>{label}</Text>
-      <Text style={{ fontSize: 18 }}>{value}</Text>
+      {/* The label keeps its width (up to 60% of the row) so it isn't squeezed to one letter per line,
+          a long value (e.g. plot name) wraps onto further lines */}
+      <Text
+        style={{
+          flexShrink: 0,
+          maxWidth: "60%",
+          fontWeight: 600,
+          fontSize: 18,
+        }}
+      >
+        {label}
+      </Text>
+      <Text style={{ flex: 1, fontSize: 18, textAlign: "right" }}>{value}</Text>
     </View>
   );
 }
