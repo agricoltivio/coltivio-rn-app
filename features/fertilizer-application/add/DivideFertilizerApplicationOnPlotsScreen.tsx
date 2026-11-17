@@ -1,3 +1,4 @@
+import { productUnitLabel } from "@/utils/units";
 import { Button } from "@/components/buttons/Button";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -29,7 +30,7 @@ export function DivideFertilizerApplicationOnPlotsScreen({
   } = useCreateFertilizerApplicationStore();
 
   const unit = fertilizerApplication?.unit;
-  const fertilizerUnit = selectedFertilizer?.unit ?? "kg";
+  const fertilizerUnit = productUnitLabel(selectedFertilizer?.unit ?? "kg", t);
 
   const [quantityByPlotId, setQuantityByPlotId] = useState<
     Record<string, string>

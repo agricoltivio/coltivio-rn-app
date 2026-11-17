@@ -62,6 +62,12 @@ export type ApplicationUnit =
   | "amount_per_hectare"
   | "other";
 
+// Symbol of a product's unit (fertilizer, crop protection), e.g. "m³" for m3. A unit the app doesn't know yet
+// (added on the API first) is shown as stored instead of as a missing translation key.
+export function productUnitLabel(unit: string, t: TranslateFn): string {
+  return t(`units.short.${unit}`, { defaultValue: unit });
+}
+
 // Builds the applied-amount label shown in the field-calendar list rows for
 // fertilizer and crop-protection applications.
 //   - total_amount:       the total product amount followed by the product unit
@@ -80,13 +86,14 @@ export function formatApplicationAmount(
   t: TranslateFn,
 ): string {
   const { unit, numberOfUnits, amountPerUnit, productUnit } = params;
+  const productUnitSymbol = productUnitLabel(productUnit, t);
 
   if (unit === "total_amount") {
-    return `${round(numberOfUnits * amountPerUnit, 2)}${productUnit}`;
+    return `${round(numberOfUnits * amountPerUnit, 2)}${productUnitSymbol}`;
   }
 
   if (unit === "amount_per_hectare") {
-    return `${round(amountPerUnit, 2)}${productUnit}/${t("units.short.ha")}`;
+    return `${round(amountPerUnit, 2)}${productUnitSymbol}/${t("units.short.ha")}`;
   }
 
   const unitLabel = t(`fertilizer_application.units.${unit}`, {

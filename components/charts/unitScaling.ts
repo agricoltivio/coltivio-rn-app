@@ -14,6 +14,7 @@ export function scaleUnit(rawUnit: string, maxValue: number): UnitScale {
     if (maxValue >= 1) return { label: "l", divisor: 1 };
     return { label: "ml", divisor: 0.001 };
   }
+  if (rawUnit === "m3") return { label: "m³", divisor: 1 };
   return { label: rawUnit, divisor: 1 };
 }
 

@@ -5305,7 +5305,7 @@ export interface components {
             /** @enum {string} */
             type: "mineral" | "organic";
             /** @enum {string} */
-            unit: "l" | "kg" | "dt" | "t";
+            unit: "l" | "kg" | "dt" | "t" | "m3";
             registrationNumber: string | null;
           };
         }[];
@@ -5322,7 +5322,7 @@ export interface components {
             totalProducedUnits: number;
             fertilizerName: string;
             /** @enum {string} */
-            unit: "l" | "kg" | "dt" | "t";
+            unit: "l" | "kg" | "dt" | "t" | "m3";
           }[];
         }[];
       };
@@ -8440,7 +8440,7 @@ export interface components {
             /** @enum {string} */
             type: "mineral" | "organic";
             /** @enum {string} */
-            unit: "l" | "kg" | "dt" | "t";
+            unit: "l" | "kg" | "dt" | "t" | "m3";
             registrationNumber: string | null;
           };
         }[];
@@ -8495,7 +8495,7 @@ export interface components {
             /** @enum {string} */
             type: "mineral" | "organic";
             /** @enum {string} */
-            unit: "l" | "kg" | "dt" | "t";
+            unit: "l" | "kg" | "dt" | "t" | "m3";
             registrationNumber: string | null;
           };
         }[];
@@ -8568,7 +8568,7 @@ export interface components {
           /** @enum {string} */
           type: "mineral" | "organic";
           /** @enum {string} */
-          unit: "l" | "kg" | "dt" | "t";
+          unit: "l" | "kg" | "dt" | "t" | "m3";
           registrationNumber: string | null;
         };
       };
@@ -8618,7 +8618,7 @@ export interface components {
           /** @enum {string} */
           type: "mineral" | "organic";
           /** @enum {string} */
-          unit: "l" | "kg" | "dt" | "t";
+          unit: "l" | "kg" | "dt" | "t" | "m3";
           registrationNumber: string | null;
         };
       };
@@ -8648,7 +8648,7 @@ export interface components {
             totalProducedUnits: number;
             fertilizerName: string;
             /** @enum {string} */
-            unit: "l" | "kg" | "dt" | "t";
+            unit: "l" | "kg" | "dt" | "t" | "m3";
           }[];
         }[];
       };
@@ -8684,7 +8684,7 @@ export interface components {
             /** @enum {string} */
             type: "mineral" | "organic";
             /** @enum {string} */
-            unit: "l" | "kg" | "dt" | "t";
+            unit: "l" | "kg" | "dt" | "t" | "m3";
             registrationNumber: string | null;
           };
         }[];
@@ -8710,7 +8710,7 @@ export interface components {
           /** @enum {string} */
           type: "mineral" | "organic";
           /** @enum {string} */
-          unit: "l" | "kg" | "dt" | "t";
+          unit: "l" | "kg" | "dt" | "t" | "m3";
           registrationNumber: string | null;
         };
       };
@@ -8743,7 +8743,7 @@ export interface components {
           /** @enum {string} */
           type: "mineral" | "organic";
           /** @enum {string} */
-          unit: "l" | "kg" | "dt" | "t";
+          unit: "l" | "kg" | "dt" | "t" | "m3";
           registrationNumber: string | null;
         };
       };
@@ -8767,7 +8767,7 @@ export interface components {
           /** @enum {string} */
           type: "mineral" | "organic";
           /** @enum {string} */
-          unit: "l" | "kg" | "dt" | "t";
+          unit: "l" | "kg" | "dt" | "t" | "m3";
           registrationNumber: string | null;
         };
       };
@@ -8794,7 +8794,7 @@ export interface components {
           /** @enum {string} */
           type: "mineral" | "organic";
           /** @enum {string} */
-          unit: "l" | "kg" | "dt" | "t";
+          unit: "l" | "kg" | "dt" | "t" | "m3";
           registrationNumber: string | null;
         }[];
         count: number;
@@ -8809,7 +8809,7 @@ export interface components {
         /** @enum {string} */
         type: "mineral" | "organic";
         /** @enum {string} */
-        unit: "l" | "kg" | "dt" | "t";
+        unit: "l" | "kg" | "dt" | "t" | "m3";
         registrationNumber: string | null;
       };
     };
@@ -8819,7 +8819,7 @@ export interface components {
       /** @enum {string} */
       type: "mineral" | "organic";
       /** @enum {string} */
-      unit: "l" | "kg" | "dt" | "t";
+      unit: "l" | "kg" | "dt" | "t" | "m3";
       registrationNumber?: string | null;
       defaultSpreaderId?: string;
     };
@@ -8832,7 +8832,7 @@ export interface components {
         /** @enum {string} */
         type: "mineral" | "organic";
         /** @enum {string} */
-        unit: "l" | "kg" | "dt" | "t";
+        unit: "l" | "kg" | "dt" | "t" | "m3";
         registrationNumber: string | null;
       };
     };
@@ -8845,7 +8845,7 @@ export interface components {
         /** @enum {string} */
         type: "mineral" | "organic";
         /** @enum {string} */
-        unit: "l" | "kg" | "dt" | "t";
+        unit: "l" | "kg" | "dt" | "t" | "m3";
         registrationNumber: string | null;
       };
     };
@@ -8855,7 +8855,7 @@ export interface components {
       /** @enum {string} */
       type?: "mineral" | "organic";
       /** @enum {string} */
-      unit?: "l" | "kg" | "dt" | "t";
+      unit?: "l" | "kg" | "dt" | "t" | "m3";
       registrationNumber?: string | null;
       defaultSpreaderId?: string;
     };
@@ -19844,7 +19844,12 @@ export interface operations {
   };
   GetV1PlotsByIdPlotIdHarvestSummary: {
     parameters: {
-      query?: never;
+      query?: {
+        /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+        fromDate?: components["schemas"]["GetV1MeadowsByIdMeadowIdUsageParameterFromDate"];
+        /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+        toDate?: components["schemas"]["GetV1MeadowsByIdMeadowIdUsageParameterFromDate"];
+      };
       header?: never;
       path: {
         /** @description GET /v1/plots/byId/:plotId/harvestSummary Parameter */
@@ -19876,7 +19881,12 @@ export interface operations {
   };
   HeadV1PlotsByIdPlotIdHarvestSummary: {
     parameters: {
-      query?: never;
+      query?: {
+        /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+        fromDate?: components["schemas"]["GetV1MeadowsByIdMeadowIdUsageParameterFromDate"];
+        /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+        toDate?: components["schemas"]["GetV1MeadowsByIdMeadowIdUsageParameterFromDate"];
+      };
       header?: never;
       path: {
         /** @description HEAD /v1/plots/byId/:plotId/harvestSummary Parameter */
@@ -23356,7 +23366,12 @@ export interface operations {
   };
   GetV1HarvestsSummaries: {
     parameters: {
-      query?: never;
+      query?: {
+        /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+        fromDate?: components["schemas"]["GetV1MeadowsByIdMeadowIdUsageParameterFromDate"];
+        /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+        toDate?: components["schemas"]["GetV1MeadowsByIdMeadowIdUsageParameterFromDate"];
+      };
       header?: never;
       path?: never;
       cookie?: never;
@@ -23385,7 +23400,12 @@ export interface operations {
   };
   HeadV1HarvestsSummaries: {
     parameters: {
-      query?: never;
+      query?: {
+        /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+        fromDate?: components["schemas"]["GetV1MeadowsByIdMeadowIdUsageParameterFromDate"];
+        /** @description YYYY-MM-DDTHH:mm:ss.sssZ */
+        toDate?: components["schemas"]["GetV1MeadowsByIdMeadowIdUsageParameterFromDate"];
+      };
       header?: never;
       path?: never;
       cookie?: never;

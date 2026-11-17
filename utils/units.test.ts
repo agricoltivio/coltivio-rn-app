@@ -9,6 +9,7 @@ import {
 // otherwise returns the provided defaultValue (mirroring i18next behaviour).
 const translations: Record<string, string> = {
   "units.short.ha": "ha",
+  "units.short.m3": "m³",
   "fertilizer_application.units.load": "Fuder",
   "fertilizer_application.units.bag": "Sack",
   "fertilizer_application.units.other": "Einheiten",
@@ -132,6 +133,31 @@ describe("formatApplicationAmount", () => {
         t,
       ),
     ).toBe("400kg/ha");
+  });
+
+  test("cubic metres are shown as m³", () => {
+    expect(
+      formatApplicationAmount(
+        {
+          unit: "amount_per_hectare",
+          numberOfUnits: 0.1696,
+          amountPerUnit: 25,
+          productUnit: "m3",
+        },
+        t,
+      ),
+    ).toBe("25m³/ha");
+    expect(
+      formatApplicationAmount(
+        {
+          unit: "total_amount",
+          numberOfUnits: 1,
+          amountPerUnit: 4.24,
+          productUnit: "m3",
+        },
+        t,
+      ),
+    ).toBe("4.24m³");
   });
 
   test("load: number of units + translated word, with space", () => {
