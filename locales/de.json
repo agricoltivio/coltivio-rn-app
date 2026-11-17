@@ -101,7 +101,8 @@
       "permanent": "Unbefristet",
       "sex": "Geschlecht",
       "date_range": "Zeitraum",
-      "duration": "Dauer"
+      "duration": "Dauer",
+      "registration_number_optional": "Zulassungsnummer (optional)"
     },
     "placeholders": {
       "location_search": "z.B. Straße, Hausnummer, Ort",
@@ -1635,7 +1636,8 @@
     },
     "notifications": {
       "title": "Benachrichtigungen",
-      "tasks_due": "Fällige Aufgaben"
+      "tasks_due": "Fällige Aufgaben",
+      "android_channel_name": "Erinnerungen"
     }
   },
   "home_tiles": {

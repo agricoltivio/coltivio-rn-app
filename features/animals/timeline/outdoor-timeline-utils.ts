@@ -4,6 +4,7 @@ import {
   addMonths,
   addYears,
   differenceInCalendarDays,
+  getDaysInMonth,
   setDay,
   getDay,
 } from "date-fns";
@@ -214,7 +215,12 @@ function expandSchedule(
   // timeline ends. 1000 steps cover the whole range even for weekly schedules.
   let iterationCount = 0;
 
-  while (current.getTime() <= limit && iterationCount < 1000) {
+  // A monthly byMonthDay moves each occurrence away from the month cursor, so the end is decided on the
+  // occurrence itself below (as on the server): start Jan 15 with day 31 until Jun 20 has no Jun 30,
+  // start Jan 20 with day 5 until Jun 10 still has Jun 5.
+  const occurrenceDayShifted = frequency === "monthly" && byMonthDay !== null;
+  while (iterationCount < 1000) {
+    if (!occurrenceDayShifted && current.getTime() > limit) break;
     iterationCount++;
     if (count !== null && occurrenceCount >= count) break;
 
@@ -250,7 +256,10 @@ function expandSchedule(
       let occStart = current;
       if (frequency === "monthly" && byMonthDay !== null) {
         occStart = new Date(occStart);
-        occStart.setDate(byMonthDay);
+        // Months without that day (31 in April) fall back to their last day
+        // instead of spilling into the next month.
+        occStart.setDate(Math.min(byMonthDay, getDaysInMonth(occStart)));
+        if (occStart.getTime() > limit) break;
       }
       const occEnd = new Date(occStart.getTime() + durationMs);
       const clampedStart = occStart < epochStart ? epochStart : occStart;

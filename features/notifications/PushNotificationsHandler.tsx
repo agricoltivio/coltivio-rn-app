@@ -12,12 +12,14 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as Notifications from "expo-notifications";
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { AppState } from "react-native";
 import {
   getNotificationPermissionAsync,
   parseBreedingDueNotificationData,
   parseTasksDueNotificationData,
   registerPushTokenAsync,
+  setUpAndroidNotificationChannelAsync,
 } from "./push-notifications";
 
 // Rendered next to RootStack inside the NavigationContainer. Keeps the push token registered
@@ -37,6 +39,15 @@ export function PushNotificationsHandler() {
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
   // The same response is returned on every render, it must only navigate once
   const handledResponseIdRef = useRef<string | null>(null);
+  const { i18n } = useTranslation();
+
+  // Firebase drops pushes into its own fallback channel until ours exists, so set it up on
+  // every start regardless of login, and again when the language changes to rename it
+  useEffect(() => {
+    setUpAndroidNotificationChannelAsync().catch((error) =>
+      console.error(error),
+    );
+  }, [i18n.language]);
 
   // Re-register silently on every app start while logged in (never prompts), and again
   // whenever the OS rotates the device token

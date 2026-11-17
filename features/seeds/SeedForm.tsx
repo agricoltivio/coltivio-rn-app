@@ -1,3 +1,4 @@
+import { IonIconButton } from "@/components/buttons/IconButton";
 import { Card } from "@/components/card/Card";
 import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { RHTextInput } from "@/components/inputs/RHTextnput";
@@ -32,6 +33,8 @@ type SeedFormProps = {
   setValue: UseFormSetValue<SeedFormValues>;
   // quantity kind can't change after creation, sowings of a seed must stay summable
   quantityKindLocked?: boolean;
+  // Shows an add button next to the crop field, e.g. to create a missing crop while creating a seed
+  onCreateCrop?: () => void;
 };
 
 export function SeedForm({
@@ -39,6 +42,7 @@ export function SeedForm({
   errors,
   setValue,
   quantityKindLocked = false,
+  onCreateCrop,
 }: SeedFormProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -85,18 +89,40 @@ export function SeedForm({
         }}
         error={errors.name?.message}
       />
-      <RHSelect
-        name="cropId"
-        control={control}
-        label={t("forms.labels.crop")}
-        data={
-          crops?.map((crop) => ({ label: crop.name, value: crop.id })) ?? []
-        }
-        rules={{
-          required: { value: true, message: t("forms.validation.required") },
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: theme.spacing.xs,
         }}
-        error={errors.cropId?.message}
-      />
+      >
+        <View style={{ flex: 1 }}>
+          <RHSelect
+            name="cropId"
+            control={control}
+            label={t("forms.labels.crop")}
+            data={
+              crops?.map((crop) => ({ label: crop.name, value: crop.id })) ?? []
+            }
+            rules={{
+              required: {
+                value: true,
+                message: t("forms.validation.required"),
+              },
+            }}
+            error={errors.cropId?.message}
+          />
+        </View>
+        {onCreateCrop && (
+          <IonIconButton
+            icon="add"
+            iconSize={24}
+            color="black"
+            type="accent"
+            onPress={onCreateCrop}
+          />
+        )}
+      </View>
       <RHSelect
         name="quantityKind"
         control={control}
