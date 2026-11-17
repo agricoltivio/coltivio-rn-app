@@ -38,6 +38,7 @@ export function CreateFertilizerScreen({
   }: FertilizerFormValues) {
     createFertilizerMutation.mutate({
       ...data,
+      registrationNumber: data.registrationNumber?.trim() || null,
       defaultSpreaderId:
         defaultSpreaderId !== "none" ? defaultSpreaderId : undefined,
     });

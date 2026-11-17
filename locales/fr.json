@@ -101,7 +101,8 @@
       "permanent": "Permanent",
       "sex": "Sexe",
       "date_range": "Période",
-      "duration": "Durée"
+      "duration": "Durée",
+      "registration_number_optional": "Numéro d'homologation (facultatif)"
     },
     "placeholders": {
       "location_search": "ex. Rue, Numéro, Ville",

@@ -37,13 +37,14 @@ export function EditCropProtectionProductScreen({
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors, isDirty },
   } = useForm<CropProtectionProductFormValues>({
     values: cropProtectionProduct
       ? {
           ...cropProtectionProduct,
           description: cropProtectionProduct?.description ?? undefined,
+          registrationNumber:
+            cropProtectionProduct?.registrationNumber ?? undefined,
         }
       : undefined,
   });
@@ -57,6 +58,8 @@ export function EditCropProtectionProductScreen({
     updateCropProtectionProductMutation.mutate({
       id: cropProtectionProductId,
       ...data,
+      // An emptied field clears the number
+      registrationNumber: data.registrationNumber?.trim() || null,
     });
   }
 
