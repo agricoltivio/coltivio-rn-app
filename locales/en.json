@@ -1291,6 +1291,15 @@
       "pig": "Pig",
       "deer": "Deer"
     },
+    "animal_types_plural": {
+      "goat": "Goats",
+      "sheep": "Sheep",
+      "cow": "Cows",
+      "horse": "Horses",
+      "donkey": "Donkeys",
+      "pig": "Pigs",
+      "deer": "Deer"
+    },
     "sex": {
       "male": "Male",
       "female": "Female"
@@ -1563,7 +1572,7 @@
     "edit_treatment": "Edit treatment",
     "treatment_name": "Treatment reason",
     "select_animal": "Select animal",
-    "select_drug": "Select drug (optional)",
+    "select_drug": "Select drug",
     "treatment_date": "Treatment date",
     "treatment_end_date": "End date",
     "reason": "Reason",
@@ -1585,8 +1594,10 @@
     "filter_by_birthday": "Filter by birthday",
     "birthday_from": "From",
     "birthday_to": "To",
-    "drug_not_defined_for_all_types": "The drug is not defined for all selected animal types",
-    "different_waiting_times_for_types": "Withdrawal periods differ between animal types"
+    "drug_not_defined_for_type": "This drug has no dose and withdrawal periods for {{type}}. Please enter them manually.",
+    "delete_confirm_title": "Delete treatment?",
+    "delete_confirm_message": "The treatment is removed from the treatment journal. This cannot be undone.",
+    "mixed_animal_types": "A treatment can only contain animals of one type."
   },
   "settings": {
     "settings": "Settings",

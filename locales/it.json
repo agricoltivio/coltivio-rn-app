@@ -1291,6 +1291,15 @@
       "pig": "Maiale",
       "deer": "Cervo"
     },
+    "animal_types_plural": {
+      "goat": "Capre",
+      "sheep": "Pecore",
+      "cow": "Mucche",
+      "horse": "Cavalli",
+      "donkey": "Asini",
+      "pig": "Maiali",
+      "deer": "Cervi"
+    },
     "sex": {
       "male": "Maschio",
       "female": "Femmina"
@@ -1563,7 +1572,7 @@
     "edit_treatment": "Modifica trattamento",
     "treatment_name": "Motivo del trattamento",
     "select_animal": "Seleziona animale",
-    "select_drug": "Seleziona medicinale (facoltativo)",
+    "select_drug": "Seleziona medicinale",
     "treatment_date": "Data del trattamento",
     "treatment_end_date": "Data di fine",
     "reason": "Motivo",
@@ -1585,8 +1594,10 @@
     "filter_by_birthday": "Filtra per data di nascita",
     "birthday_from": "Da",
     "birthday_to": "A",
-    "drug_not_defined_for_all_types": "Il medicinale non è definito per tutti i tipi di animali selezionati",
-    "different_waiting_times_for_types": "I periodi di attesa differiscono tra i tipi di animali"
+    "drug_not_defined_for_type": "Per questa specie ({{type}}) il medicinale non ha dosaggio né periodi di attesa. Inseriscili manualmente.",
+    "delete_confirm_title": "Eliminare il trattamento?",
+    "delete_confirm_message": "Il trattamento viene rimosso dal registro dei trattamenti. L'operazione non può essere annullata.",
+    "mixed_animal_types": "Un trattamento può contenere solo animali di una sola specie."
   },
   "settings": {
     "settings": "Impostazioni",

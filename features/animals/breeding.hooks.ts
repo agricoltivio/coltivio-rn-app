@@ -59,6 +59,12 @@ export function useAnimalWeightsOnDay(
     weightOnDayByAnimalId,
     isLoading: weightQueries.some((query) => query.isLoading),
     isError: weightQueries.some((query) => query.isError),
+    // Loads the weights that failed again, e.g. after a lost connection
+    retry: () => {
+      weightQueries
+        .filter((query) => query.isError)
+        .forEach((query) => query.refetch());
+    },
   };
 }
 
