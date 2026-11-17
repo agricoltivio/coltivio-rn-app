@@ -1,0 +1,24 @@
+# Supply-chain policy, keep identical across Coltivio repos.
+minimumReleaseAge: 10080 # 7 days
+minimumReleaseAgeStrict: true
+# Urgent security fixes only, as 'pkg@x.y.z' with a removal date.
+minimumReleaseAgeExclude: []
+blockExoticSubdeps: true
+strictDepBuilds: true
+trustPolicy: no-downgrade
+# Older releases often predate provenance; the check matters for fresh publishes.
+trustPolicyIgnoreAfter: 43200 # 30 days
+
+# Like Yarn 1: missing peers stay missing instead of being auto-installed.
+autoInstallPeers: false
+# Flat node_modules like Yarn 1, which Metro and Expo autolinking expect.
+nodeLinker: hoisted
+
+overrides:
+  markdown-it: ^14.3.3
+  prosemirror-view: ^1.42.3
+
+# Dependency install scripts. Unlisted packages fail the install; only allow what breaks without.
+allowBuilds:
+  '@sentry/cli': false
+  unrs-resolver: false

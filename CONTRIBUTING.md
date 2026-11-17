@@ -11,17 +11,17 @@ Thank you for your interest in contributing! Coltivio is a nonprofit open-source
 ## Development workflow
 
 ```bash
-yarn install             # install dependencies
-yarn ios                 # run on iOS simulator
-yarn android             # run on Android emulator
-yarn typecheck           # typecheck (tsc --noEmit)
-yarn lint                # lint
+pnpm install             # install dependencies
+pnpm ios                 # run on iOS simulator
+pnpm android             # run on Android emulator
+pnpm typecheck           # typecheck (tsc --noEmit)
+pnpm lint                # lint
 ```
 
 ## Submitting changes
 
-1. Make sure `yarn typecheck` passes with no errors
-2. Make sure `yarn lint` passes
+1. Make sure `pnpm typecheck` passes with no errors
+2. Make sure `pnpm lint` passes
 3. Open a pull request against `main` -- don't worry about commit history, we squash merge
 
 ## Code style

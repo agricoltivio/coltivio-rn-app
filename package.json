@@ -9,10 +9,6 @@
   "license": "SEE LICENSE IN LICENSE",
   "author": "Coltivio",
   "homepage": "https://github.com/agricoltivio/coltivio-rn-app",
-  "resolutions": {
-    "markdown-it": "^14.3.3",
-    "prosemirror-view": "^1.42.3"
-  },
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
@@ -33,7 +29,7 @@
     "eas:build-preview-ios": "eas build --profile preview --platform ios",
     "eas:build-dev-android": "APP_VARIANT=development eas build --profile development --platform android",
     "eas:install": "eas build:run -p ios",
-    "expo:update": "yarn expo install expo@latest && npx expo install --fix",
+    "expo:update": "pnpm expo install expo@latest && pnpm expo install --fix",
     "eas:build-production": "eas build --profile production --platform all",
     "eas:build-production-apk": "eas build --profile production-apk --platform android",
     "eas:submit-ios": "eas submit --platform ios --latest",
@@ -139,5 +135,9 @@
     "prettier": "^3.3.3",
     "react-test-renderer": "18.2.0",
     "typescript": "5.9.3"
+  },
+  "packageManager": "pnpm@11.28.7",
+  "engines": {
+    "node": ">=22.22"
   }
 }
