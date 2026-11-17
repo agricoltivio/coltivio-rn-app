@@ -11,15 +11,6 @@ module.exports = defineConfig([
     rules: {
       // styled-components uses 'styled' as both default and named export — this is intentional
       "import/no-named-as-default": "off",
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        {
-          vars: "all",
-          args: "none",
-          ignoreRestSiblings: true,
-          caughtErrors: "all",
-        },
-      ],
       "no-restricted-imports": [
         "error",
         {
@@ -31,6 +22,21 @@ module.exports = defineConfig([
                 "Import Text from '@/components/text/Text' instead — it applies the app's Inter font.",
             },
           ],
+        },
+      ],
+    },
+  },
+  {
+    // eslint-config-expo registers the @typescript-eslint plugin only for TS files.
+    files: ["**/*.ts", "**/*.tsx"],
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          vars: "all",
+          args: "none",
+          ignoreRestSiblings: true,
+          caughtErrors: "all",
         },
       ],
     },
