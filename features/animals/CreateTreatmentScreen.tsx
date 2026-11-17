@@ -171,6 +171,7 @@ export function CreateTreatmentScreen({
       drug: selectedDrug,
       drugTreatment: drugTreatmentForType,
       drugPickedByUser: !!dirtyFields.drugId,
+      savedAnimalTypes: [],
       usableDays: {
         milk: toDay(getValues("milkUsableDate")),
         meat: toDay(getValues("meatUsableDate")),

@@ -55,6 +55,7 @@ export function proposeDrugValues({
   drug,
   drugTreatment,
   drugPickedByUser,
+  savedAnimalTypes,
   usableDays,
 }: {
   previous: DrugProposalInputs | null;
@@ -66,14 +67,23 @@ export function proposeDrugValues({
   drugTreatment: DrugTreatment | undefined;
   // The user changed the drug field, so animals selected afterwards get the drug's values
   drugPickedByUser: boolean;
+  // Animal types of the saved treatment (empty when creating). An older treatment may mix types: removing
+  // animals there switches between types it already had, which keeps its saved values.
+  savedAnimalTypes: string[];
   usableDays: UsableDays;
 }): DrugProposal {
   if (!previous) return {};
   const drugChanged = previous.drugId !== current.drugId;
   // Animals finishing loading is no change, picking animals after the drug is
+  const switchedWithinSavedTypes =
+    previous.animalType !== undefined &&
+    current.animalType !== undefined &&
+    savedAnimalTypes.includes(previous.animalType) &&
+    savedAnimalTypes.includes(current.animalType);
   const animalTypeChanged =
     previous.animalType !== current.animalType &&
-    (previous.animalType !== undefined || drugPickedByUser);
+    (previous.animalType !== undefined || drugPickedByUser) &&
+    !switchedWithinSavedTypes;
   const endDayChanged = previous.endDay !== current.endDay;
   if (!drugChanged && !animalTypeChanged && !endDayChanged) return {};
 

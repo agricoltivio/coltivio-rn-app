@@ -37,6 +37,7 @@ describe("proposeDrugValues", () => {
         drug,
         drugTreatment: goatTreatment,
         drugPickedByUser: false,
+        savedAnimalTypes: [],
         usableDays: noDays,
       }),
     ).toEqual({});
@@ -50,6 +51,7 @@ describe("proposeDrugValues", () => {
         drug,
         drugTreatment: goatTreatment,
         drugPickedByUser: true,
+        savedAnimalTypes: [],
         usableDays: noDays,
       }),
     ).toEqual({
@@ -78,6 +80,7 @@ describe("proposeDrugValues", () => {
       drug,
       drugTreatment: undefined,
       drugPickedByUser: true,
+      savedAnimalTypes: [],
       usableDays: noDays,
     });
     expect(beforeAnimals).toEqual({
@@ -94,6 +97,7 @@ describe("proposeDrugValues", () => {
       drug,
       drugTreatment: goatTreatment,
       drugPickedByUser: true,
+      savedAnimalTypes: [],
       usableDays: noDays,
     });
     expect(afterAnimals).toEqual({
@@ -114,6 +118,7 @@ describe("proposeDrugValues", () => {
         drug,
         drugTreatment: goatTreatment,
         drugPickedByUser: false,
+        savedAnimalTypes: [],
         usableDays: {
           milk: "2026-11-20",
           meat: "2026-12-01",
@@ -130,6 +135,7 @@ describe("proposeDrugValues", () => {
       drug,
       drugTreatment: goatTreatment,
       drugPickedByUser: false,
+      savedAnimalTypes: [],
       usableDays: { milk: "2026-11-21", meat: "2026-12-02", organs: undefined },
     });
     expect(proposal.dose).toEqual({ value: "2", unit: "mg", perUnit: "kg" });
@@ -149,6 +155,7 @@ describe("proposeDrugValues", () => {
         drug,
         drugTreatment: undefined,
         drugPickedByUser: true,
+        savedAnimalTypes: [],
         usableDays: {
           milk: "2026-11-20",
           meat: "2026-11-30",
@@ -174,6 +181,7 @@ describe("proposeDrugValues", () => {
         drug: undefined,
         drugTreatment: undefined,
         drugPickedByUser: true,
+        savedAnimalTypes: [],
         usableDays: {
           milk: "2026-11-18",
           meat: "2026-11-23",
@@ -199,6 +207,7 @@ describe("proposeDrugValues", () => {
         drug,
         drugTreatment: goatTreatment,
         drugPickedByUser: true,
+        savedAnimalTypes: [],
         usableDays: {
           milk: "2026-11-18",
           meat: "2026-11-23",
@@ -222,6 +231,7 @@ describe("proposeDrugValues", () => {
         drug,
         drugTreatment: goatTreatment,
         drugPickedByUser: true,
+        savedAnimalTypes: [],
         // Meat lengthened by hand from 23.11 to 10.12, organs cleared by hand
         usableDays: {
           milk: "2026-11-18",
@@ -240,6 +250,7 @@ describe("proposeDrugValues", () => {
         drug,
         drugTreatment: undefined,
         drugPickedByUser: true,
+        savedAnimalTypes: [],
         usableDays: {
           milk: "2026-11-25",
           meat: "2026-11-30",
@@ -257,7 +268,26 @@ describe("proposeDrugValues", () => {
         drug: undefined,
         drugTreatment: undefined,
         drugPickedByUser: false,
+        savedAnimalTypes: [],
         usableDays: noDays,
+      }),
+    ).toEqual({});
+  });
+
+  test("removing animals from an older mixed treatment keeps its saved values", () => {
+    expect(
+      proposeDrugValues({
+        previous: { ...goatsWithDrug, animalType: "cow" },
+        current: goatsWithDrug,
+        drug,
+        drugTreatment: goatTreatment,
+        drugPickedByUser: false,
+        savedAnimalTypes: ["cow", "goat"],
+        usableDays: {
+          milk: "2026-11-21",
+          meat: "2026-12-02",
+          organs: undefined,
+        },
       }),
     ).toEqual({});
   });

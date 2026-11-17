@@ -227,6 +227,7 @@ export function EditTreatmentScreen({
       drug: selectedDrug,
       drugTreatment: drugTreatmentForType,
       drugPickedByUser: !!dirtyFields.drugId,
+      savedAnimalTypes: treatment.animals.map((animal) => animal.type),
       usableDays: {
         milk: toDay(getValues("milkUsableDate")),
         meat: toDay(getValues("meatUsableDate")),
