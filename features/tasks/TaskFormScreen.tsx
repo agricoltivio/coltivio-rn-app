@@ -37,6 +37,7 @@ import {
   useUpdateTaskMutation,
 } from "./tasks.hooks";
 import { TaskFormScreenProps } from "./navigation/tasks-routes";
+import { monthlyAnchorDay } from "./task-recurrence-anchor";
 import { AnimalType } from "@/api/animals.api";
 import { useAnimalsQuery } from "@/features/animals/animals.hooks";
 import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
@@ -667,10 +668,11 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
   const [labelDialogInput, setLabelDialogInput] = useState("");
   const [recurrence, setRecurrence] = useState<RecurrenceValue | null>(null);
   const [recurrenceModalVisible, setRecurrenceModalVisible] = useState(false);
-  // Recurrence fields the picker can't edit (e.g. set via the web app). The backend replaces
+  // Recurrence fields the picker can't edit (e.g. set via the API). The backend replaces
   // the whole recurrence on update, so they are sent back unchanged to not lose them.
   const [loadedRecurrenceExtras, setLoadedRecurrenceExtras] = useState<{
     frequency: RecurrenceValue["frequency"];
+    dueDate?: string;
     byWeekday?: TaskRecurrenceInput["byWeekday"];
     byMonthDay?: number;
     count?: number;
@@ -734,6 +736,10 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
       });
       setLoadedRecurrenceExtras({
         frequency: taskDetail.recurrence.frequency,
+        dueDate:
+          taskDetail.dueDate != null
+            ? toLocalDateString(new Date(taskDetail.dueDate as string))
+            : undefined,
         byWeekday: taskDetail.recurrence.byWeekday ?? undefined,
         byMonthDay: taskDetail.recurrence.byMonthDay ?? undefined,
         count: taskDetail.recurrence.count ?? undefined,
@@ -755,8 +761,9 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
       .filter((item) => item.name.trim().length > 0)
       .map((item) => ({ id: item.id, name: item.name, dueDate: item.dueDate }));
 
-    // Weekdays / month day only make sense for the frequency they were set with, and count
-    // conflicts with an end date, so they're dropped when the user changed those
+    const dueDate = values.dueDate ? toLocalDateString(values.dueDate) : null;
+    // Weekdays only make sense for the frequency they were set with, and count conflicts
+    // with an end date, so they're dropped when the user changed those
     const keepRecurrenceExtras =
       recurrence != null &&
       loadedRecurrenceExtras != null &&
@@ -769,9 +776,11 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
           byWeekday: keepRecurrenceExtras
             ? loadedRecurrenceExtras.byWeekday
             : undefined,
-          byMonthDay: keepRecurrenceExtras
-            ? loadedRecurrenceExtras.byMonthDay
-            : undefined,
+          byMonthDay: monthlyAnchorDay(
+            recurrence.frequency,
+            dueDate,
+            loadedRecurrenceExtras,
+          ),
           count:
             keepRecurrenceExtras && recurrence.until == null
               ? loadedRecurrenceExtras.count
@@ -786,7 +795,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
         labels,
         // null clears the value on the backend, undefined would leave it unchanged
         assigneeId: values.assigneeId || null,
-        dueDate: values.dueDate ? toLocalDateString(values.dueDate) : null,
+        dueDate,
         recurrence: recurrencePayload,
         checklistItems,
       };
@@ -797,7 +806,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
         description: values.description || undefined,
         labels,
         assigneeId: values.assigneeId || undefined,
-        dueDate: values.dueDate ? toLocalDateString(values.dueDate) : undefined,
+        dueDate: dueDate ?? undefined,
         recurrence: recurrencePayload ?? undefined,
         links: [],
         checklistItems,

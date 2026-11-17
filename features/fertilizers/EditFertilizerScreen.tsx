@@ -38,6 +38,7 @@ export function EditFertilizerScreen({
       ? {
           ...fertilizer,
           description: fertilizer.description ?? undefined,
+          registrationNumber: fertilizer.registrationNumber ?? undefined,
         }
       : undefined,
   });
@@ -53,6 +54,8 @@ export function EditFertilizerScreen({
     updateFertilizerMutation.mutate({
       id: fertilizerId,
       ...data,
+      // An emptied field clears the number
+      registrationNumber: data.registrationNumber?.trim() || null,
       defaultSpreaderId:
         defaultSpreaderId !== "none" ? defaultSpreaderId : undefined,
     });

@@ -19,7 +19,6 @@ export function CreateCropProtectionProductScreen({
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors, isDirty },
   } = useForm<CropProtectionProductFormValues>();
 
@@ -42,7 +41,10 @@ export function CreateCropProtectionProductScreen({
   function onSubmitCropProtectionProduct(
     data: CropProtectionProductFormValues,
   ) {
-    createCropProtectionProductMutation.mutate(data);
+    createCropProtectionProductMutation.mutate({
+      ...data,
+      registrationNumber: data.registrationNumber?.trim() || null,
+    });
   }
 
   return (

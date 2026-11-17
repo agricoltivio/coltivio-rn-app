@@ -101,7 +101,8 @@
       "permanent": "Unbefristet",
       "sex": "Geschlecht",
       "date_range": "Zeitraum",
-      "duration": "Dauer"
+      "duration": "Dauer",
+      "registration_number_optional": "Zulassungsnummer (optional)"
     },
     "placeholders": {
       "location_search": "z.B. Strasse, Hausnummer, Ort",
