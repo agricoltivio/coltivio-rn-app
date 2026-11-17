@@ -148,7 +148,7 @@ export function WikiEntryFormScreen({
       footerComponent={
         <BottomActionContainer>
           <TouchableOpacity
-            onPress={handleSubmit(onSubmit)}
+            onPress={() => handleSubmit(onSubmit)()}
             disabled={isSaveDisabled}
             style={{
               backgroundColor: theme.colors.buttonPrimary,

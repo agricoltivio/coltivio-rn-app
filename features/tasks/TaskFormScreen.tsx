@@ -28,6 +28,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import type { TextInputInstance } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
@@ -584,7 +585,7 @@ function ChecklistItemRow({
 }) {
   const theme = useTheme();
   const [editing, setEditing] = useState(false);
-  const inputRef = useRef<RNTextInput>(null);
+  const inputRef = useRef<TextInputInstance>(null);
 
   function handlePress() {
     setEditing(true);
