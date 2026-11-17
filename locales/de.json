@@ -177,8 +177,7 @@
     "unexpected_retry": "Ups, etwas ist schief gelaufen. Bitte versuche es erneut.",
     "unexpected_retry_later": "Ups, etwas ist schief gelaufen. Bitte versuche es später erneut.",
     "unexpected": "Ups, etwas ist schief gelaufen.",
-    "try_again_later": "Bitte versuche es später nochmals...",
-    "link_expired": "Der Link ist abgelaufen. Bitte versuche es erneut."
+    "try_again_later": "Bitte versuche es später nochmals..."
   },
   "units": {
     "long": {
@@ -294,7 +293,6 @@
   "users": {
     "email": "Email Adresse",
     "verify_new_email_before_in_effect": "Deine neue Email Adresse muss zuerst verifiziert werden, bevor die Änderung übernommen wird.",
-    "email_verified": "Deine Email Adresse wurde erfolgreich verifiziert",
     "email_not_verified": "Email Adresse noch nicht verifiziert!",
     "email_change_pending": "Verifizieren deine neue Email Adresse",
     "email_change_verification_sent": "Eine Email wurde versendet, um deine neue Adresse zu verifizieren. Sobald diese bestätigt ist, wird die neue Adresse aktiviert.",

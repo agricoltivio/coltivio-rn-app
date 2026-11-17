@@ -177,8 +177,7 @@
     "unexpected_retry": "Oups, une erreur s'est produite. Réessaie.",
     "unexpected_retry_later": "Oups, une erreur s'est produite. Réessaie plus tard.",
     "unexpected": "Oups, une erreur s'est produite.",
-    "try_again_later": "Réessaie plus tard...",
-    "link_expired": "Le lien a expiré. Réessaie."
+    "try_again_later": "Réessaie plus tard..."
   },
   "units": {
     "long": {
@@ -294,7 +293,6 @@
   "users": {
     "email": "Adresse e-mail",
     "verify_new_email_before_in_effect": "Ta nouvelle adresse e-mail doit être vérifiée avant que la modification ne prenne effet.",
-    "email_verified": "Ton adresse e-mail a été vérifiée",
     "email_not_verified": "Adresse e-mail non vérifiée !",
     "email_change_pending": "Vérifie ta nouvelle adresse e-mail",
     "email_change_verification_sent": "Un e-mail a été envoyé pour vérifier ta nouvelle adresse. Une fois confirmée, la nouvelle adresse sera activée.",

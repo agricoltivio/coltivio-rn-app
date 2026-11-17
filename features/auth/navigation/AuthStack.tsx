@@ -2,7 +2,6 @@ import { Stack } from "@/navigation/stack";
 import { DefaultTheme } from "styled-components/native";
 import { ForgotPasswordScreen } from "../ForgotPasswordScreen";
 import { PasswordResetLinkSentScreen } from "../PasswordResetLinkSentScreen";
-import { ResetPasswordScreen } from "../ResetPasswordScreen";
 import { SignInScreen } from "../SignInScreen";
 import { SignUpScreen } from "../SignUpScreen";
 
@@ -40,11 +39,6 @@ export function renderAuthStack(theme: DefaultTheme) {
       <Stack.Screen
         name="PasswordResetLinkSent"
         component={PasswordResetLinkSentScreen}
-        options={brandHeader}
-      />
-      <Stack.Screen
-        name="ResetPassword"
-        component={ResetPasswordScreen}
         options={brandHeader}
       />
     </Stack.Group>

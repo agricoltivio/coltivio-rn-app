@@ -177,8 +177,7 @@
     "unexpected_retry": "Oops, qualcosa è andato storto. Riprova.",
     "unexpected_retry_later": "Oops, qualcosa è andato storto. Riprova più tardi.",
     "unexpected": "Oops, qualcosa è andato storto.",
-    "try_again_later": "Riprova più tardi...",
-    "link_expired": "Il link è scaduto. Per favore riprova."
+    "try_again_later": "Riprova più tardi..."
   },
   "units": {
     "long": {
@@ -294,7 +293,6 @@
   "users": {
     "email": "Indirizzo email",
     "verify_new_email_before_in_effect": "Il tuo nuovo indirizzo email deve essere verificato prima che la modifica abbia effetto.",
-    "email_verified": "Il tuo indirizzo email è stato verificato con successo",
     "email_not_verified": "Indirizzo email non verificato!",
     "email_change_pending": "Verifica il tuo nuovo indirizzo email",
     "email_change_verification_sent": "È stata inviata un'email per verificare il nuovo indirizzo. Una volta confermato, il nuovo indirizzo sarà attivato.",
