@@ -177,8 +177,7 @@
     "unexpected_retry": "Oops, something went wrong. Please try again.",
     "unexpected_retry_later": "Oops, something went wrong. Please try again later.",
     "unexpected": "Oops, something went wrong.",
-    "try_again_later": "Please try again later...",
-    "link_expired": "The link has expired. Please try again."
+    "try_again_later": "Please try again later..."
   },
   "units": {
     "long": {
@@ -294,7 +293,6 @@
   "users": {
     "email": "Email Address",
     "verify_new_email_before_in_effect": "You must verify your new email address before the change takes effect.",
-    "email_verified": "Your email address has been successfully verified.",
     "email_not_verified": "Email address not verified!",
     "email_change_pending": "Verify your new email address",
     "email_change_verification_sent": "An email has been sent to verify your new address. Once verified, your new address will be active.",

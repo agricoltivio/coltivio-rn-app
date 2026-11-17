@@ -11,7 +11,6 @@ import { SpeedDialSettingsScreen } from "../SpeedDialSettingsScreen";
 import { UserAccountScreen } from "../UserAccountScreen";
 import { OnboardingSettingsScreen } from "../UserSettingsScreen";
 import { DevSettingsScreen } from "../../farms/DevSettingsScreen";
-import { EmailVerifiedScreen } from "../EmailVerifiedScreen";
 import { ChangeEmailPendingScreen } from "../ChangeEmailPendingScreen";
 import { UserMembershipScreen } from "../UserMembershipScreen";
 import { UserDonationsScreen } from "../UserDonationsScreen";
@@ -106,12 +105,6 @@ export function renderUserStack() {
       options={{
         title: "",
       }}
-    />,
-    <Stack.Screen
-      key="email-verified"
-      name="EmailVerified"
-      component={EmailVerifiedScreen}
-      options={{ title: "" }}
     />,
     <Stack.Screen
       key="change-password"
