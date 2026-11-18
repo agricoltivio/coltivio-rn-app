@@ -659,7 +659,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
   const isEditing = taskId != null;
 
   // Load existing task when editing
-  const { task, isLoading: taskLoading } = useTaskDetailQuery(taskId ?? "");
+  const { task } = useTaskDetailQuery(taskId ?? "");
 
   const { users } = useFarmUsersQuery();
 

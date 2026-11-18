@@ -19,6 +19,12 @@ export function RHDatePicker<T extends FieldValues>({
 }: RHTextInputProps<T>) {
   const { i18n } = useTranslation();
   const locale = i18n.language;
+  // A required date can't be cleared: the button would only produce an invalid form, and screens that read the
+  // date (e.g. the treatment start date) crash on an empty value. An explicit clearable prop still wins.
+  const required = rules?.required;
+  const isRequired =
+    typeof required === "object" ? required.value : Boolean(required);
+  const showClearButton = clearable ?? !isRequired;
   return (
     <Controller
       control={control}
@@ -36,7 +42,7 @@ export function RHDatePicker<T extends FieldValues>({
           onBlur={onBlur}
           locale={locale}
           error={error}
-          clearable={clearable}
+          clearable={showClearButton}
           minimumDate={minimumDate}
         />
       )}

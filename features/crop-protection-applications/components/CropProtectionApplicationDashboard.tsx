@@ -1,3 +1,4 @@
+import { productUnitLabel } from "@/utils/units";
 import { CropProtectionApplicationSummary } from "@/api/cropProtectionApplications.api";
 import { Card } from "@/components/card/Card";
 import { CategoryFilter } from "@/components/charts/CategoryFilter";
@@ -158,7 +159,7 @@ function ProductCard({
     }
   }
   const displayUnit = scaleUnit(unit, maxAmount);
-  const perUnitLabel = t(`units.short.${unit}`, { defaultValue: unit });
+  const perUnitLabel = productUnitLabel(unit, t);
 
   const breakdownByYearMonth = useMemo(
     () => aggregateAppliedCropProtectionsByYearMonth(summaries, productName),

@@ -1,3 +1,4 @@
+import { productUnitLabel } from "@/utils/units";
 import { FertilizerApplicationPresetCreateInput } from "@/api/fertilizerApplicationPresets.api";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -197,7 +198,7 @@ export function ConfigureFertilizerApplicationScreen({
   if (!presetsLoaded) return null;
 
   const unitLabel = unitOptions.find((o) => o.value === unit)?.label ?? "";
-  const fertilizerUnit = selectedFertilizer?.unit ?? "kg";
+  const fertilizerUnit = productUnitLabel(selectedFertilizer?.unit ?? "kg", t);
 
   return (
     <ContentView

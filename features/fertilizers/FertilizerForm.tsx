@@ -75,6 +75,8 @@ export function FertilizerForm({
             { label: t("units.long.kg"), value: "kg" },
             { label: t("units.long.dt"), value: "dt" },
             { label: t("units.long.t"), value: "t" },
+            // e.g. slurry
+            { label: t("units.long.m3"), value: "m3" },
           ]}
           rules={{
             required: {
