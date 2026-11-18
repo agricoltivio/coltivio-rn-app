@@ -164,6 +164,7 @@ export default ({ config }) => {
         },
       ],
       "@maplibre/maplibre-react-native",
+      "./plugins/withOptionalPortraitFeature",
     ],
     extra: {
       eas: {
