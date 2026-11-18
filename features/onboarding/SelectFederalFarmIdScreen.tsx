@@ -8,10 +8,11 @@ import { H3 } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
 import BottomSheet, {
   BottomSheetBackdrop,
+  BottomSheetBackdropProps,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { useDebounce } from "@uidotdev/usehooks";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Keyboard, Pressable, View } from "react-native";
 import { Text } from "@/components/text/Text";
@@ -30,6 +31,10 @@ const SEARCH_RADIUS_KM = 3;
 const SEARCH_LIMIT = 20;
 // The backend matches by trigram similarity, shorter queries (almost) never match
 const SEARCH_MIN_CHARS = 3;
+
+function renderBackdrop(props: BottomSheetBackdropProps) {
+  return <BottomSheetBackdrop disappearsOnIndex={-1} {...props} />;
+}
 
 type SheetState =
   | { kind: "confirmId"; federalFarmId: string }
@@ -122,16 +127,10 @@ export function SelectFederalFarmIdScreen({
         ? withSelectedFirst(nearbyStatus === "found" ? uniqueFarmIds : [], true)
         : [];
 
-  // A new object on every open, so tapping the same farm id again re-opens the sheet.
-  // It is not reset on close, so the content doesn't change during the close animation.
+  // The sheet is only mounted while open: a closed sheet's backdrop could stay touchable and
+  // swallow every tap on the screen. Reset in onClose, so the content stays during the close animation.
   const [sheet, setSheet] = useState<SheetState | null>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
-
-  useEffect(() => {
-    if (sheet) {
-      bottomSheetRef.current?.expand();
-    }
-  }, [sheet]);
 
   function handleFarmIdPress(federalFarmId: string) {
     Keyboard.dismiss();
@@ -296,43 +295,43 @@ export function SelectFederalFarmIdScreen({
           />
         </View>
       </View>
-      <BottomSheet
-        ref={bottomSheetRef}
-        enablePanDownToClose
-        index={-1}
-        backdropComponent={(props) => (
-          <BottomSheetBackdrop disappearsOnIndex={-1} {...props} />
-        )}
-      >
-        <BottomSheetView
-          style={{
-            paddingBottom: insets.bottom + theme.spacing.s,
-            paddingHorizontal: theme.spacing.l,
-          }}
+      {sheet ? (
+        <BottomSheet
+          ref={bottomSheetRef}
+          enablePanDownToClose
+          onClose={() => setSheet(null)}
+          backdropComponent={renderBackdrop}
         >
-          <H3
+          <BottomSheetView
             style={{
-              marginVertical: theme.spacing.l,
-              fontSize: 16,
-              textAlign: "center",
+              paddingBottom: insets.bottom + theme.spacing.s,
+              paddingHorizontal: theme.spacing.l,
             }}
           >
-            {sheet?.kind === "confirmId"
-              ? t("onboarding.federal_farm_number.confirmation", {
-                  federalFarmId: sheet.federalFarmId,
-                })
-              : t("onboarding.federal_farm_number.confirmation_without_id")}
-          </H3>
-          <Button
-            title={
-              sheet?.kind === "confirmId"
-                ? t("buttons.confirm")
-                : t("onboarding.federal_farm_number.continue_without_id")
-            }
-            onPress={handleSheetConfirm}
-          />
-        </BottomSheetView>
-      </BottomSheet>
+            <H3
+              style={{
+                marginVertical: theme.spacing.l,
+                fontSize: 16,
+                textAlign: "center",
+              }}
+            >
+              {sheet.kind === "confirmId"
+                ? t("onboarding.federal_farm_number.confirmation", {
+                    federalFarmId: sheet.federalFarmId,
+                  })
+                : t("onboarding.federal_farm_number.confirmation_without_id")}
+            </H3>
+            <Button
+              title={
+                sheet.kind === "confirmId"
+                  ? t("buttons.confirm")
+                  : t("onboarding.federal_farm_number.continue_without_id")
+              }
+              onPress={handleSheetConfirm}
+            />
+          </BottomSheetView>
+        </BottomSheet>
+      ) : null}
     </ContentView>
   );
 }
