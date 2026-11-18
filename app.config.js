@@ -148,17 +148,14 @@ export default ({ config }) => {
         "expo-build-properties",
         {
           android: {
-            compileSdkVersion: 36,
+            compileSdkVersion: 37,
             targetSdkVersion: 36,
-            buildToolsVersion: "36.0.0",
+            buildToolsVersion: "37.0.0",
             enableMinifyInReleaseBuilds: true,
             enableShrinkResourcesInReleaseBuilds: true,
-            // stripe-react-native references its optional push-provisioning SDK, which we don't ship
-            extraProguardRules:
-              "-dontwarn com.stripe.android.pushProvisioning.**",
           },
           ios: {
-            // stripe-react-native 0.81 pulls the Stripe iOS SDK in via Swift Package Manager, which needs dynamic
+            // stripe-react-native pulls the Stripe iOS SDK in via Swift Package Manager, which needs dynamic
             // frameworks (pod install fails with static linkage)
             useFrameworks: "dynamic",
           },
