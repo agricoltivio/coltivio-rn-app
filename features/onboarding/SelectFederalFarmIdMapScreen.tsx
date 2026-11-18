@@ -12,6 +12,7 @@ import {
 } from "@maplibre/maplibre-react-native";
 import BottomSheet, {
   BottomSheetBackdrop,
+  BottomSheetBackdropProps,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -22,6 +23,10 @@ import { useTheme } from "styled-components/native";
 import { usePlotsByLocationQuery } from "../federal-plots/federalPlots.hooks";
 import { MapInfoModal } from "../map/overlays/MapInfoModal";
 import { useOnboarding } from "./OnboardingContext";
+
+function renderBackdrop(props: BottomSheetBackdropProps) {
+  return <BottomSheetBackdrop disappearsOnIndex={-1} {...props} />;
+}
 
 export function SelectFederalFarmIdMapScreen({
   navigation,
@@ -37,8 +42,8 @@ export function SelectFederalFarmIdMapScreen({
     !!data.location,
   );
 
-  // A new object on every tap, so tapping the same parcel again re-opens the sheet.
-  // It is not reset on close, so the content doesn't change during the close animation.
+  // The sheet is only mounted while open: a closed sheet's backdrop could stay touchable and
+  // swallow every tap on the screen. Reset in onClose, so the content stays during the close animation.
   const [selection, setSelection] = useState<{
     federalFarmId: string;
   } | null>(null);
@@ -55,12 +60,6 @@ export function SelectFederalFarmIdMapScreen({
 
   const { lng, lat } = data.location!;
   const initialCenter: LngLat = [lng, lat];
-
-  useEffect(() => {
-    if (selection) {
-      bottomSheetModalRef.current?.expand();
-    }
-  }, [selection]);
 
   function handleOnConfirm() {
     if (!selection || confirmedRef.current) {
@@ -162,34 +161,34 @@ export function SelectFederalFarmIdMapScreen({
         <Ionicons name="arrow-back" size={22} color="#fff" />
       </TouchableOpacity>
 
-      <BottomSheet
-        ref={bottomSheetModalRef}
-        enablePanDownToClose
-        index={-1}
-        backdropComponent={(props) => {
-          return <BottomSheetBackdrop disappearsOnIndex={-1} {...props} />;
-        }}
-      >
-        <BottomSheetView
-          style={{
-            paddingBottom: insets.bottom + theme.spacing.s,
-            paddingHorizontal: theme.spacing.l,
-          }}
+      {selection ? (
+        <BottomSheet
+          ref={bottomSheetModalRef}
+          enablePanDownToClose
+          onClose={() => setSelection(null)}
+          backdropComponent={renderBackdrop}
         >
-          <H3
+          <BottomSheetView
             style={{
-              marginVertical: theme.spacing.l,
-              fontSize: 16,
-              textAlign: "center",
+              paddingBottom: insets.bottom + theme.spacing.s,
+              paddingHorizontal: theme.spacing.l,
             }}
           >
-            {t("onboarding.federal_farm_number.confirmation", {
-              federalFarmId: selection?.federalFarmId,
-            })}
-          </H3>
-          <Button title={t("buttons.confirm")} onPress={handleOnConfirm} />
-        </BottomSheetView>
-      </BottomSheet>
+            <H3
+              style={{
+                marginVertical: theme.spacing.l,
+                fontSize: 16,
+                textAlign: "center",
+              }}
+            >
+              {t("onboarding.federal_farm_number.confirmation", {
+                federalFarmId: selection.federalFarmId,
+              })}
+            </H3>
+            <Button title={t("buttons.confirm")} onPress={handleOnConfirm} />
+          </BottomSheetView>
+        </BottomSheet>
+      ) : null}
     </View>
   );
 }
