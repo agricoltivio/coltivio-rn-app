@@ -16,13 +16,16 @@
       "distribution": "internal",
       "ios": {
         "simulator": true
+      },
+      "env": {
+        "APP_VARIANT": "dev"
       }
     },
     "test": {
       "distribution": "internal",
       "environment": "production",
       "env": {
-        "APP_VARIANT": "development"
+        "APP_VARIANT": "test"
       }
     },
     "preview": {

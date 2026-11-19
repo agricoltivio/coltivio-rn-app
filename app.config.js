@@ -8,7 +8,7 @@ const VARIANTS = {
     name: "coltivio",
     iconBackground: "#ffffff",
   },
-  development: {
+  test: {
     id: "ch.agricoltivio.coltiviotest",
     name: "Coltivio - Test",
     iconBackground: "#f4c95d",
