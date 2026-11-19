@@ -57,7 +57,9 @@ export default ({ config }) => {
     // (a shared scheme across installed variants breaks ASWebAuthenticationSession redirects,
     // e.g. Stripe checkout — iOS can't unambiguously route the callback).
     scheme: variant.id,
-    userInterfaceStyle: "automatic",
+    // The app only has a light theme; "automatic" let native UI (status bar, headers, pickers, alerts)
+    // follow system dark mode, e.g. white status bar icons on the light background
+    userInterfaceStyle: "light",
     ios: {
       ...config.ios,
       supportsTablet: false,
@@ -71,10 +73,6 @@ export default ({ config }) => {
       bundleIdentifier: variant.id,
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false,
-        // Opt out of iOS 26 Liquid Glass: it wraps headerRight icons in a
-        // floating capsule that has an upstream react-native-screens layout
-        // bug where it randomly stretches to near-full header width.
-        UIDesignRequiresCompatibility: true,
       },
       usesAppleSignIn: true,
       privacyManifest: "./privacy-manifest.json",
@@ -107,10 +105,6 @@ export default ({ config }) => {
           image: "./assets/images/splash-icon.png",
           backgroundColor: "#2a5159",
           imageWidth: 85,
-          dark: {
-            image: "./assets/images/splash-icon.png",
-            backgroundColor: "#2a5159",
-          },
         },
       ],
       "expo-localization",
