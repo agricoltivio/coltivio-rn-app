@@ -1,16 +1,16 @@
 import { existsSync } from "fs";
 
 // Each variant installs side by side with its own id, name and icon background:
-// test is the standalone release build, dev is the debug build that loads from Metro.
+// preview is the standalone release build, dev is the debug build that loads from Metro.
 const VARIANTS = {
   production: {
     id: "ch.agricoltivio.coltivio",
     name: "coltivio",
     iconBackground: "#ffffff",
   },
-  development: {
-    id: "ch.agricoltivio.coltiviotest",
-    name: "Coltivio - Test",
+  preview: {
+    id: "ch.agricoltivio.coltiviopreview",
+    name: "Coltivio - Preview",
     iconBackground: "#f4c95d",
   },
   dev: {
@@ -37,8 +37,14 @@ function resolveGoogleServicesFile() {
 }
 
 export default ({ config }) => {
-  const variant =
-    VARIANTS[process.env.APP_VARIANT ?? "production"] ?? VARIANTS.production;
+  // Fail loudly on an unknown variant instead of silently building the production app
+  const variantKey = process.env.APP_VARIANT || "production";
+  const variant = VARIANTS[variantKey];
+  if (!variant) {
+    throw new Error(
+      `Unknown APP_VARIANT "${variantKey}", expected one of: ${Object.keys(VARIANTS).join(", ")}`,
+    );
+  }
   return {
     ...config,
     name: variant.name,
