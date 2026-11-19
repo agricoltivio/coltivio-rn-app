@@ -36,6 +36,7 @@ import React, {
   useState,
 } from "react";
 import { StyleSheet, View } from "react-native";
+import type { ViewInstance } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 
@@ -237,7 +238,7 @@ export function SelectPlotsMap({
   }
 
   // Vertex drag: hold a vertex or midpoint, then drag it
-  const mapViewRef = useRef<View>(null);
+  const mapViewRef = useRef<ViewInstance>(null);
   const { dragPan, touchHandlers } = useVertexDrag({
     enabled: drawPhase !== "idle" && enableDrawing,
     canDrag: () => drawingRef.current?.isClosed() ?? false,

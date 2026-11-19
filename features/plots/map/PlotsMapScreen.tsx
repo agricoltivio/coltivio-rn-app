@@ -29,6 +29,7 @@ import React, {
   useState,
 } from "react";
 import { StyleSheet, View } from "react-native";
+import type { ViewInstance } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import styled, { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../../farms/farms.hooks";
@@ -337,7 +338,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
   }, [initialMeadowAction, navigation]);
 
   // Vertex drag: hold a vertex or midpoint, then drag it
-  const mapViewRef = useRef<View>(null);
+  const mapViewRef = useRef<ViewInstance>(null);
   const { dragPan, touchHandlers } = useVertexDrag({
     enabled:
       mode.type === "split" ||

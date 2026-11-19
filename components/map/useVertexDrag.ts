@@ -1,6 +1,6 @@
 import { type MapRef } from "@maplibre/maplibre-react-native";
 import { useRef, useState } from "react";
-import { type GestureResponderEvent, type View } from "react-native";
+import { type GestureResponderEvent, type ViewInstance } from "react-native";
 import { type DrawingOverlayRef, LAYER_IDS } from "./DrawingOverlay";
 
 /** Hold time on a vertex or midpoint before it can be dragged */
@@ -42,7 +42,7 @@ export function useVertexDrag({
   canDrag: () => boolean;
   mapRef: React.RefObject<MapRef | null>;
   /** The view wrapping the map, used to turn page into map coordinates */
-  mapViewRef: React.RefObject<View | null>;
+  mapViewRef: React.RefObject<ViewInstance | null>;
   drawingRef: React.RefObject<DrawingOverlayRef | null>;
 }) {
   const [dragPan, setDragPan] = useState(true);
