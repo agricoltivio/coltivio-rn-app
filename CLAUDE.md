@@ -18,7 +18,7 @@ yarn generate:api-types # regenerate api/v1.d.ts from openapi.json
 yarn release:prepare    # bump version in app.config.js (release notes: pnpm release in coltivio-landing)
 ```
 
-EAS builds: `yarn eas:build-sim`, `yarn eas:build-dev-ios`, `yarn eas:build-test-ios`, `yarn eas:build-preview-ios`, `yarn eas:build-production`.
+EAS builds: `yarn eas:build-sim`, `yarn eas:build-dev-ios`, `yarn eas:build-preview-ios`, `yarn eas:build-production`.
 
 ## After Writing Code
 

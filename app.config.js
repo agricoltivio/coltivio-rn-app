@@ -1,16 +1,16 @@
 import { existsSync } from "fs";
 
 // Each variant installs side by side with its own id, name and icon background:
-// test is the standalone release build, dev is the debug build that loads from Metro.
+// preview is the standalone release build, dev is the debug build that loads from Metro.
 const VARIANTS = {
   production: {
     id: "ch.agricoltivio.coltivio",
     name: "coltivio",
     iconBackground: "#ffffff",
   },
-  test: {
+  preview: {
     id: "ch.agricoltivio.coltiviotest",
-    name: "Coltivio - Test",
+    name: "Coltivio - Preview",
     iconBackground: "#f4c95d",
   },
   dev: {
