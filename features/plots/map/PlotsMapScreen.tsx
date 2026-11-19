@@ -2,7 +2,8 @@ import { ContentView } from "@/components/containers/ContentView";
 import { MapLibreMap, BaseLayer } from "@/components/map/MapLibreMap";
 import { HomeMarkerLayer } from "@/components/map/HomeMarkerLayer";
 import { ParcelsLayer } from "@/components/map/ParcelsLayer";
-import { DrawingOverlayRef, LAYER_IDS } from "@/components/map/DrawingOverlay";
+import { DrawingOverlayRef } from "@/components/map/DrawingOverlay";
+import { useVertexDrag } from "@/components/map/useVertexDrag";
 import {
   IonIconButton,
   MaterialCommunityIconButton,
@@ -28,7 +29,6 @@ import React, {
   useState,
 } from "react";
 import { StyleSheet, View } from "react-native";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import styled, { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../../farms/farms.hooks";
@@ -55,8 +55,6 @@ import { DeletePlotDialog } from "./DeletePlotDialog";
 import { SplitModeLayersHandle } from "./layers/SplitModeLayers";
 import { AdjustModeLayersHandle } from "./layers/AdjustModeLayers";
 import { CreateModeLayersHandle } from "./layers/CreateModeLayers";
-
-const DRAG_Y_OFFSET = 40;
 
 export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
   const theme = useTheme();
@@ -97,7 +95,6 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
     },
     [updateLocalSettings],
   );
-  const [dragPanEnabled, setDragPanEnabled] = useState(true);
   // Restored from local settings; opening the map for a meadow flow shows meadows,
   // and opening it with showArchived shows the archived layer, for that visit
   // without changing the stored choice
@@ -151,7 +148,6 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
 
   // Drawing overlay ref — used by split/adjust/create mode layers
   const drawingRef = useRef<DrawingOverlayRef>(null);
-  const dragState = useRef<{ index: number } | null>(null);
 
   const [mode, dispatch] = useReducer(
     plotsMapReducer,
@@ -340,90 +336,22 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
     dispatch({ type: "EXIT_MODE" });
   }, [initialMeadowAction, navigation]);
 
-  // Vertex drag gesture — hold 150ms on a vertex to start dragging
-  const isDrawingMode =
-    mode.type === "split" ||
-    mode.type === "adjust" ||
-    mode.type === "create" ||
-    mode.type === "meadowAdjust";
-  const panGesture = Gesture.Pan()
-    .runOnJS(true)
-    .enabled(isDrawingMode)
-    .activateAfterLongPress(150)
-    .onStart(async (event) => {
-      const map = mapRef.current;
-      if (!map) return;
-
-      const isClosed = drawingRef.current?.isClosed() ?? false;
-      // Polylines in split mode are never closed but should still allow dragging existing vertices
-      const isSplitPolylineMode =
-        mode.type === "split" && mode.activeToolMode === "polyline";
-      if (!isClosed && !isSplitPolylineMode) return;
-
-      const features = await map.queryRenderedFeatures([event.x, event.y], {
-        layers: [LAYER_IDS.VERTICES, LAYER_IDS.MIDPOINTS],
-      });
-
-      if (features.length === 0) return;
-      const feature = features[0];
-      const props = feature.properties;
-      if (!props) return;
-
-      const offsetLngLat = await map.unproject([
-        event.absoluteX,
-        event.absoluteY - DRAG_Y_OFFSET,
-      ]);
-
-      if (props.type === "vertex" && typeof props.index === "number") {
-        dragState.current = { index: props.index };
-        drawingRef.current?.updateVertex(props.index, offsetLngLat);
-        setDragPanEnabled(false);
-      } else if (
-        props.type === "midpoint" &&
-        typeof props.afterIndex === "number"
-      ) {
-        const geometry = feature.geometry;
-        if (geometry.type === "Point") {
-          const lngLat: LngLat = [
-            geometry.coordinates[0],
-            geometry.coordinates[1],
-          ];
-          drawingRef.current?.insertVertex(props.afterIndex, lngLat);
-          const newIndex = props.afterIndex + 1;
-          dragState.current = { index: newIndex };
-          drawingRef.current?.updateVertex(newIndex, offsetLngLat);
-          setDragPanEnabled(false);
-        }
-      }
-    })
-    .onUpdate(async (event) => {
-      if (!dragState.current) return;
-      const map = mapRef.current;
-      if (!map) return;
-      const lngLat = await map.unproject([
-        event.absoluteX,
-        event.absoluteY - DRAG_Y_OFFSET,
-      ]);
-      drawingRef.current?.updateVertex(dragState.current.index, lngLat);
-    })
-    .onEnd(async (event) => {
-      if (!dragState.current) {
-        const map = mapRef.current;
-        if (map) {
-          const lngLat = await map.unproject([
-            event.absoluteX,
-            event.absoluteY,
-          ]);
-          drawingRef.current?.handleMapTap(lngLat);
-        }
-      }
-      dragState.current = null;
-      setDragPanEnabled(true);
-    })
-    .onFinalize(() => {
-      dragState.current = null;
-      setDragPanEnabled(true);
-    });
+  // Vertex drag: hold a vertex or midpoint, then drag it
+  const mapViewRef = useRef<View>(null);
+  const { dragPan, touchHandlers } = useVertexDrag({
+    enabled:
+      mode.type === "split" ||
+      mode.type === "adjust" ||
+      mode.type === "create" ||
+      mode.type === "meadowAdjust",
+    // Polylines in split mode are never closed but should still allow dragging existing vertices
+    canDrag: () =>
+      (drawingRef.current?.isClosed() ?? false) ||
+      (mode.type === "split" && mode.activeToolMode === "polyline"),
+    mapRef,
+    mapViewRef,
+    drawingRef,
+  });
 
   // Plots with size 0 have no geometry and can't be rendered on the map;
   // they are excluded from the context (map layers) but still shown in the list modal.
@@ -511,31 +439,34 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
   return (
     <PlotsMapContext.Provider value={contextValue}>
       <ContentView headerVisible={false}>
-        <GestureDetector gesture={panGesture}>
-          <View collapsable={false} style={StyleSheet.absoluteFill}>
-            <MapLibreMap
-              ref={mapRef}
-              cameraRef={cameraRef}
-              loading={!mapVisible || plotsLoading}
-              initialCenter={initialCenter}
-              initialZoom={17}
-              baseLayer={baseLayer}
-              dragPan={dragPanEnabled}
-              showUserLocation={showsUserLocation}
-              onPress={handleMapPress}
-              attributionBottomOffset={insets.bottom}
-            >
-              <MapLayers
-                splitLayersRef={splitLayersRef}
-                adjustLayersRef={adjustLayersRef}
-                createLayersRef={createLayersRef}
-              />
-              {/* Above the plots, so the borders inside merged plots stay visible */}
-              {visibleLayers.parcels && <ParcelsLayer baseLayer={baseLayer} />}
-              <HomeMarkerLayer center={farm.location.coordinates as LngLat} />
-            </MapLibreMap>
-          </View>
-        </GestureDetector>
+        <View
+          ref={mapViewRef}
+          collapsable={false}
+          style={StyleSheet.absoluteFill}
+          {...touchHandlers}
+        >
+          <MapLibreMap
+            ref={mapRef}
+            cameraRef={cameraRef}
+            loading={!mapVisible || plotsLoading}
+            initialCenter={initialCenter}
+            initialZoom={17}
+            baseLayer={baseLayer}
+            dragPan={dragPan}
+            showUserLocation={showsUserLocation}
+            onPress={handleMapPress}
+            attributionBottomOffset={insets.bottom}
+          >
+            <MapLayers
+              splitLayersRef={splitLayersRef}
+              adjustLayersRef={adjustLayersRef}
+              createLayersRef={createLayersRef}
+            />
+            {/* Above the plots, so the borders inside merged plots stay visible */}
+            {visibleLayers.parcels && <ParcelsLayer baseLayer={baseLayer} />}
+            <HomeMarkerLayer center={farm.location.coordinates as LngLat} />
+          </MapLibreMap>
+        </View>
 
         <MapShowLocationToggle onShowLocationChange={setShowsUserLocation} />
         {mode.type === "view" && visibleLayers.plots && (
