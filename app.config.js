@@ -9,7 +9,7 @@ const VARIANTS = {
     iconBackground: "#ffffff",
   },
   preview: {
-    id: "ch.agricoltivio.coltiviotest",
+    id: "ch.agricoltivio.coltiviopreview",
     name: "Coltivio - Preview",
     iconBackground: "#f4c95d",
   },
@@ -37,8 +37,14 @@ function resolveGoogleServicesFile() {
 }
 
 export default ({ config }) => {
-  const variant =
-    VARIANTS[process.env.APP_VARIANT ?? "production"] ?? VARIANTS.production;
+  // Fail loudly on an unknown variant instead of silently building the production app
+  const variantKey = process.env.APP_VARIANT || "production";
+  const variant = VARIANTS[variantKey];
+  if (!variant) {
+    throw new Error(
+      `Unknown APP_VARIANT "${variantKey}", expected one of: ${Object.keys(VARIANTS).join(", ")}`,
+    );
+  }
   return {
     ...config,
     name: variant.name,
