@@ -124,15 +124,9 @@ export default Sentry.wrap(function App() {
                                   },
                                 }}
                               >
-                                {/* translucent: keyboard-controller replaces the StatusBar module on Android and
-                                      otherwise pushes the whole app down by the status bar height on some starts */}
-                                <StatusBar
-                                  barStyle="dark-content"
-                                  translucent
-                                  backgroundColor={
-                                    coltivioTheme.colors.background
-                                  }
-                                />
+                                {/* React Native 0.88 always draws edge-to-edge, so the status bar is translucent
+                                    without the removed translucent/backgroundColor props */}
+                                <StatusBar barStyle="dark-content" />
                                 <RootStack />
                                 {/* After RootStack so its navigator is mounted before a notification tap navigates */}
                                 <PushNotificationsHandler />

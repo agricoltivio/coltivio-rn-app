@@ -1,3 +1,4 @@
+import { File } from "expo-file-system";
 import { FetchClient } from "./api";
 import { components } from "./v1";
 
@@ -160,21 +161,17 @@ export function animalsApi(client: FetchClient) {
       file: { uri: string; name: string; mimeType?: string },
       skipHeaderRow = true,
     ): Promise<AnimalImportPreviewResponse> {
-      const filePayload = {
-        uri: file.uri,
-        name: file.name,
-        type:
-          file.mimeType ??
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      } as unknown as string;
+      // Expo's fetch (the global fetch since SDK 57) can't send React Native's
+      // { uri, name, type } form parts, only Blob-like values such as an expo-file-system File.
+      const pickedFile = new File(file.uri);
       const { data } = await client.POST("/v1/animals/import/preview", {
         body: {
-          file: filePayload,
+          file: file.uri,
           skipHeaderRow: skipHeaderRow ? "true" : "false",
         },
         bodySerializer: (body) => {
           const formData = new FormData();
-          formData.append("file", body.file as unknown as Blob);
+          formData.append("file", pickedFile, file.name);
           if (body.skipHeaderRow) {
             formData.append("skipHeaderRow", body.skipHeaderRow);
           }

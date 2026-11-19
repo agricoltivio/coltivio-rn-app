@@ -240,7 +240,7 @@ export function PlotListModal({
           ListEmptyComponent={
             showPlots && !showMeadows && plots.length === 0 ? (
               <PlotsEmptyState />
-            ) : null
+            ) : undefined
           }
         />
       </View>

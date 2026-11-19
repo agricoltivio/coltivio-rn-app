@@ -262,7 +262,7 @@ export function WikiChangeRequestDraftScreen({
             {/* Save button — only shown when CR is in draft (editable) state */}
             {isEditable && (
               <TouchableOpacity
-                onPress={handleSubmit(onSave)}
+                onPress={() => handleSubmit(onSave)()}
                 disabled={isPending}
                 style={{
                   backgroundColor: theme.colors.secondary,

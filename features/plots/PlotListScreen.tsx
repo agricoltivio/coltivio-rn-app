@@ -373,7 +373,7 @@ export function PlotListScreen({ navigation }: PlotListScreenProps) {
             <Body style={{ marginTop: theme.spacing.m }}>
               {t("plots.list.no_results")}
             </Body>
-          ) : null
+          ) : undefined
         }
       />
 

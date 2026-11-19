@@ -6,6 +6,7 @@ import {
   ScrollView,
   View,
 } from "react-native";
+import type { ScrollViewInstance } from "react-native";
 import { useTheme } from "styled-components/native";
 import { IonIconButton } from "../buttons/IconButton";
 
@@ -23,7 +24,7 @@ export function ChartPager({
   pages: { key: string; content: ReactNode }[];
 }) {
   const theme = useTheme();
-  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollViewRef = useRef<ScrollViewInstance>(null);
   const [pageWidth, setPageWidth] = useState(0);
   const [activePageIndex, setActivePageIndex] = useState(0);
   const loops = pages.length > 1;

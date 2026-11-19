@@ -5,6 +5,7 @@ import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
+import { Portal } from "@gorhom/portal";
 import React, {
   useCallback,
   useEffect,
@@ -67,49 +68,51 @@ export function PlotDetailsDrawer() {
   if (mode.type !== "view") return null;
 
   return (
-    <BottomSheetModalProvider>
-      <BottomDrawerModal
-        onClose={() => dispatch({ type: "SELECT_PLOT", plotId: null })}
-        ref={bottomSheetModalRef}
-        backdropDisappearsOnIndex={0}
-        snapPoints={snapPoints}
-        onChange={handleSheetChange}
-      >
-        {/* Header with expand toggle */}
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <View style={{ flex: 1 }}>
-            <H3>{t("plots.plot_name", { name: selectedPlot?.name })}</H3>
+    <Portal>
+      <BottomSheetModalProvider key="plot-details-drawer">
+        <BottomDrawerModal
+          onClose={() => dispatch({ type: "SELECT_PLOT", plotId: null })}
+          ref={bottomSheetModalRef}
+          backdropDisappearsOnIndex={0}
+          snapPoints={snapPoints}
+          onChange={handleSheetChange}
+        >
+          {/* Header with expand toggle */}
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{ flex: 1 }}>
+              <H3>{t("plots.plot_name", { name: selectedPlot?.name })}</H3>
+            </View>
+            {/* Labelled so it's clear the drawer can be expanded */}
+            <Pressable
+              onPress={() => {
+                bottomSheetModalRef.current?.snapToIndex(
+                  sheetIndex === 1 ? 0 : 1,
+                );
+              }}
+              style={{ flexDirection: "row", alignItems: "center", gap: 2 }}
+            >
+              <Label style={{ color: theme.colors.gray2 }}>
+                {sheetIndex === 1
+                  ? t("buttons.show_less")
+                  : t("buttons.show_more")}
+              </Label>
+              <Ionicons
+                name={sheetIndex === 1 ? "chevron-down" : "chevron-up"}
+                size={24}
+                color={theme.colors.gray2}
+              />
+            </Pressable>
           </View>
-          {/* Labelled so it's clear the drawer can be expanded */}
-          <Pressable
-            onPress={() => {
-              bottomSheetModalRef.current?.snapToIndex(
-                sheetIndex === 1 ? 0 : 1,
-              );
-            }}
-            style={{ flexDirection: "row", alignItems: "center", gap: 2 }}
-          >
-            <Label style={{ color: theme.colors.gray2 }}>
-              {sheetIndex === 1
-                ? t("buttons.show_less")
-                : t("buttons.show_more")}
-            </Label>
-            <Ionicons
-              name={sheetIndex === 1 ? "chevron-down" : "chevron-up"}
-              size={24}
-              color={theme.colors.gray2}
-            />
-          </Pressable>
-        </View>
 
-        {selectedPlot && (
-          <PlotDetailsContent
-            plot={selectedPlot}
-            navigation={navigation}
-            returnTo="PlotsMap"
-          />
-        )}
-      </BottomDrawerModal>
-    </BottomSheetModalProvider>
+          {selectedPlot && (
+            <PlotDetailsContent
+              plot={selectedPlot}
+              navigation={navigation}
+              returnTo="PlotsMap"
+            />
+          )}
+        </BottomDrawerModal>
+      </BottomSheetModalProvider>
+    </Portal>
   );
 }

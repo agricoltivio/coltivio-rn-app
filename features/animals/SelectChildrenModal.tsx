@@ -180,7 +180,7 @@ export function SelectChildrenModal({
             <Body style={{ padding: theme.spacing.m }}>
               {t("common.unknown_error")}
             </Body>
-          ) : null
+          ) : undefined
         }
       />
     </ContentView>

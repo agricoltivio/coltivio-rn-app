@@ -4,7 +4,7 @@ import {
   BottomSheetScrollView,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import { forwardRef } from "react";
+import { forwardRef, useImperativeHandle, useRef } from "react";
 import { ViewStyle } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
@@ -39,6 +39,39 @@ export const BottomDrawerModal = forwardRef<
     const theme = useTheme();
     const insets = useSafeAreaInsets();
 
+    // Owners close the sheet from their state (e.g. selection cleared), also after the user swiped it
+    // closed. dismiss() on an already closed sheet keeps the next present() from showing it
+    // (bottom-sheet 5.2), so dismiss() only reaches the sheet while it is open.
+    const sheetRef = useRef<BottomSheetModal>(null);
+    const isOpenRef = useRef(false);
+    useImperativeHandle(
+      ref,
+      () => ({
+        present: (...args: Parameters<BottomSheetModal["present"]>) => {
+          isOpenRef.current = true;
+          sheetRef.current?.present(...args);
+        },
+        dismiss: (...args: Parameters<BottomSheetModal["dismiss"]>) => {
+          if (!isOpenRef.current) return;
+          sheetRef.current?.dismiss(...args);
+        },
+        snapToIndex: (...args: Parameters<BottomSheetModal["snapToIndex"]>) =>
+          sheetRef.current?.snapToIndex(...args),
+        snapToPosition: (
+          ...args: Parameters<BottomSheetModal["snapToPosition"]>
+        ) => sheetRef.current?.snapToPosition(...args),
+        expand: (...args: Parameters<BottomSheetModal["expand"]>) =>
+          sheetRef.current?.expand(...args),
+        collapse: (...args: Parameters<BottomSheetModal["collapse"]>) =>
+          sheetRef.current?.collapse(...args),
+        close: (...args: Parameters<BottomSheetModal["close"]>) =>
+          sheetRef.current?.close(...args),
+        forceClose: (...args: Parameters<BottomSheetModal["forceClose"]>) =>
+          sheetRef.current?.forceClose(...args),
+      }),
+      [],
+    );
+
     const contentStyle = {
       paddingBottom: insets.bottom + theme.spacing.s,
       paddingHorizontal: theme.spacing.l,
@@ -47,10 +80,16 @@ export const BottomDrawerModal = forwardRef<
 
     return (
       <BottomSheetModal
-        ref={ref}
+        ref={sheetRef}
         enablePanDownToClose
-        onDismiss={onClose}
-        onChange={onChange}
+        onDismiss={() => {
+          isOpenRef.current = false;
+          onClose?.();
+        }}
+        onChange={(index: number) => {
+          if (index >= 0) isOpenRef.current = true;
+          onChange?.(index);
+        }}
         {...(snapPoints ? { snapPoints, enableDynamicSizing: false } : {})}
         {...(maxContentHeight
           ? { maxDynamicContentSize: maxContentHeight }

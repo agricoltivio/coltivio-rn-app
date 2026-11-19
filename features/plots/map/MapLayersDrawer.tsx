@@ -6,6 +6,7 @@ import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
+import { Portal } from "@gorhom/portal";
 import React, { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
@@ -48,82 +49,87 @@ export function MapLayersDrawer({
   }, [visible]);
 
   return (
-    <BottomSheetModalProvider>
-      <BottomDrawerModal
-        onClose={onClose}
-        ref={bottomSheetModalRef}
-        backdropDisappearsOnIndex={-1}
-        snapPoints={snapPoints}
-      >
-        <H3>{t("plots.map_layers.title")}</H3>
-        <View style={{ marginTop: theme.spacing.m, gap: theme.spacing.m }}>
-          <View
-            style={{
-              flexDirection: "row",
-              borderWidth: 1,
-              borderColor: theme.colors.primary,
-              borderRadius: 8,
-              overflow: "hidden",
-            }}
-          >
-            {BASE_LAYERS.map((layer) => {
-              const isActive = layer === baseLayer;
-              return (
-                <TouchableOpacity
-                  key={layer}
-                  onPress={() => onBaseLayerChange(layer)}
-                  style={{
-                    flex: 1,
-                    alignItems: "center",
-                    paddingVertical: theme.spacing.s,
-                    backgroundColor: isActive
-                      ? theme.colors.primary
-                      : theme.colors.white,
-                  }}
-                >
-                  <Label
+    <Portal>
+      <BottomSheetModalProvider key="map-layers-drawer">
+        <BottomDrawerModal
+          onClose={onClose}
+          ref={bottomSheetModalRef}
+          backdropDisappearsOnIndex={-1}
+          snapPoints={snapPoints}
+        >
+          <H3>{t("plots.map_layers.title")}</H3>
+          <View style={{ marginTop: theme.spacing.m, gap: theme.spacing.m }}>
+            <View
+              style={{
+                flexDirection: "row",
+                borderWidth: 1,
+                borderColor: theme.colors.primary,
+                borderRadius: 8,
+                overflow: "hidden",
+              }}
+            >
+              {BASE_LAYERS.map((layer) => {
+                const isActive = layer === baseLayer;
+                return (
+                  <TouchableOpacity
+                    key={layer}
+                    onPress={() => onBaseLayerChange(layer)}
                     style={{
-                      color: isActive
-                        ? theme.colors.white
-                        : theme.colors.primary,
+                      flex: 1,
+                      alignItems: "center",
+                      paddingVertical: theme.spacing.s,
+                      backgroundColor: isActive
+                        ? theme.colors.primary
+                        : theme.colors.white,
                     }}
                   >
-                    {t(`plots.map_layers.${layer}`)}
-                  </Label>
-                </TouchableOpacity>
-              );
-            })}
+                    <Label
+                      style={{
+                        color: isActive
+                          ? theme.colors.white
+                          : theme.colors.primary,
+                      }}
+                    >
+                      {t(`plots.map_layers.${layer}`)}
+                    </Label>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+            <Switch
+              label={t("plots.map_layers.plots")}
+              value={visibleLayers.plots}
+              onChange={() =>
+                onChange({ ...visibleLayers, plots: !visibleLayers.plots })
+              }
+            />
+            <Switch
+              label={t("plots.map_layers.meadows")}
+              value={visibleLayers.meadows}
+              onChange={() =>
+                onChange({ ...visibleLayers, meadows: !visibleLayers.meadows })
+              }
+            />
+            <Switch
+              label={t("plots.map_layers.archived")}
+              value={visibleLayers.archived}
+              onChange={() =>
+                onChange({
+                  ...visibleLayers,
+                  archived: !visibleLayers.archived,
+                })
+              }
+            />
+            <Switch
+              label={t("plots.map_layers.parcels")}
+              value={visibleLayers.parcels}
+              onChange={() =>
+                onChange({ ...visibleLayers, parcels: !visibleLayers.parcels })
+              }
+            />
           </View>
-          <Switch
-            label={t("plots.map_layers.plots")}
-            value={visibleLayers.plots}
-            onChange={() =>
-              onChange({ ...visibleLayers, plots: !visibleLayers.plots })
-            }
-          />
-          <Switch
-            label={t("plots.map_layers.meadows")}
-            value={visibleLayers.meadows}
-            onChange={() =>
-              onChange({ ...visibleLayers, meadows: !visibleLayers.meadows })
-            }
-          />
-          <Switch
-            label={t("plots.map_layers.archived")}
-            value={visibleLayers.archived}
-            onChange={() =>
-              onChange({ ...visibleLayers, archived: !visibleLayers.archived })
-            }
-          />
-          <Switch
-            label={t("plots.map_layers.parcels")}
-            value={visibleLayers.parcels}
-            onChange={() =>
-              onChange({ ...visibleLayers, parcels: !visibleLayers.parcels })
-            }
-          />
-        </View>
-      </BottomDrawerModal>
-    </BottomSheetModalProvider>
+        </BottomDrawerModal>
+      </BottomSheetModalProvider>
+    </Portal>
   );
 }

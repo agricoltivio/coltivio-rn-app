@@ -51,8 +51,7 @@ export function InlineDatePicker({
           maximumDate={maximumDate}
           locale={i18n.language}
           themeVariant="light"
-          onChange={(_event, selectedDate) => {
-            if (!selectedDate) return;
+          onValueChange={(_event, selectedDate) => {
             onChange(selectedDate);
             setOpen(false);
           }}
@@ -65,12 +64,11 @@ export function InlineDatePicker({
           display="calendar"
           minimumDate={minimumDate}
           maximumDate={maximumDate}
-          onChange={(event, selectedDate) => {
+          onValueChange={(_event, selectedDate) => {
             setOpen(false);
-            if (event.type === "set" && selectedDate) {
-              onChange(selectedDate);
-            }
+            onChange(selectedDate);
           }}
+          onDismiss={() => setOpen(false)}
         />
       )}
     </View>

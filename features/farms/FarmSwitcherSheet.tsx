@@ -7,6 +7,7 @@ import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
+import { Portal } from "@gorhom/portal";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -66,64 +67,66 @@ export function FarmSwitcherSheet({
   }
 
   return (
-    <BottomSheetModalProvider>
-      <BottomDrawerModal
-        ref={bottomSheetModalRef}
-        onClose={onClose}
-        snapPoints={["60%"]}
-      >
-        <H2>{t("farm.switcher.title")}</H2>
-        <View style={{ marginTop: theme.spacing.m }}>
-          {farms?.result.map((farm) => (
-            <ListItem key={farm.id} onPress={() => handleSelectFarm(farm.id)}>
-              <ListItem.Content>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: theme.spacing.s,
-                  }}
-                >
-                  <ListItem.Title>{farm.name}</ListItem.Title>
-                  <Chip
-                    label={roleLabels[farm.role]}
-                    bgColor={roleColors[farm.role].bg}
-                    textColor={roleColors[farm.role].text}
-                    small
-                  />
-                </View>
-                {farm.address ? (
-                  <ListItem.Body>{farm.address}</ListItem.Body>
+    <Portal>
+      <BottomSheetModalProvider key="farm-switcher">
+        <BottomDrawerModal
+          ref={bottomSheetModalRef}
+          onClose={onClose}
+          snapPoints={["60%"]}
+        >
+          <H2>{t("farm.switcher.title")}</H2>
+          <View style={{ marginTop: theme.spacing.m }}>
+            {farms?.result.map((farm) => (
+              <ListItem key={farm.id} onPress={() => handleSelectFarm(farm.id)}>
+                <ListItem.Content>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: theme.spacing.s,
+                    }}
+                  >
+                    <ListItem.Title>{farm.name}</ListItem.Title>
+                    <Chip
+                      label={roleLabels[farm.role]}
+                      bgColor={roleColors[farm.role].bg}
+                      textColor={roleColors[farm.role].text}
+                      small
+                    />
+                  </View>
+                  {farm.address ? (
+                    <ListItem.Body>{farm.address}</ListItem.Body>
+                  ) : null}
+                </ListItem.Content>
+                {farm.id === activeFarmId ? (
+                  <ListItem.RightIcon>
+                    <Ionicons
+                      name="checkmark-circle"
+                      size={22}
+                      color={theme.colors.primary}
+                    />
+                  </ListItem.RightIcon>
                 ) : null}
-              </ListItem.Content>
-              {farm.id === activeFarmId ? (
-                <ListItem.RightIcon>
-                  <Ionicons
-                    name="checkmark-circle"
-                    size={22}
-                    color={theme.colors.primary}
-                  />
-                </ListItem.RightIcon>
-              ) : null}
-            </ListItem>
-          ))}
+              </ListItem>
+            ))}
 
-          <ListItem onPress={handleCreateAnotherFarm}>
-            <ListItem.Content>
-              <Body style={{ color: theme.colors.primary }}>
-                {t("farm.switcher.create_another")}
-              </Body>
-            </ListItem.Content>
-          </ListItem>
-          <ListItem hideBottomDivider onPress={handleJoinWithCode}>
-            <ListItem.Content>
-              <Body style={{ color: theme.colors.primary }}>
-                {t("farm.switcher.join_with_code")}
-              </Body>
-            </ListItem.Content>
-          </ListItem>
-        </View>
-      </BottomDrawerModal>
-    </BottomSheetModalProvider>
+            <ListItem onPress={handleCreateAnotherFarm}>
+              <ListItem.Content>
+                <Body style={{ color: theme.colors.primary }}>
+                  {t("farm.switcher.create_another")}
+                </Body>
+              </ListItem.Content>
+            </ListItem>
+            <ListItem hideBottomDivider onPress={handleJoinWithCode}>
+              <ListItem.Content>
+                <Body style={{ color: theme.colors.primary }}>
+                  {t("farm.switcher.join_with_code")}
+                </Body>
+              </ListItem.Content>
+            </ListItem>
+          </View>
+        </BottomDrawerModal>
+      </BottomSheetModalProvider>
+    </Portal>
   );
 }

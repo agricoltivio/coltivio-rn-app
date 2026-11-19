@@ -1,4 +1,4 @@
-import { Line as SkiaLine, matchFont, vec } from "@shopify/react-native-skia";
+import { Line as SkiaLine, matchFont, vec } from "react-native-skia";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, View } from "react-native";

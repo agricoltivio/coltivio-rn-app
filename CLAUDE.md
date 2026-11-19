@@ -93,3 +93,5 @@ i18next initialized in `locales/i18n.ts`. Translation keys live in `locales/{en,
 ### Path Alias
 
 `@/` maps to the repo root. Use it for all non-relative imports.
+
+@AGENTS.md
