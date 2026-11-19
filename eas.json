@@ -8,7 +8,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "APP_VARIANT": "development"
+        "APP_VARIANT": "dev"
       }
     },
     "development-simulator": {
@@ -16,6 +16,13 @@
       "distribution": "internal",
       "ios": {
         "simulator": true
+      }
+    },
+    "test": {
+      "distribution": "internal",
+      "environment": "production",
+      "env": {
+        "APP_VARIANT": "development"
       }
     },
     "preview": {
