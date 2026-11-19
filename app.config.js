@@ -52,7 +52,6 @@ export default ({ config }) => {
     // e.g. Stripe checkout — iOS can't unambiguously route the callback).
     scheme: variant.id,
     userInterfaceStyle: "automatic",
-    newArchEnabled: true,
     ios: {
       ...config.ios,
       supportsTablet: false,
@@ -89,9 +88,6 @@ export default ({ config }) => {
         "android.permission.ACCESS_FINE_LOCATION",
       ],
     },
-    experiments: {
-      typedRoutes: true,
-    },
     plugins: [
       // The native splash can only centre one image on a solid colour, so it
       // just holds the brand ground and the mark. SplashView takes over from
@@ -127,6 +123,9 @@ export default ({ config }) => {
       "expo-font",
       "expo-location",
       "expo-apple-authentication",
+      "expo-image",
+      "expo-sharing",
+      "expo-status-bar",
       "@react-native-community/datetimepicker",
       [
         "@stripe/stripe-react-native",
@@ -149,18 +148,17 @@ export default ({ config }) => {
         "expo-build-properties",
         {
           android: {
-            compileSdkVersion: 36,
+            compileSdkVersion: 37,
             targetSdkVersion: 36,
-            buildToolsVersion: "36.0.0",
+            buildToolsVersion: "37.0.0",
             enableMinifyInReleaseBuilds: true,
             enableShrinkResourcesInReleaseBuilds: true,
-            // stripe-react-native references its optional push-provisioning SDK, which we don't ship
-            extraProguardRules:
-              "-dontwarn com.stripe.android.pushProvisioning.**",
           },
-          // ios: {
-          //   deploymentTarget: "15.1",
-          // },
+          ios: {
+            // stripe-react-native pulls the Stripe iOS SDK in via Swift Package Manager, which needs dynamic
+            // frameworks (pod install fails with static linkage)
+            useFrameworks: "dynamic",
+          },
         },
       ],
       "@maplibre/maplibre-react-native",

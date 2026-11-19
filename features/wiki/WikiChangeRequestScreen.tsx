@@ -172,7 +172,7 @@ export function WikiChangeRequestScreen({
           ))}
 
           <TouchableOpacity
-            onPress={handleSubmit(onSubmit)}
+            onPress={() => handleSubmit(onSubmit)()}
             disabled={isPending}
             style={{
               backgroundColor: theme.colors.buttonPrimary,

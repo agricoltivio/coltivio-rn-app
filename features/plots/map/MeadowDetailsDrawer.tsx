@@ -7,6 +7,7 @@ import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
+import { Portal } from "@gorhom/portal";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Pressable, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -61,41 +62,43 @@ export function MeadowDetailsDrawer() {
   if (mode.type !== "view") return null;
 
   return (
-    <BottomSheetModalProvider>
-      <BottomDrawerModal
-        onClose={() => setSelectedMeadowId(null)}
-        ref={bottomSheetModalRef}
-        backdropDisappearsOnIndex={0}
-        snapPoints={snapPoints}
-      >
-        <View
-          onLayout={(event) =>
-            setContentHeight(event.nativeEvent.layout.height)
-          }
+    <Portal>
+      <BottomSheetModalProvider key="meadow-details-drawer">
+        <BottomDrawerModal
+          onClose={() => setSelectedMeadowId(null)}
+          ref={bottomSheetModalRef}
+          backdropDisappearsOnIndex={0}
+          snapPoints={snapPoints}
         >
-          {/* Header with close toggle */}
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <View style={{ flex: 1 }}>
-              <H3>{selectedMeadow?.name}</H3>
+          <View
+            onLayout={(event) =>
+              setContentHeight(event.nativeEvent.layout.height)
+            }
+          >
+            {/* Header with close toggle */}
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={{ flex: 1 }}>
+                <H3>{selectedMeadow?.name}</H3>
+              </View>
+              {/* Closes the drawer; there's no collapsed step */}
+              <Pressable onPress={() => setSelectedMeadowId(null)}>
+                <Ionicons
+                  name="chevron-down"
+                  size={24}
+                  color={theme.colors.gray2}
+                />
+              </Pressable>
             </View>
-            {/* Closes the drawer; there's no collapsed step */}
-            <Pressable onPress={() => setSelectedMeadowId(null)}>
-              <Ionicons
-                name="chevron-down"
-                size={24}
-                color={theme.colors.gray2}
-              />
-            </Pressable>
-          </View>
 
-          {selectedMeadow && (
-            <MeadowDetailsContent
-              meadow={selectedMeadow}
-              navigation={navigation}
-            />
-          )}
-        </View>
-      </BottomDrawerModal>
-    </BottomSheetModalProvider>
+            {selectedMeadow && (
+              <MeadowDetailsContent
+                meadow={selectedMeadow}
+                navigation={navigation}
+              />
+            )}
+          </View>
+        </BottomDrawerModal>
+      </BottomSheetModalProvider>
+    </Portal>
   );
 }

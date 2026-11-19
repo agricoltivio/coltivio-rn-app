@@ -201,6 +201,8 @@ function EditorContent({
 
             const uploadResponse = await fetch(resolveLocalUrl(signedUrl), {
               method: "PUT",
+              // Expo's fetch doesn't take the content type from the blob; images are always saved as JPEG above
+              headers: { "Content-Type": "image/jpeg" },
               body: blob,
             });
             if (!uploadResponse.ok) {

@@ -132,10 +132,8 @@ export function DatePicker({
                 value={tempDate}
                 minimumDate={minimumDate}
                 maximumDate={maximumDate}
-                onChange={(_event, selectedDate) => {
-                  if (selectedDate) {
-                    setTempDate(selectedDate);
-                  }
+                onValueChange={(_event, selectedDate) => {
+                  setTempDate(selectedDate);
                 }}
                 display={mode === "date" ? "inline" : "spinner"}
                 mode={mode}
@@ -157,12 +155,11 @@ export function DatePicker({
           value={tempDate}
           minimumDate={minimumDate}
           maximumDate={maximumDate}
-          onChange={(event, selectedDate) => {
+          onValueChange={(_event, selectedDate) => {
             setOpen(false);
-            if (event.type === "set" && selectedDate) {
-              onConfirm(selectedDate);
-            }
+            onConfirm(selectedDate);
           }}
+          onDismiss={() => setOpen(false)}
           display={mode === "date" ? "calendar" : "clock"}
           mode={mode}
         />

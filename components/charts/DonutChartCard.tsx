@@ -1,5 +1,5 @@
 import { Subtitle } from "@/theme/Typography";
-import { matchFont } from "@shopify/react-native-skia";
+import { matchFont } from "react-native-skia";
 import { useMemo } from "react";
 import { Platform, View } from "react-native";
 import { useTheme } from "styled-components/native";

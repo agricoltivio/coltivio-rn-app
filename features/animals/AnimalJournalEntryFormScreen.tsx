@@ -148,6 +148,8 @@ export function AnimalJournalEntryFormScreen({
     );
     const uploadResponse = await fetch(resolveLocalUrl(signedUrl), {
       method: "PUT",
+      // Expo's fetch doesn't take the content type from the blob; images are always saved as JPEG above
+      headers: { "Content-Type": "image/jpeg" },
       body: pending.blob,
     });
     if (!uploadResponse.ok) {

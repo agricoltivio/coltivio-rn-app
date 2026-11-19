@@ -2,6 +2,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Dimensions, Platform, Pressable, View } from "react-native";
+import type { ViewInstance } from "react-native";
 import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -49,7 +50,7 @@ export function CompactDatePicker({
   const theme = useTheme();
   const { t, i18n } = useTranslation();
   const locale = i18n.language;
-  const containerRef = useRef<View>(null);
+  const containerRef = useRef<ViewInstance>(null);
   const mountedRef = useRef(true);
   const pendingTimers = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
   const [visible, setVisible] = useState(false);
@@ -277,8 +278,7 @@ export function CompactDatePicker({
                   minimumDate={minimumDate}
                   maximumDate={maximumDate}
                   themeVariant="dark"
-                  onChange={(_event, selectedDate) => {
-                    if (!selectedDate) return;
+                  onValueChange={(_event, selectedDate) => {
                     // Defer so the native UIDatePicker finishes its delegate
                     // callback before React re-renders
                     safeTimeout(() => onDateChange(selectedDate), 0);
@@ -305,12 +305,11 @@ export function CompactDatePicker({
           display="calendar"
           minimumDate={minimumDate}
           maximumDate={maximumDate}
-          onChange={(event, selectedDate) => {
+          onValueChange={(_event, selectedDate) => {
             setAndroidOpen(false);
-            if (event.type === "set" && selectedDate) {
-              onDateChange(selectedDate);
-            }
+            onDateChange(selectedDate);
           }}
+          onDismiss={() => setAndroidOpen(false)}
         />
       )}
     </View>
