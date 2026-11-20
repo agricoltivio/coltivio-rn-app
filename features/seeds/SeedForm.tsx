@@ -156,6 +156,7 @@ export function SeedForm({
           {t("seeds.default_values_description")}
         </Body>
         <RHSelect
+          optional
           name="defaultUnit"
           control={control}
           label={t("seeds.default_unit")}
@@ -172,7 +173,8 @@ export function SeedForm({
           control={control}
           float
           disabled={!defaultUnit}
-          label={t("seeds.default_amount_optional")}
+          label={t("seeds.default_amount")}
+          optional
           error={errors.defaultAmount?.message}
         />
       </Card>
@@ -180,7 +182,8 @@ export function SeedForm({
       <RHTextInput
         name="description"
         control={control}
-        label={t("forms.labels.description_optional")}
+        label={t("forms.labels.description")}
+        optional
         error={errors.description?.message}
       />
     </View>

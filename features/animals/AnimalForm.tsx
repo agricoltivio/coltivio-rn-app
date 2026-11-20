@@ -204,6 +204,7 @@ export function AnimalForm({
         data={animalTypeData}
       />
       <RHSelect
+        optional
         name="earTagId"
         control={control}
         // Clearing sends null, which removes it on save
@@ -254,7 +255,8 @@ export function AnimalForm({
       <RHTextInput
         name="color"
         control={control}
-        label={t("animals.color_optional")}
+        label={t("animals.color")}
+        optional
         error={errors.color?.message}
       />
       {/* Herd select with + button */}
@@ -267,6 +269,7 @@ export function AnimalForm({
       >
         <View style={{ flex: 1 }}>
           <RHSelect
+            optional
             name="herdId"
             control={control}
             label={t("animals.herd")}
@@ -306,6 +309,7 @@ export function AnimalForm({
         />
       )}
       <RHSelect
+        optional
         name="motherId"
         control={control}
         // Clearing sends null, which removes it on save
@@ -316,6 +320,7 @@ export function AnimalForm({
         error={errors.motherId?.message}
       />
       <RHSelect
+        optional
         name="fatherId"
         control={control}
         // Clearing sends null, which removes it on save
@@ -328,6 +333,7 @@ export function AnimalForm({
       {showDeathFields && (
         <>
           <RHDatePicker
+            optional
             name="dateOfDeath"
             control={control}
             label={t("animals.date_of_death")}
@@ -336,6 +342,7 @@ export function AnimalForm({
           />
           {dateOfDeath && (
             <RHSelect
+              optional
               name="deathReason"
               control={control}
               label={t("animals.death_reason")}
@@ -348,7 +355,8 @@ export function AnimalForm({
       <RHTextAreaInput
         name="notes"
         control={control}
-        label={t("animals.notes_optional")}
+        label={t("animals.notes")}
+        optional
         error={errors.notes?.message}
       />
     </View>

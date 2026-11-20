@@ -12,8 +12,7 @@ import { H2 } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Alert, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import styled, { useTheme } from "styled-components/native";
+import { useTheme } from "styled-components/native";
 import { useAddPlotStore } from "./add-plots.store";
 import { AddPlotSummaryScreenProps } from "./navigation/plots-routes";
 import { plotSaveErrorMessage } from "./plot-geometry";
@@ -36,7 +35,6 @@ export function AddPlotSummaryScreen({
 }: AddPlotSummaryScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
 
   const addPlotStore = useAddPlotStore();
   const { geometry, size, localId, cuttingDate, usage } = addPlotStore.data!;
@@ -110,20 +108,23 @@ export function AddPlotSummaryScreen({
           <RHTextInput
             name="localId"
             control={control}
-            label={t("forms.labels.local_id_optional")}
+            label={t("forms.labels.local_id")}
+            optional
           />
           <RHSelect
             name="usage"
             data={getUsageCodeSelectData(t)}
             enableSearch
             control={control}
-            label={t("forms.labels.usage_optional")}
+            label={t("forms.labels.usage")}
+            optional
           />
           <RHDatePicker
             name="cuttingDate"
             control={control}
             mode="date"
-            label={t("forms.labels.cutting_date_optional")}
+            label={t("forms.labels.cutting_date")}
+            optional
           />
           <Button
             title={t("crops.new_crop")}
@@ -146,7 +147,8 @@ export function AddPlotSummaryScreen({
           <RHTextAreaInput
             name="additionalNotes"
             control={control}
-            label={t("forms.labels.additional_notes_optional")}
+            label={t("forms.labels.additional_notes")}
+            optional
           />
         </View>
       </ScrollView>

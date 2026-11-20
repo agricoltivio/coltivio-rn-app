@@ -241,18 +241,21 @@ export function TvdImportRowDetailScreen({
           />
 
           <RHTextInput
+            optional
             name="motherEarTagNumber"
             control={control}
             label={t("animals.mother_ear_tag_number")}
           />
 
           <RHTextInput
+            optional
             name="fatherEarTagNumber"
             control={control}
             label={t("animals.father_ear_tag_number")}
           />
 
           <RHDatePicker
+            optional
             name="dateOfDeath"
             control={control}
             label={t("animals.date_of_death")}
@@ -260,6 +263,7 @@ export function TvdImportRowDetailScreen({
           />
 
           <RHSelect
+            optional
             name="deathReason"
             control={control}
             label={t("animals.death_reason")}

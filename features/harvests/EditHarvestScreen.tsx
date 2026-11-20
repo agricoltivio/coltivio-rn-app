@@ -186,7 +186,8 @@ function EditHarvestForm({
           <RHSelect
             name="conservationMethod"
             control={control}
-            label={t("forms.labels.conservation_optional")}
+            label={t("forms.labels.conservation")}
+            optional
             error={errors.conservationMethod?.message}
             data={conservationOptions}
           />
@@ -228,7 +229,8 @@ function EditHarvestForm({
           <RHTextAreaInput
             name="additionalNotes"
             control={control}
-            label={t("forms.labels.additional_notes_optional")}
+            label={t("forms.labels.additional_notes")}
+            optional
           />
         </View>
       </ScrollView>

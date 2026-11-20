@@ -30,10 +30,10 @@
     "show_less": "Meno"
   },
   "forms": {
+    "optional": "facoltativo",
     "labels": {
       "name": "Nome",
       "description": "Descrizione",
-      "description_optional": "Descrizione (facoltativo)",
       "display_name": "Nome visualizzato",
       "select_date": "Seleziona data",
       "email": "Email",
@@ -68,19 +68,15 @@
       "total_unit": "Totale {{unit}}",
       "total_w_amount_unit": "Totale {{amount}}{{unit}}",
       "additional_notes": "Note aggiuntive",
-      "additional_notes_optional": "Note aggiuntive (facoltativo)",
       "unit": "Unità di misura",
       "kind": "Varietà",
-      "kind_optional": "Varietà (facoltativo)",
       "sowing": "Semina",
-      "end_optional": "Fine (facoltativo)",
       "category": "Categoria",
       "type": "Tipologia",
       "fertiliser": "Fertilizzante",
       "reason": "Motivo",
       "action": "Azione",
       "conservation": "Conservazione",
-      "conservation_optional": "Conservazione (facoltativo)",
       "processing_type": "Trasformazione",
       "weight_kg_per_harvest_unit": "Peso per unità di raccolto (kg)",
       "machine": "Macchina agricola",
@@ -92,17 +88,14 @@
       "from": "Da",
       "to": "A",
       "local_id": "Particella",
-      "local_id_optional": "Particella (facoltativo)",
       "usage": "Utilizzo",
-      "usage_optional": "Utilizzo (facoltativo)",
       "usagecode": "Codice utilizzo",
       "cutting_date": "Data di taglio",
-      "cutting_date_optional": "Data di taglio (facoltativo)",
       "permanent": "A tempo indeterminato",
       "sex": "Sesso",
       "date_range": "Periodo",
       "duration": "Durata",
-      "registration_number_optional": "Numero di omologazione (facoltativo)"
+      "registration_number": "Numero di omologazione"
     },
     "placeholders": {
       "location_search": "es. Via, Numero Civico, Città",
@@ -892,7 +885,7 @@
     "quantity_kind_locked_hint": "Il modo di misurazione non può essere modificato affinché le quantità restino sommabili. Crea una nuova semente.",
     "default_values_optional": "Valori predefiniti (facoltativo)",
     "default_values_description": "Precompilati quando si registra una nuova semina con questa semente e modificabili in quel momento.",
-    "default_amount_optional": "Quantità predefinita (facoltativo)",
+    "default_amount": "Quantità predefinita",
     "default_unit": "Unità predefinita",
     "seed_in_use_warning": "Questa semente è in uso e quindi non può essere eliminata.",
     "delete_confirm_title": "Eliminare la semente?",
@@ -905,7 +898,6 @@
     "sowing_date": "Semina del {{date}}",
     "sowing_configuration": "Configura semina",
     "seed": "Semente",
-    "seed_optional": "Semente (facoltativo)",
     "crop_from_seed": "La coltura è presa dalla semente.",
     "amount": "Quantità",
     "rate": "Densità di semina",
@@ -1010,8 +1002,8 @@
     },
     "no_variety": "Nessuna varietà",
     "crop_in_use_warning": "Questa coltura è in uso e quindi non può essere eliminata.",
-    "family_optional": "Famiglia (facoltativo)",
-    "waiting_time_in_years_optional": "Tempo di attesa (anni, facoltativo)"
+    "family": "Famiglia",
+    "waiting_time_in_years": "Tempo di attesa (anni)"
   },
   "crop_families": {
     "crop_families": "Famiglie di colture",
@@ -1383,7 +1375,6 @@
     "end_date": "Data di fine",
     "end_date_optional": "Data di fine (facoltativo)",
     "recurrence": "Ripetizione",
-    "recurrence_optional": "Ripetizione (facoltativo)",
     "until": "fino a",
     "frequency": "Frequenza",
     "frequency_types": {
@@ -1482,7 +1473,6 @@
     "meadows": {
       "meadow": "Area di pascolo",
       "meadows": "Aree di pascolo",
-      "meadow_optional": "Area di pascolo (facoltativo)",
       "no_meadow": "Nessuna area di pascolo",
       "new_meadow": "Nuova area di pascolo",
       "edit_meadow": "Modifica area di pascolo",
@@ -1511,7 +1501,7 @@
       "none": "Nessuna",
       "weekdays": "Giorni della settimana",
       "weekdays_required": "Seleziona almeno un giorno della settimana.",
-      "until_optional": "Ripeti fino al (facoltativo)"
+      "until": "Ripeti fino al"
     },
     "herd_changes_apply_from": "Modifiche valide dal",
     "herd_member_since": "Nella mandria dal",
@@ -1520,9 +1510,7 @@
     "herd_changes_summary": "{{added}} aggiunti, {{removed}} rimossi. Da quale data vale?",
     "delete_herd_confirm": "Eliminare la mandria «{{name}}»?",
     "delete_herd_confirm_info": "Questa azione non può essere annullata.",
-    "timeline_view_overview": "Panoramica",
-    "color_optional": "Colore (facoltativo)",
-    "notes_optional": "Note (facoltativo)"
+    "timeline_view_overview": "Panoramica"
   },
   "drugs": {
     "drugs": "Medicinali",
@@ -1871,7 +1859,6 @@
     "famacha_distribution": "Distribuzione FAMACHA",
     "samples": "Campioni di feci",
     "lab_name": "Laboratorio",
-    "lab_name_optional": "Laboratorio (facoltativo)",
     "sample_label": "Denominazione (facoltativo)",
     "pooled_sample": "Campione collettivo ({{count}} animali)",
     "individual_sample": "Campione individuale",
@@ -1879,8 +1866,7 @@
     "parasite_type": "Parassita",
     "duplicate_parasite_type": "Ogni parassita può comparire solo una volta per campione",
     "treatment": "Trattamento",
-    "treatment_optional": "Trattamento (facoltativo)",
-    "previous_check_optional": "Ricontrollo di (facoltativo)",
+    "previous_check": "Ricontrollo di",
     "create_follow_up_task": "Crea compito per ricontrollo",
     "follow_up_date": "Ricontrollo il",
     "follow_up_task": "Ricontrollo",
@@ -1928,7 +1914,7 @@
     "summary": "Riepilogo",
     "last_n_values": "Ultimi {{count}} valori",
     "delete_check_with_rechecks_confirm": "Eliminare questo controllo e i suoi {{count}} ricontrolli?",
-    "name_optional": "Nome (facoltativo)",
+    "name": "Nome",
     "mixed_animal_types": "Un controllo può contenere solo animali di una specie.",
     "average_per_check": "Ø per controllo",
     "average_grade_per_check": "Ø grado per controllo",
@@ -2004,9 +1990,7 @@
     },
     "amount": "Quantità",
     "conception_failed": "Non rimasta gravida",
-    "sire_optional": "Padre (facoltativo)",
-    "sire_external_optional": "Padre esterno (facoltativo)",
-    "notes_optional": "Note (facoltativo)",
+    "notes": "Note",
     "gestation_days_invalid": "Tra 1 e 500 giorni",
     "gestation_saved": "Durata della gravidanza salvata",
     "permission_denied": "Le notifiche sono disattivate nelle impostazioni di sistema. Consentile lì per ricevere promemoria prima dei parti.",

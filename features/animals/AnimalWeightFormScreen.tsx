@@ -163,7 +163,8 @@ export function AnimalWeightFormScreen({
           <RHTextAreaInput
             name="notes"
             control={control}
-            label={t("breeding.notes_optional")}
+            label={t("breeding.notes")}
+            optional
           />
         </View>
       </ScrollView>

@@ -1,4 +1,3 @@
-import { CropProtectionApplicationPresetCreateInput } from "@/api/cropProtectionApplicationPresets.api";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -294,7 +293,8 @@ export function ConfigureCropProtectionApplicationScreen({
           <RHTextAreaInput
             name="additionalNotes"
             control={control}
-            label={t("forms.labels.additional_notes_optional")}
+            label={t("forms.labels.additional_notes")}
+            optional
           />
         </View>
       </ScrollView>

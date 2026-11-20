@@ -30,10 +30,10 @@
     "show_less": "Moins"
   },
   "forms": {
+    "optional": "facultatif",
     "labels": {
       "name": "Nom",
       "description": "Description",
-      "description_optional": "Description (facultatif)",
       "display_name": "Nom d'affichage",
       "select_date": "Sélectionner une date",
       "email": "Email",
@@ -68,19 +68,15 @@
       "total_unit": "Total {{unit}}",
       "total_w_amount_unit": "Total {{amount}}{{unit}}",
       "additional_notes": "Notes supplémentaires",
-      "additional_notes_optional": "Notes supplémentaires (facultatif)",
       "unit": "Unité",
       "kind": "Variété",
-      "kind_optional": "Variété (facultatif)",
       "sowing": "Semis",
-      "end_optional": "Fin (facultatif)",
       "category": "Catégorie",
       "type": "Type",
       "fertiliser": "Engrais",
       "reason": "Raison",
       "action": "Action",
       "conservation": "Conservation",
-      "conservation_optional": "Conservation (facultatif)",
       "processing_type": "Transformation",
       "weight_kg_per_harvest_unit": "Poids par unité de récolte (kg)",
       "machine": "Machine",
@@ -92,17 +88,14 @@
       "from": "De",
       "to": "À",
       "local_id": "Parcelle",
-      "local_id_optional": "Parcelle (facultatif)",
       "usage": "Utilisation",
-      "usage_optional": "Utilisation (facultatif)",
       "usagecode": "Code d'utilisation",
       "cutting_date": "Date de coupe",
-      "cutting_date_optional": "Date de coupe (facultatif)",
       "permanent": "Permanent",
       "sex": "Sexe",
       "date_range": "Période",
       "duration": "Durée",
-      "registration_number_optional": "Numéro d'homologation (facultatif)"
+      "registration_number": "Numéro d'homologation"
     },
     "placeholders": {
       "location_search": "ex. Rue, Numéro, Ville",
@@ -892,7 +885,7 @@
     "quantity_kind_locked_hint": "Le mode de mesure ne peut pas être modifié afin que les quantités restent additionnables. Crée une nouvelle semence.",
     "default_values_optional": "Valeurs par défaut (facultatif)",
     "default_values_description": "Pré-remplies lors de la saisie d'un nouveau semis avec cette semence et modifiables à ce moment-là.",
-    "default_amount_optional": "Quantité par défaut (facultatif)",
+    "default_amount": "Quantité par défaut",
     "default_unit": "Unité par défaut",
     "seed_in_use_warning": "Cette semence est utilisée et ne peut donc pas être supprimée.",
     "delete_confirm_title": "Supprimer la semence ?",
@@ -905,7 +898,6 @@
     "sowing_date": "Semis du {{date}}",
     "sowing_configuration": "Configurer le semis",
     "seed": "Semence",
-    "seed_optional": "Semence (facultatif)",
     "crop_from_seed": "La culture est reprise de la semence.",
     "amount": "Quantité",
     "rate": "Densité de semis",
@@ -1010,8 +1002,8 @@
     },
     "no_variety": "Aucune variété",
     "crop_in_use_warning": "Cette culture est utilisée et ne peut donc pas être supprimée.",
-    "family_optional": "Famille (facultatif)",
-    "waiting_time_in_years_optional": "Temps d'attente (années, facultatif)"
+    "family": "Famille",
+    "waiting_time_in_years": "Temps d'attente (années)"
   },
   "crop_families": {
     "crop_families": "Familles de cultures",
@@ -1383,7 +1375,6 @@
     "end_date": "Date de fin",
     "end_date_optional": "Date de fin (facultatif)",
     "recurrence": "Récurrence",
-    "recurrence_optional": "Récurrence (facultatif)",
     "until": "jusqu'au",
     "frequency": "Fréquence",
     "frequency_types": {
@@ -1482,7 +1473,6 @@
     "meadows": {
       "meadow": "Pâture",
       "meadows": "Pâtures",
-      "meadow_optional": "Pâture (facultatif)",
       "no_meadow": "Aucune pâture",
       "new_meadow": "Nouvelle pâture",
       "edit_meadow": "Modifier la pâture",
@@ -1511,7 +1501,7 @@
       "none": "Aucune",
       "weekdays": "Jours de la semaine",
       "weekdays_required": "Sélectionne au moins un jour de la semaine.",
-      "until_optional": "Répéter jusqu'au (facultatif)"
+      "until": "Répéter jusqu'au"
     },
     "herd_changes_apply_from": "Changements valables dès le",
     "herd_member_since": "Dans le troupeau depuis",
@@ -1520,9 +1510,7 @@
     "herd_changes_summary": "{{added}} ajoutés, {{removed}} retirés. À partir de quelle date ?",
     "delete_herd_confirm": "Supprimer le troupeau « {{name}} » ?",
     "delete_herd_confirm_info": "Cette action est irréversible.",
-    "timeline_view_overview": "Aperçu",
-    "color_optional": "Couleur (facultatif)",
-    "notes_optional": "Notes (facultatif)"
+    "timeline_view_overview": "Aperçu"
   },
   "drugs": {
     "drugs": "Médicaments",
@@ -1871,7 +1859,6 @@
     "famacha_distribution": "Répartition FAMACHA",
     "samples": "Échantillons de fèces",
     "lab_name": "Laboratoire",
-    "lab_name_optional": "Laboratoire (facultatif)",
     "sample_label": "Désignation (facultatif)",
     "pooled_sample": "Échantillon groupé ({{count}} animaux)",
     "individual_sample": "Échantillon individuel",
@@ -1879,8 +1866,7 @@
     "parasite_type": "Parasite",
     "duplicate_parasite_type": "Chaque parasite ne peut apparaître qu'une fois par échantillon",
     "treatment": "Traitement",
-    "treatment_optional": "Traitement (facultatif)",
-    "previous_check_optional": "Recontrôle de (facultatif)",
+    "previous_check": "Recontrôle de",
     "create_follow_up_task": "Créer une tâche de recontrôle",
     "follow_up_date": "Recontrôle le",
     "follow_up_task": "Recontrôle",
@@ -1928,7 +1914,7 @@
     "summary": "Résumé",
     "last_n_values": "{{count}} dernières valeurs",
     "delete_check_with_rechecks_confirm": "Supprimer ce contrôle et ses {{count}} recontrôles ?",
-    "name_optional": "Nom (facultatif)",
+    "name": "Nom",
     "mixed_animal_types": "Un contrôle ne peut contenir que des animaux d'une seule espèce.",
     "average_per_check": "Ø par contrôle",
     "average_grade_per_check": "Ø degré par contrôle",
@@ -2004,9 +1990,7 @@
     },
     "amount": "Quantité",
     "conception_failed": "Non fécondée",
-    "sire_optional": "Père (facultatif)",
-    "sire_external_optional": "Père externe (facultatif)",
-    "notes_optional": "Notes (facultatif)",
+    "notes": "Notes",
     "gestation_days_invalid": "Entre 1 et 500 jours",
     "gestation_saved": "Durée de gestation enregistrée",
     "permission_denied": "Les notifications sont désactivées dans les réglages du système. Autorise-les pour recevoir des rappels avant les mises bas.",

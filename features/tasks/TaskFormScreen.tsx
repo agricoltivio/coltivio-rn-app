@@ -870,11 +870,13 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
             <RHTextAreaInput
               name="description"
               control={control}
-              label={t("forms.labels.description_optional")}
+              label={t("forms.labels.description")}
+              optional
             />
 
             {/* Assignee */}
             <RHSelect
+              optional
               name="assigneeId"
               control={control}
               label={t("tasks.assignee")}
@@ -885,6 +887,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
 
             {/* Due date */}
             <RHDatePicker
+              optional
               name="dueDate"
               control={control}
               label={t("tasks.due_date")}

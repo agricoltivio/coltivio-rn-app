@@ -100,7 +100,8 @@ export function ParasiteSamplesScreen({
 
         <View style={{ marginTop: theme.spacing.m }}>
           <TextInput
-            label={t("parasite_checks.lab_name_optional")}
+            label={t("parasite_checks.lab_name")}
+            optional
             value={draft.labName}
             onChangeText={draft.setLabName}
           />

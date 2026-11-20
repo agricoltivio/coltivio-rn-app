@@ -1,12 +1,15 @@
 import { ReactNode, useState } from "react";
 import { TextInputProps as RnTextInputProps, View } from "react-native";
 import styled, { useTheme } from "styled-components/native";
+import { OptionalLabelSuffix } from "./OptionalLabelSuffix";
 
 export type TextInputProps = Omit<RnTextInputProps, "editable"> & {
   label?: ReactNode;
   error?: string | null;
   hideLabel?: boolean;
   disabled?: boolean;
+  // Adds a muted "(optional)" after the label
+  optional?: boolean;
 };
 
 export function TextInput({
@@ -16,6 +19,7 @@ export function TextInput({
   error,
   hideLabel,
   disabled,
+  optional,
   onChange,
   ...props
 }: TextInputProps) {
@@ -24,7 +28,12 @@ export function TextInput({
 
   return (
     <View>
-      {!hideLabel && <Label>{label}</Label>}
+      {!hideLabel && (
+        <Label>
+          {label}
+          {optional && <OptionalLabelSuffix />}
+        </Label>
+      )}
       <Input
         placeholderTextColor={theme.colors.gray2}
         error={!!error}

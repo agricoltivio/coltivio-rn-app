@@ -16,6 +16,8 @@ export function RHDatePicker<T extends FieldValues>({
   mode,
   clearable,
   minimumDate,
+  maximumDate,
+  optional,
 }: RHTextInputProps<T>) {
   const { i18n } = useTranslation();
   const locale = i18n.language;
@@ -44,6 +46,8 @@ export function RHDatePicker<T extends FieldValues>({
           error={error}
           clearable={showClearButton}
           minimumDate={minimumDate}
+          maximumDate={maximumDate}
+          optional={optional}
         />
       )}
     />
