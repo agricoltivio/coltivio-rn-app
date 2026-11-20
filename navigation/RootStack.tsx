@@ -1,4 +1,5 @@
 import { useSession } from "@/auth/SessionProvider";
+import { ScreenErrorBoundary } from "@/components/errors/ScreenErrorBoundary";
 import { renderAgriColtivioStack } from "@/features/agri-coltivio/navigation/AgriColtivioStack";
 import { renderWikiStack } from "@/features/wiki/navigation/WikiStack";
 import { renderTasksStack } from "@/features/tasks/navigation/TasksStack";
@@ -211,6 +212,16 @@ export function RootStack() {
   }
   return (
     <Stack.Navigator
+      // A render error replaces only the failing screen, see ScreenErrorBoundary
+      screenLayout={({ children, navigation }) => (
+        <ScreenErrorBoundary
+          onGoBack={
+            navigation.canGoBack() ? () => navigation.goBack() : undefined
+          }
+        >
+          {children}
+        </ScreenErrorBoundary>
+      )}
       screenOptions={{
         contentStyle: {
           backgroundColor: theme.colors.background,

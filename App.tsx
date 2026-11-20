@@ -23,8 +23,8 @@ import { ActiveFarmProvider } from "./features/farms/ActiveFarmContext";
 import { OnboardingProvider } from "./features/onboarding/OnboardingContext";
 import i18n from "./locales/i18n";
 import { RootStack } from "./navigation/RootStack";
+import { RootErrorFallback } from "./components/errors/RootErrorFallback";
 import { PushNotificationsHandler } from "./features/notifications/PushNotificationsHandler";
-import "./theme/theme";
 
 import { StatusBar } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -84,67 +84,72 @@ focusManager.setEventListener((handleFocus) => {
 
 export default Sentry.wrap(function App() {
   return (
-    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <I18nextProvider i18n={i18n}>
-          <ThemeProvider theme={coltivioTheme}>
-            <StripeProvider
-              publishableKey={
-                process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? ""
-              }
-              urlScheme={stripeUrlScheme}
-              merchantIdentifier="merchant.ch.agricoltivio.coltivio"
-            >
-              <QueryClientProvider client={queryClient}>
-                <SessionProvider>
-                  <ActiveFarmProvider>
-                    <LocalSettingsProvider>
-                      <PortalProvider>
-                        <OnboardingProvider>
-                          <GestureHandlerRootView>
-                            <KeyboardProvider>
-                              <NavigationContainer
-                                linking={{
-                                  prefixes: [prefix],
-                                  getStateFromPath: (path, config) => {
-                                    // Stripe's returnURL (e.g. after a Twint/3DS redirect) reopens the app on
-                                    // this path. There's no screen for it — the Stripe SDK's own URL listener
-                                    // resumes the payment sheet — so don't let react-navigation route it.
-                                    if (path.startsWith("stripe-redirect")) {
-                                      return undefined;
-                                    }
-                                    const sanitizedPath = path.replace(
-                                      "#",
-                                      "?",
-                                    );
-                                    return getStateFromPath(
-                                      sanitizedPath,
-                                      config,
-                                    );
-                                  },
-                                }}
-                              >
-                                {/* React Native 0.88 always draws edge-to-edge, so the status bar is translucent
+    // Last resort for errors outside the screens (providers, navigation container)
+    <Sentry.ErrorBoundary
+      fallback={({ resetError }) => <RootErrorFallback onRetry={resetError} />}
+    >
+      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <I18nextProvider i18n={i18n}>
+            <ThemeProvider theme={coltivioTheme}>
+              <StripeProvider
+                publishableKey={
+                  process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? ""
+                }
+                urlScheme={stripeUrlScheme}
+                merchantIdentifier="merchant.ch.agricoltivio.coltivio"
+              >
+                <QueryClientProvider client={queryClient}>
+                  <SessionProvider>
+                    <ActiveFarmProvider>
+                      <LocalSettingsProvider>
+                        <PortalProvider>
+                          <OnboardingProvider>
+                            <GestureHandlerRootView>
+                              <KeyboardProvider>
+                                <NavigationContainer
+                                  linking={{
+                                    prefixes: [prefix],
+                                    getStateFromPath: (path, config) => {
+                                      // Stripe's returnURL (e.g. after a Twint/3DS redirect) reopens the app on
+                                      // this path. There's no screen for it — the Stripe SDK's own URL listener
+                                      // resumes the payment sheet — so don't let react-navigation route it.
+                                      if (path.startsWith("stripe-redirect")) {
+                                        return undefined;
+                                      }
+                                      const sanitizedPath = path.replace(
+                                        "#",
+                                        "?",
+                                      );
+                                      return getStateFromPath(
+                                        sanitizedPath,
+                                        config,
+                                      );
+                                    },
+                                  }}
+                                >
+                                  {/* React Native 0.88 always draws edge-to-edge, so the status bar is translucent
                                     without the removed translucent/backgroundColor props */}
-                                <StatusBar barStyle="dark-content" />
-                                <RootStack />
-                                {/* After RootStack so its navigator is mounted before a notification tap navigates */}
-                                <PushNotificationsHandler />
-                              </NavigationContainer>
-                            </KeyboardProvider>
-                          </GestureHandlerRootView>
-                          {/* <ComponentsShowcase /> */}
-                          {/* <BottomSheetModalTest /> */}
-                        </OnboardingProvider>
-                      </PortalProvider>
-                    </LocalSettingsProvider>
-                  </ActiveFarmProvider>
-                </SessionProvider>
-              </QueryClientProvider>
-            </StripeProvider>
-          </ThemeProvider>
-        </I18nextProvider>
-      </GestureHandlerRootView>
-    </SafeAreaProvider>
+                                  <StatusBar barStyle="dark-content" />
+                                  <RootStack />
+                                  {/* After RootStack so its navigator is mounted before a notification tap navigates */}
+                                  <PushNotificationsHandler />
+                                </NavigationContainer>
+                              </KeyboardProvider>
+                            </GestureHandlerRootView>
+                            {/* <ComponentsShowcase /> */}
+                            {/* <BottomSheetModalTest /> */}
+                          </OnboardingProvider>
+                        </PortalProvider>
+                      </LocalSettingsProvider>
+                    </ActiveFarmProvider>
+                  </SessionProvider>
+                </QueryClientProvider>
+              </StripeProvider>
+            </ThemeProvider>
+          </I18nextProvider>
+        </GestureHandlerRootView>
+      </SafeAreaProvider>
+    </Sentry.ErrorBoundary>
   );
 });
