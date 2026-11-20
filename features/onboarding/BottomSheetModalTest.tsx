@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo, useRef } from "react";
-import { View, StyleSheet, Button } from "react-native";
+import React, { useCallback, useRef } from "react";
+import { StyleSheet, Button } from "react-native";
 import { Text } from "@/components/text/Text";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {

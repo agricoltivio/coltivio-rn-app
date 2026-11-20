@@ -7,7 +7,6 @@ import {
   Alert,
   Dimensions,
   Modal,
-  PixelRatio,
   StatusBar,
   TouchableOpacity,
   View,
@@ -21,17 +20,17 @@ import { AnimalJournalEntryScreenProps } from "./navigation/animals-routes";
 import { AnimalJournalImage } from "@/api/animal-journal.api";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { Ionicons } from "@expo/vector-icons";
+import { Image } from "expo-image";
+import { useState } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
+import { usePermissions } from "@/features/user/users.hooks";
 
 function resolveLocalUrl(url: string): string {
   const lanIp = Constants.expoConfig?.hostUri?.split(":").shift();
   if (!lanIp) return url;
   return url.replace(/localhost|127\.0\.0\.1/g, lanIp);
 }
-import { Image } from "expo-image";
-import { useState } from "react";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useTranslation } from "react-i18next";
-import { usePermissions } from "@/features/user/users.hooks";
 
 export function AnimalJournalEntryScreen({
   route,

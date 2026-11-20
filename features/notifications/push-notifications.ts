@@ -91,6 +91,7 @@ export async function setUpAndroidNotificationChannelAsync() {
     ANDROID_NOTIFICATION_CHANNEL_ID,
     {
       name: i18n.t("settings.notifications.android_channel_name"),
+      // eslint-disable-next-line import/namespace -- re-exported enum, the import plugin can't follow it (tsc checks it)
       importance: Notifications.AndroidImportance.HIGH,
     },
   );

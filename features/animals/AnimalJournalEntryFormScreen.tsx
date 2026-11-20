@@ -12,7 +12,6 @@ import { useTheme } from "styled-components/native";
 import { useForm } from "react-hook-form";
 import {
   useCreateJournalEntryMutation,
-  useDeleteJournalEntryMutation,
   useUpdateJournalEntryMutation,
   useAnimalJournalEntryQuery,
 } from "./animal-journal.hooks";
@@ -79,7 +78,6 @@ export function AnimalJournalEntryFormScreen({
 
   const createMutation = useCreateJournalEntryMutation();
   const updateMutation = useUpdateJournalEntryMutation();
-  const deleteMutation = useDeleteJournalEntryMutation();
 
   const {
     control,
@@ -227,27 +225,8 @@ export function AnimalJournalEntryFormScreen({
     }
   }
 
-  function handleDelete() {
-    if (!entryId) return;
-    Alert.alert(t("animals.delete_journal_entry"), undefined, [
-      { text: t("buttons.cancel"), style: "cancel" },
-      {
-        text: t("buttons.delete"),
-        style: "destructive",
-        onPress: async () => {
-          await deleteMutation.mutateAsync({ entryId, animalId });
-          // Pop back to the journal list
-          navigation.pop(2);
-        },
-      },
-    ]);
-  }
-
   const isBusy =
-    isSubmitting ||
-    createMutation.isPending ||
-    updateMutation.isPending ||
-    deleteMutation.isPending;
+    isSubmitting || createMutation.isPending || updateMutation.isPending;
 
   // All images shown in the form (uploaded for edit mode, pending local previews for create mode)
   const allImages: { id: string; uri: string; isPending: boolean }[] = [

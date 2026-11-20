@@ -23,7 +23,7 @@ export function NativeAppleSignInButton() {
           if (credential.identityToken) {
             const {
               error,
-              data: { user, session },
+              data: { session },
             } = await supabase.auth.signInWithIdToken({
               provider: "apple",
               token: credential.identityToken,

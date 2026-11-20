@@ -1,4 +1,4 @@
-import { FamilyTreeEdge, FamilyTreeNode } from "@/api/animals.api";
+import { FamilyTreeEdge, FamilyTreeNode, AnimalType } from "@/api/animals.api";
 import { ContentView } from "@/components/containers/ContentView";
 import { Subtitle } from "@/theme/Typography";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -13,7 +13,6 @@ import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
   Modal,
-  ScrollView,
   TouchableOpacity,
   View,
   useWindowDimensions,
@@ -23,7 +22,6 @@ import { Line, Svg } from "react-native-svg";
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery, useFamilyTreeQuery } from "./animals.hooks";
 import { FamilyTreeScreenProps } from "./navigation/animals-routes";
-import { AnimalType } from "@/api/animals.api";
 
 const NODE_W = 130;
 const NODE_H = 70;

@@ -23,21 +23,6 @@ const UNIT_SQUARE: GeoJSON.MultiPolygon = {
 };
 
 // Second square offset to [2,0]→[3,0]→[3,1]→[2,1]→[2,0]
-const SECOND_SQUARE_COORDS: number[][][] = [
-  [
-    [2, 0],
-    [3, 0],
-    [3, 1],
-    [2, 1],
-    [2, 0],
-  ],
-];
-
-const TWO_SQUARE_MULTI: GeoJSON.MultiPolygon = {
-  type: "MultiPolygon",
-  coordinates: [UNIT_SQUARE_COORDS, SECOND_SQUARE_COORDS],
-};
-
 // ---------------------------------------------------------------------------
 // Coordinate conversion methods
 // ---------------------------------------------------------------------------

@@ -54,8 +54,10 @@ import { AnimalWeightFormScreen } from "../AnimalWeightFormScreen";
 import { AnimalHeatFormScreen } from "../AnimalHeatFormScreen";
 import { BreedingCalendarScreen } from "../BreedingCalendarScreen";
 import { BreedingSettingsScreen } from "../BreedingSettingsScreen";
-import { IonIconButton } from "@/components/buttons/IconButton";
-import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
+import {
+  IonIconButton,
+  MaterialCommunityIconButton,
+} from "@/components/buttons/IconButton";
 import { DefaultTheme } from "styled-components/native";
 
 export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {

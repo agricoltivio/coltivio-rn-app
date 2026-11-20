@@ -5,7 +5,8 @@ const expoConfig = require("eslint-config-expo/flat");
 module.exports = defineConfig([
   expoConfig,
   {
-    ignores: ["dist/*"],
+    // Build output, generated types and native projects
+    ignores: ["dist/*", ".expo/*", "ios/*", "android/*"],
   },
   {
     rules: {
@@ -46,6 +47,13 @@ module.exports = defineConfig([
     files: ["components/text/Text.tsx"],
     rules: {
       "no-restricted-imports": "off",
+    },
+  },
+  {
+    // Node scripts (release, translations)
+    files: ["scripts/**/*.js"],
+    languageOptions: {
+      globals: { __dirname: "readonly" },
     },
   },
 ]);

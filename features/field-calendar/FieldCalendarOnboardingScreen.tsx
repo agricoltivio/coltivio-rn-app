@@ -20,7 +20,7 @@ export function FieldCalendarOnboardingScreen({
   }
 
   const steps = [
-    <View>
+    <View key="step-1">
       <H1 style={{ color: theme.colors.primary }}>
         {t("field_calendar.onboarding.welcome_heading")}
       </H1>
@@ -33,13 +33,13 @@ export function FieldCalendarOnboardingScreen({
         {t("field_calendar.onboarding.welcome_body")}
       </H3>
     </View>,
-    <View>
+    <View key="step-2">
       <H1 style={{ color: theme.colors.primary }}>
         {t("field_calendar.onboarding.configure_heading")}
       </H1>
       <FieldCalendarSettingsBody />
     </View>,
-    <View>
+    <View key="step-3">
       <H1 style={{ color: theme.colors.primary }}>
         {t("field_calendar.onboarding.done_heading")}
       </H1>

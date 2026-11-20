@@ -20,7 +20,7 @@ export function AnimalsOnboardingScreen({
   }
 
   const steps = [
-    <View>
+    <View key="step-1">
       <H1 style={{ color: theme.colors.primary }}>
         {t("animals.onboarding.welcome_heading")}
       </H1>
@@ -33,13 +33,13 @@ export function AnimalsOnboardingScreen({
         {t("animals.onboarding.welcome_body")}
       </H3>
     </View>,
-    <View>
+    <View key="step-2">
       <H1 style={{ color: theme.colors.primary }}>
         {t("animals.onboarding.configure_heading")}
       </H1>
       <AnimalsSettingsBody />
     </View>,
-    <View>
+    <View key="step-3">
       <H1 style={{ color: theme.colors.primary }}>
         {t("animals.onboarding.done_heading")}
       </H1>
