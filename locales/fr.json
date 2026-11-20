@@ -127,6 +127,7 @@
     "yes": "Oui",
     "no": "Non",
     "no_entries": "Aucune entrée pour le moment",
+    "week_short": "S{{week}}",
     "area_acres": "Surface: {{area}}a",
     "dont_show_again": "Ne plus afficher",
     "error": "Erreur",

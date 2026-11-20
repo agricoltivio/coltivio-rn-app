@@ -42,20 +42,21 @@ function daysBetween(a: Date, b: Date): number {
   return Math.floor((b.getTime() - a.getTime()) / MS_PER_DAY);
 }
 
-const MONTH_SHORT = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
+// Language dependent parts of the grid labels, passed in so the utils stay pure
+export type TimelineLabels = {
+  // e.g. "de", formats the month names
+  locale: string;
+  // e.g. 42 -> "KW42"
+  weekLabel: (weekNumber: number) => string;
+};
+
+// Short month names of the locale, by month index (0 = January)
+function shortMonthNames(locale: string): string[] {
+  const formatter = new Intl.DateTimeFormat(locale, { month: "short" });
+  return Array.from({ length: 12 }, (_, monthIndex) =>
+    formatter.format(new Date(2000, monthIndex, 1)),
+  );
+}
 
 export type SimplePlot = { id: string; name: string };
 
@@ -222,7 +223,9 @@ export function getGridLines(
   visibleStartDay: number,
   visibleEndDay: number,
   epochStart: Date,
+  labels: TimelineLabels,
 ): GridLine[] {
+  const monthNames = shortMonthNames(labels.locale);
   const visibleDays = visibleEndDay - visibleStartDay;
   const lines: GridLine[] = [];
   const epochMs = epochStart.getTime();
@@ -251,8 +254,8 @@ export function getGridLines(
       if (day >= visibleStartDay - 15 && day <= visibleEndDay + 15) {
         const isJanuary = current.getMonth() === 0;
         const label = isJanuary
-          ? `${MONTH_SHORT[current.getMonth()]} ${current.getFullYear()}`
-          : MONTH_SHORT[current.getMonth()];
+          ? `${monthNames[current.getMonth()]} ${current.getFullYear()}`
+          : monthNames[current.getMonth()];
         lines.push({ day, label, isMajor: isJanuary });
       }
       current.setMonth(current.getMonth() + 1);
@@ -274,8 +277,8 @@ export function getGridLines(
         lines.push({
           day,
           label: isFirstWeekOfMonth
-            ? `${MONTH_SHORT[monday.getMonth()]} W${weekNum}`
-            : `W${weekNum}`,
+            ? `${monthNames[monday.getMonth()]} ${labels.weekLabel(weekNum)}`
+            : labels.weekLabel(weekNum),
           isMajor: isFirstWeekOfMonth,
         });
       }
@@ -291,6 +294,7 @@ export function getWeekLines(
   visibleStartDay: number,
   visibleEndDay: number,
   epochStart: Date,
+  labels: TimelineLabels,
 ): GridLine[] {
   const lines: GridLine[] = [];
   const epochMs = epochStart.getTime();
@@ -307,7 +311,7 @@ export function getWeekLines(
       const weekNum = getISOWeekNumber(monday);
       lines.push({
         day,
-        label: `W${weekNum}`,
+        label: labels.weekLabel(weekNum),
         isMajor: false,
       });
     }
@@ -322,7 +326,9 @@ export function getAllGridLines(
   totalDays: number,
   epochStart: Date,
   zoomLevel: "years" | "months" | "weeks",
+  labels: TimelineLabels,
 ): GridLine[] {
+  const monthNames = shortMonthNames(labels.locale);
   const lines: GridLine[] = [];
 
   if (zoomLevel === "years") {
@@ -343,8 +349,8 @@ export function getAllGridLines(
       if (day >= 0 && day <= totalDays) {
         const isJanuary = current.getMonth() === 0;
         const label = isJanuary
-          ? `${MONTH_SHORT[current.getMonth()]} ${current.getFullYear()}`
-          : MONTH_SHORT[current.getMonth()];
+          ? `${monthNames[current.getMonth()]} ${current.getFullYear()}`
+          : monthNames[current.getMonth()];
         lines.push({ day, label, isMajor: isJanuary });
       }
       current.setMonth(current.getMonth() + 1);
@@ -365,8 +371,8 @@ export function getAllGridLines(
         lines.push({
           day,
           label: isFirstWeekOfMonth
-            ? `${MONTH_SHORT[monday.getMonth()]} W${weekNum}`
-            : `W${weekNum}`,
+            ? `${monthNames[monday.getMonth()]} ${labels.weekLabel(weekNum)}`
+            : labels.weekLabel(weekNum),
           isMajor: isFirstWeekOfMonth,
         });
       }
@@ -381,6 +387,7 @@ export function getAllGridLines(
 export function getAllWeekLines(
   totalDays: number,
   epochStart: Date,
+  labels: TimelineLabels,
 ): GridLine[] {
   const lines: GridLine[] = [];
   const startDate = new Date(epochStart.getTime());
@@ -393,7 +400,7 @@ export function getAllWeekLines(
     if (day > totalDays) break;
     if (day >= 0) {
       const weekNum = getISOWeekNumber(monday);
-      lines.push({ day, label: `W${weekNum}`, isMajor: false });
+      lines.push({ day, label: labels.weekLabel(weekNum), isMajor: false });
     }
     monday.setDate(monday.getDate() + 7);
   }

@@ -16,6 +16,7 @@ import {
   GridLine,
   getAllGridLines,
   getAllWeekLines,
+  TimelineLabels,
 } from "@/features/crop-rotations/timeline/timeline-utils";
 import {
   TimelineHeader,
@@ -203,7 +204,7 @@ export function OutdoorScheduleTimeline({
   timelineData,
   onBarPress,
 }: OutdoorScheduleTimelineProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const theme = useTheme();
   const [viewportWidth, setViewportWidth] = useState(0);
   const [zoomLevel, setZoomLevel] = useState<ZoomLevel>("months");
@@ -296,12 +297,17 @@ export function OutdoorScheduleTimeline({
 
   // Grid line caching
   const gridCache = useRef<{
-    key: number;
+    key: string;
     grids: Partial<Record<ZoomLevel, GridLine[]>>;
     weeks: GridLine[] | null;
-  }>({ key: 0, grids: {}, weeks: null });
+  }>({ key: "", grids: {}, weeks: null });
 
-  const cacheKey = totalDays + epochStart.getTime();
+  // Labels are in the app language, a language change rebuilds them
+  const timelineLabels: TimelineLabels = {
+    locale: i18n.language,
+    weekLabel: (weekNumber) => t("common.week_short", { week: weekNumber }),
+  };
+  const cacheKey = `${totalDays}-${epochStart.getTime()}-${i18n.language}`;
   if (gridCache.current.key !== cacheKey) {
     gridCache.current = { key: cacheKey, grids: {}, weeks: null };
   }
@@ -310,12 +316,17 @@ export function OutdoorScheduleTimeline({
       totalDays,
       epochStart,
       zoomLevel,
+      timelineLabels,
     );
   }
   const allGridLines = gridCache.current.grids[zoomLevel]!;
 
   if (zoomLevel === "weeks" && !gridCache.current.weeks) {
-    gridCache.current.weeks = getAllWeekLines(totalDays, epochStart);
+    gridCache.current.weeks = getAllWeekLines(
+      totalDays,
+      epochStart,
+      timelineLabels,
+    );
   }
   const allWeekLines = zoomLevel === "weeks" ? gridCache.current.weeks! : [];
 
