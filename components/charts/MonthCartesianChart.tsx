@@ -66,7 +66,7 @@ function scaleYearValues(
   return result;
 }
 
-// One series per selected year; more than the 8 year colors, extend if needed
+// One series per selected year, as many as the theme has year colors (10)
 const Y_KEY_LIST = [
   "y0",
   "y1",

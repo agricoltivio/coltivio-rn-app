@@ -21,9 +21,22 @@ import { H3, Headline, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
 import { round } from "@/utils/math";
 import Fuse from "fuse.js";
-import { useCallback, useMemo, useState, ReactNode } from "react";
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  ReactNode,
+} from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, SectionList, View } from "react-native";
+import {
+  Alert,
+  SectionList,
+  SectionListRenderItemInfo,
+  View,
+} from "react-native";
 import { useTheme } from "styled-components/native";
 import {
   aggregateHarvestsByCropAndMethod,
@@ -33,6 +46,18 @@ import {
 
 // Years selected when the screen opens, older ones can be added with the chips
 const INITIAL_YEAR_COUNT = 3;
+
+// One entry of the list below the charts
+type HarvestListItem = {
+  id: string;
+  rawDate: string;
+  date: string;
+  plotName: string | undefined;
+  cropName: string;
+  kilos: number;
+  unit: string;
+  conservationMethod: string | undefined;
+};
 
 type HarvestOverviewProps = {
   summaries: HarvestSummary[];
@@ -155,25 +180,27 @@ export function HarvestOverview({
   const listSections = useMemo(() => {
     const items = harvests
       .filter((harvest) => visibleCrops.includes(harvest.crop.name))
-      .map((harvest) => ({
-        id: harvest.id,
-        rawDate: harvest.date,
-        date: formatLocalizedDate(
-          new Date(harvest.date),
-          i18n.language,
-          "long",
-          false,
-        ),
-        plotName: "plot" in harvest ? harvest.plot.name : undefined,
-        cropName: harvest.crop.name,
-        kilos: round(harvest.numberOfUnits * harvest.kilosPerUnit, 2),
-        unit: t(`harvests.labels.unit.${harvest.unit}`),
-        conservationMethod: harvest.conservationMethod
-          ? t(
-              `harvests.labels.conservation_method.${harvest.conservationMethod}`,
-            )
-          : undefined,
-      }));
+      .map(
+        (harvest): HarvestListItem => ({
+          id: harvest.id,
+          rawDate: harvest.date,
+          date: formatLocalizedDate(
+            new Date(harvest.date),
+            i18n.language,
+            "long",
+            false,
+          ),
+          plotName: "plot" in harvest ? harvest.plot.name : undefined,
+          cropName: harvest.crop.name,
+          kilos: round(harvest.numberOfUnits * harvest.kilosPerUnit, 2),
+          unit: t(`harvests.labels.unit.${harvest.unit}`),
+          conservationMethod: harvest.conservationMethod
+            ? t(
+                `harvests.labels.conservation_method.${harvest.conservationMethod}`,
+              )
+            : undefined,
+        }),
+      );
 
     let filtered = items;
     if (searchText) {
@@ -197,19 +224,54 @@ export function HarvestOverview({
       .sort((a, b) => b - a)
       .map((year) => ({
         year,
-        items: byYear[year].sort(
+        data: byYear[year].sort(
           (a, b) =>
             new Date(b.rawDate).getTime() - new Date(a.rawDate).getTime(),
         ),
       }));
   }, [harvests, visibleCrops, searchText, t, i18n.language, selectedYears]);
 
+  // Mount the list one frame after the header, so the charts and the first rows
+  // don't all render in the same frame
+  const [listReady, setListReady] = useState(false);
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setListReady(true));
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  // Stable press handler, so the memoized rows don't re-render when the screen
+  // passes a new callback
+  const onPressRef = useRef(onPressHarvest);
+  useEffect(() => {
+    onPressRef.current = onPressHarvest;
+  });
+  const handlePress = useCallback((id: string) => onPressRef.current(id), []);
+  const renderItem = useCallback(
+    ({
+      item,
+      index,
+      section,
+    }: SectionListRenderItemInfo<
+      HarvestListItem,
+      { year: number; data: HarvestListItem[] }
+    >) => (
+      <HarvestRow
+        item={item}
+        isFirst={index === 0}
+        isLast={index === section.data.length - 1}
+        onPress={handlePress}
+      />
+    ),
+    [handlePress],
+  );
+
   return (
     <SectionList
-      sections={listSections.map(({ year, items }) => ({ year, data: items }))}
+      sections={listReady ? listSections : []}
       keyExtractor={(item) => item.id}
       stickySectionHeadersEnabled={false}
       // Our ScrollView, for the title in the navigation header and keyboard handling
+      // (keeps the search field visible while typing)
       renderScrollComponent={(scrollProps) => (
         <ScrollView
           {...scrollProps}
@@ -217,6 +279,10 @@ export function HarvestOverview({
           headerTitleOnScroll={title}
         />
       )}
+      // The list starts below the tall chart header: render the first screen right
+      // away and in bigger batches, so fewer batches run while scrolling
+      initialNumToRender={20}
+      maxToRenderPerBatch={20}
       // A touch anywhere closes open chart tooltips, a tap on a chart reopens its own
       onTouchStart={dismissChartTooltips}
       // room for the FAB below the last entry
@@ -286,9 +352,11 @@ export function HarvestOverview({
         </View>
       }
       ListEmptyComponent={
-        <Headline style={{ marginTop: theme.spacing.m }}>
-          {t("common.no_entries")}
-        </Headline>
+        listReady ? (
+          <Headline style={{ marginTop: theme.spacing.m }}>
+            {t("common.no_entries")}
+          </Headline>
+        ) : undefined
       }
       renderSectionHeader={({ section }) => (
         <H3
@@ -301,50 +369,64 @@ export function HarvestOverview({
           {section.year}
         </H3>
       )}
-      renderItem={({ item, index, section }) => {
-        // One white block per year: rounded corners on its first and last entry
-        const isFirst = index === 0;
-        const isLast = index === section.data.length - 1;
-        return (
-          <View
-            style={{
-              backgroundColor: theme.colors.white,
-              overflow: "hidden",
-              borderTopLeftRadius: isFirst ? 10 : 0,
-              borderTopRightRadius: isFirst ? 10 : 0,
-              borderBottomLeftRadius: isLast ? 10 : 0,
-              borderBottomRightRadius: isLast ? 10 : 0,
-            }}
-          >
-            <ListItem onPress={() => onPressHarvest(item.id)}>
-              <ListItem.Content>
-                <ListItem.Title style={{ flex: 1 }}>
-                  {item.plotName
-                    ? t("plots.plot_name_date", {
-                        name: item.plotName,
-                        date: item.date,
-                      })
-                    : item.date}
-                </ListItem.Title>
-                <ListItem.Body>
-                  {[
-                    `${item.kilos}kg`,
-                    item.cropName,
-                    item.unit,
-                    item.conservationMethod,
-                  ]
-                    .filter(Boolean)
-                    .join(", ")}
-                </ListItem.Body>
-              </ListItem.Content>
-              <ListItem.Chevron />
-            </ListItem>
-          </View>
-        );
-      }}
+      renderItem={renderItem}
     />
   );
 }
+
+// One list entry. Memoized, so the rows don't re-render while scrolling or when the
+// charts above change, only when their entry does. One white block per year: rounded
+// corners on its first and last entry.
+const HarvestRow = memo(function HarvestRow({
+  item,
+  isFirst,
+  isLast,
+  onPress,
+}: {
+  item: HarvestListItem;
+  isFirst: boolean;
+  isLast: boolean;
+  onPress: (id: string) => void;
+}) {
+  const { t } = useTranslation();
+  const theme = useTheme();
+  return (
+    <View
+      style={{
+        backgroundColor: theme.colors.white,
+        overflow: "hidden",
+        borderTopLeftRadius: isFirst ? 10 : 0,
+        borderTopRightRadius: isFirst ? 10 : 0,
+        borderBottomLeftRadius: isLast ? 10 : 0,
+        borderBottomRightRadius: isLast ? 10 : 0,
+      }}
+    >
+      <ListItem onPress={() => onPress(item.id)}>
+        <ListItem.Content>
+          <ListItem.Title style={{ flex: 1 }}>
+            {item.plotName
+              ? t("plots.plot_name_date", {
+                  name: item.plotName,
+                  date: item.date,
+                })
+              : item.date}
+          </ListItem.Title>
+          <ListItem.Body>
+            {[
+              `${item.kilos}kg`,
+              item.cropName,
+              item.unit,
+              item.conservationMethod,
+            ]
+              .filter(Boolean)
+              .join(", ")}
+          </ListItem.Body>
+        </ListItem.Content>
+        <ListItem.Chevron />
+      </ListItem>
+    </View>
+  );
+});
 
 // One carousel page: title with the yearly average, chart mode, then the chart or the
 // numbers table for the globally selected years
@@ -447,7 +529,7 @@ function HarvestChartPage({
       Object.fromEntries(
         selectedYears.map((year) => {
           const value = valueOf(year);
-          return [year, value ? formatNumber(value) : "–"];
+          return [year, value ? formatNumber(value) : "-"];
         }),
       );
 
@@ -460,7 +542,7 @@ function HarvestChartPage({
             year,
             stats.totalKilosByYear[year]
               ? `${formatNumber(stats.totalKilosByYear[year] / totalUnit.divisor)} ${totalUnit.label}`
-              : "–",
+              : "-",
           ]),
         ),
       },

@@ -24,9 +24,22 @@ import { Text } from "@/components/text/Text";
 import { H3, Headline, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate, parseDateOnly } from "@/utils/date";
 import Fuse from "fuse.js";
-import { useCallback, useMemo, useState, ReactNode } from "react";
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  ReactNode,
+} from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, SectionList, View } from "react-native";
+import {
+  Alert,
+  SectionList,
+  SectionListRenderItemInfo,
+  View,
+} from "react-native";
 import { useTheme } from "styled-components/native";
 import { useSowingUnitsQuery } from "../sowings.hooks";
 import { formatBaseAmount } from "../sowingUnits";
@@ -44,6 +57,18 @@ type SowingSeries = {
   countUnit: "seeds" | "plants" | null;
   // year -> 12 monthly values, kg for weight, pieces for seeds / plants
   monthly: Record<number, number[]>;
+};
+
+// One entry of the list below the charts
+type SowingListItem = {
+  id: string;
+  rawDate: string;
+  date: string;
+  plotName: string | undefined;
+  cropName: string;
+  seedName: string | undefined;
+  amount: string;
+  total: string | undefined;
 };
 
 type SowingOverviewProps = {
@@ -199,7 +224,7 @@ export function SowingOverview({
   const listSections = useMemo(() => {
     const items = sowings
       .filter((sowing) => visibleCrops.includes(sowing.crop.name))
-      .map((sowing) => {
+      .map((sowing): SowingListItem => {
         const unitInfo = sowingUnits?.find((info) => info.unit === sowing.unit);
         return {
           id: sowing.id,
@@ -242,7 +267,7 @@ export function SowingOverview({
       .sort((a, b) => b - a)
       .map((year) => ({
         year,
-        items: byYear[year].sort(
+        data: byYear[year].sort(
           (a, b) =>
             new Date(b.rawDate).getTime() - new Date(a.rawDate).getTime(),
         ),
@@ -257,12 +282,47 @@ export function SowingOverview({
     selectedYears,
   ]);
 
+  // Mount the list one frame after the header, so the charts and the first rows
+  // don't all render in the same frame
+  const [listReady, setListReady] = useState(false);
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setListReady(true));
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  // Stable press handler, so the memoized rows don't re-render when the screen
+  // passes a new callback
+  const onPressRef = useRef(onPressSowing);
+  useEffect(() => {
+    onPressRef.current = onPressSowing;
+  });
+  const handlePress = useCallback((id: string) => onPressRef.current(id), []);
+  const renderItem = useCallback(
+    ({
+      item,
+      index,
+      section,
+    }: SectionListRenderItemInfo<
+      SowingListItem,
+      { year: number; data: SowingListItem[] }
+    >) => (
+      <SowingRow
+        item={item}
+        isFirst={index === 0}
+        isLast={index === section.data.length - 1}
+        onPress={handlePress}
+      />
+    ),
+    [handlePress],
+  );
+
   return (
     <SectionList
-      sections={listSections.map(({ year, items }) => ({ year, data: items }))}
+      sections={listReady ? listSections : []}
       keyExtractor={(item) => item.id}
       stickySectionHeadersEnabled={false}
       // Our ScrollView, for the title in the navigation header and keyboard handling
+      // (keeps the search field visible while typing)
       renderScrollComponent={(scrollProps) => (
         <ScrollView
           {...scrollProps}
@@ -270,6 +330,10 @@ export function SowingOverview({
           headerTitleOnScroll={title}
         />
       )}
+      // The list starts below the tall chart header: render the first screen right
+      // away and in bigger batches, so fewer batches run while scrolling
+      initialNumToRender={20}
+      maxToRenderPerBatch={20}
       // A touch anywhere closes open chart tooltips, a tap on a chart reopens its own
       onTouchStart={dismissChartTooltips}
       // room for the FAB below the last entry
@@ -336,9 +400,11 @@ export function SowingOverview({
         </View>
       }
       ListEmptyComponent={
-        <Headline style={{ marginTop: theme.spacing.m }}>
-          {t("common.no_entries")}
-        </Headline>
+        listReady ? (
+          <Headline style={{ marginTop: theme.spacing.m }}>
+            {t("common.no_entries")}
+          </Headline>
+        ) : undefined
       }
       renderSectionHeader={({ section }) => (
         <H3
@@ -351,45 +417,59 @@ export function SowingOverview({
           {section.year}
         </H3>
       )}
-      renderItem={({ item, index, section }) => {
-        // One white block per year: rounded corners on its first and last entry
-        const isFirst = index === 0;
-        const isLast = index === section.data.length - 1;
-        return (
-          <View
-            style={{
-              backgroundColor: theme.colors.white,
-              overflow: "hidden",
-              borderTopLeftRadius: isFirst ? 10 : 0,
-              borderTopRightRadius: isFirst ? 10 : 0,
-              borderBottomLeftRadius: isLast ? 10 : 0,
-              borderBottomRightRadius: isLast ? 10 : 0,
-            }}
-          >
-            <ListItem onPress={() => onPressSowing(item.id)}>
-              <ListItem.Content>
-                <ListItem.Title style={{ flex: 1 }}>
-                  {item.plotName
-                    ? t("plots.plot_name_date", {
-                        name: item.plotName,
-                        date: item.date,
-                      })
-                    : item.date}
-                </ListItem.Title>
-                <ListItem.Body>
-                  {[item.cropName, item.seedName, item.amount, item.total]
-                    .filter(Boolean)
-                    .join(", ")}
-                </ListItem.Body>
-              </ListItem.Content>
-              <ListItem.Chevron />
-            </ListItem>
-          </View>
-        );
-      }}
+      renderItem={renderItem}
     />
   );
 }
+
+// One list entry. Memoized, so the rows don't re-render while scrolling or when the
+// charts above change, only when their entry does. One white block per year: rounded
+// corners on its first and last entry.
+const SowingRow = memo(function SowingRow({
+  item,
+  isFirst,
+  isLast,
+  onPress,
+}: {
+  item: SowingListItem;
+  isFirst: boolean;
+  isLast: boolean;
+  onPress: (id: string) => void;
+}) {
+  const { t } = useTranslation();
+  const theme = useTheme();
+  return (
+    <View
+      style={{
+        backgroundColor: theme.colors.white,
+        overflow: "hidden",
+        borderTopLeftRadius: isFirst ? 10 : 0,
+        borderTopRightRadius: isFirst ? 10 : 0,
+        borderBottomLeftRadius: isLast ? 10 : 0,
+        borderBottomRightRadius: isLast ? 10 : 0,
+      }}
+    >
+      <ListItem onPress={() => onPress(item.id)}>
+        <ListItem.Content>
+          <ListItem.Title style={{ flex: 1 }}>
+            {item.plotName
+              ? t("plots.plot_name_date", {
+                  name: item.plotName,
+                  date: item.date,
+                })
+              : item.date}
+          </ListItem.Title>
+          <ListItem.Body>
+            {[item.cropName, item.seedName, item.amount, item.total]
+              .filter(Boolean)
+              .join(", ")}
+          </ListItem.Body>
+        </ListItem.Content>
+        <ListItem.Chevron />
+      </ListItem>
+    </View>
+  );
+});
 
 // One carousel page: title, chart mode, then the chart for the globally selected years
 function SowingChartPage({

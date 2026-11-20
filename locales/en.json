@@ -147,7 +147,6 @@
     "dashboard": "Dashboard",
     "list": "List",
     "notes": "Notes",
-    "average": "Avg",
     "yearly_average": "Ø {{value}} per year",
     "max_years_selected": "You can select at most {{count}} years at once.",
     "view_chart": "Chart",

@@ -147,7 +147,6 @@
     "dashboard": "Tableau de bord",
     "list": "Liste",
     "notes": "Notes",
-    "average": "Moyenne",
     "yearly_average": "Ø {{value}} par an",
     "max_years_selected": "Vous pouvez sélectionner au maximum {{count}} années à la fois.",
     "view_chart": "Graphique",

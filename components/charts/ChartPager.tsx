@@ -17,7 +17,7 @@ const SCROLL_ANIMATION_MS = 350;
 
 // Horizontally swipeable chart cards with dots below showing the current card, and
 // previous/next buttons next to the dots for people who don't think of swiping.
-// All cards get the height of the tallest one. With more than one card it loops:
+// All cards get the height of the tallest mounted one. With more than one card it loops:
 // a copy of the last card sits before the first and a copy of the first after
 // the last; landing on a copy jumps (unanimated) to the real card.
 export function ChartPager({
@@ -136,19 +136,33 @@ export function ChartPager({
           // Pages stretch to the tallest one
           contentContainerStyle={{ alignItems: "stretch" }}
         >
-          {renderedPages.map((page) => (
-            <View
-              key={page.key}
-              style={{
-                width: pageWidth,
-                backgroundColor: theme.colors.white,
-                borderRadius: 10,
-                padding: theme.spacing.m,
-              }}
-            >
-              {page.content}
-            </View>
-          ))}
+          {renderedPages.map((page, renderedIndex) => {
+            // Only the current card and its neighbours mount their chart, the others
+            // stay empty cards (stretched to the tallest mounted one), so far fewer
+            // charts render on the screen. Neighbours count around the loop, so the
+            // real card behind a loop copy is ready when the pager jumps to it.
+            let pageIndex = renderedIndex;
+            if (loops) {
+              pageIndex = renderedIndex - 1;
+              if (renderedIndex === 0) pageIndex = pages.length - 1;
+              if (renderedIndex === pages.length + 1) pageIndex = 0;
+            }
+            const distance = Math.abs(pageIndex - currentPageIndex);
+            const isNearby = Math.min(distance, pages.length - distance) <= 1;
+            return (
+              <View
+                key={page.key}
+                style={{
+                  width: pageWidth,
+                  backgroundColor: theme.colors.white,
+                  borderRadius: 10,
+                  padding: theme.spacing.m,
+                }}
+              >
+                {isNearby ? page.content : null}
+              </View>
+            );
+          })}
         </ScrollView>
       )}
       {loops && (

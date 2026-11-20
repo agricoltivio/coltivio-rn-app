@@ -147,7 +147,6 @@
     "dashboard": "Dashboard",
     "list": "Liste",
     "notes": "Notizen",
-    "average": "Durchschnitt",
     "yearly_average": "Ø {{value}} pro Jahr",
     "max_years_selected": "Es können höchstens {{count}} Jahre gleichzeitig ausgewählt werden.",
     "view_chart": "Diagramm",

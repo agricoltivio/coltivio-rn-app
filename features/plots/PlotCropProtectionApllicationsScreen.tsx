@@ -2,7 +2,7 @@ import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { usePermissions } from "@/features/user/users.hooks";
-import { H2, H3 } from "@/theme/Typography";
+import { H2, H3, Headline } from "@/theme/Typography";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, View } from "react-native";
 import { CropProtectionApplicationOverview } from "../crop-protection-applications/components/CropProtectionApplicationOverview";
@@ -21,9 +21,9 @@ export function PlotCropProtectionApplicationsScreen({
   const { plotId, name } = route.params;
   const title = t("crop_protection_applications.crop_protection");
 
-  const { cropProtectionApplications } =
+  const { cropProtectionApplications, isError: entriesError } =
     useCropProtectionApplicationsForPlotQuery(plotId);
-  const { applicationSummaries } =
+  const { applicationSummaries, isError: summariesError } =
     useCropProtectionApplicationSummariesOfPlotQuery(plotId);
 
   const header = (
@@ -38,7 +38,14 @@ export function PlotCropProtectionApplicationsScreen({
       {!applicationSummaries || !cropProtectionApplications ? (
         <ScrollView showHeaderOnScroll headerTitleOnScroll={title}>
           {header}
-          <ActivityIndicator style={{ marginTop: 40 }} size="large" />
+          {/* A failed request would otherwise keep the spinner forever */}
+          {summariesError || entriesError ? (
+            <Headline style={{ marginTop: 40 }}>
+              {t("errors.unexpected_retry_later")}
+            </Headline>
+          ) : (
+            <ActivityIndicator style={{ marginTop: 40 }} size="large" />
+          )}
         </ScrollView>
       ) : (
         // Scrolls itself: a virtualized list with the charts in its header

@@ -2,7 +2,7 @@ import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { usePermissions } from "@/features/user/users.hooks";
-import { H2, H3 } from "@/theme/Typography";
+import { H2, H3, Headline } from "@/theme/Typography";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, View } from "react-native";
 import { HarvestOverview } from "../harvests/components/HarvestOverview";
@@ -21,8 +21,9 @@ export function PlotHarvestsScreen({
   const { plotId, name } = route.params;
   const title = t("harvests.harvest");
 
-  const { harvests } = useHarvestsOfPlotQuery(plotId);
-  const { harvestSummaries } = useHarvestSummariesOfPlotQuery(plotId);
+  const { harvests, isError: entriesError } = useHarvestsOfPlotQuery(plotId);
+  const { harvestSummaries, isError: summariesError } =
+    useHarvestSummariesOfPlotQuery(plotId);
 
   const header = (
     <View>
@@ -36,7 +37,14 @@ export function PlotHarvestsScreen({
       {!harvestSummaries || !harvests ? (
         <ScrollView showHeaderOnScroll headerTitleOnScroll={title}>
           {header}
-          <ActivityIndicator style={{ marginTop: 40 }} size="large" />
+          {/* A failed request would otherwise keep the spinner forever */}
+          {summariesError || entriesError ? (
+            <Headline style={{ marginTop: 40 }}>
+              {t("errors.unexpected_retry_later")}
+            </Headline>
+          ) : (
+            <ActivityIndicator style={{ marginTop: 40 }} size="large" />
+          )}
         </ScrollView>
       ) : (
         // Scrolls itself: a virtualized list with the charts in its header

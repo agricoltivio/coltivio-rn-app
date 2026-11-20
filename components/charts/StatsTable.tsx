@@ -1,6 +1,6 @@
 import { Text } from "@/components/text/Text";
 import { useRef, useState } from "react";
-import { ScrollView, View } from "react-native";
+import { PixelRatio, ScrollView, View } from "react-native";
 import type { ScrollViewInstance } from "react-native";
 import { useTheme } from "styled-components/native";
 import { getYearColor } from "./chartColors";
@@ -16,7 +16,8 @@ export type StatsTableRow = {
 
 const STATS_ROW_HEIGHT = 32;
 const STATS_YEAR_COLUMN_MIN_WIDTH = 84;
-// Rough width per character, so values like "23.5 m³/ha" aren't cut off
+// Rough width per character at the default font size, so values like "23.5 m³/ha"
+// aren't cut off
 const STATS_CHARACTER_WIDTH = 9;
 
 // Metrics as rows, one column per selected year with its chart color. The label
@@ -50,9 +51,11 @@ export function StatsTable({
       years.map((year) => (row.values[year] ?? "").length),
     ),
   );
+  // Grows with the system font size, so larger text isn't cut off either
+  const fontScale = PixelRatio.getFontScale();
   const yearColumnWidth = Math.max(
-    STATS_YEAR_COLUMN_MIN_WIDTH,
-    (longestValue + 1) * STATS_CHARACTER_WIDTH,
+    STATS_YEAR_COLUMN_MIN_WIDTH * fontScale,
+    (longestValue + 1) * STATS_CHARACTER_WIDTH * fontScale,
   );
   const textColor = (row: StatsTableRow) =>
     row.indented ? theme.colors.gray1 : theme.colors.gray0;
@@ -152,7 +155,7 @@ export function StatsTable({
                     color: textColor(row),
                   }}
                 >
-                  {row.values[year] ?? "–"}
+                  {row.values[year] ?? "-"}
                 </Text>
               ))}
             </View>
