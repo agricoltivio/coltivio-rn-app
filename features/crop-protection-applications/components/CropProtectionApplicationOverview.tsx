@@ -14,6 +14,7 @@ import {
   MAX_CHART_YEARS,
   MonthCartesianChart,
 } from "@/components/charts/MonthCartesianChart";
+import { StatsTable, StatsTableRow } from "@/components/charts/StatsTable";
 import { scaleUnit, formatNumber } from "@/components/charts/unitScaling";
 import { YearMultiSelect } from "@/components/charts/YearMultiSelect";
 import { TextInput } from "@/components/inputs/TextInput";
@@ -21,7 +22,7 @@ import { ListItem } from "@/components/list/ListItem";
 import { Text } from "@/components/text/Text";
 import { H3, Headline, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
-import { formatApplicationAmount } from "@/utils/units";
+import { formatApplicationAmount, productUnitLabel } from "@/utils/units";
 import Fuse from "fuse.js";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -90,6 +91,15 @@ export function CropProtectionApplicationOverview({
   );
   // Total / per month, the same for all charts in the carousel
   const [chartMode, setChartMode] = useState<ChartMode>("cumulative");
+  // Chart or numbers, for all carousel pages at once
+  const [pageView, setPageView] = useState<"chart" | "stats">("chart");
+  const pageViewOptions = useMemo(
+    () => [
+      { key: "chart" as const, label: t("common.view_chart") },
+      { key: "stats" as const, label: t("common.view_stats") },
+    ],
+    [t],
+  );
   const selectedYears = useMemo(
     // Ascending, the order the charts list the years in
     () =>
@@ -217,22 +227,35 @@ export function CropProtectionApplicationOverview({
       )}
 
       {chartProducts.length > 0 && (
-        <ChartPager
-          pages={chartProducts.map((productName) => ({
-            key: productName,
-            content: (
-              <ProductChartPage
-                productName={productName}
-                unit={chartData[productName].unit}
-                monthly={chartData[productName].monthly}
-                selectedYears={selectedYears}
-                availableYears={availableYears}
-                chartMode={chartMode}
-                setChartMode={setChartMode}
-              />
-            ),
-          }))}
-        />
+        // Own container: the switch sits close to the carousel it controls
+        <View>
+          <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+            <ChartViewSwitcher
+              value={pageView}
+              onChange={setPageView}
+              options={pageViewOptions}
+            />
+          </View>
+          <ChartPager
+            style={{ marginTop: theme.spacing.xs }}
+            pages={chartProducts.map((productName) => ({
+              key: productName,
+              content: (
+                <ProductChartPage
+                  productName={productName}
+                  unit={chartData[productName].unit}
+                  monthly={chartData[productName].monthly}
+                  selectedYears={selectedYears}
+                  availableYears={availableYears}
+                  chartMode={chartMode}
+                  setChartMode={setChartMode}
+                  applications={applications}
+                  pageView={pageView}
+                />
+              ),
+            }))}
+          />
+        </View>
       )}
 
       <TextInput
@@ -285,7 +308,8 @@ export function CropProtectionApplicationOverview({
   );
 }
 
-// One carousel page: title, chart mode, then the chart for the globally selected years
+// One carousel page: title with the yearly average, chart mode, then the chart or the
+// numbers table for the globally selected years
 function ProductChartPage({
   productName,
   unit,
@@ -294,6 +318,8 @@ function ProductChartPage({
   availableYears,
   chartMode,
   setChartMode,
+  applications,
+  pageView,
 }: {
   productName: string;
   unit: string;
@@ -303,6 +329,8 @@ function ProductChartPage({
   // Shared by all pages, so it stays when swiping
   chartMode: ChartMode;
   setChartMode: (mode: ChartMode) => void;
+  applications: (CropProtectionApplication | PlotCropProtectionApplication)[];
+  pageView: "chart" | "stats";
 }) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -332,6 +360,114 @@ function ProductChartPage({
       : 0;
   const averageUnit = scaleUnit(unit, yearlyAverage);
 
+  // Numbers view for this product, per selected year, built from the entries:
+  // total amount, treated area, amount per hectare and how it was applied
+  const tableRows = useMemo(() => {
+    const totalByYear: Record<number, number> = {};
+    // m², an area treated twice counts twice
+    const areaByYear: Record<number, number> = {};
+    // "unit|amount per unit" -> year -> number of units (for amount per hectare: hectares)
+    const unitsByYear: Record<string, Record<number, number>> = {};
+    let productUnit = unit;
+    for (const application of applications) {
+      if (application.product.name !== productName) continue;
+      const year = new Date(application.dateTime).getFullYear();
+      if (!selectedYears.includes(year)) continue;
+      productUnit = application.product.unit;
+      totalByYear[year] =
+        (totalByYear[year] ?? 0) +
+        application.numberOfUnits * application.amountPerUnit;
+      areaByYear[year] = (areaByYear[year] ?? 0) + application.size;
+      // A total amount has no units to break down, it is in the total
+      if (application.unit === "total_amount") continue;
+      const unitKey = `${application.unit}|${application.amountPerUnit}`;
+      const byYear = (unitsByYear[unitKey] ??= {});
+      byYear[year] = (byYear[year] ?? 0) + application.numberOfUnits;
+    }
+
+    const productSymbol = productUnitLabel(productUnit, t);
+    const hectareSymbol = t("units.short.ha");
+    // One scale for all years, so the totals are comparable
+    const totalUnit = scaleUnit(
+      productUnit,
+      Math.max(0, ...Object.values(totalByYear)),
+    );
+    const valuesPerYear = (valueOf: (year: number) => string | undefined) =>
+      Object.fromEntries(
+        selectedYears.map((year) => [year, valueOf(year) ?? "–"]),
+      );
+
+    const rows: StatsTableRow[] = [
+      {
+        key: "total",
+        label: t("harvests.total_amount"),
+        values: valuesPerYear((year) =>
+          totalByYear[year]
+            ? `${formatNumber(totalByYear[year] / totalUnit.divisor)} ${totalUnit.label}`
+            : undefined,
+        ),
+      },
+      {
+        key: "area",
+        label: t("forms.labels.area"),
+        values: valuesPerYear((year) =>
+          areaByYear[year]
+            ? `${formatNumber(areaByYear[year] / 10000)} ${hectareSymbol}`
+            : undefined,
+        ),
+      },
+      {
+        key: "per-hectare",
+        label: t("common.average_per_hectare"),
+        values: valuesPerYear((year) =>
+          totalByYear[year] && areaByYear[year]
+            ? `${formatNumber(totalByYear[year] / (areaByYear[year] / 10000))} ${productSymbol}/${hectareSymbol}`
+            : undefined,
+        ),
+      },
+    ];
+
+    // Same unit and amount per unit as one row, e.g. "Fuder à 10 m³": 12
+    const unitKeys = Object.keys(unitsByYear).sort((a, b) => {
+      const [unitA, amountA] = a.split("|");
+      const [unitB, amountB] = b.split("|");
+      return unitA === unitB
+        ? Number(amountA) - Number(amountB)
+        : unitA.localeCompare(unitB);
+    });
+    for (const unitKey of unitKeys) {
+      const [applicationUnit, amountPerUnitText] = unitKey.split("|");
+      const amountPerUnit = Number(amountPerUnitText);
+      const byYear = unitsByYear[unitKey];
+      if (applicationUnit === "amount_per_hectare") {
+        // e.g. "25 m³/ha": 0.2 ha
+        rows.push({
+          key: unitKey,
+          label: `${formatNumber(amountPerUnit)} ${productSymbol}/${hectareSymbol}`,
+          values: valuesPerYear((year) =>
+            byYear[year]
+              ? `${formatNumber(byYear[year])} ${hectareSymbol}`
+              : undefined,
+          ),
+        });
+        continue;
+      }
+      const unitLabel = t(`fertilizer_application.units.${applicationUnit}`, {
+        defaultValue: applicationUnit,
+      });
+      rows.push({
+        key: unitKey,
+        label: `${unitLabel} ${t("common.per_unit_amount", {
+          amount: `${formatNumber(amountPerUnit)} ${productSymbol}`,
+        })}`,
+        values: valuesPerYear((year) =>
+          byYear[year] ? formatNumber(byYear[year]) : undefined,
+        ),
+      });
+    }
+    return rows;
+  }, [applications, productName, unit, selectedYears, t]);
+
   return (
     <View style={{ gap: theme.spacing.s }}>
       {/* Title on the left, chart mode on the right */}
@@ -346,11 +482,13 @@ function ProductChartPage({
         <Subtitle style={{ flex: 1, fontWeight: "600" }}>
           {productName}
         </Subtitle>
-        <ChartViewSwitcher
-          value={chartMode}
-          onChange={setChartMode}
-          options={chartViewOptions}
-        />
+        {pageView === "chart" && (
+          <ChartViewSwitcher
+            value={chartMode}
+            onChange={setChartMode}
+            options={chartViewOptions}
+          />
+        )}
       </View>
       {yearlyAverage > 0 && (
         <Text style={{ color: theme.colors.gray1 }}>
@@ -359,13 +497,21 @@ function ProductChartPage({
           })}
         </Text>
       )}
-      <MonthCartesianChart
-        mode={chartMode}
-        monthlyData={monthly}
-        selectedYears={selectedYears}
-        availableYears={availableYears}
-        unit={displayUnit}
-      />
+      {pageView === "chart" ? (
+        <MonthCartesianChart
+          mode={chartMode}
+          monthlyData={monthly}
+          selectedYears={selectedYears}
+          availableYears={availableYears}
+          unit={displayUnit}
+        />
+      ) : (
+        <StatsTable
+          years={selectedYears}
+          availableYears={availableYears}
+          rows={tableRows}
+        />
+      )}
     </View>
   );
 }

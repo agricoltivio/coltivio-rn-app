@@ -149,7 +149,11 @@
     "notes": "Notes",
     "average": "Moyenne",
     "yearly_average": "Ø {{value}} par an",
-    "max_years_selected": "Vous pouvez sélectionner au maximum {{count}} années à la fois."
+    "max_years_selected": "Vous pouvez sélectionner au maximum {{count}} années à la fois.",
+    "view_chart": "Graphique",
+    "view_stats": "Chiffres",
+    "per_unit_amount": "de {{amount}}",
+    "average_per_hectare": "Ø par ha"
   },
   "splash": {
     "tagline": "Par des paysans. Pour des paysans.",
@@ -870,12 +874,7 @@
     "amount_per_month": "Quantité par mois",
     "chart_total": "Total",
     "chart_per_month": "Par mois",
-    "edit_harvest": "Modifier la récolte",
-    "stats": {
-      "view_chart": "Graphique",
-      "view_stats": "Chiffres",
-      "per_unit_weight": "de {{weight}} kg"
-    }
+    "edit_harvest": "Modifier la récolte"
   },
   "fertilizers": {
     "fertilizer": "Engrais",

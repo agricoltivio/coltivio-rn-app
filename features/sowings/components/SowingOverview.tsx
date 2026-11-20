@@ -10,6 +10,7 @@ import {
   MAX_CHART_YEARS,
   MonthCartesianChart,
 } from "@/components/charts/MonthCartesianChart";
+import { StatsTable, StatsTableRow } from "@/components/charts/StatsTable";
 import {
   scaleUnit,
   UnitScale,
@@ -96,6 +97,15 @@ export function SowingOverview({
   );
   // Total / per month, the same for all charts in the carousel
   const [chartMode, setChartMode] = useState<ChartMode>("cumulative");
+  // Chart or numbers, for all carousel pages at once
+  const [pageView, setPageView] = useState<"chart" | "stats">("chart");
+  const pageViewOptions = useMemo(
+    () => [
+      { key: "chart" as const, label: t("common.view_chart") },
+      { key: "stats" as const, label: t("common.view_stats") },
+    ],
+    [t],
+  );
   const selectedYears = useMemo(
     // Ascending, the order the charts list the years in
     () =>
@@ -163,6 +173,20 @@ export function SowingOverview({
       .filter((entry) => selectedYears.some((year) => entry.monthly[year]))
       .sort((a, b) => a.title.localeCompare(b.title));
   }, [summaries, visibleCrops, selectedYears, t]);
+
+  // Entries per chart for the numbers view, matched like the summaries: crop, seed
+  // and what is counted (weight, seeds or plants)
+  const sowingsBySeries = useMemo(() => {
+    const result: Record<string, (Sowing | PlotSowing)[]> = {};
+    for (const sowing of sowings) {
+      const countUnit =
+        sowingUnits?.find((info) => info.unit === sowing.unit)?.countUnit ??
+        null;
+      const key = `${sowing.crop.id}-${sowing.seedId ?? "none"}-${countUnit ?? "weight"}`;
+      (result[key] ??= []).push(sowing);
+    }
+    return result;
+  }, [sowings, sowingUnits]);
 
   const listSections = useMemo(() => {
     const items = sowings
@@ -248,20 +272,33 @@ export function SowingOverview({
       )}
 
       {series.length > 0 && (
-        <ChartPager
-          pages={series.map((entry) => ({
-            key: entry.key,
-            content: (
-              <SowingChartPage
-                series={entry}
-                selectedYears={selectedYears}
-                availableYears={availableYears}
-                chartMode={chartMode}
-                setChartMode={setChartMode}
-              />
-            ),
-          }))}
-        />
+        // Own container: the switch sits close to the carousel it controls
+        <View>
+          <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+            <ChartViewSwitcher
+              value={pageView}
+              onChange={setPageView}
+              options={pageViewOptions}
+            />
+          </View>
+          <ChartPager
+            style={{ marginTop: theme.spacing.xs }}
+            pages={series.map((entry) => ({
+              key: entry.key,
+              content: (
+                <SowingChartPage
+                  series={entry}
+                  selectedYears={selectedYears}
+                  availableYears={availableYears}
+                  chartMode={chartMode}
+                  setChartMode={setChartMode}
+                  sowings={sowingsBySeries[entry.key] ?? []}
+                  pageView={pageView}
+                />
+              ),
+            }))}
+          />
+        </View>
       )}
 
       <TextInput
@@ -320,6 +357,8 @@ function SowingChartPage({
   availableYears,
   chartMode,
   setChartMode,
+  sowings,
+  pageView,
 }: {
   series: SowingSeries;
   selectedYears: number[];
@@ -327,6 +366,9 @@ function SowingChartPage({
   // Shared by all pages, so it stays when swiping
   chartMode: ChartMode;
   setChartMode: (mode: ChartMode) => void;
+  // the entries behind this chart
+  sowings: (Sowing | PlotSowing)[];
+  pageView: "chart" | "stats";
 }) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -359,6 +401,68 @@ function SowingChartPage({
     ? { label: t(`sowings.units.${series.countUnit}`), divisor: 1 }
     : scaleUnit("kg", yearlyAverage);
 
+  // Numbers view for this chart, per selected year, built from its entries: total
+  // amount, sown area and amount per hectare
+  const tableRows = useMemo(() => {
+    const totalByYear: Record<number, number> = {};
+    // m², an area sown twice counts twice
+    const areaByYear: Record<number, number> = {};
+    for (const sowing of sowings) {
+      const year = parseDateOnly(sowing.date).getFullYear();
+      if (!selectedYears.includes(year)) continue;
+      // base amounts are grams for weight, pieces for seeds / plants
+      totalByYear[year] =
+        (totalByYear[year] ?? 0) +
+        (series.countUnit
+          ? sowing.totalBaseAmount
+          : sowing.totalBaseAmount / 1000);
+      areaByYear[year] = (areaByYear[year] ?? 0) + sowing.size;
+    }
+    const hectareSymbol = t("units.short.ha");
+    // One scale for all years, so the totals are comparable
+    const totalUnit: UnitScale = series.countUnit
+      ? { label: t(`sowings.units.${series.countUnit}`), divisor: 1 }
+      : scaleUnit("kg", Math.max(0, ...Object.values(totalByYear)));
+    const valuesPerYear = (valueOf: (year: number) => string | undefined) =>
+      Object.fromEntries(
+        selectedYears.map((year) => [year, valueOf(year) ?? "–"]),
+      );
+
+    const rows: StatsTableRow[] = [
+      {
+        key: "total",
+        label: t("harvests.total_amount"),
+        values: valuesPerYear((year) =>
+          totalByYear[year]
+            ? `${formatNumber(totalByYear[year] / totalUnit.divisor)} ${totalUnit.label}`
+            : undefined,
+        ),
+      },
+      {
+        key: "area",
+        label: t("forms.labels.area"),
+        values: valuesPerYear((year) =>
+          areaByYear[year]
+            ? `${formatNumber(areaByYear[year] / 10000)} ${hectareSymbol}`
+            : undefined,
+        ),
+      },
+      {
+        key: "per-hectare",
+        label: t("common.average_per_hectare"),
+        values: valuesPerYear((year) => {
+          if (!totalByYear[year] || !areaByYear[year]) return undefined;
+          const perHectare = totalByYear[year] / (areaByYear[year] / 10000);
+          const perHectareUnit: UnitScale = series.countUnit
+            ? totalUnit
+            : scaleUnit("kg", perHectare);
+          return `${formatNumber(perHectare / perHectareUnit.divisor)} ${perHectareUnit.label}/${hectareSymbol}`;
+        }),
+      },
+    ];
+    return rows;
+  }, [sowings, series.countUnit, selectedYears, t]);
+
   return (
     <View style={{ gap: theme.spacing.s }}>
       {/* Title on the left, chart mode on the right */}
@@ -373,11 +477,13 @@ function SowingChartPage({
         <Subtitle style={{ flex: 1, fontWeight: "600" }}>
           {series.title}
         </Subtitle>
-        <ChartViewSwitcher
-          value={chartMode}
-          onChange={setChartMode}
-          options={chartViewOptions}
-        />
+        {pageView === "chart" && (
+          <ChartViewSwitcher
+            value={chartMode}
+            onChange={setChartMode}
+            options={chartViewOptions}
+          />
+        )}
       </View>
       {yearlyAverage > 0 && (
         <Text style={{ color: theme.colors.gray1 }}>
@@ -386,13 +492,21 @@ function SowingChartPage({
           })}
         </Text>
       )}
-      <MonthCartesianChart
-        mode={chartMode}
-        monthlyData={series.monthly}
-        selectedYears={selectedYears}
-        availableYears={availableYears}
-        unit={unit}
-      />
+      {pageView === "chart" ? (
+        <MonthCartesianChart
+          mode={chartMode}
+          monthlyData={series.monthly}
+          selectedYears={selectedYears}
+          availableYears={availableYears}
+          unit={unit}
+        />
+      ) : (
+        <StatsTable
+          years={selectedYears}
+          availableYears={availableYears}
+          rows={tableRows}
+        />
+      )}
     </View>
   );
 }
