@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { Ionicons } from "@expo/vector-icons";
 import { Select } from "@/components/select/Select";
 import { CompactDatePicker } from "@/components/datepicker/CompactDatePicker";
+import { addDays, differenceInCalendarDays } from "date-fns";
 import { RotationEntry, RecurrenceRule } from "../plan-crop-rotations.store";
 import { Plot } from "@/api/plots.api";
 import { Crop } from "@/api/crops.api";
@@ -89,8 +90,31 @@ export function RotationEditModal({
     }
   }, [visible, rotation, selectedPlotId]);
 
+  // A start past the end moves the end along, so the entry keeps its length.
+  // The recurrence end moves along too when the new end passes it.
+  const handleFromDateChange = (newFromDate: Date) => {
+    setFromDate(newFromDate);
+    if (newFromDate <= toDate) return;
+    const newToDate = addDays(
+      newFromDate,
+      differenceInCalendarDays(toDate, fromDate),
+    );
+    handleToDateChange(newToDate);
+  };
+
+  const handleToDateChange = (newToDate: Date) => {
+    setToDate(newToDate);
+    if (newToDate <= until) return;
+    setUntil(addDays(until, differenceInCalendarDays(newToDate, toDate)));
+  };
+
+  // The pickers keep the order, this guards against dates loaded in the wrong order
+  const datesInOrder =
+    toDate >= fromDate && (!hasRecurrence || !hasUntil || until >= toDate);
+  const canSave = !!plotId && !!cropId && datesInOrder;
+
   const handleSave = () => {
-    if (!plotId || !cropId) return;
+    if (!canSave) return;
 
     const recurrence: RecurrenceRule | undefined = hasRecurrence
       ? { interval: Number(interval), until: hasUntil ? until : undefined }
@@ -222,11 +246,14 @@ export function RotationEditModal({
                   marginBottom: theme.spacing.m,
                 }}
               >
-                <CompactDatePicker date={fromDate} onDateChange={setFromDate} />
+                <CompactDatePicker
+                  date={fromDate}
+                  onDateChange={handleFromDateChange}
+                />
                 <Text style={{ color: theme.colors.gray2 }}>-</Text>
                 <CompactDatePicker
                   date={toDate}
-                  onDateChange={setToDate}
+                  onDateChange={handleToDateChange}
                   minimumDate={fromDate}
                 />
               </View>
@@ -380,14 +407,13 @@ export function RotationEditModal({
                 </Pressable>
                 <Pressable
                   onPress={handleSave}
-                  disabled={!plotId || !cropId}
+                  disabled={!canSave}
                   style={{
                     flex: 1,
                     paddingVertical: 12,
-                    backgroundColor:
-                      !plotId || !cropId
-                        ? theme.colors.gray3
-                        : theme.colors.primary,
+                    backgroundColor: !canSave
+                      ? theme.colors.gray3
+                      : theme.colors.primary,
                     borderRadius: 10,
                     alignItems: "center",
                   }}
