@@ -32,30 +32,29 @@ export function CropProtectionApplicationsScreen({
     useCropProtectionApplicationSummariesOfFarmQuery();
   const { cropProtectionApplications } = useCropProtectionApplicationsQuery();
 
+  const header = <H2>{title}</H2>;
+
   return (
     <ContentView headerVisible>
-      <ScrollView
-        showHeaderOnScroll
-        headerTitleOnScroll={title}
-        // room for the FAB below the last entry
-        contentContainerStyle={{ paddingBottom: 120 }}
-        keyboardAware
-      >
-        <H2>{title}</H2>
-        {!ready || !applicationSummaries || !cropProtectionApplications ? (
+      {!ready || !applicationSummaries || !cropProtectionApplications ? (
+        <ScrollView showHeaderOnScroll headerTitleOnScroll={title}>
+          {header}
           <ActivityIndicator style={{ marginTop: 40 }} size="large" />
-        ) : (
-          <CropProtectionApplicationOverview
-            summaries={applicationSummaries}
-            applications={cropProtectionApplications}
-            onPressApplication={(cropProtectionApplicationId) =>
-              navigation.navigate("CropProtectionApplicationDetails", {
-                cropProtectionApplicationId,
-              })
-            }
-          />
-        )}
-      </ScrollView>
+        </ScrollView>
+      ) : (
+        // Scrolls itself: a virtualized list with the charts in its header
+        <CropProtectionApplicationOverview
+          title={title}
+          header={header}
+          summaries={applicationSummaries}
+          applications={cropProtectionApplications}
+          onPressApplication={(cropProtectionApplicationId) =>
+            navigation.navigate("CropProtectionApplicationDetails", {
+              cropProtectionApplicationId,
+            })
+          }
+        />
+      )}
       {canWrite("field_calendar") && (
         <FAB
           icon={{ name: "add", color: "white" }}

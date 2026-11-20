@@ -23,27 +23,27 @@ export function PlotSowingsScreen({
   const { sowingSummaries } = useSowingSummariesOfPlotQuery(plotId);
   const title = t("sowings.sowing");
 
+  const header = <H2>{title}</H2>;
+
   return (
     <ContentView headerVisible>
-      <ScrollView
-        showHeaderOnScroll
-        headerTitleOnScroll={title}
-        contentContainerStyle={{ paddingBottom: 120 }}
-        keyboardAware
-      >
-        <H2>{title}</H2>
-        {!sowings || !sowingSummaries ? (
+      {!sowings || !sowingSummaries ? (
+        <ScrollView showHeaderOnScroll headerTitleOnScroll={title}>
+          {header}
           <ActivityIndicator style={{ marginTop: 40 }} size="large" />
-        ) : (
-          <SowingOverview
-            summaries={sowingSummaries}
-            sowings={sowings}
-            onPressSowing={(sowingId) =>
-              navigation.navigate("SowingDetails", { sowingId })
-            }
-          />
-        )}
-      </ScrollView>
+        </ScrollView>
+      ) : (
+        // Scrolls itself: a virtualized list with the charts in its header
+        <SowingOverview
+          title={title}
+          header={header}
+          summaries={sowingSummaries}
+          sowings={sowings}
+          onPressSowing={(sowingId) =>
+            navigation.navigate("SowingDetails", { sowingId })
+          }
+        />
+      )}
       {canWrite("field_calendar") && (
         <FAB
           icon={{ name: "add", color: "white" }}

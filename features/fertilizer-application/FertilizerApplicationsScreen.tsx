@@ -31,30 +31,29 @@ export function FertilizerApplicationsScreen({
   const { applicationSummaries } = useFertilizerApplicationSummaryOfFarmQuery();
   const { fertilizerApplications } = useFertilizerApplicationsQuery();
 
+  const header = <H2>{title}</H2>;
+
   return (
     <ContentView headerVisible>
-      <ScrollView
-        showHeaderOnScroll
-        headerTitleOnScroll={title}
-        // room for the FAB below the last entry
-        contentContainerStyle={{ paddingBottom: 120 }}
-        keyboardAware
-      >
-        <H2>{title}</H2>
-        {!ready || !applicationSummaries || !fertilizerApplications ? (
+      {!ready || !applicationSummaries || !fertilizerApplications ? (
+        <ScrollView showHeaderOnScroll headerTitleOnScroll={title}>
+          {header}
           <ActivityIndicator style={{ marginTop: 40 }} size="large" />
-        ) : (
-          <FertilizerApplicationOverview
-            summaries={applicationSummaries}
-            applications={fertilizerApplications}
-            onPressApplication={(fertilizerApplicationId) =>
-              navigation.navigate("FertilizerApplicationDetails", {
-                fertilizerApplicationId,
-              })
-            }
-          />
-        )}
-      </ScrollView>
+        </ScrollView>
+      ) : (
+        // Scrolls itself: a virtualized list with the charts in its header
+        <FertilizerApplicationOverview
+          title={title}
+          header={header}
+          summaries={applicationSummaries}
+          applications={fertilizerApplications}
+          onPressApplication={(fertilizerApplicationId) =>
+            navigation.navigate("FertilizerApplicationDetails", {
+              fertilizerApplicationId,
+            })
+          }
+        />
+      )}
       {canWrite("field_calendar") && (
         <FAB
           icon={{ name: "add", color: "white" }}

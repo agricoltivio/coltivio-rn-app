@@ -26,28 +26,27 @@ export function HarvestsScreen({ navigation }: HarvestsScreenProps) {
   const { harvestSummaries } = useHarvestSummariesOfFarm();
   const { harvests } = useHarvestsQuery();
 
+  const header = <H2>{title}</H2>;
+
   return (
     <ContentView headerVisible>
-      <ScrollView
-        showHeaderOnScroll
-        headerTitleOnScroll={title}
-        // room for the FAB below the last entry
-        contentContainerStyle={{ paddingBottom: 120 }}
-        keyboardAware
-      >
-        <H2>{title}</H2>
-        {!ready || !harvestSummaries || !harvests ? (
+      {!ready || !harvestSummaries || !harvests ? (
+        <ScrollView showHeaderOnScroll headerTitleOnScroll={title}>
+          {header}
           <ActivityIndicator style={{ marginTop: 40 }} size="large" />
-        ) : (
-          <HarvestOverview
-            summaries={harvestSummaries}
-            harvests={harvests}
-            onPressHarvest={(harvestId) =>
-              navigation.navigate("HarvestDetails", { harvestId })
-            }
-          />
-        )}
-      </ScrollView>
+        </ScrollView>
+      ) : (
+        // Scrolls itself: a virtualized list with the charts in its header
+        <HarvestOverview
+          title={title}
+          header={header}
+          summaries={harvestSummaries}
+          harvests={harvests}
+          onPressHarvest={(harvestId) =>
+            navigation.navigate("HarvestDetails", { harvestId })
+          }
+        />
+      )}
       {canWrite("field_calendar") && (
         <FAB
           icon={{ name: "add", color: "white" }}

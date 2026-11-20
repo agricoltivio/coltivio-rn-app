@@ -18,15 +18,16 @@ import { StatsTable, StatsTableRow } from "@/components/charts/StatsTable";
 import { scaleUnit, formatNumber } from "@/components/charts/unitScaling";
 import { YearMultiSelect } from "@/components/charts/YearMultiSelect";
 import { TextInput } from "@/components/inputs/TextInput";
+import { ScrollView } from "@/components/views/ScrollView";
 import { ListItem } from "@/components/list/ListItem";
 import { Text } from "@/components/text/Text";
 import { H3, Headline, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
 import { formatApplicationAmount, productUnitLabel } from "@/utils/units";
 import Fuse from "fuse.js";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, View } from "react-native";
+import { Alert, SectionList, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { aggregateCropProtectionApplicationsByProduct } from "../cropProtectionApplication.utils";
 
@@ -37,6 +38,10 @@ type CropProtectionApplicationOverviewProps = {
   summaries: CropProtectionApplicationSummary[];
   // Per-plot entries come without the plot, the per-plot screen shows it in its title
   applications: (CropProtectionApplication | PlotCropProtectionApplication)[];
+  // Screen title, shown in the navigation header once the list is scrolled
+  title: string;
+  // Top of the list, e.g. the title and the plot name
+  header: ReactNode;
   onPressApplication: (cropProtectionApplicationId: string) => void;
 };
 
@@ -44,6 +49,8 @@ type CropProtectionApplicationOverviewProps = {
 export function CropProtectionApplicationOverview({
   summaries,
   applications,
+  title,
+  header,
   onPressApplication,
 }: CropProtectionApplicationOverviewProps) {
   const { t, i18n } = useTranslation();
@@ -206,106 +213,136 @@ export function CropProtectionApplicationOverview({
   ]);
 
   return (
-    // A touch anywhere closes open chart tooltips, a tap on a chart reopens its own
-    <View
-      style={{ gap: theme.spacing.m, marginTop: theme.spacing.m }}
+    <SectionList
+      sections={listSections.map(({ year, items }) => ({ year, data: items }))}
+      keyExtractor={(item) => item.id}
+      stickySectionHeadersEnabled={false}
+      // Our ScrollView, for the title in the navigation header and keyboard handling
+      renderScrollComponent={(scrollProps) => (
+        <ScrollView
+          {...scrollProps}
+          showHeaderOnScroll
+          headerTitleOnScroll={title}
+        />
+      )}
+      // A touch anywhere closes open chart tooltips, a tap on a chart reopens its own
       onTouchStart={dismissChartTooltips}
-    >
-      {allProducts.length > 1 && (
-        <CategoryFilter
-          items={allProducts}
-          selected={selectedProducts}
-          onToggle={toggleProduct}
-        />
-      )}
-
-      {availableYears.length > 0 && (
-        <YearMultiSelect
-          years={availableYears}
-          selectedYears={selectedYears}
-          onToggle={toggleYear}
-        />
-      )}
-
-      {chartProducts.length > 0 && (
-        // Own container: the switch sits close to the carousel it controls
-        <View>
-          <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-            <ChartViewSwitcher
-              value={pageView}
-              onChange={setPageView}
-              options={pageViewOptions}
+      // room for the FAB below the last entry
+      contentContainerStyle={{ paddingBottom: 120 }}
+      // An element, not a component: it re-renders but never re-mounts, so the
+      // search field keeps its focus and the carousel its page
+      ListHeaderComponent={
+        <View style={{ gap: theme.spacing.m }}>
+          {header}
+          {allProducts.length > 1 && (
+            <CategoryFilter
+              items={allProducts}
+              selected={selectedProducts}
+              onToggle={toggleProduct}
             />
-          </View>
-          <ChartPager
-            style={{ marginTop: theme.spacing.xs }}
-            pages={chartProducts.map((productName) => ({
-              key: productName,
-              content: (
-                <ProductChartPage
-                  productName={productName}
-                  unit={chartData[productName].unit}
-                  monthly={chartData[productName].monthly}
-                  selectedYears={selectedYears}
-                  availableYears={availableYears}
-                  chartMode={chartMode}
-                  setChartMode={setChartMode}
-                  applications={applications}
-                  pageView={pageView}
+          )}
+
+          {availableYears.length > 0 && (
+            <YearMultiSelect
+              years={availableYears}
+              selectedYears={selectedYears}
+              onToggle={toggleYear}
+            />
+          )}
+
+          {chartProducts.length > 0 && (
+            // Own container: the switch sits close to the carousel it controls
+            <View>
+              <View
+                style={{ flexDirection: "row", justifyContent: "flex-end" }}
+              >
+                <ChartViewSwitcher
+                  value={pageView}
+                  onChange={setPageView}
+                  options={pageViewOptions}
                 />
-              ),
-            }))}
+              </View>
+              <ChartPager
+                style={{ marginTop: theme.spacing.xs }}
+                pages={chartProducts.map((productName) => ({
+                  key: productName,
+                  content: (
+                    <ProductChartPage
+                      productName={productName}
+                      unit={chartData[productName].unit}
+                      monthly={chartData[productName].monthly}
+                      selectedYears={selectedYears}
+                      availableYears={availableYears}
+                      chartMode={chartMode}
+                      setChartMode={setChartMode}
+                      applications={applications}
+                      pageView={pageView}
+                    />
+                  ),
+                }))}
+              />
+            </View>
+          )}
+
+          <TextInput
+            hideLabel
+            placeholder={t("forms.placeholders.search")}
+            onChangeText={setSearchText}
+            value={searchText}
           />
         </View>
+      }
+      ListEmptyComponent={
+        <Headline style={{ marginTop: theme.spacing.m }}>
+          {t("common.no_entries")}
+        </Headline>
+      }
+      renderSectionHeader={({ section }) => (
+        <H3
+          style={{
+            paddingHorizontal: theme.spacing.xs,
+            marginTop: theme.spacing.m,
+            marginBottom: theme.spacing.s,
+          }}
+        >
+          {section.year}
+        </H3>
       )}
-
-      <TextInput
-        hideLabel
-        placeholder={t("forms.placeholders.search")}
-        onChangeText={setSearchText}
-        value={searchText}
-      />
-
-      {listSections.length === 0 ? (
-        <Headline>{t("common.no_entries")}</Headline>
-      ) : (
-        listSections.map(({ year, items }) => (
-          <View key={year}>
-            <H3 style={{ paddingHorizontal: theme.spacing.xs }}>{year}</H3>
-            <View
-              style={{
-                marginTop: theme.spacing.s,
-                borderRadius: 10,
-                overflow: "hidden",
-                backgroundColor: theme.colors.white,
-              }}
-            >
-              {items.map((item) => (
-                <ListItem
-                  key={item.id}
-                  onPress={() => onPressApplication(item.id)}
-                >
-                  <ListItem.Content>
-                    <ListItem.Title style={{ flex: 1 }}>
-                      {item.plotName
-                        ? t("plots.plot_name_date", {
-                            name: item.plotName,
-                            date: item.date,
-                          })
-                        : item.date}
-                    </ListItem.Title>
-                    <ListItem.Body>
-                      {item.amount} {item.productName}
-                    </ListItem.Body>
-                  </ListItem.Content>
-                  <ListItem.Chevron />
-                </ListItem>
-              ))}
-            </View>
+      renderItem={({ item, index, section }) => {
+        // One white block per year: rounded corners on its first and last entry
+        const isFirst = index === 0;
+        const isLast = index === section.data.length - 1;
+        return (
+          <View
+            style={{
+              backgroundColor: theme.colors.white,
+              overflow: "hidden",
+              borderTopLeftRadius: isFirst ? 10 : 0,
+              borderTopRightRadius: isFirst ? 10 : 0,
+              borderBottomLeftRadius: isLast ? 10 : 0,
+              borderBottomRightRadius: isLast ? 10 : 0,
+            }}
+          >
+            <ListItem onPress={() => onPressApplication(item.id)}>
+              <ListItem.Content>
+                <ListItem.Title style={{ flex: 1 }}>
+                  {item.plotName
+                    ? t("plots.plot_name_date", {
+                        name: item.plotName,
+                        date: item.date,
+                      })
+                    : item.date}
+                </ListItem.Title>
+                <ListItem.Body>
+                  {item.amount} {item.productName}
+                </ListItem.Body>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
           </View>
-        ))
-      )}
-    </View>
+        );
+      }}
+    />
   );
 }
 

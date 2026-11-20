@@ -14,15 +14,16 @@ import { StatsTable, StatsTableRow } from "@/components/charts/StatsTable";
 import { formatNumber, scaleUnit } from "@/components/charts/unitScaling";
 import { YearMultiSelect } from "@/components/charts/YearMultiSelect";
 import { TextInput } from "@/components/inputs/TextInput";
+import { ScrollView } from "@/components/views/ScrollView";
 import { ListItem } from "@/components/list/ListItem";
 import { Text } from "@/components/text/Text";
 import { H3, Headline, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
 import { round } from "@/utils/math";
 import Fuse from "fuse.js";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, View } from "react-native";
+import { Alert, SectionList, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import {
   aggregateHarvestsByCropAndMethod,
@@ -37,6 +38,10 @@ type HarvestOverviewProps = {
   summaries: HarvestSummary[];
   // Per-plot entries come without the plot, the per-plot screen shows it in its title
   harvests: (Harvest | PlotHarvest)[];
+  // Screen title, shown in the navigation header once the list is scrolled
+  title: string;
+  // Top of the list, e.g. the title and the plot name
+  header: ReactNode;
   onPressHarvest: (harvestId: string) => void;
 };
 
@@ -44,6 +49,8 @@ type HarvestOverviewProps = {
 export function HarvestOverview({
   summaries,
   harvests,
+  title,
+  header,
   onPressHarvest,
 }: HarvestOverviewProps) {
   const { t, i18n } = useTranslation();
@@ -198,111 +205,144 @@ export function HarvestOverview({
   }, [harvests, visibleCrops, searchText, t, i18n.language, selectedYears]);
 
   return (
-    // A touch anywhere closes open chart tooltips, a tap on a chart reopens its own
-    <View
-      style={{ gap: theme.spacing.m, marginTop: theme.spacing.m }}
+    <SectionList
+      sections={listSections.map(({ year, items }) => ({ year, data: items }))}
+      keyExtractor={(item) => item.id}
+      stickySectionHeadersEnabled={false}
+      // Our ScrollView, for the title in the navigation header and keyboard handling
+      renderScrollComponent={(scrollProps) => (
+        <ScrollView
+          {...scrollProps}
+          showHeaderOnScroll
+          headerTitleOnScroll={title}
+        />
+      )}
+      // A touch anywhere closes open chart tooltips, a tap on a chart reopens its own
       onTouchStart={dismissChartTooltips}
-    >
-      {allCrops.length > 1 && (
-        <CategoryFilter
-          items={allCrops}
-          selected={selectedCrops}
-          onToggle={toggleCrop}
-        />
-      )}
-
-      {availableYears.length > 0 && (
-        <YearMultiSelect
-          years={availableYears}
-          selectedYears={selectedYears}
-          onToggle={toggleYear}
-        />
-      )}
-
-      {chartSeries.length > 0 && (
-        // Own container: the switch sits close to the carousel it controls
-        <View>
-          <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-            <ChartViewSwitcher
-              value={pageView}
-              onChange={setPageView}
-              options={pageViewOptions}
+      // room for the FAB below the last entry
+      contentContainerStyle={{ paddingBottom: 120 }}
+      // An element, not a component: it re-renders but never re-mounts, so the
+      // search field keeps its focus and the carousel its page
+      ListHeaderComponent={
+        <View style={{ gap: theme.spacing.m }}>
+          {header}
+          {allCrops.length > 1 && (
+            <CategoryFilter
+              items={allCrops}
+              selected={selectedCrops}
+              onToggle={toggleCrop}
             />
-          </View>
-          <ChartPager
-            style={{ marginTop: theme.spacing.xs }}
-            pages={chartSeries.map((series) => ({
-              key: series.key,
-              content: (
-                <HarvestChartPage
-                  cropName={series.cropName}
-                  conservationMethod={series.conservationMethod}
-                  monthly={series.monthly}
-                  total={series.total}
-                  harvests={harvests}
-                  selectedYears={selectedYears}
-                  availableYears={availableYears}
-                  pageView={pageView}
-                  chartMode={chartMode}
-                  setChartMode={setChartMode}
+          )}
+
+          {availableYears.length > 0 && (
+            <YearMultiSelect
+              years={availableYears}
+              selectedYears={selectedYears}
+              onToggle={toggleYear}
+            />
+          )}
+
+          {chartSeries.length > 0 && (
+            // Own container: the switch sits close to the carousel it controls
+            <View>
+              <View
+                style={{ flexDirection: "row", justifyContent: "flex-end" }}
+              >
+                <ChartViewSwitcher
+                  value={pageView}
+                  onChange={setPageView}
+                  options={pageViewOptions}
                 />
-              ),
-            }))}
+              </View>
+              <ChartPager
+                style={{ marginTop: theme.spacing.xs }}
+                pages={chartSeries.map((series) => ({
+                  key: series.key,
+                  content: (
+                    <HarvestChartPage
+                      cropName={series.cropName}
+                      conservationMethod={series.conservationMethod}
+                      monthly={series.monthly}
+                      total={series.total}
+                      harvests={harvests}
+                      selectedYears={selectedYears}
+                      availableYears={availableYears}
+                      pageView={pageView}
+                      chartMode={chartMode}
+                      setChartMode={setChartMode}
+                    />
+                  ),
+                }))}
+              />
+            </View>
+          )}
+
+          <TextInput
+            hideLabel
+            placeholder={t("forms.placeholders.search")}
+            onChangeText={setSearchText}
+            value={searchText}
           />
         </View>
+      }
+      ListEmptyComponent={
+        <Headline style={{ marginTop: theme.spacing.m }}>
+          {t("common.no_entries")}
+        </Headline>
+      }
+      renderSectionHeader={({ section }) => (
+        <H3
+          style={{
+            paddingHorizontal: theme.spacing.xs,
+            marginTop: theme.spacing.m,
+            marginBottom: theme.spacing.s,
+          }}
+        >
+          {section.year}
+        </H3>
       )}
-
-      <TextInput
-        hideLabel
-        placeholder={t("forms.placeholders.search")}
-        onChangeText={setSearchText}
-        value={searchText}
-      />
-
-      {listSections.length === 0 ? (
-        <Headline>{t("common.no_entries")}</Headline>
-      ) : (
-        listSections.map(({ year, items }) => (
-          <View key={year}>
-            <H3 style={{ paddingHorizontal: theme.spacing.xs }}>{year}</H3>
-            <View
-              style={{
-                marginTop: theme.spacing.s,
-                borderRadius: 10,
-                overflow: "hidden",
-                backgroundColor: theme.colors.white,
-              }}
-            >
-              {items.map((item) => (
-                <ListItem key={item.id} onPress={() => onPressHarvest(item.id)}>
-                  <ListItem.Content>
-                    <ListItem.Title style={{ flex: 1 }}>
-                      {item.plotName
-                        ? t("plots.plot_name_date", {
-                            name: item.plotName,
-                            date: item.date,
-                          })
-                        : item.date}
-                    </ListItem.Title>
-                    <ListItem.Body>
-                      {[
-                        `${item.kilos}kg`,
-                        item.cropName,
-                        item.unit,
-                        item.conservationMethod,
-                      ]
-                        .filter(Boolean)
-                        .join(", ")}
-                    </ListItem.Body>
-                  </ListItem.Content>
-                  <ListItem.Chevron />
-                </ListItem>
-              ))}
-            </View>
+      renderItem={({ item, index, section }) => {
+        // One white block per year: rounded corners on its first and last entry
+        const isFirst = index === 0;
+        const isLast = index === section.data.length - 1;
+        return (
+          <View
+            style={{
+              backgroundColor: theme.colors.white,
+              overflow: "hidden",
+              borderTopLeftRadius: isFirst ? 10 : 0,
+              borderTopRightRadius: isFirst ? 10 : 0,
+              borderBottomLeftRadius: isLast ? 10 : 0,
+              borderBottomRightRadius: isLast ? 10 : 0,
+            }}
+          >
+            <ListItem onPress={() => onPressHarvest(item.id)}>
+              <ListItem.Content>
+                <ListItem.Title style={{ flex: 1 }}>
+                  {item.plotName
+                    ? t("plots.plot_name_date", {
+                        name: item.plotName,
+                        date: item.date,
+                      })
+                    : item.date}
+                </ListItem.Title>
+                <ListItem.Body>
+                  {[
+                    `${item.kilos}kg`,
+                    item.cropName,
+                    item.unit,
+                    item.conservationMethod,
+                  ]
+                    .filter(Boolean)
+                    .join(", ")}
+                </ListItem.Body>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
           </View>
-        ))
-      )}
-    </View>
+        );
+      }}
+    />
   );
 }
 
