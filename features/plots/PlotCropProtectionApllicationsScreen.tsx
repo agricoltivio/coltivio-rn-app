@@ -1,201 +1,56 @@
 import { FAB } from "@/components/buttons/FAB";
 import { ContentView } from "@/components/containers/ContentView";
-import { TextInput } from "@/components/inputs/TextInput";
-import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
-import { H2, H3, Headline, Subtitle } from "@/theme/Typography";
-import { formatLocalizedDate } from "@/utils/date";
-import { formatApplicationAmount } from "@/utils/units";
 import { usePermissions } from "@/features/user/users.hooks";
-import Fuse from "fuse.js";
-import { useCallback, useMemo, useState } from "react";
+import { H2, H3 } from "@/theme/Typography";
 import { useTranslation } from "react-i18next";
-import {
-  ActivityIndicator,
-  SectionList,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { useTheme } from "styled-components/native";
-import { PlotCropProtectionApplicationsScreenProps } from "./navigation/plots-routes";
+import { ActivityIndicator } from "react-native";
+import { CropProtectionApplicationOverview } from "../crop-protection-applications/components/CropProtectionApplicationOverview";
 import {
   useCropProtectionApplicationsForPlotQuery,
   useCropProtectionApplicationSummariesOfPlotQuery,
 } from "../crop-protection-applications/cropProtectionApplications.hooks";
-import { CropProtectionApplicationDashboard } from "../crop-protection-applications/components/CropProtectionApplicationDashboard";
-
-type ViewMode = "dashboard" | "list";
+import { PlotCropProtectionApplicationsScreenProps } from "./navigation/plots-routes";
 
 export function PlotCropProtectionApplicationsScreen({
   navigation,
   route,
 }: PlotCropProtectionApplicationsScreenProps) {
-  const { t, i18n } = useTranslation();
-  const locale = i18n.language;
-  const theme = useTheme();
+  const { t } = useTranslation();
   const { canWrite } = usePermissions();
   const { plotId, name } = route.params;
-
-  const [viewMode, setViewMode] = useState<ViewMode>("dashboard");
-  const [searchText, setSearchText] = useState("");
+  const title = t("crop_protection_applications.crop_protection");
 
   const { cropProtectionApplications } =
     useCropProtectionApplicationsForPlotQuery(plotId);
-  const { applicationSummaries, isLoading: summariesLoading } =
+  const { applicationSummaries } =
     useCropProtectionApplicationSummariesOfPlotQuery(plotId);
-
-  // Build SectionList sections for the list view
-  const sections = useMemo(() => {
-    if (!cropProtectionApplications) return [];
-    const sanitized = cropProtectionApplications.map((cpa) => ({
-      ...cpa,
-      formattedDate: formatLocalizedDate(
-        new Date(cpa.dateTime),
-        locale,
-        "long",
-        false,
-      ),
-    }));
-
-    let filtered = sanitized;
-    if (searchText) {
-      const fuse = new Fuse(sanitized, {
-        minMatchCharLength: 1,
-        keys: ["formattedDate", "product.name"],
-      });
-      filtered = fuse.search(searchText).map((r) => r.item);
-    }
-
-    const grouped: Record<number, typeof filtered> = {};
-    for (const item of filtered) {
-      const year = new Date(item.dateTime).getFullYear();
-      if (!grouped[year]) grouped[year] = [];
-      grouped[year].push(item);
-    }
-    return Object.keys(grouped)
-      .map(Number)
-      .sort((a, b) => b - a)
-      .map((year) => ({ title: year.toString(), data: grouped[year] }));
-  }, [cropProtectionApplications, searchText, locale]);
-
-  const renderItem = useCallback(
-    ({ item: cpa }: { item: (typeof sections)[number]["data"][number] }) => (
-      <ListItem
-        key={cpa.id}
-        onPress={() =>
-          navigation.navigate("CropProtectionApplicationDetails", {
-            cropProtectionApplicationId: cpa.id,
-          })
-        }
-      >
-        <ListItem.Content>
-          <ListItem.Title style={{ flex: 1 }}>
-            {cpa.formattedDate}
-          </ListItem.Title>
-          <ListItem.Body>
-            {formatApplicationAmount(
-              {
-                unit: cpa.unit,
-                numberOfUnits: cpa.numberOfUnits,
-                amountPerUnit: cpa.amountPerUnit,
-                productUnit: cpa.product.unit,
-              },
-              t,
-            )}{" "}
-            {cpa.product.name}
-          </ListItem.Body>
-        </ListItem.Content>
-        <ListItem.Chevron />
-      </ListItem>
-    ),
-    [navigation, t],
-  );
-
-  if (!cropProtectionApplications) {
-    return (
-      <ContentView headerVisible>
-        <H2>{t("crop_protection_applications.crop_protection")}</H2>
-        <ActivityIndicator style={{ marginTop: 40 }} size="large" />
-      </ContentView>
-    );
-  }
 
   return (
     <ContentView headerVisible>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          paddingBottom: theme.spacing.s,
-        }}
+      <ScrollView
+        showHeaderOnScroll
+        headerTitleOnScroll={title}
+        // room for the FAB below the last entry
+        contentContainerStyle={{ paddingBottom: 120 }}
+        keyboardAware
       >
-        <View>
-          <H2>{t("crop_protection_applications.crop_protection")}</H2>
-          <H3>{t("plots.plot_name", { name })}</H3>
-        </View>
-        <ViewToggle mode={viewMode} onToggle={setViewMode} />
-      </View>
-
-      {viewMode === "dashboard" && (
-        <ScrollView
-          showHeaderOnScroll
-          headerTitleOnScroll={t(
-            "crop_protection_applications.crop_protection",
-          )}
-          contentContainerStyle={{ paddingBottom: 120 }}
-        >
-          {summariesLoading ? (
-            <ActivityIndicator style={{ marginTop: 40 }} size="large" />
-          ) : !applicationSummaries || applicationSummaries.length === 0 ? (
-            <Headline>{t("common.no_entries")}</Headline>
-          ) : (
-            <CropProtectionApplicationDashboard
-              summaries={applicationSummaries}
-            />
-          )}
-        </ScrollView>
-      )}
-
-      {viewMode === "list" && (
-        <View style={{ flex: 1 }}>
-          <View style={{ marginBottom: theme.spacing.m }}>
-            <TextInput
-              hideLabel
-              placeholder={t("forms.placeholders.search")}
-              onChangeText={setSearchText}
-              value={searchText}
-            />
-          </View>
-          {sections.length === 0 ? (
-            <Headline>{t("common.no_entries")}</Headline>
-          ) : (
-            <SectionList
-              stickySectionHeadersEnabled={false}
-              sections={sections}
-              keyExtractor={(item) => item.id}
-              renderSectionHeader={({ section: { title } }) => (
-                <View
-                  style={{
-                    paddingVertical: theme.spacing.s,
-                    paddingHorizontal: theme.spacing.xs,
-                    marginTop: theme.spacing.m,
-                  }}
-                >
-                  <H3>{title}</H3>
-                </View>
-              )}
-              contentContainerStyle={{
-                borderTopRightRadius: 10,
-                borderTopLeftRadius: 10,
-                overflow: "hidden",
-              }}
-              renderItem={renderItem}
-            />
-          )}
-        </View>
-      )}
-
+        <H2>{title}</H2>
+        <H3>{t("plots.plot_name", { name })}</H3>
+        {!applicationSummaries || !cropProtectionApplications ? (
+          <ActivityIndicator style={{ marginTop: 40 }} size="large" />
+        ) : (
+          <CropProtectionApplicationOverview
+            summaries={applicationSummaries}
+            applications={cropProtectionApplications}
+            onPressApplication={(cropProtectionApplicationId) =>
+              navigation.navigate("CropProtectionApplicationDetails", {
+                cropProtectionApplicationId,
+              })
+            }
+          />
+        )}
+      </ScrollView>
       {canWrite("field_calendar") && (
         <FAB
           icon={{ name: "add", color: "white" }}
@@ -212,63 +67,5 @@ export function PlotCropProtectionApplicationsScreen({
         />
       )}
     </ContentView>
-  );
-}
-
-function ViewToggle({
-  mode,
-  onToggle,
-}: {
-  mode: ViewMode;
-  onToggle: (mode: ViewMode) => void;
-}) {
-  const theme = useTheme();
-  return (
-    <View
-      style={{
-        flexDirection: "row",
-        borderRadius: 8,
-        borderWidth: 1,
-        borderColor: theme.colors.gray3,
-        overflow: "hidden",
-      }}
-    >
-      <TouchableOpacity
-        onPress={() => onToggle("dashboard")}
-        style={{
-          paddingHorizontal: 10,
-          paddingVertical: 6,
-          backgroundColor:
-            mode === "dashboard" ? theme.colors.primary : theme.colors.white,
-        }}
-      >
-        <Subtitle
-          style={{
-            fontSize: 18,
-            color: mode === "dashboard" ? "#fff" : theme.colors.gray2,
-          }}
-        >
-          {"\u25A6"}
-        </Subtitle>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => onToggle("list")}
-        style={{
-          paddingHorizontal: 10,
-          paddingVertical: 6,
-          backgroundColor:
-            mode === "list" ? theme.colors.primary : theme.colors.white,
-        }}
-      >
-        <Subtitle
-          style={{
-            fontSize: 18,
-            color: mode === "list" ? "#fff" : theme.colors.gray2,
-          }}
-        >
-          {"\u2630"}
-        </Subtitle>
-      </TouchableOpacity>
-    </View>
   );
 }

@@ -147,7 +147,9 @@
     "dashboard": "Dashboard",
     "list": "Lista",
     "notes": "Note",
-    "average": "Media"
+    "average": "Media",
+    "yearly_average": "Ø {{value}} all'anno",
+    "max_years_selected": "Puoi selezionare al massimo {{count}} anni alla volta."
   },
   "splash": {
     "tagline": "Da contadini. Per contadini.",
@@ -868,7 +870,12 @@
     "amount_per_month": "Quantità per mese",
     "chart_total": "Totale",
     "chart_per_month": "Al mese",
-    "edit_harvest": "Modifica raccolto"
+    "edit_harvest": "Modifica raccolto",
+    "stats": {
+      "view_chart": "Grafico",
+      "view_stats": "Cifre",
+      "per_unit_weight": "da {{weight}} kg"
+    }
   },
   "fertilizers": {
     "fertilizer": "Fertilizzante",

@@ -147,7 +147,9 @@
     "dashboard": "Dashboard",
     "list": "Liste",
     "notes": "Notizen",
-    "average": "Durchschnitt"
+    "average": "Durchschnitt",
+    "yearly_average": "Ø {{value}} pro Jahr",
+    "max_years_selected": "Es können höchstens {{count}} Jahre gleichzeitig ausgewählt werden."
   },
   "splash": {
     "tagline": "Von Bauern. Für Bauern.",
@@ -868,7 +870,12 @@
     "amount_per_month": "Menge pro Monat",
     "chart_total": "Total",
     "chart_per_month": "Pro Monat",
-    "edit_harvest": "Ernte bearbeiten"
+    "edit_harvest": "Ernte bearbeiten",
+    "stats": {
+      "view_chart": "Diagramm",
+      "view_stats": "Zahlen",
+      "per_unit_weight": "à {{weight}} kg"
+    }
   },
   "fertilizers": {
     "fertilizer": "Dünger",

@@ -147,7 +147,9 @@
     "dashboard": "Tableau de bord",
     "list": "Liste",
     "notes": "Notes",
-    "average": "Moyenne"
+    "average": "Moyenne",
+    "yearly_average": "Ø {{value}} par an",
+    "max_years_selected": "Vous pouvez sélectionner au maximum {{count}} années à la fois."
   },
   "splash": {
     "tagline": "Par des paysans. Pour des paysans.",
@@ -868,7 +870,12 @@
     "amount_per_month": "Quantité par mois",
     "chart_total": "Total",
     "chart_per_month": "Par mois",
-    "edit_harvest": "Modifier la récolte"
+    "edit_harvest": "Modifier la récolte",
+    "stats": {
+      "view_chart": "Graphique",
+      "view_stats": "Chiffres",
+      "per_unit_weight": "de {{weight}} kg"
+    }
   },
   "fertilizers": {
     "fertilizer": "Engrais",

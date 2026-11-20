@@ -147,7 +147,9 @@
     "dashboard": "Dashboard",
     "list": "List",
     "notes": "Notes",
-    "average": "Avg"
+    "average": "Avg",
+    "yearly_average": "Ø {{value}} per year",
+    "max_years_selected": "You can select at most {{count}} years at once."
   },
   "splash": {
     "tagline": "By Farmers. For Farmers.",
@@ -868,7 +870,12 @@
     "amount_per_month": "Amount per month",
     "chart_total": "Total",
     "chart_per_month": "Per month",
-    "edit_harvest": "Edit harvest"
+    "edit_harvest": "Edit harvest",
+    "stats": {
+      "view_chart": "Chart",
+      "view_stats": "Numbers",
+      "per_unit_weight": "of {{weight}} kg"
+    }
   },
   "fertilizers": {
     "fertilizer": "Fertilizer",

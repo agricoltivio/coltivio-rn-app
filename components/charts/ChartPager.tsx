@@ -1,6 +1,8 @@
 import { ReactNode, useRef, useState } from "react";
 import {
   LayoutChangeEvent,
+  StyleProp,
+  ViewStyle,
   NativeScrollEvent,
   NativeSyntheticEvent,
   ScrollView,
@@ -20,8 +22,11 @@ const SCROLL_ANIMATION_MS = 350;
 // the last; landing on a copy jumps (unanimated) to the real card.
 export function ChartPager({
   pages,
+  style,
 }: {
   pages: { key: string; content: ReactNode }[];
+  // e.g. a smaller top margin when a control sits directly above
+  style?: StyleProp<ViewStyle>;
 }) {
   const theme = useTheme();
   const scrollViewRef = useRef<ScrollViewInstance>(null);
@@ -117,7 +122,7 @@ export function ChartPager({
   }
 
   return (
-    <View onLayout={onLayout} style={{ marginTop: theme.spacing.m }}>
+    <View onLayout={onLayout} style={[{ marginTop: theme.spacing.m }, style]}>
       {pageWidth > 0 && (
         <ScrollView
           ref={scrollViewRef}

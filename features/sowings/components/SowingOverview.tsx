@@ -1,26 +1,36 @@
 import { PlotSowing, Sowing, SowingSummary } from "@/api/sowings.api";
 import { CategoryFilter } from "@/components/charts/CategoryFilter";
 import { ChartPager } from "@/components/charts/ChartPager";
+import { dismissChartTooltips } from "@/components/charts/chartTooltipDismiss";
 import {
   ChartMode,
   ChartViewSwitcher,
 } from "@/components/charts/ChartViewSwitcher";
-import { MonthCartesianChart } from "@/components/charts/MonthCartesianChart";
-import { scaleUnit, UnitScale } from "@/components/charts/unitScaling";
+import {
+  MAX_CHART_YEARS,
+  MonthCartesianChart,
+} from "@/components/charts/MonthCartesianChart";
+import {
+  scaleUnit,
+  UnitScale,
+  formatNumber,
+} from "@/components/charts/unitScaling";
 import { YearMultiSelect } from "@/components/charts/YearMultiSelect";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
+import { Text } from "@/components/text/Text";
 import { H3, Headline, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate, parseDateOnly } from "@/utils/date";
 import Fuse from "fuse.js";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useSowingUnitsQuery } from "../sowings.hooks";
 import { formatBaseAmount } from "../sowingUnits";
 
-const MAX_SELECTED_YEARS = 5;
+// Years selected when the screen opens, older ones can be added with the chips
+const INITIAL_YEAR_COUNT = 3;
 
 // One chart per seed (or crop when sown without a seed) and quantity kind,
 // weight and count can never share an axis
@@ -66,13 +76,53 @@ export function SowingOverview({
     );
   }, []);
 
-  // Year -> color mapping stays the same on every chart
+  // Years from the charts and the entries, so every entry can be shown or hidden.
+  // Also keeps the year -> color mapping the same on every chart.
   const availableYears = useMemo(
     () =>
-      [...new Set(summaries.map((summary) => summary.year))].sort(
-        (a, b) => b - a,
-      ),
-    [summaries],
+      [
+        ...new Set([
+          ...summaries.map((summary) => summary.year),
+          ...sowings.map((sowing) => parseDateOnly(sowing.date).getFullYear()),
+        ]),
+      ].sort((a, b) => b - a),
+    [summaries, sowings],
+  );
+
+  // One year selection for the charts and the list. Starts with the latest years and
+  // stores the deselected ones, so a year with a new entry shows up right away.
+  const [hiddenYears, setHiddenYears] = useState<number[]>(() =>
+    availableYears.slice(INITIAL_YEAR_COUNT),
+  );
+  // Total / per month, the same for all charts in the carousel
+  const [chartMode, setChartMode] = useState<ChartMode>("cumulative");
+  const selectedYears = useMemo(
+    // Ascending, the order the charts list the years in
+    () =>
+      availableYears
+        .filter((year) => !hiddenYears.includes(year))
+        .sort((a, b) => a - b)
+        // A new year can push past the limit, keep the newest
+        .slice(-MAX_CHART_YEARS),
+    [availableYears, hiddenYears],
+  );
+  const toggleYear = useCallback(
+    (year: number) => {
+      if (hiddenYears.includes(year)) {
+        if (selectedYears.length >= MAX_CHART_YEARS) {
+          Alert.alert(
+            t("common.max_years_selected", { count: MAX_CHART_YEARS }),
+          );
+          return;
+        }
+        setHiddenYears((prev) => prev.filter((hidden) => hidden !== year));
+        return;
+      }
+      // At least one year stays selected
+      if (selectedYears.length === 1) return;
+      setHiddenYears((prev) => [...prev, year]);
+    },
+    [hiddenYears, selectedYears, t],
   );
 
   const series = useMemo(() => {
@@ -108,10 +158,11 @@ export function SowingOverview({
           : sownSeed.totalBaseAmount / 1000;
       }
     }
-    return [...seriesByKey.values()].sort((a, b) =>
-      a.title.localeCompare(b.title),
-    );
-  }, [summaries, visibleCrops, t]);
+    // Seeds without data in the selected years get no chart page
+    return [...seriesByKey.values()]
+      .filter((entry) => selectedYears.some((year) => entry.monthly[year]))
+      .sort((a, b) => a.title.localeCompare(b.title));
+  }, [summaries, visibleCrops, selectedYears, t]);
 
   const listSections = useMemo(() => {
     const items = sowings
@@ -150,6 +201,7 @@ export function SowingOverview({
     const byYear: Record<number, typeof filtered> = {};
     for (const item of filtered) {
       const year = parseDateOnly(item.rawDate).getFullYear();
+      if (!selectedYears.includes(year)) continue;
       if (!byYear[year]) byYear[year] = [];
       byYear[year].push(item);
     }
@@ -163,10 +215,22 @@ export function SowingOverview({
             new Date(b.rawDate).getTime() - new Date(a.rawDate).getTime(),
         ),
       }));
-  }, [sowings, sowingUnits, visibleCrops, searchText, t, i18n.language]);
+  }, [
+    sowings,
+    sowingUnits,
+    visibleCrops,
+    searchText,
+    t,
+    i18n.language,
+    selectedYears,
+  ]);
 
   return (
-    <View style={{ gap: theme.spacing.m, marginTop: theme.spacing.m }}>
+    // A touch anywhere closes open chart tooltips, a tap on a chart reopens its own
+    <View
+      style={{ gap: theme.spacing.m, marginTop: theme.spacing.m }}
+      onTouchStart={dismissChartTooltips}
+    >
       {allCrops.length > 1 && (
         <CategoryFilter
           items={allCrops}
@@ -175,12 +239,26 @@ export function SowingOverview({
         />
       )}
 
+      {availableYears.length > 0 && (
+        <YearMultiSelect
+          years={availableYears}
+          selectedYears={selectedYears}
+          onToggle={toggleYear}
+        />
+      )}
+
       {series.length > 0 && (
         <ChartPager
           pages={series.map((entry) => ({
             key: entry.key,
             content: (
-              <SowingChartPage series={entry} availableYears={availableYears} />
+              <SowingChartPage
+                series={entry}
+                selectedYears={selectedYears}
+                availableYears={availableYears}
+                chartMode={chartMode}
+                setChartMode={setChartMode}
+              />
             ),
           }))}
         />
@@ -235,39 +313,23 @@ export function SowingOverview({
   );
 }
 
-// One carousel page: title + chart mode, its own year selection, then the chart
+// One carousel page: title, chart mode, then the chart for the globally selected years
 function SowingChartPage({
   series,
+  selectedYears,
   availableYears,
+  chartMode,
+  setChartMode,
 }: {
   series: SowingSeries;
+  selectedYears: number[];
   availableYears: number[];
+  // Shared by all pages, so it stays when swiping
+  chartMode: ChartMode;
+  setChartMode: (mode: ChartMode) => void;
 }) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const [chartMode, setChartMode] = useState<ChartMode>("cumulative");
-
-  const seriesYears = useMemo(
-    () =>
-      Object.keys(series.monthly)
-        .map(Number)
-        .sort((a, b) => b - a),
-    [series.monthly],
-  );
-  const [selectedYears, setSelectedYears] = useState<number[]>(() =>
-    seriesYears.length > 0 ? [seriesYears[0]] : [],
-  );
-
-  const toggleYear = useCallback((year: number) => {
-    setSelectedYears((prev) => {
-      if (prev.includes(year)) {
-        if (prev.length === 1) return prev;
-        return prev.filter((selectedYear) => selectedYear !== year);
-      }
-      if (prev.length >= MAX_SELECTED_YEARS) return prev;
-      return [...prev, year].sort((a, b) => a - b);
-    });
-  }, []);
 
   const chartViewOptions = useMemo(
     () => [
@@ -284,8 +346,22 @@ function SowingChartPage({
     ? { label: t(`sowings.units.${series.countUnit}`), divisor: 1 }
     : scaleUnit("kg", Math.max(0, ...yearTotals));
 
+  // Average yearly total over all years with data, independent of the year selection
+  const yearlyTotals = Object.values(series.monthly)
+    .map((values) => values.reduce((sum, value) => sum + value, 0))
+    .filter((yearTotal) => yearTotal > 0);
+  const yearlyAverage =
+    yearlyTotals.length > 0
+      ? yearlyTotals.reduce((sum, value) => sum + value, 0) /
+        yearlyTotals.length
+      : 0;
+  const averageUnit: UnitScale = series.countUnit
+    ? { label: t(`sowings.units.${series.countUnit}`), divisor: 1 }
+    : scaleUnit("kg", yearlyAverage);
+
   return (
     <View style={{ gap: theme.spacing.s }}>
+      {/* Title on the left, chart mode on the right */}
       <View
         style={{
           flexDirection: "row",
@@ -303,12 +379,12 @@ function SowingChartPage({
           options={chartViewOptions}
         />
       </View>
-      {seriesYears.length > 1 && (
-        <YearMultiSelect
-          years={seriesYears}
-          selectedYears={selectedYears}
-          onToggle={toggleYear}
-        />
+      {yearlyAverage > 0 && (
+        <Text style={{ color: theme.colors.gray1 }}>
+          {t("common.yearly_average", {
+            value: `${formatNumber(yearlyAverage / averageUnit.divisor)} ${averageUnit.label}`,
+          })}
+        </Text>
       )}
       <MonthCartesianChart
         mode={chartMode}
@@ -316,7 +392,6 @@ function SowingChartPage({
         selectedYears={selectedYears}
         availableYears={availableYears}
         unit={unit}
-        perUnitLabel={unit.label}
       />
     </View>
   );
