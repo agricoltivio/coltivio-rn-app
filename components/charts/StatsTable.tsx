@@ -15,7 +15,9 @@ export type StatsTableRow = {
 };
 
 const STATS_ROW_HEIGHT = 32;
-const STATS_YEAR_COLUMN_WIDTH = 84;
+const STATS_YEAR_COLUMN_MIN_WIDTH = 84;
+// Rough width per character, so values like "23.5 m³/ha" aren't cut off
+const STATS_CHARACTER_WIDTH = 9;
 
 // Metrics as rows, one column per selected year with its chart color. The label
 // column stays fixed (swiping there still turns the carousel page), the year columns
@@ -41,6 +43,17 @@ export function StatsTable({
     borderBottomColor:
       row === undefined ? theme.colors.gray4 : theme.colors.gray5,
   });
+  // All year columns as wide as the longest value, so the columns stay aligned
+  const longestValue = Math.max(
+    0,
+    ...rows.flatMap((row) =>
+      years.map((year) => (row.values[year] ?? "").length),
+    ),
+  );
+  const yearColumnWidth = Math.max(
+    STATS_YEAR_COLUMN_MIN_WIDTH,
+    (longestValue + 1) * STATS_CHARACTER_WIDTH,
+  );
   const textColor = (row: StatsTableRow) =>
     row.indented ? theme.colors.gray1 : theme.colors.gray0;
 
@@ -94,7 +107,7 @@ export function StatsTable({
               <View
                 key={year}
                 style={{
-                  width: STATS_YEAR_COLUMN_WIDTH,
+                  width: yearColumnWidth,
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "flex-end",
@@ -133,7 +146,7 @@ export function StatsTable({
                   key={year}
                   numberOfLines={1}
                   style={{
-                    width: STATS_YEAR_COLUMN_WIDTH,
+                    width: yearColumnWidth,
                     textAlign: "right",
                     fontVariant: ["tabular-nums"],
                     color: textColor(row),

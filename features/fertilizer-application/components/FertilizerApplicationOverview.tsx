@@ -114,7 +114,8 @@ export function FertilizerApplicationOverview({
   );
   const toggleYear = useCallback(
     (year: number) => {
-      if (hiddenYears.includes(year)) {
+      // By what is shown: a year cut off by the limit isn't hidden but not selected either
+      if (!selectedYears.includes(year)) {
         if (selectedYears.length >= MAX_CHART_YEARS) {
           Alert.alert(
             t("common.max_years_selected", { count: MAX_CHART_YEARS }),
@@ -128,7 +129,7 @@ export function FertilizerApplicationOverview({
       if (selectedYears.length === 1) return;
       setHiddenYears((prev) => [...prev, year]);
     },
-    [hiddenYears, selectedYears, t],
+    [selectedYears, t],
   );
 
   const chartData = useMemo(

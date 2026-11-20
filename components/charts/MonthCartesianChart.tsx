@@ -217,9 +217,11 @@ export function MonthCartesianChart({
       pressState.matchedIndex.value = index;
       pressState.isActive.value = true;
     };
-    // Tap shows the tapped month's values and keeps them (tap the same month
-    // again to hide). It only fires once the hold below has failed, i.e. the
-    // finger lifted before SCRUB_HOLD_MS.
+    // Tap shows the tapped month's values and keeps them. Screens that call
+    // dismissChartTooltips on touch start close them with a touch anywhere
+    // else; without that, tapping the same month again hides them. It only
+    // fires once the hold below has failed, i.e. the finger lifted before
+    // SCRUB_HOLD_MS.
     const tapGesture = Gesture.Tap().onEnd((e) => {
       const index = monthIndexAt(e.x);
       if (index === null) return;

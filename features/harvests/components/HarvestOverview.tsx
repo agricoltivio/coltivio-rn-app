@@ -97,7 +97,8 @@ export function HarvestOverview({
   );
   const toggleYear = useCallback(
     (year: number) => {
-      if (hiddenYears.includes(year)) {
+      // By what is shown: a year cut off by the limit isn't hidden but not selected either
+      if (!selectedYears.includes(year)) {
         if (selectedYears.length >= MAX_CHART_YEARS) {
           Alert.alert(
             t("common.max_years_selected", { count: MAX_CHART_YEARS }),
@@ -111,7 +112,7 @@ export function HarvestOverview({
       if (selectedYears.length === 1) return;
       setHiddenYears((prev) => [...prev, year]);
     },
-    [hiddenYears, selectedYears, t],
+    [selectedYears, t],
   );
 
   // Chart or numbers, for all carousel pages at once
@@ -417,7 +418,9 @@ function HarvestChartPage({
         values: Object.fromEntries(
           selectedYears.map((year) => [
             year,
-            `${formatNumber((stats.totalKilosByYear[year] ?? 0) / totalUnit.divisor)} ${totalUnit.label}`,
+            stats.totalKilosByYear[year]
+              ? `${formatNumber(stats.totalKilosByYear[year] / totalUnit.divisor)} ${totalUnit.label}`
+              : "–",
           ]),
         ),
       },
