@@ -1,7 +1,4 @@
-import {
-  DrawingOverlay,
-  type DrawingOverlayRef,
-} from "@/components/map/DrawingOverlay";
+import { DrawingOverlay } from "@/components/map/DrawingOverlay";
 import { hexToRgba, indexToDistinctColor } from "@/theme/theme";
 import {
   GeoSpatials,
@@ -14,6 +11,7 @@ import {
   Layer,
   type LngLat,
 } from "@maplibre/maplibre-react-native";
+import * as Sentry from "@sentry/react-native";
 import * as turf from "@turf/turf";
 import React, {
   forwardRef,
@@ -138,16 +136,30 @@ export const SplitModeLayers = forwardRef<SplitModeLayersHandle>(
           return;
         }
         const newPolygons: GeoJSON.MultiPolygon[] = [];
-        for (const polygon of currentMode.currentPolygons) {
-          const result = splitMultiPolygonByLine(polygon, {
-            type: "LineString",
-            coordinates: coords,
-          });
-          if (result) {
-            newPolygons.push(...result);
-          } else {
-            newPolygons.push(polygon);
+        try {
+          for (const polygon of currentMode.currentPolygons) {
+            const result = splitMultiPolygonByLine(polygon, {
+              type: "LineString",
+              coordinates: coords,
+            });
+            if (result) {
+              newPolygons.push(...result);
+            } else {
+              newPolygons.push(polygon);
+            }
           }
+        } catch (error) {
+          // turf can still fail on unusual geometry. Keep the drawn line, so the
+          // user can adjust it and try again.
+          Sentry.captureException(error, {
+            extra: {
+              plotId: currentMode.plotId,
+              linePointCount: coords.length,
+              polygonCount: currentMode.currentPolygons.length,
+            },
+          });
+          Alert.alert(t("plots.split.split_failed"));
+          return;
         }
         const validPolylines = newPolygons.filter(
           (p) => p.coordinates.length > 0 && turf.area(p) > 0.1,
