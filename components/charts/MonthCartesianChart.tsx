@@ -81,8 +81,8 @@ export type MonthCartesianChartProps = {
   selectedYears: number[];
   availableYears: number[];
   unit: UnitScale;
-  // unit label used inside breakdown lines, e.g. "kg" for "10 crates × 20kg"
-  perUnitLabel: string;
+  // unit label used inside breakdown lines, e.g. "kg" for "10 crates × 20kg"; only needed with getBreakdown
+  perUnitLabel?: string;
   getBreakdown?: (year: number, month: number) => UnitBreakdownEntry[];
   height?: number;
 };

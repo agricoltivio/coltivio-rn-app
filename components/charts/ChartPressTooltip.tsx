@@ -29,7 +29,7 @@ export function ChartPressTooltip({
   // a stable reference that doesn't shift as the year selection changes.
   monthlyAverages: number[];
   unitLabel: string;
-  perUnitLabel: string;
+  perUnitLabel?: string;
   getBreakdown?: (year: number, month: number) => UnitBreakdownEntry[];
 }) {
   const theme = useTheme();
@@ -106,7 +106,9 @@ export function ChartPressTooltip({
                 </Text>
                 {breakdown.length > 0
                   ? ` — ${breakdown
-                      .map((entry) => formatUnitBreakdown(entry, perUnitLabel))
+                      .map((entry) =>
+                        formatUnitBreakdown(entry, perUnitLabel ?? ""),
+                      )
                       .join(", ")}`
                   : ""}
               </Text>

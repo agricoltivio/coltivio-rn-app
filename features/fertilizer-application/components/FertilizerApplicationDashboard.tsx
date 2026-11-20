@@ -1,4 +1,3 @@
-import { productUnitLabel } from "@/utils/units";
 import { FertilizerApplicationSummary } from "@/api/fertilizerApplications.api";
 import { Card } from "@/components/card/Card";
 import { CategoryFilter } from "@/components/charts/CategoryFilter";
@@ -7,18 +6,13 @@ import {
   ChartViewSwitcher,
 } from "@/components/charts/ChartViewSwitcher";
 import { MonthCartesianChart } from "@/components/charts/MonthCartesianChart";
-import { UnitBreakdownEntry } from "@/components/charts/unitBreakdown";
 import { scaleUnit } from "@/components/charts/unitScaling";
 import { YearMultiSelect } from "@/components/charts/YearMultiSelect";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
-import {
-  accumulateAppliedFertilizersUpToMonth,
-  aggregateAppliedFertilizersByYearMonth,
-  aggregateFertilizerApplicationsByName,
-} from "../fertilizerApplications.utils";
+import { aggregateFertilizerApplicationsByName } from "../fertilizerApplications.utils";
 
 const MAX_SELECTED_YEARS = 5;
 
@@ -159,34 +153,6 @@ function FertilizerCard({
     }
   }
   const displayUnit = scaleUnit(unit, maxAmount);
-  const perUnitLabel = productUnitLabel(unit, t);
-
-  const breakdownByYearMonth = useMemo(
-    () => aggregateAppliedFertilizersByYearMonth(summaries, fertilizerName),
-    [summaries, fertilizerName],
-  );
-
-  const getBreakdown = (year: number, month: number): UnitBreakdownEntry[] => {
-    const row =
-      chartMode === "cumulative"
-        ? accumulateAppliedFertilizersUpToMonth(
-            breakdownByYearMonth,
-            year,
-            month,
-          )
-        : (breakdownByYearMonth[year]?.[month] ?? {
-            totalAmount: 0,
-            totalProducedUnits: 0,
-          });
-    if (row.totalProducedUnits === 0) return [];
-    return [
-      {
-        label: t("common.applications"),
-        count: row.totalProducedUnits,
-        amountPerUnit: row.totalAmount / row.totalProducedUnits,
-      },
-    ];
-  };
 
   return (
     <Card>
@@ -219,8 +185,6 @@ function FertilizerCard({
           selectedYears={selectedYears}
           availableYears={availableYears}
           unit={displayUnit}
-          perUnitLabel={perUnitLabel}
-          getBreakdown={getBreakdown}
         />
       </Card.Content>
     </Card>
