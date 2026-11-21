@@ -33,7 +33,11 @@ export function ChangePasswordScren({ navigation }: ChangePasswordScreenProps) {
       password,
     });
     if (error || !data) {
-      Sentry.captureException(error);
+      // Auth errors with a 4xx status are user errors (e.g. weak or same password), only
+      // the rest is worth a report
+      if (error && !(error.status !== undefined && error.status < 500)) {
+        Sentry.captureException(error);
+      }
       setError(t("errors.unexpected_retry"));
     } else {
       setUser(data.user);

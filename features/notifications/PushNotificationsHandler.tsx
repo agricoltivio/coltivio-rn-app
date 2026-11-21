@@ -59,16 +59,16 @@ export function PushNotificationsHandler() {
     getNotificationPermissionAsync({ requestPermission: false })
       .then((permission) => {
         if (permission?.granted) {
-          return registerPushTokenAsync(api.users);
+          // Reports its own failures
+          registerPushTokenAsync(api.users).catch(() => {});
         }
       })
       .catch((error) => Sentry.captureException(error));
     // Only fires when a device token exists, so permission is granted
     const subscription = Notifications.addPushTokenListener(
       (devicePushToken) => {
-        registerPushTokenAsync(api.users, devicePushToken).catch((error) =>
-          Sentry.captureException(error),
-        );
+        // Reports its own failures
+        registerPushTokenAsync(api.users, devicePushToken).catch(() => {});
       },
     );
     return () => subscription.remove();
@@ -162,10 +162,15 @@ export function PushNotificationsHandler() {
     } else {
       navigation.navigate("TaskList");
     }
-    // setActiveFarmId isn't memoized and also persists the selection; rerunning on every render
-    // could switch the farm repeatedly before the response is marked as handled
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lastNotificationResponse, token, farms, user, activeFarmId]);
+  }, [
+    lastNotificationResponse,
+    token,
+    farms,
+    user,
+    activeFarmId,
+    setActiveFarmId,
+    navigation,
+  ]);
 
   return null;
 }

@@ -9,6 +9,7 @@ import {
   useContext,
   useEffect,
   useState,
+  useCallback,
 } from "react";
 
 type ActiveFarm = {
@@ -83,31 +84,35 @@ export function ActiveFarmProvider({ children }: PropsWithChildren) {
     };
   }, [authUser, hydratedForUserId, queryClient]);
 
-  function setActiveFarmId(farmId: string) {
-    const previousFarmId = activeFarmId;
-    // Update the value the request middleware reads immediately, before anything else runs —
-    // so any refetch triggered below (or by React re-rendering) is guaranteed to already see
-    // the new farm, never a stale one from before the switch.
-    setActiveFarmIdForRequests(farmId);
-    setActiveFarmIdState(farmId);
-    if (authUser) {
-      AsyncStorage.setItem(storageKeyForUser(authUser.id), farmId);
-    }
-    if (previousFarmId !== null && previousFarmId !== farmId) {
-      // Switching between existing farms: every farm-scoped query holds the old farm's data.
-      queryClient.removeQueries();
-    } else {
-      // First-ever selection (onboarding, or joining a first farm): no farm-scoped data is
-      // cached yet, but farms.list / farm / users.me were all fetched before this farm
-      // existed. Drop just those so they refetch fresh — otherwise RootStack briefly sees a
-      // farm selected that isn't in the (stale, empty) farms list and treats it as invalid.
-      queryClient.removeQueries({ queryKey: queryKeys.farms.list.queryKey });
-      queryClient.removeQueries({ queryKey: queryKeys.farms.farm.queryKey });
-      queryClient.removeQueries({ queryKey: queryKeys.users.me.queryKey });
-    }
-  }
+  // Memoized, so effects can list them without rerunning on every render
+  const setActiveFarmId = useCallback(
+    (farmId: string) => {
+      const previousFarmId = activeFarmId;
+      // Update the value the request middleware reads immediately, before anything else runs —
+      // so any refetch triggered below (or by React re-rendering) is guaranteed to already see
+      // the new farm, never a stale one from before the switch.
+      setActiveFarmIdForRequests(farmId);
+      setActiveFarmIdState(farmId);
+      if (authUser) {
+        AsyncStorage.setItem(storageKeyForUser(authUser.id), farmId);
+      }
+      if (previousFarmId !== null && previousFarmId !== farmId) {
+        // Switching between existing farms: every farm-scoped query holds the old farm's data.
+        queryClient.removeQueries();
+      } else {
+        // First-ever selection (onboarding, or joining a first farm): no farm-scoped data is
+        // cached yet, but farms.list / farm / users.me were all fetched before this farm
+        // existed. Drop just those so they refetch fresh — otherwise RootStack briefly sees a
+        // farm selected that isn't in the (stale, empty) farms list and treats it as invalid.
+        queryClient.removeQueries({ queryKey: queryKeys.farms.list.queryKey });
+        queryClient.removeQueries({ queryKey: queryKeys.farms.farm.queryKey });
+        queryClient.removeQueries({ queryKey: queryKeys.users.me.queryKey });
+      }
+    },
+    [activeFarmId, authUser, queryClient],
+  );
 
-  function clearActiveFarmId() {
+  const clearActiveFarmId = useCallback(() => {
     const previousFarmId = activeFarmId;
     setActiveFarmIdForRequests(null);
     setActiveFarmIdState(null);
@@ -117,7 +122,7 @@ export function ActiveFarmProvider({ children }: PropsWithChildren) {
     if (previousFarmId !== null) {
       queryClient.removeQueries();
     }
-  }
+  }, [activeFarmId, authUser, queryClient]);
 
   return (
     <ActiveFarmContext.Provider

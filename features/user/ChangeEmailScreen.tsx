@@ -57,7 +57,11 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
     );
     setSubmitting(false);
     if (error || !data) {
-      Sentry.captureException(error);
+      // Auth errors with a 4xx status are user errors (e.g. weak or same password), only
+      // the rest is worth a report
+      if (error && !(error.status !== undefined && error.status < 500)) {
+        Sentry.captureException(error);
+      }
       setError(t("errors.unexpected_retry"));
     } else {
       setUser(data.user);
@@ -70,7 +74,10 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
       setVerificationMailSent(true);
       setError(null);
     } catch (error) {
-      Sentry.captureException(error);
+      // The cooldown is expected and has its own message
+      if (!(error instanceof ApiError && error.status === 429)) {
+        Sentry.captureException(error);
+      }
       setError(
         error instanceof ApiError && error.status === 429
           ? t("users.verification_email_cooldown")
