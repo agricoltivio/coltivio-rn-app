@@ -2,7 +2,7 @@ import * as Sentry from "@sentry/react-native";
 import { Task, TaskStatus } from "@/api/tasks.api";
 import { FAB } from "@/components/buttons/FAB";
 import { Chip } from "@/components/chips/Chip";
-import { getDueDateColor } from "@/features/tasks/task-due-date";
+import { getDueDateColor, isTaskOverdue } from "@/features/tasks/task-due-date";
 import { useAssigneeColor } from "@/features/tasks/task-assignee-color";
 import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
@@ -168,11 +168,10 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
     let result = search
       ? fuse.search(search).map((r) => r.item)
       : (tasks ?? []);
-    // Overdue relative to when the list is filtered
-    const now = new Date();
+    // Same rule as the red due date chip: due before today
     if (overdueOnly) {
       result = result.filter(
-        (t) => t.dueDate != null && new Date(t.dueDate as string) < now,
+        (t) => t.dueDate != null && isTaskOverdue(t.dueDate as string),
       );
     }
     if (activeAssignees.size > 0) {
