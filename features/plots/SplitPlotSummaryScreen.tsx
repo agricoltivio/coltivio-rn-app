@@ -81,7 +81,7 @@ export function SplitPlotSummaryScreen({
       geometry: turf.truncate(sp.geometry, {
         precision: 6,
         coordinates: 2,
-      }) as GeoJSON.MultiPolygon,
+      }),
       name: values.subPlots[i].name,
       size: sp.size,
     }));

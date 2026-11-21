@@ -1,5 +1,6 @@
 import { H1, H3, Body } from "@/theme/Typography";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -57,8 +58,15 @@ export function SplitPlotOnboardingScreen({
   const { t } = useTranslation();
   const { updateLocalSettings } = useLocalSettings();
 
+  // Mark completed on any dismissal (swipe down, back gesture, finish button), like the map draw onboarding
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("beforeRemove", () => {
+      updateLocalSettings("splitPlotOnboardingCompleted", true);
+    });
+    return unsubscribe;
+  }, [navigation, updateLocalSettings]);
+
   function handleFinish() {
-    updateLocalSettings("splitPlotOnboardingCompleted", true);
     navigation.goBack();
   }
 

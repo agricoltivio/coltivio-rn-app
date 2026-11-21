@@ -1,5 +1,6 @@
 import { H1, H3, Body } from "@/theme/Typography";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -56,8 +57,15 @@ export function MergePlotsOnboardingScreen() {
   const { updateLocalSettings } = useLocalSettings();
   const navigation = useNavigation();
 
+  // Mark completed on any dismissal (swipe down, back gesture, finish button), like the map draw onboarding
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("beforeRemove", () => {
+      updateLocalSettings("mergePlotsOnboardingCompleted", true);
+    });
+    return unsubscribe;
+  }, [navigation, updateLocalSettings]);
+
   function handleFinish() {
-    updateLocalSettings("mergePlotsOnboardingCompleted", true);
     navigation.goBack();
   }
 

@@ -60,8 +60,11 @@ export function StaticMapPreview({
     if (center || features.features.length === 0) {
       return { center, zoom };
     }
+    // 2D features: [west, south, east, north]
+    const [west, south, east, north] = turf.bbox(features);
+    const bounds: LngLatBounds = [west, south, east, north];
     return {
-      bounds: turf.bbox(features) as LngLatBounds,
+      bounds,
       padding: {
         top: FIT_PADDING,
         right: FIT_PADDING,

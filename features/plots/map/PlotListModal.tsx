@@ -160,7 +160,7 @@ export function PlotListModal({
         <ListItem.Chevron />
       </ListItem>
     ),
-    [handlePlotSelect],
+    [handlePlotSelect, t],
   );
 
   const renderItem = useCallback(
