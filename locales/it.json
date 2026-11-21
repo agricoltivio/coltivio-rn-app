@@ -127,6 +127,7 @@
     "yes": "Sì",
     "no": "No",
     "no_entries": "Ancora nessun elemento",
+    "week_short": "S{{week}}",
     "area_acres": "Superficie: {{area}}a",
     "dont_show_again": "Non mostrare più",
     "error": "Errore",

@@ -3,6 +3,7 @@ import {
   getISOWeekNumber,
   buildMultiYearTimelineData,
   getAllGridLines,
+  TimelineLabels,
 } from "./timeline-utils";
 import type { components } from "@/api/v1";
 
@@ -227,11 +228,15 @@ describe("buildMultiYearTimelineData", () => {
 // ---------------------------------------------------------------------------
 
 describe("getAllGridLines", () => {
+  const labels: TimelineLabels = {
+    locale: "en",
+    weekLabel: (weekNumber) => `W${weekNumber}`,
+  };
   const epochStart = new Date(2025, 0, 1); // Jan 1 2025 (local)
   const totalDays = 365;
 
   test("years: one entry, isMajor=true, label=year string, day=0 for 2025", () => {
-    const lines = getAllGridLines(totalDays, epochStart, "years");
+    const lines = getAllGridLines(totalDays, epochStart, "years", labels);
     expect(lines.length).toBeGreaterThan(0);
     lines.forEach((l) => expect(l.isMajor).toBe(true));
     const jan2025 = lines.find((l) => l.label === "2025");
@@ -240,7 +245,7 @@ describe("getAllGridLines", () => {
   });
 
   test("years: no lines with day < 0 or day > totalDays", () => {
-    const lines = getAllGridLines(totalDays, epochStart, "years");
+    const lines = getAllGridLines(totalDays, epochStart, "years", labels);
     lines.forEach((l) => {
       expect(l.day).toBeGreaterThanOrEqual(0);
       expect(l.day).toBeLessThanOrEqual(totalDays);
@@ -248,13 +253,13 @@ describe("getAllGridLines", () => {
   });
 
   test("months: 13 lines for a single-year epoch (includes Jan of following year at day=totalDays)", () => {
-    const lines = getAllGridLines(totalDays, epochStart, "months");
+    const lines = getAllGridLines(totalDays, epochStart, "months", labels);
     // epochStart=2025-01-01, totalDays=365 → endDate=2026-01-01 (day=365=totalDays), so 13 lines
     expect(lines).toHaveLength(13);
   });
 
   test("months: January has isMajor=true and includes year in label", () => {
-    const lines = getAllGridLines(totalDays, epochStart, "months");
+    const lines = getAllGridLines(totalDays, epochStart, "months", labels);
     const jan = lines.find((l) => l.label.startsWith("Jan"));
     expect(jan).toBeDefined();
     expect(jan!.isMajor).toBe(true);
@@ -263,14 +268,14 @@ describe("getAllGridLines", () => {
   });
 
   test("months: non-January months have isMajor=false", () => {
-    const lines = getAllGridLines(totalDays, epochStart, "months");
+    const lines = getAllGridLines(totalDays, epochStart, "months", labels);
     lines
       .filter((l) => !l.label.startsWith("Jan"))
       .forEach((l) => expect(l.isMajor).toBe(false));
   });
 
   test("months: no lines with day < 0 or day > totalDays", () => {
-    const lines = getAllGridLines(totalDays, epochStart, "months");
+    const lines = getAllGridLines(totalDays, epochStart, "months", labels);
     lines.forEach((l) => {
       expect(l.day).toBeGreaterThanOrEqual(0);
       expect(l.day).toBeLessThanOrEqual(totalDays);
@@ -278,7 +283,7 @@ describe("getAllGridLines", () => {
   });
 
   test("weeks: labels follow W{n} or 'MMM W{n}' format", () => {
-    const lines = getAllGridLines(totalDays, epochStart, "weeks");
+    const lines = getAllGridLines(totalDays, epochStart, "weeks", labels);
     expect(lines.length).toBeGreaterThan(0);
     lines.forEach((l) => {
       expect(l.label).toMatch(/W\d+/);
@@ -286,7 +291,7 @@ describe("getAllGridLines", () => {
   });
 
   test("weeks: no lines with day < 0 or day > totalDays", () => {
-    const lines = getAllGridLines(totalDays, epochStart, "weeks");
+    const lines = getAllGridLines(totalDays, epochStart, "weeks", labels);
     lines.forEach((l) => {
       expect(l.day).toBeGreaterThanOrEqual(0);
       expect(l.day).toBeLessThanOrEqual(totalDays);
@@ -294,11 +299,43 @@ describe("getAllGridLines", () => {
   });
 
   test("weeks: first week of month lines have isMajor=true, others false", () => {
-    const lines = getAllGridLines(totalDays, epochStart, "weeks");
+    const lines = getAllGridLines(totalDays, epochStart, "weeks", labels);
     lines.forEach((l) => {
       // Lines with month prefix (e.g. "Jan W1") should be major
       const hasMonthPrefix = /^[A-Z][a-z]{2} W/.test(l.label);
       expect(l.isMajor).toBe(hasMonthPrefix);
     });
+  });
+});
+
+describe("getAllGridLines localized", () => {
+  const epochStart = new Date(2025, 0, 1);
+  const totalDays = 365;
+  const germanLabels: TimelineLabels = {
+    locale: "de",
+    weekLabel: (weekNumber) => `KW${weekNumber}`,
+  };
+
+  test("months: month names in the given locale", () => {
+    const lines = getAllGridLines(
+      totalDays,
+      epochStart,
+      "months",
+      germanLabels,
+    );
+    // One line per month from January, index 9 is October
+    const october = lines[9];
+    expect(october.label).toBe(
+      new Intl.DateTimeFormat("de", { month: "short" }).format(
+        new Date(2025, 9, 1),
+      ),
+    );
+    expect(lines[0].label).toContain("2025");
+  });
+
+  test("weeks: week labels from the given formatter", () => {
+    const lines = getAllGridLines(totalDays, epochStart, "weeks", germanLabels);
+    lines.forEach((l) => expect(l.label).toMatch(/KW\d+$/));
+    expect(lines.some((l) => l.label.includes(" KW"))).toBe(true);
   });
 });
