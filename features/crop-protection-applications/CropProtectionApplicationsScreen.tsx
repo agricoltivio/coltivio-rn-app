@@ -3,7 +3,8 @@ import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { usePermissions } from "@/features/user/users.hooks";
 import { H2, Headline } from "@/theme/Typography";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { startOfEarliestYear } from "@/utils/date";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator } from "react-native";
 import { CropProtectionApplicationOverview } from "./components/CropProtectionApplicationOverview";
@@ -30,8 +31,18 @@ export function CropProtectionApplicationsScreen({
 
   const { applicationSummaries, isError: summariesError } =
     useCropProtectionApplicationSummariesOfFarmQuery();
+  // Entries of every year the summaries cover, not only the API's default range since 2020
+  const entriesFromDate = useMemo(
+    () =>
+      startOfEarliestYear(applicationSummaries?.map((summary) => summary.year)),
+    [applicationSummaries],
+  );
   const { cropProtectionApplications, isError: entriesError } =
-    useCropProtectionApplicationsQuery();
+    useCropProtectionApplicationsQuery(
+      entriesFromDate,
+      undefined,
+      !!entriesFromDate,
+    );
 
   const header = <H2>{title}</H2>;
 

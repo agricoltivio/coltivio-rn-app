@@ -9,11 +9,15 @@ import {
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-export function useSowingsQuery(enabled: boolean = true) {
+export function useSowingsQuery(
+  fromDate?: Date,
+  toDate?: Date,
+  enabled: boolean = true,
+) {
   const api = useApi();
   const { data, ...rest } = useQuery({
-    queryKey: queryKeys.sowings.all.queryKey,
-    queryFn: () => api.sowings.getSowings(),
+    queryKey: queryKeys.sowings.all(fromDate, toDate).queryKey,
+    queryFn: () => api.sowings.getSowings(fromDate, toDate),
     enabled,
   });
   return { sowings: data, ...rest };

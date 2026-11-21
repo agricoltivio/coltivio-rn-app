@@ -80,3 +80,13 @@ export function parseDateOnly(isoDate: string): Date {
   const [year, month, day] = isoDate.slice(0, 10).split("-").map(Number);
   return new Date(year, month - 1, day);
 }
+
+// Start of the earliest of the years, e.g. to fetch every entry the yearly summaries
+// cover (the list endpoints default to entries since 2020). Undefined while the years
+// aren't loaded yet; with no years, the start of the current year.
+export function startOfEarliestYear(
+  years: number[] | undefined,
+): Date | undefined {
+  if (!years) return undefined;
+  return new Date(Math.min(new Date().getFullYear(), ...years), 0, 1);
+}

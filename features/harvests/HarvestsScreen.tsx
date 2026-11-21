@@ -3,7 +3,8 @@ import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { usePermissions } from "@/features/user/users.hooks";
 import { H2, Headline } from "@/theme/Typography";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { startOfEarliestYear } from "@/utils/date";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator } from "react-native";
 import { HarvestOverview } from "./components/HarvestOverview";
@@ -25,7 +26,16 @@ export function HarvestsScreen({ navigation }: HarvestsScreenProps) {
 
   const { harvestSummaries, isError: summariesError } =
     useHarvestSummariesOfFarm();
-  const { harvests, isError: entriesError } = useHarvestsQuery();
+  // Entries of every year the summaries cover, not only the API's default range since 2020
+  const entriesFromDate = useMemo(
+    () => startOfEarliestYear(harvestSummaries?.map((summary) => summary.year)),
+    [harvestSummaries],
+  );
+  const { harvests, isError: entriesError } = useHarvestsQuery(
+    entriesFromDate,
+    undefined,
+    !!entriesFromDate,
+  );
 
   const header = <H2>{title}</H2>;
 

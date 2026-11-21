@@ -36,8 +36,15 @@ export function sowingsApi(client: FetchClient) {
       const { data } = await client.POST("/v1/sowings", { body: sowings });
       return data!.data.result;
     },
-    async getSowings(): Promise<Sowing[]> {
-      const { data } = await client.GET("/v1/sowings");
+    async getSowings(fromDate?: Date, toDate?: Date): Promise<Sowing[]> {
+      const { data } = await client.GET("/v1/sowings", {
+        params: {
+          query: {
+            fromDate: fromDate?.toISOString(),
+            toDate: toDate?.toISOString(),
+          },
+        },
+      });
       return data!.data.result;
     },
     async getSowingById(sowingId: string): Promise<Sowing> {
