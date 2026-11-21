@@ -129,6 +129,11 @@ function EditorContent({
   const api = useApi();
   const { t } = useTranslation();
   const isFirstRender = useRef(true);
+  // Latest onChange, so the effect below runs on content changes only, even with an inline parent callback
+  const onChangeRef = useRef(onChange);
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  });
 
   const editor = useEditorBridge({
     initialContent: markdownToHtml(value),
@@ -147,7 +152,7 @@ function EditorContent({
       return;
     }
     if (htmlContent !== undefined) {
-      onChange(nhm.translate(htmlContent));
+      onChangeRef.current(nhm.translate(htmlContent));
     }
   }, [htmlContent]);
 

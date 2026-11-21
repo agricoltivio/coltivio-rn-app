@@ -1,3 +1,4 @@
+import { AppLocale, isAppLocale } from "@/locales/i18n";
 import { WikiTranslationInput } from "@/api/wiki.api";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
@@ -15,8 +16,7 @@ import {
 } from "./wiki.hooks";
 import { WikiChangeRequestScreenProps } from "./navigation/wiki-routes";
 
-type LocaleKey = "de" | "en" | "it" | "fr";
-const LOCALES: LocaleKey[] = ["de", "en", "it", "fr"];
+const LOCALES: AppLocale[] = ["de", "en", "it", "fr"];
 
 type FormValues = {
   de_title: string;
@@ -38,10 +38,8 @@ export function WikiChangeRequestScreen({
   const theme = useTheme();
   const { entryId } = route.params;
 
-  const [activeLocale, setActiveLocale] = useState<LocaleKey>(
-    (locale as LocaleKey) in { de: true, en: true, it: true, fr: true }
-      ? (locale as LocaleKey)
-      : "de",
+  const [activeLocale, setActiveLocale] = useState<AppLocale>(
+    isAppLocale(locale) ? locale : "de",
   );
 
   const { entry } = useWikiDetailQuery(entryId);

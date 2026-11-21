@@ -13,6 +13,7 @@ import { WikiMySubmissionsScreenProps } from "./navigation/wiki-routes";
 import { WikiStatusBadge } from "./components/WikiStatusBadge";
 
 type StatusFilter = "active" | "resolved" | "all";
+const STATUS_FILTERS: StatusFilter[] = ["active", "resolved", "all"];
 
 const ACTIVE_STATUSES = new Set(["draft", "under_review", "changes_requested"]);
 const RESOLVED_STATUSES = new Set(["approved", "rejected"]);
@@ -48,6 +49,8 @@ export function WikiMySubmissionsScreen({
       ...localSettings.wikiSeenCrStatuses,
       ...snapshot,
     });
+    // Only when the change requests change: listing the settings would rerun it after its own update
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [changeRequests]);
 
   const filterLabels: Record<StatusFilter, string> = {
@@ -72,12 +75,10 @@ export function WikiMySubmissionsScreen({
           style={{ marginTop: theme.spacing.m, marginBottom: theme.spacing.s }}
         >
           <FilterChips
-            items={(["active", "resolved", "all"] as StatusFilter[]).map(
-              (f) => filterLabels[f],
-            )}
+            items={STATUS_FILTERS.map((f) => filterLabels[f])}
             selectedItems={new Set([filterLabels[filter]])}
             onToggle={(label) => {
-              const found = (Object.keys(filterLabels) as StatusFilter[]).find(
+              const found = STATUS_FILTERS.find(
                 (k) => filterLabels[k] === label,
               );
               if (found) setFilter(found);

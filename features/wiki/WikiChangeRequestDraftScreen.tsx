@@ -1,3 +1,4 @@
+import { AppLocale, isAppLocale } from "@/locales/i18n";
 import { WikiTranslationInput } from "@/api/wiki.api";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -25,8 +26,7 @@ import {
 } from "./wiki.hooks";
 import { WikiChangeRequestDraftScreenProps } from "./navigation/wiki-routes";
 
-type LocaleKey = "de" | "en" | "it" | "fr";
-const LOCALES: LocaleKey[] = ["de", "en", "it", "fr"];
+const LOCALES: AppLocale[] = ["de", "en", "it", "fr"];
 
 type FormValues = {
   de_title: string;
@@ -50,10 +50,8 @@ export function WikiChangeRequestDraftScreen({
   // Stable UUID for image uploads in case changeRequest.entryId is unavailable
   const imageEntryId = useRef(Crypto.randomUUID()).current;
 
-  const [activeLocale, setActiveLocale] = useState<LocaleKey>(
-    (locale as LocaleKey) in { de: true, en: true, it: true, fr: true }
-      ? (locale as LocaleKey)
-      : "de",
+  const [activeLocale, setActiveLocale] = useState<AppLocale>(
+    isAppLocale(locale) ? locale : "de",
   );
 
   const { changeRequests } = useMyChangeRequestsQuery();

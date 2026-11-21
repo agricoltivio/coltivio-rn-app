@@ -58,6 +58,8 @@ export function WikiListScreen({ navigation }: WikiListScreenProps) {
     if (!localSettings.wikiOnboardingCompleted) {
       navigation.navigate("WikiOnboarding");
     }
+    // Only on mount: finishing the onboarding sets the flag, which must not redirect again
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { entries: publicEntries, isLoading: publicLoading } =
@@ -217,7 +219,8 @@ export function WikiListScreen({ navigation }: WikiListScreenProps) {
             onToggle={(name) =>
               setSelectedCategories((prev) => {
                 const next = new Set(prev);
-                next.has(name) ? next.delete(name) : next.add(name);
+                if (next.has(name)) next.delete(name);
+                else next.add(name);
                 return next;
               })
             }
