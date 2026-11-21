@@ -45,7 +45,6 @@ export function SelectHarvestCropAndDateScreen({
   const preselectedPlotId = route.params?.plotId;
   const returnTo = route.params?.returnTo;
 
-  // Reset store on mount
   useEffect(() => {
     // Clears the add flow when it is left; the store action is stable
     return () => reset();
