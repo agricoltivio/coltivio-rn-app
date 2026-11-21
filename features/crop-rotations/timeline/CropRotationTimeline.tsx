@@ -28,6 +28,9 @@ import {
 } from "./ZoomLevelToggle";
 import { scheduleOnRN } from "react-native-worklets";
 
+// Stable empty list, so the memos below don't recompute on every render outside weeks mode
+const NO_GRID_LINES: GridLine[] = [];
+
 type CropRotationTimelineProps = {
   timelineData: TimelineData;
   onBarPress: (rotationId: string, plotName: string) => void;
@@ -184,9 +187,9 @@ export function CropRotationTimeline({
     (x: number) => {
       scrollX.value = x;
       const opts = { x, y: 0, animated: false };
-      (headerScrollRef.current as any)?.scrollTo?.(opts);
-      (weekHeaderScrollRef.current as any)?.scrollTo?.(opts);
-      (bodyHorizontalScrollRef.current as any)?.scrollTo?.(opts);
+      headerScrollRef.current?.scrollTo(opts);
+      weekHeaderScrollRef.current?.scrollTo(opts);
+      bodyHorizontalScrollRef.current?.scrollTo(opts);
     },
     [scrollX, headerScrollRef, weekHeaderScrollRef, bodyHorizontalScrollRef],
   );
@@ -274,7 +277,8 @@ export function CropRotationTimeline({
   if (zoomLevel === "weeks" && !gridCache.current.weeks) {
     gridCache.current.weeks = getAllWeekLines(totalDays, epochStart);
   }
-  const allWeekLines = zoomLevel === "weeks" ? gridCache.current.weeks! : [];
+  const allWeekLines =
+    zoomLevel === "weeks" ? gridCache.current.weeks! : NO_GRID_LINES;
 
   // Helper: compute center/halfSpan from barVisibleRange or fallback to todayDay
   const rangeCenter =
@@ -434,6 +438,8 @@ export function CropRotationTimeline({
   // Notify parent of initial zoom level on mount
   useEffect(() => {
     onZoomChange?.(zoomLevel);
+    // Only the initial level, later changes are reported by the zoom handler
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // FlatList helpers

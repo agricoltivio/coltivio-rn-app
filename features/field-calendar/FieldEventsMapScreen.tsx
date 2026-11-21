@@ -95,7 +95,7 @@ function FloatingLabel({
         }),
       ]),
     ]).start();
-  }, []);
+  }, [opacity, translateY]);
 
   return (
     <Marker lngLat={[lng, lat] as LngLat} anchor="bottom">
@@ -194,15 +194,19 @@ export function FieldEventsMapScreen({
   sortedEventsRef.current = sortedEvents;
 
   // Fly to farm location when map is ready
+  // By value, so a refetch of the farm doesn't fly again; also flies when the farm loads after the map
+  const farmLongitude = farm?.location?.coordinates[0];
+  const farmLatitude = farm?.location?.coordinates[1];
   useEffect(() => {
-    if (!mapVisible || !farm?.location?.coordinates) return;
-    const [lng, lat] = farm.location.coordinates;
-    cameraRef.current?.flyTo({
-      center: [lng, lat] as LngLat,
-      zoom: 14,
-      duration: 800,
-    });
-  }, [mapVisible]);
+    if (
+      !mapVisible ||
+      farmLongitude === undefined ||
+      farmLatitude === undefined
+    )
+      return;
+    const center: LngLat = [farmLongitude, farmLatitude];
+    cameraRef.current?.flyTo({ center, zoom: 14, duration: 800 });
+  }, [mapVisible, farmLongitude, farmLatitude]);
 
   function reset() {
     setIsPlaying(false);

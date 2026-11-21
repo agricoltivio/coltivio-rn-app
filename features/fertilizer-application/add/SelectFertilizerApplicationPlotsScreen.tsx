@@ -37,11 +37,13 @@ export function SelectFertilizerApplicationPlotsScreen({
     if (!localSettings.mapDrawOnboardingCompleted) {
       navigation.navigate("SelectPlotsOnboarding");
     }
+    // Only on mount: finishing the onboarding sets the flag, which must not redirect again
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     return resetSelectedPlots;
-  }, []);
+  }, [resetSelectedPlots]);
 
   const handleTogglePlot = useCallback(
     (plot: Plot) => {

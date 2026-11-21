@@ -7,9 +7,14 @@ import { FieldCalendarSettingsScreen } from "../FieldCalendarSettingsScreen";
 import { FieldCalendarOnboardingScreen } from "../FieldCalendarOnboardingScreen";
 import { FieldEventsMapScreen } from "../FieldEventsMapScreen";
 import { DefaultTheme } from "styled-components/native";
+import { NavigationProp } from "@react-navigation/native";
+import { RootStackParamList } from "@/navigation/rootStackTypes";
 import { View } from "react-native";
 
-export function renderFieldCalendarStack(theme: DefaultTheme, navigation: any) {
+export function renderFieldCalendarStack(
+  theme: DefaultTheme,
+  navigation: Omit<NavigationProp<RootStackParamList>, "getState">,
+) {
   return [
     <Stack.Screen
       key="field-calendar"

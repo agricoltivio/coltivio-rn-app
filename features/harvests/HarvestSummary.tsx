@@ -105,9 +105,6 @@ export function HarvestSummary({
       <View style={{ marginTop: theme.spacing.m }}>
         <StaticMapPreview features={features} height={250} />
       </View>
-      {/* <View>
-        <H2 style={{ marginTop: theme.spacing.xl }}>Infos</H2>
-      </View> */}
       <Card style={{ marginTop: theme.spacing.m }}>
         {hidePlotList && (
           <SummaryItem label={t("plots.plot")} value={harvestAreas[0]?.name} />

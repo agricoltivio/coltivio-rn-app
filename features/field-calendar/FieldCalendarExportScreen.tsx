@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react-native";
 import { Button } from "@/components/buttons/Button";
 import { ContentView } from "@/components/containers/ContentView";
 import { getYearRange, toLocalDateString } from "@/utils/date";
@@ -55,7 +56,7 @@ export function FieldCalendarExportScreen({
       navigation.goBack();
     },
     (error) => {
-      console.error(error);
+      Sentry.captureException(error);
       setError(t("errors.unexpected_retry_later"));
     },
   );

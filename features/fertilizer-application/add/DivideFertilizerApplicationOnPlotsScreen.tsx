@@ -8,7 +8,7 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { Body, H2, Subtitle, Title } from "@/theme/Typography";
 import { round } from "@/utils/math";
 import { splitByArea } from "@/utils/splitByArea";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Switch, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCreateFertilizerApplicationStore } from "./fertilizerApplication.store";
@@ -39,7 +39,11 @@ export function DivideFertilizerApplicationOnPlotsScreen({
   const [divisionPrecision, setDivisionPrecision] = useState(2);
   const [error, setError] = useState<string | null>(null);
 
-  const selectedPlots = Object.values(selectedPlotsById);
+  // Memoized, so the split below only reruns when the selection changes
+  const selectedPlots = useMemo(
+    () => Object.values(selectedPlotsById),
+    [selectedPlotsById],
+  );
 
   let quantityLabel: string;
   if (unit === "total_amount" || unit === "amount_per_hectare") {
@@ -65,7 +69,12 @@ export function DivideFertilizerApplicationOnPlotsScreen({
       });
       setQuantityByPlotId(next);
     }
-  }, [divideByArea, selectedPlotsById, divisionPrecision]);
+  }, [
+    divideByArea,
+    selectedPlots,
+    totalNumberOfApplications,
+    divisionPrecision,
+  ]);
 
   const totalDivided = +Object.values(quantityByPlotId)
     .reduce((total, val) => total + Number(val), 0)
@@ -79,6 +88,8 @@ export function DivideFertilizerApplicationOnPlotsScreen({
     ) {
       setError(null);
     }
+    // Only when the amounts change: with error as a dependency, the "not all divided yet" error would clear itself right away
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalDivided]);
 
   function handleRemove(plotId: string) {
@@ -93,10 +104,10 @@ export function DivideFertilizerApplicationOnPlotsScreen({
   function handleOnConfirm() {
     const remaining = round(totalNumberOfApplications - totalDivided, 2);
     if (remaining < 0) {
-      setError("Die verteilte Menge ist grösser als die verfügbare Menge");
+      setError(t("forms.validation.divided_amount_too_big"));
       return;
     } else if (remaining > 0) {
-      setError("Du hast noch nicht die gesamte Menge verteilt");
+      setError(t("forms.validation.not_all_divided"));
       return;
     }
     for (const fertilizerApplicationArea of selectedPlots) {
