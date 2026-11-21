@@ -8,8 +8,10 @@ import { useTheme } from "styled-components/native";
 
 const CHART_HEIGHT = 180;
 const Y_AXIS_WIDTH = 40;
-// Space before the first and after the last point: the date label and the value
-// above a point are centered on it, so half of a label ("11.11.26") has to fit
+// Space before the first and after the last point: the date label is centered on its
+// point, so half of it ("11.11.26") has to fit. The value above a point starts at the
+// point and runs to the right, so a long value on the last point (e.g. "1050.5") can
+// clip by a few pixels.
 const EDGE_SPACING = 32;
 const MIN_POINT_SPACING = 56;
 
