@@ -8,6 +8,10 @@ import { useTheme } from "styled-components/native";
 
 const CHART_HEIGHT = 180;
 const Y_AXIS_WIDTH = 40;
+// Space before the first and after the last point: the date label and the value
+// above a point are centered on it, so half of a label ("11.11.26") has to fit
+const EDGE_SPACING = 32;
+const MIN_POINT_SPACING = 56;
 
 // Weight timeline, entries are expected sorted by date ascending
 export function AnimalWeightChart({ weights }: { weights: AnimalWeight[] }) {
@@ -30,10 +34,13 @@ export function AnimalWeightChart({ weights }: { weights: AnimalWeight[] }) {
     }).format(parseDateOnly(weight.date)),
     dataPointText: String(weight.weightKg),
   }));
-  const spacing =
+  // Spread the points over the width; with many weights the chart scrolls instead
+  const fittingSpacing =
     weights.length > 1
-      ? Math.max(56, (chartWidth - Y_AXIS_WIDTH - 40) / (weights.length - 1))
-      : 56;
+      ? (chartWidth - Y_AXIS_WIDTH - 2 * EDGE_SPACING) / (weights.length - 1)
+      : MIN_POINT_SPACING;
+  const scrolls = fittingSpacing < MIN_POINT_SPACING;
+  const spacing = scrolls ? MIN_POINT_SPACING : fittingSpacing;
 
   return (
     <View
@@ -48,8 +55,8 @@ export function AnimalWeightChart({ weights }: { weights: AnimalWeight[] }) {
           width={chartWidth - Y_AXIS_WIDTH}
           yAxisLabelWidth={Y_AXIS_WIDTH}
           spacing={spacing}
-          initialSpacing={20}
-          endSpacing={20}
+          initialSpacing={EDGE_SPACING}
+          endSpacing={EDGE_SPACING}
           yAxisOffset={yAxisOffset}
           maxValue={Math.ceil(maxWeight * 1.05) - yAxisOffset}
           noOfSections={4}
@@ -69,7 +76,9 @@ export function AnimalWeightChart({ weights }: { weights: AnimalWeight[] }) {
           rulesColor={theme.colors.gray4}
           xAxisColor={theme.colors.gray3}
           yAxisColor={theme.colors.gray3}
-          scrollToEnd
+          // Scrolling a chart that fits would shift the first point under the y-axis
+          disableScroll={!scrolls}
+          scrollToEnd={scrolls}
         />
       )}
     </View>
