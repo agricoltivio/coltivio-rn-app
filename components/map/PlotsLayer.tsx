@@ -2,11 +2,13 @@ import { Plot } from "@/api/plots.api";
 import { hexToRgba, indexToDistinctColor, plotIdToColor } from "@/theme/theme";
 import {
   GeoJSONSource,
+  type GeoJSONSourceRef,
   Layer,
   type LngLat,
 } from "@maplibre/maplibre-react-native";
 import * as turf from "@turf/turf";
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
+import { useSelectedFeatureState } from "./useSelectedFeatureState";
 import { useTheme } from "styled-components/native";
 
 export type PlotColorMode = "plot" | "crop" | "usage" | "cutting";
@@ -65,10 +67,11 @@ export function PlotsLayer({
       features: plots.flatMap((plot) =>
         plot.geometry.coordinates.map((polygonCoords) => ({
           type: "Feature" as const,
+          // Feature id for the selection state, shared by all parts of the plot
+          id: plot.id,
           properties: {
             id: plot.id,
             name: plot.name,
-            selected: selectedPlotIds.includes(plot.id) ? 1 : 0,
             color: hexToRgba(
               resolvePlotColor(plot, plotColorMode),
               theme.map.defaultFillAlpha,
@@ -78,7 +81,10 @@ export function PlotsLayer({
         })),
       ),
     };
-  }, [plots, selectedPlotIds, plotColorMode, theme]);
+  }, [plots, plotColorMode, theme]);
+
+  const sourceRef = useRef<GeoJSONSourceRef>(null);
+  useSelectedFeatureState(sourceRef, selectedPlotIds, featureCollection);
 
   // One label per plot at the centroid of the full MultiPolygon geometry.
   // Built from the original plots array (not the flattened sub-polygons).
@@ -109,6 +115,7 @@ export function PlotsLayer({
   return (
     <>
       <GeoJSONSource
+        ref={sourceRef}
         id={`plots${sid}`}
         data={featureCollection}
         onPress={onPlotPress}
@@ -119,7 +126,7 @@ export function PlotsLayer({
           paint={{
             "fill-color": [
               "case",
-              ["==", ["get", "selected"], 1],
+              ["boolean", ["feature-state", "selected"], false],
               selectedFillColor,
               ["get", "color"],
             ],
@@ -132,13 +139,13 @@ export function PlotsLayer({
           paint={{
             "line-color": [
               "case",
-              ["==", ["get", "selected"], 1],
+              ["boolean", ["feature-state", "selected"], false],
               theme.colors.warning,
               "white",
             ],
             "line-width": [
               "case",
-              ["==", ["get", "selected"], 1],
+              ["boolean", ["feature-state", "selected"], false],
               3,
               theme.map.defaultStrokeWidth,
             ],
