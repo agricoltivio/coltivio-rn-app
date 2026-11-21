@@ -11,6 +11,22 @@ export type AnimalWithWaitingTimeFlag =
   components["schemas"]["GetV1AnimalsPositiveResponse"]["data"]["result"][number];
 export type AnimalType = AnimalWithWaitingTimeFlag["type"];
 
+// All animal types, in the order the app lists them
+export const ANIMAL_TYPES = [
+  "goat",
+  "sheep",
+  "cow",
+  "horse",
+  "donkey",
+  "pig",
+  "deer",
+] as const satisfies readonly AnimalType[];
+
+// For values from selects and other strings
+export function isAnimalType(value: string): value is AnimalType {
+  return ANIMAL_TYPES.some((animalType) => animalType === value);
+}
+
 export type Animal =
   components["schemas"]["PostV1AnimalsPositiveResponse"]["data"];
 

@@ -1,3 +1,5 @@
+import { ANIMAL_TYPES, AnimalType } from "@/api/animals.api";
+import * as Sentry from "@sentry/react-native";
 import { Button } from "@/components/buttons/Button";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -11,19 +13,10 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3, Subtitle } from "@/theme/Typography";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { View, Alert } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCreateDrugMutation } from "./drugs.hooks";
 import { CreateDrugScreenProps } from "./navigation/animals-routes";
-
-type AnimalType =
-  | "goat"
-  | "sheep"
-  | "cow"
-  | "horse"
-  | "donkey"
-  | "pig"
-  | "deer";
 
 type DoseUnit =
   | "tablet"
@@ -55,16 +48,6 @@ interface DrugFormValues {
   receivedFrom: string;
   drugTreatment: TreatmentDefFormValues[];
 }
-
-const ANIMAL_TYPES: AnimalType[] = [
-  "goat",
-  "sheep",
-  "cow",
-  "horse",
-  "donkey",
-  "pig",
-  "deer",
-];
 
 const DOSE_UNITS: DoseUnit[] = [
   "ml",
@@ -121,7 +104,11 @@ export function CreateDrugScreen({ route, navigation }: CreateDrugScreenProps) {
         navigation.goBack();
       }
     },
-    (error) => console.error(error),
+    (error) => {
+      // The save failed: tell the user, the form stays filled for another try
+      Sentry.captureException(error);
+      Alert.alert(t("common.error"), t("errors.unexpected_retry"));
+    },
   );
 
   const watchedTreatments = watch("drugTreatment");
@@ -285,7 +272,7 @@ export function CreateDrugScreen({ route, navigation }: CreateDrugScreenProps) {
               (type) => type === currentType || !usedTypes.has(type),
             );
             const filteredOptions = animalTypeOptions.filter((opt) =>
-              availableTypes.includes(opt.value as AnimalType),
+              availableTypes.some((type) => type === opt.value),
             );
 
             return (

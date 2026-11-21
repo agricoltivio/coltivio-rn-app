@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react-native";
 import { useApi } from "@/api/api";
 import { AnimalType } from "@/api/animals.api";
 import { GestationSetting } from "@/api/breeding.api";
@@ -145,7 +146,8 @@ export function BreedingSettingsScreen(_props: BreedingSettingsScreenProps) {
         await registerPushTokenAsync(api.users);
       }
     } catch (error) {
-      console.error(error);
+      // Permission or push token registration failed; the reminder setting is saved anyway
+      Sentry.captureException(error);
     }
   }
 

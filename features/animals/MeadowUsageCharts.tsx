@@ -1,3 +1,4 @@
+import { ANIMAL_TYPES, AnimalType } from "@/api/animals.api";
 import { Card } from "@/components/card/Card";
 import { YearMultiSelect } from "@/components/charts/YearMultiSelect";
 import { Text } from "@/components/text/Text";
@@ -11,16 +12,6 @@ import { Bar, CartesianChart, type ChartBounds } from "victory-native";
 import { MeadowMonthlyUsage } from "./meadow-usage-utils";
 
 // Fixed order, as in the API
-const ANIMAL_TYPES = [
-  "goat",
-  "sheep",
-  "cow",
-  "horse",
-  "donkey",
-  "pig",
-  "deer",
-] as const;
-type AnimalType = (typeof ANIMAL_TYPES)[number];
 
 type AverageAnimalsRow = { month: number } & Record<AnimalType, number>;
 type OccupiedDaysRow = { month: number; days: number };

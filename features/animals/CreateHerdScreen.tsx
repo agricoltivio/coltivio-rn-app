@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react-native";
 import { OutdoorScheduleCreateInput } from "@/api/herds.api";
 import { Button } from "@/components/buttons/Button";
 import { IonIconButton } from "@/components/buttons/IconButton";
@@ -11,7 +12,7 @@ import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { formatOutdoorScheduleSummary } from "./outdoor-schedule-summary";
-import { FlatList, View } from "react-native";
+import { FlatList, View, Alert } from "react-native";
 import { Text } from "@/components/text/Text";
 import { useTheme } from "styled-components/native";
 import { useAnimalsQuery } from "./animals.hooks";
@@ -143,7 +144,11 @@ export function CreateHerdScreen({ route, navigation }: CreateHerdScreenProps) {
         navigation.goBack();
       }
     },
-    (error) => console.error(error),
+    (error) => {
+      // The save failed: tell the user, the form stays filled for another try
+      Sentry.captureException(error);
+      Alert.alert(t("common.error"), t("errors.unexpected_retry"));
+    },
   );
 
   function onSubmit(data: CreateHerdFormValues) {

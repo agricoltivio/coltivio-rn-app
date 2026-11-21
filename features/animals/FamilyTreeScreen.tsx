@@ -32,6 +32,8 @@ function buildLayout(
   nodes: FamilyTreeNode[],
   edges: FamilyTreeEdge[],
 ): { layoutMap: LayoutMap; canvasWidth: number; canvasHeight: number } {
+  // The default export is how dagre documents its use
+  // eslint-disable-next-line import/no-named-as-default-member
   const g = new dagre.graphlib.Graph();
   g.setGraph({
     rankdir: "TB",
@@ -48,6 +50,7 @@ function buildLayout(
     // dagre edge: parentId → childId (top-down)
     g.setEdge(e.parentId, e.childId);
   }
+  // eslint-disable-next-line import/no-named-as-default-member
   dagre.layout(g);
   const layoutMap: LayoutMap = {};
   for (const n of nodes) {
@@ -153,9 +156,7 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
     [animals],
   );
 
-  const { familyTree, isLoading } = useFamilyTreeQuery(
-    animalType ?? ("goat" as AnimalType),
-  );
+  const { familyTree, isLoading } = useFamilyTreeQuery(animalType ?? "goat");
 
   // Pan + zoom gesture state
   const translateX = useSharedValue(0);
@@ -201,7 +202,17 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
     translateY.value = y;
     savedX.value = x;
     savedY.value = y;
-  }, [layoutMap, focusedAnimalId]);
+    // centeredRef keeps it to once, the shared values are stable
+  }, [
+    layoutMap,
+    focusedAnimalId,
+    screenWidth,
+    screenHeight,
+    translateX,
+    translateY,
+    savedX,
+    savedY,
+  ]);
 
   // Connected node ids for highlight
   const connectedIds = useMemo(() => {

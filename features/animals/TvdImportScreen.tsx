@@ -1,4 +1,4 @@
-import { AnimalType } from "@/api/animals.api";
+import { AnimalType, isAnimalType } from "@/api/animals.api";
 import { ApiError, useApi } from "@/api/api";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -28,6 +28,8 @@ export function TvdImportScreen({ navigation }: TvdImportScreenProps) {
     if (!localSettings.tvdImportOnboardingCompleted) {
       navigation.replace("TvdImportOnboarding");
     }
+    // Only on mount: finishing the onboarding sets the flag, which must not redirect again
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [selectedFile, setSelectedFile] = useState<SelectedFile | null>(null);
   const [animalType, setAnimalType] = useState<AnimalType | null>(null);
@@ -131,7 +133,9 @@ export function TvdImportScreen({ navigation }: TvdImportScreenProps) {
             label={t("forms.labels.type")}
             data={animalTypeData}
             value={animalType ?? undefined}
-            onChange={(value) => setAnimalType(value as AnimalType)}
+            onChange={(value) => {
+              if (isAnimalType(value)) setAnimalType(value);
+            }}
           />
         </View>
 
