@@ -132,7 +132,6 @@ export default Sentry.wrap(function App() {
                               </NavigationContainer>
                             </KeyboardProvider>
                           </GestureHandlerRootView>
-                          {/* <BottomSheetModalTest /> */}
                         </OnboardingProvider>
                       </PortalProvider>
                     </LocalSettingsProvider>
