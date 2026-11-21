@@ -47,23 +47,32 @@ export function ScrollView({
       });
     }
   };
-  const handleScrollEvent = showHeaderOnScroll ? handleScroll : undefined;
+  // Calls both our handler and a passed one: a list using this as its scroll
+  // component passes its own onScroll, which it needs for virtualization
+  const { onScroll: passedOnScroll, ...otherProps } = props;
+  const handleScrollEvent: RnScrollViewProps["onScroll"] =
+    showHeaderOnScroll || passedOnScroll
+      ? (event) => {
+          if (showHeaderOnScroll) handleScroll(event);
+          passedOnScroll?.(event);
+        }
+      : undefined;
   return keyboardAware ? (
     <KeyboardAwareScrollView
       bottomOffset={keyboardBottomOffset}
       keyboardShouldPersistTaps="handled"
-      onScroll={handleScrollEvent}
       scrollEventThrottle={16}
       contentContainerStyle={{ paddingBottom: 30 }}
-      {...props}
+      {...otherProps}
+      onScroll={handleScrollEvent}
     />
   ) : (
     <RnScrollView
       keyboardShouldPersistTaps="handled"
-      onScroll={handleScrollEvent}
       scrollEventThrottle={16}
       contentContainerStyle={{ paddingBottom: 30 }}
-      {...props}
+      {...otherProps}
+      onScroll={handleScrollEvent}
     />
   );
 }

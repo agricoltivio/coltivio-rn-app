@@ -5,6 +5,7 @@ import {
   getMinMaxIso,
   getYearRange,
   combineDateAndTime,
+  startOfEarliestYear,
 } from "./date";
 
 describe("isInfiniteDate", () => {
@@ -120,5 +121,23 @@ describe("combineDateAndTime", () => {
     const result = combineDateAndTime(date, time);
     expect(result.getHours()).toBe(0);
     expect(result.getMinutes()).toBe(0);
+  });
+});
+
+describe("startOfEarliestYear", () => {
+  test("undefined while the years aren't loaded", () => {
+    expect(startOfEarliestYear(undefined)).toBeUndefined();
+  });
+
+  test("January 1st of the earliest year", () => {
+    expect(startOfEarliestYear([2024, 2015, 2019])).toEqual(
+      new Date(2015, 0, 1),
+    );
+  });
+
+  test("no years: start of the current year", () => {
+    expect(startOfEarliestYear([])).toEqual(
+      new Date(new Date().getFullYear(), 0, 1),
+    );
   });
 });
