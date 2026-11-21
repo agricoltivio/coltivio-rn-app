@@ -4,9 +4,22 @@ import { RefObject, useEffect, useRef } from "react";
 
 // Marks the selected features via maplibre's feature state instead of a property in
 // the GeoJSON, so a selection change only restyles the layer and doesn't re-parse the
-// source. Paint expressions read it with ["boolean", ["feature-state", "selected"], false].
-// Features need a top-level `id`; features sharing an id (e.g. the parts of a plot)
-// share the state.
+// source.
+//
+// Contract for a layer using it:
+// - Every feature needs a top-level `id` (not only in `properties`): GeoJSONSource has
+//   no promoteId prop in maplibre-react-native 11.5, and without an id
+//   setFeatureState matches nothing. Features sharing an id (e.g. the parts of a
+//   plot) share the state, so they highlight together.
+// - Paint expressions read the state with
+//   ["boolean", ["feature-state", "selected"], false], never ["get", "selected"].
+// - Keep the selection out of the feature collection's memo dependencies, otherwise
+//   the source is rebuilt on every selection change again.
+// - Pass the feature collection as `data`: maplibre drops the state of features
+//   whose data changed, so the selection is applied again after a refetch.
+//
+// The selection lives in native maplibre state, not in the GeoJSON: to debug a
+// missing highlight, check the feature ids and the paint expressions first.
 export function useSelectedFeatureState(
   sourceRef: RefObject<GeoJSONSourceRef | null>,
   selectedIds: string[],
