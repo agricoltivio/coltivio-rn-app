@@ -6,7 +6,7 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { DivideHarvestOnPlotsScreenProps } from "../navigation/harvest-routes";
 import { Body, H2, Subtitle, Title } from "@/theme/Typography";
 import { splitByArea, validateDivision } from "@/utils/splitByArea";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Switch, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCreateHarvestStore } from "./harvest.store";
@@ -39,7 +39,11 @@ export function DivideHarvestOnPlotsScreen({
   );
   const [error, setError] = useState<string | null>(null);
 
-  const harvestAreas = Object.values(selectedHarvestPlotsById);
+  // Memoized, so the split below only reruns when the selection changes
+  const harvestAreas = useMemo(
+    () => Object.values(selectedHarvestPlotsById),
+    [selectedHarvestPlotsById],
+  );
 
   let quantityLabel: string = "";
   switch (harvest!.unit) {
@@ -72,7 +76,7 @@ export function DivideHarvestOnPlotsScreen({
       });
       setQuantityByPlotId(next);
     }
-  }, [divideByArea, selectedHarvestPlotsById, divisionPrecision]);
+  }, [divideByArea, harvestAreas, totalProducedUnits, divisionPrecision]);
 
   const division = validateDivision(
     harvestAreas.map((harvestArea) => quantityByPlotId[harvestArea.plotId]),

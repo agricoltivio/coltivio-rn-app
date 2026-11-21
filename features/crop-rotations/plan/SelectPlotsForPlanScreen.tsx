@@ -29,12 +29,14 @@ export function SelectPlotsForPlanScreen({
 
   useEffect(() => {
     return resetSelectedPlots;
-  }, []);
+  }, [resetSelectedPlots]);
 
   useEffect(() => {
     if (!localSettings.selectPlotsForPlanOnboardingCompleted) {
       navigation.navigate("MapDrawOnboarding", { variant: "cropRotation" });
     }
+    // Only on mount: finishing the onboarding sets the flag, which must not redirect again
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleTogglePlot = useCallback(

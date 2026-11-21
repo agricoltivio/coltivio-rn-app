@@ -347,11 +347,8 @@ export function PlotRotationsEditor({
           bars,
         };
       })
-      .filter(Boolean) as {
-      plotId: string;
-      plotName: string;
-      bars: TimelineBar[];
-    }[];
+      // TypeScript infers the non-null type from the predicate
+      .filter((timelinePlot) => timelinePlot !== null);
 
     return {
       totalDays,

@@ -34,8 +34,9 @@ export function SelectTillageDateScreen({
 
   // Reset store on mount
   useEffect(() => {
+    // Clears the add flow when it is left; the store action is stable
     return () => reset();
-  }, []);
+  }, [reset]);
 
   // Launched with a plot already chosen (plot details drawer, or the FAB on the
   // plot-scoped tillages list) — preselect it in the store so later steps can skip

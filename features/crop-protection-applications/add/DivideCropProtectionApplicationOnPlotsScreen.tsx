@@ -8,7 +8,7 @@ import { DivideCropProtectionApplicationOnPlotsScreenProps } from "../navigation
 import { Body, H2, Subtitle, Title } from "@/theme/Typography";
 import { round } from "@/utils/math";
 import { splitByArea } from "@/utils/splitByArea";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Switch, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useAddCropProtectionApplicationStore } from "./cropProtectionApplication.store";
@@ -38,7 +38,11 @@ export function DivideCropProtectionApplicationOnPlotsScreen({
   const [divisionPrecision, setDivisionPrecision] = useState(2);
   const [error, setError] = useState<string | null>(null);
 
-  const selectedPlots = Object.values(selectedPlotsById);
+  // Memoized, so the split below only reruns when the selection changes
+  const selectedPlots = useMemo(
+    () => Object.values(selectedPlotsById),
+    [selectedPlotsById],
+  );
 
   let quantityLabel: string;
   if (unit === "total_amount" || unit === "amount_per_hectare") {
@@ -64,7 +68,12 @@ export function DivideCropProtectionApplicationOnPlotsScreen({
       });
       setQuantityByPlotId(next);
     }
-  }, [divideByArea, selectedPlotsById, divisionPrecision]);
+  }, [
+    divideByArea,
+    selectedPlots,
+    totalNumberOfApplications,
+    divisionPrecision,
+  ]);
 
   const totalDivided = +Object.values(quantityByPlotId)
     .reduce((total, val) => total + Number(val), 0)
@@ -78,6 +87,8 @@ export function DivideCropProtectionApplicationOnPlotsScreen({
     ) {
       setError(null);
     }
+    // Only when the amounts change: with error as a dependency, the "not all divided yet" error would clear itself right away
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalDivided]);
 
   function handleRemove(plotId: string) {
