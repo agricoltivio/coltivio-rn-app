@@ -52,9 +52,6 @@ export function useCreateCropProtectionApplicationPresetMutation(
         preset,
       );
     },
-    onError: (error) => {
-      console.error(error);
-    },
     onSuccess: (preset) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.cropProtectionApplicationPresets.all.queryKey,

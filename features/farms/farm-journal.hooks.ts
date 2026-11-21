@@ -27,6 +27,8 @@ export function useCreateFarmJournalEntryMutation() {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
+    // The screens catch the error and show their own message
+    meta: { handlesError: true },
     mutationFn: (body: components["schemas"]["PostV1FarmJournalRequestBody"]) =>
       api.farmJournal.createJournalEntry(body),
     onSuccess: () => {
@@ -41,6 +43,8 @@ export function useUpdateFarmJournalEntryMutation() {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
+    // The screens catch the error and show their own message
+    meta: { handlesError: true },
     mutationFn: ({
       entryId,
       body,

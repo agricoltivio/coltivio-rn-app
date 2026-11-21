@@ -81,6 +81,8 @@ export function useCreateAnimalWeightMutation(onSuccess?: () => void) {
   const api = useApi();
   const invalidate = useInvalidateWeights();
   return useMutation({
+    // The screens catch the error and show their own message
+    meta: { handlesError: true },
     mutationFn: ({
       animalId,
       input,
@@ -99,6 +101,8 @@ export function useUpdateAnimalWeightMutation(onSuccess?: () => void) {
   const api = useApi();
   const invalidate = useInvalidateWeights();
   return useMutation({
+    // The screens catch the error and show their own message
+    meta: { handlesError: true },
     mutationFn: ({
       weightId,
       input,
@@ -139,6 +143,8 @@ export function useCreateAnimalHeatMutation(onSuccess?: () => void) {
   const api = useApi();
   const queryClient = useQueryClient();
   return useMutation({
+    // The screens catch the error and show their own message
+    meta: { handlesError: true },
     mutationFn: ({
       animalId,
       input,
@@ -170,6 +176,8 @@ export function useUpdateAnimalHeatMutation(onSuccess?: () => void) {
   const api = useApi();
   const queryClient = useQueryClient();
   return useMutation({
+    // The screens catch the error and show their own message
+    meta: { handlesError: true },
     mutationFn: ({
       heatId,
       input,

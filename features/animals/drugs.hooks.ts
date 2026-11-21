@@ -91,6 +91,8 @@ export function useDeleteDrugMutation(
 export function useCheckDrugInUseMutation() {
   const api = useApi();
   return useMutation({
+    // The screens catch the error and show their own message
+    meta: { handlesError: true },
     mutationFn: (drugId: string) => {
       return api.drugs.checkDrugInUse(drugId);
     },

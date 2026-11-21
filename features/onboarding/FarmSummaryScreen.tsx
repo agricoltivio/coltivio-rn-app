@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react-native";
 import { ContentView } from "@/components/containers/ContentView";
 import { FarmSummaryScreenProps } from "@/features/onboarding/navigation/onboarding-routes";
 import { useTranslation } from "react-i18next";
@@ -15,9 +16,10 @@ export function FarmSummaryScreen({ navigation }: FarmSummaryScreenProps) {
   const { data } = useOnboarding();
   const theme = useTheme();
 
+  // Runs in the background, a failure is only reported, not shown
   const syncMissingLocalIdsMutation = useSyncMissingLocalIdsMutation(
     () => {},
-    (error) => console.error(error),
+    (error) => Sentry.captureException(error),
   );
   const createFarmMutation = useCreateFarmMutation(() => {
     syncMissingLocalIdsMutation.mutate();

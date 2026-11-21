@@ -42,9 +42,6 @@ export function useCreateTillagePresetMutation(
     mutationFn: (preset: TillagePresetCreateInput) => {
       return api.tillagePresets.createTillagePreset(preset);
     },
-    onError: (error) => {
-      console.error(error);
-    },
     onSuccess: (preset) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.tillagePresets.all.queryKey,

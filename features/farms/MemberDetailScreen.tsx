@@ -91,8 +91,8 @@ export function MemberDetailScreen({
     try {
       await Promise.all(pendingSaves);
       navigation.goBack();
-    } catch (error) {
-      console.error(error);
+    } catch {
+      // The global mutation error handler already reported it and alerted
     }
   }
 
