@@ -47,11 +47,11 @@ export function SelectTillagePlotsScreen({
 
   const handleDrawComplete = useCallback(
     (
-      intersections: Array<{
+      intersections: {
         plot: Plot;
         geometry: GeoJSON.MultiPolygon;
         size: number;
-      }>,
+      }[],
     ) => {
       for (const { plot, geometry, size } of intersections) {
         putPlot({

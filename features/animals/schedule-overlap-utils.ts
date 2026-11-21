@@ -5,7 +5,7 @@ import { addWeeks, addMonths, addYears } from "date-fns";
 function expandOccurrences(
   schedule: OutdoorScheduleCreateInput,
   rangeEnd: Date,
-): Array<{ from: Date; to: Date }> {
+): { from: Date; to: Date }[] {
   const from = new Date(schedule.startDate);
   const to = schedule.endDate ? new Date(schedule.endDate) : new Date(from);
 
@@ -18,7 +18,7 @@ function expandOccurrences(
     until && new Date(until) < rangeEnd ? new Date(until) : rangeEnd;
 
   const durationMs = to.getTime() - from.getTime();
-  const ranges: Array<{ from: Date; to: Date }> = [];
+  const ranges: { from: Date; to: Date }[] = [];
   let current = new Date(from);
 
   while (current <= effectiveUntil) {

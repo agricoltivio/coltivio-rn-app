@@ -8,8 +8,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
-import { useTheme } from "styled-components/native";
-import styled from "styled-components/native";
+import styled, { useTheme } from "styled-components/native";
 import { MarkdownEditor } from "./components/MarkdownEditor";
 import {
   useCreateWikiEntryMutation,

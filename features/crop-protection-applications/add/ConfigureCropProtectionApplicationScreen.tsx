@@ -1,4 +1,3 @@
-import { CropProtectionApplicationPresetCreateInput } from "@/api/cropProtectionApplicationPresets.api";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";

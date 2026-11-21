@@ -1,4 +1,3 @@
-import { AnimalWithWaitingTimeFlag } from "@/api/animals.api";
 import { StatCard } from "@/components/card/StatCard";
 import { ChartLegend } from "@/components/charts/ChartLegend";
 import { animalTypeColor, hslToHex } from "@/components/charts/chartColors";

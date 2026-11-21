@@ -8,7 +8,6 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { EditCropRotationScreenProps } from "./navigation/crop-rotations-routes";
 import { H2, H3 } from "@/theme/Typography";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCropsQuery } from "../crops/crops.hooks";

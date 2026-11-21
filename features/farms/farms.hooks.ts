@@ -6,14 +6,12 @@ import {
   FarmCreated,
   FarmInvite,
   FarmUpdateInput,
-  MemberPermission,
   PermissionAccess,
   PermissionFeature,
 } from "@/api/farms.api";
 import { queryKeys } from "@/cache/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { OnboardingData } from "../onboarding/OnboardingContext";
-import { User } from "@/api/user.api";
 import * as Linking from "expo-linking";
 import { usePaymentSheet } from "@stripe/stripe-react-native";
 import { applePayParams, googlePayParams } from "@/utils/stripe";

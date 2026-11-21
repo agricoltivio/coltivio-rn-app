@@ -31,7 +31,7 @@ export function TasksOnboardingScreen({
   }
 
   const introSteps = [
-    <View>
+    <View key="step-1">
       <H1 style={{ color: theme.colors.primary }}>
         {t("tasks.onboarding.step1_heading")}
       </H1>
@@ -39,7 +39,7 @@ export function TasksOnboardingScreen({
         {t("tasks.onboarding.step1_body")}
       </H3>
     </View>,
-    <View>
+    <View key="step-2">
       <H1 style={{ color: theme.colors.primary }}>
         {t("tasks.onboarding.step2_heading")}
       </H1>
