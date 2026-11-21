@@ -1714,6 +1714,7 @@
   },
   "wiki": {
     "wiki": "Wiki",
+    "editor_placeholder": "Scrivi qualcosa …",
     "private": "Privato",
     "pending_section": "Le mie proposte",
     "status": {

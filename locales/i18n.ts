@@ -11,13 +11,17 @@ export type AppLocale = "de" | "fr" | "it" | "en";
 const defaultLocale: AppLocale = "de";
 const supportedLocales: AppLocale[] = ["de", "fr", "it", "en"];
 
+export function isAppLocale(
+  code: string | null | undefined,
+): code is AppLocale {
+  return supportedLocales.some((locale) => locale === code);
+}
+
 // Clamps to a supported language so i18n.language is always one of ours,
 // which the settings highlight and the Accept-Language header rely on.
 function resolveDeviceLocale(): AppLocale {
   const code = Localization.getLocales()[0]?.languageCode;
-  return supportedLocales.includes(code as AppLocale)
-    ? (code as AppLocale)
-    : defaultLocale;
+  return isAppLocale(code) ? code : defaultLocale;
 }
 
 export const resources = {
