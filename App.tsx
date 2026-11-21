@@ -88,9 +88,12 @@ const queryClient = new QueryClient({
       const handledByScreen =
         mutation.meta?.handlesError ?? mutation.options.onError !== undefined;
       if (handledByScreen) return;
-      // An expired session signs the user out, no alert on top of that
-      if (error instanceof ApiError && error.status === 401) return;
-      Sentry.captureException(error);
+      // Rejections by the API (validation, conflicts, expired session) are expected and only
+      // need the alert; everything else is reported. A 401 gets the alert too: with a merely
+      // stale token the user stays on the screen and would otherwise get no feedback.
+      const isExpectedRejection =
+        error instanceof ApiError && error.status >= 400 && error.status < 500;
+      if (!isExpectedRejection) Sentry.captureException(error);
       Alert.alert(i18n.t("common.error"), i18n.t("errors.unexpected_retry"));
     },
   }),

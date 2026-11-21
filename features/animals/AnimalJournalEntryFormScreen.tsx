@@ -220,6 +220,8 @@ export function AnimalJournalEntryFormScreen({
         }
       }
       navigation.goBack();
+    } catch {
+      // Create / update failures get the global mutation alert; stay on the form to retry
     } finally {
       setIsSubmitting(false);
     }

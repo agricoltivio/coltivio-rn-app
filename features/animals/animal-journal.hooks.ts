@@ -25,8 +25,6 @@ export function useCreateJournalEntryMutation() {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
-    // The screens catch the error and show their own message
-    meta: { handlesError: true },
     mutationFn: ({
       animalId,
       body,
@@ -46,8 +44,6 @@ export function useUpdateJournalEntryMutation() {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
-    // The screens catch the error and show their own message
-    meta: { handlesError: true },
     mutationFn: ({
       entryId,
       animalId,

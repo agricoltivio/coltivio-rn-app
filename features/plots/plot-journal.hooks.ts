@@ -25,8 +25,6 @@ export function useCreatePlotJournalEntryMutation() {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
-    // The screens catch the error and show their own message
-    meta: { handlesError: true },
     mutationFn: ({
       plotId,
       body,
@@ -46,8 +44,6 @@ export function useUpdatePlotJournalEntryMutation() {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
-    // The screens catch the error and show their own message
-    meta: { handlesError: true },
     mutationFn: ({
       entryId,
       body,
