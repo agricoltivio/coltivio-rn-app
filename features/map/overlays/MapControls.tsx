@@ -34,7 +34,7 @@ export const MapControls = ({
     if (isControlled) {
       isExpanded.value = expanded;
     }
-  }, [expanded, isControlled]);
+  }, [expanded, isControlled, isExpanded]);
 
   const toggleOverlay = () => {
     const next = !isExpanded.value;

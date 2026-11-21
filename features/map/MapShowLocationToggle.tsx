@@ -31,6 +31,9 @@ export const MapShowLocationToggle = ({
       setShowLocationEnabled(false);
       onShowLocationChange && onShowLocationChange(false);
     }
+    // Only when the permission changes: the parent may pass an inline callback, listing it would
+    // report the same state again on every render
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [permission]);
 
   const toggleShowLocation = async () => {

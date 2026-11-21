@@ -25,6 +25,9 @@ import { isSelfIntersecting } from "../../plot-geometry";
 import { useTheme } from "styled-components/native";
 import { usePlotsMapContext } from "../plots-map-mode";
 
+// Stable empty list, so the layer memos don't recompute on every render outside split mode
+const NO_POLYGONS: GeoJSON.MultiPolygon[] = [];
+
 export type SplitModeLayersHandle = {
   handleMapPress: (lngLat: LngLat) => void;
   handlePolylineCut: () => void;
@@ -45,7 +48,8 @@ export const SplitModeLayers = forwardRef<SplitModeLayersHandle>(
       LngLat[] | null
     >(null);
 
-    const currentPolygons = mode.type === "split" ? mode.currentPolygons : [];
+    const currentPolygons =
+      mode.type === "split" ? mode.currentPolygons : NO_POLYGONS;
     const activeToolMode =
       mode.type === "split" ? mode.activeToolMode : ("none" as const);
     const hasMultiplePolygons = currentPolygons.length >= 2;

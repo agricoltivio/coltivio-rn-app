@@ -82,17 +82,21 @@ export const AdjustModeLayers = forwardRef<AdjustModeLayersHandle>(
           drawingRef.current?.loadCoordinates(loadedRings[0].coordinates);
         });
       }
+      // Only when another plot is adjusted: rereading the same plot would drop the edits in progress
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [plot?.id]);
 
     // When mode.activeRingIndex advances (via ADVANCE_ADJUST_RING dispatch),
     // load the new ring's coordinates into the DrawingOverlay.
+    const activeAdjustRingIndex =
+      mode.type === "adjust" ? mode.activeRingIndex : -1;
     useEffect(() => {
-      if (mode.type !== "adjust") return;
-      const ring = ringsRef.current[mode.activeRingIndex];
+      if (activeAdjustRingIndex < 0) return;
+      const ring = ringsRef.current[activeAdjustRingIndex];
       if (ring && ring.coordinates.length > 0) {
         drawingRef.current?.loadCoordinates(ring.coordinates);
       }
-    }, [mode.type === "adjust" ? mode.activeRingIndex : -1]);
+    }, [activeAdjustRingIndex, drawingRef]);
 
     useImperativeHandle(ref, () => ({
       handleMapPress(_lngLat: LngLat) {
