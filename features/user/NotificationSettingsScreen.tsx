@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react-native";
 import { useApi } from "@/api/api";
 import { Button } from "@/components/buttons/Button";
 import { ContentView } from "@/components/containers/ContentView";
@@ -63,7 +64,8 @@ export function NotificationSettingsScreen(
         await registerPushTokenAsync(api.users);
       }
     } catch (error) {
-      console.error(error);
+      // Permission or push token registration failed, the setting itself is saved
+      Sentry.captureException(error);
     }
   }
 

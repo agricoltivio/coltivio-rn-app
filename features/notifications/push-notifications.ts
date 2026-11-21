@@ -34,7 +34,7 @@ setBeforeSignOutHandler(async (authToken) => {
   }
   await userApi(createAuthClient(authToken))
     .deletePushToken(storedPushToken)
-    .catch((error) => console.error(error));
+    .catch((error) => Sentry.captureException(error));
   await SecureStore.deleteItemAsync(PUSH_TOKEN_STORAGE_KEY).catch(() => {});
 });
 

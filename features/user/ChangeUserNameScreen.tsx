@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react-native";
 import { useSession } from "@/auth/SessionProvider";
 import { queryKeys } from "@/cache/query-keys";
 import { Button } from "@/components/buttons/Button";
@@ -38,7 +39,7 @@ export function ChangeUserNameScreen({
       data: { full_name: name },
     });
     if (error || !data) {
-      console.error(error?.code || error?.message);
+      Sentry.captureException(error);
       setError(t("errors.unexpected_retry"));
     } else {
       queryClient.invalidateQueries({ queryKey: queryKeys.users._def });

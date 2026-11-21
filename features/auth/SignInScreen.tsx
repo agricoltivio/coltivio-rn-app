@@ -39,9 +39,9 @@ export function SignInScreen({ navigation }: SignInScreenProps) {
         error.code === "invalid_credentials" ||
         error.code === "validation_failed"
       ) {
-        setError("Email oder Passwort falsch");
+        setError(t("errors.wrong_credentials"));
       } else {
-        setError("Unerwarteter Fehler");
+        setError(t("errors.unexpected_retry"));
       }
     } else {
       setSession(data.session);

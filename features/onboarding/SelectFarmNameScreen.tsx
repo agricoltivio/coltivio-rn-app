@@ -17,6 +17,8 @@ export function SelectFarmNameScreen({
   const { t } = useTranslation();
   const { data, setData, clear } = useOnboarding();
 
+  // Fresh onboarding data on mount; clear isn't memoized in the context
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => clear(), []);
 
   return (

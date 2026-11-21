@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react-native";
 import { supabase } from "@/supabase/supabase";
 import { Session, User } from "@supabase/supabase-js";
 import { useQueryClient } from "@tanstack/react-query";
@@ -59,10 +60,8 @@ export function useSession() {
 // if the user's session is terminated. This should only be registered once.
 AppState.addEventListener("change", (state) => {
   if (state === "active") {
-    console.log("active");
     supabase.auth.startAutoRefresh();
   } else {
-    console.log("stop refresh");
     supabase.auth.stopAutoRefresh();
   }
 });
@@ -124,7 +123,9 @@ export function SessionProvider({ children }: PropsWithChildren) {
   async function clearSession() {
     if (token && beforeSignOutHandler) {
       // Sign-out must never be blocked by a failing cleanup
-      await beforeSignOutHandler(token).catch((error) => console.error(error));
+      await beforeSignOutHandler(token).catch((error) =>
+        Sentry.captureException(error),
+      );
     }
     await supabase.auth.signOut();
     setToken(null);
