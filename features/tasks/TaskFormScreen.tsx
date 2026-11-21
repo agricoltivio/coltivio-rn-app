@@ -712,40 +712,34 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
   // Initialize form when editing and task is loaded
   React.useEffect(() => {
     if (!isEditing || !task || initialized) return;
-    const taskDetail = task;
     reset({
-      name: taskDetail.name,
-      description: taskDetail.description ?? "",
-      assigneeId: taskDetail.assigneeId ?? undefined,
-      dueDate:
-        taskDetail.dueDate != null
-          ? new Date(taskDetail.dueDate as string)
-          : null,
-      checklistItems: taskDetail.checklistItems.map((item) => ({
+      name: task.name,
+      description: task.description ?? "",
+      assigneeId: task.assigneeId ?? undefined,
+      dueDate: task.dueDate != null ? new Date(task.dueDate as string) : null,
+      checklistItems: task.checklistItems.map((item) => ({
         id: item.id,
         name: item.name,
         dueDate: item.dueDate != null ? String(item.dueDate) : undefined,
       })),
     });
-    setLabels(taskDetail.labels);
-    if (taskDetail.recurrence != null) {
+    setLabels(task.labels);
+    if (task.recurrence != null) {
       setRecurrence({
-        frequency: taskDetail.recurrence.frequency,
-        interval: taskDetail.recurrence.interval,
+        frequency: task.recurrence.frequency,
+        interval: task.recurrence.interval,
         until:
-          taskDetail.recurrence.until != null
-            ? String(taskDetail.recurrence.until)
-            : null,
+          task.recurrence.until != null ? String(task.recurrence.until) : null,
       });
       setLoadedRecurrenceExtras({
-        frequency: taskDetail.recurrence.frequency,
+        frequency: task.recurrence.frequency,
         dueDate:
-          taskDetail.dueDate != null
-            ? toLocalDateString(new Date(taskDetail.dueDate as string))
+          task.dueDate != null
+            ? toLocalDateString(new Date(task.dueDate as string))
             : undefined,
-        byWeekday: taskDetail.recurrence.byWeekday ?? undefined,
-        byMonthDay: taskDetail.recurrence.byMonthDay ?? undefined,
-        count: taskDetail.recurrence.count ?? undefined,
+        byWeekday: task.recurrence.byWeekday ?? undefined,
+        byMonthDay: task.recurrence.byMonthDay ?? undefined,
+        count: task.recurrence.count ?? undefined,
       });
     }
     setInitialized(true);
