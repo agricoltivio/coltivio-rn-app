@@ -1,3 +1,4 @@
+import { CloseButton } from "@/components/buttons/CloseButton";
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
@@ -19,7 +20,6 @@ import {
 import { PlotJournalEntryScreenProps } from "./navigation/plots-routes";
 import { PlotJournalImage } from "@/api/plot-journal.api";
 import { IonIconButton } from "@/components/buttons/IconButton";
-import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -189,8 +189,9 @@ export function PlotJournalEntryScreen({
             alignItems: "center",
           }}
         >
-          <TouchableOpacity
+          <CloseButton
             onPress={() => setFullscreenImage(null)}
+            color="white"
             style={{
               position: "absolute",
               top:
@@ -199,9 +200,7 @@ export function PlotJournalEntryScreen({
               zIndex: 10,
               padding: theme.spacing.xs,
             }}
-          >
-            <Ionicons name="close" size={30} color="white" />
-          </TouchableOpacity>
+          />
 
           {fullscreenImage && (
             <Image

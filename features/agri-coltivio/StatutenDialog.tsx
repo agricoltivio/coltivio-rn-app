@@ -1,8 +1,8 @@
+import { CloseButton } from "@/components/buttons/CloseButton";
 import { Button } from "@/components/buttons/Button";
 import { Checkbox } from "@/components/inputs/Checkbox";
 import { Switch } from "@/components/inputs/Switch";
 import { Body, H2 } from "@/theme/Typography";
-import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, ScrollView, TouchableOpacity, View } from "react-native";
@@ -53,9 +53,7 @@ export function StatutenDialog({
             paddingTop: theme.spacing.s,
           }}
         >
-          <TouchableOpacity onPress={handleClose} hitSlop={12}>
-            <Ionicons name="close" size={26} color={theme.colors.gray1} />
-          </TouchableOpacity>
+          <CloseButton onPress={handleClose} />
         </View>
 
         <ScrollView
