@@ -107,10 +107,7 @@ export function useCreateFertilizerApplicationsMutation(
         fertilizerApplications,
       );
     },
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
+    onError,
     onSuccess: (fertilizerApplication) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.fertilizerApplications._def,
@@ -136,9 +133,6 @@ export function useUpdateFertilizerApplicationMutation(onSuccess?: () => void) {
         fertilizerApplicationId,
         input,
       ),
-    onError: (error) => {
-      console.error(error);
-    },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.fertilizerApplications._def,

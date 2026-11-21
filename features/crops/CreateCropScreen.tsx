@@ -20,21 +20,18 @@ export function CreateCropScreen({ navigation }: CreateCropScreenProps) {
   const previousScreen =
     navigation.getState().routes[navigation.getState().index - 1];
 
-  const createForageMutation = useCreateCropMutation(
-    (crop) => {
-      if (previousScreen.name === "AddPlotSummary") {
-        navigation.popTo("AddPlotSummary", { cropId: crop.id });
-      } else if (previousScreen.name === "SelectHarvestCropAndDate") {
-        navigation.popTo("SelectHarvestCropAndDate", { cropId: crop.id });
-      } else if (previousScreen.name === "CreateSeed") {
-        // Back to the new seed with the crop preselected
-        navigation.popTo("CreateSeed", { cropId: crop.id });
-      } else {
-        navigation.goBack();
-      }
-    },
-    (error) => console.error(error),
-  );
+  const createForageMutation = useCreateCropMutation((crop) => {
+    if (previousScreen.name === "AddPlotSummary") {
+      navigation.popTo("AddPlotSummary", { cropId: crop.id });
+    } else if (previousScreen.name === "SelectHarvestCropAndDate") {
+      navigation.popTo("SelectHarvestCropAndDate", { cropId: crop.id });
+    } else if (previousScreen.name === "CreateSeed") {
+      // Back to the new seed with the crop preselected
+      navigation.popTo("CreateSeed", { cropId: crop.id });
+    } else {
+      navigation.goBack();
+    }
+  });
 
   function onCreateCrop({ waitingTimeInYears, ...data }: CropFormValues) {
     createForageMutation.mutate({

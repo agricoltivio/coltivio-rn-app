@@ -78,6 +78,8 @@ export function useSetTaskStatusMutation(taskId: string) {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
+    // onError below only rolls back, the failure still gets the alert
+    meta: { handlesError: false },
     mutationFn: (status: TaskStatus) => api.tasks.setTaskStatus(taskId, status),
     onMutate: async () => {
       // Cancel in-flight refetches so they don't overwrite the optimistic update
@@ -124,6 +126,8 @@ export function useToggleChecklistItemMutation(taskId: string) {
   const queryClient = useQueryClient();
   const api = useApi();
   return useMutation({
+    // onError below only rolls back, the failure still gets the alert
+    meta: { handlesError: false },
     mutationFn: ({ itemId, done }: { itemId: string; done: boolean }) =>
       api.tasks.toggleChecklistItem(taskId, itemId, done),
     onMutate: async ({ itemId, done }) => {

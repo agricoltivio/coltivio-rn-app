@@ -81,6 +81,8 @@ export function useCreateAnimalWeightMutation(onSuccess?: () => void) {
   const api = useApi();
   const invalidate = useInvalidateWeights();
   return useMutation({
+    // The screens catch the error and show their own message
+    meta: { handlesError: true },
     mutationFn: ({
       animalId,
       input,
@@ -99,6 +101,8 @@ export function useUpdateAnimalWeightMutation(onSuccess?: () => void) {
   const api = useApi();
   const invalidate = useInvalidateWeights();
   return useMutation({
+    // The screens catch the error and show their own message
+    meta: { handlesError: true },
     mutationFn: ({
       weightId,
       input,
@@ -139,6 +143,8 @@ export function useCreateAnimalHeatMutation(onSuccess?: () => void) {
   const api = useApi();
   const queryClient = useQueryClient();
   return useMutation({
+    // The screens catch the error and show their own message
+    meta: { handlesError: true },
     mutationFn: ({
       animalId,
       input,
@@ -157,6 +163,8 @@ export function useCreateAnimalHeatsBatchMutation(onSuccess?: () => void) {
   const api = useApi();
   const queryClient = useQueryClient();
   return useMutation({
+    // The screens catch the error and show their own message
+    meta: { handlesError: true },
     mutationFn: (input: AnimalHeatsBatchCreateInput) =>
       api.breeding.createHeatsBatch(input),
     onSuccess: () => {
@@ -170,6 +178,8 @@ export function useUpdateAnimalHeatMutation(onSuccess?: () => void) {
   const api = useApi();
   const queryClient = useQueryClient();
   return useMutation({
+    // The screens catch the error and show their own message
+    meta: { handlesError: true },
     mutationFn: ({
       heatId,
       input,
@@ -218,6 +228,8 @@ export function useUpdateGestationSettingsMutation(onSuccess?: () => void) {
   const api = useApi();
   const queryClient = useQueryClient();
   return useMutation({
+    // The screens catch the error and show their own message
+    meta: { handlesError: true },
     mutationFn: (input: GestationSettingsUpdateInput) =>
       api.breeding.updateGestationSettings(input),
     onSuccess: () => {

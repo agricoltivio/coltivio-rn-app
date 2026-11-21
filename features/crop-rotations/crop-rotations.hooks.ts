@@ -61,10 +61,7 @@ export function useCreateCropRotationMutation(
       });
       onSuccess && onSuccess(data);
     },
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
+    onError,
   });
 }
 
@@ -86,10 +83,7 @@ export function useCreateCropRotationsByCropMutation(
       });
       onSuccess && onSuccess(data);
     },
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
+    onError,
   });
 }
 
@@ -111,10 +105,7 @@ export function useCreateCropRotationsByPlotMutation(
       });
       onSuccess && onSuccess(data);
     },
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
+    onError,
   });
 }
 
@@ -174,10 +165,7 @@ export function useUpdateCropRotationMutation(
       });
       onSuccess && onSuccess(data);
     },
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
+    onError,
   });
 }
 
@@ -200,10 +188,7 @@ export function useDeleteCropRotationMutation(
       });
       onSuccess && onSuccess();
     },
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
+    onError,
   });
 }
 
@@ -235,10 +220,7 @@ export function usePlanCropRotationsMutation(
       });
       onSuccess && onSuccess(data);
     },
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
+    onError,
   });
 }
 
@@ -279,10 +261,7 @@ export function useCreateDraftPlanMutation(
       });
       onSuccess && onSuccess(data);
     },
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
+    onError,
   });
 }
 
@@ -307,10 +286,7 @@ export function useUpdateDraftPlanMutation(
       });
       onSuccess && onSuccess(data);
     },
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
+    onError,
   });
 }
 
@@ -329,10 +305,7 @@ export function useDeleteDraftPlanMutation(
       });
       onSuccess && onSuccess();
     },
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
+    onError,
   });
 }
 
@@ -354,9 +327,6 @@ export function useApplyDraftPlanMutation(
       });
       onSuccess && onSuccess();
     },
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
+    onError,
   });
 }
