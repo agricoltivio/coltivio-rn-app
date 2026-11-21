@@ -11,8 +11,6 @@ import { useTheme } from "styled-components/native";
 import { Bar, CartesianChart, type ChartBounds } from "victory-native";
 import { MeadowMonthlyUsage } from "./meadow-usage-utils";
 
-// Fixed order, as in the API
-
 type AverageAnimalsRow = { month: number } & Record<AnimalType, number>;
 type OccupiedDaysRow = { month: number; days: number };
 

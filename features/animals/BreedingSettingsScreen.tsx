@@ -129,25 +129,26 @@ export function BreedingSettingsScreen(_props: BreedingSettingsScreenProps) {
       updateRemindersMutation.mutate(settings);
       return;
     }
+    let permission: Awaited<ReturnType<typeof getNotificationPermissionAsync>>;
     try {
-      const permission = await getNotificationPermissionAsync({
+      permission = await getNotificationPermissionAsync({
         requestPermission: true,
       });
-      // Denied and blocked both need the system settings, so both show the hint
-      setNotificationPermissionDenied(
-        permission != null && !permission.granted,
-      );
-      // null: simulator/emulator without push support, the setting can still be changed
-      if (permission != null && !permission.granted) {
-        return;
-      }
-      updateRemindersMutation.mutate(settings);
-      if (permission != null) {
-        await registerPushTokenAsync(api.users);
-      }
     } catch (error) {
-      // Permission or push token registration failed; the reminder setting is saved anyway
+      // The permission request failed, the setting isn't saved
       Sentry.captureException(error);
+      return;
+    }
+    // Denied and blocked both need the system settings, so both show the hint
+    setNotificationPermissionDenied(permission != null && !permission.granted);
+    // null: simulator/emulator without push support, the setting can still be changed
+    if (permission != null && !permission.granted) {
+      return;
+    }
+    updateRemindersMutation.mutate(settings);
+    if (permission != null) {
+      // Reports its own failures to Sentry; the reminder setting is saved anyway
+      await registerPushTokenAsync(api.users).catch(() => {});
     }
   }
 

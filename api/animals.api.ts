@@ -22,6 +22,15 @@ export const ANIMAL_TYPES = [
   "deer",
 ] as const satisfies readonly AnimalType[];
 
+// Fails to compile when the API adds an animal type that is missing above, so no list
+// built from ANIMAL_TYPES silently leaves it out
+export const ANIMAL_TYPES_COMPLETE: Exclude<
+  AnimalType,
+  (typeof ANIMAL_TYPES)[number]
+> extends never
+  ? true
+  : never = true;
+
 // For values from selects and other strings
 export function isAnimalType(value: string): value is AnimalType {
   return ANIMAL_TYPES.some((animalType) => animalType === value);
