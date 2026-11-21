@@ -37,10 +37,6 @@ export function PlotDetailsDrawer() {
       archivedPlots.find((p) => p.id === selectedPlotId))
     : undefined;
 
-  const handleExpandBottomDrawer = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-
   const handleSheetChange = useCallback((index: number) => {
     if (index >= 0) setSheetIndex(index);
   }, []);

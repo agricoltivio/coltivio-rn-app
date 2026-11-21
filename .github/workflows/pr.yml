@@ -29,6 +29,18 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn lint:ci
 
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn typecheck
+
   format:
     name: Prettier
     runs-on: ubuntu-latest
