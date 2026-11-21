@@ -259,11 +259,13 @@ export function CompactDatePicker({
               position: "absolute",
               ...popoverStyle,
               zIndex: 9999,
-              backgroundColor: "rgba(40,40,40, 0.9)",
+              // Opaque, so the dialog content below doesn't show through the calendar
+              backgroundColor: theme.colors.white,
               borderRadius: 12,
               shadowColor: "#000",
               shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.3,
+              // Lighter than on the former dark popover, still lifts it off a light dialog
+              shadowOpacity: 0.2,
               shadowRadius: 12,
               elevation: 8,
               overflow: "hidden",
@@ -277,7 +279,8 @@ export function CompactDatePicker({
                   display="inline"
                   minimumDate={minimumDate}
                   maximumDate={maximumDate}
-                  themeVariant="dark"
+                  themeVariant="light"
+                  accentColor={theme.colors.primary}
                   onValueChange={(_event, selectedDate) => {
                     // Defer so the native UIDatePicker finishes its delegate
                     // callback before React re-renders
@@ -288,7 +291,7 @@ export function CompactDatePicker({
                   title={t("buttons.confirm")}
                   onPress={dismiss}
                   style={{ margin: theme.spacing.s }}
-                  type="accent"
+                  type="primary"
                   fontSize={16}
                 />
               </>
