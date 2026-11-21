@@ -66,6 +66,7 @@ export function AnimalWeightField({
               }
               placeholder={t("breeding.no_weight")}
               disabled={disabled}
+              optional
             />
           </View>
         </Pressable>
