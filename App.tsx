@@ -133,6 +133,7 @@ export default Sentry.wrap(function App() {
                             </KeyboardProvider>
                           </GestureHandlerRootView>
                           {/* <ComponentsShowcase /> */}
+                          {/* <BottomSheetModalTest /> */}
                         </OnboardingProvider>
                       </PortalProvider>
                     </LocalSettingsProvider>
