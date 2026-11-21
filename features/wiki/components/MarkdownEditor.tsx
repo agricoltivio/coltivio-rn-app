@@ -1,6 +1,8 @@
 import {
   DEFAULT_TOOLBAR_ITEMS,
+  PlaceholderBridge,
   RichText,
+  TenTapStartKit,
   Toolbar,
   useEditorBridge,
   useEditorContent,
@@ -139,6 +141,13 @@ function EditorContent({
     initialContent: markdownToHtml(value),
     autofocus: true,
     avoidIosKeyboard: true,
+    // The default placeholder is English only
+    bridgeExtensions: [
+      ...TenTapStartKit,
+      PlaceholderBridge.configureExtension({
+        placeholder: t("wiki.editor_placeholder"),
+      }),
+    ],
   });
 
   const htmlContent = useEditorContent(editor, {
