@@ -163,7 +163,8 @@ export function SelectSowingSeedAndDateScreen({
               <RHSelect
                 name="seedId"
                 control={control}
-                label={t("sowings.seed_optional")}
+                label={t("sowings.seed")}
+                optional
                 clearable
                 data={
                   seeds?.map((seed) => ({

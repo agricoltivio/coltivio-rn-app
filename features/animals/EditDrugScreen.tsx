@@ -303,6 +303,7 @@ export function EditDrugScreen({ route, navigation }: EditDrugScreenProps) {
           />
 
           <RHTextAreaInput
+            optional
             label={t("common.notes")}
             control={control}
             name="notes"

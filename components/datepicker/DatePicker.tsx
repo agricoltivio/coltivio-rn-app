@@ -34,6 +34,8 @@ export type DatePickerProps = {
   minimumDate?: Date;
   /** Latest selectable date */
   maximumDate?: Date;
+  /** Adds a muted "(optional)" after the label */
+  optional?: boolean;
 };
 
 export function DatePicker({
@@ -48,6 +50,7 @@ export function DatePicker({
   clearable = true,
   minimumDate,
   maximumDate,
+  optional,
 }: DatePickerProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -116,6 +119,7 @@ export function DatePicker({
           <TextInput
             value={formatDate(date)}
             label={label}
+            optional={optional}
             error={error}
             disabled={disabled}
             onBlur={onBlur}

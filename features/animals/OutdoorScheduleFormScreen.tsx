@@ -255,7 +255,8 @@ export function OutdoorScheduleFormScreen({
                 name="meadowId"
                 control={control}
                 clearable
-                label={t("animals.meadows.meadow_optional")}
+                label={t("animals.meadows.meadow")}
+                optional
                 placeholder={t("animals.meadows.no_meadow")}
                 data={(meadows ?? [])
                   // Archived meadows only when this schedule already uses one
@@ -392,11 +393,8 @@ export function OutdoorScheduleFormScreen({
               name="endDate"
               control={control}
               mode="date"
-              label={
-                repeat === "none"
-                  ? t("animals.end_date_optional")
-                  : t("animals.end_date")
-              }
+              label={t("animals.end_date")}
+              optional={repeat === "none"}
               minimumDate={startDate}
               rules={{
                 validate: (value) => {
@@ -421,7 +419,8 @@ export function OutdoorScheduleFormScreen({
               name="untilDate"
               control={control}
               mode="date"
-              label={t("animals.schedule_repeat.until_optional")}
+              label={t("animals.schedule_repeat.until")}
+              optional
               minimumDate={startDate}
               rules={{
                 validate: (value) =>

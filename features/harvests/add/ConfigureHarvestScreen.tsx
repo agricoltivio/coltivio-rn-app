@@ -215,7 +215,8 @@ export function ConfigureHarvestScreen({
           <RHSelect
             name="conservationMethod"
             control={control}
-            label={t("forms.labels.conservation_optional")}
+            label={t("forms.labels.conservation")}
+            optional
             error={errors.conservationMethod?.message}
             data={conservationOptions}
           />
@@ -247,7 +248,8 @@ export function ConfigureHarvestScreen({
           <RHTextAreaInput
             name="additionalNotes"
             control={control}
-            label={t("forms.labels.additional_notes_optional")}
+            label={t("forms.labels.additional_notes")}
+            optional
           />
         </View>
       </ScrollView>

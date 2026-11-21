@@ -41,14 +41,16 @@ export function CropProtectionProductForm({
         <RHTextInput
           name="description"
           control={control}
-          label={t("forms.labels.description_optional")}
+          label={t("forms.labels.description")}
+          optional
           error={errors.description?.message}
         />
         {/* Federal registration number (Zulassungsnummer) from the BLV register */}
         <RHTextInput
           name="registrationNumber"
           control={control}
-          label={t("forms.labels.registration_number_optional")}
+          label={t("forms.labels.registration_number")}
+          optional
           placeholder={"W-1234"}
           error={errors.registrationNumber?.message}
         />

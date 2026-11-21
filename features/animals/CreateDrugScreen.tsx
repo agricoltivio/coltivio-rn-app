@@ -249,6 +249,7 @@ export function CreateDrugScreen({ route, navigation }: CreateDrugScreenProps) {
           />
 
           <RHTextAreaInput
+            optional
             label={t("common.notes")}
             control={control}
             name="notes"

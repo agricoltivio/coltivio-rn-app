@@ -447,7 +447,8 @@ export function ParasiteCheckFormScreen({
 
         <View style={{ marginTop: theme.spacing.m, gap: theme.spacing.xs }}>
           <TextInput
-            label={t("parasite_checks.name_optional")}
+            label={t("parasite_checks.name")}
+            optional
             value={name}
             onChangeText={setName}
           />
@@ -612,7 +613,8 @@ export function ParasiteCheckFormScreen({
         {/* Context: action taken and comparison */}
         <View style={{ marginTop: theme.spacing.l, gap: theme.spacing.xs }}>
           <Select
-            label={t("parasite_checks.treatment_optional")}
+            label={t("parasite_checks.treatment")}
+            optional
             value={treatmentId}
             data={treatmentOptions}
             enableSearch
@@ -621,13 +623,15 @@ export function ParasiteCheckFormScreen({
           {/* A base check with re-checks cannot become a re-check itself */}
           {!existingCheck?.rechecks.length && (
             <Select
-              label={t("parasite_checks.previous_check_optional")}
+              label={t("parasite_checks.previous_check")}
+              optional
               value={previousCheckId}
               data={previousCheckOptions}
               onChange={setPreviousCheckId}
             />
           )}
           <TextInput
+            optional
             label={t("common.notes")}
             value={notes}
             onChangeText={setNotes}

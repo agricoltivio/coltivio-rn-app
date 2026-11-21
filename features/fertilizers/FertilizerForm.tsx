@@ -39,14 +39,16 @@ export function FertilizerForm({
         <RHTextInput
           name="description"
           control={control}
-          label={t("forms.labels.description_optional")}
+          label={t("forms.labels.description")}
+          optional
           error={errors.description?.message}
         />
         {/* BLW registration or authorization number; freely tradable fertilizers have none */}
         <RHTextInput
           name="registrationNumber"
           control={control}
-          label={t("forms.labels.registration_number_optional")}
+          label={t("forms.labels.registration_number")}
+          optional
           error={errors.registrationNumber?.message}
         />
         <RHSelect
