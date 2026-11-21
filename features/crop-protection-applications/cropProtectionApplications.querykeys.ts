@@ -3,7 +3,7 @@ import { createQueryKeys } from "@lukemorales/query-key-factory";
 export const cropProtectionApplicationsQueryKeys = createQueryKeys(
   "cropProtectionApplications",
   {
-    all: null,
+    all: (fromDate?: Date, toDate?: Date) => [fromDate, toDate],
     byId: (applicationId: string) => [applicationId],
     byPlotId: (plotId: string) => [plotId],
     years: null,

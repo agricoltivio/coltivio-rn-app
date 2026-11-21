@@ -14,7 +14,8 @@ export function useCropProtectionApplicationsQuery(
 ) {
   const api = useApi();
   const { data, ...rest } = useQuery({
-    queryKey: queryKeys.cropProtectionApplications.all.queryKey,
+    queryKey: queryKeys.cropProtectionApplications.all(fromDate, toDate)
+      .queryKey,
     queryFn: () =>
       api.cropProtectionApplications.getCropProtectionApplications(
         fromDate,
