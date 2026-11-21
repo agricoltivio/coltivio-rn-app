@@ -1,5 +1,5 @@
 import { toLocalDateString } from "@/utils/date";
-import { TaskCreateInput, TaskDetail, TaskUpdateInput } from "@/api/tasks.api";
+import { TaskCreateInput, TaskUpdateInput } from "@/api/tasks.api";
 import { Button } from "@/components/buttons/Button";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -67,6 +67,7 @@ type EntityType = (typeof ENTITY_TYPES)[number];
 
 // Which sub-view is active when entityType === "animal"
 type AnimalSubView = "animals" | "herds";
+const ANIMAL_SUB_VIEWS: AnimalSubView[] = ["animals", "herds"];
 
 type ChecklistGenerationModalProps = {
   visible: boolean;
@@ -236,7 +237,8 @@ function ChecklistGenerationModal({
   function toggleAnimalType(type: AnimalType) {
     setSelectedAnimalTypes((prev) => {
       const next = new Set(prev);
-      next.has(type) ? next.delete(type) : next.add(type);
+      if (next.has(type)) next.delete(type);
+      else next.add(type);
       return next;
     });
   }
@@ -405,7 +407,7 @@ function ChecklistGenerationModal({
               }}
             >
               {entityType === "animal" &&
-                (["animals", "herds"] as AnimalSubView[]).map((view) => (
+                ANIMAL_SUB_VIEWS.map((view) => (
                   <Chip
                     key={view}
                     label={
@@ -710,7 +712,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
   // Initialize form when editing and task is loaded
   React.useEffect(() => {
     if (!isEditing || !task || initialized) return;
-    const taskDetail = task as TaskDetail;
+    const taskDetail = task;
     reset({
       name: taskDetail.name,
       description: taskDetail.description ?? "",
@@ -747,7 +749,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
       });
     }
     setInitialized(true);
-  }, [task, isEditing, initialized]);
+  }, [task, isEditing, initialized, reset]);
 
   const createMutation = useCreateTaskMutation(() => {
     navigation.popTo("TaskList");
