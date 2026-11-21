@@ -163,6 +163,8 @@ export function useCreateAnimalHeatsBatchMutation(onSuccess?: () => void) {
   const api = useApi();
   const queryClient = useQueryClient();
   return useMutation({
+    // The screens catch the error and show their own message
+    meta: { handlesError: true },
     mutationFn: (input: AnimalHeatsBatchCreateInput) =>
       api.breeding.createHeatsBatch(input),
     onSuccess: () => {
@@ -226,6 +228,8 @@ export function useUpdateGestationSettingsMutation(onSuccess?: () => void) {
   const api = useApi();
   const queryClient = useQueryClient();
   return useMutation({
+    // The screens catch the error and show their own message
+    meta: { handlesError: true },
     mutationFn: (input: GestationSettingsUpdateInput) =>
       api.breeding.updateGestationSettings(input),
     onSuccess: () => {

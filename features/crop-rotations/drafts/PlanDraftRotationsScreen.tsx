@@ -1,6 +1,6 @@
 import { toLocalDateString } from "@/utils/date";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { View, ActivityIndicator } from "react-native";
+import { Alert, View, ActivityIndicator } from "react-native";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { usePlanCropRotationsStore } from "../plan/plan-crop-rotations.store";
@@ -101,6 +101,7 @@ export function PlanDraftRotationsScreen({
     },
     () => {
       setSaving(false);
+      Alert.alert(t("common.error"), t("errors.unexpected_retry"));
     },
   );
 
