@@ -1,6 +1,7 @@
 import { H1, H3, Body } from "@/theme/Typography";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { Ionicons } from "@expo/vector-icons";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
@@ -57,8 +58,15 @@ export function PlotsMapOnboardingScreen() {
   const { updateLocalSettings } = useLocalSettings();
   const navigation = useNavigation();
 
+  // Mark completed on any dismissal (swipe down, back gesture, finish button), like the map draw onboarding
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("beforeRemove", () => {
+      updateLocalSettings("plotsMapOnboardingCompleted", true);
+    });
+    return unsubscribe;
+  }, [navigation, updateLocalSettings]);
+
   function handleFinish() {
-    updateLocalSettings("plotsMapOnboardingCompleted", true);
     navigation.goBack();
   }
 
