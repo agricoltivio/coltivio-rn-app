@@ -29,6 +29,9 @@ import { OutdoorTimelineData, OutdoorHerdData } from "./outdoor-timeline-utils";
 import { OutdoorTimelineHerdRow, getRowHeight } from "./OutdoorTimelineHerdRow";
 import { scheduleOnRN } from "react-native-worklets";
 
+// Stable empty list, so the memos below don't recompute on every render outside weeks mode
+const NO_GRID_LINES: GridLine[] = [];
+
 type OutdoorScheduleTimelineProps = {
   timelineData: OutdoorTimelineData;
   onBarPress: (scheduleId: string) => void;
@@ -224,9 +227,9 @@ export function OutdoorScheduleTimeline({
     (x: number) => {
       scrollX.value = x;
       const opts = { x, y: 0, animated: false };
-      (headerScrollRef.current as any)?.scrollTo?.(opts);
-      (weekHeaderScrollRef.current as any)?.scrollTo?.(opts);
-      (bodyHorizontalScrollRef.current as any)?.scrollTo?.(opts);
+      headerScrollRef.current?.scrollTo(opts);
+      weekHeaderScrollRef.current?.scrollTo(opts);
+      bodyHorizontalScrollRef.current?.scrollTo(opts);
     },
     [scrollX, headerScrollRef, weekHeaderScrollRef, bodyHorizontalScrollRef],
   );
@@ -317,7 +320,8 @@ export function OutdoorScheduleTimeline({
   if (zoomLevel === "weeks" && !gridCache.current.weeks) {
     gridCache.current.weeks = getAllWeekLines(totalDays, epochStart);
   }
-  const allWeekLines = zoomLevel === "weeks" ? gridCache.current.weeks! : [];
+  const allWeekLines =
+    zoomLevel === "weeks" ? gridCache.current.weeks! : NO_GRID_LINES;
 
   const rangeCenter =
     barVisibleRange.end > barVisibleRange.start

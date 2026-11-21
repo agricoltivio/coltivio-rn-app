@@ -57,9 +57,16 @@ export function TreatmentsExportScreen({
     return ALL_ANIMAL_TYPES.filter((type) => types.has(type));
   }, [animals]);
 
-  const defaultAnimalTypeSwitches = Object.fromEntries(
-    ALL_ANIMAL_TYPES.map((type) => [type, true]),
-  ) as Record<AnimalType, boolean>;
+  // Every animal type switched on; a new type fails to compile here until it's added
+  const defaultAnimalTypeSwitches: Record<AnimalType, boolean> = {
+    cow: true,
+    goat: true,
+    sheep: true,
+    horse: true,
+    donkey: true,
+    pig: true,
+    deer: true,
+  };
 
   const {
     control,

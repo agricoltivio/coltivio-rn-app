@@ -1,3 +1,5 @@
+import { ANIMAL_TYPES, AnimalType } from "@/api/animals.api";
+import * as Sentry from "@sentry/react-native";
 import { Button } from "@/components/buttons/Button";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
@@ -21,15 +23,6 @@ import {
   useUpdateDrugMutation,
 } from "./drugs.hooks";
 import { EditDrugScreenProps } from "./navigation/animals-routes";
-
-type AnimalType =
-  | "goat"
-  | "sheep"
-  | "cow"
-  | "horse"
-  | "donkey"
-  | "pig"
-  | "deer";
 
 type DoseUnit =
   | "tablet"
@@ -61,16 +54,6 @@ interface DrugFormValues {
   receivedFrom: string;
   drugTreatment: TreatmentDefFormValues[];
 }
-
-const ANIMAL_TYPES: AnimalType[] = [
-  "goat",
-  "sheep",
-  "cow",
-  "horse",
-  "donkey",
-  "pig",
-  "deer",
-];
 
 const DOSE_UNITS: DoseUnit[] = [
   "ml",
@@ -179,7 +162,8 @@ export function EditDrugScreen({ route, navigation }: EditDrugScreenProps) {
         deleteDrugMutation.mutate(drugId);
       }
     } catch (error) {
-      console.error(error);
+      Sentry.captureException(error);
+      Alert.alert(t("common.error"), t("errors.unexpected_retry"));
     }
   }
 
@@ -339,7 +323,7 @@ export function EditDrugScreen({ route, navigation }: EditDrugScreenProps) {
               (type) => type === currentType || !usedTypes.has(type),
             );
             const filteredOptions = animalTypeOptions.filter((opt) =>
-              availableTypes.includes(opt.value as AnimalType),
+              availableTypes.some((type) => type === opt.value),
             );
 
             return (
