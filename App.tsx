@@ -86,6 +86,7 @@ export default Sentry.wrap(function App() {
   return (
     // Last resort for errors outside the screens (providers, navigation container)
     <Sentry.ErrorBoundary
+      handled={false}
       fallback={({ resetError }) => <RootErrorFallback onRetry={resetError} />}
     >
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>

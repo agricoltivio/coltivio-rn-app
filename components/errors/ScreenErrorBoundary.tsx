@@ -20,6 +20,8 @@ export function ScreenErrorBoundary({
 }) {
   return (
     <Sentry.ErrorBoundary
+      // Report as unhandled like a crash, so crash alerts and the crash free rate still see it
+      handled={false}
       fallback={({ resetError }) => (
         <ScreenErrorFallback onRetry={resetError} onGoBack={onGoBack} />
       )}
