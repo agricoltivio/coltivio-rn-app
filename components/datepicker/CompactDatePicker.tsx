@@ -268,34 +268,37 @@ export function CompactDatePicker({
               shadowOpacity: 0.2,
               shadowRadius: 12,
               elevation: 8,
-              overflow: "hidden",
             }}
           >
-            {pickerMounted && (
-              <>
-                <DateTimePicker
-                  value={date}
-                  mode="date"
-                  display="inline"
-                  minimumDate={minimumDate}
-                  maximumDate={maximumDate}
-                  themeVariant="light"
-                  accentColor={theme.colors.primary}
-                  onValueChange={(_event, selectedDate) => {
-                    // Defer so the native UIDatePicker finishes its delegate
-                    // callback before React re-renders
-                    safeTimeout(() => onDateChange(selectedDate), 0);
-                  }}
-                />
-                <Button
-                  title={t("buttons.confirm")}
-                  onPress={dismiss}
-                  style={{ margin: theme.spacing.s }}
-                  type="primary"
-                  fontSize={16}
-                />
-              </>
-            )}
+            {/* Clips to the rounded corners. On its own view: overflow hidden next to the
+                shadow props would clip the shadow on iOS */}
+            <View style={{ borderRadius: 12, overflow: "hidden" }}>
+              {pickerMounted && (
+                <>
+                  <DateTimePicker
+                    value={date}
+                    mode="date"
+                    display="inline"
+                    minimumDate={minimumDate}
+                    maximumDate={maximumDate}
+                    themeVariant="light"
+                    accentColor={theme.colors.primary}
+                    onValueChange={(_event, selectedDate) => {
+                      // Defer so the native UIDatePicker finishes its delegate
+                      // callback before React re-renders
+                      safeTimeout(() => onDateChange(selectedDate), 0);
+                    }}
+                  />
+                  <Button
+                    title={t("buttons.confirm")}
+                    onPress={dismiss}
+                    style={{ margin: theme.spacing.s }}
+                    type="primary"
+                    fontSize={16}
+                  />
+                </>
+              )}
+            </View>
           </View>
         </>
       )}
