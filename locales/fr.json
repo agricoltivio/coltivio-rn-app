@@ -1859,7 +1859,7 @@
     "famacha_distribution": "Répartition FAMACHA",
     "samples": "Échantillons de fèces",
     "lab_name": "Laboratoire",
-    "sample_label": "Désignation (facultatif)",
+    "sample_label": "Désignation",
     "pooled_sample": "Échantillon groupé ({{count}} animaux)",
     "individual_sample": "Échantillon individuel",
     "add_parasite": "Ajouter un parasite",

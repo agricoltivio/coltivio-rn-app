@@ -1859,7 +1859,7 @@
     "famacha_distribution": "Distribuzione FAMACHA",
     "samples": "Campioni di feci",
     "lab_name": "Laboratorio",
-    "sample_label": "Denominazione (facoltativo)",
+    "sample_label": "Denominazione",
     "pooled_sample": "Campione collettivo ({{count}} animali)",
     "individual_sample": "Campione individuale",
     "add_parasite": "Aggiungi parassita",

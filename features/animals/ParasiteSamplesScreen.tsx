@@ -117,6 +117,7 @@ export function ParasiteSamplesScreen({
             </Subtitle>
             <TextInput
               label={t("parasite_checks.sample_label")}
+              optional
               value={draft.pooledLabel}
               onChangeText={draft.setPooledLabel}
             />

@@ -1859,7 +1859,7 @@
     "famacha_distribution": "FAMACHA-Verteilung",
     "samples": "Kotproben",
     "lab_name": "Labor",
-    "sample_label": "Probenbezeichnung (optional)",
+    "sample_label": "Probenbezeichnung",
     "pooled_sample": "Sammelprobe ({{count}} Tiere)",
     "individual_sample": "Einzelprobe",
     "add_parasite": "Parasit hinzufügen",
