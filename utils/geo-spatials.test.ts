@@ -318,6 +318,20 @@ describe("splitMultiPolygonByLine robustness", () => {
     expect(result).toHaveLength(2);
   });
 
+  test("a last point close to the one before replaces it as the line's end", () => {
+    // B + ~1 cm is dropped by the filter, then put back as the end in place of B
+    const line: GeoJSON.LineString = {
+      type: "LineString",
+      coordinates: [
+        [8.7336, 47.5815],
+        [8.7336, 47.583],
+        [8.7336001, 47.583], // ~1 cm east of the previous point
+      ],
+    };
+    const result = splitMultiPolygonByLine(FIELD, line);
+    expect(result).toHaveLength(2);
+  });
+
   test("a line only made of points closer than 0.5 m returns null", () => {
     const line: GeoJSON.LineString = {
       type: "LineString",

@@ -193,16 +193,30 @@ export const SplitModeLayers = forwardRef<SplitModeLayersHandle>(
           return;
         }
         const newPolygons: GeoJSON.MultiPolygon[] = [];
-        for (const currentPolygon of currentMode.currentPolygons) {
-          const result = cutPolygonFromMultiPolygonLngLat(
-            currentPolygon,
-            coords,
-          );
-          if (result) {
-            newPolygons.push(result.remaining, result.plots);
-          } else {
-            newPolygons.push(currentPolygon);
+        try {
+          for (const currentPolygon of currentMode.currentPolygons) {
+            const result = cutPolygonFromMultiPolygonLngLat(
+              currentPolygon,
+              coords,
+            );
+            if (result) {
+              newPolygons.push(result.remaining, result.plots);
+            } else {
+              newPolygons.push(currentPolygon);
+            }
           }
+        } catch (error) {
+          // Same turf operations as the line cut, same failure. Keep the drawn area, so the
+          // user can adjust it and try again.
+          Sentry.captureException(error, {
+            extra: {
+              plotId: currentMode.plotId,
+              areaPointCount: coords.length,
+              polygonCount: currentMode.currentPolygons.length,
+            },
+          });
+          Alert.alert(t("plots.split.split_failed"));
+          return;
         }
         // Filter out zero-area degenerate polygons (floating-point artifacts from cuts)
         const validPolygons = newPolygons.filter(

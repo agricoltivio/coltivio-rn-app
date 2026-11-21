@@ -230,8 +230,9 @@ export function splitMultiPolygonByLine(
   line: GeoJSON.LineString,
 ): GeoJSON.MultiPolygon[] | null {
   // turf.intersect throws "degenerate segment" on zero-length segments, which
-  // appear when points coincide after its internal rounding. Fixed precision on
-  // the plot plus dropping cut points that are almost on top of each other avoids them.
+  // appear when points coincide after its internal rounding. Fixed precision on the
+  // plot plus dropping cut points that are almost on top of each other should make
+  // them less likely; the caller still catches what gets through.
   const cleanMulti: GeoJSON.MultiPolygon = turf.cleanCoords(
     turf.truncate(turf.clone(multiPolygon), {
       precision: SPLIT_COORDINATE_PRECISION,
