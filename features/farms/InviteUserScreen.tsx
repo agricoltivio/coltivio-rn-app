@@ -20,7 +20,6 @@ import {
   ALL_PERMISSION_FEATURES,
   PermissionAccessTable,
 } from "./PermissionAccessTable";
-import { InviteUserScreenProps } from "./navigation/farm-routes";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
@@ -37,7 +36,7 @@ function getInviteStatus(invite: FarmInvite): "pending" | "used" | "expired" {
   return "pending";
 }
 
-export function InviteUserScreen({}: InviteUserScreenProps) {
+export function InviteUserScreen() {
   const { t } = useTranslation();
   const theme = useTheme();
   const [email, setEmail] = useState("");

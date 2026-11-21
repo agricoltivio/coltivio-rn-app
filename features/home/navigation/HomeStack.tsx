@@ -1,11 +1,16 @@
 import { Stack } from "@/navigation/stack";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { DefaultTheme } from "styled-components/native";
+import { NavigationProp } from "@react-navigation/native";
+import { RootStackParamList } from "@/navigation/rootStackTypes";
 import { HomeScreen } from "../HomeScreen";
 import { SpeedDialOnboardingScreen } from "../SpeedDialOnboardingScreen";
 import { View } from "react-native";
 
-export function renderHomeStack(theme: DefaultTheme, navigation: any) {
+export function renderHomeStack(
+  theme: DefaultTheme,
+  navigation: Omit<NavigationProp<RootStackParamList>, "getState">,
+) {
   return [
     <Stack.Screen
       key="home"

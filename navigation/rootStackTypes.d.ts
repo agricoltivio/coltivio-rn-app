@@ -64,6 +64,8 @@ export type RootStackParamList = AuthStackParamList &
 
 declare global {
   namespace ReactNavigation {
+    // Declaration merging is how React Navigation types useNavigation, the empty body is intended
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     interface RootParamList extends RootStackParamList {}
   }
 }

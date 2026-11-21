@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react-native";
 import { useSession } from "@/auth/SessionProvider";
 import { renderAgriColtivioStack } from "@/features/agri-coltivio/navigation/AgriColtivioStack";
 import { renderWikiStack } from "@/features/wiki/navigation/WikiStack";
@@ -82,7 +83,7 @@ export function RootStack() {
     if (farms?.count === 1 && activeFarmId !== farms.result[0].id) {
       setActiveFarmId(farms.result[0].id);
     }
-  }, [farms, activeFarmId]);
+  }, [farms, activeFarmId, setActiveFarmId]);
 
   // farms.count === 1 is excluded here — that case is fully handled by the
   // auto-select effect above. Without this exclusion, both effects fire off
@@ -99,7 +100,15 @@ export function RootStack() {
     if (hasInvalidFarmSelection) {
       clearActiveFarmId();
     }
-  }, [hasInvalidFarmSelection]);
+  }, [hasInvalidFarmSelection, clearActiveFarmId]);
+
+  // Report once per error instead of logging on every render of the error stack
+  useEffect(() => {
+    if (farmsError) Sentry.captureException(farmsError);
+  }, [farmsError]);
+  useEffect(() => {
+    if (error) Sentry.captureException(error);
+  }, [error]);
 
   const stillResolvingSession =
     loadingFromStorage ||
@@ -139,7 +148,6 @@ export function RootStack() {
       return renderAuthStack(theme);
     }
     if (farmsError) {
-      console.error(farmsError);
       return renderErrorStack(theme);
     }
 
@@ -152,9 +160,6 @@ export function RootStack() {
     }
 
     if (error || (!user && isFetching)) {
-      if (error) {
-        console.error(error);
-      }
       return renderErrorStack(theme);
     }
 
