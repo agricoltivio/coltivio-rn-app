@@ -1,4 +1,3 @@
-import { SquareIconCta } from "@/components/buttons/SquareIconCta";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import styled, { useTheme } from "styled-components/native";

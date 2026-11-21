@@ -1,7 +1,4 @@
-import {
-  DrawingOverlay,
-  type DrawingOverlayRef,
-} from "@/components/map/DrawingOverlay";
+import { DrawingOverlay } from "@/components/map/DrawingOverlay";
 import { hexToRgba, indexToDistinctColor } from "@/theme/theme";
 import {
   GeoSpatials,

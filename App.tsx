@@ -24,7 +24,6 @@ import { OnboardingProvider } from "./features/onboarding/OnboardingContext";
 import i18n from "./locales/i18n";
 import { RootStack } from "./navigation/RootStack";
 import { PushNotificationsHandler } from "./features/notifications/PushNotificationsHandler";
-import "./theme/theme";
 
 import { StatusBar } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";

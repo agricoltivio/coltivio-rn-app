@@ -12,7 +12,7 @@ Coltivio is an open-source farm management React Native app built with Expo SDK 
 yarn start              # Expo dev server
 yarn ios / yarn android # Run on simulator/device
 yarn typecheck          # tsc --noEmit (also checks scripts/)
-yarn lint               # expo lint
+yarn lint               # eslint over the whole repo (CI: lint:ci)
 yarn test               # jest --watchAll
 yarn generate:api-types # regenerate api/v1.d.ts from openapi.json
 yarn release:prepare    # bump version in app.config.js (release notes: pnpm release in coltivio-landing)

@@ -1,4 +1,4 @@
-import { Task } from "@/api/tasks.api";
+import { Task, TaskStatus } from "@/api/tasks.api";
 import { FAB } from "@/components/buttons/FAB";
 import { Chip } from "@/components/chips/Chip";
 import { getDueDateColor } from "@/features/tasks/task-due-date";
@@ -9,7 +9,7 @@ import { ListItem } from "@/components/list/ListItem";
 import { H2 } from "@/theme/Typography";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Fuse from "fuse.js";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
@@ -40,8 +40,6 @@ import {
   getNotificationPermissionAsync,
   registerPushTokenAsync,
 } from "@/features/notifications/push-notifications";
-import { useEffect } from "react";
-import { TaskStatus } from "@/api/tasks.api";
 
 // Separate component so useAnimatedStyle can be called as a proper hook
 function SwipeCompleteAction({ drag }: { drag: SharedValue<number> }) {

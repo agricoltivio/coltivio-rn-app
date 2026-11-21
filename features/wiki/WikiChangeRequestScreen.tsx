@@ -6,8 +6,7 @@ import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
-import styled from "styled-components/native";
-import { useTheme } from "styled-components/native";
+import styled, { useTheme } from "styled-components/native";
 import { TextInput } from "@/components/inputs/TextInput";
 import { MarkdownEditor } from "./components/MarkdownEditor";
 import {

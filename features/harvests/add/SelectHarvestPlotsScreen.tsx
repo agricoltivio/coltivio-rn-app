@@ -6,7 +6,6 @@ import { SelectPlotsMap } from "@/components/map/SelectPlotsMap";
 import { round } from "@/utils/math";
 import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useFarmPlotsQuery } from "../../plots/plots.hooks";
 import { useLocalSettings } from "../../user/LocalSettingsContext";
 import { SelectHarvestPlotsScreenProps } from "../navigation/harvest-routes";
 import { useCreateHarvestStore } from "./harvest.store";
@@ -22,11 +21,9 @@ export function SelectHarvestPlotsScreen({
   navigation,
 }: SelectHarvestPlotsScreenProps) {
   const { t } = useTranslation();
-  const { plots } = useFarmPlotsQuery();
   const { localSettings } = useLocalSettings();
 
   const {
-    harvest,
     putHarvestPlot,
     removeHarvestPlot,
     selectedPlotsById,
@@ -64,11 +61,11 @@ export function SelectHarvestPlotsScreen({
 
   const handleDrawComplete = useCallback(
     (
-      intersections: Array<{
+      intersections: {
         plot: Plot;
         geometry: GeoJSON.MultiPolygon;
         size: number;
-      }>,
+      }[],
     ) => {
       for (const { plot, geometry, size } of intersections) {
         putHarvestPlot({

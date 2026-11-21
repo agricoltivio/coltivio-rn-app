@@ -31,7 +31,7 @@ export function TvdImportOnboardingScreen({
       : pedigreeImages.de;
 
   const steps = [
-    <View style={{ width: "100%" }}>
+    <View key="step-1" style={{ width: "100%" }}>
       <H3 style={{ color: theme.colors.primary }}>
         {t("animals.tvd_import.onboarding_body")}
       </H3>
@@ -54,7 +54,7 @@ export function TvdImportOnboardingScreen({
         contentFit="contain"
       />
     </View>,
-    <View style={{ width: "100%" }}>
+    <View key="step-2" style={{ width: "100%" }}>
       <H3 style={{ color: theme.colors.primary }}>
         {t("animals.tvd_import.onboarding_pedigree_body")}
       </H3>
@@ -70,7 +70,7 @@ export function TvdImportOnboardingScreen({
         contentFit="contain"
       />
     </View>,
-    <View style={{ width: "100%" }}>
+    <View key="step-3" style={{ width: "100%" }}>
       <H3 style={{ color: theme.colors.primary }}>
         {t("animals.tvd_import.onboarding_sync_body")}
       </H3>
