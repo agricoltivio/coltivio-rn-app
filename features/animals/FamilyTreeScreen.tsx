@@ -461,8 +461,10 @@ export function FamilyTreeScreen({ route, navigation }: FamilyTreeScreenProps) {
                       );
                       const ageLabel =
                         ageMonths < 12
-                          ? `${ageMonths}m`
-                          : `${Math.floor(ageMonths / 12)}y`;
+                          ? t("animals.age_months_short", { count: ageMonths })
+                          : t("animals.age_years_short", {
+                              count: Math.floor(ageMonths / 12),
+                            });
                       return (
                         <View
                           style={{
