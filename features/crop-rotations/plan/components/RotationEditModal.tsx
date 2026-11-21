@@ -90,27 +90,35 @@ export function RotationEditModal({
     }
   }, [visible, rotation, selectedPlotId]);
 
+  // All order checks compare calendar days: loaded dates carry a time of day (UTC midnight
+  // is 01:00 or 02:00 locally, depending on DST) and the pickers keep the time of their
+  // value, so comparing timestamps would treat two dates on the same day as out of order.
+
   // A start past the end moves the end along, so the entry keeps its length.
   // The recurrence end moves along too when the new end passes it.
   const handleFromDateChange = (newFromDate: Date) => {
     setFromDate(newFromDate);
-    if (newFromDate <= toDate) return;
-    const newToDate = addDays(
-      newFromDate,
+    if (differenceInCalendarDays(newFromDate, toDate) <= 0) return;
+    // Never negative: picking a start repairs an entry loaded with the end before the start
+    const lengthInDays = Math.max(
+      0,
       differenceInCalendarDays(toDate, fromDate),
     );
-    handleToDateChange(newToDate);
+    handleToDateChange(addDays(newFromDate, lengthInDays));
   };
 
   const handleToDateChange = (newToDate: Date) => {
     setToDate(newToDate);
-    if (newToDate <= until) return;
+    if (differenceInCalendarDays(newToDate, until) <= 0) return;
     setUntil(addDays(until, differenceInCalendarDays(newToDate, toDate)));
   };
 
   // The pickers keep the order, this guards against dates loaded in the wrong order
   const datesInOrder =
-    toDate >= fromDate && (!hasRecurrence || !hasUntil || until >= toDate);
+    differenceInCalendarDays(toDate, fromDate) >= 0 &&
+    (!hasRecurrence ||
+      !hasUntil ||
+      differenceInCalendarDays(until, toDate) >= 0);
   const canSave = !!plotId && !!cropId && datesInOrder;
 
   const handleSave = () => {
