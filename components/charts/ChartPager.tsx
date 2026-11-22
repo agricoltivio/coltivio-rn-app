@@ -1,4 +1,4 @@
-import { ReactNode, useRef, useState } from "react";
+import { createContext, ReactNode, useContext, useRef, useState } from "react";
 import {
   LayoutChangeEvent,
   StyleProp,
@@ -11,6 +11,15 @@ import {
 import type { ScrollViewInstance } from "react-native";
 import { useTheme } from "styled-components/native";
 import { IonIconButton } from "../buttons/IconButton";
+
+// Lets content inside a card step the carousel, e.g. a table whose own horizontal
+// scroll hits its end (see StatsTable)
+const ChartPagerContext = createContext<{
+  goToPage: (step: -1 | 1) => void;
+} | null>(null);
+export function useChartPager() {
+  return useContext(ChartPagerContext);
+}
 
 // Length of ScrollView's animated scrollTo, after which a loop copy is swapped for the real card
 const SCROLL_ANIMATION_MS = 350;
@@ -137,90 +146,92 @@ export function ChartPager({
   }
 
   return (
-    <View onLayout={onLayout} style={[{ marginTop: theme.spacing.m }, style]}>
-      {pageWidth > 0 && (
-        <ScrollView
-          ref={scrollViewRef}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          onMomentumScrollEnd={onScrollEnd}
-          // A swipe takes over from a button press, the swipe's own scroll end handles copies
-          onScrollBeginDrag={() => cancelPendingCopySwap()}
-          onContentSizeChange={onContentSizeChange}
-          // Pages stretch to the tallest one
-          contentContainerStyle={{ alignItems: "stretch" }}
-        >
-          {renderedPages.map((page, renderedIndex) => {
-            // Only the current card and its neighbours mount their chart, the others
-            // stay empty cards (stretched to the tallest mounted one), so far fewer
-            // charts render on the screen. Neighbours count around the loop, so the
-            // real card behind a loop copy is ready when the pager jumps to it.
-            const pageIndex = loops
-              ? loopPageIndex(renderedIndex, pages.length)
-              : renderedIndex;
-            const isNearby =
-              mountAllPages ||
-              isNeighbourPage(pageIndex, currentPageIndex, pages.length);
-            return (
-              <View
-                key={page.key}
-                style={{
-                  width: pageWidth,
-                  backgroundColor: theme.colors.white,
-                  borderRadius: 10,
-                  padding: theme.spacing.m,
-                }}
-              >
-                {isNearby ? page.content : null}
-              </View>
-            );
-          })}
-        </ScrollView>
-      )}
-      {loops && (
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: theme.spacing.s,
-            marginTop: theme.spacing.s,
-          }}
-        >
-          <IonIconButton
-            icon="chevron-back"
-            type="ghost"
-            iconSize={22}
-            color={theme.colors.primary}
-            onPress={() => goToPage(-1)}
-          />
-          <View style={{ flexDirection: "row", gap: 6 }}>
-            {pages.map((page, index) => (
-              <View
-                key={page.key}
-                style={{
-                  width: 7,
-                  height: 7,
-                  borderRadius: 3.5,
-                  backgroundColor:
-                    index === currentPageIndex
-                      ? theme.colors.primary
-                      : theme.colors.gray3,
-                }}
-              />
-            ))}
+    <ChartPagerContext.Provider value={{ goToPage }}>
+      <View onLayout={onLayout} style={[{ marginTop: theme.spacing.m }, style]}>
+        {pageWidth > 0 && (
+          <ScrollView
+            ref={scrollViewRef}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            onMomentumScrollEnd={onScrollEnd}
+            // A swipe takes over from a button press, the swipe's own scroll end handles copies
+            onScrollBeginDrag={() => cancelPendingCopySwap()}
+            onContentSizeChange={onContentSizeChange}
+            // Pages stretch to the tallest one
+            contentContainerStyle={{ alignItems: "stretch" }}
+          >
+            {renderedPages.map((page, renderedIndex) => {
+              // Only the current card and its neighbours mount their chart, the others
+              // stay empty cards (stretched to the tallest mounted one), so far fewer
+              // charts render on the screen. Neighbours count around the loop, so the
+              // real card behind a loop copy is ready when the pager jumps to it.
+              const pageIndex = loops
+                ? loopPageIndex(renderedIndex, pages.length)
+                : renderedIndex;
+              const isNearby =
+                mountAllPages ||
+                isNeighbourPage(pageIndex, currentPageIndex, pages.length);
+              return (
+                <View
+                  key={page.key}
+                  style={{
+                    width: pageWidth,
+                    backgroundColor: theme.colors.white,
+                    borderRadius: 10,
+                    padding: theme.spacing.m,
+                  }}
+                >
+                  {isNearby ? page.content : null}
+                </View>
+              );
+            })}
+          </ScrollView>
+        )}
+        {loops && (
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: theme.spacing.s,
+              marginTop: theme.spacing.s,
+            }}
+          >
+            <IonIconButton
+              icon="chevron-back"
+              type="ghost"
+              iconSize={22}
+              color={theme.colors.primary}
+              onPress={() => goToPage(-1)}
+            />
+            <View style={{ flexDirection: "row", gap: 6 }}>
+              {pages.map((page, index) => (
+                <View
+                  key={page.key}
+                  style={{
+                    width: 7,
+                    height: 7,
+                    borderRadius: 3.5,
+                    backgroundColor:
+                      index === currentPageIndex
+                        ? theme.colors.primary
+                        : theme.colors.gray3,
+                  }}
+                />
+              ))}
+            </View>
+            <IonIconButton
+              icon="chevron-forward"
+              type="ghost"
+              iconSize={22}
+              color={theme.colors.primary}
+              onPress={() => goToPage(1)}
+            />
           </View>
-          <IonIconButton
-            icon="chevron-forward"
-            type="ghost"
-            iconSize={22}
-            color={theme.colors.primary}
-            onPress={() => goToPage(1)}
-          />
-        </View>
-      )}
-    </View>
+        )}
+      </View>
+    </ChartPagerContext.Provider>
   );
 }
 

@@ -1,9 +1,17 @@
 import { Text } from "@/components/text/Text";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { PixelRatio, Pressable, ScrollView, View } from "react-native";
+import {
+  GestureResponderEvent,
+  PixelRatio,
+  Platform,
+  Pressable,
+  ScrollView,
+  View,
+} from "react-native";
 import type { ScrollViewInstance } from "react-native";
 import { useTheme } from "styled-components/native";
+import { useChartPager } from "./ChartPager";
 import { getYearColor } from "./chartColors";
 
 export type StatsTableRow = {
@@ -47,6 +55,59 @@ export function StatsTable({
   const theme = useTheme();
   const { t } = useTranslation();
   const yearsScrollRef = useRef<ScrollViewInstance>(null);
+  const chartPager = useChartPager();
+
+  // On iOS a swipe that runs past the end of the year columns carries on into the
+  // carousel. Android's nested scroll keeps the gesture in the columns, so there a
+  // drag that starts with the columns already at an end, heads further past it and
+  // leaves them at that end steps the carousel instead. The columns take over the
+  // touch after a few pixels (JS gets a cancel), so the first movement gives the
+  // direction and the columns' drag end decides.
+  const yearsScrollStateRef = useRef({
+    offset: 0,
+    viewportWidth: 0,
+    contentWidth: 0,
+  });
+  const edgeSwipeRef = useRef<{
+    startX: number;
+    lastX: number;
+    atStart: boolean;
+    atEnd: boolean;
+  } | null>(null);
+  const edgeSwipeEnabled = Platform.OS === "android" && chartPager !== null;
+  function yearsScrollEdges() {
+    const { offset, viewportWidth, contentWidth } = yearsScrollStateRef.current;
+    return {
+      // Columns that fit don't scroll, the carousel gets those swipes itself
+      scrolls: contentWidth > viewportWidth + 1,
+      atStart: offset <= 1,
+      atEnd: offset + viewportWidth >= contentWidth - 1,
+    };
+  }
+  function onYearsTouchStart(event: GestureResponderEvent) {
+    const { scrolls, atStart, atEnd } = yearsScrollEdges();
+    const x = event.nativeEvent.pageX;
+    edgeSwipeRef.current = scrolls
+      ? { startX: x, lastX: x, atStart, atEnd }
+      : null;
+  }
+  function onYearsTouchMove(event: GestureResponderEvent) {
+    if (edgeSwipeRef.current) {
+      edgeSwipeRef.current.lastX = event.nativeEvent.pageX;
+    }
+  }
+  function onYearsScrollEndDrag() {
+    const edgeSwipe = edgeSwipeRef.current;
+    edgeSwipeRef.current = null;
+    if (!edgeSwipe || !chartPager) return;
+    const direction = edgeSwipe.lastX - edgeSwipe.startX;
+    const edgesNow = yearsScrollEdges();
+    if (edgeSwipe.atEnd && edgesNow.atEnd && direction < 0) {
+      chartPager.goToPage(1);
+    } else if (edgeSwipe.atStart && edgesNow.atStart && direction > 0) {
+      chartPager.goToPage(-1);
+    }
+  }
   // row key -> height of its label row
   const [rowHeights, setRowHeights] = useState<Record<string, number>>({});
   const rowStyle = (row?: StatsTableRow) => ({
@@ -139,9 +200,22 @@ export function StatsTable({
         horizontal
         nestedScrollEnabled
         // Start at the latest year (rightmost), also after the year selection changes
-        onContentSizeChange={() =>
-          yearsScrollRef.current?.scrollToEnd({ animated: false })
-        }
+        onContentSizeChange={(contentWidth) => {
+          yearsScrollStateRef.current.contentWidth = contentWidth;
+          yearsScrollRef.current?.scrollToEnd({ animated: false });
+        }}
+        onLayout={(event) => {
+          yearsScrollStateRef.current.viewportWidth =
+            event.nativeEvent.layout.width;
+        }}
+        onScroll={(event) => {
+          yearsScrollStateRef.current.offset =
+            event.nativeEvent.contentOffset.x;
+        }}
+        scrollEventThrottle={16}
+        onTouchStart={edgeSwipeEnabled ? onYearsTouchStart : undefined}
+        onTouchMove={edgeSwipeEnabled ? onYearsTouchMove : undefined}
+        onScrollEndDrag={edgeSwipeEnabled ? onYearsScrollEndDrag : undefined}
         showsHorizontalScrollIndicator={false}
         // When the columns fit, a swipe on the table should still turn the carousel page
         bounces={false}
