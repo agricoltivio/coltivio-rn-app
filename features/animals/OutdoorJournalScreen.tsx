@@ -195,30 +195,6 @@ export function OutdoorJournalScreen({
           </RNScrollView>
         )}
 
-        {/* Info banner */}
-        <View
-          style={{
-            marginTop: theme.spacing.m,
-            backgroundColor: theme.colors.white,
-            borderRadius: 10,
-            padding: theme.spacing.m,
-            borderLeftWidth: 4,
-            borderLeftColor: theme.colors.blue,
-            flexDirection: "row",
-            alignItems: "center",
-            gap: theme.spacing.xs,
-          }}
-        >
-          <Ionicons
-            name="information-circle"
-            size={20}
-            color={theme.colors.blue}
-          />
-          <Subtitle style={{ flex: 1 }}>
-            {t("animals.outdoor_journal_info")}
-          </Subtitle>
-        </View>
-
         {/* Warning banner for uncategorized animals */}
         {data && data.uncategorizedAnimals.length > 0 && (
           <View

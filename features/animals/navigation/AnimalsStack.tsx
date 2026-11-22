@@ -1,6 +1,7 @@
 import { CloseButton } from "@/components/buttons/CloseButton";
 import { Stack } from "@/navigation/stack";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
+import i18n from "@/locales/i18n";
 import { AnimalsHubScreen } from "../AnimalsHubScreen";
 import { EarTagsScreen } from "../EarTagsScreen";
 import { CreateEarTagRangeScreen } from "../CreateEarTagRangeScreen";
@@ -289,13 +290,29 @@ export function renderAnimalsStack(
         title: "",
         headerRight() {
           return (
-            <IonIconButton
-              icon="share-outline"
-              type="ghost"
-              iconSize={30}
-              color={theme.colors.primary}
-              onPress={() => navigation.navigate("OutdoorJournalExport")}
-            />
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              {/* How the journal comes about, instead of a box on the screen */}
+              <IonIconButton
+                icon="information-circle-outline"
+                type="ghost"
+                // The circle reads smaller than the share glyph at the same size
+                iconSize={34}
+                color={theme.colors.primary}
+                onPress={() =>
+                  Alert.alert(
+                    i18n.t("animals.outdoor_journal"),
+                    i18n.t("animals.outdoor_journal_info"),
+                  )
+                }
+              />
+              <IonIconButton
+                icon="share-outline"
+                type="ghost"
+                iconSize={30}
+                color={theme.colors.primary}
+                onPress={() => navigation.navigate("OutdoorJournalExport")}
+              />
+            </View>
           );
         },
       }}
