@@ -147,8 +147,13 @@
     "dashboard": "Dashboard",
     "list": "List",
     "notes": "Notes",
-    "applications": "applications",
-    "average": "Avg"
+    "yearly_average": "Ø {{value}} per year",
+    "more_rows": "{{count}} more",
+    "max_years_selected": "You can select at most {{count}} years at once.",
+    "view_chart": "Chart",
+    "view_stats": "Numbers",
+    "per_unit_amount": "of {{amount}}",
+    "average_per_hectare": "Ø per ha"
   },
   "splash": {
     "tagline": "By Farmers. For Farmers.",

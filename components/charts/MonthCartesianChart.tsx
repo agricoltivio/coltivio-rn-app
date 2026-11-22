@@ -1,5 +1,5 @@
 import { Line as SkiaLine, matchFont, vec } from "react-native-skia";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, View } from "react-native";
 import { Gesture } from "react-native-gesture-handler";
@@ -19,8 +19,8 @@ import {
 import { getYearColor } from "./chartColors";
 import { ChartMode } from "./ChartViewSwitcher";
 import { ChartPressTooltip } from "./ChartPressTooltip";
+import { subscribeToChartTooltipDismiss } from "./chartTooltipDismiss";
 import { ChartTooltipCard } from "./ChartTooltipCard";
-import { UnitBreakdownEntry } from "./unitBreakdown";
 import { formatYValue, UnitScale } from "./unitScaling";
 
 const LAST_MONTH_INDEX = 11;
@@ -35,6 +35,11 @@ type Row = {
   y2?: number;
   y3?: number;
   y4?: number;
+  y5?: number;
+  y6?: number;
+  y7?: number;
+  y8?: number;
+  y9?: number;
 };
 
 // Scales raw per-year monthly totals to display units for the given years:
@@ -61,8 +66,22 @@ function scaleYearValues(
   return result;
 }
 
-const Y_KEY_LIST = ["y0", "y1", "y2", "y3", "y4"] as const;
+// One series per selected year, as many as the theme has year colors (10)
+const Y_KEY_LIST = [
+  "y0",
+  "y1",
+  "y2",
+  "y3",
+  "y4",
+  "y5",
+  "y6",
+  "y7",
+  "y8",
+  "y9",
+] as const;
 type YKey = (typeof Y_KEY_LIST)[number];
+// Most years one chart can show, screens limit their year selection to this
+export const MAX_CHART_YEARS = Y_KEY_LIST.length;
 const ALL_Y_KEYS: YKey[] = [...Y_KEY_LIST];
 const INITIAL_PRESS_Y: Record<YKey, number> = {
   y0: 0,
@@ -70,20 +89,21 @@ const INITIAL_PRESS_Y: Record<YKey, number> = {
   y2: 0,
   y3: 0,
   y4: 0,
+  y5: 0,
+  y6: 0,
+  y7: 0,
+  y8: 0,
+  y9: 0,
 };
 
 export type MonthCartesianChartProps = {
   mode: ChartMode;
   // year -> 12 raw monthly values (not yet scaled to the display unit). May
-  // include years beyond selectedYears — those aren't plotted but do feed
-  // the info panel's all-years average.
+  // include years beyond selectedYears, those aren't plotted.
   monthlyData: Record<number, number[]>;
   selectedYears: number[];
   availableYears: number[];
   unit: UnitScale;
-  // unit label used inside breakdown lines, e.g. "kg" for "10 crates × 20kg"
-  perUnitLabel: string;
-  getBreakdown?: (year: number, month: number) => UnitBreakdownEntry[];
   height?: number;
 };
 
@@ -97,8 +117,6 @@ export function MonthCartesianChart({
   selectedYears,
   availableYears,
   unit,
-  perUnitLabel,
-  getBreakdown,
   height = 220,
 }: MonthCartesianChartProps) {
   const theme = useTheme();
@@ -170,6 +188,15 @@ export function MonthCartesianChart({
     },
   );
   const [chartWidth, setChartWidth] = useState(0);
+  // A touch anywhere else on the screen closes the tooltip (a tap on the chart
+  // reopens it, it fires after the touch start)
+  useEffect(
+    () =>
+      subscribeToChartTooltipDismiss(() => {
+        pressState.isActive.value = false;
+      }),
+    [pressState],
+  );
   const scrubGesture = useMemo(() => {
     // Month under the finger, null while the chart bounds aren't known yet
     const monthIndexAt = (x: number) => {
@@ -190,9 +217,11 @@ export function MonthCartesianChart({
       pressState.matchedIndex.value = index;
       pressState.isActive.value = true;
     };
-    // Tap shows the tapped month's values and keeps them (tap the same month
-    // again to hide). It only fires once the hold below has failed, i.e. the
-    // finger lifted before SCRUB_HOLD_MS.
+    // Tap shows the tapped month's values and keeps them. Screens that call
+    // dismissChartTooltips on touch start close them with a touch anywhere
+    // else; without that, tapping the same month again hides them. It only
+    // fires once the hold below has failed, i.e. the finger lifted before
+    // SCRUB_HOLD_MS.
     const tapGesture = Gesture.Tap().onEnd((e) => {
       const index = monthIndexAt(e.x);
       if (index === null) return;
@@ -225,21 +254,6 @@ export function MonthCartesianChart({
     () => scaleYearValues(monthlyData, selectedYears, mode, unit.divisor),
     [monthlyData, selectedYears, mode, unit.divisor],
   );
-
-  // Per-month average across every year present in monthlyData (not just
-  // selectedYears) — a stable historical reference that doesn't change as
-  // the year selection changes.
-  const monthlyAverages = useMemo(() => {
-    const allYears = Object.keys(monthlyData).map(Number);
-    if (allYears.length === 0) return new Array(12).fill(0);
-    const scaled = scaleYearValues(monthlyData, allYears, mode, unit.divisor);
-    return Array.from(
-      { length: 12 },
-      (_, month) =>
-        allYears.reduce((sum, year) => sum + (scaled[year]?.[month] ?? 0), 0) /
-        allYears.length,
-    );
-  }, [monthlyData, mode, unit.divisor]);
 
   const rows: Row[] = useMemo(
     () =>
@@ -358,10 +372,7 @@ export function MonthCartesianChart({
               selectedYears={selectedYears}
               availableYears={availableYears}
               valuesByYear={valuesByYear}
-              monthlyAverages={monthlyAverages}
               unitLabel={unit.label}
-              perUnitLabel={perUnitLabel}
-              getBreakdown={getBreakdown}
             />
           </ChartTooltipCard>
         )}

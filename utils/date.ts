@@ -80,3 +80,8 @@ export function parseDateOnly(isoDate: string): Date {
   const [year, month, day] = isoDate.slice(0, 10).split("-").map(Number);
   return new Date(year, month - 1, day);
 }
+
+// Start for list requests that should return every entry (the list endpoints default to
+// entries since 2020). Fixed, so the request doesn't wait for anything and keeps a stable
+// query key; UTC, since the API stores dates as UTC midnight.
+export const ALL_ENTRIES_FROM_DATE = new Date(Date.UTC(1900, 0, 1));

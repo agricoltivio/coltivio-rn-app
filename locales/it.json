@@ -147,8 +147,13 @@
     "dashboard": "Dashboard",
     "list": "Lista",
     "notes": "Note",
-    "applications": "applicazioni",
-    "average": "Media"
+    "yearly_average": "Ø {{value}} all'anno",
+    "more_rows": "altri {{count}}",
+    "max_years_selected": "Puoi selezionare al massimo {{count}} anni alla volta.",
+    "view_chart": "Grafico",
+    "view_stats": "Cifre",
+    "per_unit_amount": "da {{amount}}",
+    "average_per_hectare": "Ø per ha"
   },
   "splash": {
     "tagline": "Da contadini. Per contadini.",
