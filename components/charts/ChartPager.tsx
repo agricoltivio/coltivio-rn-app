@@ -24,6 +24,7 @@ export function ChartPager({
   pages,
   style,
   mountAllPages = false,
+  onPageChange,
 }: {
   pages: { key: string; content: ReactNode }[];
   // e.g. a smaller top margin when a control sits directly above
@@ -31,11 +32,18 @@ export function ChartPager({
   // For cheap cards of different heights (number tables): all mount, so the tallest
   // sets the height from the start and it never changes while stepping through
   mountAllPages?: boolean;
+  // A different card became the current one (button or swipe)
+  onPageChange?: (pageIndex: number) => void;
 }) {
   const theme = useTheme();
   const scrollViewRef = useRef<ScrollViewInstance>(null);
   const [pageWidth, setPageWidth] = useState(0);
   const [activePageIndex, setActivePageIndex] = useState(0);
+  function changePage(pageIndex: number) {
+    if (pageIndex === activePageIndex) return;
+    setActivePageIndex(pageIndex);
+    onPageChange?.(pageIndex);
+  }
   const loops = pages.length > 1;
   // Pages can shrink when data reloads
   const currentPageIndex = Math.min(activePageIndex, pages.length - 1);
@@ -73,7 +81,7 @@ export function ChartPager({
       event.nativeEvent.contentOffset.x / pageWidth,
     );
     if (!loops) {
-      setActivePageIndex(renderedIndex);
+      changePage(renderedIndex);
       return;
     }
     // Copies at both ends map to the real card on the other end
@@ -86,7 +94,7 @@ export function ChartPager({
         animated: false,
       });
     }
-    setActivePageIndex(pageIndex);
+    changePage(pageIndex);
   }
 
   // Pending swap from a loop copy to the real card after a button press
@@ -117,7 +125,7 @@ export function ChartPager({
     });
     const targetPageIndex =
       (currentPageIndex + step + pages.length) % pages.length;
-    setActivePageIndex(targetPageIndex);
+    changePage(targetPageIndex);
     const landsOnCopy =
       targetRenderedIndex === 0 || targetRenderedIndex === pages.length + 1;
     if (landsOnCopy) {

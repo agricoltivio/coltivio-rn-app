@@ -40,7 +40,7 @@ export function StatsTable({
   years: number[];
   availableYears: number[];
   rows: StatsTableRow[];
-  // Shared by all cards, so all unfold together
+  // Folds again when the carousel moves to another card
   showAllRows?: boolean;
   onToggleShowAllRows?: () => void;
 }) {

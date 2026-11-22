@@ -149,7 +149,7 @@ export function HarvestOverview({
 
   // Chart or numbers, for all carousel pages at once
   const [pageView, setPageView] = useState<"chart" | "stats">("chart");
-  // Numbers view: whether long tables show all rows, shared by all cards
+  // Numbers view: whether the current card's long table shows all rows
   const [showAllRows, setShowAllRows] = useState(false);
   const pageViewOptions = useMemo(
     () => [
@@ -324,6 +324,8 @@ export function HarvestOverview({
               </View>
               <ChartPager
                 mountAllPages={pageView === "stats"}
+                // Unfolded rows belong to the card they were opened on
+                onPageChange={() => setShowAllRows(false)}
                 style={{ marginTop: theme.spacing.xs }}
                 pages={chartSeries.map((series) => ({
                   key: series.key,
