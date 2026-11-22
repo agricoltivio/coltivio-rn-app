@@ -52,3 +52,14 @@ jobs:
           cache: yarn
       - run: yarn install --frozen-lockfile
       - run: yarn format:check
+
+  translations:
+    name: Translation keys
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      # Warnings only: unused keys in de.json, keys missing or extra in en / fr / it
+      - run: node scripts/find-unused-translation-keys.js --ci
