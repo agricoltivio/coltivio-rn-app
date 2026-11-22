@@ -84,10 +84,7 @@ export function ChartPager({
       changePage(renderedIndex);
       return;
     }
-    // Copies at both ends map to the real card on the other end
-    let pageIndex = renderedIndex - 1;
-    if (renderedIndex === 0) pageIndex = pages.length - 1;
-    if (renderedIndex === pages.length + 1) pageIndex = 0;
+    const pageIndex = loopPageIndex(renderedIndex, pages.length);
     if (pageIndex !== renderedIndex - 1) {
       scrollViewRef.current?.scrollTo({
         x: (pageIndex + 1) * pageWidth,
@@ -159,15 +156,12 @@ export function ChartPager({
             // stay empty cards (stretched to the tallest mounted one), so far fewer
             // charts render on the screen. Neighbours count around the loop, so the
             // real card behind a loop copy is ready when the pager jumps to it.
-            let pageIndex = renderedIndex;
-            if (loops) {
-              pageIndex = renderedIndex - 1;
-              if (renderedIndex === 0) pageIndex = pages.length - 1;
-              if (renderedIndex === pages.length + 1) pageIndex = 0;
-            }
-            const distance = Math.abs(pageIndex - currentPageIndex);
+            const pageIndex = loops
+              ? loopPageIndex(renderedIndex, pages.length)
+              : renderedIndex;
             const isNearby =
-              mountAllPages || Math.min(distance, pages.length - distance) <= 1;
+              mountAllPages ||
+              isNeighbourPage(pageIndex, currentPageIndex, pages.length);
             return (
               <View
                 key={page.key}
@@ -228,4 +222,22 @@ export function ChartPager({
       )}
     </View>
   );
+}
+
+// Card index of a position in the looping ScrollView: position 0 is a copy of the
+// last card, position pageCount + 1 a copy of the first, the others are shifted by one
+export function loopPageIndex(renderedIndex: number, pageCount: number) {
+  if (renderedIndex === 0) return pageCount - 1;
+  if (renderedIndex === pageCount + 1) return 0;
+  return renderedIndex - 1;
+}
+
+// The card itself or the one before/after it, counted around the loop
+export function isNeighbourPage(
+  pageIndex: number,
+  currentPageIndex: number,
+  pageCount: number,
+) {
+  const distance = Math.abs(pageIndex - currentPageIndex);
+  return Math.min(distance, pageCount - distance) <= 1;
 }

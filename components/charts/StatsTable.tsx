@@ -17,7 +17,7 @@ export type StatsTableRow = {
 
 const STATS_ROW_HEIGHT = 32;
 // Longer tables show this many rows, the last one a "N more" row that unfolds them
-const STATS_FOLDED_ROW_COUNT = 6;
+export const STATS_FOLDED_ROW_COUNT = 6;
 const STATS_YEAR_COLUMN_MIN_WIDTH = 84;
 // Rough width per character at the default font size, so values like "23.5 m³/ha"
 // aren't cut off
@@ -72,24 +72,20 @@ export function StatsTable({
   const textColor = (row: StatsTableRow) =>
     row.indented ? theme.colors.gray1 : theme.colors.gray0;
 
-  // Data rows, then the "N more" / "Less" row when the table folds
-  const folds =
-    onToggleShowAllRows !== undefined && rows.length > STATS_FOLDED_ROW_COUNT;
-  const shownRows =
-    folds && !showAllRows ? rows.slice(0, STATS_FOLDED_ROW_COUNT - 1) : rows;
-  const displayRows: {
-    key: string;
-    row?: StatsTableRow;
-    toggleLabel?: string;
-  }[] = shownRows.map((row) => ({ key: row.key, row }));
-  if (folds) {
-    displayRows.push({
-      key: "toggle",
-      toggleLabel: showAllRows
+  const displayRows = statsDisplayRows({
+    rows,
+    canFold: onToggleShowAllRows !== undefined,
+    showAllRows,
+  }).map((displayRow) => ({
+    key: displayRow.key,
+    row: displayRow.kind === "row" ? displayRow.row : undefined,
+    toggleLabel:
+      displayRow.kind === "show-less"
         ? t("buttons.show_less")
-        : t("common.more_rows", { count: rows.length - shownRows.length }),
-    });
-  }
+        : displayRow.kind === "show-more"
+          ? t("common.more_rows", { count: displayRow.hiddenCount })
+          : undefined,
+  }));
 
   return (
     <View style={{ flexDirection: "row" }}>
@@ -214,4 +210,40 @@ export function StatsTable({
       </ScrollView>
     </View>
   );
+}
+
+// The rows a table shows: its data rows, and when it is longer than
+// STATS_FOLDED_ROW_COUNT either the first ones plus a "N more" row (folded) or all
+// plus a "Less" row (unfolded)
+export function statsDisplayRows({
+  rows,
+  canFold,
+  showAllRows,
+}: {
+  rows: StatsTableRow[];
+  canFold: boolean;
+  showAllRows: boolean;
+}): (
+  | { kind: "row"; key: string; row: StatsTableRow }
+  | { kind: "show-more"; key: string; hiddenCount: number }
+  | { kind: "show-less"; key: string }
+)[] {
+  const folds = canFold && rows.length > STATS_FOLDED_ROW_COUNT;
+  const shownRows =
+    folds && !showAllRows ? rows.slice(0, STATS_FOLDED_ROW_COUNT - 1) : rows;
+  const dataRows = shownRows.map((row) => ({
+    kind: "row" as const,
+    key: row.key,
+    row,
+  }));
+  if (!folds) return dataRows;
+  if (showAllRows) return [...dataRows, { kind: "show-less", key: "toggle" }];
+  return [
+    ...dataRows,
+    {
+      kind: "show-more",
+      key: "toggle",
+      hiddenCount: rows.length - shownRows.length,
+    },
+  ];
 }
