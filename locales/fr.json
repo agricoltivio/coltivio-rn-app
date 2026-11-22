@@ -184,7 +184,8 @@
     "unexpected_retry": "Oups, une erreur s'est produite. Réessaie.",
     "unexpected_retry_later": "Oups, une erreur s'est produite. Réessaie plus tard.",
     "unexpected": "Oups, une erreur s'est produite.",
-    "try_again_later": "Réessaie plus tard..."
+    "try_again_later": "Réessaie plus tard...",
+    "screen_error_hint": "Cet écran n'a pas pu être affiché. L'erreur nous a été signalée."
   },
   "units": {
     "long": {

@@ -184,7 +184,8 @@
     "unexpected_retry": "Ups, etwas ist schief gelaufen. Bitte versuche es erneut.",
     "unexpected_retry_later": "Ups, etwas ist schief gelaufen. Bitte versuche es später erneut.",
     "unexpected": "Ups, etwas ist schief gelaufen.",
-    "try_again_later": "Bitte versuche es später nochmals..."
+    "try_again_later": "Bitte versuche es später nochmals...",
+    "screen_error_hint": "Diese Ansicht konnte nicht angezeigt werden. Der Fehler wurde uns gemeldet."
   },
   "units": {
     "long": {

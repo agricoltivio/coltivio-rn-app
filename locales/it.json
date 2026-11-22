@@ -184,7 +184,8 @@
     "unexpected_retry": "Oops, qualcosa è andato storto. Riprova.",
     "unexpected_retry_later": "Oops, qualcosa è andato storto. Riprova più tardi.",
     "unexpected": "Oops, qualcosa è andato storto.",
-    "try_again_later": "Riprova più tardi..."
+    "try_again_later": "Riprova più tardi...",
+    "screen_error_hint": "Non è stato possibile visualizzare questa schermata. L'errore ci è stato segnalato."
   },
   "units": {
     "long": {
