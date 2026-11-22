@@ -23,6 +23,21 @@ const UNIT_SQUARE: GeoJSON.MultiPolygon = {
 };
 
 // Second square offset to [2,0]→[3,0]→[3,1]→[2,1]→[2,0]
+const SECOND_SQUARE_COORDS: number[][][] = [
+  [
+    [2, 0],
+    [3, 0],
+    [3, 1],
+    [2, 1],
+    [2, 0],
+  ],
+];
+
+const TWO_SQUARE_MULTI: GeoJSON.MultiPolygon = {
+  type: "MultiPolygon",
+  coordinates: [UNIT_SQUARE_COORDS, SECOND_SQUARE_COORDS],
+};
+
 // ---------------------------------------------------------------------------
 // Coordinate conversion methods
 // ---------------------------------------------------------------------------
@@ -249,5 +264,122 @@ describe("GeoSpatials.getMidpointFromCoordinates", () => {
     const result = GeoSpatials.getMidpointFromCoordinates(p1, p2);
     expect(result.latitude).toBeCloseTo(48.5, 0);
     expect(result.longitude).toBeCloseTo(16.5, 0);
+  });
+});
+
+// A field of about 100 x 55 m near the coordinates of the Sentry report in #155
+const FIELD: GeoJSON.MultiPolygon = {
+  type: "MultiPolygon",
+  coordinates: [
+    [
+      [
+        [8.733, 47.582],
+        [8.7343, 47.582],
+        [8.7343, 47.5825],
+        [8.733, 47.5825],
+        [8.733, 47.582],
+      ],
+    ],
+  ],
+};
+
+describe("splitMultiPolygonByLine robustness", () => {
+  test("a line through only one part of a multipolygon keeps the other part whole", () => {
+    const line: GeoJSON.LineString = {
+      type: "LineString",
+      coordinates: [
+        [0.5, -1],
+        [0.5, 2],
+      ],
+    };
+    const result = splitMultiPolygonByLine(TWO_SQUARE_MULTI, line);
+    expect(result).toHaveLength(2);
+    const totalArea = result!.reduce((sum, piece) => sum + turf.area(piece), 0);
+    expect(totalArea).toBeCloseTo(turf.area(TWO_SQUARE_MULTI), -3);
+    // The second square stays in one piece, on one side of the line
+    const sideWithSecondSquare = result!.find((piece) =>
+      piece.coordinates.some((polygon) =>
+        polygon[0].some(([longitude]) => longitude === 3),
+      ),
+    );
+    expect(sideWithSecondSquare!.coordinates).toHaveLength(2);
+  });
+
+  test("near-duplicate cut points (double tap) still split the field", () => {
+    const line: GeoJSON.LineString = {
+      type: "LineString",
+      coordinates: [
+        [8.7336, 47.5815],
+        [8.7336, 47.58150001], // ~1 mm from the previous point
+        [8.7336, 47.583],
+      ],
+    };
+    const result = splitMultiPolygonByLine(FIELD, line);
+    expect(result).toHaveLength(2);
+  });
+
+  test("a last point close to the one before replaces it as the line's end", () => {
+    // B + ~1 cm is dropped by the filter, then put back as the end in place of B
+    const line: GeoJSON.LineString = {
+      type: "LineString",
+      coordinates: [
+        [8.7336, 47.5815],
+        [8.7336, 47.583],
+        [8.7336001, 47.583], // ~1 cm east of the previous point
+      ],
+    };
+    const result = splitMultiPolygonByLine(FIELD, line);
+    expect(result).toHaveLength(2);
+  });
+
+  test("a line only made of points closer than 0.5 m returns null", () => {
+    const line: GeoJSON.LineString = {
+      type: "LineString",
+      coordinates: [
+        [8.7336, 47.5822],
+        [8.7336, 47.582201],
+      ],
+    };
+    expect(splitMultiPolygonByLine(FIELD, line)).toBeNull();
+  });
+
+  test("a line through two corners splits the field along its diagonal", () => {
+    // Straight line through the corners (8.733, 47.582) and (8.7343, 47.5825), extended on both sides
+    const slope = 0.0005 / 0.0013;
+    const line: GeoJSON.LineString = {
+      type: "LineString",
+      coordinates: [
+        [8.7327, 47.582 - 0.0003 * slope],
+        [8.7346, 47.5825 + 0.0003 * slope],
+      ],
+    };
+    const result = splitMultiPolygonByLine(FIELD, line);
+    expect(result).toHaveLength(2);
+    const areas = result!.map((piece) => turf.area(piece));
+    expect(areas[0]).toBeCloseTo(areas[1], -1);
+  });
+
+  test("a sharply bent polyline doesn't throw", () => {
+    const line: GeoJSON.LineString = {
+      type: "LineString",
+      coordinates: [
+        [8.7333, 47.583],
+        [8.7336, 47.5815],
+        [8.7339, 47.583],
+      ],
+    };
+    expect(() => splitMultiPolygonByLine(FIELD, line)).not.toThrow();
+  });
+
+  test("a polyline bending back on itself doesn't throw", () => {
+    const line: GeoJSON.LineString = {
+      type: "LineString",
+      coordinates: [
+        [8.7336, 47.5815],
+        [8.7336, 47.583],
+        [8.73361, 47.5815],
+      ],
+    };
+    expect(() => splitMultiPolygonByLine(FIELD, line)).not.toThrow();
   });
 });

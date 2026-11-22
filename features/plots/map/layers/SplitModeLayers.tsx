@@ -11,6 +11,7 @@ import {
   Layer,
   type LngLat,
 } from "@maplibre/maplibre-react-native";
+import * as Sentry from "@sentry/react-native";
 import * as turf from "@turf/turf";
 import React, {
   forwardRef,
@@ -139,16 +140,30 @@ export const SplitModeLayers = forwardRef<SplitModeLayersHandle>(
           return;
         }
         const newPolygons: GeoJSON.MultiPolygon[] = [];
-        for (const polygon of currentMode.currentPolygons) {
-          const result = splitMultiPolygonByLine(polygon, {
-            type: "LineString",
-            coordinates: coords,
-          });
-          if (result) {
-            newPolygons.push(...result);
-          } else {
-            newPolygons.push(polygon);
+        try {
+          for (const polygon of currentMode.currentPolygons) {
+            const result = splitMultiPolygonByLine(polygon, {
+              type: "LineString",
+              coordinates: coords,
+            });
+            if (result) {
+              newPolygons.push(...result);
+            } else {
+              newPolygons.push(polygon);
+            }
           }
+        } catch (error) {
+          // turf can still fail on unusual geometry. Keep the drawn line, so the
+          // user can adjust it and try again.
+          Sentry.captureException(error, {
+            extra: {
+              plotId: currentMode.plotId,
+              linePointCount: coords.length,
+              polygonCount: currentMode.currentPolygons.length,
+            },
+          });
+          Alert.alert(t("plots.split.split_failed"));
+          return;
         }
         const validPolylines = newPolygons.filter(
           (p) => p.coordinates.length > 0 && turf.area(p) > 0.1,
@@ -182,16 +197,30 @@ export const SplitModeLayers = forwardRef<SplitModeLayersHandle>(
           return;
         }
         const newPolygons: GeoJSON.MultiPolygon[] = [];
-        for (const currentPolygon of currentMode.currentPolygons) {
-          const result = cutPolygonFromMultiPolygonLngLat(
-            currentPolygon,
-            coords,
-          );
-          if (result) {
-            newPolygons.push(result.remaining, result.plots);
-          } else {
-            newPolygons.push(currentPolygon);
+        try {
+          for (const currentPolygon of currentMode.currentPolygons) {
+            const result = cutPolygonFromMultiPolygonLngLat(
+              currentPolygon,
+              coords,
+            );
+            if (result) {
+              newPolygons.push(result.remaining, result.plots);
+            } else {
+              newPolygons.push(currentPolygon);
+            }
           }
+        } catch (error) {
+          // Same turf operations as the line cut, same failure. Keep the drawn area, so the
+          // user can adjust it and try again.
+          Sentry.captureException(error, {
+            extra: {
+              plotId: currentMode.plotId,
+              areaPointCount: coords.length,
+              polygonCount: currentMode.currentPolygons.length,
+            },
+          });
+          Alert.alert(t("plots.split.split_failed"));
+          return;
         }
         // Filter out zero-area degenerate polygons (floating-point artifacts from cuts)
         const validPolygons = newPolygons.filter(

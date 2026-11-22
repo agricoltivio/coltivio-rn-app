@@ -220,16 +220,46 @@ export class GeoSpatials {
   }
 }
 
+// About 0.1 mm, well below anything drawn on the map
+const SPLIT_COORDINATE_PRECISION = 9;
+// Cut points closer than this to the previous one come from double taps or tiny drags
+const MIN_CUT_POINT_DISTANCE_M = 0.5;
+
 export function splitMultiPolygonByLine(
   multiPolygon: GeoJSON.MultiPolygon,
   line: GeoJSON.LineString,
 ): GeoJSON.MultiPolygon[] | null {
+  // turf.intersect throws "degenerate segment" on zero-length segments, which
+  // appear when points coincide after its internal rounding. Fixed precision on the
+  // plot plus dropping cut points that are almost on top of each other should make
+  // them less likely; the caller still catches what gets through.
   const cleanMulti: GeoJSON.MultiPolygon = turf.cleanCoords(
-    turf.clone(multiPolygon),
+    turf.truncate(turf.clone(multiPolygon), {
+      precision: SPLIT_COORDINATE_PRECISION,
+    }),
   );
-  const cleanLine: GeoJSON.LineString = turf.cleanCoords(turf.clone(line));
   const flattened = turf.flatten(cleanMulti);
-  const lineCoords = cleanLine.coordinates as number[][];
+  const lineCoords: number[][] = [];
+  for (const coordinate of line.coordinates) {
+    const previous = lineCoords[lineCoords.length - 1];
+    if (
+      previous &&
+      turf.distance(previous, coordinate, { units: "meters" }) <
+        MIN_CUT_POINT_DISTANCE_M
+    ) {
+      continue;
+    }
+    lineCoords.push(coordinate);
+  }
+  // The last point counts even when it is close to the one before: it sets the line's end
+  const lastCoordinate = line.coordinates[line.coordinates.length - 1];
+  if (
+    lineCoords.length > 1 &&
+    lineCoords[lineCoords.length - 1] !== lastCoordinate
+  ) {
+    lineCoords[lineCoords.length - 1] = lastCoordinate;
+  }
+  if (lineCoords.length < 2) return null;
 
   // Extend the line well beyond the polygon in both directions so the half-planes
   // cover the full plot regardless of where the user drew the line.
@@ -268,12 +298,18 @@ export function splitMultiPolygonByLine(
   });
   const coordsA = turf.getCoords(offsetA) as number[][];
   const coordsB = turf.getCoords(offsetB) as number[][];
-  const halfPlaneA = turf.polygon([
-    [...extCoords, ...[...coordsA].reverse(), extCoords[0]],
-  ]);
-  const halfPlaneB = turf.polygon([
-    [...extCoords, ...[...coordsB].reverse(), extCoords[0]],
-  ]);
+  const halfPlaneA = turf.cleanCoords(
+    turf.truncate(
+      turf.polygon([[...extCoords, ...[...coordsA].reverse(), extCoords[0]]]),
+      { precision: SPLIT_COORDINATE_PRECISION },
+    ),
+  );
+  const halfPlaneB = turf.cleanCoords(
+    turf.truncate(
+      turf.polygon([[...extCoords, ...[...coordsB].reverse(), extCoords[0]]]),
+      { precision: SPLIT_COORDINATE_PRECISION },
+    ),
+  );
 
   const sideA: GeoJSON.Polygon["coordinates"][] = [];
   const sideB: GeoJSON.Polygon["coordinates"][] = [];
