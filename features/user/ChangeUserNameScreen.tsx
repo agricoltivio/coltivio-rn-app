@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react-native";
 import { useSession } from "@/auth/SessionProvider";
 import { queryKeys } from "@/cache/query-keys";
 import { Button } from "@/components/buttons/Button";
@@ -38,7 +39,11 @@ export function ChangeUserNameScreen({
       data: { full_name: name },
     });
     if (error || !data) {
-      console.error(error?.code || error?.message);
+      // Auth errors with a 4xx status are user errors (e.g. weak or same password), only
+      // the rest is worth a report
+      if (error && !(error.status !== undefined && error.status < 500)) {
+        Sentry.captureException(error);
+      }
       setError(t("errors.unexpected_retry"));
     } else {
       queryClient.invalidateQueries({ queryKey: queryKeys.users._def });

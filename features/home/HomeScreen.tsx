@@ -135,7 +135,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
       didInitLaunchDate.current = true;
       updateLocalSettings("firstLaunchDate", new Date().toISOString());
     }
-  }, [localSettings.firstLaunchDate]);
+  }, [localSettings.firstLaunchDate, updateLocalSettings]);
 
   const daysSinceLaunch = localSettings.firstLaunchDate
     ? (Date.now() - new Date(localSettings.firstLaunchDate).getTime()) /

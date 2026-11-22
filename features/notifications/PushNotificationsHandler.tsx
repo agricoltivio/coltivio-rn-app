@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react-native";
 import { useApi } from "@/api/api";
 import { useSession } from "@/auth/SessionProvider";
 import { useActiveFarm } from "@/features/farms/ActiveFarmContext";
@@ -45,7 +46,7 @@ export function PushNotificationsHandler() {
   // every start regardless of login, and again when the language changes to rename it
   useEffect(() => {
     setUpAndroidNotificationChannelAsync().catch((error) =>
-      console.error(error),
+      Sentry.captureException(error),
     );
   }, [i18n.language]);
 
@@ -58,19 +59,21 @@ export function PushNotificationsHandler() {
     getNotificationPermissionAsync({ requestPermission: false })
       .then((permission) => {
         if (permission?.granted) {
-          return registerPushTokenAsync(api.users);
+          // Reports its own failures
+          registerPushTokenAsync(api.users).catch(() => {});
         }
       })
-      .catch((error) => console.error(error));
+      .catch((error) => Sentry.captureException(error));
     // Only fires when a device token exists, so permission is granted
     const subscription = Notifications.addPushTokenListener(
       (devicePushToken) => {
-        registerPushTokenAsync(api.users, devicePushToken).catch((error) =>
-          console.error(error),
-        );
+        // Reports its own failures
+        registerPushTokenAsync(api.users, devicePushToken).catch(() => {});
       },
     );
     return () => subscription.remove();
+    // Keyed by the session: useApi returns a new object on every render and would register again each time
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   // The setting must never stay enabled without permission: turn it off when permission
@@ -100,7 +103,7 @@ export function PushNotificationsHandler() {
             });
           }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => Sentry.captureException(error));
     }
     disableIfPermissionBlocked();
     const subscription = AppState.addEventListener("change", (appState) => {
@@ -109,6 +112,8 @@ export function PushNotificationsHandler() {
       }
     });
     return () => subscription.remove();
+    // The mutation objects are new on every render, listing them would recheck the permission each time
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [taskPushNotificationsEnabled, breedingRemindersEnabled]);
 
   useEffect(() => {
@@ -157,7 +162,15 @@ export function PushNotificationsHandler() {
     } else {
       navigation.navigate("TaskList");
     }
-  }, [lastNotificationResponse, token, farms, user, activeFarmId]);
+  }, [
+    lastNotificationResponse,
+    token,
+    farms,
+    user,
+    activeFarmId,
+    setActiveFarmId,
+    navigation,
+  ]);
 
   return null;
 }

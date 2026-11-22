@@ -34,7 +34,7 @@ setBeforeSignOutHandler(async (authToken) => {
   }
   await userApi(createAuthClient(authToken))
     .deletePushToken(storedPushToken)
-    .catch((error) => console.error(error));
+    .catch((error) => Sentry.captureException(error));
   await SecureStore.deleteItemAsync(PUSH_TOKEN_STORAGE_KEY).catch(() => {});
 });
 
@@ -135,7 +135,7 @@ export async function getNotificationPermissionAsync({
 // Pass devicePushToken when calling from addPushTokenListener: without it the Expo token
 // lookup fetches the device token itself, which fires the listener again (endless loop).
 // Only called once permission is granted, so every failure is a real one (e.g. Firebase not
-// configured on Android) and goes to Sentry: callers only log it, nobody sees the console.
+// configured on Android) and goes to Sentry here; callers don't report it again.
 export async function registerPushTokenAsync(
   usersApi: UsersApi,
   devicePushToken?: Notifications.DevicePushToken,

@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react-native";
 import { useApi } from "@/api/api";
 import { Button } from "@/components/buttons/Button";
 import { ContentView } from "@/components/containers/ContentView";
@@ -49,21 +50,25 @@ export function NotificationSettingsScreen(
       updateTaskPushNotificationsMutation.mutate(false);
       return;
     }
+    let permission: Awaited<ReturnType<typeof getNotificationPermissionAsync>>;
     try {
-      const permission = await getNotificationPermissionAsync({
+      permission = await getNotificationPermissionAsync({
         requestPermission: true,
       });
-      setNotificationPermissionBlocked(permission?.blocked ?? false);
-      // null: simulator/emulator without push support, the setting can still be toggled
-      if (permission != null && !permission.granted) {
-        return;
-      }
-      updateTaskPushNotificationsMutation.mutate(true);
-      if (permission != null) {
-        await registerPushTokenAsync(api.users);
-      }
     } catch (error) {
-      console.error(error);
+      // The permission request failed, the setting isn't changed
+      Sentry.captureException(error);
+      return;
+    }
+    setNotificationPermissionBlocked(permission?.blocked ?? false);
+    // null: simulator/emulator without push support, the setting can still be toggled
+    if (permission != null && !permission.granted) {
+      return;
+    }
+    updateTaskPushNotificationsMutation.mutate(true);
+    if (permission != null) {
+      // Reports its own failures; the setting itself is saved
+      await registerPushTokenAsync(api.users).catch(() => {});
     }
   }
 
