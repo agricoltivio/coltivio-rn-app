@@ -33,7 +33,9 @@ export const OutdoorTimelineBar = memo(function OutdoorTimelineBar({
       ? "#4CAF50"
       : bar.scheduleType === "exercise_yard"
         ? "#FF9800"
-        : stringToColor(bar.herdName);
+        : bar.scheduleType === "stable"
+          ? "#78909C"
+          : stringToColor(bar.herdName);
 
   // How far today falls within this bar (in pixels from the bar's left edge)
   const todayOffset = todayLeft - left;
@@ -116,6 +118,23 @@ export const OutdoorTimelineBar = memo(function OutdoorTimelineBar({
             borderStyle: "dashed",
             borderColor: futureBorderColor,
             borderLeftWidth: hasPast ? 0 : 1.5,
+          }}
+        />
+      )}
+
+      {/* Overrides get an outline, so they stand out from the schedule around them */}
+      {bar.isOverride && (
+        <View
+          pointerEvents="none"
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            borderRadius: 4,
+            borderWidth: 2,
+            borderColor: hexToRgba("#263238", 0.8),
           }}
         />
       )}

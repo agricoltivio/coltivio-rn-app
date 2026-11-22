@@ -1377,7 +1377,8 @@
     "outdoor_type": "Type",
     "outdoor_types": {
       "pasture": "Pâturage",
-      "exercise_yard": "Cour d'exercice"
+      "exercise_yard": "Cour d'exercice",
+      "stable": "Étable"
     },
     "new_outdoor_schedule": "Nouvelle sortie",
     "edit_outdoor_schedule": "Modifier la sortie",
@@ -1522,7 +1523,13 @@
     "herd_changes_summary": "{{added}} ajoutés, {{removed}} retirés. À partir de quelle date ?",
     "delete_herd_confirm": "Supprimer le troupeau « {{name}} » ?",
     "delete_herd_confirm_info": "Cette action est irréversible.",
-    "timeline_view_overview": "Aperçu"
+    "timeline_view_overview": "Aperçu",
+    "outdoor_overrides": "Exceptions",
+    "outdoor_overrides_hint": "Jours où le troupeau a fait autre chose que prévu, p. ex. à l'étable à cause d'un orage. Une exception prime sur la sortie ces jours-là.",
+    "new_outdoor_override": "Nouvelle exception",
+    "edit_outdoor_override": "Modifier l'exception",
+    "outdoor_override_overlap": "L'exception chevauche une autre exception de ce troupeau.",
+    "stable_no_meadow": "L'étable n'a pas de pâturage."
   },
   "drugs": {
     "drugs": "Médicaments",

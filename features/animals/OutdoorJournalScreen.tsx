@@ -319,9 +319,7 @@ export function OutdoorJournalScreen({
                           color: theme.colors.text,
                         }}
                       >
-                        {selectedBar.scheduleType === "pasture"
-                          ? t("animals.outdoor_types.pasture")
-                          : t("animals.outdoor_types.exercise_yard")}
+                        {t(`animals.outdoor_types.${selectedBar.scheduleType}`)}
                       </Text>
                     </View>
                   )}

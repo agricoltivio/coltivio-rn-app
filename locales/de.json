@@ -1377,7 +1377,8 @@
     "outdoor_type": "Typ",
     "outdoor_types": {
       "pasture": "Weide",
-      "exercise_yard": "Laufhof"
+      "exercise_yard": "Laufhof",
+      "stable": "Stall"
     },
     "new_outdoor_schedule": "Neuer Auslauf",
     "edit_outdoor_schedule": "Auslauf bearbeiten",
@@ -1522,7 +1523,13 @@
     "herd_changes_summary": "{{added}} hinzugefügt, {{removed}} entfernt. Ab welchem Datum gilt das?",
     "delete_herd_confirm": "Herde «{{name}}» löschen?",
     "delete_herd_confirm_info": "Das kann nicht rückgängig gemacht werden.",
-    "timeline_view_overview": "Übersicht"
+    "timeline_view_overview": "Übersicht",
+    "outdoor_overrides": "Ausnahmen",
+    "outdoor_overrides_hint": "Tage, an denen die Herde etwas anderes machte als geplant, z.B. wegen Unwetter im Stall. Eine Ausnahme geht dem Auslauf an diesen Tagen vor.",
+    "new_outdoor_override": "Neue Ausnahme",
+    "edit_outdoor_override": "Ausnahme bearbeiten",
+    "outdoor_override_overlap": "Die Ausnahme überschneidet sich mit einer anderen Ausnahme dieser Herde.",
+    "stable_no_meadow": "Im Stall gibt es keine Weidefläche."
   },
   "drugs": {
     "drugs": "Medikamente",

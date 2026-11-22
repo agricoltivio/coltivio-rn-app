@@ -1,4 +1,7 @@
-import { OutdoorScheduleCreateInput } from "@/api/herds.api";
+import {
+  OutdoorScheduleCreateInput,
+  OutdoorScheduleOverride,
+} from "@/api/herds.api";
 import { BottomDrawerModal } from "@/components/bottom-drawer/BottomDrawerModal";
 import { InlineDatePicker } from "@/components/datepicker/InlineDatePicker";
 import { Portal } from "@gorhom/portal";
@@ -17,7 +20,10 @@ import { H2, H3, Subtitle } from "@/theme/Typography";
 import { toLocalDateString } from "@/utils/date";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { formatOutdoorScheduleSummary } from "./outdoor-schedule-summary";
+import {
+  formatOutdoorOverrideSummary,
+  formatOutdoorScheduleSummary,
+} from "./outdoor-schedule-summary";
 import { usePermissions } from "@/features/user/users.hooks";
 import { Alert, View } from "react-native";
 import { Text } from "@/components/text/Text";
@@ -290,6 +296,14 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
     "overview",
   );
 
+  function openOverrideForm(override?: OutdoorScheduleOverride) {
+    if (!herd) return;
+    navigation.navigate("OutdoorScheduleOverrideForm", {
+      herdId: herd.id,
+      override,
+    });
+  }
+
   // Build timeline data from local schedules
   const timelineData = useMemo(() => {
     if (!herd) return null;
@@ -311,17 +325,21 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
         : null,
     });
 
+    // Saved right away, so always the server state (unlike the local schedules)
+    const overrides = herd.outdoorScheduleOverrides ?? [];
+
     if (timelineView === "overview") {
       return buildOutdoorTimelineData([
         {
           herdId: herd.id,
           herdName: herd.name,
           schedules: localSchedules.map(toTimelineSchedule),
+          overrides,
         },
       ]);
     }
 
-    // Group stays by meadow; stays without a meadow get their own row
+    // Group stays and overrides by meadow; those without a meadow get their own row
     const schedulesByMeadow = new Map<string, LocalSchedule[]>();
     for (const schedule of localSchedules) {
       const key = schedule.meadowId ?? "_no_meadow";
@@ -330,14 +348,27 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
         schedule,
       ]);
     }
+    const meadowKeys = new Set([
+      ...schedulesByMeadow.keys(),
+      ...overrides.map((override) => override.meadowId ?? "_no_meadow"),
+    ]);
     const data = buildOutdoorTimelineData(
-      [...schedulesByMeadow.entries()].map(([meadowId, schedules]) => ({
+      [...meadowKeys].map((meadowId) => ({
         herdId: meadowId,
         herdName:
           meadowId === "_no_meadow"
             ? t("animals.meadows.no_meadow")
             : (meadows?.find((m) => m.id === meadowId)?.name ?? "–"),
-        schedules: schedules.map(toTimelineSchedule),
+        schedules: (schedulesByMeadow.get(meadowId) ?? []).map(
+          toTimelineSchedule,
+        ),
+        overrides: overrides.filter(
+          (override) => (override.meadowId ?? "_no_meadow") === meadowId,
+        ),
+        // An override applies to the whole herd, also to the stays on other meadows
+        otherOverrides: overrides.filter(
+          (override) => (override.meadowId ?? "_no_meadow") !== meadowId,
+        ),
       })),
     );
     // Most recently used meadows on top
@@ -500,6 +531,13 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
                 <OutdoorScheduleTimeline
                   timelineData={timelineData}
                   onBarPress={(scheduleId) => {
+                    const override = herd.outdoorScheduleOverrides?.find(
+                      (o) => o.id === scheduleId,
+                    );
+                    if (override) {
+                      openOverrideForm(override);
+                      return;
+                    }
                     const schedule = localSchedules.find(
                       (s) => s.tempId === scheduleId,
                     );
@@ -536,6 +574,61 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
                     </ListItem.Title>
                     {schedule.notes && (
                       <ListItem.Body>{schedule.notes}</ListItem.Body>
+                    )}
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+              ))}
+            </View>
+          )}
+        </View>
+
+        {/* Overrides (exceptions): days on which the herd did something else than the
+            schedules say. Saved right away, independent of the herd's save button. */}
+        <View style={{ marginTop: theme.spacing.l }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginBottom: theme.spacing.s,
+            }}
+          >
+            <H3 style={{ flex: 1 }}>{t("animals.outdoor_overrides")}</H3>
+            <IonIconButton
+              icon="add"
+              color="black"
+              iconSize={25}
+              type="accent"
+              onPress={() => openOverrideForm()}
+            />
+          </View>
+          {(herd.outdoorScheduleOverrides ?? []).length === 0 ? (
+            <Subtitle>{t("animals.outdoor_overrides_hint")}</Subtitle>
+          ) : (
+            <View
+              style={{
+                borderRadius: 10,
+                overflow: "hidden",
+                backgroundColor: theme.colors.white,
+              }}
+            >
+              {(herd.outdoorScheduleOverrides ?? []).map((override) => (
+                <ListItem
+                  key={override.id}
+                  style={{ paddingVertical: 5 }}
+                  onPress={() => openOverrideForm(override)}
+                >
+                  <ListItem.Content>
+                    <ListItem.Title>
+                      {formatOutdoorOverrideSummary(
+                        override,
+                        t,
+                        locale,
+                        override.meadow?.name,
+                      )}
+                    </ListItem.Title>
+                    {override.notes && (
+                      <ListItem.Body>{override.notes}</ListItem.Body>
                     )}
                   </ListItem.Content>
                   <ListItem.Chevron />

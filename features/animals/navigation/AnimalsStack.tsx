@@ -33,6 +33,7 @@ import { MeadowDetailsScreen } from "../MeadowDetailsScreen";
 import { MeadowOverviewScreen } from "../MeadowOverviewScreen";
 import { MeadowSummaryScreen } from "../MeadowSummaryScreen";
 import { OutdoorScheduleFormScreen } from "../OutdoorScheduleFormScreen";
+import { OutdoorScheduleOverrideFormScreen } from "../OutdoorScheduleOverrideFormScreen";
 import { TreatmentsExportScreen } from "../TreatmentsExportScreen";
 import { HerdsOnboardingScreen } from "../HerdsOnboardingScreen";
 import { BatchSelectAnimalsScreen } from "../BatchSelectAnimalsScreen";
@@ -317,6 +318,12 @@ export function renderAnimalsStack(
       name="OutdoorScheduleForm"
       options={{ title: "" }}
       component={OutdoorScheduleFormScreen}
+    />,
+    <Stack.Screen
+      key="outdoor-schedule-override-form"
+      name="OutdoorScheduleOverrideForm"
+      options={{ title: "" }}
+      component={OutdoorScheduleOverrideFormScreen}
     />,
     <Stack.Screen
       key="meadow-summary"

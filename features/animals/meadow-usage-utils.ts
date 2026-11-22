@@ -98,24 +98,34 @@ type ScheduleEndInfo = {
   recurrence: { until: string | null } | null;
 };
 
-// Names of the herds with a schedule on this meadow that hasn't ended yet (ongoing or
-// upcoming). A repeating schedule ends with its "until" date, a single stay with its
-// end date; without one it's open-ended. today is a "YYYY-MM-DD" local date.
-// Such a meadow can't be archived.
+// Names of the herds with a schedule or override on this meadow that hasn't ended yet
+// (ongoing or upcoming). A repeating schedule ends with its "until" date, a single stay
+// with its end date; without one it's open-ended. today is a "YYYY-MM-DD" local date.
+// Such a meadow can't be archived (same check as the API).
 export function getHerdsWithActiveSchedules(
-  herds: { name: string; outdoorSchedules: ScheduleEndInfo[] }[],
+  herds: {
+    name: string;
+    outdoorSchedules: ScheduleEndInfo[];
+    outdoorScheduleOverrides?: { meadowId: string | null; endDate: string }[];
+  }[],
   meadowId: string,
   today: string,
 ): string[] {
   return herds
-    .filter((herd) =>
-      herd.outdoorSchedules.some((schedule) => {
-        if (schedule.meadowId !== meadowId) return false;
-        const lastDay = schedule.recurrence
-          ? schedule.recurrence.until
-          : schedule.endDate;
-        return lastDay === null || lastDay.slice(0, 10) >= today;
-      }),
+    .filter(
+      (herd) =>
+        herd.outdoorSchedules.some((schedule) => {
+          if (schedule.meadowId !== meadowId) return false;
+          const lastDay = schedule.recurrence
+            ? schedule.recurrence.until
+            : schedule.endDate;
+          return lastDay === null || lastDay.slice(0, 10) >= today;
+        }) ||
+        (herd.outdoorScheduleOverrides ?? []).some(
+          (override) =>
+            override.meadowId === meadowId &&
+            override.endDate.slice(0, 10) >= today,
+        ),
     )
     .map((herd) => herd.name);
 }

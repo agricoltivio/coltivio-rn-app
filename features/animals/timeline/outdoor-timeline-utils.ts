@@ -1,4 +1,5 @@
-import { OutdoorSchedule } from "@/api/herds.api";
+import { OutdoorSchedule, OutdoorScheduleType } from "@/api/herds.api";
+import { parseDateOnly } from "@/utils/date";
 import {
   addWeeks,
   addMonths,
@@ -18,7 +19,9 @@ export type OutdoorBar = {
   isOpenEnded: boolean;
   isFuture: boolean; // starts after today — rendered as projection
   notes: string | null;
-  scheduleType?: "pasture" | "exercise_yard";
+  scheduleType?: OutdoorScheduleType;
+  // The bar is an override (scheduleId is then the override's id), drawn on top of the schedules
+  isOverride?: boolean;
   // Journal-specific metadata
   animalCount?: number;
   meadowName?: string;
@@ -65,7 +68,7 @@ type ScheduleInput = {
   startDate: string;
   endDate: string | null;
   notes: string | null;
-  type?: "pasture" | "exercise_yard";
+  type?: OutdoorScheduleType;
   recurrence: {
     frequency: "weekly" | "monthly" | "yearly";
     interval: number;
@@ -98,34 +101,122 @@ export function getTimelineEpoch(entryStartDates: string[]) {
   return { years, epochStart, epochEnd, totalDays, todayDay };
 }
 
+type OverrideInput = {
+  id: string;
+  startDate: string;
+  // inclusive
+  endDate: string;
+  type: OutdoorScheduleType;
+  notes: string | null;
+};
+
+// Parts of [startDay, endDay] not covered by the given day ranges (all inclusive)
+export function subtractDayRanges(
+  startDay: number,
+  endDay: number,
+  covered: { startDay: number; endDay: number }[],
+): { startDay: number; endDay: number }[] {
+  const parts: { startDay: number; endDay: number }[] = [];
+  let cursor = startDay;
+  for (const range of [...covered].sort((a, b) => a.startDay - b.startDay)) {
+    if (range.endDay < cursor || range.startDay > endDay) continue;
+    if (range.startDay > cursor) {
+      parts.push({ startDay: cursor, endDay: range.startDay - 1 });
+    }
+    cursor = Math.max(cursor, range.endDay + 1);
+  }
+  if (cursor <= endDay) parts.push({ startDay: cursor, endDay });
+  return parts;
+}
+
 // Builds timeline data from one or more herds' outdoor schedules.
-// Recurring schedules are expanded into individual bars.
+// Recurring schedules are expanded into individual bars. Overrides take precedence over
+// the schedules on their days, as on the server: their days are cut out of the schedule
+// bars and they get bars of their own.
 export function buildOutdoorTimelineData(
-  herds: { herdId: string; herdName: string; schedules: ScheduleInput[] }[],
+  herds: {
+    herdId: string;
+    herdName: string;
+    schedules: ScheduleInput[];
+    // Drawn in this row and cut out of its schedules
+    overrides?: OverrideInput[];
+    // Only cut out of this row's schedules, drawn elsewhere (e.g. a stable override in
+    // the meadow view, whose row is "no meadow")
+    otherOverrides?: OverrideInput[];
+  }[],
 ): OutdoorTimelineData {
   const { years, epochStart, epochEnd, totalDays, todayDay } = getTimelineEpoch(
-    herds.flatMap((herd) => herd.schedules.map((s) => s.startDate)),
+    herds.flatMap((herd) => [
+      ...herd.schedules.map((s) => s.startDate),
+      ...(herd.overrides ?? []).map((override) => override.startDate),
+    ]),
   );
+  const lastDay = daysBetween(epochStart, epochEnd);
 
   const herdRows: OutdoorHerdData[] = herds.map(
-    ({ herdId, herdName, schedules }) => {
+    ({ herdId, herdName, schedules, overrides = [], otherOverrides = [] }) => {
       const bars: OutdoorBar[] = [];
+
+      const toOverrideDays = (rowOverrides: OverrideInput[]) =>
+        rowOverrides
+          .map((override) => ({
+            override,
+            startDay: Math.max(
+              0,
+              differenceInCalendarDays(
+                parseDateOnly(override.startDate),
+                epochStart,
+              ),
+            ),
+            endDay: Math.min(
+              lastDay,
+              differenceInCalendarDays(
+                parseDateOnly(override.endDate),
+                epochStart,
+              ),
+            ),
+          }))
+          .filter((range) => range.startDay <= range.endDay);
+      const overrideDays = toOverrideDays(overrides);
+      const cuttingDays = [...overrideDays, ...toOverrideDays(otherOverrides)];
 
       for (const schedule of schedules) {
         const occurrences = expandSchedule(schedule, epochStart, epochEnd);
         for (const occ of occurrences) {
-          bars.push({
-            scheduleId: schedule.id,
-            herdName,
-            herdId,
-            startDay: occ.startDay,
-            endDay: occ.endDay,
-            isOpenEnded: occ.isOpenEnded,
-            isFuture: occ.startDay > todayDay,
-            notes: schedule.notes,
-            scheduleType: schedule.type,
-          });
+          for (const part of subtractDayRanges(
+            occ.startDay,
+            occ.endDay,
+            cuttingDays,
+          )) {
+            bars.push({
+              scheduleId: schedule.id,
+              herdName,
+              herdId,
+              startDay: part.startDay,
+              endDay: part.endDay,
+              // Only the part reaching the original end keeps the open end
+              isOpenEnded: occ.isOpenEnded && part.endDay === occ.endDay,
+              isFuture: part.startDay > todayDay,
+              notes: schedule.notes,
+              scheduleType: schedule.type,
+            });
+          }
         }
+      }
+
+      for (const { override, startDay, endDay } of overrideDays) {
+        bars.push({
+          scheduleId: override.id,
+          herdName,
+          herdId,
+          startDay,
+          endDay,
+          isOpenEnded: false,
+          isFuture: startDay > todayDay,
+          notes: override.notes,
+          scheduleType: override.type,
+          isOverride: true,
+        });
       }
 
       bars.sort((a, b) => a.startDay - b.startDay);

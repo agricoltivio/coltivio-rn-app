@@ -3,6 +3,7 @@ import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
 import {
   buildOutdoorTimelineData,
   buildSingleHerdTimelineData,
+  subtractDayRanges,
 } from "./outdoor-timeline-utils";
 import type { OutdoorSchedule } from "@/api/herds.api";
 
@@ -46,7 +47,7 @@ function makeSchedule(
   endDate: string | null,
   opts?: {
     notes?: string | null;
-    type?: "pasture" | "exercise_yard";
+    type?: "pasture" | "exercise_yard" | "stable";
     recurrence?: RecurrenceInput;
   },
 ) {
@@ -540,5 +541,117 @@ describe("buildSingleHerdTimelineData", () => {
     const result = buildSingleHerdTimelineData("h1", "My Herd", [schedule]);
     // Yearly from 2022 until end of 2024 → 3 bars (2022, 2023, 2024)
     expect(result.herds[0].bars).toHaveLength(3);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Overrides
+// ---------------------------------------------------------------------------
+
+describe("subtractDayRanges", () => {
+  test("cuts ranges at the start, in the middle and at the end", () => {
+    expect(
+      subtractDayRanges(10, 30, [
+        { startDay: 5, endDay: 11 },
+        { startDay: 20, endDay: 21 },
+        { startDay: 30, endDay: 40 },
+      ]),
+    ).toEqual([
+      { startDay: 12, endDay: 19 },
+      { startDay: 22, endDay: 29 },
+    ]);
+  });
+
+  test("a range covering everything leaves nothing", () => {
+    expect(subtractDayRanges(10, 20, [{ startDay: 0, endDay: 99 }])).toEqual(
+      [],
+    );
+  });
+});
+
+describe("buildOutdoorTimelineData with overrides", () => {
+  function override(
+    startDate: string,
+    endDate: string,
+    type: "pasture" | "exercise_yard" | "stable",
+  ) {
+    return { id: nextId(), startDate, endDate, type, notes: null };
+  }
+
+  test("an override cuts the schedule bar and gets a bar of its own", () => {
+    const schedule = makeSchedule("2025-05-01", "2025-05-31", {
+      type: "pasture",
+    });
+    const stable = override("2025-05-10", "2025-05-11", "stable");
+    const data = buildOutdoorTimelineData([
+      {
+        herdId: "h1",
+        herdName: "Herd",
+        schedules: [schedule],
+        overrides: [stable],
+      },
+    ]);
+    const bars = data.herds[0].bars.map((bar) => ({
+      scheduleId: bar.scheduleId,
+      startDay: bar.startDay,
+      endDay: bar.endDay,
+      scheduleType: bar.scheduleType,
+      isOverride: bar.isOverride ?? false,
+    }));
+    expect(bars).toEqual([
+      {
+        scheduleId: schedule.id,
+        startDay: dayOf("2025-05-01"),
+        endDay: dayOf("2025-05-10") - 1,
+        scheduleType: "pasture",
+        isOverride: false,
+      },
+      {
+        scheduleId: stable.id,
+        startDay: dayOf("2025-05-10"),
+        endDay: dayOf("2025-05-11"),
+        scheduleType: "stable",
+        isOverride: true,
+      },
+      {
+        scheduleId: schedule.id,
+        startDay: dayOf("2025-05-11") + 1,
+        endDay: dayOf("2025-05-31"),
+        scheduleType: "pasture",
+        isOverride: false,
+      },
+    ]);
+  });
+
+  test("other overrides only cut, without a bar in this row", () => {
+    const schedule = makeSchedule("2025-05-01", "2025-05-31");
+    const data = buildOutdoorTimelineData([
+      {
+        herdId: "meadow-1",
+        herdName: "Meadow",
+        schedules: [schedule],
+        otherOverrides: [override("2025-05-10", "2025-05-11", "stable")],
+      },
+    ]);
+    expect(data.herds[0].bars.map((bar) => [bar.startDay, bar.endDay])).toEqual(
+      [
+        [dayOf("2025-05-01"), dayOf("2025-05-10") - 1],
+        [dayOf("2025-05-11") + 1, dayOf("2025-05-31")],
+      ],
+    );
+  });
+
+  test("an open-ended schedule keeps its open end only on the last part", () => {
+    const schedule = makeSchedule("2025-05-01", null);
+    const data = buildOutdoorTimelineData([
+      {
+        herdId: "h1",
+        herdName: "Herd",
+        schedules: [schedule],
+        overrides: [override("2025-05-10", "2025-05-10", "stable")],
+      },
+    ]);
+    const scheduleBars = data.herds[0].bars.filter((bar) => !bar.isOverride);
+    expect(scheduleBars.map((bar) => bar.isOpenEnded)).toEqual([false, true]);
   });
 });
