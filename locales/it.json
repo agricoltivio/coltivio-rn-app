@@ -147,7 +147,8 @@
     "view_chart": "Grafico",
     "view_stats": "Cifre",
     "per_unit_amount": "da {{amount}}",
-    "average_per_hectare": "Ø per ha"
+    "average_per_hectare": "Ø per ha",
+    "last_value": "ultimo: {{value}}"
   },
   "splash": {
     "tagline": "Da contadini. Per contadini.",
@@ -1522,7 +1523,9 @@
     "herd_changes_summary": "{{added}} aggiunti, {{removed}} rimossi. Da quale data vale?",
     "delete_herd_confirm": "Eliminare la mandria «{{name}}»?",
     "delete_herd_confirm_info": "Questa azione non può essere annullata.",
-    "timeline_view_overview": "Panoramica"
+    "timeline_view_overview": "Panoramica",
+    "n_offspring": "{{count}} discendente",
+    "n_offspring_plural": "{{count}} discendenti"
   },
   "drugs": {
     "drugs": "Medicinali",
@@ -1595,7 +1598,9 @@
     "drug_not_defined_for_type": "Per questa specie ({{type}}) il medicinale non ha dosaggio né periodi di attesa. Inseriscili manualmente.",
     "delete_confirm_title": "Eliminare il trattamento?",
     "delete_confirm_message": "Il trattamento viene rimosso dal registro dei trattamenti. L'operazione non può essere annullata.",
-    "mixed_animal_types": "Un trattamento può contenere solo animali di una sola specie."
+    "mixed_animal_types": "Un trattamento può contenere solo animali di una sola specie.",
+    "n_treatments": "{{count}} trattamento",
+    "n_treatments_plural": "{{count}} trattamenti"
   },
   "settings": {
     "settings": "Impostazioni",
@@ -1952,7 +1957,9 @@
     "max": "max",
     "n_samples": "{{count}} campione",
     "n_animals_plural": "{{count}} animali",
-    "n_samples_plural": "{{count}} campioni"
+    "n_samples_plural": "{{count}} campioni",
+    "n_checks": "{{count}} controllo",
+    "n_checks_plural": "{{count}} controlli"
   },
   "breeding": {
     "weight": "Peso",
@@ -2007,6 +2014,9 @@
     "gestation_days_invalid": "Tra 1 e 500 giorni",
     "gestation_saved": "Durata della gravidanza salvata",
     "permission_denied": "Le notifiche sono disattivate nelle impostazioni di sistema. Consentile lì per ricevere promemoria prima dei parti.",
-    "weight_load_failed": "Non è stato possibile caricare il peso"
+    "weight_load_failed": "Non è stato possibile caricare il peso",
+    "last_mated": "Ultima monta: {{date}}",
+    "n_heats": "{{count}} voce",
+    "n_heats_plural": "{{count}} voci"
   }
 }

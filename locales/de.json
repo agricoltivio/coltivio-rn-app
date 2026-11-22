@@ -147,7 +147,8 @@
     "view_chart": "Diagramm",
     "view_stats": "Zahlen",
     "per_unit_amount": "à {{amount}}",
-    "average_per_hectare": "Ø pro ha"
+    "average_per_hectare": "Ø pro ha",
+    "last_value": "zuletzt: {{value}}"
   },
   "splash": {
     "tagline": "Von Bauern. Für Bauern.",
@@ -1522,7 +1523,9 @@
     "herd_changes_summary": "{{added}} hinzugefügt, {{removed}} entfernt. Ab welchem Datum gilt das?",
     "delete_herd_confirm": "Herde «{{name}}» löschen?",
     "delete_herd_confirm_info": "Das kann nicht rückgängig gemacht werden.",
-    "timeline_view_overview": "Übersicht"
+    "timeline_view_overview": "Übersicht",
+    "n_offspring": "{{count}} Nachkomme",
+    "n_offspring_plural": "{{count}} Nachkommen"
   },
   "drugs": {
     "drugs": "Medikamente",
@@ -1595,7 +1598,9 @@
     "drug_not_defined_for_type": "Für {{type}} sind bei diesem Medikament keine Dosierung und Absetzfristen hinterlegt. Bitte manuell erfassen.",
     "delete_confirm_title": "Behandlung löschen?",
     "delete_confirm_message": "Die Behandlung wird aus dem Behandlungsjournal entfernt. Dies kann nicht rückgängig gemacht werden.",
-    "mixed_animal_types": "Eine Behandlung kann nur Tiere einer Tierart enthalten."
+    "mixed_animal_types": "Eine Behandlung kann nur Tiere einer Tierart enthalten.",
+    "n_treatments": "{{count}} Behandlung",
+    "n_treatments_plural": "{{count}} Behandlungen"
   },
   "speed_dial": {
     "harvest": "Ernte hinzufügen",
@@ -1952,7 +1957,9 @@
     "max": "max",
     "n_samples": "{{count}} Probe",
     "n_animals_plural": "{{count}} Tiere",
-    "n_samples_plural": "{{count}} Proben"
+    "n_samples_plural": "{{count}} Proben",
+    "n_checks": "{{count}} Kontrolle",
+    "n_checks_plural": "{{count}} Kontrollen"
   },
   "breeding": {
     "weight": "Gewicht",
@@ -2007,6 +2014,9 @@
     "gestation_days_invalid": "Zwischen 1 und 500 Tagen",
     "gestation_saved": "Trächtigkeitsdauer gespeichert",
     "permission_denied": "Mitteilungen sind in den Systemeinstellungen deaktiviert. Erlaube sie dort, damit du Erinnerungen vor Geburten erhältst.",
-    "weight_load_failed": "Gewicht konnte nicht geladen werden"
+    "weight_load_failed": "Gewicht konnte nicht geladen werden",
+    "last_mated": "Zuletzt gedeckt: {{date}}",
+    "n_heats": "{{count}} Eintrag",
+    "n_heats_plural": "{{count}} Einträge"
   }
 }

@@ -10,6 +10,8 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useAnimalByIdQuery } from "./animals.hooks";
+import { IonIconButton } from "@/components/buttons/IconButton";
+import { usePermissions } from "@/features/user/users.hooks";
 import { AnimalParasiteHistoryScreenProps } from "./navigation/animals-routes";
 import {
   animalDisplayName,
@@ -50,6 +52,7 @@ export function AnimalParasiteHistoryScreen({
   const locale = i18n.language;
   const theme = useTheme();
   const { animalId } = route.params;
+  const { canWrite } = usePermissions();
   const { animal } = useAnimalByIdQuery(animalId);
   const { history, isLoading } = useAnimalParasiteHistoryQuery(animalId);
 
@@ -156,12 +159,36 @@ export function AnimalParasiteHistoryScreen({
   return (
     <ContentView headerVisible>
       <ScrollView showHeaderOnScroll headerTitleOnScroll={title}>
-        <H2>{title}</H2>
-        {animal && (
-          <Subtitle style={{ color: theme.colors.gray2, marginTop: 4 }}>
-            {animalDisplayName(animal.name, animal.earTag?.number)}
-          </Subtitle>
-        )}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <View style={{ flex: 1 }}>
+            <H2>{title}</H2>
+            {animal && (
+              <Subtitle style={{ color: theme.colors.gray2, marginTop: 4 }}>
+                {animalDisplayName(animal.name, animal.earTag?.number)}
+              </Subtitle>
+            )}
+          </View>
+          {/* New check with this animal preselected, like the other sections of an animal */}
+          {canWrite("animals") && (
+            <IonIconButton
+              icon="add"
+              color="black"
+              iconSize={25}
+              type="accent"
+              onPress={() =>
+                navigation.navigate("ParasiteCheckForm", {
+                  animalIds: [animalId],
+                })
+              }
+            />
+          )}
+        </View>
 
         {!isLoading && timelineEntries.length === 0 && (
           <Subtitle style={{ marginTop: theme.spacing.m }}>

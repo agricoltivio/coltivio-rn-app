@@ -147,7 +147,8 @@
     "view_chart": "Chart",
     "view_stats": "Numbers",
     "per_unit_amount": "of {{amount}}",
-    "average_per_hectare": "Ø per ha"
+    "average_per_hectare": "Ø per ha",
+    "last_value": "last: {{value}}"
   },
   "splash": {
     "tagline": "By Farmers. For Farmers.",
@@ -1522,7 +1523,9 @@
     "herd_changes_summary": "{{added}} added, {{removed}} removed. From which date does this apply?",
     "delete_herd_confirm": "Delete herd \"{{name}}\"?",
     "delete_herd_confirm_info": "This can't be undone.",
-    "timeline_view_overview": "Overview"
+    "timeline_view_overview": "Overview",
+    "n_offspring": "{{count}} offspring",
+    "n_offspring_plural": "{{count}} offspring"
   },
   "drugs": {
     "drugs": "Drugs",
@@ -1595,7 +1598,9 @@
     "drug_not_defined_for_type": "This drug has no dose and withdrawal periods for {{type}}. Please enter them manually.",
     "delete_confirm_title": "Delete treatment?",
     "delete_confirm_message": "The treatment is removed from the treatment journal. This cannot be undone.",
-    "mixed_animal_types": "A treatment can only contain animals of one type."
+    "mixed_animal_types": "A treatment can only contain animals of one type.",
+    "n_treatments": "{{count}} treatment",
+    "n_treatments_plural": "{{count}} treatments"
   },
   "settings": {
     "settings": "Settings",
@@ -1952,7 +1957,9 @@
     "max": "max",
     "n_samples": "{{count}} sample",
     "n_animals_plural": "{{count}} animals",
-    "n_samples_plural": "{{count}} samples"
+    "n_samples_plural": "{{count}} samples",
+    "n_checks": "{{count}} check",
+    "n_checks_plural": "{{count}} checks"
   },
   "breeding": {
     "weight": "Weight",
@@ -2007,6 +2014,9 @@
     "gestation_days_invalid": "Between 1 and 500 days",
     "gestation_saved": "Gestation length saved",
     "permission_denied": "Notifications are turned off in the system settings. Allow them there to get reminders before births.",
-    "weight_load_failed": "Weight couldn't be loaded"
+    "weight_load_failed": "Weight couldn't be loaded",
+    "last_mated": "Last mated: {{date}}",
+    "n_heats": "{{count}} entry",
+    "n_heats_plural": "{{count}} entries"
   }
 }
