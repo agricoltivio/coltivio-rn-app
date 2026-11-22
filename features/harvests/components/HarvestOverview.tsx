@@ -149,6 +149,8 @@ export function HarvestOverview({
 
   // Chart or numbers, for all carousel pages at once
   const [pageView, setPageView] = useState<"chart" | "stats">("chart");
+  // Numbers view: whether long tables show all rows, shared by all cards
+  const [showAllRows, setShowAllRows] = useState(false);
   const pageViewOptions = useMemo(
     () => [
       { key: "chart" as const, label: t("common.view_chart") },
@@ -321,6 +323,7 @@ export function HarvestOverview({
                 />
               </View>
               <ChartPager
+                mountAllPages={pageView === "stats"}
                 style={{ marginTop: theme.spacing.xs }}
                 pages={chartSeries.map((series) => ({
                   key: series.key,
@@ -334,6 +337,10 @@ export function HarvestOverview({
                       selectedYears={selectedYears}
                       availableYears={availableYears}
                       pageView={pageView}
+                      showAllRows={showAllRows}
+                      onToggleShowAllRows={() =>
+                        setShowAllRows((showAll) => !showAll)
+                      }
                       chartMode={chartMode}
                       setChartMode={setChartMode}
                     />
@@ -439,6 +446,8 @@ function HarvestChartPage({
   selectedYears,
   availableYears,
   pageView,
+  showAllRows,
+  onToggleShowAllRows,
   chartMode,
   setChartMode,
 }: {
@@ -450,6 +459,8 @@ function HarvestChartPage({
   selectedYears: number[];
   availableYears: number[];
   pageView: "chart" | "stats";
+  showAllRows: boolean;
+  onToggleShowAllRows: () => void;
   // Shared by all pages, so it stays when swiping
   chartMode: ChartMode;
   setChartMode: (mode: ChartMode) => void;
@@ -641,6 +652,8 @@ function HarvestChartPage({
           years={selectedYears}
           availableYears={availableYears}
           rows={tableRows}
+          showAllRows={showAllRows}
+          onToggleShowAllRows={onToggleShowAllRows}
         />
       )}
     </View>

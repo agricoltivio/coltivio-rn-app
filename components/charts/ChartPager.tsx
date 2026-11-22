@@ -23,10 +23,14 @@ const SCROLL_ANIMATION_MS = 350;
 export function ChartPager({
   pages,
   style,
+  mountAllPages = false,
 }: {
   pages: { key: string; content: ReactNode }[];
   // e.g. a smaller top margin when a control sits directly above
   style?: StyleProp<ViewStyle>;
+  // For cheap cards of different heights (number tables): all mount, so the tallest
+  // sets the height from the start and it never changes while stepping through
+  mountAllPages?: boolean;
 }) {
   const theme = useTheme();
   const scrollViewRef = useRef<ScrollViewInstance>(null);
@@ -154,7 +158,8 @@ export function ChartPager({
               if (renderedIndex === pages.length + 1) pageIndex = 0;
             }
             const distance = Math.abs(pageIndex - currentPageIndex);
-            const isNearby = Math.min(distance, pages.length - distance) <= 1;
+            const isNearby =
+              mountAllPages || Math.min(distance, pages.length - distance) <= 1;
             return (
               <View
                 key={page.key}

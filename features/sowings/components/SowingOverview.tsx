@@ -131,6 +131,8 @@ export function SowingOverview({
   const [chartMode, setChartMode] = useState<ChartMode>("cumulative");
   // Chart or numbers, for all carousel pages at once
   const [pageView, setPageView] = useState<"chart" | "stats">("chart");
+  // Numbers view: whether long tables show all rows, shared by all cards
+  const [showAllRows, setShowAllRows] = useState(false);
   const pageViewOptions = useMemo(
     () => [
       { key: "chart" as const, label: t("common.view_chart") },
@@ -372,6 +374,7 @@ export function SowingOverview({
                 />
               </View>
               <ChartPager
+                mountAllPages={pageView === "stats"}
                 style={{ marginTop: theme.spacing.xs }}
                 pages={series.map((entry) => ({
                   key: entry.key,
@@ -384,6 +387,10 @@ export function SowingOverview({
                       setChartMode={setChartMode}
                       sowings={sowingsBySeries[entry.key] ?? []}
                       pageView={pageView}
+                      showAllRows={showAllRows}
+                      onToggleShowAllRows={() =>
+                        setShowAllRows((showAll) => !showAll)
+                      }
                     />
                   ),
                 }))}
@@ -480,6 +487,8 @@ function SowingChartPage({
   setChartMode,
   sowings,
   pageView,
+  showAllRows,
+  onToggleShowAllRows,
 }: {
   series: SowingSeries;
   selectedYears: number[];
@@ -490,6 +499,8 @@ function SowingChartPage({
   // the entries behind this chart
   sowings: (Sowing | PlotSowing)[];
   pageView: "chart" | "stats";
+  showAllRows: boolean;
+  onToggleShowAllRows: () => void;
 }) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -626,6 +637,8 @@ function SowingChartPage({
           years={selectedYears}
           availableYears={availableYears}
           rows={tableRows}
+          showAllRows={showAllRows}
+          onToggleShowAllRows={onToggleShowAllRows}
         />
       )}
     </View>

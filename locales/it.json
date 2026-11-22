@@ -148,6 +148,7 @@
     "list": "Lista",
     "notes": "Note",
     "yearly_average": "Ø {{value}} all'anno",
+    "more_rows": "altri {{count}}",
     "max_years_selected": "Puoi selezionare al massimo {{count}} anni alla volta.",
     "view_chart": "Grafico",
     "view_stats": "Cifre",

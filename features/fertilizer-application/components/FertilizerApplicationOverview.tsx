@@ -125,6 +125,8 @@ export function FertilizerApplicationOverview({
   const [chartMode, setChartMode] = useState<ChartMode>("cumulative");
   // Chart or numbers, for all carousel pages at once
   const [pageView, setPageView] = useState<"chart" | "stats">("chart");
+  // Numbers view: whether long tables show all rows, shared by all cards
+  const [showAllRows, setShowAllRows] = useState(false);
   const pageViewOptions = useMemo(
     () => [
       { key: "chart" as const, label: t("common.view_chart") },
@@ -329,6 +331,7 @@ export function FertilizerApplicationOverview({
                 />
               </View>
               <ChartPager
+                mountAllPages={pageView === "stats"}
                 style={{ marginTop: theme.spacing.xs }}
                 pages={chartFertilizers.map((fertilizerName) => ({
                   key: fertilizerName,
@@ -343,6 +346,10 @@ export function FertilizerApplicationOverview({
                       setChartMode={setChartMode}
                       applications={applications}
                       pageView={pageView}
+                      showAllRows={showAllRows}
+                      onToggleShowAllRows={() =>
+                        setShowAllRows((showAll) => !showAll)
+                      }
                     />
                   ),
                 }))}
@@ -440,6 +447,8 @@ function FertilizerChartPage({
   setChartMode,
   applications,
   pageView,
+  showAllRows,
+  onToggleShowAllRows,
 }: {
   fertilizerName: string;
   unit: string;
@@ -451,6 +460,8 @@ function FertilizerChartPage({
   setChartMode: (mode: ChartMode) => void;
   applications: (FertilizerApplication | PlotFertilizerApplication)[];
   pageView: "chart" | "stats";
+  showAllRows: boolean;
+  onToggleShowAllRows: () => void;
 }) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -630,6 +641,8 @@ function FertilizerChartPage({
           years={selectedYears}
           availableYears={availableYears}
           rows={tableRows}
+          showAllRows={showAllRows}
+          onToggleShowAllRows={onToggleShowAllRows}
         />
       )}
     </View>
