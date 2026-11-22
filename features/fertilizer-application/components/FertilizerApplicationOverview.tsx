@@ -525,6 +525,17 @@ function FertilizerChartPage({
       productUnit,
       Math.max(0, ...Object.values(totalByYear)),
     );
+    // Amount per hectare, also one scale for all years (e.g. 9434 kg/ha -> 9.4 t/ha)
+    const perHectareByYear: Record<number, number> = {};
+    for (const year of selectedYears) {
+      if (totalByYear[year] && areaByYear[year]) {
+        perHectareByYear[year] = totalByYear[year] / (areaByYear[year] / 10000);
+      }
+    }
+    const perHectareUnit = scaleUnit(
+      productUnit,
+      Math.max(0, ...Object.values(perHectareByYear)),
+    );
     const valuesPerYear = (valueOf: (year: number) => string | undefined) =>
       Object.fromEntries(
         selectedYears.map((year) => [year, valueOf(year) ?? "-"]),
@@ -553,8 +564,8 @@ function FertilizerChartPage({
         key: "per-hectare",
         label: t("common.average_per_hectare"),
         values: valuesPerYear((year) =>
-          totalByYear[year] && areaByYear[year]
-            ? `${formatNumber(totalByYear[year] / (areaByYear[year] / 10000))} ${productSymbol}/${hectareSymbol}`
+          perHectareByYear[year]
+            ? `${formatNumber(perHectareByYear[year] / perHectareUnit.divisor)} ${perHectareUnit.label}/${hectareSymbol}`
             : undefined,
         ),
       },
