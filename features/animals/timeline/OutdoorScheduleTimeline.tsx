@@ -36,7 +36,12 @@ const NO_GRID_LINES: GridLine[] = [];
 type OutdoorScheduleTimelineProps = {
   timelineData: OutdoorTimelineData;
   onBarPress: (scheduleId: string) => void;
+  // As tall as its rows (up to FIT_CONTENT_MAX_HEIGHT, then the rows scroll) instead of
+  // filling the parent, e.g. with more content below it in a scroll view
+  fitContent?: boolean;
 };
+
+const FIT_CONTENT_MAX_HEIGHT = 400;
 
 const LABEL_WIDTH = 100;
 const MS_PER_DAY = 86_400_000;
@@ -206,6 +211,7 @@ function OutdoorZoomLevelToggle({
 export function OutdoorScheduleTimeline({
   timelineData,
   onBarPress,
+  fitContent = false,
 }: OutdoorScheduleTimelineProps) {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
@@ -505,7 +511,7 @@ export function OutdoorScheduleTimeline({
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={fitContent ? undefined : { flex: 1 }}>
       {/* Zoom level toggle and Today button */}
       <View
         style={{
@@ -543,7 +549,15 @@ export function OutdoorScheduleTimeline({
       {/* Timeline grid */}
       <View
         style={{
-          flex: 1,
+          ...(fitContent
+            ? {
+                // header + rows + the header's bottom border
+                height: Math.min(
+                  totalHeaderHeight + contentHeight + 1,
+                  FIT_CONTENT_MAX_HEIGHT,
+                ),
+              }
+            : { flex: 1 }),
           backgroundColor: theme.colors.white,
           borderRadius: 10,
           overflow: "hidden",

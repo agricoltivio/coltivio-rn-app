@@ -252,10 +252,12 @@ export function OutdoorJournalScreen({
           </View>
         )}
 
-        <View style={{ marginTop: theme.spacing.m, flex: 1, minHeight: 400 }}>
+        {/* As tall as its rows, so the herds below stay in view */}
+        <View style={{ marginTop: theme.spacing.m }}>
           <OutdoorScheduleTimeline
             timelineData={timelineData}
             onBarPress={handleBarPress}
+            fitContent
           />
         </View>
 
