@@ -1,7 +1,8 @@
+import * as Sentry from "@sentry/react-native";
 import { Task, TaskStatus } from "@/api/tasks.api";
 import { FAB } from "@/components/buttons/FAB";
 import { Chip } from "@/components/chips/Chip";
-import { getDueDateColor } from "@/features/tasks/task-due-date";
+import { getDueDateColor, isTaskOverdue } from "@/features/tasks/task-due-date";
 import { useAssigneeColor } from "@/features/tasks/task-assignee-color";
 import { ContentView } from "@/components/containers/ContentView";
 import { TextInput } from "@/components/inputs/TextInput";
@@ -40,6 +41,8 @@ import {
   getNotificationPermissionAsync,
   registerPushTokenAsync,
 } from "@/features/notifications/push-notifications";
+
+const TASK_STATUSES: TaskStatus[] = ["todo", "done"];
 
 // Separate component so useAnimatedStyle can be called as a proper hook
 function SwipeCompleteAction({ drag }: { drag: SharedValue<number> }) {
@@ -87,6 +90,8 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
     ) {
       navigation.navigate("TasksOnboarding");
     }
+    // Only on mount: finishing the onboarding sets the flags, which must not redirect again
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Ask for notification permission here instead of cold at app launch, but not on top of
@@ -115,13 +120,15 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
         // enabled without permission
         updateTaskPushNotificationsMutation.mutate(false);
       })
-      .catch((error) => console.error(error));
+      // Permission or push token registration failed, the user can retry in the settings
+      .catch((error) => Sentry.captureException(error));
+    // Only when the prompt is done or the setting changes; api and the mutation object are
+    // new on every render and would ask again each time
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     localSettings.taskPushNotificationsPromptCompleted,
     taskPushNotificationsEnabled,
   ]);
-
-  const now = new Date();
 
   // Collect all unique labels across loaded tasks
   const availableLabels = useMemo(() => {
@@ -161,9 +168,10 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
     let result = search
       ? fuse.search(search).map((r) => r.item)
       : (tasks ?? []);
+    // Same rule as the red due date chip: due before today
     if (overdueOnly) {
       result = result.filter(
-        (t) => t.dueDate != null && new Date(t.dueDate as string) < now,
+        (t) => t.dueDate != null && isTaskOverdue(t.dueDate as string),
       );
     }
     if (activeAssignees.size > 0) {
@@ -192,7 +200,8 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
   function toggleLabel(label: string) {
     setActiveLabels((prev) => {
       const next = new Set(prev);
-      next.has(label) ? next.delete(label) : next.add(label);
+      if (next.has(label)) next.delete(label);
+      else next.add(label);
       return next;
     });
   }
@@ -308,7 +317,7 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
           paddingVertical: theme.spacing.xs,
         }}
       >
-        {(["todo", "done"] as TaskStatus[]).map((s) => (
+        {TASK_STATUSES.map((s) => (
           <Chip
             key={s}
             label={
@@ -333,7 +342,8 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
             onPress={() =>
               setActiveAssignees((prev) => {
                 const next = new Set(prev);
-                next.has(id) ? next.delete(id) : next.add(id);
+                if (next.has(id)) next.delete(id);
+                else next.add(id);
                 return next;
               })
             }
