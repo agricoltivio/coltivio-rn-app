@@ -557,6 +557,16 @@ function SowingChartPage({
     const totalUnit: UnitScale = series.countUnit
       ? { label: t(`sowings.units.${series.countUnit}`), divisor: 1 }
       : scaleUnit("kg", Math.max(0, ...Object.values(totalByYear)));
+    // Amount per hectare, also one scale for all years (e.g. 1850 kg/ha -> 1.9 t/ha)
+    const perHectareByYear: Record<number, number> = {};
+    for (const year of selectedYears) {
+      if (totalByYear[year] && areaByYear[year]) {
+        perHectareByYear[year] = totalByYear[year] / (areaByYear[year] / 10000);
+      }
+    }
+    const perHectareUnit: UnitScale = series.countUnit
+      ? totalUnit
+      : scaleUnit("kg", Math.max(0, ...Object.values(perHectareByYear)));
     const valuesPerYear = (valueOf: (year: number) => string | undefined) =>
       Object.fromEntries(
         selectedYears.map((year) => [year, valueOf(year) ?? "–"]),
@@ -584,14 +594,11 @@ function SowingChartPage({
       {
         key: "per-hectare",
         label: t("common.average_per_hectare"),
-        values: valuesPerYear((year) => {
-          if (!totalByYear[year] || !areaByYear[year]) return undefined;
-          const perHectare = totalByYear[year] / (areaByYear[year] / 10000);
-          const perHectareUnit: UnitScale = series.countUnit
-            ? totalUnit
-            : scaleUnit("kg", perHectare);
-          return `${formatNumber(perHectare / perHectareUnit.divisor)} ${perHectareUnit.label}/${hectareSymbol}`;
-        }),
+        values: valuesPerYear((year) =>
+          perHectareByYear[year]
+            ? `${formatNumber(perHectareByYear[year] / perHectareUnit.divisor)} ${perHectareUnit.label}/${hectareSymbol}`
+            : undefined,
+        ),
       },
     ];
     return rows;
