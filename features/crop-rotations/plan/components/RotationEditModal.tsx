@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { Ionicons } from "@expo/vector-icons";
 import { Select } from "@/components/select/Select";
 import { CompactDatePicker } from "@/components/datepicker/CompactDatePicker";
+import { addDays, differenceInCalendarDays } from "date-fns";
 import { RotationEntry, RecurrenceRule } from "../plan-crop-rotations.store";
 import { Plot } from "@/api/plots.api";
 import { Crop } from "@/api/crops.api";
@@ -89,8 +90,39 @@ export function RotationEditModal({
     }
   }, [visible, rotation, selectedPlotId]);
 
+  // All order checks compare calendar days: loaded dates carry a time of day (UTC midnight
+  // is 01:00 or 02:00 locally, depending on DST) and the pickers keep the time of their
+  // value, so comparing timestamps would treat two dates on the same day as out of order.
+
+  // A start past the end moves the end along, so the entry keeps its length.
+  // The recurrence end moves along too when the new end passes it.
+  const handleFromDateChange = (newFromDate: Date) => {
+    setFromDate(newFromDate);
+    if (differenceInCalendarDays(newFromDate, toDate) <= 0) return;
+    // Never negative: picking a start repairs an entry loaded with the end before the start
+    const lengthInDays = Math.max(
+      0,
+      differenceInCalendarDays(toDate, fromDate),
+    );
+    handleToDateChange(addDays(newFromDate, lengthInDays));
+  };
+
+  const handleToDateChange = (newToDate: Date) => {
+    setToDate(newToDate);
+    if (differenceInCalendarDays(newToDate, until) <= 0) return;
+    setUntil(addDays(until, differenceInCalendarDays(newToDate, toDate)));
+  };
+
+  // The pickers keep the order, this guards against dates loaded in the wrong order
+  const datesInOrder =
+    differenceInCalendarDays(toDate, fromDate) >= 0 &&
+    (!hasRecurrence ||
+      !hasUntil ||
+      differenceInCalendarDays(until, toDate) >= 0);
+  const canSave = !!plotId && !!cropId && datesInOrder;
+
   const handleSave = () => {
-    if (!plotId || !cropId) return;
+    if (!canSave) return;
 
     const recurrence: RecurrenceRule | undefined = hasRecurrence
       ? { interval: Number(interval), until: hasUntil ? until : undefined }
@@ -222,11 +254,14 @@ export function RotationEditModal({
                   marginBottom: theme.spacing.m,
                 }}
               >
-                <CompactDatePicker date={fromDate} onDateChange={setFromDate} />
+                <CompactDatePicker
+                  date={fromDate}
+                  onDateChange={handleFromDateChange}
+                />
                 <Text style={{ color: theme.colors.gray2 }}>-</Text>
                 <CompactDatePicker
                   date={toDate}
-                  onDateChange={setToDate}
+                  onDateChange={handleToDateChange}
                   minimumDate={fromDate}
                 />
               </View>
@@ -380,14 +415,13 @@ export function RotationEditModal({
                 </Pressable>
                 <Pressable
                   onPress={handleSave}
-                  disabled={!plotId || !cropId}
+                  disabled={!canSave}
                   style={{
                     flex: 1,
                     paddingVertical: 12,
-                    backgroundColor:
-                      !plotId || !cropId
-                        ? theme.colors.gray3
-                        : theme.colors.primary,
+                    backgroundColor: !canSave
+                      ? theme.colors.gray3
+                      : theme.colors.primary,
                     borderRadius: 10,
                     alignItems: "center",
                   }}
