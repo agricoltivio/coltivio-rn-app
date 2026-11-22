@@ -22,8 +22,10 @@ export function Switch({
   style,
 }: SwitchProps) {
   return (
-    <View style={[{ flexDirection: "row" }, style]}>
-      <Label style={{ flex: 1 }}>{label}</Label>
+    <View style={[{ flexDirection: "row", alignItems: "center" }, style]}>
+      {/* Only with a label: an empty flexing label next to list row content made the
+          row very tall on Android */}
+      {label ? <Label style={{ flex: 1 }}>{label}</Label> : null}
       <RnSwitch
         value={value}
         onChange={onChange}
