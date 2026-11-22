@@ -703,6 +703,7 @@ export function EditTreatmentScreen({
                     </Subtitle>
                     <View style={{ gap: theme.spacing.xs }}>
                       <RHTextInput
+                        optional
                         name="drugReceivedFrom"
                         control={control}
                         label={t("drugs.received_from")}
@@ -715,6 +716,7 @@ export function EditTreatmentScreen({
                       >
                         <View style={{ flex: 1 }}>
                           <RHNumberInput
+                            optional
                             name="drugDoseValue"
                             control={control}
                             label={t("drugs.dose_value")}
@@ -724,6 +726,7 @@ export function EditTreatmentScreen({
                         </View>
                         <View style={{ flex: 1 }}>
                           <RHSelect
+                            optional
                             name="drugDoseUnit"
                             control={control}
                             label={t("drugs.dose_unit")}
@@ -735,6 +738,7 @@ export function EditTreatmentScreen({
                         </View>
                       </View>
                       <RHSelect
+                        optional
                         name="drugDosePerUnit"
                         control={control}
                         label={t("drugs.dose_per_unit")}
@@ -761,6 +765,7 @@ export function EditTreatmentScreen({
                 )}
 
                 <RHDatePicker
+                  optional
                   name="milkUsableDate"
                   control={control}
                   label={t("treatments.milk_usable_date")}
@@ -769,6 +774,7 @@ export function EditTreatmentScreen({
                 />
 
                 <RHDatePicker
+                  optional
                   name="meatUsableDate"
                   control={control}
                   label={t("treatments.meat_usable_date")}
@@ -777,6 +783,7 @@ export function EditTreatmentScreen({
                 />
 
                 <RHDatePicker
+                  optional
                   name="organsUsableDate"
                   control={control}
                   label={t("treatments.organs_usable_date")}
@@ -809,6 +816,7 @@ export function EditTreatmentScreen({
           </View>
 
           <RHTextAreaInput
+            optional
             name="notes"
             control={control}
             label={t("common.notes")}

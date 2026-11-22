@@ -51,7 +51,8 @@ export function CropForm({ control, errors }: CropFormProps) {
         <RHTextInput
           name="variety"
           control={control}
-          label={t("forms.labels.kind_optional")}
+          label={t("forms.labels.kind")}
+          optional
           error={errors.variety?.message}
         />
         <RHSelect
@@ -82,7 +83,8 @@ export function CropForm({ control, errors }: CropFormProps) {
             <RHSelect
               name="familyId"
               control={control}
-              label={t("crops.family_optional")}
+              label={t("crops.family")}
+              optional
               error={errors.familyId?.message}
               enableSearch
               data={familyOptions}
@@ -102,14 +104,16 @@ export function CropForm({ control, errors }: CropFormProps) {
         <RHNumberInput
           name="waitingTimeInYears"
           control={control}
-          label={t("crops.waiting_time_in_years_optional")}
+          label={t("crops.waiting_time_in_years")}
+          optional
           keyboardType="numbers-and-punctuation"
           error={errors.waitingTimeInYears?.message}
         />
         <RHTextAreaInput
           name="additionalNotes"
           control={control}
-          label={t("forms.labels.additional_notes_optional")}
+          label={t("forms.labels.additional_notes")}
+          optional
           error={errors.additionalNotes?.message}
         />
       </View>

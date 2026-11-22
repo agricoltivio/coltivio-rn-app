@@ -217,6 +217,7 @@ function EditFertilizerApplicationForm({
           />
 
           <RHSelect
+            optional
             name="method"
             control={control}
             label={t("forms.labels.method")}
@@ -262,7 +263,8 @@ function EditFertilizerApplicationForm({
           <RHTextAreaInput
             name="additionalNotes"
             control={control}
-            label={t("forms.labels.additional_notes_optional")}
+            label={t("forms.labels.additional_notes")}
+            optional
           />
         </View>
       </ScrollView>

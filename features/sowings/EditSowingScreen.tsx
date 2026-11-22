@@ -188,7 +188,8 @@ function EditSowingForm({
           <RHSelect
             name="seedId"
             control={control}
-            label={t("sowings.seed_optional")}
+            label={t("sowings.seed")}
+            optional
             clearable
             data={
               seeds?.map((seed) => ({
@@ -278,7 +279,8 @@ function EditSowingForm({
           <RHTextAreaInput
             name="additionalNotes"
             control={control}
-            label={t("forms.labels.additional_notes_optional")}
+            label={t("forms.labels.additional_notes")}
+            optional
           />
         </View>
       </ScrollView>

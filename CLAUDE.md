@@ -35,7 +35,7 @@ Never launch or interact with the iOS/Android simulator yourself (no `yarn ios`/
 
 ## Form Fields
 
-Mark optional fields with "(optional)" in the label, in all four languages (`… (optional)`, `… (facultatif/facultative)`, `… (facoltativo/facoltativa)`, `… (optional)`), and leave required fields unmarked. Never mark required fields with `*`. See issue #127 for moving the marking into the input components.
+Mark optional fields with the `optional` prop of the form inputs (`TextInput`, `NumberInput`, `Select`, `DatePicker` and their `RH*` wrappers), which appends a muted "(optional)" after the label. Leave required fields unmarked and never mark them with `*`. Don't put "(optional)" into label translations (#127).
 
 ## Architecture
 

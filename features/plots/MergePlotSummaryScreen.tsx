@@ -211,20 +211,23 @@ export function MergePlotSummaryScreen({
           <RHTextInput
             name="localId"
             control={control}
-            label={t("forms.labels.local_id_optional")}
+            label={t("forms.labels.local_id")}
+            optional
           />
           <RHSelect
             name="usage"
             data={getUsageCodeSelectData(t)}
             enableSearch
             control={control}
-            label={t("forms.labels.usage_optional")}
+            label={t("forms.labels.usage")}
+            optional
           />
           <RHDatePicker
             name="cuttingDate"
             control={control}
             mode="date"
-            label={t("forms.labels.cutting_date_optional")}
+            label={t("forms.labels.cutting_date")}
+            optional
           />
           <RHNumberInput
             name="size"
@@ -242,7 +245,8 @@ export function MergePlotSummaryScreen({
           <RHTextAreaInput
             name="additionalNotes"
             control={control}
-            label={t("forms.labels.additional_notes_optional")}
+            label={t("forms.labels.additional_notes")}
+            optional
           />
         </View>
       </ScrollView>

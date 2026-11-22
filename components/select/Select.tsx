@@ -18,6 +18,7 @@ import { Dropdown as RnDropdown } from "react-native-element-dropdown";
 import { DropdownProps } from "react-native-element-dropdown/lib/typescript/components/Dropdown/model";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import styled, { useTheme } from "styled-components/native";
+import { OptionalLabelSuffix } from "../inputs/OptionalLabelSuffix";
 
 export type SelectItem = { label: string; value: string; description?: string };
 
@@ -38,6 +39,8 @@ export type SelectProps = {
   enableSearch?: boolean;
   // Truncate the selected value to one line instead of wrapping
   singleLine?: boolean;
+  // Adds a muted "(optional)" after the label
+  optional?: boolean;
 };
 export function Select({
   label,
@@ -53,6 +56,7 @@ export function Select({
   style,
   error,
   singleLine,
+  optional,
 }: SelectProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -134,7 +138,10 @@ export function Select({
   if (enableSearch) {
     return (
       <View>
-        <Label>{label}</Label>
+        <Label>
+          {label}
+          {optional && <OptionalLabelSuffix />}
+        </Label>
         <SearchTrigger
           style={style}
           onPress={() => {
@@ -234,7 +241,10 @@ export function Select({
 
   return (
     <View>
-      <Label>{label}</Label>
+      <Label>
+        {label}
+        {optional && <OptionalLabelSuffix />}
+      </Label>
       <Dropdown
         style={{
           ...style,
