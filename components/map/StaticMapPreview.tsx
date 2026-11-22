@@ -11,8 +11,9 @@ import {
 } from "@maplibre/maplibre-react-native";
 import { hexToRgba } from "@/theme/theme";
 import * as turf from "@turf/turf";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { useTheme } from "styled-components/native";
 import { MapAttribution } from "./MapAttribution";
 
@@ -24,6 +25,10 @@ type StaticMapPreviewProps = {
   zoom?: number;
   features: GeoJSON.FeatureCollection;
   height?: number;
+  /** Makes the whole preview a button: no map gestures, a tap anywhere calls this. */
+  onPress?: () => void;
+  /** Screen reader label for the tappable preview */
+  accessibilityLabel?: string;
 };
 
 const EMPTY_STYLE: StyleSpecification = {
@@ -40,6 +45,8 @@ const TILE_URLS = {
 } as const;
 
 const FIT_PADDING = 24;
+// Points the finger may move before a tap on a tappable preview stops counting
+const TAP_MAX_DISTANCE = 10;
 const FIT_MAX_ZOOM = 19;
 
 export function StaticMapPreview({
@@ -47,7 +54,27 @@ export function StaticMapPreview({
   zoom = 16,
   features,
   height = 250,
+  onPress,
+  accessibilityLabel,
 }: StaticMapPreviewProps) {
+  // A tappable preview is fully static: zooming or rotating it by accident while
+  // scrolling the screen would be confusing
+  const gesturesEnabled = onPress === undefined;
+
+  // A tap, not a press: it fails as soon as the finger moves more than a few points in
+  // any direction, so a scroll or a sideways swipe starting on the map doesn't open it
+  const onPressRef = useRef(onPress);
+  onPressRef.current = onPress;
+  const tapGesture = useMemo(
+    () =>
+      Gesture.Tap()
+        .maxDistance(TAP_MAX_DISTANCE)
+        .runOnJS(true)
+        .onEnd((_event, success) => {
+          if (success) onPressRef.current?.();
+        }),
+    [],
+  );
   const theme = useTheme();
   const [baseLayer] = useState<BaseLayer>("satellite");
 
@@ -80,6 +107,11 @@ export function StaticMapPreview({
         style={styles.map}
         mapStyle={EMPTY_STYLE}
         dragPan={false}
+        touchZoom={gesturesEnabled}
+        touchRotate={gesturesEnabled}
+        touchPitch={gesturesEnabled}
+        doubleTapZoom={gesturesEnabled}
+        doubleTapHoldZoom={gesturesEnabled}
         attribution={false}
         logo={false}
       >
@@ -137,6 +169,21 @@ export function StaticMapPreview({
         </GeoJSONSource>
       </Map>
 
+      {/* Covers the map, so the map never gets the touch; only a tap opens */}
+      {onPress && (
+        <GestureDetector gesture={tapGesture}>
+          <View
+            style={StyleSheet.absoluteFill}
+            accessible
+            accessibilityRole="button"
+            accessibilityLabel={accessibilityLabel}
+            // Screen readers activate it without a touch gesture
+            onAccessibilityTap={onPress}
+          />
+        </GestureDetector>
+      )}
+
+      {/* After the overlay, so its link stays tappable */}
       <MapAttribution />
 
       {/* Layer toggle button */}

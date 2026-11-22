@@ -5,6 +5,7 @@ import { hexToRgba } from "@/theme/theme";
 import { type LngLat } from "@maplibre/maplibre-react-native";
 import { useNavigation } from "@react-navigation/native";
 import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useFarmQuery } from "../farms/farms.hooks";
@@ -14,6 +15,7 @@ import { useLocalSettings } from "../user/LocalSettingsContext";
 export const MapTile = ({ showMap = true }: { showMap?: boolean }) => {
   const navigation = useNavigation();
   const theme = useTheme();
+  const { t } = useTranslation();
   const { farm } = useFarmQuery();
   const { plots } = useFarmPlotsQuery();
   const { localSettings } = useLocalSettings();
@@ -43,6 +45,10 @@ export const MapTile = ({ showMap = true }: { showMap?: boolean }) => {
 
   const center = farm.location.coordinates as LngLat;
 
+  function openMap() {
+    navigation.navigate("PlotsMap", {});
+  }
+
   return (
     <View
       style={{
@@ -65,11 +71,14 @@ export const MapTile = ({ showMap = true }: { showMap?: boolean }) => {
             zoom={15}
             features={features}
             height={250}
+            // Tapping the map opens it, like the expand button
+            onPress={openMap}
+            accessibilityLabel={t("plots.list.open_map")}
           />
         )}
         {/* Expand button */}
         <TouchableOpacity
-          onPress={() => navigation.navigate("PlotsMap", {})}
+          onPress={openMap}
           activeOpacity={0.8}
           style={{
             position: "absolute",
