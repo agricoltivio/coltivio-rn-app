@@ -27,6 +27,8 @@ export function FieldCalendarScreen({ navigation }: FieldCalendarScreenProps) {
     if (!localSettings.fieldCalendarOnboardingCompleted) {
       navigation.replace("FieldCalendarOnboarding");
     }
+    // Only on mount: finishing the onboarding sets the flag, which must not redirect again
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const groups = localSettings.fieldCalendarGroups;

@@ -52,7 +52,7 @@ export function FertilizerForm({
         <RHSelect
           name="type"
           control={control}
-          label="Typ"
+          label={t("forms.labels.type")}
           data={[
             { label: t("forms.labels.organic"), value: "organic" },
             { label: t("forms.labels.mineralic"), value: "mineral" },
