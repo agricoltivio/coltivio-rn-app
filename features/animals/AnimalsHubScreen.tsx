@@ -13,6 +13,14 @@ import { ANIMALS_GROUPS, ANIMALS_ITEMS } from "./animals-settings";
 type GroupId = keyof typeof ANIMALS_GROUPS;
 type ItemId = keyof typeof ANIMALS_ITEMS;
 
+// Group and item ids come from the stored settings and can be outdated
+function isGroupId(id: string): id is GroupId {
+  return Object.prototype.hasOwnProperty.call(ANIMALS_GROUPS, id);
+}
+function isItemId(id: string): id is ItemId {
+  return Object.prototype.hasOwnProperty.call(ANIMALS_ITEMS, id);
+}
+
 export function AnimalsHubScreen({ navigation }: AnimalsHubScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -24,6 +32,8 @@ export function AnimalsHubScreen({ navigation }: AnimalsHubScreenProps) {
     if (!localSettings.animalsOnboardingCompleted) {
       navigation.replace("AnimalsOnboarding");
     }
+    // Only on mount: finishing the onboarding sets the flag, which must not redirect again
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const groups = localSettings.animalsGroups;
@@ -39,9 +49,9 @@ export function AnimalsHubScreen({ navigation }: AnimalsHubScreenProps) {
         {groups
           .filter((group) => group.visible)
           .map((group) => {
-            const groupId = group.groupId as GroupId;
+            const groupId = group.groupId;
+            if (!isGroupId(groupId)) return null;
             const groupMeta = ANIMALS_GROUPS[groupId];
-            if (!groupMeta) return null;
 
             const visibleItems = group.items.filter((item) => {
               if (!item.visible) return false;
@@ -59,9 +69,9 @@ export function AnimalsHubScreen({ navigation }: AnimalsHubScreenProps) {
                 style={{ marginTop: theme.spacing.l }}
               >
                 {visibleItems.map((item, index) => {
-                  const itemId = item.itemId as ItemId;
+                  const itemId = item.itemId;
+                  if (!isItemId(itemId)) return null;
                   const itemMeta = ANIMALS_ITEMS[itemId];
-                  if (!itemMeta) return null;
 
                   return (
                     <List.Item

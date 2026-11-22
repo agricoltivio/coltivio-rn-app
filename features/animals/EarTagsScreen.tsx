@@ -8,7 +8,7 @@ import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
 import { useTranslation } from "react-i18next";
-import { Alert, View } from "react-native";
+import { Alert, FlatList, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useDeleteEarTagMutation, useEarTagsQuery } from "./earTags.hooks";
 import { EarTagsScreenProps } from "./navigation/animals-routes";
@@ -47,32 +47,52 @@ export function EarTagsScreen({ navigation }: EarTagsScreenProps) {
 
   return (
     <ContentView headerVisible>
-      <ScrollView
-        showHeaderOnScroll
-        headerTitleOnScroll={t("ear_tags.ear_tags")}
-      >
-        <H2>{t("ear_tags.ear_tags")}</H2>
-        {canWrite("animals") && (earTags?.length ?? 0) > 0 && (
-          <Button
-            style={{ marginTop: theme.spacing.m }}
-            type="accent"
-            title={t("ear_tags.delete_range")}
-            onPress={() => navigation.navigate("DeleteEarTagRange")}
+      {/* Virtualized: a farm can have hundreds of ear tags */}
+      <FlatList
+        data={earTags ?? []}
+        keyExtractor={(earTag) => earTag.id}
+        // Our ScrollView, for the title in the navigation header
+        renderScrollComponent={(scrollProps) => (
+          <ScrollView
+            {...scrollProps}
+            showHeaderOnScroll
+            headerTitleOnScroll={t("ear_tags.ear_tags")}
           />
         )}
-        <View style={{ marginTop: theme.spacing.m }}>
-          {earTags?.length === 0 && (
-            <Subtitle>{t("common.no_entries")}</Subtitle>
-          )}
-          <View
-            style={{
-              borderRadius: 10,
-              overflow: "hidden",
-              backgroundColor: theme.colors.white,
-            }}
-          >
-            {earTags?.map((earTag) => (
-              <ListItem key={earTag.id} style={{ paddingVertical: 5 }}>
+        // room for the FAB below the last tag
+        contentContainerStyle={{ paddingBottom: 120 }}
+        ListHeaderComponent={
+          <View style={{ marginBottom: theme.spacing.m }}>
+            <H2>{t("ear_tags.ear_tags")}</H2>
+            {canWrite("animals") && (earTags?.length ?? 0) > 0 && (
+              <Button
+                style={{ marginTop: theme.spacing.m }}
+                type="accent"
+                title={t("ear_tags.delete_range")}
+                onPress={() => navigation.navigate("DeleteEarTagRange")}
+              />
+            )}
+          </View>
+        }
+        ListEmptyComponent={
+          earTags ? <Subtitle>{t("common.no_entries")}</Subtitle> : undefined
+        }
+        renderItem={({ item: earTag, index }) => {
+          // One white block: rounded corners on the first and last tag
+          const isFirst = index === 0;
+          const isLast = index === (earTags?.length ?? 0) - 1;
+          return (
+            <View
+              style={{
+                backgroundColor: theme.colors.white,
+                overflow: "hidden",
+                borderTopLeftRadius: isFirst ? 10 : 0,
+                borderTopRightRadius: isFirst ? 10 : 0,
+                borderBottomLeftRadius: isLast ? 10 : 0,
+                borderBottomRightRadius: isLast ? 10 : 0,
+              }}
+            >
+              <ListItem style={{ paddingVertical: 5 }}>
                 <ListItem.Content>
                   <ListItem.Title>{earTag.number}</ListItem.Title>
                   <ListItem.Body>
@@ -100,10 +120,10 @@ export function EarTagsScreen({ navigation }: EarTagsScreenProps) {
                   </View>
                 )}
               </ListItem>
-            ))}
-          </View>
-        </View>
-      </ScrollView>
+            </View>
+          );
+        }}
+      />
       {canWrite("animals") && (
         <FAB
           icon={{ name: "add", color: "white" }}

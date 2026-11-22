@@ -59,8 +59,13 @@ import {
   MaterialCommunityIconButton,
 } from "@/components/buttons/IconButton";
 import { DefaultTheme } from "styled-components/native";
+import { NavigationProp } from "@react-navigation/native";
+import { RootStackParamList } from "@/navigation/rootStackTypes";
 
-export function renderAnimalsStack(theme: DefaultTheme, navigation: any) {
+export function renderAnimalsStack(
+  theme: DefaultTheme,
+  navigation: Omit<NavigationProp<RootStackParamList>, "getState">,
+) {
   return [
     <Stack.Screen
       key="animals-hub"

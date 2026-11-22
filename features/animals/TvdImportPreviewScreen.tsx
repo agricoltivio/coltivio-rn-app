@@ -227,7 +227,7 @@ export function TvdImportPreviewScreen({
         </ListItem>
       );
     },
-    [rows, t, locale, theme, navigation, type],
+    [t, locale, theme, navigation, type],
   );
 
   return (

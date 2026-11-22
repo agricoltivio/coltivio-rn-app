@@ -1,4 +1,4 @@
-import { AnimalType } from "@/api/animals.api";
+import { ANIMAL_TYPES, AnimalType } from "@/api/animals.api";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -17,14 +17,10 @@ import { useAnimalsQuery } from "./animals.hooks";
 import { TreatmentsExportScreenProps } from "./navigation/animals-routes";
 import { useDownloadTreatmentsReportMutation } from "./reports.hooks";
 
+// Cows first, the most common case for treatment journals; otherwise the app's order
 const ALL_ANIMAL_TYPES: AnimalType[] = [
   "cow",
-  "goat",
-  "sheep",
-  "horse",
-  "donkey",
-  "pig",
-  "deer",
+  ...ANIMAL_TYPES.filter((type) => type !== "cow"),
 ];
 
 interface FormValues {
@@ -57,9 +53,16 @@ export function TreatmentsExportScreen({
     return ALL_ANIMAL_TYPES.filter((type) => types.has(type));
   }, [animals]);
 
-  const defaultAnimalTypeSwitches = Object.fromEntries(
-    ALL_ANIMAL_TYPES.map((type) => [type, true]),
-  ) as Record<AnimalType, boolean>;
+  // Every animal type switched on; a new type fails to compile here until it's added
+  const defaultAnimalTypeSwitches: Record<AnimalType, boolean> = {
+    cow: true,
+    goat: true,
+    sheep: true,
+    horse: true,
+    donkey: true,
+    pig: true,
+    deer: true,
+  };
 
   const {
     control,

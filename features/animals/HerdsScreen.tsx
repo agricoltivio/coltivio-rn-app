@@ -25,6 +25,8 @@ export function HerdsScreen({ navigation }: HerdsScreenProps) {
     if (!localSettings.herdsOnboardingCompleted) {
       navigation.replace("HerdsOnboarding");
     }
+    // Only on mount: finishing the onboarding sets the flag, which must not redirect again
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const herds = unsortedHerds
     ?.slice()

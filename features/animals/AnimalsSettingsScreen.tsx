@@ -16,6 +16,14 @@ import {
 type GroupId = keyof typeof ANIMALS_GROUPS;
 type ItemId = keyof typeof ANIMALS_ITEMS;
 
+// Group and item ids come from the stored settings and can be outdated
+function isGroupId(id: string): id is GroupId {
+  return Object.prototype.hasOwnProperty.call(ANIMALS_GROUPS, id);
+}
+function isItemId(id: string): id is ItemId {
+  return Object.prototype.hasOwnProperty.call(ANIMALS_ITEMS, id);
+}
+
 /** Reusable settings body: group cards with switches and reorder buttons */
 export function AnimalsSettingsBody() {
   const { t } = useTranslation();
@@ -63,9 +71,9 @@ export function AnimalsSettingsBody() {
   return (
     <>
       {groups.map((group, groupIndex) => {
-        const groupId = group.groupId as GroupId;
+        const groupId = group.groupId;
+        if (!isGroupId(groupId)) return null;
         const groupMeta = ANIMALS_GROUPS[groupId];
-        if (!groupMeta) return null;
 
         return (
           <View
@@ -118,9 +126,9 @@ export function AnimalsSettingsBody() {
 
             {/* Item toggles */}
             {group.items.map((item, itemIndex) => {
-              const itemId = item.itemId as ItemId;
+              const itemId = item.itemId;
+              if (!isItemId(itemId)) return null;
               const itemMeta = ANIMALS_ITEMS[itemId];
-              if (!itemMeta) return null;
 
               return (
                 <Switch
