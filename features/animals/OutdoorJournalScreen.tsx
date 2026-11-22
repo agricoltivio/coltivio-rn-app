@@ -1,6 +1,6 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
-import { H2, Subtitle } from "@/theme/Typography";
+import { H2, H3, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
 import { useTranslation } from "react-i18next";
 import {
@@ -23,7 +23,10 @@ import { ChartViewSwitcher } from "@/components/charts/ChartViewSwitcher";
 import { round } from "@/utils/math";
 import { OutdoorScheduleTimeline } from "./timeline/OutdoorScheduleTimeline";
 import { OutdoorJournalScreenProps } from "./navigation/animals-routes";
-import { OutdoorBar } from "./timeline/outdoor-timeline-utils";
+import { OutdoorBar, herdBarOnDay } from "./timeline/outdoor-timeline-utils";
+import { OUTDOOR_TYPE_COLORS } from "./timeline/OutdoorTimelineBar";
+import { useHerdsQuery } from "./herds.hooks";
+import { ListItem } from "@/components/list/ListItem";
 
 export function OutdoorJournalScreen({
   navigation,
@@ -93,6 +96,29 @@ export function OutdoorJournalScreen({
       if (bar) setSelectedBar(bar);
     },
     [barLookup],
+  );
+
+  // Herds below the timeline: those with something planned today first
+  const { herds } = useHerdsQuery();
+  const herdRows = useMemo(
+    () =>
+      (herds ?? [])
+        .map((herd) => {
+          const overrides = herd.outdoorScheduleOverrides ?? [];
+          const bar = herdBarOnDay(herd.outdoorSchedules, overrides);
+          const source = bar?.isOverride
+            ? overrides.find((override) => override.id === bar.scheduleId)
+            : herd.outdoorSchedules.find(
+                (schedule) => schedule.id === bar?.scheduleId,
+              );
+          return { herd, bar, meadowName: source?.meadow?.name ?? null };
+        })
+        .sort(
+          (a, b) =>
+            Number(b.bar !== null) - Number(a.bar !== null) ||
+            a.herd.name.localeCompare(b.herd.name),
+        ),
+    [herds],
   );
 
   return (
@@ -231,6 +257,80 @@ export function OutdoorJournalScreen({
             timelineData={timelineData}
             onBarPress={handleBarPress}
           />
+        </View>
+
+        {/* Herds with what they do today (exceptions applied); tapping opens the herd */}
+        <View style={{ marginTop: theme.spacing.l }}>
+          <H3 style={{ marginBottom: theme.spacing.s }}>
+            {t("animals.herds")}
+          </H3>
+          {herdRows.length === 0 ? (
+            <Subtitle>{t("animals.no_herds")}</Subtitle>
+          ) : (
+            <View
+              style={{
+                borderRadius: 10,
+                overflow: "hidden",
+                backgroundColor: theme.colors.white,
+              }}
+            >
+              {herdRows.map(({ herd, bar, meadowName }) => (
+                <ListItem
+                  key={herd.id}
+                  style={{ paddingVertical: 5 }}
+                  onPress={() =>
+                    navigation.navigate("HerdEdit", { herdId: herd.id })
+                  }
+                >
+                  <ListItem.Content>
+                    <ListItem.Title>{herd.name}</ListItem.Title>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 6,
+                      }}
+                    >
+                      {bar?.scheduleType && (
+                        <View
+                          style={{
+                            width: 10,
+                            height: 10,
+                            borderRadius: 2,
+                            backgroundColor:
+                              OUTDOOR_TYPE_COLORS[bar.scheduleType],
+                            borderWidth: bar.isOverride ? 1.5 : 0,
+                            borderColor: theme.colors.gray0,
+                          }}
+                        />
+                      )}
+                      <ListItem.Body>
+                        {[
+                          // e.g. "Today: Stable (Exception)"
+                          `${t("crop_rotations.timeline.today")}: ${
+                            bar?.scheduleType
+                              ? t(`animals.outdoor_types.${bar.scheduleType}`)
+                              : "–"
+                          }${
+                            bar?.isOverride
+                              ? ` (${t("animals.outdoor_override_single")})`
+                              : ""
+                          }`,
+                          meadowName,
+                          t("animals.herd_animal_count", {
+                            count: herd.animals.length,
+                          }),
+                        ]
+                          .filter(Boolean)
+                          .join(" · ")}
+                      </ListItem.Body>
+                    </View>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+              ))}
+            </View>
+          )}
         </View>
       </ScrollView>
 

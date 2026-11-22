@@ -1529,7 +1529,10 @@
     "new_outdoor_override": "Nuova eccezione",
     "edit_outdoor_override": "Modifica eccezione",
     "outdoor_override_overlap": "L'eccezione si sovrappone a un'altra eccezione di questa mandria.",
-    "stable_no_meadow": "La stalla non ha un pascolo."
+    "stable_no_meadow": "La stalla non ha un pascolo.",
+    "outdoor_override_single": "Eccezione",
+    "herd_animal_count": "{{count}} animale",
+    "herd_animal_count_plural": "{{count}} animali"
   },
   "drugs": {
     "drugs": "Medicinali",

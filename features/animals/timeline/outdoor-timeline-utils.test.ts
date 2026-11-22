@@ -3,6 +3,7 @@ import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
 import {
   buildOutdoorTimelineData,
   buildSingleHerdTimelineData,
+  herdBarOnDay,
   subtractDayRanges,
 } from "./outdoor-timeline-utils";
 import type { OutdoorSchedule } from "@/api/herds.api";
@@ -653,5 +654,43 @@ describe("buildOutdoorTimelineData with overrides", () => {
     ]);
     const scheduleBars = data.herds[0].bars.filter((bar) => !bar.isOverride);
     expect(scheduleBars.map((bar) => bar.isOpenEnded)).toEqual([false, true]);
+  });
+});
+
+describe("herdBarOnDay", () => {
+  const pasture: OutdoorSchedule = {
+    id: "s1",
+    farmId: "f1",
+    herdId: "h1",
+    meadowId: null,
+    startDate: "2025-05-01",
+    endDate: "2025-05-31",
+    type: "pasture",
+    notes: null,
+    recurrence: null,
+  };
+  const stable = {
+    id: "o1",
+    startDate: "2025-05-10",
+    endDate: "2025-05-10",
+    type: "stable" as const,
+    notes: null,
+  };
+
+  test("the exception on its day, the schedule around it, null outside", () => {
+    expect(
+      herdBarOnDay([pasture], [stable], new Date(2025, 4, 10)),
+    ).toMatchObject({
+      scheduleId: "o1",
+      isOverride: true,
+      scheduleType: "stable",
+    });
+    expect(
+      herdBarOnDay([pasture], [stable], new Date(2025, 4, 31)),
+    ).toMatchObject({
+      scheduleId: "s1",
+      scheduleType: "pasture",
+    });
+    expect(herdBarOnDay([pasture], [stable], new Date(2025, 5, 1))).toBeNull();
   });
 });

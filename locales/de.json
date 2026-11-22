@@ -1529,7 +1529,10 @@
     "new_outdoor_override": "Neue Ausnahme",
     "edit_outdoor_override": "Ausnahme bearbeiten",
     "outdoor_override_overlap": "Die Ausnahme überschneidet sich mit einer anderen Ausnahme dieser Herde.",
-    "stable_no_meadow": "Im Stall gibt es keine Weidefläche."
+    "stable_no_meadow": "Im Stall gibt es keine Weidefläche.",
+    "outdoor_override_single": "Ausnahme",
+    "herd_animal_count": "{{count}} Tier",
+    "herd_animal_count_plural": "{{count}} Tiere"
   },
   "drugs": {
     "drugs": "Medikamente",

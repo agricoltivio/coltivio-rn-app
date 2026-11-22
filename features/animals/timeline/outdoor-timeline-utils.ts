@@ -235,11 +235,13 @@ export function buildSingleHerdTimelineData(
   herdId: string,
   herdName: string,
   schedules: OutdoorSchedule[],
+  overrides: OverrideInput[] = [],
 ): OutdoorTimelineData {
   return buildOutdoorTimelineData([
     {
       herdId,
       herdName,
+      overrides,
       schedules: schedules.map((s) => ({
         id: s.id,
         startDate: s.startDate,
@@ -402,4 +404,19 @@ function expandSchedule(
   }
 
   return results;
+}
+
+// What the herd does on that day (default today): the bar covering it, an exception or a
+// schedule, with the exceptions applied as in the timeline. null when nothing is planned.
+export function herdBarOnDay(
+  schedules: OutdoorSchedule[],
+  overrides: OverrideInput[],
+  date: Date = new Date(),
+): OutdoorBar | null {
+  const data = buildSingleHerdTimelineData("", "", schedules, overrides);
+  const day = differenceInCalendarDays(date, data.epochStart);
+  return (
+    data.herds[0].bars.find((bar) => bar.startDay <= day && day < bar.endDay) ??
+    null
+  );
 }

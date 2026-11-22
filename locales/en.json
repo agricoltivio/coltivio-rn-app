@@ -1529,7 +1529,10 @@
     "new_outdoor_override": "New exception",
     "edit_outdoor_override": "Edit exception",
     "outdoor_override_overlap": "The exception overlaps another exception of this herd.",
-    "stable_no_meadow": "The stable has no meadow."
+    "stable_no_meadow": "The stable has no meadow.",
+    "outdoor_override_single": "Exception",
+    "herd_animal_count": "{{count}} animal",
+    "herd_animal_count_plural": "{{count}} animals"
   },
   "drugs": {
     "drugs": "Drugs",
