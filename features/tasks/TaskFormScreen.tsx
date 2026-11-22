@@ -1,3 +1,4 @@
+import { CloseButton } from "@/components/buttons/CloseButton";
 import { toLocalDateString } from "@/utils/date";
 import { TaskCreateInput, TaskUpdateInput } from "@/api/tasks.api";
 import { Button } from "@/components/buttons/Button";
@@ -305,12 +306,10 @@ function ChecklistGenerationModal({
                 justifyContent: "flex-end",
               }}
             >
-              <Pressable
+              <CloseButton
                 onPress={handleClose}
                 style={{ paddingHorizontal: 8, paddingVertical: 4 }}
-              >
-                <Ionicons name="close" size={28} color={theme.colors.primary} />
-              </Pressable>
+              />
             </View>,
           )}
           <View

@@ -1,3 +1,4 @@
+import { CloseButton } from "@/components/buttons/CloseButton";
 import { Stack } from "@/navigation/stack";
 import { View } from "react-native";
 import { AnimalsHubScreen } from "../AnimalsHubScreen";
@@ -325,11 +326,8 @@ export function renderAnimalsStack(
         presentation: "modal",
         headerShown: true,
         headerRight: () => (
-          <IonIconButton
-            icon="close"
-            type="ghost"
-            iconSize={28}
-            color={theme.colors.primary}
+          <CloseButton
+            style={{ paddingHorizontal: 4 }}
             onPress={() => navigation.goBack()}
           />
         ),

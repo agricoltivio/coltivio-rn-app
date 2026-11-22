@@ -1,17 +1,11 @@
+import { CloseButton } from "@/components/buttons/CloseButton";
 import { Button } from "@/components/buttons/Button";
 import { Chip } from "@/components/chips/Chip";
 import { NumberInput } from "@/components/inputs/NumberInput";
 import { Body, H2 } from "@/theme/Typography";
-import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Modal,
-  Pressable,
-  ScrollView,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Modal, Pressable, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 import { useDonationCheckoutMutation } from "./agri-coltivio.hooks";
@@ -60,9 +54,7 @@ export function DonationModal({ visible, onClose }: DonationModalProps) {
               paddingTop: theme.spacing.s,
             }}
           >
-            <TouchableOpacity onPress={handleClose} hitSlop={12}>
-              <Ionicons name="close" size={26} color={theme.colors.gray1} />
-            </TouchableOpacity>
+            <CloseButton onPress={handleClose} />
           </View>
 
           <ScrollView

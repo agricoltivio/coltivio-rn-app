@@ -1,3 +1,4 @@
+import { CloseButton } from "@/components/buttons/CloseButton";
 import { Banner } from "@/components/banners/Banner";
 import { Button } from "@/components/buttons/Button";
 import { SpeedDial } from "@/components/buttons/SpeedDial";
@@ -7,11 +8,10 @@ import { ScrollView } from "@/components/views/ScrollView";
 import { MapTile } from "@/features/map/MapTile";
 import { Body, H2, H1 } from "@/theme/Typography";
 import { canLinkToMembership, goToMembershipScreen } from "@/utils/membership";
-import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, Modal, TouchableOpacity, View } from "react-native";
+import { Alert, Modal, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
 import {
@@ -410,9 +410,7 @@ export const HomeScreen = ({ navigation }: HomeScreenProps) => {
               paddingTop: theme.spacing.s,
             }}
           >
-            <TouchableOpacity onPress={dismissPromo} hitSlop={12}>
-              <Ionicons name="close" size={26} color={theme.colors.gray1} />
-            </TouchableOpacity>
+            <CloseButton onPress={dismissPromo} />
           </View>
 
           {/* Scrollable content mirrors AgriColtivioInfoScreen */}

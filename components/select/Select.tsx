@@ -1,4 +1,4 @@
-import { IonIconButton } from "@/components/buttons/IconButton";
+import { CloseButton } from "@/components/buttons/CloseButton";
 import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
 import { H2 } from "@/theme/Typography";
@@ -202,11 +202,7 @@ export function Select({
               >
                 {label || t("forms.labels.please_select")}
               </H2>
-              <IonIconButton
-                icon="close"
-                color="black"
-                type="accent"
-                iconSize={24}
+              <CloseButton
                 onPress={() => {
                   setModalVisible(false);
                   setSearchText("");

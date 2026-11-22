@@ -1,7 +1,7 @@
+import { CloseButton } from "@/components/buttons/CloseButton";
 import { Meadow } from "@/api/meadows.api";
 import { Plot } from "@/api/plots.api";
 import { Button } from "@/components/buttons/Button";
-import { IonIconButton } from "@/components/buttons/IconButton";
 import { Chip } from "@/components/chips/Chip";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
@@ -431,13 +431,7 @@ function UsageCodeFilterModal({
           }}
         >
           <H2>{t("plots.list.usage_filter_heading")}</H2>
-          <IonIconButton
-            icon="close"
-            type="ghost"
-            iconSize={28}
-            color={theme.colors.primary}
-            onPress={onClose}
-          />
+          <CloseButton onPress={onClose} />
         </View>
         <FlatList
           style={{ marginTop: theme.spacing.m }}
