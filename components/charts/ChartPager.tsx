@@ -48,8 +48,14 @@ export function ChartPager({
     setPageWidth(event.nativeEvent.layout.width);
   }
 
-  // Start on the first real card (behind the leading copy)
-  function onContentSizeChange() {
+  // Start on the first real card (behind the leading copy). Only when the content gets
+  // wider or narrower (cards added or removed, new page width): a height change comes
+  // from a taller neighbour mounting during a step, and snapping then would cut the
+  // step's animation short.
+  const contentWidthRef = useRef(0);
+  function onContentSizeChange(contentWidth: number) {
+    if (contentWidth === contentWidthRef.current) return;
+    contentWidthRef.current = contentWidth;
     if (!loops || pageWidth === 0) return;
     scrollViewRef.current?.scrollTo({
       x: (currentPageIndex + 1) * pageWidth,
