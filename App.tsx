@@ -95,9 +95,34 @@ const queryClient = new QueryClient({
       const isExpectedRejection =
         error instanceof ApiError && error.status >= 400 && error.status < 500;
       if (!isExpectedRejection) Sentry.captureException(error);
-      Alert.alert(i18n.t("common.error"), i18n.t("errors.unexpected_retry"));
+      // A rejection with a known error code gets its own message, e.g. an overlapping crop rotation
+      const codeMessageKey =
+        error instanceof ApiError && error.code
+          ? `errors.codes.${error.code}`
+          : undefined;
+      const message =
+        codeMessageKey && i18n.exists(codeMessageKey)
+          ? i18n.t(codeMessageKey)
+          : i18n.t("errors.unexpected_retry");
+      Alert.alert(i18n.t("common.error"), message);
     },
   }),
+  defaultOptions: {
+    queries: {
+      // A rejection by the API (not found, forbidden, invalid) won't change on a retry, e.g. the
+      // details query of an entry that was just deleted. Everything else keeps the default 3 retries.
+      retry: (failureCount, error) => {
+        if (
+          error instanceof ApiError &&
+          error.status >= 400 &&
+          error.status < 500
+        ) {
+          return false;
+        }
+        return failureCount < 3;
+      },
+    },
+  },
 });
 
 // Wire TanStack Query's focusManager to React Native's AppState so that

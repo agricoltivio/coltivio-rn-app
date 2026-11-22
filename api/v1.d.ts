@@ -3838,7 +3838,10 @@ export interface components {
         | "ear_tag_range_conflict"
         | "invalid_ear_tag_range"
         | "ear_tag_assigned"
-        | "invalid_sire";
+        | "invalid_sire"
+        | "invalid_date_range"
+        | "crop_rotation_overlap"
+        | "outdoor_schedule_overlap";
     };
     GetV1LayersPlotsFarmsFederalFarmIdOnlyPositiveResponse: {
       data: {

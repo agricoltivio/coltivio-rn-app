@@ -178,7 +178,12 @@
     "unexpected_retry_later": "Oops, qualcosa è andato storto. Riprova più tardi.",
     "unexpected": "Oops, qualcosa è andato storto.",
     "try_again_later": "Riprova più tardi...",
-    "screen_error_hint": "Non è stato possibile visualizzare questa schermata. L'errore ci è stato segnalato."
+    "screen_error_hint": "Non è stato possibile visualizzare questa schermata. L'errore ci è stato segnalato.",
+    "codes": {
+      "crop_rotation_overlap": "La rotazione colturale si sovrappone a una rotazione esistente su questo campo.",
+      "outdoor_schedule_overlap": "Il programma di uscita si sovrappone a un altro programma di questa mandria.",
+      "invalid_date_range": "La data di fine è precedente alla data di inizio."
+    }
   },
   "units": {
     "long": {

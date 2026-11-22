@@ -178,7 +178,12 @@
     "unexpected_retry_later": "Oups, une erreur s'est produite. Réessaie plus tard.",
     "unexpected": "Oups, une erreur s'est produite.",
     "try_again_later": "Réessaie plus tard...",
-    "screen_error_hint": "Cet écran n'a pas pu être affiché. L'erreur nous a été signalée."
+    "screen_error_hint": "Cet écran n'a pas pu être affiché. L'erreur nous a été signalée.",
+    "codes": {
+      "crop_rotation_overlap": "La rotation culturale chevauche une rotation existante sur ce champ.",
+      "outdoor_schedule_overlap": "La sortie chevauche une autre sortie de ce troupeau.",
+      "invalid_date_range": "La date de fin est antérieure à la date de début."
+    }
   },
   "units": {
     "long": {
