@@ -40,7 +40,8 @@ export function OutdoorJournalScreen({
   const locale = i18n.language;
   const { data } = useOutdoorJournalQuery();
 
-  // "categories": one row per animal category, "meadows": one row per meadow
+  // "categories": one row per animal category, "herds": one row per herd (its schedules
+  // with the exceptions), "meadows": one row per meadow
   const [viewMode, setViewMode] = useState<"categories" | "herds" | "meadows">(
     "categories",
   );
