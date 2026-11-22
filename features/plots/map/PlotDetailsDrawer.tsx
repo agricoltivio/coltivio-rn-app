@@ -48,8 +48,10 @@ export function PlotDetailsDrawer() {
   // is called once the plot is actually in the cache.
   // RAF defers present() by one frame so a freshly-remounted BottomSheetModal (was null
   // while in split/merge/adjust/create mode) has time to initialize.
+  // The id of the plot once it's in the cache (see above), not the selected id
+  const loadedPlotId = selectedPlot?.id;
   useEffect(() => {
-    if (selectedPlot) {
+    if (loadedPlotId) {
       const raf = requestAnimationFrame(() => {
         bottomSheetModalRef.current?.present();
         bottomSheetModalRef.current?.snapToIndex(0);
@@ -58,7 +60,7 @@ export function PlotDetailsDrawer() {
     } else {
       bottomSheetModalRef.current?.dismiss();
     }
-  }, [selectedPlot?.id]);
+  }, [loadedPlotId]);
 
   // Don't render in non-view modes
   if (mode.type !== "view") return null;

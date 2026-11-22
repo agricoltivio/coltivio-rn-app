@@ -49,15 +49,17 @@ export function MeadowDetailsDrawer() {
     : undefined;
 
   // RAF defers present() by one frame so a freshly-mounted sheet has time to initialize
+  // The id of the meadow once it's loaded, not the selected id
+  const loadedMeadowId = selectedMeadow?.id;
   useEffect(() => {
-    if (selectedMeadow) {
+    if (loadedMeadowId) {
       const raf = requestAnimationFrame(() => {
         bottomSheetModalRef.current?.present();
       });
       return () => cancelAnimationFrame(raf);
     }
     bottomSheetModalRef.current?.dismiss();
-  }, [selectedMeadow?.id]);
+  }, [loadedMeadowId]);
 
   if (mode.type !== "view") return null;
 

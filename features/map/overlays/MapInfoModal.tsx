@@ -2,6 +2,7 @@ import { Button } from "@/components/buttons/Button";
 import { Card } from "@/components/card/Card";
 import { Subtitle, Title } from "@/theme/Typography";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useSafeAreaFrame } from "react-native-safe-area-context";
 import { useTheme } from "styled-components/native";
@@ -13,6 +14,7 @@ type MapInfoModalProps = {
 };
 
 export function MapInfoModal({ title, text, onClose }: MapInfoModalProps) {
+  const { t } = useTranslation();
   const theme = useTheme();
   const frame = useSafeAreaFrame();
 
@@ -40,7 +42,7 @@ export function MapInfoModal({ title, text, onClose }: MapInfoModalProps) {
         <Subtitle>{text}</Subtitle>
       </View>
       <View style={{ marginTop: theme.spacing.l }}>
-        <Button fontSize={16} title="Ok" onPress={onDone} />
+        <Button fontSize={16} title={t("buttons.ok")} onPress={onDone} />
       </View>
     </Card>
   );
