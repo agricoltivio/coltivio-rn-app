@@ -9,6 +9,7 @@ import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
 import { parseDateOnly, toLocalDateString } from "@/utils/date";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Alert, View } from "react-native";
@@ -19,6 +20,7 @@ import {
   useUpdateOutdoorScheduleOverrideMutation,
 } from "./herds.hooks";
 import { useMeadowsQuery } from "./meadows.hooks";
+import { usePermissions } from "@/features/user/users.hooks";
 import { OutdoorScheduleOverrideFormScreenProps } from "./navigation/animals-routes";
 
 type OverrideFormValues = {
@@ -39,6 +41,8 @@ export function OutdoorScheduleOverrideFormScreen({
   const { t } = useTranslation();
   const theme = useTheme();
   const { herdId, override } = route.params;
+  const { canWrite } = usePermissions();
+  const canEdit = canWrite("animals");
   // Archived included so an existing override on an archived meadow keeps it selectable
   const { meadows } = useMeadowsQuery(true);
 
@@ -46,6 +50,8 @@ export function OutdoorScheduleOverrideFormScreen({
     control,
     handleSubmit,
     watch,
+    getValues,
+    setValue,
     formState: { errors },
   } = useForm<OverrideFormValues>({
     defaultValues: {
@@ -58,6 +64,15 @@ export function OutdoorScheduleOverrideFormScreen({
   });
   const type = watch("type");
   const startDate = watch("startDate");
+
+  // Moving the start past the end moves the end along (one day), instead of an error
+  useEffect(() => {
+    if (
+      toLocalDateString(getValues("endDate")) < toLocalDateString(startDate)
+    ) {
+      setValue("endDate", startDate);
+    }
+  }, [startDate, getValues, setValue]);
 
   function onSaveError(error: Error) {
     const message =
@@ -105,25 +120,27 @@ export function OutdoorScheduleOverrideFormScreen({
   return (
     <ContentView
       footerComponent={
-        <BottomActionContainer>
-          <View style={{ flexDirection: "row", gap: theme.spacing.s }}>
-            {override && (
+        canEdit && (
+          <BottomActionContainer>
+            <View style={{ flexDirection: "row", gap: theme.spacing.s }}>
+              {override && (
+                <Button
+                  style={{ flexGrow: 1 }}
+                  type="dangerGhost"
+                  title={t("buttons.delete")}
+                  loading={deleteMutation.isPending}
+                  onPress={() => deleteMutation.mutate(override.id)}
+                />
+              )}
               <Button
                 style={{ flexGrow: 1 }}
-                type="dangerGhost"
-                title={t("buttons.delete")}
-                loading={deleteMutation.isPending}
-                onPress={() => deleteMutation.mutate(override.id)}
+                title={t("buttons.save")}
+                loading={isSaving}
+                onPress={handleSubmit(onSubmit)}
               />
-            )}
-            <Button
-              style={{ flexGrow: 1 }}
-              title={t("buttons.save")}
-              loading={isSaving}
-              onPress={handleSubmit(onSubmit)}
-            />
-          </View>
-        </BottomActionContainer>
+            </View>
+          </BottomActionContainer>
+        )
       }
     >
       <ScrollView showHeaderOnScroll headerTitleOnScroll={title}>

@@ -15,7 +15,9 @@ export type OutdoorBar = {
   herdName: string;
   herdId: string;
   startDay: number; // days since epochStart
-  endDay: number; // days since epochStart
+  // days since epochStart of the day after the last day (exclusive), so a single day is
+  // one day wide (the row draws endDay - startDay days)
+  endDay: number;
   isOpenEnded: boolean;
   isFuture: boolean; // starts after today — rendered as projection
   notes: string | null;
@@ -110,7 +112,7 @@ type OverrideInput = {
   notes: string | null;
 };
 
-// Parts of [startDay, endDay] not covered by the given day ranges (all inclusive)
+// Parts of [startDay, endDay) not covered by the given day ranges (all with an exclusive end)
 export function subtractDayRanges(
   startDay: number,
   endDay: number,
@@ -119,13 +121,13 @@ export function subtractDayRanges(
   const parts: { startDay: number; endDay: number }[] = [];
   let cursor = startDay;
   for (const range of [...covered].sort((a, b) => a.startDay - b.startDay)) {
-    if (range.endDay < cursor || range.startDay > endDay) continue;
+    if (range.endDay <= cursor || range.startDay >= endDay) continue;
     if (range.startDay > cursor) {
-      parts.push({ startDay: cursor, endDay: range.startDay - 1 });
+      parts.push({ startDay: cursor, endDay: range.startDay });
     }
-    cursor = Math.max(cursor, range.endDay + 1);
+    cursor = Math.max(cursor, range.endDay);
   }
-  if (cursor <= endDay) parts.push({ startDay: cursor, endDay });
+  if (cursor < endDay) parts.push({ startDay: cursor, endDay });
   return parts;
 }
 
@@ -168,15 +170,16 @@ export function buildOutdoorTimelineData(
                 epochStart,
               ),
             ),
+            // The day after the (inclusive) end date
             endDay: Math.min(
-              lastDay,
+              lastDay + 1,
               differenceInCalendarDays(
                 parseDateOnly(override.endDate),
                 epochStart,
-              ),
+              ) + 1,
             ),
           }))
-          .filter((range) => range.startDay <= range.endDay);
+          .filter((range) => range.startDay < range.endDay);
       const overrideDays = toOverrideDays(overrides);
       const cuttingDays = [...overrideDays, ...toOverrideDays(otherOverrides)];
 
@@ -287,7 +290,8 @@ function expandSchedule(
     return [
       {
         startDay: daysBetween(epochStart, clampedStart),
-        endDay: daysBetween(epochStart, clampedEnd),
+        // The day after the (inclusive) end date
+        endDay: daysBetween(epochStart, clampedEnd) + 1,
         isOpenEnded,
       },
     ];
@@ -337,7 +341,7 @@ function expandSchedule(
             ) + 1;
           results.push({
             startDay,
-            endDay: Math.min(occEndDay, daysBetween(epochStart, epochEnd)),
+            endDay: Math.min(occEndDay, daysBetween(epochStart, epochEnd) + 1),
             isOpenEnded: false,
           });
         }
@@ -358,7 +362,8 @@ function expandSchedule(
       if (clampedEnd >= epochStart && clampedStart <= epochEnd) {
         results.push({
           startDay: daysBetween(epochStart, clampedStart),
-          endDay: daysBetween(epochStart, clampedEnd),
+          // The day after the (inclusive) end of the occurrence
+          endDay: daysBetween(epochStart, clampedEnd) + 1,
           isOpenEnded: false,
         });
       }

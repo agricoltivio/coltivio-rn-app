@@ -110,7 +110,8 @@ describe("buildOutdoorTimelineData", () => {
     expect(result.herds[0].bars).toHaveLength(1);
     const bar = result.herds[0].bars[0];
     expect(bar.startDay).toBe(dayOf("2025-05-01"));
-    expect(bar.endDay).toBe(dayOf("2025-05-31"));
+    // The day after the end date: the bar covers May 31 too
+    expect(bar.endDay).toBe(dayOf("2025-05-31") + 1);
     expect(bar.isOpenEnded).toBe(false);
   });
 
@@ -123,9 +124,8 @@ describe("buildOutdoorTimelineData", () => {
     expect(bar.isOpenEnded).toBe(true);
     // epochEnd = 2028-12-31 23:59:59.999
     const epochEnd = new Date(2028, 11, 31, 23, 59, 59, 999);
-    const expectedEndDay = Math.floor(
-      (epochEnd.getTime() - EPOCH_START.getTime()) / MS_PER_DAY,
-    );
+    const expectedEndDay =
+      Math.floor((epochEnd.getTime() - EPOCH_START.getTime()) / MS_PER_DAY) + 1;
     expect(bar.endDay).toBe(expectedEndDay);
   });
 
@@ -552,12 +552,12 @@ describe("subtractDayRanges", () => {
   test("cuts ranges at the start, in the middle and at the end", () => {
     expect(
       subtractDayRanges(10, 30, [
-        { startDay: 5, endDay: 11 },
-        { startDay: 20, endDay: 21 },
-        { startDay: 30, endDay: 40 },
+        { startDay: 5, endDay: 12 },
+        { startDay: 20, endDay: 22 },
+        { startDay: 29, endDay: 40 },
       ]),
     ).toEqual([
-      { startDay: 12, endDay: 19 },
+      { startDay: 12, endDay: 20 },
       { startDay: 22, endDay: 29 },
     ]);
   });
@@ -602,21 +602,21 @@ describe("buildOutdoorTimelineData with overrides", () => {
       {
         scheduleId: schedule.id,
         startDay: dayOf("2025-05-01"),
-        endDay: dayOf("2025-05-10") - 1,
+        endDay: dayOf("2025-05-10"),
         scheduleType: "pasture",
         isOverride: false,
       },
       {
         scheduleId: stable.id,
         startDay: dayOf("2025-05-10"),
-        endDay: dayOf("2025-05-11"),
+        endDay: dayOf("2025-05-12"),
         scheduleType: "stable",
         isOverride: true,
       },
       {
         scheduleId: schedule.id,
-        startDay: dayOf("2025-05-11") + 1,
-        endDay: dayOf("2025-05-31"),
+        startDay: dayOf("2025-05-12"),
+        endDay: dayOf("2025-05-31") + 1,
         scheduleType: "pasture",
         isOverride: false,
       },
@@ -635,8 +635,8 @@ describe("buildOutdoorTimelineData with overrides", () => {
     ]);
     expect(data.herds[0].bars.map((bar) => [bar.startDay, bar.endDay])).toEqual(
       [
-        [dayOf("2025-05-01"), dayOf("2025-05-10") - 1],
-        [dayOf("2025-05-11") + 1, dayOf("2025-05-31")],
+        [dayOf("2025-05-01"), dayOf("2025-05-10")],
+        [dayOf("2025-05-12"), dayOf("2025-05-31") + 1],
       ],
     );
   });

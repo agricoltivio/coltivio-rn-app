@@ -509,7 +509,8 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
             />
           </View>
           {/* Outdoor schedule timeline */}
-          {localSchedules.length > 0 && (
+          {(localSchedules.length > 0 ||
+            (herd.outdoorScheduleOverrides ?? []).length > 0) && (
             <View style={{ marginBottom: theme.spacing.s }}>
               <ChartViewSwitcher
                 value={timelineView}
@@ -594,13 +595,16 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
             }}
           >
             <H3 style={{ flex: 1 }}>{t("animals.outdoor_overrides")}</H3>
-            <IonIconButton
-              icon="add"
-              color="black"
-              iconSize={25}
-              type="accent"
-              onPress={() => openOverrideForm()}
-            />
+            {/* Saved right away, so only with write access (schedules wait for the save button) */}
+            {canWrite("animals") && (
+              <IonIconButton
+                icon="add"
+                color="black"
+                iconSize={25}
+                type="accent"
+                onPress={() => openOverrideForm()}
+              />
+            )}
           </View>
           {(herd.outdoorScheduleOverrides ?? []).length === 0 ? (
             <Subtitle>{t("animals.outdoor_overrides_hint")}</Subtitle>
