@@ -2,6 +2,7 @@ import { differenceInCalendarDays } from "date-fns";
 import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
 import {
   buildOutdoorTimelineData,
+  buildHerdsTimelineData,
   buildSingleHerdTimelineData,
   herdBarOnDay,
   subtractDayRanges,
@@ -692,5 +693,45 @@ describe("herdBarOnDay", () => {
       scheduleType: "pasture",
     });
     expect(herdBarOnDay([pasture], [stable], new Date(2025, 5, 1))).toBeNull();
+  });
+});
+
+describe("buildHerdsTimelineData", () => {
+  test("one row per herd sorted by name, exceptions applied", () => {
+    const schedule = (id: string, herdId: string): OutdoorSchedule => ({
+      id,
+      farmId: "f1",
+      herdId,
+      meadowId: null,
+      startDate: "2025-05-01",
+      endDate: "2025-05-31",
+      type: "pasture",
+      notes: null,
+      recurrence: null,
+    });
+    const data = buildHerdsTimelineData([
+      { id: "h2", name: "Ziegen", outdoorSchedules: [schedule("s2", "h2")] },
+      {
+        id: "h1",
+        name: "Kühe",
+        outdoorSchedules: [schedule("s1", "h1")],
+        outdoorScheduleOverrides: [
+          {
+            id: "o1",
+            startDate: "2025-05-10",
+            endDate: "2025-05-10",
+            type: "stable",
+            notes: null,
+          },
+        ],
+      },
+    ]);
+    expect(data.herds.map((row) => row.herdName)).toEqual(["Kühe", "Ziegen"]);
+    expect(data.herds[0].bars.map((bar) => bar.scheduleType)).toEqual([
+      "pasture",
+      "stable",
+      "pasture",
+    ]);
+    expect(data.herds[1].bars).toHaveLength(1);
   });
 });

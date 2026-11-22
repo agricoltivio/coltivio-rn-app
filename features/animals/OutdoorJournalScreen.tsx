@@ -23,7 +23,11 @@ import { ChartViewSwitcher } from "@/components/charts/ChartViewSwitcher";
 import { round } from "@/utils/math";
 import { OutdoorScheduleTimeline } from "./timeline/OutdoorScheduleTimeline";
 import { OutdoorJournalScreenProps } from "./navigation/animals-routes";
-import { OutdoorBar, herdBarOnDay } from "./timeline/outdoor-timeline-utils";
+import {
+  OutdoorBar,
+  buildHerdsTimelineData,
+  herdBarOnDay,
+} from "./timeline/outdoor-timeline-utils";
 import { OUTDOOR_TYPE_COLORS } from "./timeline/OutdoorTimelineBar";
 import { useHerdsQuery } from "./herds.hooks";
 import { ListItem } from "@/components/list/ListItem";
@@ -37,9 +41,10 @@ export function OutdoorJournalScreen({
   const { data } = useOutdoorJournalQuery();
 
   // "categories": one row per animal category, "meadows": one row per meadow
-  const [viewMode, setViewMode] = useState<"categories" | "meadows">(
+  const [viewMode, setViewMode] = useState<"categories" | "herds" | "meadows">(
     "categories",
   );
+  const { herds } = useHerdsQuery();
 
   const [selectedCategories, setSelectedCategories] = useState<Set<string>>(
     new Set(),
@@ -59,13 +64,14 @@ export function OutdoorJournalScreen({
     return data.entries.filter((e) => selectedCategories.has(e.category));
   }, [data?.entries, selectedCategories]);
 
-  const timelineData = useMemo(
-    () =>
-      viewMode === "meadows"
-        ? buildMeadowJournalTimelineData(data?.meadowEntries ?? [])
-        : buildJournalTimelineData(filteredEntries),
-    [viewMode, filteredEntries, data?.meadowEntries],
-  );
+  const timelineData = useMemo(() => {
+    if (viewMode === "meadows") {
+      return buildMeadowJournalTimelineData(data?.meadowEntries ?? []);
+    }
+    // Per herd: its schedules with the exceptions applied, colored by type
+    if (viewMode === "herds") return buildHerdsTimelineData(herds ?? []);
+    return buildJournalTimelineData(filteredEntries);
+  }, [viewMode, filteredEntries, data?.meadowEntries, herds]);
 
   // Build a lookup from scheduleId to bar for fast access on press
   const barLookup = useMemo(() => {
@@ -93,13 +99,18 @@ export function OutdoorJournalScreen({
   const handleBarPress = useCallback(
     (scheduleId: string) => {
       const bar = barLookup.get(scheduleId);
-      if (bar) setSelectedBar(bar);
+      if (!bar) return;
+      // Herd view: a bar opens its herd, the other views show the journal entry
+      if (viewMode === "herds") {
+        navigation.navigate("HerdEdit", { herdId: bar.herdId });
+        return;
+      }
+      setSelectedBar(bar);
     },
-    [barLookup],
+    [barLookup, viewMode, navigation],
   );
 
   // Herds below the timeline: those with something planned today first
-  const { herds } = useHerdsQuery();
   const herdRows = useMemo(
     () =>
       (herds ?? [])
@@ -138,6 +149,7 @@ export function OutdoorJournalScreen({
                 key: "categories",
                 label: t("animals.meadows.journal_view_categories"),
               },
+              { key: "herds", label: t("animals.herds") },
               { key: "meadows", label: t("animals.meadows.meadows") },
             ]}
           />

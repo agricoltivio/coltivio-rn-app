@@ -231,6 +231,27 @@ export function buildOutdoorTimelineData(
 }
 
 // Convenience for a single herd (HerdEditScreen)
+// A saved schedule (API shape) as timeline input
+function toScheduleInput(schedule: OutdoorSchedule): ScheduleInput {
+  return {
+    id: schedule.id,
+    startDate: schedule.startDate,
+    endDate: schedule.endDate,
+    notes: schedule.notes,
+    type: schedule.type,
+    recurrence: schedule.recurrence
+      ? {
+          frequency: schedule.recurrence.frequency,
+          interval: schedule.recurrence.interval,
+          byWeekday: schedule.recurrence.byWeekday ?? null,
+          byMonthDay: schedule.recurrence.byMonthDay ?? null,
+          until: schedule.recurrence.until,
+          count: schedule.recurrence.count ?? null,
+        }
+      : null,
+  };
+}
+
 export function buildSingleHerdTimelineData(
   herdId: string,
   herdName: string,
@@ -238,29 +259,29 @@ export function buildSingleHerdTimelineData(
   overrides: OverrideInput[] = [],
 ): OutdoorTimelineData {
   return buildOutdoorTimelineData([
-    {
-      herdId,
-      herdName,
-      overrides,
-      schedules: schedules.map((s) => ({
-        id: s.id,
-        startDate: s.startDate,
-        endDate: s.endDate,
-        notes: s.notes,
-        type: s.type,
-        recurrence: s.recurrence
-          ? {
-              frequency: s.recurrence.frequency,
-              interval: s.recurrence.interval,
-              byWeekday: s.recurrence.byWeekday ?? null,
-              byMonthDay: s.recurrence.byMonthDay ?? null,
-              until: s.recurrence.until,
-              count: s.recurrence.count ?? null,
-            }
-          : null,
-      })),
-    },
+    { herdId, herdName, overrides, schedules: schedules.map(toScheduleInput) },
   ]);
+}
+
+// One row per herd with its schedules and exceptions (the journal's herd view), sorted by name
+export function buildHerdsTimelineData(
+  herds: {
+    id: string;
+    name: string;
+    outdoorSchedules: OutdoorSchedule[];
+    outdoorScheduleOverrides?: OverrideInput[];
+  }[],
+): OutdoorTimelineData {
+  return buildOutdoorTimelineData(
+    [...herds]
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map((herd) => ({
+        herdId: herd.id,
+        herdName: herd.name,
+        schedules: herd.outdoorSchedules.map(toScheduleInput),
+        overrides: herd.outdoorScheduleOverrides ?? [],
+      })),
+  );
 }
 
 type OccurrenceResult = {
