@@ -53,10 +53,7 @@ export function useSendVerificationEmailMutation(
   return useMutation({
     mutationFn: () => api.users.sendVerificationEmail(),
     onSuccess,
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
+    onError,
   });
 }
 
@@ -68,10 +65,7 @@ export function useUpdateUserMutation(
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (user: UpdateUserInput) => api.users.updateUser(user),
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
+    onError,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.users.me.queryKey,
@@ -85,6 +79,8 @@ export function useUpdateTaskPushNotificationsMutation() {
   const api = useApi();
   const queryClient = useQueryClient();
   return useMutation({
+    // onError below only rolls back, the failure still gets the alert
+    meta: { handlesError: false },
     mutationFn: (taskPushNotifications: boolean) =>
       api.users.updateUser({ taskPushNotifications }),
     // Flip the toggle immediately and roll back if the request fails
@@ -103,8 +99,7 @@ export function useUpdateTaskPushNotificationsMutation() {
       }
       return { previousUser };
     },
-    onError: (error, _taskPushNotifications, context) => {
-      console.error(error);
+    onError: (_error, _taskPushNotifications, context) => {
       if (context?.previousUser) {
         queryClient.setQueryData(
           queryKeys.users.me.queryKey,
@@ -160,9 +155,6 @@ export function useDeleteAccountMutation(onError?: (error: Error) => void) {
       clearActiveFarmId();
       await clearSession();
     },
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
+    onError,
   });
 }

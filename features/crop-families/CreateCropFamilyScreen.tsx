@@ -23,22 +23,19 @@ export function CreateCropFamilyScreen({
     },
   });
 
-  const createCropFamilyMutation = useCreateCropFamilyMutation(
-    (cropFamily) => {
-      const previousScreen =
-        navigation.getState().routes[navigation.getState().index - 1];
-      // If coming from crop form, go back with the new family ID
-      if (
-        previousScreen.name === "CreateCrop" ||
-        previousScreen.name === "EditCrop"
-      ) {
-        navigation.goBack();
-      } else {
-        navigation.goBack();
-      }
-    },
-    (error) => console.error(error),
-  );
+  const createCropFamilyMutation = useCreateCropFamilyMutation((cropFamily) => {
+    const previousScreen =
+      navigation.getState().routes[navigation.getState().index - 1];
+    // If coming from crop form, go back with the new family ID
+    if (
+      previousScreen.name === "CreateCrop" ||
+      previousScreen.name === "EditCrop"
+    ) {
+      navigation.goBack();
+    } else {
+      navigation.goBack();
+    }
+  });
 
   function onCreateCropFamily(data: CropFamilyFormValues) {
     createCropFamilyMutation.mutate({

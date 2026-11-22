@@ -37,10 +37,7 @@ export function EditPlotScreen({
   const theme = useTheme();
   const { plot } = usePlotByIdQuery(plotId);
 
-  const updatePlotMutation = useUpdatePlotMutation(
-    () => navigation.goBack(),
-    (error) => console.error(error),
-  );
+  const updatePlotMutation = useUpdatePlotMutation(() => navigation.goBack());
   // Archiving keeps all entries, unlike deleting; it's reversible
   const archivePlotMutation = useUpdatePlotMutation(
     () => navigation.goBack(),

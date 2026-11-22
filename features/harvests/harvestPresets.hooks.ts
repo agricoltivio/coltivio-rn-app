@@ -42,9 +42,6 @@ export function useCreateHarvestPresetMutation(
     mutationFn: (preset: HarvestPresetCreateInput) => {
       return api.harvestPresets.createHarvestPreset(preset);
     },
-    onError: (error) => {
-      console.error(error);
-    },
     onSuccess: (preset) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.harvestPresets.all.queryKey,

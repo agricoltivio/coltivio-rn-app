@@ -62,10 +62,7 @@ export function useUpdateFarmMutation(
       const farm = await api.farms.updateFarm(data);
       return { farm };
     },
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
+    onError,
     onSuccess: ({ farm }) => {
       queryClient.setQueryData(queryKeys.farms.farm.queryKey, () => farm);
       onSuccess && onSuccess(farm);
@@ -95,10 +92,7 @@ export function useCreateFarmMutation(
       });
       return { farm };
     },
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
+    onError,
     onSuccess: ({ farm }) => {
       // Home shows the "farm set up" modal for this farm until dismissed
       updateLocalSettings("farmCreatedModalPendingFarmIds", [
@@ -131,10 +125,7 @@ export function useAcceptInviteMutation(
       }
       onSuccess && onSuccess(user);
     },
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
+    onError,
   });
 }
 
@@ -159,7 +150,6 @@ export function useCreateInviteMutation(
       });
       onSuccess && onSuccess(invite);
     },
-    onError: (error) => console.error(error),
   });
 }
 
@@ -189,7 +179,6 @@ export function useSetMemberPermissionMutation(userId: string) {
         queryKey: queryKeys.farms.memberPermissions(userId).queryKey,
       });
     },
-    onError: (error) => console.error(error),
   });
 }
 
@@ -204,7 +193,6 @@ export function useDeleteMemberPermissionMutation(userId: string) {
         queryKey: queryKeys.farms.memberPermissions(userId).queryKey,
       });
     },
-    onError: (error) => console.error(error),
   });
 }
 
@@ -219,7 +207,6 @@ export function useRevokeInviteMutation(onSuccess?: () => void) {
       });
       onSuccess && onSuccess();
     },
-    onError: (error) => console.error(error),
   });
 }
 
@@ -232,7 +219,6 @@ export function useRemoveMemberMutation(onSuccess?: () => void) {
       queryClient.invalidateQueries({ queryKey: queryKeys.users._def });
       onSuccess && onSuccess();
     },
-    onError: (error) => console.error(error),
   });
 }
 
@@ -243,7 +229,6 @@ export function useLeaveFarmMutation(onSuccess?: () => void) {
     onSuccess: () => {
       onSuccess && onSuccess();
     },
-    onError: (error) => console.error(error),
   });
 }
 
@@ -262,7 +247,6 @@ export function useUpdateMemberRoleMutation(onSuccess?: () => void) {
       queryClient.invalidateQueries({ queryKey: queryKeys.users._def });
       onSuccess && onSuccess();
     },
-    onError: (error) => console.error(error),
   });
 }
 
@@ -501,10 +485,7 @@ export function useDeleteFarmMutation(
       clearActiveFarmId();
       onSuccess && onSuccess(deleteAccount);
     },
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
+    onError,
   });
   return deleteFarmMutation;
 }

@@ -6,18 +6,20 @@ import {
   NavigationContainer,
 } from "@react-navigation/native";
 import {
+  MutationCache,
   QueryClient,
   QueryClientProvider,
   focusManager,
 } from "@tanstack/react-query";
 import React from "react";
-import { AppState, type AppStateStatus } from "react-native";
+import { Alert, AppState, type AppStateStatus } from "react-native";
 import { I18nextProvider } from "react-i18next";
 import {
   initialWindowMetrics,
   SafeAreaProvider,
 } from "react-native-safe-area-context";
 import { ThemeProvider } from "styled-components";
+import { ApiError } from "./api/api";
 import { SessionProvider } from "./auth/SessionProvider";
 import { ActiveFarmProvider } from "./features/farms/ActiveFarmContext";
 import { OnboardingProvider } from "./features/onboarding/OnboardingContext";
@@ -67,7 +69,35 @@ Linking.addEventListener("url", (event) => {
   handleURLCallback(event.url);
 });
 
-const queryClient = new QueryClient();
+declare module "@tanstack/react-query" {
+  interface Register {
+    mutationMeta: {
+      // true: the screen catches the error itself (mutateAsync in try/catch, mutate(..., { onError })).
+      // false: the mutation's own onError only rolls back an optimistic update, still show the alert.
+      // Unset: a mutation with an onError handles the error, one without gets the alert.
+      handlesError?: boolean;
+    };
+  }
+}
+
+const queryClient = new QueryClient({
+  // A failed save, edit or delete reports to Sentry and tells the user, unless the screen
+  // handles the error itself (see handlesError above)
+  mutationCache: new MutationCache({
+    onError: (error, _variables, _context, mutation) => {
+      const handledByScreen =
+        mutation.meta?.handlesError ?? mutation.options.onError !== undefined;
+      if (handledByScreen) return;
+      // Rejections by the API (validation, conflicts, expired session) are expected and only
+      // need the alert; everything else is reported. A 401 gets the alert too: with a merely
+      // stale token the user stays on the screen and would otherwise get no feedback.
+      const isExpectedRejection =
+        error instanceof ApiError && error.status >= 400 && error.status < 500;
+      if (!isExpectedRejection) Sentry.captureException(error);
+      Alert.alert(i18n.t("common.error"), i18n.t("errors.unexpected_retry"));
+    },
+  }),
+});
 
 // Wire TanStack Query's focusManager to React Native's AppState so that
 // queries refetch when the app returns to the foreground (e.g. after browser redirect).

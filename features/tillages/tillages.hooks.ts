@@ -64,10 +64,7 @@ export function useCreateTillagesMutation(
     mutationFn: (batchInput: TillagesBatchCreateInput) => {
       return api.tillages.createTillages(batchInput);
     },
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
+    onError,
     onSuccess: (tillage) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.tillages._def,
@@ -89,9 +86,6 @@ export function useUpdateTillageMutation(onSuccess?: () => void) {
       tillageId: string;
       input: TillageUpdateInput;
     }) => api.tillages.updateTillage(tillageId, input),
-    onError: (error) => {
-      console.error(error);
-    },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.tillages._def,

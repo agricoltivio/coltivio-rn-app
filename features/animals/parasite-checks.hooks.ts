@@ -50,6 +50,8 @@ export function useCreateParasiteCheckMutation(
   const api = useApi();
   const invalidate = useInvalidateParasiteQueries();
   return useMutation({
+    // The screens catch the error and show their own message
+    meta: { handlesError: true },
     mutationFn: (input: ParasiteCheckCreateInput) =>
       api.parasiteChecks.createParasiteCheck(input),
     onSuccess: (check) => {
@@ -65,6 +67,8 @@ export function useUpdateParasiteCheckMutation(
   const api = useApi();
   const invalidate = useInvalidateParasiteQueries();
   return useMutation({
+    // The screens catch the error and show their own message
+    meta: { handlesError: true },
     mutationFn: ({
       checkId,
       input,

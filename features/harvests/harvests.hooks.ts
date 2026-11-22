@@ -76,9 +76,6 @@ export function useCreateHarvestMutation(
     mutationFn: (harvests: HarvestBatchCreateInput) => {
       return api.harvests.createHarvests(harvests);
     },
-    onError: (error) => {
-      console.error(error);
-    },
     onSuccess: (harvests) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.harvests._def,
@@ -100,9 +97,6 @@ export function useUpdateHarvestMutation(onSuccess?: () => void) {
       harvestId: string;
       input: HarvestUpdateInput;
     }) => api.harvests.updateHarvest(harvestId, input),
-    onError: (error) => {
-      console.error(error);
-    },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.harvests._def,

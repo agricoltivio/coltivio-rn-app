@@ -86,10 +86,7 @@ export function useCreateCropProtectionApplicationsMutation(
         cropProtectionApplications,
       );
     },
-    onError: (error) => {
-      console.error(error);
-      onError && onError(error);
-    },
+    onError,
     onSuccess: (cropProtectionApplication) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.cropProtectionApplications._def,
@@ -117,9 +114,6 @@ export function useUpdateCropProtectionApplicationMutation(
         cropProtectionApplicationId,
         input,
       ),
-    onError: (error) => {
-      console.error(error);
-    },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.cropProtectionApplications._def,
