@@ -1,12 +1,14 @@
 import { Meadow } from "@/api/meadows.api";
 import {
   GeoJSONSource,
+  type GeoJSONSourceRef,
   Images,
   Layer,
   type LngLat,
 } from "@maplibre/maplibre-react-native";
 import * as turf from "@turf/turf";
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
+import { useSelectedFeatureState } from "./useSelectedFeatureState";
 import { useTheme } from "styled-components/native";
 
 const STRIPE_PATTERN_ID = "meadow-stripes";
@@ -38,15 +40,21 @@ export function MeadowsLayer({
       type: "FeatureCollection",
       features: visibleMeadows.map((meadow) => ({
         type: "Feature",
-        properties: {
-          id: meadow.id,
-          selected: meadow.id === selectedMeadowId ? 1 : 0,
-        },
+        // Feature id for the selection state
+        id: meadow.id,
+        properties: { id: meadow.id },
         geometry: meadow.geometry,
       })),
     }),
-    [visibleMeadows, selectedMeadowId],
+    [visibleMeadows],
   );
+
+  const sourceRef = useRef<GeoJSONSourceRef>(null);
+  const selectedMeadowIds = useMemo(
+    () => (selectedMeadowId ? [selectedMeadowId] : []),
+    [selectedMeadowId],
+  );
+  useSelectedFeatureState(sourceRef, selectedMeadowIds, featureCollection);
 
   const labelCollection = useMemo(
     (): GeoJSON.FeatureCollection => ({
@@ -79,6 +87,7 @@ export function MeadowsLayer({
     <>
       <Images images={{ [STRIPE_PATTERN_ID]: stripePattern }} />
       <GeoJSONSource
+        ref={sourceRef}
         id="meadows"
         data={featureCollection}
         onPress={onMeadowPress ? handlePress : undefined}
@@ -94,11 +103,16 @@ export function MeadowsLayer({
           paint={{
             "line-color": [
               "case",
-              ["==", ["get", "selected"], 1],
+              ["boolean", ["feature-state", "selected"], false],
               theme.colors.warning,
               theme.colors.secondary,
             ],
-            "line-width": ["case", ["==", ["get", "selected"], 1], 4, 2.5],
+            "line-width": [
+              "case",
+              ["boolean", ["feature-state", "selected"], false],
+              4,
+              2.5,
+            ],
           }}
         />
       </GeoJSONSource>

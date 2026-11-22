@@ -2,11 +2,13 @@ import { Meadow } from "@/api/meadows.api";
 import { Plot } from "@/api/plots.api";
 import {
   GeoJSONSource,
+  type GeoJSONSourceRef,
   Layer,
   type LngLat,
 } from "@maplibre/maplibre-react-native";
 import * as turf from "@turf/turf";
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
+import { useSelectedFeatureState } from "./useSelectedFeatureState";
 import { useTheme } from "styled-components/native";
 
 type ArchivedAreasLayerProps = {
@@ -33,29 +35,31 @@ export function ArchivedAreasLayer({
         ...plots.map(
           (plot): GeoJSON.Feature => ({
             type: "Feature",
-            properties: {
-              id: plot.id,
-              kind: "plot",
-              selected: plot.id === selectedId ? 1 : 0,
-            },
+            // Feature id for the selection state
+            id: plot.id,
+            properties: { id: plot.id, kind: "plot" },
             geometry: plot.geometry,
           }),
         ),
         ...meadows.map(
           (meadow): GeoJSON.Feature => ({
             type: "Feature",
-            properties: {
-              id: meadow.id,
-              kind: "meadow",
-              selected: meadow.id === selectedId ? 1 : 0,
-            },
+            id: meadow.id,
+            properties: { id: meadow.id, kind: "meadow" },
             geometry: meadow.geometry,
           }),
         ),
       ],
     }),
-    [plots, meadows, selectedId],
+    [plots, meadows],
   );
+
+  const sourceRef = useRef<GeoJSONSourceRef>(null);
+  const selectedIds = useMemo(
+    () => (selectedId ? [selectedId] : []),
+    [selectedId],
+  );
+  useSelectedFeatureState(sourceRef, selectedIds, featureCollection);
 
   const labelCollection = useMemo(
     (): GeoJSON.FeatureCollection => ({
@@ -88,6 +92,7 @@ export function ArchivedAreasLayer({
   return (
     <>
       <GeoJSONSource
+        ref={sourceRef}
         id="archived-areas"
         data={featureCollection}
         onPress={onPress ? handlePress : undefined}
@@ -106,7 +111,12 @@ export function ArchivedAreasLayer({
           paint={{
             "line-color": theme.colors.gray0,
             "line-opacity": 0.35,
-            "line-width": ["case", ["==", ["get", "selected"], 1], 4.5, 2.5],
+            "line-width": [
+              "case",
+              ["boolean", ["feature-state", "selected"], false],
+              4.5,
+              2.5,
+            ],
           }}
         />
         <Layer
@@ -115,11 +125,16 @@ export function ArchivedAreasLayer({
           paint={{
             "line-color": [
               "case",
-              ["==", ["get", "selected"], 1],
+              ["boolean", ["feature-state", "selected"], false],
               theme.colors.warning,
               theme.colors.white,
             ],
-            "line-width": ["case", ["==", ["get", "selected"], 1], 3, 1.5],
+            "line-width": [
+              "case",
+              ["boolean", ["feature-state", "selected"], false],
+              3,
+              1.5,
+            ],
             "line-dasharray": [2, 1.5],
           }}
         />
