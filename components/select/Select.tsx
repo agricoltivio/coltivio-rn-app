@@ -12,6 +12,7 @@ import {
   Pressable,
   TouchableOpacity,
   View,
+  ViewStyle,
 } from "react-native";
 import { Dropdown as RnDropdown } from "react-native-element-dropdown";
 import { DropdownProps } from "react-native-element-dropdown/lib/typescript/components/Dropdown/model";
@@ -32,7 +33,7 @@ export type SelectProps = {
   onFocus?: () => void;
   // description is an optional secondary line, shown and searchable in the search modal
   data: SelectItem[];
-  style?: any;
+  style?: ViewStyle;
   error?: string;
   enableSearch?: boolean;
   // Truncate the selected value to one line instead of wrapping
@@ -286,7 +287,7 @@ export function Select({
     </View>
   );
 }
-type CustomDropdownProps = DropdownProps<any> & {
+type CustomDropdownProps = DropdownProps<SelectItem> & {
   focus: boolean;
   error?: boolean;
 };

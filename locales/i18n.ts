@@ -31,6 +31,8 @@ export const resources = {
   fr: { translation: fr },
 } as const;
 
+// The default export is the i18next instance the app configures, as in the i18next docs
+// eslint-disable-next-line import/no-named-as-default-member
 i18n.use(initReactI18next).init({
   compatibilityJSON: "v3",
   fallbackLng: defaultLocale,
@@ -45,6 +47,7 @@ i18n.use(initReactI18next).init({
 
 // Applies the stored language choice, or follows the device when unset.
 export function applyAppLocale(preferred: AppLocale | null) {
+  // eslint-disable-next-line import/no-named-as-default-member
   i18n.changeLanguage(preferred ?? resolveDeviceLocale());
 }
 
