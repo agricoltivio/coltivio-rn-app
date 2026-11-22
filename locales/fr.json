@@ -1718,6 +1718,7 @@
   },
   "wiki": {
     "wiki": "Wiki",
+    "editor_placeholder": "Écris quelque chose…",
     "private": "Privé",
     "pending_section": "Mes soumissions",
     "status": {

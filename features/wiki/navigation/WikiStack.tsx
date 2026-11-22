@@ -1,6 +1,8 @@
 import { Stack } from "@/navigation/stack";
 import { IonIconButton } from "@/components/buttons/IconButton";
 import { DefaultTheme } from "styled-components/native";
+import { NavigationProp } from "@react-navigation/native";
+import { RootStackParamList } from "@/navigation/rootStackTypes";
 import { View } from "react-native";
 import { WikiListScreen } from "../WikiListScreen";
 import { WikiDetailScreen } from "../WikiDetailScreen";
@@ -12,7 +14,10 @@ import { WikiOnboardingScreen } from "../WikiOnboardingScreen";
 import { WikiMySubmissionsScreen } from "../WikiMySubmissionsScreen";
 import { WikiSubmissionsButton } from "../components/WikiSubmissionsButton";
 
-export function renderWikiStack(theme: DefaultTheme, navigation: any) {
+export function renderWikiStack(
+  theme: DefaultTheme,
+  navigation: Omit<NavigationProp<RootStackParamList>, "getState">,
+) {
   return [
     <Stack.Screen
       key="wiki-list"
