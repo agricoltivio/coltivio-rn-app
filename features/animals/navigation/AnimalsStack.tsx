@@ -4,6 +4,7 @@ import { Alert, View } from "react-native";
 import i18n from "@/locales/i18n";
 import { AnimalsHubScreen } from "../AnimalsHubScreen";
 import { EarTagsScreen } from "../EarTagsScreen";
+import { EditEarTagScreen } from "../EditEarTagScreen";
 import { CreateEarTagRangeScreen } from "../CreateEarTagRangeScreen";
 import { DeleteEarTagRangeScreen } from "../DeleteEarTagRangeScreen";
 import { AnimalsScreen } from "../AnimalsScreen";
@@ -106,6 +107,12 @@ export function renderAnimalsStack(
       name="EarTags"
       options={{ title: "" }}
       component={EarTagsScreen}
+    />,
+    <Stack.Screen
+      key="edit-ear-tag"
+      name="EditEarTag"
+      options={{ title: "" }}
+      component={EditEarTagScreen}
     />,
     <Stack.Screen
       key="create-ear-tag-range"

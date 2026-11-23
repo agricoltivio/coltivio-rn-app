@@ -92,7 +92,20 @@ export function EarTagsScreen({ navigation }: EarTagsScreenProps) {
                 borderBottomRightRadius: isLast ? 10 : 0,
               }}
             >
-              <ListItem style={{ paddingVertical: 5 }}>
+              <ListItem
+                style={{ paddingVertical: 5 }}
+                // Tapping a tag changes its number
+                onPress={
+                  canWrite("animals")
+                    ? () =>
+                        navigation.navigate("EditEarTag", {
+                          earTagId: earTag.id,
+                          number: earTag.number,
+                          animalName: earTag.animal?.name,
+                        })
+                    : undefined
+                }
+              >
                 <ListItem.Content>
                   <ListItem.Title>{earTag.number}</ListItem.Title>
                   <ListItem.Body>
