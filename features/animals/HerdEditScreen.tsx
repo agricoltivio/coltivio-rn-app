@@ -1,3 +1,7 @@
+import {
+  apiErrorMessage,
+  reportUnexpectedError,
+} from "@/utils/api-error-message";
 import { OutdoorScheduleCreateInput } from "@/api/herds.api";
 import { BottomDrawerModal } from "@/components/bottom-drawer/BottomDrawerModal";
 import { InlineDatePicker } from "@/components/datepicker/InlineDatePicker";
@@ -104,8 +108,14 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
 
   const updateHerdMutation = useUpdateHerdMutation(
     () => navigation.goBack(),
-    // Too early dates are prevented in the date sheet, so any failure is unexpected
-    () => Alert.alert(t("common.error"), t("common.unknown_error")),
+    // Too early dates are prevented in the date sheet; an overlapping schedule gets its own message
+    (error) => {
+      reportUnexpectedError(error);
+      Alert.alert(
+        t("common.error"),
+        apiErrorMessage(error, t("common.unknown_error"), t),
+      );
+    },
   );
   const deleteHerdMutation = useDeleteHerdMutation(() => navigation.goBack());
 
