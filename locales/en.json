@@ -998,7 +998,6 @@
     "ear_tags": "Ear tags",
     "ear_tag": "Ear tag",
     "new_ear_tag_range": "New ear tags",
-    "invalid_number": "Enter a number, optionally with a letter prefix (e.g. CH001)",
     "invalid_amount": "Enter at least 1",
     "confirm_create_title": "Create ear tags?",
     "confirm_create_message": "From {{from}} to {{to}}\nTotal: {{total}} ear tags",

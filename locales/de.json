@@ -998,7 +998,6 @@
     "ear_tags": "Ohrmarken",
     "ear_tag": "Ohrmarke",
     "new_ear_tag_range": "Neue Ohrmarken",
-    "invalid_number": "Gib eine Nummer ein, optional mit Buchstaben davor (z. B. CH001)",
     "invalid_amount": "Mindestens 1",
     "confirm_create_title": "Ohrmarken erstellen?",
     "confirm_create_message": "Von {{from}} bis {{to}}\nTotal: {{total}} Ohrmarken",

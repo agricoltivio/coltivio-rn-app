@@ -998,7 +998,6 @@
     "ear_tags": "Marques auriculaires",
     "ear_tag": "Marque auriculaire",
     "new_ear_tag_range": "Nouvelles marques auriculaires",
-    "invalid_number": "Saisis un numéro, éventuellement précédé de lettres (p. ex. CH001)",
     "invalid_amount": "Au moins 1",
     "confirm_create_title": "Créer des marques auriculaires ?",
     "confirm_create_message": "De {{from}} à {{to}}\nTotal : {{total}} marques auriculaires",

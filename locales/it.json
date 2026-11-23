@@ -998,7 +998,6 @@
     "ear_tags": "Marche auricolari",
     "ear_tag": "Marca auricolare",
     "new_ear_tag_range": "Nuove marche auricolari",
-    "invalid_number": "Inserisci un numero, eventualmente con lettere davanti (es. CH001)",
     "invalid_amount": "Almeno 1",
     "confirm_create_title": "Creare marche auricolari?",
     "confirm_create_message": "Da {{from}} a {{to}}\nTotale: {{total}} marche auricolari",
