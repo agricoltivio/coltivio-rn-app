@@ -1530,7 +1530,6 @@
     "edit_outdoor_override": "Modifier l'exception",
     "delete_outdoor_override_confirm": "Vraiment supprimer cette exception ?",
     "outdoor_override_overlap": "L'exception chevauche une autre exception de ce troupeau.",
-    "stable_no_meadow": "L'étable n'a pas de pâturage.",
     "outdoor_override_single": "Exception",
     "herd_animal_count": "{{count}} animal",
     "herd_animal_count_plural": "{{count}} animaux"

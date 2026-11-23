@@ -9,6 +9,7 @@ import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
 import { parseDateOnly, toLocalDateString } from "@/utils/date";
+import * as Sentry from "@sentry/react-native";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -75,14 +76,21 @@ export function OutdoorScheduleOverrideFormScreen({
   }, [startDate, getValues, setValue]);
 
   function onSaveError(error: Error) {
+    // Passing onError skips the global Sentry report, so report everything that isn't an
+    // expected rejection by the API here
+    const isExpectedRejection =
+      error instanceof ApiError && error.status >= 400 && error.status < 500;
+    if (!isExpectedRejection) Sentry.captureException(error);
     const code = error instanceof ApiError ? error.code : undefined;
-    // Other known codes (e.g. invalid_date_range) get their message from errors.codes
+    // Other known codes get their message from errors.codes
     const message =
       code === "outdoor_schedule_override_overlap"
         ? t("animals.outdoor_override_overlap")
-        : code && i18n.exists(`errors.codes.${code}`)
-          ? t(`errors.codes.${code}`)
-          : t("errors.unexpected_retry");
+        : code === "invalid_date_range"
+          ? t("animals.end_date_before_start")
+          : code && i18n.exists(`errors.codes.${code}`)
+            ? t(`errors.codes.${code}`)
+            : t("errors.unexpected_retry");
     Alert.alert(t("common.error"), message);
   }
 
