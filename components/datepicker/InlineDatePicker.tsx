@@ -75,13 +75,15 @@ export function InlineDatePicker({
             themeVariant="light"
             onValueChange={(_event, selectedDate) => {
               onChange(selectedDate);
-              // Picking a year or month in the calendar's wheel also changes the value: stay
-              // open so the day can still be chosen. Close once a day of the shown month is
-              // tapped (same month and year as before).
-              const pickedDayOfShownMonth =
-                selectedDate.getFullYear() === date.getFullYear() &&
-                selectedDate.getMonth() === date.getMonth();
-              if (pickedDayOfShownMonth) {
+              // Picking a year or month in the calendar's wheel also changes the value but
+              // keeps the day of month: stay open so the day can still be chosen. A tapped
+              // day closes: a different day of month (also after browsing with the month
+              // arrows, which don't change the value), or any day in the same month and year.
+              const pickedDay =
+                selectedDate.getDate() !== date.getDate() ||
+                (selectedDate.getFullYear() === date.getFullYear() &&
+                  selectedDate.getMonth() === date.getMonth());
+              if (pickedDay) {
                 setPickedYearOrMonth(false);
                 changeOpen(false);
               } else {
@@ -105,7 +107,7 @@ export function InlineDatePicker({
             style={{ alignSelf: "flex-end", paddingVertical: theme.spacing.xs }}
           >
             <Text style={{ color: theme.colors.primary, fontWeight: "600" }}>
-              {t("buttons.finish")}
+              {t("buttons.done")}
             </Text>
           </Pressable>
         </View>
