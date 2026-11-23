@@ -125,25 +125,8 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
     });
   }
 
-  // Ear tag numbers by animal id, for the parents shown in each row (dead parents included)
-  const earTagNumberById = useMemo(
-    () =>
-      new Map(
-        (animals ?? []).flatMap((animal) =>
-          animal.earTag ? [[animal.id, animal.earTag.number] as const] : [],
-        ),
-      ),
-    [animals],
-  );
-
   const renderItem = useCallback(
     ({ item: animal }: { item: AnimalWithWaitingTimeFlag }) => {
-      const motherEarTag = animal.motherId
-        ? earTagNumberById.get(animal.motherId)
-        : undefined;
-      const fatherEarTag = animal.fatherId
-        ? earTagNumberById.get(animal.fatherId)
-        : undefined;
       const birthdate = animal.dateOfBirth
         ? new Date(animal.dateOfBirth).toLocaleDateString()
         : null;
@@ -166,46 +149,10 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
         >
           <ListItem.Content>
             <ListItem.Title numberOfLines={1}>{animal.name}</ListItem.Title>
-            {(animal.earTag || motherEarTag || fatherEarTag) && (
-              <View
-                style={{
-                  flexDirection: "row",
-                  flexWrap: "wrap",
-                  alignItems: "center",
-                  columnGap: theme.spacing.s,
-                }}
-              >
-                {animal.earTag && (
-                  <ListItem.Body numberOfLines={1}>
-                    {animal.earTag.number}
-                  </ListItem.Body>
-                )}
-                {/* Ear tags of mother and father */}
-                {motherEarTag && (
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Ionicons
-                      name="female"
-                      size={12}
-                      color={theme.colors.gray2}
-                    />
-                    <ListItem.Body numberOfLines={1}>
-                      {motherEarTag}
-                    </ListItem.Body>
-                  </View>
-                )}
-                {fatherEarTag && (
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Ionicons
-                      name="male"
-                      size={12}
-                      color={theme.colors.gray2}
-                    />
-                    <ListItem.Body numberOfLines={1}>
-                      {fatherEarTag}
-                    </ListItem.Body>
-                  </View>
-                )}
-              </View>
+            {animal.earTag && (
+              <ListItem.Body numberOfLines={1}>
+                {animal.earTag.number}
+              </ListItem.Body>
             )}
           </ListItem.Content>
           <View
@@ -230,7 +177,7 @@ export function AnimalsScreen({ navigation }: AnimalsScreenProps) {
         </ListItem>
       );
     },
-    [t, navigation, theme, earTagNumberById],
+    [t, navigation, theme],
   );
 
   return (

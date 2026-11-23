@@ -473,9 +473,9 @@ export function AnimalDetailsScreen({
               >
                 <ListItem.Content>
                   <ListItem.Title>{animal.mother.name}</ListItem.Title>
-                  <ListItem.Body>
-                    {t(`animals.animal_types.${animal.mother.type}`)}
-                  </ListItem.Body>
+                  {animal.mother.earTag && (
+                    <ListItem.Body>{animal.mother.earTag.number}</ListItem.Body>
+                  )}
                 </ListItem.Content>
                 <ListItem.Chevron />
               </ListItem>
@@ -505,9 +505,9 @@ export function AnimalDetailsScreen({
               >
                 <ListItem.Content>
                   <ListItem.Title>{animal.father.name}</ListItem.Title>
-                  <ListItem.Body>
-                    {t(`animals.animal_types.${animal.father.type}`)}
-                  </ListItem.Body>
+                  {animal.father.earTag && (
+                    <ListItem.Body>{animal.father.earTag.number}</ListItem.Body>
+                  )}
                 </ListItem.Content>
                 <ListItem.Chevron />
               </ListItem>
