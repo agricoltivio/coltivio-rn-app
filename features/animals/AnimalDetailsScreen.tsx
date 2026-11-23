@@ -116,7 +116,7 @@ export function AnimalDetailsScreen({
     latestParasiteCheck
       ? t("common.last_value", {
           value: formatLocalizedDate(
-            new Date(latestParasiteCheck.date),
+            parseDateOnly(latestParasiteCheck.date),
             locale,
           ),
         })

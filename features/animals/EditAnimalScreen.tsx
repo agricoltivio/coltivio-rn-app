@@ -16,7 +16,6 @@ import {
   useAnimalByIdQuery,
   useDeleteAnimalMutation,
   useSetCustomOutdoorJournalCategoriesMutation,
-  useUnlinkOffspringMutation,
   useUpdateAnimalMutation,
 } from "./animals.hooks";
 import { useAvailableEarTagsQuery } from "./earTags.hooks";
@@ -85,7 +84,6 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
     }
   }, [animal]);
 
-  const unlinkOffspringMutation = useUnlinkOffspringMutation();
   const updateAnimalMutation = useUpdateAnimalMutation(
     () => navigation.goBack(),
     // Too early herd dates are prevented in the form, so any failure is unexpected
@@ -146,20 +144,9 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
             : null,
       });
 
-    // A sex or type change unlinks the offspring (by the old sex), then saves
-    const saveAndUnlink = () => {
-      if ((typeChanged || sexChanged) && offspringIds.length > 0 && animal) {
-        unlinkOffspringMutation.mutate({
-          offspringIds,
-          parentField: animal.sex === "female" ? "motherId" : "fatherId",
-        });
-      }
-      save();
-    };
-
     const confirmSexChangeThenSave = () => {
       if (!animal || !sexChanged || offspringIds.length === 0) {
-        saveAndUnlink();
+        save();
         return;
       }
       Alert.alert(
@@ -176,7 +163,8 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
           {
             text: t("animals.change_anyway"),
             style: "destructive",
-            onPress: saveAndUnlink,
+            // The API unlinks parents and offspring that no longer fit
+            onPress: save,
           },
         ],
       );
@@ -200,7 +188,8 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
           {
             text: t("animals.change_anyway"),
             style: "destructive",
-            onPress: saveAndUnlink,
+            // The API unlinks parents and offspring that no longer fit
+            onPress: save,
           },
         ],
       );

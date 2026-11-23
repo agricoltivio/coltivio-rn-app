@@ -15,10 +15,8 @@ import { RefObject, useEffect, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, View } from "react-native";
 import { useTheme } from "styled-components/native";
-import {
-  useUnlinkOffspringMutation,
-  useUpdateAnimalMutation,
-} from "./animals.hooks";
+import { useUpdateAnimalMutation } from "./animals.hooks";
+import { ANIMAL_TYPES, AnimalDetail, AnimalType } from "@/api/animals.api";
 import { useEarliestHerdChangeDateQuery, useHerdsQuery } from "./herds.hooks";
 
 // Fields of the animal details that can be changed on their own, without the full form.
@@ -34,26 +32,9 @@ export type AnimalQuickEditField =
   | "death"
   | "herd";
 
-type AnimalUsage = "milk" | "other";
-type AnimalType =
-  | "goat"
-  | "sheep"
-  | "cow"
-  | "horse"
-  | "donkey"
-  | "pig"
-  | "deer";
-const ANIMAL_TYPES: AnimalType[] = [
-  "goat",
-  "sheep",
-  "cow",
-  "horse",
-  "donkey",
-  "pig",
-  "deer",
-];
-type AnimalSex = "male" | "female";
-type DeathReason = "died" | "slaughtered";
+type AnimalUsage = AnimalDetail["usage"];
+type AnimalSex = AnimalDetail["sex"];
+type DeathReason = NonNullable<AnimalDetail["deathReason"]>;
 
 // The "no herd" option (leaving the herd)
 const NO_HERD = "__none__";
@@ -122,9 +103,9 @@ export function AnimalQuickEditSheet({
     dateOfDeath: string | null;
     deathReason: DeathReason | null;
     herdId: string | null;
-    // as mother or father: unlinked when the sex or type changes
+    // as mother or father: unlinked by the API when the sex or type changes
     offspringIds: string[];
-    // has a mother or father: unlinked when the type changes
+    // has a mother or father: unlinked by the API when the type changes
     hasParents: boolean;
   };
 }) {
@@ -132,7 +113,6 @@ export function AnimalQuickEditSheet({
   const theme = useTheme();
   // Unique per screen instance: the same animal can be open twice in the stack
   const portalKey = useId();
-  const unlinkOffspringMutation = useUnlinkOffspringMutation();
   const updateAnimalMutation = useUpdateAnimalMutation(() =>
     sheetRef.current?.dismiss(),
   );
@@ -211,9 +191,6 @@ export function AnimalQuickEditSheet({
     herd: t("animals.herd"),
   };
 
-  // This animal as mother / father of its offspring, by its current sex
-  const parentField = animal.sex === "female" ? "motherId" : "fatherId";
-
   // A sex change unlinks the offspring (they'd have a male mother / female father): confirm
   function saveSex() {
     if (sex === animal.sex) {
@@ -238,13 +215,8 @@ export function AnimalQuickEditSheet({
         {
           text: t("animals.change_anyway"),
           style: "destructive",
-          onPress: () => {
-            unlinkOffspringMutation.mutate({
-              offspringIds: animal.offspringIds,
-              parentField,
-            });
-            updateAnimalMutation.mutate({ id: animal.id, sex });
-          },
+          // The API unlinks the offspring
+          onPress: () => updateAnimalMutation.mutate({ id: animal.id, sex }),
         },
       ],
     );
@@ -271,19 +243,9 @@ export function AnimalQuickEditSheet({
         {
           text: t("animals.change_anyway"),
           style: "destructive",
-          onPress: () => {
-            if (animal.offspringIds.length > 0) {
-              unlinkOffspringMutation.mutate({
-                offspringIds: animal.offspringIds,
-                parentField,
-              });
-            }
-            updateAnimalMutation.mutate({
-              id: animal.id,
-              type: animalType,
-              ...(animal.hasParents ? { motherId: null, fatherId: null } : {}),
-            });
-          },
+          // The API unlinks parents and offspring of another type
+          onPress: () =>
+            updateAnimalMutation.mutate({ id: animal.id, type: animalType }),
         },
       ],
     );
@@ -474,6 +436,8 @@ export function AnimalQuickEditSheet({
                 title={t("buttons.save")}
                 onPress={save}
                 loading={updateAnimalMutation.isPending}
+                // The name is required
+                disabled={field === "name" && !text.trim()}
               />
               {/* Death: undo a recorded death (clears date and reason) */}
               {field === "death" && animal.dateOfDeath && (

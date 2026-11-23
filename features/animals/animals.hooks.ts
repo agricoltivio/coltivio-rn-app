@@ -76,30 +76,6 @@ export function useCreateAnimalMutation(
   });
 }
 
-// Removes this animal as mother or father of its offspring, e.g. after its sex or type
-// changed and the links no longer fit
-export function useUnlinkOffspringMutation() {
-  const api = useApi();
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({
-      offspringIds,
-      parentField,
-    }: {
-      offspringIds: string[];
-      parentField: "motherId" | "fatherId";
-    }) =>
-      Promise.all(
-        offspringIds.map((offspringId) =>
-          api.animals.updateAnimal(offspringId, { [parentField]: null }),
-        ),
-      ),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.animals._def });
-    },
-  });
-}
-
 export function useUpdateAnimalMutation(
   onSuccess?: (animal: AnimalUpdateResponse) => void,
   onError?: (error: Error) => void,
