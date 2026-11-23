@@ -123,6 +123,7 @@ export function AnimalQuickEditSheet({
   const [dateOfBirth, setDateOfBirth] = useState(new Date());
   const [usage, setUsage] = useState<AnimalUsage>(animal.usage);
   const [text, setText] = useState("");
+  const [textFocused, setTextFocused] = useState(false);
   const [dateOfDeath, setDateOfDeath] = useState(new Date());
   const [deathReason, setDeathReason] = useState<DeathReason | null>(null);
   const [herdChoice, setHerdChoice] = useState<string>(NO_HERD);
@@ -357,6 +358,9 @@ export function AnimalQuickEditSheet({
                         : (animal.notes ?? "")
                   }
                   onChangeText={setText}
+                  // Border like our TextInput: primary while focused
+                  onFocus={() => setTextFocused(true)}
+                  onBlur={() => setTextFocused(false)}
                   placeholder={titles[field]}
                   placeholderTextColor={theme.colors.gray2}
                   autoFocus
@@ -368,7 +372,9 @@ export function AnimalQuickEditSheet({
                     padding: 10,
                     borderRadius: theme.radii.l,
                     borderWidth: 1,
-                    borderColor: theme.colors.gray2,
+                    borderColor: textFocused
+                      ? theme.colors.primary
+                      : theme.colors.gray2,
                     backgroundColor: theme.colors.white,
                     color: theme.colors.gray0,
                     ...(field === "notes"
