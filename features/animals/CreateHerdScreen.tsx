@@ -1,5 +1,7 @@
-import { apiErrorMessage } from "@/utils/api-error-message";
-import * as Sentry from "@sentry/react-native";
+import {
+  apiErrorMessage,
+  reportUnexpectedError,
+} from "@/utils/api-error-message";
 import { OutdoorScheduleCreateInput } from "@/api/herds.api";
 import { Button } from "@/components/buttons/Button";
 import { IonIconButton } from "@/components/buttons/IconButton";
@@ -147,7 +149,7 @@ export function CreateHerdScreen({ route, navigation }: CreateHerdScreenProps) {
     },
     (error) => {
       // The save failed: tell the user, the form stays filled for another try
-      Sentry.captureException(error);
+      reportUnexpectedError(error);
       Alert.alert(
         t("common.error"),
         apiErrorMessage(error, t("errors.unexpected_retry"), t),
