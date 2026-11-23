@@ -53,7 +53,13 @@ export function InlineDatePicker({
           themeVariant="light"
           onValueChange={(_event, selectedDate) => {
             onChange(selectedDate);
-            setOpen(false);
+            // Picking a year or month in the calendar's wheel also changes the value: stay
+            // open so the day can still be chosen. Close once a day of the shown month is
+            // tapped (same month and year as before).
+            const pickedDayOfShownMonth =
+              selectedDate.getFullYear() === date.getFullYear() &&
+              selectedDate.getMonth() === date.getMonth();
+            if (pickedDayOfShownMonth) setOpen(false);
           }}
         />
       )}
