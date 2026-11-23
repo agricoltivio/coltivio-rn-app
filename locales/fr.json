@@ -182,7 +182,7 @@
     "codes": {
       "crop_rotation_overlap": "La rotation culturale chevauche une rotation existante sur ce champ.",
       "outdoor_schedule_overlap": "La sortie chevauche une autre sortie de ce troupeau.",
-      "invalid_date_range": "La date de fin est antérieure à la date de début."
+      "invalid_date_range": "Une date de fin est antérieure à sa date de début."
     }
   },
   "units": {

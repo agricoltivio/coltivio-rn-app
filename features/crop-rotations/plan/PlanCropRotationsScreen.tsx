@@ -1,3 +1,4 @@
+import { apiErrorMessage } from "@/utils/api-error-message";
 import { toLocalDateString } from "@/utils/date";
 import { useEffect, useMemo, useState, useRef } from "react";
 import { Alert, View, ActivityIndicator } from "react-native";
@@ -87,9 +88,12 @@ export function PlanCropRotationsScreen({
         );
       }
     },
-    () => {
+    (error) => {
       setSaving(false);
-      Alert.alert(t("common.error"), t("errors.unexpected_retry"));
+      Alert.alert(
+        t("common.error"),
+        apiErrorMessage(error, t("errors.unexpected_retry"), t),
+      );
     },
   );
 

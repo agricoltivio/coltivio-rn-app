@@ -182,7 +182,7 @@
     "codes": {
       "crop_rotation_overlap": "Die Fruchtfolge überschneidet sich mit einer bestehenden Fruchtfolge auf diesem Schlag.",
       "outdoor_schedule_overlap": "Der Auslauf überschneidet sich mit einem anderen Auslauf dieser Herde.",
-      "invalid_date_range": "Das Enddatum liegt vor dem Startdatum."
+      "invalid_date_range": "Ein Enddatum liegt vor dem zugehörigen Startdatum."
     }
   },
   "units": {

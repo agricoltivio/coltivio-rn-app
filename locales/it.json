@@ -182,7 +182,7 @@
     "codes": {
       "crop_rotation_overlap": "La rotazione colturale si sovrappone a una rotazione esistente su questo campo.",
       "outdoor_schedule_overlap": "Il programma di uscita si sovrappone a un altro programma di questa mandria.",
-      "invalid_date_range": "La data di fine è precedente alla data di inizio."
+      "invalid_date_range": "Una data di fine precede la relativa data di inizio."
     }
   },
   "units": {

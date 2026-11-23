@@ -1,3 +1,4 @@
+import { apiErrorMessage } from "@/utils/api-error-message";
 import * as Linking from "expo-linking";
 import { coltivioTheme } from "@/theme/theme";
 import { PortalProvider } from "@gorhom/portal";
@@ -96,26 +97,24 @@ const queryClient = new QueryClient({
         error instanceof ApiError && error.status >= 400 && error.status < 500;
       if (!isExpectedRejection) Sentry.captureException(error);
       // A rejection with a known error code gets its own message, e.g. an overlapping crop rotation
-      const codeMessageKey =
-        error instanceof ApiError && error.code
-          ? `errors.codes.${error.code}`
-          : undefined;
-      const message =
-        codeMessageKey && i18n.exists(codeMessageKey)
-          ? i18n.t(codeMessageKey)
-          : i18n.t("errors.unexpected_retry");
-      Alert.alert(i18n.t("common.error"), message);
+      Alert.alert(
+        i18n.t("common.error"),
+        apiErrorMessage(error, i18n.t("errors.unexpected_retry"), i18n.t),
+      );
     },
   }),
   defaultOptions: {
     queries: {
       // A rejection by the API (not found, forbidden, invalid) won't change on a retry, e.g. the
       // details query of an entry that was just deleted. Everything else keeps the default 3 retries.
+      // 401 still retries: a stale token is refreshed meanwhile and the retry uses the new one.
+      // 408 and 429 are temporary as well.
       retry: (failureCount, error) => {
         if (
           error instanceof ApiError &&
           error.status >= 400 &&
-          error.status < 500
+          error.status < 500 &&
+          ![401, 408, 429].includes(error.status)
         ) {
           return false;
         }

@@ -182,7 +182,7 @@
     "codes": {
       "crop_rotation_overlap": "The crop rotation overlaps an existing rotation on this plot.",
       "outdoor_schedule_overlap": "The outdoor schedule overlaps another schedule of this herd.",
-      "invalid_date_range": "The end date lies before the start date."
+      "invalid_date_range": "An end date lies before its start date."
     }
   },
   "units": {
