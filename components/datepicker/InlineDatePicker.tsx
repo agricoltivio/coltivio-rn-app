@@ -3,6 +3,8 @@ import { formatLocalizedDate } from "@/utils/date";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard, Platform, Pressable, View } from "react-native";
+import { useTheme } from "styled-components/native";
+import { Text } from "@/components/text/Text";
 import { TextInput } from "../inputs/TextInput";
 
 // Date field for use inside a bottom drawer. The regular DatePicker opens its own drawer,
@@ -23,7 +25,8 @@ export function InlineDatePicker({
   maximumDate?: Date;
   error?: string;
 }) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const theme = useTheme();
   const [open, setOpen] = useState(false);
 
   return (
@@ -43,25 +46,38 @@ export function InlineDatePicker({
         </View>
       </Pressable>
       {open && Platform.OS === "ios" && (
-        <DateTimePicker
-          value={date}
-          mode="date"
-          display="inline"
-          minimumDate={minimumDate}
-          maximumDate={maximumDate}
-          locale={i18n.language}
-          themeVariant="light"
-          onValueChange={(_event, selectedDate) => {
-            onChange(selectedDate);
-            // Picking a year or month in the calendar's wheel also changes the value: stay
-            // open so the day can still be chosen. Close once a day of the shown month is
-            // tapped (same month and year as before).
-            const pickedDayOfShownMonth =
-              selectedDate.getFullYear() === date.getFullYear() &&
-              selectedDate.getMonth() === date.getMonth();
-            if (pickedDayOfShownMonth) setOpen(false);
-          }}
-        />
+        <View>
+          <DateTimePicker
+            value={date}
+            mode="date"
+            display="inline"
+            minimumDate={minimumDate}
+            maximumDate={maximumDate}
+            locale={i18n.language}
+            themeVariant="light"
+            onValueChange={(_event, selectedDate) => {
+              onChange(selectedDate);
+              // Picking a year or month in the calendar's wheel also changes the value: stay
+              // open so the day can still be chosen. Close once a day of the shown month is
+              // tapped (same month and year as before).
+              const pickedDayOfShownMonth =
+                selectedDate.getFullYear() === date.getFullYear() &&
+                selectedDate.getMonth() === date.getMonth();
+              if (pickedDayOfShownMonth) setOpen(false);
+            }}
+          />
+          {/* Tapping the already selected day sends no change, so it can't close the
+              calendar: this closes it with the current date */}
+          <Pressable
+            onPress={() => setOpen(false)}
+            hitSlop={8}
+            style={{ alignSelf: "flex-end", paddingVertical: theme.spacing.xs }}
+          >
+            <Text style={{ color: theme.colors.primary, fontWeight: "600" }}>
+              {t("buttons.finish")}
+            </Text>
+          </Pressable>
+        </View>
       )}
       {open && Platform.OS === "android" && (
         <DateTimePicker
