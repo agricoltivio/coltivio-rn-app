@@ -1,6 +1,6 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { formatLocalizedDate } from "@/utils/date";
-import { getDaysInMonth, isSameDay } from "date-fns";
+import { getDaysInMonth, isSameDay, startOfDay } from "date-fns";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard, Platform, Pressable, View } from "react-native";
@@ -86,14 +86,26 @@ export function InlineDatePicker({
               // The wheel can't keep a day the new month doesn't have (31 Mar → Feb) or that
               // lies outside the allowed range: iOS moves it to the month's last day or to the
               // limit. Such a change is still the wheel, not a tapped day.
+              // The day the wheel would keep (the month may be shorter); it only clamps to a
+              // limit when that day lies beyond it, so a tapped day equal to the limit after
+              // browsing with the arrows still counts as a tap
+              const keptDay = startOfDay(
+                new Date(
+                  selectedDate.getFullYear(),
+                  selectedDate.getMonth(),
+                  Math.min(date.getDate(), getDaysInMonth(selectedDate)),
+                ),
+              );
               const clampedByWheel =
                 monthOrYearChanged &&
                 ((selectedDate.getDate() < date.getDate() &&
                   selectedDate.getDate() === getDaysInMonth(selectedDate)) ||
                   (maximumDate !== undefined &&
-                    isSameDay(selectedDate, maximumDate)) ||
+                    isSameDay(selectedDate, maximumDate) &&
+                    keptDay > startOfDay(maximumDate)) ||
                   (minimumDate !== undefined &&
-                    isSameDay(selectedDate, minimumDate)));
+                    isSameDay(selectedDate, minimumDate) &&
+                    keptDay < startOfDay(minimumDate)));
               const pickedDay =
                 !monthOrYearChanged ||
                 (selectedDate.getDate() !== date.getDate() && !clampedByWheel);
