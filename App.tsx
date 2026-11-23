@@ -1,4 +1,7 @@
-import { apiErrorMessage } from "@/utils/api-error-message";
+import {
+  apiErrorMessage,
+  reportUnexpectedError,
+} from "@/utils/api-error-message";
 import * as Linking from "expo-linking";
 import { coltivioTheme } from "@/theme/theme";
 import { PortalProvider } from "@gorhom/portal";
@@ -93,9 +96,7 @@ const queryClient = new QueryClient({
       // Rejections by the API (validation, conflicts, expired session) are expected and only
       // need the alert; everything else is reported. A 401 gets the alert too: with a merely
       // stale token the user stays on the screen and would otherwise get no feedback.
-      const isExpectedRejection =
-        error instanceof ApiError && error.status >= 400 && error.status < 500;
-      if (!isExpectedRejection) Sentry.captureException(error);
+      reportUnexpectedError(error);
       // A rejection with a known error code gets its own message, e.g. an overlapping crop rotation
       Alert.alert(
         i18n.t("common.error"),
