@@ -21,6 +21,7 @@
     "show_entries": "Show entries",
     "export": "Export",
     "finish": "Finish",
+    "done": "Done",
     "send_email": "Send email",
     "forgot_password": "Forgot password",
     "apply": "Apply",
@@ -152,7 +153,8 @@
     "view_chart": "Chart",
     "view_stats": "Numbers",
     "per_unit_amount": "of {{amount}}",
-    "average_per_hectare": "Ø per ha"
+    "average_per_hectare": "Ø per ha",
+    "last_value": "last: {{value}}"
   },
   "splash": {
     "tagline": "By Farmers. For Farmers.",
@@ -183,7 +185,12 @@
     "unexpected_retry_later": "Oops, something went wrong. Please try again later.",
     "unexpected": "Oops, something went wrong.",
     "try_again_later": "Please try again later...",
-    "screen_error_hint": "This screen couldn't be displayed. The error has been reported to us."
+    "screen_error_hint": "This screen couldn't be displayed. The error has been reported to us.",
+    "codes": {
+      "crop_rotation_overlap": "The crop rotation overlaps an existing rotation on this plot.",
+      "outdoor_schedule_overlap": "The outdoor schedule overlaps another schedule of this herd.",
+      "invalid_date_range": "An end date lies before its start date."
+    }
   },
   "units": {
     "long": {
@@ -1382,7 +1389,8 @@
     "outdoor_type": "Type",
     "outdoor_types": {
       "pasture": "Pasture",
-      "exercise_yard": "Exercise yard"
+      "exercise_yard": "Exercise yard",
+      "stable": "Stable"
     },
     "new_outdoor_schedule": "New outdoor schedule",
     "edit_outdoor_schedule": "Edit outdoor schedule",
@@ -1527,7 +1535,27 @@
     "herd_changes_summary": "{{added}} added, {{removed}} removed. From which date does this apply?",
     "delete_herd_confirm": "Delete herd \"{{name}}\"?",
     "delete_herd_confirm_info": "This can't be undone.",
-    "timeline_view_overview": "Overview"
+    "timeline_view_overview": "Overview",
+    "n_offspring": "{{count}} offspring",
+    "n_offspring_plural": "{{count}} offspring",
+    "sex_change_offspring_title": "Change sex?",
+    "sex_change_offspring_body": "{{name}} is set as {{parent}} of {{count}} offspring. These links are removed with the change.",
+    "change_anyway": "Change anyway",
+    "death": "Death",
+    "no_herd": "No herd",
+    "open_herd": "Open herd",
+    "type_change_title": "Change animal type?",
+    "type_change_body": "The outdoor journal category, the breeding calendar and the treatments depend on the type of {{name}}.",
+    "type_change_relatives": "Parents and offspring then have a different type, their links are removed.",
+    "outdoor_overrides": "Exceptions",
+    "outdoor_overrides_hint": "Days on which the herd did something else than planned, e.g. in the stable because of a storm. An exception takes precedence over the outdoor schedule on those days.",
+    "new_outdoor_override": "New exception",
+    "edit_outdoor_override": "Edit exception",
+    "delete_outdoor_override_confirm": "Really delete this exception?",
+    "outdoor_override_overlap": "The exception overlaps another exception of this herd.",
+    "outdoor_override_single": "Exception",
+    "herd_animal_count": "{{count}} animal",
+    "herd_animal_count_plural": "{{count}} animals"
   },
   "drugs": {
     "drugs": "Drugs",
@@ -1600,7 +1628,9 @@
     "drug_not_defined_for_type": "This drug has no dose and withdrawal periods for {{type}}. Please enter them manually.",
     "delete_confirm_title": "Delete treatment?",
     "delete_confirm_message": "The treatment is removed from the treatment journal. This cannot be undone.",
-    "mixed_animal_types": "A treatment can only contain animals of one type."
+    "mixed_animal_types": "A treatment can only contain animals of one type.",
+    "n_treatments": "{{count}} treatment",
+    "n_treatments_plural": "{{count}} treatments"
   },
   "settings": {
     "settings": "Settings",
@@ -1957,7 +1987,9 @@
     "max": "max",
     "n_samples": "{{count}} sample",
     "n_animals_plural": "{{count}} animals",
-    "n_samples_plural": "{{count}} samples"
+    "n_samples_plural": "{{count}} samples",
+    "n_checks": "{{count}} check",
+    "n_checks_plural": "{{count}} checks"
   },
   "breeding": {
     "weight": "Weight",
@@ -2012,6 +2044,9 @@
     "gestation_days_invalid": "Between 1 and 500 days",
     "gestation_saved": "Gestation length saved",
     "permission_denied": "Notifications are turned off in the system settings. Allow them there to get reminders before births.",
-    "weight_load_failed": "Weight couldn't be loaded"
+    "weight_load_failed": "Weight couldn't be loaded",
+    "last_mated": "Last mated: {{date}}",
+    "n_heats": "{{count}} entry",
+    "n_heats_plural": "{{count}} entries"
   }
 }

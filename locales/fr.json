@@ -21,6 +21,7 @@
     "show_entries": "Afficher les entrées",
     "export": "Exporter",
     "finish": "Terminer",
+    "done": "Terminé",
     "send_email": "Envoyer e-mail",
     "forgot_password": "Mot de passe oublié",
     "apply": "Appliquer",
@@ -152,7 +153,8 @@
     "view_chart": "Graphique",
     "view_stats": "Chiffres",
     "per_unit_amount": "de {{amount}}",
-    "average_per_hectare": "Ø par ha"
+    "average_per_hectare": "Ø par ha",
+    "last_value": "dernier : {{value}}"
   },
   "splash": {
     "tagline": "Par des paysans. Pour des paysans.",
@@ -183,7 +185,12 @@
     "unexpected_retry_later": "Oups, une erreur s'est produite. Réessaie plus tard.",
     "unexpected": "Oups, une erreur s'est produite.",
     "try_again_later": "Réessaie plus tard...",
-    "screen_error_hint": "Cet écran n'a pas pu être affiché. L'erreur nous a été signalée."
+    "screen_error_hint": "Cet écran n'a pas pu être affiché. L'erreur nous a été signalée.",
+    "codes": {
+      "crop_rotation_overlap": "La rotation culturale chevauche une rotation existante sur ce champ.",
+      "outdoor_schedule_overlap": "La sortie chevauche une autre sortie de ce troupeau.",
+      "invalid_date_range": "Une date de fin est antérieure à sa date de début."
+    }
   },
   "units": {
     "long": {
@@ -1382,7 +1389,8 @@
     "outdoor_type": "Type",
     "outdoor_types": {
       "pasture": "Pâturage",
-      "exercise_yard": "Cour d'exercice"
+      "exercise_yard": "Cour d'exercice",
+      "stable": "Étable"
     },
     "new_outdoor_schedule": "Nouvelle sortie",
     "edit_outdoor_schedule": "Modifier la sortie",
@@ -1527,7 +1535,27 @@
     "herd_changes_summary": "{{added}} ajoutés, {{removed}} retirés. À partir de quelle date ?",
     "delete_herd_confirm": "Supprimer le troupeau « {{name}} » ?",
     "delete_herd_confirm_info": "Cette action est irréversible.",
-    "timeline_view_overview": "Aperçu"
+    "timeline_view_overview": "Aperçu",
+    "n_offspring": "{{count}} descendant",
+    "n_offspring_plural": "{{count}} descendants",
+    "sex_change_offspring_title": "Changer le sexe ?",
+    "sex_change_offspring_body": "{{name}} est enregistré·e comme {{parent}} de {{count}} descendant(s). Ces liens sont supprimés avec la modification.",
+    "change_anyway": "Changer quand même",
+    "death": "Décès",
+    "no_herd": "Aucun troupeau",
+    "open_herd": "Ouvrir le troupeau",
+    "type_change_title": "Changer l'espèce ?",
+    "type_change_body": "La catégorie du journal de sorties, le calendrier de gestation et les traitements dépendent de l'espèce de {{name}}.",
+    "type_change_relatives": "Les parents et descendants sont alors d'une autre espèce, leurs liens sont supprimés.",
+    "outdoor_overrides": "Exceptions",
+    "outdoor_overrides_hint": "Jours où le troupeau a fait autre chose que prévu, p. ex. à l'étable à cause d'un orage. Une exception prime sur la sortie ces jours-là.",
+    "new_outdoor_override": "Nouvelle exception",
+    "edit_outdoor_override": "Modifier l'exception",
+    "delete_outdoor_override_confirm": "Vraiment supprimer cette exception ?",
+    "outdoor_override_overlap": "L'exception chevauche une autre exception de ce troupeau.",
+    "outdoor_override_single": "Exception",
+    "herd_animal_count": "{{count}} animal",
+    "herd_animal_count_plural": "{{count}} animaux"
   },
   "drugs": {
     "drugs": "Médicaments",
@@ -1600,7 +1628,9 @@
     "drug_not_defined_for_type": "Ce médicament n'a pas de dosage ni de délais d'attente pour les {{type}}. Veuillez les saisir manuellement.",
     "delete_confirm_title": "Supprimer le traitement ?",
     "delete_confirm_message": "Le traitement est retiré du journal des traitements. Cette action est irréversible.",
-    "mixed_animal_types": "Un traitement ne peut contenir que des animaux d'une seule espèce."
+    "mixed_animal_types": "Un traitement ne peut contenir que des animaux d'une seule espèce.",
+    "n_treatments": "{{count}} traitement",
+    "n_treatments_plural": "{{count}} traitements"
   },
   "settings": {
     "settings": "Paramètres",
@@ -1957,7 +1987,9 @@
     "max": "max",
     "n_samples": "{{count}} échantillon",
     "n_animals_plural": "{{count}} animaux",
-    "n_samples_plural": "{{count}} échantillons"
+    "n_samples_plural": "{{count}} échantillons",
+    "n_checks": "{{count}} contrôle",
+    "n_checks_plural": "{{count}} contrôles"
   },
   "breeding": {
     "weight": "Poids",
@@ -2012,6 +2044,9 @@
     "gestation_days_invalid": "Entre 1 et 500 jours",
     "gestation_saved": "Durée de gestation enregistrée",
     "permission_denied": "Les notifications sont désactivées dans les réglages du système. Autorise-les pour recevoir des rappels avant les mises bas.",
-    "weight_load_failed": "Le poids n'a pas pu être chargé"
+    "weight_load_failed": "Le poids n'a pas pu être chargé",
+    "last_mated": "Dernière saillie : {{date}}",
+    "n_heats": "{{count}} entrée",
+    "n_heats_plural": "{{count}} entrées"
   }
 }

@@ -1,23 +1,15 @@
 import { Button } from "@/components/buttons/Button";
-import {
-  IonIconButton,
-  MaterialCommunityIconButton,
-} from "@/components/buttons/IconButton";
+import { MaterialCommunityIconButton } from "@/components/buttons/IconButton";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { ContentView } from "@/components/containers/ContentView";
 import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
-import { H2, H3, Subtitle } from "@/theme/Typography";
+import { H2, H3 } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
-import { useId, useMemo, useRef } from "react";
-import { BottomDrawerModal } from "@/components/bottom-drawer/BottomDrawerModal";
-import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-} from "@gorhom/bottom-sheet";
-import { Portal } from "@gorhom/portal";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useTranslation } from "react-i18next";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import {
   useAnimalByIdQuery,
@@ -26,11 +18,26 @@ import {
 } from "./animals.hooks";
 import { usePermissions } from "@/features/user/users.hooks";
 import { AnimalDetailsScreenProps } from "./navigation/animals-routes";
-import { formatLocalizedDate, parseDateOnly } from "@/utils/date";
+import {
+  formatLocalizedDate,
+  parseDateOnly,
+  toLocalDateString,
+} from "@/utils/date";
 import { Switch } from "@/components/inputs/Switch";
 import { useAnimalHeatsQuery, useAnimalWeightsQuery } from "./breeding.hooks";
 import { AnimalWeightChartDrawer } from "./AnimalWeightField";
 import { confirmDelete } from "@/utils/confirmDelete";
+import { AnimalWeightDrawer } from "./AnimalWeightDrawer";
+import { useAvailableEarTagsQuery } from "./earTags.hooks";
+import { SelectSearchModal } from "@/components/select/Select";
+import {
+  AnimalQuickEditField,
+  AnimalQuickEditSheet,
+} from "./AnimalQuickEditSheet";
+import { useAnimalParasiteHistoryQuery } from "./parasite-checks.hooks";
+
+// "No ear tag" entry of the ear tag picker (removes the tag)
+const NO_EAR_TAG = "__none__";
 
 export function AnimalDetailsScreen({
   route,
@@ -45,22 +52,29 @@ export function AnimalDetailsScreen({
   const { weights } = useAnimalWeightsQuery(animalId);
   const isFemale = animal?.sex === "female";
   const { heats } = useAnimalHeatsQuery(animalId, isFemale);
+  const { history: parasiteHistory } = useAnimalParasiteHistoryQuery(animalId);
 
   const deleteAnimalMutation = useDeleteAnimalMutation(() =>
     navigation.goBack(),
   );
 
-  const removeChildMutation = useUpdateAnimalMutation();
-
-  // Drawer to choose between creating a new offspring and selecting existing animals.
-  // Rendered through a Portal at the app root (like DatePicker) so it covers the whole
-  // window: a sheet provider inside the screen measures the screen's container, which
-  // went stale after another screen was pushed on top.
-  const addOffspringSheetRef = useRef<BottomSheetModal>(null);
-  // Unique per screen instance: the same animal can be open twice in the stack
-  const addOffspringPortalKey = useId();
   // Drawer with the weight timeline chart
   const weightChartSheetRef = useRef<BottomSheetModal>(null);
+  // Ear tag picker (search list), only loads the free tags once opened
+  const [earTagPickerVisible, setEarTagPickerVisible] = useState(false);
+  const { availableEarTags } = useAvailableEarTagsQuery(earTagPickerVisible);
+  const updateEarTagMutation = useUpdateAnimalMutation();
+  // Weight drawer: correct the current weight or add an entry
+  const weightSheetRef = useRef<BottomSheetModal>(null);
+  // Sheet to edit a single field of the animal
+  const quickEditSheetRef = useRef<BottomSheetModal>(null);
+  const [quickEditField, setQuickEditField] =
+    useState<AnimalQuickEditField | null>(null);
+  // Opened once the field is set: the sheet sizes itself to its content, which only exists
+  // then. Closing resets the field, so the same field can be opened again.
+  useEffect(() => {
+    if (quickEditField) quickEditSheetRef.current?.present();
+  }, [quickEditField]);
   const updateRegisteredMutation = useUpdateAnimalMutation();
 
   // Combine children from both mother and father relationships
@@ -72,15 +86,6 @@ export function AnimalDetailsScreen({
     ];
   }, [animal]);
 
-  function handleRemoveChild(childId: string) {
-    if (!animal) return;
-    const parentField = animal.sex === "female" ? "motherId" : "fatherId";
-    removeChildMutation.mutate({
-      id: childId,
-      [parentField]: null,
-    });
-  }
-
   function onDelete() {
     confirmDelete(() => deleteAnimalMutation.mutate(animalId));
   }
@@ -88,6 +93,63 @@ export function AnimalDetailsScreen({
   if (!animal) {
     return null;
   }
+
+  // Summaries of the sections
+  const lastMatedHeat = (heats ?? [])
+    .filter((heat) => heat.mated)
+    .sort((a, b) => b.date.localeCompare(a.date))[0];
+  // One line each: the expected birth if it is still ahead, otherwise the last mating. The API
+  // keeps the expected birth after the birth happened, so a past one would be last season's.
+  const todayDateString = toLocalDateString(new Date());
+  const upcomingExpectedBirthDate =
+    lastMatedHeat?.expectedBirthDate &&
+    lastMatedHeat.expectedBirthDate.slice(0, 10) >= todayDateString
+      ? lastMatedHeat.expectedBirthDate
+      : null;
+  const heatsSummary = upcomingExpectedBirthDate
+    ? `${t("breeding.expected_birth")}: ${formatLocalizedDate(
+        parseDateOnly(upcomingExpectedBirthDate),
+        locale,
+      )}`
+    : lastMatedHeat
+      ? t("breeding.last_mated", {
+          date: formatLocalizedDate(parseDateOnly(lastMatedHeat.date), locale),
+        })
+      : t("breeding.n_heats", { count: heats?.length ?? 0 });
+  const treatmentsSummary = t("treatments.n_treatments", {
+    count: animal.treatments.length,
+  });
+  const parasiteChecks = parasiteHistory?.checks ?? [];
+  const latestParasiteCheck = [...parasiteChecks].sort((a, b) =>
+    b.date.localeCompare(a.date),
+  )[0];
+  const parasiteSummary = [
+    t("parasite_checks.n_checks", { count: parasiteChecks.length }),
+    latestParasiteCheck
+      ? t("common.last_value", {
+          value: formatLocalizedDate(
+            parseDateOnly(latestParasiteCheck.date),
+            locale,
+          ),
+        })
+      : null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
+  const currentHerd = animal.herd;
+
+  // Quick edit: tapping an editable field opens a sheet with just that field
+  const quickEditOnPress = (field: AnimalQuickEditField) =>
+    canWrite("animals") ? () => setQuickEditField(field) : undefined;
+  const quickEditIcon = canWrite("animals") ? (
+    <Ionicons
+      name="create-outline"
+      size={20}
+      color={theme.colors.gray2}
+      style={{ alignSelf: "center", marginRight: theme.spacing.s }}
+    />
+  ) : null;
 
   const formattedDateOfBirth = animal.dateOfBirth
     ? new Date(animal.dateOfBirth).toLocaleDateString()
@@ -159,33 +221,63 @@ export function AnimalDetailsScreen({
             backgroundColor: theme.colors.white,
           }}
         >
-          <ListItem style={{ paddingVertical: 5 }}>
+          <ListItem
+            style={{ paddingVertical: 5 }}
+            onPress={quickEditOnPress("name")}
+          >
+            <ListItem.Content>
+              <ListItem.Title>{t("forms.labels.name")}</ListItem.Title>
+              <ListItem.Body>{animal.name}</ListItem.Body>
+            </ListItem.Content>
+            {quickEditIcon}
+          </ListItem>
+          <ListItem
+            style={{ paddingVertical: 5 }}
+            onPress={quickEditOnPress("type")}
+          >
             <ListItem.Content>
               <ListItem.Title>{t("forms.labels.type")}</ListItem.Title>
               <ListItem.Body>
                 {t(`animals.animal_types.${animal.type}`)}
               </ListItem.Body>
             </ListItem.Content>
+            {quickEditIcon}
           </ListItem>
-          <ListItem style={{ paddingVertical: 5 }}>
+          <ListItem
+            style={{ paddingVertical: 5 }}
+            onPress={
+              canWrite("animals")
+                ? () => setEarTagPickerVisible(true)
+                : undefined
+            }
+          >
             <ListItem.Content>
               <ListItem.Title>{t("ear_tags.ear_tag")}</ListItem.Title>
               <ListItem.Body>
                 {animal.earTag?.number ?? t("ear_tags.no_ear_tag")}
               </ListItem.Body>
             </ListItem.Content>
+            {quickEditIcon}
           </ListItem>
-          <ListItem style={{ paddingVertical: 5 }}>
+          <ListItem
+            style={{ paddingVertical: 5 }}
+            onPress={quickEditOnPress("sex")}
+          >
             <ListItem.Content>
               <ListItem.Title>{t("forms.labels.sex")}</ListItem.Title>
               <ListItem.Body>{t(`animals.sex.${animal.sex}`)}</ListItem.Body>
             </ListItem.Content>
+            {quickEditIcon}
           </ListItem>
-          <ListItem style={{ paddingVertical: 5 }}>
+          <ListItem
+            style={{ paddingVertical: 5 }}
+            onPress={quickEditOnPress("dateOfBirth")}
+          >
             <ListItem.Content>
               <ListItem.Title>{t("animals.date_of_birth")}</ListItem.Title>
               <ListItem.Body>{formattedDateOfBirth}</ListItem.Body>
             </ListItem.Content>
+            {quickEditIcon}
           </ListItem>
           <ListItem style={{ paddingVertical: 5 }}>
             <ListItem.Content>
@@ -202,15 +294,27 @@ export function AnimalDetailsScreen({
               }
             />
           </ListItem>
-          <ListItem style={{ paddingVertical: 5 }}>
+          <ListItem
+            style={{ paddingVertical: 5 }}
+            onPress={quickEditOnPress("usage")}
+          >
             <ListItem.Content>
               <ListItem.Title>{t("animals.usage")}</ListItem.Title>
               <ListItem.Body>
                 {t(`animals.usage_types.${animal.usage}`)}
               </ListItem.Body>
             </ListItem.Content>
+            {quickEditIcon}
           </ListItem>
-          <ListItem style={{ paddingVertical: 5 }}>
+          {/* Weight: the weight drawer of the edit form (edit the current entry or add one) */}
+          <ListItem
+            style={{ paddingVertical: 5 }}
+            onPress={
+              canWrite("animals")
+                ? () => weightSheetRef.current?.present()
+                : undefined
+            }
+          >
             <ListItem.Content>
               <ListItem.Title>{t("breeding.weight")}</ListItem.Title>
               <ListItem.Body>
@@ -239,21 +343,31 @@ export function AnimalDetailsScreen({
                 />
               </View>
             )}
+            {quickEditIcon}
           </ListItem>
-          {animal.color && (
-            <ListItem style={{ paddingVertical: 5 }}>
+          {/* Empty color / notes only with write access, so they can be added */}
+          {(animal.color || canWrite("animals")) && (
+            <ListItem
+              style={{ paddingVertical: 5 }}
+              onPress={quickEditOnPress("color")}
+            >
               <ListItem.Content>
                 <ListItem.Title>{t("animals.color")}</ListItem.Title>
-                <ListItem.Body>{animal.color}</ListItem.Body>
+                <ListItem.Body>{animal.color || "–"}</ListItem.Body>
               </ListItem.Content>
+              {quickEditIcon}
             </ListItem>
           )}
-          {animal.notes && (
-            <ListItem style={{ paddingVertical: 5 }}>
+          {(animal.notes || canWrite("animals")) && (
+            <ListItem
+              style={{ paddingVertical: 5 }}
+              onPress={quickEditOnPress("notes")}
+            >
               <ListItem.Content>
                 <ListItem.Title>{t("animals.notes")}</ListItem.Title>
-                <ListItem.Body>{animal.notes}</ListItem.Body>
+                <ListItem.Body>{animal.notes || "–"}</ListItem.Body>
               </ListItem.Content>
+              {quickEditIcon}
             </ListItem>
           )}
           {animal.customOutdoorJournalCategories.length > 0 && (
@@ -290,39 +404,51 @@ export function AnimalDetailsScreen({
               <ListItem.Chevron />
             </ListItem>
           )}
-          {animal.herd && (
+          {/* Herd: quick edit (herd and from when) with write access, otherwise opens the herd */}
+          {(animal.herd || canWrite("animals")) && (
             <ListItem
               style={{ paddingVertical: 5 }}
-              onPress={() =>
-                navigation.navigate("HerdEdit", { herdId: animal.herd!.id })
+              onPress={
+                canWrite("animals")
+                  ? quickEditOnPress("herd")
+                  : currentHerd
+                    ? () =>
+                        navigation.navigate("HerdEdit", {
+                          herdId: currentHerd.id,
+                        })
+                    : undefined
               }
             >
               <ListItem.Content>
                 <ListItem.Title>{t("animals.herd")}</ListItem.Title>
-                <ListItem.Body>{animal.herd.name}</ListItem.Body>
+                <ListItem.Body>{animal.herd?.name ?? "–"}</ListItem.Body>
               </ListItem.Content>
-              <ListItem.Chevron />
+              {canWrite("animals") ? quickEditIcon : <ListItem.Chevron />}
             </ListItem>
           )}
-          {formattedDateOfDeath && (
-            <>
-              <ListItem style={{ paddingVertical: 5 }}>
-                <ListItem.Content>
-                  <ListItem.Title>{t("animals.date_of_death")}</ListItem.Title>
-                  <ListItem.Body>{formattedDateOfDeath}</ListItem.Body>
-                </ListItem.Content>
-              </ListItem>
-              {animal.deathReason && (
-                <ListItem style={{ paddingVertical: 5 }}>
-                  <ListItem.Content>
-                    <ListItem.Title>{t("animals.death_reason")}</ListItem.Title>
-                    <ListItem.Body>
-                      {t(`animals.death_reasons.${animal.deathReason}`)}
-                    </ListItem.Body>
-                  </ListItem.Content>
-                </ListItem>
-              )}
-            </>
+          {/* Death: date and reason in one row and one quick edit; shown empty only with write access */}
+          {(formattedDateOfDeath || canWrite("animals")) && (
+            <ListItem
+              style={{ paddingVertical: 5 }}
+              onPress={quickEditOnPress("death")}
+            >
+              <ListItem.Content>
+                <ListItem.Title>{t("animals.date_of_death")}</ListItem.Title>
+                <ListItem.Body>
+                  {formattedDateOfDeath
+                    ? [
+                        formattedDateOfDeath,
+                        animal.deathReason
+                          ? t(`animals.death_reasons.${animal.deathReason}`)
+                          : null,
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")
+                    : "–"}
+                </ListItem.Body>
+              </ListItem.Content>
+              {quickEditIcon}
+            </ListItem>
           )}
         </View>
 
@@ -390,349 +516,166 @@ export function AnimalDetailsScreen({
           </View>
         )}
 
-        <View style={{ marginTop: theme.spacing.l }}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("AnimalJournal", { animalId })}
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: theme.spacing.xs,
-              padding: 12,
-              borderRadius: theme.radii.m,
-              borderWidth: 1.5,
-              borderColor: theme.colors.primary,
-              backgroundColor: theme.colors.white,
-            }}
+        {/* Sections, each opening its own screen, with a one-line summary */}
+        <View
+          style={{
+            marginTop: theme.spacing.l,
+            borderRadius: 10,
+            overflow: "hidden",
+            backgroundColor: theme.colors.white,
+          }}
+        >
+          {isFemale && (
+            <ListItem
+              style={{ paddingVertical: 5 }}
+              onPress={() => navigation.navigate("AnimalHeats", { animalId })}
+            >
+              <Ionicons
+                name="heart-outline"
+                size={20}
+                color={theme.colors.primary}
+                style={{ alignSelf: "center", marginLeft: theme.spacing.s }}
+              />
+              <ListItem.Content>
+                <ListItem.Title>{t("breeding.heats")}</ListItem.Title>
+                <ListItem.Body numberOfLines={1}>{heatsSummary}</ListItem.Body>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
+          )}
+          <ListItem
+            style={{ paddingVertical: 5 }}
+            onPress={() => navigation.navigate("AnimalOffspring", { animalId })}
           >
             <Ionicons
-              name="book-outline"
-              size={18}
+              name="git-branch-outline"
+              size={20}
               color={theme.colors.primary}
+              style={{ alignSelf: "center", marginLeft: theme.spacing.s }}
             />
-            <Subtitle
-              style={{
-                color: theme.colors.primary,
-                fontWeight: "600",
-                fontSize: 16,
-              }}
-            >
-              {t("animals.journal")}
-            </Subtitle>
-          </TouchableOpacity>
-          <TouchableOpacity
+            <ListItem.Content>
+              <ListItem.Title>{t("animals.children")}</ListItem.Title>
+              <ListItem.Body numberOfLines={1}>
+                {t("animals.n_offspring", { count: children.length })}
+              </ListItem.Body>
+            </ListItem.Content>
+            <ListItem.Chevron />
+          </ListItem>
+          <ListItem
+            style={{ paddingVertical: 5 }}
+            onPress={() =>
+              navigation.navigate("AnimalTreatments", { animalId })
+            }
+          >
+            <Ionicons
+              name="medkit-outline"
+              size={20}
+              color={theme.colors.primary}
+              style={{ alignSelf: "center", marginLeft: theme.spacing.s }}
+            />
+            <ListItem.Content>
+              <ListItem.Title>{t("treatments.treatments")}</ListItem.Title>
+              <ListItem.Body numberOfLines={1}>
+                {treatmentsSummary}
+              </ListItem.Body>
+            </ListItem.Content>
+            <ListItem.Chevron />
+          </ListItem>
+          <ListItem
+            style={{ paddingVertical: 5 }}
             onPress={() =>
               navigation.navigate("AnimalParasiteHistory", { animalId })
             }
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: theme.spacing.xs,
-              padding: 12,
-              marginTop: theme.spacing.s,
-              borderRadius: theme.radii.m,
-              borderWidth: 1.5,
-              borderColor: theme.colors.primary,
-              backgroundColor: theme.colors.white,
-            }}
           >
             <Ionicons
               name="bug-outline"
-              size={18}
+              size={20}
               color={theme.colors.primary}
+              style={{ alignSelf: "center", marginLeft: theme.spacing.s }}
             />
-            <Subtitle
-              style={{
-                color: theme.colors.primary,
-                fontWeight: "600",
-                fontSize: 16,
-              }}
-            >
-              {t("parasite_checks.parasite_history")}
-            </Subtitle>
-          </TouchableOpacity>
-        </View>
-
-        {/* Heats and matings, the basis of the breeding calendar */}
-        {isFemale && (
-          <View style={{ marginTop: theme.spacing.l }}>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <H3>{t("breeding.heats")}</H3>
-              {canWrite("animals") && (
-                <IonIconButton
-                  icon="add"
-                  color="black"
-                  iconSize={25}
-                  type="accent"
-                  onPress={() =>
-                    navigation.navigate("AnimalHeatForm", { animalId })
-                  }
-                />
-              )}
-            </View>
-            {!heats || heats.length === 0 ? (
-              <Subtitle style={{ marginTop: theme.spacing.s }}>
-                {t("breeding.no_heats")}
-              </Subtitle>
-            ) : (
-              <View
-                style={{
-                  marginTop: theme.spacing.s,
-                  borderRadius: 10,
-                  overflow: "hidden",
-                  backgroundColor: theme.colors.white,
-                }}
-              >
-                {heats.map((heat) => {
-                  // Computed on the server, also knows when a later heat showed the mating didn't work
-                  const expectedBirthDate = heat.expectedBirthDate
-                    ? parseDateOnly(heat.expectedBirthDate)
-                    : null;
-                  return (
-                    <ListItem
-                      key={heat.id}
-                      style={{ paddingVertical: 5 }}
-                      onPress={
-                        canWrite("animals")
-                          ? () =>
-                              navigation.navigate("AnimalHeatForm", {
-                                animalId,
-                                heatId: heat.id,
-                              })
-                          : undefined
-                      }
-                    >
-                      <ListItem.Content>
-                        <ListItem.Title>
-                          {formatLocalizedDate(
-                            parseDateOnly(heat.date),
-                            locale,
-                          )}
-                          {` · ${t(`breeding.heat_by_type.${animal.type}`)}`}
-                          {heat.mated ? ` · ${t("breeding.mated")}` : ""}
-                        </ListItem.Title>
-                        {expectedBirthDate && (
-                          <ListItem.Body>
-                            {t("breeding.expected_birth")}:{" "}
-                            {formatLocalizedDate(expectedBirthDate, locale)}
-                          </ListItem.Body>
-                        )}
-                        {heat.conceptionFailed && (
-                          <ListItem.Body>
-                            {t("breeding.conception_failed")}
-                          </ListItem.Body>
-                        )}
-                      </ListItem.Content>
-                      {heat.mated && (
-                        <Ionicons
-                          name="checkmark-circle"
-                          size={20}
-                          color={theme.colors.primary}
-                        />
-                      )}
-                      {canWrite("animals") && <ListItem.Chevron />}
-                    </ListItem>
-                  );
-                })}
-              </View>
-            )}
-          </View>
-        )}
-
-        {/* Children */}
-        <View style={{ marginTop: theme.spacing.l }}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
+            <ListItem.Content>
+              <ListItem.Title>
+                {t("parasite_checks.parasite_history")}
+              </ListItem.Title>
+              <ListItem.Body numberOfLines={1}>{parasiteSummary}</ListItem.Body>
+            </ListItem.Content>
+            <ListItem.Chevron />
+          </ListItem>
+          <ListItem
+            style={{ paddingVertical: 5 }}
+            onPress={() => navigation.navigate("AnimalJournal", { animalId })}
           >
-            <H3>{t("animals.children")}</H3>
-            {canWrite("animals") && (
-              <IonIconButton
-                icon="add"
-                color="black"
-                iconSize={25}
-                type="accent"
-                onPress={() => addOffspringSheetRef.current?.present()}
-              />
-            )}
-          </View>
-          {children.length === 0 ? (
-            <Subtitle style={{ marginTop: theme.spacing.s }}>
-              {t("animals.no_children")}
-            </Subtitle>
-          ) : (
-            <View
-              style={{
-                marginTop: theme.spacing.s,
-                borderRadius: 10,
-                overflow: "hidden",
-                backgroundColor: theme.colors.white,
-              }}
-            >
-              {children.map((child) => (
-                <ListItem
-                  key={child.id}
-                  style={{ paddingVertical: 5 }}
-                  onPress={() =>
-                    navigation.push("AnimalDetails", {
-                      animalId: child.id,
-                    })
-                  }
-                >
-                  <ListItem.Content>
-                    <ListItem.Title>{child.name}</ListItem.Title>
-                    <ListItem.Body>
-                      {t(`animals.animal_types.${child.type}`)}
-                    </ListItem.Body>
-                  </ListItem.Content>
-                  {canWrite("animals") && (
-                    <TouchableOpacity
-                      onPress={() => handleRemoveChild(child.id)}
-                      style={{ padding: theme.spacing.xs }}
-                    >
-                      <Ionicons
-                        name="trash-outline"
-                        size={20}
-                        color={theme.colors.danger}
-                      />
-                    </TouchableOpacity>
-                  )}
-                  <ListItem.Chevron />
-                </ListItem>
-              ))}
-            </View>
-          )}
-        </View>
-
-        {/* Treatments */}
-        <View style={{ marginTop: theme.spacing.l }}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <H3>{t("treatments.treatments")}</H3>
-            {canWrite("animals") && (
-              <IonIconButton
-                icon="add"
-                color="black"
-                iconSize={25}
-                type="accent"
-                onPress={() =>
-                  navigation.navigate("CreateTreatment", {
-                    animalIds: [animalId],
-                  })
-                }
-              />
-            )}
-          </View>
-          {animal?.treatments.length === 0 ? (
-            <Subtitle style={{ marginTop: theme.spacing.s }}>
-              {t("treatments.no_treatments")}
-            </Subtitle>
-          ) : (
-            <View
-              style={{
-                marginTop: theme.spacing.s,
-                borderRadius: 10,
-                overflow: "hidden",
-                backgroundColor: theme.colors.white,
-              }}
-            >
-              {animal.treatments.map((treatment) => (
-                <ListItem
-                  key={treatment.id}
-                  style={{ paddingVertical: 5 }}
-                  onPress={() =>
-                    navigation.navigate("EditTreatment", {
-                      treatmentId: treatment.id,
-                    })
-                  }
-                >
-                  <ListItem.Content>
-                    <ListItem.Title>{treatment.name}</ListItem.Title>
-                    <ListItem.Body>
-                      {formatLocalizedDate(
-                        new Date(treatment.startDate),
-                        locale,
-                      )}
-                    </ListItem.Body>
-                  </ListItem.Content>
-                  <ListItem.Chevron />
-                </ListItem>
-              ))}
-            </View>
-          )}
+            <Ionicons
+              name="book-outline"
+              size={20}
+              color={theme.colors.primary}
+              style={{ alignSelf: "center", marginLeft: theme.spacing.s }}
+            />
+            <ListItem.Content>
+              <ListItem.Title>{t("animals.journal")}</ListItem.Title>
+            </ListItem.Content>
+            <ListItem.Chevron />
+          </ListItem>
         </View>
       </ScrollView>
 
-      {/* Add offspring: create a new animal with this parent preset, or link existing ones */}
-      <Portal>
-        {/* PortalHost renders portals as an unkeyed list, so without a key React can hand
-            this sheet's state to another portal (e.g. a DatePicker) when portals are
-            added or removed */}
-        <BottomSheetModalProvider key={addOffspringPortalKey}>
-          <BottomDrawerModal ref={addOffspringSheetRef}>
-            <View style={{ gap: theme.spacing.s }}>
-              <H3>{t("animals.add_offspring")}</H3>
-              <View>
-                <ListItem
-                  onPress={() => {
-                    addOffspringSheetRef.current?.dismiss();
-                    navigation.navigate("CreateAnimal", {
-                      animalType: animal.type,
-                      ...(animal.sex === "female"
-                        ? { motherId: animal.id }
-                        : { fatherId: animal.id }),
-                    });
-                  }}
-                >
-                  <ListItem.Content>
-                    <ListItem.Title>
-                      {t("animals.create_new_offspring")}
-                    </ListItem.Title>
-                  </ListItem.Content>
-                  <ListItem.Chevron />
-                </ListItem>
-                <ListItem
-                  onPress={() => {
-                    addOffspringSheetRef.current?.dismiss();
-                    navigation.navigate("SelectChildren", {
-                      animalId,
-                      sex: animal.sex,
-                    });
-                  }}
-                >
-                  <ListItem.Content>
-                    <ListItem.Title>
-                      {t("animals.select_existing_offspring")}
-                    </ListItem.Title>
-                  </ListItem.Content>
-                  <ListItem.Chevron />
-                </ListItem>
-              </View>
-            </View>
-          </BottomDrawerModal>
-        </BottomSheetModalProvider>
-      </Portal>
+      {/* Ear tag: the same search list as in the edit form, saved on pick */}
+      <SelectSearchModal
+        visible={earTagPickerVisible}
+        title={t("ear_tags.ear_tag")}
+        value={animal.earTagId ?? NO_EAR_TAG}
+        data={[
+          { label: t("ear_tags.no_ear_tag"), value: NO_EAR_TAG },
+          ...(animal.earTag
+            ? [{ label: animal.earTag.number, value: animal.earTag.id }]
+            : []),
+          ...(availableEarTags ?? []).map((earTag) => ({
+            label: earTag.number,
+            value: earTag.id,
+          })),
+        ]}
+        onSelect={(earTagId) => {
+          setEarTagPickerVisible(false);
+          if (earTagId === (animal.earTagId ?? NO_EAR_TAG)) return;
+          updateEarTagMutation.mutate({
+            id: animalId,
+            earTagId: earTagId === NO_EAR_TAG ? null : earTagId,
+          });
+        }}
+        onClose={() => setEarTagPickerVisible(false)}
+      />
+
+      <AnimalQuickEditSheet
+        sheetRef={quickEditSheetRef}
+        field={quickEditField}
+        animal={{
+          ...animal,
+          offspringIds: children.map((child) => child.id),
+          hasParents: !!animal.motherId || !!animal.fatherId,
+        }}
+        onClose={() => setQuickEditField(null)}
+        onOpenHerd={(herdId) => navigation.navigate("HerdEdit", { herdId })}
+      />
+
+      <AnimalWeightDrawer
+        sheetRef={weightSheetRef}
+        animalId={animalId}
+        currentWeight={
+          animal.latestWeight
+            ? {
+                id: animal.latestWeight.id,
+                date: parseDateOnly(animal.latestWeight.date),
+                weightKg: animal.latestWeight.weightKg,
+              }
+            : null
+        }
+      />
 
       <AnimalWeightChartDrawer
         sheetRef={weightChartSheetRef}
         animalId={animalId}
-        // View only, weights are edited in the edit form like the other fields
-        canEdit={false}
+        // Tapping an entry opens it for editing, with write access
+        canEdit={canWrite("animals")}
       />
     </ContentView>
   );

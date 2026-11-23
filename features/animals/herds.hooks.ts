@@ -6,6 +6,8 @@ import {
   HerdUpdateResponse,
   OutdoorScheduleCreateInput,
   OutdoorScheduleCreateResponse,
+  OutdoorScheduleOverrideCreateInput,
+  OutdoorScheduleOverrideUpdateInput,
   OutdoorScheduleUpdateInput,
   OutdoorScheduleUpdateResponse,
 } from "@/api/herds.api";
@@ -156,6 +158,60 @@ export function useDeleteOutdoorScheduleMutation(
       onSuccess && onSuccess();
     },
     onError,
+  });
+}
+
+// Overrides are saved right away (unlike schedules, which are saved with the herd)
+export function useCreateOutdoorScheduleOverrideMutation(
+  herdId: string,
+  onSuccess?: () => void,
+  onError?: (error: Error) => void,
+) {
+  const invalidateOutdoorQueries = useInvalidateOutdoorQueries();
+  const api = useApi();
+  return useMutation({
+    mutationFn: (input: OutdoorScheduleOverrideCreateInput) =>
+      api.herds.createOutdoorScheduleOverride(herdId, input),
+    onSuccess: () => {
+      invalidateOutdoorQueries();
+      onSuccess && onSuccess();
+    },
+    onError,
+  });
+}
+
+export function useUpdateOutdoorScheduleOverrideMutation(
+  onSuccess?: () => void,
+  onError?: (error: Error) => void,
+) {
+  const invalidateOutdoorQueries = useInvalidateOutdoorQueries();
+  const api = useApi();
+  return useMutation({
+    mutationFn: ({
+      id,
+      ...input
+    }: OutdoorScheduleOverrideUpdateInput & { id: string }) =>
+      api.herds.updateOutdoorScheduleOverride(id, input),
+    onSuccess: () => {
+      invalidateOutdoorQueries();
+      onSuccess && onSuccess();
+    },
+    onError,
+  });
+}
+
+export function useDeleteOutdoorScheduleOverrideMutation(
+  onSuccess?: () => void,
+) {
+  const invalidateOutdoorQueries = useInvalidateOutdoorQueries();
+  const api = useApi();
+  return useMutation({
+    mutationFn: (outdoorScheduleOverrideId: string) =>
+      api.herds.deleteOutdoorScheduleOverride(outdoorScheduleOverrideId),
+    onSuccess: () => {
+      invalidateOutdoorQueries();
+      onSuccess && onSuccess();
+    },
   });
 }
 

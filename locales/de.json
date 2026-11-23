@@ -21,6 +21,7 @@
     "show_entries": "Einträge anzeigen",
     "export": "Exportieren",
     "finish": "Fertig",
+    "done": "Fertig",
     "send_email": "E-Mail senden",
     "forgot_password": "Passwort vergessen",
     "apply": "Anwenden",
@@ -152,7 +153,8 @@
     "view_chart": "Diagramm",
     "view_stats": "Zahlen",
     "per_unit_amount": "à {{amount}}",
-    "average_per_hectare": "Ø pro ha"
+    "average_per_hectare": "Ø pro ha",
+    "last_value": "zuletzt: {{value}}"
   },
   "splash": {
     "tagline": "Von Bauern. Für Bauern.",
@@ -183,7 +185,12 @@
     "unexpected_retry_later": "Ups, etwas ist schief gelaufen. Bitte versuche es später erneut.",
     "unexpected": "Ups, etwas ist schief gelaufen.",
     "try_again_later": "Bitte versuche es später nochmals...",
-    "screen_error_hint": "Diese Ansicht konnte nicht angezeigt werden. Der Fehler wurde uns gemeldet."
+    "screen_error_hint": "Diese Ansicht konnte nicht angezeigt werden. Der Fehler wurde uns gemeldet.",
+    "codes": {
+      "crop_rotation_overlap": "Die Fruchtfolge überschneidet sich mit einer bestehenden Fruchtfolge auf diesem Schlag.",
+      "outdoor_schedule_overlap": "Der Auslauf überschneidet sich mit einem anderen Auslauf dieser Herde.",
+      "invalid_date_range": "Ein Enddatum liegt vor dem zugehörigen Startdatum."
+    }
   },
   "units": {
     "long": {
@@ -1382,7 +1389,8 @@
     "outdoor_type": "Typ",
     "outdoor_types": {
       "pasture": "Weide",
-      "exercise_yard": "Laufhof"
+      "exercise_yard": "Laufhof",
+      "stable": "Stall"
     },
     "new_outdoor_schedule": "Neuer Auslauf",
     "edit_outdoor_schedule": "Auslauf bearbeiten",
@@ -1527,7 +1535,27 @@
     "herd_changes_summary": "{{added}} hinzugefügt, {{removed}} entfernt. Ab welchem Datum gilt das?",
     "delete_herd_confirm": "Herde «{{name}}» löschen?",
     "delete_herd_confirm_info": "Das kann nicht rückgängig gemacht werden.",
-    "timeline_view_overview": "Übersicht"
+    "timeline_view_overview": "Übersicht",
+    "n_offspring": "{{count}} Nachkomme",
+    "n_offspring_plural": "{{count}} Nachkommen",
+    "sex_change_offspring_title": "Geschlecht ändern?",
+    "sex_change_offspring_body": "{{name}} ist bei {{count}} Nachkommen als {{parent}} eingetragen. Mit der Änderung werden diese Verknüpfungen entfernt.",
+    "change_anyway": "Trotzdem ändern",
+    "death": "Tod",
+    "no_herd": "Keine Herde",
+    "open_herd": "Herde öffnen",
+    "type_change_title": "Tierart ändern?",
+    "type_change_body": "Die Kategorie im Auslaufjournal, der Trächtigkeitskalender und die Behandlungen richten sich nach der Tierart von {{name}}.",
+    "type_change_relatives": "Eltern und Nachkommen haben dann eine andere Tierart, ihre Verknüpfungen werden entfernt.",
+    "outdoor_overrides": "Ausnahmen",
+    "outdoor_overrides_hint": "Tage, an denen die Herde etwas anderes machte als geplant, z.B. wegen Unwetter im Stall. Eine Ausnahme geht dem Auslauf an diesen Tagen vor.",
+    "new_outdoor_override": "Neue Ausnahme",
+    "edit_outdoor_override": "Ausnahme bearbeiten",
+    "delete_outdoor_override_confirm": "Ausnahme wirklich löschen?",
+    "outdoor_override_overlap": "Die Ausnahme überschneidet sich mit einer anderen Ausnahme dieser Herde.",
+    "outdoor_override_single": "Ausnahme",
+    "herd_animal_count": "{{count}} Tier",
+    "herd_animal_count_plural": "{{count}} Tiere"
   },
   "drugs": {
     "drugs": "Medikamente",
@@ -1600,7 +1628,9 @@
     "drug_not_defined_for_type": "Für {{type}} sind bei diesem Medikament keine Dosierung und Absetzfristen hinterlegt. Bitte manuell erfassen.",
     "delete_confirm_title": "Behandlung löschen?",
     "delete_confirm_message": "Die Behandlung wird aus dem Behandlungsjournal entfernt. Dies kann nicht rückgängig gemacht werden.",
-    "mixed_animal_types": "Eine Behandlung kann nur Tiere einer Tierart enthalten."
+    "mixed_animal_types": "Eine Behandlung kann nur Tiere einer Tierart enthalten.",
+    "n_treatments": "{{count}} Behandlung",
+    "n_treatments_plural": "{{count}} Behandlungen"
   },
   "speed_dial": {
     "harvest": "Ernte hinzufügen",
@@ -1957,7 +1987,9 @@
     "max": "max",
     "n_samples": "{{count}} Probe",
     "n_animals_plural": "{{count}} Tiere",
-    "n_samples_plural": "{{count}} Proben"
+    "n_samples_plural": "{{count}} Proben",
+    "n_checks": "{{count}} Kontrolle",
+    "n_checks_plural": "{{count}} Kontrollen"
   },
   "breeding": {
     "weight": "Gewicht",
@@ -2012,6 +2044,9 @@
     "gestation_days_invalid": "Zwischen 1 und 500 Tagen",
     "gestation_saved": "Trächtigkeitsdauer gespeichert",
     "permission_denied": "Mitteilungen sind in den Systemeinstellungen deaktiviert. Erlaube sie dort, damit du Erinnerungen vor Geburten erhältst.",
-    "weight_load_failed": "Gewicht konnte nicht geladen werden"
+    "weight_load_failed": "Gewicht konnte nicht geladen werden",
+    "last_mated": "Zuletzt gedeckt: {{date}}",
+    "n_heats": "{{count}} Eintrag",
+    "n_heats_plural": "{{count}} Einträge"
   }
 }

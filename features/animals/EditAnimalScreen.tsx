@@ -111,27 +111,95 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
   ];
 
   function onSubmit(data: AnimalFormValues) {
-    updateAnimalMutation.mutate({
-      id: animalId,
-      ...data,
-      dateOfBirth: data.dateOfBirth
-        ? toLocalDateString(data.dateOfBirth)
-        : undefined,
-      dateOfDeath: data.dateOfDeath
-        ? toLocalDateString(data.dateOfDeath)
-        : null,
-      // clear deathReason when death date is removed
-      deathReason: data.dateOfDeath ? (data.deathReason ?? null) : null,
-      // An emptied field clears the value
-      color: data.color?.trim() || null,
-      notes: data.notes?.trim() || null,
-      // Only sent when the herd actually changed
-      herdEffectiveDate:
-        (data.herdId ?? null) !== (animal?.herdId ?? null) &&
-        data.herdEffectiveDate
-          ? toLocalDateString(data.herdEffectiveDate)
+    const typeChanged = !!animal && data.type !== animal.type;
+    const sexChanged = !!animal && data.sex !== animal.sex;
+    const offspringIds = [
+      ...(animal?.childrenAsMother ?? []),
+      ...(animal?.childrenAsFather ?? []),
+    ].map((child) => child.id);
+    const save = () =>
+      updateAnimalMutation.mutate({
+        id: animalId,
+        ...data,
+        // Another type: the old parents (another type) are unlinked; the form clears
+        // them on a type change, parents picked afterwards are kept
+        ...(typeChanged
+          ? {
+              motherId: data.motherId ?? null,
+              fatherId: data.fatherId ?? null,
+            }
+          : {}),
+        dateOfBirth: data.dateOfBirth
+          ? toLocalDateString(data.dateOfBirth)
+          : undefined,
+        dateOfDeath: data.dateOfDeath
+          ? toLocalDateString(data.dateOfDeath)
           : null,
-    });
+        // clear deathReason when death date is removed
+        deathReason: data.dateOfDeath ? (data.deathReason ?? null) : null,
+        // An emptied field clears the value
+        color: data.color?.trim() || null,
+        notes: data.notes?.trim() || null,
+        // Only sent when the herd actually changed
+        herdEffectiveDate:
+          (data.herdId ?? null) !== (animal?.herdId ?? null) &&
+          data.herdEffectiveDate
+            ? toLocalDateString(data.herdEffectiveDate)
+            : null,
+      });
+
+    const confirmSexChangeThenSave = () => {
+      if (!animal || !sexChanged || offspringIds.length === 0) {
+        save();
+        return;
+      }
+      Alert.alert(
+        t("animals.sex_change_offspring_title"),
+        t("animals.sex_change_offspring_body", {
+          name: animal.name,
+          count: offspringIds.length,
+          parent: t(
+            animal.sex === "female" ? "animals.mother" : "animals.father",
+          ),
+        }),
+        [
+          { text: t("buttons.cancel"), style: "cancel" },
+          {
+            text: t("animals.change_anyway"),
+            style: "destructive",
+            // The API unlinks parents and offspring that no longer fit
+            onPress: save,
+          },
+        ],
+      );
+    };
+
+    // Category, breeding calendar and treatments depend on the type: confirm a change first.
+    // The type alert already covers the offspring, so no second alert for the sex.
+    if (animal && typeChanged) {
+      const hasRelatives =
+        !!animal.motherId || !!animal.fatherId || offspringIds.length > 0;
+      Alert.alert(
+        t("animals.type_change_title"),
+        [
+          t("animals.type_change_body", { name: animal.name }),
+          hasRelatives ? t("animals.type_change_relatives") : null,
+        ]
+          .filter(Boolean)
+          .join(" "),
+        [
+          { text: t("buttons.cancel"), style: "cancel" },
+          {
+            text: t("animals.change_anyway"),
+            style: "destructive",
+            // The API unlinks parents and offspring that no longer fit
+            onPress: save,
+          },
+        ],
+      );
+      return;
+    }
+    confirmSexChangeThenSave();
   }
 
   function onDelete() {

@@ -119,6 +119,7 @@ export function OutdoorScheduleFormScreen({
   useDiscardChangesPrompt(isDirty);
   const repeat = watch("repeat");
   const startDate = watch("startDate");
+  const scheduleType = watch("type");
 
   // Returning from creating a meadow: select it
   const createdMeadowId = route.params.createdMeadowId;
@@ -182,7 +183,8 @@ export function OutdoorScheduleFormScreen({
         startDate: toLocalDateString(values.startDate),
         endDate,
         type: values.type,
-        meadowId: values.meadowId,
+        // Stable time is inside, it has no meadow
+        meadowId: values.type === "stable" ? null : values.meadowId,
         notes: schedule?.notes ?? null,
         recurrence,
       },
@@ -242,48 +244,54 @@ export function OutdoorScheduleFormScreen({
                 label: t("animals.outdoor_types.exercise_yard"),
                 value: "exercise_yard",
               },
+              { label: t("animals.outdoor_types.stable"), value: "stable" },
             ]}
           />
 
-          {/* Meadow (optional) */}
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              gap: theme.spacing.xs,
-            }}
-          >
-            <View style={{ flex: 1 }}>
-              <RHSelect
-                name="meadowId"
-                control={control}
-                clearable
-                label={t("animals.meadows.meadow")}
-                optional
-                placeholder={t("animals.meadows.no_meadow")}
-                data={(meadows ?? [])
-                  // Archived meadows only when this schedule already uses one
-                  .filter(
-                    (meadow) =>
-                      meadow.archivedAt === null ||
-                      meadow.id === schedule?.meadowId,
-                  )
-                  .sort((a, b) => a.name.localeCompare(b.name))
-                  .map((meadow) => ({ label: meadow.name, value: meadow.id }))}
+          {/* Meadow (optional), not for stable time */}
+          {scheduleType !== "stable" && (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: theme.spacing.xs,
+              }}
+            >
+              <View style={{ flex: 1 }}>
+                <RHSelect
+                  name="meadowId"
+                  control={control}
+                  clearable
+                  label={t("animals.meadows.meadow")}
+                  optional
+                  placeholder={t("animals.meadows.no_meadow")}
+                  data={(meadows ?? [])
+                    // Archived meadows only when this schedule already uses one
+                    .filter(
+                      (meadow) =>
+                        meadow.archivedAt === null ||
+                        meadow.id === schedule?.meadowId,
+                    )
+                    .sort((a, b) => a.name.localeCompare(b.name))
+                    .map((meadow) => ({
+                      label: meadow.name,
+                      value: meadow.id,
+                    }))}
+                />
+              </View>
+              <IonIconButton
+                icon="add"
+                color="black"
+                iconSize={25}
+                type="accent"
+                onPress={() =>
+                  navigation.navigate("PlotsMap", {
+                    meadowAction: { type: "create" },
+                  })
+                }
               />
             </View>
-            <IonIconButton
-              icon="add"
-              color="black"
-              iconSize={25}
-              type="accent"
-              onPress={() =>
-                navigation.navigate("PlotsMap", {
-                  meadowAction: { type: "create" },
-                })
-              }
-            />
-          </View>
+          )}
 
           {/* Repeat — decides which date fields follow */}
           <RHSelect

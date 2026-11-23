@@ -21,6 +21,7 @@
     "show_entries": "Mostra elementi",
     "export": "Esporta",
     "finish": "Finisci",
+    "done": "Fine",
     "send_email": "Invia e-mail",
     "forgot_password": "Password dimenticata",
     "apply": "Applica",
@@ -152,7 +153,8 @@
     "view_chart": "Grafico",
     "view_stats": "Cifre",
     "per_unit_amount": "da {{amount}}",
-    "average_per_hectare": "Ø per ha"
+    "average_per_hectare": "Ø per ha",
+    "last_value": "ultimo: {{value}}"
   },
   "splash": {
     "tagline": "Da contadini. Per contadini.",
@@ -183,7 +185,12 @@
     "unexpected_retry_later": "Oops, qualcosa è andato storto. Riprova più tardi.",
     "unexpected": "Oops, qualcosa è andato storto.",
     "try_again_later": "Riprova più tardi...",
-    "screen_error_hint": "Non è stato possibile visualizzare questa schermata. L'errore ci è stato segnalato."
+    "screen_error_hint": "Non è stato possibile visualizzare questa schermata. L'errore ci è stato segnalato.",
+    "codes": {
+      "crop_rotation_overlap": "La rotazione colturale si sovrappone a una rotazione esistente su questo campo.",
+      "outdoor_schedule_overlap": "Il programma di uscita si sovrappone a un altro programma di questa mandria.",
+      "invalid_date_range": "Una data di fine precede la relativa data di inizio."
+    }
   },
   "units": {
     "long": {
@@ -1382,7 +1389,8 @@
     "outdoor_type": "Tipo",
     "outdoor_types": {
       "pasture": "Pascolo",
-      "exercise_yard": "Paddock"
+      "exercise_yard": "Paddock",
+      "stable": "Stalla"
     },
     "new_outdoor_schedule": "Nuovo programma di uscita",
     "edit_outdoor_schedule": "Modifica programma di uscita",
@@ -1527,7 +1535,27 @@
     "herd_changes_summary": "{{added}} aggiunti, {{removed}} rimossi. Da quale data vale?",
     "delete_herd_confirm": "Eliminare la mandria «{{name}}»?",
     "delete_herd_confirm_info": "Questa azione non può essere annullata.",
-    "timeline_view_overview": "Panoramica"
+    "timeline_view_overview": "Panoramica",
+    "n_offspring": "{{count}} discendente",
+    "n_offspring_plural": "{{count}} discendenti",
+    "sex_change_offspring_title": "Cambiare sesso?",
+    "sex_change_offspring_body": "{{name}} è registrato come {{parent}} di {{count}} discendenti. Con la modifica questi collegamenti vengono rimossi.",
+    "change_anyway": "Cambia comunque",
+    "death": "Morte",
+    "no_herd": "Nessuna mandria",
+    "open_herd": "Apri mandria",
+    "type_change_title": "Cambiare specie?",
+    "type_change_body": "La categoria del diario all'aperto, il calendario della gestazione e i trattamenti dipendono dalla specie di {{name}}.",
+    "type_change_relatives": "Genitori e discendenti sono poi di un'altra specie, i loro collegamenti vengono rimossi.",
+    "outdoor_overrides": "Eccezioni",
+    "outdoor_overrides_hint": "Giorni in cui la mandria ha fatto altro rispetto al previsto, p. es. in stalla a causa di un temporale. Un'eccezione prevale sul programma di uscita in quei giorni.",
+    "new_outdoor_override": "Nuova eccezione",
+    "edit_outdoor_override": "Modifica eccezione",
+    "delete_outdoor_override_confirm": "Eliminare davvero questa eccezione?",
+    "outdoor_override_overlap": "L'eccezione si sovrappone a un'altra eccezione di questa mandria.",
+    "outdoor_override_single": "Eccezione",
+    "herd_animal_count": "{{count}} animale",
+    "herd_animal_count_plural": "{{count}} animali"
   },
   "drugs": {
     "drugs": "Medicinali",
@@ -1600,7 +1628,9 @@
     "drug_not_defined_for_type": "Per questa specie ({{type}}) il medicinale non ha dosaggio né periodi di attesa. Inseriscili manualmente.",
     "delete_confirm_title": "Eliminare il trattamento?",
     "delete_confirm_message": "Il trattamento viene rimosso dal registro dei trattamenti. L'operazione non può essere annullata.",
-    "mixed_animal_types": "Un trattamento può contenere solo animali di una sola specie."
+    "mixed_animal_types": "Un trattamento può contenere solo animali di una sola specie.",
+    "n_treatments": "{{count}} trattamento",
+    "n_treatments_plural": "{{count}} trattamenti"
   },
   "settings": {
     "settings": "Impostazioni",
@@ -1957,7 +1987,9 @@
     "max": "max",
     "n_samples": "{{count}} campione",
     "n_animals_plural": "{{count}} animali",
-    "n_samples_plural": "{{count}} campioni"
+    "n_samples_plural": "{{count}} campioni",
+    "n_checks": "{{count}} controllo",
+    "n_checks_plural": "{{count}} controlli"
   },
   "breeding": {
     "weight": "Peso",
@@ -2012,6 +2044,9 @@
     "gestation_days_invalid": "Tra 1 e 500 giorni",
     "gestation_saved": "Durata della gravidanza salvata",
     "permission_denied": "Le notifiche sono disattivate nelle impostazioni di sistema. Consentile lì per ricevere promemoria prima dei parti.",
-    "weight_load_failed": "Non è stato possibile caricare il peso"
+    "weight_load_failed": "Non è stato possibile caricare il peso",
+    "last_mated": "Ultima monta: {{date}}",
+    "n_heats": "{{count}} voce",
+    "n_heats_plural": "{{count}} voci"
   }
 }
