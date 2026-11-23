@@ -11806,6 +11806,15 @@
             "schema": {
               "$ref": "#/components/schemas/DeleteV1EarTagsRangeParameterFromNumber"
             }
+          },
+          {
+            "name": "prefix",
+            "in": "query",
+            "required": false,
+            "description": "DELETE /v1/earTags/range Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
           }
         ],
         "security": [{ "APIKEY_1": [] }],
@@ -11834,6 +11843,54 @@
       }
     },
     "/v1/earTags/byId/{earTagId}": {
+      "patch": {
+        "operationId": "PatchV1EarTagsByIdEarTagId",
+        "parameters": [
+          {
+            "name": "earTagId",
+            "in": "path",
+            "required": true,
+            "description": "PATCH /v1/earTags/byId/:earTagId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PATCH /v1/earTags/byId/:earTagId Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchV1EarTagsByIdEarTagIdRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "PATCH /v1/earTags/byId/:earTagId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchV1EarTagsByIdEarTagIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "PATCH /v1/earTags/byId/:earTagId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
       "delete": {
         "operationId": "DeleteV1EarTagsByIdEarTagId",
         "parameters": [
@@ -18262,7 +18319,9 @@
               "ear_tag_range_conflict",
               "invalid_ear_tag_range",
               "ear_tag_assigned",
-              "invalid_sire"
+              "ear_tag_number_taken",
+              "invalid_sire",
+              "invalid_date_range"
             ]
           }
         },
@@ -37342,7 +37401,8 @@
         "type": "object",
         "properties": {
           "fromNumber": { "type": "string", "minLength": 1 },
-          "toNumber": { "type": "string", "minLength": 1 }
+          "toNumber": { "type": "string", "minLength": 1 },
+          "prefix": { "type": "string" }
         },
         "required": ["fromNumber", "toNumber"]
       },
@@ -37368,6 +37428,28 @@
         },
         "required": ["data"],
         "additionalProperties": false
+      },
+      "PatchV1EarTagsByIdEarTagIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "number": { "type": "string" }
+            },
+            "required": ["id", "farmId", "number"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1EarTagsByIdEarTagIdRequestBody": {
+        "type": "object",
+        "properties": { "number": { "type": "string", "minLength": 1 } },
+        "required": ["number"]
       },
       "DeleteV1EarTagsByIdEarTagIdPositiveResponse": {
         "type": "object",

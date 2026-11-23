@@ -2433,7 +2433,7 @@ export interface paths {
     delete: operations["DeleteV1EarTagsByIdEarTagId"];
     options?: never;
     head?: never;
-    patch?: never;
+    patch: operations["PatchV1EarTagsByIdEarTagId"];
     trace?: never;
   };
   "/v1/drugs": {
@@ -3838,7 +3838,9 @@ export interface components {
         | "ear_tag_range_conflict"
         | "invalid_ear_tag_range"
         | "ear_tag_assigned"
-        | "invalid_sire";
+        | "ear_tag_number_taken"
+        | "invalid_sire"
+        | "invalid_date_range";
     };
     GetV1LayersPlotsFarmsFederalFarmIdOnlyPositiveResponse: {
       data: {
@@ -11935,6 +11937,7 @@ export interface components {
     PostV1EarTagsRangeRequestBody: {
       fromNumber: string;
       toNumber: string;
+      prefix?: string;
     };
     DeleteV1EarTagsRangeParameterFromNumber: string;
     DeleteV1EarTagsRangePositiveResponse: {
@@ -11942,6 +11945,16 @@ export interface components {
         deletedCount: number;
         skippedAssigned: string[];
       };
+    };
+    PatchV1EarTagsByIdEarTagIdPositiveResponse: {
+      data: {
+        id: string;
+        farmId: string;
+        number: string;
+      };
+    };
+    PatchV1EarTagsByIdEarTagIdRequestBody: {
+      number: string;
     };
     DeleteV1EarTagsByIdEarTagIdPositiveResponse: {
       data: Record<string, never>;
@@ -27775,6 +27788,8 @@ export interface operations {
         fromNumber: components["schemas"]["DeleteV1EarTagsRangeParameterFromNumber"];
         /** @description DELETE /v1/earTags/range Parameter */
         toNumber: components["schemas"]["DeleteV1EarTagsRangeParameterFromNumber"];
+        /** @description DELETE /v1/earTags/range Parameter */
+        prefix?: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
       };
       header?: never;
       path?: never;
@@ -27824,6 +27839,43 @@ export interface operations {
         };
       };
       /** @description DELETE /v1/earTags/byId/:earTagId Negative response */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GetV1LayersPlotsBboxNegativeResponse"];
+        };
+      };
+    };
+  };
+  PatchV1EarTagsByIdEarTagId: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description PATCH /v1/earTags/byId/:earTagId Parameter */
+        earTagId: components["schemas"]["GetV1LayersPlotsBboxParameterXmin"];
+      };
+      cookie?: never;
+    };
+    /** @description PATCH /v1/earTags/byId/:earTagId Request body */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PatchV1EarTagsByIdEarTagIdRequestBody"];
+      };
+    };
+    responses: {
+      /** @description PATCH /v1/earTags/byId/:earTagId Positive response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["PatchV1EarTagsByIdEarTagIdPositiveResponse"];
+        };
+      };
+      /** @description PATCH /v1/earTags/byId/:earTagId Negative response */
       400: {
         headers: {
           [name: string]: unknown;

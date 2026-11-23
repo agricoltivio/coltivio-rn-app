@@ -15,6 +15,7 @@ export type AnimalsStackParamList = {
   AnimalsOnboarding: undefined;
   AnimalsSettings: undefined;
   EarTags: undefined;
+  EditEarTag: { earTagId: string; number: string; animalName?: string };
   CreateEarTagRange: undefined;
   DeleteEarTagRange: undefined;
   Animals: undefined;
@@ -136,6 +137,7 @@ export type AnimalsStackParamList = {
 
 export type AnimalsHubScreenProps = StackScreenProps<"AnimalsHub">;
 export type EarTagsScreenProps = StackScreenProps<"EarTags">;
+export type EditEarTagScreenProps = StackScreenProps<"EditEarTag">;
 export type CreateEarTagRangeScreenProps =
   StackScreenProps<"CreateEarTagRange">;
 export type DeleteEarTagRangeScreenProps =

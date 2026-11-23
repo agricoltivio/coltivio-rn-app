@@ -1207,6 +1207,13 @@
     "donate_thank_you_close": "Close"
   },
   "ear_tags": {
+    "prefix": "Prefix",
+    "prefix_placeholder": "e.g. CH or CH 120.",
+    "invalid_digits": "Digits only, letters and characters go into the prefix",
+    "edit_ear_tag": "Edit ear tag",
+    "number": "Number",
+    "assigned_to": "Assigned to {{name}}",
+    "number_taken": "This number already exists.",
     "ear_tags": "Ear tags",
     "ear_tag": "Ear tag",
     "new_ear_tag_range": "New ear tags",

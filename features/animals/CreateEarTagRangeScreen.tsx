@@ -11,69 +11,43 @@ import { RHTextInput } from "@/components/inputs/RHTextnput";
 import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { ApiError } from "@/api/api";
 import { useCreateEarTagRangeMutation, useEarTagsQuery } from "./earTags.hooks";
+import {
+  buildEarTagRange,
+  EAR_TAG_RANGE_DIGITS_PATTERN,
+  EarTagRange,
+  MAX_EAR_TAG_RANGE_SIZE,
+} from "./ear-tag-range";
 import { CreateEarTagRangeScreenProps } from "./navigation/animals-routes";
 
 type EarTagRangeFormValues = {
+  prefix: string;
   fromNumber: string;
   amount: string;
 };
 
-// Same format the API expects: optional letter prefix + number, e.g. "CH001" or "201231"
-export const EAR_TAG_NUMBER_PATTERN = /^([A-Za-z]*)(\d+)$/;
-
 // Conflicting numbers listed in the preview; the rest is summarized as a count
 const MAX_LISTED_CONFLICTS = 10;
-// Largest range the API creates or deletes at once
-export const MAX_EAR_TAG_RANGE_SIZE = 1000;
 
-type EarTagRangePreview = {
-  fromNumber: string;
-  toNumber: string;
-  amount: number;
+type EarTagRangePreview = EarTagRange & {
   // Existing tags inside the range, sorted
   conflictingNumbers: string[];
 };
 
-// The range of `amount` tags starting at `fromNumber`, numbered like the API does it:
-// same prefix, zero padded to the start number's length, e.g. ("CH001", 50) -> CH001..CH050.
-// Conflicts are found by checking each existing tag against the range, so a large
-// amount doesn't build a large list. Null while the input is incomplete or invalid.
+// The range of `amount` tags starting at the first number, and the existing tags in it.
+// Null while the input is incomplete or invalid.
 function buildRangePreview(
+  prefixInput: string,
   fromNumberInput: string,
   amountInput: string,
   existingNumbers: string[],
 ): EarTagRangePreview | null {
-  const fromNumber = fromNumberInput.trim();
-  const match = fromNumber.match(EAR_TAG_NUMBER_PATTERN);
-  const amount = /^\d+$/.test(amountInput.trim())
-    ? parseInt(amountInput, 10)
-    : 0;
-  if (!match || amount < 1) return null;
-  const [, prefix, digits] = match;
-  const firstValue = parseInt(digits, 10);
-  const lastValue = firstValue + amount - 1;
-  const formatNumber = (value: number) =>
-    `${prefix}${value.toString().padStart(digits.length, "0")}`;
-
-  const conflictingNumbers = existingNumbers
-    .filter((existingNumber) => {
-      const existingMatch = existingNumber.match(EAR_TAG_NUMBER_PATTERN);
-      if (!existingMatch || existingMatch[1] !== prefix) return false;
-      const existingValue = parseInt(existingMatch[2], 10);
-      // Only an exact match counts, e.g. "CH0105" isn't "CH105"
-      return (
-        existingValue >= firstValue &&
-        existingValue <= lastValue &&
-        formatNumber(existingValue) === existingNumber
-      );
-    })
-    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
-
+  const range = buildEarTagRange(prefixInput, fromNumberInput, amountInput);
+  if (!range) return null;
   return {
-    fromNumber,
-    toNumber: formatNumber(lastValue),
-    amount,
-    conflictingNumbers,
+    ...range,
+    conflictingNumbers: existingNumbers
+      .filter(range.contains)
+      .sort((a, b) => a.localeCompare(b, undefined, { numeric: true })),
   };
 }
 
@@ -87,14 +61,18 @@ export function CreateEarTagRangeScreen({
     control,
     handleSubmit,
     formState: { errors, isDirty },
-  } = useForm<EarTagRangeFormValues>();
+  } = useForm<EarTagRangeFormValues>({
+    defaultValues: { prefix: "", fromNumber: "", amount: "" },
+  });
   const { earTags } = useEarTagsQuery();
 
   // Live preview of the range below the inputs, including overlaps with existing tags
+  const prefixInput = useWatch({ control, name: "prefix" }) ?? "";
   const fromNumberInput = useWatch({ control, name: "fromNumber" }) ?? "";
   const amountInput = useWatch({ control, name: "amount" }) ?? "";
   const preview = earTags
     ? buildRangePreview(
+        prefixInput,
         fromNumberInput,
         amountInput,
         earTags.map((earTag) => earTag.number),
@@ -122,13 +100,15 @@ export function CreateEarTagRangeScreen({
   function onSubmit(data: EarTagRangeFormValues) {
     if (!earTags) return;
     const range = buildRangePreview(
+      data.prefix,
       data.fromNumber,
       data.amount,
       earTags.map((earTag) => earTag.number),
     );
     // Overlapping existing tags isn't possible: the API would reject the whole range
     if (!range || range.conflictingNumbers.length > 0) return;
-    const { fromNumber, toNumber, amount } = range;
+    const { fromNumber, toNumber, amount, prefix, fromDigits, toDigits } =
+      range;
 
     Alert.alert(
       t("ear_tags.confirm_create_title"),
@@ -142,7 +122,11 @@ export function CreateEarTagRangeScreen({
         {
           text: t("buttons.confirm"),
           onPress: () =>
-            createEarTagRangeMutation.mutate({ fromNumber, toNumber }),
+            createEarTagRangeMutation.mutate({
+              fromNumber: fromDigits,
+              toNumber: toDigits,
+              prefix: prefix || undefined,
+            }),
         },
       ],
     );
@@ -176,18 +160,28 @@ export function CreateEarTagRangeScreen({
         <View
           style={{ gap: theme.spacing.xs, flex: 1, marginTop: theme.spacing.m }}
         >
+          {/* Text in front of the numbers, e.g. "CH" or "CH 120." */}
+          <RHTextInput
+            name="prefix"
+            control={control}
+            label={t("ear_tags.prefix")}
+            placeholder={t("ear_tags.prefix_placeholder")}
+            autoCapitalize="characters"
+            optional
+          />
           <RHTextInput
             name="fromNumber"
             control={control}
             label={t("ear_tags.first_number")}
+            keyboardType="number-pad"
             rules={{
               required: {
                 value: true,
                 message: t("forms.validation.required"),
               },
               validate: (value) =>
-                EAR_TAG_NUMBER_PATTERN.test(value.trim()) ||
-                t("ear_tags.invalid_number"),
+                EAR_TAG_RANGE_DIGITS_PATTERN.test(value.trim()) ||
+                t("ear_tags.invalid_digits"),
             }}
             error={errors.fromNumber?.message}
           />

@@ -1207,6 +1207,13 @@
     "donate_thank_you_close": "Schliessen"
   },
   "ear_tags": {
+    "prefix": "Präfix",
+    "prefix_placeholder": "z.B. CH oder CH 120.",
+    "invalid_digits": "Nur Ziffern, Buchstaben und Zeichen gehören ins Präfix",
+    "edit_ear_tag": "Ohrmarke bearbeiten",
+    "number": "Nummer",
+    "assigned_to": "Zugewiesen an {{name}}",
+    "number_taken": "Diese Nummer gibt es schon.",
     "ear_tags": "Ohrmarken",
     "ear_tag": "Ohrmarke",
     "new_ear_tag_range": "Neue Ohrmarken",

@@ -11,13 +11,16 @@ import { useTranslation } from "react-i18next";
 import { Alert, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import {
-  EAR_TAG_NUMBER_PATTERN,
+  buildEarTagRange,
+  EAR_TAG_RANGE_DIGITS_PATTERN,
+  EarTagRange,
   MAX_EAR_TAG_RANGE_SIZE,
-} from "./CreateEarTagRangeScreen";
+} from "./ear-tag-range";
 import { useDeleteEarTagRangeMutation, useEarTagsQuery } from "./earTags.hooks";
 import { DeleteEarTagRangeScreenProps } from "./navigation/animals-routes";
 
 type DeleteEarTagRangeFormValues = {
+  prefix: string;
   fromNumber: string;
   amount: string;
 };
@@ -25,53 +28,29 @@ type DeleteEarTagRangeFormValues = {
 // Kept numbers listed in the preview; the rest is summarized as a count
 const MAX_LISTED_ASSIGNED = 10;
 
-type DeleteRangePreview = {
-  fromNumber: string;
-  toNumber: string;
+type DeleteRangePreview = EarTagRange & {
   // Existing tags in the range: unassigned ones get deleted, assigned ones are kept
   deletableNumbers: string[];
   assignedNumbers: string[];
 };
 
-// The range of `amount` numbers starting at `fromNumber`, numbered like the API does it
-// (same prefix, zero padded to the start number's length), and the existing tags in it.
+// The range of `amount` numbers starting at the first number, and the existing tags in it.
 // Null while the input is incomplete or invalid.
 function buildDeletePreview(
+  prefixInput: string,
   fromNumberInput: string,
   amountInput: string,
   earTags: EarTag[],
 ): DeleteRangePreview | null {
-  const fromNumber = fromNumberInput.trim();
-  const match = fromNumber.match(EAR_TAG_NUMBER_PATTERN);
-  const amount = /^\d+$/.test(amountInput.trim())
-    ? parseInt(amountInput, 10)
-    : 0;
-  if (!match || amount < 1) return null;
-  const [, prefix, digits] = match;
-  const firstValue = parseInt(digits, 10);
-  const lastValue = firstValue + amount - 1;
-  const formatNumber = (value: number) =>
-    `${prefix}${value.toString().padStart(digits.length, "0")}`;
-
+  const range = buildEarTagRange(prefixInput, fromNumberInput, amountInput);
+  if (!range) return null;
   const tagsInRange = earTags
-    .filter((earTag) => {
-      const existingMatch = earTag.number.match(EAR_TAG_NUMBER_PATTERN);
-      if (!existingMatch || existingMatch[1] !== prefix) return false;
-      const existingValue = parseInt(existingMatch[2], 10);
-      // Only an exact match counts, e.g. "CH0105" isn't "CH105"
-      return (
-        existingValue >= firstValue &&
-        existingValue <= lastValue &&
-        formatNumber(existingValue) === earTag.number
-      );
-    })
+    .filter((earTag) => range.contains(earTag.number))
     .sort((a, b) =>
       a.number.localeCompare(b.number, undefined, { numeric: true }),
     );
-
   return {
-    fromNumber,
-    toNumber: formatNumber(lastValue),
+    ...range,
     deletableNumbers: tagsInRange
       .filter((earTag) => !earTag.animal)
       .map((earTag) => earTag.number),
@@ -90,14 +69,17 @@ export function DeleteEarTagRangeScreen({
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<DeleteEarTagRangeFormValues>();
+  } = useForm<DeleteEarTagRangeFormValues>({
+    defaultValues: { prefix: "", fromNumber: "", amount: "" },
+  });
   const { earTags } = useEarTagsQuery();
 
   // Live preview of what the range deletes and keeps
+  const prefixInput = useWatch({ control, name: "prefix" }) ?? "";
   const fromNumberInput = useWatch({ control, name: "fromNumber" }) ?? "";
   const amountInput = useWatch({ control, name: "amount" }) ?? "";
   const preview = earTags
-    ? buildDeletePreview(fromNumberInput, amountInput, earTags)
+    ? buildDeletePreview(prefixInput, fromNumberInput, amountInput, earTags)
     : null;
   const listedAssigned =
     preview?.assignedNumbers.slice(0, MAX_LISTED_ASSIGNED) ?? [];
@@ -110,9 +92,14 @@ export function DeleteEarTagRangeScreen({
 
   function onSubmit(data: DeleteEarTagRangeFormValues) {
     if (!earTags) return;
-    const range = buildDeletePreview(data.fromNumber, data.amount, earTags);
+    const range = buildDeletePreview(
+      data.prefix,
+      data.fromNumber,
+      data.amount,
+      earTags,
+    );
     if (!range || range.deletableNumbers.length === 0) return;
-    const { fromNumber, toNumber } = range;
+    const { fromNumber, toNumber, prefix, fromDigits, toDigits } = range;
     Alert.alert(
       t("ear_tags.confirm_delete_range_title"),
       t("ear_tags.confirm_delete_range_message", {
@@ -127,7 +114,11 @@ export function DeleteEarTagRangeScreen({
           style: "destructive",
           onPress: () =>
             deleteRangeMutation.mutate(
-              { fromNumber, toNumber },
+              {
+                fromNumber: fromDigits,
+                toNumber: toDigits,
+                prefix: prefix || undefined,
+              },
               {
                 // Tags may have been assigned meanwhile, the API skips those too
                 onSuccess: (result) => {
@@ -180,18 +171,28 @@ export function DeleteEarTagRangeScreen({
         <View
           style={{ gap: theme.spacing.xs, flex: 1, marginTop: theme.spacing.m }}
         >
+          {/* Text in front of the numbers, e.g. "CH" or "CH 120." */}
+          <RHTextInput
+            name="prefix"
+            control={control}
+            label={t("ear_tags.prefix")}
+            placeholder={t("ear_tags.prefix_placeholder")}
+            autoCapitalize="characters"
+            optional
+          />
           <RHTextInput
             name="fromNumber"
             control={control}
             label={t("ear_tags.first_number")}
+            keyboardType="number-pad"
             rules={{
               required: {
                 value: true,
                 message: t("forms.validation.required"),
               },
               validate: (value) =>
-                EAR_TAG_NUMBER_PATTERN.test(value.trim()) ||
-                t("ear_tags.invalid_number"),
+                EAR_TAG_RANGE_DIGITS_PATTERN.test(value.trim()) ||
+                t("ear_tags.invalid_digits"),
             }}
             error={errors.fromNumber?.message}
           />

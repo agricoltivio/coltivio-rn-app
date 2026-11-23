@@ -1207,6 +1207,13 @@
     "donate_thank_you_close": "Chiudi"
   },
   "ear_tags": {
+    "prefix": "Prefisso",
+    "prefix_placeholder": "p.es. CH o CH 120.",
+    "invalid_digits": "Solo cifre, lettere e caratteri vanno nel prefisso",
+    "edit_ear_tag": "Modifica marca auricolare",
+    "number": "Numero",
+    "assigned_to": "Assegnata a {{name}}",
+    "number_taken": "Questo numero esiste già.",
     "ear_tags": "Marche auricolari",
     "ear_tag": "Marca auricolare",
     "new_ear_tag_range": "Nuove marche auricolari",

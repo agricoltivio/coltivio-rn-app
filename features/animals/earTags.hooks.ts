@@ -53,11 +53,13 @@ export function useDeleteEarTagRangeMutation(
     mutationFn: async ({
       fromNumber,
       toNumber,
+      prefix,
     }: {
       fromNumber: string;
       toNumber: string;
+      prefix?: string;
     }) => {
-      return api.earTags.deleteEarTagRange(fromNumber, toNumber);
+      return api.earTags.deleteEarTagRange(fromNumber, toNumber, prefix);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -78,6 +80,25 @@ export function useDeleteEarTagMutation(onError?: (error: Error) => void) {
       queryClient.invalidateQueries({
         queryKey: queryKeys.earTags._def,
       });
+    },
+    onError,
+  });
+}
+
+// Changes the number of one ear tag; animals show the new number
+export function useUpdateEarTagNumberMutation(
+  onSuccess?: () => void,
+  onError?: (error: Error) => void,
+) {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ earTagId, number }: { earTagId: string; number: string }) =>
+      api.earTags.updateEarTagNumber(earTagId, number),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.earTags._def });
+      queryClient.invalidateQueries({ queryKey: queryKeys.animals._def });
+      onSuccess && onSuccess();
     },
     onError,
   });
