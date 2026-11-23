@@ -1,5 +1,6 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { formatLocalizedDate } from "@/utils/date";
+import { getDaysInMonth, isSameDay } from "date-fns";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard, Platform, Pressable, View } from "react-native";
@@ -79,10 +80,23 @@ export function InlineDatePicker({
               // keeps the day of month: stay open so the day can still be chosen. A tapped
               // day closes: a different day of month (also after browsing with the month
               // arrows, which don't change the value), or any day in the same month and year.
+              const monthOrYearChanged =
+                selectedDate.getFullYear() !== date.getFullYear() ||
+                selectedDate.getMonth() !== date.getMonth();
+              // The wheel can't keep a day the new month doesn't have (31 Mar → Feb) or that
+              // lies outside the allowed range: iOS moves it to the month's last day or to the
+              // limit. Such a change is still the wheel, not a tapped day.
+              const clampedByWheel =
+                monthOrYearChanged &&
+                ((selectedDate.getDate() < date.getDate() &&
+                  selectedDate.getDate() === getDaysInMonth(selectedDate)) ||
+                  (maximumDate !== undefined &&
+                    isSameDay(selectedDate, maximumDate)) ||
+                  (minimumDate !== undefined &&
+                    isSameDay(selectedDate, minimumDate)));
               const pickedDay =
-                selectedDate.getDate() !== date.getDate() ||
-                (selectedDate.getFullYear() === date.getFullYear() &&
-                  selectedDate.getMonth() === date.getMonth());
+                !monthOrYearChanged ||
+                (selectedDate.getDate() !== date.getDate() && !clampedByWheel);
               if (pickedDay) {
                 setPickedYearOrMonth(false);
                 changeOpen(false);
@@ -91,6 +105,17 @@ export function InlineDatePicker({
               }
             }}
           />
+          {/* The field (with its error) is hidden meanwhile, so show the error here */}
+          {error && (
+            <Text
+              style={{
+                color: theme.colors.danger,
+                marginTop: theme.spacing.xs,
+              }}
+            >
+              {error}
+            </Text>
+          )}
           {/* Tapping the already selected day sends no change, so it can't close the
               calendar: this closes it with the current date. After picking a year or month
               it first goes back to the days. */}
