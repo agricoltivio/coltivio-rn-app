@@ -34,6 +34,9 @@ import { MeadowDetailsScreen } from "../MeadowDetailsScreen";
 import { MeadowOverviewScreen } from "../MeadowOverviewScreen";
 import { MeadowSummaryScreen } from "../MeadowSummaryScreen";
 import { OutdoorScheduleFormScreen } from "../OutdoorScheduleFormScreen";
+import { AnimalHeatsScreen } from "../AnimalHeatsScreen";
+import { AnimalOffspringScreen } from "../AnimalOffspringScreen";
+import { AnimalTreatmentsScreen } from "../AnimalTreatmentsScreen";
 import { OutdoorScheduleOverrideFormScreen } from "../OutdoorScheduleOverrideFormScreen";
 import { TreatmentsExportScreen } from "../TreatmentsExportScreen";
 import { HerdsOnboardingScreen } from "../HerdsOnboardingScreen";
@@ -167,6 +170,24 @@ export function renderAnimalsStack(
       name="SelectChildren"
       options={{ title: "", presentation: "modal" }}
       component={SelectChildrenModal}
+    />,
+    <Stack.Screen
+      key="animal-heats"
+      name="AnimalHeats"
+      options={{ title: "" }}
+      component={AnimalHeatsScreen}
+    />,
+    <Stack.Screen
+      key="animal-offspring"
+      name="AnimalOffspring"
+      options={{ title: "" }}
+      component={AnimalOffspringScreen}
+    />,
+    <Stack.Screen
+      key="animal-treatments"
+      name="AnimalTreatments"
+      options={{ title: "" }}
+      component={AnimalTreatmentsScreen}
     />,
     <Stack.Screen
       key="select-animals"

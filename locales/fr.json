@@ -148,7 +148,8 @@
     "view_chart": "Graphique",
     "view_stats": "Chiffres",
     "per_unit_amount": "de {{amount}}",
-    "average_per_hectare": "Ø par ha"
+    "average_per_hectare": "Ø par ha",
+    "last_value": "dernier : {{value}}"
   },
   "splash": {
     "tagline": "Par des paysans. Pour des paysans.",
@@ -1530,6 +1531,17 @@
     "delete_herd_confirm": "Supprimer le troupeau « {{name}} » ?",
     "delete_herd_confirm_info": "Cette action est irréversible.",
     "timeline_view_overview": "Aperçu",
+    "n_offspring": "{{count}} descendant",
+    "n_offspring_plural": "{{count}} descendants",
+    "sex_change_offspring_title": "Changer le sexe ?",
+    "sex_change_offspring_body": "{{name}} est enregistré·e comme {{parent}} de {{count}} descendant(s). Ces liens sont supprimés avec la modification.",
+    "change_anyway": "Changer quand même",
+    "death": "Décès",
+    "no_herd": "Aucun troupeau",
+    "open_herd": "Ouvrir le troupeau",
+    "type_change_title": "Changer l'espèce ?",
+    "type_change_body": "La catégorie du journal de sorties, le calendrier de gestation et les traitements dépendent de l'espèce de {{name}}.",
+    "type_change_relatives": "Les parents et descendants sont alors d'une autre espèce, leurs liens sont supprimés.",
     "outdoor_overrides": "Exceptions",
     "outdoor_overrides_hint": "Jours où le troupeau a fait autre chose que prévu, p. ex. à l'étable à cause d'un orage. Une exception prime sur la sortie ces jours-là.",
     "new_outdoor_override": "Nouvelle exception",
@@ -1611,7 +1623,9 @@
     "drug_not_defined_for_type": "Ce médicament n'a pas de dosage ni de délais d'attente pour les {{type}}. Veuillez les saisir manuellement.",
     "delete_confirm_title": "Supprimer le traitement ?",
     "delete_confirm_message": "Le traitement est retiré du journal des traitements. Cette action est irréversible.",
-    "mixed_animal_types": "Un traitement ne peut contenir que des animaux d'une seule espèce."
+    "mixed_animal_types": "Un traitement ne peut contenir que des animaux d'une seule espèce.",
+    "n_treatments": "{{count}} traitement",
+    "n_treatments_plural": "{{count}} traitements"
   },
   "settings": {
     "settings": "Paramètres",
@@ -1968,7 +1982,9 @@
     "max": "max",
     "n_samples": "{{count}} échantillon",
     "n_animals_plural": "{{count}} animaux",
-    "n_samples_plural": "{{count}} échantillons"
+    "n_samples_plural": "{{count}} échantillons",
+    "n_checks": "{{count}} contrôle",
+    "n_checks_plural": "{{count}} contrôles"
   },
   "breeding": {
     "weight": "Poids",
@@ -2023,6 +2039,9 @@
     "gestation_days_invalid": "Entre 1 et 500 jours",
     "gestation_saved": "Durée de gestation enregistrée",
     "permission_denied": "Les notifications sont désactivées dans les réglages du système. Autorise-les pour recevoir des rappels avant les mises bas.",
-    "weight_load_failed": "Le poids n'a pas pu être chargé"
+    "weight_load_failed": "Le poids n'a pas pu être chargé",
+    "last_mated": "Dernière saillie : {{date}}",
+    "n_heats": "{{count}} entrée",
+    "n_heats_plural": "{{count}} entrées"
   }
 }

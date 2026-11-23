@@ -31,6 +31,10 @@ export type AnimalsStackParamList = {
     | undefined;
   EditAnimal: { animalId?: string; herdId?: string };
   SelectChildren: { animalId: string; sex: "male" | "female" };
+  // Sections of the animal details, each a screen of its own
+  AnimalHeats: { animalId: string };
+  AnimalOffspring: { animalId: string };
+  AnimalTreatments: { animalId: string };
   SelectAnimals: {
     initialSelectedIds: string[];
     previousScreen:
@@ -150,6 +154,9 @@ export type AnimalDetailsScreenProps = StackScreenProps<"AnimalDetails">;
 export type CreateAnimalScreenProps = StackScreenProps<"CreateAnimal">;
 export type EditAnimalScreenProps = StackScreenProps<"EditAnimal">;
 export type SelectChildrenScreenProps = StackScreenProps<"SelectChildren">;
+export type AnimalHeatsScreenProps = StackScreenProps<"AnimalHeats">;
+export type AnimalOffspringScreenProps = StackScreenProps<"AnimalOffspring">;
+export type AnimalTreatmentsScreenProps = StackScreenProps<"AnimalTreatments">;
 export type SelectAnimalsScreenProps = StackScreenProps<"SelectAnimals">;
 export type DrugsScreenProps = StackScreenProps<"Drugs">;
 export type CreateDrugScreenProps = StackScreenProps<"CreateDrug">;
