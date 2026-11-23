@@ -124,6 +124,9 @@ export function AnimalQuickEditSheet({
   const [usage, setUsage] = useState<AnimalUsage>(animal.usage);
   const [text, setText] = useState("");
   const [textFocused, setTextFocused] = useState(false);
+  // A date's calendar is open: everything else (choices, buttons) is hidden meanwhile, so
+  // only the calendar and its Fertig button show
+  const [calendarOpen, setCalendarOpen] = useState(false);
   const [dateOfDeath, setDateOfDeath] = useState(new Date());
   const [deathReason, setDeathReason] = useState<DeathReason | null>(null);
   const [herdChoice, setHerdChoice] = useState<string>(NO_HERD);
@@ -141,6 +144,7 @@ export function AnimalQuickEditSheet({
   // Start from the current value each time the sheet opens for a field
   useEffect(() => {
     if (!field) return;
+    setCalendarOpen(false);
     setAnimalType(animal.type);
     setSex(animal.sex);
     setDateOfBirth(
@@ -331,6 +335,7 @@ export function AnimalQuickEditSheet({
                   date={dateOfBirth}
                   onChange={setDateOfBirth}
                   maximumDate={new Date()}
+                  onOpenChange={setCalendarOpen}
                 />
               )}
 
@@ -392,38 +397,46 @@ export function AnimalQuickEditSheet({
                     date={dateOfDeath}
                     onChange={setDateOfDeath}
                     maximumDate={new Date()}
+                    onOpenChange={setCalendarOpen}
                   />
-                  <OptionList
-                    options={[
-                      { value: "died", label: t("animals.death_reasons.died") },
-                      {
-                        value: "slaughtered",
-                        label: t("animals.death_reasons.slaughtered"),
-                      },
-                    ]}
-                    selected={deathReason}
-                    onSelect={(reason) =>
-                      setDeathReason((current) =>
-                        current === reason ? null : reason,
-                      )
-                    }
-                  />
+                  {!calendarOpen && (
+                    <OptionList
+                      options={[
+                        {
+                          value: "died",
+                          label: t("animals.death_reasons.died"),
+                        },
+                        {
+                          value: "slaughtered",
+                          label: t("animals.death_reasons.slaughtered"),
+                        },
+                      ]}
+                      selected={deathReason}
+                      onSelect={(reason) =>
+                        setDeathReason((current) =>
+                          current === reason ? null : reason,
+                        )
+                      }
+                    />
+                  )}
                 </>
               )}
 
               {field === "herd" && (
                 <>
-                  <OptionList
-                    options={[
-                      { value: NO_HERD, label: t("animals.no_herd") },
-                      ...(herds ?? []).map((herd) => ({
-                        value: herd.id,
-                        label: herd.name,
-                      })),
-                    ]}
-                    selected={herdChoice}
-                    onSelect={setHerdChoice}
-                  />
+                  {!calendarOpen && (
+                    <OptionList
+                      options={[
+                        { value: NO_HERD, label: t("animals.no_herd") },
+                        ...(herds ?? []).map((herd) => ({
+                          value: herd.id,
+                          label: herd.name,
+                        })),
+                      ]}
+                      selected={herdChoice}
+                      onSelect={setHerdChoice}
+                    />
+                  )}
                   {/* From when the change counts, only when the herd changes (as in the form) */}
                   {herdChanged && (
                     <InlineDatePicker
@@ -435,9 +448,10 @@ export function AnimalQuickEditSheet({
                       date={herdEffectiveDate}
                       onChange={setHerdEffectiveDate}
                       minimumDate={earliestEffectiveDate ?? undefined}
+                      onOpenChange={setCalendarOpen}
                     />
                   )}
-                  {currentHerdId && (
+                  {currentHerdId && !calendarOpen && (
                     <ListItem
                       onPress={() => {
                         sheetRef.current?.dismiss();
@@ -455,21 +469,23 @@ export function AnimalQuickEditSheet({
                 </>
               )}
 
-              <Button
-                title={t("buttons.save")}
-                onPress={save}
-                loading={updateAnimalMutation.isPending}
-                // The name is required. A herd change waits for the earliest allowed date, otherwise
-                // today could be sent although it lies before it.
-                disabled={
-                  (field === "name" && !text.trim()) ||
-                  (field === "herd" &&
-                    herdChanged &&
-                    isLoadingEarliestEffectiveDate)
-                }
-              />
+              {!calendarOpen && (
+                <Button
+                  title={t("buttons.save")}
+                  onPress={save}
+                  loading={updateAnimalMutation.isPending}
+                  // The name is required. A herd change waits for the earliest allowed date, otherwise
+                  // today could be sent although it lies before it.
+                  disabled={
+                    (field === "name" && !text.trim()) ||
+                    (field === "herd" &&
+                      herdChanged &&
+                      isLoadingEarliestEffectiveDate)
+                  }
+                />
+              )}
               {/* Death: undo a recorded death (clears date and reason) */}
-              {field === "death" && animal.dateOfDeath && (
+              {field === "death" && animal.dateOfDeath && !calendarOpen && (
                 <Button
                   type="dangerGhost"
                   title={t("buttons.remove")}
