@@ -13,11 +13,8 @@
     "ok": "OK",
     "close": "Close",
     "delete": "Delete",
-    "details": "Details",
     "parcel_select": "Select parcel",
     "draw_area": "Draw area",
-    "edit_area": "Edit area",
-    "show_entries": "Show entries",
     "export": "Export",
     "finish": "Finish",
     "done": "Done",
@@ -35,8 +32,6 @@
     "labels": {
       "name": "Name",
       "description": "Description",
-      "display_name": "Display name",
-      "select_date": "Select date",
       "email": "Email",
       "password": "Password",
       "password_repeat": "Repeat password",
@@ -52,10 +47,8 @@
       "area_hectares": "Area (ha)",
       "divide_by_plot_size": "Divide by plot size",
       "plot_w_size": "Plot {{name}} ({{size}}a)",
-      "device": "Device",
       "none": "None",
       "method": "Method",
-      "capacity_per_unit": "{{unit}} per {{loadUnit}}",
       "crop_protection_product": "Crop protection product",
       "load": "Load",
       "loads": "Loads",
@@ -64,24 +57,16 @@
       "amount_unit": "Quantity {{unit}}",
       "amount_of_loads": "Number of loads",
       "amount_per_load": "Quantity per load",
-      "unit_per_load": "{{unit}} per load",
       "total": "Total",
       "total_unit": "Total {{unit}}",
-      "total_w_amount_unit": "Total {{amount}}{{unit}}",
       "additional_notes": "Additional notes",
       "unit": "Unit",
       "kind": "Variety",
-      "sowing": "Sowing",
       "category": "Category",
       "type": "Type",
       "fertiliser": "Fertilizer",
-      "reason": "Reason",
       "action": "Action",
       "conservation": "Conservation",
-      "processing_type": "Processing type",
-      "weight_kg_per_harvest_unit": "Weight per unit (kg)",
-      "machine": "Machine",
-      "default_machine": "Default machine",
       "organic": "Organic",
       "mineralic": "Mineral",
       "produced_units": "Produced units",
@@ -94,15 +79,12 @@
       "cutting_date": "Cutting date",
       "permanent": "Permanent",
       "sex": "Sex",
-      "date_range": "Date range",
-      "duration": "Duration",
       "registration_number": "Registration number"
     },
     "placeholders": {
       "location_search": "e.g., street, house number, city",
       "federal_farm_number": "e.g., BEB113945 or LU3862",
       "search": "Search...",
-      "weight_kg_per_harvest_unit": "e.g., 20kg per square bale",
       "password_requirements": "At least 6 characters"
     },
     "validation": {
@@ -118,29 +100,16 @@
     }
   },
   "common": {
-    "yes": "Yes",
-    "no": "No",
     "no_entries": "No entries yet",
     "week_short": "W{{week}}",
-    "area_acres": "Area: {{area}}a",
-    "dont_show_again": "Don't show this again",
     "error": "Error",
     "unknown_error": "An unknown error has occurred.",
-    "danger_zone": "Caution!",
     "all_entries_will_be_deleted": "All entries will be permanently deleted.",
     "remaining_quantity": "{{quantity}} {{quantityLabel}} still available",
-    "total_amount_w_unit": "Total {{amount}}{{unit}}",
     "if_problem_contact_support": "If you have any problems, please contact our support.",
     "unknown": "Unknown",
-    "parcel_number": "Parcel: {{number}}",
-    "usage": "Usage",
-    "federal_farm_id": "Farm number: {{number}}",
-    "new_machine": "New machine",
-    "new_device": "New device",
     "crate": "Crate",
     "total_amount": "Total amount",
-    "dashboard": "Dashboard",
-    "list": "List",
     "notes": "Notes",
     "yearly_average": "Ø {{value}} per year",
     "more_rows": "{{count}} more",
@@ -157,12 +126,9 @@
   },
   "presets": {
     "preset": "Preset",
-    "presets": "Presets",
-    "preset_settings": "Preset settings",
     "select_preset": "Select preset",
     "manage_presets": "Manage presets",
     "manage_harvest_presets": "Manage harvest presets",
-    "manage_tillage_presets": "Manage tillage presets",
     "manage_fertilizer_presets": "Manage fertilizer presets",
     "manage_crop_protection_presets": "Manage crop protection presets",
     "save_as_preset": "Save as preset",
@@ -208,17 +174,6 @@
       "ml": "ml",
       "m3": "m³",
       "ha": "ha"
-    }
-  },
-  "tips": {
-    "select_or_draw_area": {
-      "select_area": "Select your area",
-      "chose_select_or_draw": "Choose existing parcels or draw a custom area.",
-      "draw_tip": "Use these symbols to start and finish drawing. Tap on the map to set corner points. Press and hold the corner points to move them."
-    },
-    "select_plots": {
-      "heading": "Select plots",
-      "content": "Select one or more plots"
     }
   },
   "signup": {
@@ -283,11 +238,7 @@
     "summary": {
       "heading": "All set!",
       "subheading": "Your farm with farm number {{federalFarmId}} is ready.",
-      "subheading_no_federal_farm_id": "Your farm is ready.",
-      "plots_info": "Your plots will be added based on your farm number.",
-      "crops_info": "The current crop will be derived from the usage code.",
-      "edit_plots_info": "You can edit your plots at any time under 'Plots' or via the map.",
-      "press_save_to_finish": "Tap Save to create your farm."
+      "subheading_no_federal_farm_id": "Your farm is ready."
     },
     "preference": {
       "heading": "One last question",
@@ -300,7 +251,6 @@
   },
   "users": {
     "email": "Email address",
-    "verify_new_email_before_in_effect": "You must verify your new email address before the change takes effect.",
     "email_not_verified": "Email address not verified!",
     "email_change_pending": "Verify your new email address",
     "email_change_verification_sent": "An email has been sent to verify your new address. Once verified, your new address will be active.",
@@ -340,10 +290,8 @@
     "tiles": {
       "farm": "My farm",
       "plots": "Plots",
-      "machines": "Equipment",
       "field_calendar": "Field calendar",
       "animal_husbandry": "Animal husbandry",
-      "community": "Community",
       "wiki": "Wiki",
       "tasks": "Tasks"
     },
@@ -356,23 +304,15 @@
     }
   },
   "farm": {
-    "farm": "Farm",
     "journal_show_all": "Show all entries",
     "edit_farm": "Edit farm",
-    "farm_name": "Farm name",
-    "location": "Location",
     "users": "Users",
     "invite_user": "Invite user",
     "invite_email_label": "Email address",
-    "invite_sent": "Invitation sent",
     "invite_pending": "Pending",
     "invite_used": "Accepted",
     "invite_expired": "Expired",
-    "revoke_invite": "Revoke invitation",
-    "members": "Members",
     "remove_member": "Remove member",
-    "promote_to_owner": "Promote to owner",
-    "demote_to_member": "Demote to member",
     "role_owner": "Owner",
     "role_member": "Member",
     "delete_farm": "Delete farm",
@@ -433,16 +373,8 @@
       "no_results": "No matching areas found",
       "open_map": "Open map"
     },
-    "common": {
-      "draw_area_overlap_info": "Overlapping an existing plot will automatically reduce the area.",
-      "affected_plots_warning": "Warning: Overlapping plots will be reduced."
-    },
     "map": {
-      "choose_area": "Which area?",
-      "selected_plot": {
-        "size": "{{size}}a",
-        "crop": "Crop: {{crop}}"
-      }
+      "choose_area": "Which area?"
     },
     "color_mode": {
       "plot": "Plot",
@@ -459,44 +391,16 @@
           "target_meadow": "Meadow",
           "message_meadow": "Draw the meadow freely or select existing plots.",
           "select_plots": "Select plots"
-        },
-        "tips": {
-          "parcel_select": {
-            "heading": "Select a parcel",
-            "overlap_info": "Overlapping an existing plot will automatically reduce the area."
-          },
-          "draw_area": {
-            "heading": "Draw a new plot",
-            "drawing_info": "Tap on the map to set the corner points of your area. Press and hold the corner points to move them.",
-            "finish": "Press the following symbol to confirm the area."
-          }
         }
       },
       "summary": {
         "heading": "Add plot"
       }
     },
-    "edit": {
-      "map": {
-        "tips": {
-          "edit_area": {
-            "heading": "Edit plot",
-            "move_markers": "Hold corner points until they appear above your finger, then drag them to the desired location."
-          }
-        }
-      }
-    },
     "delete": {
       "heading": "Delete plot {{name}}?",
       "entries_warning": "All records for this plot will be permanently deleted.",
       "confirm_by_typing_name": "Type the plot name to confirm deletion."
-    },
-    "actions": {
-      "adjust": "Adjust",
-      "adjust_area": "Adjust area",
-      "manage_area": "Manage area",
-      "split": "Split",
-      "merge": "Merge"
     },
     "split_onboarding": {
       "welcome_heading": "Split plot",
@@ -510,12 +414,6 @@
       "abort_body": "Press the X to cancel and discard the split."
     },
     "split": {
-      "heading": "Split plot",
-      "mode_line": "Line",
-      "mode_polygon": "Area",
-      "mode_select_message": "Choose how you want to split the plot.",
-      "line_tip": "Draw a line across the plot to split it.",
-      "polygon_tip": "Draw an area within the plot to cut it out.",
       "split_failed": "Split failed. Make sure the line fully crosses the plot.",
       "summary": {
         "heading": "Confirm split",
@@ -531,9 +429,6 @@
       }
     },
     "merge": {
-      "heading": "Merge plots",
-      "select_plots": "Select the plots to be merged.",
-      "min_two_plots": "Select at least 2 plots.",
       "summary": {
         "heading": "Confirm merge",
         "strategy_label": "Strategy",
@@ -548,7 +443,6 @@
     "merge_onboarding": {
       "welcome_heading": "Merge plots",
       "welcome_body": "Select the plots you want to merge. The current plot is already selected.",
-      "confirm_heading": "Confirm",
       "confirm_body": "Press the confirm icon once at least 2 plots are selected.",
       "actions_heading": "Done & cancel",
       "confirm_action_body": "Press the checkmark once at least 2 plots are selected.",
@@ -758,31 +652,6 @@
       "save_failed": "The plot could not be saved."
     }
   },
-  "farm_equipment": {
-    "farm_equipment": "Farm equipment",
-    "new_equipment": "New equipment",
-    "device_types": {
-      "harvest": "Harvesting",
-      "tillage": "Tillage",
-      "crop_protection": "Crop protection",
-      "fertilization": "Fertilizer application"
-    }
-  },
-  "crop_protection_equipments": {
-    "new_equipment": "New crop protection equipment",
-    "only_same_unit_warning": "Attention: To use a machine for a plant protection product, it must have the same unit."
-  },
-  "harvest_equipments": {
-    "new_harvester": "New harvesting equipment",
-    "info_default_values": "Default values can be adjusted as needed."
-  },
-  "tillage_equipment": {
-    "new_equipment": "New tillage equipment"
-  },
-  "fertilizer_spreaders": {
-    "new_spreader": "New fertilizer spreader",
-    "only_same_unit_warning": "Attention: To use a machine for a fertilizer, it must have the same unit."
-  },
   "field_calendar": {
     "field_calendar": "Field calendar",
     "field_events_map": "Year in review",
@@ -809,7 +678,6 @@
       "crops": "Crops",
       "measures": "Operations",
       "resources": "Farm inputs",
-      "export": "Export",
       "tools": "Tools"
     },
     "onboarding": {
@@ -826,15 +694,10 @@
     "harvest": "Harvest",
     "add_harvest": "New harvest",
     "harvest_configuration": "Harvest configuration",
-    "harvest_year": "Harvest {{year}}",
     "harvest_date": "Harvest {{date}}",
-    "harvest_plot_name": "Harvest - {{name}}",
     "divide_on_plots": {
       "header_title": "Distribution",
       "heading": "How should the harvest be distributed?"
-    },
-    "select_crop": {
-      "heading": "What was harvested?"
     },
     "select_quantity": {
       "heading": "How much was harvested?"
@@ -856,25 +719,9 @@
         "haylage": "Haylage",
         "other": "Other",
         "none": "None"
-      },
-      "processing_type": {
-        "none": "Loose",
-        "round_bale": "Round bale",
-        "square_bale": "Square bale",
-        "other": "Other"
-      },
-      "select_date": {
-        "heading": "When was it harvested?"
-      },
-      "select_how": {
-        "heading": "How was it harvested?",
-        "no_machinery": "You have not recorded any machines yet. They simplify harvest recording by allowing you to predefine default values."
       }
     },
-    "comparison_year": "Comparison year",
-    "select_comparison_year": "Select comparison year",
     "total_amount": "Total amount",
-    "amount_per_month": "Amount per month",
     "chart_total": "Total",
     "chart_per_month": "Per month",
     "edit_harvest": "Edit harvest"
@@ -882,10 +729,7 @@
   "fertilizers": {
     "fertilizer": "Fertilizer",
     "new_fertilizer": "New fertilizer",
-    "product_in_use_warning": "This fertilizer is in use and cannot be deleted.",
-    "warning_unit_not_editable": "The unit defines in which unit the fertilizer is applied.",
-    "unit_info": "Select in which unit (e.g. liter) the fertilizer is applied.",
-    "default_machine_info": "To simplify recording, a machine can be defined with which this fertilizer is applied."
+    "product_in_use_warning": "This fertilizer is in use and cannot be deleted."
   },
   "seeds": {
     "seeds": "Seeds",
@@ -937,8 +781,6 @@
   "fertilizer_application": {
     "fertilizer_application": "Fertilizer application",
     "fertilizer_application_date": "Fertilizer application {{date}}",
-    "fertilizer_application_year": "Fertilizer application {{year}}",
-    "fertilizer_application_plot_name": "Fertilizer application - {{name}}",
     "add_fertilizer_application": "New fertilizer application",
     "application_configuration": "Application configuration",
     "units": {
@@ -954,19 +796,6 @@
       "header_title": "Distribution",
       "heading": "How should the applied amount be distributed?"
     },
-    "select_date": {
-      "heading": "When was it applied?"
-    },
-    "select_fertilizer": {
-      "header_title": "Fertilizer",
-      "heading": "Which fertilizer was used?",
-      "no_fertilizers": "No fertilizers recorded yet"
-    },
-    "select_machine": {
-      "heading": "Which machine was used?",
-      "no_machines": "Record machines to simplify data entry.",
-      "only_same_unit_warning": "Use equipment matching the fertilizer's unit."
-    },
     "methods": {
       "spread": "Spread",
       "spray": "Spray",
@@ -979,15 +808,8 @@
     "tillage": "Tillage",
     "tillage_configuration": "Tillage configuration",
     "add_tillage": "New tillage",
-    "tillage_year": "Tillage {{year}}",
     "tillage_date": "Tillage {{date}}",
-    "tillage_plot_name": "Tillage - {{name}}",
     "custom_action": "Custom action",
-    "reasons": {
-      "soil_loosening": "Soil loosening",
-      "weed_control": "Weed control",
-      "other": "Other"
-    },
     "actions": {
       "plowing": "Plowing",
       "tilling": "Tilling",
@@ -1006,7 +828,6 @@
     "crop": "Crop",
     "no_crop": "None",
     "crops": "Crops",
-    "crop_name": "Crop {{name}}",
     "new_crop": "New crop",
     "categories": {
       "grass": "Grass",
@@ -1022,7 +843,6 @@
   },
   "crop_families": {
     "crop_families": "Crop families",
-    "crop_family": "Crop family",
     "new_crop_family": "New crop family",
     "waiting_time_in_years": "Waiting time (years)",
     "waiting_time_years": "{{count}} year waiting time",
@@ -1033,20 +853,9 @@
     "crop_protection": "Crop protection",
     "application_configuration": "Crop protection configuration",
     "add_application": "New crop protection application",
-    "crop_protection_year": "Crop protection {{year}}",
-    "crop_protection_plot_name": "Crop protection - {{name}}",
     "crop_protection_date": "Crop protection - {{date}}",
-    "select_date": {
-      "heading": "When was the treatment applied?"
-    },
     "select_product": {
-      "heading": "Which crop protection product was used?",
       "no_products_message": "No crop protection products recorded yet"
-    },
-    "select_equipment": {
-      "heading": "Which equipment was used?",
-      "only_same_unit_warning": "Use equipment matching the product's unit.",
-      "no_matching_equipment_message": "No matching equipment recorded. Record equipment to simplify data entry."
     },
     "select_quantity": {
       "heading": "How much was used?"
@@ -1054,10 +863,6 @@
     "divide_on_plots": {
       "header_title": "Distribution",
       "heading": "How should the applied amount be distributed?"
-    },
-    "list": {
-      "title": "Plot {{plotName}} - {{date}}",
-      "body": "{{totalAmount}}{{unit}} {{product}} ({{method}})"
     },
     "methods": {
       "broadcasting": "Broadcasting",
@@ -1071,38 +876,11 @@
   "crop_protection_product": {
     "add_product": "New crop protection product",
     "product_in_use_warning": "This product is in use and cannot be deleted.",
-    "warning_unit_not_editable": "Attention, the unit cannot be edited! It should correspond to the unit in which the plant protection product is applied.",
-    "unit_info": "Select in which unit (e.g. liter) the product is applied.",
-    "default_machine_info": "To simplify recording, a machine can be defined with which this product is applied."
+    "unit_info": "Select in which unit (e.g. liter) the product is applied."
   },
   "crop_rotations": {
     "crop_rotation": "Crop rotation",
-    "crop_rotation_crop_name": "Crop rotation - {{name}}",
     "crop_rotation_year": "Crop rotation {{year}}",
-    "crop_rotation_plot_name": "Crop rotation - {{name}}",
-    "crop_rotation_date": "Crop rotation - {{date}}",
-    "sowing": "Sowing",
-    "sowings": "Sowings",
-    "sowings_year": "Sowings {{year}}",
-    "sowing_date": "Sowing {{date}}",
-    "new_crop": "New crop",
-    "select_crop": {
-      "heading": "Plan the crop rotation for a crop"
-    },
-    "select_date": {
-      "heading": "When was it sown?"
-    },
-    "cannot_delete_warning": "This is the only crop on this plot and therefore cannot be deleted.",
-    "set_dates_for_all": "Set dates for all",
-    "overlap_warning": "Date range overlaps with an existing crop rotation.",
-    "view_list": "List",
-    "view_timeline": "Timeline",
-    "view_calendar": "Calendar",
-    "last_rotation": "Last: {{crop}} ({{from}} – {{to}})",
-    "last_rotation_permanent": "Current: {{crop}} ({{from}} – permanent)",
-    "permanent_end_date_info": "The end date of the existing crop rotation will be automatically set to the day before the new start date.",
-    "add_rotation": "Add rotation",
-    "permanent": "Permanent",
     "plan": {
       "title": "Crop rotation planning",
       "save_plan": "Save plan",
@@ -1144,12 +922,9 @@
       "apply": "Apply draft",
       "apply_confirm_title": "Apply Draft?",
       "apply_confirm_message": "Rotations for plots in this draft will be replaced. Plots not present in this draft will remain unchanged.",
-      "applied_success": "Draft was applied",
       "delete_confirm": "Delete Draft?",
       "no_drafts": "No drafts yet",
       "updated_at": "Last modified: {{date}}",
-      "add_plots": "Add plots",
-      "select_plots_to_add": "Select plots to add to the draft",
       "edit_plots": "Edit plots",
       "select_plots_to_edit": "Select which plots are included in this draft"
     }
@@ -1159,7 +934,6 @@
       "heading": "Field calendar export",
       "subheading": "Export the field calendar as an Excel document.",
       "select_sections": "Select what should be exported",
-      "confirmation": "The generated Excel document will be sent to you via email at {{email}}.",
       "export_success_heading": "Field calendar successfully exported",
       "export_sent_to": "The document has been sent to {{email}}.",
       "export_mail_being_deliverd": "It may take a moment for the email to arrive. If it doesn't appear, please check your spam folder."
@@ -1285,7 +1059,6 @@
   },
   "animals": {
     "animals": "Animals",
-    "animal": "Animal",
     "new_animal": "New animal",
     "animal_types": {
       "goat": "Goat",
@@ -1323,7 +1096,6 @@
     "father": "Father",
     "father_ear_tag_number": "Father ear tag",
     "children": "Offspring",
-    "add_child": "Add offspring",
     "no_children": "No offspring",
     "animal_husbandry": "Animal husbandry",
     "unregistered_count": "{{count}} unregistered animal",
@@ -1418,7 +1190,6 @@
     "outdoor_journal": "Outdoor journal",
     "outdoor_journal_info": "This journal is automatically generated from the outdoor schedules of the herds and the defined animal categories.",
     "uncategorized_animals_warning": "{{count}} animals without category",
-    "journal_animal_count": "{{count}} animals",
     "herds_onboarding": {
       "step1_heading": "Herds & outdoor",
       "step1_body": "Group your animals into herds and create outdoor schedules. These are automatically used for the outdoor journal.",
@@ -1427,12 +1198,10 @@
       "step3_heading": "Done!",
       "step3_body": "You can now create herds and define outdoor schedules."
     },
-    "family_tree": "Family tree",
     "select_type_for_tree": "Select animal type",
     "hide_dead": "Hide deceased",
     "age_months_short": "{{count}} mo",
     "age_years_short": "{{count}} y",
-    "view_details": "View details",
     "charts": {
       "title": "Statistics",
       "born_this_year": "Born (this year)",
@@ -1447,11 +1216,6 @@
       "title": "TVD import",
       "instructions": "Download the livestock as an Excel file from the TVD and upload it here.",
       "select_file": "Select Excel file",
-      "import_button": "Import",
-      "success_title": "Import completed",
-      "success_message": "{{imported}} of {{total}} animals were imported.",
-      "skipped_message": "{{count}} animals were skipped.",
-      "import_error": "The import failed. Please try again.",
       "error_report_prompt": "It would help us if you sent the file so we can fix the issue.",
       "send_file": "Send file",
       "onboarding_body": "The import needs an Excel file from the TVD. Proceed as follows:",
@@ -1496,7 +1260,6 @@
       "no_meadow": "No meadow",
       "new_meadow": "New meadow",
       "edit_meadow": "Edit meadow",
-      "details": "Details",
       "usage": "Usage",
       "size_value": "{{are}}a ({{squareMeters}}m²)",
       "journal_view_categories": "Categories",
@@ -1556,14 +1319,12 @@
     "drugs": "Drugs",
     "drug": "Drug",
     "new_drug": "New drug",
-    "edit_drug": "Edit drug",
     "drug_name": "Drug name",
     "received_from": "Received from",
     "is_antibiotic": "Antibiotic",
     "critical_antibiotic": "Critical antibiotic",
     "treatment_definitions": "Treatment definitions",
     "no_treatment_definitions": "No treatment definitions yet",
-    "add_animal_type": "Add animal type",
     "dose_value": "Dose",
     "dose_unit": "Unit",
     "dose_per_unit": "Per",
@@ -1593,23 +1354,18 @@
   },
   "treatments": {
     "treatments": "Treatments",
-    "treatment": "Treatment",
     "new_treatment": "New treatment",
-    "edit_treatment": "Edit treatment",
     "treatment_name": "Treatment reason",
     "select_animal": "Select animal",
     "select_drug": "Select drug",
     "treatment_date": "Treatment date",
     "treatment_end_date": "End date",
-    "reason": "Reason",
     "milk_usable_date": "Milk usable from",
     "meat_usable_date": "Meat usable from",
     "organs_usable_date": "Organs usable from",
     "drug_configuration": "Drug configuration",
-    "dose_label": "{{unit}} / {{perUnit}}",
     "no_treatments": "No treatments yet",
     "antibiogram_available": "Antibiogram available",
-    "auto_calculated": "Automatically calculated based on drug",
     "select_animals": "Select animals",
     "no_animals_selected": "No animals selected",
     "n_animals_selected": "{{count}} animals selected",
@@ -1617,7 +1373,6 @@
     "select_all": "Select all ({{count}})",
     "clear_selection": "Clear selection",
     "birthday_filter": "Birthday",
-    "filter_by_birthday": "Filter by birthday",
     "birthday_from": "From",
     "birthday_to": "To",
     "drug_not_defined_for_type": "This drug has no dose and withdrawal periods for {{type}}. Please enter them manually.",
@@ -1709,8 +1464,6 @@
     "edit_task": "Edit task",
     "status_todo": "Open",
     "status_done": "Done",
-    "mark_done": "Mark as done",
-    "reopen": "Reopen",
     "due_date": "Due date",
     "assignee": "Collaborator",
     "labels": "Labels",
@@ -1720,22 +1473,12 @@
     "add_checklist_item": "Add item",
     "generate_checklist_items": "Generate checklist",
     "generate_checklist_items_hint": "Generate a checklist from your animals or plots.",
-    "links": "Links",
     "link_types": {
       "animal": "Animal",
       "animal_plural": "Animals",
-      "plot": "Plot",
       "plot_plural": "Plots",
-      "wiki_entry": "Wiki entry",
-      "wiki_entry_plural": "Wiki entries",
       "herd": "Herd",
-      "herd_plural": "Herds",
-      "contact": "Contact",
-      "contact_plural": "Contacts",
-      "order": "Order",
-      "order_plural": "Orders",
-      "treatment": "Treatment",
-      "treatment_plural": "Treatments"
+      "herd_plural": "Herds"
     },
     "no_tasks": "No tasks found",
     "delete_confirm": "Delete task?",
@@ -1746,7 +1489,6 @@
     "wiki": "Wiki",
     "editor_placeholder": "Write something…",
     "private": "Private",
-    "pending_section": "My submissions",
     "status": {
       "draft": "Draft",
       "submitted": "Submitted",
@@ -1762,8 +1504,6 @@
     "activity_changes_requested": "A submission requires changes",
     "activity_approved": "A submission was approved",
     "activity_rejected": "A submission was denied",
-    "create_entry": "New entry",
-    "edit_entry": "Edit",
     "submit": "Submit",
     "submit_confirm": "Do you want to submit this entry for review?",
     "share": "Share",
@@ -1774,8 +1514,6 @@
     "title": "Title",
     "body": "Content",
     "comments": "Comments",
-    "send": "Send",
-    "in_review": "Under review",
     "required_locale_hint": "German is required",
     "changes_requested": "Changes requested",
     "image_too_large": "The image is too large (max. 10 MB).",
@@ -1808,7 +1546,6 @@
     "status_inactive": "Inactive",
     "auto_renewing": "Auto-renewal",
     "trial_ends": "Trial ends on",
-    "starts_after_trial": "Your membership will start automatically after the trial.",
     "valid_until": "Valid until",
     "become_member": "Become a member",
     "renew": "Renew membership",
@@ -1997,7 +1734,6 @@
     "weight_positive": "Weight must be greater than 0",
     "date": "Date",
     "weight_per_animal": "Effective amount per animal",
-    "effective_amount": "Effective amount",
     "heats": "Pregnancy",
     "heat": "In heat",
     "no_heats": "No entries",

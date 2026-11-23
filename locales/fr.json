@@ -13,11 +13,8 @@
     "ok": "OK",
     "close": "Fermer",
     "delete": "Supprimer",
-    "details": "Détails",
     "parcel_select": "Sélectionner la parcelle",
     "draw_area": "Dessiner une zone",
-    "edit_area": "Modifier la zone",
-    "show_entries": "Afficher les entrées",
     "export": "Exporter",
     "finish": "Terminer",
     "done": "Terminé",
@@ -35,8 +32,6 @@
     "labels": {
       "name": "Nom",
       "description": "Description",
-      "display_name": "Nom d'affichage",
-      "select_date": "Sélectionner une date",
       "email": "Email",
       "password": "Mot de passe",
       "password_repeat": "Répéter le mot de passe",
@@ -52,10 +47,8 @@
       "area_hectares": "Surface (ha)",
       "divide_by_plot_size": "Diviser en fonction de la taille du champ",
       "plot_w_size": "Champ {{name}} ({{size}}a)",
-      "device": "Appareil",
       "none": "Aucun",
       "method": "Méthode",
-      "capacity_per_unit": "{{unit}} par {{loadUnit}}",
       "crop_protection_product": "Produit phytosanitaire",
       "load": "Charge",
       "loads": "Charges",
@@ -64,24 +57,16 @@
       "amount_unit": "Quantité {{unit}}",
       "amount_of_loads": "Nombre de charges",
       "amount_per_load": "Quantité par charge",
-      "unit_per_load": "{{unit}} par charge",
       "total": "Total",
       "total_unit": "Total {{unit}}",
-      "total_w_amount_unit": "Total {{amount}}{{unit}}",
       "additional_notes": "Notes supplémentaires",
       "unit": "Unité",
       "kind": "Variété",
-      "sowing": "Semis",
       "category": "Catégorie",
       "type": "Type",
       "fertiliser": "Engrais",
-      "reason": "Raison",
       "action": "Action",
       "conservation": "Conservation",
-      "processing_type": "Transformation",
-      "weight_kg_per_harvest_unit": "Poids par unité de récolte (kg)",
-      "machine": "Machine",
-      "default_machine": "Machine par défaut",
       "organic": "Biologique",
       "mineralic": "Minéral",
       "produced_units": "Unités produites",
@@ -94,15 +79,12 @@
       "cutting_date": "Date de coupe",
       "permanent": "Permanent",
       "sex": "Sexe",
-      "date_range": "Période",
-      "duration": "Durée",
       "registration_number": "Numéro d'homologation"
     },
     "placeholders": {
       "location_search": "ex. Rue, Numéro, Ville",
       "federal_farm_number": "ex. BEB113945 ou LU3862",
       "search": "Rechercher...",
-      "weight_kg_per_harvest_unit": "ex. 20kg par balle carrée",
       "password_requirements": "Au moins 6 caractères"
     },
     "validation": {
@@ -118,29 +100,16 @@
     }
   },
   "common": {
-    "yes": "Oui",
-    "no": "Non",
     "no_entries": "Aucune entrée pour le moment",
     "week_short": "S{{week}}",
-    "area_acres": "Surface: {{area}}a",
-    "dont_show_again": "Ne plus afficher",
     "error": "Erreur",
     "unknown_error": "Une erreur inconnue s'est produite.",
-    "danger_zone": "Attention !",
     "all_entries_will_be_deleted": "Toutes les entrées seront définitivement supprimées.",
     "remaining_quantity": "{{quantity}} {{quantityLabel}} encore disponible",
-    "total_amount_w_unit": "Total {{amount}}{{unit}}",
     "if_problem_contact_support": "En cas de problème, contacte notre support.",
     "unknown": "Inconnu",
-    "parcel_number": "Parcelle : {{number}}",
-    "usage": "Utilisation",
-    "federal_farm_id": "Numéro d'exploitation : {{number}}",
-    "new_machine": "Nouvelle machine",
-    "new_device": "Nouveau dispositif",
     "crate": "Caisse",
     "total_amount": "Quantité totale",
-    "dashboard": "Tableau de bord",
-    "list": "Liste",
     "notes": "Notes",
     "yearly_average": "Ø {{value}} par an",
     "more_rows": "{{count}} de plus",
@@ -157,12 +126,9 @@
   },
   "presets": {
     "preset": "Modèle",
-    "presets": "Modèles",
-    "preset_settings": "Paramètres des modèles",
     "select_preset": "Sélectionner un modèle",
     "manage_presets": "Gérer les modèles",
     "manage_harvest_presets": "Gérer les modèles de récolte",
-    "manage_tillage_presets": "Gérer les modèles de travail du sol",
     "manage_fertilizer_presets": "Gérer les modèles d'engrais",
     "manage_crop_protection_presets": "Gérer les modèles phytosanitaires",
     "save_as_preset": "Enregistrer comme modèle",
@@ -208,17 +174,6 @@
       "ml": "ml",
       "m3": "m³",
       "ha": "ha"
-    }
-  },
-  "tips": {
-    "select_or_draw_area": {
-      "select_area": "Sélectionne ta zone",
-      "chose_select_or_draw": "Choisis des champs entiers ou dessine une zone personnalisée.",
-      "draw_tip": "Utilise ces icônes pour commencer et terminer le dessin. Appuie sur la carte pour placer les points d'angle. Maintiens les points d'angle enfoncés pour les déplacer."
-    },
-    "select_plots": {
-      "heading": "Sélectionner les champs utilisés",
-      "content": "Sélectionne un ou plusieurs champs"
     }
   },
   "signup": {
@@ -283,11 +238,7 @@
     "summary": {
       "heading": "Tout est prêt !",
       "subheading": "Ta ferme avec le numéro d'exploitation {{federalFarmId}} est prête.",
-      "subheading_no_federal_farm_id": "Ta ferme est prête.",
-      "plots_info": "Tes surfaces seront ajoutées comme champs sur la base de ton numéro d'exploitation.",
-      "crops_info": "La culture actuelle est dérivée du code d'utilisation.",
-      "edit_plots_info": "Tu peux modifier tes surfaces à tout moment sous « Champs » ou via la carte.",
-      "press_save_to_finish": "Appuie sur Enregistrer pour créer ta ferme."
+      "subheading_no_federal_farm_id": "Ta ferme est prête."
     },
     "preference": {
       "heading": "Une dernière question",
@@ -300,7 +251,6 @@
   },
   "users": {
     "email": "Adresse e-mail",
-    "verify_new_email_before_in_effect": "Ta nouvelle adresse e-mail doit être vérifiée avant que la modification ne prenne effet.",
     "email_not_verified": "Adresse e-mail non vérifiée !",
     "email_change_pending": "Vérifie ta nouvelle adresse e-mail",
     "email_change_verification_sent": "Un e-mail a été envoyé pour vérifier ta nouvelle adresse. Une fois confirmée, la nouvelle adresse sera activée.",
@@ -340,10 +290,8 @@
     "tiles": {
       "farm": "Ma ferme",
       "plots": "Champs",
-      "machines": "Machines",
       "field_calendar": "Calendrier cultural",
       "animal_husbandry": "Élevage",
-      "community": "Communauté",
       "wiki": "Wiki",
       "tasks": "Tâches"
     },
@@ -356,23 +304,15 @@
     }
   },
   "farm": {
-    "farm": "Ma ferme",
     "journal_show_all": "Afficher toutes les entrées",
     "edit_farm": "Modifier la ferme",
-    "farm_name": "Nom de la ferme",
-    "location": "Localisation",
     "users": "Utilisateurs",
     "invite_user": "Inviter un utilisateur",
     "invite_email_label": "Adresse e-mail",
-    "invite_sent": "Invitation envoyée",
     "invite_pending": "En attente",
     "invite_used": "Acceptée",
     "invite_expired": "Expirée",
-    "revoke_invite": "Révoquer l'invitation",
-    "members": "Membres",
     "remove_member": "Supprimer le membre",
-    "promote_to_owner": "Promouvoir propriétaire",
-    "demote_to_member": "Rétrograder en membre",
     "role_owner": "Propriétaire",
     "role_member": "Membre",
     "delete_farm": "Supprimer la ferme",
@@ -433,16 +373,8 @@
       "no_results": "Aucune surface trouvée",
       "open_map": "Ouvrir la carte"
     },
-    "common": {
-      "draw_area_overlap_info": "Si la zone chevauche un champ existant, celui-ci sera automatiquement réduit.",
-      "affected_plots_warning": "Les champs suivants seront réduits par ce champ."
-    },
     "map": {
-      "choose_area": "Quelle surface ?",
-      "selected_plot": {
-        "size": "{{size}}a",
-        "crop": "Culture : {{crop}}"
-      }
+      "choose_area": "Quelle surface ?"
     },
     "color_mode": {
       "plot": "Champ",
@@ -459,44 +391,16 @@
           "target_meadow": "Pâture",
           "message_meadow": "Dessine librement la pâture ou sélectionne des champs existants.",
           "select_plots": "Sélectionner des champs"
-        },
-        "tips": {
-          "parcel_select": {
-            "heading": "Sélectionner une parcelle",
-            "overlap_info": "Si la parcelle sélectionnée chevauche un champ existant, celui-ci sera automatiquement réduit."
-          },
-          "draw_area": {
-            "heading": "Dessiner un nouveau champ",
-            "drawing_info": "Appuie sur la carte pour placer les coins de ta surface. Maintiens les points d'angle enfoncés pour les déplacer.",
-            "finish": "Appuie sur l'icône suivante pour confirmer la surface."
-          }
         }
       },
       "summary": {
         "heading": "Ajouter un champ"
       }
     },
-    "edit": {
-      "map": {
-        "tips": {
-          "edit_area": {
-            "heading": "Modifier le champ",
-            "move_markers": "Maintiens les points d'angle enfoncés jusqu'à ce qu'ils apparaissent devant ton doigt et déplace-les à l'endroit souhaité."
-          }
-        }
-      }
-    },
     "delete": {
       "heading": "Veux-tu vraiment supprimer le champ {{name}} ?",
       "entries_warning": "Toutes les entrées pour ce champ seront supprimées de façon irréversible.",
       "confirm_by_typing_name": "Pour supprimer ce champ, saisis son nom et confirme."
-    },
-    "actions": {
-      "adjust": "Ajuster",
-      "adjust_area": "Ajuster la surface",
-      "manage_area": "Gérer la surface",
-      "split": "Diviser",
-      "merge": "Fusionner"
     },
     "split_onboarding": {
       "welcome_heading": "Diviser un champ",
@@ -510,12 +414,6 @@
       "abort_body": "Appuie sur le X pour annuler et ignorer la division."
     },
     "split": {
-      "heading": "Diviser le champ",
-      "mode_line": "Ligne",
-      "mode_polygon": "Surface",
-      "mode_select_message": "Choisis comment diviser le champ.",
-      "line_tip": "Dessine une ligne en travers du champ pour le diviser.",
-      "polygon_tip": "Dessine une surface à l'intérieur du champ pour la découper.",
       "split_failed": "Échec de la division. Assure-toi que la ligne traverse entièrement le champ.",
       "summary": {
         "heading": "Confirmer la division",
@@ -531,9 +429,6 @@
       }
     },
     "merge": {
-      "heading": "Fusionner les champs",
-      "select_plots": "Sélectionne les champs à fusionner.",
-      "min_two_plots": "Sélectionne au moins 2 champs.",
       "summary": {
         "heading": "Confirmer la fusion",
         "strategy_label": "Stratégie",
@@ -548,7 +443,6 @@
     "merge_onboarding": {
       "welcome_heading": "Fusionner des champs",
       "welcome_body": "Sélectionne les champs à fusionner. Le champ actif est déjà sélectionné.",
-      "confirm_heading": "Confirmer",
       "confirm_body": "Appuie sur l'icône de confirmation quand au moins 2 champs sont sélectionnés.",
       "actions_heading": "Terminer & annuler",
       "confirm_action_body": "Appuie sur l'icône de confirmation quand au moins 2 champs sont sélectionnés.",
@@ -758,31 +652,6 @@
       "save_failed": "Le champ n'a pas pu être enregistré."
     }
   },
-  "farm_equipment": {
-    "farm_equipment": "Machines et équipements",
-    "new_equipment": "Nouvel équipement",
-    "device_types": {
-      "harvest": "Récolte",
-      "tillage": "Travail du sol",
-      "crop_protection": "Protection des cultures",
-      "fertilization": "Fertilisation"
-    }
-  },
-  "crop_protection_equipments": {
-    "new_equipment": "Nouveau dispositif de protection des cultures",
-    "only_same_unit_warning": "Pour utiliser une machine pour un produit phytosanitaire, elle doit avoir la même unité."
-  },
-  "harvest_equipments": {
-    "new_harvester": "Nouvelle moissonneuse-batteuse",
-    "info_default_values": "Ces configurations sont des valeurs par défaut et peuvent être ajustées si nécessaire."
-  },
-  "tillage_equipment": {
-    "new_equipment": "Nouvel équipement de travail du sol"
-  },
-  "fertilizer_spreaders": {
-    "new_spreader": "Nouvel épandeur d'engrais",
-    "only_same_unit_warning": "Pour utiliser une machine pour un engrais, elle doit avoir la même unité."
-  },
   "field_calendar": {
     "field_calendar": "Calendrier cultural",
     "field_events_map": "Rétrospective annuelle",
@@ -809,7 +678,6 @@
       "crops": "Cultures",
       "measures": "Interventions",
       "resources": "Intrants",
-      "export": "Export",
       "tools": "Outils"
     },
     "onboarding": {
@@ -826,15 +694,10 @@
     "harvest": "Récolte",
     "add_harvest": "Nouvelle récolte",
     "harvest_configuration": "Configuration de la récolte",
-    "harvest_year": "Récolte {{year}}",
     "harvest_date": "Récolte {{date}}",
-    "harvest_plot_name": "Récolte - {{name}}",
     "divide_on_plots": {
       "header_title": "Distribution",
       "heading": "Comment la récolte doit-elle être distribuée ?"
-    },
-    "select_crop": {
-      "heading": "Qu'est-ce qui a été récolté ?"
     },
     "select_quantity": {
       "heading": "Quelle est la quantité récoltée ?"
@@ -856,25 +719,9 @@
         "haylage": "Ensilage d'herbe",
         "other": "Autre",
         "none": "Aucune"
-      },
-      "processing_type": {
-        "none": "En vrac",
-        "round_bale": "Balle ronde",
-        "square_bale": "Balle carrée",
-        "other": "Autre"
-      },
-      "select_date": {
-        "heading": "Quand a-t-elle été récoltée ?"
-      },
-      "select_how": {
-        "heading": "Comment a-t-elle été récoltée ?",
-        "no_machinery": "Tu n'as pas encore ajouté de machine. Les machines simplifient le suivi des récoltes en définissant des valeurs par défaut."
       }
     },
-    "comparison_year": "Année de comparaison",
-    "select_comparison_year": "Sélectionner l'année de comparaison",
     "total_amount": "Quantité totale",
-    "amount_per_month": "Quantité par mois",
     "chart_total": "Total",
     "chart_per_month": "Par mois",
     "edit_harvest": "Modifier la récolte"
@@ -882,10 +729,7 @@
   "fertilizers": {
     "fertilizer": "Engrais",
     "new_fertilizer": "Nouvel engrais",
-    "product_in_use_warning": "Cet engrais est en cours d'utilisation et ne peut donc être modifié que dans une mesure limitée et ne peut pas être supprimé.",
-    "warning_unit_not_editable": "L'unité définit dans quelle unité l'engrais est appliqué.",
-    "unit_info": "Sélectionne l'unité dans laquelle l'engrais est appliqué (ex. litres).",
-    "default_machine_info": "Pour faciliter l'enregistrement, une machine peut être définie pour appliquer cet engrais."
+    "product_in_use_warning": "Cet engrais est en cours d'utilisation et ne peut donc être modifié que dans une mesure limitée et ne peut pas être supprimé."
   },
   "seeds": {
     "seeds": "Semences",
@@ -937,8 +781,6 @@
   "fertilizer_application": {
     "fertilizer_application": "Fertilisation",
     "fertilizer_application_date": "Fertilisation {{date}}",
-    "fertilizer_application_year": "Fertilisation {{year}}",
-    "fertilizer_application_plot_name": "Fertilisation - {{name}}",
     "add_fertilizer_application": "Nouvelle fertilisation",
     "application_configuration": "Configuration de l'application",
     "units": {
@@ -954,19 +796,6 @@
       "header_title": "Distribution",
       "heading": "Comment la quantité appliquée doit-elle être distribuée ?"
     },
-    "select_date": {
-      "heading": "Quand a-t-il été appliqué ?"
-    },
-    "select_fertilizer": {
-      "header_title": "Engrais",
-      "heading": "Quel engrais a été utilisé ?",
-      "no_fertilizers": "Aucun engrais enregistré pour le moment"
-    },
-    "select_machine": {
-      "heading": "Quelle machine a été utilisée ?",
-      "no_machines": "Tu n'as pas encore enregistré de machine. Les machines simplifient la saisie en prédéfinissant des valeurs par défaut.",
-      "only_same_unit_warning": "Tu ne peux utiliser que des machines qui utilisent la même unité que l'engrais sélectionné."
-    },
     "methods": {
       "spread": "Épandage",
       "spray": "Pulvérisation",
@@ -979,15 +808,8 @@
     "tillage": "Travail du sol",
     "tillage_configuration": "Configuration du travail du sol",
     "add_tillage": "Nouveau travail du sol",
-    "tillage_year": "Travail du sol {{year}}",
     "tillage_date": "Travail du sol {{date}}",
-    "tillage_plot_name": "Travail du sol - {{name}}",
     "custom_action": "Action personnalisée",
-    "reasons": {
-      "soil_loosening": "Décompactage du sol",
-      "weed_control": "Désherbage",
-      "other": "Autre"
-    },
     "actions": {
       "plowing": "Labour",
       "tilling": "Bêchage",
@@ -1006,7 +828,6 @@
     "crop": "Culture",
     "no_crop": "Aucune",
     "crops": "Cultures",
-    "crop_name": "Culture {{name}}",
     "new_crop": "Nouvelle culture",
     "categories": {
       "grass": "Herbe",
@@ -1022,7 +843,6 @@
   },
   "crop_families": {
     "crop_families": "Familles de cultures",
-    "crop_family": "Famille de cultures",
     "new_crop_family": "Nouvelle famille de cultures",
     "waiting_time_in_years": "Temps d'attente (années)",
     "waiting_time_years": "{{count}} année d'attente",
@@ -1033,20 +853,9 @@
     "crop_protection": "Phytosanitaire",
     "application_configuration": "Configuration phytosanitaire",
     "add_application": "Nouveau phytosanitaire",
-    "crop_protection_year": "Phytosanitaire {{year}}",
-    "crop_protection_plot_name": "Phytosanitaire - {{name}}",
     "crop_protection_date": "Phytosanitaire {{date}}",
-    "select_date": {
-      "heading": "Quand la mesure a-t-elle été appliquée ?"
-    },
     "select_product": {
-      "heading": "Quel produit phytosanitaire a été utilisé ?",
       "no_products_message": "Aucun produit phytosanitaire enregistré pour le moment"
-    },
-    "select_equipment": {
-      "heading": "Quel équipement a été utilisé ?",
-      "only_same_unit_warning": "Tu ne peux utiliser que des équipements qui utilisent la même unité que le produit phytosanitaire.",
-      "no_matching_equipment_message": "Aucun équipement correspondant enregistré pour le moment. Ceux-ci simplifient la saisie des données en prédéfinissant des valeurs par défaut."
     },
     "select_quantity": {
       "heading": "Quelle quantité a été utilisée ?"
@@ -1054,10 +863,6 @@
     "divide_on_plots": {
       "header_title": "Distribution",
       "heading": "Comment la quantité appliquée doit-elle être distribuée ?"
-    },
-    "list": {
-      "title": "Champ {{plotName}} - {{date}}",
-      "body": "{{totalAmount}}{{unit}} {{product}} ({{method}})"
     },
     "methods": {
       "broadcasting": "Épandage",
@@ -1071,38 +876,11 @@
   "crop_protection_product": {
     "add_product": "Nouveau produit phytosanitaire",
     "product_in_use_warning": "Ce produit phytosanitaire est utilisé et ne peut donc pas être supprimé.",
-    "warning_unit_not_editable": "L'unité ne peut pas être modifiée ! Elle doit correspondre à l'unité dans laquelle le produit phytosanitaire est appliqué.",
-    "unit_info": "Sélectionne l'unité dans laquelle le produit est appliqué (ex. litres).",
-    "default_machine_info": "Pour faciliter l'enregistrement, une machine peut être définie pour appliquer ce produit."
+    "unit_info": "Sélectionne l'unité dans laquelle le produit est appliqué (ex. litres)."
   },
   "crop_rotations": {
     "crop_rotation": "Rotation des cultures",
-    "crop_rotation_crop_name": "Rotation des cultures - {{name}}",
     "crop_rotation_year": "Rotation des cultures {{year}}",
-    "crop_rotation_plot_name": "Rotation des cultures - {{name}}",
-    "crop_rotation_date": "Rotation des cultures - {{date}}",
-    "sowing": "Semis",
-    "sowings": "Semis",
-    "sowings_year": "Semis {{year}}",
-    "sowing_date": "Semis {{date}}",
-    "new_crop": "Nouvelle culture",
-    "select_crop": {
-      "heading": "Planifie la rotation pour une culture"
-    },
-    "select_date": {
-      "heading": "Quand a-t-il été semé ?"
-    },
-    "cannot_delete_warning": "C'est la seule culture sur ce champ et ne peut donc pas être supprimée.",
-    "set_dates_for_all": "Définir les dates pour tous",
-    "overlap_warning": "La période chevauche une rotation de culture existante.",
-    "view_list": "Liste",
-    "view_timeline": "Chronologie",
-    "view_calendar": "Calendrier",
-    "last_rotation": "Dernière : {{crop}} ({{from}} – {{to}})",
-    "last_rotation_permanent": "Actuelle : {{crop}} ({{from}} – permanente)",
-    "permanent_end_date_info": "La date de fin de la rotation actuelle sera automatiquement fixée au jour précédant la nouvelle date de début.",
-    "add_rotation": "Ajouter une rotation",
-    "permanent": "Permanent",
     "plan": {
       "title": "Planification des rotations",
       "save_plan": "Enregistrer le plan",
@@ -1144,12 +922,9 @@
       "apply": "Appliquer le brouillon",
       "apply_confirm_title": "Appliquer le brouillon?",
       "apply_confirm_message": "Les rotations des champs dans ce brouillon seront remplacées. Les champs non présents dans ce brouillon resteront inchangés.",
-      "applied_success": "Brouillon appliqué",
       "delete_confirm": "Supprimer le brouillon?",
       "no_drafts": "Aucun brouillon",
       "updated_at": "Dernière modification: {{date}}",
-      "add_plots": "Ajouter des champs",
-      "select_plots_to_add": "Sélectionner les champs à ajouter au brouillon",
       "edit_plots": "Modifier les champs",
       "select_plots_to_edit": "Sélectionner les champs à inclure dans ce brouillon"
     }
@@ -1159,7 +934,6 @@
       "heading": "Exportation du calendrier cultural",
       "subheading": "Exporte le calendrier cultural sous forme de document Excel.",
       "select_sections": "Sélectionne ce qui doit être exporté",
-      "confirmation": "Le document Excel généré te sera envoyé par e-mail à {{email}}.",
       "export_success_heading": "Calendrier cultural exporté avec succès",
       "export_sent_to": "Le document a été envoyé à {{email}}.",
       "export_mail_being_deliverd": "L'e-mail peut mettre un moment à arriver. S'il n'apparaît pas, vérifie ton dossier spam."
@@ -1285,7 +1059,6 @@
   },
   "animals": {
     "animals": "Animaux",
-    "animal": "Animal",
     "new_animal": "Nouvel animal",
     "animal_types": {
       "goat": "Chèvre",
@@ -1323,7 +1096,6 @@
     "father": "Père",
     "father_ear_tag_number": "Marque auriculaire père",
     "children": "Descendants",
-    "add_child": "Ajouter un descendant",
     "no_children": "Aucun descendant",
     "animal_husbandry": "Élevage",
     "unregistered_count": "{{count}} animal non enregistré",
@@ -1418,7 +1190,6 @@
     "outdoor_journal": "Journal de sorties",
     "outdoor_journal_info": "Ce journal est généré automatiquement à partir des plannings de sorties des troupeaux et des catégories d'animaux définies.",
     "uncategorized_animals_warning": "{{count}} animaux sans catégorie",
-    "journal_animal_count": "{{count}} animaux",
     "herds_onboarding": {
       "step1_heading": "Troupeaux & sorties",
       "step1_body": "Regroupe tes animaux en troupeaux et crée des plannings de sorties. Ils sont utilisés automatiquement pour le journal des sorties.",
@@ -1427,12 +1198,10 @@
       "step3_heading": "Terminé !",
       "step3_body": "Tu peux maintenant créer des troupeaux et définir des plannings de sorties."
     },
-    "family_tree": "Arbre généalogique",
     "select_type_for_tree": "Sélectionner l'espèce",
     "hide_dead": "Masquer les décédés",
     "age_months_short": "{{count}} m",
     "age_years_short": "{{count}} a",
-    "view_details": "Voir les détails",
     "charts": {
       "title": "Statistiques",
       "born_this_year": "Nés (cette année)",
@@ -1447,11 +1216,6 @@
       "title": "Import BDTA",
       "instructions": "Télécharge le « Cheptel » sous forme de fichier Excel depuis la BDTA et importe-le ici.",
       "select_file": "Sélectionner un fichier Excel",
-      "import_button": "Importer",
-      "success_title": "Import terminé",
-      "success_message": "{{imported}} sur {{total}} animaux ont été importés.",
-      "skipped_message": "{{count}} animaux ont été ignorés.",
-      "import_error": "L'importation a échoué. Réessaie.",
       "error_report_prompt": "Ce serait utile que tu nous envoies le fichier pour que nous puissions résoudre le problème.",
       "send_file": "Envoyer le fichier",
       "onboarding_body": "L'import nécessite un fichier Excel de la BDTA. Procède comme suit :",
@@ -1496,7 +1260,6 @@
       "no_meadow": "Aucune pâture",
       "new_meadow": "Nouvelle pâture",
       "edit_meadow": "Modifier la pâture",
-      "details": "Détails",
       "usage": "Occupation",
       "size_value": "{{are}}a ({{squareMeters}}m²)",
       "journal_view_categories": "Catégories",
@@ -1556,14 +1319,12 @@
     "drugs": "Médicaments",
     "drug": "Médicament",
     "new_drug": "Nouveau médicament",
-    "edit_drug": "Modifier le médicament",
     "drug_name": "Nom du médicament",
     "received_from": "Reçu de",
     "is_antibiotic": "Antibiotique",
     "critical_antibiotic": "Antibiotique critique",
     "treatment_definitions": "Définitions de traitement",
     "no_treatment_definitions": "Aucune définition de traitement",
-    "add_animal_type": "Ajouter un type d'animal",
     "dose_value": "Dose",
     "dose_unit": "Unité",
     "dose_per_unit": "Par",
@@ -1593,23 +1354,18 @@
   },
   "treatments": {
     "treatments": "Traitements",
-    "treatment": "Traitement",
     "new_treatment": "Nouveau traitement",
-    "edit_treatment": "Modifier le traitement",
     "treatment_name": "Motif du traitement",
     "select_animal": "Sélectionner un animal",
     "select_drug": "Sélectionner un médicament",
     "treatment_date": "Date du traitement",
     "treatment_end_date": "Date de fin",
-    "reason": "Motif",
     "milk_usable_date": "Lait utilisable dès le",
     "meat_usable_date": "Viande utilisable dès le",
     "organs_usable_date": "Organes utilisables dès le",
     "drug_configuration": "Configuration du médicament",
-    "dose_label": "{{unit}} / {{perUnit}}",
     "no_treatments": "Aucun traitement pour le moment",
     "antibiogram_available": "Antibiogramme disponible",
-    "auto_calculated": "Calculé automatiquement selon le médicament",
     "select_animals": "Sélectionner les animaux",
     "no_animals_selected": "Aucun animal sélectionné",
     "n_animals_selected": "{{count}} animaux sélectionnés",
@@ -1617,7 +1373,6 @@
     "select_all": "Tout sélectionner ({{count}})",
     "clear_selection": "Effacer la sélection",
     "birthday_filter": "Anniversaire",
-    "filter_by_birthday": "Filtrer par date de naissance",
     "birthday_from": "De",
     "birthday_to": "Jusqu'au",
     "drug_not_defined_for_type": "Ce médicament n'a pas de dosage ni de délais d'attente pour les {{type}}. Veuillez les saisir manuellement.",
@@ -1709,8 +1464,6 @@
     "edit_task": "Modifier la tâche",
     "status_todo": "Ouvert",
     "status_done": "Terminé",
-    "mark_done": "Marquer comme terminé",
-    "reopen": "Rouvrir",
     "due_date": "Date d'échéance",
     "assignee": "Collaborateur",
     "labels": "Étiquettes",
@@ -1720,22 +1473,12 @@
     "add_checklist_item": "Ajouter un élément",
     "generate_checklist_items": "Générer une liste de contrôle",
     "generate_checklist_items_hint": "Génère une liste de contrôle à partir de tes animaux ou champs.",
-    "links": "Liens",
     "link_types": {
       "animal": "Animal",
       "animal_plural": "Animaux",
-      "plot": "Champ",
       "plot_plural": "Champs",
-      "wiki_entry": "Entrée wiki",
-      "wiki_entry_plural": "Entrées wiki",
       "herd": "Troupeau",
-      "herd_plural": "Troupeaux",
-      "contact": "Contact",
-      "contact_plural": "Contacts",
-      "order": "Commande",
-      "order_plural": "Commandes",
-      "treatment": "Traitement",
-      "treatment_plural": "Traitements"
+      "herd_plural": "Troupeaux"
     },
     "no_tasks": "Aucune tâche trouvée",
     "delete_confirm": "Supprimer la tâche ?",
@@ -1746,7 +1489,6 @@
     "wiki": "Wiki",
     "editor_placeholder": "Écris quelque chose…",
     "private": "Privé",
-    "pending_section": "Mes soumissions",
     "status": {
       "draft": "Brouillon",
       "submitted": "Soumis",
@@ -1762,8 +1504,6 @@
     "activity_changes_requested": "Une soumission nécessite des modifications",
     "activity_approved": "Une soumission a été approuvée",
     "activity_rejected": "Une soumission a été refusée",
-    "create_entry": "Nouvelle entrée",
-    "edit_entry": "Modifier",
     "submit": "Soumettre",
     "submit_confirm": "Veux-tu soumettre cette entrée pour révision ?",
     "share": "Partager",
@@ -1775,8 +1515,6 @@
     "body": "Contenu",
     "comments": "Commentaires",
     "add_comment": "Ajouter un commentaire…",
-    "send": "Envoyer",
-    "in_review": "En révision",
     "required_locale_hint": "L'allemand est requis",
     "changes_requested": "Modifications demandées",
     "image_too_large": "L'image est trop grande (max. 10 Mo).",
@@ -1808,7 +1546,6 @@
     "status_inactive": "Inactif",
     "auto_renewing": "Renouvellement automatique",
     "trial_ends": "Fin de la période d'essai",
-    "starts_after_trial": "Ton abonnement démarrera automatiquement après la période d'essai.",
     "valid_until": "Valable jusqu'au",
     "become_member": "Devenir membre",
     "renew": "Renouveler l'adhésion",
@@ -1997,7 +1734,6 @@
     "weight_positive": "Le poids doit être supérieur à 0",
     "date": "Date",
     "weight_per_animal": "Quantité effective par animal",
-    "effective_amount": "Quantité effective",
     "heats": "Gestation",
     "heat": "En chaleur",
     "no_heats": "Aucune entrée",
