@@ -26,6 +26,7 @@ import {
 import { useMeadowsQuery } from "./meadows.hooks";
 import { usePermissions } from "@/features/user/users.hooks";
 import { OutdoorScheduleOverrideFormScreenProps } from "./navigation/animals-routes";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type OverrideFormValues = {
   type: OutdoorScheduleType;
@@ -56,7 +57,7 @@ export function OutdoorScheduleOverrideFormScreen({
     watch,
     getValues,
     setValue,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<OverrideFormValues>({
     defaultValues: {
       type: override?.type ?? "stable",
@@ -66,6 +67,8 @@ export function OutdoorScheduleOverrideFormScreen({
       notes: override?.notes ?? "",
     },
   });
+  // Asks before leaving with unsaved changes (only editors can save at all)
+  useDiscardChangesPrompt(canEdit && isDirty);
   const type = watch("type");
   const startDate = watch("startDate");
 

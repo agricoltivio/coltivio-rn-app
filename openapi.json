@@ -12062,6 +12062,15 @@
             "schema": {
               "$ref": "#/components/schemas/DeleteV1EarTagsRangeParameterFromNumber"
             }
+          },
+          {
+            "name": "prefix",
+            "in": "query",
+            "required": false,
+            "description": "DELETE /v1/earTags/range Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
           }
         ],
         "security": [{ "APIKEY_1": [] }],
@@ -12090,6 +12099,54 @@
       }
     },
     "/v1/earTags/byId/{earTagId}": {
+      "patch": {
+        "operationId": "PatchV1EarTagsByIdEarTagId",
+        "parameters": [
+          {
+            "name": "earTagId",
+            "in": "path",
+            "required": true,
+            "description": "PATCH /v1/earTags/byId/:earTagId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PATCH /v1/earTags/byId/:earTagId Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchV1EarTagsByIdEarTagIdRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "PATCH /v1/earTags/byId/:earTagId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchV1EarTagsByIdEarTagIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "PATCH /v1/earTags/byId/:earTagId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
       "delete": {
         "operationId": "DeleteV1EarTagsByIdEarTagId",
         "parameters": [
@@ -18388,6 +18445,84 @@
           }
         }
       }
+    },
+    "/v1/forum/images": {
+      "post": {
+        "operationId": "PostV1ForumImages",
+        "requestBody": {
+          "description": "POST /v1/forum/images Request body",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1ForumImagesRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/forum/images Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1ForumImagesPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/forum/images Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/forum/images/byId/{imageId}": {
+      "delete": {
+        "operationId": "DeleteV1ForumImagesByIdImageId",
+        "parameters": [
+          {
+            "name": "imageId",
+            "in": "path",
+            "required": true,
+            "description": "DELETE /v1/forum/images/byId/:imageId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "DELETE /v1/forum/images/byId/:imageId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteV1ForumImagesByIdImageIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "DELETE /v1/forum/images/byId/:imageId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -18518,11 +18653,15 @@
               "ear_tag_range_conflict",
               "invalid_ear_tag_range",
               "ear_tag_assigned",
+              "ear_tag_number_taken",
               "invalid_sire",
               "invalid_date_range",
               "crop_rotation_overlap",
               "outdoor_schedule_overlap",
-              "outdoor_schedule_override_overlap"
+              "outdoor_schedule_override_overlap",
+              "invalid_image",
+              "invalid_image_reference",
+              "too_many_pending_images"
             ]
           }
         },
@@ -38031,7 +38170,8 @@
         "type": "object",
         "properties": {
           "fromNumber": { "type": "string", "minLength": 1 },
-          "toNumber": { "type": "string", "minLength": 1 }
+          "toNumber": { "type": "string", "minLength": 1 },
+          "prefix": { "type": "string" }
         },
         "required": ["fromNumber", "toNumber"]
       },
@@ -38057,6 +38197,28 @@
         },
         "required": ["data"],
         "additionalProperties": false
+      },
+      "PatchV1EarTagsByIdEarTagIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "number": { "type": "string" }
+            },
+            "required": ["id", "farmId", "number"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1EarTagsByIdEarTagIdRequestBody": {
+        "type": "object",
+        "properties": { "number": { "type": "string", "minLength": 1 } },
+        "required": ["number"]
       },
       "DeleteV1EarTagsByIdEarTagIdPositiveResponse": {
         "type": "object",
@@ -49730,6 +49892,41 @@
         "required": ["body"]
       },
       "DeleteV1ForumRepliesByIdReplyIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1ForumImagesPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "url": { "type": "string" },
+              "width": { "type": "number" },
+              "height": { "type": "number" }
+            },
+            "required": ["id", "url", "width", "height"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1ForumImagesRequestBody": {
+        "type": "object",
+        "properties": { "file": { "type": "string", "format": "binary" } },
+        "required": ["file"]
+      },
+      "DeleteV1ForumImagesByIdImageIdPositiveResponse": {
         "type": "object",
         "properties": {
           "data": {

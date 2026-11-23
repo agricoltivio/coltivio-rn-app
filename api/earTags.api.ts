@@ -36,14 +36,29 @@ export function earTagsApi(client: FetchClient) {
       });
     },
 
-    async deleteEarTagRange(fromNumber: string, toNumber: string) {
+    // prefix: text in front of the numbers; fromNumber / toNumber are digits then
+    async deleteEarTagRange(
+      fromNumber: string,
+      toNumber: string,
+      prefix?: string,
+    ) {
       const { data } = await client.DELETE("/v1/earTags/range", {
         params: {
           query: {
             fromNumber,
             toNumber,
+            prefix: prefix || undefined,
           },
         },
+      });
+      return data!.data;
+    },
+
+    // Changes the number of one ear tag, also of an assigned one
+    async updateEarTagNumber(earTagId: string, number: string) {
+      const { data } = await client.PATCH("/v1/earTags/byId/{earTagId}", {
+        params: { path: { earTagId } },
+        body: { number },
       });
       return data!.data;
     },
