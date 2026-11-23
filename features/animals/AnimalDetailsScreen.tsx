@@ -18,7 +18,11 @@ import {
 } from "./animals.hooks";
 import { usePermissions } from "@/features/user/users.hooks";
 import { AnimalDetailsScreenProps } from "./navigation/animals-routes";
-import { formatLocalizedDate, parseDateOnly } from "@/utils/date";
+import {
+  formatLocalizedDate,
+  parseDateOnly,
+  toLocalDateString,
+} from "@/utils/date";
 import { Switch } from "@/components/inputs/Switch";
 import { useAnimalHeatsQuery, useAnimalWeightsQuery } from "./breeding.hooks";
 import { AnimalWeightChartDrawer } from "./AnimalWeightField";
@@ -93,10 +97,17 @@ export function AnimalDetailsScreen({
   const lastMatedHeat = (heats ?? [])
     .filter((heat) => heat.mated)
     .sort((a, b) => b.date.localeCompare(a.date))[0];
-  // One line each: the expected birth if there is one, otherwise the last mating
-  const heatsSummary = lastMatedHeat?.expectedBirthDate
+  // One line each: the expected birth if it is still ahead, otherwise the last mating. The API
+  // keeps the expected birth after the birth happened, so a past one would be last season's.
+  const todayDateString = toLocalDateString(new Date());
+  const upcomingExpectedBirthDate =
+    lastMatedHeat?.expectedBirthDate &&
+    lastMatedHeat.expectedBirthDate.slice(0, 10) >= todayDateString
+      ? lastMatedHeat.expectedBirthDate
+      : null;
+  const heatsSummary = upcomingExpectedBirthDate
     ? `${t("breeding.expected_birth")}: ${formatLocalizedDate(
-        parseDateOnly(lastMatedHeat.expectedBirthDate),
+        parseDateOnly(upcomingExpectedBirthDate),
         locale,
       )}`
     : lastMatedHeat

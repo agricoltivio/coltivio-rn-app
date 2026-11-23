@@ -1,7 +1,6 @@
 import { BottomDrawerModal } from "@/components/bottom-drawer/BottomDrawerModal";
 import { Button } from "@/components/buttons/Button";
 import { InlineDatePicker } from "@/components/datepicker/InlineDatePicker";
-import { TextInput } from "@/components/inputs/TextInput";
 import { ListItem } from "@/components/list/ListItem";
 import { H3 } from "@/theme/Typography";
 import { parseDateOnly, toLocalDateString } from "@/utils/date";
@@ -9,6 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
+  BottomSheetTextInput,
 } from "@gorhom/bottom-sheet";
 import { Portal } from "@gorhom/portal";
 import { RefObject, useEffect, useId, useState } from "react";
@@ -131,10 +131,11 @@ export function AnimalQuickEditSheet({
   const currentHerdId = animal.herdId;
   const herdChanged = herdChoice !== (currentHerdId ?? NO_HERD);
   // A herd change can't take effect before the animal joined its current herd
-  const { earliestEffectiveDate } = useEarliestHerdChangeDateQuery(
-    [animal.id],
-    field === "herd" && herdChanged,
-  );
+  const { earliestEffectiveDate, isLoading: isLoadingEarliestEffectiveDate } =
+    useEarliestHerdChangeDateQuery(
+      [animal.id],
+      field === "herd" && herdChanged,
+    );
 
   // Start from the current value each time the sheet opens for a field
   useEffect(() => {
@@ -344,20 +345,36 @@ export function AnimalQuickEditSheet({
               )}
 
               {(field === "name" || field === "color" || field === "notes") && (
-                <TextInput
-                  hideLabel
-                  placeholder={titles[field]}
-                  value={text}
+                // BottomSheetTextInput so the sheet moves above the keyboard. Uncontrolled like in
+                // AnimalWeightDrawer (a controlled value flickers), remounted per field.
+                <BottomSheetTextInput
+                  key={field}
+                  defaultValue={
+                    field === "name"
+                      ? animal.name
+                      : field === "color"
+                        ? (animal.color ?? "")
+                        : (animal.notes ?? "")
+                  }
                   onChangeText={setText}
+                  placeholder={titles[field]}
+                  placeholderTextColor={theme.colors.gray2}
                   autoFocus
                   // Notes: a text area like in the edit form
                   multiline={field === "notes"}
-                  returnKeyType={field === "notes" ? "default" : undefined}
-                  style={
-                    field === "notes"
+                  returnKeyType={field === "notes" ? "default" : "done"}
+                  style={{
+                    fontSize: 17,
+                    padding: 10,
+                    borderRadius: theme.radii.l,
+                    borderWidth: 1,
+                    borderColor: theme.colors.gray2,
+                    backgroundColor: theme.colors.white,
+                    color: theme.colors.gray0,
+                    ...(field === "notes"
                       ? { textAlignVertical: "top", minHeight: 100 }
-                      : undefined
-                  }
+                      : {}),
+                  }}
                 />
               )}
 
@@ -436,8 +453,14 @@ export function AnimalQuickEditSheet({
                 title={t("buttons.save")}
                 onPress={save}
                 loading={updateAnimalMutation.isPending}
-                // The name is required
-                disabled={field === "name" && !text.trim()}
+                // The name is required. A herd change waits for the earliest allowed date, otherwise
+                // today could be sent although it lies before it.
+                disabled={
+                  (field === "name" && !text.trim()) ||
+                  (field === "herd" &&
+                    herdChanged &&
+                    isLoadingEarliestEffectiveDate)
+                }
               />
               {/* Death: undo a recorded death (clears date and reason) */}
               {field === "death" && animal.dateOfDeath && (
