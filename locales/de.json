@@ -178,7 +178,12 @@
     "unexpected_retry_later": "Ups, etwas ist schief gelaufen. Bitte versuche es später erneut.",
     "unexpected": "Ups, etwas ist schief gelaufen.",
     "try_again_later": "Bitte versuche es später nochmals...",
-    "screen_error_hint": "Diese Ansicht konnte nicht angezeigt werden. Der Fehler wurde uns gemeldet."
+    "screen_error_hint": "Diese Ansicht konnte nicht angezeigt werden. Der Fehler wurde uns gemeldet.",
+    "codes": {
+      "crop_rotation_overlap": "Die Fruchtfolge überschneidet sich mit einer bestehenden Fruchtfolge auf diesem Schlag.",
+      "outdoor_schedule_overlap": "Der Auslauf überschneidet sich mit einem anderen Auslauf dieser Herde.",
+      "invalid_date_range": "Ein Enddatum liegt vor dem zugehörigen Startdatum."
+    }
   },
   "units": {
     "long": {
