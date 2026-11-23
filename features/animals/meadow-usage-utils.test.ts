@@ -173,4 +173,19 @@ describe("getHerdsWithActiveSchedules", () => {
       ),
     ).toEqual(["A", "B"]);
   });
+
+  test("an override on the meadow from today on counts, a past one doesn't", () => {
+    const withOverride = (name: string, endDate: string) => ({
+      name,
+      outdoorSchedules: [],
+      outdoorScheduleOverrides: [{ meadowId: "m1", endDate }],
+    });
+    expect(
+      getHerdsWithActiveSchedules(
+        [withOverride("A", "2026-10-21"), withOverride("B", "2026-10-20")],
+        "m1",
+        today,
+      ),
+    ).toEqual(["A"]);
+  });
 });

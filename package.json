@@ -23,6 +23,7 @@
     "lint": "eslint . --cache --cache-location .expo/cache/eslint/",
     "lint:fix": "expo lint --fix",
     "lint:ci": "eslint .",
+    "i18n:unused": "node scripts/find-unused-translation-keys.js",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json}\" --ignore-path .gitignore",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json}\" --ignore-path .gitignore",
     "typecheck": "tsc --noEmit && cd scripts && tsc --noEmit",

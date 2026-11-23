@@ -10,19 +10,17 @@ import {
   getTimelineEpoch,
 } from "./outdoor-timeline-utils";
 
-// Day range of a journal entry on the timeline. Calendar days keep consecutive days
-// adjacent across daylight-saving changes, and an entry always covers at least its
-// own day — single-day entries (e.g. weekday stays) would otherwise have no width.
+// Day range of a journal entry on the timeline, with an exclusive end (the day after the
+// last day), so the last day is drawn too and a single-day entry is one day wide.
+// Calendar days keep consecutive days adjacent across daylight-saving changes.
 function entryDayRange(
   startDate: string,
   endDate: string,
   epochStart: Date,
 ): { startDay: number; endDay: number } {
   const startDay = differenceInCalendarDays(new Date(startDate), epochStart);
-  const endDay = Math.max(
-    differenceInCalendarDays(new Date(endDate), epochStart),
-    startDay + 1,
-  );
+  // The day after the (inclusive) end date, so the last day is drawn too
+  const endDay = differenceInCalendarDays(new Date(endDate), epochStart) + 1;
   return { startDay, endDay };
 }
 

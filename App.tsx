@@ -1,3 +1,7 @@
+import {
+  apiErrorMessage,
+  reportUnexpectedError,
+} from "@/utils/api-error-message";
 import * as Linking from "expo-linking";
 import { coltivioTheme } from "@/theme/theme";
 import { PortalProvider } from "@gorhom/portal";
@@ -92,12 +96,33 @@ const queryClient = new QueryClient({
       // Rejections by the API (validation, conflicts, expired session) are expected and only
       // need the alert; everything else is reported. A 401 gets the alert too: with a merely
       // stale token the user stays on the screen and would otherwise get no feedback.
-      const isExpectedRejection =
-        error instanceof ApiError && error.status >= 400 && error.status < 500;
-      if (!isExpectedRejection) Sentry.captureException(error);
-      Alert.alert(i18n.t("common.error"), i18n.t("errors.unexpected_retry"));
+      reportUnexpectedError(error);
+      // A rejection with a known error code gets its own message, e.g. an overlapping crop rotation
+      Alert.alert(
+        i18n.t("common.error"),
+        apiErrorMessage(error, i18n.t("errors.unexpected_retry"), i18n.t),
+      );
     },
   }),
+  defaultOptions: {
+    queries: {
+      // A rejection by the API (not found, forbidden, invalid) won't change on a retry, e.g. the
+      // details query of an entry that was just deleted. Everything else keeps the default 3 retries.
+      // 401 still retries: a stale token is refreshed meanwhile and the retry uses the new one.
+      // 408 and 429 are temporary as well.
+      retry: (failureCount, error) => {
+        if (
+          error instanceof ApiError &&
+          error.status >= 400 &&
+          error.status < 500 &&
+          ![401, 408, 429].includes(error.status)
+        ) {
+          return false;
+        }
+        return failureCount < 3;
+      },
+    },
+  },
 });
 
 // Wire TanStack Query's focusManager to React Native's AppState so that

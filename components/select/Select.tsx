@@ -22,6 +22,130 @@ import { OptionalLabelSuffix } from "../inputs/OptionalLabelSuffix";
 
 export type SelectItem = { label: string; value: string; description?: string };
 
+// The searchable list of a select in a page sheet. Used by Select with enableSearch, and on
+// its own where a value is picked without a form field (e.g. quick edits on a details screen).
+export function SelectSearchModal({
+  visible,
+  title,
+  data,
+  value,
+  onSelect,
+  onClose,
+}: {
+  visible: boolean;
+  title?: string;
+  data: SelectItem[];
+  value?: string;
+  onSelect: (value: string) => void;
+  onClose: () => void;
+}) {
+  const { t } = useTranslation();
+  const theme = useTheme();
+  const insets = useSafeAreaInsets();
+  const [searchText, setSearchText] = useState("");
+
+  const fuse = useMemo(
+    () =>
+      new Fuse(data, {
+        minMatchCharLength: 1,
+        keys: ["label", "description"],
+      }),
+    [data],
+  );
+
+  const filteredData = useMemo(() => {
+    if (searchText.length === 0) return data;
+    return fuse.search(searchText).map((result) => result.item);
+  }, [searchText, fuse, data]);
+
+  function close() {
+    onClose();
+    setSearchText("");
+  }
+
+  const renderItem = useCallback(
+    ({ item }: { item: SelectItem }) => (
+      <ListItem
+        onPress={() => {
+          onSelect(item.value);
+          setSearchText("");
+        }}
+      >
+        <ListItem.Content>
+          <ListItem.Title
+            style={{
+              flex: 1,
+              fontWeight: item.value === value ? "600" : "400",
+            }}
+          >
+            {item.label}
+          </ListItem.Title>
+          {item.description && (
+            <ListItem.Body>{item.description}</ListItem.Body>
+          )}
+        </ListItem.Content>
+        <ListItem.Chevron />
+      </ListItem>
+    ),
+    [onSelect, value],
+  );
+
+  return (
+    <Modal
+      visible={visible}
+      animationType="slide"
+      presentationStyle="pageSheet"
+      onRequestClose={close}
+    >
+      <View
+        style={{
+          flex: 1,
+          paddingTop: insets.top + theme.spacing.m,
+          paddingHorizontal: theme.spacing.m,
+          backgroundColor: theme.colors.background,
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <H2
+            style={{ flex: 1, marginRight: theme.spacing.s }}
+            numberOfLines={1}
+            adjustsFontSizeToFit
+          >
+            {title || t("forms.labels.please_select")}
+          </H2>
+          <CloseButton onPress={close} />
+        </View>
+        <View style={{ marginVertical: theme.spacing.m }}>
+          <TextInput
+            hideLabel
+            placeholder={t("forms.placeholders.search")}
+            onChangeText={setSearchText}
+            value={searchText}
+          />
+        </View>
+        <FlatList
+          contentContainerStyle={{
+            borderTopRightRadius: 10,
+            borderTopLeftRadius: 10,
+            overflow: "hidden",
+            backgroundColor: theme.colors.white,
+          }}
+          data={filteredData}
+          keyExtractor={(item) => item.value}
+          renderItem={renderItem}
+          keyboardShouldPersistTaps="handled"
+        />
+      </View>
+    </Modal>
+  );
+}
+
 export type SelectProps = {
   label?: string;
   value?: string;
@@ -60,58 +184,11 @@ export function Select({
 }: SelectProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
 
   const [focus, setFocus] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [searchText, setSearchText] = useState("");
 
   const selectedLabel = data.find((item) => item.value === value)?.label;
-
-  const fuse = useMemo(
-    () =>
-      new Fuse(data, {
-        minMatchCharLength: 1,
-        keys: ["label", "description"],
-      }),
-    [data],
-  );
-
-  const filteredData = useMemo(() => {
-    if (searchText.length === 0) return data;
-    return fuse.search(searchText).map((result) => result.item);
-  }, [searchText, fuse, data]);
-
-  const handleItemSelect = useCallback(
-    (itemValue: string) => {
-      onChange?.(itemValue);
-      setModalVisible(false);
-      setSearchText("");
-    },
-    [onChange],
-  );
-
-  const renderItem = useCallback(
-    ({ item }: { item: SelectItem }) => (
-      <ListItem onPress={() => handleItemSelect(item.value)}>
-        <ListItem.Content>
-          <ListItem.Title
-            style={{
-              flex: 1,
-              fontWeight: item.value === value ? "600" : "400",
-            }}
-          >
-            {item.label}
-          </ListItem.Title>
-          {item.description && (
-            <ListItem.Body>{item.description}</ListItem.Body>
-          )}
-        </ListItem.Content>
-        <ListItem.Chevron />
-      </ListItem>
-    ),
-    [handleItemSelect, value],
-  );
 
   function renderClearButton(rightOffset: number) {
     if (!onClear || !selectedLabel || disabled) return null;
@@ -171,66 +248,17 @@ export function Select({
           </View>
         )}
 
-        <Modal
+        <SelectSearchModal
           visible={modalVisible}
-          animationType="slide"
-          presentationStyle="pageSheet"
-          onRequestClose={() => {
+          title={label}
+          data={data}
+          value={value}
+          onSelect={(itemValue) => {
+            onChange?.(itemValue);
             setModalVisible(false);
-            setSearchText("");
           }}
-        >
-          <View
-            style={{
-              flex: 1,
-              paddingTop: insets.top + theme.spacing.m,
-              paddingHorizontal: theme.spacing.m,
-              backgroundColor: theme.colors.background,
-            }}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <H2
-                style={{ flex: 1, marginRight: theme.spacing.s }}
-                numberOfLines={1}
-                adjustsFontSizeToFit
-              >
-                {label || t("forms.labels.please_select")}
-              </H2>
-              <CloseButton
-                onPress={() => {
-                  setModalVisible(false);
-                  setSearchText("");
-                }}
-              />
-            </View>
-            <View style={{ marginVertical: theme.spacing.m }}>
-              <TextInput
-                hideLabel
-                placeholder={t("forms.placeholders.search")}
-                onChangeText={setSearchText}
-                value={searchText}
-              />
-            </View>
-            <FlatList
-              contentContainerStyle={{
-                borderTopRightRadius: 10,
-                borderTopLeftRadius: 10,
-                overflow: "hidden",
-                backgroundColor: theme.colors.white,
-              }}
-              data={filteredData}
-              keyExtractor={(item) => item.value}
-              renderItem={renderItem}
-              keyboardShouldPersistTaps="handled"
-            />
-          </View>
-        </Modal>
+          onClose={() => setModalVisible(false)}
+        />
       </View>
     );
   }

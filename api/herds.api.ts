@@ -34,6 +34,18 @@ export type OutdoorScheduleCreateResponse =
 export type OutdoorScheduleUpdateResponse =
   components["schemas"]["PatchV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleIdPositiveResponse"]["data"];
 
+// A date range in which the herd did something else than its schedules say; takes
+// precedence over the schedules on those days (e.g. stable for two days)
+export type OutdoorScheduleOverride = NonNullable<
+  HerdDetail["outdoorScheduleOverrides"]
+>[number];
+
+export type OutdoorScheduleOverrideCreateInput =
+  components["schemas"]["PostV1AnimalsHerdsByIdHerdIdOutdoorScheduleOverridesRequestBody"];
+
+export type OutdoorScheduleOverrideUpdateInput =
+  components["schemas"]["PatchV1AnimalsHerdsOutdoorScheduleOverridesByIdOutdoorScheduleOverrideIdRequestBody"];
+
 export function herdsApi(client: FetchClient) {
   return {
     async getHerds(): Promise<Herd[]> {
@@ -117,6 +129,35 @@ export function herdsApi(client: FetchClient) {
       await client.DELETE(
         "/v1/animals/herds/outdoorSchedules/byId/{outdoorScheduleId}",
         { params: { path: { outdoorScheduleId } } },
+      );
+    },
+
+    async createOutdoorScheduleOverride(
+      herdId: string,
+      input: OutdoorScheduleOverrideCreateInput,
+    ): Promise<OutdoorScheduleOverride> {
+      const { data } = await client.POST(
+        "/v1/animals/herds/byId/{herdId}/outdoorScheduleOverrides",
+        { params: { path: { herdId } }, body: input },
+      );
+      return data!.data;
+    },
+
+    async updateOutdoorScheduleOverride(
+      outdoorScheduleOverrideId: string,
+      input: OutdoorScheduleOverrideUpdateInput,
+    ): Promise<OutdoorScheduleOverride> {
+      const { data } = await client.PATCH(
+        "/v1/animals/herds/outdoorScheduleOverrides/byId/{outdoorScheduleOverrideId}",
+        { params: { path: { outdoorScheduleOverrideId } }, body: input },
+      );
+      return data!.data;
+    },
+
+    async deleteOutdoorScheduleOverride(outdoorScheduleOverrideId: string) {
+      await client.DELETE(
+        "/v1/animals/herds/outdoorScheduleOverrides/byId/{outdoorScheduleOverrideId}",
+        { params: { path: { outdoorScheduleOverrideId } } },
       );
     },
   };
