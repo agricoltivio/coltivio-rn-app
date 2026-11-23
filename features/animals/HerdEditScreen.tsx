@@ -1,4 +1,7 @@
-import { apiErrorMessage } from "@/utils/api-error-message";
+import {
+  apiErrorMessage,
+  reportUnexpectedError,
+} from "@/utils/api-error-message";
 import {
   OutdoorScheduleCreateInput,
   OutdoorScheduleOverride,
@@ -112,11 +115,13 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
   const updateHerdMutation = useUpdateHerdMutation(
     () => navigation.goBack(),
     // Too early dates are prevented in the date sheet; an overlapping schedule gets its own message
-    (error) =>
+    (error) => {
+      reportUnexpectedError(error);
       Alert.alert(
         t("common.error"),
         apiErrorMessage(error, t("common.unknown_error"), t),
-      ),
+      );
+    },
   );
   const deleteHerdMutation = useDeleteHerdMutation(() => navigation.goBack());
 

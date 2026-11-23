@@ -8,8 +8,11 @@ import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
 import { RHSelect } from "@/components/select/RHSelect";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, Subtitle } from "@/theme/Typography";
+import {
+  apiErrorMessage,
+  reportUnexpectedError,
+} from "@/utils/api-error-message";
 import { parseDateOnly, toLocalDateString } from "@/utils/date";
-import * as Sentry from "@sentry/react-native";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -39,7 +42,7 @@ export function OutdoorScheduleOverrideFormScreen({
   route,
   navigation,
 }: OutdoorScheduleOverrideFormScreenProps) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const { herdId, override } = route.params;
   const { canWrite } = usePermissions();
@@ -76,11 +79,8 @@ export function OutdoorScheduleOverrideFormScreen({
   }, [startDate, getValues, setValue]);
 
   function onSaveError(error: Error) {
-    // Passing onError skips the global Sentry report, so report everything that isn't an
-    // expected rejection by the API here
-    const isExpectedRejection =
-      error instanceof ApiError && error.status >= 400 && error.status < 500;
-    if (!isExpectedRejection) Sentry.captureException(error);
+    // Passing onError skips the global Sentry report
+    reportUnexpectedError(error);
     const code = error instanceof ApiError ? error.code : undefined;
     // Other known codes get their message from errors.codes
     const message =
@@ -88,9 +88,7 @@ export function OutdoorScheduleOverrideFormScreen({
         ? t("animals.outdoor_override_overlap")
         : code === "invalid_date_range"
           ? t("animals.end_date_before_start")
-          : code && i18n.exists(`errors.codes.${code}`)
-            ? t(`errors.codes.${code}`)
-            : t("errors.unexpected_retry");
+          : apiErrorMessage(error, t("errors.unexpected_retry"), t);
     Alert.alert(t("common.error"), message);
   }
 
