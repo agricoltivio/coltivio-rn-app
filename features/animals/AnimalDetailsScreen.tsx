@@ -211,6 +211,16 @@ export function AnimalDetailsScreen({
         >
           <ListItem
             style={{ paddingVertical: 5 }}
+            onPress={quickEditOnPress("name")}
+          >
+            <ListItem.Content>
+              <ListItem.Title>{t("forms.labels.name")}</ListItem.Title>
+              <ListItem.Body>{animal.name}</ListItem.Body>
+            </ListItem.Content>
+            {quickEditIcon}
+          </ListItem>
+          <ListItem
+            style={{ paddingVertical: 5 }}
             onPress={quickEditOnPress("type")}
           >
             <ListItem.Content>

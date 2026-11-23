@@ -24,6 +24,7 @@ import { useEarliestHerdChangeDateQuery, useHerdsQuery } from "./herds.hooks";
 // Fields of the animal details that can be changed on their own, without the full form.
 // The ear tag uses the edit form's search list, the weight its own drawer.
 export type AnimalQuickEditField =
+  | "name"
   | "type"
   | "sex"
   | "dateOfBirth"
@@ -164,7 +165,13 @@ export function AnimalQuickEditSheet({
       animal.dateOfBirth ? parseDateOnly(animal.dateOfBirth) : new Date(),
     );
     setUsage(animal.usage);
-    setText(field === "color" ? (animal.color ?? "") : (animal.notes ?? ""));
+    setText(
+      field === "name"
+        ? animal.name
+        : field === "color"
+          ? (animal.color ?? "")
+          : (animal.notes ?? ""),
+    );
     setDateOfDeath(
       animal.dateOfDeath ? parseDateOnly(animal.dateOfDeath) : new Date(),
     );
@@ -174,6 +181,7 @@ export function AnimalQuickEditSheet({
   }, [
     field,
     animal.type,
+    animal.name,
     animal.sex,
     animal.dateOfBirth,
     animal.usage,
@@ -192,6 +200,7 @@ export function AnimalQuickEditSheet({
   }, [earliestEffectiveDate, herdEffectiveDate]);
 
   const titles: Record<AnimalQuickEditField, string> = {
+    name: t("forms.labels.name"),
     type: t("forms.labels.type"),
     sex: t("forms.labels.sex"),
     dateOfBirth: t("animals.date_of_birth"),
@@ -282,7 +291,11 @@ export function AnimalQuickEditSheet({
 
   function save() {
     if (!field) return;
-    if (field === "type") {
+    if (field === "name") {
+      // Required, an empty name isn't saved
+      const name = text.trim();
+      if (name) updateAnimalMutation.mutate({ id: animal.id, name });
+    } else if (field === "type") {
       saveType();
     } else if (field === "sex") {
       saveSex();
@@ -368,7 +381,7 @@ export function AnimalQuickEditSheet({
                 />
               )}
 
-              {(field === "color" || field === "notes") && (
+              {(field === "name" || field === "color" || field === "notes") && (
                 <TextInput
                   hideLabel
                   placeholder={titles[field]}
