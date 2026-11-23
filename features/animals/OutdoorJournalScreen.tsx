@@ -1,6 +1,6 @@
 import { ContentView } from "@/components/containers/ContentView";
 import { ScrollView } from "@/components/views/ScrollView";
-import { H2, Subtitle } from "@/theme/Typography";
+import { H2, H3, Subtitle } from "@/theme/Typography";
 import { formatLocalizedDate } from "@/utils/date";
 import { useTranslation } from "react-i18next";
 import {
@@ -23,7 +23,14 @@ import { ChartViewSwitcher } from "@/components/charts/ChartViewSwitcher";
 import { round } from "@/utils/math";
 import { OutdoorScheduleTimeline } from "./timeline/OutdoorScheduleTimeline";
 import { OutdoorJournalScreenProps } from "./navigation/animals-routes";
-import { OutdoorBar } from "./timeline/outdoor-timeline-utils";
+import {
+  OutdoorBar,
+  buildHerdsTimelineData,
+  herdBarOnDay,
+} from "./timeline/outdoor-timeline-utils";
+import { OUTDOOR_TYPE_COLORS } from "./timeline/OutdoorTimelineBar";
+import { useHerdsQuery } from "./herds.hooks";
+import { ListItem } from "@/components/list/ListItem";
 
 export function OutdoorJournalScreen({
   navigation,
@@ -33,10 +40,12 @@ export function OutdoorJournalScreen({
   const locale = i18n.language;
   const { data } = useOutdoorJournalQuery();
 
-  // "categories": one row per animal category, "meadows": one row per meadow
-  const [viewMode, setViewMode] = useState<"categories" | "meadows">(
+  // "categories": one row per animal category, "herds": one row per herd (its schedules
+  // with the exceptions), "meadows": one row per meadow
+  const [viewMode, setViewMode] = useState<"categories" | "herds" | "meadows">(
     "categories",
   );
+  const { herds } = useHerdsQuery();
 
   const [selectedCategories, setSelectedCategories] = useState<Set<string>>(
     new Set(),
@@ -56,13 +65,14 @@ export function OutdoorJournalScreen({
     return data.entries.filter((e) => selectedCategories.has(e.category));
   }, [data?.entries, selectedCategories]);
 
-  const timelineData = useMemo(
-    () =>
-      viewMode === "meadows"
-        ? buildMeadowJournalTimelineData(data?.meadowEntries ?? [])
-        : buildJournalTimelineData(filteredEntries),
-    [viewMode, filteredEntries, data?.meadowEntries],
-  );
+  const timelineData = useMemo(() => {
+    if (viewMode === "meadows") {
+      return buildMeadowJournalTimelineData(data?.meadowEntries ?? []);
+    }
+    // Per herd: its schedules with the exceptions applied, colored by type
+    if (viewMode === "herds") return buildHerdsTimelineData(herds ?? []);
+    return buildJournalTimelineData(filteredEntries);
+  }, [viewMode, filteredEntries, data?.meadowEntries, herds]);
 
   // Build a lookup from scheduleId to bar for fast access on press
   const barLookup = useMemo(() => {
@@ -90,9 +100,37 @@ export function OutdoorJournalScreen({
   const handleBarPress = useCallback(
     (scheduleId: string) => {
       const bar = barLookup.get(scheduleId);
-      if (bar) setSelectedBar(bar);
+      if (!bar) return;
+      // Herd view: a bar opens its herd, the other views show the journal entry
+      if (viewMode === "herds") {
+        navigation.navigate("HerdEdit", { herdId: bar.herdId });
+        return;
+      }
+      setSelectedBar(bar);
     },
-    [barLookup],
+    [barLookup, viewMode, navigation],
+  );
+
+  // Herds below the timeline: those with something planned today first
+  const herdRows = useMemo(
+    () =>
+      (herds ?? [])
+        .map((herd) => {
+          const overrides = herd.outdoorScheduleOverrides ?? [];
+          const bar = herdBarOnDay(herd.outdoorSchedules, overrides);
+          const source = bar?.isOverride
+            ? overrides.find((override) => override.id === bar.scheduleId)
+            : herd.outdoorSchedules.find(
+                (schedule) => schedule.id === bar?.scheduleId,
+              );
+          return { herd, bar, meadowName: source?.meadow?.name ?? null };
+        })
+        .sort(
+          (a, b) =>
+            Number(b.bar !== null) - Number(a.bar !== null) ||
+            a.herd.name.localeCompare(b.herd.name),
+        ),
+    [herds],
   );
 
   return (
@@ -112,6 +150,7 @@ export function OutdoorJournalScreen({
                 key: "categories",
                 label: t("animals.meadows.journal_view_categories"),
               },
+              { key: "herds", label: t("animals.herds") },
               { key: "meadows", label: t("animals.meadows.meadows") },
             ]}
           />
@@ -156,30 +195,6 @@ export function OutdoorJournalScreen({
             ))}
           </RNScrollView>
         )}
-
-        {/* Info banner */}
-        <View
-          style={{
-            marginTop: theme.spacing.m,
-            backgroundColor: theme.colors.white,
-            borderRadius: 10,
-            padding: theme.spacing.m,
-            borderLeftWidth: 4,
-            borderLeftColor: theme.colors.blue,
-            flexDirection: "row",
-            alignItems: "center",
-            gap: theme.spacing.xs,
-          }}
-        >
-          <Ionicons
-            name="information-circle"
-            size={20}
-            color={theme.colors.blue}
-          />
-          <Subtitle style={{ flex: 1 }}>
-            {t("animals.outdoor_journal_info")}
-          </Subtitle>
-        </View>
 
         {/* Warning banner for uncategorized animals */}
         {data && data.uncategorizedAnimals.length > 0 && (
@@ -226,11 +241,87 @@ export function OutdoorJournalScreen({
           </View>
         )}
 
-        <View style={{ marginTop: theme.spacing.m, flex: 1, minHeight: 400 }}>
+        {/* As tall as its rows, so the herds below stay in view */}
+        <View style={{ marginTop: theme.spacing.m }}>
           <OutdoorScheduleTimeline
             timelineData={timelineData}
             onBarPress={handleBarPress}
+            fitContent
           />
+        </View>
+
+        {/* Herds with what they do today (exceptions applied); tapping opens the herd */}
+        <View style={{ marginTop: theme.spacing.l }}>
+          <H3 style={{ marginBottom: theme.spacing.s }}>
+            {t("animals.herds")}
+          </H3>
+          {herdRows.length === 0 ? (
+            <Subtitle>{t("animals.no_herds")}</Subtitle>
+          ) : (
+            <View
+              style={{
+                borderRadius: 10,
+                overflow: "hidden",
+                backgroundColor: theme.colors.white,
+              }}
+            >
+              {herdRows.map(({ herd, bar, meadowName }) => (
+                <ListItem
+                  key={herd.id}
+                  style={{ paddingVertical: 5 }}
+                  onPress={() =>
+                    navigation.navigate("HerdEdit", { herdId: herd.id })
+                  }
+                >
+                  <ListItem.Content>
+                    <ListItem.Title>{herd.name}</ListItem.Title>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 6,
+                      }}
+                    >
+                      {bar?.scheduleType && (
+                        <View
+                          style={{
+                            width: 10,
+                            height: 10,
+                            borderRadius: 2,
+                            backgroundColor:
+                              OUTDOOR_TYPE_COLORS[bar.scheduleType],
+                            borderWidth: bar.isOverride ? 1.5 : 0,
+                            borderColor: theme.colors.gray0,
+                          }}
+                        />
+                      )}
+                      <ListItem.Body>
+                        {[
+                          // e.g. "Today: Stable (Exception)"
+                          `${t("crop_rotations.timeline.today")}: ${
+                            bar?.scheduleType
+                              ? t(`animals.outdoor_types.${bar.scheduleType}`)
+                              : "–"
+                          }${
+                            bar?.isOverride
+                              ? ` (${t("animals.outdoor_override_single")})`
+                              : ""
+                          }`,
+                          meadowName,
+                          t("animals.herd_animal_count", {
+                            count: herd.animals.length,
+                          }),
+                        ]
+                          .filter(Boolean)
+                          .join(" · ")}
+                      </ListItem.Body>
+                    </View>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+              ))}
+            </View>
+          )}
         </View>
       </ScrollView>
 
@@ -319,9 +410,7 @@ export function OutdoorJournalScreen({
                           color: theme.colors.text,
                         }}
                       >
-                        {selectedBar.scheduleType === "pasture"
-                          ? t("animals.outdoor_types.pasture")
-                          : t("animals.outdoor_types.exercise_yard")}
+                        {t(`animals.outdoor_types.${selectedBar.scheduleType}`)}
                       </Text>
                     </View>
                   )}

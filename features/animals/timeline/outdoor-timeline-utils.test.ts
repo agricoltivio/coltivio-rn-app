@@ -2,7 +2,10 @@ import { differenceInCalendarDays } from "date-fns";
 import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
 import {
   buildOutdoorTimelineData,
+  buildHerdsTimelineData,
   buildSingleHerdTimelineData,
+  herdBarOnDay,
+  subtractDayRanges,
 } from "./outdoor-timeline-utils";
 import type { OutdoorSchedule } from "@/api/herds.api";
 
@@ -46,7 +49,7 @@ function makeSchedule(
   endDate: string | null,
   opts?: {
     notes?: string | null;
-    type?: "pasture" | "exercise_yard";
+    type?: "pasture" | "exercise_yard" | "stable";
     recurrence?: RecurrenceInput;
   },
 ) {
@@ -109,7 +112,8 @@ describe("buildOutdoorTimelineData", () => {
     expect(result.herds[0].bars).toHaveLength(1);
     const bar = result.herds[0].bars[0];
     expect(bar.startDay).toBe(dayOf("2025-05-01"));
-    expect(bar.endDay).toBe(dayOf("2025-05-31"));
+    // The day after the end date: the bar covers May 31 too
+    expect(bar.endDay).toBe(dayOf("2025-05-31") + 1);
     expect(bar.isOpenEnded).toBe(false);
   });
 
@@ -122,9 +126,8 @@ describe("buildOutdoorTimelineData", () => {
     expect(bar.isOpenEnded).toBe(true);
     // epochEnd = 2028-12-31 23:59:59.999
     const epochEnd = new Date(2028, 11, 31, 23, 59, 59, 999);
-    const expectedEndDay = Math.floor(
-      (epochEnd.getTime() - EPOCH_START.getTime()) / MS_PER_DAY,
-    );
+    const expectedEndDay =
+      Math.floor((epochEnd.getTime() - EPOCH_START.getTime()) / MS_PER_DAY) + 1;
     expect(bar.endDay).toBe(expectedEndDay);
   });
 
@@ -540,5 +543,195 @@ describe("buildSingleHerdTimelineData", () => {
     const result = buildSingleHerdTimelineData("h1", "My Herd", [schedule]);
     // Yearly from 2022 until end of 2024 → 3 bars (2022, 2023, 2024)
     expect(result.herds[0].bars).toHaveLength(3);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Overrides
+// ---------------------------------------------------------------------------
+
+describe("subtractDayRanges", () => {
+  test("cuts ranges at the start, in the middle and at the end", () => {
+    expect(
+      subtractDayRanges(10, 30, [
+        { startDay: 5, endDay: 12 },
+        { startDay: 20, endDay: 22 },
+        { startDay: 29, endDay: 40 },
+      ]),
+    ).toEqual([
+      { startDay: 12, endDay: 20 },
+      { startDay: 22, endDay: 29 },
+    ]);
+  });
+
+  test("a range covering everything leaves nothing", () => {
+    expect(subtractDayRanges(10, 20, [{ startDay: 0, endDay: 99 }])).toEqual(
+      [],
+    );
+  });
+});
+
+describe("buildOutdoorTimelineData with overrides", () => {
+  function override(
+    startDate: string,
+    endDate: string,
+    type: "pasture" | "exercise_yard" | "stable",
+  ) {
+    return { id: nextId(), startDate, endDate, type, notes: null };
+  }
+
+  test("an override cuts the schedule bar and gets a bar of its own", () => {
+    const schedule = makeSchedule("2025-05-01", "2025-05-31", {
+      type: "pasture",
+    });
+    const stable = override("2025-05-10", "2025-05-11", "stable");
+    const data = buildOutdoorTimelineData([
+      {
+        herdId: "h1",
+        herdName: "Herd",
+        schedules: [schedule],
+        overrides: [stable],
+      },
+    ]);
+    const bars = data.herds[0].bars.map((bar) => ({
+      scheduleId: bar.scheduleId,
+      startDay: bar.startDay,
+      endDay: bar.endDay,
+      scheduleType: bar.scheduleType,
+      isOverride: bar.isOverride ?? false,
+    }));
+    expect(bars).toEqual([
+      {
+        scheduleId: schedule.id,
+        startDay: dayOf("2025-05-01"),
+        endDay: dayOf("2025-05-10"),
+        scheduleType: "pasture",
+        isOverride: false,
+      },
+      {
+        scheduleId: stable.id,
+        startDay: dayOf("2025-05-10"),
+        endDay: dayOf("2025-05-12"),
+        scheduleType: "stable",
+        isOverride: true,
+      },
+      {
+        scheduleId: schedule.id,
+        startDay: dayOf("2025-05-12"),
+        endDay: dayOf("2025-05-31") + 1,
+        scheduleType: "pasture",
+        isOverride: false,
+      },
+    ]);
+  });
+
+  test("other overrides only cut, without a bar in this row", () => {
+    const schedule = makeSchedule("2025-05-01", "2025-05-31");
+    const data = buildOutdoorTimelineData([
+      {
+        herdId: "meadow-1",
+        herdName: "Meadow",
+        schedules: [schedule],
+        otherOverrides: [override("2025-05-10", "2025-05-11", "stable")],
+      },
+    ]);
+    expect(data.herds[0].bars.map((bar) => [bar.startDay, bar.endDay])).toEqual(
+      [
+        [dayOf("2025-05-01"), dayOf("2025-05-10")],
+        [dayOf("2025-05-12"), dayOf("2025-05-31") + 1],
+      ],
+    );
+  });
+
+  test("an open-ended schedule keeps its open end only on the last part", () => {
+    const schedule = makeSchedule("2025-05-01", null);
+    const data = buildOutdoorTimelineData([
+      {
+        herdId: "h1",
+        herdName: "Herd",
+        schedules: [schedule],
+        overrides: [override("2025-05-10", "2025-05-10", "stable")],
+      },
+    ]);
+    const scheduleBars = data.herds[0].bars.filter((bar) => !bar.isOverride);
+    expect(scheduleBars.map((bar) => bar.isOpenEnded)).toEqual([false, true]);
+  });
+});
+
+describe("herdBarOnDay", () => {
+  const pasture: OutdoorSchedule = {
+    id: "s1",
+    farmId: "f1",
+    herdId: "h1",
+    meadowId: null,
+    startDate: "2025-05-01",
+    endDate: "2025-05-31",
+    type: "pasture",
+    notes: null,
+    recurrence: null,
+  };
+  const stable = {
+    id: "o1",
+    startDate: "2025-05-10",
+    endDate: "2025-05-10",
+    type: "stable" as const,
+    notes: null,
+  };
+
+  test("the exception on its day, the schedule around it, null outside", () => {
+    expect(
+      herdBarOnDay([pasture], [stable], new Date(2025, 4, 10)),
+    ).toMatchObject({
+      scheduleId: "o1",
+      isOverride: true,
+      scheduleType: "stable",
+    });
+    expect(
+      herdBarOnDay([pasture], [stable], new Date(2025, 4, 31)),
+    ).toMatchObject({
+      scheduleId: "s1",
+      scheduleType: "pasture",
+    });
+    expect(herdBarOnDay([pasture], [stable], new Date(2025, 5, 1))).toBeNull();
+  });
+});
+
+describe("buildHerdsTimelineData", () => {
+  test("one row per herd sorted by name, exceptions applied", () => {
+    const schedule = (id: string, herdId: string): OutdoorSchedule => ({
+      id,
+      farmId: "f1",
+      herdId,
+      meadowId: null,
+      startDate: "2025-05-01",
+      endDate: "2025-05-31",
+      type: "pasture",
+      notes: null,
+      recurrence: null,
+    });
+    const data = buildHerdsTimelineData([
+      { id: "h2", name: "Ziegen", outdoorSchedules: [schedule("s2", "h2")] },
+      {
+        id: "h1",
+        name: "Kühe",
+        outdoorSchedules: [schedule("s1", "h1")],
+        outdoorScheduleOverrides: [
+          {
+            id: "o1",
+            startDate: "2025-05-10",
+            endDate: "2025-05-10",
+            type: "stable",
+            notes: null,
+          },
+        ],
+      },
+    ]);
+    expect(data.herds.map((row) => row.herdName)).toEqual(["Kühe", "Ziegen"]);
+    expect(data.herds[0].bars.map((bar) => bar.scheduleType)).toEqual([
+      "pasture",
+      "stable",
+      "pasture",
+    ]);
+    expect(data.herds[1].bars).toHaveLength(1);
   });
 });

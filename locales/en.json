@@ -1382,7 +1382,8 @@
     "outdoor_type": "Type",
     "outdoor_types": {
       "pasture": "Pasture",
-      "exercise_yard": "Exercise yard"
+      "exercise_yard": "Exercise yard",
+      "stable": "Stable"
     },
     "new_outdoor_schedule": "New outdoor schedule",
     "edit_outdoor_schedule": "Edit outdoor schedule",
@@ -1527,7 +1528,16 @@
     "herd_changes_summary": "{{added}} added, {{removed}} removed. From which date does this apply?",
     "delete_herd_confirm": "Delete herd \"{{name}}\"?",
     "delete_herd_confirm_info": "This can't be undone.",
-    "timeline_view_overview": "Overview"
+    "timeline_view_overview": "Overview",
+    "outdoor_overrides": "Exceptions",
+    "outdoor_overrides_hint": "Days on which the herd did something else than planned, e.g. in the stable because of a storm. An exception takes precedence over the outdoor schedule on those days.",
+    "new_outdoor_override": "New exception",
+    "edit_outdoor_override": "Edit exception",
+    "delete_outdoor_override_confirm": "Really delete this exception?",
+    "outdoor_override_overlap": "The exception overlaps another exception of this herd.",
+    "outdoor_override_single": "Exception",
+    "herd_animal_count": "{{count}} animal",
+    "herd_animal_count_plural": "{{count}} animals"
   },
   "drugs": {
     "drugs": "Drugs",

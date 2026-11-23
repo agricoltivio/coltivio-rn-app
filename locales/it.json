@@ -1382,7 +1382,8 @@
     "outdoor_type": "Tipo",
     "outdoor_types": {
       "pasture": "Pascolo",
-      "exercise_yard": "Paddock"
+      "exercise_yard": "Paddock",
+      "stable": "Stalla"
     },
     "new_outdoor_schedule": "Nuovo programma di uscita",
     "edit_outdoor_schedule": "Modifica programma di uscita",
@@ -1527,7 +1528,16 @@
     "herd_changes_summary": "{{added}} aggiunti, {{removed}} rimossi. Da quale data vale?",
     "delete_herd_confirm": "Eliminare la mandria «{{name}}»?",
     "delete_herd_confirm_info": "Questa azione non può essere annullata.",
-    "timeline_view_overview": "Panoramica"
+    "timeline_view_overview": "Panoramica",
+    "outdoor_overrides": "Eccezioni",
+    "outdoor_overrides_hint": "Giorni in cui la mandria ha fatto altro rispetto al previsto, p. es. in stalla a causa di un temporale. Un'eccezione prevale sul programma di uscita in quei giorni.",
+    "new_outdoor_override": "Nuova eccezione",
+    "edit_outdoor_override": "Modifica eccezione",
+    "delete_outdoor_override_confirm": "Eliminare davvero questa eccezione?",
+    "outdoor_override_overlap": "L'eccezione si sovrappone a un'altra eccezione di questa mandria.",
+    "outdoor_override_single": "Eccezione",
+    "herd_animal_count": "{{count}} animale",
+    "herd_animal_count_plural": "{{count}} animali"
   },
   "drugs": {
     "drugs": "Medicinali",
