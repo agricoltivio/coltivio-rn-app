@@ -11526,6 +11526,116 @@
         }
       }
     },
+    "/v1/animals/herds/byId/{herdId}/outdoorScheduleOverrides": {
+      "get": {
+        "operationId": "GetV1AnimalsHerdsByIdHerdIdOutdoorScheduleOverrides",
+        "parameters": [
+          {
+            "name": "herdId",
+            "in": "path",
+            "required": true,
+            "description": "GET /v1/animals/herds/byId/:herdId/outdoorScheduleOverrides Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/animals/herds/byId/:herdId/outdoorScheduleOverrides Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1AnimalsHerdsByIdHerdIdOutdoorScheduleOverridesPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/animals/herds/byId/:herdId/outdoorScheduleOverrides Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1AnimalsHerdsByIdHerdIdOutdoorScheduleOverrides",
+        "parameters": [
+          {
+            "name": "herdId",
+            "in": "path",
+            "required": true,
+            "description": "HEAD /v1/animals/herds/byId/:herdId/outdoorScheduleOverrides Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/animals/herds/byId/:herdId/outdoorScheduleOverrides Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/animals/herds/byId/:herdId/outdoorScheduleOverrides Negative response"
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostV1AnimalsHerdsByIdHerdIdOutdoorScheduleOverrides",
+        "parameters": [
+          {
+            "name": "herdId",
+            "in": "path",
+            "required": true,
+            "description": "POST /v1/animals/herds/byId/:herdId/outdoorScheduleOverrides Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "POST /v1/animals/herds/byId/:herdId/outdoorScheduleOverrides Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1AnimalsHerdsByIdHerdIdOutdoorScheduleOverridesRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/animals/herds/byId/:herdId/outdoorScheduleOverrides Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1AnimalsHerdsByIdHerdIdOutdoorScheduleOverridesPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/animals/herds/byId/:herdId/outdoorScheduleOverrides Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/animals/herds/outdoorSchedules/byId/{outdoorScheduleId}": {
       "get": {
         "operationId": "GetV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleId",
@@ -11661,6 +11771,152 @@
           },
           "400": {
             "description": "DELETE /v1/animals/herds/outdoorSchedules/byId/:outdoorScheduleId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/animals/herds/outdoorScheduleOverrides/byId/{outdoorScheduleOverrideId}": {
+      "get": {
+        "operationId": "GetV1AnimalsHerdsOutdoorScheduleOverridesByIdOutdoorScheduleOverrideId",
+        "parameters": [
+          {
+            "name": "outdoorScheduleOverrideId",
+            "in": "path",
+            "required": true,
+            "description": "GET /v1/animals/herds/outdoorScheduleOverrides/byId/:outdoorScheduleOverrideId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "GET /v1/animals/herds/outdoorScheduleOverrides/byId/:outdoorScheduleOverrideId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1AnimalsHerdsOutdoorScheduleOverridesByIdOutdoorScheduleOverrideIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "GET /v1/animals/herds/outdoorScheduleOverrides/byId/:outdoorScheduleOverrideId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "operationId": "HeadV1AnimalsHerdsOutdoorScheduleOverridesByIdOutdoorScheduleOverrideId",
+        "parameters": [
+          {
+            "name": "outdoorScheduleOverrideId",
+            "in": "path",
+            "required": true,
+            "description": "HEAD /v1/animals/herds/outdoorScheduleOverrides/byId/:outdoorScheduleOverrideId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "HEAD /v1/animals/herds/outdoorScheduleOverrides/byId/:outdoorScheduleOverrideId Positive response"
+          },
+          "400": {
+            "description": "HEAD /v1/animals/herds/outdoorScheduleOverrides/byId/:outdoorScheduleOverrideId Negative response"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "PatchV1AnimalsHerdsOutdoorScheduleOverridesByIdOutdoorScheduleOverrideId",
+        "parameters": [
+          {
+            "name": "outdoorScheduleOverrideId",
+            "in": "path",
+            "required": true,
+            "description": "PATCH /v1/animals/herds/outdoorScheduleOverrides/byId/:outdoorScheduleOverrideId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "PATCH /v1/animals/herds/outdoorScheduleOverrides/byId/:outdoorScheduleOverrideId Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchV1AnimalsHerdsOutdoorScheduleOverridesByIdOutdoorScheduleOverrideIdRequestBody"
+              }
+            }
+          }
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "PATCH /v1/animals/herds/outdoorScheduleOverrides/byId/:outdoorScheduleOverrideId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatchV1AnimalsHerdsOutdoorScheduleOverridesByIdOutdoorScheduleOverrideIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "PATCH /v1/animals/herds/outdoorScheduleOverrides/byId/:outdoorScheduleOverrideId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteV1AnimalsHerdsOutdoorScheduleOverridesByIdOutdoorScheduleOverrideId",
+        "parameters": [
+          {
+            "name": "outdoorScheduleOverrideId",
+            "in": "path",
+            "required": true,
+            "description": "DELETE /v1/animals/herds/outdoorScheduleOverrides/byId/:outdoorScheduleOverrideId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "DELETE /v1/animals/herds/outdoorScheduleOverrides/byId/:outdoorScheduleOverrideId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteV1AnimalsHerdsOutdoorScheduleOverridesByIdOutdoorScheduleOverrideIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "DELETE /v1/animals/herds/outdoorScheduleOverrides/byId/:outdoorScheduleOverrideId Negative response",
             "content": {
               "application/json": {
                 "schema": {
@@ -18189,6 +18445,84 @@
           }
         }
       }
+    },
+    "/v1/forum/images": {
+      "post": {
+        "operationId": "PostV1ForumImages",
+        "requestBody": {
+          "description": "POST /v1/forum/images Request body",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PostV1ForumImagesRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "POST /v1/forum/images Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostV1ForumImagesPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "POST /v1/forum/images Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/forum/images/byId/{imageId}": {
+      "delete": {
+        "operationId": "DeleteV1ForumImagesByIdImageId",
+        "parameters": [
+          {
+            "name": "imageId",
+            "in": "path",
+            "required": true,
+            "description": "DELETE /v1/forum/images/byId/:imageId Parameter",
+            "schema": {
+              "$ref": "#/components/schemas/GetV1LayersPlotsBboxParameterXmin"
+            }
+          }
+        ],
+        "security": [{ "APIKEY_1": [] }],
+        "responses": {
+          "200": {
+            "description": "DELETE /v1/forum/images/byId/:imageId Positive response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteV1ForumImagesByIdImageIdPositiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "DELETE /v1/forum/images/byId/:imageId Negative response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetV1LayersPlotsBboxNegativeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -18321,7 +18655,13 @@
               "ear_tag_assigned",
               "ear_tag_number_taken",
               "invalid_sire",
-              "invalid_date_range"
+              "invalid_date_range",
+              "crop_rotation_overlap",
+              "outdoor_schedule_overlap",
+              "outdoor_schedule_override_overlap",
+              "invalid_image",
+              "invalid_image_reference",
+              "too_many_pending_images"
             ]
           }
         },
@@ -20489,7 +20829,7 @@
                     "herdName": { "type": "string" },
                     "type": {
                       "type": "string",
-                      "enum": ["pasture", "exercise_yard"]
+                      "enum": ["pasture", "exercise_yard", "stable"]
                     },
                     "startDate": {
                       "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
@@ -36067,7 +36407,7 @@
                     "herdName": { "type": "string" },
                     "type": {
                       "type": "string",
-                      "enum": ["pasture", "exercise_yard"]
+                      "enum": ["pasture", "exercise_yard", "stable"]
                     },
                     "startDate": {
                       "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
@@ -36265,7 +36605,7 @@
                           },
                           "type": {
                             "type": "string",
-                            "enum": ["pasture", "exercise_yard"]
+                            "enum": ["pasture", "exercise_yard", "stable"]
                           },
                           "notes": { "type": ["string", "null"] },
                           "recurrence": {
@@ -36318,6 +36658,60 @@
                           "type",
                           "notes",
                           "recurrence"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "outdoorScheduleOverrides": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string" },
+                          "farmId": { "type": "string" },
+                          "herdId": { "type": "string" },
+                          "meadowId": { "type": ["string", "null"] },
+                          "meadow": {
+                            "type": ["object", "null"],
+                            "properties": {
+                              "id": { "type": "string" },
+                              "name": { "type": "string" },
+                              "size": { "type": "number" }
+                            },
+                            "required": ["id", "name", "size"],
+                            "additionalProperties": false
+                          },
+                          "startDate": {
+                            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                            "type": "string",
+                            "format": "date-time",
+                            "externalDocs": {
+                              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                            }
+                          },
+                          "endDate": {
+                            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                            "type": "string",
+                            "format": "date-time",
+                            "externalDocs": {
+                              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                            }
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": ["pasture", "exercise_yard", "stable"]
+                          },
+                          "notes": { "type": ["string", "null"] }
+                        },
+                        "required": [
+                          "id",
+                          "farmId",
+                          "herdId",
+                          "meadowId",
+                          "startDate",
+                          "endDate",
+                          "type",
+                          "notes"
                         ],
                         "additionalProperties": false
                       }
@@ -36389,7 +36783,7 @@
                 },
                 "type": {
                   "type": "string",
-                  "enum": ["pasture", "exercise_yard"]
+                  "enum": ["pasture", "exercise_yard", "stable"]
                 },
                 "notes": { "type": ["string", "null"] },
                 "meadowId": { "type": ["string", "null"] },
@@ -36595,7 +36989,7 @@
                     },
                     "type": {
                       "type": "string",
-                      "enum": ["pasture", "exercise_yard"]
+                      "enum": ["pasture", "exercise_yard", "stable"]
                     },
                     "notes": { "type": ["string", "null"] },
                     "recurrence": {
@@ -36640,6 +37034,60 @@
                     "type",
                     "notes",
                     "recurrence"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "outdoorScheduleOverrides": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "farmId": { "type": "string" },
+                    "herdId": { "type": "string" },
+                    "meadowId": { "type": ["string", "null"] },
+                    "meadow": {
+                      "type": ["object", "null"],
+                      "properties": {
+                        "id": { "type": "string" },
+                        "name": { "type": "string" },
+                        "size": { "type": "number" }
+                      },
+                      "required": ["id", "name", "size"],
+                      "additionalProperties": false
+                    },
+                    "startDate": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "endDate": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": ["pasture", "exercise_yard", "stable"]
+                    },
+                    "notes": { "type": ["string", "null"] }
+                  },
+                  "required": [
+                    "id",
+                    "farmId",
+                    "herdId",
+                    "meadowId",
+                    "startDate",
+                    "endDate",
+                    "type",
+                    "notes"
                   ],
                   "additionalProperties": false
                 }
@@ -36699,7 +37147,7 @@
                 },
                 "type": {
                   "type": "string",
-                  "enum": ["pasture", "exercise_yard"]
+                  "enum": ["pasture", "exercise_yard", "stable"]
                 },
                 "notes": { "type": ["string", "null"] },
                 "meadowId": { "type": ["string", "null"] },
@@ -36795,7 +37243,7 @@
                     },
                     "type": {
                       "type": "string",
-                      "enum": ["pasture", "exercise_yard"]
+                      "enum": ["pasture", "exercise_yard", "stable"]
                     },
                     "notes": { "type": ["string", "null"] },
                     "recurrence": {
@@ -36891,7 +37339,7 @@
               },
               "type": {
                 "type": "string",
-                "enum": ["pasture", "exercise_yard"]
+                "enum": ["pasture", "exercise_yard", "stable"]
               },
               "notes": { "type": ["string", "null"] },
               "recurrence": {
@@ -36964,7 +37412,10 @@
               "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
             }
           },
-          "type": { "type": "string", "enum": ["pasture", "exercise_yard"] },
+          "type": {
+            "type": "string",
+            "enum": ["pasture", "exercise_yard", "stable"]
+          },
           "notes": { "type": ["string", "null"] },
           "meadowId": { "type": ["string", "null"] },
           "recurrence": {
@@ -36990,6 +37441,163 @@
           }
         },
         "required": ["startDate", "type"]
+      },
+      "GetV1AnimalsHerdsByIdHerdIdOutdoorScheduleOverridesPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "farmId": { "type": "string" },
+                    "herdId": { "type": "string" },
+                    "meadowId": { "type": ["string", "null"] },
+                    "meadow": {
+                      "type": ["object", "null"],
+                      "properties": {
+                        "id": { "type": "string" },
+                        "name": { "type": "string" },
+                        "size": { "type": "number" }
+                      },
+                      "required": ["id", "name", "size"],
+                      "additionalProperties": false
+                    },
+                    "startDate": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "endDate": {
+                      "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                      "type": "string",
+                      "format": "date-time",
+                      "externalDocs": {
+                        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                      }
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": ["pasture", "exercise_yard", "stable"]
+                    },
+                    "notes": { "type": ["string", "null"] }
+                  },
+                  "required": [
+                    "id",
+                    "farmId",
+                    "herdId",
+                    "meadowId",
+                    "startDate",
+                    "endDate",
+                    "type",
+                    "notes"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "count": { "type": "number" }
+            },
+            "required": ["result", "count"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1AnimalsHerdsByIdHerdIdOutdoorScheduleOverridesPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "herdId": { "type": "string" },
+              "meadowId": { "type": ["string", "null"] },
+              "meadow": {
+                "type": ["object", "null"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "name": { "type": "string" },
+                  "size": { "type": "number" }
+                },
+                "required": ["id", "name", "size"],
+                "additionalProperties": false
+              },
+              "startDate": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "endDate": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": ["pasture", "exercise_yard", "stable"]
+              },
+              "notes": { "type": ["string", "null"] }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "herdId",
+              "meadowId",
+              "startDate",
+              "endDate",
+              "type",
+              "notes"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1AnimalsHerdsByIdHerdIdOutdoorScheduleOverridesRequestBody": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+            }
+          },
+          "endDate": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+            }
+          },
+          "type": {
+            "type": "string",
+            "enum": ["pasture", "exercise_yard", "stable"]
+          },
+          "notes": { "type": ["string", "null"] },
+          "meadowId": { "type": ["string", "null"] }
+        },
+        "required": ["startDate", "endDate", "type"]
       },
       "GetV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleIdPositiveResponse": {
         "type": "object",
@@ -37029,7 +37637,7 @@
               },
               "type": {
                 "type": "string",
-                "enum": ["pasture", "exercise_yard"]
+                "enum": ["pasture", "exercise_yard", "stable"]
               },
               "notes": { "type": ["string", "null"] },
               "recurrence": {
@@ -37119,7 +37727,7 @@
               },
               "type": {
                 "type": "string",
-                "enum": ["pasture", "exercise_yard"]
+                "enum": ["pasture", "exercise_yard", "stable"]
               },
               "notes": { "type": ["string", "null"] },
               "recurrence": {
@@ -37192,7 +37800,10 @@
               "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
             }
           },
-          "type": { "type": "string", "enum": ["pasture", "exercise_yard"] },
+          "type": {
+            "type": "string",
+            "enum": ["pasture", "exercise_yard", "stable"]
+          },
           "notes": { "type": ["string", "null"] },
           "meadowId": { "type": ["string", "null"] },
           "recurrence": {
@@ -37220,6 +37831,164 @@
         "required": []
       },
       "DeleteV1AnimalsHerdsOutdoorSchedulesByIdOutdoorScheduleIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "GetV1AnimalsHerdsOutdoorScheduleOverridesByIdOutdoorScheduleOverrideIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "herdId": { "type": "string" },
+              "meadowId": { "type": ["string", "null"] },
+              "meadow": {
+                "type": ["object", "null"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "name": { "type": "string" },
+                  "size": { "type": "number" }
+                },
+                "required": ["id", "name", "size"],
+                "additionalProperties": false
+              },
+              "startDate": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "endDate": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": ["pasture", "exercise_yard", "stable"]
+              },
+              "notes": { "type": ["string", "null"] }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "herdId",
+              "meadowId",
+              "startDate",
+              "endDate",
+              "type",
+              "notes"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1AnimalsHerdsOutdoorScheduleOverridesByIdOutdoorScheduleOverrideIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "farmId": { "type": "string" },
+              "herdId": { "type": "string" },
+              "meadowId": { "type": ["string", "null"] },
+              "meadow": {
+                "type": ["object", "null"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "name": { "type": "string" },
+                  "size": { "type": "number" }
+                },
+                "required": ["id", "name", "size"],
+                "additionalProperties": false
+              },
+              "startDate": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "endDate": {
+                "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+                "type": "string",
+                "format": "date-time",
+                "externalDocs": {
+                  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+                }
+              },
+              "type": {
+                "type": "string",
+                "enum": ["pasture", "exercise_yard", "stable"]
+              },
+              "notes": { "type": ["string", "null"] }
+            },
+            "required": [
+              "id",
+              "farmId",
+              "herdId",
+              "meadowId",
+              "startDate",
+              "endDate",
+              "type",
+              "notes"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PatchV1AnimalsHerdsOutdoorScheduleOverridesByIdOutdoorScheduleOverrideIdRequestBody": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+            }
+          },
+          "endDate": {
+            "description": "YYYY-MM-DDTHH:mm:ss.sssZ",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?)?Z?$",
+            "externalDocs": {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"
+            }
+          },
+          "type": {
+            "type": "string",
+            "enum": ["pasture", "exercise_yard", "stable"]
+          },
+          "notes": { "type": ["string", "null"] },
+          "meadowId": { "type": ["string", "null"] }
+        },
+        "required": []
+      },
+      "DeleteV1AnimalsHerdsOutdoorScheduleOverridesByIdOutdoorScheduleOverrideIdPositiveResponse": {
         "type": "object",
         "properties": {
           "data": {
@@ -49123,6 +49892,41 @@
         "required": ["body"]
       },
       "DeleteV1ForumRepliesByIdReplyIdPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1ForumImagesPositiveResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "url": { "type": "string" },
+              "width": { "type": "number" },
+              "height": { "type": "number" }
+            },
+            "required": ["id", "url", "width", "height"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["data"],
+        "additionalProperties": false
+      },
+      "PostV1ForumImagesRequestBody": {
+        "type": "object",
+        "properties": { "file": { "type": "string", "format": "binary" } },
+        "required": ["file"]
+      },
+      "DeleteV1ForumImagesByIdImageIdPositiveResponse": {
         "type": "object",
         "properties": {
           "data": {

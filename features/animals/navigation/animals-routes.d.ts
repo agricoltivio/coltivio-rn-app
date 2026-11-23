@@ -1,3 +1,4 @@
+import { OutdoorScheduleOverride } from "@/api/herds.api";
 import type {
   OutdoorScheduleFormResult,
   ScheduleEditData,
@@ -31,6 +32,10 @@ export type AnimalsStackParamList = {
     | undefined;
   EditAnimal: { animalId?: string; herdId?: string };
   SelectChildren: { animalId: string; sex: "male" | "female" };
+  // Sections of the animal details, each a screen of its own
+  AnimalHeats: { animalId: string };
+  AnimalOffspring: { animalId: string };
+  AnimalTreatments: { animalId: string };
   SelectAnimals: {
     initialSelectedIds: string[];
     previousScreen:
@@ -93,6 +98,10 @@ export type AnimalsStackParamList = {
     animalIds?: string[];
     scheduleResult?: OutdoorScheduleFormResult;
   };
+  OutdoorScheduleOverrideForm: {
+    herdId: string;
+    override?: OutdoorScheduleOverride;
+  };
   OutdoorScheduleForm: {
     previousScreen: "HerdEdit" | "CreateHerd";
     canDelete: boolean;
@@ -147,6 +156,9 @@ export type AnimalDetailsScreenProps = StackScreenProps<"AnimalDetails">;
 export type CreateAnimalScreenProps = StackScreenProps<"CreateAnimal">;
 export type EditAnimalScreenProps = StackScreenProps<"EditAnimal">;
 export type SelectChildrenScreenProps = StackScreenProps<"SelectChildren">;
+export type AnimalHeatsScreenProps = StackScreenProps<"AnimalHeats">;
+export type AnimalOffspringScreenProps = StackScreenProps<"AnimalOffspring">;
+export type AnimalTreatmentsScreenProps = StackScreenProps<"AnimalTreatments">;
 export type SelectAnimalsScreenProps = StackScreenProps<"SelectAnimals">;
 export type DrugsScreenProps = StackScreenProps<"Drugs">;
 export type CreateDrugScreenProps = StackScreenProps<"CreateDrug">;
@@ -176,6 +188,8 @@ export type CreateHerdScreenProps = StackScreenProps<"CreateHerd">;
 export type HerdEditScreenProps = StackScreenProps<"HerdEdit">;
 export type OutdoorScheduleFormScreenProps =
   StackScreenProps<"OutdoorScheduleForm">;
+export type OutdoorScheduleOverrideFormScreenProps =
+  StackScreenProps<"OutdoorScheduleOverrideForm">;
 export type BatchSelectAnimalsScreenProps =
   StackScreenProps<"BatchSelectAnimals">;
 export type BatchEditActionScreenProps = StackScreenProps<"BatchEditAction">;

@@ -106,7 +106,8 @@ export function EditPlotScreen({
       data: {
         ...rest,
         size: Number(size),
-        usage: Number(usage),
+        // No usage code set: leave it out, Number(undefined) is NaN and is sent as null
+        usage: usage ? Number(usage) : undefined,
         cuttingDate: rest.cuttingDate
           ? toLocalDateString(rest.cuttingDate)
           : null,

@@ -1,6 +1,7 @@
 import { CloseButton } from "@/components/buttons/CloseButton";
 import { Stack } from "@/navigation/stack";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
+import i18n from "@/locales/i18n";
 import { AnimalsHubScreen } from "../AnimalsHubScreen";
 import { EarTagsScreen } from "../EarTagsScreen";
 import { EditEarTagScreen } from "../EditEarTagScreen";
@@ -34,6 +35,10 @@ import { MeadowDetailsScreen } from "../MeadowDetailsScreen";
 import { MeadowOverviewScreen } from "../MeadowOverviewScreen";
 import { MeadowSummaryScreen } from "../MeadowSummaryScreen";
 import { OutdoorScheduleFormScreen } from "../OutdoorScheduleFormScreen";
+import { AnimalHeatsScreen } from "../AnimalHeatsScreen";
+import { AnimalOffspringScreen } from "../AnimalOffspringScreen";
+import { AnimalTreatmentsScreen } from "../AnimalTreatmentsScreen";
+import { OutdoorScheduleOverrideFormScreen } from "../OutdoorScheduleOverrideFormScreen";
 import { TreatmentsExportScreen } from "../TreatmentsExportScreen";
 import { HerdsOnboardingScreen } from "../HerdsOnboardingScreen";
 import { BatchSelectAnimalsScreen } from "../BatchSelectAnimalsScreen";
@@ -174,6 +179,24 @@ export function renderAnimalsStack(
       component={SelectChildrenModal}
     />,
     <Stack.Screen
+      key="animal-heats"
+      name="AnimalHeats"
+      options={{ title: "" }}
+      component={AnimalHeatsScreen}
+    />,
+    <Stack.Screen
+      key="animal-offspring"
+      name="AnimalOffspring"
+      options={{ title: "" }}
+      component={AnimalOffspringScreen}
+    />,
+    <Stack.Screen
+      key="animal-treatments"
+      name="AnimalTreatments"
+      options={{ title: "" }}
+      component={AnimalTreatmentsScreen}
+    />,
+    <Stack.Screen
       key="select-animals"
       name="SelectAnimals"
       options={{ title: "", presentation: "modal" }}
@@ -295,13 +318,29 @@ export function renderAnimalsStack(
         title: "",
         headerRight() {
           return (
-            <IonIconButton
-              icon="share-outline"
-              type="ghost"
-              iconSize={30}
-              color={theme.colors.primary}
-              onPress={() => navigation.navigate("OutdoorJournalExport")}
-            />
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              {/* How the journal comes about, instead of a box on the screen */}
+              <IonIconButton
+                icon="information-circle-outline"
+                type="ghost"
+                // The circle reads smaller than the share glyph at the same size
+                iconSize={34}
+                color={theme.colors.primary}
+                onPress={() =>
+                  Alert.alert(
+                    i18n.t("animals.outdoor_journal"),
+                    i18n.t("animals.outdoor_journal_info"),
+                  )
+                }
+              />
+              <IonIconButton
+                icon="share-outline"
+                type="ghost"
+                iconSize={30}
+                color={theme.colors.primary}
+                onPress={() => navigation.navigate("OutdoorJournalExport")}
+              />
+            </View>
           );
         },
       }}
@@ -324,6 +363,12 @@ export function renderAnimalsStack(
       name="OutdoorScheduleForm"
       options={{ title: "" }}
       component={OutdoorScheduleFormScreen}
+    />,
+    <Stack.Screen
+      key="outdoor-schedule-override-form"
+      name="OutdoorScheduleOverrideForm"
+      options={{ title: "" }}
+      component={OutdoorScheduleOverrideFormScreen}
     />,
     <Stack.Screen
       key="meadow-summary"

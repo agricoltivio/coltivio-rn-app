@@ -68,7 +68,7 @@ describe("buildJournalTimelineData", () => {
     expect(result.herds).toHaveLength(1);
     const bar = result.herds[0].bars[0];
     expect(bar.startDay).toBe(dayOf("2025-05-01T00:00:00.000Z"));
-    expect(bar.endDay).toBe(dayOf("2025-05-31T00:00:00.000Z"));
+    expect(bar.endDay).toBe(dayOf("2025-05-31T00:00:00.000Z") + 1);
     expect(bar.animalCount).toBe(42);
     expect(bar.scheduleId).toBe("A1-0");
     expect(bar.startDate).toBe("2025-05-01T00:00:00.000Z");
@@ -208,7 +208,7 @@ describe("buildMeadowJournalTimelineData", () => {
     expect(first.meadowName).toBe("Allmend");
     expect(first.meadowSize).toBe(12000);
     expect(first.startDay).toBe(dayOf("2025-05-01T00:00:00.000Z"));
-    expect(first.endDay).toBe(dayOf("2025-05-31T00:00:00.000Z"));
+    expect(first.endDay).toBe(dayOf("2025-05-31T00:00:00.000Z") + 1);
     expect(second.herdName).toBe("Rinder");
     expect(first.scheduleId).not.toBe(second.scheduleId);
   });

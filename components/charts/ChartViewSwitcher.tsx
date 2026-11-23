@@ -27,7 +27,7 @@ export function ChartViewSwitcher<TMode extends string = ChartMode>({
         alignSelf: "flex-start",
       }}
     >
-      {options.map((option) => {
+      {options.map((option, index) => {
         const isActive = option.key === value;
         return (
           <TouchableOpacity
@@ -39,6 +39,9 @@ export function ChartViewSwitcher<TMode extends string = ChartMode>({
               backgroundColor: isActive
                 ? theme.colors.primary
                 : theme.colors.white,
+              // Vertical line between the options
+              borderLeftWidth: index > 0 ? 1 : 0,
+              borderLeftColor: theme.colors.gray3,
             }}
           >
             <Subtitle

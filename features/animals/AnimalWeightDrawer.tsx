@@ -47,6 +47,8 @@ export function AnimalWeightDrawer({
   const [entryDate, setEntryDate] = useState(new Date());
   const [weightInput, setWeightInput] = useState("");
   const [weightInputKey, setWeightInputKey] = useState(0);
+  // The date's calendar is open: weight and save are hidden meanwhile
+  const [calendarOpen, setCalendarOpen] = useState(false);
   const step: DrawerStep = selectedStep ?? (currentWeight ? "choose" : "new");
 
   const createWeightMutation = useCreateAnimalWeightMutation(() =>
@@ -59,6 +61,7 @@ export function AnimalWeightDrawer({
   function selectStep(nextStep: "edit" | "new") {
     setSelectedStep(nextStep);
     setWeightInputKey((key) => key + 1);
+    setCalendarOpen(false);
     if (nextStep === "edit" && currentWeight) {
       setEntryDate(currentWeight.date);
       setWeightInput(String(currentWeight.weightKg));
@@ -73,6 +76,7 @@ export function AnimalWeightDrawer({
     setWeightInputKey((key) => key + 1);
     setEntryDate(new Date());
     setWeightInput("");
+    setCalendarOpen(false);
   }
 
   const weightKg = parseFloat(weightInput.replace(",", "."));
@@ -132,37 +136,44 @@ export function AnimalWeightDrawer({
                   onChange={setEntryDate}
                   // A weighing can't be in the future
                   maximumDate={new Date()}
+                  onOpenChange={setCalendarOpen}
                 />
-                <View>
-                  <Label style={{ marginBottom: theme.spacing.xxs }}>
-                    {t("breeding.weight_kg")}
-                  </Label>
-                  <BottomSheetTextInput
-                    // Uncontrolled: writing the value back on every keystroke made the native
-                    // input flicker. Remounted via key to load the start value of a step.
-                    key={weightInputKey}
-                    defaultValue={weightInput}
-                    onChangeText={setWeightInput}
-                    keyboardType="decimal-pad"
-                    placeholder="0.0"
-                    placeholderTextColor={theme.colors.gray2}
-                    style={{
-                      fontSize: 17,
-                      padding: 10,
-                      borderRadius: theme.radii.l,
-                      borderWidth: 1,
-                      borderColor: theme.colors.gray2,
-                      backgroundColor: theme.colors.white,
-                      color: theme.colors.gray0,
-                    }}
+                {/* Hidden while the calendar is open: focusing the weight there pushed the
+                    field out of view behind the keyboard, which then couldn't be closed */}
+                {!calendarOpen && (
+                  <View>
+                    <Label style={{ marginBottom: theme.spacing.xxs }}>
+                      {t("breeding.weight_kg")}
+                    </Label>
+                    <BottomSheetTextInput
+                      // Uncontrolled: writing the value back on every keystroke made the native
+                      // input flicker. Remounted via key to load the start value of a step.
+                      key={weightInputKey}
+                      defaultValue={weightInput}
+                      onChangeText={setWeightInput}
+                      keyboardType="decimal-pad"
+                      placeholder="0.0"
+                      placeholderTextColor={theme.colors.gray2}
+                      style={{
+                        fontSize: 17,
+                        padding: 10,
+                        borderRadius: theme.radii.l,
+                        borderWidth: 1,
+                        borderColor: theme.colors.gray2,
+                        backgroundColor: theme.colors.white,
+                        color: theme.colors.gray0,
+                      }}
+                    />
+                  </View>
+                )}
+                {!calendarOpen && (
+                  <Button
+                    title={t("buttons.save")}
+                    onPress={save}
+                    disabled={!isValid || isSaving}
+                    loading={isSaving}
                   />
-                </View>
-                <Button
-                  title={t("buttons.save")}
-                  onPress={save}
-                  disabled={!isValid || isSaving}
-                  loading={isSaving}
-                />
+                )}
               </View>
             )}
           </View>

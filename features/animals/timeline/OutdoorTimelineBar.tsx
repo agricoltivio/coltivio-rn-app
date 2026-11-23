@@ -3,6 +3,7 @@ import { stringToColor, hexToRgba } from "@/theme/theme";
 import { TouchableOpacity, View } from "react-native";
 import { Text } from "@/components/text/Text";
 import { OutdoorBar } from "./outdoor-timeline-utils";
+import { OutdoorScheduleType } from "@/api/herds.api";
 
 type OutdoorTimelineBarProps = {
   bar: OutdoorBar;
@@ -17,6 +18,13 @@ type OutdoorTimelineBarProps = {
 
 const MIN_BAR_WIDTH = 4;
 
+// Fixed colors per outdoor type (herd screens, herd list of the journal)
+export const OUTDOOR_TYPE_COLORS: Record<OutdoorScheduleType, string> = {
+  pasture: "#4CAF50",
+  exercise_yard: "#FF9800",
+  stable: "#78909C",
+};
+
 export const OutdoorTimelineBar = memo(function OutdoorTimelineBar({
   bar,
   left,
@@ -28,12 +36,9 @@ export const OutdoorTimelineBar = memo(function OutdoorTimelineBar({
 }: OutdoorTimelineBarProps) {
   const barWidth = Math.max(width, MIN_BAR_WIDTH);
   // Use fixed colors for schedule types (herd screens), fall back to herd name hash (journal)
-  const color =
-    bar.scheduleType === "pasture"
-      ? "#4CAF50"
-      : bar.scheduleType === "exercise_yard"
-        ? "#FF9800"
-        : stringToColor(bar.herdName);
+  const color = bar.scheduleType
+    ? OUTDOOR_TYPE_COLORS[bar.scheduleType]
+    : stringToColor(bar.herdName);
 
   // How far today falls within this bar (in pixels from the bar's left edge)
   const todayOffset = todayLeft - left;
@@ -116,6 +121,23 @@ export const OutdoorTimelineBar = memo(function OutdoorTimelineBar({
             borderStyle: "dashed",
             borderColor: futureBorderColor,
             borderLeftWidth: hasPast ? 0 : 1.5,
+          }}
+        />
+      )}
+
+      {/* Overrides get an outline, so they stand out from the schedule around them */}
+      {bar.isOverride && (
+        <View
+          pointerEvents="none"
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            borderRadius: 4,
+            borderWidth: 2,
+            borderColor: hexToRgba("#263238", 0.8),
           }}
         />
       )}
