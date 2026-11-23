@@ -1525,7 +1525,16 @@
     "delete_herd_confirm_info": "This can't be undone.",
     "timeline_view_overview": "Overview",
     "n_offspring": "{{count}} offspring",
-    "n_offspring_plural": "{{count}} offspring"
+    "n_offspring_plural": "{{count}} offspring",
+    "sex_change_offspring_title": "Change sex?",
+    "sex_change_offspring_body": "{{name}} is set as {{parent}} of {{count}} offspring. These links are removed with the change.",
+    "change_anyway": "Change anyway",
+    "death": "Death",
+    "no_herd": "No herd",
+    "open_herd": "Open herd",
+    "type_change_title": "Change animal type?",
+    "type_change_body": "The outdoor journal category, the breeding calendar and the treatments depend on the type of {{name}}.",
+    "type_change_relatives": "Parents and offspring then have a different type, their links are removed."
   },
   "drugs": {
     "drugs": "Drugs",

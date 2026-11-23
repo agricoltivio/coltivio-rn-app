@@ -6,7 +6,7 @@ import { ListItem } from "@/components/list/ListItem";
 import { ScrollView } from "@/components/views/ScrollView";
 import { H2, H3 } from "@/theme/Typography";
 import { Ionicons } from "@expo/vector-icons";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -22,7 +22,17 @@ import { formatLocalizedDate, parseDateOnly } from "@/utils/date";
 import { Switch } from "@/components/inputs/Switch";
 import { useAnimalHeatsQuery, useAnimalWeightsQuery } from "./breeding.hooks";
 import { AnimalWeightChartDrawer } from "./AnimalWeightField";
+import { AnimalWeightDrawer } from "./AnimalWeightDrawer";
+import { useAvailableEarTagsQuery } from "./earTags.hooks";
+import { SelectSearchModal } from "@/components/select/Select";
+import {
+  AnimalQuickEditField,
+  AnimalQuickEditSheet,
+} from "./AnimalQuickEditSheet";
 import { useAnimalParasiteHistoryQuery } from "./parasite-checks.hooks";
+
+// "No ear tag" entry of the ear tag picker (removes the tag)
+const NO_EAR_TAG = "__none__";
 
 export function AnimalDetailsScreen({
   route,
@@ -45,6 +55,21 @@ export function AnimalDetailsScreen({
 
   // Drawer with the weight timeline chart
   const weightChartSheetRef = useRef<BottomSheetModal>(null);
+  // Ear tag picker (search list), only loads the free tags once opened
+  const [earTagPickerVisible, setEarTagPickerVisible] = useState(false);
+  const { availableEarTags } = useAvailableEarTagsQuery(earTagPickerVisible);
+  const updateEarTagMutation = useUpdateAnimalMutation();
+  // Weight drawer: correct the current weight or add an entry
+  const weightSheetRef = useRef<BottomSheetModal>(null);
+  // Sheet to edit a single field of the animal
+  const quickEditSheetRef = useRef<BottomSheetModal>(null);
+  const [quickEditField, setQuickEditField] =
+    useState<AnimalQuickEditField | null>(null);
+  // Opened once the field is set: the sheet sizes itself to its content, which only exists
+  // then. Closing resets the field, so the same field can be opened again.
+  useEffect(() => {
+    if (quickEditField) quickEditSheetRef.current?.present();
+  }, [quickEditField]);
   const updateRegisteredMutation = useUpdateAnimalMutation();
 
   // Combine children from both mother and father relationships
@@ -99,6 +124,20 @@ export function AnimalDetailsScreen({
   ]
     .filter(Boolean)
     .join(" · ");
+
+  const currentHerd = animal.herd;
+
+  // Quick edit: tapping an editable field opens a sheet with just that field
+  const quickEditOnPress = (field: AnimalQuickEditField) =>
+    canWrite("animals") ? () => setQuickEditField(field) : undefined;
+  const quickEditIcon = canWrite("animals") ? (
+    <Ionicons
+      name="create-outline"
+      size={20}
+      color={theme.colors.gray2}
+      style={{ alignSelf: "center", marginRight: theme.spacing.s }}
+    />
+  ) : null;
 
   const formattedDateOfBirth = animal.dateOfBirth
     ? new Date(animal.dateOfBirth).toLocaleDateString()
@@ -170,33 +209,53 @@ export function AnimalDetailsScreen({
             backgroundColor: theme.colors.white,
           }}
         >
-          <ListItem style={{ paddingVertical: 5 }}>
+          <ListItem
+            style={{ paddingVertical: 5 }}
+            onPress={quickEditOnPress("type")}
+          >
             <ListItem.Content>
               <ListItem.Title>{t("forms.labels.type")}</ListItem.Title>
               <ListItem.Body>
                 {t(`animals.animal_types.${animal.type}`)}
               </ListItem.Body>
             </ListItem.Content>
+            {quickEditIcon}
           </ListItem>
-          <ListItem style={{ paddingVertical: 5 }}>
+          <ListItem
+            style={{ paddingVertical: 5 }}
+            onPress={
+              canWrite("animals")
+                ? () => setEarTagPickerVisible(true)
+                : undefined
+            }
+          >
             <ListItem.Content>
               <ListItem.Title>{t("ear_tags.ear_tag")}</ListItem.Title>
               <ListItem.Body>
                 {animal.earTag?.number ?? t("ear_tags.no_ear_tag")}
               </ListItem.Body>
             </ListItem.Content>
+            {quickEditIcon}
           </ListItem>
-          <ListItem style={{ paddingVertical: 5 }}>
+          <ListItem
+            style={{ paddingVertical: 5 }}
+            onPress={quickEditOnPress("sex")}
+          >
             <ListItem.Content>
               <ListItem.Title>{t("forms.labels.sex")}</ListItem.Title>
               <ListItem.Body>{t(`animals.sex.${animal.sex}`)}</ListItem.Body>
             </ListItem.Content>
+            {quickEditIcon}
           </ListItem>
-          <ListItem style={{ paddingVertical: 5 }}>
+          <ListItem
+            style={{ paddingVertical: 5 }}
+            onPress={quickEditOnPress("dateOfBirth")}
+          >
             <ListItem.Content>
               <ListItem.Title>{t("animals.date_of_birth")}</ListItem.Title>
               <ListItem.Body>{formattedDateOfBirth}</ListItem.Body>
             </ListItem.Content>
+            {quickEditIcon}
           </ListItem>
           <ListItem style={{ paddingVertical: 5 }}>
             <ListItem.Content>
@@ -213,15 +272,27 @@ export function AnimalDetailsScreen({
               }
             />
           </ListItem>
-          <ListItem style={{ paddingVertical: 5 }}>
+          <ListItem
+            style={{ paddingVertical: 5 }}
+            onPress={quickEditOnPress("usage")}
+          >
             <ListItem.Content>
               <ListItem.Title>{t("animals.usage")}</ListItem.Title>
               <ListItem.Body>
                 {t(`animals.usage_types.${animal.usage}`)}
               </ListItem.Body>
             </ListItem.Content>
+            {quickEditIcon}
           </ListItem>
-          <ListItem style={{ paddingVertical: 5 }}>
+          {/* Weight: the weight drawer of the edit form (edit the current entry or add one) */}
+          <ListItem
+            style={{ paddingVertical: 5 }}
+            onPress={
+              canWrite("animals")
+                ? () => weightSheetRef.current?.present()
+                : undefined
+            }
+          >
             <ListItem.Content>
               <ListItem.Title>{t("breeding.weight")}</ListItem.Title>
               <ListItem.Body>
@@ -250,21 +321,31 @@ export function AnimalDetailsScreen({
                 />
               </View>
             )}
+            {quickEditIcon}
           </ListItem>
-          {animal.color && (
-            <ListItem style={{ paddingVertical: 5 }}>
+          {/* Empty color / notes only with write access, so they can be added */}
+          {(animal.color || canWrite("animals")) && (
+            <ListItem
+              style={{ paddingVertical: 5 }}
+              onPress={quickEditOnPress("color")}
+            >
               <ListItem.Content>
                 <ListItem.Title>{t("animals.color")}</ListItem.Title>
-                <ListItem.Body>{animal.color}</ListItem.Body>
+                <ListItem.Body>{animal.color || "–"}</ListItem.Body>
               </ListItem.Content>
+              {quickEditIcon}
             </ListItem>
           )}
-          {animal.notes && (
-            <ListItem style={{ paddingVertical: 5 }}>
+          {(animal.notes || canWrite("animals")) && (
+            <ListItem
+              style={{ paddingVertical: 5 }}
+              onPress={quickEditOnPress("notes")}
+            >
               <ListItem.Content>
                 <ListItem.Title>{t("animals.notes")}</ListItem.Title>
-                <ListItem.Body>{animal.notes}</ListItem.Body>
+                <ListItem.Body>{animal.notes || "–"}</ListItem.Body>
               </ListItem.Content>
+              {quickEditIcon}
             </ListItem>
           )}
           {animal.customOutdoorJournalCategories.length > 0 && (
@@ -301,39 +382,51 @@ export function AnimalDetailsScreen({
               <ListItem.Chevron />
             </ListItem>
           )}
-          {animal.herd && (
+          {/* Herd: quick edit (herd and from when) with write access, otherwise opens the herd */}
+          {(animal.herd || canWrite("animals")) && (
             <ListItem
               style={{ paddingVertical: 5 }}
-              onPress={() =>
-                navigation.navigate("HerdEdit", { herdId: animal.herd!.id })
+              onPress={
+                canWrite("animals")
+                  ? quickEditOnPress("herd")
+                  : currentHerd
+                    ? () =>
+                        navigation.navigate("HerdEdit", {
+                          herdId: currentHerd.id,
+                        })
+                    : undefined
               }
             >
               <ListItem.Content>
                 <ListItem.Title>{t("animals.herd")}</ListItem.Title>
-                <ListItem.Body>{animal.herd.name}</ListItem.Body>
+                <ListItem.Body>{animal.herd?.name ?? "–"}</ListItem.Body>
               </ListItem.Content>
-              <ListItem.Chevron />
+              {canWrite("animals") ? quickEditIcon : <ListItem.Chevron />}
             </ListItem>
           )}
-          {formattedDateOfDeath && (
-            <>
-              <ListItem style={{ paddingVertical: 5 }}>
-                <ListItem.Content>
-                  <ListItem.Title>{t("animals.date_of_death")}</ListItem.Title>
-                  <ListItem.Body>{formattedDateOfDeath}</ListItem.Body>
-                </ListItem.Content>
-              </ListItem>
-              {animal.deathReason && (
-                <ListItem style={{ paddingVertical: 5 }}>
-                  <ListItem.Content>
-                    <ListItem.Title>{t("animals.death_reason")}</ListItem.Title>
-                    <ListItem.Body>
-                      {t(`animals.death_reasons.${animal.deathReason}`)}
-                    </ListItem.Body>
-                  </ListItem.Content>
-                </ListItem>
-              )}
-            </>
+          {/* Death: date and reason in one row and one quick edit; shown empty only with write access */}
+          {(formattedDateOfDeath || canWrite("animals")) && (
+            <ListItem
+              style={{ paddingVertical: 5 }}
+              onPress={quickEditOnPress("death")}
+            >
+              <ListItem.Content>
+                <ListItem.Title>{t("animals.date_of_death")}</ListItem.Title>
+                <ListItem.Body>
+                  {formattedDateOfDeath
+                    ? [
+                        formattedDateOfDeath,
+                        animal.deathReason
+                          ? t(`animals.death_reasons.${animal.deathReason}`)
+                          : null,
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")
+                    : "–"}
+                </ListItem.Body>
+              </ListItem.Content>
+              {quickEditIcon}
+            </ListItem>
           )}
         </View>
 
@@ -504,11 +597,63 @@ export function AnimalDetailsScreen({
         </View>
       </ScrollView>
 
+      {/* Ear tag: the same search list as in the edit form, saved on pick */}
+      <SelectSearchModal
+        visible={earTagPickerVisible}
+        title={t("ear_tags.ear_tag")}
+        value={animal.earTagId ?? NO_EAR_TAG}
+        data={[
+          { label: t("ear_tags.no_ear_tag"), value: NO_EAR_TAG },
+          ...(animal.earTag
+            ? [{ label: animal.earTag.number, value: animal.earTag.id }]
+            : []),
+          ...(availableEarTags ?? []).map((earTag) => ({
+            label: earTag.number,
+            value: earTag.id,
+          })),
+        ]}
+        onSelect={(earTagId) => {
+          setEarTagPickerVisible(false);
+          if (earTagId === (animal.earTagId ?? NO_EAR_TAG)) return;
+          updateEarTagMutation.mutate({
+            id: animalId,
+            earTagId: earTagId === NO_EAR_TAG ? null : earTagId,
+          });
+        }}
+        onClose={() => setEarTagPickerVisible(false)}
+      />
+
+      <AnimalQuickEditSheet
+        sheetRef={quickEditSheetRef}
+        field={quickEditField}
+        animal={{
+          ...animal,
+          offspringIds: children.map((child) => child.id),
+          hasParents: !!animal.motherId || !!animal.fatherId,
+        }}
+        onClose={() => setQuickEditField(null)}
+        onOpenHerd={(herdId) => navigation.navigate("HerdEdit", { herdId })}
+      />
+
+      <AnimalWeightDrawer
+        sheetRef={weightSheetRef}
+        animalId={animalId}
+        currentWeight={
+          animal.latestWeight
+            ? {
+                id: animal.latestWeight.id,
+                date: parseDateOnly(animal.latestWeight.date),
+                weightKg: animal.latestWeight.weightKg,
+              }
+            : null
+        }
+      />
+
       <AnimalWeightChartDrawer
         sheetRef={weightChartSheetRef}
         animalId={animalId}
-        // View only, weights are edited in the edit form like the other fields
-        canEdit={false}
+        // Tapping an entry opens it for editing, with write access
+        canEdit={canWrite("animals")}
       />
     </ContentView>
   );

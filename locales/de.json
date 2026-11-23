@@ -1525,7 +1525,16 @@
     "delete_herd_confirm_info": "Das kann nicht rückgängig gemacht werden.",
     "timeline_view_overview": "Übersicht",
     "n_offspring": "{{count}} Nachkomme",
-    "n_offspring_plural": "{{count}} Nachkommen"
+    "n_offspring_plural": "{{count}} Nachkommen",
+    "sex_change_offspring_title": "Geschlecht ändern?",
+    "sex_change_offspring_body": "{{name}} ist bei {{count}} Nachkommen als {{parent}} eingetragen. Mit der Änderung werden diese Verknüpfungen entfernt.",
+    "change_anyway": "Trotzdem ändern",
+    "death": "Tod",
+    "no_herd": "Keine Herde",
+    "open_herd": "Herde öffnen",
+    "type_change_title": "Tierart ändern?",
+    "type_change_body": "Die Kategorie im Auslaufjournal, der Trächtigkeitskalender und die Behandlungen richten sich nach der Tierart von {{name}}.",
+    "type_change_relatives": "Eltern und Nachkommen haben dann eine andere Tierart, ihre Verknüpfungen werden entfernt."
   },
   "drugs": {
     "drugs": "Medikamente",

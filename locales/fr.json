@@ -1525,7 +1525,16 @@
     "delete_herd_confirm_info": "Cette action est irréversible.",
     "timeline_view_overview": "Aperçu",
     "n_offspring": "{{count}} descendant",
-    "n_offspring_plural": "{{count}} descendants"
+    "n_offspring_plural": "{{count}} descendants",
+    "sex_change_offspring_title": "Changer le sexe ?",
+    "sex_change_offspring_body": "{{name}} est enregistré·e comme {{parent}} de {{count}} descendant(s). Ces liens sont supprimés avec la modification.",
+    "change_anyway": "Changer quand même",
+    "death": "Décès",
+    "no_herd": "Aucun troupeau",
+    "open_herd": "Ouvrir le troupeau",
+    "type_change_title": "Changer l'espèce ?",
+    "type_change_body": "La catégorie du journal de sorties, le calendrier de gestation et les traitements dépendent de l'espèce de {{name}}.",
+    "type_change_relatives": "Les parents et descendants sont alors d'une autre espèce, leurs liens sont supprimés."
   },
   "drugs": {
     "drugs": "Médicaments",
