@@ -13,6 +13,7 @@ import {
 import { PlanCropRotationsScreenProps } from "../navigation/crop-rotations-routes.d";
 import { addYears, subYears } from "date-fns";
 import { PlotRotationsEditor } from "./components/PlotRotationsEditor";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 export function PlanCropRotationsScreen({
   route,
@@ -32,6 +33,19 @@ export function PlanCropRotationsScreen({
   const { plots, isLoading: plotsLoading } = useFarmPlotsQuery();
   const [saving, setSaving] = useState(false);
   const initializedRef = useRef(false);
+
+  // Asks before leaving with unsaved plan changes: compared with the plan as it was loaded
+  const initialPlotPlansRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (initialPlotPlansRef.current === null && plotPlans.length > 0) {
+      initialPlotPlansRef.current = JSON.stringify(plotPlans);
+    }
+  }, [plotPlans]);
+  useDiscardChangesPrompt(
+    initialPlotPlansRef.current !== null &&
+      JSON.stringify(plotPlans) !== initialPlotPlansRef.current,
+    saving,
+  );
 
   const selectedPlotIds = plotIdsFromParams;
   const queryFromDate = subYears(new Date(), 10);

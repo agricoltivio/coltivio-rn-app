@@ -12,6 +12,7 @@ import { Button } from "@/components/buttons/Button";
 import { ScrollView } from "@/components/views/ScrollView";
 import { useTranslation } from "react-i18next";
 import { useUserQuery } from "@/features/user/users.hooks";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 export function EditFarmScreen({ navigation }: EditFarmScreenProps) {
   const { t } = useTranslation();
@@ -28,6 +29,8 @@ export function EditFarmScreen({ navigation }: EditFarmScreenProps) {
   } = useForm<{ name: string }>({
     values: farm,
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   async function onSubmit({ name }: { name: string }) {
     updateFarmMutation.mutate({ name });

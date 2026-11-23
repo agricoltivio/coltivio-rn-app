@@ -28,6 +28,7 @@ import {
   isPerAreaUnit,
   unitsForQuantityKind,
 } from "./sowingUnits";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type FormValues = {
   date: Date;
@@ -87,6 +88,8 @@ function EditSowingForm({
       additionalNotes: sowing.additionalNotes ?? undefined,
     },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const seedId = watch("seedId");
   const unitValue = watch("unit");

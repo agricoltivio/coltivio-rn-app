@@ -17,6 +17,7 @@ import { View, Alert } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useCreateDrugMutation } from "./drugs.hooks";
 import { CreateDrugScreenProps } from "./navigation/animals-routes";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type DoseUnit =
   | "tablet"
@@ -72,7 +73,7 @@ export function CreateDrugScreen({ route, navigation }: CreateDrugScreenProps) {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { isDirty, errors },
     watch,
   } = useForm<DrugFormValues>({
     defaultValues: {
@@ -84,6 +85,8 @@ export function CreateDrugScreen({ route, navigation }: CreateDrugScreenProps) {
       drugTreatment: [],
     },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const { fields, append, remove } = useFieldArray({
     control,

@@ -35,6 +35,7 @@ import { OutdoorScheduleTimeline } from "./timeline/OutdoorScheduleTimeline";
 import { ChartViewSwitcher } from "@/components/charts/ChartViewSwitcher";
 import { buildOutdoorTimelineData } from "./timeline/outdoor-timeline-utils";
 import { hasScheduleOverlaps } from "./schedule-overlap-utils";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 // Local schedule with a temp id for list keys
 type LocalSchedule = OutdoorScheduleCreateInput & { tempId: string };
@@ -188,6 +189,8 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
 
   const isDirty =
     (herd != null && name !== herd.name) || animalsChanged || schedulesChanged;
+  // Asks before leaving with unsaved changes (schedules are saved with the herd)
+  useDiscardChangesPrompt(isDirty);
 
   // Overlap detection
   const hasOverlaps = useMemo(

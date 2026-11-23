@@ -16,6 +16,7 @@ import { useFarmPlotsQuery } from "../../plots/plots.hooks";
 import { round } from "@/utils/math";
 import { SelectHarvestCropAndDateScreenProps } from "../navigation/harvest-routes";
 import { useCreateHarvestStore } from "./harvest.store";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type FormValues = {
   date: Date;
@@ -73,13 +74,16 @@ export function SelectHarvestCropAndDateScreen({
     control,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       date: harvest?.date ?? new Date(),
       cropId: harvest?.cropId ?? preselectedCropId,
     },
   });
+  // Leaving the add flow (back from its first step, or closing it) asks once something was
+  // entered; going back between the steps doesn't
+  useDiscardChangesPrompt(isDirty || harvest !== undefined);
 
   useEffect(() => {
     if (preselectedCropId) {

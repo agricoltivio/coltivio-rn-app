@@ -17,6 +17,8 @@ import { useTheme } from "styled-components/native";
 import { Card } from "@/components/card/Card";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/features/user/users.hooks";
+import { confirmDelete } from "@/utils/confirmDelete";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 export function EditFertilizerScreen({
   route,
@@ -42,6 +44,8 @@ export function EditFertilizerScreen({
         }
       : undefined,
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const updateFertilizerMutation = useUpdateFertilizerMutation(() =>
     navigation.goBack(),
@@ -62,7 +66,7 @@ export function EditFertilizerScreen({
   }
 
   function onDelete() {
-    deleteFertilizerMutation.mutate(fertilizerId);
+    confirmDelete(() => deleteFertilizerMutation.mutate(fertilizerId));
   }
 
   if (!fertilizer || isLoadingInUse) {

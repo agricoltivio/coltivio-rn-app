@@ -30,6 +30,7 @@ import { formatLocalizedDate, parseDateOnly } from "@/utils/date";
 import { Switch } from "@/components/inputs/Switch";
 import { useAnimalHeatsQuery, useAnimalWeightsQuery } from "./breeding.hooks";
 import { AnimalWeightChartDrawer } from "./AnimalWeightField";
+import { confirmDelete } from "@/utils/confirmDelete";
 
 export function AnimalDetailsScreen({
   route,
@@ -81,7 +82,7 @@ export function AnimalDetailsScreen({
   }
 
   function onDelete() {
-    deleteAnimalMutation.mutate(animalId);
+    confirmDelete(() => deleteAnimalMutation.mutate(animalId));
   }
 
   if (!animal) {

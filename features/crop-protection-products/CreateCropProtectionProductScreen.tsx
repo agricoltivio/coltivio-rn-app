@@ -11,6 +11,7 @@ import {
 } from "./CropProtectionProductForm";
 import { useCreateCropProtectionProductMutation } from "./cropProtectionProduct.hooks";
 import { useTranslation } from "react-i18next";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 export function CreateCropProtectionProductScreen({
   navigation,
@@ -21,6 +22,8 @@ export function CreateCropProtectionProductScreen({
     handleSubmit,
     formState: { errors, isDirty },
   } = useForm<CropProtectionProductFormValues>();
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const previousRoute =
     navigation.getState().routes[navigation.getState().index - 1];

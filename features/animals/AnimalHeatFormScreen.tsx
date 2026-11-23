@@ -30,6 +30,7 @@ import {
   useUpdateAnimalHeatMutation,
 } from "./breeding.hooks";
 import { AnimalHeatFormScreenProps } from "./navigation/animals-routes";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type HeatFormValues = {
   date: Date;
@@ -76,7 +77,7 @@ export function AnimalHeatFormScreen({
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<HeatFormValues>({
     defaultValues: {
       date: presetDate ? parseDateOnly(presetDate) : new Date(),
@@ -92,6 +93,8 @@ export function AnimalHeatFormScreen({
         }
       : undefined,
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
   const heatDate = useWatch({ control, name: "date" });
   const mated = useWatch({ control, name: "mated" });
 

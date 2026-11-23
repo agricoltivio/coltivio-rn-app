@@ -12,6 +12,7 @@ import { RHNumberInput } from "@/components/inputs/RHNumberInput";
 import { ApiError } from "@/api/api";
 import { useCreateEarTagRangeMutation, useEarTagsQuery } from "./earTags.hooks";
 import { CreateEarTagRangeScreenProps } from "./navigation/animals-routes";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type EarTagRangeFormValues = {
   fromNumber: string;
@@ -88,6 +89,8 @@ export function CreateEarTagRangeScreen({
     handleSubmit,
     formState: { errors, isDirty },
   } = useForm<EarTagRangeFormValues>();
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
   const { earTags } = useEarTagsQuery();
 
   // Live preview of the range below the inputs, including overlaps with existing tags

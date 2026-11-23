@@ -16,6 +16,7 @@ import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { ChangeEmailScreenProps } from "./navigation/user-routes";
 import { useUserQuery } from "./users.hooks";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 const redirectTo = `${process.env.EXPO_PUBLIC_WEB_URL}/auth/confirm`;
 
@@ -34,6 +35,8 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
   } = useForm<{ email: string }>({
     defaultValues: { email: user?.email ?? undefined },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const api = useApi();
   const [submitting, setSubmitting] = useState(false);

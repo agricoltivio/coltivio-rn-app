@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { FertilizerForm, FertilizerFormValues } from "./FertilizerForm";
 import { useCreateFertilizerMutation } from "./fertilizers.hooks";
 import { CreateFertilizerScreenProps } from "./navigation/fertilizer-routes";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 export function CreateFertilizerScreen({
   navigation,
@@ -18,6 +19,8 @@ export function CreateFertilizerScreen({
     handleSubmit,
     formState: { errors, isDirty },
   } = useForm<FertilizerFormValues>();
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const previousRoute =
     navigation.getState().routes[navigation.getState().index - 1];

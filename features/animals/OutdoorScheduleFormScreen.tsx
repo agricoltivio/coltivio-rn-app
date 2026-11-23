@@ -18,6 +18,7 @@ import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useMeadowsQuery } from "./meadows.hooks";
 import { OutdoorScheduleFormScreenProps } from "./navigation/animals-routes";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type ScheduleRecurrence = OutdoorScheduleCreateInput["recurrence"];
 type Weekday = NonNullable<
@@ -87,7 +88,7 @@ export function OutdoorScheduleFormScreen({
     handleSubmit,
     setValue,
     watch,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<ScheduleFormValues>({
     defaultValues: {
       type: schedule?.type ?? "pasture",
@@ -114,6 +115,8 @@ export function OutdoorScheduleFormScreen({
         : null,
     },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
   const repeat = watch("repeat");
   const startDate = watch("startDate");
 

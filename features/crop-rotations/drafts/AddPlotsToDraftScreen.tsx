@@ -21,6 +21,7 @@ import {
 } from "../crop-rotations.hooks";
 import { addYears, subYears } from "date-fns";
 import { AddPlotsToDraftScreenProps } from "../navigation/crop-rotations-routes.d";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 const SEED_FROM_YEARS_BACK = 10;
 const SEED_TO_YEARS_FORWARD = 10;
@@ -65,6 +66,14 @@ export function AddPlotsToDraftScreen({
       setInitialized(true);
     }
   }, [draftPlan, initialized]);
+
+  // Asks before leaving with a changed plot selection
+  const initialPlotIds = draftPlan?.plots.map((p) => p.plotId) ?? [];
+  useDiscardChangesPrompt(
+    initialized &&
+      (selectedIds.size !== initialPlotIds.length ||
+        initialPlotIds.some((plotId) => !selectedIds.has(plotId))),
+  );
 
   const updateMutation = useUpdateDraftPlanMutation(() => {
     navigation.goBack();

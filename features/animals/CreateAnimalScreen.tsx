@@ -13,6 +13,7 @@ import { AnimalForm, AnimalFormValues } from "./AnimalForm";
 import { DrawerWeight } from "./AnimalWeightDrawer";
 import { useCreateAnimalWeightMutation } from "./breeding.hooks";
 import { CreateAnimalScreenProps } from "./navigation/animals-routes";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 export function CreateAnimalScreen({
   route,
@@ -40,6 +41,8 @@ export function CreateAnimalScreen({
       herdId: herdId ?? undefined,
     },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   // Sync herdId from route params when returning from CreateHerd
   useEffect(() => {

@@ -17,6 +17,7 @@ import { useCropsQuery } from "../crops/crops.hooks";
 import { useHarvestQuery, useUpdateHarvestMutation } from "./harvests.hooks";
 import { conservationsMethods } from "./harvestUtils";
 import { EditHarvestScreenProps } from "./navigation/harvest-routes";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type FormValues = {
   date: Date;
@@ -69,7 +70,7 @@ function EditHarvestForm({
     control,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       date: new Date(harvest.date),
@@ -81,6 +82,8 @@ function EditHarvestForm({
       additionalNotes: harvest.additionalNotes ?? undefined,
     },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const unit = watch("unit");
 

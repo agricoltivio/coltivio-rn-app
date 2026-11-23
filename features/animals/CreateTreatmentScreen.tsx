@@ -30,6 +30,7 @@ import {
   treatmentAnimalDosePayload,
 } from "./TreatmentAnimalDoses";
 import { DrugProposalInputs, proposeDrugValues } from "./treatmentDrugProposal";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type DoseUnit =
   | "tablet"
@@ -95,7 +96,7 @@ export function CreateTreatmentScreen({
   const {
     control,
     handleSubmit,
-    formState: { errors, dirtyFields },
+    formState: { isDirty, errors, dirtyFields },
     watch,
     setValue,
     getValues,
@@ -109,6 +110,8 @@ export function CreateTreatmentScreen({
       antibiogramAvailable: false,
     },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const withDrug = watch("withDrug");
   const selectedDrugId = watch("drugId");

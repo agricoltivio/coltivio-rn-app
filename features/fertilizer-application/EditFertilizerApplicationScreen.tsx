@@ -25,6 +25,7 @@ import {
 } from "./fertilizerApplications.hooks";
 import { fertilizerApplicationMethods } from "./fertilizerApplications.utils";
 import { EditFertilizerApplicationScreenProps } from "./navigation/fertilizer-application-routes";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type FormValues = {
   date: Date;
@@ -84,7 +85,7 @@ function EditFertilizerApplicationForm({
     control,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       date: new Date(fertilizerApplication.date),
@@ -96,6 +97,8 @@ function EditFertilizerApplicationForm({
       additionalNotes: fertilizerApplication.additionalNotes ?? undefined,
     },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const unit = watch("unit");
   const fertilizerId = watch("fertilizerId");

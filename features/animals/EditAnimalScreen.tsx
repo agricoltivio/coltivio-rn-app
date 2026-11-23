@@ -22,6 +22,8 @@ import { useAvailableEarTagsQuery } from "./earTags.hooks";
 import { AnimalForm, AnimalFormValues } from "./AnimalForm";
 import { toDrawerWeight } from "./AnimalWeightDrawer";
 import { EditAnimalScreenProps } from "./navigation/animals-routes";
+import { confirmDelete } from "@/utils/confirmDelete";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
   const { t } = useTranslation();
@@ -61,6 +63,8 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
         }
       : undefined,
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   // Sync herdId from route params when returning from CreateHerd
   useEffect(() => {
@@ -131,7 +135,7 @@ export function EditAnimalScreen({ route, navigation }: EditAnimalScreenProps) {
   }
 
   function onDelete() {
-    deleteAnimalMutation.mutate(animalId);
+    confirmDelete(() => deleteAnimalMutation.mutate(animalId));
   }
 
   if (!animal) {

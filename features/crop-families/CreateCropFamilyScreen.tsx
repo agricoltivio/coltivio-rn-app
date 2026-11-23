@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { useTranslation } from "react-i18next";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 export function CreateCropFamilyScreen({
   navigation,
@@ -22,6 +23,8 @@ export function CreateCropFamilyScreen({
       waitingTimeInYears: 0,
     },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const createCropFamilyMutation = useCreateCropFamilyMutation((cropFamily) => {
     const previousScreen =

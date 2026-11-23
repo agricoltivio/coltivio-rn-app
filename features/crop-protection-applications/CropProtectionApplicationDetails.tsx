@@ -11,6 +11,7 @@ import {
 import { CropProtectionApplicationSummary } from "./CropProtectionApplicationSummary";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/features/user/users.hooks";
+import { confirmDelete } from "@/utils/confirmDelete";
 
 export function CropProtectionApplicationDetailsScreen({
   route,
@@ -34,7 +35,7 @@ export function CropProtectionApplicationDetailsScreen({
   const { dateTime, additionalNotes } = cropProtectionApplication;
 
   function onDelete() {
-    deleteMutation.mutate(cropProtectionApplicationId);
+    confirmDelete(() => deleteMutation.mutate(cropProtectionApplicationId));
   }
   return (
     <ContentView

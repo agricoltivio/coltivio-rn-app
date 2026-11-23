@@ -15,6 +15,7 @@ import { RHDatePicker } from "@/components/inputs/RHDatePicker";
 import { RHSelect } from "@/components/select/RHSelect";
 import { getUsageCodeSelectData } from "./usage-codes";
 import { RHTextAreaInput } from "@/components/inputs/RHTextAreaInput";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type EditPlotFormValues = {
   name: string;
@@ -62,6 +63,8 @@ export function EditPlotScreen({
         }
       : undefined,
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   if (!plot) {
     return null;

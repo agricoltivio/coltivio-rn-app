@@ -24,6 +24,8 @@ import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import Constants from "expo-constants";
+import { confirmDelete } from "@/utils/confirmDelete";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 function resolveLocalUrl(url: string): string {
   const lanIp = Constants.expoConfig?.hostUri?.split(":").shift();
@@ -72,7 +74,7 @@ export function PlotJournalEntryFormScreen({
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: { title: "", date: new Date(), content: "" },
     values: entry
@@ -83,6 +85,8 @@ export function PlotJournalEntryFormScreen({
         }
       : undefined,
   });
+  // Asks before leaving with unsaved changes (also images picked but not uploaded yet)
+  useDiscardChangesPrompt(isDirty || pendingImages.length > 0, isSubmitting);
 
   async function pickAndProcessImage(): Promise<PendingImage | null> {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -161,13 +165,16 @@ export function PlotJournalEntryFormScreen({
     }
   }
 
-  async function handleDeleteUploadedImage(imageId: string) {
-    try {
-      await api.plotJournal.deleteImage(imageId);
-      setUploadedImages((prev) => prev.filter((img) => img.id !== imageId));
-    } catch {
-      Alert.alert(t("common.error"), t("common.error"));
-    }
+  // Deleted on the server right away, so confirm first
+  function handleDeleteUploadedImage(imageId: string) {
+    confirmDelete(async () => {
+      try {
+        await api.plotJournal.deleteImage(imageId);
+        setUploadedImages((prev) => prev.filter((img) => img.id !== imageId));
+      } catch {
+        Alert.alert(t("common.error"), t("common.error"));
+      }
+    });
   }
 
   function handleDeletePendingImage(localUri: string) {

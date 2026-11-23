@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import {
+  Alert,
   Modal,
   View,
   Pressable,
@@ -19,6 +20,7 @@ import { RotationEntry, RecurrenceRule } from "../plan-crop-rotations.store";
 import { Plot } from "@/api/plots.api";
 import { Crop } from "@/api/crops.api";
 import { IonIconButton } from "@/components/buttons/IconButton";
+import { confirmDelete } from "@/utils/confirmDelete";
 
 type RotationEditModalProps = {
   visible: boolean;
@@ -57,8 +59,34 @@ export function RotationEditModal({
     new Date(new Date().getFullYear() + 3, 11, 31),
   );
 
+  // Set by the user's own changes (not by filling the form when it opens): closing asks first
+  const [hasUserChanges, setHasUserChanges] = useState(false);
+  function withChange<TArgs extends unknown[]>(
+    handler: (...args: TArgs) => void,
+  ) {
+    return (...args: TArgs) => {
+      setHasUserChanges(true);
+      handler(...args);
+    };
+  }
+  function requestClose() {
+    if (!hasUserChanges) {
+      onClose();
+      return;
+    }
+    Alert.alert(
+      t("common.discard_changes_title"),
+      t("common.discard_changes_message"),
+      [
+        { text: t("buttons.cancel"), style: "cancel" },
+        { text: t("buttons.discard"), style: "destructive", onPress: onClose },
+      ],
+    );
+  }
+
   // Reset form when modal opens with new rotation
   useEffect(() => {
+    if (visible) setHasUserChanges(false);
     if (visible && rotation) {
       setPlotId(selectedPlotId || "");
       setCropId(rotation.cropId);
@@ -143,8 +171,10 @@ export function RotationEditModal({
 
   const handleDelete = () => {
     if (rotation && onDelete) {
-      onDelete(rotation.entryId);
-      onClose();
+      confirmDelete(() => {
+        onDelete(rotation.entryId);
+        onClose();
+      });
     }
   };
 
@@ -161,7 +191,7 @@ export function RotationEditModal({
           alignItems: "center",
           padding: theme.spacing.m,
         }}
-        onPress={onClose}
+        onPress={requestClose}
       >
         <KeyboardAvoidingView
           behavior="padding"
@@ -201,7 +231,7 @@ export function RotationEditModal({
                   label={t("plots.plot")}
                   value={plotId}
                   data={plotOptions}
-                  onChange={setPlotId}
+                  onChange={withChange(setPlotId)}
                   enableSearch
                 />
               </View>
@@ -220,7 +250,7 @@ export function RotationEditModal({
                     label={t("crops.crop")}
                     value={cropId}
                     data={cropOptions}
-                    onChange={setCropId}
+                    onChange={withChange(setCropId)}
                     enableSearch
                   />
                 </View>
@@ -256,12 +286,12 @@ export function RotationEditModal({
               >
                 <CompactDatePicker
                   date={fromDate}
-                  onDateChange={handleFromDateChange}
+                  onDateChange={withChange(handleFromDateChange)}
                 />
                 <Text style={{ color: theme.colors.gray2 }}>-</Text>
                 <CompactDatePicker
                   date={toDate}
-                  onDateChange={handleToDateChange}
+                  onDateChange={withChange(handleToDateChange)}
                   minimumDate={fromDate}
                 />
               </View>
@@ -286,7 +316,9 @@ export function RotationEditModal({
                 </Text>
 
                 {hasRecurrence && (
-                  <Pressable onPress={() => setHasRecurrence(false)}>
+                  <Pressable
+                    onPress={withChange(() => setHasRecurrence(false))}
+                  >
                     <Ionicons
                       name="close-circle"
                       size={24}
@@ -311,11 +343,11 @@ export function RotationEditModal({
                     </Text>
                     <TextInput
                       value={interval}
-                      onChangeText={(text) => {
+                      onChangeText={withChange((text: string) => {
                         if (!text) setInterval("");
                         const num = parseInt(text);
                         if (!isNaN(num) && num > 0) setInterval(String(num));
-                      }}
+                      })}
                       keyboardType="numbers-and-punctuation"
                       returnKeyType="done"
                       blurOnSubmit
@@ -338,22 +370,22 @@ export function RotationEditModal({
                   </View>
                   <CompactDatePicker
                     date={until}
-                    onDateChange={(d) => {
+                    onDateChange={withChange((d: Date) => {
                       setUntil(d);
                       setHasUntil(true);
-                    }}
+                    })}
                     minimumDate={toDate}
                     label={
                       hasUntil ? t("crop_rotations.plan.until") : undefined
                     }
                     placeholder={t("crop_rotations.plan.add_end_date")}
                     hasValue={hasUntil}
-                    onClear={() => setHasUntil(false)}
+                    onClear={withChange(() => setHasUntil(false))}
                   />
                 </>
               ) : (
                 <Pressable
-                  onPress={() => setHasRecurrence(true)}
+                  onPress={withChange(() => setHasRecurrence(true))}
                   style={{
                     backgroundColor: theme.colors.gray5,
                     paddingHorizontal: theme.spacing.s,
@@ -394,7 +426,7 @@ export function RotationEditModal({
                   </Pressable>
                 )}
                 <Pressable
-                  onPress={onClose}
+                  onPress={requestClose}
                   style={{
                     flex: 1,
                     paddingVertical: 12,

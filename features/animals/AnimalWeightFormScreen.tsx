@@ -18,6 +18,7 @@ import {
   useUpdateAnimalWeightMutation,
 } from "./breeding.hooks";
 import { AnimalWeightFormScreenProps } from "./navigation/animals-routes";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type WeightFormValues = {
   date: Date;
@@ -39,7 +40,7 @@ export function AnimalWeightFormScreen({
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<WeightFormValues>({
     defaultValues: { date: new Date(), weightKg: "" },
     values: existingWeight
@@ -50,6 +51,8 @@ export function AnimalWeightFormScreen({
         }
       : undefined,
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const createMutation = useCreateAnimalWeightMutation(() =>
     navigation.goBack(),

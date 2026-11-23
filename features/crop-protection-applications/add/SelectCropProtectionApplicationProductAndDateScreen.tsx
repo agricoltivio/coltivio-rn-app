@@ -17,6 +17,7 @@ import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { SelectCropProtectionApplicationProductAndDateScreenProps } from "../navigation/crop-protection-application-routes";
 import { useAddCropProtectionApplicationStore } from "./cropProtectionApplication.store";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type FormValues = {
   date: Date;
@@ -76,7 +77,7 @@ export function SelectCropProtectionApplicationProductAndDateScreen({
     control,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       date: data?.date ?? new Date(),
@@ -84,6 +85,9 @@ export function SelectCropProtectionApplicationProductAndDateScreen({
       productId: selectedProduct?.id ?? preselectedProductId,
     },
   });
+  // Leaving the add flow (back from its first step, or closing it) asks once something was
+  // entered; going back between the steps doesn't
+  useDiscardChangesPrompt(isDirty || data !== undefined);
 
   useEffect(() => {
     if (preselectedProductId) {

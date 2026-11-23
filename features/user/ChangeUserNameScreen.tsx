@@ -16,6 +16,7 @@ import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { ChangeUserNameScreenProps } from "./navigation/user-routes";
 import { useUserQuery } from "./users.hooks";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 export function ChangeUserNameScreen({
   navigation,
@@ -33,6 +34,8 @@ export function ChangeUserNameScreen({
   } = useForm<{ name: string }>({
     defaultValues: { name: user?.fullName ?? undefined },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   async function onSubmit({ name }: { name: string }) {
     const { error, data } = await supabase.auth.updateUser({

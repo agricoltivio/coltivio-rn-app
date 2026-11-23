@@ -1,5 +1,6 @@
 {
   "buttons": {
+    "discard": "Verwerfen",
     "signup": "Registrieren",
     "login": "Anmelden",
     "signout": "Abmelden",
@@ -117,6 +118,10 @@
     }
   },
   "common": {
+    "discard_changes_title": "Änderungen verwerfen?",
+    "discard_changes_message": "Deine Änderungen sind noch nicht gespeichert und gehen verloren.",
+    "delete_confirm_title": "Wirklich löschen?",
+    "delete_confirm_message": "Das kann nicht rückgängig gemacht werden.",
     "yes": "Ja",
     "no": "Nein",
     "no_entries": "Noch keine Einträge",

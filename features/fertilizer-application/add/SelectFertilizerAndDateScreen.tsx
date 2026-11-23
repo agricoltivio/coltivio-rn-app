@@ -16,6 +16,7 @@ import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { SelectFertilizerAndDateScreenProps } from "../navigation/fertilizer-application-routes";
 import { useCreateFertilizerApplicationStore } from "./fertilizerApplication.store";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type FormValues = {
   date: Date;
@@ -73,13 +74,16 @@ export function SelectFertilizerAndDateScreen({
     control,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       date: fertilizerApplication?.date ?? new Date(),
       fertilizerId: selectedFertilizer?.id ?? preselectedFertilizerId,
     },
   });
+  // Leaving the add flow (back from its first step, or closing it) asks once something was
+  // entered; going back between the steps doesn't
+  useDiscardChangesPrompt(isDirty || fertilizerApplication !== undefined);
 
   useEffect(() => {
     if (preselectedFertilizerId) {

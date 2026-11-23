@@ -13,6 +13,7 @@ import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { SelectTillageDateScreenProps } from "../navigation/tillages-routes";
 import { useAddTillageStore } from "./add-tillage.store";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type FormValues = {
   date: Date;
@@ -57,12 +58,15 @@ export function SelectTillageDateScreen({
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       date: data?.date ?? new Date(),
     },
   });
+  // Leaving the add flow (back from its first step, or closing it) asks once something was
+  // entered; going back between the steps doesn't
+  useDiscardChangesPrompt(isDirty || data !== undefined);
 
   function onSubmit(values: FormValues) {
     setData({

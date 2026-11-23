@@ -45,6 +45,7 @@ import { useAnimalsQuery } from "@/features/animals/animals.hooks";
 import { useFarmPlotsQuery } from "@/features/plots/plots.hooks";
 import { useHerdsQuery } from "@/features/animals/herds.hooks";
 import { usePermissions } from "@/features/user/users.hooks";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type ChecklistItemInput = {
   id?: string;
@@ -691,7 +692,7 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
     watch,
     setValue,
     getValues,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       name: "",
@@ -700,6 +701,8 @@ export function TaskFormScreen({ route, navigation }: TaskFormScreenProps) {
       checklistItems: [],
     },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const {
     fields: checklistFields,

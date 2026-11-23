@@ -25,6 +25,7 @@ import {
   useUpdateChangeRequestDraftMutation,
 } from "./wiki.hooks";
 import { WikiChangeRequestDraftScreenProps } from "./navigation/wiki-routes";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 const LOCALES: AppLocale[] = ["de", "en", "it", "fr"];
 
@@ -79,6 +80,8 @@ export function WikiChangeRequestDraftScreen({
       fr_body: "",
     },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   // Pre-fill translations from the draft change request
   useEffect(() => {

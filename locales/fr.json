@@ -1,5 +1,6 @@
 {
   "buttons": {
+    "discard": "Abandonner",
     "signup": "S'inscrire",
     "login": "Se connecter",
     "signout": "Se déconnecter",
@@ -117,6 +118,10 @@
     }
   },
   "common": {
+    "discard_changes_title": "Abandonner les modifications ?",
+    "discard_changes_message": "Tes modifications ne sont pas encore enregistrées et seront perdues.",
+    "delete_confirm_title": "Vraiment supprimer ?",
+    "delete_confirm_message": "Cette action est irréversible.",
     "yes": "Oui",
     "no": "Non",
     "no_entries": "Aucune entrée pour le moment",

@@ -17,6 +17,7 @@ import { useFarmPlotsQuery } from "../../plots/plots.hooks";
 import { useSeedsQuery } from "../../seeds/seeds.hooks";
 import { SelectSowingSeedAndDateScreenProps } from "../navigation/sowing-routes";
 import { useCreateSowingStore } from "./sowing.store";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type FormValues = {
   date: Date;
@@ -74,7 +75,7 @@ export function SelectSowingSeedAndDateScreen({
     handleSubmit,
     setValue,
     watch,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       date: sowing?.date ?? new Date(),
@@ -82,6 +83,9 @@ export function SelectSowingSeedAndDateScreen({
       cropId: sowing?.cropId ?? route.params?.cropId,
     },
   });
+  // Leaving the add flow (back from its first step, or closing it) asks once something was
+  // entered; going back between the steps doesn't
+  useDiscardChangesPrompt(isDirty || sowing !== undefined);
 
   const seedId = watch("seedId");
   const selectedSeed = seeds?.find((seed) => seed.id === seedId);
