@@ -65,3 +65,24 @@ export function formatOutdoorScheduleSummary(
   }
   return summary;
 }
+
+// One line per override, e.g. "Stall: 10.05.2025 - 11.05.2025" or "Weide: 12.05.2025 · Hauswiese"
+// (a single day shows one date)
+export function formatOutdoorOverrideSummary(
+  override: {
+    type: OutdoorScheduleCreateInput["type"];
+    startDate: string;
+    endDate: string;
+  },
+  t: TFunction,
+  locale: string,
+  meadowName?: string,
+): string {
+  const typeLabel = t(`animals.outdoor_types.${override.type}`);
+  const start = formatLocalizedDate(parseDateOnly(override.startDate), locale);
+  const end = formatLocalizedDate(parseDateOnly(override.endDate), locale);
+  const dates = start === end ? start : `${start} - ${end}`;
+  return meadowName
+    ? `${typeLabel}: ${dates} · ${meadowName}`
+    : `${typeLabel}: ${dates}`;
+}

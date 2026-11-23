@@ -179,7 +179,12 @@
     "unexpected_retry_later": "Oops, something went wrong. Please try again later.",
     "unexpected": "Oops, something went wrong.",
     "try_again_later": "Please try again later...",
-    "screen_error_hint": "This screen couldn't be displayed. The error has been reported to us."
+    "screen_error_hint": "This screen couldn't be displayed. The error has been reported to us.",
+    "codes": {
+      "crop_rotation_overlap": "The crop rotation overlaps an existing rotation on this plot.",
+      "outdoor_schedule_overlap": "The outdoor schedule overlaps another schedule of this herd.",
+      "invalid_date_range": "An end date lies before its start date."
+    }
   },
   "units": {
     "long": {
@@ -1378,7 +1383,8 @@
     "outdoor_type": "Type",
     "outdoor_types": {
       "pasture": "Pasture",
-      "exercise_yard": "Exercise yard"
+      "exercise_yard": "Exercise yard",
+      "stable": "Stable"
     },
     "new_outdoor_schedule": "New outdoor schedule",
     "edit_outdoor_schedule": "Edit outdoor schedule",
@@ -1534,7 +1540,16 @@
     "open_herd": "Open herd",
     "type_change_title": "Change animal type?",
     "type_change_body": "The outdoor journal category, the breeding calendar and the treatments depend on the type of {{name}}.",
-    "type_change_relatives": "Parents and offspring then have a different type, their links are removed."
+    "type_change_relatives": "Parents and offspring then have a different type, their links are removed.",
+    "outdoor_overrides": "Exceptions",
+    "outdoor_overrides_hint": "Days on which the herd did something else than planned, e.g. in the stable because of a storm. An exception takes precedence over the outdoor schedule on those days.",
+    "new_outdoor_override": "New exception",
+    "edit_outdoor_override": "Edit exception",
+    "delete_outdoor_override_confirm": "Really delete this exception?",
+    "outdoor_override_overlap": "The exception overlaps another exception of this herd.",
+    "outdoor_override_single": "Exception",
+    "herd_animal_count": "{{count}} animal",
+    "herd_animal_count_plural": "{{count}} animals"
   },
   "drugs": {
     "drugs": "Drugs",

@@ -179,7 +179,12 @@
     "unexpected_retry_later": "Oups, une erreur s'est produite. Réessaie plus tard.",
     "unexpected": "Oups, une erreur s'est produite.",
     "try_again_later": "Réessaie plus tard...",
-    "screen_error_hint": "Cet écran n'a pas pu être affiché. L'erreur nous a été signalée."
+    "screen_error_hint": "Cet écran n'a pas pu être affiché. L'erreur nous a été signalée.",
+    "codes": {
+      "crop_rotation_overlap": "La rotation culturale chevauche une rotation existante sur ce champ.",
+      "outdoor_schedule_overlap": "La sortie chevauche une autre sortie de ce troupeau.",
+      "invalid_date_range": "Une date de fin est antérieure à sa date de début."
+    }
   },
   "units": {
     "long": {
@@ -1378,7 +1383,8 @@
     "outdoor_type": "Type",
     "outdoor_types": {
       "pasture": "Pâturage",
-      "exercise_yard": "Cour d'exercice"
+      "exercise_yard": "Cour d'exercice",
+      "stable": "Étable"
     },
     "new_outdoor_schedule": "Nouvelle sortie",
     "edit_outdoor_schedule": "Modifier la sortie",
@@ -1534,7 +1540,16 @@
     "open_herd": "Ouvrir le troupeau",
     "type_change_title": "Changer l'espèce ?",
     "type_change_body": "La catégorie du journal de sorties, le calendrier de gestation et les traitements dépendent de l'espèce de {{name}}.",
-    "type_change_relatives": "Les parents et descendants sont alors d'une autre espèce, leurs liens sont supprimés."
+    "type_change_relatives": "Les parents et descendants sont alors d'une autre espèce, leurs liens sont supprimés.",
+    "outdoor_overrides": "Exceptions",
+    "outdoor_overrides_hint": "Jours où le troupeau a fait autre chose que prévu, p. ex. à l'étable à cause d'un orage. Une exception prime sur la sortie ces jours-là.",
+    "new_outdoor_override": "Nouvelle exception",
+    "edit_outdoor_override": "Modifier l'exception",
+    "delete_outdoor_override_confirm": "Vraiment supprimer cette exception ?",
+    "outdoor_override_overlap": "L'exception chevauche une autre exception de ce troupeau.",
+    "outdoor_override_single": "Exception",
+    "herd_animal_count": "{{count}} animal",
+    "herd_animal_count_plural": "{{count}} animaux"
   },
   "drugs": {
     "drugs": "Médicaments",

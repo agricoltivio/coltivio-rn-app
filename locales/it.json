@@ -179,7 +179,12 @@
     "unexpected_retry_later": "Oops, qualcosa è andato storto. Riprova più tardi.",
     "unexpected": "Oops, qualcosa è andato storto.",
     "try_again_later": "Riprova più tardi...",
-    "screen_error_hint": "Non è stato possibile visualizzare questa schermata. L'errore ci è stato segnalato."
+    "screen_error_hint": "Non è stato possibile visualizzare questa schermata. L'errore ci è stato segnalato.",
+    "codes": {
+      "crop_rotation_overlap": "La rotazione colturale si sovrappone a una rotazione esistente su questo campo.",
+      "outdoor_schedule_overlap": "Il programma di uscita si sovrappone a un altro programma di questa mandria.",
+      "invalid_date_range": "Una data di fine precede la relativa data di inizio."
+    }
   },
   "units": {
     "long": {
@@ -1378,7 +1383,8 @@
     "outdoor_type": "Tipo",
     "outdoor_types": {
       "pasture": "Pascolo",
-      "exercise_yard": "Paddock"
+      "exercise_yard": "Paddock",
+      "stable": "Stalla"
     },
     "new_outdoor_schedule": "Nuovo programma di uscita",
     "edit_outdoor_schedule": "Modifica programma di uscita",
@@ -1534,7 +1540,16 @@
     "open_herd": "Apri mandria",
     "type_change_title": "Cambiare specie?",
     "type_change_body": "La categoria del diario all'aperto, il calendario della gestazione e i trattamenti dipendono dalla specie di {{name}}.",
-    "type_change_relatives": "Genitori e discendenti sono poi di un'altra specie, i loro collegamenti vengono rimossi."
+    "type_change_relatives": "Genitori e discendenti sono poi di un'altra specie, i loro collegamenti vengono rimossi.",
+    "outdoor_overrides": "Eccezioni",
+    "outdoor_overrides_hint": "Giorni in cui la mandria ha fatto altro rispetto al previsto, p. es. in stalla a causa di un temporale. Un'eccezione prevale sul programma di uscita in quei giorni.",
+    "new_outdoor_override": "Nuova eccezione",
+    "edit_outdoor_override": "Modifica eccezione",
+    "delete_outdoor_override_confirm": "Eliminare davvero questa eccezione?",
+    "outdoor_override_overlap": "L'eccezione si sovrappone a un'altra eccezione di questa mandria.",
+    "outdoor_override_single": "Eccezione",
+    "herd_animal_count": "{{count}} animale",
+    "herd_animal_count_plural": "{{count}} animali"
   },
   "drugs": {
     "drugs": "Medicinali",

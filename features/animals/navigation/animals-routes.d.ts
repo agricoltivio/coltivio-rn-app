@@ -1,3 +1,4 @@
+import { OutdoorScheduleOverride } from "@/api/herds.api";
 import type {
   OutdoorScheduleFormResult,
   ScheduleEditData,
@@ -96,6 +97,10 @@ export type AnimalsStackParamList = {
     animalIds?: string[];
     scheduleResult?: OutdoorScheduleFormResult;
   };
+  OutdoorScheduleOverrideForm: {
+    herdId: string;
+    override?: OutdoorScheduleOverride;
+  };
   OutdoorScheduleForm: {
     previousScreen: "HerdEdit" | "CreateHerd";
     canDelete: boolean;
@@ -181,6 +186,8 @@ export type CreateHerdScreenProps = StackScreenProps<"CreateHerd">;
 export type HerdEditScreenProps = StackScreenProps<"HerdEdit">;
 export type OutdoorScheduleFormScreenProps =
   StackScreenProps<"OutdoorScheduleForm">;
+export type OutdoorScheduleOverrideFormScreenProps =
+  StackScreenProps<"OutdoorScheduleOverrideForm">;
 export type BatchSelectAnimalsScreenProps =
   StackScreenProps<"BatchSelectAnimals">;
 export type BatchEditActionScreenProps = StackScreenProps<"BatchEditAction">;

@@ -179,7 +179,12 @@
     "unexpected_retry_later": "Ups, etwas ist schief gelaufen. Bitte versuche es später erneut.",
     "unexpected": "Ups, etwas ist schief gelaufen.",
     "try_again_later": "Bitte versuche es später nochmals...",
-    "screen_error_hint": "Diese Ansicht konnte nicht angezeigt werden. Der Fehler wurde uns gemeldet."
+    "screen_error_hint": "Diese Ansicht konnte nicht angezeigt werden. Der Fehler wurde uns gemeldet.",
+    "codes": {
+      "crop_rotation_overlap": "Die Fruchtfolge überschneidet sich mit einer bestehenden Fruchtfolge auf diesem Schlag.",
+      "outdoor_schedule_overlap": "Der Auslauf überschneidet sich mit einem anderen Auslauf dieser Herde.",
+      "invalid_date_range": "Ein Enddatum liegt vor dem zugehörigen Startdatum."
+    }
   },
   "units": {
     "long": {
@@ -1378,7 +1383,8 @@
     "outdoor_type": "Typ",
     "outdoor_types": {
       "pasture": "Weide",
-      "exercise_yard": "Laufhof"
+      "exercise_yard": "Laufhof",
+      "stable": "Stall"
     },
     "new_outdoor_schedule": "Neuer Auslauf",
     "edit_outdoor_schedule": "Auslauf bearbeiten",
@@ -1534,7 +1540,16 @@
     "open_herd": "Herde öffnen",
     "type_change_title": "Tierart ändern?",
     "type_change_body": "Die Kategorie im Auslaufjournal, der Trächtigkeitskalender und die Behandlungen richten sich nach der Tierart von {{name}}.",
-    "type_change_relatives": "Eltern und Nachkommen haben dann eine andere Tierart, ihre Verknüpfungen werden entfernt."
+    "type_change_relatives": "Eltern und Nachkommen haben dann eine andere Tierart, ihre Verknüpfungen werden entfernt.",
+    "outdoor_overrides": "Ausnahmen",
+    "outdoor_overrides_hint": "Tage, an denen die Herde etwas anderes machte als geplant, z.B. wegen Unwetter im Stall. Eine Ausnahme geht dem Auslauf an diesen Tagen vor.",
+    "new_outdoor_override": "Neue Ausnahme",
+    "edit_outdoor_override": "Ausnahme bearbeiten",
+    "delete_outdoor_override_confirm": "Ausnahme wirklich löschen?",
+    "outdoor_override_overlap": "Die Ausnahme überschneidet sich mit einer anderen Ausnahme dieser Herde.",
+    "outdoor_override_single": "Ausnahme",
+    "herd_animal_count": "{{count}} Tier",
+    "herd_animal_count_plural": "{{count}} Tiere"
   },
   "drugs": {
     "drugs": "Medikamente",
