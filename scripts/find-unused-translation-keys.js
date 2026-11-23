@@ -11,9 +11,11 @@
 // key built at runtime: a template literal with placeholders anywhere
 // (t(`harvests.labels.unit.${unit}`), t(`${prefix}.select_date.heading`)) or a
 // "prefix." + value / value + ".suffix" concatenation.
+// Templates nested in another template (`${t(`animals.types.${type}`)} (${count})`) are found
+// by a separate scan of t(`...`) calls; a nested template outside a t() call is not.
 const fs = require("fs");
 const path = require("path");
-const { execSync } = require("child_process");
+const { execFileSync } = require("child_process");
 
 const LOCALES = ["de", "en", "fr", "it"];
 // i18next v3 JSON (compatibilityJSON: "v3"): key_plural; newer: key_one, key_other, ...
@@ -46,9 +48,12 @@ function removeKey(translations, keyPath) {
   if (Object.keys(translations[first]).length === 0) delete translations[first];
 }
 
-const sourceFiles = execSync("git ls-files -- '*.ts' '*.tsx' '*.js' '*.jsx'", {
-  encoding: "utf-8",
-})
+// Without a shell: cmd.exe on Windows keeps the quotes of quoted pathspecs, then no file matches
+const sourceFiles = execFileSync(
+  "git",
+  ["ls-files", "--", "*.ts", "*.tsx", "*.js", "*.jsx"],
+  { encoding: "utf-8" },
+)
   .split("\n")
   .filter(
     (file) =>
@@ -80,11 +85,10 @@ for (const match of source.matchAll(/"([^"\n\\]*)"|'([^'\n\\]*)'/g)) {
     dynamicKeyPatterns.push(new RegExp(`${escapeRegExp(literal)}$`));
   }
 }
-for (const match of source.matchAll(/`([^`]*)`/g)) {
-  const template = match[1];
+function addTemplate(template) {
   if (!template.includes("${")) {
     literals.add(template);
-    continue;
+    return;
   }
   // `harvests.labels.unit.${unit}`, `${prefix}.select_date.heading`: every placeholder
   // stands for any key characters. The fixed text has to look like part of a key, with
@@ -95,11 +99,19 @@ for (const match of source.matchAll(/`([^`]*)`/g)) {
     !/^[A-Za-z0-9_.]*$/.test(fixedText) ||
     !/[A-Za-z0-9_]\.|\.[A-Za-z0-9_]/.test(fixedText)
   ) {
-    continue;
+    return;
   }
   dynamicKeyPatterns.push(
     new RegExp(`^${fixedParts.map(escapeRegExp).join(KEY_CHARACTERS)}$`),
   );
+}
+// Backticks are paired naively, so a template nested in another one splits into wrong pieces.
+// The t(`...`) scan below starts at the inner backtick and catches the nested keys.
+for (const match of source.matchAll(/`([^`]*)`/g)) {
+  addTemplate(match[1]);
+}
+for (const match of source.matchAll(/\bt\(\s*`([^`]*)`/g)) {
+  addTemplate(match[1]);
 }
 
 function isUsed(key) {
