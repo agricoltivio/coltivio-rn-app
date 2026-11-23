@@ -38,7 +38,7 @@ export function OutdoorScheduleOverrideFormScreen({
   route,
   navigation,
 }: OutdoorScheduleOverrideFormScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const theme = useTheme();
   const { herdId, override } = route.params;
   const { canWrite } = usePermissions();
@@ -75,11 +75,14 @@ export function OutdoorScheduleOverrideFormScreen({
   }, [startDate, getValues, setValue]);
 
   function onSaveError(error: Error) {
+    const code = error instanceof ApiError ? error.code : undefined;
+    // Other known codes (e.g. invalid_date_range) get their message from errors.codes
     const message =
-      error instanceof ApiError &&
-      error.code === "outdoor_schedule_override_overlap"
+      code === "outdoor_schedule_override_overlap"
         ? t("animals.outdoor_override_overlap")
-        : t("errors.unexpected_retry");
+        : code && i18n.exists(`errors.codes.${code}`)
+          ? t(`errors.codes.${code}`)
+          : t("errors.unexpected_retry");
     Alert.alert(t("common.error"), message);
   }
 
@@ -129,7 +132,21 @@ export function OutdoorScheduleOverrideFormScreen({
                   type="dangerGhost"
                   title={t("buttons.delete")}
                   loading={deleteMutation.isPending}
-                  onPress={() => deleteMutation.mutate(override.id)}
+                  // Deleted right away on the server, so confirm first
+                  onPress={() =>
+                    Alert.alert(
+                      t("animals.delete_outdoor_override_confirm"),
+                      undefined,
+                      [
+                        { text: t("buttons.cancel"), style: "cancel" },
+                        {
+                          text: t("buttons.delete"),
+                          style: "destructive",
+                          onPress: () => deleteMutation.mutate(override.id),
+                        },
+                      ],
+                    )
+                  }
                 />
               )}
               <Button

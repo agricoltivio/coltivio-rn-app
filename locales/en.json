@@ -1528,6 +1528,7 @@
     "outdoor_overrides_hint": "Days on which the herd did something else than planned, e.g. in the stable because of a storm. An exception takes precedence over the outdoor schedule on those days.",
     "new_outdoor_override": "New exception",
     "edit_outdoor_override": "Edit exception",
+    "delete_outdoor_override_confirm": "Really delete this exception?",
     "outdoor_override_overlap": "The exception overlaps another exception of this herd.",
     "stable_no_meadow": "The stable has no meadow.",
     "outdoor_override_single": "Exception",

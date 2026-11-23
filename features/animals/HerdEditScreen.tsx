@@ -528,9 +528,11 @@ export function HerdEditScreen({ route, navigation }: HerdEditScreenProps) {
           {timelineData &&
             timelineData.herds.length > 0 &&
             timelineData.herds.some((row) => row.bars.length > 0) && (
-              <View style={{ height: 200, marginBottom: theme.spacing.s }}>
+              <View style={{ marginBottom: theme.spacing.s }}>
+                {/* As tall as its rows, no empty space below a single row */}
                 <OutdoorScheduleTimeline
                   timelineData={timelineData}
+                  fitContent
                   onBarPress={(scheduleId) => {
                     const override = herd.outdoorScheduleOverrides?.find(
                       (o) => o.id === scheduleId,

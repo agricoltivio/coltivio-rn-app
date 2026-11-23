@@ -1528,6 +1528,7 @@
     "outdoor_overrides_hint": "Giorni in cui la mandria ha fatto altro rispetto al previsto, p. es. in stalla a causa di un temporale. Un'eccezione prevale sul programma di uscita in quei giorni.",
     "new_outdoor_override": "Nuova eccezione",
     "edit_outdoor_override": "Modifica eccezione",
+    "delete_outdoor_override_confirm": "Eliminare davvero questa eccezione?",
     "outdoor_override_overlap": "L'eccezione si sovrappone a un'altra eccezione di questa mandria.",
     "stable_no_meadow": "La stalla non ha un pascolo.",
     "outdoor_override_single": "Eccezione",

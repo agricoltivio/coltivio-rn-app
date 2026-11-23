@@ -1528,6 +1528,7 @@
     "outdoor_overrides_hint": "Tage, an denen die Herde etwas anderes machte als geplant, z.B. wegen Unwetter im Stall. Eine Ausnahme geht dem Auslauf an diesen Tagen vor.",
     "new_outdoor_override": "Neue Ausnahme",
     "edit_outdoor_override": "Ausnahme bearbeiten",
+    "delete_outdoor_override_confirm": "Ausnahme wirklich löschen?",
     "outdoor_override_overlap": "Die Ausnahme überschneidet sich mit einer anderen Ausnahme dieser Herde.",
     "stable_no_meadow": "Im Stall gibt es keine Weidefläche.",
     "outdoor_override_single": "Ausnahme",
