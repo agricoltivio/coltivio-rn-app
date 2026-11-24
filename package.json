@@ -108,7 +108,6 @@
     "react-native": "0.88.1",
     "react-native-element-dropdown": "^2.12.4",
     "react-native-gesture-handler": "~3.3.0",
-    "react-native-gifted-charts": "^1.4.47",
     "react-native-keyboard-controller": "1.22.7",
     "react-native-markdown-display": "^7.0.2",
     "react-native-pager-view": "9.0.7",
