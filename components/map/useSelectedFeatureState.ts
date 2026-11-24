@@ -1,6 +1,7 @@
 import * as Sentry from "@sentry/react-native";
 import { type GeoJSONSourceRef } from "@maplibre/maplibre-react-native";
 import { RefObject, useEffect, useRef } from "react";
+import { useMapReady } from "./MapReadyContext";
 
 // Marks the selected features via maplibre's feature state instead of a property in
 // the GeoJSON, so a selection change only restyles the layer and doesn't re-parse the
@@ -32,9 +33,13 @@ export function useSelectedFeatureState(
   const markedIdsRef = useRef<string[]>([]);
   // Joined, so a new array with the same ids doesn't rerun the effect
   const selectedKey = selectedIds.join(",");
+  // A map opened with a selection (e.g. from the plots list) would otherwise run this before
+  // maplibre has registered the native source, and nothing reruns it afterwards: the selection
+  // is applied once the map has loaded.
+  const mapReady = useMapReady();
   useEffect(() => {
     const source = sourceRef.current;
-    if (!source) return;
+    if (!mapReady || !source) return;
     const nextIds = selectedKey ? selectedKey.split(",") : [];
     const unmarkIds = markedIdsRef.current.filter(
       (id) => !nextIds.includes(id),
@@ -48,6 +53,19 @@ export function useSelectedFeatureState(
         source.setFeatureState({ id }, { selected: true }),
       ),
     ];
-    Promise.all(updates).catch((error) => Sentry.captureException(error));
-  }, [sourceRef, selectedKey, data]);
+    Promise.all(updates).catch((error: unknown) => {
+      // The source is already gone when the screen closes right after a selection change:
+      // nothing left to mark
+      if (isSourceNotMountedError(error)) return;
+      Sentry.captureException(error);
+    });
+  }, [mapReady, sourceRef, selectedKey, data]);
+}
+
+function isSourceNotMountedError(error: unknown): boolean {
+  return (
+    error instanceof Error &&
+    error.message.includes("reactTag") &&
+    error.message.includes("could not find")
+  );
 }
