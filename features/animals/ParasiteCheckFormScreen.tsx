@@ -112,8 +112,20 @@ export function ParasiteCheckFormScreen({
 
   // Lab results are edited on separate screens and shared via the draft store
   const resetSampleDraft = useParasiteSampleDraftStore((state) => state.reset);
+  // Draft writes by this form (reset, filling in edit mode) are not user changes; everything
+  // else comes from the results screens. Opening them without editing doesn't count.
+  const fillingSampleDraft = useRef(false);
+  useEffect(
+    () =>
+      useParasiteSampleDraftStore.subscribe(() => {
+        if (!fillingSampleDraft.current) setHasUserChanges(true);
+      }),
+    [],
+  );
   useEffect(() => {
+    fillingSampleDraft.current = true;
     resetSampleDraft();
+    fillingSampleDraft.current = false;
   }, [resetSampleDraft]);
 
   // Edit mode: fill the form once the check is loaded
@@ -129,7 +141,9 @@ export function ParasiteCheckFormScreen({
         famachaScore: checkAnimal.famachaScore,
       })),
     );
+    fillingSampleDraft.current = true;
     useParasiteSampleDraftStore.getState().initFromCheck(existingCheck);
+    fillingSampleDraft.current = false;
     setName(existingCheck.name ?? "");
     setNotes(existingCheck.notes ?? "");
     setTreatmentId(existingCheck.treatmentId ?? "");
@@ -178,8 +192,13 @@ export function ParasiteCheckFormScreen({
 
   // Animals picked in the SelectAnimals modal (or passed in for a re-check)
   const animalIdsParam = params.animalIds;
+  // Animals passed in when opening the form are prefilled, not a user change
+  const initialAnimalIdsParam = useRef(params.animalIds);
   useEffect(() => {
     if (!animalIdsParam) return;
+    if (animalIdsParam !== initialAnimalIdsParam.current) {
+      setHasUserChanges(true);
+    }
     setAnimalRows((rows) => mergeAnimalRows(rows, animalIdsParam));
   }, [animalIdsParam]);
 
@@ -506,7 +525,7 @@ export function ParasiteCheckFormScreen({
                 borderRadius: 8,
                 paddingVertical: 12,
               }}
-              onPress={withChange(openSelectAnimals)}
+              onPress={openSelectAnimals}
             >
               <ListItem.Content>
                 <ListItem.Title
@@ -618,11 +637,11 @@ export function ParasiteCheckFormScreen({
                 type="secondary"
                 title={t("parasite_checks.record_results")}
                 disabled={animalRows.length === 0}
-                onPress={withChange(() =>
+                onPress={() =>
                   navigation.navigate("ParasiteSamples", {
                     animalIds: animalRows.map((row) => row.animalId),
-                  }),
-                )}
+                  })
+                }
               />
             </View>
           </View>

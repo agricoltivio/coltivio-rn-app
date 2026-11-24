@@ -116,7 +116,8 @@ export function OutdoorScheduleFormScreen({
     },
   });
   // Asks before leaving with unsaved changes
-  useDiscardChangesPrompt(isDirty);
+  // Saving and deleting hand the result back with popTo (no mutation), that leaves without asking
+  const { leaveWithoutPrompt } = useDiscardChangesPrompt(isDirty);
   const repeat = watch("repeat");
   const startDate = watch("startDate");
   const scheduleType = watch("type");
@@ -192,6 +193,7 @@ export function OutdoorScheduleFormScreen({
   }
 
   function returnResult(scheduleResult: OutdoorScheduleFormResult) {
+    leaveWithoutPrompt();
     navigation.popTo(previousScreen, { scheduleResult }, { merge: true });
   }
 

@@ -23,11 +23,12 @@ export function ChangePasswordScren({ navigation }: ChangePasswordScreenProps) {
   const {
     control,
     handleSubmit,
-    formState: { isDirty, errors },
+    formState: { isDirty, isSubmitting, errors },
     watch,
   } = useForm<{ password: string; passwordRepeat: string }>();
   // Asks before leaving with unsaved changes
-  useDiscardChangesPrompt(isDirty);
+  // The save calls Supabase directly (no mutation): no prompt while it runs and navigates back
+  useDiscardChangesPrompt(isDirty, isSubmitting);
 
   const password = watch("password");
 

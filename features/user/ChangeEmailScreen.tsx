@@ -32,6 +32,7 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
     control,
     handleSubmit,
     formState: { isDirty },
+    reset,
   } = useForm<{ email: string }>({
     defaultValues: { email: user?.email ?? undefined },
   });
@@ -68,6 +69,8 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
       setError(t("errors.unexpected_retry"));
     } else {
       setUser(data.user);
+      // This screen stays below the pending screen; a clean form doesn't ask when "Home" resets the stack
+      reset({ email });
       navigation.navigate("ChangeEmailPending", { newEmail: email });
     }
   }
