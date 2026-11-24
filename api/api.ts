@@ -83,6 +83,42 @@ function triggerTokenRefresh() {
   }
 }
 
+const MAX_ERROR_BODY_SNIPPET_LENGTH = 200;
+
+// Gateways and proxies (e.g. a 504 on a bad connection) answer with an empty or HTML body
+// instead of the API's JSON error, so parsing must not throw: otherwise a SyntaxError
+// replaces the ApiError and the global error handling (status checks, error codes) misses it.
+export async function apiErrorFromResponse(
+  response: Response,
+): Promise<ApiError> {
+  const text = await response.text().catch(() => "");
+  let content: { error?: string; code?: ApiErrorCode } | null = null;
+  try {
+    const parsed: unknown = JSON.parse(text);
+    if (parsed !== null && typeof parsed === "object") {
+      content = parsed;
+    }
+  } catch {
+    // Not JSON, handled below
+  }
+  if (content) {
+    return new ApiError(
+      response.status,
+      `${response.url}: ${response.status} - ${content.error}`,
+      content.error,
+      content.code,
+    );
+  }
+  const detail =
+    text.trim().slice(0, MAX_ERROR_BODY_SNIPPET_LENGTH) ||
+    response.statusText ||
+    "empty response";
+  return new ApiError(
+    response.status,
+    `${response.url}: ${response.status} - ${detail}`,
+  );
+}
+
 const middleware: Middleware = {
   async onResponse({ request, response, options }) {
     if (!response.ok) {
@@ -93,13 +129,7 @@ const middleware: Middleware = {
         // already turns into token=null, routing back to the auth stack.
         triggerTokenRefresh();
       }
-      const content = await response.json();
-      throw new ApiError(
-        response.status,
-        `${response.url}: ${response.status} - ${content.error}`,
-        content.error,
-        content.code,
-      );
+      throw await apiErrorFromResponse(response);
     }
   },
   async onRequest({ request, options }) {

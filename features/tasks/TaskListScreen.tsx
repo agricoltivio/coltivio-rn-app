@@ -114,13 +114,14 @@ export function TaskListScreen({ navigation }: TaskListScreenProps) {
           return;
         }
         if (permission.granted) {
-          return registerPushTokenAsync(api.users);
+          // Reports its own failures
+          return registerPushTokenAsync(api.users).catch(() => {});
         }
         // Declined (or blocked in the system settings): the setting must never stay
         // enabled without permission
         updateTaskPushNotificationsMutation.mutate(false);
       })
-      // Permission or push token registration failed, the user can retry in the settings
+      // Permission request failed, the user can retry in the settings
       .catch((error) => Sentry.captureException(error));
     // Only when the prompt is done or the setting changes; api and the mutation object are
     // new on every render and would ask again each time
