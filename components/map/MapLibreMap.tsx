@@ -13,6 +13,7 @@ import React, { forwardRef, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { MapAttribution } from "./MapAttribution";
+import { MapReadyContext } from "./MapReadyContext";
 
 export type BaseLayer = "satellite" | "map";
 
@@ -61,6 +62,9 @@ export const MapLibreMap = forwardRef<MapRef, MapLibreMapProps>(
   ) {
     const theme = useTheme();
     const [mapReady, setMapReady] = useState(false);
+    // While loading, the Map isn't mounted; a Map mounted again afterwards has to report
+    // onDidFinishLoadingMap anew before layers call native source methods
+    if (loading && mapReady) setMapReady(false);
 
     return (
       <View style={styles.container}>
@@ -115,7 +119,10 @@ export const MapLibreMap = forwardRef<MapRef, MapLibreMapProps>(
 
             {showUserLocation && <UserLocation />}
 
-            {children}
+            {/* Layers wait for the loaded map before calling native source methods */}
+            <MapReadyContext.Provider value={mapReady}>
+              {children}
+            </MapReadyContext.Provider>
           </Map>
         )}
 
