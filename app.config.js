@@ -50,7 +50,7 @@ export default ({ config }) => {
     name: variant.name,
     slug: "coltivio",
     owner: "agricoltivio",
-    version: "1.0.11",
+    version: "1.0.12",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
     // Distinct per variant so the dev/test build never collides with production's URL scheme
