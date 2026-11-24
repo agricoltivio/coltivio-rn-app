@@ -45,6 +45,16 @@ export function AnimalWeightChart({ weights }: { weights: AnimalWeight[] }) {
       }),
     [],
   );
+  // Short year ("1.6.25") keeps the labels narrow
+  const dateFormat = useMemo(
+    () =>
+      new Intl.DateTimeFormat(i18n.language, {
+        day: "numeric",
+        month: "numeric",
+        year: "2-digit",
+      }),
+    [i18n.language],
+  );
 
   const firstDate = weights.length > 0 ? parseDateOnly(weights[0].date) : null;
   // x = days since the first weighing
@@ -64,25 +74,23 @@ export function AnimalWeightChart({ weights }: { weights: AnimalWeight[] }) {
   const yMin = Math.max(0, Math.floor(Math.min(...weightValues) * 0.9));
   const yMax = Math.ceil(Math.max(...weightValues) * 1.05);
   const lastDay = rows[rows.length - 1].day;
-  // Short year ("1.6.25") keeps the labels narrow
   const formatDate = (day: number) =>
-    new Intl.DateTimeFormat(i18n.language, {
-      day: "numeric",
-      month: "numeric",
-      year: "2-digit",
-    }).format(addDays(firstDate, Math.round(day)));
-  // Days whose point gets a date and a value: from the newest back, each far enough from the
-  // last labeled one
+    dateFormat.format(addDays(firstDate, Math.round(day)));
+  // Points that get a date and a value: from the newest back, each far enough from the last
+  // labeled one. By row, so of two weighings on the same date only the newer one is labeled.
   const minLabelGap = Math.max(1, lastDay * MIN_LABEL_GAP_SHARE);
-  const labeledDays = new Set<number>();
+  const labeledRowIndices = new Set<number>();
   let lastLabeledDay: number | null = null;
   for (let index = rows.length - 1; index >= 0; index--) {
     const day = rows[index].day;
     if (lastLabeledDay === null || lastLabeledDay - day >= minLabelGap) {
-      labeledDays.add(day);
+      labeledRowIndices.add(index);
       lastLabeledDay = day;
     }
   }
+  const tickDays = [...labeledRowIndices]
+    .map((index) => rows[index].day)
+    .sort((a, b) => a - b);
 
   return (
     <View style={{ height: CHART_HEIGHT }}>
@@ -99,7 +107,9 @@ export function AnimalWeightChart({ weights }: { weights: AnimalWeight[] }) {
         domainPadding={{ left: 28, right: 28, top: 18 }}
         xAxis={{
           font,
-          tickValues: [...labeledDays].sort((a, b) => a - b),
+          tickValues: tickDays,
+          // victory-native downsamples tickValues to tickCount (default 5): keep every labeled day
+          tickCount: tickDays.length,
           formatXLabel: (value) => formatDate(value),
           lineColor: theme.charts.grid,
           labelColor: theme.charts.axisLabel,
@@ -136,7 +146,7 @@ export function AnimalWeightChart({ weights }: { weights: AnimalWeight[] }) {
             />
             {points.weight.map((point, index) => {
               if (point.y === null || point.y === undefined) return null;
-              if (!labeledDays.has(rows[index].day)) return null;
+              if (!labeledRowIndices.has(index)) return null;
               const label = String(rows[index].weight);
               const labelWidth = valueFont.measureText(label).width;
               return (
