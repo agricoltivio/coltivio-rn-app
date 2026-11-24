@@ -62,6 +62,9 @@ export const MapLibreMap = forwardRef<MapRef, MapLibreMapProps>(
   ) {
     const theme = useTheme();
     const [mapReady, setMapReady] = useState(false);
+    // While loading, the Map isn't mounted; a Map mounted again afterwards has to report
+    // onDidFinishLoadingMap anew before layers call native source methods
+    if (loading && mapReady) setMapReady(false);
 
     return (
       <View style={styles.container}>
