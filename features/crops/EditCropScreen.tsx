@@ -17,6 +17,8 @@ import { useTheme } from "styled-components/native";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/features/user/users.hooks";
 import { Card } from "@/components/card/Card";
+import { confirmDelete } from "@/utils/confirmDelete";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 export function EditCropScreen({ route, navigation }: EditCropScreenProps) {
   const { t } = useTranslation();
@@ -41,6 +43,8 @@ export function EditCropScreen({ route, navigation }: EditCropScreenProps) {
         }
       : undefined,
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const updateCropMutation = useUpdateCropMutation(() => navigation.goBack());
   const deleteCropMutation = useDeleteCropMutation(() => navigation.goBack());
@@ -56,7 +60,7 @@ export function EditCropScreen({ route, navigation }: EditCropScreenProps) {
   }
 
   function onDelete() {
-    deleteCropMutation.mutate(cropId);
+    confirmDelete(() => deleteCropMutation.mutate(cropId));
   }
 
   if (!crop) {

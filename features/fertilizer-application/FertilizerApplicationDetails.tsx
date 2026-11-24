@@ -11,6 +11,7 @@ import {
 import { FertilizerApplicationSummary } from "./FertilizerApplicationSummary";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/features/user/users.hooks";
+import { confirmDelete } from "@/utils/confirmDelete";
 
 export function FertilizerApplicationDetailsScreen({
   route,
@@ -34,7 +35,7 @@ export function FertilizerApplicationDetailsScreen({
   const { date, additionalNotes } = fertilizerApplication;
 
   function onDelete() {
-    deleteMutation.mutate(fertilizerApplicationId);
+    confirmDelete(() => deleteMutation.mutate(fertilizerApplicationId));
   }
   return (
     <ContentView

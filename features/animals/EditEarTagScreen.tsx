@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { Alert, View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { useUpdateEarTagNumberMutation } from "./earTags.hooks";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 import { EditEarTagScreenProps } from "./navigation/animals-routes";
 
 // Changes the number of one ear tag, e.g. a typo or a format the range didn't cover. An
@@ -24,6 +25,8 @@ export function EditEarTagScreen({ route, navigation }: EditEarTagScreenProps) {
     handleSubmit,
     formState: { errors, isDirty },
   } = useForm<{ number: string }>({ defaultValues: { number } });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const updateMutation = useUpdateEarTagNumberMutation(
     () => navigation.goBack(),

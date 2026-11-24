@@ -18,6 +18,8 @@ import {
 } from "./crop-rotations.hooks";
 import { useTranslation } from "react-i18next";
 import { INFINITE_DATE, isInfiniteDate, toLocalDateString } from "@/utils/date";
+import { confirmDelete } from "@/utils/confirmDelete";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type FormValues = {
   cropId: string;
@@ -63,6 +65,8 @@ export function EditCropRotationScreen({
         }
       : undefined,
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
   const toDate = watch("toDate");
   const isPermanent = isInfiniteDate(toDate || new Date());
 
@@ -77,7 +81,7 @@ export function EditCropRotationScreen({
   }
 
   function onDelete() {
-    deletePlotCropRotationMutation.mutate({ rotationId });
+    confirmDelete(() => deletePlotCropRotationMutation.mutate({ rotationId }));
   }
 
   if (!cropRotation) {

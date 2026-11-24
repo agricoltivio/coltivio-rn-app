@@ -20,6 +20,8 @@ import {
   useIsCropProtectionProductInUseQuery,
   useUpdateCropProtectionProductMutation,
 } from "./cropProtectionProduct.hooks";
+import { confirmDelete } from "@/utils/confirmDelete";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 export function EditCropProtectionProductScreen({
   route,
@@ -48,6 +50,8 @@ export function EditCropProtectionProductScreen({
         }
       : undefined,
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const updateCropProtectionProductMutation =
     useUpdateCropProtectionProductMutation(() => navigation.goBack());
@@ -64,7 +68,9 @@ export function EditCropProtectionProductScreen({
   }
 
   function onDelete() {
-    deleteCropProtectionProductMutation.mutate(cropProtectionProductId);
+    confirmDelete(() =>
+      deleteCropProtectionProductMutation.mutate(cropProtectionProductId),
+    );
   }
 
   if (!cropProtectionProduct || isFetchingInUse) {

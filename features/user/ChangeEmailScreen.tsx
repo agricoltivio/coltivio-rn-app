@@ -16,6 +16,7 @@ import { View } from "react-native";
 import { useTheme } from "styled-components/native";
 import { ChangeEmailScreenProps } from "./navigation/user-routes";
 import { useUserQuery } from "./users.hooks";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 const redirectTo = `${process.env.EXPO_PUBLIC_WEB_URL}/auth/confirm`;
 
@@ -31,9 +32,12 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
     control,
     handleSubmit,
     formState: { isDirty },
+    reset,
   } = useForm<{ email: string }>({
     defaultValues: { email: user?.email ?? undefined },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const api = useApi();
   const [submitting, setSubmitting] = useState(false);
@@ -65,6 +69,8 @@ export function ChangeEmailScreen({ navigation }: ChangeEmailScreenProps) {
       setError(t("errors.unexpected_retry"));
     } else {
       setUser(data.user);
+      // This screen stays below the pending screen; a clean form doesn't ask when "Home" resets the stack
+      reset({ email });
       navigation.navigate("ChangeEmailPending", { newEmail: email });
     }
   }

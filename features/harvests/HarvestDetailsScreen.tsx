@@ -9,6 +9,7 @@ import { round } from "@/utils/math";
 import { usePermissions } from "@/features/user/users.hooks";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
+import { confirmDelete } from "@/utils/confirmDelete";
 
 export function HarvestDetailsScreen({
   route,
@@ -41,7 +42,7 @@ export function HarvestDetailsScreen({
   } = harvest;
 
   function onDelete() {
-    deleteHarvestMutation.mutate(harvestId);
+    confirmDelete(() => deleteHarvestMutation.mutate(harvestId));
   }
   return (
     <ContentView

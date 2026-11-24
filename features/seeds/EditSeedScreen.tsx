@@ -21,6 +21,7 @@ import {
   useSeedByIdQuery,
   useUpdateSeedMutation,
 } from "./seeds.hooks";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 export function EditSeedScreen({ route, navigation }: EditSeedScreenProps) {
   const seedId = route.params.seedId;
@@ -70,6 +71,8 @@ function EditSeedForm({
       defaultUnit: seed.defaultUnit,
     },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const [error, setError] = useState<string | null>(null);
   const showError = () => setError(t("errors.unexpected_retry"));

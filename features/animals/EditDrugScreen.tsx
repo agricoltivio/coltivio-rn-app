@@ -23,6 +23,8 @@ import {
   useUpdateDrugMutation,
 } from "./drugs.hooks";
 import { EditDrugScreenProps } from "./navigation/animals-routes";
+import { confirmDelete } from "@/utils/confirmDelete";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type DoseUnit =
   | "tablet"
@@ -159,13 +161,18 @@ export function EditDrugScreen({ route, navigation }: EditDrugScreenProps) {
           { text: t("buttons.ok") },
         ]);
       } else {
-        deleteDrugMutation.mutate(drugId);
+        confirmDelete(() => deleteDrugMutation.mutate(drugId));
       }
     } catch (error) {
       Sentry.captureException(error);
       Alert.alert(t("common.error"), t("errors.unexpected_retry"));
     }
   }
+
+  // Asks before leaving with unsaved changes (also added or removed treatment rows)
+  useDiscardChangesPrompt(
+    isDirty || (!!drug && fields.length !== drug.drugTreatment.length),
+  );
 
   if (!drug) {
     return null;

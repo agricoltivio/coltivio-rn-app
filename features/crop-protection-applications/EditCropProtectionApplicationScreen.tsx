@@ -23,6 +23,7 @@ import {
   useUpdateCropProtectionApplicationMutation,
 } from "./cropProtectionApplications.hooks";
 import { EditCropProtectionApplicationScreenProps } from "./navigation/crop-protection-application-routes";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 const cropProtectionMethods: CropProtectionApplicationMethod[] = [
   "spraying",
@@ -93,7 +94,7 @@ function EditCropProtectionApplicationForm({
     control,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       date: applicationDateTime,
@@ -106,6 +107,8 @@ function EditCropProtectionApplicationForm({
       additionalNotes: cropProtectionApplication.additionalNotes ?? undefined,
     },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const unit = watch("unit");
   const productId = watch("productId");

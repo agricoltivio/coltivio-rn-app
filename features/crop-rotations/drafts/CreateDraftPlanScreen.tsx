@@ -19,6 +19,7 @@ import {
 } from "../crop-rotations.hooks";
 import { CreateDraftPlanScreenProps } from "../navigation/crop-rotations-routes.d";
 import { Plot } from "@/api/plots.api";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 const SEED_FROM_YEARS_BACK = 10;
 const SEED_TO_YEARS_FORWARD = 10;
@@ -32,6 +33,8 @@ export function CreateDraftPlanScreen({
   const [draftName, setDraftName] = useState("");
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [searchText, setSearchText] = useState("");
+  // Asks before leaving once a name or plots were entered
+  useDiscardChangesPrompt(draftName.trim() !== "" || selectedIds.size > 0);
 
   const { plots, isLoading: plotsLoading } = useFarmPlotsQuery();
 

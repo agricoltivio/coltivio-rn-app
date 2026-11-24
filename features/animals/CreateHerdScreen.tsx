@@ -26,6 +26,7 @@ import { OutdoorScheduleFormResult } from "./OutdoorScheduleFormScreen";
 import { OutdoorScheduleTimeline } from "./timeline/OutdoorScheduleTimeline";
 import { buildOutdoorTimelineData } from "./timeline/outdoor-timeline-utils";
 import { hasScheduleOverlaps } from "./schedule-overlap-utils";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 interface CreateHerdFormValues {
   name: string;
@@ -104,6 +105,8 @@ export function CreateHerdScreen({ route, navigation }: CreateHerdScreenProps) {
   } = useForm<CreateHerdFormValues>({
     defaultValues: { name: "" },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   // Build timeline data from local schedules
   const timelineData = useMemo(() => {

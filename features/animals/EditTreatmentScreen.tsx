@@ -36,6 +36,7 @@ import {
   useTreatmentByIdQuery,
   useUpdateTreatmentMutation,
 } from "./treatments.hooks";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type DoseUnit =
   | "tablet"
@@ -319,6 +320,18 @@ export function EditTreatmentScreen({
     selectedAnimalIds,
     startDay,
     drugDosePerUnit === "kg",
+  );
+
+  // Asks before leaving with unsaved changes (also changed animals and doses)
+  const initialTreatmentAnimalIds = treatment?.animals?.map((a) => a.id) ?? [];
+  useDiscardChangesPrompt(
+    isDirty ||
+      (!!treatment &&
+        (selectedAnimalIds.length !== initialTreatmentAnimalIds.length ||
+          selectedAnimalIds.some(
+            (id: string) => !initialTreatmentAnimalIds.includes(id),
+          ))) ||
+      Object.keys(effectiveDoseInputs).length > 0,
   );
 
   if (!treatment) {

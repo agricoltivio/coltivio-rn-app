@@ -16,6 +16,8 @@ import {
   useDeleteAnimalsMutation,
 } from "./animals.hooks";
 import { BatchEditActionScreenProps } from "./navigation/animals-routes";
+import { confirmDelete } from "@/utils/confirmDelete";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type ActionType = "type" | "death" | "registered" | "usage" | "delete";
 
@@ -40,13 +42,15 @@ export function BatchEditActionScreen({
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       registered: true,
       dateOfDeath: new Date(),
     },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const selectedAction = useWatch({ control, name: "action" });
 
@@ -64,7 +68,7 @@ export function BatchEditActionScreen({
 
   function onSubmit(values: FormValues) {
     if (values.action === "delete") {
-      deleteAnimals.mutate(animalIds);
+      confirmDelete(() => deleteAnimals.mutate(animalIds));
       return;
     }
 

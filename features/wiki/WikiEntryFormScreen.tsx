@@ -19,6 +19,7 @@ import {
 } from "./wiki.hooks";
 import { WikiEntryFormScreenProps } from "./navigation/wiki-routes";
 import { TextInput } from "@/components/inputs/TextInput";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 const LOCALES: AppLocale[] = ["de", "en", "it", "fr"];
 
@@ -55,7 +56,13 @@ export function WikiEntryFormScreen({
   // On edit we use the existing entryId instead.
   const imageEntryId = useRef(entryId ?? Crypto.randomUUID()).current;
 
-  const { control, handleSubmit, setValue, watch } = useForm<FormValues>({
+  const {
+    formState: { isDirty },
+    control,
+    handleSubmit,
+    setValue,
+    watch,
+  } = useForm<FormValues>({
     defaultValues: {
       categoryId: "",
       de_title: "",
@@ -68,6 +75,8 @@ export function WikiEntryFormScreen({
       fr_body: "",
     },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   // Pre-fill form when editing an existing entry
   useEffect(() => {

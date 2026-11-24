@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/buttons/Button";
 import { BottomActionContainer } from "@/components/containers/BottomActionContainer";
 import { useTranslation } from "react-i18next";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 export function CreateCropScreen({ navigation }: CreateCropScreenProps) {
   const { t } = useTranslation();
@@ -16,6 +17,8 @@ export function CreateCropScreen({ navigation }: CreateCropScreenProps) {
     handleSubmit,
     formState: { errors, isDirty },
   } = useForm<CropFormValues>();
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const previousScreen =
     navigation.getState().routes[navigation.getState().index - 1];

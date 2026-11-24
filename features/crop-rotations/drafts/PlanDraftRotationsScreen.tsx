@@ -17,6 +17,7 @@ import {
 import { PlanDraftRotationsScreenProps } from "../navigation/crop-rotations-routes.d";
 import { PlotRotationsEditor } from "../plan/components/PlotRotationsEditor";
 import { DraftPlanRotation } from "@/api/crop-rotations.api";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 // Map a DraftPlanRotation (from draftPlan.plots[].rotations[]) to the shape initializeFromExisting expects
 function draftRotationToPlotCropRotation(
@@ -62,6 +63,19 @@ export function PlanDraftRotationsScreen({
   const { draftPlan, isLoading: draftLoading } = useDraftPlanQuery(draftPlanId);
   const [saving, setSaving] = useState(false);
   const initializedRef = useRef(false);
+
+  // Asks before leaving with unsaved plan changes: compared with the plan as it was loaded
+  const initialPlotPlansRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (initialPlotPlansRef.current === null && plotPlans.length > 0) {
+      initialPlotPlansRef.current = JSON.stringify(plotPlans);
+    }
+  }, [plotPlans]);
+  useDiscardChangesPrompt(
+    initialPlotPlansRef.current !== null &&
+      JSON.stringify(plotPlans) !== initialPlotPlansRef.current,
+    saving,
+  );
 
   // Initialise store from draft plot rotations for the requested plots
   useEffect(() => {

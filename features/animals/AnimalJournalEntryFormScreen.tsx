@@ -24,6 +24,8 @@ import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import Constants from "expo-constants";
+import { confirmDelete } from "@/utils/confirmDelete";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 // When running against local Supabase, the backend returns URLs with localhost
 // which the device can't reach — replace with LAN IP from Expo Metro host.
@@ -82,7 +84,7 @@ export function AnimalJournalEntryFormScreen({
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       title: "",
@@ -97,6 +99,8 @@ export function AnimalJournalEntryFormScreen({
         }
       : undefined,
   });
+  // Asks before leaving with unsaved changes (also images picked but not uploaded yet)
+  useDiscardChangesPrompt(isDirty || pendingImages.length > 0, isSubmitting);
 
   async function pickAndProcessImage(): Promise<PendingImage | null> {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -177,13 +181,16 @@ export function AnimalJournalEntryFormScreen({
     }
   }
 
-  async function handleDeleteUploadedImage(imageId: string) {
-    try {
-      await api.animalJournal.deleteImage(imageId);
-      setUploadedImages((prev) => prev.filter((img) => img.id !== imageId));
-    } catch {
-      Alert.alert(t("common.error"), t("common.error"));
-    }
+  // Deleted on the server right away, so confirm first
+  function handleDeleteUploadedImage(imageId: string) {
+    confirmDelete(async () => {
+      try {
+        await api.animalJournal.deleteImage(imageId);
+        setUploadedImages((prev) => prev.filter((img) => img.id !== imageId));
+      } catch {
+        Alert.alert(t("common.error"), t("common.error"));
+      }
+    });
   }
 
   function handleDeletePendingImage(localUri: string) {

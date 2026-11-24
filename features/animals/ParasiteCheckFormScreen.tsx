@@ -38,6 +38,7 @@ import {
   useUpdateParasiteCheckMutation,
 } from "./parasite-checks.hooks";
 import { useTreatmentsQuery } from "./treatments.hooks";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 const DEFAULT_RECHECK_DAYS = 14;
 
@@ -89,6 +90,19 @@ export function ParasiteCheckFormScreen({
     addDays(new Date(), DEFAULT_RECHECK_DAYS),
   );
 
+  // Set by the user's own changes, not by filling the form (edit mode, re-check, preselected
+  // animals): asks before leaving with unsaved changes
+  const [hasUserChanges, setHasUserChanges] = useState(false);
+  function withChange<TArgs extends unknown[]>(
+    handler: (...args: TArgs) => void,
+  ) {
+    return (...args: TArgs) => {
+      setHasUserChanges(true);
+      handler(...args);
+    };
+  }
+  useDiscardChangesPrompt(hasUserChanges);
+
   // Re-check date follows the check date until the user picks one
   const followUpDateTouched = useRef(false);
   useEffect(() => {
@@ -98,8 +112,20 @@ export function ParasiteCheckFormScreen({
 
   // Lab results are edited on separate screens and shared via the draft store
   const resetSampleDraft = useParasiteSampleDraftStore((state) => state.reset);
+  // Draft writes by this form (reset, filling in edit mode) are not user changes; everything
+  // else comes from the results screens. Opening them without editing doesn't count.
+  const fillingSampleDraft = useRef(false);
+  useEffect(
+    () =>
+      useParasiteSampleDraftStore.subscribe(() => {
+        if (!fillingSampleDraft.current) setHasUserChanges(true);
+      }),
+    [],
+  );
   useEffect(() => {
+    fillingSampleDraft.current = true;
     resetSampleDraft();
+    fillingSampleDraft.current = false;
   }, [resetSampleDraft]);
 
   // Edit mode: fill the form once the check is loaded
@@ -115,7 +141,9 @@ export function ParasiteCheckFormScreen({
         famachaScore: checkAnimal.famachaScore,
       })),
     );
+    fillingSampleDraft.current = true;
     useParasiteSampleDraftStore.getState().initFromCheck(existingCheck);
+    fillingSampleDraft.current = false;
     setName(existingCheck.name ?? "");
     setNotes(existingCheck.notes ?? "");
     setTreatmentId(existingCheck.treatmentId ?? "");
@@ -164,8 +192,13 @@ export function ParasiteCheckFormScreen({
 
   // Animals picked in the SelectAnimals modal (or passed in for a re-check)
   const animalIdsParam = params.animalIds;
+  // Animals passed in when opening the form are prefilled, not a user change
+  const initialAnimalIdsParam = useRef(params.animalIds);
   useEffect(() => {
     if (!animalIdsParam) return;
+    if (animalIdsParam !== initialAnimalIdsParam.current) {
+      setHasUserChanges(true);
+    }
     setAnimalRows((rows) => mergeAnimalRows(rows, animalIdsParam));
   }, [animalIdsParam]);
 
@@ -408,7 +441,7 @@ export function ParasiteCheckFormScreen({
             <TouchableOpacity
               key={methodOption}
               disabled={isEditing || !!baseCheck}
-              onPress={() => setMethod(methodOption)}
+              onPress={withChange(() => setMethod(methodOption))}
               style={{
                 flex: 1,
                 paddingVertical: 10,
@@ -450,7 +483,7 @@ export function ParasiteCheckFormScreen({
             label={t("parasite_checks.name")}
             optional
             value={name}
-            onChangeText={setName}
+            onChangeText={withChange(setName)}
           />
           <DatePicker
             mode="date"
@@ -461,7 +494,9 @@ export function ParasiteCheckFormScreen({
             minimumDate={baseCheck ? parseDateOnly(baseCheck.date) : undefined}
             maximumDate={earliestRecheckDate}
             clearable={false}
-            onConfirm={(pickedDate) => pickedDate && setDate(pickedDate)}
+            onConfirm={withChange(
+              (pickedDate?: Date | null) => pickedDate && setDate(pickedDate),
+            )}
           />
         </View>
 
@@ -564,7 +599,9 @@ export function ParasiteCheckFormScreen({
                   </Subtitle>
                   <FamachaScorePicker
                     value={row.famachaScore}
-                    onChange={(score) => setScore(row.animalId, score)}
+                    onChange={withChange((score: number | null) =>
+                      setScore(row.animalId, score),
+                    )}
                   />
                 </View>
               ))}
@@ -618,7 +655,7 @@ export function ParasiteCheckFormScreen({
             value={treatmentId}
             data={treatmentOptions}
             enableSearch
-            onChange={setTreatmentId}
+            onChange={withChange(setTreatmentId)}
           />
           {/* A base check with re-checks cannot become a re-check itself */}
           {!existingCheck?.rechecks.length && (
@@ -627,14 +664,14 @@ export function ParasiteCheckFormScreen({
               optional
               value={previousCheckId}
               data={previousCheckOptions}
-              onChange={setPreviousCheckId}
+              onChange={withChange(setPreviousCheckId)}
             />
           )}
           <TextInput
             optional
             label={t("common.notes")}
             value={notes}
-            onChangeText={setNotes}
+            onChangeText={withChange(setNotes)}
             multiline
           />
         </View>
@@ -651,7 +688,10 @@ export function ParasiteCheckFormScreen({
             <Switch
               label={t("parasite_checks.create_follow_up_task")}
               value={followUpEnabled}
-              onChange={(event) => setFollowUpEnabled(event.nativeEvent.value)}
+              onChange={withChange(
+                (event: { nativeEvent: { value: boolean } }) =>
+                  setFollowUpEnabled(event.nativeEvent.value),
+              )}
             />
             {followUpEnabled && (
               <DatePicker
@@ -661,11 +701,11 @@ export function ParasiteCheckFormScreen({
                 date={followUpDate}
                 clearable={false}
                 minimumDate={date}
-                onConfirm={(pickedDate) => {
+                onConfirm={withChange((pickedDate?: Date | null) => {
                   if (!pickedDate) return;
                   followUpDateTouched.current = true;
                   setFollowUpDate(pickedDate);
-                }}
+                })}
               />
             )}
           </View>

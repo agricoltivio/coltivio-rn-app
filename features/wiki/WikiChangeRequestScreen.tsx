@@ -15,6 +15,7 @@ import {
   useWikiDetailQuery,
 } from "./wiki.hooks";
 import { WikiChangeRequestScreenProps } from "./navigation/wiki-routes";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 const LOCALES: AppLocale[] = ["de", "en", "it", "fr"];
 
@@ -44,7 +45,12 @@ export function WikiChangeRequestScreen({
 
   const { entry } = useWikiDetailQuery(entryId);
 
-  const { control, handleSubmit, setValue } = useForm<FormValues>({
+  const {
+    formState: { isDirty },
+    control,
+    handleSubmit,
+    setValue,
+  } = useForm<FormValues>({
     defaultValues: {
       de_title: "",
       de_body: "",
@@ -56,6 +62,8 @@ export function WikiChangeRequestScreen({
       fr_body: "",
     },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   // Pre-fill translations from the published entry
   useEffect(() => {

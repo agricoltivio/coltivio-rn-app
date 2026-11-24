@@ -18,6 +18,7 @@ import {
   MAX_EAR_TAG_RANGE_SIZE,
 } from "./ear-tag-range";
 import { CreateEarTagRangeScreenProps } from "./navigation/animals-routes";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type EarTagRangeFormValues = {
   prefix: string;
@@ -64,6 +65,8 @@ export function CreateEarTagRangeScreen({
   } = useForm<EarTagRangeFormValues>({
     defaultValues: { prefix: "", fromNumber: "", amount: "" },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
   const { earTags } = useEarTagsQuery();
 
   // Live preview of the range below the inputs, including overlaps with existing tags

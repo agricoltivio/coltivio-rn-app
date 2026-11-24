@@ -26,6 +26,7 @@ import {
 import { Switch } from "@/components/inputs/Switch";
 import { useAnimalHeatsQuery, useAnimalWeightsQuery } from "./breeding.hooks";
 import { AnimalWeightChartDrawer } from "./AnimalWeightField";
+import { confirmDelete } from "@/utils/confirmDelete";
 import { AnimalWeightDrawer } from "./AnimalWeightDrawer";
 import { useAvailableEarTagsQuery } from "./earTags.hooks";
 import { SelectSearchModal } from "@/components/select/Select";
@@ -86,7 +87,7 @@ export function AnimalDetailsScreen({
   }, [animal]);
 
   function onDelete() {
-    deleteAnimalMutation.mutate(animalId);
+    confirmDelete(() => deleteAnimalMutation.mutate(animalId));
   }
 
   if (!animal) {

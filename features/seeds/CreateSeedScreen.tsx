@@ -13,6 +13,7 @@ import { CreateSeedScreenProps } from "./navigation/seed-routes";
 import { SeedForm, SeedFormValues } from "./SeedForm";
 import { parseQuantityKind, seedDefaultRateFromForm } from "./seedFormValues";
 import { useCreateSeedMutation } from "./seeds.hooks";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 export function CreateSeedScreen({ navigation, route }: CreateSeedScreenProps) {
   const { t } = useTranslation();
@@ -23,6 +24,8 @@ export function CreateSeedScreen({ navigation, route }: CreateSeedScreenProps) {
     setValue,
     formState: { errors, isDirty },
   } = useForm<SeedFormValues>({ defaultValues: { quantityKind: "weight" } });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const previousRoute =
     navigation.getState().routes[navigation.getState().index - 1];

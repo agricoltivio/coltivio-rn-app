@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useTheme } from "styled-components/native";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 export function ChangePasswordScren({ navigation }: ChangePasswordScreenProps) {
   const { t } = useTranslation();
@@ -22,9 +23,12 @@ export function ChangePasswordScren({ navigation }: ChangePasswordScreenProps) {
   const {
     control,
     handleSubmit,
-    formState: { isDirty, errors },
+    formState: { isDirty, isSubmitting, errors },
     watch,
   } = useForm<{ password: string; passwordRepeat: string }>();
+  // Asks before leaving with unsaved changes
+  // The save calls Supabase directly (no mutation): no prompt while it runs and navigates back
+  useDiscardChangesPrompt(isDirty, isSubmitting);
 
   const password = watch("password");
 

@@ -8,6 +8,7 @@ import { useDeleteTillageMutation, useTillageQuery } from "./tillages.hooks";
 import { TillageSummary } from "./TillageSummary";
 import { useTranslation } from "react-i18next";
 import { usePermissions } from "@/features/user/users.hooks";
+import { confirmDelete } from "@/utils/confirmDelete";
 
 export function TillageDetailsScreen({
   route,
@@ -29,7 +30,7 @@ export function TillageDetailsScreen({
   const { date, additionalNotes } = tillage;
 
   function onDelete() {
-    deleteMutation.mutate(tillageId);
+    confirmDelete(() => deleteMutation.mutate(tillageId));
   }
   return (
     <ContentView

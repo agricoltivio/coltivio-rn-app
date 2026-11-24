@@ -16,6 +16,7 @@ import { useTheme } from "styled-components/native";
 import { EditTillageScreenProps } from "./navigation/tillages-routes";
 import { useTillageQuery, useUpdateTillageMutation } from "./tillages.hooks";
 import { tillageActions } from "./tillageUtils";
+import { useDiscardChangesPrompt } from "@/navigation/useDiscardChangesPrompt";
 
 type FormValues = {
   date: Date;
@@ -55,7 +56,7 @@ function EditTillageForm({
     control,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       date: new Date(tillage.date),
@@ -64,6 +65,8 @@ function EditTillageForm({
       additionalNotes: tillage.additionalNotes ?? undefined,
     },
   });
+  // Asks before leaving with unsaved changes
+  useDiscardChangesPrompt(isDirty);
 
   const action = watch("action");
 

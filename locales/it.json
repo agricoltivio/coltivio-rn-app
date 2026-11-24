@@ -1,5 +1,6 @@
 {
   "buttons": {
+    "discard": "Scarta",
     "signup": "Iscriviti",
     "login": "Accedi",
     "signout": "Esci",
@@ -100,6 +101,10 @@
     }
   },
   "common": {
+    "discard_changes_title": "Scartare le modifiche?",
+    "discard_changes_message": "Le tue modifiche non sono ancora salvate e andranno perse.",
+    "delete_confirm_title": "Eliminare davvero?",
+    "delete_confirm_message": "Questa azione non può essere annullata.",
     "no_entries": "Ancora nessun elemento",
     "week_short": "S{{week}}",
     "error": "Errore",
