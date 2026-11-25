@@ -281,6 +281,10 @@ type PlotsMapContextValue = {
   // opened the map directly in that flow (e.g. the animals section)
   exitMeadowFlow: () => void;
   meadowFlowOpenedExternally: boolean;
+  // PortalHost of this map screen, where its drawers render. Per screen instance: two maps can
+  // be on the stack (e.g. outdoor schedule form > "+" pushes a second one), and @gorhom/portal
+  // keeps portals per host name, so a shared name would mix up their drawers.
+  portalHostName: string;
 };
 
 export const PlotsMapContext = createContext<PlotsMapContextValue | null>(null);

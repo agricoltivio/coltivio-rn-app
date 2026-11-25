@@ -23,6 +23,7 @@ export function AreaChoiceDrawer() {
     areaChoiceOptions,
     setAreaChoiceOptions,
     setSelectedMeadowId,
+    portalHostName,
   } = usePlotsMapContext();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -40,7 +41,7 @@ export function AreaChoiceDrawer() {
   if (mode.type !== "view") return null;
 
   return (
-    <Portal>
+    <Portal hostName={portalHostName}>
       <BottomSheetModalProvider key="area-choice-drawer">
         <BottomDrawerModal
           onClose={() => setAreaChoiceOptions(null)}
