@@ -40,7 +40,7 @@ export function AreaChoiceDrawer() {
   if (mode.type !== "view") return null;
 
   return (
-    <Portal>
+    <Portal hostName="PlotsMapPortal">
       <BottomSheetModalProvider key="area-choice-drawer">
         <BottomDrawerModal
           onClose={() => setAreaChoiceOptions(null)}

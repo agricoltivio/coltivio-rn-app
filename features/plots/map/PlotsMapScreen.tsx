@@ -439,122 +439,125 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
 
   return (
     <PlotsMapContext.Provider value={contextValue}>
-      <ContentView headerVisible={false}>
-        <View
-          ref={mapViewRef}
-          collapsable={false}
-          style={StyleSheet.absoluteFill}
-          {...touchHandlers}
-        >
-          <MapLibreMap
-            ref={mapRef}
-            cameraRef={cameraRef}
-            loading={!mapVisible || plotsLoading}
-            initialCenter={initialCenter}
-            initialZoom={17}
-            baseLayer={baseLayer}
-            dragPan={dragPan}
-            showUserLocation={showsUserLocation}
-            onPress={handleMapPress}
-            attributionBottomOffset={insets.bottom}
+      <View style={{ flex: 1 }}>
+        <ContentView headerVisible={false}>
+          <View
+            ref={mapViewRef}
+            collapsable={false}
+            style={StyleSheet.absoluteFill}
+            {...touchHandlers}
           >
-            <MapLayers
-              splitLayersRef={splitLayersRef}
-              adjustLayersRef={adjustLayersRef}
-              createLayersRef={createLayersRef}
-            />
-            {/* Above the plots, so the borders inside merged plots stay visible */}
-            {visibleLayers.parcels && <ParcelsLayer baseLayer={baseLayer} />}
-            <HomeMarkerLayer center={farm.location.coordinates as LngLat} />
-          </MapLibreMap>
-        </View>
+            <MapLibreMap
+              ref={mapRef}
+              cameraRef={cameraRef}
+              loading={!mapVisible || plotsLoading}
+              initialCenter={initialCenter}
+              initialZoom={17}
+              baseLayer={baseLayer}
+              dragPan={dragPan}
+              showUserLocation={showsUserLocation}
+              onPress={handleMapPress}
+              attributionBottomOffset={insets.bottom}
+            >
+              <MapLayers
+                splitLayersRef={splitLayersRef}
+                adjustLayersRef={adjustLayersRef}
+                createLayersRef={createLayersRef}
+              />
+              {/* Above the plots, so the borders inside merged plots stay visible */}
+              {visibleLayers.parcels && <ParcelsLayer baseLayer={baseLayer} />}
+              <HomeMarkerLayer center={farm.location.coordinates as LngLat} />
+            </MapLibreMap>
+          </View>
 
-        <MapShowLocationToggle onShowLocationChange={setShowsUserLocation} />
-        {mode.type === "view" && visibleLayers.plots && (
-          <MapPlotColorToggle
-            plotColorMode={plotColorMode}
-            onChange={setPlotColorMode}
-            topOffset={insets.top + theme.spacing.s + 150}
+          <MapShowLocationToggle onShowLocationChange={setShowsUserLocation} />
+          {mode.type === "view" && visibleLayers.plots && (
+            <MapPlotColorToggle
+              plotColorMode={plotColorMode}
+              onChange={setPlotColorMode}
+              topOffset={insets.top + theme.spacing.s + 150}
+            />
+          )}
+          {mode.type === "view" && (
+            <MapLayersButton insets={insets}>
+              <MaterialCommunityIconButton
+                type="accent"
+                color={theme.colors.black}
+                iconSize={30}
+                onPress={() => setLayersDrawerVisible(true)}
+                icon="layers-outline"
+              />
+            </MapLayersButton>
+          )}
+          <TopLeftBackButton />
+
+          {/* Plot list button */}
+          {mode.type === "view" && (
+            <PlotListButton insets={insets}>
+              <IonIconButton
+                type="accent"
+                color={theme.colors.black}
+                iconSize={30}
+                onPress={() => setPlotListVisible(true)}
+                icon="list"
+              />
+            </PlotListButton>
+          )}
+
+          {/* Mode-specific controls */}
+          <MapOverlays
+            splitLayersRef={splitLayersRef}
+            adjustLayersRef={adjustLayersRef}
+            onDelete={() => setDeleteDialogVisible(true)}
           />
-        )}
-        {mode.type === "view" && (
-          <MapLayersButton insets={insets}>
-            <MaterialCommunityIconButton
-              type="accent"
-              color={theme.colors.black}
-              iconSize={30}
-              onPress={() => setLayersDrawerVisible(true)}
-              icon="layers-outline"
-            />
-          </MapLayersButton>
-        )}
-        <TopLeftBackButton />
 
-        {/* Plot list button */}
-        {mode.type === "view" && (
-          <PlotListButton insets={insets}>
-            <IonIconButton
-              type="accent"
-              color={theme.colors.black}
-              iconSize={30}
-              onPress={() => setPlotListVisible(true)}
-              icon="list"
+          {/* Bottom drawer for view mode */}
+          <PlotDetailsDrawer />
+          <MeadowDetailsDrawer />
+          <AreaChoiceDrawer />
+          {mode.type === "view" && (
+            <MapLayersDrawer
+              visible={layersDrawerVisible}
+              onClose={() => setLayersDrawerVisible(false)}
+              visibleLayers={visibleLayers}
+              onChange={handleVisibleLayersChange}
+              baseLayer={baseLayer}
+              onBaseLayerChange={setBaseLayer}
             />
-          </PlotListButton>
-        )}
+          )}
 
+          {/* Plot list modal */}
+          <PlotListModal
+            visible={plotListVisible}
+            onClose={() => setPlotListVisible(false)}
+            plots={plots ?? []}
+            onSelectPlot={(plot) => {
+              setSelectedMeadowId(null);
+              dispatch({ type: "SELECT_PLOT", plotId: plot.id });
+            }}
+            cameraRef={cameraRef}
+            showPlots={visibleLayers.plots}
+            meadows={visibleLayers.meadows ? (meadows ?? []) : undefined}
+            onSelectMeadow={(meadow) => {
+              dispatch({ type: "SELECT_PLOT", plotId: null });
+              setSelectedMeadowId(meadow.id);
+            }}
+          />
+
+          {/* Delete confirmation dialog */}
+          {selectedPlot && (
+            <DeletePlotDialog
+              visible={deleteDialogVisible}
+              plotId={selectedPlot.id}
+              plotName={selectedPlot.name}
+              onClose={() => setDeleteDialogVisible(false)}
+            />
+          )}
+        </ContentView>
+        {/* The drawers render here: part of this screen (not the app-wide portal), so a screen
+          opened from a drawer covers them; outside ContentView so its padding doesn't inset them */}
         <PortalHost name="PlotsMapPortal" />
-
-        {/* Mode-specific controls */}
-        <MapOverlays
-          splitLayersRef={splitLayersRef}
-          adjustLayersRef={adjustLayersRef}
-          onDelete={() => setDeleteDialogVisible(true)}
-        />
-
-        {/* Bottom drawer for view mode */}
-        <PlotDetailsDrawer />
-        <MeadowDetailsDrawer />
-        <AreaChoiceDrawer />
-        {mode.type === "view" && (
-          <MapLayersDrawer
-            visible={layersDrawerVisible}
-            onClose={() => setLayersDrawerVisible(false)}
-            visibleLayers={visibleLayers}
-            onChange={handleVisibleLayersChange}
-            baseLayer={baseLayer}
-            onBaseLayerChange={setBaseLayer}
-          />
-        )}
-
-        {/* Plot list modal */}
-        <PlotListModal
-          visible={plotListVisible}
-          onClose={() => setPlotListVisible(false)}
-          plots={plots ?? []}
-          onSelectPlot={(plot) => {
-            setSelectedMeadowId(null);
-            dispatch({ type: "SELECT_PLOT", plotId: plot.id });
-          }}
-          cameraRef={cameraRef}
-          showPlots={visibleLayers.plots}
-          meadows={visibleLayers.meadows ? (meadows ?? []) : undefined}
-          onSelectMeadow={(meadow) => {
-            dispatch({ type: "SELECT_PLOT", plotId: null });
-            setSelectedMeadowId(meadow.id);
-          }}
-        />
-
-        {/* Delete confirmation dialog */}
-        {selectedPlot && (
-          <DeletePlotDialog
-            visible={deleteDialogVisible}
-            plotId={selectedPlot.id}
-            plotName={selectedPlot.name}
-            onClose={() => setDeleteDialogVisible(false)}
-          />
-        )}
-      </ContentView>
+      </View>
     </PlotsMapContext.Provider>
   );
 }

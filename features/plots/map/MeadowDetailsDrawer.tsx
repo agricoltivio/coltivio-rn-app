@@ -64,7 +64,7 @@ export function MeadowDetailsDrawer() {
   if (mode.type !== "view") return null;
 
   return (
-    <Portal>
+    <Portal hostName="PlotsMapPortal">
       <BottomSheetModalProvider key="meadow-details-drawer">
         <BottomDrawerModal
           onClose={() => setSelectedMeadowId(null)}

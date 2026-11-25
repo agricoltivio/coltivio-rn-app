@@ -66,7 +66,7 @@ export function PlotDetailsDrawer() {
   if (mode.type !== "view") return null;
 
   return (
-    <Portal>
+    <Portal hostName="PlotsMapPortal">
       <BottomSheetModalProvider key="plot-details-drawer">
         <BottomDrawerModal
           onClose={() => dispatch({ type: "SELECT_PLOT", plotId: null })}

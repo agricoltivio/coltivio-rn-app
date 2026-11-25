@@ -49,7 +49,7 @@ export function MapLayersDrawer({
   }, [visible]);
 
   return (
-    <Portal>
+    <Portal hostName="PlotsMapPortal">
       <BottomSheetModalProvider key="map-layers-drawer">
         <BottomDrawerModal
           onClose={onClose}
