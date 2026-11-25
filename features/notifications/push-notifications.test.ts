@@ -10,6 +10,7 @@ import { ApiError } from "@/api/api";
 import * as Sentry from "@sentry/react-native";
 import * as Notifications from "expo-notifications";
 import * as SecureStore from "expo-secure-store";
+import { setBeforeSignOutHandler } from "@/auth/SessionProvider";
 import { registerPushTokenAsync } from "./push-notifications";
 
 jest.mock("@/api/api", () => {
@@ -43,6 +44,15 @@ jest.mock("expo-secure-store", () => ({
 }));
 
 const getExpoPushTokenAsync = jest.mocked(Notifications.getExpoPushTokenAsync);
+// Registered when the module loads, before beforeEach clears the mock calls
+const registeredBeforeSignOut = jest.mocked(setBeforeSignOutHandler).mock
+  .calls[0][0];
+function beforeSignOut(authToken: string) {
+  if (!registeredBeforeSignOut) {
+    throw new Error("push-notifications registers no before-sign-out handler");
+  }
+  return registeredBeforeSignOut(authToken);
+}
 const captureException = jest.mocked(Sentry.captureException);
 const captureMessage = jest.mocked(Sentry.captureMessage);
 const setItemAsync = jest.mocked(SecureStore.setItemAsync);
@@ -109,6 +119,8 @@ describe("registerPushTokenAsync", () => {
 
     await register(usersApi);
 
+    // the Expo token is kept: only our API is asked again
+    expect(getExpoPushTokenAsync).toHaveBeenCalledTimes(1);
     expect(registerPushToken).toHaveBeenCalledTimes(2);
     expect(setItemAsync).toHaveBeenCalledTimes(1);
     expect(captureException).not.toHaveBeenCalled();
@@ -141,6 +153,82 @@ describe("registerPushTokenAsync", () => {
 
     expect(getExpoPushTokenAsync).toHaveBeenCalledTimes(2);
     expect(captureException).not.toHaveBeenCalled();
+  });
+
+  test("retries when a fetch of our API times out", async () => {
+    getExpoPushTokenAsync.mockResolvedValue(pushToken);
+    const registerPushToken = jest
+      .fn<() => Promise<void>>()
+      .mockRejectedValueOnce(new TypeError("Network request timed out"))
+      .mockResolvedValueOnce();
+
+    await register(usersApiMock(registerPushToken));
+
+    expect(registerPushToken).toHaveBeenCalledTimes(2);
+    expect(captureException).not.toHaveBeenCalled();
+  });
+
+  test("retries a 5xx of exp.host whatever its status text", async () => {
+    getExpoPushTokenAsync
+      .mockRejectedValueOnce(
+        expoError(
+          "ERR_NOTIFICATIONS_SERVER_ERROR",
+          'Error encountered while fetching Expo token, expected an OK response, received: Gateway Time-out (body: "").',
+        ),
+      )
+      .mockResolvedValueOnce(pushToken);
+
+    await register(usersApiMock());
+
+    expect(getExpoPushTokenAsync).toHaveBeenCalledTimes(2);
+    expect(captureException).not.toHaveBeenCalled();
+  });
+
+  test("stops without a report when the session has ended (401)", async () => {
+    getExpoPushTokenAsync.mockResolvedValue(pushToken);
+    const error = new ApiError(401, "401 - Unauthorized");
+    const usersApi = usersApiMock(jest.fn(async () => Promise.reject(error)));
+
+    await expect(register(usersApi)).rejects.toBe(error);
+
+    expect(usersApi.registerPushToken).toHaveBeenCalledTimes(1);
+    expect(captureException).not.toHaveBeenCalled();
+    expect(Sentry.addBreadcrumb).toHaveBeenCalledTimes(1);
+  });
+
+  test("a sign-out during the wait stops the retry", async () => {
+    getExpoPushTokenAsync.mockResolvedValue(pushToken);
+    const registerPushToken = jest
+      .fn<() => Promise<void>>()
+      .mockRejectedValueOnce(new ApiError(504, "504 - Gateway Timeout"))
+      .mockResolvedValue();
+    const result = registerPushTokenAsync(usersApiMock(registerPushToken));
+    // let the first attempt fail, then sign out while the retry waits
+    await jest.advanceTimersByTimeAsync(0);
+    await beforeSignOut("jwt");
+    await jest.runAllTimersAsync();
+
+    await expect(result).resolves.toBeUndefined();
+    // the device isn't registered for the signed-out user again
+    expect(registerPushToken).toHaveBeenCalledTimes(1);
+    expect(setItemAsync).not.toHaveBeenCalled();
+  });
+
+  test("a newer registration stops an older one that is still retrying", async () => {
+    getExpoPushTokenAsync.mockResolvedValue(pushToken);
+    const olderRegisterPushToken = jest
+      .fn<() => Promise<void>>()
+      .mockRejectedValueOnce(new ApiError(504, "504 - Gateway Timeout"))
+      .mockResolvedValue();
+    const older = registerPushTokenAsync(usersApiMock(olderRegisterPushToken));
+    await jest.advanceTimersByTimeAsync(0);
+    const newer = registerPushTokenAsync(usersApiMock());
+    await jest.runAllTimersAsync();
+
+    await expect(older).resolves.toBeUndefined();
+    await expect(newer).resolves.toBeUndefined();
+    expect(olderRegisterPushToken).toHaveBeenCalledTimes(1);
+    expect(setItemAsync).toHaveBeenCalledTimes(1);
   });
 
   test("reports a 4xx of our API without retrying", async () => {

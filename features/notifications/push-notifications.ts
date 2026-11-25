@@ -26,6 +26,8 @@ Notifications.setNotificationHandler({
 // Unregister this device before the session is cleared, while the JWT is still valid.
 // Failures are ignored: the backend drops dead tokens on its own.
 setBeforeSignOutHandler(async (authToken) => {
+  // A registration still retrying must not register this device for the signed-out user again
+  registrationGeneration++;
   const storedPushToken = await SecureStore.getItemAsync(
     PUSH_TOKEN_STORAGE_KEY,
   ).catch(() => null);
@@ -134,30 +136,40 @@ export async function getNotificationPermissionAsync({
 // Waits between the attempts of registerPushTokenAsync
 const PUSH_TOKEN_RETRY_DELAYS_MS = [2000, 5000];
 
-const SERVER_ERROR_STATUS =
-  /received: (5\d\d|Internal Server Error|Bad Gateway|Service Unavailable|Gateway Timeout)\b/;
+// exp.host passes the status only in the message ("received: 400 (body: ...)"); a client
+// error is named by its number, a server error may be a number or any status text
+const CLIENT_ERROR_STATUS = /received: 4\d\d\b/;
+// fetch of our API without a response: offline, or the request timed out
+const NETWORK_FAILURE = /^Network request (failed|timed out)$/;
 
-// Bad connections and outages of exp.host or our API, which pass on their own
-function isTransientPushTokenError(error: unknown) {
+// How a failed registration attempt is handled:
+// - retry: bad connections and outages of exp.host or our API, which pass on their own
+// - quiet: the session ended (401); registration runs again after the next sign-in
+// - report: a real failure, e.g. Firebase not configured on Android
+function classifyPushTokenError(error: unknown): "retry" | "quiet" | "report" {
   if (error instanceof ApiError) {
-    return error.status >= 500;
+    if (error.status === 401) return "quiet";
+    return error.status >= 500 ? "retry" : "report";
   }
   if (!(error instanceof Error)) {
-    return false;
+    return "report";
   }
-  const code = (error as { code?: unknown }).code;
+  const code = "code" in error ? error.code : undefined;
   if (code === "ERR_NOTIFICATIONS_NETWORK_ERROR") {
-    return true;
+    return "retry";
   }
   if (code === "ERR_NOTIFICATIONS_SERVER_ERROR") {
-    // exp.host doesn't pass the status separately, only in the message
-    return SERVER_ERROR_STATUS.test(error.message);
+    return CLIENT_ERROR_STATUS.test(error.message) ? "report" : "retry";
   }
-  // fetch of our API without a response (offline, timeout)
-  return (
-    error instanceof TypeError && error.message === "Network request failed"
-  );
+  return error instanceof TypeError && NETWORK_FAILURE.test(error.message)
+    ? "retry"
+    : "report";
 }
+
+// Bumped by every registration and by sign-out: an older registration that is still retrying
+// stops, so it can neither register this device for a signed-out user nor store an older token
+// over a newer one (app start and a rotated device token can register at the same time)
+let registrationGeneration = 0;
 
 function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -167,34 +179,48 @@ function wait(ms: number) {
 // Pass devicePushToken when calling from addPushTokenListener: without it the Expo token
 // lookup fetches the device token itself, which fires the listener again (endless loop).
 // Transient failures (network, 5xx of exp.host or our API) are retried; if they persist the
-// registration is retried on the next app start, so they only leave a breadcrumb. Every other
-// failure is a real one (e.g. Firebase not configured on Android) and goes to Sentry here;
-// callers don't report it again.
+// registration is retried on the next app start, so they only leave a breadcrumb, like an ended
+// session. Every other failure is a real one (e.g. Firebase not configured on Android) and goes
+// to Sentry here; callers don't report it again. A registration superseded by a newer one or by
+// sign-out (see registrationGeneration) stops without an error.
 export async function registerPushTokenAsync(
   usersApi: UsersApi,
   devicePushToken?: Notifications.DevicePushToken,
 ) {
+  const generation = ++registrationGeneration;
+  const isSuperseded = () => generation !== registrationGeneration;
+  // Fetched once: when only our API failed, a retry doesn't ask exp.host again
+  let pushToken: string | null = null;
   for (let attempt = 0; ; attempt++) {
     try {
-      const projectId =
-        Constants.expoConfig?.extra?.eas?.projectId ??
-        Constants.easConfig?.projectId;
-      const { data: pushToken } = await Notifications.getExpoPushTokenAsync({
-        projectId,
-        devicePushToken,
-      });
+      if (pushToken === null) {
+        const projectId =
+          Constants.expoConfig?.extra?.eas?.projectId ??
+          Constants.easConfig?.projectId;
+        const expoToken = await Notifications.getExpoPushTokenAsync({
+          projectId,
+          devicePushToken,
+        });
+        pushToken = expoToken.data;
+      }
+      if (isSuperseded()) return;
       await usersApi.registerPushToken({
         token: pushToken,
         platform: Platform.OS === "ios" ? "ios" : "android",
       });
+      if (isSuperseded()) return;
       await SecureStore.setItemAsync(PUSH_TOKEN_STORAGE_KEY, pushToken);
       return;
     } catch (error) {
-      if (!isTransientPushTokenError(error)) {
+      const handling = classifyPushTokenError(error);
+      if (handling === "report") {
         Sentry.captureException(error);
         throw error;
       }
-      if (attempt >= PUSH_TOKEN_RETRY_DELAYS_MS.length) {
+      if (
+        handling === "quiet" ||
+        attempt >= PUSH_TOKEN_RETRY_DELAYS_MS.length
+      ) {
         Sentry.addBreadcrumb({
           category: "push-notifications",
           level: "warning",
@@ -203,6 +229,7 @@ export async function registerPushTokenAsync(
         throw error;
       }
       await wait(PUSH_TOKEN_RETRY_DELAYS_MS[attempt]);
+      if (isSuperseded()) return;
     }
   }
 }

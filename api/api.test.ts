@@ -7,10 +7,15 @@ jest.mock("@/supabase/supabase", () => ({
 }));
 jest.mock("@/locales/i18n", () => ({ language: "de" }));
 
-const originalFetch = globalThis.fetch;
-
 function respondWith(response: Response) {
-  globalThis.fetch = jest.fn(async () => response) as typeof fetch;
+  jest.spyOn(globalThis, "fetch").mockResolvedValue(response);
+}
+
+function asApiError(error: unknown): ApiError {
+  if (!(error instanceof ApiError)) {
+    throw new Error(`expected an ApiError, got ${String(error)}`);
+  }
+  return error;
 }
 
 async function registerPushTokenError() {
@@ -23,13 +28,13 @@ async function registerPushTokenError() {
       () => {
         throw new Error("expected the request to fail");
       },
-      (error: unknown) => error,
+      (error: unknown) => asApiError(error),
     );
 }
 
 describe("api middleware error responses", () => {
   afterEach(() => {
-    globalThis.fetch = originalFetch;
+    jest.restoreAllMocks();
   });
 
   test("throws an ApiError for a 504 with an empty body", async () => {
@@ -37,11 +42,10 @@ describe("api middleware error responses", () => {
       new Response("", { status: 504, statusText: "Gateway Timeout" }),
     );
     const error = await registerPushTokenError();
-    expect(error).toBeInstanceOf(ApiError);
-    expect((error as ApiError).status).toBe(504);
-    expect((error as ApiError).message).toContain("504 - Gateway Timeout");
-    expect((error as ApiError).serverMessage).toBeUndefined();
-    expect((error as ApiError).code).toBeUndefined();
+    expect(error.status).toBe(504);
+    expect(error.message).toContain("504 - Gateway Timeout");
+    expect(error.serverMessage).toBeUndefined();
+    expect(error.code).toBeUndefined();
   });
 
   test("keeps message and code of a JSON error body", async () => {
@@ -52,11 +56,24 @@ describe("api middleware error responses", () => {
       ),
     );
     const error = await registerPushTokenError();
-    expect(error).toBeInstanceOf(ApiError);
-    expect((error as ApiError).status).toBe(400);
-    expect((error as ApiError).message).toContain("400 - Plot overlaps");
-    expect((error as ApiError).serverMessage).toBe("Plot overlaps");
-    expect((error as ApiError).code).toBe("PLOT_OVERLAP");
+    expect(error.status).toBe(400);
+    expect(error.message).toContain("400 - Plot overlaps");
+    expect(error.serverMessage).toBe("Plot overlaps");
+    expect(error.code).toBe("PLOT_OVERLAP");
+  });
+
+  test("keeps the text of a JSON body that isn't the API's error shape", async () => {
+    respondWith(
+      new Response(JSON.stringify({ message: "Service Unavailable" }), {
+        status: 503,
+        headers: { "Content-Type": "application/json" },
+      }),
+    );
+    const error = await registerPushTokenError();
+    expect(error.status).toBe(503);
+    expect(error.message).toContain('503 - {"message":"Service Unavailable"}');
+    expect(error.serverMessage).toBeUndefined();
+    expect(error.code).toBeUndefined();
   });
 
   test("throws an ApiError with a shortened body for an HTML error page", async () => {
@@ -68,10 +85,9 @@ describe("api middleware error responses", () => {
       }),
     );
     const error = await registerPushTokenError();
-    expect(error).toBeInstanceOf(ApiError);
-    expect((error as ApiError).status).toBe(502);
-    expect((error as ApiError).message).toContain("502 - <html><body>");
-    expect((error as ApiError).message.length).toBeLessThan(html.length);
-    expect((error as ApiError).serverMessage).toBeUndefined();
+    expect(error.status).toBe(502);
+    expect(error.message).toContain("502 - <html><body>");
+    expect(error.message.length).toBeLessThan(html.length);
+    expect(error.serverMessage).toBeUndefined();
   });
 });
