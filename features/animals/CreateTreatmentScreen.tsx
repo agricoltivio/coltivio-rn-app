@@ -1,4 +1,4 @@
-import { ApiError } from "@/api/api";
+import { apiErrorMessage } from "@/utils/api-error-message";
 import { parseDateOnly, toLocalDateString } from "@/utils/date";
 import { Button } from "@/components/buttons/Button";
 import { IonIconButton } from "@/components/buttons/IconButton";
@@ -219,7 +219,8 @@ export function CreateTreatmentScreen({
   function showError(error: Error) {
     Alert.alert(
       t("common.error"),
-      error instanceof ApiError ? error.message : t("common.unknown_error"),
+      // The app's own message: error.message is technical (URL, status, a gateway's HTML)
+      apiErrorMessage(error, t("common.unknown_error"), t),
     );
   }
   const createTreatmentMutation = useCreateTreatmentMutation(

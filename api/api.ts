@@ -83,6 +83,56 @@ function triggerTokenRefresh() {
   }
 }
 
+const MAX_ERROR_BODY_SNIPPET_LENGTH = 200;
+
+// Any string: a code of a newer API version gets the fallback message (see apiErrorMessage)
+function isApiErrorCode(value: unknown): value is ApiErrorCode {
+  return typeof value === "string";
+}
+
+// Gateways and proxies (e.g. a 504 on a bad connection) answer with an empty or HTML body
+// instead of the API's JSON error, so parsing must not throw: otherwise a SyntaxError
+// replaces the ApiError and the global error handling (status checks, error codes) misses it.
+export async function apiErrorFromResponse(
+  response: Response,
+): Promise<ApiError> {
+  const text = await response.text().catch(() => "");
+  // The API's error shape: { error: string, code?: string }. Other JSON (e.g. a proxy's
+  // { message }) is handled like any other body below, so its text stays visible.
+  let serverMessage: string | undefined;
+  let code: ApiErrorCode | undefined;
+  try {
+    const parsed: unknown = JSON.parse(text);
+    if (
+      parsed !== null &&
+      typeof parsed === "object" &&
+      "error" in parsed &&
+      typeof parsed.error === "string"
+    ) {
+      serverMessage = parsed.error;
+      if ("code" in parsed && isApiErrorCode(parsed.code)) code = parsed.code;
+    }
+  } catch {
+    // Not JSON, handled below
+  }
+  if (serverMessage !== undefined) {
+    return new ApiError(
+      response.status,
+      `${response.url}: ${response.status} - ${serverMessage}`,
+      serverMessage,
+      code,
+    );
+  }
+  const detail =
+    text.trim().slice(0, MAX_ERROR_BODY_SNIPPET_LENGTH) ||
+    response.statusText ||
+    "empty response";
+  return new ApiError(
+    response.status,
+    `${response.url}: ${response.status} - ${detail}`,
+  );
+}
+
 const middleware: Middleware = {
   async onResponse({ request, response, options }) {
     if (!response.ok) {
@@ -93,13 +143,7 @@ const middleware: Middleware = {
         // already turns into token=null, routing back to the auth stack.
         triggerTokenRefresh();
       }
-      const content = await response.json();
-      throw new ApiError(
-        response.status,
-        `${response.url}: ${response.status} - ${content.error}`,
-        content.error,
-        content.code,
-      );
+      throw await apiErrorFromResponse(response);
     }
   },
   async onRequest({ request, options }) {
