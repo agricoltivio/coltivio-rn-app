@@ -26,6 +26,7 @@ export function MeadowDetailsDrawer() {
     selectedMeadowId,
     setSelectedMeadowId,
     archivedMeadows,
+    portalHostName,
   } = usePlotsMapContext();
   const { meadows } = useMeadowsQuery();
 
@@ -64,7 +65,7 @@ export function MeadowDetailsDrawer() {
   if (mode.type !== "view") return null;
 
   return (
-    <Portal hostName="PlotsMapPortal">
+    <Portal hostName={portalHostName}>
       <BottomSheetModalProvider key="meadow-details-drawer">
         <BottomDrawerModal
           onClose={() => setSelectedMeadowId(null)}

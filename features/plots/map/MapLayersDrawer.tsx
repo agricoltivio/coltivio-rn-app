@@ -11,7 +11,7 @@ import React, { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View } from "react-native";
 import { useTheme } from "styled-components/native";
-import { type MapVisibleLayers } from "./plots-map-mode";
+import { type MapVisibleLayers, usePlotsMapContext } from "./plots-map-mode";
 
 type MapLayersDrawerProps = {
   visible: boolean;
@@ -34,6 +34,7 @@ export function MapLayersDrawer({
 }: MapLayersDrawerProps) {
   const { t } = useTranslation();
   const theme = useTheme();
+  const { portalHostName } = usePlotsMapContext();
   const snapPoints = useMemo(() => [380], []);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -49,7 +50,7 @@ export function MapLayersDrawer({
   }, [visible]);
 
   return (
-    <Portal hostName="PlotsMapPortal">
+    <Portal hostName={portalHostName}>
       <BottomSheetModalProvider key="map-layers-drawer">
         <BottomDrawerModal
           onClose={onClose}

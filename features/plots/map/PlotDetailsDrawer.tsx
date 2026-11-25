@@ -23,7 +23,8 @@ import { usePlotsMapContext } from "./plots-map-mode";
 export function PlotDetailsDrawer() {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { mode, dispatch, navigation, archivedPlots } = usePlotsMapContext();
+  const { mode, dispatch, navigation, archivedPlots, portalHostName } =
+    usePlotsMapContext();
   // Use all plots (including size-0) so selecting a plot with no geometry still opens the drawer
   const { plots: allPlots } = useFarmPlotsQuery();
 
@@ -66,7 +67,7 @@ export function PlotDetailsDrawer() {
   if (mode.type !== "view") return null;
 
   return (
-    <Portal hostName="PlotsMapPortal">
+    <Portal hostName={portalHostName}>
       <BottomSheetModalProvider key="plot-details-drawer">
         <BottomDrawerModal
           onClose={() => dispatch({ type: "SELECT_PLOT", plotId: null })}

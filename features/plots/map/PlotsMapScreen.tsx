@@ -361,6 +361,8 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
     [plots],
   );
 
+  // See PlotsMapContextValue.portalHostName
+  const portalHostName = `PlotsMapPortal-${route.key}`;
   const contextValue = useMemo(
     () => ({
       mode,
@@ -385,8 +387,10 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
       setAreaChoiceOptions,
       exitMeadowFlow,
       meadowFlowOpenedExternally: initialMeadowAction !== undefined,
+      portalHostName,
     }),
     [
+      portalHostName,
       mode,
       dispatch,
       mapPlots,
@@ -556,7 +560,7 @@ export function PlotsMapScreen({ route, navigation }: PlotsMapScreenProps) {
         </ContentView>
         {/* The drawers render here: part of this screen (not the app-wide portal), so a screen
           opened from a drawer covers them; outside ContentView so its padding doesn't inset them */}
-        <PortalHost name="PlotsMapPortal" />
+        <PortalHost name={portalHostName} />
       </View>
     </PlotsMapContext.Provider>
   );
